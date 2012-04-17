@@ -232,32 +232,32 @@ public class DefaultProgramStageInstanceService
             orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
     }
 
-    public Grid getTabularReport( ProgramStage programStage, List<PatientIdentifierType> idens,
-        List<PatientAttribute> attributes, List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys,
-        Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
-        int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min,
-        int max, I18nFormat format, I18n i18n )
+    public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
+        List<PatientIdentifierType> idens, List<PatientAttribute> attributes, List<DataElement> dataElements,
+        Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
+        Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate,
+        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage,
             searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc,
             orderByExecutionDateByAsc, min, max );
 
-        return createTabularGrid( level, programStage, programStageInstances, idens, attributes, dataElements,
-            startDate, endDate, format, i18n );
+        return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, attributes,
+            dataElements, startDate, endDate, format, i18n );
     }
 
-    public Grid getTabularReport( ProgramStage programStage, List<PatientIdentifierType> idens,
-        List<PatientAttribute> attributes, List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys,
-        Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
-        int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc,
-        I18nFormat format, I18n i18n )
+    public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
+        List<PatientIdentifierType> idens, List<PatientAttribute> attributes, List<DataElement> dataElements,
+        Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
+        Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate,
+        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage,
             searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc,
             orderByExecutionDateByAsc );
 
-        return createTabularGrid( level, programStage, programStageInstances, idens, attributes, dataElements,
-            startDate, endDate, format, i18n );
+        return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, attributes,
+            dataElements, startDate, endDate, format, i18n );
     }
 
     @Override
@@ -340,7 +340,7 @@ public class DefaultProgramStageInstanceService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Grid createTabularGrid( Integer level, ProgramStage programStage,
+    private Grid createTabularGrid( Integer level, List<Boolean> hiddenCols, ProgramStage programStage,
         List<ProgramStageInstance> programStageInstances, List<PatientIdentifierType> idens,
         List<PatientAttribute> attributes, List<DataElement> dataElements, Date startDate, Date endDate,
         I18nFormat format, I18n i18n )
@@ -366,11 +366,13 @@ public class DefaultProgramStageInstanceService
             grid.addHeader( new GridHeader( i18n.getString( "report_unit" ), false, true ) );
             grid.addHeader( new GridHeader( i18n.getString( "report_date" ), false, true ) );
 
+            int index = 0;
             if ( idens != null && idens.size() > 0 )
             {
                 for ( PatientIdentifierType identifierType : idens )
                 {
-                    grid.addHeader( new GridHeader( identifierType.getName(), false, true ) );
+                    grid.addHeader( new GridHeader( identifierType.getName(), hiddenCols.get( index ), true ) );
+                    index++;
                 }
             }
 
@@ -378,7 +380,8 @@ public class DefaultProgramStageInstanceService
             {
                 for ( PatientAttribute attribute : attributes )
                 {
-                    grid.addHeader( new GridHeader( attribute.getName(), false, true ) );
+                    grid.addHeader( new GridHeader( attribute.getName(), hiddenCols.get( index ), true ) );
+                    index++;
                 }
             }
 
@@ -386,7 +389,8 @@ public class DefaultProgramStageInstanceService
             {
                 for ( DataElement dataElement : dataElements )
                 {
-                    grid.addHeader( new GridHeader( dataElement.getName(), false, true ) );
+                    grid.addHeader( new GridHeader( dataElement.getName(), hiddenCols.get( index ), true ) );
+                    index++;
                 }
             }
 

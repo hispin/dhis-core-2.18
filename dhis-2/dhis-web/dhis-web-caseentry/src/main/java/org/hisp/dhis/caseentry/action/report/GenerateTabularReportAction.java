@@ -67,7 +67,7 @@ public class GenerateTabularReportAction
     private String PREFIX_PATIENT_ATTRIBUTE = "attr";
 
     private String PREFIX_DATA_ELEMENT = "de";
-    
+
     private String VALUE_TYPE_OPTION_SET = "optionSet";
 
     // -------------------------------------------------------------------------
@@ -161,7 +161,7 @@ public class GenerateTabularReportAction
     {
         this.searchingValues = searchingValues;
     }
-
+    
     private boolean orderByOrgunitAsc;
 
     public void setOrderByOrgunitAsc( boolean orderByOrgunitAsc )
@@ -266,6 +266,8 @@ public class GenerateTabularReportAction
 
     private Map<Integer, String> searchingDEKeys = new HashMap<Integer, String>();
 
+    private List<Boolean> hiddenCols = new ArrayList<Boolean>();
+    
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -328,7 +330,7 @@ public class GenerateTabularReportAction
 
             this.paging = createPaging( totalRecords );
 
-            grid = programStageInstanceService.getTabularReport( programStage, identifierTypes, patientAttributes,
+            grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes, patientAttributes,
                 dataElements, searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, level, startValue,
                 endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, paging.getStartPos(), paging.getPageSize(),
                 format, i18n );
@@ -336,7 +338,7 @@ public class GenerateTabularReportAction
             return SUCCESS;
         }
 
-        grid = programStageInstanceService.getTabularReport( programStage, identifierTypes, patientAttributes,
+        grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes, patientAttributes,
             dataElements, searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, level, startValue,
             endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, format, i18n );
 
@@ -372,12 +374,13 @@ public class GenerateTabularReportAction
 
                 // Get value-type && suggested-values
                 valueTypes.add( identifierType.getType() );
+                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
 
                 // Get searching-value
-                if ( infor.length == 3 )
+                if ( infor.length == 4 )
                 {
-                    searchingIdenKeys.put( objectId, infor[2].trim() );
-                    values.add( infor[2].trim() );
+                    searchingIdenKeys.put( objectId, infor[3].trim() );
+                    values.add( infor[3].trim() );
                 }
                 else
                 {
@@ -388,16 +391,17 @@ public class GenerateTabularReportAction
             {
                 PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
                 patientAttributes.add( attribute );
-
+                
                 // Get value-type && suggested-values
                 valueTypes.add( attribute.getValueType() );
                 mapSuggestedValues.put( index, getSuggestedAttrValues( attribute ) );
+                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
 
                 // Get searching-value
-                if ( infor.length == 3 )
+                if ( infor.length == 4 )
                 {
-                    searchingAttrKeys.put( objectId, infor[2].trim() );
-                    values.add( infor[2].trim() );
+                    searchingAttrKeys.put( objectId, infor[3].trim() );
+                    values.add( infor[3].trim() );
                 }
                 else
                 {
@@ -408,16 +412,17 @@ public class GenerateTabularReportAction
             {
                 DataElement dataElement = dataElementService.getDataElement( objectId );
                 dataElements.add( dataElement );
-
+                
                 // Get value-type && suggested-values
-                String valueType = ( dataElement.getOptionSet() != null ) ? VALUE_TYPE_OPTION_SET : dataElement.getType();
+                String valueType = (dataElement.getOptionSet() != null) ? VALUE_TYPE_OPTION_SET : dataElement.getType();
                 valueTypes.add( valueType );
                 mapSuggestedValues.put( index, getSuggestedDEValues( dataElement ) );
+                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
 
-                if ( infor.length == 3 )
+                if ( infor.length == 4 )
                 {
-                    searchingDEKeys.put( objectId, infor[2].trim() );
-                    values.add( infor[2].trim() );
+                    searchingDEKeys.put( objectId, infor[3].trim() );
+                    values.add( infor[3].trim() );
                 }
                 else
                 {

@@ -108,39 +108,6 @@ TR.utilbody {
     background-position: -25px -60px;
 }
 
-/* Grid / Tree panel font color */
-.x-grid-row .x-grid-cell {
-    color: #222;
-    background-color: transparent;
-    border: 1px solid transparent;
-}
-
-.x-grid-row-selected .x-grid-cell {
-    border: 1px solid transparent;
-}
-
-.x-grid-row-over {
-    background-color: #f1f1f1;
-}
-
-.x-grid-row-over .x-grid-cell-first, .x-grid-row-selected .x-grid-cell-first {
-    -moz-border-radius: 2px 0 0 2px;
-    -webkit-border-radius: 2px 0 0 2px;
-    -o-border-radius: 2px 0 0 2px;
-    -ms-border-radius: 2px 0 0 2px;
-    -khtml-border-radius: 2px 0 0 2px;
-    border-radius: 2px 0 0 2px;
-}
-
-.x-grid-row-over .x-grid-cell-last, .x-grid-row-selected .x-grid-cell-last {
-    -moz-border-radius: 0 2px 2px 0;
-    -webkit-border-radius: 0 2px 2px 0;
-    -o-border-radius: 0 2px 2px 0;
-    -ms-border-radius: 0 2px 2px 0;
-    -khtml-border-radius: 0 2px 2px 0;
-    border-radius: 0 2px 2px 0;
-}
-
 /* TR menu grid */
 .tr-menugrid .x-grid-row .x-grid-cell, .tr-menugrid .x-grid-row-selected .x-grid-cell {
     border: 0 none;
@@ -372,40 +339,6 @@ TR.utilbody {
     cursor: pointer;
     cursor: hand;
 }
-
-/* Grid datatable column chooser */
-.x-column-header-over .x-column-header-trigger, .x-column-header-open .x-column-header-trigger {
-    display: none;
-}
-
-/* Toolbar second bar chart settings */
-#chartsettings_tb {
-    background: #f5f5f5;
-    padding: 5px 0 0 8px;
-    border-style: none;
-    border-top: 1px dashed #ccc;
-}
-
-#chartoptions_tb {
-    background: #f5f5f5;
-	height: 100%;
-    padding: 6px 0 0 8px;
-    border-top: 2px ridge #e1e1e1;
-    border-right: 0 none;
-    border-bottom: 1px solid #ccc;
-    border-left: 0 none;
-}
-
-/* Toolbar favorites */
-#favorite_t {
-    border-bottom-width: 1px !important;
-    -moz-border-radius: 2px 2px 2px 2px;
-    -webkit-border-radius: 2px 2px 2px 2px;
-    -o-border-radius: 2px 2px 2px 2px;
-    -ms-border-radius: 2px 2px 2px 2px;
-    -khtml-border-radius: 2px 2px 2px 2px;
-    border-radius: 2px 2px 2px 2px;
-}    
 
 /* Multiselect dock border radius */
 .tr-toolbar-multiselect-left .x-docked-top {    
@@ -735,30 +668,4 @@ TR.utilbody {
 }
 .tr-accordion .tr-combo .x-form-item-label { /* accordion combo box label */
 	padding: 4px 0 0;
-}
-
-.x-grid-row-alt
-{
-	background-color: #F4F4F4; 
-	border-bottom-color: #CCCCCC; 
-    border-bottom-style: solid; 
-    border-top-color: #CCCCCC; 
-    border-top-style: solid; 
-}
-
-.custom-grid .x-grid-row-over .x-grid-cell { 
-    background-color: #ff6; 
-    border-bottom-color: #999; 
-    border-bottom-style: dashed; 
-    border-top-color: #999; 
-    border-top-style: dashed; 
-} 
- 
-/* Grid cells in the selected row */ 
-.custom-grid .x-grid-row-selected .x-grid-cell { 
-    background-color: #ff0 !important; 
-    border-bottom-color: #999; 
-    border-bottom-style: solid; 
-    border-top-color: #999; 
-    border-top-style: solid; 
 }
