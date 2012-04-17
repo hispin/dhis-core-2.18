@@ -123,6 +123,8 @@ public class Chart
     private RelativePeriods relatives;
 
     private boolean userOrganisationUnit;
+    
+    private boolean userOrganisationUnitChildren;
 
     private User user;
 
@@ -578,9 +580,22 @@ public class Chart
         return userOrganisationUnit;
     }
 
-    public void setUserOrganisationUnit( boolean userOrganisationUnit )
+    public void setUserOrganisationUnit( boolean userOrganisationUnitChildren )
     {
         this.userOrganisationUnit = userOrganisationUnit;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isUserOrganisationUnitChildren()
+    {
+        return userOrganisationUnitChildren;
+    }
+
+    public void setUserOrganisationUnitChildren( boolean userOrganisationUnitChildren )
+    {
+        this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
 
     @JsonProperty
