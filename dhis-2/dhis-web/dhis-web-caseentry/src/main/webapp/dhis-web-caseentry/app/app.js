@@ -60,11 +60,11 @@ TR.conf = {
             },
             identifierType: {
                 value: 'identifierType',
-                rawvalue: TR.i18n.identifier
+                rawvalue: TR.i18n.identifiers
             },
             patientAttribute: {
                 value: 'patientAttribute',
-                rawvalue: TR.i18n.attribute
+                rawvalue: TR.i18n.attributes
             },
             programStage: {
                 value: 'programStage',
@@ -72,7 +72,7 @@ TR.conf = {
             },
             dataelement: {
                 value: 'dataelement',
-                rawvalue: TR.i18n.data_element
+                rawvalue: TR.i18n.data_elements
             }
         },
         data: {
@@ -111,10 +111,7 @@ TR.conf = {
 Ext.Loader.setConfig({enabled: true});
 Ext.Loader.setPath('Ext.ux', TR.conf.finals.ajax.path_lib + 'ext-ux');
 Ext.require('Ext.ux.form.MultiSelect');
-
-
-Ext.Loader.setPath('Ext.ux', TR.conf.finals.ajax.path_lib + 'ext-ux');
-Ext.require('Ext.ux.form.MultiSelect');
+Ext.require('Ext.ux.grid.ColumnHeaderGroup');
 
 Ext.onReady( function() {
     Ext.override(Ext.form.FieldSet,{setExpanded:function(a){var b=this,c=b.checkboxCmp,d=b.toggleCmp,e;a=!!a;if(c){c.setValue(a)}if(d){d.setType(a?"up":"down")}if(a){e="expand";b.removeCls(b.baseCls+"-collapsed")}else{e="collapse";b.addCls(b.baseCls+"-collapsed")}b.collapsed=!a;b.doComponentLayout();b.fireEvent(e,b);return b}});
@@ -585,7 +582,7 @@ Ext.onReady( function() {
 			p.currentPage = this.currentPage;
 			
 			p.searchingValues = [];
-			if( TR.datatable.datatable )
+			if( TR.store.datatable && TR.store.datatable.data.length)
 			{
 				var grid = TR.datatable.datatable;
 				var editor = grid.getStore().getAt(0);
@@ -635,7 +632,7 @@ Ext.onReady( function() {
 			p += "&programStageId=" + TR.cmp.params.programStage.getValue();
 			p += "&type=" + type;
 			
-			if( TR.datatable.datatable )
+			if( TR.store.datatable && TR.store.datatable.data.length)
 			{
 				var grid = TR.datatable.datatable;
 				var editor = grid.getStore().getAt(0);
@@ -743,7 +740,8 @@ Ext.onReady( function() {
 				width: 50,
 				height: TR.conf.layout.east_gridcolumn_height,
 				sortable: false,
-				draggable: false
+				draggable: false,
+				groupable: true
 			}
 			
 			cols[1] = {
@@ -751,7 +749,8 @@ Ext.onReady( function() {
 				dataIndex: 'col1',
 				height: TR.conf.layout.east_gridcolumn_height,
 				sortable: false,
-				draggable: false
+				draggable: false,
+				groupable: true
 			};
 			
 			cols[2] = { 
@@ -760,7 +759,8 @@ Ext.onReady( function() {
 				width: 150,
 				height: TR.conf.layout.east_gridcolumn_height,
 				sortable: false,
-				draggable: false
+				draggable: false,
+				groupable: true
 			};
 			
 			var index = 3;
@@ -774,6 +774,7 @@ Ext.onReady( function() {
 					name: "iden_"+ r.data.id + "_",
 					sortable: false,
 					draggable: false,
+					groupable: true,
 					editor: {
 						xtype: 'textfield',
 						allowBlank: true
@@ -794,6 +795,7 @@ Ext.onReady( function() {
 					flex:1,
 					sortable: false,
 					draggable: false,
+					groupable: true,
 					editor: {
 							xtype: TR.value.valueTypes[index].valueType,
 							queryMode: 'local',
@@ -822,6 +824,7 @@ Ext.onReady( function() {
 					flex:1,
 					sortable: false,
 					draggable: false,
+					groupable: true,
 					editor: {
 						xtype: TR.value.valueTypes[index].valueType,
 							queryMode: 'local',
@@ -838,30 +841,35 @@ Ext.onReady( function() {
 				index++;
 			});
 			
+			cols1 = [
+				{
+					text: TR.i18n.commons,
+					colspan: 3, 
+					align: 'center'
+				},
+				{ 
+					text: TR.i18n.identifiers,
+					colspan: TR.cmp.params.identifierType.selected.length, 
+					align: 'center'
+				},
+				{
+					text: TR.i18n.attributes,
+					colspan: TR.cmp.params.patientAttribute.selected.length, 
+					align: 'center'
+				},
+				{
+					text: TR.i18n.data_elements,
+					colspan: TR.cmp.params.dataelement.selected.length, 
+					align: 'center'
+				}
+			];
+			
+			var group = new Ext.ux.grid.ColumnHeaderGroup({rows: [cols1, cols]});
+			
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
                 height: TR.util.viewport.getSize().y - 68,
 				columns: cols,
-				lbar: [
-					{
-						xtype: 'label',
-						text: "",
-						style: 'font-size:11px; font-weight:bold; padding:13px 10px 0 10px'
-					},
-					{
-						xtype: 'button',
-						icon: 'images/clearFilter.png',
-						name: TR.i18n.clear,
-						value:"",
-						tooltip: TR.i18n.clear,
-						width: 30,
-						listeners: {
-							click: function() {
-								TR.exe.execute();
-							}
-						}
-					}
-				],
 				scroll: 'both',
 				bbar: [
 					{
@@ -969,6 +977,8 @@ Ext.onReady( function() {
 							}
 						}
 					})
+					
+					,group
 				],
 				store: TR.store.datatable
 				,listeners: {
@@ -978,7 +988,8 @@ Ext.onReady( function() {
 							grid.getView().focusRow(this.rowIndex);
 						}
 					}
-				  } 
+				},
+				sortAscText: TR.i18n.asc
 			});
 			
 			if (Ext.grid.RowEditor) {
@@ -1037,6 +1048,10 @@ Ext.onReady( function() {
 			Ext.getCmp('currentPage').setValue( currentPage );	
 			TR.datatable.setPagingToolbarStatus();
 		},
+		reload: function() {
+			TR.store.datatable.loadData([],false);
+			this.execute();
+		},
 		datatable: function() {
 			TR.store.getDataTableStore();
 			TR.datatable.getDataTable();
@@ -1057,10 +1072,11 @@ Ext.onReady( function() {
                 items: [
 				{
 					xtype: 'toolbar',
+					style: 'padding-top:1px; border-style:none',
 					items: [
 						{
 							xtype: 'panel',
-							bodyStyle: 'border-style:none; background-color:transparent; padding:0 2px',
+							bodyStyle: 'border-style:none; background-color:transparent; padding:0 6px',
                             items: [
                             {
 								xtype: 'label',
@@ -1194,51 +1210,6 @@ Ext.onReady( function() {
 										hideCollapseTool: true,
 										items: [
 											{
-												xtype: 'combobox',
-												cls: 'tr-combo',
-												id:'facilityLBCombobox',
-												fieldLabel: TR.i18n.use_data_from_level,
-												emptyText: TR.i18n.please_select,
-												queryMode: 'local',
-												editable: false,
-												valueField: 'value',
-												displayField: 'name',
-												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 20,
-												store:  new Ext.data.ArrayStore({
-													fields: ['value', 'name'],
-													data: [['all', TR.i18n.all], ['childrenOnly', TR.i18n.children_only], ['selected', TR.i18n.selected]],
-												}),
-												value: 'all',
-												listeners: {
-													added: function() {
-														TR.cmp.settings.facilityLB = this;
-													}
-												}
-											},
-											{
-												xtype: 'combobox',
-												cls: 'tr-combo',
-												id:'levelCombobox',
-												fieldLabel: TR.i18n.show_hierachy_from_level,
-												name: TR.conf.finals.programs,
-												emptyText: TR.i18n.please_select,
-												queryMode: 'local',
-												editable: false,
-												valueField: 'value',
-												displayField: 'name',
-												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 20,
-												store: Ext.create('Ext.data.Store', {
-													fields: ['value', 'name'],
-													data: TR.init.system.level,
-												}),
-												value: '1',
-												listeners: {
-													added: function() {
-														TR.cmp.settings.level = this;
-													}
-												}
-											},
-											{
 												xtype: 'treepanel',
 												cls: 'tr-tree',
 												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
@@ -1327,7 +1298,7 @@ Ext.onReady( function() {
 									
 									// IDENTIFIER TYPE
 									{
-										title: '<div style="height:17px">' + TR.i18n.identifier + '</div>',
+										title: '<div style="height:17px">' + TR.i18n.identifiers + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -1448,7 +1419,7 @@ Ext.onReady( function() {
 									
 									// PATIENT-ATTRIBUTE
 									{
-										title: '<div style="height:17px">' + TR.i18n.attribute + '</div>',
+										title: '<div style="height:17px">' + TR.i18n.attributes + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -1569,7 +1540,7 @@ Ext.onReady( function() {
 									
 									// DATA ELEMENTS
 									{
-										title: '<div style="height:17px">' + TR.i18n.data_element + '</div>',
+										title: '<div style="height:17px">' + TR.i18n.data_elements + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -1715,6 +1686,59 @@ Ext.onReady( function() {
 												);
 											}
 										}
+									},
+									
+									// OPTIONS
+									{
+										title: '<div style="height:17px">' + TR.i18n.options + '</div>',
+										hideCollapseTool: true,
+										items: [
+											{
+												xtype: 'combobox',
+												cls: 'tr-combo',
+												id:'facilityLBCombobox',
+												fieldLabel: TR.i18n.use_data_from_level,
+												emptyText: TR.i18n.please_select,
+												queryMode: 'local',
+												editable: false,
+												valueField: 'value',
+												displayField: 'name',
+												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 20,
+												store:  new Ext.data.ArrayStore({
+													fields: ['value', 'name'],
+													data: [['all', TR.i18n.all], ['childrenOnly', TR.i18n.children_only], ['selected', TR.i18n.selected]],
+												}),
+												value: 'all',
+												listeners: {
+													added: function() {
+														TR.cmp.settings.facilityLB = this;
+													}
+												}
+											},
+											{
+												xtype: 'combobox',
+												cls: 'tr-combo',
+												id:'levelCombobox',
+												fieldLabel: TR.i18n.show_hierachy_from_level,
+												name: TR.conf.finals.programs,
+												emptyText: TR.i18n.please_select,
+												queryMode: 'local',
+												editable: false,
+												valueField: 'value',
+												displayField: 'name',
+												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor - 20,
+												store: Ext.create('Ext.data.Store', {
+													fields: ['value', 'name'],
+													data: TR.init.system.level,
+												}),
+												value: '1',
+												listeners: {
+													added: function() {
+														TR.cmp.settings.level = this;
+													}
+												}
+											}
+										]
 									}
 								
 								
@@ -1774,7 +1798,6 @@ Ext.onReady( function() {
                                 }
                             }
                         },
-                        
                         {
                             xtype: 'button',
 							cls: 'tr-toolbar-btn-1',
@@ -1784,8 +1807,18 @@ Ext.onReady( function() {
                             }
                         },
 						{
-                            xtype: 'button',
+							xtype: 'button',
 							cls: 'tr-toolbar-btn-1',
+							text: TR.i18n.reload,
+							width: 50,
+							listeners: {
+								click: function() {
+									TR.exe.reload();
+								}
+							}
+						},
+						{
+                            xtype: 'button',
                             text: TR.i18n.download,
                             execute: function(type) {
 								TR.exe.execute( type );

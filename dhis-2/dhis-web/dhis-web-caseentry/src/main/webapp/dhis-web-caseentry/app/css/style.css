@@ -18,7 +18,7 @@ TR.utilbody {
 /* Combobox empty text */
 .x-form-empty-field, textarea.x-form-empty-field {
     font-size: 20px;
-    color: red;
+    color: gray;
 }
 
 /* Combobox text position*/
@@ -501,7 +501,7 @@ TR.utilbody {
 
 /* Textfield */
 .tr-textfield .x-form-field, .tr-textfield-alt1 .x-form-field {  
-    height: 26px;
+    height: 24px;
     padding-left: 4px;
     -moz-border-radius: 2px 2px 2px 2px;
     -webkit-border-radius: 2px 2px 2px 2px;
