@@ -111,9 +111,11 @@ public class GetProgramListAction
     {
         programs = programService.getAllPrograms();
 
-        associations = programStageService.getAllProgramStages();
-
-        if ( id != null )
+        if ( id == null )
+        {
+            associations = programStageService.getAllProgramStages();
+        }
+        else
         {
             Program program = programService.getProgram( id );
 

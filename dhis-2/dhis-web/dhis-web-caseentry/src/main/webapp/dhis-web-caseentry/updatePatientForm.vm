@@ -140,6 +140,14 @@
 			</select>
 		</td>		
 	</tr>
+	
+	<tr>
+		<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
+		<td class="input-column">
+			<input type="text" id="phoneNumber" name="phoneNumber" style='width:25px' value="$!patient.phoneNumber" />
+		</td>
+	</tr>
+	
 	<tr><td>&nbsp;</td></tr>	
 
 	<!-- UNDERAGE -->

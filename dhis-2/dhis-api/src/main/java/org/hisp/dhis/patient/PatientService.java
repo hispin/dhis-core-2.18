@@ -109,7 +109,7 @@ public interface PatientService
     Collection<Patient> getPatients( String searchText, int min, int max );
     
     /**
-     * Search Patient base on organisation unit  with result limited
+     * Search Patient base on organization unit with result limited
      * 
      * @param organisationUnit organisationUnit
      * @return Patient List
@@ -117,7 +117,7 @@ public interface PatientService
     Collection<Patient> getPatients( OrganisationUnit organisationUnit );
     
     /**
-     * Search Patient base on organisation unit with result limited
+     * Search Patient base on organization unit with result limited
      * 
      * @param organisationUnit organisationUnit
      * @param min
@@ -127,7 +127,7 @@ public interface PatientService
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max );
 
     /**
-     * Search Patient base on organisation unit and sort the result by PatientAttribute
+     * Search Patient base on organization unit and sort the result by PatientAttribute
      * 
      * @param organisationUnit organisationUnit
      * @param min

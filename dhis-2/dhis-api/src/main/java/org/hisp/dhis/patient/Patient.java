@@ -47,15 +47,21 @@ public class Patient
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = 884114994005945275L;
+
     public static final String MALE = "M";
+
     public static final String FEMALE = "F";
 
     public static final char DOB_TYPE_VERIFIED = 'V';
+
     public static final char DOB_TYPE_DECLARED = 'D';
+
     public static final char DOB_TYPE_APPROXIATED = 'A';
-    
+
     public static final char AGE_TYPE_YEAR = 'Y';
+
     public static final char AGE_TYPE_MONTH = 'M';
+
     public static final char AGE_TYPE_DAY = 'D';
 
     private Integer id;
@@ -71,6 +77,8 @@ public class Patient
     private Date birthDate;
 
     private String bloodGroup;
+
+    private String phoneNumber;
 
     private Date deathDate;
 
@@ -129,13 +137,13 @@ public class Patient
     {
         final int prime = 31;
         int result = 1;
-        
-        result = prime * result + ( ( id == null) ? 0 : id.hashCode() );
-        result = prime * result + ( ( birthDate == null) ? 0 : birthDate.hashCode() );
-        result = prime * result + ( ( firstName == null) ? 0 : firstName.hashCode() );
-        result = prime * result + ( ( gender == null) ? 0 : gender.hashCode() );
-        result = prime * result + ( ( lastName == null) ? 0 : lastName.hashCode() );
-        result = prime * result + ( ( middleName == null) ? 0 : middleName.hashCode() );
+
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+        result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+        result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
 
         return result;
     }
@@ -147,19 +155,19 @@ public class Patient
         {
             return true;
         }
-        
+
         if ( obj == null )
         {
             return false;
         }
-        
+
         if ( getClass() != obj.getClass() )
         {
             return false;
         }
-        
+
         final Patient other = (Patient) obj;
-        
+
         if ( birthDate == null )
         {
             if ( other.birthDate != null )
@@ -171,7 +179,7 @@ public class Patient
         {
             return false;
         }
-        
+
         if ( firstName == null )
         {
             if ( other.firstName != null )
@@ -183,7 +191,7 @@ public class Patient
         {
             return false;
         }
-        
+
         if ( gender == null )
         {
             if ( other.gender != null )
@@ -193,7 +201,7 @@ public class Patient
         {
             return false;
         }
-        
+
         if ( lastName == null )
         {
             if ( other.lastName != null )
@@ -205,7 +213,7 @@ public class Patient
         {
             return false;
         }
-        
+
         if ( middleName == null )
         {
             if ( other.middleName != null )
@@ -217,7 +225,7 @@ public class Patient
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -441,7 +449,7 @@ public class Patient
         // Assumed relative to the 1st of January
         // todayCalendar.set( Calendar.DATE, 1 );
         // todayCalendar.set( Calendar.MONTH, Calendar.JANUARY );
-        
+
         if ( ageType == AGE_TYPE_YEAR )
         {
             todayCalendar.add( Calendar.YEAR, -1 * age );
@@ -499,28 +507,28 @@ public class Patient
             name = firstName;
             space = true;
         }
-        
+
         if ( middleName != null && middleName.length() != 0 )
         {
             if ( space )
             {
                 name += " ";
             }
-            
+
             name += middleName;
             space = true;
         }
-        
+
         if ( lastName != null && lastName.length() != 0 )
         {
             if ( space )
             {
                 name += " ";
             }
-            
+
             name += lastName;
         }
-        
+
         return name;
     }
 
@@ -532,6 +540,16 @@ public class Patient
     public void setBloodGroup( String bloodGroup )
     {
         this.bloodGroup = bloodGroup;
+    }
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isUnderAge()
@@ -563,12 +581,12 @@ public class Patient
     {
         switch ( dobType )
         {
-            case DOB_TYPE_VERIFIED:
-                return "Verified";
-            case DOB_TYPE_DECLARED:
-                return "Declared";
-            default:
-                return "Approxiated";
+        case DOB_TYPE_VERIFIED:
+            return "Verified";
+        case DOB_TYPE_DECLARED:
+            return "Declared";
+        default:
+            return "Approxiated";
         }
     }
 }

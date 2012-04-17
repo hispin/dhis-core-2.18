@@ -101,7 +101,9 @@ public class AddPatientAction
     private String gender;
 
     private String bloodGroup;
-    
+
+    private String phoneNumber;
+
     private String registrationDate;
 
     private boolean underAge;
@@ -125,8 +127,8 @@ public class AddPatientAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         Patient patient = new Patient();
-        
-        verified = ( verified == null ) ? false : verified ;
+
+        verified = (verified == null) ? false : verified;
 
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
@@ -167,16 +169,17 @@ public class AddPatientAction
         patient.setGender( gender );
         patient.setIsDead( false );
         patient.setBloodGroup( bloodGroup );
+        patient.setPhoneNumber( phoneNumber );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
-        Character dobType = ( verified ) ? 'V' : 'D';
-        
-        if( !verified && age != null )
+        Character dobType = (verified) ? 'V' : 'D';
+
+        if ( !verified && age != null )
         {
             dobType = 'A';
         }
-        
+
         if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
         {
             birthDate = birthDate.trim();
@@ -384,6 +387,11 @@ public class AddPatientAction
     public void setBloodGroup( String bloodGroup )
     {
         this.bloodGroup = bloodGroup;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
