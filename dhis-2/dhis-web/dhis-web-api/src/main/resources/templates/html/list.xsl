@@ -7,7 +7,7 @@
   <xsl:include href="identifiable-row.xsl" />
 
   <!-- match all plural elements -->
-  <xsl:template match="d:dxf2">
+  <xsl:template match="d:metaData">
     <xsl:apply-templates select="d:pager"/>
     <xsl:apply-templates select="d:*[local-name()!='pager']"/>
   </xsl:template>
