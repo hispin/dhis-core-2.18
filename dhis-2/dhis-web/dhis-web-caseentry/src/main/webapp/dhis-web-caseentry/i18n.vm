@@ -32,6 +32,7 @@ data_table:'$encoder.jsEscape($i18n.getString( 'data_table' ) , "'")',
 page:'$encoder.jsEscape($i18n.getString( 'page' ) , "'")',
 loading:'$encoder.jsEscape($i18n.getString( 'loading' ) , "'")',
 generate:'$encoder.jsEscape($i18n.getString( 'generate' ) , "'")',
-et_no_data : '$encoder.jsEscape($i18n.getString( 'et_no_data' ) , "'")',
-
+et_no_data:'$encoder.jsEscape($i18n.getString( 'et_no_data' ) , "'")',
+em_no_orgunits:'$encoder.jsEscape($i18n.getString( 'em_no_orgunits' ) , "'")',
+organisation_units:'$encoder.jsEscape($i18n.getString( 'organisation_units' ) , "'")',
 };

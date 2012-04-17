@@ -27,7 +27,7 @@
 		#foreach( $level in $levels )
 		  {
 			"value":  "${level.level}" ,
-			"name": "${level.level}"
+			"name": "${level.name}"
 		  }#if($velocityCount < $levels.size()),#end
 		#end
 	]

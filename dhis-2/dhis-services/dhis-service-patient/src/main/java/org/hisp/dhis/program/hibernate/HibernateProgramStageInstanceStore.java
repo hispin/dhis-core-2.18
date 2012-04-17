@@ -273,7 +273,7 @@ public class HibernateProgramStageInstanceStore
         condition += " WHERE psi.executiondate >= '" + DateUtils.getMediumDateString( startDate )
             + "' AND psi.executiondate <= '" + DateUtils.getMediumDateString( endDate ) + "' "
             + " AND psi.organisationunitid in " + splitListHelper( orgunitIds )
-            + " psi.programstageid = " + programStage.getId() + " ";
+            + " AND psi.programstageid = " + programStage.getId() + " ";
 
         // ---------------------------------------------------------------------
         // Searching program-stage-instances by patient-identifiers

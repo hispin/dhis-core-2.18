@@ -101,7 +101,7 @@ TR.conf = {
         west_width_subtractor: 18,
         west_fill: 117,
         west_fill_accordion_organisationunit: 75,
-        west_maxheight_accordion_organisationunit: 700,
+        west_maxheight_accordion_organisationunit: 225,
         center_tbar_height: 31,
         east_gridcolumn_height: 30,
         form_label_width: 90
@@ -520,15 +520,14 @@ Ext.onReady( function() {
 				storage: {}
 			});
         }
-    };
+	}
     
     TR.state = {
-        filterValues:[],
-		currentPage: 1,
+        currentPage: 1,
 		total: 1,
 		generateReport: function( type ) {
 			// Validation
-			if( this.filterValues.length==0 && !this.validation.objects() )
+			if( !this.validation.objects() )
 			{
 				return;
 			}
@@ -537,21 +536,18 @@ Ext.onReady( function() {
 			// Export to XLS or PDF
 			if( type)
 			{
-				url += "?" + "type=" + type + "&";
-				var params = ( this.filterValues.length==0 ) ? this.getURLParams() : this.getURLFilterValues() ;
-				window.location.href = url + params;
+				window.location.href = url + "?" + this.getURLParams(type);
 			}
 			// Show report on grid
 			else
 			{
-				var params = ( this.filterValues.length == 0 ) ? TR.state.getParams() : this.filterValues;
 				TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 			
 				Ext.Ajax.request({
 					url: url,
 					method: "POST",
 					scope: this,
-					params: params,
+					params: this.getParams(),
 					success: function(r) {
 						var json = Ext.JSON.decode(r.responseText);
 						TR.state.total = json.total;
@@ -576,25 +572,8 @@ Ext.onReady( function() {
 			}
 			TR.util.notification.ok();
 		},
-		getBaseParams: function() {
-            var p = {};
-            
-			p.startDate = TR.cmp.settings.startDate.rawValue;
-            p.endDate = TR.cmp.settings.endDate.rawValue;
-			p.facilityLB = TR.cmp.settings.facilityLB.getValue();
-			p.level = TR.cmp.settings.level.getValue();
-			p.orgunitId = TR.cmp.params.organisationunit.treepanel.getSelectionModel().getSelection()[0].data.id
-			p.orderByOrgunitAsc = 'true';
-			p.orderByExecutionDateByAsc= 'true';
-			p.programStageId = TR.cmp.params.programStage.getValue();
-			p.currentPage = this.currentPage;
-			p.pageSize = this.pageSize;
-			
-            return p;
-        },
 		getParams: function() {
-            var p = {};
-            //p.program = TR.cmp.settings.program.getValue();
+			var p = {};
             p.startDate = TR.cmp.settings.startDate.rawValue;
             p.endDate = TR.cmp.settings.endDate.rawValue;
 			p.facilityLB = TR.cmp.settings.facilityLB.getValue();
@@ -604,25 +583,47 @@ Ext.onReady( function() {
 			p.orderByExecutionDateByAsc= 'true';
 			p.programStageId = TR.cmp.params.programStage.getValue();
 			p.currentPage = this.currentPage;
-			p.pageSize = this.pageSize;
-			 
-			p.searchingValues = [];
-			// Identifier Types
-			TR.cmp.params.identifierType.selected.store.each( function(r) {
-				p.searchingValues.push( 'iden_' + r.data.id + '_');
-			});
-			// Patient Attributes
-			TR.cmp.params.patientAttribute.selected.store.each( function(r) {
-				p.searchingValues.push( 'attr_' + r.data.id + '_');
-			});
-			// Data elements
-			TR.cmp.params.dataelement.selected.store.each( function(r) {
-				p.searchingValues.push( 'de_' + r.data.id + '_');
-			});
 			
+			p.searchingValues = [];
+			if( TR.datatable.datatable )
+			{
+				var grid = TR.datatable.datatable;
+				var editor = grid.getStore().getAt(0);
+				var colLen = grid.columns.length;
+				for( var i=0; i<colLen; i++ )
+				{
+					var col = grid.columns[i];	
+					if( col.name )
+					{
+						var dataIndex = col.dataIndex;
+						var value = editor.data[dataIndex];
+						if( value!=null && value!= '')
+						{
+							value = TR.util.getValueFormula(value);
+						}
+						p.searchingValues.push( col.name + col.hidden + "_" + value );
+					}
+				}
+			}
+			else
+			{
+				// Identifier Types
+				TR.cmp.params.identifierType.selected.store.each( function(r) {
+					p.searchingValues.push( 'iden_' + r.data.id + '_false_' );
+				});
+				// Patient Attributes
+				TR.cmp.params.patientAttribute.selected.store.each( function(r) {
+					p.searchingValues.push( 'attr_' + r.data.id + '_false_' );
+				});
+				// Data elements
+				TR.cmp.params.dataelement.selected.store.each( function(r) {
+					p.searchingValues.push( 'de_' + r.data.id +  '_false_' );
+				});
+			}
+		
             return p;
         },
-		getURLParams: function() {
+		getURLParams: function( type ) {
             var p = "";
             p += "startDate=" + TR.cmp.settings.startDate.rawValue;
             p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
@@ -632,43 +633,46 @@ Ext.onReady( function() {
 			p += "&orderByOrgunitAsc=" + 'true';
 			p += "&orderByExecutionDateByAsc=" +'true';
 			p += "&programStageId=" + TR.cmp.params.programStage.getValue();
-			p += "&currentPage=" + this.currentPage;
-			p += "&pageSize=" + this.pageSize;
-			 
-			// Identifier Types
-			TR.cmp.params.identifierType.selected.store.each( function(r) {
-				p += "&searchingValues=" + 'iden_' + r.data.id + '_';
-			});
-			// Patient Attributes
-			TR.cmp.params.patientAttribute.selected.store.each( function(r) {
-				p += "&searchingValues=" +'attr_' + r.data.id + '_';
-			});
-			// Data elements
-			TR.cmp.params.dataelement.selected.store.each( function(r) {
-				p += "&searchingValues=" + 'de_' + r.data.id + '_';
-			});
+			p += "&type=" + type;
+			
+			if( TR.datatable.datatable )
+			{
+				var grid = TR.datatable.datatable;
+				var editor = grid.getStore().getAt(0);
+				var colLen = grid.columns.length;
+				for( var i=0; i<colLen; i++ )
+				{
+					var col = grid.columns[i];	
+					if( col.name )
+					{
+						var dataIndex = col.dataIndex;
+						var value = editor.data[dataIndex];
+						if( value!=null && value!= '')
+						{
+							value = TR.util.getValueFormula(value);
+						}
+						p += "&searchingValues=" + col.name + col.hidden + "_" + value;
+					}
+				}
+			}
+			else
+			{
+				// Identifier Types
+				TR.cmp.params.identifierType.selected.store.each( function(r) {
+					p += "&searchingValues=" + 'iden_' + r.data.id + '_false_';
+				});
+				// Patient Attributes
+				TR.cmp.params.patientAttribute.selected.store.each( function(r) {
+					p += "&searchingValues=" +'attr_' + r.data.id + '_false_';
+				});
+				// Data elements
+				TR.cmp.params.dataelement.selected.store.each( function(r) {
+					p += "&searchingValues=" + 'de_' + r.data.id + '_false_';
+				});
+			}
 			
             return p;
         },
-		getURLFilterValues: function() {
-			var p = "";
-			p += "startDate=" + TR.cmp.settings.startDate.rawValue;
-            p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
-			p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
-			p += "&level=" + TR.cmp.settings.level.getValue();
-			p += "&orgunitId=" + TR.cmp.params.organisationunit.treepanel.getSelectionModel().getSelection()[0].data.id
-			p += "&orderByOrgunitAsc=" + 'true';
-			p += "&orderByExecutionDateByAsc=" +'true';
-			p += "&programStageId=" + TR.cmp.params.programStage.getValue();
-			p += "&currentPage=" + this.currentPage;
-			p += "&pageSize=" + this.pageSize;
-			
-			// Searching values
-			for( var i = 0; i<this.filterValues.searchingValues.length; i++ ){
-				p += "&searchingValues=" + this.filterValues.searchingValues[i];
-			}
-			return p;
-		},
 		validation: {
 			params: function() {
 				if (!TR.c.params.program ) {
@@ -724,7 +728,7 @@ Ext.onReady( function() {
     
     TR.value = {
 		valueTypes: [],
-        fields: [],
+		fields: [],
 		values: []
     };
       
@@ -832,13 +836,11 @@ Ext.onReady( function() {
 					}
 				};
 				index++;
-			}); 
+			});
 			
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
                 height: TR.util.viewport.getSize().y - 68,
-				cls: 'x-grid-row-alt',
-				stripeRows: true,
 				columns: cols,
 				lbar: [
 					{
@@ -855,23 +857,6 @@ Ext.onReady( function() {
 						width: 30,
 						listeners: {
 							click: function() {
-								var p = TR.state.getBaseParams();
-								p.searchingValues = [];
-								var cols = TR.datatable.datatable.columns;
-								for( var i=0; i<cols.length; i++ )
-								{
-									var dataIndex = cols[i].dataIndex;
-									if( TR.store.datatable.first() )
-									{
-										TR.store.datatable.first().data[dataIndex] = "";
-									}
-									if( cols[i].name )
-									{
-										p.searchingValues.push( cols[i].name );
-									}
-								};
-								
-								TR.state.filterValues = p;
 								TR.exe.execute();
 							}
 						}
@@ -980,33 +965,11 @@ Ext.onReady( function() {
 								}
 							},
 							edit: function( editor, e ){
-								var p = TR.state.getBaseParams();
-								p.searchingValues = [];
-								var colLen = editor.grid.columns.length;
-								for( var i=0; i<colLen; i++ )
-								{
-									var col = editor.grid.columns[i];	
-									if( col.name )
-									{
-										var dataIndex = col.dataIndex;
-										var value = col.field.rawValue;
-										if( value!=null && value!= '')
-										{
-											value = TR.util.getValueFormula(value);
-										}
-										p.searchingValues.push( col.name + value );
-									}
-								};
-								
-								TR.state.filterValues = p;
 								TR.exe.execute();
-								TR.datatable.getDataTable();
 							}
 						}
 					})
-					//, group
-				
-			],
+				],
 				store: TR.store.datatable
 				,listeners: {
 					celldblclick: function(grid,rowIndex,cellIndex,e){
@@ -1223,7 +1186,7 @@ Ext.onReady( function() {
 								activeOnTop: true,
 								cls: 'tr-accordion',
 								bodyStyle: 'border:0 none',
-								height: 350,
+								height: 430,
 								items: [
 									// ORGANISATION UNIT
 									{
