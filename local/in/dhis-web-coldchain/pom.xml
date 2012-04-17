@@ -9,12 +9,12 @@
 		<version>2.8-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>dhis-web-dashboard</artifactId>
+	<artifactId>dhis-web-coldchain</artifactId>
 	<packaging>war</packaging>
-	<name>DHIS DashBoard</name>
+	<name>DHIS Cold Chain</name>
 	
 	<build>
-		<finalName>dhis-web-dashboard</finalName>
+		<finalName>dhis-web-coldchain</finalName>
 	</build>
 	
 	<dependencies>
@@ -93,13 +93,12 @@
 			<artifactId>dhis-in-service-dataentrystatus</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>org.hisp.dhis</groupId>
             <artifactId>dhis-in-service-coldchain</artifactId>
             <version>${project.version}</version>
         </dependency>
-		-->
-
+			
 		<!-- Other -->
 		<!--	     
 		<dependency>

@@ -20,6 +20,7 @@
 	<module>dhis-in-service-reports</module>
     <module>dhis-in-service-survey</module>
 	<module>dhis-in-service-dataentrystatus</module>
+	<module>dhis-in-service-coldchain</module>
   </modules>
   
   <dependencies>
