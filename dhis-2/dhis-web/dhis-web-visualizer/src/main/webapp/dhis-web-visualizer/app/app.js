@@ -606,8 +606,8 @@ Ext.onReady( function() {
             organisationunit: {
                 getObjects: function() {
                     var a = [],
-                        tp = DV.cmp.dimension.organisationunit.treepanel,
-                        selection = tp.getSelectionModel().getSelection();
+					tp = DV.cmp.dimension.organisationunit.treepanel,
+	                selection = tp.getSelectionModel().getSelection();
 					if (!selection.length) {
 						selection = [tp.getRootNode()];
 						tp.selectRoot();
@@ -630,12 +630,14 @@ Ext.onReady( function() {
 						if (DV.c.userorganisationunit || DV.c.userorganisationunitchildren) {
 							if (DV.c.userorganisationunit) {
 								a.push(DV.init.user.organisationunit.name);
+								DV.cmp.dimension.organisationunit.treepanel.addToStorage([DV.init.user.organisationunit]);
 							}
 							if (DV.c.userorganisationunitchildren) {
-								var c = DV.init.user.organisationunitchildren;
-								for (var i = 0; i < c.length; i++) {
-									a.push(c[i].name);
+								var ouc = DV.init.user.organisationunitchildren;
+								for (var i = 0; i < ouc.length; i++) {
+									a.push(ouc[i].name);
 								}
+								DV.cmp.dimension.organisationunit.treepanel.addToStorage(DV.init.user.organisationunitchildren);
 							}
 						}
 						else {
@@ -1660,7 +1662,7 @@ Ext.onReady( function() {
 			p.hideLegend = DV.c.hidelegend;
 			p.trendLine = DV.c.trendline;
 			p.userOrganisationUnit = DV.c.userorganisationunit;
-			p.userOrganisationUnitChildren = DV.c.userorganisationunitChildren;
+			p.userOrganisationUnitChildren = DV.c.userorganisationunitchildren;
 			if (DV.c.domainaxislabel) {
 				p.domainAxisLabel = DV.c.domainaxislabel;
 			}
@@ -1917,7 +1919,7 @@ Ext.onReady( function() {
                 url: baseurl,
                 disableCaching: false,
                 success: function(r) {
-                    DV.value.values = DV.util.value.jsonfy(r);                    
+                    DV.value.values = DV.util.value.jsonfy(r);
                     
                     if (!DV.state.validation.value()) {
 						return;
