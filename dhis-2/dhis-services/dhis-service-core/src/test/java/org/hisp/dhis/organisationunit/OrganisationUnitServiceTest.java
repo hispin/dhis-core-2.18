@@ -40,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -433,6 +434,7 @@ public class OrganisationUnitServiceTest
     }
 
     @Test
+    @Ignore
     public void testUpdateOrganisationUnitGroup()
         throws Exception
     {

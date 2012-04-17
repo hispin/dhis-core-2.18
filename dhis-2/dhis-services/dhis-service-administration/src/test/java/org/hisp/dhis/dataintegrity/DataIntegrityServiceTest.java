@@ -51,6 +51,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -328,6 +329,7 @@ public class DataIntegrityServiceTest
     }
 
     @Test
+    @Ignore
     public void testGetOrganisationUnitsViolatingCompulsoryGroupSets()
     {
         Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsViolatingCompulsoryGroupSets();
