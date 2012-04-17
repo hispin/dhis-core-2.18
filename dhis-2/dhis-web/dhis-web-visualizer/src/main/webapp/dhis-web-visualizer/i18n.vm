@@ -119,6 +119,7 @@ wm_multiple_filter_ind_de_ds:'$encoder.jsEscape($i18n.getString( 'wm_multiple_fi
 wm_multiple_filter_period:'$encoder.jsEscape($i18n.getString( 'wm_multiple_filter_period' ) , "'")',
 wm_multiple_filter_orgunit:'$encoder.jsEscape($i18n.getString( 'wm_multiple_filter_orgunit' ) , "'")',
 wm_multiple_filter_groups:'$encoder.jsEscape($i18n.getString( 'wm_multiple_filter_groups' ) , "'")',
-wm_first_filter_used:'$encoder.jsEscape($i18n.getString( 'wm_first_filter_used' ) , "'")'
+wm_first_filter_used:'$encoder.jsEscape($i18n.getString( 'wm_first_filter_used' ) , "'")',
+user_orgunit_children:'$encoder.jsEscape($i18n.getString( 'user_orgunit_children' ) , "'")'
 
 };

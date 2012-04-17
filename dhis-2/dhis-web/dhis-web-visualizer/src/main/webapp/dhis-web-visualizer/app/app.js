@@ -63,12 +63,34 @@ DV.conf = {
 		ajax: {
 			jsonfy: function(r) {
 				r = Ext.JSON.decode(r.responseText);
-				var obj = {system: {rootnode: {id: r.rn[0], name: r.rn[1], level: 1}, periods: {}, user: {id: r.user.id, isadmin: r.user.isAdmin, organisationunit: {id: r.user.ou[0], name: r.user.ou[1]}},organisationunitgroupsets:r.ougs}};
+				var obj = {
+					system: {
+						rootnode: {
+							id: r.rn[0],
+							name: r.rn[1],
+							level: 1
+						},
+						periods: {},
+						organisationunitgroupsets: r.ougs
+					},
+					user: {
+						id: r.user.id,
+						isadmin: r.user.isAdmin,
+						organisationunit: {
+							id: r.user.ou[0],
+							name: r.user.ou[1]
+						},
+						organisationunitchildren: []							
+					}
+				};
 				for (var relative in r.p) {
 					obj.system.periods[relative] = [];
 					for (var i = 0; i < r.p[relative].length; i++) {
 						obj.system.periods[relative].push({id: r.p[relative][i][0], name: r.p[relative][i][1]});
 					}
+				}
+				for (var i = 0; i < r.user.ouc.length; i++) {
+					obj.user.organisationunitchildren.push({id: r.user.ouc[i][0], name: r.user.ouc[i][1]});
 				}
 				return obj;
 			}
@@ -195,7 +217,7 @@ DV.conf = {
         west_maxheight_accordion_dataset: 450,
         west_maxheight_accordion_period: 340,
         west_maxheight_accordion_organisationunit: 700,
-        west_maxheight_accordion_options: 367,
+        west_maxheight_accordion_options: 393,
         center_tbar_height: 31,
         east_tbar_height: 31,
         east_gridcolumn_height: 30,
@@ -605,8 +627,16 @@ Ext.onReady( function() {
 						}
 					}
 					else {
-						if (DV.c.userorganisationunit) {
-							a.push(DV.init.system.user.organisationunit.name);
+						if (DV.c.userorganisationunit || DV.c.userorganisationunitchildren) {
+							if (DV.c.userorganisationunit) {
+								a.push(DV.init.user.organisationunit.name);
+							}
+							if (DV.c.userorganisationunitchildren) {
+								var c = DV.init.user.organisationunitchildren;
+								for (var i = 0; i < c.length; i++) {
+									a.push(c[i].name);
+								}
+							}
 						}
 						else {
 							for (var i = 0; i < ou.objects.length; i++) {
@@ -622,8 +652,16 @@ Ext.onReady( function() {
                 getUrl: function(isFilter) {
 					var ou = DV.c.organisationunit,
 						a = [];
-					if (DV.c.userorganisationunit) {
-						a.push('organisationUnitIds=' + DV.init.system.user.organisationunit.id);
+					if (DV.c.userorganisationunit || DV.c.userorganisationunitchildren) {
+						if (DV.c.userorganisationunit) {
+							a.push('organisationUnitIds=' + DV.init.user.organisationunit.id);
+						}
+						if (DV.c.userorganisationunitchildren) {
+							var c = DV.init.user.organisationunitchildren;
+							for (var i = 0; i < c.length; i++) {
+								a.push('organisationUnitIds=' + c[i].id);
+							}
+						}
 					}
 					else {
 						for (var i = 0; i < ou.objects.length; i++) {
@@ -1506,6 +1544,7 @@ Ext.onReady( function() {
                         DV.c.hidelegend = f.hideLegend;
                         DV.c.trendline = f.regression;
                         DV.c.userorganisationunit = f.userOrganisationUnit;
+                        DV.c.userorganisationunitchildren = f.userOrganisationUnitChildren;
                         DV.c.domainaxislabel = f.domainAxisLabel;
                         DV.c.rangeaxislabel = f.rangeAxisLabel;
                         DV.c.targetlinevalue = f.targetLineValue ? parseFloat(f.targetLineValue) : null;
@@ -1603,6 +1642,7 @@ Ext.onReady( function() {
             DV.c.hidelegend = DV.cmp.favorite.hidelegend.getValue();
             DV.c.trendline = DV.cmp.favorite.trendline.getValue();
             DV.c.userorganisationunit = DV.cmp.favorite.userorganisationunit.getValue();
+            DV.c.userorganisationunitchildren = DV.cmp.favorite.userorganisationunitchildren.getValue();
             DV.c.domainaxislabel = DV.cmp.favorite.domainaxislabel.getValue();
             DV.c.rangeaxislabel = DV.cmp.favorite.rangeaxislabel.getValue();
             DV.c.targetlinevalue = parseFloat(DV.cmp.favorite.targetlinevalue.getValue());
@@ -1620,6 +1660,7 @@ Ext.onReady( function() {
 			p.hideLegend = DV.c.hidelegend;
 			p.trendLine = DV.c.trendline;
 			p.userOrganisationUnit = DV.c.userorganisationunit;
+			p.userOrganisationUnitChildren = DV.c.userorganisationunitChildren;
 			if (DV.c.domainaxislabel) {
 				p.domainAxisLabel = DV.c.domainaxislabel;
 			}
@@ -1654,6 +1695,7 @@ Ext.onReady( function() {
 			DV.cmp.favorite.hidelegend.setValue(DV.c.hidelegend);
 			DV.cmp.favorite.trendline.setValue(DV.c.trendline);
 			DV.cmp.favorite.userorganisationunit.setValue(DV.c.userorganisationunit);
+			DV.cmp.favorite.userorganisationunitchildren.setValue(DV.c.userorganisationunitchildren);
 			DV.cmp.favorite.domainaxislabel.setValue(DV.c.domainaxislabel);
 			DV.cmp.favorite.rangeaxislabel.setValue(DV.c.rangeaxislabel);
 			DV.cmp.favorite.targetlinevalue.setValue(DV.c.targetlinevalue);
@@ -1914,6 +1956,7 @@ Ext.onReady( function() {
 			hidelegend: false,
 			trendline: false,
 			userorganisationunit: false,
+			userorganisationunitchildren: false,
 			domainaxislabel: null,
 			rangeaxislabel: null,
 			targetlinevalue: null,
@@ -1937,6 +1980,7 @@ Ext.onReady( function() {
 			this.model.hidelegend = false;
 			this.model.trendline = false;
 			this.model.userorganisationunit = false;
+			this.model.userorganisationunitchildren = false;			
 			this.model.domainaxislabel = null;
 			this.model.rangeaxislabel = null;
 			this.model.targetlinevalue = null;
@@ -3205,12 +3249,11 @@ Ext.onReady( function() {
 													{
 														xtype: 'panel',
 														layout: 'column',
-														bodyStyle: 'border-style:none; background-color:transparent; padding-bottom:15px',
+														bodyStyle: 'border-style:none; background-color:transparent; padding-bottom:3px',
 														items: [
 															{
 																xtype: 'checkbox',
-																cls: 'dv-checkbox-alt1',
-																style: 'margin-right:23px',
+																width: 124,
 																boxLabel: DV.i18n.hide_subtitle,
 																labelWidth: DV.conf.layout.form_label_width,
 																listeners: {
@@ -3221,8 +3264,36 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																cls: 'dv-checkbox-alt1',
-																style: 'margin-right:23px',
+																width: 130,
+																boxLabel: DV.i18n.user_orgunit,
+																labelWidth: DV.conf.layout.form_label_width,
+																listeners: {
+																	added: function() {
+																		DV.cmp.favorite.userorganisationunit = this;
+																	}
+																}
+															},
+															{
+																xtype: 'checkbox',
+																width: 124,
+																boxLabel: DV.i18n.trend_line,
+																labelWidth: DV.conf.layout.form_label_width,
+																listeners: {
+																	added: function() {
+																		DV.cmp.favorite.trendline = this;
+																	}
+																}
+															}
+														]
+													},
+													{
+														xtype: 'panel',
+														layout: 'column',
+														bodyStyle: 'border-style:none; background-color:transparent; padding-bottom:15px',
+														items: [
+															{
+																xtype: 'checkbox',
+																width: 124,
 																boxLabel: DV.i18n.hide_legend,
 																labelWidth: DV.conf.layout.form_label_width,
 																listeners: {
@@ -3233,24 +3304,12 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																cls: 'dv-checkbox-alt1',
-																style: 'margin-right:23px',
-																boxLabel: DV.i18n.trend_line,
+																width: 130,
+																boxLabel: DV.i18n.user_orgunit_children,
 																labelWidth: DV.conf.layout.form_label_width,
 																listeners: {
 																	added: function() {
-																		DV.cmp.favorite.trendline = this;
-																	}
-																}
-															},
-															{
-																xtype: 'checkbox',
-																cls: 'dv-checkbox-alt1',
-																boxLabel: DV.i18n.user_orgunit,
-																labelWidth: DV.conf.layout.form_label_width,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.userorganisationunit = this;
+																		DV.cmp.favorite.userorganisationunitchildren = this;
 																	}
 																}
 															}
@@ -3540,9 +3599,9 @@ Ext.onReady( function() {
                                                                             style: 'padding-bottom:2px',
                                                                             fieldLabel: DV.i18n.system,
                                                                             labelWidth: DV.conf.layout.form_label_width,
-                                                                            disabled: !DV.init.system.user.isadmin,
+                                                                            disabled: !DV.init.user.isadmin,
                                                                             check: function() {
-                                                                                if (!DV.init.system.user.isadmin) {
+                                                                                if (!DV.init.user.isadmin) {
                                                                                     if (DV.store.favorite.findExact('name', DV.cmp.favorite.name.getValue()) === -1) {
                                                                                         this.setValue(false);
                                                                                     }
@@ -3862,7 +3921,7 @@ Ext.onReady( function() {
                                                                             if (DV.cmp.favorite.name.getValue()) {
                                                                                 var index = DV.store.favorite.findExact('name', DV.cmp.favorite.name.getValue());
                                                                                 if (index != -1) {
-                                                                                    if (DV.store.favorite.getAt(index).data.userId || DV.init.system.user.isadmin) {
+                                                                                    if (DV.store.favorite.getAt(index).data.userId || DV.init.user.isadmin) {
                                                                                         this.enable();
                                                                                         DV.cmp.favorite.label.setText('');
                                                                                         return true;
