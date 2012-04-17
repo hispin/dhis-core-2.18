@@ -227,7 +227,7 @@ public class ReflectionUtils
             {
                 Field field = object.getClass().getDeclaredField( fieldName );
                 method = findSetterMethod( fieldName, object, field.getType() );
-            } catch ( NoSuchFieldException e )
+            } catch ( NoSuchFieldException ignored )
             {
             }
         }
@@ -244,7 +244,6 @@ public class ReflectionUtils
     public static <T> T invokeGetterMethod( String fieldName, Object object )
     {
         Method method = findGetterMethod( fieldName, object );
-        log.info( method );
 
         if ( method == null )
         {
@@ -269,7 +268,6 @@ public class ReflectionUtils
     public static <T> T invokeSetterMethod( String fieldName, Object object, Object... objects )
     {
         Method method = findSetterMethod( fieldName, object );
-        log.info( method );
 
         if ( method == null )
         {

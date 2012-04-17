@@ -202,6 +202,16 @@ public class OrganisationUnit
         organisationUnitGroup.getMembers().remove( this );
     }
 
+    public void removeAllOrganisationUnitGroups()
+    {
+        for ( OrganisationUnitGroup organisationUnitGroup : groups )
+        {
+            organisationUnitGroup.getMembers().remove( this );
+        }
+
+        groups.clear();
+    }
+
     public void addDataSet( DataSet dataSet )
     {
         dataSets.add( dataSet );
@@ -212,6 +222,16 @@ public class OrganisationUnit
     {
         dataSets.remove( dataSet );
         dataSet.getSources().remove( this );
+    }
+
+    public void removeAllDataSets()
+    {
+        for ( DataSet dataSet : dataSets )
+        {
+            dataSet.getSources().remove( this );
+        }
+
+        dataSets.clear();
     }
 
     public void updateDataSets( Set<DataSet> updates )
@@ -240,6 +260,16 @@ public class OrganisationUnit
     {
         user.getOrganisationUnits().remove( this );
         users.remove( user );
+    }
+
+    public void removeAllUsers()
+    {
+        for ( User user : users )
+        {
+            user.getOrganisationUnits().remove( this );
+        }
+
+        users.clear();
     }
 
     public List<OrganisationUnit> getSortedChildren()
@@ -867,29 +897,14 @@ public class OrganisationUnit
             comment = organisationUnit.getComment() == null ? comment : organisationUnit.getComment();
             geoCode = organisationUnit.getGeoCode() == null ? geoCode : organisationUnit.getGeoCode();
             featureType = organisationUnit.getFeatureType() == null ? featureType : organisationUnit.getFeatureType();
-            coordinates = organisationUnit.getFeatureType() == null ? coordinates : organisationUnit.getCoordinates();
+            coordinates = organisationUnit.getCoordinates() == null ? coordinates : organisationUnit.getCoordinates();
             url = organisationUnit.getUrl() == null ? url : organisationUnit.getUrl();
             contactPerson = organisationUnit.getContactPerson() == null ? contactPerson : organisationUnit.getContactPerson();
             address = organisationUnit.getAddress() == null ? address : organisationUnit.getAddress();
             email = organisationUnit.getEmail() == null ? email : organisationUnit.getEmail();
             phoneNumber = organisationUnit.getPhoneNumber() == null ? phoneNumber : organisationUnit.getPhoneNumber();
             hasPatients = organisationUnit.isHasPatients();
-            parent = organisationUnit.getParent() == null ? parent : organisationUnit.getParent();
-
-            for ( DataSet dataSet : organisationUnit.getDataSets() )
-            {
-                addDataSet( dataSet );
-            }
-
-            for ( OrganisationUnitGroup organisationUnitGroup : organisationUnit.getGroups() )
-            {
-                addOrganisationUnitGroup( organisationUnitGroup );
-            }
-
-            for ( User user : organisationUnit.getUsers() )
-            {
-                addUser( user );
-            }
+            parent = organisationUnit.getParent();
         }
     }
 }

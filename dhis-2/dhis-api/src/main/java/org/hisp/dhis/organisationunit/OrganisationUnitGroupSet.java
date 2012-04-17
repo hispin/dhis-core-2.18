@@ -93,6 +93,16 @@ public class OrganisationUnitGroupSet
         organisationUnitGroup.setGroupSet( null );
     }
 
+    public void removeAllOrganisationUnitGroups()
+    {
+        for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroups )
+        {
+            organisationUnitGroup.setGroupSet( null );
+        }
+
+        organisationUnitGroups.clear();
+    }
+
     public Collection<OrganisationUnit> getOrganisationUnits()
     {
         List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
@@ -172,6 +182,7 @@ public class OrganisationUnitGroupSet
         return name.equals( other.getName() );
     }
 
+/*
     @Override
     public String toString()
     {
@@ -181,6 +192,7 @@ public class OrganisationUnitGroupSet
             ", compulsory=" + compulsory +
             "} " + super.toString();
     }
+*/
 
     // -------------------------------------------------------------------------
     // Getters and setters
@@ -238,6 +250,8 @@ public class OrganisationUnitGroupSet
 
             compulsory = organisationUnitGroupSet.isCompulsory();
             description = organisationUnitGroupSet.getDescription() == null ? description : organisationUnitGroupSet.getDescription();
+
+            removeAllOrganisationUnitGroups();
 
             for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroupSet.getOrganisationUnitGroups() )
             {

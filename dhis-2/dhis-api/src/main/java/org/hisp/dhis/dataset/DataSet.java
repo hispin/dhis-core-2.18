@@ -488,25 +488,35 @@ public class DataSet
             version = version != null ? version : dataSet.getVersion();
             expiryDays = dataSet.getExpiryDays();
 
+            dataElements.clear();
+
             for ( DataElement dataElement : dataSet.getDataElements() )
             {
                 addDataElement( dataElement );
             }
+
+            indicators.clear();
 
             for ( Indicator indicator : dataSet.getIndicators() )
             {
                 addIndicator( indicator );
             }
 
+            compulsoryDataElementOperands.clear();
+
             for ( DataElementOperand dataElementOperand : dataSet.getCompulsoryDataElementOperands() )
             {
                 compulsoryDataElementOperands.add( dataElementOperand );
             }
 
+            sources.clear();
+
             for ( OrganisationUnit organisationUnit : dataSet.getSources() )
             {
                 addOrganisationUnit( organisationUnit );
             }
+
+            sections.clear();
 
             for ( Section section : dataSet.getSections() )
             {

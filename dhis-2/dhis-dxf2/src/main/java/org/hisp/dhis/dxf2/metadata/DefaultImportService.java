@@ -29,7 +29,6 @@ package org.hisp.dhis.dxf2.metadata;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -39,7 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -82,7 +80,11 @@ public class DefaultImportService
         doImport( metaData.getConstants(), importOptions, importSummary );
         doImport( metaData.getDocuments(), importOptions, importSummary );
         doImport( metaData.getAttributeTypes(), importOptions, importSummary );
+*/
+
         doImport( metaData.getOptionSets(), importOptions, importSummary );
+
+/*
         doImport( metaData.getCategories(), importOptions, importSummary );
         doImport( metaData.getCategoryCombos(), importOptions, importSummary );
         doImport( metaData.getCategoryOptions(), importOptions, importSummary );
@@ -103,9 +105,9 @@ public class DefaultImportService
 
         doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
+        doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
 
 /*
-        doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
         doImport( metaData.getSqlViews(), importOptions, importSummary );
         doImport( metaData.getUsers(), importOptions, importSummary );
         doImport( metaData.getUserGroups(), importOptions, importSummary );
@@ -137,7 +139,7 @@ public class DefaultImportService
 
     private <T> Importer<T> findImporterClass( Class<?> clazz )
     {
-        for ( Importer<T> i : importerClasses )
+        for ( Importer i : importerClasses )
         {
             if ( i.canHandle( clazz ) )
             {

@@ -166,6 +166,7 @@ public class ValidationRuleGroup
             ValidationRuleGroup validationRuleGroup = (ValidationRuleGroup) other;
 
             description = validationRuleGroup.getDescription() == null ? description : validationRuleGroup.getDescription();
+            members.clear();
 
             for ( ValidationRule validationRule : validationRuleGroup.getMembers() )
             {

@@ -40,7 +40,6 @@ import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -119,14 +118,18 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             return null;
         }
 
+        // make sure that the internalId is 0, so that the system will generate a ID
+        object.setId( 0 );
+        object.setUid( CodeGenerator.generateCode() );
+
         log.info( "Trying to save new object with UID: " + object.getUid() );
 
         saveOrUpdateObjectWithReferences( object, false );
+
         manager.update( object );
         updateIdMaps( object );
 
         log.info( "Save successful." );
-
         log.info( object );
 
         return null;
@@ -150,12 +153,12 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         log.info( "Starting update of object " + getDisplayName( oldObject ) + " (" + oldObject.getClass().getSimpleName() + ")" );
 
         saveOrUpdateObjectWithReferences( object, true );
+
         oldObject.mergeWith( object );
         manager.update( oldObject );
 
         log.info( "Update successful." );
-
-        log.info( object );
+        log.info( oldObject );
 
         return null;
     }
@@ -246,18 +249,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         }
     }
 
-    protected void prepareIdentifiableObject( BaseIdentifiableObject object )
-    {
-        if ( object.getUid() == null && object.getLastUpdated() == null )
-        {
-            object.setAutoFields();
-        }
-        else if ( object.getUid() == null )
-        {
-            object.setUid( CodeGenerator.generateCode() );
-        }
-    }
-
     /**
      * @param object Object to get display name for
      * @return A usable display name
@@ -335,7 +326,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
         if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
-            prepareIdentifiableObject( object );
             conflict = newObject( object, options );
 
             if ( conflict != null )
@@ -371,7 +361,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             }
             else
             {
-                prepareIdentifiableObject( object );
                 conflict = newObject( object, options );
 
                 if ( conflict != null )
@@ -574,6 +563,7 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         return matchedObject;
     }
 
+    // FIXME slow! some kind of global idMap would be needed here, that will also update itself from several importers
     private IdentifiableObject findObjectByReference( IdentifiableObject identifiableObject )
     {
         IdentifiableObject match = null;
