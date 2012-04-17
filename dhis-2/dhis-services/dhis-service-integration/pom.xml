@@ -14,6 +14,11 @@
   <name>DHIS Integration Service</name>
   
   <dependencies>
+      
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+    </dependency>
     
     <!-- DHIS -->
     <dependency>
