@@ -4,8 +4,8 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute" table="catalogtypeattribute">
-    <id name="id" column="catalogtypeattributeid">
+  <class name="org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute" table="inventorytypeattribute">
+    <id name="id" column="inventorytypeattributeid">
       <generator class="native"/>
     </id>
 
@@ -20,8 +20,8 @@
     <property name="noChars" />
 	
 	<set name="attributeOptions">
-      <key column="catalogtypeattributeid" />
-      <one-to-many class="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOption" />
+      <key column="inventorytypeattributeid" />
+      <one-to-many class="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOption" />
     </set>
 	
   </class>

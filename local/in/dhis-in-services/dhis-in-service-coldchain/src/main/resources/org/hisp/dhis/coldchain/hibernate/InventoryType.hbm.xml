@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.coldchain.inventory.InventoryType" table="inventorytype">
+    <id name="id" column="inventorytypeid">
+      <generator class="native"/>
+    </id>
+
+    <property name="name" not-null="true" unique="true" length="160"/>
+    
+    <property name="description" not-null="false" length="250"/>
+	
+	<many-to-one name="catalogType" class="org.hisp.dhis.coldchain.catalog.CatalogType" column="catalogtypeid"
+      foreign-key="fk_inventorytype_catalogypeid" />
+
+    <property name="tracking" column="tracking" />
+	
+	<set name="inventoryTypeAttributes" table="inventorytype_attributes">
+      <key column="inventorytypeid" foreign-key="fk_inventorytype_attributes_inventorytypeid" />
+      <many-to-many class="org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute" column="inventorytypeattributeid"
+          foreign-key="fk_inventorytype_attributes_inventorytypeattribtueid" />
+    </set>
+	
+
+  </class>
+</hibernate-mapping>

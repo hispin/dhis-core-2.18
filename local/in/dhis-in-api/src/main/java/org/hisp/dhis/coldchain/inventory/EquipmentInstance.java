@@ -1,9 +1,9 @@
 package org.hisp.dhis.coldchain.inventory;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.program.ProgramStageInstance;
 
 public class EquipmentInstance implements Serializable
 {
@@ -15,6 +15,8 @@ public class EquipmentInstance implements Serializable
     private OrganisationUnit organisationUnit;
     
     private boolean working = true;
+    
+    private Set<EquipmentWorkingStatus> equipmentStatusUpdates;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -113,6 +115,16 @@ public class EquipmentInstance implements Serializable
     public void setWorking( boolean working )
     {
         this.working = working;
+    }
+
+    public Set<EquipmentWorkingStatus> getEquipmentStatusUpdates()
+    {
+        return equipmentStatusUpdates;
+    }
+
+    public void setEquipmentStatusUpdates( Set<EquipmentWorkingStatus> equipmentStatusUpdates )
+    {
+        this.equipmentStatusUpdates = equipmentStatusUpdates;
     }
     
 }
