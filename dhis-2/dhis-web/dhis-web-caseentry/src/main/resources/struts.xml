@@ -277,7 +277,7 @@
 		</action>
 		
 		<action name="getOrganisationUnitChildren"
-			class="org.hisp.dhis.visualizer.action.GetOrganisationUnitChildrenAction">
+			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonminOrganisationUnitChildren.vm</result>
 		</action>
