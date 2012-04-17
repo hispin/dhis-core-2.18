@@ -97,11 +97,13 @@ public class UpdatePatientAction
     private Integer age;
 
     private Boolean verified;
-    
+
     private String gender;
 
     private String bloodGroup;
-	
+
+    private String phoneNumber;
+
     private boolean underAge;
 
     private Integer representativeId;
@@ -124,8 +126,8 @@ public class UpdatePatientAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patient = patientService.getPatient( id );
-        
-        verified = ( verified == null ) ? false : verified ;
+
+        verified = (verified == null) ? false : verified;
 
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
@@ -164,19 +166,20 @@ public class UpdatePatientAction
         patient.setGender( gender );
         patient.setIsDead( isDead );
         patient.setBloodGroup( bloodGroup );
-		
+        patient.setPhoneNumber( phoneNumber );
+
         if ( deathDate != null )
         {
             deathDate = deathDate.trim();
             patient.setDeathDate( format.parseDate( deathDate ) );
         }
-		
+
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
-        Character dobType = ( verified ) ? 'V' : 'D';
-        
-        if( !verified && age != null )
+        Character dobType = (verified) ? 'V' : 'D';
+
+        if ( !verified && age != null )
         {
             dobType = 'A';
         }
@@ -395,10 +398,15 @@ public class UpdatePatientAction
     {
         this.gender = gender;
     }
-	
+
     public void setBloodGroup( String bloodGroup )
     {
         this.bloodGroup = bloodGroup;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
     }
 
     public Patient getPatient()
@@ -435,5 +443,4 @@ public class UpdatePatientAction
     {
         this.verified = verified;
     }
-
 }

@@ -225,6 +225,7 @@ function showListPatientDuplicate( rootElement, validate )
 			sPatient += "<tr><td class='bold'>" + i18n_patient_date_of_birth + "</td><td>" + jQuery(patient).find('dateOfBirth').text() + "</td></tr>" ;
 			sPatient += "<tr><td class='bold'>" + i18n_patient_age + "</td><td>" + jQuery(patient).find('age').text() + "</td></tr>" ;
 			sPatient += "<tr><td class='bold'>" + i18n_patient_blood_group + "</td><td>" + jQuery(patient).find('bloodGroup').text() + "</td></tr>";
+			sPatient += "<tr><td class='bold'>" + i18n_patient_phone_number + "</td><td>" + jQuery(patient).find('phoneNumber').text() + "</td></tr>";
         	
 			var identifiers = jQuery(patient).find('identifier');
         	if( identifiers.length > 0 )

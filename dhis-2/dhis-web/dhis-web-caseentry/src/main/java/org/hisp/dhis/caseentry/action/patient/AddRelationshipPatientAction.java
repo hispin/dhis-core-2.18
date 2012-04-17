@@ -104,6 +104,8 @@ public class AddRelationshipPatientAction
     private String gender;
 
     private String bloodGroup;
+    
+    private String phoneNumber;
 
     private String registrationDate;
 
@@ -173,6 +175,7 @@ public class AddRelationshipPatientAction
         patient.setGender( gender );
         patient.setIsDead( false );
         patient.setBloodGroup( bloodGroup );
+        patient.setPhoneNumber( phoneNumber );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
@@ -428,5 +431,10 @@ public class AddRelationshipPatientAction
     public void setRegistrationDate( String registrationDate )
     {
         this.registrationDate = registrationDate;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
     }
 }

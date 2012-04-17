@@ -28,6 +28,8 @@
 
     <property name="gender" column="gender" length="5" not-null="true" />
 
+    <property name="phoneNumber" length="25" />
+
     <property name="underAge" column="underage" not-null="true" />
 
     <property name="dobType" column="dobType" />

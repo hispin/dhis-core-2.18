@@ -25,15 +25,15 @@
   <tr>
     <td>    
       <table class="listTable">                   
-          <col width="40">
-          <col>
-          <col width="60">
-          <col width="90">
-          <col width="60">
+          <col width="40"/>
+          <col/>
+          <col width="60"/>
+          <col width="90"/>
+          <col width="60"/>
 		  #if($mapPatientOrgunit.size()!=0)
-		  <col>
+		  <col/>
 		  #end
-		  <col width="80">
+		  <col width="80"/>
           <tr>
 			<th>#</th>
             <th>$i18n.getString( "full_name" )</th>        
