@@ -4,10 +4,10 @@ import java.util.Collection;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hisp.dhis.coldchain.inventory.EquipmentWorkingStatus;
-import org.hisp.dhis.coldchain.inventory.EquipmentWorkingStatusStore;
+import org.hisp.dhis.coldchain.inventory.EquipmentStatus;
+import org.hisp.dhis.coldchain.inventory.EquipmentStatusStore;
 
-public class HibernateEquipmentWorkingStatusStore implements EquipmentWorkingStatusStore
+public class HibernateEquipmentStatusStore implements EquipmentStatusStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -25,35 +25,35 @@ public class HibernateEquipmentWorkingStatusStore implements EquipmentWorkingSta
     // -------------------------------------------------------------------------
 
     @Override
-    public int addEquipmentWorkingStatus( EquipmentWorkingStatus equipmentWorkingStatus )
+    public int addEquipmentStatus( EquipmentStatus equipmentStatus )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        return (Integer) session.save( equipmentWorkingStatus );
+        return (Integer) session.save( equipmentStatus );
     }
 
     @Override
-    public void deleteEquipmentWorkingStatus( EquipmentWorkingStatus equipmentWorkingStatus )
+    public void deleteEquipmentStatus( EquipmentStatus equipmentStatus )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        session.delete( equipmentWorkingStatus );
+        session.delete( equipmentStatus );
     }
 
     @Override
-    public Collection<EquipmentWorkingStatus> getAllEquipmentWorkingStatus()
+    public Collection<EquipmentStatus> getAllEquipmentStatus()
     {
         Session session = sessionFactory.getCurrentSession();
 
-        return session.createCriteria( EquipmentWorkingStatus.class ).list();
+        return session.createCriteria( EquipmentStatus.class ).list();
     }
 
     @Override
-    public void updateEquipmentWorkingStatus( EquipmentWorkingStatus equipmentWorkingStatus )
+    public void updateEquipmentStatus( EquipmentStatus equipmentStatus )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        session.update( equipmentWorkingStatus );
+        session.update( equipmentStatus );
     }
 
 }

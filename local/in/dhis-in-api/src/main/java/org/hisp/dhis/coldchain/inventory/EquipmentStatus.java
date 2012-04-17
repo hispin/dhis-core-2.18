@@ -3,7 +3,7 @@ package org.hisp.dhis.coldchain.inventory;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EquipmentWorkingStatus implements Serializable
+public class EquipmentStatus implements Serializable
 {
     private int id;
     
@@ -24,12 +24,12 @@ public class EquipmentWorkingStatus implements Serializable
     // Constructors
     // -------------------------------------------------------------------------
 
-    public EquipmentWorkingStatus( )
+    public EquipmentStatus( )
     {
         
     }
     
-    public EquipmentWorkingStatus( EquipmentInstance equipmentInstance, Date reportingDate, Date updationDate, String status )
+    public EquipmentStatus( EquipmentInstance equipmentInstance, Date reportingDate, Date updationDate, String status )
     {
         this.equipmentInstance = equipmentInstance;
     }
@@ -50,12 +50,12 @@ public class EquipmentWorkingStatus implements Serializable
             return false;
         }
 
-        if ( !(o instanceof EquipmentWorkingStatus) )
+        if ( !(o instanceof EquipmentStatus) )
         {
             return false;
         }
 
-        final EquipmentWorkingStatus other = (EquipmentWorkingStatus) o;
+        final EquipmentStatus other = (EquipmentStatus) o;
 
         return equipmentInstance.equals( other.getEquipmentInstance() );
 
