@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<include file="dhis-web-commons.xml"/>
+	
+	<package name="dhis-web-coldchain" extends="dhis-web-commons" namespace="/dhis-web-coldchain">
+		
+ 	   <action name="index"
+			class="org.hisp.dhis.coldchain.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-coldchain/welcome.vm</param>
+			<param name="menu">/dhis-web-coldchain/menu.vm</param>
+		</action>
+		
+	</package>
+
+</struts>

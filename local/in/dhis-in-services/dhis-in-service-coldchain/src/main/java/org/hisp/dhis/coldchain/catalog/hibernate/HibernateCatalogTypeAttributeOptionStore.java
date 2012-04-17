@@ -14,13 +14,14 @@ public class HibernateCatalogTypeAttributeOptionStore implements CatalogTypeAttr
     // Dependencies
     // -------------------------------------------------------------------------
 
+    
     private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
     }
-
+    
     // -------------------------------------------------------------------------
     // CatalogTypeAttributeOption
     // -------------------------------------------------------------------------
