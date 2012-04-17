@@ -122,7 +122,7 @@ public class BaseIdentifiableObject
     // -------------------------------------------------------------------------
 
     @JsonProperty( value = "internalId" )
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
     public int getId()
     {
@@ -309,7 +309,10 @@ public class BaseIdentifiableObject
     {
         Validate.notNull( other );
 
-        this.id = other.getId() == 0 ? this.id : other.getId();
+        // since we are using these objects as db objects, i don't really think we want to "merge"
+        // with other.id, since .id is used by the underlying db.
+        // this.id = other.getId() == 0 ? this.id : other.getId();
+
         this.uid = other.getUid() == null ? this.uid : other.getUid();
         this.name = other.getName() == null ? this.name : other.getName();
         this.code = other.getCode() == null ? this.code : other.getCode();

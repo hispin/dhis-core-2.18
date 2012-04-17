@@ -34,6 +34,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -94,8 +95,8 @@ public class OptionSet
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "options" )
-    @JacksonXmlProperty( localName = "option" )
+    @JacksonXmlElementWrapper( localName = "options", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "option", namespace = Dxf2Namespace.NAMESPACE )
     public List<String> getOptions()
     {
         return options;
@@ -115,5 +116,19 @@ public class OptionSet
     {
         Matcher matcher = OPTION_PATTERN.matcher( option );
         return matcher.find() && matcher.groupCount() > 0 ? matcher.group( 1 ).replaceAll( "_", " " ) : null;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( other ) )
+        {
+            OptionSet optionSet = (OptionSet) other;
+
+            options.clear();
+            options.addAll( optionSet.getOptions() );
+        }
     }
 }

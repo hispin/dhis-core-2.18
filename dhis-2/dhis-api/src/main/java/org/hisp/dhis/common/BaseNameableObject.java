@@ -80,20 +80,14 @@ public class BaseNameableObject
     {
     }
 
-    public BaseNameableObject( int id, String uuid, String name, String alternativeName, String shortName,
+    public BaseNameableObject( int id, String uid, String name, String alternativeName, String shortName,
                                String code, String description )
     {
-        super( id, uuid, name );
+        super( id, uid, name );
         this.alternativeName = alternativeName;
         this.shortName = shortName;
         this.code = code;
         this.description = description;
-    }
-
-    @Override
-    public String toString()
-    {
-        return super.toString();
     }
 
     @JsonProperty

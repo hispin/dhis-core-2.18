@@ -100,6 +100,16 @@ public class OrganisationUnitGroup
         organisationUnit.getGroups().remove( this );
     }
 
+    public void removeAllOrganisationUnits()
+    {
+        for ( OrganisationUnit organisationUnit : members )
+        {
+            organisationUnit.getGroups().remove( this );
+        }
+
+        members.clear();
+    }
+
     public void updateOrganisationUnits( Set<OrganisationUnit> updates )
     {
         for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( members ) )
@@ -143,14 +153,16 @@ public class OrganisationUnitGroup
         return name.equals( other.getName() );
     }
 
+/*
     @Override
     public String toString()
     {
         return "OrganisationUnitGroup{" +
             "members=" + members +
-            ", groupSet=" + groupSet +
+            ", groupSet=" + groupSet.getName() +
             "} " + super.toString();
     }
+*/
 
     // -------------------------------------------------------------------------
     // Getters and setters
@@ -194,7 +206,7 @@ public class OrganisationUnitGroup
         {
             OrganisationUnitGroup organisationUnitGroup = (OrganisationUnitGroup) other;
 
-            groupSet = groupSet != null ? groupSet : organisationUnitGroup.getGroupSet();
+            removeAllOrganisationUnits();
 
             for ( OrganisationUnit organisationUnit : organisationUnitGroup.getMembers() )
             {
