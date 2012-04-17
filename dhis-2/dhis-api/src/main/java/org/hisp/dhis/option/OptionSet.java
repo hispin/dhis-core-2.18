@@ -123,7 +123,7 @@ public class OptionSet
     {
         super.mergeWith( other );
 
-        if ( other.getClass().isInstance( other ) )
+        if ( other.getClass().isInstance( this ) )
         {
             OptionSet optionSet = (OptionSet) other;
 
