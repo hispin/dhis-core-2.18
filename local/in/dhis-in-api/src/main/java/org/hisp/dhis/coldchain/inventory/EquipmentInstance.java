@@ -16,7 +16,7 @@ public class EquipmentInstance implements Serializable
     
     private boolean working = true;
     
-    private Set<EquipmentWorkingStatus> equipmentStatusUpdates;
+    private Set<EquipmentStatus> equipmentStatusUpdates;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -117,12 +117,12 @@ public class EquipmentInstance implements Serializable
         this.working = working;
     }
 
-    public Set<EquipmentWorkingStatus> getEquipmentStatusUpdates()
+    public Set<EquipmentStatus> getEquipmentStatusUpdates()
     {
         return equipmentStatusUpdates;
     }
 
-    public void setEquipmentStatusUpdates( Set<EquipmentWorkingStatus> equipmentStatusUpdates )
+    public void setEquipmentStatusUpdates( Set<EquipmentStatus> equipmentStatusUpdates )
     {
         this.equipmentStatusUpdates = equipmentStatusUpdates;
     }

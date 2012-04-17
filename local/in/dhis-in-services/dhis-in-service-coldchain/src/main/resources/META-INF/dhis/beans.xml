@@ -34,8 +34,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateEquipmentInstanceStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="org.hisp.dhis.coldchain.inventory.EquipmentWorkingStatusStore"
-        class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateEquipmentWorkingStatusStore">
+    <bean id="org.hisp.dhis.coldchain.inventory.EquipmentStatusStore"
+        class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateEquipmentStatusStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionStore"
@@ -82,9 +82,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentInstanceService">
         <property name="equipmentInstanceStore" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceStore"/>
     </bean>
-    <bean id="org.hisp.dhis.coldchain.inventory.EquipmentWorkingStatusService"
-        class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentWorkingStatusService">
-        <property name="equipmentWorkingStatusStore" ref="org.hisp.dhis.coldchain.inventory.EquipmentWorkingStatusStore"/>
+    <bean id="org.hisp.dhis.coldchain.inventory.EquipmentStatusService"
+        class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentStatusService">
+        <property name="equipmentStatusStore" ref="org.hisp.dhis.coldchain.inventory.EquipmentStatusStore"/>
     </bean>
     <bean id="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService"
         class="org.hisp.dhis.coldchain.inventory.DefaultInventoryTypeAttributeOptionService">

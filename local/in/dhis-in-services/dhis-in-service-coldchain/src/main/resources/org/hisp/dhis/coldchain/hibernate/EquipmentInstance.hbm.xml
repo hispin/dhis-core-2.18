@@ -20,7 +20,7 @@
     
 	<set name="equipmentStatusUpdates" cascade="all-delete-orphan" inverse="true" >
       <key column="equipmentinstanceid" />
-	  <one-to-many class="org.hisp.dhis.coldchain.inventory.EquipmentWorkingStatus" />
+	  <one-to-many class="org.hisp.dhis.coldchain.inventory.EquipmentStatus" />
     </set>
 	
   </class>
