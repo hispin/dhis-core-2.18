@@ -400,15 +400,14 @@ public class StreamUtils
     /**
      * Test for zip stream signature.
      * 
+     * Signature of zip stream from
+     * http://www.pkware.com/documents/casestudies/APPNOTE.TXT Local file
+     * header: local file header signature 4 bytes (0x04034b50)
+     * 
      * @param instream the BufferedInputStream to test.
      */
     public static boolean isZip( BufferedInputStream instream )
     {
-        /*
-         * Signature of zip stream from
-         * http://www.pkware.com/documents/casestudies/APPNOTE.TXT Local file
-         * header: local file header signature 4 bytes (0x04034b50)
-         */
         instream.mark( 4 );
         byte[] b = new byte[4];
         byte[] zipSig = new byte[4];
@@ -439,16 +438,15 @@ public class StreamUtils
 
     /**
      * Test for Gzip stream signature.
+     *
+     * Signature of gzip stream from RFC 1952: ID1 (IDentification 1) ID2
+     * (IDentification 2) These have the fixed values ID1 = 31 (0x1f, \037),
+     * ID2 = 139 (0x8b, \213), to identify the file as being in gzip format.
      * 
      * @param instream the BufferedInputStream to test.
      */
     public static boolean isGZip( BufferedInputStream instream )
     {
-        /*
-         * Signature of gzip stream from RFC 1952: ID1 (IDentification 1) ID2
-         * (IDentification 2) These have the fixed values ID1 = 31 (0x1f, \037),
-         * ID2 = 139 (0x8b, \213), to identify the file as being in gzip format.
-         */
         instream.mark( 2 );
         byte[] b = new byte[2];
 
