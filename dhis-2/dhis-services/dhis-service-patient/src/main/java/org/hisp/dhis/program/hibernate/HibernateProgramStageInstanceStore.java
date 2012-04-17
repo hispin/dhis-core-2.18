@@ -44,6 +44,7 @@ import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -189,52 +190,61 @@ public class HibernateProgramStageInstanceStore
         Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max )
     {
-            String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc )
-                + statementBuilder.limitRecord( min, max );
-            
-            List<Integer> ids = executeSQL( sql );
+        String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
+            searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc )
+            + statementBuilder.limitRecord( min, max );
 
-            List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
+        List<Integer> ids = executeSQL( sql );
 
-            for ( Integer id : ids )
-            {
-                programStageInstances.add( get( id ) );
-            }
+        List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
-            return programStageInstances;
+        for ( Integer id : ids )
+        {
+            programStageInstances.add( get( id ) );
+        }
+
+        return programStageInstances;
     }
 
     public List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
         Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc )
     {
-            String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+        String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
+            searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
 
-            List<Integer> ids = executeSQL( sql );
+        List<Integer> ids = executeSQL( sql );
 
-            List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
+        List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
-            for ( Integer id : ids )
-            {
-                programStageInstances.add( get( id ) );
-            }
+        for ( Integer id : ids )
+        {
+            programStageInstances.add( get( id ) );
+        }
 
-            return programStageInstances;
+        return programStageInstances;
     }
 
     public int count( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
         Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
         Date startDate, Date endDate )
     {
-            String sql = getTabularReportStatement( true, programStage, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, orgunitIds, startDate, endDate, true, true );
-            List<Integer> countRow = executeSQL( sql );
+        String sql = getTabularReportStatement( true, programStage, searchingIdenKeys, searchingAttrKeys,
+            searchingDEKeys, orgunitIds, startDate, endDate, true, true );
+        List<Integer> countRow = executeSQL( sql );
 
-            return (countRow != null && countRow.size() > 0) ? countRow.get( 0 ) : 0;
+        return (countRow != null && countRow.size() > 0) ? countRow.get( 0 ) : 0;
     }
 
+    @SuppressWarnings( "unchecked" )
+    public List<ProgramStageInstance> get( OrganisationUnit orgunit, Program program, Date startDate, Date endDate )
+    {
+        return getCriteria().createAlias( "programStage", "programStage" ).add(
+            Restrictions.eq( "programStage.program", program ) ).add( Restrictions.eq( "organisationUnit", orgunit ) )
+            .add( Restrictions.between( "dueDate", startDate, endDate ) ).list();
+    }
+
+    // -------------------------------------------------------------------------
     private String getTabularReportStatement( boolean isCount, ProgramStage programStage,
         Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
         Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
@@ -272,8 +282,8 @@ public class HibernateProgramStageInstanceStore
 
         condition += " WHERE psi.executiondate >= '" + DateUtils.getMediumDateString( startDate )
             + "' AND psi.executiondate <= '" + DateUtils.getMediumDateString( endDate ) + "' "
-            + " AND psi.organisationunitid in " + splitListHelper( orgunitIds )
-            + " AND psi.programstageid = " + programStage.getId() + " ";
+            + " AND psi.organisationunitid in " + splitListHelper( orgunitIds ) + " AND psi.programstageid = "
+            + programStage.getId() + " ";
 
         // ---------------------------------------------------------------------
         // Searching program-stage-instances by patient-identifiers
@@ -287,7 +297,8 @@ public class HibernateProgramStageInstanceStore
 
             if ( index )
             {
-                condition += " AND psi.programstageinstanceid in ( " + sqlID + " WHERE psi.programstageid = " + programStage.getId() + " ";
+                condition += " AND psi.programstageinstanceid in ( " + sqlID + " WHERE psi.programstageid = "
+                    + programStage.getId() + " ";
             }
 
             condition += " AND pid.patientidentifierTypeid=" + attributeId + " AND lower(pid.identifier) ";
@@ -355,7 +366,7 @@ public class HibernateProgramStageInstanceStore
             Integer dataElementId = deKeys.next();
 
             condition += " AND psi.programstageinstanceid in ( " + sqlDE + " WHERE 1=1 ";
-           
+
             condition += " AND pdv.dataElementid=" + dataElementId + " AND lower(pdv.value) ";
 
             String compareValue = searchingDEKeys.get( dataElementId ).toLowerCase();

@@ -98,4 +98,6 @@ public interface ProgramStageInstanceService
     int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
     
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
+    
+    List<ProgramStageInstance> getProgramStages( OrganisationUnit orgunit, Program program, Date startDate, Date endDate );
 }

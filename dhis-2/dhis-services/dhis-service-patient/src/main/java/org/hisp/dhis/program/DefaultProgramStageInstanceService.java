@@ -336,6 +336,12 @@ public class DefaultProgramStageInstanceService
         return grids;
     }
 
+    public List<ProgramStageInstance> getProgramStages( OrganisationUnit orgunit, Program program, Date startDate,
+        Date endDate )
+    {
+        return programStageInstanceStore.get( orgunit, program, startDate, endDate );
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
