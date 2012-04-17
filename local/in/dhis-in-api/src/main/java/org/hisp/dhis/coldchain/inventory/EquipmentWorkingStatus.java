@@ -5,7 +5,8 @@ import java.util.Date;
 
 public class EquipmentWorkingStatus implements Serializable
 {
-
+    private int id;
+    
     private EquipmentInstance equipmentInstance;
     
     private Date reportingDate;
@@ -74,6 +75,15 @@ public class EquipmentWorkingStatus implements Serializable
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
 
     public EquipmentInstance getEquipmentInstance()
     {
