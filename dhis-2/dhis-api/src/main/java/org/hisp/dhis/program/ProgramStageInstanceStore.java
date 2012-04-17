@@ -77,4 +77,5 @@ public interface ProgramStageInstanceStore
 
     int count( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
     
+    List<ProgramStageInstance> get( OrganisationUnit orgunit, Program program, Date startDate, Date endDate );
 }
