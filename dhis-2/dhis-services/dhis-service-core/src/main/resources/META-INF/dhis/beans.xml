@@ -605,11 +605,11 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	  <value>gu</value>
 	  <value>hi</value>
 	  <value>it</value>
-	  <value>ja</value>
 	  <value>nl</value>
 	  <value>no</value>
 	  <value>pt</value>
 	  <value>ru</value>
+	  <value>rw</value>
 	  <value>sw</value>
 	  <value>vi</value>
 	</list>
