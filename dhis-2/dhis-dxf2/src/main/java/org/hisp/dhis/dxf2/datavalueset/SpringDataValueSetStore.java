@@ -44,6 +44,7 @@ import org.hisp.dhis.dxf2.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -65,7 +66,9 @@ public class SpringDataValueSetStore
     {
         DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLWriter( out ) );
         
-        writeDataValueSet( dataSet, completeDate, period, orgUnit, dataElements, periods, orgUnits, dataValueSet );        
+        writeDataValueSet( dataSet, completeDate, period, orgUnit, dataElements, periods, orgUnits, dataValueSet );
+        
+        StreamUtils.closeOutputStream( out );
     }
     
     public void writeDataValueSetCsv( Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer )
