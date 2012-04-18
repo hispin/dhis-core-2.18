@@ -99,5 +99,4 @@ public interface ProgramStageInstanceService
     
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
     
-    List<ProgramStageInstance> getProgramStages( OrganisationUnit orgunit, Program program, Date startDate, Date endDate );
 }

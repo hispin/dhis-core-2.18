@@ -550,6 +550,7 @@ Ext.onReady( function() {
 						TR.state.total = json.total;
 						TR.value.valueTypes = json.valueTypes;
 						TR.value.fields = json.fields;
+						TR.value.columns = json.columns;
 						TR.value.values = json.items;
 						
 						if ( json.items.length > 1 )
@@ -725,6 +726,7 @@ Ext.onReady( function() {
     
     TR.value = {
 		valueTypes: [],
+		columns: [],
 		fields: [],
 		values: []
     };
@@ -735,7 +737,7 @@ Ext.onReady( function() {
 			// column
 			var cols = [];
 			cols[0] = {
-				header: '#', 
+				header: TR.i18n.no, 
 				dataIndex: 'id',
 				width: 50,
 				height: TR.conf.layout.east_gridcolumn_height,
@@ -744,26 +746,34 @@ Ext.onReady( function() {
 				groupable: true
 			}
 			
-			cols[1] = {
-				header: TR.i18n.report_unit, 
-				dataIndex: 'col1',
-				height: TR.conf.layout.east_gridcolumn_height,
-				sortable: false,
-				draggable: false,
-				groupable: true
-			};
+			var paramsLen = TR.cmp.params.identifierType.selected.store.data.length
+						+ TR.cmp.params.patientAttribute.selected.store.data.length
+						+ TR.cmp.params.dataelement.selected.store.data.length;
 			
-			cols[2] = { 
+			var orgunitColsLen = TR.value.columns.length - paramsLen - 2;
+			var index = 1;
+			
+			for( index=1; index < orgunitColsLen + 1; index++ )
+			{
+				cols[index] = {
+					header: TR.value.columns[index], 
+					dataIndex: 'col' + index,
+					height: TR.conf.layout.east_gridcolumn_height,
+					sortable: false,
+					draggable: false,
+					groupable: true
+				}
+			}
+			
+			cols[index] = { 
 				header: TR.i18n.report_date, 
-				dataIndex: 'col2',
-				width: 150,
-				height: TR.conf.layout.east_gridcolumn_height,
+				dataIndex: 'col' + index,
 				sortable: false,
 				draggable: false,
 				groupable: true
 			};
 			
-			var index = 3;
+			index++;
 			TR.cmp.params.identifierType.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
 				cols[index] = { 
@@ -797,7 +807,7 @@ Ext.onReady( function() {
 					draggable: false,
 					groupable: true,
 					editor: {
-							xtype: TR.value.valueTypes[index].valueType,
+							xtype: TR.value.valueTypes[index - orgunitColsLen - 2].valueType,
 							queryMode: 'local',
 							editable: true,
 							valueField: 'name',
@@ -805,7 +815,7 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store:  new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.valueTypes[index].suggestedValues,
+								data: TR.value.valueTypes[index - orgunitColsLen - 2].suggestedValues,
 							})
 						}
 					};
@@ -826,7 +836,7 @@ Ext.onReady( function() {
 					draggable: false,
 					groupable: true,
 					editor: {
-						xtype: TR.value.valueTypes[index].valueType,
+						xtype: TR.value.valueTypes[index - orgunitColsLen - 2].valueType,
 							queryMode: 'local',
 							editable: true,
 							valueField: 'name',
@@ -834,37 +844,12 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store: new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.valueTypes[index].suggestedValues,
+								data: TR.value.valueTypes[index - orgunitColsLen - 2].suggestedValues,
 							})
 					}
 				};
 				index++;
 			});
-			
-			cols1 = [
-				{
-					text: TR.i18n.commons,
-					colspan: 3, 
-					align: 'center'
-				},
-				{ 
-					text: TR.i18n.identifiers,
-					colspan: TR.cmp.params.identifierType.selected.length, 
-					align: 'center'
-				},
-				{
-					text: TR.i18n.attributes,
-					colspan: TR.cmp.params.patientAttribute.selected.length, 
-					align: 'center'
-				},
-				{
-					text: TR.i18n.data_elements,
-					colspan: TR.cmp.params.dataelement.selected.length, 
-					align: 'center'
-				}
-			];
-			
-			var group = new Ext.ux.grid.ColumnHeaderGroup({rows: [cols1, cols]});
 			
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
@@ -977,8 +962,6 @@ Ext.onReady( function() {
 							}
 						}
 					})
-					
-					,group
 				],
 				store: TR.store.datatable
 				,listeners: {
@@ -1048,7 +1031,7 @@ Ext.onReady( function() {
 			Ext.getCmp('currentPage').setValue( currentPage );	
 			TR.datatable.setPagingToolbarStatus();
 		},
-		reload: function() {
+		reset: function() {
 			TR.store.datatable.loadData([],false);
 			this.execute();
 		},
@@ -1809,11 +1792,11 @@ Ext.onReady( function() {
 						{
 							xtype: 'button',
 							cls: 'tr-toolbar-btn-1',
-							text: TR.i18n.reload,
+							text: TR.i18n.reset,
 							width: 50,
 							listeners: {
 								click: function() {
-									TR.exe.reload();
+									TR.exe.reset();
 								}
 							}
 						},

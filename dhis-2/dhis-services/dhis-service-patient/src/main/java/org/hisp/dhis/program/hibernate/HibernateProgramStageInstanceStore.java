@@ -44,7 +44,6 @@ import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -236,15 +235,10 @@ public class HibernateProgramStageInstanceStore
         return (countRow != null && countRow.size() > 0) ? countRow.get( 0 ) : 0;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> get( OrganisationUnit orgunit, Program program, Date startDate, Date endDate )
-    {
-        return getCriteria().createAlias( "programStage", "programStage" ).add(
-            Restrictions.eq( "programStage.program", program ) ).add( Restrictions.eq( "organisationUnit", orgunit ) )
-            .add( Restrictions.between( "dueDate", startDate, endDate ) ).list();
-    }
-
     // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+    
     private String getTabularReportStatement( boolean isCount, ProgramStage programStage,
         Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
         Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
