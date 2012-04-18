@@ -30,12 +30,14 @@ package org.hisp.dhis.dxf2.metadata.importers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.*;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -58,6 +60,9 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
     @Autowired
     protected IdentifiableObjectManager manager;
+
+    @Autowired
+    private PeriodService periodService;
 
     //-------------------------------------------------------------------------------------------------------
     // Constructor
@@ -563,12 +568,20 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         return matchedObject;
     }
 
-    // FIXME slow! some kind of global idMap would be needed here, that will also update itself from several importers
+    // FIXME slow! some kind of global idMap is needed here, that will also update itself from several importers
     private IdentifiableObject findObjectByReference( IdentifiableObject identifiableObject )
     {
         IdentifiableObject match = null;
 
-        if ( identifiableObject.getUid() != null )
+        if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
+        {
+            // FIXME this is not working..
+            Period period = (Period) identifiableObject;
+            periodService.reloadPeriod( period );
+
+            match = period;
+        }
+        else if ( identifiableObject.getUid() != null )
         {
             match = manager.get( identifiableObject.getClass(), identifiableObject.getUid() );
         }
@@ -590,7 +603,7 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
         log.info( "-> Finding and updating references." );
 
-        Map<String, Set<? extends IdentifiableObject>> collectedCollections = new HashMap<String, Set<? extends IdentifiableObject>>();
+        Map<Field, Set<? extends IdentifiableObject>> collectedCollections = new HashMap<Field, Set<? extends IdentifiableObject>>();
 
         for ( Field field : fields )
         {
@@ -600,29 +613,21 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
                 if ( identifiableObject != null )
                 {
-                    if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
+                    IdentifiableObject ref = findObjectByReference( identifiableObject );
+
+                    if ( ref != null )
                     {
-                        // FIXME
-                        log.info( "Skipping Period.class" );
+                        ReflectionUtils.invokeSetterMethod( field.getName(), object, ref );
                     }
                     else
                     {
-                        IdentifiableObject ref = findObjectByReference( identifiableObject );
-
-                        if ( ref != null )
-                        {
-                            ReflectionUtils.invokeSetterMethod( field.getName(), object, ref );
-                        }
-                        else
-                        {
-                            log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
-                        }
+                        log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
                     }
                 }
             }
             else
             {
-                boolean b = ReflectionUtils.isCollection( field.getName(), object, IdentifiableObject.class );
+                boolean b = ReflectionUtils.isCollection( field.getName(), object, IdentifiableObject.class, Scanned.class );
 
                 if ( b )
                 {
@@ -631,7 +636,7 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
                     if ( objects != null && !objects.isEmpty() )
                     {
                         Set<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>( objects );
-                        collectedCollections.put( field.getName(), identifiableObjects );
+                        collectedCollections.put( field, identifiableObjects );
                         objects.clear();
                     }
                 }
@@ -643,10 +648,25 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             manager.save( object );
         }
 
-        for ( String collectionKey : collectedCollections.keySet() )
+        for ( Field field : collectedCollections.keySet() )
         {
-            Collection<? extends IdentifiableObject> identifiableObjects = collectedCollections.get( collectionKey );
-            Collection<IdentifiableObject> objects = new HashSet<IdentifiableObject>();
+            log.info( field.getName() );
+
+            Collection<? extends IdentifiableObject> identifiableObjects = collectedCollections.get( field );
+            Collection<IdentifiableObject> objects = null;
+
+            if ( List.class.isAssignableFrom( field.getType() ) )
+            {
+                objects = new ArrayList<IdentifiableObject>();
+            }
+            else if ( Set.class.isAssignableFrom( field.getType() ) )
+            {
+                objects = new HashSet<IdentifiableObject>();
+            }
+            else
+            {
+                log.warn( "Unknown Collection type!" );
+            }
 
             for ( IdentifiableObject identifiableObject : identifiableObjects )
             {
@@ -662,7 +682,7 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
                 }
             }
 
-            ReflectionUtils.invokeSetterMethod( collectionKey, object, objects );
+            ReflectionUtils.invokeSetterMethod( field.getName(), object, objects );
         }
     }
 }

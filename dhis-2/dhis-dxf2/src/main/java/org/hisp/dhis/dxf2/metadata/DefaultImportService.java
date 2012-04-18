@@ -116,10 +116,12 @@ public class DefaultImportService
         doImport( metaData.getValidationRuleGroups(), importOptions, importSummary );
         doImport( metaData.getDataDictionaries(), importOptions, importSummary );
         doImport( metaData.getReports(), importOptions, importSummary );
-        doImport( metaData.getReportTables(), importOptions, importSummary );
-        doImport( metaData.getCharts(), importOptions, importSummary );
-        doImport( metaData.getDataSets(), importOptions, importSummary );
 */
+        doImport( metaData.getReportTables(), importOptions, importSummary );
+
+//        doImport( metaData.getCharts(), importOptions, importSummary );
+        doImport( metaData.getDataSets(), importOptions, importSummary );
+
         return importSummary;
     }
 

@@ -38,6 +38,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
@@ -112,18 +113,22 @@ public class Chart
 
     private String baseLineLabel;
 
+    @Scanned
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
+    @Scanned
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
+    @Scanned
     private List<DataSet> dataSets = new ArrayList<DataSet>();
 
+    @Scanned
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
     private RelativePeriods relatives;
 
     private boolean userOrganisationUnit;
-    
+
     private boolean userOrganisationUnitChildren;
 
     private User user;
@@ -690,9 +695,16 @@ public class Chart
             user = chart.getUser() == null ? user : chart.getUser();
             organisationUnitGroupSet = chart.getOrganisationUnitGroupSet() == null ? organisationUnitGroupSet : chart.getOrganisationUnitGroupSet();
 
+            indicators.clear();
             indicators.addAll( chart.getIndicators() );
+
+            dataElements.clear();
             dataElements.addAll( chart.getDataElements() );
+
+            dataSets.clear();
             dataSets.addAll( chart.getDataSets() );
+
+            organisationUnits.clear();
             organisationUnits.addAll( chart.getOrganisationUnits() );
         }
     }

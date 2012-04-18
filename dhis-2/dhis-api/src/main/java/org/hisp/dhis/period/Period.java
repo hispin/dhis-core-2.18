@@ -29,10 +29,15 @@ package org.hisp.dhis.period;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.Weighted;
+import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
+import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -246,9 +251,9 @@ public class Period
         int prime = 31;
         int result = 1;
 
-        result = result * prime + startDate.hashCode();
-        result = result * prime + endDate.hashCode();
-        result = result * prime + periodType.hashCode();
+        result = result * prime + (startDate != null ? startDate.hashCode() : 0);
+        result = result * prime + (endDate != null ? endDate.hashCode() : 0);
+        result = result * prime + (periodType != null ? periodType.hashCode() : 0);
 
         return result;
     }
@@ -300,7 +305,11 @@ public class Period
         this.endDate = endDate;
     }
 
-    // TODO FIX THIS!
+    @JsonProperty
+    @JsonSerialize( using = JacksonPeriodTypeSerializer.class )
+    @JsonDeserialize( using = JacksonPeriodTypeDeserializer.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public PeriodType getPeriodType()
     {
         return periodType;

@@ -30,12 +30,16 @@ package org.hisp.dhis.reporttable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.*;
+import org.hisp.dhis.common.adapter.JacksonPeriodDeserializer;
+import org.hisp.dhis.common.adapter.JacksonPeriodSerializer;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
@@ -190,31 +194,37 @@ public class ReportTable
     /**
      * The list of DataElements the ReportTable contains.
      */
+    @Scanned
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
     /**
      * The list of Indicators the ReportTable contains.
      */
+    @Scanned
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
     /**
      * The list of DataSets the ReportTable contains.
      */
+    @Scanned
     private List<DataSet> dataSets = new ArrayList<DataSet>();
 
     /**
      * The list of Periods the ReportTable contains.
      */
+    @Scanned
     private List<Period> periods = new ArrayList<Period>();
 
     /**
      * The list of OrganisationUnits the ReportTable contains.
      */
+    @Scanned
     private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
 
     /**
      * The list of OrganisationUnitGroups the ReportTable contains.
      */
+    @Scanned
     private List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
 
     /**
@@ -957,7 +967,8 @@ public class ReportTable
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentUsing = JacksonPeriodSerializer.class )
+    @JsonDeserialize( contentUsing = JacksonPeriodDeserializer.class )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "periods", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "period", namespace = Dxf2Namespace.NAMESPACE )
@@ -1158,6 +1169,7 @@ public class ReportTable
         return allUnits;
     }
 
+    @JsonIgnore
     public I18nFormat getI18nFormat()
     {
         return i18nFormat;
@@ -1266,11 +1278,22 @@ public class ReportTable
             sortOrder = reportTable.getSortOrder() == null ? sortOrder : reportTable.getSortOrder();
             topLimit = reportTable.getTopLimit() == null ? topLimit : reportTable.getTopLimit();
 
+            organisationUnitGroups.clear();
             organisationUnitGroups.addAll( reportTable.getOrganisationUnitGroups() );
+
+            units.clear();
             units.addAll( reportTable.getUnits() );
+
+            periods.clear();
             periods.addAll( reportTable.getPeriods() );
+
+            dataSets.clear();
             dataSets.addAll( reportTable.getDataSets() );
+
+            indicators.clear();
             indicators.addAll( reportTable.getIndicators() );
+
+            dataElements.clear();
             dataElements.addAll( reportTable.getDataElements() );
         }
     }

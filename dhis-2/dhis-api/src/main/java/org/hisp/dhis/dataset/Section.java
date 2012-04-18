@@ -31,6 +31,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
@@ -78,6 +79,36 @@ public class Section
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+
+    public void addDataElement( DataElement dataElement )
+    {
+        dataElements.add( dataElement );
+    }
+
+    public void removeDataElement( DataElement dataElement )
+    {
+        dataElements.remove( dataElement );
+    }
+
+    public void addGreyedField( DataElementOperand greyedField )
+    {
+        greyedFields.add( greyedField );
+    }
+
+    public void removeGreyedField( DataElementOperand greyedField )
+    {
+        greyedFields.remove( greyedField );
+    }
+
+    public void removeAllGreyedFields()
+    {
+        greyedFields.clear();
+    }
+
+    public void removeAllDataElements()
+    {
+        dataElements.clear();
+    }
 
     public DataElementCategoryCombo getCategoryCombo()
     {
@@ -189,11 +220,6 @@ public class Section
         this.dataElements = dataElements;
     }
 
-    public void addDataElement( DataElement dataElement )
-    {
-        this.dataElements.add( dataElement );
-    }
-
     public int getSortOrder()
     {
         return sortOrder;
@@ -216,5 +242,32 @@ public class Section
     public void setGreyedFields( Set<DataElementOperand> greyedFields )
     {
         this.greyedFields = greyedFields;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            Section section = (Section) other;
+
+            dataSet = section.getDataSet() == null ? dataSet : section.getDataSet();
+
+            removeAllDataElements();
+
+            for ( DataElement dataElement : section.getDataElements() )
+            {
+                addDataElement( dataElement );
+            }
+
+            removeAllGreyedFields();
+
+            for ( DataElementOperand dataElementOperand : section.getGreyedFields() )
+            {
+                addGreyedField( dataElementOperand );
+            }
+        }
     }
 }
