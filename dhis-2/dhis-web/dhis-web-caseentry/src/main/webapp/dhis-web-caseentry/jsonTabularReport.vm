@@ -1,12 +1,18 @@
 {
 #if( $grid.getRows().size() > 0)
-	#set( $noHeader = $grid.getRows().get(0).size() )
+	#set( $noHeader = $grid.getHeaders().size() )
+	#set ( $noOrgunit = $noHeader - $valueTypes.size())
 	'total': "$total",
 	'valueTypes':[
-		{"valueType": "", "suggestedValues":[]},
-		{"valueType": "", "suggestedValues":[]},
-		{"valueType": "", "suggestedValues":[]},
-		#set( $index = 0 )
+		#foreach( $col in $grid.getVisibleHeaders() )
+			#if ($velocityCount <= $noOrgunit + 1)
+				{
+					"valueType": "",
+					"suggestedValues": []
+				},
+			#end
+		#end
+			
 		#foreach( $valueType in $valueTypes )
 			{
 				"valueType": 
@@ -32,9 +38,16 @@
 			#set( $index = $index + 1 )
 		#end
 	],
+	'columns':[
+		"id",
+		#foreach( $colName in $grid.getVisibleHeaders() )
+			"$colName.name"
+			#if( $velocityCount < $noHeader ),#end
+		#end
+	],
 	'fields':[
 		"id",
-		#foreach( $col in $grid.getRows().get(0) )
+		#foreach( $col in $grid.getHeaders() )
 			"col$velocityCount"
 			#if( $velocityCount < $noHeader ),#end
 		#end
@@ -42,9 +55,13 @@
 	'items':[
 		{
 			"id":"$i18n.getString( 'filter' )",
-			"col1": "",
-			"col2": "",
-			#set( $index = 3 )
+			#foreach( $col in $grid.getVisibleHeaders() )
+				#if ($velocityCount <= $noOrgunit )
+					"col$velocityCount": "",
+				#end
+			#end
+			
+			#set( $index = $noOrgunit + 1 )
 			#foreach( $value in $values )
 				"col$index": "$value"
 				#if( $velocityCount < $values.size() ),#end
@@ -65,6 +82,7 @@
 #else
 	'total': 0,
 	'valueTypes':[],
+	'columns':[],
 	'fields':[],
 	'items':[]
 #end

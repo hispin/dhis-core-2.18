@@ -336,12 +336,6 @@ public class DefaultProgramStageInstanceService
         return grids;
     }
 
-    public List<ProgramStageInstance> getProgramStages( OrganisationUnit orgunit, Program program, Date startDate,
-        Date endDate )
-    {
-        return programStageInstanceStore.get( orgunit, program, startDate, endDate );
-    }
-
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -369,9 +363,19 @@ public class DefaultProgramStageInstanceService
             // Headers
             // ---------------------------------------------------------------------
 
-            grid.addHeader( new GridHeader( i18n.getString( "report_unit" ), false, true ) );
+            // Organisation units
+            int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
+
+            for ( int i = level; i < maxLevel; i++ )
+            {
+                grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i ).getName(),
+                    false, true ) );
+            }
+
+            // Report-date
             grid.addHeader( new GridHeader( i18n.getString( "report_date" ), false, true ) );
 
+            // Identifier types
             int index = 0;
             if ( idens != null && idens.size() > 0 )
             {
@@ -382,6 +386,7 @@ public class DefaultProgramStageInstanceService
                 }
             }
 
+            // Attributes
             if ( attributes != null && attributes.size() > 0 )
             {
                 for ( PatientAttribute attribute : attributes )
@@ -391,6 +396,7 @@ public class DefaultProgramStageInstanceService
                 }
             }
 
+            // Dataelements
             if ( dataElements != null && dataElements.size() > 0 )
             {
                 for ( DataElement dataElement : dataElements )
@@ -409,10 +415,28 @@ public class DefaultProgramStageInstanceService
                 grid.addRow();
 
                 // -------------------------------------------------------------
-                // Add enrollment information
+                // Add organisation units
                 // -------------------------------------------------------------
 
-                grid.addValue( getHierarchyOrgunit( programStageInstance.getOrganisationUnit(), level ) );
+                Map<Integer, String> hierarchyOrgunit = getHierarchyOrgunit(
+                    programStageInstance.getOrganisationUnit(), level );
+
+                for ( int i = level; i < maxLevel; i++ )
+                {
+                    if ( hierarchyOrgunit.get( i ) != null )
+                    {
+                        grid.addValue( hierarchyOrgunit.get( i ) );
+                    }
+                    else
+                    {
+                        grid.addValue("");
+                    }
+                }
+
+                // -------------------------------------------------------------
+                // Report-date
+                // -------------------------------------------------------------
+
                 grid.addValue( format.formatDate( programStageInstance.getExecutionDate() ) );
 
                 // -------------------------------------------------------------
@@ -486,19 +510,22 @@ public class DefaultProgramStageInstanceService
         return grid;
     }
 
-    private String getHierarchyOrgunit( OrganisationUnit orgunit, int level )
+    private Map<Integer, String> getHierarchyOrgunit( OrganisationUnit orgunit, int level )
     {
-        String hierarchyOrgunit = orgunit.getName();
+        Map<Integer, String> hierarchyOrgunit = new HashMap<Integer, String>();
+        hierarchyOrgunit.put( level, orgunit.getName() );
 
         orgunit = orgunit.getParent();
 
         while ( orgunit != null && organisationUnitService.getLevelOfOrganisationUnit( orgunit.getId() ) >= level )
         {
-            hierarchyOrgunit = orgunit.getName() + " / " + hierarchyOrgunit;
+            hierarchyOrgunit.put( organisationUnitService.getLevelOfOrganisationUnit( orgunit.getId() ), orgunit
+                .getName() );
 
             orgunit = orgunit.getParent();
         }
 
         return hierarchyOrgunit;
     }
+
 }
