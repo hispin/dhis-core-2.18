@@ -62,6 +62,8 @@ import org.hisp.dhis.program.ProgramStageService;
 public class GenerateTabularReportAction
     extends ActionPagingSupport<ProgramStageInstance>
 {
+    private String PREFIX_ORGANISTAION_UNIT = "org";
+    
     private String PREFIX_IDENTIFIER_TYPE = "iden";
 
     private String PREFIX_PATIENT_ATTRIBUTE = "attr";
@@ -367,7 +369,11 @@ public class GenerateTabularReportAction
             String objectType = infor[0];
             int objectId = Integer.parseInt( infor[1] );
 
-            if ( objectType.equals( PREFIX_IDENTIFIER_TYPE ) )
+            if( objectType.equals( PREFIX_ORGANISTAION_UNIT ))
+            {
+                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
+            }
+            else if ( objectType.equals( PREFIX_IDENTIFIER_TYPE ) )
             {
                 PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( objectId );
                 identifierTypes.add( identifierType );

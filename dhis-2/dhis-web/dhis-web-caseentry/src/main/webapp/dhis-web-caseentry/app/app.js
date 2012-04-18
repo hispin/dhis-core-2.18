@@ -507,6 +507,8 @@ Ext.onReady( function() {
 			this.datatable = Ext.create('Ext.data.Store', {
 				fields: TR.value.fields,
 				data: TR.value.values,
+				remoteSort:true,
+				autoLoad: false,
 				proxy: {
 					type: 'memory',
 					reader: {
@@ -522,6 +524,8 @@ Ext.onReady( function() {
     TR.state = {
         currentPage: 1,
 		total: 1,
+		orderByOrgunitAsc: true,
+		orderByExecutionDateByAsc: true,
 		generateReport: function( type ) {
 			// Validation
 			if( !this.validation.objects() )
@@ -576,9 +580,11 @@ Ext.onReady( function() {
             p.endDate = TR.cmp.settings.endDate.rawValue;
 			p.facilityLB = TR.cmp.settings.facilityLB.getValue();
 			p.level = TR.cmp.settings.level.getValue();
+			// organisation unit
 			p.orgunitId = TR.cmp.params.organisationunit.treepanel.getSelectionModel().getSelection()[0].data.id
-			p.orderByOrgunitAsc = 'true';
-			p.orderByExecutionDateByAsc= 'true';
+			p.orderByOrgunitAsc = this.orderByOrgunitAsc;
+			p.orderByExecutionDateByAsc= this.orderByExecutionDateByAsc;
+			
 			p.programStageId = TR.cmp.params.programStage.getValue();
 			p.currentPage = this.currentPage;
 			
@@ -759,18 +765,24 @@ Ext.onReady( function() {
 					header: TR.value.columns[index], 
 					dataIndex: 'col' + index,
 					height: TR.conf.layout.east_gridcolumn_height,
+					name:"org_" + index + "_",
 					sortable: false,
 					draggable: false,
-					groupable: true
+					groupable: true,
+					sortAscText: TR.i18n.asc,
+					sortDescText: TR.i18n.desc
 				}
 			}
 			
 			cols[index] = { 
 				header: TR.i18n.report_date, 
 				dataIndex: 'col' + index,
-				sortable: false,
+				name:"reportdate_" + index + "_",
+				sortable: true,
 				draggable: false,
-				groupable: true
+				groupable: true,
+				sortAscText: TR.i18n.asc,
+				sortDescText: TR.i18n.desc
 			};
 			
 			index++;
@@ -806,6 +818,7 @@ Ext.onReady( function() {
 					sortable: false,
 					draggable: false,
 					groupable: true,
+					emptyText: TR.i18n.et_no_data,
 					editor: {
 							xtype: TR.value.valueTypes[index - orgunitColsLen - 2].valueType,
 							queryMode: 'local',
@@ -856,6 +869,15 @@ Ext.onReady( function() {
                 height: TR.util.viewport.getSize().y - 68,
 				columns: cols,
 				scroll: 'both',
+				viewConfig: {
+					getRowClass: function(record, rowIndex, rp, ds){ 
+						if(rowIndex == 0){
+							return 'green-row';
+						} else {
+						   return '';
+						}
+					}
+				},
 				bbar: [
 					{
 						xtype: 'button',
@@ -970,9 +992,24 @@ Ext.onReady( function() {
 						{
 							grid.getView().focusRow(this.rowIndex);
 						}
+					},
+					sortchange: function( ct, column, direction, eOpts )
+					{
+						var sortedStatus = (direction == "DESC") ? false: true;
+						if( column.name.match("^org")=='org' && TR.state.orderByOrgunitAsc != sortedStatus )
+						{
+							TR.state.orderByOrgunitAsc = sortedStatus;
+							TR.exe.execute();
+						}
+						else if ( TR.state.orderByExecutionDateByAsc != sortedStatus )
+						{
+							TR.state.orderByExecutionDateByAsc = (direction == "DESC") ? false: true;
+							TR.exe.execute();
+						}
 					}
 				},
-				sortAscText: TR.i18n.asc
+				sortAscText: TR.i18n.asc,
+				sortDescText: TR.i18n.desc
 			});
 			
 			if (Ext.grid.RowEditor) {
