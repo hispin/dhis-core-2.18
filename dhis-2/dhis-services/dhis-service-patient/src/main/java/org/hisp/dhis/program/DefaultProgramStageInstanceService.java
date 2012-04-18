@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
@@ -233,8 +234,8 @@ public class DefaultProgramStageInstanceService
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
-        List<PatientIdentifierType> idens, List<PatientAttribute> attributes, List<DataElement> dataElements,
-        Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
+        List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
         Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
     {
@@ -242,13 +243,13 @@ public class DefaultProgramStageInstanceService
             searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc,
             orderByExecutionDateByAsc, min, max );
 
-        return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, attributes,
-            dataElements, startDate, endDate, format, i18n );
+        return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, fixedAttributes,
+            attributes, dataElements, startDate, endDate, format, i18n );
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
-        List<PatientIdentifierType> idens, List<PatientAttribute> attributes, List<DataElement> dataElements,
-        Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
+        List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
         Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n )
     {
@@ -256,8 +257,8 @@ public class DefaultProgramStageInstanceService
             searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc,
             orderByExecutionDateByAsc );
 
-        return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, attributes,
-            dataElements, startDate, endDate, format, i18n );
+        return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, fixedAttributes,
+            attributes, dataElements, startDate, endDate, format, i18n );
     }
 
     @Override
@@ -344,8 +345,8 @@ public class DefaultProgramStageInstanceService
 
     private Grid createTabularGrid( Integer level, List<Boolean> hiddenCols, ProgramStage programStage,
         List<ProgramStageInstance> programStageInstances, List<PatientIdentifierType> idens,
-        List<PatientAttribute> attributes, List<DataElement> dataElements, Date startDate, Date endDate,
-        I18nFormat format, I18n i18n )
+        List<String> fixedAttributes, List<PatientAttribute> attributes, List<DataElement> dataElements,
+        Date startDate, Date endDate, I18nFormat format, I18n i18n )
     {
         Grid grid = new ListGrid();
 
@@ -391,6 +392,15 @@ public class DefaultProgramStageInstanceService
 
             // Report-date
             grid.addHeader( new GridHeader( i18n.getString( "report_date" ), false, true ) );
+
+            // Fixed Attributes
+            if ( fixedAttributes != null && fixedAttributes.size() > 0 )
+            {
+                for ( String fixedAttribute : fixedAttributes )
+                {
+                    grid.addHeader( new GridHeader( i18n.getString( fixedAttribute), false, true ) );
+                }
+            }
 
             // Identifier types
             if ( idens != null && idens.size() > 0 )
@@ -454,6 +464,20 @@ public class DefaultProgramStageInstanceService
                 // -------------------------------------------------------------
 
                 grid.addValue( format.formatDate( programStageInstance.getExecutionDate() ) );
+
+                // -------------------------------------------------------------
+                // Fixed Attributes
+                // -------------------------------------------------------------
+
+                if ( fixedAttributes != null && fixedAttributes.size() > 0 )
+                {
+                    Patient patient = programStageInstance.getProgramInstance().getPatient();
+                    for ( String fixedAttribute : fixedAttributes )
+                    {
+                        String value = getValueByFixedAttribute( patient, fixedAttribute ).toString();
+                        grid.addValue( value );
+                    }
+                }
 
                 // -------------------------------------------------------------
                 // Add patient-identifiers
@@ -542,6 +566,20 @@ public class DefaultProgramStageInstanceService
         }
 
         return hierarchyOrgunit;
+    }
+
+    private Object getValueByFixedAttribute( Patient patient, String propertyName )
+    {
+        propertyName = StringUtils.capitalize( propertyName );
+
+        try
+        {
+            return Patient.class.getMethod( "get" + propertyName ).invoke( patient );
+        }
+        catch ( Exception e )
+        {
+           return "";
+        }
     }
 
 }
