@@ -577,9 +577,7 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         {
             // FIXME this is not working..
             Period period = (Period) identifiableObject;
-            periodService.reloadPeriod( period );
-
-            match = period;
+            match = periodService.reloadPeriod( period );
         }
         else if ( identifiableObject.getUid() != null )
         {
