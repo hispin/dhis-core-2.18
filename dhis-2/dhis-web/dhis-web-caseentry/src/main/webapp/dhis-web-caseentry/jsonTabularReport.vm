@@ -7,7 +7,7 @@
 		#foreach( $col in $grid.getVisibleHeaders() )
 			#if ($velocityCount <= $noOrgunit + 1)
 				{
-					"valueType": "",
+					"valueType": "textfield",
 					"suggestedValues": []
 				},
 			#end

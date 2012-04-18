@@ -136,7 +136,10 @@ Ext.onReady( function() {
 			patientAttribute: {},
 			programStage: {},
 			dataelement: {},
-			organisationunit: {}
+			organisationunit: {},
+			fixedAttributes:{
+				checkbox: []
+			}
         },
         options: {},
         toolbar: {
@@ -588,6 +591,15 @@ Ext.onReady( function() {
 			p.programStageId = TR.cmp.params.programStage.getValue();
 			p.currentPage = this.currentPage;
 			
+			// Get fixed attributes
+			p.fixedAttributes = [];
+			var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
+			Ext.Array.each(fixedAttributes, function(item) {
+				if( item.value )
+					p.fixedAttributes.push( item.paramName );
+			});
+			
+			// Get searching values
 			p.searchingValues = [];
 			if( TR.store.datatable && TR.store.datatable.data.length)
 			{
@@ -638,6 +650,13 @@ Ext.onReady( function() {
 			p += "&orderByExecutionDateByAsc=" +'true';
 			p += "&programStageId=" + TR.cmp.params.programStage.getValue();
 			p += "&type=" + type;
+			
+			// Get fixed attributes
+			var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
+			Ext.Array.each(fixedAttributes, function(item) {
+				if( item.value )
+					p+="&fixedAttributes=" + item.paramName;
+			});
 			
 			if( TR.store.datatable && TR.store.datatable.data.length)
 			{
@@ -756,10 +775,10 @@ Ext.onReady( function() {
 						+ TR.cmp.params.patientAttribute.selected.store.data.length
 						+ TR.cmp.params.dataelement.selected.store.data.length;
 			
-			var orgunitColsLen = TR.value.columns.length - paramsLen - 2;
+			var orgunitColsLen = TR.value.columns.length - paramsLen ;
 			var index = 1;
 			
-			for( index=1; index < orgunitColsLen + 1; index++ )
+			for( index=1; index < orgunitColsLen ; index++ )
 			{
 				cols[index] = {
 					header: TR.value.columns[index], 
@@ -774,6 +793,7 @@ Ext.onReady( function() {
 				}
 			}
 			
+			
 			cols[index] = { 
 				header: TR.i18n.report_date, 
 				dataIndex: 'col' + index,
@@ -785,7 +805,6 @@ Ext.onReady( function() {
 				sortDescText: TR.i18n.desc
 			};
 			
-			index++;
 			TR.cmp.params.identifierType.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
 				cols[index] = { 
@@ -820,7 +839,7 @@ Ext.onReady( function() {
 					groupable: true,
 					emptyText: TR.i18n.et_no_data,
 					editor: {
-							xtype: TR.value.valueTypes[index - orgunitColsLen - 2].valueType,
+							xtype: TR.value.valueTypes[index].valueType,
 							queryMode: 'local',
 							editable: true,
 							valueField: 'name',
@@ -828,7 +847,7 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store:  new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.valueTypes[index - orgunitColsLen - 2].suggestedValues,
+								data: TR.value.valueTypes[index].suggestedValues,
 							})
 						}
 					};
@@ -849,7 +868,7 @@ Ext.onReady( function() {
 					draggable: false,
 					groupable: true,
 					editor: {
-						xtype: TR.value.valueTypes[index - orgunitColsLen - 2].valueType,
+						xtype: TR.value.valueTypes[index].valueType,
 							queryMode: 'local',
 							editable: true,
 							valueField: 'name',
@@ -857,7 +876,7 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store: new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.valueTypes[index - orgunitColsLen - 2].suggestedValues,
+								data: TR.value.valueTypes[index].suggestedValues,
 							})
 					}
 				};
@@ -1442,6 +1461,115 @@ Ext.onReady( function() {
 										title: '<div style="height:17px">' + TR.i18n.attributes + '</div>',
 										hideCollapseTool: true,
 										items: [
+											{
+														xtype: 'label',
+														text: TR.i18n.fixed_attributes
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'border-style:none; padding:10px 10px;',
+												items: [
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; ',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'checkbox',
+																paramName: 'fullName',
+																boxLabel: TR.i18n.full_name
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'gender',
+																boxLabel: TR.i18n.gender
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'birthDate',
+																boxLabel: TR.i18n.date_of_birth
+															}
+														]
+													},
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:0 0 0 32px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'checkbox',
+																paramName: 'bloodGroup',
+																boxLabel: TR.i18n.blood_group
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'phoneNumber',
+																boxLabel: TR.i18n.phone_number
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'deathdate',
+																boxLabel: TR.i18n.death_date
+															}
+														]
+													},
+													
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:0 0 0 32px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'checkbox',
+																paramName: 'registrationDate',
+																boxLabel: TR.i18n.registration_date
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'dobType',
+																boxLabel: TR.i18n.dob_type
+															}
+														]
+													}
+													
+												]
+											},
+											
+											{
+												xtype: 'label',
+												text: TR.i18n.dynamic_attributes
+											},
 											{
 												xtype: 'panel',
 												layout: 'column',

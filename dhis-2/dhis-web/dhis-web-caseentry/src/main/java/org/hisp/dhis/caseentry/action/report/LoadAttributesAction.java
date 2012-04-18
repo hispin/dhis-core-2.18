@@ -109,7 +109,9 @@ public class LoadAttributesAction
         throws Exception
     {
         Program program = programService.getProgram( programId );
-        patientAttributes = attributeService.getPatientAttributes( program );
+        patientAttributes = attributeService.getAllPatientAttributes();
+        
+        patientAttributes.addAll( attributeService.getPatientAttributes( program ) );
 
         if ( attributeGroupId == null )
         {
