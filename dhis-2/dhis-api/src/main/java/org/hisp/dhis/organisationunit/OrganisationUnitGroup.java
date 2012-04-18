@@ -37,6 +37,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -55,6 +56,7 @@ public class OrganisationUnitGroup
      */
     private static final long serialVersionUID = -1131637847640209166L;
 
+    @Scanned
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
 
     private OrganisationUnitGroupSet groupSet;

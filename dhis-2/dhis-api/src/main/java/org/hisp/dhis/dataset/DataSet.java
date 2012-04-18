@@ -40,6 +40,7 @@ import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
@@ -81,28 +82,33 @@ public class DataSet
     /**
      * All DataElements associated with this DataSet.
      */
+    @Scanned
     private Set<DataElement> dataElements = new HashSet<DataElement>();
 
     /**
      * Indicators associated with this data set. Indicators are used for view and
      * output purposes, such as calculated fields in forms and reports.
      */
+    @Scanned
     private Set<Indicator> indicators = new HashSet<Indicator>();
 
     /**
      * The DataElementOperands for which data must be entered in order for the
      * DataSet to be considered as complete.
      */
+    @Scanned
     private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
 
     /**
      * All Sources that register data with this DataSet.
      */
+    @Scanned
     private Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
 
     /**
      * The Sections associated with the DataSet.
      */
+    @Scanned
     private Set<Section> sections = new HashSet<Section>();
 
     /**
@@ -180,6 +186,11 @@ public class DataSet
         unit.getDataSets().remove( this );
     }
 
+    public void removeAllOrganisationUnits()
+    {
+        sources.clear();
+    }
+
     public void updateOrganisationUnits( Set<OrganisationUnit> updates )
     {
         for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( sources ) )
@@ -208,6 +219,11 @@ public class DataSet
         dataElement.getDataSets().remove( dataElement );
     }
 
+    public void removeAllDataElements()
+    {
+        dataElements.clear();
+    }
+
     public void updateDataElements( Set<DataElement> updates )
     {
         for ( DataElement dataElement : new HashSet<DataElement>( dataElements ) )
@@ -234,6 +250,26 @@ public class DataSet
     {
         indicators.remove( indicator );
         indicator.getDataSets().remove( this );
+    }
+
+    public void removeAllIndicators()
+    {
+        indicators.clear();
+    }
+
+    public void addCompulsoryDataElementOperand( DataElementOperand dataElementOperand )
+    {
+        compulsoryDataElementOperands.add( dataElementOperand );
+    }
+
+    public void removeCompulsoryDataElementOperand( DataElementOperand dataElementOperand )
+    {
+        compulsoryDataElementOperands.remove( dataElementOperand );
+    }
+
+    public void removeAllCompulsoryDataElementOperands()
+    {
+        compulsoryDataElementOperands.clear();
     }
 
     public boolean hasDataEntryForm()
@@ -488,44 +524,32 @@ public class DataSet
             version = version != null ? version : dataSet.getVersion();
             expiryDays = dataSet.getExpiryDays();
 
-            dataElements.clear();
+            removeAllDataElements();
 
             for ( DataElement dataElement : dataSet.getDataElements() )
             {
                 addDataElement( dataElement );
             }
 
-            indicators.clear();
+            removeAllIndicators();
 
             for ( Indicator indicator : dataSet.getIndicators() )
             {
                 addIndicator( indicator );
             }
 
-            compulsoryDataElementOperands.clear();
+            removeAllCompulsoryDataElementOperands();
 
             for ( DataElementOperand dataElementOperand : dataSet.getCompulsoryDataElementOperands() )
             {
-                compulsoryDataElementOperands.add( dataElementOperand );
+                addCompulsoryDataElementOperand( dataElementOperand );
             }
 
-            sources.clear();
+            removeAllOrganisationUnits();
 
             for ( OrganisationUnit organisationUnit : dataSet.getSources() )
             {
                 addOrganisationUnit( organisationUnit );
-            }
-
-            sections.clear();
-
-            for ( Section section : dataSet.getSections() )
-            {
-                sections.add( section );
-
-                if ( section.getDataSet() == null )
-                {
-                    section.setDataSet( this );
-                }
             }
         }
     }

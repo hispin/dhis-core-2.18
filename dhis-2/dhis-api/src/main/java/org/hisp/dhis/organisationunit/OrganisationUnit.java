@@ -40,6 +40,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -93,10 +94,13 @@ public class OrganisationUnit
 
     private String url;
 
+    @Scanned
     private Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
 
+    @Scanned
     private Set<DataSet> dataSets = new HashSet<DataSet>();
 
+    @Scanned
     private Set<User> users = new HashSet<User>();
 
     private String contactPerson;
