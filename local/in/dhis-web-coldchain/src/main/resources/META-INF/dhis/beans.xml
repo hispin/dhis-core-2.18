@@ -2,11 +2,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
+	<!-- Home page -->
 	<bean id="org.hisp.dhis.coldchain.action.NoAction"
         class="org.hisp.dhis.coldchain.action.NoAction"
         scope="prototype">
     </bean>
-	
+
+<!-- catalog -->	
+
+	<bean id="org.hisp.dhis.coldchain.catalog.action.GetColdChainCatalogTypeAttributeListAction"
+        class="org.hisp.dhis.coldchain.catalog.action.GetColdChainCatalogTypeAttributeListAction"
+        scope="prototype">
+    </bean>	
+
+	<bean id="org.hisp.dhis.coldchain.catalog.action.AddColdChainCatalogTypeAttributeForm"
+        class="org.hisp.dhis.coldchain.catalog.action.AddColdChainCatalogTypeAttributeForm"
+        scope="prototype">
+    </bean>	
+				
 </beans>

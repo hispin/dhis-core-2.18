@@ -1,0 +1,69 @@
+
+<h3>$i18n.getString( "coldchain_catalog_type_attribute_management" )</h3>
+<table class="mainPageTable">
+  <tr>
+    <td style="vertical-align:top">
+		<table width="100%">
+			<tr>
+				<td>
+					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+				</td>
+				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddColdChainCatalogTypeAttributeForm.action'" style="width:70px"></td>
+			</tr>
+		</table>
+		
+		<table class="listTable">
+			<col>          
+			<col width="20">
+			<col width="20">
+			<col width="20">          		  
+			<thead>
+			  <tr>
+				<th>$i18n.getString( "name" )</th>
+				<th colspan="3">$i18n.getString( "operations" )</th>
+			  </tr>
+			</thead>
+			<tbody id="list"><!--
+            #foreach( $patientAttribute in $patientAttributes )
+              <tr id="tr${patientAttribute.id}">
+              
+                <td>$encoder.htmlEncode( $patientAttribute.name )</td>                
+                
+                <td style="text-align:center">
+                  <a href="showUpdatePatientAttributeForm.action?id=$patientAttribute.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+                </td>                
+ 
+                <td style="text-align:center">
+                  <a href="javascript:removePatientAttribute( '$patientAttribute.id', '$encoder.jsEncode( $patientAttribute.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+                </td>            
+                
+                <td style="text-align:center">
+                  <a href="javascript:showPatientAttributeDetails( $patientAttribute.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
+                </td>
+                
+              </tr>
+			#end
+		-->		
+          </tbody>
+
+        </table>
+    </td>
+	
+		<td style="width:20em; padding-left:2em; vertical-align:top">
+
+			<div id="detailsArea" style="display:none">
+				<div style="float:right">
+					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
+				</div>				
+                <p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
+                <p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
+                <p><label class="bold">$i18n.getString( "mandatory" ):</label><br><span id="mandatoryField"></span></p>
+                <p><label class="bold">$i18n.getString( "inheritable" ):</label><br><span id="inheritableField"></span></p>
+                <p><label class="bold">$i18n.getString( "value_type" ):</label><br><span id="valueTypeField"></span></p>
+				<p><label class="bold">$i18n.getString( "program" ):</label><br><span id="programField"></span></p>
+			</div>
+
+		</td>
+  </tr>
+</table>
+
