@@ -398,9 +398,31 @@ public class StreamUtils
     }
 
     /**
-     * Test for zip stream signature.
+     * Test for ZIP stream signature. Wraps the input stream in a
+     * BufferedInputStream. If ZIP test is true wraps again in ZipInputStream.
      * 
-     * Signature of zip stream from
+     * @param in the InputStream.
+     * @return the wrapped InputStream.
+     */
+    public static InputStream wrapAndCheckZip( InputStream in )
+        throws IOException
+    {
+        BufferedInputStream bufferedIn = new BufferedInputStream( in );
+        
+        if ( isZip( bufferedIn ) )
+        {
+            ZipInputStream zipIn = new ZipInputStream( bufferedIn );
+            zipIn.getNextEntry();
+            return zipIn;
+        }
+        
+        return bufferedIn;
+    }
+    
+    /**
+     * Test for ZIP stream signature.
+     * 
+     * Signature of ZIP stream from
      * http://www.pkware.com/documents/casestudies/APPNOTE.TXT Local file
      * header: local file header signature 4 bytes (0x04034b50)
      * 
@@ -433,15 +455,15 @@ public class StreamUtils
             throw new RuntimeException( "Couldn't reset stream ", ex );
         }
         
-        return Arrays.equals( b, zipSig ) ? true : false;
+        return Arrays.equals( b, zipSig );
     }
 
     /**
-     * Test for Gzip stream signature.
+     * Test for GZIP stream signature.
      *
-     * Signature of gzip stream from RFC 1952: ID1 (IDentification 1) ID2
+     * Signature of GZIP stream from RFC 1952: ID1 (IDentification 1) ID2
      * (IDentification 2) These have the fixed values ID1 = 31 (0x1f, \037),
-     * ID2 = 139 (0x8b, \213), to identify the file as being in gzip format.
+     * ID2 = 139 (0x8b, \213), to identify the file as being in GZIP format.
      * 
      * @param instream the BufferedInputStream to test.
      */
@@ -467,7 +489,7 @@ public class StreamUtils
             throw new RuntimeException( "Couldn't reset stream ", ex );
         }
 
-        return (b[0] == 31 && b[1] == -117) ? true : false;
+        return ( b[0] == 31 && b[1] == -117 );
     }
 
     /**
@@ -543,5 +565,5 @@ public class StreamUtils
     public static boolean exists( String path )
     {
         return new File( path ).exists();
-    }   
+    }
 }

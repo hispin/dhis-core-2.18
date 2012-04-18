@@ -31,15 +31,13 @@ import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
 import static org.hisp.dhis.util.ContextUtils.CONTENT_TYPE_CSV;
 import static org.hisp.dhis.util.ContextUtils.CONTENT_TYPE_XML;
+import static org.hisp.dhis.util.ContextUtils.getZipOut;
 
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -133,7 +131,7 @@ public class ExportDataValueAction
         {
             ContextUtils.configureResponse( response, CONTENT_TYPE_CSV, true, getFileName( EXTENSION_CSV_ZIP ), true );
             
-            Writer writer = new OutputStreamWriter( getZipOut( response, EXTENSION_CSV ) );
+            Writer writer = new OutputStreamWriter( getZipOut( response, getFileName( EXTENSION_CSV ) ) );
             
             dataValueSetService.writeDataValueSetCsv( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, writer );
         }
@@ -141,7 +139,7 @@ public class ExportDataValueAction
         {
             ContextUtils.configureResponse( response, CONTENT_TYPE_XML, true, getFileName( EXTENSION_XML_ZIP ), true );
             
-            dataValueSetService.writeDataValueSet( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, getZipOut( response, EXTENSION_XML ) );
+            dataValueSetService.writeDataValueSet( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, getZipOut( response, getFileName( EXTENSION_XML ) ) );
         }
                 
         return SUCCESS;
@@ -161,14 +159,5 @@ public class ExportDataValueAction
         }
         
         return fileName + extension;
-    }
-    
-    private ZipOutputStream getZipOut( HttpServletResponse response, String extension )
-        throws IOException
-    {
-        ZipOutputStream out = new ZipOutputStream( response.getOutputStream() );
-        out.putNextEntry( new ZipEntry( getFileName( extension ) ) );
-        
-        return out;
     }
 }
