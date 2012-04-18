@@ -279,9 +279,10 @@ public class DefaultProgramStageInstanceService
         {
             Grid grid = new ListGrid();
 
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Title
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
+
             Date executionDate = programStageInstance.getExecutionDate();
             String executionDateValue = (executionDate != null) ? format.formatDate( programStageInstance
                 .getExecutionDate() ) : "[" + i18n.getString( "none" ) + "]";
@@ -291,16 +292,17 @@ public class DefaultProgramStageInstanceService
                 + format.formatDate( programStageInstance.getDueDate() ) + " - " + i18n.getString( "report_date" )
                 + ": " + executionDateValue );
 
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Headers
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
 
             grid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
             grid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
 
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Values
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
+
             Collection<PatientDataValue> patientDataValues = patientDataValueService
                 .getPatientDataValues( programStageInstance );
 
@@ -366,17 +368,31 @@ public class DefaultProgramStageInstanceService
             // Organisation units
             int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
-            for ( int i = level; i < maxLevel; i++ )
+            boolean hasHiddenOrgunits = !(hiddenCols.size() == idens.size() + attributes.size() + dataElements.size());
+            int index = 0;
+
+            if ( !hasHiddenOrgunits )
             {
-                grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i ).getName(),
-                    false, true ) );
+                for ( int i = level; i < maxLevel; i++ )
+                {
+                    grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i )
+                        .getName(), false, true ) );
+                }
+            }
+            else
+            {
+                for ( int i = level; i < maxLevel; i++ )
+                {
+                    grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i )
+                        .getName(), hiddenCols.get( index ), true ) );
+                    index++;
+                }
             }
 
             // Report-date
             grid.addHeader( new GridHeader( i18n.getString( "report_date" ), false, true ) );
 
             // Identifier types
-            int index = 0;
             if ( idens != null && idens.size() > 0 )
             {
                 for ( PatientIdentifierType identifierType : idens )
@@ -429,7 +445,7 @@ public class DefaultProgramStageInstanceService
                     }
                     else
                     {
-                        grid.addValue("");
+                        grid.addValue( "" );
                     }
                 }
 

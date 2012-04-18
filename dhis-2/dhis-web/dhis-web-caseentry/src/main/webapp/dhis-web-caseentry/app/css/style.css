@@ -669,3 +669,9 @@ TR.utilbody {
 .tr-accordion .tr-combo .x-form-item-label { /* accordion combo box label */
 	padding: 4px 0 0;
 }
+
+.green-row {
+    color: green;
+    font-style: italic;
+	font-weight: weight;
+}
