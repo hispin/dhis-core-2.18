@@ -1,2 +1,6 @@
 
 <h2>$i18n.getString( "coldchain" )</h2>
+<ul>
+	<li><a href="coldChainCatalogTypeAttribute.action">$i18n.getString( "catalogType_attribute" )</a></li>
+	
+</ul>
