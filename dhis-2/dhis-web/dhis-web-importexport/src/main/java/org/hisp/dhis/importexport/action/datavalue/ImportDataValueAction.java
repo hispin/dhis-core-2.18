@@ -27,7 +27,8 @@ package org.hisp.dhis.importexport.action.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedInputStream;
+import static org.hisp.dhis.importexport.action.util.ImportDataValueTask.FORMAT_CSV;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,12 +44,11 @@ import org.hisp.dhis.importexport.action.util.ImportDataValueTask;
 import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.scheduling.Scheduler;
+import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
-
-import static org.hisp.dhis.importexport.action.util.ImportDataValueTask.FORMAT_CSV;
 
 /**
  * @author Lars Helge Overland
@@ -109,14 +109,16 @@ public class ImportDataValueAction
     public String execute()
         throws Exception
     {
-        final TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
-
-        final ImportOptions options = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, dryRun, strategy );
+        InputStream in = new FileInputStream( upload );
         
-        final InputStream in = !FORMAT_CSV.equals( importFormat ) ? new BufferedInputStream( new FileInputStream( upload ) ) : null;
+        in = StreamUtils.wrapAndCheckZip( in );
         
-        final Reader reader = FORMAT_CSV.equals( importFormat ) ? new BufferedReader( new InputStreamReader( new FileInputStream( upload ) ) ) : null;
+        Reader reader = FORMAT_CSV.equals( importFormat ) ? new BufferedReader( new InputStreamReader( in ) ) : null;
 
+        TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
+
+        ImportOptions options = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, dryRun, strategy );
+        
         scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, reader, options, taskId, importFormat ) );
         
         return SUCCESS;

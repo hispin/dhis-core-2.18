@@ -33,6 +33,8 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -200,5 +202,22 @@ public class ContextUtils
             
             objects.clear();
         }
+    }
+
+    /**
+     * Creates a ZipOutputStream based on the HttpServletResponse and puts a
+     * new ZipEntry with the given filename to it.
+     * 
+     * @param response the HttpServletResponse.
+     * @param fileName the filename of the file inside the zip archive.
+     * @return a ZipOutputStream
+     * @throws IOException
+     */
+    public static ZipOutputStream getZipOut( HttpServletResponse response, String fileName )
+        throws IOException
+    {
+        ZipOutputStream out = new ZipOutputStream( response.getOutputStream() );
+        out.putNextEntry( new ZipEntry( fileName ) );        
+        return out;
     }
 }
