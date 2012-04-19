@@ -502,7 +502,7 @@ TR.utilbody {
 
 /* Textfield */
 .tr-textfield .x-form-field, .tr-textfield-alt1 .x-form-field {  
-    height: 24px;
+    height: 22px;
     padding-left: 4px;
     -moz-border-radius: 2px 2px 2px 2px;
     -webkit-border-radius: 2px 2px 2px 2px;
