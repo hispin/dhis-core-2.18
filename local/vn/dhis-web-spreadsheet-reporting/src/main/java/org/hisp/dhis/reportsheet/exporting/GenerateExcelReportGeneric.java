@@ -63,6 +63,7 @@ import org.hisp.dhis.reportsheet.ReportLocationManager;
 import org.hisp.dhis.reportsheet.preview.manager.InitializePOIStylesManager;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dang Duy Hieu
@@ -90,32 +91,46 @@ public class GenerateExcelReportGeneric
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     CurrentUserService currentUserService;
 
+    @Autowired
     IndicatorService indicatorService;
 
+    @Autowired
     InitializePOIStylesManager initPOIStylesManager;
 
+    @Autowired
     protected AggregationService aggregationService;
 
+    @Autowired
     protected AggregatedDataValueService aggregatedDataValueService;
 
+    @Autowired
     protected DataElementCategoryService categoryService;
 
+    @Autowired
     protected DataElementService dataElementService;
 
+    @Autowired
     protected PeriodService periodService;
 
+    @Autowired
     protected ExportReportService exportReportService;
 
+    @Autowired
     protected ReportLocationManager reportLocationManager;
 
+    @Autowired
     protected StatementManager statementManager;
 
+    @Autowired
     protected SelectionManager selectionManager;
 
+    @Autowired
     protected OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
+    @Autowired
     protected DataValueService dataValueService;
 
     protected I18n i18n;
@@ -212,89 +227,14 @@ public class GenerateExcelReportGeneric
         this.i18n = i18n;
     }
 
-    public InputStream getInputStream()
-    {
-        return inputStream;
-    }
-
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-    {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-    }
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    public void setAggregationService( AggregationService aggregationService )
-    {
-        this.aggregationService = aggregationService;
-    }
-
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
-    {
-        this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-
     public void setFormat( I18nFormat format )
     {
         this.format = format;
     }
 
-    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    public InputStream getInputStream()
     {
-        this.reportLocationManager = reportLocationManager;
-    }
-
-    public void setExportReportService( ExportReportService exportReportService )
-    {
-        this.exportReportService = exportReportService;
-    }
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    public InitializePOIStylesManager getInitPOIStylesManager()
-    {
-        return initPOIStylesManager;
-    }
-
-    public void setInitPOIStylesManager( InitializePOIStylesManager initPOIStylesManager )
-    {
-        this.initPOIStylesManager = initPOIStylesManager;
+        return inputStream;
     }
 
     // -------------------------------------------------------------------------

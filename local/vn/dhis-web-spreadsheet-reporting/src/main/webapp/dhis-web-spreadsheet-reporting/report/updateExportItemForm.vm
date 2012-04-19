@@ -5,8 +5,8 @@
 		});
 	});
 	
-	var category = $exportReport.isCategory();
-	
+	var category = $!exportReport.isCategory();
+	var attribute = $!exportReport.isAttribute();
 </script>
 
 <h3>$i18n.getString( 'update_export_item' )</h3>
@@ -24,8 +24,8 @@
 			<td>$!encoder.htmlEncode( $!exportReport.displayName )</td>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString('report_type')</label></td>
-			<td>: $i18n.getString( $!exportReport.getReportType() )</td>
+			<td><label>$i18n.getString('report_type')</label>: </td>
+			<td>$i18n.getString( $!exportReport.getReportType() )</td>
 		</tr>
 		<tr>
 			<td colspan="2" height="20px"></td>

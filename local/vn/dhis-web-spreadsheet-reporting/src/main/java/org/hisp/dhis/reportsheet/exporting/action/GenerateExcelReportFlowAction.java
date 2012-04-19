@@ -30,6 +30,7 @@ package org.hisp.dhis.reportsheet.exporting.action;
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,19 +46,11 @@ public class GenerateExcelReportFlowAction
     // Dependency
     // -------------------------------------------------------------------------
 
+	@Autowired
     private ExportReportService exportReportService;
 
-    public void setExportReportService( ExportReportService exportReportService )
-    {
-        this.exportReportService = exportReportService;
-    }
-
+	@Autowired
     private SelectionManager selectionManager;
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
 
     // -------------------------------------------------------------------------
     // Input && Output

@@ -5,7 +5,8 @@
 		});
 	});
 	
-	var category = $exportReport.isCategory();
+	var category = $!exportReport.isCategory();
+	var attribute = $!exportReport.isAttribute();
 	
 </script>
 

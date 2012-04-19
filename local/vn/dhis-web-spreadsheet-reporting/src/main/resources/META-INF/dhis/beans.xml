@@ -504,138 +504,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.reportsheet.exporting.action.GenerateExcelReportFlowAction"
 		class="org.hisp.dhis.reportsheet.exporting.action.GenerateExcelReportFlowAction"
-		scope="prototype">
-		<property name="exportReportService"
-			ref="org.hisp.dhis.reportsheet.ExportReportService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-	</bean>
+		scope="prototype" />
 
 	<bean
 		id="org.hisp.dhis.reportsheet.exporting.action.GenerateReportOrgGroupListingAction"
 		class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportOrgGroupListingAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-		<property name="exportReportService"
-			ref="org.hisp.dhis.reportsheet.ExportReportService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportsheet.ReportLocationManager" />
-		<property name="aggregationService"
-			ref="org.hisp.dhis.aggregation.AggregationService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="statementManager" ref="statementManager" />
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="indicatorService"
-			ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="initPOIStylesManager"
-			ref="org.hisp.dhis.reportsheet.preview.manager.InitializePOIStylesManager" />
-		<property name="dataValueService"
-			ref="org.hisp.dhis.datavalue.DataValueService" />
-	</bean>
+		scope="prototype" />
 
 	<bean
 		id="org.hisp.dhis.reportsheet.exporting.action.GenerateReportNormalAction"
 		class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportNormalAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-		<property name="exportReportService"
-			ref="org.hisp.dhis.reportsheet.ExportReportService" />
-		<property name="periodService"
-			ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportsheet.ReportLocationManager" />
-		<property name="aggregationService"
-			ref="org.hisp.dhis.aggregation.AggregationService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="statementManager" ref="statementManager" />
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="indicatorService"
-			ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="initPOIStylesManager"
-			ref="org.hisp.dhis.reportsheet.preview.manager.InitializePOIStylesManager" />
-		<property name="dataValueService"
-			ref="org.hisp.dhis.datavalue.DataValueService" />
-	</bean>
+		scope="prototype" />
 
 	<bean
 		id="org.hisp.dhis.reportsheet.exporting.action.GenerateReportCategoryAction"
 		class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportCategoryAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-		<property name="exportReportService"
-			ref="org.hisp.dhis.reportsheet.ExportReportService" />
-		<property name="periodService"
-			ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportsheet.ReportLocationManager" />
-		<property name="aggregationService"
-			ref="org.hisp.dhis.aggregation.AggregationService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="statementManager"
-			ref="statementManager" />
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="indicatorService"
-			ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="initPOIStylesManager"
-			ref="org.hisp.dhis.reportsheet.preview.manager.InitializePOIStylesManager" />
-		<property name="dataValueService"
-			ref="org.hisp.dhis.datavalue.DataValueService" />
-	</bean>
+		scope="prototype" />
 
+	<bean
+		id="org.hisp.dhis.reportsheet.exporting.action.GenerateReportAttributeAction"
+		class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportAttributeAction"
+		scope="prototype" />
 
 	<bean
 		id="org.hisp.dhis.reportsheet.exporting.action.GenerateReportPeriodColumnListingAction"
 		class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportPeriodColumnListingAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-		<property name="exportReportService"
-			ref="org.hisp.dhis.reportsheet.ExportReportService" />
-		<property name="periodService"
-			ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportsheet.ReportLocationManager" />
-		<property name="aggregationService"
-			ref="org.hisp.dhis.aggregation.AggregationService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="statementManager"
-			ref="statementManager" />
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="indicatorService"
-			ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="initPOIStylesManager"
-			ref="org.hisp.dhis.reportsheet.preview.manager.InitializePOIStylesManager" />
-		<property name="dataValueService"
-			ref="org.hisp.dhis.datavalue.DataValueService" />
-	</bean>
+		scope="prototype" />
 
 	<!-- DATA ENTRY STATUS BEAN -->
 
