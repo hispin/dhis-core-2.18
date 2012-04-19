@@ -1,4 +1,4 @@
-package org.hisp.dhis.common.annotation;
+package org.hisp.dhis.organisationunit.comparator;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -11,7 +11,7 @@ package org.hisp.dhis.common.annotation;
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of the <ORGANIZATION> nor the names of its contributors may
+ * * Neither the name of the HISP project nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
@@ -27,28 +27,35 @@ package org.hisp.dhis.common.annotation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+
+import java.util.Comparator;
 
 /**
- * A very simple annotation that is currently only used for marking identifiable collections
- * that should be part of the auto-populating reference scanning of the DefaultImporter.
- *
- * This is here to separate between collections that we want scanned (e.g. dataSet.indicators) and collections
- * that we don't want scanned (e.g. reportTable.allIndicators).
- *
- * TODO
- *  - refactor out scanner from DefaultIdentifiableObjectImporter
- *  - add support for profiling (only scan for this profile, etc)
- *  - add support for annotation the setter or getter also
- *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Target( {ElementType.FIELD} )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface Scanned
+public class OrganisationUnitComparator
+    implements Comparator<OrganisationUnit>
 {
-    String[] value() default {};
+    private int countParents( OrganisationUnit organisationUnit )
+    {
+        int parents = 0;
+        OrganisationUnit currentOrganisationUnit = organisationUnit;
+
+        while ( (currentOrganisationUnit = currentOrganisationUnit.getParent()) != null )
+        {
+            parents++;
+        }
+
+        return parents;
+    }
+
+    @Override
+    public int compare( OrganisationUnit organisationUnit1, OrganisationUnit organisationUnit2 )
+    {
+        Integer parents1 = countParents( organisationUnit1 );
+        Integer parents2 = countParents( organisationUnit2 );
+
+        return parents1.compareTo( parents2 );
+    }
 }
