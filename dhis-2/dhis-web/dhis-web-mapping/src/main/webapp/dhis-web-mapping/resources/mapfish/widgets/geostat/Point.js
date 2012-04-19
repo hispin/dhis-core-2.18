@@ -1655,7 +1655,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
 		},
         
         clearForm: function(clearLayer) {
-            this.cmp.mapview.clearValue();            
+            this.cmp.mapview.clearValue();
             
             this.cmp.mapValueType.setValue(G.conf.map_value_type_indicator);
             this.valueType.setIndicator();
@@ -1698,13 +1698,11 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         G.vars.mask.msg = G.i18n.loading;
         G.vars.mask.show();
         G.vars.activeWidget = this;
-        this.updateValues = false;
+        this.updateValues = true;
         
-        var url = G.conf.path_mapping + 'getGeoJsonWithValues.action?' + 
-            'periodId=' + this.cmp.period.getValue() +
-            '&parentId=' + this.organisationUnitSelection.parent.id +
-            '&level=' + this.organisationUnitSelection.level.level;            
-        url += this.valueType.isIndicator() ? '&indicatorId=' + this.cmp.indicator.getValue() : '&dataElementId=' + this.cmp.dataElement.getValue();
+        var url = G.conf.path_mapping + 'getGeoJson.action?' +
+            'parentId=' + this.organisationUnitSelection.parent.id +
+            '&level=' + this.organisationUnitSelection.level.level;
         this.setUrl(url);
     },
 
@@ -1789,7 +1787,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             Ext.message.msg(false, G.i18n.no_values_found);
             return;
         }
-
+        
         this.button.menu.find('name','history')[0].addItem(this);
         
 		var options = {

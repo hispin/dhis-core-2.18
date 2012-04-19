@@ -27,9 +27,6 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.mapping.MappingService.KEY_MAP_DATE_TYPE;
-import static org.hisp.dhis.mapping.MappingService.MAP_DATE_TYPE_FIXED;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,7 +41,6 @@ import org.hisp.dhis.mapping.comparator.MapLayerNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -64,13 +60,6 @@ public class InitializeAction
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
-    }
-
-    private UserSettingService userSettingService;
-
-    public void setUserSettingService( UserSettingService userSettingService )
-    {
-        this.userSettingService = userSettingService;
     }
 
     private ConfigurationService configurationService;
