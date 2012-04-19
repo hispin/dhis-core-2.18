@@ -1024,13 +1024,11 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
         G.vars.mask.msg = G.i18n.loading;
         G.vars.mask.show();
         G.vars.activeWidget = this;
-        this.updateValues = false;
+        this.updateValues = true;
         
-        var url = G.conf.path_mapping + 'getGeoJsonWithValues.action?' + 
-            'periodId=' + this.cmp.period.getValue() +
-            '&parentId=' + this.organisationUnitSelection.parent.id +
-            '&level=' + this.organisationUnitSelection.level.level;            
-        url += this.valueType.isIndicator() ? '&indicatorId=' + this.cmp.indicator.getValue() : '&dataElementId=' + this.cmp.dataElement.getValue();
+        var url = G.conf.path_mapping + 'getGeoJson.action?' +
+            'parentId=' + this.organisationUnitSelection.parent.id +
+            '&level=' + this.organisationUnitSelection.level.level;
         this.setUrl(url);
     },
 

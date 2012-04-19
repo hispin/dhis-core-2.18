@@ -100,7 +100,6 @@ mapfish.GeoStat = OpenLayers.Class({
 		this.layer.features = G.util.getTransformedFeatureArray(this.layer.features);
         G.vars.activeWidget.featureStorage = this.layer.features.slice(0);
         this.requestSuccess(request);
-        
         G.vars.activeWidget.classify(false, false, true);
     },
 
