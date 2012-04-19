@@ -771,20 +771,31 @@ Ext.onReady( function() {
 				groupable: true
 			}
 			
+			cols[1] = { 
+				header: TR.i18n.report_date, 
+				dataIndex: 'col' + index,
+				name:"reportdate_1" + "_",
+				sortable: true,
+				draggable: false,
+				groupable: true,
+				sortAscText: TR.i18n.asc,
+				sortDescText: TR.i18n.desc
+			};
+			
 			var paramsLen = TR.cmp.params.identifierType.selected.store.data.length
 						+ TR.cmp.params.patientAttribute.selected.store.data.length
 						+ TR.cmp.params.dataelement.selected.store.data.length;
 			
-			var orgunitColsLen = TR.value.columns.length - paramsLen ;
-			var index = 1;
+			var metaDatatColsLen = TR.value.columns.length - paramsLen ;
+			var index = 2;
 			
-			for( index=1; index < orgunitColsLen ; index++ )
+			for( index=2; index < metaDatatColsLen; index++ )
 			{
 				cols[index] = {
 					header: TR.value.columns[index], 
 					dataIndex: 'col' + index,
 					height: TR.conf.layout.east_gridcolumn_height,
-					name:"org_" + index + "_",
+					name:"meta_" + index + "_",
 					sortable: false,
 					draggable: false,
 					groupable: true,
@@ -792,18 +803,6 @@ Ext.onReady( function() {
 					sortDescText: TR.i18n.desc
 				}
 			}
-			
-			
-			cols[index] = { 
-				header: TR.i18n.report_date, 
-				dataIndex: 'col' + index,
-				name:"reportdate_" + index + "_",
-				sortable: true,
-				draggable: false,
-				groupable: true,
-				sortAscText: TR.i18n.asc,
-				sortDescText: TR.i18n.desc
-			};
 			
 			TR.cmp.params.identifierType.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
@@ -891,7 +890,7 @@ Ext.onReady( function() {
 				viewConfig: {
 					getRowClass: function(record, rowIndex, rp, ds){ 
 						if(rowIndex == 0){
-							return 'green-row';
+							return 'blue-row';
 						} else {
 						   return '';
 						}

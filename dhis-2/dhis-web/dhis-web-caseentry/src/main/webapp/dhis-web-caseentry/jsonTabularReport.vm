@@ -1,18 +1,19 @@
 {
 #if( $grid.getRows().size() > 0)
 	#set( $noHeader = $grid.getHeaders().size() )
-	#set ( $noOrgunit = $noHeader - $valueTypes.size())
+	#set ( $metaData = $noHeader - $valueTypes.size())
 	'total': "$total",
 	'valueTypes':[
 		#foreach( $col in $grid.getVisibleHeaders() )
-			#if ($velocityCount <= $noOrgunit + 1)
+			#if ($velocityCount <= $metaData + 1)
 				{
 					"valueType": "textfield",
 					"suggestedValues": []
 				},
 			#end
 		#end
-			
+		
+		#set($index = 0)
 		#foreach( $valueType in $valueTypes )
 			{
 				"valueType": 
@@ -25,13 +26,13 @@
 					#else
 						"textfield"
 					#end,
-					
 				#set( $suggestedValues = $mapSuggestedValues.get($index) )
 				"suggestedValues":[
 					#foreach( $suggestedValue in $suggestedValues )
 						["$!encoder.jsonEncode( ${suggestedValue} )"]
 						#if( $velocityCount < $suggestedValues.size() ),#end
 					#end
+				
 				]
 			}
 			#if( $velocityCount < $valueTypes.size() ),#end
@@ -56,12 +57,12 @@
 		{
 			"id":"$i18n.getString( 'filter' )",
 			#foreach( $col in $grid.getVisibleHeaders() )
-				#if ($velocityCount <= $noOrgunit )
+				#if ($velocityCount <= $metaData )
 					"col$velocityCount": "",
 				#end
 			#end
 			
-			#set( $index = $noOrgunit + 1 )
+			#set( $index = $metaData + 1 )
 			#foreach( $value in $values )
 				"col$index": "$value"
 				#if( $velocityCount < $values.size() ),#end

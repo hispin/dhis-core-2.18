@@ -62,7 +62,7 @@ import org.hisp.dhis.program.ProgramStageService;
 public class GenerateTabularReportAction
     extends ActionPagingSupport<ProgramStageInstance>
 {
-    private String PREFIX_ORGANISTAION_UNIT = "org";
+    private String PREFIX_META_DATA = "meta";
 
     private String PREFIX_IDENTIFIER_TYPE = "iden";
 
@@ -376,7 +376,7 @@ public class GenerateTabularReportAction
             String objectType = infor[0];
             int objectId = Integer.parseInt( infor[1] );
 
-            if ( objectType.equals( PREFIX_ORGANISTAION_UNIT ) )
+            if ( objectType.equals( PREFIX_META_DATA ) )
             {
                 hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
             }
@@ -399,6 +399,7 @@ public class GenerateTabularReportAction
                 {
                     values.add( "" );
                 }
+                index++;
             }
             else if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
             {
@@ -420,6 +421,7 @@ public class GenerateTabularReportAction
                 {
                     values.add( "" );
                 }
+                index++;
             }
             else if ( objectType.equals( PREFIX_DATA_ELEMENT ) )
             {
@@ -441,9 +443,9 @@ public class GenerateTabularReportAction
                 {
                     values.add( "" );
                 }
+                index++;
             }
 
-            index++;
         }
     }
 
