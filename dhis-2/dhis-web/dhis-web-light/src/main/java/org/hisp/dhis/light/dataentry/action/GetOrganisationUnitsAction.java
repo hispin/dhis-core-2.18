@@ -91,33 +91,41 @@ public class GetOrganisationUnitsAction
     {
         organisationUnits = formUtils.getSortedOrganisationUnitsForCurrentUser();
 
-        if ( organisationUnits.size() == 1 )
+        try
         {
-            for ( OrganisationUnit organisationUnit : organisationUnits )
+            if ( organisationUnits.size() == 1 )
             {
-                for ( OrganisationUnit child : organisationUnit.getChildren() )
+                for ( OrganisationUnit organisationUnit : organisationUnits )
                 {
-                    if ( child.getDataSets().size() > 0 )
+                    for ( OrganisationUnit child : organisationUnit.getChildren() )
                     {
-                        return SUCCESS;
+                        if ( child.getDataSets().size() > 0 ) // >0
+                        {
+                            return SUCCESS;
+                        }
                     }
                 }
+                organisationUnitId = organisationUnits.get( 0 ).getId();
+
+                List<DataSet> dataSets = formUtils.getDataSetsForCurrentUser( organisationUnitId );
+
+                if ( dataSets.size() > 1 )
+                {
+                    return "selectDataSet";
+                }
+
+                dataSetId = dataSets.get( 0 ).getId();
+
+                return "selectPeriod";
             }
 
-            organisationUnitId = organisationUnits.get( 0 ).getId();
-
-            List<DataSet> dataSets = formUtils.getDataSetsForCurrentUser( organisationUnitId );
-
-            if ( dataSets.size() > 1 )
-            {
-                return "selectDataSet";
-            }
-
-            dataSetId = dataSets.get( 0 ).getId();
-
-            return "selectPeriod";
         }
+        catch ( Exception e )
+        {
 
+        }
         return SUCCESS;
+
     }
+
 }
