@@ -7,7 +7,7 @@
 "indicators": [
 #set( $size = $pivotTable.indicators.size() )
 #foreach( $indicator in $pivotTable.indicators )
-{ "id":"${indicator.id}", "name":"$!encoder.jsonEncode( ${indicator.shortName} )" }#if( $velocityCount < $size ),#end
+{ "id":"${indicator.id}", "name":"$!encoder.jsonEncode( ${indicator.displayShortName} )" }#if( $velocityCount < $size ),#end
 #end ],
 
 "periods": [

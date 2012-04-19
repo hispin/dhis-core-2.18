@@ -135,7 +135,7 @@ public class DefaultPivotTableService
             }
             else
             {
-                indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( groupId ).getMembers() );
+                indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( groupId, true ).getMembers() );
                 
                 aggregatedValues = aggregatedDataValueService.getAggregatedIndicatorValues(
                     ConversionUtils.getIdentifiers( Indicator.class, indicators ),
@@ -155,7 +155,7 @@ public class DefaultPivotTableService
             }
             else
             {
-                indicators = new ArrayList<BaseIdentifiableObject>( dataElementService.getDataElementGroup( groupId ).getMembers() );
+                indicators = new ArrayList<BaseIdentifiableObject>( dataElementService.getDataElementGroup( groupId, true ).getMembers() );
                 
                 aggregatedValues = aggregatedDataValueService.getAggregatedDataValueTotals(
                     ConversionUtils.getIdentifiers( DataElement.class, indicators ),
