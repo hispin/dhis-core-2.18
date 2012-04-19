@@ -366,6 +366,9 @@ public class DefaultProgramStageInstanceService
             // Headers
             // ---------------------------------------------------------------------
 
+            // Report-date
+            grid.addHeader( new GridHeader( i18n.getString( "report_date" ), false, true ) );
+
             // Organisation units
             int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
@@ -390,15 +393,12 @@ public class DefaultProgramStageInstanceService
                 }
             }
 
-            // Report-date
-            grid.addHeader( new GridHeader( i18n.getString( "report_date" ), false, true ) );
-
             // Fixed Attributes
             if ( fixedAttributes != null && fixedAttributes.size() > 0 )
             {
                 for ( String fixedAttribute : fixedAttributes )
                 {
-                    grid.addHeader( new GridHeader( i18n.getString( fixedAttribute), false, true ) );
+                    grid.addHeader( new GridHeader( i18n.getString( fixedAttribute), hiddenCols.get( index ), true ) );
                 }
             }
 
@@ -441,6 +441,12 @@ public class DefaultProgramStageInstanceService
                 grid.addRow();
 
                 // -------------------------------------------------------------
+                // Report-date
+                // -------------------------------------------------------------
+
+                grid.addValue( format.formatDate( programStageInstance.getExecutionDate() ) );
+
+                // -------------------------------------------------------------
                 // Add organisation units
                 // -------------------------------------------------------------
 
@@ -460,12 +466,6 @@ public class DefaultProgramStageInstanceService
                 }
 
                 // -------------------------------------------------------------
-                // Report-date
-                // -------------------------------------------------------------
-
-                grid.addValue( format.formatDate( programStageInstance.getExecutionDate() ) );
-
-                // -------------------------------------------------------------
                 // Fixed Attributes
                 // -------------------------------------------------------------
 
@@ -474,7 +474,7 @@ public class DefaultProgramStageInstanceService
                     Patient patient = programStageInstance.getProgramInstance().getPatient();
                     for ( String fixedAttribute : fixedAttributes )
                     {
-                        String value = getValueByFixedAttribute( patient, fixedAttribute ).toString();
+                        String value = getValueByFixedAttribute( patient, fixedAttribute, format );
                         grid.addValue( value );
                     }
                 }
@@ -568,13 +568,20 @@ public class DefaultProgramStageInstanceService
         return hierarchyOrgunit;
     }
 
-    private Object getValueByFixedAttribute( Patient patient, String propertyName )
+    private String getValueByFixedAttribute( Patient patient, String propertyName, I18nFormat format )
     {
         propertyName = StringUtils.capitalize( propertyName );
 
         try
         {
-            return Patient.class.getMethod( "get" + propertyName ).invoke( patient );
+            Object object = Patient.class.getMethod( "get" + propertyName ).invoke( patient );
+            
+            if( object instanceof Date )
+            {
+                return format.formatDate( (Date) object );
+            }
+            
+            return object.toString();
         }
         catch ( Exception e )
         {
