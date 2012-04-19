@@ -81,11 +81,11 @@ public class DataValueSetController
                                  HttpServletResponse response ) throws IOException
     {
         log.info( "Get data value set for data set: " + dataSet + ", period: " + period + ", org unit: " + orgUnit );
-        
+
         response.setContentType( CONTENT_TYPE_XML );
         dataValueSetService.writeDataValueSet( dataSet, period, orgUnit, response.getOutputStream() );
     }
-    
+
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void postDataValueSet( ImportOptions importOptions,

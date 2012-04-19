@@ -76,15 +76,11 @@ public class DefaultImportService
         // the correct order
 
         // FIXME this is not currently in the "correct" order
-/*        doImport( metaData.getConcepts(), importOptions, importSummary );
+        doImport( metaData.getConcepts(), importOptions, importSummary );
         doImport( metaData.getConstants(), importOptions, importSummary );
         doImport( metaData.getDocuments(), importOptions, importSummary );
         doImport( metaData.getAttributeTypes(), importOptions, importSummary );
-*/
-
         doImport( metaData.getOptionSets(), importOptions, importSummary );
-
-/*
         doImport( metaData.getCategories(), importOptions, importSummary );
         doImport( metaData.getCategoryCombos(), importOptions, importSummary );
         doImport( metaData.getCategoryOptions(), importOptions, importSummary );
@@ -101,13 +97,9 @@ public class DefaultImportService
         doImport( metaData.getMapLegendSets(), importOptions, importSummary );
         doImport( metaData.getMapLayers(), importOptions, importSummary );
         doImport( metaData.getMessageConversations(), importOptions, importSummary );
-*/
-
         doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
-
-/*
         doImport( metaData.getSqlViews(), importOptions, importSummary );
         doImport( metaData.getUsers(), importOptions, importSummary );
         doImport( metaData.getUserGroups(), importOptions, importSummary );
@@ -116,10 +108,8 @@ public class DefaultImportService
         doImport( metaData.getValidationRuleGroups(), importOptions, importSummary );
         doImport( metaData.getDataDictionaries(), importOptions, importSummary );
         doImport( metaData.getReports(), importOptions, importSummary );
-*/
         doImport( metaData.getReportTables(), importOptions, importSummary );
-
-//        doImport( metaData.getCharts(), importOptions, importSummary );
+        doImport( metaData.getCharts(), importOptions, importSummary );
         doImport( metaData.getDataSets(), importOptions, importSummary );
 
         return importSummary;

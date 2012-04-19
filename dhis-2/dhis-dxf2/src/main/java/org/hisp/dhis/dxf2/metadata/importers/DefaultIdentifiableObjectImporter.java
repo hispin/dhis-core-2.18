@@ -35,7 +35,10 @@ import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.Importer;
+import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -49,10 +52,10 @@ import java.util.*;
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class DefaultImporter<T extends BaseIdentifiableObject>
+public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     implements Importer<T>
 {
-    private static final Log log = LogFactory.getLog( DefaultImporter.class );
+    private static final Log log = LogFactory.getLog( DefaultIdentifiableObjectImporter.class );
 
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
@@ -68,7 +71,7 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
     // Constructor
     //-------------------------------------------------------------------------------------------------------
 
-    public DefaultImporter( Class<T> importerClass )
+    public DefaultIdentifiableObjectImporter( Class<T> importerClass )
     {
         this.importerClass = importerClass;
         this.nameable = NameableObject.class.isAssignableFrom( importerClass );
@@ -102,8 +105,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
     protected Map<String, T> nameMap;
 
     protected Map<String, T> shortNameMap;
-
-    protected Map<String, T> alternativeNameMap;
 
     //-------------------------------------------------------------------------------------------------------
     // Generic implementations of newObject and updatedObject
@@ -184,6 +185,12 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
         reset();
 
+        if ( OrganisationUnit.class.isAssignableFrom( objects.get( 0 ).getClass() ) )
+        {
+            OrganisationUnitUtils.updateParents( (Collection<OrganisationUnit>) objects );
+            Collections.sort( (List<OrganisationUnit>) objects, new OrganisationUnitComparator() );
+        }
+
         for ( T object : objects )
         {
             ImportConflict importConflict = importObjectLocal( object, options );
@@ -246,11 +253,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             {
                 shortNameMap.put( nameableObject.getShortName(), object );
             }
-
-            if ( nameableObject.getAlternativeName() != null )
-            {
-                alternativeNameMap.put( nameableObject.getAlternativeName(), object );
-            }
         }
     }
 
@@ -303,7 +305,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         if ( nameable )
         {
             shortNameMap = (Map<String, T>) manager.getIdMap( (Class<? extends NameableObject>) importerClass, NameableObject.NameableProperty.SHORT_NAME );
-            alternativeNameMap = (Map<String, T>) manager.getIdMap( (Class<? extends NameableObject>) importerClass, NameableObject.NameableProperty.ALTERNATIVE_NAME );
         }
     }
 
@@ -394,7 +395,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             NameableObject nameableObject = (NameableObject) object;
 
             shortNameObject = shortNameMap.get( nameableObject.getShortName() );
-            alternativeNameObject = alternativeNameMap.get( nameableObject.getAlternativeName() );
         }
 
         ImportConflict conflict = null;
@@ -437,7 +437,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             NameableObject nameableObject = (NameableObject) object;
 
             shortNameObject = shortNameMap.get( nameableObject.getShortName() );
-            alternativeNameObject = alternativeNameMap.get( nameableObject.getAlternativeName() );
         }
 
         ImportConflict conflict = null;
@@ -495,7 +494,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             NameableObject nameableObject = (NameableObject) object;
 
             shortNameObject = shortNameMap.get( nameableObject.getShortName() );
-            alternativeNameObject = alternativeNameMap.get( nameableObject.getAlternativeName() );
         }
 
         ImportConflict conflict = null;
@@ -556,13 +554,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             {
                 return matchedObject;
             }
-
-            matchedObject = alternativeNameMap.get( nameableObject.getAlternativeName() );
-
-            if ( matchedObject != null )
-            {
-                return matchedObject;
-            }
         }
 
         return matchedObject;
@@ -573,9 +564,9 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
     {
         IdentifiableObject match = null;
 
+        // FIXME this is a bit too static ATM, should be refactored out into its own "type handler"
         if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
         {
-            // FIXME this is not working..
             Period period = (Period) identifiableObject;
             match = periodService.reloadPeriod( period );
         }
@@ -595,62 +586,75 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         return match;
     }
 
-    private void saveOrUpdateObjectWithReferences( T object, boolean update )
+    private Map<Field, IdentifiableObject> scanIdentifiableObjects( IdentifiableObject identifiableObject )
     {
-        Field[] fields = object.getClass().getDeclaredFields();
-
-        log.info( "-> Finding and updating references." );
-
-        Map<Field, Set<? extends IdentifiableObject>> collectedCollections = new HashMap<Field, Set<? extends IdentifiableObject>>();
+        Map<Field, IdentifiableObject> identifiableObjects = new HashMap<Field, IdentifiableObject>();
+        Field[] fields = identifiableObject.getClass().getDeclaredFields();
 
         for ( Field field : fields )
         {
             if ( ReflectionUtils.isType( field, IdentifiableObject.class ) )
             {
-                IdentifiableObject identifiableObject = ReflectionUtils.invokeGetterMethod( field.getName(), object );
+                IdentifiableObject ref = ReflectionUtils.invokeGetterMethod( field.getName(), identifiableObject );
 
-                if ( identifiableObject != null )
+                if ( ref != null )
                 {
-                    IdentifiableObject ref = findObjectByReference( identifiableObject );
-
-                    if ( ref != null )
-                    {
-                        ReflectionUtils.invokeSetterMethod( field.getName(), object, ref );
-                    }
-                    else
-                    {
-                        log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
-                    }
+                    identifiableObjects.put( field, ref );
                 }
+            }
+        }
+
+        return identifiableObjects;
+    }
+
+    private void updateIdentifiableObjects( IdentifiableObject identifiableObject, Map<Field, IdentifiableObject> identifiableObjects )
+    {
+        for ( Field field : identifiableObjects.keySet() )
+        {
+            IdentifiableObject ref = findObjectByReference( identifiableObject );
+
+            if ( ref != null )
+            {
+                ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, ref );
             }
             else
             {
-                boolean b = ReflectionUtils.isCollection( field.getName(), object, IdentifiableObject.class, Scanned.class );
+                log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
+            }
+        }
+    }
 
-                if ( b )
+    private Map<Field, Set<? extends IdentifiableObject>> scanIdentifiableObjectCollections( IdentifiableObject identifiableObject )
+    {
+        Map<Field, Set<? extends IdentifiableObject>> collected = new HashMap<Field, Set<? extends IdentifiableObject>>();
+        Field[] fields = identifiableObject.getClass().getDeclaredFields();
+
+        for ( Field field : fields )
+        {
+            boolean b = ReflectionUtils.isCollection( field.getName(), identifiableObject, IdentifiableObject.class, Scanned.class );
+
+            if ( b )
+            {
+                Collection<IdentifiableObject> objects = ReflectionUtils.invokeGetterMethod( field.getName(), identifiableObject );
+
+                if ( objects != null && !objects.isEmpty() )
                 {
-                    Collection<IdentifiableObject> objects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
-
-                    if ( objects != null && !objects.isEmpty() )
-                    {
-                        Set<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>( objects );
-                        collectedCollections.put( field, identifiableObjects );
-                        objects.clear();
-                    }
+                    Set<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>( objects );
+                    collected.put( field, identifiableObjects );
+                    objects.clear();
                 }
             }
         }
 
-        if ( !update )
-        {
-            manager.save( object );
-        }
+        return collected;
+    }
 
-        for ( Field field : collectedCollections.keySet() )
+    private void updateIdentifiableObjectCollections( IdentifiableObject identifiableObject,
+                                                      Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections )
+    {
+        for ( Field field : identifiableObjectCollections.keySet() )
         {
-            log.info( field.getName() );
-
-            Collection<? extends IdentifiableObject> identifiableObjects = collectedCollections.get( field );
+            Collection<? extends IdentifiableObject> identifiableObjects = identifiableObjectCollections.get( field );
             Collection<IdentifiableObject> objects = null;
 
             if ( List.class.isAssignableFrom( field.getType() ) )
@@ -666,9 +670,9 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
                 log.warn( "Unknown Collection type!" );
             }
 
-            for ( IdentifiableObject identifiableObject : identifiableObjects )
+            for ( IdentifiableObject idObject : identifiableObjects )
             {
-                IdentifiableObject ref = findObjectByReference( identifiableObject );
+                IdentifiableObject ref = findObjectByReference( idObject );
 
                 if ( ref != null )
                 {
@@ -680,7 +684,24 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
                 }
             }
 
-            ReflectionUtils.invokeSetterMethod( field.getName(), object, objects );
+            ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, objects );
         }
+    }
+
+    private void saveOrUpdateObjectWithReferences( T object, boolean update )
+    {
+        log.info( "-> Finding and updating references." );
+
+        Map<Field, IdentifiableObject> identifiableObjects = scanIdentifiableObjects( object );
+        Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections = scanIdentifiableObjectCollections( object );
+
+        updateIdentifiableObjects( object, identifiableObjects );
+
+        if ( !update )
+        {
+            manager.save( object );
+        }
+
+        updateIdentifiableObjectCollections( object, identifiableObjectCollections );
     }
 }
