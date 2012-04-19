@@ -5,7 +5,7 @@ identifiers:'$encoder.jsEscape($i18n.getString( 'identifiers' ) , "'")',
 attributes:'$encoder.jsEscape($i18n.getString( 'attributes' ) , "'")',
 start_date:'$encoder.jsEscape($i18n.getString( 'start_date' ) , "'")',
 end_date:'$encoder.jsEscape($i18n.getString( 'end_date' ) , "'")',
-et_no_programs:'$encoder.jsEscape($i18n.getString( 'et_no_programs' ) , "'")',
+et_no_program:'$encoder.jsEscape($i18n.getString( 'et_no_program' ) , "'")',
 data_elements:'$encoder.jsEscape($i18n.getString( 'data_elements' ) , "'")',
 program_stage:'$encoder.jsEscape($i18n.getString( 'program_stage' ) , "'")',
 please_select:'[' + '$encoder.jsEscape($i18n.getString( 'please_select' ) , "'")'  + ']',
@@ -53,4 +53,6 @@ registration_date:'$encoder.jsEscape($i18n.getString( 'registration_date' ) , "'
 dob_type:'$encoder.jsEscape($i18n.getString( 'dob_type' ) , "'")',
 fixed_attributes:'$encoder.jsEscape($i18n.getString( 'fixed_attributes' ) , "'")',
 dynamic_attributes:'$encoder.jsEscape($i18n.getString( 'dynamic_attributes' ) , "'")',
+report:'$encoder.jsEscape($i18n.getString( 'report' ) , "'")',
+demographics:'$encoder.jsEscape($i18n.getString( 'demographics' ) , "'")'
 };

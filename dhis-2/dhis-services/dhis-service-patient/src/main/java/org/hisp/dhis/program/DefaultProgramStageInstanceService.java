@@ -372,15 +372,24 @@ public class DefaultProgramStageInstanceService
             // Organisation units
             int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
-            boolean hasHiddenOrgunits = !(hiddenCols.size() == idens.size() + attributes.size() + dataElements.size());
+            boolean hasMetaData = !(hiddenCols.size() == idens.size() + attributes.size() + dataElements.size());
             int index = 0;
-
-            if ( !hasHiddenOrgunits )
+            
+            if ( !hasMetaData )
             {
+                // Organisation units
                 for ( int i = level; i < maxLevel; i++ )
                 {
                     grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i )
                         .getName(), false, true ) );
+                }
+                // Fixed Attributes
+                if ( fixedAttributes != null && fixedAttributes.size() > 0 )
+                {
+                    for ( String fixedAttribute : fixedAttributes )
+                    {
+                        grid.addHeader( new GridHeader( i18n.getString( fixedAttribute), false, true ) );
+                    }
                 }
             }
             else
@@ -391,16 +400,18 @@ public class DefaultProgramStageInstanceService
                         .getName(), hiddenCols.get( index ), true ) );
                     index++;
                 }
-            }
-
-            // Fixed Attributes
-            if ( fixedAttributes != null && fixedAttributes.size() > 0 )
-            {
-                for ( String fixedAttribute : fixedAttributes )
+                // Fixed Attributes
+                if ( fixedAttributes != null && fixedAttributes.size() > 0 )
                 {
-                    grid.addHeader( new GridHeader( i18n.getString( fixedAttribute), hiddenCols.get( index ), true ) );
+                    for ( String fixedAttribute : fixedAttributes )
+                    {
+                        grid.addHeader( new GridHeader( i18n.getString( fixedAttribute), hiddenCols.get( index ), true ) );
+                        index ++;
+                    }
                 }
             }
+
+           
 
             // Identifier types
             if ( idens != null && idens.size() > 0 )

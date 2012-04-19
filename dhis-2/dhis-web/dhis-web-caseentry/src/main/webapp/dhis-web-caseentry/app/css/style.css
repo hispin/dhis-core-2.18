@@ -119,6 +119,7 @@ TR.utilbody {
     border: 1px solid transparent;
     border-right: 0 none;
 }
+
 .tr-menugrid .x-grid-row .x-grid-cell-last, .tr-menugrid .x-grid-row-selected .x-grid-cell-last {
     border: 1px solid transparent;
     border-left: 0 none;
