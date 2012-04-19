@@ -128,9 +128,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         object.setId( 0 );
         object.setUid( CodeGenerator.generateCode() );
 
-        log.info( "Trying to save new object with UID: " + object.getUid() );
+        log.info( "Trying to save new object => " + getDisplayName( object ) );
 
-        saveOrUpdateObjectWithReferences( object, false );
+        Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections = scanIdentifiableObjectCollections( object );
+
+        updateIdentifiableObjects( object, scanIdentifiableObjects( object ) );
+
+        manager.save( object );
+
+        updateIdentifiableObjectCollections( object, identifiableObjectCollections );
 
         manager.update( object );
         updateIdMaps( object );
@@ -158,7 +164,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         log.info( "Starting update of object " + getDisplayName( oldObject ) + " (" + oldObject.getClass().getSimpleName() + ")" );
 
-        saveOrUpdateObjectWithReferences( object, true );
+        updateIdentifiableObjects( object, scanIdentifiableObjects( object ) );
+        updateIdentifiableObjectCollections( object, scanIdentifiableObjectCollections( object ) );
 
         oldObject.mergeWith( object );
         manager.update( oldObject );
@@ -185,6 +192,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         reset();
 
+        // FIXME a bit too static.. implement "pre handler" for types?
         if ( OrganisationUnit.class.isAssignableFrom( objects.get( 0 ).getClass() ) )
         {
             OrganisationUnitUtils.updateParents( (Collection<OrganisationUnit>) objects );
@@ -388,7 +396,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         T nameObject = nameMap.get( object.getName() );
 
         T shortNameObject = null;
-        T alternativeNameObject = null;
 
         if ( nameable )
         {
@@ -410,7 +417,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
         {
             // if we have a match on at least one of the objects, then assume update
-            if ( uidObject != null || codeObject != null || nameObject != null || shortNameObject != null || alternativeNameObject != null )
+            if ( uidObject != null || codeObject != null || nameObject != null || shortNameObject != null )
             {
                 conflict = validateForUpdatesStrategy( object, options );
             }
@@ -430,7 +437,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         T nameObject = nameMap.get( object.getName() );
 
         T shortNameObject = null;
-        T alternativeNameObject = null;
 
         if ( nameable )
         {
@@ -463,11 +469,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             nonNullObjects.add( shortNameObject );
         }
 
-        if ( alternativeNameObject != null )
-        {
-            nonNullObjects.add( alternativeNameObject );
-        }
-
         if ( nonNullObjects.isEmpty() )
         {
             conflict = reportLookupConflict( object, options );
@@ -487,7 +488,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         T nameObject = nameMap.get( object.getName() );
 
         T shortNameObject = null;
-        T alternativeNameObject = null;
 
         if ( nameable )
         {
@@ -498,7 +498,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         ImportConflict conflict = null;
 
-        if ( uidObject != null || codeObject != null || nameObject != null || shortNameObject != null || alternativeNameObject != null )
+        if ( uidObject != null || codeObject != null || nameObject != null || shortNameObject != null )
         {
             conflict = reportConflict( object, options );
         }
@@ -686,22 +686,5 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, objects );
         }
-    }
-
-    private void saveOrUpdateObjectWithReferences( T object, boolean update )
-    {
-        log.info( "-> Finding and updating references." );
-
-        Map<Field, IdentifiableObject> identifiableObjects = scanIdentifiableObjects( object );
-        Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections = scanIdentifiableObjectCollections( object );
-
-        updateIdentifiableObjects( object, identifiableObjects );
-
-        if ( !update )
-        {
-            manager.save( object );
-        }
-
-        updateIdentifiableObjectCollections( object, identifiableObjectCollections );
     }
 }
