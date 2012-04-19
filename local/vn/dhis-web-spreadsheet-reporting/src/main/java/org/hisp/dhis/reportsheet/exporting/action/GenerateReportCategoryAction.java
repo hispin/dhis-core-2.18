@@ -34,9 +34,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
+import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportCategory;
-import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.exporting.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
 
@@ -65,7 +65,14 @@ public class GenerateReportCategoryAction
 
             Collection<ExportItem> exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
 
-            this.generateOutPutFile( exportReportInstance, exportReportItems, organisationUnit, sheet );
+            if ( isVerticalCategory( exportReportItems ) )
+            {
+                this.generateVerticalOutPutFile( exportReportInstance, exportReportItems, organisationUnit, sheet );
+            }
+            else
+            {
+                this.generateHorizontalOutPutFile( exportReportInstance, exportReportItems, organisationUnit, sheet );
+            }
         }
     }
 
@@ -73,8 +80,8 @@ public class GenerateReportCategoryAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    private void generateOutPutFile( ExportReportCategory exportReport, Collection<ExportItem> exportReportItems,
-        OrganisationUnit organisationUnit, Sheet sheet )
+    private void generateVerticalOutPutFile( ExportReportCategory exportReport,
+        Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
         for ( ExportItem reportItem : exportReportItems )
         {
@@ -157,5 +164,57 @@ public class GenerateReportCategoryAction
                 }
             }
         }
+    }
+
+    private void generateHorizontalOutPutFile( ExportReportCategory exportReport,
+        Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
+    {
+        for ( ExportItem reportItem : exportReportItems )
+        {
+            int colBegin = reportItem.getRow();
+
+            for ( DataElementGroupOrder dataElementGroup : exportReport.getDataElementOrders() )
+            {
+                for ( DataElement dataElement : dataElementGroup.getDataElements() )
+                {
+                    if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
+                    {
+                        ExportItem newReportItem = new ExportItem();
+                        newReportItem.setColumn( reportItem.getColumn() );
+                        newReportItem.setRow( reportItem.getRow() );
+                        newReportItem.setPeriodType( reportItem.getPeriodType() );
+                        newReportItem.setName( reportItem.getName() );
+                        newReportItem.setSheetNo( reportItem.getSheetNo() );
+                        newReportItem.setItemType( reportItem.getItemType() );
+
+                        String expression = reportItem.getExpression();
+                        expression = expression.replace( "*", String.valueOf( dataElement.getId() ) );
+                        newReportItem.setExpression( expression );
+
+                        double value = this.getDataValue( newReportItem, organisationUnit );
+
+                        ExcelUtils.writeValueByPOI( reportItem.getRow(), colBegin++, String.valueOf( value ),
+                            ExcelUtils.NUMBER, sheet, this.csNumber );
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isVerticalCategory( Collection<ExportItem> items )
+    {
+        Integer previousRow = null;
+
+        for ( ExportItem item : items )
+        {
+            if ( previousRow != null && previousRow != item.getRow() )
+            {
+                return false;
+            }
+
+            previousRow = item.getRow();
+        }
+
+        return true;
     }
 }
