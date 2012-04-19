@@ -512,6 +512,7 @@ Ext.onReady( function() {
 				data: TR.value.values,
 				remoteSort:true,
 				autoLoad: false,
+				//groupField: 'col1',
 				proxy: {
 					type: 'memory',
 					reader: {
@@ -603,12 +604,24 @@ Ext.onReady( function() {
 			p.searchingValues = [];
 			if( TR.store.datatable && TR.store.datatable.data.length)
 			{
+				var cols = [];
 				var grid = TR.datatable.datatable;
+				var i = 0;
+				for( var index=1; index<grid.columns.length; index++)
+				{
+					var subCols = grid.columns[index].items;
+					for( var subIndex=0; subIndex<subCols.length; subIndex++)
+					{
+						cols[i] = subCols.getAt(subIndex);
+						i++;
+					}
+				}
+				
 				var editor = grid.getStore().getAt(0);
-				var colLen = grid.columns.length;
+				var colLen = cols.length;
 				for( var i=0; i<colLen; i++ )
 				{
-					var col = grid.columns[i];	
+					var col = cols[i];	
 					if( col.name )
 					{
 						var dataIndex = col.dataIndex;
@@ -660,12 +673,24 @@ Ext.onReady( function() {
 			
 			if( TR.store.datatable && TR.store.datatable.data.length)
 			{
+				var cols = [];
 				var grid = TR.datatable.datatable;
+				var i = 0;
+				for( var index=1; index<grid.columns.length; index++)
+				{
+					var subCols = grid.columns[index].items;
+					for( var subIndex=0; subIndex<subCols.length; subIndex++)
+					{
+						cols[i] = subCols.getAt(subIndex);
+						i++;
+					}
+				}
+				
 				var editor = grid.getStore().getAt(0);
-				var colLen = grid.columns.length;
+				var colLen = cols.length;
 				for( var i=0; i<colLen; i++ )
 				{
-					var col = grid.columns[i];	
+					var col = cols[i];	
 					if( col.name )
 					{
 						var dataIndex = col.dataIndex;
@@ -674,7 +699,7 @@ Ext.onReady( function() {
 						{
 							value = TR.util.getValueFormula(value);
 						}
-						p += "&searchingValues=" + col.name + col.hidden + "_" + value;
+						p += "&searchingValues=" +  col.name + col.hidden + "_" + value;
 					}
 				}
 			}
@@ -693,7 +718,6 @@ Ext.onReady( function() {
 					p += "&searchingValues=" + 'de_' + r.data.id + '_false_';
 				});
 			}
-			
             return p;
         },
 		validation: {
@@ -707,7 +731,7 @@ Ext.onReady( function() {
 			objects: function() {
 				
 				if (TR.cmp.settings.program.getValue() == null) {
-					TR.util.notification.error(TR.i18n.et_no_programs, TR.i18n.et_no_programs);
+					TR.util.notification.error(TR.i18n.et_no_programss, TR.i18n.et_no_programss);
 					return false;
 				}
 				
@@ -759,28 +783,6 @@ Ext.onReady( function() {
     TR.datatable = {
         datatable: null,
 		getDataTable: function() {
-			// column
-			var cols = [];
-			cols[0] = {
-				header: TR.i18n.no, 
-				dataIndex: 'id',
-				width: 50,
-				height: TR.conf.layout.east_gridcolumn_height,
-				sortable: false,
-				draggable: false,
-				groupable: true
-			}
-			
-			cols[1] = { 
-				header: TR.i18n.report_date, 
-				dataIndex: 'col' + index,
-				name:"reportdate_1" + "_",
-				sortable: true,
-				draggable: false,
-				groupable: true,
-				sortAscText: TR.i18n.asc,
-				sortDescText: TR.i18n.desc
-			};
 			
 			var paramsLen = TR.cmp.params.identifierType.selected.store.data.length
 						+ TR.cmp.params.patientAttribute.selected.store.data.length
@@ -789,54 +791,83 @@ Ext.onReady( function() {
 			var metaDatatColsLen = TR.value.columns.length - paramsLen ;
 			var index = 2;
 			
+			var dgCols = [];
+			dgCols[0] = { 
+				header: TR.i18n.report_date, 
+				dataIndex: 'col' + index,
+				sortable: true,
+				draggable: false,
+				sortAscText: TR.i18n.asc,
+				sortDescText: TR.i18n.desc
+			};
+			
+			var i = 1;
 			for( index=2; index < metaDatatColsLen; index++ )
 			{
-				cols[index] = {
+				dgCols[i] = {
 					header: TR.value.columns[index], 
 					dataIndex: 'col' + index,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name:"meta_" + index + "_",
 					sortable: false,
 					draggable: false,
-					groupable: true,
 					sortAscText: TR.i18n.asc,
 					sortDescText: TR.i18n.desc
 				}
+				i++;
 			}
 			
+			var idenCols = [];
+			i = 0;
 			TR.cmp.params.identifierType.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
-				cols[index] = { 
+				idenCols[i] = { 
 					header: r.data.name, 
 					dataIndex: dataIndex,
 					width: 150,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "iden_"+ r.data.id + "_",
 					sortable: false,
-					draggable: false,
-					groupable: true,
+					draggable: true,
+					renderer: function (val) {
+						if (val > 0) {
+							return '<span style="color:black;">' + val + '</span>';
+						} else if (val < 0) {
+							return '<span style="color:red;">' + val + '</span>';
+						}
+						return val;
+					},
 					editor: {
 						xtype: 'textfield',
 						allowBlank: true
 					}
 				};
 				index++;
+				i++;
 			});
 			
+			i = 0;
+			var attrCols = [];
 			TR.cmp.params.patientAttribute.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
-				cols[index] = { 
+				attrCols[i] = { 
 					header: r.data.name, 
 					dataIndex: dataIndex,
 					width: 150,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "attr_"+ r.data.id + "_",
-					groupable: true,
 					flex:1,
 					sortable: false,
-					draggable: false,
-					groupable: true,
+					draggable: true,
 					emptyText: TR.i18n.et_no_data,
+					renderer: function (val) {
+						if (val > 0) {
+							return '<span style="color:black;">' + val + '</span>';
+						} else if (val < 0) {
+							return '<span style="color:red;">' + val + '</span>';
+						}
+						return val;
+					},
 					editor: {
 							xtype: TR.value.valueTypes[index].valueType,
 							queryMode: 'local',
@@ -851,21 +882,31 @@ Ext.onReady( function() {
 						}
 					};
 				index++;
+				i++;
 			});
 			
+			i = 0;
+			var deCols = [];
 			TR.cmp.params.dataelement.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
-				cols[index] = { 
+				deCols[i] = { 
 					header: r.data.name, 
 					dataIndex: dataIndex,
 					width: 150,
 					height: TR.conf.layout.east_gridcolumn_height,
-					groupable: true,
 					name: "de_"+ r.data.id + "_",
 					flex:1,
 					sortable: false,
-					draggable: false,
-					groupable: true,
+					draggable: true,
+					dragGroup: "dataElementGroup",
+					renderer: function (val) {
+						if (val > 0) {
+							return '<span style="color:black;">' + val + '</span>';
+						} else if (val < 0) {
+							return '<span style="color:red;">' + val + '</span>';
+						}
+						return val;
+					},
 					editor: {
 						xtype: TR.value.valueTypes[index].valueType,
 							queryMode: 'local',
@@ -880,13 +921,67 @@ Ext.onReady( function() {
 					}
 				};
 				index++;
+				i++;
 			});
+			
+						
+			// column
+			var cols = [];
+			
+			cols[0] = {
+				header: TR.i18n.no, 
+				dataIndex: 'id',
+				width: 50,
+				height: TR.conf.layout.east_gridcolumn_height,
+				sortable: false,
+				draggable: false,
+				menuDisabled: true
+			}
+			
+			index = 1;
+			if( dgCols.length > 0 )
+			{
+				cols[index]={
+					text: TR.i18n.demographics,
+					columns: dgCols,
+					menuDisabled: true
+				}
+				index++;
+			}
+			
+			if( idenCols.length > 0 )
+			{
+				cols[index]={
+					text: TR.i18n.identifiers,
+					columns: idenCols,
+					menuDisabled: true
+				}
+				index++;
+			}
+			
+			if( attrCols.length > 0 )
+			{
+				cols[index]={
+					text: TR.i18n.attributes,
+					columns: attrCols,
+					menuDisabled: true
+				}
+				index++;
+			}
+			
+			// Data element group header
+			cols[index]={
+				text: TR.i18n.data_elements,
+				columns: deCols,
+				menuDisabled: true
+			}
 			
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
                 height: TR.util.viewport.getSize().y - 68,
 				columns: cols,
 				scroll: 'both',
+				title: TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report,
 				viewConfig: {
 					getRowClass: function(record, rowIndex, rp, ds){ 
 						if(rowIndex == 0){
@@ -983,7 +1078,7 @@ Ext.onReady( function() {
 					}
 				], 
 				plugins: [
-					  Ext.create('Ext.grid.plugin.RowEditing', {
+					  Ext.create('Ext.grid.plugin.CellEditing', {
 						clicksToEdit: 1,
 						editStyle: 'row',
 						clicksToMoveEditor: 1,
@@ -998,7 +1093,10 @@ Ext.onReady( function() {
 								}
 							},
 							edit: function( editor, e ){
-								TR.exe.execute();
+								if( e.originalValue!=e.value )
+								{
+									TR.exe.execute();
+								}
 							}
 						}
 					})
@@ -1037,6 +1135,7 @@ Ext.onReady( function() {
 				});
 			}
 			
+			
 			TR.cmp.region.center.removeAll(true);
 			TR.cmp.region.center.add(this.datatable);		
           	
@@ -1071,8 +1170,8 @@ Ext.onReady( function() {
 				Ext.getCmp('previousPageBtn').enable();
 				Ext.getCmp('nextPageBtn').enable();
 				Ext.getCmp('lastPageBtn').enable();
-			}
-        }            
+			} 
+        }           
     };
         
 	TR.exe = {
