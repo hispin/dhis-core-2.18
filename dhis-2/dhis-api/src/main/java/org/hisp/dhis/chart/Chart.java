@@ -130,6 +130,8 @@ public class Chart
     private boolean userOrganisationUnit;
 
     private boolean userOrganisationUnitChildren;
+    
+    private boolean showData;
 
     private User user;
 
@@ -602,6 +604,20 @@ public class Chart
     {
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isShowData()
+    {
+        return showData;
+    }
+
+    public void setShowData( boolean showData )
+    {
+        this.showData = showData;
+    }
+    
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )

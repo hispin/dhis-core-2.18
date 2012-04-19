@@ -287,6 +287,13 @@ public class AddOrUpdateChartAction
         this.userOrganisationUnitChildren = userOrganisationUnitChildren;
     }
 
+    private Boolean showData;
+
+    public void setShowData( Boolean showData )
+    {
+        this.showData = showData;
+    }
+
     private String domainAxisLabel;
 
     public void setDomainAxisLabel( String domainAxisLabel )
@@ -467,6 +474,11 @@ public class AddOrUpdateChartAction
         if ( userOrganisationUnitChildren != null )
         {
             chart.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
+        }
+
+        if ( showData != null )
+        {
+            chart.setShowData( showData );
         }
 
         if ( domainAxisLabel != null )

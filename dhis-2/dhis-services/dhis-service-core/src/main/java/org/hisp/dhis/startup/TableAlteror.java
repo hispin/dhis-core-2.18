@@ -283,6 +283,10 @@ public class TableAlteror
         
         executeSql( "ALTER TABLE chart DROP COLUMN domainaxixlabel" );
         
+        executeSql( "UPDATE chart SET userorganisationunit=false WHERE userorganisationunit IS NULL" );
+        executeSql( "UPDATE chart SET userorganisationunitchildren=false WHERE userorganisationunitchildren IS NULL" );
+        executeSql( "UPDATE chart SET showdata=false WHERE showdata IS NULL" );        
+        
         // remove outdated relative periods
         
         executeSql( "ALTER TABLE reporttable DROP COLUMN last3months" );
