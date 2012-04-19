@@ -602,6 +602,8 @@
 
 		<action name="generateExportReport"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateExcelReportFlowAction">
+			<result name="ATTRIBUTE" type="redirect">
+				generateReportAttribute.action</result>
 			<result name="CATEGORY" type="redirect">
 				generateReportCategory.action</result>
 			<result name="NORMAL" type="redirect">
@@ -610,6 +612,12 @@
 				generateReportOrgGroupListing.action</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
 				generateReportPeriodColumnListing.action</result>
+		</action>
+
+		<action name="generateReportAttribute"
+			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportAttributeAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateReportCategory"
@@ -745,6 +753,8 @@
 
 		<action name="previewExportReport"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateExcelReportFlowAction">
+			<result name="ATTRIBUTE" type="redirect">
+				generatePreviewAttribute.action</result>
 			<result name="CATEGORY" type="redirect">
 				generatePreviewCategory.action</result>
 			<result name="NORMAL" type="redirect">
@@ -753,6 +763,12 @@
 				generatePreviewOrgGroupListing.action</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
 				generatePreviewPeriodColumnListing.action</result>
+		</action>
+
+		<action name="generatePreviewAttribute"
+			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportAttributeAction">
+			<result name="success" type="redirect">exportXML.action
+			</result>
 		</action>
 
 		<action name="generatePreviewCategory"

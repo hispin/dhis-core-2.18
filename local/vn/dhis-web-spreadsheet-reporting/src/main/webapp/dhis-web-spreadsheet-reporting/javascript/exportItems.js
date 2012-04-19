@@ -53,13 +53,26 @@ function changeItemType()
 	
 	setFieldValue( 'exportItem input[id=expression]', getFieldValue( 'exportItem input[id=currentExpression]') );
 	
-	if( value == 'dataelement' ){
-		byId('expression-button' ).onclick = deExpressionBuilderForm;
-	}else if( value == 'indicator' ){
+	if( value == 'dataelement' )
+	{
+		if ( attribute ) {
+			disable( 'expression-button' );
+			setFieldValue( 'exportItem input[id=expression]', value );
+			removeValidatorRulesById( 'exportItem input[id=expression]' );
+			removeValidatorRulesById( 'dataelement textarea[id=formula]' );
+		} else {
+			byId('expression-button' ).onclick = deExpressionBuilderForm;
+		}
+	}
+	else if( value == 'indicator' )
+	{
 		byId('expression-button' ).onclick = inExpressionBuilderForm ;
-	}else if( value == 'formulaexcel' ){
+	}
+	else if( value == 'formulaexcel' )
+	{
 		byId('expression-button' ).onclick = excelFormulaExpressionBuilderForm ;
-	}else if( value == 'organisation' || value == 'serial' || value == 'dataelement_code' || value == 'dataelement_name' ){
+	}
+	else if( value == 'organisation' || value == 'serial' || value == 'dataelement_code' || value == 'dataelement_name' ){
 		disable( 'expression-button' );
 		setFieldValue( 'exportItem input[id=expression]', value );
 		removeValidatorRulesById( 'exportItem input[id=expression]' );
@@ -109,7 +122,7 @@ function validateAddExportItem( form )
 		if( json.response == 'success' ) {					
 			form.submit();
 		}else {
-			showErrorMessage( json.message );
+			showErrorMessage( json.message, 7000 );
 		}
 	});
 }
