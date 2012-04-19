@@ -171,7 +171,7 @@ public class GenerateReportCategoryAction
     {
         for ( ExportItem reportItem : exportReportItems )
         {
-            int colBegin = reportItem.getRow();
+            int colBegin = reportItem.getColumn();
 
             for ( DataElementGroupOrder dataElementGroup : exportReport.getDataElementOrders() )
             {
