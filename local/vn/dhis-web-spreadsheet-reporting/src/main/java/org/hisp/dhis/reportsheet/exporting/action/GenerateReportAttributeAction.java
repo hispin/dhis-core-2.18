@@ -32,8 +32,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
+
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementFormNameComparator;
 import org.hisp.dhis.dataelement.LocalDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -83,6 +86,8 @@ public class GenerateReportAttributeAction
     private void generateOutPutFile( ExportReportAttribute exportReport, Collection<ExportItem> exportReportItems,
         OrganisationUnit organisationUnit, Sheet sheet )
     {
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+
         for ( ExportItem exportItem : exportReportItems )
         {
             int rowBegin = exportItem.getRow();
@@ -115,18 +120,18 @@ public class GenerateReportAttributeAction
                     }
                     else
                     {
+                        int innerColumn = exportItem.getColumn();
+
+                        ExportItem newExportItem = new ExportItem();
+
                         dataElements = new ArrayList<DataElement>( localDataElementService.getDataElementsByAttribute(
                             avgOrder.getAttribute(), avalue ) );
 
                         Collections.sort( dataElements, new DataElementFormNameComparator() );
 
-                        ExportItem newExportItem = new ExportItem();
-
-                        int innerColumn = exportItem.getColumn();
-
                         for ( DataElement de : dataElements )
                         {
-                            newExportItem.setExpression( String.valueOf( de.getId() ) );
+                            newExportItem.setExpression( de.getId() + SEPARATOR + defaultOptionCombo.getId() );
 
                             double value = this.getDataValue( newExportItem, organisationUnit );
 
