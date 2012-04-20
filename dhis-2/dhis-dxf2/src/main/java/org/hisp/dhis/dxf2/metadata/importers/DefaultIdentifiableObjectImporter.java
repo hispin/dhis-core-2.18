@@ -171,7 +171,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         manager.update( oldObject );
 
         log.info( "Update successful." );
-        log.info( oldObject );
 
         return null;
     }
@@ -270,17 +269,17 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected String getDisplayName( IdentifiableObject object )
     {
-        if ( object.getUid() != null )
+        if ( object.getName() != null )
+        {
+            return object.getName();
+        }
+        else if ( object.getUid() != null )
         {
             return object.getUid();
         }
         else if ( object.getCode() != null )
         {
             return object.getCode();
-        }
-        else if ( object.getName() != null )
-        {
-            return object.getName();
         }
 
         return object.getClass().getName();
@@ -611,7 +610,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     {
         for ( Field field : identifiableObjects.keySet() )
         {
-            IdentifiableObject ref = findObjectByReference( identifiableObject );
+            IdentifiableObject ref = findObjectByReference( identifiableObjects.get( field ) );
 
             if ( ref != null )
             {
