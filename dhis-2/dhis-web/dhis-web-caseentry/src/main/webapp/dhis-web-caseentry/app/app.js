@@ -148,9 +148,6 @@ Ext.onReady( function() {
     };
     
     TR.util = {
-        getCmp: function(q) {
-            return TR.viewport.query(q)[0];
-        },
         getUrlParam: function(s) {
             var output = '';
             var href = window.location.href;
@@ -381,45 +378,10 @@ Ext.onReady( function() {
 	};
     
     TR.store = {
-        params: function() {
-            return Ext.create('Ext.data.Store', {
-                fields: ['id', 'name'],
-                data: [
-                    {id: TR.conf.finals.params.data.value, name: TR.conf.finals.params.data.rawvalue},
-					//{id: TR.conf.finals.params.program.value, name: TR.conf.finals.params.program.rawvalue},
-					{id: TR.conf.finals.params.organisationunit.value, name: TR.conf.finals.params.organisationunit.rawvalue},
-					{id: TR.conf.finals.params.identifierType.value, name: TR.conf.finals.params.identifierType.rawvalue},
-					{id: TR.conf.finals.params.patientAttribute.value, name: TR.conf.finals.params.patientAttribute.rawvalue},
-					{id: TR.conf.finals.params.programStage.value, name: TR.conf.finals.params.programStage.rawvalue},
-					{id: TR.conf.finals.params.dataelement.value, name: TR.conf.finals.params.dataelement.rawvalue}
-                ]
-            });
-        },
-        program: {
-            available: Ext.create('Ext.data.Store', {
+        program: Ext.create('Ext.data.Store', {
                 fields: ['id', 'name', 'anonymous'],
-                proxy: {
-                    type: 'ajax',
-                    url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.programs_get,
-					reader: {
-                        type: 'json',
-                        root: 'programs'
-                    }
-                },
-				data:TR.init.system.program,
-                storage: {},
-                listeners: {
-                    load: function(s) {
-                       s.add({id: 0, name: TR.i18n.please_select, index: -1});
-					   s.sort('index', 'ASC');
-                    }
-                }
+				data:TR.init.system.program
             }),
-            selected: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name'],
-                data: []
-            })
-        },
 		identifierType: {
             available: Ext.create('Ext.data.Store', {
                 fields: ['id', 'name'],
@@ -1229,7 +1191,7 @@ Ext.onReady( function() {
 								valueField: 'id',
 								displayField: 'name',
 								width: TR.conf.layout.west_fieldset_width,
-								store: TR.store.program.available,
+								store: TR.store.program,
 								listeners: {
 									added: function() {
 										TR.cmp.settings.program = this;
@@ -1329,7 +1291,6 @@ Ext.onReady( function() {
 									}
 								]
 							}
-							
 							
 							]
 						}]

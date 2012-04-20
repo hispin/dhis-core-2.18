@@ -300,12 +300,6 @@
 				/dhis-web-caseentry/jsonIdentifierTypes.vm</result>
 		</action>
 		
-		<action name="loadReportAttributeGroups"
-			class="org.hisp.dhis.caseentry.action.report.LoadAttributeGroupsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPatientAttributeGroups.vm</result>
-		</action>
-		
 		<action name="loadReportProgramStages"
 			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responseProgramStages.vm</result>
