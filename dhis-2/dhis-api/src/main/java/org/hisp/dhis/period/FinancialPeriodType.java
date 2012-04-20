@@ -142,7 +142,7 @@ public abstract class FinancialPeriodType
         
         boolean past = cal.get( Calendar.MONTH ) >= getBaseMonth();
         
-        cal.add( Calendar.YEAR, past ? -5 : -6 );
+        cal.add( Calendar.YEAR, past ? -4 : -5 );
         cal.set( Calendar.MONTH, getBaseMonth() );
         cal.set( Calendar.DATE, 1 );
 
