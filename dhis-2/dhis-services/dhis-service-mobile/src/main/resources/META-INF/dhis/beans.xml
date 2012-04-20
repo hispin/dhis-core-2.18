@@ -14,6 +14,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
     <property name="modelMapping" ref="org.hisp.dhis.mobile.service.ModelMapping" />
+	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.mobile.api.ActivityReportingService" class="org.hisp.dhis.mobile.service.ActivityReportingServiceImpl">

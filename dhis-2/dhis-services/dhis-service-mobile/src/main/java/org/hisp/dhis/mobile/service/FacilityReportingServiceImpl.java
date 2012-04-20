@@ -60,6 +60,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Required;
 
 public class FacilityReportingServiceImpl
@@ -88,6 +89,8 @@ public class FacilityReportingServiceImpl
     private org.hisp.dhis.mobile.service.ModelMapping modelMapping;
 
     private CompleteDataSetRegistrationService registrationService;
+
+    private CurrentUserService currentUserService;
 
     // -------------------------------------------------------------------------
     // Service methods
@@ -198,7 +201,7 @@ public class FacilityReportingServiceImpl
     public DataSet getDataSetForLocale( int dataSetId, Locale locale )
     {
         org.hisp.dhis.dataset.DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        
+
         if ( dataSet == null )
         {
             return null;
@@ -221,7 +224,7 @@ public class FacilityReportingServiceImpl
 
         ds.setVersion( 1 );
         Integer version = dataSet.getVersion();
-        if (version != null)
+        if ( version != null )
         {
             ds.setVersion( version );
         }
@@ -345,7 +348,7 @@ public class FacilityReportingServiceImpl
         registration.setPeriod( period );
         registration.setSource( unit );
         registration.setDate( new Date() );
-
+        registration.setStoredBy( currentUserService.getCurrentUser().getUsername() );
         registrationService.saveCompleteDataSetRegistration( registration );
 
         log.info( "Saved and registered data value set as complete: " + unit.getName() + ", " + dataSet.getName()
@@ -469,4 +472,12 @@ public class FacilityReportingServiceImpl
     {
         this.registrationService = registrationService;
     }
+    
+    @Required
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+    
+    
 }
