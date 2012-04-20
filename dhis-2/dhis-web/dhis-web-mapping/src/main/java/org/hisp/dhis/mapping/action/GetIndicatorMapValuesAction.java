@@ -29,10 +29,14 @@ package org.hisp.dhis.mapping.action;
 
 import java.util.Collection;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.mapping.MappingService;
 
 import com.opensymphony.xwork2.Action;
+
+import static org.hisp.dhis.api.utils.ContextUtils.*;
 
 /**
  * @author Jan Henrik Overland
@@ -50,6 +54,13 @@ public class GetIndicatorMapValuesAction
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
+    }
+    
+    private ContextUtils contextUtils;
+
+    public void setContextUtils( ContextUtils contextUtils )
+    {
+        this.contextUtils = contextUtils;
     }
 
     // -------------------------------------------------------------------------
@@ -103,6 +114,8 @@ public class GetIndicatorMapValuesAction
         throws Exception
     {
         object = mappingService.getIndicatorMapValues( id, periodId, parentId, level );
+        
+        contextUtils.configureResponse( ServletActionContext.getResponse(), CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING, null, false );
         
         return SUCCESS;
     }
