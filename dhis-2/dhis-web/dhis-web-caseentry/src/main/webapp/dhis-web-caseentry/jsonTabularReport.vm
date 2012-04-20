@@ -4,7 +4,7 @@
 	#set ( $metaData = $noHeader - $valueTypes.size())
 	'total': "$total",
 	'valueTypes':[
-		#foreach( $col in $grid.getVisibleHeaders() )
+		#foreach( $col in $grid.getHeaders() )
 			#if ($velocityCount <= $metaData + 1)
 				{
 					"valueType": "textfield",
@@ -41,7 +41,7 @@
 	],
 	'columns':[
 		"id",
-		#foreach( $colName in $grid.getVisibleHeaders() )
+		#foreach( $colName in $grid.getHeaders() )
 			"$colName.name"
 			#if( $velocityCount < $noHeader ),#end
 		#end
@@ -50,6 +50,12 @@
 		"id",
 		#foreach( $col in $grid.getHeaders() )
 			"col$velocityCount"
+			#if( $velocityCount < $noHeader ),#end
+		#end
+	],
+	'hidden':[
+		#foreach( $col in $grid.getHeaders() )
+			"$col.hidden"
 			#if( $velocityCount < $noHeader ),#end
 		#end
 	],
@@ -85,6 +91,7 @@
 	'valueTypes':[],
 	'columns':[],
 	'fields':[],
+	'hidden':[],
 	'items':[]
 #end
 }

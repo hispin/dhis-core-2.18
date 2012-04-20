@@ -557,6 +557,7 @@ Ext.onReady( function() {
 						TR.state.total = json.total;
 						TR.value.valueTypes = json.valueTypes;
 						TR.value.fields = json.fields;
+						TR.value.hidden= json.hidden;
 						TR.value.columns = json.columns;
 						TR.value.values = json.items;
 						
@@ -565,6 +566,9 @@ Ext.onReady( function() {
 							TR.store.getDataTableStore();
 							TR.datatable.getDataTable();
 							TR.datatable.setPagingToolbarStatus();
+							
+							Ext.getCmp('btnReset').enable();
+							
 							TR.util.mask.hideMask();
 						}
 						else
@@ -606,12 +610,21 @@ Ext.onReady( function() {
 				var cols = [];
 				var grid = TR.datatable.datatable;
 				var i = 0;
-				for( var index=1; index<grid.columns.length; index++)
+				for( var index=0; index<grid.columns.length; index++)
 				{
-					var subCols = grid.columns[index].items;
+					var col = grid.columns[index];
+					if( col.name )
+					{
+						cols[i] = col;
+						i++;
+					}
+					var hidden = col.hidden;
+					var subCols = col.items;
 					for( var subIndex=0; subIndex<subCols.length; subIndex++)
 					{
-						cols[i] = subCols.getAt(subIndex);
+						var subCol = subCols.getAt(subIndex);
+						subCol.hidden = hidden ? hidden : subCol.hidden;
+						cols[i] = subCol;
 						i++;
 					}
 				}
@@ -776,6 +789,7 @@ Ext.onReady( function() {
 		valueTypes: [],
 		columns: [],
 		fields: [],
+		hidden: [],
 		values: []
     };
       
@@ -783,24 +797,15 @@ Ext.onReady( function() {
         datatable: null,
 		getDataTable: function() {
 			
+			var index = 1;
+			
 			var paramsLen = TR.cmp.params.identifierType.selected.store.data.length
 						+ TR.cmp.params.patientAttribute.selected.store.data.length
 						+ TR.cmp.params.dataelement.selected.store.data.length;
-			
 			var metaDatatColsLen = TR.value.columns.length - paramsLen ;
-			var index = 2;
 			
 			var dgCols = [];
-			dgCols[0] = { 
-				header: TR.i18n.report_date, 
-				dataIndex: 'col' + index,
-				sortable: true,
-				draggable: false,
-				sortAscText: TR.i18n.asc,
-				sortDescText: TR.i18n.desc
-			};
-			
-			var i = 1;
+			var i = 0;
 			for( index=2; index < metaDatatColsLen; index++ )
 			{
 				dgCols[i] = {
@@ -810,6 +815,7 @@ Ext.onReady( function() {
 					name:"meta_" + index + "_",
 					sortable: false,
 					draggable: false,
+					hidden: eval(TR.value.hidden[index]),
 					sortAscText: TR.i18n.asc,
 					sortDescText: TR.i18n.desc
 				}
@@ -826,6 +832,7 @@ Ext.onReady( function() {
 					width: 150,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "iden_"+ r.data.id + "_",
+					hidden: eval(TR.value.hidden[index]),
 					sortable: false,
 					draggable: true,
 					renderer: function (val) {
@@ -855,6 +862,7 @@ Ext.onReady( function() {
 					width: 150,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "attr_"+ r.data.id + "_",
+					hidden: eval(TR.value.hidden[index]),
 					flex:1,
 					sortable: false,
 					draggable: true,
@@ -894,6 +902,7 @@ Ext.onReady( function() {
 					width: 150,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "de_"+ r.data.id + "_",
+					hidden: eval(TR.value.hidden[index]),
 					flex:1,
 					sortable: false,
 					draggable: true,
@@ -934,10 +943,20 @@ Ext.onReady( function() {
 				height: TR.conf.layout.east_gridcolumn_height,
 				sortable: false,
 				draggable: false,
+				hideable: false,
 				menuDisabled: true
-			}
-			
-			index = 1;
+			};
+			cols[1] = {
+				header: TR.value.columns[1], 
+				dataIndex: 'col1',
+				height: TR.conf.layout.east_gridcolumn_height,
+				name:"meta_1_",
+				sortable: false,
+				draggable: false,
+				hideable: false
+			};
+				
+			index = 2;
 			if( dgCols.length > 0 )
 			{
 				cols[index]={
@@ -1106,20 +1125,6 @@ Ext.onReady( function() {
 						if( rowIndex==0 && cellIndex==0 )
 						{
 							grid.getView().focusRow(this.rowIndex);
-						}
-					},
-					sortchange: function( ct, column, direction, eOpts )
-					{
-						var sortedStatus = (direction == "DESC") ? false: true;
-						if( column.name.match("^org")=='org' && TR.state.orderByOrgunitAsc != sortedStatus )
-						{
-							TR.state.orderByOrgunitAsc = sortedStatus;
-							TR.exe.execute();
-						}
-						else if ( TR.state.orderByExecutionDateByAsc != sortedStatus )
-						{
-							TR.state.orderByExecutionDateByAsc = (direction == "DESC") ? false: true;
-							TR.exe.execute();
 						}
 					}
 				},
@@ -2045,7 +2050,9 @@ Ext.onReady( function() {
 							xtype: 'button',
 							cls: 'tr-toolbar-btn-2',
 							text: TR.i18n.reset,
+							id:'btnReset',
 							width: 50,
+							disabled: true,
 							listeners: {
 								click: function() {
 									TR.exe.reset();
