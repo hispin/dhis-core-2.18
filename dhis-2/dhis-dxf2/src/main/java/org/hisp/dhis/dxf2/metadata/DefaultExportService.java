@@ -86,6 +86,8 @@ public class DefaultExportService
     {
         MetaData metaData = new MetaData();
 
+        System.err.println("Starting export..");
+
         if ( exportOptions.isAttributeTypes() )
         {
             metaData.setAttributeTypes( new ArrayList<Attribute>( manager.getAll( Attribute.class ) ) );
@@ -263,6 +265,8 @@ public class DefaultExportService
         {
             metaData.setDataDictionaries( new ArrayList<DataDictionary>( manager.getAll( DataDictionary.class ) ) );
         }
+
+        System.err.println("Ending export..");
 
         return metaData;
     }

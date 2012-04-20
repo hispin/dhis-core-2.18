@@ -44,29 +44,24 @@ public class OrganisationUnitUtils
 
         for ( OrganisationUnit organisationUnit : organisationUnits )
         {
-            OrganisationUnit parent = organisationUnit.getParent();
-
-            if ( parent != null )
+            if ( organisationUnit.getUid() != null )
             {
-                if ( parent.getUid() != null )
-                {
-                    organisationUnitMap.put( parent.getUid(), parent );
-                }
+                organisationUnitMap.put( organisationUnit.getUid(), organisationUnit );
+            }
 
-                if ( parent.getCode() != null )
-                {
-                    organisationUnitMap.put( parent.getCode(), parent );
-                }
+            if ( organisationUnit.getCode() != null )
+            {
+                organisationUnitMap.put( organisationUnit.getCode(), organisationUnit );
+            }
 
-                if ( parent.getName() != null )
-                {
-                    organisationUnitMap.put( parent.getName(), parent );
-                }
+            if ( organisationUnit.getName() != null )
+            {
+                organisationUnitMap.put( organisationUnit.getName(), organisationUnit );
+            }
 
-                if ( parent.getShortName() != null )
-                {
-                    organisationUnitMap.put( parent.getShortName(), parent );
-                }
+            if ( organisationUnit.getShortName() != null )
+            {
+                organisationUnitMap.put( organisationUnit.getShortName(), organisationUnit );
             }
         }
 
