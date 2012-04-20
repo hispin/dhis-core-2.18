@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,15 +27,14 @@
 
 package org.hisp.dhis.light.beneficiaryenrollment.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
-public class SearchBeneficiaryAction
+public class GetProgramEnrollmentFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -44,54 +43,76 @@ public class SearchBeneficiaryAction
 
     private PatientService patientService;
 
-    public PatientService getPatientService()
-    {
-        return patientService;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String keyword;
+    private String programId;
 
-    public String getKeyword()
+    public String getProgramId()
     {
-        return keyword;
+        return programId;
     }
 
-    public void setKeyword( String keyword )
+    public void setProgramId( String programId )
     {
-        this.keyword = keyword;
+        this.programId = programId;
+    }
+    
+    private String beneficiaryId;
+    
+    public String getBeneficiaryId()
+    {
+        return beneficiaryId;
     }
 
-    public List<Patient> patientList;
-
-    public List<Patient> getPatientList()
+    public void setBeneficiaryId( String beneficiaryId )
     {
-        return patientList;
+        this.beneficiaryId = beneficiaryId;
     }
 
-    public void setPatientList( List<Patient> patientList )
+    private Patient patient;
+
+    public Patient getPatient()
     {
-        this.patientList = patientList;
+        return patient;
     }
+
+    public void setPatient( Patient patient )
+    {
+        this.patient = patient;
+    }
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
+    public void setProgram( Program program )
+    {
+        this.program = program;
+    }
+
+    private Program program;
 
     @Override
     public String execute()
         throws Exception
     {
-        String[] tokens = keyword.split( " " );
-        if ( tokens.length == 2 )
-        {
-            keyword = tokens[0] + "  " + tokens[1];
-        }
-        patientList = new ArrayList<Patient>( patientService.getPatientsByNames( keyword ) );
+        patient = patientService.getPatient( Integer.parseInt( beneficiaryId ) );
+        program = programService.getProgram( Integer.parseInt( programId ) );
         return SUCCESS;
     }
 

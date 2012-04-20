@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.light.beneficiaryregistration.action;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -184,24 +185,38 @@ public class SaveBeneficiaryAction
         }
         else
         {
-            String[] tokens = this.patientFullName.split( " " );
+            patientFullName = patientFullName.trim();
 
-            patient.setFirstName( tokens[0] );
+            int startIndex = patientFullName.indexOf( ' ' );
+            int endIndex = patientFullName.lastIndexOf( ' ' );
 
-            if ( tokens.length == 2 )
+            String firstName = patientFullName.toString();
+            String middleName = "";
+            String lastName = "";
+
+            if ( patientFullName.indexOf( ' ' ) != -1 )
             {
-                patient.setLastName( tokens[1] );
+                firstName = patientFullName.substring( 0, startIndex );
+                if ( startIndex == endIndex )
+                {
+                    middleName = "";
+                    lastName = patientFullName.substring( startIndex + 1, patientFullName.length() );
+                }
+                else
+                {
+                    middleName = patientFullName.substring( startIndex + 1, endIndex );
+                    lastName = patientFullName.substring( endIndex + 1, patientFullName.length() );
+                }
             }
-            else if ( tokens.length > 2 )
-            {
-                patient.setMiddleName( tokens[1] );
-                patient.setLastName( tokens[2] );
-            }
+
+            patient.setFirstName( firstName );
+            patient.setMiddleName( middleName );
+            patient.setLastName( lastName );
         }
 
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
-
+        patient.setRegistrationDate( new Date() );
         try
         {
             DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();

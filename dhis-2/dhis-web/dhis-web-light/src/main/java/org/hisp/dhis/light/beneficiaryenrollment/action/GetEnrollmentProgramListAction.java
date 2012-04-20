@@ -32,10 +32,13 @@ import java.util.List;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
-public class SearchBeneficiaryAction
+public class GetEnrollmentProgramListAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -54,44 +57,112 @@ public class SearchBeneficiaryAction
         this.patientService = patientService;
     }
 
+    private ProgramService programService;
+
+    public ProgramService getProgramService()
+    {
+        return programService;
+    }
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
+    private ProgramInstanceService programInstanceService;
+
+    public ProgramInstanceService getProgramInstanceService()
+    {
+        return programInstanceService;
+    }
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+    
+    private String beneficiaryId;
 
-    private String keyword;
-
-    public String getKeyword()
+    public String getBeneficiaryId()
     {
-        return keyword;
+        return beneficiaryId;
     }
 
-    public void setKeyword( String keyword )
+    public void setBeneficiaryId( String beneficiaryId )
     {
-        this.keyword = keyword;
+        this.beneficiaryId = beneficiaryId;
     }
 
-    public List<Patient> patientList;
+    private List<Program> programList =  new ArrayList<Program>();
 
-    public List<Patient> getPatientList()
+    public List<Program> getProgramList()
     {
-        return patientList;
+        return programList;
     }
 
-    public void setPatientList( List<Patient> patientList )
+    public void setProgramList( List<Program> programList )
     {
-        this.patientList = patientList;
+        this.programList = programList;
+    }
+
+    private List<Program> enrolledProgramList = new ArrayList<Program>();
+
+    public List<Program> getEnrolledProgramList()
+    {
+        return enrolledProgramList;
+    }
+
+    public void setEnrolledProgramList( List<Program> enrolledProgramList )
+    {
+        this.enrolledProgramList = enrolledProgramList;
+    }
+
+    private Patient patient;
+
+    public Patient getPatient()
+    {
+        return patient;
+    }
+
+    public void setPatient( Patient patient )
+    {
+        this.patient = patient;
+    }
+    
+    private boolean validated;
+    
+    public boolean isValidated()
+    {
+        return validated;
+    }
+
+    public void setValidated( boolean validated )
+    {
+        this.validated = validated;
     }
 
     @Override
     public String execute()
         throws Exception
     {
-        String[] tokens = keyword.split( " " );
-        if ( tokens.length == 2 )
+        patient = patientService.getPatient( Integer.parseInt( beneficiaryId ) );
+        for ( Program program :  programService.getPrograms( patient.getOrganisationUnit() ) )
         {
-            keyword = tokens[0] + "  " + tokens[1];
+            if ( !program.getAnonymous() && !program.getSingleEvent() )
+            {
+                if ( programInstanceService.getProgramInstances( patient, program ).size() > 0 )
+                {
+                    enrolledProgramList.add( program );
+                    
+                } else {
+                    programList.add( program );
+                }
+            }
         }
-        patientList = new ArrayList<Patient>( patientService.getPatientsByNames( keyword ) );
         return SUCCESS;
     }
 
