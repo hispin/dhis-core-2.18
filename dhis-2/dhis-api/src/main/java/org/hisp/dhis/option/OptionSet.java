@@ -93,6 +93,11 @@ public class OptionSet
         return name.equals( other.getName() );
     }
 
+    public void removeAllOptions()
+    {
+        options.clear();
+    }
+
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "options", namespace = Dxf2Namespace.NAMESPACE )
@@ -127,7 +132,8 @@ public class OptionSet
         {
             OptionSet optionSet = (OptionSet) other;
 
-            options.clear();
+            removeAllOptions();
+
             options.addAll( optionSet.getOptions() );
         }
     }

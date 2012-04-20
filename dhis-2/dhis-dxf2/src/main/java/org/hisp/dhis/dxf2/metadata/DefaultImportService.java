@@ -96,8 +96,9 @@ public class DefaultImportService
         doImport( metaData.getMapLegends(), importOptions, importSummary );
         doImport( metaData.getMapLegendSets(), importOptions, importSummary );
         doImport( metaData.getMapLayers(), importOptions, importSummary );
-        doImport( metaData.getMessageConversations(), importOptions, importSummary );
+        // doImport( metaData.getMessageConversations(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
+        // doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
         doImport( metaData.getSqlViews(), importOptions, importSummary );
@@ -129,7 +130,7 @@ public class DefaultImportService
         return null;
     }
 
-    private <T> Importer<T> findImporterClass( Class<?> clazz )
+    private <T> Importer findImporterClass( Class<?> clazz )
     {
         for ( Importer i : importerClasses )
         {

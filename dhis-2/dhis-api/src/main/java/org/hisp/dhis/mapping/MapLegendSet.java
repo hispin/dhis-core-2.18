@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
@@ -55,10 +56,13 @@ public class MapLegendSet
 
     private String symbolizer;
 
+    @Scanned
     private Set<MapLegend> mapLegends = new HashSet<MapLegend>();
 
+    @Scanned
     private Set<Indicator> indicators = new HashSet<Indicator>();
 
+    @Scanned
     private Set<DataElement> dataElements = new HashSet<DataElement>();
 
     public MapLegendSet()
@@ -107,6 +111,25 @@ public class MapLegendSet
         MapLegendSet other = (MapLegendSet) object;
 
         return name.equals( other.name );
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void removeAllDataElements()
+    {
+        dataElements.clear();
+    }
+
+    public void removeAllIndicators()
+    {
+        indicators.clear();
+    }
+
+    public void removeAllMapLegends()
+    {
+        mapLegends.clear();
     }
 
     // -------------------------------------------------------------------------
@@ -196,8 +219,13 @@ public class MapLegendSet
             type = mapLegendSet.getType() == null ? type : mapLegendSet.getType();
             symbolizer = mapLegendSet.getSymbolizer() == null ? symbolizer : mapLegendSet.getSymbolizer();
 
+            removeAllMapLegends();
             mapLegends.addAll( mapLegendSet.getMapLegends() );
+
+            removeAllIndicators();
             indicators.addAll( mapLegendSet.getIndicators() );
+
+            removeAllDataElements();
             dataElements.addAll( mapLegendSet.getDataElements() );
         }
     }

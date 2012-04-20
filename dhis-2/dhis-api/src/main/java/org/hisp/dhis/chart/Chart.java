@@ -130,7 +130,7 @@ public class Chart
     private boolean userOrganisationUnit;
 
     private boolean userOrganisationUnitChildren;
-    
+
     private boolean showData;
 
     private User user;
@@ -278,6 +278,26 @@ public class Chart
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+
+    public void removeAllOrganisationUnits()
+    {
+        organisationUnits.clear();
+    }
+
+    public void removeAllDataSets()
+    {
+        dataSets.clear();
+    }
+
+    public void removeAllDataElements()
+    {
+        dataElements.clear();
+    }
+
+    public void removeAllIndicators()
+    {
+        indicators.clear();
+    }
 
     /**
      * Sets all dimensions for this chart.
@@ -617,7 +637,7 @@ public class Chart
     {
         this.showData = showData;
     }
-    
+
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
@@ -711,16 +731,16 @@ public class Chart
             user = chart.getUser() == null ? user : chart.getUser();
             organisationUnitGroupSet = chart.getOrganisationUnitGroupSet() == null ? organisationUnitGroupSet : chart.getOrganisationUnitGroupSet();
 
-            indicators.clear();
+            removeAllIndicators();
             indicators.addAll( chart.getIndicators() );
 
-            dataElements.clear();
+            removeAllDataElements();
             dataElements.addAll( chart.getDataElements() );
 
-            dataSets.clear();
+            removeAllDataSets();
             dataSets.addAll( chart.getDataSets() );
 
-            organisationUnits.clear();
+            removeAllOrganisationUnits();
             organisationUnits.addAll( chart.getOrganisationUnits() );
         }
     }

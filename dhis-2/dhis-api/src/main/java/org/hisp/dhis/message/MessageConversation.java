@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.user.User;
@@ -55,13 +56,15 @@ public class MessageConversation
 
     private String subject;
 
-    private Set<UserMessage> userMessages = new HashSet<UserMessage>();
-
-    private List<Message> messages = new ArrayList<Message>();
-
     private User lastSender;
 
     private Date lastMessage;
+
+    @Scanned
+    private Set<UserMessage> userMessages = new HashSet<UserMessage>();
+
+    @Scanned
+    private List<Message> messages = new ArrayList<Message>();
 
     //-------------------------------------------------------------------------------------------------------
     // Transient fields
@@ -234,6 +237,16 @@ public class MessageConversation
         return users;
     }
 
+    public void removeAllMessages()
+    {
+        messages.clear();
+    }
+
+    public void removeAllUserMessages()
+    {
+        userMessages.clear();
+    }
+
     //-------------------------------------------------------------------------------------------------------
     // Persistent fields
     //-------------------------------------------------------------------------------------------------------
@@ -255,6 +268,33 @@ public class MessageConversation
     public void setSubject( String subject )
     {
         this.subject = subject;
+    }
+
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public User getLastSender()
+    {
+        return lastSender;
+    }
+
+    public void setLastSender( User lastSender )
+    {
+        this.lastSender = lastSender;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public Date getLastMessage()
+    {
+        return lastMessage;
+    }
+
+    public void setLastMessage( Date lastMessage )
+    {
+        this.lastMessage = lastMessage;
     }
 
     @JsonProperty
@@ -284,33 +324,6 @@ public class MessageConversation
     public void setMessages( List<Message> messages )
     {
         this.messages = messages;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public User getLastSender()
-    {
-        return lastSender;
-    }
-
-    public void setLastSender( User lastSender )
-    {
-        this.lastSender = lastSender;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public Date getLastMessage()
-    {
-        return lastMessage;
-    }
-
-    public void setLastMessage( Date lastMessage )
-    {
-        this.lastMessage = lastMessage;
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -375,7 +388,10 @@ public class MessageConversation
             lastSender = messageConversation.getLastSender() == null ? lastSender : messageConversation.getLastSender();
             lastMessage = messageConversation.getLastMessage() == null ? lastMessage : messageConversation.getLastMessage();
 
+            removeAllUserMessages();
             userMessages.addAll( messageConversation.getUserMessages() );
+
+            removeAllMessages();
             messages.addAll( messageConversation.getMessages() );
         }
     }

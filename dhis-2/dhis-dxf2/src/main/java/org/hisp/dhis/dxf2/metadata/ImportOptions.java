@@ -43,7 +43,7 @@ public class ImportOptions
 
     private ImportStrategy importStrategy;
 
-    private static ImportOptions DEFAULT_OPTIONS = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES );
+    private static final ImportOptions DEFAULT_OPTIONS = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES );
 
     public static ImportOptions getDefaultImportOptions()
     {

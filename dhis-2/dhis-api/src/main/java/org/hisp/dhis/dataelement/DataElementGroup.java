@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -54,6 +55,7 @@ public class DataElementGroup
      */
     private static final long serialVersionUID = 6101685842665568056L;
 
+    @Scanned
     private Set<DataElement> members = new HashSet<DataElement>();
 
     private DataElementGroupSet groupSet;
@@ -85,6 +87,16 @@ public class DataElementGroup
     {
         members.remove( dataElement );
         dataElement.getGroups().remove( this );
+    }
+
+    public void removeAllDataElements()
+    {
+        for ( DataElement dataElement : members )
+        {
+            dataElement.getGroups().remove( this );
+        }
+
+        members.clear();
     }
 
     public void updateDataElements( Set<DataElement> updates )
@@ -184,8 +196,12 @@ public class DataElementGroup
         {
             DataElementGroup dataElementGroup = (DataElementGroup) other;
 
-            members.addAll( dataElementGroup.getMembers() );
-            groupSet = groupSet != null ? groupSet : dataElementGroup.getGroupSet();
+            removeAllDataElements();
+
+            for ( DataElement dataElement : dataElementGroup.getMembers() )
+            {
+                addDataElement( dataElement );
+            }
         }
     }
 }

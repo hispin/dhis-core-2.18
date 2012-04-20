@@ -39,6 +39,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -80,11 +81,13 @@ public class User
      * <p/>
      * TODO This should have been put in UserCredentials
      */
+    @Scanned
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
 
     /**
      * Set of the dynamic attributes values that belong to this User.
      */
+    @Scanned
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
     // -------------------------------------------------------------------------
@@ -253,6 +256,16 @@ public class User
         return userCredentials != null ? userCredentials.getUsername() : null;
     }
 
+    public void removeAllOrganisationUnits()
+    {
+        organisationUnits.clear();
+    }
+
+    public void removeAllAttributeValues()
+    {
+        attributeValues.clear();
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -366,7 +379,10 @@ public class User
             phoneNumber = user.getPhoneNumber() == null ? phoneNumber : user.getPhoneNumber();
             userCredentials = user.getUserCredentials() == null ? userCredentials : user.getUserCredentials();
 
+            removeAllAttributeValues();
             attributeValues.addAll( user.getAttributeValues() );
+
+            removeAllOrganisationUnits();
 
             for ( OrganisationUnit organisationUnit : user.getOrganisationUnits() )
             {

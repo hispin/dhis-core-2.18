@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -65,6 +66,7 @@ public class IndicatorGroupSet
 
     private Boolean compulsory = false;
 
+    @Scanned
     private List<IndicatorGroup> members = new ArrayList<IndicatorGroup>();
 
     // -------------------------------------------------------------------------
@@ -193,6 +195,11 @@ public class IndicatorGroupSet
     // Logic
     // -------------------------------------------------------------------------
 
+    public void removeAllIndicatorGroups()
+    {
+        members.clear();
+    }
+
     public void addIndicatorGroup( IndicatorGroup indicatorGroup )
     {
         if ( !members.contains( indicatorGroup ) )
@@ -265,17 +272,11 @@ public class IndicatorGroupSet
             compulsory = indicatorGroupSet.isCompulsory() == null ? compulsory : indicatorGroupSet.isCompulsory();
             description = indicatorGroupSet.getDescription() == null ? description : indicatorGroupSet.getDescription();
 
+            removeAllIndicatorGroups();
+
             for ( IndicatorGroup indicatorGroup : indicatorGroupSet.getMembers() )
             {
-                if ( !members.contains( indicatorGroup ) )
-                {
-                    members.add( indicatorGroup );
-                }
-
-                if ( indicatorGroup.getGroupSet() == null )
-                {
-                    indicatorGroup.setGroupSet( this );
-                }
+                addIndicatorGroup( indicatorGroup );
             }
         }
     }

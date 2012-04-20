@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.concept.Concept;
@@ -64,6 +65,7 @@ public class DataElementCategory
 
     private Concept concept;
 
+    @Scanned
     private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
 
     // -------------------------------------------------------------------------
@@ -95,6 +97,25 @@ public class DataElementCategory
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+
+    public void addDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
+    {
+        categoryOptions.add( dataElementCategoryOption );
+        dataElementCategoryOption.setCategory( this );
+    }
+
+    public void removeAllCategoryOptions()
+    {
+        for ( DataElementCategoryOption dataElementCategoryOption : categoryOptions )
+        {
+            if ( dataElementCategoryOption.getCategory() == this )
+            {
+                dataElementCategoryOption.setCategory( null );
+            }
+        }
+
+        categoryOptions.clear();
+    }
 
     public DataElementCategoryOption getCategoryOption( DataElementCategoryOptionCombo categoryOptionCombo )
     {
@@ -192,14 +213,11 @@ public class DataElementCategory
 
             concept = dataElementCategory.getConcept() == null ? concept : dataElementCategory.getConcept();
 
+            removeAllCategoryOptions();
+
             for ( DataElementCategoryOption dataElementCategoryOption : dataElementCategory.getCategoryOptions() )
             {
-                categoryOptions.add( dataElementCategoryOption );
-
-                if ( dataElementCategoryOption.getCategory() == null )
-                {
-                    dataElementCategoryOption.setCategory( this );
-                }
+                addDataElementCategoryOption( dataElementCategoryOption );
             }
         }
     }

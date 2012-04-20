@@ -193,16 +193,6 @@ public class Attribute
             userAttribute = attribute.isUserAttribute();
             mandatory = attribute.isMandatory();
             sortOrder = attribute.getSortOrder() == null ? sortOrder : attribute.getSortOrder();
-
-            for ( AttributeValue attributeValue : attribute.getAttributeValues() )
-            {
-                attributeValues.add( attributeValue );
-
-                if ( attributeValue.getAttribute() == null )
-                {
-                    attributeValue.setAttribute( this );
-                }
-            }
         }
     }
 }

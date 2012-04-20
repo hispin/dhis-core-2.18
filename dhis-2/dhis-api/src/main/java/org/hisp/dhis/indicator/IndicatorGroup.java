@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -54,6 +55,7 @@ public class IndicatorGroup
      */
     private static final long serialVersionUID = 1447947029536960810L;
 
+    @Scanned
     private Set<Indicator> members = new HashSet<Indicator>();
 
     private IndicatorGroupSet groupSet;
@@ -143,6 +145,15 @@ public class IndicatorGroup
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void removeAllIndicators()
+    {
+        members.clear();
+    }
+
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
@@ -184,7 +195,7 @@ public class IndicatorGroup
         {
             IndicatorGroup indicatorGroup = (IndicatorGroup) other;
 
-            groupSet = groupSet != null ? groupSet : indicatorGroup.getGroupSet();
+            removeAllIndicators();
 
             for ( Indicator indicator : indicatorGroup.getMembers() )
             {
