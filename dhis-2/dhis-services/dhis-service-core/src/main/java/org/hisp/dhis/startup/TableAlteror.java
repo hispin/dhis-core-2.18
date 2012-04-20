@@ -283,9 +283,10 @@ public class TableAlteror
         
         executeSql( "ALTER TABLE chart DROP COLUMN domainaxixlabel" );
         
-        executeSql( "UPDATE chart SET userorganisationunit=false WHERE userorganisationunit IS NULL" );
-        executeSql( "UPDATE chart SET userorganisationunitchildren=false WHERE userorganisationunitchildren IS NULL" );
-        executeSql( "UPDATE chart SET showdata=false WHERE showdata IS NULL" );        
+        executeSql( "ALTER TABLE chart ALTER hideLegend DROP NOT NULL" );
+        executeSql( "ALTER TABLE chart ALTER regression DROP NOT NULL" );
+        executeSql( "ALTER TABLE chart ALTER hideSubtitle DROP NOT NULL" );
+        executeSql( "ALTER TABLE chart ALTER userOrganisationUnit DROP NOT NULL" );        
         
         // remove outdated relative periods
         
