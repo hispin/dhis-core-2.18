@@ -55,6 +55,8 @@ public class RelativePeriods
     public static final String LAST_SIXMONTH = "last_sixmonth";
     public static final String THIS_YEAR = "year";
     public static final String LAST_YEAR = "last_year";
+    public static final String THIS_FINANCIAL_YEAR = "financial_year";
+    public static final String LAST_FINANCIAL_YEAR = "last_financial_year";
 
     public static final String[] MONTHS_THIS_YEAR = {
         "january",
@@ -120,14 +122,21 @@ public class RelativePeriods
         "quarter1_last_year",
         "quarter2_last_year",
         "quarter3_last_year",
-        "quarter4_last_year"};
+        "quarter4_last_year" };
 
     public static final String[] LAST_5_YEARS = {
         "year_minus_4",
         "year_minus_3",
         "year_minus_2",
         "year_minus_1",
-        "year_this"};
+        "year_this" };
+    
+    public static final String[] LAST_5_FINANCIAL_YEARS = {
+        "financial_year_minus_4",
+        "financial_year_minus_3",
+        "financial_year_minus_2",
+        "financial_year_minus_1",
+        "financial_year_this" };
 
     private static final int MONTHS_IN_YEAR = 12;
 
@@ -160,6 +169,12 @@ public class RelativePeriods
     private boolean last4Quarters = false;
 
     private boolean last2SixMonths = false;
+    
+    private boolean thisFinancialYear = false;
+    
+    private boolean lastFinancialYear = false;
+    
+    private boolean last5FinancialYears = false;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -188,7 +203,8 @@ public class RelativePeriods
     public RelativePeriods( boolean reportingMonth, boolean reportingBimonth, boolean reportingQuarter, boolean lastSixMonth,
                             boolean monthsThisYear, boolean quartersThisYear, boolean thisYear,
                             boolean monthsLastYear, boolean quartersLastYear, boolean lastYear, boolean last5Years,
-                            boolean last12Months, boolean last6BiMonths, boolean last4Quarters, boolean last2SixMonths )
+                            boolean last12Months, boolean last6BiMonths, boolean last4Quarters, boolean last2SixMonths,
+                            boolean thisFinancialYear, boolean lastFinancialYear, boolean last5FinancialYears )
     {
         this.reportingMonth = reportingMonth;
         this.reportingBimonth = reportingBimonth;
@@ -205,6 +221,9 @@ public class RelativePeriods
         this.last6BiMonths = last6BiMonths;
         this.last4Quarters = last4Quarters;
         this.last2SixMonths = last2SixMonths;
+        this.thisFinancialYear = thisFinancialYear;
+        this.lastFinancialYear = lastFinancialYear;
+        this.last5FinancialYears = last5FinancialYears;
     }
 
     // -------------------------------------------------------------------------
@@ -393,6 +412,16 @@ public class RelativePeriods
             periods.addAll( getRelativePeriodList( new SixMonthlyPeriodType().generateRollingPeriods( date ), SIXMONHTS_LAST_2, dynamicNames, format ) );
         }
 
+        if ( isThisFinancialYear() )
+        {
+            periods.add( getRelativePeriod( new FinancialJulyPeriodType(), THIS_FINANCIAL_YEAR, date, dynamicNames, format ) );
+        }
+
+        if ( isLast5FinancialYears() )
+        {
+            periods.addAll( getRelativePeriodList( new FinancialJulyPeriodType().generateLast5Years( date ), LAST_5_FINANCIAL_YEARS, dynamicNames, format ) );
+        }
+
         date = getDate( MONTHS_IN_YEAR, date );
 
         if ( isMonthsLastYear() )
@@ -409,7 +438,12 @@ public class RelativePeriods
         {
             periods.add( getRelativePeriod( new YearlyPeriodType(), LAST_YEAR, date, dynamicNames, format ) );
         }
-
+        
+        if ( isLastFinancialYear() )
+        {
+            periods.add( getRelativePeriod( new FinancialJulyPeriodType(), LAST_FINANCIAL_YEAR, date, dynamicNames, format ) );
+        }
+        
         return periods;
     }
 
@@ -730,6 +764,42 @@ public class RelativePeriods
     {
         this.last2SixMonths = last2SixMonths;
         return this;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isThisFinancialYear()
+    {
+        return thisFinancialYear;
+    }
+
+    public void setThisFinancialYear( boolean thisFinancialYear )
+    {
+        this.thisFinancialYear = thisFinancialYear;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isLastFinancialYear()
+    {
+        return lastFinancialYear;
+    }
+
+    public void setLastFinancialYear( boolean lastFinancialYear )
+    {
+        this.lastFinancialYear = lastFinancialYear;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isLast5FinancialYears()
+    {
+        return last5FinancialYears;
+    }
+
+    public void setLast5FinancialYears( boolean last5FinancialYears )
+    {
+        this.last5FinancialYears = last5FinancialYears;
     }
 
     // -------------------------------------------------------------------------

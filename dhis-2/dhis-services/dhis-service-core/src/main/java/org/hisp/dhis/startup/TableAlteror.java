@@ -398,6 +398,9 @@ public class TableAlteror
         executeSql( "update reporttable set last6bimonths = false where last6bimonths is null" );
         executeSql( "update reporttable set last4quarters = false where last4quarters is null" );
         executeSql( "update reporttable set last2sixmonths = false where last2sixmonths is null" );
+        executeSql( "update reporttable set thisfinancialyear = false where thisfinancialyear is null" );
+        executeSql( "update reporttable set lastfinancialyear = false where lastfinancialyear is null" );
+        executeSql( "update reporttable set last5financialyears = false where last5financialyears is null" );
         executeSql( "update reporttable set cumulative = false where cumulative is null" );
 
         executeSql( "update chart set reportingmonth = false where reportingmonth is null" );
