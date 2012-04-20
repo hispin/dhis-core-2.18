@@ -30,11 +30,13 @@ package org.hisp.dhis.mapping.action;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
 import org.hisp.dhis.system.filter.OrganisationUnitWithValidPointCoordinateFilter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -121,6 +123,8 @@ public class GetGeoJsonAction
             }
         }
 
+        ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), object );
+        
         return SUCCESS;
     }
 }

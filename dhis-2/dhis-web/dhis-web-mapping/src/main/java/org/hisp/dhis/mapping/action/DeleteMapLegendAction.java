@@ -36,11 +36,11 @@ public class DeleteMapLegendAction
 
     public String execute()
     {
-        MapLegend mapLegend = this.mappingService.getMapLegend( this.id.intValue() );
+        MapLegend mapLegend = mappingService.getMapLegend( id.intValue() );
 
         if ( mapLegend != null )
         {
-            this.mappingService.deleteMapLegend( mapLegend );
+            mappingService.deleteMapLegend( mapLegend );
         }
 
         return SUCCESS;
