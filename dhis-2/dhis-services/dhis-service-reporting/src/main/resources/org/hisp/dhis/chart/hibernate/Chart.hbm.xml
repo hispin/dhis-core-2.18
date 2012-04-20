@@ -30,11 +30,11 @@
 
     <property name="filter" />
 
-    <property name="hideLegend" not-null="true" />
+    <property name="hideLegend" />
 
-    <property name="regression" not-null="true" />
+    <property name="regression" />
 
-    <property name="hideSubtitle" not-null="true" />
+    <property name="hideSubtitle" />
 
     <property name="targetLineValue" />
 
@@ -87,11 +87,11 @@
       <property name="last5Years" />
     </component>
 
-    <property name="userOrganisationUnit" not-null="true" />
+    <property name="userOrganisationUnit" />
 	  
-    <property name="userOrganisationUnitChildren" not-null="true" />
+    <property name="userOrganisationUnitChildren" />
 
-    <property name="showData" not-null="true" />
+    <property name="showData" />
     
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_chart_userid" />
 
