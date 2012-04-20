@@ -25,12 +25,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.patientidentifiertype;
+package org.hisp.dhis.patient.action.program;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -39,61 +38,37 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $ShowUpdatePatientIdentifierTypeForm.java Mar 26, 2012 07:25:51 AM$
+ * @version $GetUnAnonymousProgramAction.java Apr 20, 2012 12:29:59 PM$
  */
-public class ShowUpdatePatientIdentifierTypeForm
+public class GetUnAnonymousProgramAction
+
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
-
-    private PatientIdentifierTypeService patientIdentifierTypeService;
 
     private ProgramService programService;
-
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    private PatientIdentifierType patientIdentifierType;
-
-    private Collection<Program> programs;
-
-    // -------------------------------------------------------------------------
-    // Getters && Setters
-    // -------------------------------------------------------------------------
-
-    public PatientIdentifierType getPatientIdentifierType()
-    {
-        return patientIdentifierType;
-    }
-
-    public Collection<Program> getPrograms()
-    {
-        return programs;
-    }
 
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
     }
 
-    public Integer getId()
+    // -------------------------------------------------------------------------
+    // Input/Output
+    // -------------------------------------------------------------------------
+
+    private Collection<Program> programs = new ArrayList<Program>();
+
+    public Collection<Program> getPrograms()
     {
-        return id;
+        return programs;
     }
 
-    public void setId( Integer id )
+    public void setPrograms( Collection<Program> programs )
     {
-        this.id = id;
-    }
-
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
-    {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
+        this.programs = programs;
     }
 
     // -------------------------------------------------------------------------
@@ -103,12 +78,10 @@ public class ShowUpdatePatientIdentifierTypeForm
     public String execute()
         throws Exception
     {
-        patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
-
         programs = programService.getAllPrograms();
 
         programs.removeAll( programService.getPrograms( true, true ) );
-
+        
         return SUCCESS;
     }
 }

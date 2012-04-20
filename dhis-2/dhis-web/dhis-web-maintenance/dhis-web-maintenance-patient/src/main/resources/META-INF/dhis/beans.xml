@@ -196,6 +196,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.patient.action.program.GetUnAnonymousProgramAction"
+		class="org.hisp.dhis.patient.action.program.GetUnAnonymousProgramAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.patient.action.program.GetProgramAction"
 		class="org.hisp.dhis.patient.action.program.GetProgramAction" scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
