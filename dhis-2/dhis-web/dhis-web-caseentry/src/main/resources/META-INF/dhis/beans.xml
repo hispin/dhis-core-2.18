@@ -298,8 +298,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.caseentry.action.report.LoadAttributesAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="attributeGroupService"
-			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
 		<property name="attributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>

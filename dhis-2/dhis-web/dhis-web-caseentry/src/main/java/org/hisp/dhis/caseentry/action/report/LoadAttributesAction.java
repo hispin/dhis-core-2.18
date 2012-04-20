@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
@@ -52,8 +51,6 @@ public class LoadAttributesAction
 
     private ProgramService programService;
 
-    private PatientAttributeGroupService attributeGroupService;
-
     private PatientAttributeService attributeService;
 
     // -------------------------------------------------------------------------
@@ -67,11 +64,6 @@ public class LoadAttributesAction
     // -------------------------------------------------------------------------
     // Getter && Setters
     // -------------------------------------------------------------------------
-
-    public void setAttributeGroupService( PatientAttributeGroupService attributeGroupService )
-    {
-        this.attributeGroupService = attributeGroupService;
-    }
 
     public Collection<PatientAttribute> getPatientAttributes()
     {
