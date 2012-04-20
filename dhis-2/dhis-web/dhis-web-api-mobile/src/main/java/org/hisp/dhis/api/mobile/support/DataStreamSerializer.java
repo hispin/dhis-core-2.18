@@ -35,12 +35,11 @@ public class DataStreamSerializer
         }
     }
 
-    
     public static void write( DataStreamSerializable entity, OutputStream out )
         throws IOException
     {
         ByteArrayOutputStream baos = serializePersistent( entity );
-        ZOutputStream gzip = new ZOutputStream(out, JZlib.Z_BEST_COMPRESSION );
+        ZOutputStream gzip = new ZOutputStream( out, JZlib.Z_BEST_COMPRESSION );
         DataOutputStream dos = new DataOutputStream( gzip );
 
         try

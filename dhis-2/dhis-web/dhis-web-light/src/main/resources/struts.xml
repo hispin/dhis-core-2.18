@@ -172,9 +172,31 @@
 			class="org.hisp.dhis.light.beneficiaryenrollment.action.SearchBeneficiaryAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">
-				/dhis-web-light/beneficiarySearchResult.vm</param>
+			<param name="page"> /dhis-web-light/beneficiarySearchResult.vm</param>
 		</action>
+		
+		<action name="selectEnrollmentProgram"
+			class="org.hisp.dhis.light.beneficiaryenrollment.action.GetEnrollmentProgramListAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page"> /dhis-web-light/enrollmentProgramList.vm</param>
+		</action>
+		
+		<action name="showProgramEnrollmentForm"
+			class="org.hisp.dhis.light.beneficiaryenrollment.action.GetProgramEnrollmentFormAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page"> /dhis-web-light/programEnrollmentForm.vm</param>
+		</action>
+		
+		<action name="saveMobileProgramEnrollment"
+			class="org.hisp.dhis.light.beneficiaryenrollment.action.SaveMobileProgramEnrollmentAction">
+			<result name="success" type="redirect">
+				/mobile/selectEnrollmentProgram.action?beneficiaryId=${beneficiaryId}&amp;validated=true</result>
+			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/programEnrollmentForm.vm</param>
+		</action>
+		
 		<!-- Reports -->
 		
 		<action name="reports"

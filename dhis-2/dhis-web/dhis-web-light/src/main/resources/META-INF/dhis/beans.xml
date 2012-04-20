@@ -136,6 +136,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!-- Namebased Data entry -->
+	
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetNamebasedOrganisationUnitsAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetNamebasedOrganisationUnitsAction"
@@ -249,6 +250,44 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="patientService"
 			ref="org.hisp.dhis.patient.PatientService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.beneficiaryenrollment.action.GetEnrollmentProgramListAction"
+		class="org.hisp.dhis.light.beneficiaryenrollment.action.GetEnrollmentProgramListAction"
+		scope="prototype">
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService"/>
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.beneficiaryenrollment.action.GetProgramEnrollmentFormAction"
+		class="org.hisp.dhis.light.beneficiaryenrollment.action.GetProgramEnrollmentFormAction"
+		scope="prototype">
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.beneficiaryenrollment.action.SaveMobileProgramEnrollmentAction"
+		class="org.hisp.dhis.light.beneficiaryenrollment.action.SaveMobileProgramEnrollmentAction"
+		scope="prototype">
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService"/>
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService"/>
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
+		<property name="formUtils"
+			ref="org.hisp.dhis.light.dataentry.utils.FormUtils"/>
 	</bean>
 	
 	<!-- Dashboard -->
