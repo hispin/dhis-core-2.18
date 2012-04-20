@@ -130,7 +130,7 @@
 		</action>
 
 		<action name="showAddPatientAttributeForm"
-			class="org.hisp.dhis.patient.action.program.GetProgramListAction">
+			class="org.hisp.dhis.patient.action.program.GetUnAnonymousProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/addPatientAttributeForm.vm</param>
@@ -583,7 +583,7 @@
 		<!-- Patient Identifier Type -->
 
 		<action name="showAddPatientIdentifierTypeForm"
-			class="org.hisp.dhis.patient.action.program.GetProgramListAction">
+			class="org.hisp.dhis.patient.action.program.GetUnAnonymousProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/addPatientIdentifierTypeForm.vm</param>

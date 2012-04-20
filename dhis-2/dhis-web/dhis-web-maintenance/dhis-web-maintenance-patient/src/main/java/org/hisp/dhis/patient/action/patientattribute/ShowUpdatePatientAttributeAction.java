@@ -98,6 +98,8 @@ public class ShowUpdatePatientAttributeAction
         
         programs = programService.getAllPrograms();
         
+        programs.removeAll( programService.getPrograms( true, true ) );
+        
         return SUCCESS;
     }
 }
