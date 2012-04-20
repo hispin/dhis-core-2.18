@@ -7,7 +7,7 @@ TR.conf = {
 				for (var program in r.programs) {
 					obj.system.program = [];
 					for (var i = 0; i < r.programs.length; i++) {
-						obj.system.program.push({id: r.programs[i].id, name: r.programs[i].name});
+						obj.system.program.push({id: r.programs[i].id, name: r.programs[i].name, anonymous: r.programs[i].anonymous });
 					}
 				}
 				
@@ -330,39 +330,54 @@ Ext.onReady( function() {
             }
         },
         getValueFormula: function( value )
+		{
+			if( value.indexOf('"') != value.lastIndexOf('"') )
 			{
-				if( value.indexOf('"') != value.lastIndexOf('"') )
+				value = value.replace(/"/g,"'");
+			}
+			// if key is [xyz] && [=xyz]
+			if( value.indexOf("'")==-1 ){
+				var flag = value.match(/[>|>=|<|<=|=|!=]+[ ]*/);
+			
+				if( flag == null )
 				{
-					value = value.replace(/"/g,"'");
+					value = "='"+ value + "'";
 				}
-				// if key is [xyz] && [=xyz]
-				if( value.indexOf("'")==-1 ){
-					var flag = value.match(/[>|>=|<|<=|=|!=]+[ ]*/);
-				
-					if( flag == null )
-					{
-						value = "='"+ value + "'";
-					}
-					else
-					{
-						value = value.replace( flag, flag + "'");
-						value +=  "'";
-					}
-				}
-				// if key is ['xyz'] && [='xyz']
-				// if( value.indexOf("'") != value.lastIndexOf("'") )
 				else
 				{
-					var flag = value.match(/[>|>=|<|<=|=|!=]+[ ]*/);
-				
-					if( flag == null )
-					{
-						value = "="+ value;
-					}
+					value = value.replace( flag, flag + "'");
+					value +=  "'";
 				}
-				
-				return value;
 			}
+			// if key is ['xyz'] && [='xyz']
+			// if( value.indexOf("'") != value.lastIndexOf("'") )
+			else
+			{
+				var flag = value.match(/[>|>=|<|<=|=|!=]+[ ]*/);
+			
+				if( flag == null )
+				{
+					value = "="+ value;
+				}
+			}
+			
+			return value;
+		},
+		setEnabledFixedAttr: function()
+		{
+			var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
+			Ext.Array.each(fixedAttributes, function(item) {
+				item.enable();
+			});
+		},
+		setDisabledFixedAttr: function()
+		{
+			var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
+			Ext.Array.each(fixedAttributes, function(item) {
+				item.setValue(false);
+				item.disable();
+			});
+		}
 	};
     
     TR.store = {
@@ -371,7 +386,7 @@ Ext.onReady( function() {
                 fields: ['id', 'name'],
                 data: [
                     {id: TR.conf.finals.params.data.value, name: TR.conf.finals.params.data.rawvalue},
-					{id: TR.conf.finals.params.program.value, name: TR.conf.finals.params.program.rawvalue},
+					//{id: TR.conf.finals.params.program.value, name: TR.conf.finals.params.program.rawvalue},
 					{id: TR.conf.finals.params.organisationunit.value, name: TR.conf.finals.params.organisationunit.rawvalue},
 					{id: TR.conf.finals.params.identifierType.value, name: TR.conf.finals.params.identifierType.rawvalue},
 					{id: TR.conf.finals.params.patientAttribute.value, name: TR.conf.finals.params.patientAttribute.rawvalue},
@@ -382,7 +397,7 @@ Ext.onReady( function() {
         },
         program: {
             available: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name'],
+                fields: ['id', 'name', 'anonymous'],
                 proxy: {
                     type: 'ajax',
                     url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.programs_get,
@@ -835,14 +850,6 @@ Ext.onReady( function() {
 					hidden: eval(TR.value.hidden[index]),
 					sortable: false,
 					draggable: true,
-					renderer: function (val) {
-						if (val > 0) {
-							return '<span style="color:black;">' + val + '</span>';
-						} else if (val < 0) {
-							return '<span style="color:red;">' + val + '</span>';
-						}
-						return val;
-					},
 					editor: {
 						xtype: 'textfield',
 						allowBlank: true
@@ -867,14 +874,6 @@ Ext.onReady( function() {
 					sortable: false,
 					draggable: true,
 					emptyText: TR.i18n.et_no_data,
-					renderer: function (val) {
-						if (val > 0) {
-							return '<span style="color:black;">' + val + '</span>';
-						} else if (val < 0) {
-							return '<span style="color:red;">' + val + '</span>';
-						}
-						return val;
-					},
 					editor: {
 							xtype: TR.value.valueTypes[index].valueType,
 							queryMode: 'local',
@@ -906,15 +905,6 @@ Ext.onReady( function() {
 					flex:1,
 					sortable: false,
 					draggable: true,
-					dragGroup: "dataElementGroup",
-					renderer: function (val) {
-						if (val > 0) {
-							return '<span style="color:black;">' + val + '</span>';
-						} else if (val < 0) {
-							return '<span style="color:red;">' + val + '</span>';
-						}
-						return val;
-					},
 					editor: {
 						xtype: TR.value.valueTypes[index].valueType,
 							queryMode: 'local',
@@ -961,6 +951,7 @@ Ext.onReady( function() {
 			{
 				cols[index]={
 					text: TR.i18n.demographics,
+					isGroupHeader: true,
 					columns: dgCols,
 					menuDisabled: true
 				}
@@ -971,6 +962,7 @@ Ext.onReady( function() {
 			{
 				cols[index]={
 					text: TR.i18n.identifiers,
+					isGroupHeader: true,
 					columns: idenCols,
 					menuDisabled: true
 				}
@@ -981,6 +973,7 @@ Ext.onReady( function() {
 			{
 				cols[index]={
 					text: TR.i18n.attributes,
+					isGroupHeader: true,
 					columns: attrCols,
 					menuDisabled: true
 				}
@@ -990,6 +983,7 @@ Ext.onReady( function() {
 			// Data element group header
 			cols[index]={
 				text: TR.i18n.data_elements,
+				isGroupHeader: true,
 				columns: deCols,
 				menuDisabled: true
 			}
@@ -1241,30 +1235,45 @@ Ext.onReady( function() {
 										TR.cmp.settings.program = this;
 									},
 									select: function(cb) {
-										// IDENTIFIER TYPE
-										var storeIdentifierType = TR.store.identifierType.available;
-										TR.store.identifierType.selected.loadData([],false);
-										storeIdentifierType.parent = cb.getValue();
-										
-										if (TR.util.store.containsParent(storeIdentifierType)) {
-											TR.util.store.loadFromStorage(storeIdentifierType);
-											TR.util.multiselect.filterAvailable(TR.cmp.params.identifierType.available, TR.cmp.params.identifierType.selected);
+										var anonymous = cb.displayTplData[0].anonymous;
+										if( anonymous=='false' )
+										{
+											// IDENTIFIER TYPE
+											var storeIdentifierType = TR.store.identifierType.available;
+											TR.store.identifierType.selected.loadData([],false);
+											storeIdentifierType.parent = cb.getValue();
+											
+											if (TR.util.store.containsParent(storeIdentifierType)) {
+												TR.util.store.loadFromStorage(storeIdentifierType);
+												TR.util.multiselect.filterAvailable(TR.cmp.params.identifierType.available, TR.cmp.params.identifierType.selected);
+											}
+											else {
+												storeIdentifierType.load({params: {programId: cb.getValue()}});
+											}
+											
+											// PATIENT ATTRIBUTE
+											var storePatientAttribute = TR.store.patientAttribute.available;
+											storePatientAttribute.parent = cb.getValue();
+											TR.store.patientAttribute.selected.loadData([],false);
+											
+											if (TR.util.store.containsParent(storePatientAttribute)) {
+												TR.util.store.loadFromStorage(storePatientAttribute);
+												TR.util.multiselect.filterAvailable(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
+											}
+											else {
+												storePatientAttribute.load({params: {programId: cb.getValue()}});
+											}
+											TR.util.setEnabledFixedAttr();
 										}
-										else {
-											storeIdentifierType.load({params: {programId: cb.getValue()}});
-										}
-										
-										// PATIENT ATTRIBUTE
-										var storePatientAttribute = TR.store.patientAttribute.available;
-										storePatientAttribute.parent = cb.getValue();
-										TR.store.patientAttribute.selected.loadData([],false);
-										
-										if (TR.util.store.containsParent(storePatientAttribute)) {
-											TR.util.store.loadFromStorage(storePatientAttribute);
-											TR.util.multiselect.filterAvailable(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
-										}
-										else {
-											storePatientAttribute.load({params: {programId: cb.getValue()}});
+										else
+										{
+											TR.util.setDisabledFixedAttr();
+											
+											TR.store.identifierType.available.loadData([],false);
+											TR.store.identifierType.selected.loadData([],false);
+											
+											TR.store.patientAttribute.available.loadData([],false);
+											TR.store.patientAttribute.selected.loadData([],false);
 										}
 										
 										// PROGRAM-STAGE										
