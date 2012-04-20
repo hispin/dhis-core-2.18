@@ -287,15 +287,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 	</bean>
 	
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.LoadAttributeGroupsAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadAttributeGroupsAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="attributeGroupService"
-			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
-	</bean>
-	
 	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
 		class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
 		scope="prototype">

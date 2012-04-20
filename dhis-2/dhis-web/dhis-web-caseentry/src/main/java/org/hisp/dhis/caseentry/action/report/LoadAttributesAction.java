@@ -62,8 +62,6 @@ public class LoadAttributesAction
 
     private Integer programId;
 
-    private Integer attributeGroupId;
-
     private Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
 
     // -------------------------------------------------------------------------
@@ -78,11 +76,6 @@ public class LoadAttributesAction
     public Collection<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
-    }
-
-    public void setAttributeGroupId( Integer attributeGroupId )
-    {
-        this.attributeGroupId = attributeGroupId;
     }
 
     public void setAttributeService( PatientAttributeService attributeService )
@@ -109,19 +102,10 @@ public class LoadAttributesAction
         throws Exception
     {
         Program program = programService.getProgram( programId );
-        patientAttributes = attributeService.getAllPatientAttributes();
-        
-        patientAttributes.addAll( attributeService.getPatientAttributes( program ) );
 
-        if ( attributeGroupId == null )
-        {
-            patientAttributes.addAll( attributeService.getPatientAttributes( null, null ) );
-        }
-        else
-        {
-            patientAttributes.retainAll( attributeGroupService.getPatientAttributeGroup( attributeGroupId )
-                .getAttributes() );
-        }
+        patientAttributes.addAll( attributeService.getPatientAttributes( null, null ) );
+        
+        patientAttributes.addAll( attributeService.getPatientAttributes( program ) );       
 
         return SUCCESS;
 
