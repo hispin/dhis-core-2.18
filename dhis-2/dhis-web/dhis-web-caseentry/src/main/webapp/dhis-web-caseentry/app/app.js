@@ -111,7 +111,6 @@ TR.conf = {
 Ext.Loader.setConfig({enabled: true});
 Ext.Loader.setPath('Ext.ux', TR.conf.finals.ajax.path_lib + 'ext-ux');
 Ext.require('Ext.ux.form.MultiSelect');
-Ext.require('Ext.ux.grid.ColumnHeaderGroup');
 
 Ext.onReady( function() {
     Ext.override(Ext.form.FieldSet,{setExpanded:function(a){var b=this,c=b.checkboxCmp,d=b.toggleCmp,e;a=!!a;if(c){c.setValue(a)}if(d){d.setType(a?"up":"down")}if(a){e="expand";b.removeCls(b.baseCls+"-collapsed")}else{e="collapse";b.addCls(b.baseCls+"-collapsed")}b.collapsed=!a;b.doComponentLayout();b.fireEvent(e,b);return b}});
