@@ -201,12 +201,6 @@ public class DataElementCategoryOption
             DataElementCategoryOption dataElementCategoryOption = (DataElementCategoryOption) other;
 
             concept = dataElementCategoryOption.getConcept() == null ? concept : dataElementCategoryOption.getConcept();
-            category = category != null ? category : dataElementCategoryOption.getCategory();
-
-            for ( DataElementCategoryOptionCombo dataElementCategoryOptionCombo : dataElementCategoryOption.getCategoryOptionCombos() )
-            {
-                addCategoryOptionCombo( dataElementCategoryOptionCombo );
-            }
         }
     }
 }

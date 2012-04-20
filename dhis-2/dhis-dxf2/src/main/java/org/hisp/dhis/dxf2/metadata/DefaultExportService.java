@@ -36,7 +36,6 @@ import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.document.Document;
-import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
@@ -85,8 +84,6 @@ public class DefaultExportService
     public MetaData getMetaData( ExportOptions exportOptions )
     {
         MetaData metaData = new MetaData();
-
-        System.err.println("Starting export..");
 
         if ( exportOptions.isAttributeTypes() )
         {
@@ -265,8 +262,6 @@ public class DefaultExportService
         {
             metaData.setDataDictionaries( new ArrayList<DataDictionary>( manager.getAll( DataDictionary.class ) ) );
         }
-
-        System.err.println("Ending export..");
 
         return metaData;
     }

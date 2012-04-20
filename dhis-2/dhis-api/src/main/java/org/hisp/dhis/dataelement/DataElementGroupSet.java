@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -65,6 +66,7 @@ public class DataElementGroupSet
 
     private Boolean compulsory = false;
 
+    @Scanned
     private List<DataElementGroup> members = new ArrayList<DataElementGroup>();
 
     // -------------------------------------------------------------------------
@@ -102,6 +104,19 @@ public class DataElementGroupSet
     {
         members.add( dataElementGroup );
         dataElementGroup.setGroupSet( this );
+    }
+
+    public void removeAllDataElementGroups()
+    {
+        for ( DataElementGroup dataElementGroup : members )
+        {
+            if ( dataElementGroup.getGroupSet() == this )
+            {
+                dataElementGroup.setGroupSet( null );
+            }
+        }
+
+        members.clear();
     }
 
     public Collection<DataElement> getDataElements()
@@ -257,14 +272,11 @@ public class DataElementGroupSet
             description = dataElementGroupSet.getDescription() == null ? description : dataElementGroupSet.getDescription();
             compulsory = dataElementGroupSet.isCompulsory() == null ? compulsory : dataElementGroupSet.isCompulsory();
 
+            removeAllDataElementGroups();
+
             for ( DataElementGroup dataElementGroup : dataElementGroupSet.getMembers() )
             {
-                members.add( dataElementGroup );
-
-                if ( dataElementGroup.getGroupSet() == null )
-                {
-                    dataElementGroup.setGroupSet( this );
-                }
+                addDataElementGroup( dataElementGroup );
             }
         }
     }

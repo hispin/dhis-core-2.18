@@ -27,9 +27,6 @@ package org.hisp.dhis.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -38,10 +35,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -56,11 +58,13 @@ public class DataDictionary
     private static final long serialVersionUID = -2221681462723457717L;
 
     private String description;
-    
+
     private String region;
-    
+
+    @Scanned
     private Set<DataElement> dataElements = new HashSet<DataElement>();
-    
+
+    @Scanned
     private Set<Indicator> indicators = new HashSet<Indicator>();
 
     // -------------------------------------------------------------------------
@@ -68,9 +72,9 @@ public class DataDictionary
     // -------------------------------------------------------------------------
 
     public DataDictionary()
-    {   
+    {
     }
-    
+
     public DataDictionary( String name, String description, String region )
     {
         this.name = name;
@@ -112,6 +116,20 @@ public class DataDictionary
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void removeAllIndicators()
+    {
+        indicators.clear();
+    }
+
+    public void removeAllDataElements()
+    {
+        dataElements.clear();
+    }
+
+    // -------------------------------------------------------------------------
     // Set and get methods
     // -------------------------------------------------------------------------
 
@@ -127,7 +145,7 @@ public class DataDictionary
     {
         this.description = description;
     }
-    
+
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty
@@ -169,5 +187,25 @@ public class DataDictionary
     public void setIndicators( Set<Indicator> indicators )
     {
         this.indicators = indicators;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            DataDictionary dataDictionary = (DataDictionary) other;
+
+            description = dataDictionary.getDescription() == null ? description : dataDictionary.getDescription();
+            region = dataDictionary.getRegion() == null ? region : dataDictionary.getRegion();
+
+            removeAllDataElements();
+            dataElements.addAll( dataDictionary.getDataElements() );
+
+            removeAllIndicators();
+            indicators.addAll( dataDictionary.getIndicators() );
+        }
     }
 }

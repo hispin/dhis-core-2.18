@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -54,6 +55,7 @@ public class UserGroup
     /**
      * Set of related users
      */
+    @Scanned
     private Set<User> members = new HashSet<User>();
 
     // -------------------------------------------------------------------------
@@ -75,7 +77,6 @@ public class UserGroup
         this.name = name;
         this.members = members;
     }
-
 
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
@@ -107,6 +108,15 @@ public class UserGroup
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void removeAllUsers()
+    {
+        members.clear();
+    }
+
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
@@ -134,6 +144,7 @@ public class UserGroup
         {
             UserGroup userGroup = (UserGroup) other;
 
+            removeAllUsers();
             members.addAll( userGroup.getMembers() );
         }
     }

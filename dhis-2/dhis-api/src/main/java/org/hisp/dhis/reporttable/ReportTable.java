@@ -746,6 +746,36 @@ public class ReportTable
         return organisationUnitGroups != null && organisationUnitGroups.size() > 0;
     }
 
+    public void removeAllDataElements()
+    {
+        dataElements.clear();
+    }
+
+    public void removeAllIndicators()
+    {
+        indicators.clear();
+    }
+
+    public void removeAllDataSets()
+    {
+        dataSets.clear();
+    }
+
+    public void removeAllPeriods()
+    {
+        periods.clear();
+    }
+
+    public void removeAllOrganisationUnits()
+    {
+        units.clear();
+    }
+
+    public void removeAllOrganisationUnitGroups()
+    {
+        organisationUnitGroups.clear();
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -1278,22 +1308,22 @@ public class ReportTable
             sortOrder = reportTable.getSortOrder() == null ? sortOrder : reportTable.getSortOrder();
             topLimit = reportTable.getTopLimit() == null ? topLimit : reportTable.getTopLimit();
 
-            organisationUnitGroups.clear();
+            removeAllOrganisationUnitGroups();
             organisationUnitGroups.addAll( reportTable.getOrganisationUnitGroups() );
 
-            units.clear();
+            removeAllOrganisationUnits();
             units.addAll( reportTable.getUnits() );
 
-            periods.clear();
+            removeAllPeriods();
             periods.addAll( reportTable.getPeriods() );
 
-            dataSets.clear();
+            removeAllDataSets();
             dataSets.addAll( reportTable.getDataSets() );
 
-            indicators.clear();
+            removeAllIndicators();
             indicators.addAll( reportTable.getIndicators() );
 
-            dataElements.clear();
+            removeAllDataElements();
             dataElements.addAll( reportTable.getDataElements() );
         }
     }

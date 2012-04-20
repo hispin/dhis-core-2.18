@@ -74,6 +74,12 @@ public class MetaData
 {
     private List<Attribute> attributeTypes = new ArrayList<Attribute>();
 
+    private List<Document> documents = new ArrayList<Document>();
+
+    private List<Constant> constants = new ArrayList<Constant>();
+
+    private List<Concept> concepts = new ArrayList<Concept>();
+
     private List<User> users = new ArrayList<User>();
 
     private List<UserAuthorityGroup> userAuthorityGroups = new ArrayList<UserAuthorityGroup>();
@@ -82,15 +88,7 @@ public class MetaData
 
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
-
     private List<OptionSet> optionSets = new ArrayList<OptionSet>();
-
-    private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
-
-    private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
-
-    private List<Concept> concepts = new ArrayList<Concept>();
 
     private List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
 
@@ -99,6 +97,12 @@ public class MetaData
     private List<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
 
     private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
+
+    private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
 
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
@@ -116,8 +120,6 @@ public class MetaData
 
     private List<OrganisationUnitLevel> organisationUnitLevels = new ArrayList<OrganisationUnitLevel>();
 
-    private List<DataSet> dataSets = new ArrayList<DataSet>();
-
     private List<ValidationRule> validationRules = new ArrayList<ValidationRule>();
 
     private List<ValidationRuleGroup> validationRuleGroups = new ArrayList<ValidationRuleGroup>();
@@ -130,10 +132,6 @@ public class MetaData
 
     private List<ReportTable> reportTables = new ArrayList<ReportTable>();
 
-    private List<Document> documents = new ArrayList<Document>();
-
-    private List<Constant> constants = new ArrayList<Constant>();
-
     private List<MapView> maps = new ArrayList<MapView>();
 
     private List<MapLegend> mapLegends = new ArrayList<MapLegend>();
@@ -143,6 +141,8 @@ public class MetaData
     private List<MapLayer> mapLayers = new ArrayList<MapLayer>();
 
     private List<DataDictionary> dataDictionaries = new ArrayList<DataDictionary>();
+
+    private List<DataSet> dataSets = new ArrayList<DataSet>();
 
     public MetaData()
     {

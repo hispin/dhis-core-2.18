@@ -170,6 +170,15 @@ public class Indicator
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void removeAllAttributeValues()
+    {
+        attributeValues.clear();
+    }
+
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
@@ -363,18 +372,8 @@ public class Indicator
             explodedDenominator = indicator.getExplodedDenominator() == null ? explodedDenominator : indicator.getExplodedDenominator();
             indicatorType = indicator.getIndicatorType() == null ? indicatorType : indicator.getIndicatorType();
 
+            removeAllAttributeValues();
             attributeValues.addAll( indicator.getAttributeValues() );
-
-            for ( DataSet dataSet : indicator.getDataSets() )
-            {
-                addDataSet( dataSet );
-            }
-
-            for ( IndicatorGroup indicatorGroup : indicator.getGroups() )
-            {
-                addIndicatorGroup( indicatorGroup );
-            }
-
         }
     }
 }

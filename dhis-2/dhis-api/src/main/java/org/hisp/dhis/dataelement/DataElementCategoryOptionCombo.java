@@ -38,6 +38,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -67,6 +68,7 @@ public class DataElementCategoryOptionCombo
     /**
      * The category options.
      */
+    @Scanned
     private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
 
     // -------------------------------------------------------------------------
@@ -165,6 +167,23 @@ public class DataElementCategoryOptionCombo
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+
+    public void addDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
+    {
+        categoryOptions.add( dataElementCategoryOption );
+        dataElementCategoryOption.getCategoryOptionCombos().add( this );
+    }
+
+    public void removeDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption )
+    {
+        categoryOptions.remove( dataElementCategoryOption );
+        dataElementCategoryOption.getCategoryOptionCombos().remove( this );
+    }
+
+    public void removeAllCategoryOptions()
+    {
+        categoryOptions.clear();
+    }
 
     /**
      * Tests whether two objects compare on a name basis. The default equals
@@ -336,8 +355,14 @@ public class DataElementCategoryOptionCombo
         {
             DataElementCategoryOptionCombo dataElementCategoryOptionCombo = (DataElementCategoryOptionCombo) other;
 
-            categoryCombo = categoryCombo != null ? categoryCombo : dataElementCategoryOptionCombo.getCategoryCombo();
-            categoryOptions.addAll( dataElementCategoryOptionCombo.getCategoryOptions() );
+            categoryCombo = dataElementCategoryOptionCombo.getCategoryCombo() == null ? categoryCombo : dataElementCategoryOptionCombo.getCategoryCombo();
+
+            removeAllCategoryOptions();
+
+            for ( DataElementCategoryOption dataElementCategoryOption : dataElementCategoryOptionCombo.getCategoryOptions() )
+            {
+                addDataElementCategoryOption( dataElementCategoryOption );
+            }
         }
     }
 }

@@ -257,12 +257,7 @@ public class OrganisationUnitGroupSet
 
             for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroupSet.getOrganisationUnitGroups() )
             {
-                organisationUnitGroups.add( organisationUnitGroup );
-
-                if ( organisationUnitGroup.getGroupSet() == null )
-                {
-                    organisationUnitGroup.setGroupSet( this );
-                }
+                addOrganisationUnitGroup( organisationUnitGroup );
             }
         }
     }

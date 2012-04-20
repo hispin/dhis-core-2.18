@@ -39,6 +39,7 @@ import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.expression.Expression;
@@ -263,11 +264,6 @@ public class ValidationRule
             leftSide = validationRule.getLeftSide() == null ? leftSide : validationRule.getLeftSide();
             rightSide = validationRule.getRightSide() == null ? rightSide : validationRule.getRightSide();
             periodType = validationRule.getPeriodType() == null ? periodType : validationRule.getPeriodType();
-
-            for ( ValidationRuleGroup validationRuleGroup : validationRule.getGroups() )
-            {
-                addValidationRuleGroup( validationRuleGroup );
-            }
         }
     }
 }

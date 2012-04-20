@@ -38,6 +38,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
@@ -234,6 +235,16 @@ public class DataElement
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+
+    public void removeAllAttributeValues()
+    {
+        attributeValues.clear();
+    }
+
+    public void removeAllCategoryLevels()
+    {
+        aggregationLevels.clear();
+    }
 
     public void addDataElementGroup( DataElementGroup group )
     {
@@ -620,18 +631,11 @@ public class DataElement
             url = dataElement.getUrl() == null ? url : dataElement.getUrl();
             optionSet = dataElement.getOptionSet() == null ? optionSet : dataElement.getOptionSet();
 
+            removeAllCategoryLevels();
             aggregationLevels.addAll( dataElement.getAggregationLevels() );
+
+            removeAllAttributeValues();
             attributeValues.addAll( dataElement.getAttributeValues() );
-
-            for ( DataElementGroup dataElementGroup : dataElement.getGroups() )
-            {
-                addDataElementGroup( dataElementGroup );
-            }
-
-            for ( DataSet dataSet : dataElement.getDataSets() )
-            {
-                addDataSet( dataSet );
-            }
         }
     }
 }

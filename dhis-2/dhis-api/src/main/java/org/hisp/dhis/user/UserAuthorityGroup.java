@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
@@ -61,6 +62,7 @@ public class UserAuthorityGroup
 
     private Set<UserCredentials> members = new HashSet<UserCredentials>();
 
+    @Scanned
     private Set<DataSet> dataSets = new HashSet<DataSet>();
 
     // -------------------------------------------------------------------------
@@ -179,13 +181,21 @@ public class UserAuthorityGroup
 
             description = userAuthorityGroup.getDescription() == null ? description : userAuthorityGroup.getDescription();
 
+            removeAllAuthorities();
             authorities.addAll( authorities );
-            dataSets.addAll( userAuthorityGroup.getDataSets() );
 
-            for ( UserCredentials userCredentials : userAuthorityGroup.getMembers() )
-            {
-                addUserCredentials( userCredentials );
-            }
+            removeAllDataSets();
+            dataSets.addAll( userAuthorityGroup.getDataSets() );
         }
+    }
+
+    public void removeAllDataSets()
+    {
+        dataSets.clear();
+    }
+
+    private void removeAllAuthorities()
+    {
+        authorities.clear();
     }
 }
