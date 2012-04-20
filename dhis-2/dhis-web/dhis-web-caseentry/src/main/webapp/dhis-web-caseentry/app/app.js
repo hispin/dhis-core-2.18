@@ -488,7 +488,6 @@ Ext.onReady( function() {
 				data: TR.value.values,
 				remoteSort:true,
 				autoLoad: false,
-				//groupField: 'col1',
 				proxy: {
 					type: 'memory',
 					reader: {
@@ -806,7 +805,6 @@ Ext.onReady( function() {
 				idenCols[i] = { 
 					header: r.data.name, 
 					dataIndex: dataIndex,
-					width: 150,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "iden_"+ r.data.id + "_",
 					hidden: eval(TR.value.hidden[index]),
@@ -828,7 +826,6 @@ Ext.onReady( function() {
 				attrCols[i] = { 
 					header: r.data.name, 
 					dataIndex: dataIndex,
-					width: 150,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "attr_"+ r.data.id + "_",
 					hidden: eval(TR.value.hidden[index]),
@@ -860,7 +857,6 @@ Ext.onReady( function() {
 				deCols[i] = { 
 					header: r.data.name, 
 					dataIndex: dataIndex,
-					width: 150,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "de_"+ r.data.id + "_",
 					hidden: eval(TR.value.hidden[index]),
@@ -965,6 +961,48 @@ Ext.onReady( function() {
 						}
 					}
 				},
+				lbar: [
+					{
+						xtype: 'label',
+						style: 'padding:45px 3px 3 0px',
+					},
+					{
+						xtype: 'button',
+						icon: 'images/clearFilter.png',
+						tooltip: TR.i18n.clear_filter,
+						handler: function() {
+							var cols = [];
+							var grid = TR.datatable.datatable;
+							var i = 0;
+							for( var index=0; index<grid.columns.length; index++)
+							{
+								var col = grid.columns[index];
+								
+								cols[i] = col;
+								i++;
+								
+								var subCols = col.items;
+								for( var subIndex=0; subIndex<subCols.length; subIndex++)
+								{
+									cols[i] = subCols.getAt(subIndex);
+									i++;
+								}
+							}
+							
+							var editor = grid.getStore().getAt(0);
+							var colLen = cols.length;
+							for( var i=1; i<colLen; i++ )
+							{
+								var col = cols[i];
+								var dataIndex = col.dataIndex;
+								TR.store.datatable.first().data[dataIndex] = "";
+							}
+							
+							TR.exe.execute();
+						}
+					}
+					
+				],
 				bbar: [
 					{
 						xtype: 'button',
@@ -1083,9 +1121,7 @@ Ext.onReady( function() {
 							grid.getView().focusRow(this.rowIndex);
 						}
 					}
-				},
-				sortAscText: TR.i18n.asc,
-				sortDescText: TR.i18n.desc
+				}
 			});
 			
 			if (Ext.grid.RowEditor) {
@@ -1095,7 +1131,11 @@ Ext.onReady( function() {
 				});
 			}
 			
-			
+			Ext.override(Ext.grid.header.Container, { 
+				sortAscText: TR.i18n.asc,
+				sortDescText: TR.i18n.desc, 
+				columnsText: TR.i18n.show_hide_columns });
+
 			TR.cmp.region.center.removeAll(true);
 			TR.cmp.region.center.add(this.datatable);		
           	
