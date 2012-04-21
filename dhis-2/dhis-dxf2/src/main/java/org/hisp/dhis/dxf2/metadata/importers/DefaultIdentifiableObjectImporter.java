@@ -41,6 +41,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     @Autowired
     private PeriodService periodService;
+
+    @Autowired
+    private PeriodStore periodStore;
 
     //-------------------------------------------------------------------------------------------------------
     // Constructor
@@ -106,6 +110,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     protected Map<String, T> nameMap;
 
     protected Map<String, T> shortNameMap;
+
+    private Map<String, PeriodType> periodTypeMap = new HashMap<String, PeriodType>();
 
     //-------------------------------------------------------------------------------------------------------
     // Generic implementations of newObject and updatedObject
@@ -187,7 +193,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             if ( PeriodType.class.isAssignableFrom( field.getType() ) )
             {
                 PeriodType periodType = ReflectionUtils.invokeGetterMethod( field.getName(), object );
-                periodType = periodService.reloadPeriodType( periodType ); // FIXME
+
+                periodType = periodTypeMap.get( periodType.getName() );
+
                 ReflectionUtils.invokeSetterMethod( field.getName(), object, periodType );
             }
         }
@@ -207,6 +215,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             return conflicts;
         }
+
+        populatePeriodTypeMap();
 
         reset();
 
@@ -233,6 +243,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Override
     public ImportConflict importObject( T object, ImportOptions options )
     {
+        populatePeriodTypeMap();
         reset();
 
         return importObjectLocal( object, options );
@@ -253,6 +264,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     //-------------------------------------------------------------------------------------------------------
     // Protected methods
     //-------------------------------------------------------------------------------------------------------
+
+    protected void populatePeriodTypeMap()
+    {
+        for ( PeriodType periodType : periodStore.getAllPeriodTypes() )
+        {
+            periodTypeMap.put( periodType.getName(), periodType );
+        }
+    }
 
     protected void updateIdMaps( T object )
     {

@@ -36,6 +36,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.adapter.JacksonPeriodDeserializer;
+import org.hisp.dhis.common.adapter.JacksonPeriodSerializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
 import org.hisp.dhis.common.view.DetailedView;
@@ -281,7 +283,8 @@ public class MapView
     }
 
     @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonSerialize( using = JacksonPeriodSerializer.class )
+    @JsonDeserialize( using = JacksonPeriodDeserializer.class )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Period getPeriod()
