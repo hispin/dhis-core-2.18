@@ -1,7 +1,10 @@
 package org.hisp.dhis.coldchain.inventory;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
+
+import org.hisp.dhis.patient.PatientAttributeOption;
 
 public class InventoryTypeAttribute implements Serializable
 {
@@ -150,4 +153,10 @@ public class InventoryTypeAttribute implements Serializable
         this.attributeOptions = attributeOptions;
     }
     
+    public void addAttributeOptions( InventoryTypeAttributeOption option )
+    {
+        if ( attributeOptions == null )
+            attributeOptions = new HashSet<InventoryTypeAttributeOption>();
+        attributeOptions.add( option );
+    }
 }

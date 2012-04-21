@@ -12,5 +12,11 @@ public interface InventoryTypeAttributeOptionService
 
     void deleteInventoryTypeAttributeOption( InventoryTypeAttributeOption inventoryTypeAttributeOption );
 
+    InventoryTypeAttributeOption getInventoryTypeAttributeOption( int id );
+    
     Collection<InventoryTypeAttributeOption> getAllInventoryTypeAttributeOptions();
+    
+    Collection<InventoryTypeAttributeOption> get( InventoryTypeAttribute inventoryTypeAttribute);
+    
+    InventoryTypeAttributeOption get( InventoryTypeAttribute inventoryTypeAttribute, String name );
 }

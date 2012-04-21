@@ -2,8 +2,11 @@ package org.hisp.dhis.coldchain.inventory.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOption;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionStore;
 
@@ -55,5 +58,32 @@ public class HibernateInventoryTypeAttributeOptionStore implements InventoryType
 
         session.update( inventoryTypeAttributeOption );
     }
+    
+    public InventoryTypeAttributeOption getInventoryTypeAttributeOption( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
+        return (InventoryTypeAttributeOption) session.get( InventoryTypeAttributeOption.class, id );
+    }
+
+    public Collection<InventoryTypeAttributeOption> get( InventoryTypeAttribute inventoryTypeAttribute )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( InventoryTypeAttributeOption.class );
+        criteria.add( Restrictions.eq( "inventoryTypeAttribute", inventoryTypeAttribute ) );
+
+        return criteria.list();
+    }
+
+    public InventoryTypeAttributeOption get( InventoryTypeAttribute inventoryTypeAttribute, String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( InventoryTypeAttributeOption.class );
+        criteria.add( Restrictions.eq( "inventoryTypeAttribute", inventoryTypeAttribute ) );
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (InventoryTypeAttributeOption) criteria.uniqueResult();
+    }
 }
