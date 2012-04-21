@@ -93,5 +93,51 @@
 		scope="prototype">
 		<property name="catalogTypeService"
 			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />		
-	</bean>					
+	</bean>
+
+
+<!-- Inventory -->
+    <bean id="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeListAction"
+        class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeListAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.inventory.action.AddInventoryTypeAttributeAction"
+        class="org.hisp.dhis.coldchain.inventory.action.AddInventoryTypeAttributeAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
+		<property name="inventoryTypeAttributeOptionService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.inventory.action.ValidateInventoryTypeAttributeAction"
+        class="org.hisp.dhis.coldchain.inventory.action.ValidateInventoryTypeAttributeAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.inventory.action.ShowUpdateInventoryTypeAttributeAction"
+        class="org.hisp.dhis.coldchain.inventory.action.ShowUpdateInventoryTypeAttributeAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeAttributeAction"
+        class="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeAttributeAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
+		<property name="inventoryTypeAttributeOptionService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.inventory.action.RemoveInventoryTypeAttributeAction"
+        class="org.hisp.dhis.coldchain.inventory.action.RemoveInventoryTypeAttributeAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.inventory.action.RemoveInventoryTypeAttributeOptionAction"
+        class="org.hisp.dhis.coldchain.inventory.action.RemoveInventoryTypeAttributeOptionAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeOptionService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeAction"
+        class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
+    </bean>
+	
 </beans>

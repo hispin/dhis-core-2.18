@@ -13,4 +13,9 @@ public interface InventoryTypeAttributeStore
     void deleteInventoryTypeAttribute( InventoryTypeAttribute inventoryTypeAttribute );
 
     Collection<InventoryTypeAttribute> getAllInventoryTypeAttributes();
+    
+    InventoryTypeAttribute getInventoryTypeAttribute( int id );
+    
+    InventoryTypeAttribute getInventoryTypeAttributeByName( String name );
+    
 }

@@ -85,7 +85,73 @@
 		<param name="page">/dhis-web-coldchain/catalogTypeList.vm</param>
 		<param name="menu">/dhis-web-coldchain/menu.vm</param>
 		<param name="javascripts">javascript/catalogType.js</param>
-	</action>		
+	</action>
+
+<!-- Inventory -->
+        <action name="inventoryTypeAttributeList" class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeListAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-coldchain/inventoryTypeAttributeList.vm</param>
+            <param name="menu">/dhis-web-coldchain/menu.vm</param>
+            <param name="javascripts">javascript/inventoryTypeAttribute.js</param>
+        </action>
+		
+        <action name="showAddInventoryTypeAttributeForm" class="org.hisp.dhis.coldchain.action.NoAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-coldchain/addInventoryTypeAttributeForm.vm</param>
+            <param name="javascripts">javascript/inventoryTypeAttribute.js</param>
+            <param name="stylesheets">style/basic.css</param>
+            <param name="requiredAuthorities">F_INVENTORYTYPEATTRIBUTE_ADD</param>
+        </action>
+
+        <action name="addInventoryTypeAttribute"
+            class="org.hisp.dhis.coldchain.inventory.action.AddInventoryTypeAttributeAction">
+            <result name="success" type="redirect">inventoryTypeAttributeList.action</result>
+            <param name="requiredAuthorities">F_INVENTORYTYPEATTRIBUTE_ADD</param>
+        </action>
+		
+		<action name="validateInventoryTypeAttribute"
+            class="org.hisp.dhis.coldchain.inventory.action.ValidateInventoryTypeAttributeAction">
+            <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+            <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+
+        <action name="showUpdateInventoryTypeAttributeForm"
+            class="org.hisp.dhis.coldchain.inventory.action.ShowUpdateInventoryTypeAttributeAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-coldchain/updateInventoryTypeAttibuteForm.vm</param>
+            <param name="javascripts">javascript/inventoryTypeAttribute.js,../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js</param>
+            <param name="stylesheets">style/basic.css</param>
+            <param name="requiredAuthorities">F_INVENTORYTYPEATTRIBUTE_UPDATE</param>
+        </action>
+		
+        <action name="updateInventoryTypeAttribute"
+            class="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeAttributeAction">
+            <result name="success" type="redirect">inventoryTypeAttributeList.action</result>
+            <param name="requiredAuthorities">F_INVENTORYTYPEATTRIBUTE_UPDATE</param>
+        </action>
+		
+        <action name="removeInventoryTypeAttribute"
+            class="org.hisp.dhis.coldchain.inventory.action.RemoveInventoryTypeAttributeAction">
+            <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+            <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+            <param name="requiredAuthorities">F_INVENTORYTYPEATTRIBUTE_DELETE</param>
+        </action>
+
+        <action name="removeInventoryTypeAttributeOption"
+            class="org.hisp.dhis.coldchain.inventory.action.RemoveInventoryTypeAttributeOptionAction">
+            <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+            <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+            <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+            <param name="requiredAuthorities">F_INVENTORYTYPEATTRIBUTE_DELETE</param>
+        </action>
+
+        <action name="getInventoryTypeAttribute"
+            class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeAction">
+            <result name="success" type="velocity-json">/dhis-web-coldchain/jsonInventoryTypeAttribute.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+	
 										
 </package>		
 </struts>

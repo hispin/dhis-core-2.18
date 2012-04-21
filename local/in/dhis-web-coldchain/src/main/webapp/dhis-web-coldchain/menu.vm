@@ -3,5 +3,9 @@
 <ul>
 	<li><a href="coldChainCatalogTypeAttribute.action">$i18n.getString( "catalogType_attribute" )</a></li>
 	<li><a href="catalogType.action">$i18n.getString( "catalogType" )</a></li>
-	
+</ul>
+
+<h2>$i18n.getString( "inventory" )</h2>
+<ul>
+    <li><a href="inventoryTypeAttributeList.action">$i18n.getString( "inventorytype_attribute" )</a></li>
 </ul>

@@ -44,4 +44,18 @@ public class DefaultInventoryTypeAttributeOptionService implements InventoryType
         inventoryTypeAttributeOptionStore.updateInventoryTypeAttributeOption( inventoryTypeAttributeOption );
     }
     
+    public Collection<InventoryTypeAttributeOption> get( InventoryTypeAttribute inventoryTypeAttribute)
+    {
+        return inventoryTypeAttributeOptionStore.get( inventoryTypeAttribute );
+    }
+    
+    public InventoryTypeAttributeOption get( InventoryTypeAttribute inventoryTypeAttribute, String name )
+    {
+        return inventoryTypeAttributeOptionStore.get( inventoryTypeAttribute, name );
+    }
+    
+    public InventoryTypeAttributeOption getInventoryTypeAttributeOption( int id )
+    {
+        return inventoryTypeAttributeOptionStore.getInventoryTypeAttributeOption( id );
+    }
 }
