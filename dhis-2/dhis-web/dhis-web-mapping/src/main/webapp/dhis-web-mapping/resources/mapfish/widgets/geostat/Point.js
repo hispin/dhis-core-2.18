@@ -1738,6 +1738,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 Ext.Ajax.request({
                     url: G.conf.path_mapping + dataUrl + G.conf.type,
                     params: params,
+                    disableCaching: false,
                     scope: this,
                     success: function(r) {
                         var mapvalues = G.util.mapValueDecode(r);
