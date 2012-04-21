@@ -373,9 +373,11 @@ public class DataSet
         this.periodType = periodType;
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    //@JsonProperty
+    //@JsonView( {DetailedView.class, ExportView.class} )
+    //@JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    // Leaving dataEntryForm out for the moment since we are using IDs there and not UIDs.
+    // At some point it should also be upgraded to idObject (to make it work a bit better with the importer).
     public DataEntryForm getDataEntryForm()
     {
         return dataEntryForm;
