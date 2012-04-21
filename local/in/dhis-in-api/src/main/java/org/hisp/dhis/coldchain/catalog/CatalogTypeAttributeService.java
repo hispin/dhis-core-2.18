@@ -11,7 +11,13 @@ public interface CatalogTypeAttributeService
     void updateCatalogTypeAttribute( CatalogTypeAttribute catalogTypeAttribute );
 
     void deleteCatalogTypeAttribute( CatalogTypeAttribute catalogTypeAttribute );
+    
+    CatalogTypeAttribute getCatalogTypeAttribute( int id );
+    
+    CatalogTypeAttribute getCatalogTypeAttributeByName( String name );
 
     Collection<CatalogTypeAttribute> getAllCatalogTypeAttributes();
+    
+    
 
 }

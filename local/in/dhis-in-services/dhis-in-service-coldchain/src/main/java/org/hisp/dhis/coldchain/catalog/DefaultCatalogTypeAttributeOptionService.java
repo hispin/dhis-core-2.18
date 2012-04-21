@@ -2,6 +2,8 @@ package org.hisp.dhis.coldchain.catalog;
 
 import java.util.Collection;
 
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
 import org.springframework.transaction.annotation.Transactional;
 
 public class DefaultCatalogTypeAttributeOptionService implements CatalogTypeAttributeOptionService
@@ -48,5 +50,32 @@ public class DefaultCatalogTypeAttributeOptionService implements CatalogTypeAttr
     {
         catalogTypeAttributeOptionStore.updateCatalogTypeAttributeOption( catalogTypeAttributeOption );
     }
-
+   
+    @Transactional
+    @Override
+    public CatalogTypeAttributeOption getCatalogTypeAttributeOption( int id )
+    {
+        return catalogTypeAttributeOptionStore.getCatalogTypeAttributeOption( id );
+    }
+    
+    @Transactional
+    @Override
+    public int countByCatalogTypeAttributeoption( CatalogTypeAttributeOption catalogTypeAttributeOption )
+    {
+        return catalogTypeAttributeOptionStore.countByCatalogTypeAttributeoption( catalogTypeAttributeOption );
+    }
+    
+    @Transactional
+    @Override
+    public Collection<CatalogTypeAttributeOption> getCatalogTypeAttributeOptions( CatalogTypeAttribute catalogTypeAttribute )
+    {
+        return catalogTypeAttributeOptionStore.getCatalogTypeAttributeOptions( catalogTypeAttribute );
+    }
+    
+    @Transactional
+    @Override
+    public CatalogTypeAttributeOption getCatalogTypeAttributeOptionName( CatalogTypeAttribute catalogTypeAttribute, String name )
+    {
+        return catalogTypeAttributeOptionStore.getCatalogTypeAttributeOptionName( catalogTypeAttribute, name );
+    }
 }

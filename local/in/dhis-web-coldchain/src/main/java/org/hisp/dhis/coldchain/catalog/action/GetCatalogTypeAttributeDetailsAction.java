@@ -1,49 +1,50 @@
 package org.hisp.dhis.coldchain.catalog.action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService;
-import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetColdChainCatalogTypeAttributeListAction  implements Action
+public class GetCatalogTypeAttributeDetailsAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
-    
+
     private CatalogTypeAttributeService catalogTypeAttributeService;
-    
+
     public void setCatalogTypeAttributeService( CatalogTypeAttributeService catalogTypeAttributeService )
     {
         this.catalogTypeAttributeService = catalogTypeAttributeService;
     }
-    
+
     // -------------------------------------------------------------------------
-    // Output
+    // Input/Output
     // -------------------------------------------------------------------------
-    
-    private List<CatalogTypeAttribute> catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>();
-    
-    public List<CatalogTypeAttribute> getCatalogTypeAttributes()
+
+    private int id;
+
+    public void setId( int id )
     {
-        return catalogTypeAttributes;
+        this.id = id;
     }
+
+    private CatalogTypeAttribute catalogTypeAttribute;
+
+    public CatalogTypeAttribute getCatalogTypeAttribute()
+    {
+        return catalogTypeAttribute;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception
+    public String execute()
+        throws Exception
     {
-        
-        catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>(catalogTypeAttributeService.getAllCatalogTypeAttributes());
-        Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
-        
+        catalogTypeAttribute = catalogTypeAttributeService.getCatalogTypeAttribute( id );
         return SUCCESS;
     }
-    
 }

@@ -18,7 +18,11 @@
 	</build>
 	
 	<dependencies>
-		
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+	</dependency>	
 		<!-- DHIS -->
 		
 		<dependency>

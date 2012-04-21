@@ -48,5 +48,4 @@ public class DefaultCatalogTypeService implements CatalogTypeService
     {
         catalogTypeStore.updateCatalogType( catalogType );
     }
-
 }

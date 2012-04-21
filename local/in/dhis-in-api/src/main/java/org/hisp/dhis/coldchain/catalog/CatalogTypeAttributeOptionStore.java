@@ -11,7 +11,15 @@ public interface CatalogTypeAttributeOptionStore
     void updateCatalogTypeAttributeOption( CatalogTypeAttributeOption catalogTypeAttributeOption );
 
     void deleteCatalogTypeAttributeOption( CatalogTypeAttributeOption catalogTypeAttributeOption );
-
+    
+    CatalogTypeAttributeOption getCatalogTypeAttributeOption( int id );
+    
+    int countByCatalogTypeAttributeoption( CatalogTypeAttributeOption catalogTypeAttributeOption );
+    
+    Collection<CatalogTypeAttributeOption> getCatalogTypeAttributeOptions( CatalogTypeAttribute catalogTypeAttribute );
+    
+    CatalogTypeAttributeOption getCatalogTypeAttributeOptionName( CatalogTypeAttribute catalogTypeAttribute, String name );
+    
     Collection<CatalogTypeAttributeOption> getAllCatalogTypeAttributeOptions();
 
 }
