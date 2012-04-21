@@ -519,8 +519,7 @@ public class DataSet
         {
             DataSet dataSet = (DataSet) other;
 
-            // FIXME
-            // periodType = dataSet.getPeriodType() == null ? periodType : dataSet.getPeriodType();
+            periodType = dataSet.getPeriodType() == null ? periodType : dataSet.getPeriodType();
             sortOrder = dataSet.getSortOrder() == null ? sortOrder : dataSet.getSortOrder();
             mobile = dataSet.isMobile();
             dataEntryForm = dataSet.getDataEntryForm() == null ? dataEntryForm : dataSet.getDataEntryForm();
