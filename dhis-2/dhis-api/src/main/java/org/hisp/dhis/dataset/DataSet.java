@@ -517,11 +517,12 @@ public class DataSet
         {
             DataSet dataSet = (DataSet) other;
 
-            periodType = periodType != null ? periodType : dataSet.getPeriodType();
-            sortOrder = sortOrder != null ? sortOrder : dataSet.getSortOrder();
+            // FIXME
+            // periodType = dataSet.getPeriodType() == null ? periodType : dataSet.getPeriodType();
+            sortOrder = dataSet.getSortOrder() == null ? sortOrder : dataSet.getSortOrder();
             mobile = dataSet.isMobile();
-            dataEntryForm = dataEntryForm != null ? dataEntryForm : dataSet.getDataEntryForm();
-            version = version != null ? version : dataSet.getVersion();
+            dataEntryForm = dataSet.getDataEntryForm() == null ? dataEntryForm : dataSet.getDataEntryForm();
+            version = dataSet.getVersion() == null ? version : dataSet.getVersion();
             expiryDays = dataSet.getExpiryDays();
 
             removeAllDataElements();

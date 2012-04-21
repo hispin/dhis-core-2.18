@@ -41,6 +41,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -138,6 +139,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         updateIdentifiableObjectCollections( object, identifiableObjectCollections );
 
+        updatePeriodTypes( object );
         manager.update( object );
         updateIdMaps( object );
 
@@ -168,11 +170,27 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         updateIdentifiableObjectCollections( object, scanIdentifiableObjectCollections( object ) );
 
         oldObject.mergeWith( object );
+        updatePeriodTypes( oldObject );
+
         manager.update( oldObject );
 
         log.info( "Update successful." );
 
         return null;
+    }
+
+    // FIXME to static ATM, should be refactor out.. "type handler", not idObject
+    private void updatePeriodTypes( T object )
+    {
+        for ( Field field : object.getClass().getDeclaredFields() )
+        {
+            if ( PeriodType.class.isAssignableFrom( field.getType() ) )
+            {
+                PeriodType periodType = ReflectionUtils.invokeGetterMethod( field.getName(), object );
+                periodType = periodService.reloadPeriodType( periodType ); // FIXME
+                ReflectionUtils.invokeSetterMethod( field.getName(), object, periodType );
+            }
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------

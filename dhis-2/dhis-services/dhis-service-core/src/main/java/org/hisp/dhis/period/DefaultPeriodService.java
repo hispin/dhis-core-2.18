@@ -27,15 +27,6 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -43,6 +34,8 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 /**
  * @author Kristian Nordal
@@ -61,7 +54,7 @@ public class DefaultPeriodService
     public void setPeriodStore( PeriodStore periodStore )
     {
         this.periodStore = periodStore;
-    }   
+    }
 
     // -------------------------------------------------------------------------
     // Period
@@ -151,16 +144,16 @@ public class DefaultPeriodService
     {
         return periodStore.getIntersectingPeriods( startDate, endDate );
     }
-    
+
     public Collection<Period> getIntersectionPeriods( Collection<Period> periods )
     {
         Set<Period> intersecting = new HashSet<Period>();
-        
+
         for ( Period period : periods )
         {
             intersecting.addAll( getIntersectingPeriods( period.getStartDate(), period.getEndDate() ) );
         }
-        
+
         return intersecting;
     }
 
@@ -205,7 +198,7 @@ public class DefaultPeriodService
     }
 
     public Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements,
-        Collection<OrganisationUnit> sources )
+                                          Collection<OrganisationUnit> sources )
     {
         return periodStore.getPeriods( period, dataElements, sources );
     }
@@ -227,7 +220,7 @@ public class DefaultPeriodService
         List<Period> periods = new ArrayList<Period>( historyLength );
 
         lastPeriod = periodStore.reloadForceAddPeriod( lastPeriod );
-        
+
         CalendarPeriodType periodType = (CalendarPeriodType) lastPeriod.getPeriodType();
 
         Period p = new Period();
@@ -288,5 +281,10 @@ public class DefaultPeriodService
     public PeriodType getPeriodTypeByClass( Class<? extends PeriodType> periodType )
     {
         return periodStore.getPeriodType( periodType );
+    }
+
+    public PeriodType reloadPeriodType( PeriodType periodType )
+    {
+        return periodStore.reloadPeriodType( periodType );
     }
 }

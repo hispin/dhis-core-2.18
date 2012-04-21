@@ -299,7 +299,6 @@ public interface PeriodService
      */
     PeriodType getPeriodTypeByName( String name );
     
-    
     /**
      * Returns a PeriodType represented by the given Class.
      * 
@@ -308,4 +307,12 @@ public interface PeriodService
      */
     PeriodType getPeriodTypeByClass( Class<? extends PeriodType> periodType );  
     
+    /**
+     * Checks if the given periodType is associated with the current session and loads
+     * it if not. Null is returned if the period does not exist.
+     *
+     * @param periodType the Period to reload.
+     * @return a Period.
+     */
+    PeriodType reloadPeriodType( PeriodType periodType );
 }

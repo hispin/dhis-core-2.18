@@ -27,15 +27,15 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
+import java.util.Collection;
+import java.util.Date;
+
 /**
  * Defines the functionality for persisting Periods and PeriodTypes.
- * 
+ *
  * @author Torgeir Lorange Ostby
  * @version $Id: PeriodStore.java 5983 2008-10-17 17:42:44Z larshelg $
  */
@@ -49,7 +49,7 @@ public interface PeriodStore
 
     /**
      * Adds a Period.
-     * 
+     *
      * @param period the Period to add.
      * @return a generated unique id of the added Period.
      */
@@ -57,14 +57,14 @@ public interface PeriodStore
 
     /**
      * Deletes a Period.
-     * 
+     *
      * @param period the Period to delete.
      */
     void deletePeriod( Period period );
 
     /**
      * Returns a Period.
-     * 
+     *
      * @param id the id of the Period to return.
      * @return the Period with the given id, or null if no match.
      */
@@ -72,9 +72,9 @@ public interface PeriodStore
 
     /**
      * Returns a Period.
-     * 
-     * @param startDate the start date of the Period.
-     * @param endDate the end date of the Period.
+     *
+     * @param startDate  the start date of the Period.
+     * @param endDate    the end date of the Period.
      * @param periodType the PeriodType of the Period
      * @return the Period matching the dates and periodtype, or null if no match.
      */
@@ -82,27 +82,27 @@ public interface PeriodStore
 
     /**
      * Returns all persisted Periods.
-     * 
+     *
      * @return all persisted Periods.
      */
     Collection<Period> getAllPeriods();
 
     /**
      * Returns a Period.
-     * 
-     * @param startDate the start date of the Period.
-     * @param endDate the end date of the Period.
+     *
+     * @param startDate  the start date of the Period.
+     * @param endDate    the end date of the Period.
      * @param periodType the PeriodType of the Period
      * @return the Period matching the dates and periodtype, or null if no match.
      */
     Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType );
-    
+
     /**
      * Returns all Periods with start date after or equal the specified start
      * date and end date before or equal the specified end date.
-     * 
+     *
      * @param startDate the ultimate start date.
-     * @param endDate the ultimate end date.
+     * @param endDate   the ultimate end date.
      * @return a collection of all Periods with start date after or equal the
      *         specified start date and end date before or equal the specified
      *         end date, or an empty collection if no Periods match.
@@ -110,13 +110,13 @@ public interface PeriodStore
     Collection<Period> getPeriodsBetweenDates( Date startDate, Date endDate );
 
     /**
-     * Returns all Periods of the specified PeriodType with start date after or 
-     * equal the specified start date and end date before or equal the specified 
+     * Returns all Periods of the specified PeriodType with start date after or
+     * equal the specified start date and end date before or equal the specified
      * end date.
-     * 
+     *
      * @param periodType the PeriodType.
-     * @param startDate the ultimate start date.
-     * @param endDate the ultimate end date.
+     * @param startDate  the ultimate start date.
+     * @param endDate    the ultimate end date.
      * @return a collection of all Periods with start date after or equal the
      *         specified start date and end date before or equal the specified
      *         end date, or an empty collection if no Periods match.
@@ -124,53 +124,53 @@ public interface PeriodStore
     Collection<Period> getPeriodsBetweenDates( PeriodType periodType, Date startDate, Date endDate );
 
     Collection<Period> getPeriodsBetweenOrSpanningDates( Date startDate, Date endDate );
-    
+
     /**
      * Returns all intersecting Periods between the startDate and endDate based on PeriodType
      * For example if the startDate is 2007-05-01 and endDate is 2007-08-01 and periodType is Quartely
      * then it retuns the periods for Q2,Q3
-     *  
+     *
      * @param periodType is the ultimate period type
-     * @param startDate is intercepting startDate
-     * @param endDate is intercepting endDate
+     * @param startDate  is intercepting startDate
+     * @param endDate    is intercepting endDate
      * @return
      */
-    Collection<Period> getIntersectingPeriodsByPeriodType(PeriodType periodType, Date startDate, Date endDate);
-    
+    Collection<Period> getIntersectingPeriodsByPeriodType( PeriodType periodType, Date startDate, Date endDate );
+
     /**
      * Returns Periods where at least one its days is between the given start date and end date.
-     * 
+     *
      * @param startDate the start date.
-     * @param endDate the end date.
+     * @param endDate   the end date.
      * @return Periods where at least one its days is between the given start date and end date.
      */
     Collection<Period> getIntersectingPeriods( Date startDate, Date endDate );
-    
+
     /**
      * Returns all Periods with a given PeriodType.
-     * 
+     *
      * @param periodType the PeriodType of the Periods to return.
      * @return all Periods with the given PeriodType, or an empty collection if
      *         no Periods match.
      */
     Collection<Period> getPeriodsByPeriodType( PeriodType periodType );
-    
+
     /**
      * Returns all intersecting Periods for the given Period which have assosiated DataValues for
      * the given collection of DataElements and Sources.
-     * 
-     * @param period the Period.
+     *
+     * @param period       the Period.
      * @param dataElements the collection of DataElements.
-     * @param sources the collection of Sources.
+     * @param sources      the collection of Sources.
      * @return all intersecting Periods for the given Period which have assosiated DataValues for
      *         the given collection of DataElements and Sources.
      */
     Collection<Period> getPeriods( Period period, Collection<DataElement> dataElements, Collection<OrganisationUnit> sources );
-    
+
     /**
      * Checks if the given period is associated with the current session and loads
      * it if not. Null is returned if the period does not exist.
-     * 
+     *
      * @param period the Period.
      * @return the Period.
      */
@@ -180,19 +180,19 @@ public interface PeriodStore
      * Checks if the given period is associated with the current session and loads
      * it if not. The period is persisted if it does not exist. The persisted Period
      * is returned.
-     * 
+     *
      * @param period the Period.
      * @return the persisted Period.
      */
     Period reloadForceAddPeriod( Period period );
-    
+
     // -------------------------------------------------------------------------
     // PeriodType
     // -------------------------------------------------------------------------
 
     /**
      * Adds a PeriodType.
-     * 
+     *
      * @param periodType the PeriodType to add.
      * @return a generated unique id of the added PeriodType.
      */
@@ -200,14 +200,14 @@ public interface PeriodStore
 
     /**
      * Deletes a PeriodType.
-     * 
+     *
      * @param periodType the PeriodType to delete.
      */
     void deletePeriodType( PeriodType periodType );
 
     /**
      * Returns a PeriodType.
-     * 
+     *
      * @param id the id of the PeriodType to return.
      * @return the PeriodType with the given id, or null if no match.
      */
@@ -215,7 +215,7 @@ public interface PeriodStore
 
     /**
      * Returns the persisted instance of a given PeriodType.
-     * 
+     *
      * @param periodType the PeriodType class of the instance to return.
      * @return
      */
@@ -223,9 +223,18 @@ public interface PeriodStore
 
     /**
      * Returns all PeriodTypes.
-     * 
+     *
      * @return a collection of all PeriodTypes, or an empty collection if there
      *         are no PeriodTypes.
      */
     Collection<PeriodType> getAllPeriodTypes();
+
+    /**
+     * Checks if the given periodType is associated with the current session and loads
+     * it if not. Null is returned if the period does not exist.
+     *
+     * @param periodType the PeriodType.
+     * @return the Period.
+     */
+    PeriodType reloadPeriodType( PeriodType periodType );
 }
