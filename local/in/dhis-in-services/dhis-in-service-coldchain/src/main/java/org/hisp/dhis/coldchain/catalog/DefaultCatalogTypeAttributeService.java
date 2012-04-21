@@ -47,5 +47,19 @@ public class DefaultCatalogTypeAttributeService implements CatalogTypeAttributeS
     {
         catalogTypeAttributeStore.updateCatalogTypeAttribute( catalogTypeAttribute );
     }
-
+    
+    @Transactional
+    @Override
+    public CatalogTypeAttribute getCatalogTypeAttribute( int id )
+    {
+        return catalogTypeAttributeStore.getCatalogTypeAttribute( id );
+    }
+    
+    @Transactional
+    @Override
+    public CatalogTypeAttribute getCatalogTypeAttributeByName( String name )
+    {
+        return catalogTypeAttributeStore.getCatalogTypeAttributeByName( name );
+        
+    }
 }

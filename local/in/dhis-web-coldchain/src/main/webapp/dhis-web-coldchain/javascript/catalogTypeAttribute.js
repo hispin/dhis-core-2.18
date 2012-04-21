@@ -1,5 +1,28 @@
+// -----------------------------------------------------------------------------
+// View details
+// -----------------------------------------------------------------------------
 
-
+function showCatalogTypeAttributeDetails( catalogTypeAttributeId )
+{
+	jQuery.getJSON( 'getCatalogTypeAttributeDetails.action', { id: catalogTypeAttributeId },
+		function ( json ) {
+			setInnerHTML( 'nameField', json.catalogTypeAttribute.name );	
+			setInnerHTML( 'descriptionField', json.catalogTypeAttribute.description );
+			setInnerHTML( 'valueTypeField', json.catalogTypeAttribute.valueType );
+			
+			var mandatory = ( json.catalogTypeAttribute.mandatory == 'true') ? i18n_yes : i18n_no;
+			setInnerHTML( 'mandatoryField', mandatory );
+			
+			showDetails();
+	});
+}
+//-----------------------------------------------------------------------------
+//Remove Patient Attribute
+//-----------------------------------------------------------------------------
+function removeCatalogTypeAttribute( catalogTypeAttributeId, name )
+{
+	removeItem( catalogTypeAttributeId, name, i18n_confirm_delete, 'removeCatalogTypeAttribute.action' );	
+}
 ATTRIBUTE_OPTION = 
 {
 	selectValueType : 	function (this_)
@@ -7,12 +30,17 @@ ATTRIBUTE_OPTION =
 		if ( jQuery(this_).val() == "COMBO" )
 		{
 			jQuery("#attributeComboRow").show();
+			jQuery("#attributeNoCharRow").hide();
 			if( jQuery("#attrOptionContainer").find("input").length ==0 ) 
 			{
 				ATTRIBUTE_OPTION.addOption();
 				ATTRIBUTE_OPTION.addOption();
 			}
+		}else if ( jQuery(this_).val() == "DATE" )
+		{
+			jQuery("#attributeNoCharRow").hide();
 		}else {
+			jQuery("#attributeNoCharRow").show();
 			jQuery("#attributeComboRow").hide();
 		}
 	},
@@ -43,7 +71,7 @@ ATTRIBUTE_OPTION =
 		
 		if( jQuery(this_).siblings("input").attr("name") != "attrOptions")
 		{
-			jQuery.get("removePatientAttributeOption.action?id="+optionId,function(data){
+			jQuery.get("removeCatalogTypeAttributeOption.action?id="+optionId,function(data){
 				if( data.response == "success")
 				{
 					jQuery(this_).parent().parent().remove();

@@ -5,33 +5,87 @@
 <struts>
 <include file="dhis-web-commons.xml"/>
 	
-	<package name="dhis-web-coldchain" extends="dhis-web-commons" namespace="/dhis-web-coldchain">
+<package name="dhis-web-coldchain" extends="dhis-web-commons" namespace="/dhis-web-coldchain">
 
 <!-- Home page -->
-		<action name="index" class="org.hisp.dhis.coldchain.action.NoAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-coldchain/welcome.vm</param>
-			<param name="menu">/dhis-web-coldchain/menu.vm</param>
-		</action>
+	<action name="index" class="org.hisp.dhis.coldchain.action.NoAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-coldchain/welcome.vm</param>
+		<param name="menu">/dhis-web-coldchain/menu.vm</param>
+	</action>
 		
 
-<!-- catalog -->
-		<action name="coldChainCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.GetColdChainCatalogTypeAttributeListAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-coldchain/coldChainCatalogTypeAttribute.vm</param>
-			<param name="menu">/dhis-web-coldchain/menu.vm</param>
-			<param name="javascripts">javascript/catalogTypeAttribute.js</param>
+<!-- catalog Type Attribute -->
+		
+	<!-- Catalog Type Attribute List -->
+	<action name="coldChainCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.GetColdChainCatalogTypeAttributeListAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-coldchain/coldChainCatalogTypeAttribute.vm</param>
+		<param name="menu">/dhis-web-coldchain/menu.vm</param>
+		<param name="javascripts">javascript/catalogTypeAttribute.js</param>
+	</action>
 			
-		</action>	
+	<!-- Add Form -->
+	<action name="showAddColdChainCatalogTypeAttributeForm" class="org.hisp.dhis.coldchain.catalog.action.AddColdChainCatalogTypeAttributeForm">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-coldchain/addColdChainCatalogTypeAttributeForm.vm</param>
+		<param name="javascripts">javascript/catalogTypeAttribute.js</param>
+		<param name="stylesheets">css/style.css</param>
+	</action>
+		
+	<!-- Add -->	
+	<action name="addCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.AddCatalogTypeAttributeAction">
+		<result name="success" type="redirect">coldChainCatalogTypeAttribute.action</result>
+	</action>
+		
+	<!-- show details -->
+	<action name="getCatalogTypeAttributeDetails" class="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeAttributeDetailsAction">
+		<result name="success" type="velocity-json">/dhis-web-coldchain/jsonCatalogTypeAttribute.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>						
 
-		<action name="showAddColdChainCatalogTypeAttributeForm" class="org.hisp.dhis.coldchain.catalog.action.AddColdChainCatalogTypeAttributeForm">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-coldchain/addColdChainCatalogTypeAttributeForm.vm</param>
-			<param name="javascripts">javascript/catalogTypeAttribute.js</param>
-			<param name="stylesheets">css/style.css</param>
-		</action>
-		
-		
-				
-	</package>		
+	<!-- Remove/Delete -->
+	<action name="removeCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAttributeAction">
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+	</action>
+			
+	<!-- Remove/Delete Attrobute Option -->
+	<action name="removeCatalogTypeAttributeOption" class="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAttributeOptionAction">
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+		<result name="input" type="velocity-json">
+			/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+	</action>
+	
+	<!-- Update Form -->
+	<action name="showUpdateCatalogTypeAttributeForm" class="org.hisp.dhis.coldchain.catalog.action.ShowUpdateCatalogTypeAttributeFormAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-coldchain/updateCatalogTypeAttibuteForm.vm</param>
+		<param name="javascripts">javascript/catalogTypeAttribute.js</param>
+		<param name="stylesheets">css/style.css</param>
+	</action>
+	
+	<!-- Update -->
+	<action name="updateCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogTypeAttributeAction">
+		<result name="success" type="redirect">coldChainCatalogTypeAttribute.action</result>
+	</action>
+	
+	<!-- Validation -->
+	<action name="validateCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.ValidateCatalogTypeAttributeAction">
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+	</action>
+	
+<!-- catalog Type -->	
+
+	<!-- Catalog Type List -->
+	<action name="catalogType" class="org.hisp.dhis.coldchain.catalog.action.CatalogTypeListAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-coldchain/catalogTypeList.vm</param>
+		<param name="menu">/dhis-web-coldchain/menu.vm</param>
+		<param name="javascripts">javascript/catalogType.js</param>
+	</action>		
+										
+</package>		
 </struts>

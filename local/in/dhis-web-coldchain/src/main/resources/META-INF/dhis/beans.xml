@@ -10,16 +10,88 @@
         scope="prototype">
     </bean>
 
-<!-- catalog -->	
-
+<!-- catalog Type Attribute -->
+	
+	<!-- Catalog Type Attribute List -->
 	<bean id="org.hisp.dhis.coldchain.catalog.action.GetColdChainCatalogTypeAttributeListAction"
-        class="org.hisp.dhis.coldchain.catalog.action.GetColdChainCatalogTypeAttributeListAction"
-        scope="prototype">
-    </bean>	
-
+		class="org.hisp.dhis.coldchain.catalog.action.GetColdChainCatalogTypeAttributeListAction"
+		scope="prototype">
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />		
+	</bean>	
+	
+	<!-- Add Form -->
 	<bean id="org.hisp.dhis.coldchain.catalog.action.AddColdChainCatalogTypeAttributeForm"
-        class="org.hisp.dhis.coldchain.catalog.action.AddColdChainCatalogTypeAttributeForm"
-        scope="prototype">
-    </bean>	
-				
+		class="org.hisp.dhis.coldchain.catalog.action.AddColdChainCatalogTypeAttributeForm"
+		scope="prototype">
+	</bean>
+	
+	<!-- Add -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.AddCatalogTypeAttributeAction"
+		class="org.hisp.dhis.coldchain.catalog.action.AddCatalogTypeAttributeAction"
+		scope="prototype">
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />
+		<property name="catalogTypeAttributeOptionService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOptionService" />		
+	</bean>	
+	
+	<!-- show details -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeAttributeDetailsAction"
+		class="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeAttributeDetailsAction"
+		scope="prototype">
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />		
+	</bean>
+	<!-- Remove/Delete -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAttributeAction"
+		class="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAttributeAction"
+		scope="prototype">
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />		
+	</bean>
+	
+	<!-- Remove/Delete Attrobute Option -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAttributeOptionAction"
+		class="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAttributeOptionAction"
+		scope="prototype">
+		<property name="catalogTypeAttributeOptionService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOptionService" />		
+	</bean>
+	
+	<!-- Update Form -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.ShowUpdateCatalogTypeAttributeFormAction"
+		class="org.hisp.dhis.coldchain.catalog.action.ShowUpdateCatalogTypeAttributeFormAction"
+		scope="prototype">
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />		
+	</bean>
+	
+	<!-- Update -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogTypeAttributeAction"
+		class="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogTypeAttributeAction"
+		scope="prototype">
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />
+		<property name="catalogTypeAttributeOptionService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOptionService" />	
+	</bean>	
+
+	<!-- Validation --> 
+	<bean id="org.hisp.dhis.coldchain.catalog.action.ValidateCatalogTypeAttributeAction"
+		class="org.hisp.dhis.coldchain.catalog.action.ValidateCatalogTypeAttributeAction"
+		scope="prototype">
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />
+	</bean>	
+
+<!-- Catalog Type -->
+	
+	<!-- Catalog Type List -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.CatalogTypeListAction"
+		class="org.hisp.dhis.coldchain.catalog.action.CatalogTypeListAction"
+		scope="prototype">
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />		
+	</bean>					
 </beans>
