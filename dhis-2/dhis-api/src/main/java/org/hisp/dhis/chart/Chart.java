@@ -607,7 +607,7 @@ public class Chart
         return userOrganisationUnit;
     }
 
-    public void setUserOrganisationUnit( boolean userOrganisationUnitChildren )
+    public void setUserOrganisationUnit( boolean userOrganisationUnit )
     {
         this.userOrganisationUnit = userOrganisationUnit;
     }
