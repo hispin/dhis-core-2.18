@@ -76,7 +76,7 @@ public class DefaultImportService
         // the correct order
 
         // FIXME this is not currently in the "correct" order
-        doImport( metaData.getConcepts(), importOptions, importSummary );
+/*        doImport( metaData.getConcepts(), importOptions, importSummary );
         doImport( metaData.getConstants(), importOptions, importSummary );
         doImport( metaData.getDocuments(), importOptions, importSummary );
         doImport( metaData.getAttributeTypes(), importOptions, importSummary );
@@ -88,10 +88,16 @@ public class DefaultImportService
         doImport( metaData.getDataElements(), importOptions, importSummary );
         doImport( metaData.getDataElementGroups(), importOptions, importSummary );
         doImport( metaData.getDataElementGroupSets(), importOptions, importSummary );
+*/
+
+/*
         doImport( metaData.getIndicatorTypes(), importOptions, importSummary );
         doImport( metaData.getIndicators(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroups(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroupSets(), importOptions, importSummary );
+*/
+
+/*
         doImport( metaData.getMaps(), importOptions, importSummary );
         doImport( metaData.getMapLegends(), importOptions, importSummary );
         doImport( metaData.getMapLegendSets(), importOptions, importSummary );
@@ -105,12 +111,15 @@ public class DefaultImportService
         doImport( metaData.getUsers(), importOptions, importSummary );
         doImport( metaData.getUserGroups(), importOptions, importSummary );
         doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
-        doImport( metaData.getValidationRules(), importOptions, importSummary );
-        doImport( metaData.getValidationRuleGroups(), importOptions, importSummary );
-        doImport( metaData.getDataDictionaries(), importOptions, importSummary );
-        doImport( metaData.getReports(), importOptions, importSummary );
-        doImport( metaData.getReportTables(), importOptions, importSummary );
-        doImport( metaData.getCharts(), importOptions, importSummary );
+*/
+
+//        doImport( metaData.getValidationRules(), importOptions, importSummary );
+//        doImport( metaData.getValidationRuleGroups(), importOptions, importSummary );
+
+//        doImport( metaData.getDataDictionaries(), importOptions, importSummary );
+//        doImport( metaData.getReports(), importOptions, importSummary );
+//        doImport( metaData.getReportTables(), importOptions, importSummary );
+//        doImport( metaData.getCharts(), importOptions, importSummary );
         doImport( metaData.getDataSets(), importOptions, importSummary );
 
         return importSummary;

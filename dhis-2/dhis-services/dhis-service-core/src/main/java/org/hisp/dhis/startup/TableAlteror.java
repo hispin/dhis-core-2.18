@@ -103,6 +103,7 @@ public class TableAlteror
         executeSql( "DROP TABLE datasetlocksource" );
         executeSql( "DROP TABLE datasetlock" );
         executeSql( "DROP TABLE datasetlockexceptions" );
+        executeSql( "DROP TABLE indicator_indicatorgroupsetmembers" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
         executeSql( "ALTER TABLE reporttable DROP column dimension_type" );
         executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );

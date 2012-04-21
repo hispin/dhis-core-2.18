@@ -296,11 +296,7 @@ public class HibernatePeriodStore
         return session.createCriteria( PeriodType.class ).setCacheable( true ).list();
     }
 
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private PeriodType reloadPeriodType( PeriodType periodType )
+    public PeriodType reloadPeriodType( PeriodType periodType )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -313,7 +309,7 @@ public class HibernatePeriodStore
 
         if ( reloadedPeriodType == null )
         {
-            throw new IllegalArgumentException( "The PeriodType referenced by the " + "Period is not in database: "
+            throw new IllegalArgumentException( "The PeriodType referenced by the Period is not in database: "
                 + periodType.getName() );
         }
 
