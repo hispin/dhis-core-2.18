@@ -34,8 +34,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
-import org.hisp.dhis.system.filter.OrganisationUnitWithValidPointCoordinateFilter;
+import org.hisp.dhis.system.filter.OrganisationUnitWithValidCoordinatesFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -114,11 +113,9 @@ public class GetGeoJsonFacilitiesAction
 
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
             parent );
-        
-        FilterUtils.filter( organisationUnits, new OrganisationUnitWithCoordinatesFilter() );
 
-        FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidPointCoordinateFilter() );
-        
+        FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
+
         groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
         
         object = new ArrayList<OrganisationUnit>();

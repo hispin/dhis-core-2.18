@@ -188,7 +188,7 @@ public class ContextUtils
      * @param response the HttpServletResponse.
      * @return true if the eTag values are equals, false otherwise.
      */
-    public static void clearIfNotModified( HttpServletRequest request, HttpServletResponse response, Collection<? extends IdentifiableObject> objects )
+    public static boolean clearIfNotModified( HttpServletRequest request, HttpServletResponse response, Collection<? extends IdentifiableObject> objects )
     {
         String tag = QUOTE + IdentifiableObjectUtils.getLastUpdatedTag( objects ) + QUOTE;
         
@@ -201,7 +201,11 @@ public class ContextUtils
             response.setStatus( HttpServletResponse.SC_NOT_MODIFIED );
             
             objects.clear();
+            
+            return true;
         }
+        
+        return false;
     }
 
     /**

@@ -40,7 +40,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland
- * @version $Id$
  */
 public class GetDataElementsByDataElementGroupAction
     implements Action
