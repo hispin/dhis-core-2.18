@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
@@ -99,19 +100,29 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     /**
      * Called every time a new object is to be imported.
      *
-     * @param object  Object to import
-     * @param options Current import options
+     * @param object Object to import
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected ImportConflict newObject( T object, ImportOptions options )
+    protected ImportConflict newObject( T object )
     {
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
         object.setUid( CodeGenerator.generateCode() );
 
-        log.info( "Trying to save new object => " + getDisplayName( object ) );
+        log.debug( "Trying to save new object => " + getDisplayName( object ) );
 
-        Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections = scanIdentifiableObjectCollections( object );
+        if ( NameableObject.class.isInstance( object ) )
+        {
+            NameableObject nameableObject = (NameableObject) object;
+
+            if ( nameableObject.getShortName() == null )
+            {
+                log.info( "shortName is null on " + object );
+            }
+        }
+
+        Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections =
+            scanIdentifiableObjectCollections( object );
 
         updateIdentifiableObjects( object, scanIdentifiableObjects( object ) );
 
@@ -122,8 +133,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         updatePeriodTypes( object );
         objectBridge.updateObject( object );
 
-        log.info( "Save successful." );
-        log.info( object );
+        log.debug( "Save successful." );
 
         return null;
     }
@@ -133,12 +143,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      *
      * @param object    Object to import
      * @param oldObject The current version of the object
-     * @param options   Current import options
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected ImportConflict updatedObject( T object, T oldObject, ImportOptions options )
+    protected ImportConflict updatedObject( T object, T oldObject )
     {
-        log.info( "Starting update of object " + getDisplayName( oldObject ) + " (" + oldObject.getClass().getSimpleName() + ")" );
+        log.debug( "Starting update of object " + getDisplayName( oldObject ) + " (" + oldObject.getClass()
+            .getSimpleName() + ")" );
 
         updateIdentifiableObjects( object, scanIdentifiableObjects( object ) );
         updateIdentifiableObjectCollections( object, scanIdentifiableObjectCollections( object ) );
@@ -148,7 +158,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         objectBridge.updateObject( oldObject );
 
-        log.info( "Update successful." );
+        log.debug( "Update successful." );
 
         return null;
     }
@@ -234,7 +244,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      */
     protected String getDisplayName( IdentifiableObject object )
     {
-        if ( object.getName() != null )
+        if ( object == null )
+        {
+            return "[ object is null ]";
+        }
+        else if ( object.getName() != null )
         {
             return object.getName();
         }
@@ -291,7 +305,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
-            conflict = newObject( object, options );
+            conflict = newObject( object );
 
             if ( conflict != null )
             {
@@ -302,7 +316,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         }
         else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
         {
-            conflict = updatedObject( object, oldObject, options );
+            conflict = updatedObject( object, oldObject );
 
             if ( conflict != null )
             {
@@ -315,7 +329,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             if ( oldObject != null )
             {
-                conflict = updatedObject( object, oldObject, options );
+                conflict = updatedObject( object, oldObject );
 
                 if ( conflict != null )
                 {
@@ -326,7 +340,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
             else
             {
-                conflict = newObject( object, options );
+                conflict = newObject( object );
 
                 if ( conflict != null )
                 {
@@ -448,7 +462,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return identifiableObjects;
     }
 
-    private void updateIdentifiableObjects( IdentifiableObject identifiableObject, Map<Field, IdentifiableObject> identifiableObjects )
+    private void updateIdentifiableObjects( IdentifiableObject identifiableObject, Map<Field,
+        IdentifiableObject> identifiableObjects )
     {
         for ( Field field : identifiableObjects.keySet() )
         {
@@ -460,23 +475,28 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
             else
             {
-                log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
+                log.warn( "Ignored reference " + getDisplayName( ref ) + " on object " + getDisplayName(
+                    identifiableObject ) + "." );
             }
         }
     }
 
-    private Map<Field, Set<? extends IdentifiableObject>> scanIdentifiableObjectCollections( IdentifiableObject identifiableObject )
+    private Map<Field, Set<? extends IdentifiableObject>> scanIdentifiableObjectCollections( IdentifiableObject
+        identifiableObject )
     {
-        Map<Field, Set<? extends IdentifiableObject>> collected = new HashMap<Field, Set<? extends IdentifiableObject>>();
+        Map<Field, Set<? extends IdentifiableObject>> collected = new HashMap<Field,
+            Set<? extends IdentifiableObject>>();
         Field[] fields = identifiableObject.getClass().getDeclaredFields();
 
         for ( Field field : fields )
         {
-            boolean b = ReflectionUtils.isCollection( field.getName(), identifiableObject, IdentifiableObject.class, Scanned.class );
+            boolean b = ReflectionUtils.isCollection( field.getName(), identifiableObject, IdentifiableObject.class,
+                Scanned.class );
 
             if ( b )
             {
-                Collection<IdentifiableObject> objects = ReflectionUtils.invokeGetterMethod( field.getName(), identifiableObject );
+                Collection<IdentifiableObject> objects = ReflectionUtils.invokeGetterMethod( field.getName(),
+                    identifiableObject );
 
                 if ( objects != null && !objects.isEmpty() )
                 {
@@ -491,7 +511,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     }
 
     private void updateIdentifiableObjectCollections( IdentifiableObject identifiableObject,
-                                                      Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections )
+        Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections )
     {
         for ( Field field : identifiableObjectCollections.keySet() )
         {
@@ -508,7 +528,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
             else
             {
-                log.warn( "Unknown Collection type!" );
+                log.warn( "Unknown Collection type." );
                 continue;
             }
 
@@ -522,7 +542,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
+                    log.warn( "Ignored reference " + getDisplayName( identifiableObject ) + " on object " +
+                        getDisplayName( identifiableObject ) + "." );
                 }
             }
 

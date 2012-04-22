@@ -87,7 +87,6 @@ public class User
     /**
      * Set of the dynamic attributes values that belong to this User.
      */
-    @Scanned
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
     // -------------------------------------------------------------------------

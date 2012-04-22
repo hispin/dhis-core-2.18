@@ -267,11 +267,11 @@ public class DefaultObjectBridge
         }
         else if ( objects.size() > 1 )
         {
-            log.warn( "Multiple objects found.. object discarded, returning null." );
+            log.debug( "Multiple objects found.. object discarded, returning null." );
         }
         else
         {
-            log.warn( "No object found, returning null." );
+            log.debug( "No object found, returning null." );
         }
 
         return null;
