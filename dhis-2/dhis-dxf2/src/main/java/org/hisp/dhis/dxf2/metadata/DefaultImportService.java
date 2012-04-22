@@ -131,12 +131,13 @@ public class DefaultImportService
 
         doImport( metaData.getDataSets(), importOptions, importSummary );
 */
+        cacheManager.clearCache();
+        objectBridge.destroy();
+
         Date endDate = new Date();
         log.info( "Started import at " + startDate );
         log.info( "Finished import at " + endDate );
 
-        objectBridge.destroy();
-        cacheManager.clearCache();
 
         return importSummary;
     }
