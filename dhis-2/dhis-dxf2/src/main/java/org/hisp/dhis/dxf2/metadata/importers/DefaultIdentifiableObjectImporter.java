@@ -475,8 +475,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
             else
             {
-                log.warn( "Ignored reference " + getDisplayName( ref ) + " on object " + getDisplayName(
-                    identifiableObject ) + "." );
+                log.warn( "Ignored reference " + ref + " on object " + identifiableObject + "." );
             }
         }
     }
@@ -542,8 +541,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    log.warn( "Ignored reference " + getDisplayName( ref ) + " on object " +
-                        getDisplayName( identifiableObject ) + "." );
+                    log.warn( "Ignored reference " + ref + " on object " + identifiableObject + "." );
                 }
             }
 
