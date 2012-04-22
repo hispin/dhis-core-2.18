@@ -478,6 +478,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
             else
             {
+                // FIXME special case, possible forward reference.. so just skip it..
                 if ( !OrganisationUnitGroupSet.class.isInstance( idObject ) )
                 {
                     log.warn( "Ignored reference " + idObject + " on object " + identifiableObject + "." );
