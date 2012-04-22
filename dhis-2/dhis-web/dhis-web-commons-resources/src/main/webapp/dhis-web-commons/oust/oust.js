@@ -8,6 +8,7 @@ var selectionTreeSelection = new SelectionTreeSelection();
 var selectionTree = new SelectionTree();
 var selectionTreePath = '../dhis-web-commons/oust/';
 var selectedOrganisationUnit = new Array();
+var selectedOrganisationUnitUid = new Array();
 
 // -----------------------------------------------------------------------------
 // Selection
@@ -40,6 +41,11 @@ function SelectionTreeSelection()
 	{
 		return selectedOrganisationUnit;
 	};
+	
+	this.getSelectedUid = function()
+	{
+		return selectedOrganisationUnitUid;
+	}
 	
 	this.isSelected = function()
 	{
@@ -94,13 +100,18 @@ function SelectionTreeSelection()
     function responseReceived( json )
     {
 		selectedOrganisationUnit = new Array();
+		selectedOrganisationUnitUid = new Array();
 
 		var unitIds = new Array();
+		var unitUids = new Array();
 
         for ( i in json.selectedUnits )
         {
             unitIds[i] = json.selectedUnits[i].id;
 			selectedOrganisationUnit.push( unitIds[i] );
+			
+			unitUids[i] = json.selectedUnits[i].uid;
+			selectedOrganisationUnitUid.push( unitUids[i] );
         }
 
         jQuery("body").trigger("oust.selected", selectedOrganisationUnit);
