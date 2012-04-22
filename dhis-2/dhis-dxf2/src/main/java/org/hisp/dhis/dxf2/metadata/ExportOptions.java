@@ -49,13 +49,13 @@ public class ExportOptions
     // means it can be used as a simple argument in controller methods.
     //--------------------------------------------------------------------------
 
+    private boolean users = true;
+
+    private boolean userAuthorityGroups = true;
+
+    private boolean userGroups = true;
+
     private boolean attributeTypes = true;
-
-    private boolean users = false;
-
-    private boolean userAuthorityGroups = false;
-
-    private boolean userGroups = false;
 
     private boolean messageConversations = false;
 
@@ -107,7 +107,7 @@ public class ExportOptions
 
     private boolean reportTables = true;
 
-    private boolean documents = false;
+    private boolean documents = true;
 
     private boolean constants = true;
 
