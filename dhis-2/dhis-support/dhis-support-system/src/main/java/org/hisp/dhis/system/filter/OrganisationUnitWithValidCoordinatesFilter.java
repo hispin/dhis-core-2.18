@@ -31,21 +31,15 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.ValidationUtils;
 
-/**
- * @author Jan Henrik Overland
- */
-public class OrganisationUnitWithValidPointCoordinateFilter
+import static org.hisp.dhis.organisationunit.OrganisationUnit.*;
+
+public class OrganisationUnitWithValidCoordinatesFilter
     implements Filter<OrganisationUnit>
 {
     @Override
     public boolean retain( OrganisationUnit object )
     {
-        if ( object != null && object.hasCoordinates() )
-        {
-            return object.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) ?
-                ValidationUtils.coordinateIsValid( object.getCoordinates() ) : true;
-        }
-        
-        return false;
+        return object != null && object.getFeatureType() != null && object.hasCoordinates() &&
+            ( object.getFeatureType().equals( FEATURETYPE_POINT ) ? ValidationUtils.coordinateIsValid( object.getCoordinates() ) : true );
     }
 }

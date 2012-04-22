@@ -27,22 +27,21 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.util.ContextUtils.clearIfNotModified;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
-import org.hisp.dhis.system.filter.OrganisationUnitWithValidPointCoordinateFilter;
+import org.hisp.dhis.system.filter.OrganisationUnitWithValidCoordinatesFilter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland
- * @version $Id$
  */
 public class GetGeoJsonAction
     implements Action
@@ -80,7 +79,7 @@ public class GetGeoJsonAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<OrganisationUnit> object;
+    private Collection<OrganisationUnit> object = new ArrayList<OrganisationUnit>();
 
     public Collection<OrganisationUnit> getObject()
     {
@@ -98,33 +97,31 @@ public class GetGeoJsonAction
 
         level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent.getId() ) : level;
 
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
-            parent );
+        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
 
-        FilterUtils.filter( organisationUnits, new OrganisationUnitWithCoordinatesFilter() );
+        FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
 
-        FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidPointCoordinateFilter() );
-
-        object = new ArrayList<OrganisationUnit>();
-
-        for ( OrganisationUnit unit : organisationUnits )
-        {
-            if ( !unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-            {
-                object.add( unit );
-            }
-        }
-
-        for ( OrganisationUnit unit : organisationUnits )
-        {
-            if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-            {
-                object.add( unit );
-            }
-        }
-
-        ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), object );
+        boolean modified = !clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), organisationUnits );
         
+        if ( modified )
+        {        
+            for ( OrganisationUnit unit : organisationUnits )
+            {
+                if ( !unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
+                {
+                    object.add( unit );
+                }
+            }
+    
+            for ( OrganisationUnit unit : organisationUnits )
+            {
+                if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
+                {
+                    object.add( unit );
+                }
+            }
+        }
+
         return SUCCESS;
     }
 }
