@@ -28,12 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * @author Lars Helge Overland
@@ -43,12 +38,12 @@ public class IdentifiableObjectUtils
     private static final String SEPARATOR_JOIN = ", ";
     private static final String SEPARATOR = "-";
     private static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
-    
+
     /**
-     * Joins the names of the IdentifiableObjects in the given list and separates 
-     * them with a comma and space. Returns null if the given list is null or has 
+     * Joins the names of the IdentifiableObjects in the given list and separates
+     * them with a comma and space. Returns null if the given list is null or has
      * no elements.
-     * 
+     *
      * @param objects the list of IdentifiableObjects.
      * @return the joined string.
      */
@@ -57,30 +52,30 @@ public class IdentifiableObjectUtils
         if ( objects != null && objects.size() > 0 )
         {
             Iterator<? extends IdentifiableObject> iterator = objects.iterator();
-            
+
             StringBuilder builder = new StringBuilder( iterator.next().getDisplayName() );
-            
+
             while ( iterator.hasNext() )
             {
                 builder.append( SEPARATOR_JOIN ).append( iterator.next().getDisplayName() );
             }
-            
+
             return builder.toString();
         }
-        
+
         return null;
     }
-    
+
     /**
      * Filters the given list of IdentifiableObjects based on the given key.
-     * 
+     *
      * @param identifiableObjects the list of IdentifiableObjects.
-     * @param key the key.
-     * @param ignoreCase indicates whether to ignore case when filtering.
+     * @param key                 the key.
+     * @param ignoreCase          indicates whether to ignore case when filtering.
      * @return a filtered list of IdentifiableObjects.
      */
     public static <T extends IdentifiableObject> List<T> filterNameByKey( List<T> identifiableObjects, String key,
-        boolean ignoreCase )
+                                                                          boolean ignoreCase )
     {
         List<T> objects = new ArrayList<T>();
         ListIterator<T> iterator = identifiableObjects.listIterator();
@@ -103,29 +98,29 @@ public class IdentifiableObjectUtils
 
         return objects;
     }
-    
+
     /**
      * Generates a tag reflecting when the date of when the most recently updated
      * IdentifiableObject in the given collection was modified.
-     * 
+     *
      * @param objects the collection of IdentifiableObjects.
      * @return a string tag.
      */
     public static <T extends IdentifiableObject> String getLastUpdatedTag( Collection<T> objects )
     {
         Date latest = null;
-        
+
         if ( objects != null )
         {
             for ( IdentifiableObject object : objects )
             {
-                if ( object != null && object.getLastUpdated() != null && ( latest == null || object.getLastUpdated().after( latest ) ) )
+                if ( object != null && object.getLastUpdated() != null && (latest == null || object.getLastUpdated().after( latest )) )
                 {
                     latest = object.getLastUpdated();
                 }
             }
         }
-        
+
         return latest != null && objects != null ? objects.size() + SEPARATOR + LONG_DATE_FORMAT.format( latest ) : null;
     }
 }

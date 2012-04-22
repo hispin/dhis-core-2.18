@@ -27,16 +27,15 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.common.NameableObject.NameableProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Lars Helge Overland
@@ -45,6 +44,8 @@ import java.util.Set;
 public class DefaultIdentifiableObjectManager
     implements IdentifiableObjectManager
 {
+    private static final Log log = LogFactory.getLog( DefaultIdentifiableObjectManager.class );
+
     @Autowired
     private Set<GenericIdentifiableObjectStore<IdentifiableObject>> objectStores;
 
@@ -73,6 +74,7 @@ public class DefaultIdentifiableObjectManager
         }
     }
 
+    @Override
     public void save( IdentifiableObject object )
     {
         if ( objectStoreMap.get( object.getClass() ) != null )
@@ -81,6 +83,7 @@ public class DefaultIdentifiableObjectManager
         }
     }
 
+    @Override
     public void update( IdentifiableObject object )
     {
         if ( objectStoreMap.get( object.getClass() ) != null )
@@ -89,42 +92,68 @@ public class DefaultIdentifiableObjectManager
         }
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> T get( Class<T> clazz, String uid )
     {
-        if ( objectStoreMap.get( clazz ) != null )
+        GenericIdentifiableObjectStore<IdentifiableObject> store = objectStoreMap.get( clazz );
+
+        if ( store == null )
         {
-            return (T) objectStoreMap.get( clazz ).getByUid( uid );
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null." );
+
+            return null;
         }
 
-        return null;
+        return (T) store.getByUid( uid );
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> T getByCode( Class<T> clazz, String code )
     {
-        if ( objectStoreMap.get( clazz ) != null )
+        GenericIdentifiableObjectStore<IdentifiableObject> store = objectStoreMap.get( clazz );
+
+        if ( store == null )
         {
-            return (T) objectStoreMap.get( clazz ).getByCode( code );
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null." );
+
+            return null;
         }
 
-        return null;
+        return (T) store.getByCode( code );
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> T getByName( Class<T> clazz, String name )
     {
-        if ( objectStoreMap.get( clazz ) != null )
+        GenericIdentifiableObjectStore<IdentifiableObject> store = objectStoreMap.get( clazz );
+
+        if ( store == null )
         {
-            return (T) objectStoreMap.get( clazz ).getByName( name );
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null." );
+
+            return null;
         }
 
-        return null;
+        return (T) store.getByName( name );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz )
     {
-        return (Collection<T>) objectStoreMap.get( clazz ).getAll();
+        GenericIdentifiableObjectStore<IdentifiableObject> store = objectStoreMap.get( clazz );
+
+        if ( store == null )
+        {
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection." );
+
+            return new ArrayList<T>();
+        }
+
+        return (Collection<T>) store.getAll();
     }
 
     public void delete( IdentifiableObject object )
@@ -132,6 +161,7 @@ public class DefaultIdentifiableObjectManager
         objectStoreMap.get( object.getClass() ).delete( object );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property )
     {
@@ -206,6 +236,7 @@ public class DefaultIdentifiableObjectManager
         return map;
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> T getObject( Class<T> clazz, IdentifiableProperty property, String id )
     {
@@ -237,6 +268,7 @@ public class DefaultIdentifiableObjectManager
         throw new IllegalArgumentException( String.valueOf( property ) );
     }
 
+    @Override
     public IdentifiableObject getObject( String uid, String simpleClassName )
     {
         for ( GenericIdentifiableObjectStore<IdentifiableObject> objectStore : objectStores )
@@ -250,6 +282,7 @@ public class DefaultIdentifiableObjectManager
         return null;
     }
 
+    @Override
     public IdentifiableObject getObject( int id, String simpleClassName )
     {
         for ( GenericIdentifiableObjectStore<IdentifiableObject> objectStore : objectStores )

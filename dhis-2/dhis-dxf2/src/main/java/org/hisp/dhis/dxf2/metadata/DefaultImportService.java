@@ -35,6 +35,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -92,17 +93,13 @@ public class DefaultImportService
         doImport( metaData.getUsers(), importOptions, importSummary );
         doImport( metaData.getUserGroups(), importOptions, importSummary );
         doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
-*/
 
-/*
         doImport( metaData.getConcepts(), importOptions, importSummary );
         doImport( metaData.getConstants(), importOptions, importSummary );
         doImport( metaData.getDocuments(), importOptions, importSummary );
         doImport( metaData.getAttributeTypes(), importOptions, importSummary );
         doImport( metaData.getOptionSets(), importOptions, importSummary );
-*/
 
-/*
         doImport( metaData.getCategoryOptions(), importOptions, importSummary );
         doImport( metaData.getCategories(), importOptions, importSummary );
         doImport( metaData.getCategoryCombos(), importOptions, importSummary );
@@ -111,9 +108,7 @@ public class DefaultImportService
         doImport( metaData.getDataElements(), importOptions, importSummary );
         doImport( metaData.getDataElementGroups(), importOptions, importSummary );
         doImport( metaData.getDataElementGroupSets(), importOptions, importSummary );
-*/
 
-/*
         doImport( metaData.getIndicatorTypes(), importOptions, importSummary );
         doImport( metaData.getIndicators(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroups(), importOptions, importSummary );
