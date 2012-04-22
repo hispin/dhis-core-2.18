@@ -150,9 +150,9 @@
 
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.dataSets" maxElementsInMemory="120000" />
 
-  <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.groups" maxElementsInMemory="400" />
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.groups" maxElementsInMemory="20000" />
 
-  <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.users" maxElementsInMemory="400" />
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.users" maxElementsInMemory="20000" />
 
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnit.attributeValues" maxElementsInMemory="1000" />
 
