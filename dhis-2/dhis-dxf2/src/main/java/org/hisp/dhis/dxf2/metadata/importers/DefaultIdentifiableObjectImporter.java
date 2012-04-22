@@ -542,7 +542,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    log.warn( "Ignored reference " + getDisplayName( identifiableObject ) + " on object " +
+                    log.warn( "Ignored reference " + getDisplayName( ref ) + " on object " +
                         getDisplayName( identifiableObject ) + "." );
                 }
             }
