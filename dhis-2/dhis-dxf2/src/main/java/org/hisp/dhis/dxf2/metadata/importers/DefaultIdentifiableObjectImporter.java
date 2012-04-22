@@ -30,7 +30,6 @@ package org.hisp.dhis.dxf2.metadata.importers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
@@ -42,6 +41,7 @@ import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -107,7 +107,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     {
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
-        object.setUid( CodeGenerator.generateCode() );
+
+        // FIXME add uidValidator.. part of bean validation impl?
+        // object.setUid( CodeGenerator.generateCode() );
 
         log.debug( "Trying to save new object => " + getDisplayName( object ) );
 
@@ -467,7 +469,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     {
         for ( Field field : identifiableObjects.keySet() )
         {
-            IdentifiableObject ref = findObjectByReference( identifiableObjects.get( field ) );
+            IdentifiableObject idObject = identifiableObjects.get( field );
+            IdentifiableObject ref = findObjectByReference( idObject );
 
             if ( ref != null )
             {
@@ -475,7 +478,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
             else
             {
-                log.warn( "Ignored reference " + ref + " on object " + identifiableObject + "." );
+                if ( !OrganisationUnitGroupSet.class.isInstance( idObject ) )
+                {
+                    log.warn( "Ignored reference " + idObject + " on object " + identifiableObject + "." );
+                }
             }
         }
     }
@@ -483,8 +489,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private Map<Field, Set<? extends IdentifiableObject>> scanIdentifiableObjectCollections( IdentifiableObject
         identifiableObject )
     {
-        Map<Field, Set<? extends IdentifiableObject>> collected = new HashMap<Field,
-            Set<? extends IdentifiableObject>>();
+        Map<Field, Set<? extends IdentifiableObject>> collected = new HashMap<Field, Set<? extends IdentifiableObject>>();
         Field[] fields = identifiableObject.getClass().getDeclaredFields();
 
         for ( Field field : fields )
@@ -541,7 +546,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    log.warn( "Ignored reference " + ref + " on object " + identifiableObject + "." );
+                    log.warn( "Ignored reference " + idObject + " on object " + identifiableObject + "." );
                 }
             }
 
