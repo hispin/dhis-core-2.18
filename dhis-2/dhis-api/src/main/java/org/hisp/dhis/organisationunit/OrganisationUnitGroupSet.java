@@ -57,12 +57,12 @@ public class OrganisationUnitGroupSet
 
     private static final Comparator<IdentifiableObject> COMPARATOR = new IdentifiableObjectNameComparator();
 
-    @Scanned
-    private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
-
     private String description;
 
     private boolean compulsory;
+
+    @Scanned
+    private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
 
     // -------------------------------------------------------------------------
     // Constructors

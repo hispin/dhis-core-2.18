@@ -36,7 +36,8 @@
         value="org.hisp.dhis.dataelement.DataElementCategoryOption" />
   </bean>
 
-  <bean id="categoryOptionComboImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+  <bean id="categoryOptionComboImporter"
+      class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class"
         value="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" />
   </bean>
@@ -49,7 +50,8 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.dataelement.DataElementGroup" />
   </bean>
 
-  <bean id="dataElementGroupSetImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+  <bean id="dataElementGroupSetImporter"
+      class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class"
         value="org.hisp.dhis.dataelement.DataElementGroupSet" />
   </bean>
@@ -106,7 +108,8 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.mapping.MapLayer" />
   </bean>
 
-  <bean id="messageConversationImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+  <bean id="messageConversationImporter"
+      class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.message.MessageConversation" />
   </bean>
 
@@ -115,12 +118,14 @@
         value="org.hisp.dhis.organisationunit.OrganisationUnit" />
   </bean>
 
-  <bean id="organisationUnitGroupImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+  <bean id="organisationUnitGroupImporter"
+      class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class"
         value="org.hisp.dhis.organisationunit.OrganisationUnitGroup" />
   </bean>
 
-  <bean id="organisationUnitGroupSetImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+  <bean id="organisationUnitGroupSetImporter"
+      class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class"
         value="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" />
   </bean>
@@ -153,7 +158,8 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.validation.ValidationRule" />
   </bean>
 
-  <bean id="validationRuleGroupImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+  <bean id="validationRuleGroupImporter"
+      class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.validation.ValidationRuleGroup" />
   </bean>
 

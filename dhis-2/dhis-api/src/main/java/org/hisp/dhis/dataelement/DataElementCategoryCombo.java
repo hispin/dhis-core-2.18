@@ -152,7 +152,6 @@ public class DataElementCategoryCombo
     }
 
     //TODO update category option -> category option combo association
-
     public void generateOptionCombos()
     {
         this.optionCombos = new HashSet<DataElementCategoryOptionCombo>( generateOptionCombosList() );

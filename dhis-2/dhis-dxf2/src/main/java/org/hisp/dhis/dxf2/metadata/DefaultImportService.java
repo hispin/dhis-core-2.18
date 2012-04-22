@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.metadata;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
@@ -36,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +59,12 @@ public class DefaultImportService
     @Autowired( required = false )
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
+    @Autowired
+    private ObjectBridge objectBridge;
+
+    @Autowired
+    private HibernateCacheManager cacheManager;
+
     //-------------------------------------------------------------------------------------------------------
     // ImportService Implementation
     //-------------------------------------------------------------------------------------------------------
@@ -71,26 +79,41 @@ public class DefaultImportService
     public ImportSummary importMetaData( MetaData metaData, ImportOptions importOptions )
     {
         ImportSummary importSummary = new ImportSummary();
+        objectBridge.init();
 
-        // Imports.. this could be made even more generic, just need to make sure that everything is imported in
-        // the correct order
+        Date startDate = new Date();
 
+        doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
+        // doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
+        doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
+        doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
+
+/*
+        doImport( metaData.getUsers(), importOptions, importSummary );
+        doImport( metaData.getUserGroups(), importOptions, importSummary );
+        doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
+*/
+
+/*
         doImport( metaData.getConcepts(), importOptions, importSummary );
         doImport( metaData.getConstants(), importOptions, importSummary );
         doImport( metaData.getDocuments(), importOptions, importSummary );
         doImport( metaData.getAttributeTypes(), importOptions, importSummary );
         doImport( metaData.getOptionSets(), importOptions, importSummary );
+*/
 
-        /*
+/*
+        doImport( metaData.getCategoryOptions(), importOptions, importSummary );
         doImport( metaData.getCategories(), importOptions, importSummary );
         doImport( metaData.getCategoryCombos(), importOptions, importSummary );
-        doImport( metaData.getCategoryOptions(), importOptions, importSummary );
         doImport( metaData.getCategoryOptionCombos(), importOptions, importSummary );
+
         doImport( metaData.getDataElements(), importOptions, importSummary );
         doImport( metaData.getDataElementGroups(), importOptions, importSummary );
         doImport( metaData.getDataElementGroupSets(), importOptions, importSummary );
-        */
+*/
 
+/*
         doImport( metaData.getIndicatorTypes(), importOptions, importSummary );
         doImport( metaData.getIndicators(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroups(), importOptions, importSummary );
@@ -101,14 +124,7 @@ public class DefaultImportService
         doImport( metaData.getMapLegendSets(), importOptions, importSummary );
         doImport( metaData.getMapLayers(), importOptions, importSummary );
         // doImport( metaData.getMessageConversations(), importOptions, importSummary );
-        doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
-        // doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
-        doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
-        doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
         doImport( metaData.getSqlViews(), importOptions, importSummary );
-        doImport( metaData.getUsers(), importOptions, importSummary );
-        doImport( metaData.getUserGroups(), importOptions, importSummary );
-        doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
 
         doImport( metaData.getValidationRules(), importOptions, importSummary );
         doImport( metaData.getValidationRuleGroups(), importOptions, importSummary );
@@ -119,6 +135,13 @@ public class DefaultImportService
         doImport( metaData.getCharts(), importOptions, importSummary );
 
         doImport( metaData.getDataSets(), importOptions, importSummary );
+*/
+        Date endDate = new Date();
+        log.info( "Started import at " + startDate );
+        log.info( "Finished import at " + endDate );
+
+        objectBridge.destroy();
+        cacheManager.clearCache();
 
         return importSummary;
     }
