@@ -182,7 +182,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return conflicts;
         }
 
-        reset();
+        init( options );
 
         // FIXME a bit too static.. implement "pre handler" for types?
         if ( OrganisationUnit.class.isAssignableFrom( objects.get( 0 ).getClass() ) )
@@ -207,7 +207,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Override
     public ImportConflict importObject( T object, ImportOptions options )
     {
-        reset();
+        init( options );
 
         return importObjectLocal( object, options );
     }
@@ -254,11 +254,17 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     // Helpers
     //-------------------------------------------------------------------------------------------------------
 
-    private void reset()
+    private void init( ImportOptions options )
     {
         imported = 0;
         updated = 0;
         ignored = 0;
+
+        if ( options.isDryRun() )
+        {
+            // disable writing on the persistence layer
+            objectBridge.setWriteEnabled( false );
+        }
     }
 
     private ImportConflict importObjectLocal( T object, ImportOptions options )

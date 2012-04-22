@@ -67,17 +67,17 @@ public class DefaultObjectBridge
     // Internal and Semi-Public maps
     //-------------------------------------------------------------------------------------------------------
 
-    private Map<Class<?>, Collection<?>> masterMap = new HashMap<Class<?>, Collection<?>>();
+    private Map<Class<?>, Collection<?>> masterMap;
 
-    private Map<String, PeriodType> periodTypeMap = new HashMap<String, PeriodType>();
+    private Map<String, PeriodType> periodTypeMap;
 
-    private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> uidMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
+    private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> uidMap;
 
-    private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> codeMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
+    private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> codeMap;
 
-    private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> nameMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
+    private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> nameMap;
 
-    private Map<Class<? extends NameableObject>, Map<String, NameableObject>> shortNameMap = new HashMap<Class<? extends NameableObject>, Map<String, NameableObject>>();
+    private Map<Class<? extends NameableObject>, Map<String, NameableObject>> shortNameMap;
 
     private static final List<Class<?>> registeredTypes = new ArrayList<Class<?>>();
 
@@ -99,6 +99,13 @@ public class DefaultObjectBridge
     public void init()
     {
         log.info( "Started updating lookup maps at " + new Date() );
+
+        masterMap = new HashMap<Class<?>, Collection<?>>();
+        periodTypeMap = new HashMap<String, PeriodType>();
+        uidMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
+        codeMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
+        nameMap = new HashMap<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>>();
+        shortNameMap = new HashMap<Class<? extends NameableObject>, Map<String, NameableObject>>();
 
         for ( Class<?> type : registeredTypes )
         {
