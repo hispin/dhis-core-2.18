@@ -35,6 +35,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,7 @@ public class DefaultObjectBridge
     static
     {
         registeredTypes.add( PeriodType.class );
+        registeredTypes.add( OrganisationUnitLevel.class );
         registeredTypes.add( OrganisationUnit.class );
         registeredTypes.add( OrganisationUnitGroup.class );
         registeredTypes.add( OrganisationUnitGroupSet.class );
