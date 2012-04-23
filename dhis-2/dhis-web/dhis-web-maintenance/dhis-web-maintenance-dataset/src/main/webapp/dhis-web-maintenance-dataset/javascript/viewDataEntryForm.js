@@ -1,11 +1,5 @@
-$(document).ready(function() {
-	validation2('saveDataEntryForm', function() {
-		autoSave = false;
-		validateDataEntryForm();
-	}, {
-		'rules' : getValidationRules("dataEntry")
-	});
-
+$( document ).ready( function() {
+	
 	leftBar.hideAnimated();
 
 	$("#selectionDialog").dialog({
@@ -197,7 +191,7 @@ function filterSelectList( select_id, filter )
 function showThenFadeOutMessage( message )
 {
 	$("#message_").html(message);
-	$("#message_").fadeOut(1000, function() {
+	$("#message_").fadeOut(3000, function() {
 		$("#message_").html("");
 		$("#message_").show();
 	});

@@ -5,12 +5,12 @@
 
 function removeDataEntryForm( dataSetIdField, dataEntryFormId, dataEntryFormName )
 {
-  var result = window.confirm( i18n_confirm_delete + '\n\n' + dataEntryFormName );
+	var result = window.confirm( i18n_confirm_delete + '\n\n' + dataEntryFormName );
 
-  if ( result )
-  {
-	window.location.href = 'delDataEntryForm.action?dataSetId=' + dataSetIdField + "&dataEntryFormId=" + dataEntryFormId;
-  }
+	if ( result )
+	{
+		window.location.href = 'delDataEntryForm.action?dataSetId=' + dataSetIdField + "&dataEntryFormId=" + dataEntryFormId;
+	}
 }
 
 // ----------------------------------------------------------------------
@@ -20,48 +20,34 @@ function removeDataEntryForm( dataSetIdField, dataEntryFormId, dataEntryFormName
 function validateDataEntryForm()
 {  
 	$.postUTF8( 'validateDataEntryForm.action',
+	{
+		name: $( '#nameField' ).val(),
+		dataSetId: $( '#dataSetIdField' ).val(),
+		dataEntryFormId: dataEntryFormId
+	}, 
+	function( json ) 
+	{
+		if ( autoSave == false )
 		{
-			name: byId( 'nameField' ).value,
-			dataSetId: byId( 'dataSetIdField' ).value,
-			dataEntryFormId: dataEntryFormId
+			dataEntryFormValidationCompleted( json );
 		}
-		, function( xmlObject ) 
+		else
 		{
-			if(autoSave == false)
-			{
-				dataEntryFormValidationCompleted(xmlObject);
-			}
-			else
-			{
-				autoSaveDataEntryFormValidationCompleted(xmlObject);
-			}
-		} );
+			autoSaveDataEntryFormValidationCompleted( json );
+		}
+	} );
 }
 
-function dataEntryFormValidationCompleted( messageElement )
+function dataEntryFormValidationCompleted( json )
 {
-  messageElement = messageElement.getElementsByTagName( 'message' )[0];
-  var type = messageElement.getAttribute( 'type' );
-  var message = messageElement.firstChild.nodeValue;
-
-  if ( type == 'success' )
-  {  
-      document.forms['saveDataEntryForm'].submit();
-  }
-  else if ( type == 'input' )
-  {
-    document.getElementById( 'message' ).innerHTML = message;
-    document.getElementById( 'message' ).style.display = 'block';
-  }
-  else if ( type == 'mismatch' )
-  {
-    var result = window.confirm( message );
-
-    if ( result )
-    {
-      document.forms['saveDataEntryForm'].submit();
-    }
-  }
+	if ( json.response == 'success' )
+	{  
+		$( '#saveDataEntryForm' ).submit();
+	}
+	else if ( json.response = 'input' )
+	{
+		setHeaderDelayMessage( json.message );
+	}
 }
 
 // -----------------------------------------------------------------------------
@@ -102,48 +88,35 @@ function findDataElementCountCompleted( dataSetElement )
 // Auto-save DataEntryForm
 // -----------------------------------------------------------------------------
 
-function autoSaveDataEntryFormValidationCompleted( messageElement )
+function autoSaveDataEntryFormValidationCompleted( json )
 {
-  messageElement = messageElement.getElementsByTagName( 'message' )[0];
-  var type = messageElement.getAttribute( 'type' );
-  var message = messageElement.firstChild.nodeValue;
-
-  if ( type == 'success' )
-  {
-     autoSaveDataEntryForm();
-  }
-  else if ( type == 'input' )
-  {
-	 setMessage( message );
-  }
-  else if ( type == 'mismatch' )
-  {
-    var result = window.confirm( message );
-
-    if ( result )
-    {
-      autoSaveDataEntryForm();
-    }
-  }
+	if ( json.response == 'success' )
+	{
+		autoSaveDataEntryForm();
+	}
+	else if ( json.response = 'input' )
+	{
+		setHeaderDelayMessage( json.message );
+	}
 }
 
 function autoSaveDataEntryForm() 
 {
 	var field = $("#designTextarea").ckeditorGet();
-	var designTextarea = htmlEncode(field.getData());
+	var designTextarea = field.getData();
 	
 	$.postUTF8( 'autoSaveDataEntryForm.action',
-		{
-			nameField: getFieldValue('nameField'),
-			designTextarea: designTextarea,
-			dataSetIdField: getFieldValue('dataSetIdField'),
-			dataEntryFormId: dataEntryFormId
-		}
-		, function( xmlObject ) 
-		{
-			setMessage(i18n_save_success); 
-			stat = "EDIT";
-			dataEntryFormId = xmlObject.getElementsByTagName( 'message' )[0].firstChild.nodeValue;
-			enable('delete');
-		} );
+	{
+		nameField: getFieldValue('nameField'),
+		designTextarea: designTextarea,
+		dataSetIdField: getFieldValue('dataSetIdField'),
+		dataEntryFormId: dataEntryFormId
+	},
+	function( xmlObject ) 
+	{
+		setHeaderDelayMessage( i18n_save_success ); 
+		stat = "EDIT";
+		dataEntryFormId = xmlObject.getElementsByTagName( 'message' )[0].firstChild.nodeValue;
+		enable('delete');
+	} );
 }
