@@ -1034,7 +1034,7 @@ Ext.onReady( function() {
 						xtype: 'textfield',
 						cls: 'tr-textfield-alt1',
 						id:'currentPage',
-						value: '1',
+						value: TR.state.currentPage,
 						listeners: {
 							added: function() {
 								TR.cmp.settings.currentPage = this;
@@ -1143,7 +1143,8 @@ Ext.onReady( function() {
             
         },
         setPagingToolbarStatus: function() {
-			if( TR.state.currentPage == TR.state.total == 1 )
+			if( TR.state.currentPage == TR.state.total 
+				&& TR.state.total== 1 )
 			{
 				Ext.getCmp('firstPageBtn').disable();
 				Ext.getCmp('previousPageBtn').disable();
