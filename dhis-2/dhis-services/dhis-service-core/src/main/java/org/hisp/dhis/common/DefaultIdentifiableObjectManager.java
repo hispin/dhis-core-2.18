@@ -77,18 +77,45 @@ public class DefaultIdentifiableObjectManager
     @Override
     public void save( IdentifiableObject object )
     {
-        if ( objectStoreMap.get( object.getClass() ) != null )
+        GenericIdentifiableObjectStore<IdentifiableObject> store = objectStoreMap.get( object.getClass() );
+
+        if ( store != null )
         {
-            objectStoreMap.get( object.getClass() ).save( object );
+            store.save( object );
+        }
+        else
+        {
+            log.warn( "No IdentifiableObject store found for " + object.getClass() + " (save)." );
         }
     }
 
     @Override
     public void update( IdentifiableObject object )
     {
-        if ( objectStoreMap.get( object.getClass() ) != null )
+        GenericIdentifiableObjectStore<IdentifiableObject> store = objectStoreMap.get( object.getClass() );
+
+        if ( store != null )
         {
-            objectStoreMap.get( object.getClass() ).update( object );
+            store.update( object );
+        }
+        else
+        {
+            log.warn( "No IdentifiableObject store found for " + object.getClass() + " (update)." );
+        }
+    }
+
+    @Override
+    public void delete( IdentifiableObject object )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = objectStoreMap.get( object.getClass() );
+
+        if ( store != null )
+        {
+            store.delete( object );
+        }
+        else
+        {
+            log.warn( "No IdentifiableObject store found for " + object.getClass() + " (delete)." );
         }
     }
 
@@ -116,7 +143,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null." );
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null (getByCode)." );
 
             return null;
         }
@@ -132,7 +159,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null." );
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null (getByName)." );
 
             return null;
         }
@@ -148,17 +175,12 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection." );
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getAll)." );
 
             return new ArrayList<T>();
         }
 
         return (Collection<T>) store.getAll();
-    }
-
-    public void delete( IdentifiableObject object )
-    {
-        objectStoreMap.get( object.getClass() ).delete( object );
     }
 
     @Override
