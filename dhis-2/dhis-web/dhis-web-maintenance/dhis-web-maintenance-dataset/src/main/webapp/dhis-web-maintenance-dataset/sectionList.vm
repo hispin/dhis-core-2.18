@@ -13,7 +13,7 @@
 			<tr>
 				<td><label>$i18n.getString( "select_dataset" )</label><br/>
 					<select id="dataSetId" name="dataSetId" style="min-width:20em" onchange="javascript:getSectionByDataSet(this.options[this.selectedIndex].value)">
-						<option value=null selected="selected" >[ $i18n.getString( "all" ) ]</option>
+						<option value="-1">[ $i18n.getString( "all" ) ]</option>
 						#foreach ( $dataset in $datasets )
 						  <option value="$dataset.id" #if($dataSetId==$dataset.id) selected="selected" #end>$dataset.name</option>
 						#end
@@ -22,7 +22,7 @@
 				<td>	
 					<label>$i18n.getString( "select_categorycombo" )</label><br/>			  
 					<select id="categoryComboId" name="categoryComboId" style="min-width:20em">
-						<option value=null selected="selected" >[ $i18n.getString( "all" ) ]</option>
+						<option value="-1">[ $i18n.getString( "all" ) ]</option>
 						#foreach ( $categoryCombo in $categoryCombos )
 							<option value="$categoryCombo.id" #if($categoryComboId==$categoryCombo.id) selected="selected" #end>$categoryCombo.name</option>
 						#end
