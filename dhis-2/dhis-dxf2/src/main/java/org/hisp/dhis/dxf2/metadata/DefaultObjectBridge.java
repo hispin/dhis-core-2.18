@@ -96,7 +96,6 @@ public class DefaultObjectBridge
         registeredTypes.add( OrganisationUnit.class );
         registeredTypes.add( OrganisationUnitGroup.class );
         registeredTypes.add( OrganisationUnitGroupSet.class );
-        registeredTypes.add( DataSet.class );
     }
 
     @Override
