@@ -136,10 +136,6 @@
       <groupId>jfree</groupId>
       <artifactId>jcommon</artifactId>
     </dependency>
-    <dependency>
-      <groupId>net.fckeditor</groupId>
-      <artifactId>java-core</artifactId>
-    </dependency>
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

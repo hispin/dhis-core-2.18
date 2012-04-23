@@ -40,13 +40,8 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-    </dependency>
-    
-    
-	<!-- GeoTools -->
+
+    <!-- GeoTools -->
     
     <dependency>
       <groupId>org.geotools</groupId>
