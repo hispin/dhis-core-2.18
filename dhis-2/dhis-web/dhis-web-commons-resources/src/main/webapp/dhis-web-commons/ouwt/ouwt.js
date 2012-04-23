@@ -113,6 +113,11 @@ function Selection()
                 return true;
             }
 
+            if(localRoots === undefined || localRoots.length)
+            {
+                return true;
+            }
+
             localRoots.sort();
             remoteRoots.sort();
 
