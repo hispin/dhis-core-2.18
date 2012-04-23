@@ -11,44 +11,45 @@ function showSectionDetails( sectionId )
 		setInnerHTML( 'dataElementCountField', json.section.dataElementCount );  
 		
 		showDetails();
-	});
+	} );
 }
 
 function sortOrderSubmit() 
 {
-	var datasetId = document.getElementById('dataSetId').value;
+	var dataSetId = $( "#dataSetId" ).val();
 
-	if ( datasetId == "null" ) 
+	if ( dataSetId && dataSetId != -1 ) 
+	{
+		window.location.href = "showSortSectionForm.action?dataSetId=" + dataSetId;
+	} 
+	else 
 	{
 		window.alert( i18n_please_select_dataset );
-	} else 
-	{
-		window.location.href = "showSortSectionForm.action?dataSetId=" + datasetId;
 	}
 }
 
-function getSectionByDataSet(dataSetId) 
+function getSectionByDataSet( dataSetId ) 
 {
 	window.location.href = "section.action?dataSetId=" + dataSetId;
 }
 
 function removeSection(sectionId, sectionName) 
 {
-	removeItem(sectionId, sectionName, i18n_confirm_delete,	"removeSection.action");
+	removeItem( sectionId, sectionName, i18n_confirm_delete, "removeSection.action" );
 }
 
 function addSectionSubmit() 
 {
-	var dataSetId = document.getElementById('dataSetId').value;
-	var categoryComboId = document.getElementById('categoryComboId').value;
+	var dataSetId = $( '#dataSetId' ).val();
+	var categoryComboId = $( '#categoryComboId' ).val();
 
-	if ( dataSetId == "null" || dataSetId == "" || categoryComboId == "null" || categoryComboId == "" ) 
+	if ( dataSetId && dataSetId != "-1" && categoryComboId && categoryComboId != "-1" ) 
 	{
-		showWarningMessage( i18n_please_select_dataset_categorycombo );
+		window.location.href = "getSectionOptions.action?dataSetId=" + dataSetId + "&categoryComboId=" + categoryComboId;
 	} 
 	else 
 	{
-		window.location.href = "getSectionOptions.action?dataSetId=" + dataSetId + "&categoryComboId=" + categoryComboId;
+		showWarningMessage( i18n_please_select_dataset_categorycombo );		
 	}
 }
 

@@ -36,6 +36,16 @@ public class SectionOrderComparator
 {
     public int compare( Section o1, Section o2 )
     {
+        if ( o1.getDataSet() != null && o2.getDataSet() != null )
+        {
+            int dataSet = o1.getDataSet().getName().compareTo( o2.getDataSet().getName() );
+            
+            if ( dataSet != 0 )
+            {
+                return dataSet;
+            }
+        }
+        
         return o1.getSortOrder() - o2.getSortOrder();
     }
 }

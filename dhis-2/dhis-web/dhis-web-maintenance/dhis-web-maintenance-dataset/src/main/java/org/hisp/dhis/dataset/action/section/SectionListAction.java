@@ -134,29 +134,23 @@ public class SectionListAction
 
         Collections.sort( datasets, IdentifiableObjectNameComparator.INSTANCE );
 
-        Collection<Section> temp = sectionService.getAllSections();
-
-        if ( dataSetId == null )
+        if ( dataSetId != null && dataSetId != -1 )
         {
-            sections = new ArrayList<Section>( temp );
-        }
-        else
-        {
-            sections = new ArrayList<Section>();
-
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
-            Set<Section> dataSetSections = dataSet.getSections();
-            sections = new ArrayList<Section>( dataSetSections );
-
-            dataSet = dataSetService.getDataSet( dataSetId.intValue() );
+            
+            sections = new ArrayList<Section>( dataSet.getSections() );
 
             for ( DataElement de : dataSet.getDataElements() )
             {
                 categoryCombos.add( de.getCategoryCombo() );
-            }
-
-            Collections.sort( sections, new SectionOrderComparator() );
+            }            
         }
+        else
+        {
+            sections = new ArrayList<Section>( sectionService.getAllSections() );
+        }
+        
+        Collections.sort( sections, new SectionOrderComparator() );
 
         return SUCCESS;
     }
