@@ -13,7 +13,7 @@
 
 <div class="headerDiv"><span class="header">$i18n.getString( "report_table_parameters" )</span></div>
 
-<input type="hidden" id="id" name="id" value="$!id" />
+<input type="hidden" id="uid" name="uid" value="$!uid" />
 
 <!-- Reporting month -->
 

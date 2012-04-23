@@ -2,6 +2,6 @@
 
 <div class="contentDiv">
 #foreach( $table in $reportTables )
-<div class="contentItemDiv" id="reportTable${table.id}" onclick="getReportParams( '${table.id}' )">$encoder.htmlEncode( $table.name )</div>
+<div class="contentItemDiv" id="reportTable${table.id}" onclick="getReportParams( '${table.uid}' )">$encoder.htmlEncode( $table.name )</div>
 #end
 </div>

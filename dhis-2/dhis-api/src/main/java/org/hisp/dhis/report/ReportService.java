@@ -35,7 +35,6 @@ import java.util.Date;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public interface ReportService
 {
@@ -43,9 +42,6 @@ public interface ReportService
 
     final String REPORTTYPE_PDF = "pdf";
     final String REPORTTYPE_XLS = "xls";
-
-    public void renderReport( OutputStream out, Report report, Date reportingPeriod,
-                              Integer organisationUnitId, String type, I18nFormat format );
 
     void renderReport( OutputStream out, String reportUid, Date reportingPeriod,
                        String organisationUnitUid, String type, I18nFormat format );
@@ -74,10 +70,30 @@ public interface ReportService
      */
     Report getReport( String uid );
 
+    /**
+     * Returns the total number of reports. 
+     * @return the total number of reports.
+     */
     int getReportCount();
 
+    /**
+     * Retrieves the given number of maximum reports starting at the given start
+     * index. Reports are sorted on the name property.
+     * 
+     * @param first the start index.
+     * @param max the maximum number of reports.
+     * @return a collection of reports.
+     */
     Collection<Report> getReportsBetween( int first, int max );
 
+    /**
+     * Retrieves the given number of maximum reports starting at the given start
+     * index. Reports are sorted on the name property.
+     * 
+     * @param first the start index.
+     * @param max the maximum number of reports.
+     * @return a collection of reports.
+     */
     Collection<Report> getReportsBetweenByName( String name, int first, int max );
 
     /**

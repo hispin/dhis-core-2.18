@@ -13,14 +13,14 @@ function pageInit()
 // Report table
 // -----------------------------------------------------------------------------
 
-function getReportParams( id )
+function getReportParams( uid )
 {
-	window.location.href = "getReportParams.action?id=" + id;
+	window.location.href = "getReportParams.action?uid=" + uid;
 }
 
 function validationError()
 {
-	if ( $( "#selectionTree" ).length && selectionTreeSelection.getSelected().length == 0 )
+	if ( $( "#selectionTree" ).length && !selectionTreeSelection.isSelected() )
 	{
 		setMessage( i18n_please_select_unit );
 		return true;
@@ -36,16 +36,16 @@ function generateReport()
 		return false;
 	}
 	
-	var url = "id=" + $( "#id" ).val() + "&mode=" + $( "#mode" ).val();
+	var url = "uid=" + $( "#uid" ).val();
 	    
     if ( $( "#reportingPeriod" ).length )
     {
-        url += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
+        url += "&pe=" + $( "#reportingPeriod" ).val();
     }
         
     if ( $( "#selectionTree" ).length )
     {
-        url += "&organisationUnitId=" + selectionTreeSelection.getSelected()[0];
+        url += "&ou=" + selectionTreeSelection.getSelectedUid();
     }
     
 	window.location.href = "getReport.action?" + url;
