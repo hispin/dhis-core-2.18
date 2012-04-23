@@ -188,7 +188,5 @@ public class DefaultImportService
                 log.info( "Importer for object of type " + objects.get( 0 ).getClass().getSimpleName() + " not found." );
             }
         }
-
-        log.info( "importConflicts = " + importSummary.getConflicts() );
     }
 }
