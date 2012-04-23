@@ -122,7 +122,7 @@ public class BaseIdentifiableObject
     // -------------------------------------------------------------------------
 
     @JsonProperty( value = "internalId" )
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
     @JacksonXmlProperty( isAttribute = true )
     public int getId()
     {
@@ -230,7 +230,7 @@ public class BaseIdentifiableObject
      */
     public void setAutoFields()
     {
-        if ( uid == null )
+        if ( uid == null || uid.length() == 0 )
         {
             setUid( CodeGenerator.generateCode() );
         }
