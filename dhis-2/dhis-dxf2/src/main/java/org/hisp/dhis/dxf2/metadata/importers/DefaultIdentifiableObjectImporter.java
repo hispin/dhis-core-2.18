@@ -113,16 +113,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         log.debug( "Trying to save new object => " + getDisplayName( object ) );
 
-        if ( NameableObject.class.isInstance( object ) )
-        {
-            NameableObject nameableObject = (NameableObject) object;
-
-            if ( nameableObject.getShortName() == null )
-            {
-                log.info( "shortName is null on " + object );
-            }
-        }
-
         Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections =
             scanIdentifiableObjectCollections( object );
 
@@ -250,15 +240,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             return "[ object is null ]";
         }
-        else if ( object.getName() != null )
+        else if ( object.getName() != null && object.getName().length() > 0 )
         {
             return object.getName();
         }
-        else if ( object.getUid() != null )
+        else if ( object.getUid() != null && object.getName().length() > 0 )
         {
             return object.getUid();
         }
-        else if ( object.getCode() != null )
+        else if ( object.getCode() != null && object.getName().length() > 0 )
         {
             return object.getCode();
         }
@@ -359,6 +349,23 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private ImportConflict validateIdentifiableObject( T object, ImportOptions options )
     {
         ImportConflict conflict = null;
+
+        // FIXME add bean validation for this
+        if ( object.getName() == null || object.getName().length() == 0 )
+        {
+            return new ImportConflict( getDisplayName( object ), "Empty name." );
+        }
+
+        if ( NameableObject.class.isInstance( object ) )
+        {
+            NameableObject nameableObject = (NameableObject) object;
+
+            if ( nameableObject.getShortName() == null || nameableObject.getShortName().length() == 0 )
+            {
+                return new ImportConflict( getDisplayName( object ), "Empty shortName." );
+            }
+        }
+        // end
 
         if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
