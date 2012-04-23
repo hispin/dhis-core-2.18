@@ -411,8 +411,6 @@ public class DefaultProgramStageInstanceService
                 }
             }
 
-           
-
             // Identifier types
             if ( idens != null && idens.size() > 0 )
             {

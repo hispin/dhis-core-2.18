@@ -610,9 +610,14 @@ Ext.onReady( function() {
 				for( var i=0; i<colLen; i++ )
 				{
 					var col = cols[i];	
-					if( col.name )
+					var dataIndex = col.dataIndex;
+					
+					if( dataIndex== 'col1' ) 
 					{
-						var dataIndex = col.dataIndex;
+						p.searchingValues.push( col.name + col.hidden + "_" );
+					}
+					else if( col.name )
+					{
 						var value = editor.data[dataIndex];
 						if( value!=null && value!= '')
 						{
@@ -948,7 +953,7 @@ Ext.onReady( function() {
 			
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
-                height: TR.util.viewport.getSize().y - 68,
+                height: TR.util.viewport.getSize().y - 60,
 				columns: cols,
 				scroll: 'both',
 				title: TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report,
@@ -961,48 +966,6 @@ Ext.onReady( function() {
 						}
 					}
 				},
-				lbar: [
-					{
-						xtype: 'label',
-						style: 'padding:45px 3px 3 0px',
-					},
-					{
-						xtype: 'button',
-						icon: 'images/clearFilter.png',
-						tooltip: TR.i18n.clear_filter,
-						handler: function() {
-							var cols = [];
-							var grid = TR.datatable.datatable;
-							var i = 0;
-							for( var index=0; index<grid.columns.length; index++)
-							{
-								var col = grid.columns[index];
-								
-								cols[i] = col;
-								i++;
-								
-								var subCols = col.items;
-								for( var subIndex=0; subIndex<subCols.length; subIndex++)
-								{
-									cols[i] = subCols.getAt(subIndex);
-									i++;
-								}
-							}
-							
-							var editor = grid.getStore().getAt(0);
-							var colLen = cols.length;
-							for( var i=1; i<colLen; i++ )
-							{
-								var col = cols[i];
-								var dataIndex = col.dataIndex;
-								TR.store.datatable.first().data[dataIndex] = "";
-							}
-							
-							TR.exe.execute();
-						}
-					}
-					
-				],
 				bbar: [
 					{
 						xtype: 'button',
@@ -1110,15 +1073,43 @@ Ext.onReady( function() {
 									TR.exe.execute();
 								}
 							}
+
 						}
 					})
 				],
 				store: TR.store.datatable
 				,listeners: {
-					celldblclick: function(grid,rowIndex,cellIndex,e){
-						if( rowIndex==0 && cellIndex==0 )
+					cellclick: function ( o, idx, colIdx, e ) {
+						if ( e.index == 0 && colIdx == 1 )
 						{
-							grid.getView().focusRow(this.rowIndex);
+							var cols = [];
+							var grid = TR.datatable.datatable;
+							var i = 0;
+							for( var index=0; index<grid.columns.length; index++)
+							{
+								var col = grid.columns[index];
+								
+								cols[i] = col;
+								i++;
+								
+								var subCols = col.items;
+								for( var subIndex=0; subIndex<subCols.length; subIndex++)
+								{
+									cols[i] = subCols.getAt(subIndex);
+									i++;
+								}
+							}
+							
+							var editor = grid.getStore().getAt(0);
+							var colLen = cols.length;
+							for( var i=1; i<colLen; i++ )
+							{
+								var col = cols[i];
+								var dataIndex = col.dataIndex;
+								TR.store.datatable.first().data[dataIndex] = "";
+							}
+							
+							TR.exe.execute();
 						}
 					}
 				}
@@ -2019,7 +2010,7 @@ Ext.onReady( function() {
                 id: 'center',
                 region: 'center',
                 layout: 'fit',
-                bodyStyle: 'padding-top:5px',
+                bodyStyle: 'padding-top:0px, padding-bottom:0px',
                 tbar: {
                     xtype: 'toolbar',
                     cls: 'tr-toolbar',

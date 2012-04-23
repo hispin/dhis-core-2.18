@@ -252,9 +252,7 @@ public class HibernateProgramStageInstanceStore
         String sqlATTR = " select distinct psi.programstageinstanceid from patientdatavalue pdv "
             + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid ";
         String sqlDE = " select distinct psi.programstageinstanceid from patientdatavalue pdv "
-            + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid "
-            + "INNER JOIN patientattributevalue as pav ON pav.patientid = p.patientid "
-            + "INNER JOIN patientattribute as pa ON pa.patientattributeid = pav.patientattributeid ";
+            + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid ";
         String condition = "FROM patientdatavalue pdv "
             + "INNER JOIN programstageinstance psi ON pdv.programstageinstanceid=psi.programstageinstanceid "
             + "INNER JOIN programinstance pi ON pi.programinstanceid=psi.programinstanceid ";
