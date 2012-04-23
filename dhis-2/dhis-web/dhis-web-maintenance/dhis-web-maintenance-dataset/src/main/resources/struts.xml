@@ -182,7 +182,7 @@
     </action>
 
     <action name="autoSaveDataEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.AutoSaveDataEntryFormAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
     </action>
 
     <action name="validateDataEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.ValidateDataEntryFormAction">
