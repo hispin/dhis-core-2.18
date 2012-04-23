@@ -373,7 +373,7 @@
       <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjweaver</artifactId>
-        <version>>1.6.4</version>
+        <version>1.6.4</version>
       </dependency>
       <!--Spring Security -->
       <dependency>
