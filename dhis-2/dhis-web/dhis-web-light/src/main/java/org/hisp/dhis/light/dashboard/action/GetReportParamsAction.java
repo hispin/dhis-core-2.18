@@ -78,18 +78,18 @@ public class GetReportParamsAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
-    public Integer getId()
+    private String uid;
+    
+    public String getUid()
     {
-        return id;
+        return uid;
     }
 
-    public void setId( Integer id )
+    public void setUid( String uid )
     {
-        this.id = id;
+        this.uid = uid;
     }
-        
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -116,9 +116,9 @@ public class GetReportParamsAction
     {
         selectionTreeManager.setCurrentUserOrganisationUnitAsSelected();
         
-        if ( id != null )
+        if ( uid != null )
         {
-            ReportTable reportTable = reportTableService.getReportTable( id, ReportTableService.MODE_REPORT_TABLE );
+            ReportTable reportTable = reportTableService.getReportTable( uid, ReportTableService.MODE_REPORT_TABLE );
 
             if ( reportTable != null )
             {

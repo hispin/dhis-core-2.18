@@ -119,14 +119,7 @@ public class DefaultReportService
         String organisationUnitUid, String type, I18nFormat format )
     {
         Report report = getReport( reportUid );
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
         
-        renderReport( out, report, reportingPeriod, unit.getId(), type, format );
-    }
-    
-    public void renderReport( OutputStream out, Report report, Date reportingPeriod,
-        Integer organisationUnitId, String type, I18nFormat format )
-    {
         Map<String, Object> params = new HashMap<String, Object>();
 
         params.putAll( constantService.getConstantParameterMap() );
@@ -141,7 +134,7 @@ public class DefaultReportService
             {
                 ReportTable reportTable = report.getReportTable();
 
-                Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
+                Grid grid = reportTableService.getReportTableGrid( reportTable.getUid(), format, reportingPeriod, organisationUnitUid );
 
                 if ( report.isUsingOrganisationUnitGroupSets() )
                 {
