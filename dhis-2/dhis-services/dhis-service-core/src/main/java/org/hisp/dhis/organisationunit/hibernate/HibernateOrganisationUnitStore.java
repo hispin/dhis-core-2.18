@@ -27,30 +27,20 @@ package org.hisp.dhis.organisationunit.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.OrganisationUnitStore;
+import org.hisp.dhis.organisationunit.*;
 import org.hisp.dhis.system.objectmapper.OrganisationUnitRelationshipRowMapper;
 import org.springframework.jdbc.core.RowCallbackHandler;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * @author Kristian Nordal
@@ -59,19 +49,6 @@ public class HibernateOrganisationUnitStore
     extends HibernateIdentifiableObjectStore<OrganisationUnit>
     implements OrganisationUnitStore
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    //TODO this should be a separate class!
-    
-    private HibernateIdentifiableObjectStore<OrganisationUnitLevel> orgLevelStore;
-
-    public void setOrgLevelStore( HibernateIdentifiableObjectStore<OrganisationUnitLevel> orgLevelStore )
-    {
-        this.orgLevelStore = orgLevelStore;
-    }    
-    
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -148,32 +125,32 @@ public class HibernateOrganisationUnitStore
 
         return query.list();
     }
-        
+
     public Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap()
     {
         final String sql = "select datasetid, sourceid from datasetsource";
-        
+
         final Map<Integer, Set<Integer>> map = new HashMap<Integer, Set<Integer>>();
-        
+
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
             public void processRow( ResultSet rs ) throws SQLException
             {
                 int dataSetId = rs.getInt( 1 );
                 int organisationUnitId = rs.getInt( 2 );
-                
+
                 Set<Integer> dataSets = map.get( organisationUnitId );
-                
+
                 if ( dataSets == null )
                 {
                     dataSets = new HashSet<Integer>();
                     map.put( organisationUnitId, dataSets );
                 }
-                
+
                 dataSets.add( dataSetId );
             }
         } );
-        
+
         return map;
     }
 
@@ -181,9 +158,9 @@ public class HibernateOrganisationUnitStore
     {
         final String sql = "select organisationunitid from organisationunit ou where not exists (" +
             "select sourceid from datavalue where sourceid=ou.organisationunitid)";
-        
+
         final Set<Integer> units = new HashSet<Integer>();
-        
+
         jdbcTemplate.query( sql, new RowCallbackHandler()
         {
             public void processRow( ResultSet rs ) throws SQLException
@@ -191,7 +168,7 @@ public class HibernateOrganisationUnitStore
                 units.add( rs.getInt( 1 ) );
             }
         } );
-        
+
         return units;
     }
 
@@ -209,82 +186,18 @@ public class HibernateOrganisationUnitStore
     public void updateOrganisationUnitParent( int organisationUnitId, int parentId )
     {
         Timestamp now = new Timestamp( new Date().getTime() );
-        
+
         final String sql = "update organisationunit " + "set parentid=" + parentId + ", lastupdated='"
             + now + "' " + "where organisationunitid=" + organisationUnitId;
 
         jdbcTemplate.execute( sql );
     }
 
-    // -------------------------------------------------------------------------
-    // OrganisationUnitLevel
-    // -------------------------------------------------------------------------
-
-    public int addOrganisationUnitLevel( OrganisationUnitLevel level )
-    {
-        return orgLevelStore.save( level );
-    }
-
-    public void updateOrganisationUnitLevel( OrganisationUnitLevel level )
-    {
-        orgLevelStore.update( level );
-    }
-
-    public OrganisationUnitLevel getOrganisationUnitLevel( int id )
-    {
-        return orgLevelStore.get(  id );
-    }
-
-    public OrganisationUnitLevel getOrganisationUnitLevel( String uid )
-    {
-        return orgLevelStore.getByUid( uid );
-    }
-
-    public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )
-    {
-        orgLevelStore.delete( level );
-    }
-
-    public void deleteOrganisationUnitLevels()
-    {
-        String hql = "delete from OrganisationUnitLevel";
-
-        sessionFactory.getCurrentSession().createQuery( hql ).executeUpdate();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<OrganisationUnitLevel> getOrganisationUnitLevels()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class ).list();
-    }
-
-    public OrganisationUnitLevel getOrganisationUnitLevelByLevel( int level )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
-
-        return (OrganisationUnitLevel) criteria.add( Restrictions.eq( "level", level ) ).uniqueResult();
-    }
-
-    public OrganisationUnitLevel getOrganisationUnitLevelByName( String name )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnitLevel.class );
-
-        return (OrganisationUnitLevel) criteria.add( Restrictions.eq( "name", name ) ).uniqueResult();
-    }
-
-    @Override
-    public int getMaxOfOrganisationUnitLevels()
-    {
-        final String sql = "SELECT MAX(level) FROM orgunitlevel";
-
-        return jdbcTemplate.queryForInt( sql );
-    }
-
     @Override
     public void update( Collection<OrganisationUnit> units )
     {
         Timestamp now = new Timestamp( new Date().getTime() );
-        
+
         Collection<Integer> unitIds = new HashSet<Integer>();
 
         for ( OrganisationUnit orgunit : units )
@@ -294,13 +207,13 @@ public class HibernateOrganisationUnitStore
 
         if ( unitIds.size() > 0 )
         {
-            String sql = "update OrganisationUnit set hasPatients=true,lastUpdated='" + now + 
+            String sql = "update OrganisationUnit set hasPatients=true,lastUpdated='" + now +
                 "' where organisationunitid in (:unitIds)";
             Query query = sessionFactory.getCurrentSession().createQuery( sql );
             query.setParameterList( "unitIds", unitIds );
             query.executeUpdate();
 
-            sql = "UPDATE OrganisationUnit SET hasPatients=false,lastUpdated='" + now + 
+            sql = "UPDATE OrganisationUnit SET hasPatients=false,lastUpdated='" + now +
                 "' WHERE organisationunitid not in ( :unitIds )";
             query = sessionFactory.getCurrentSession().createQuery( sql );
             query.setParameterList( "unitIds", unitIds );
@@ -308,7 +221,7 @@ public class HibernateOrganisationUnitStore
         }
         else
         {
-            String sql = "update OrganisationUnit set hasPatients=false,,lastUpdated='" + now +"'";
+            String sql = "update OrganisationUnit set hasPatients=false,,lastUpdated='" + now + "'";
             Query query = sessionFactory.getCurrentSession().createQuery( sql );
             query.executeUpdate();
         }

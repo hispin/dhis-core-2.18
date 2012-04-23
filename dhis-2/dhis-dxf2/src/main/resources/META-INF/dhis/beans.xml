@@ -118,6 +118,11 @@
         value="org.hisp.dhis.organisationunit.OrganisationUnit" />
   </bean>
 
+  <bean id="organisationUnitLevelImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+    <constructor-arg name="importerClass" type="java.lang.Class"
+        value="org.hisp.dhis.organisationunit.OrganisationUnitLevel" />
+  </bean>
+
   <bean id="organisationUnitGroupImporter"
       class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class"

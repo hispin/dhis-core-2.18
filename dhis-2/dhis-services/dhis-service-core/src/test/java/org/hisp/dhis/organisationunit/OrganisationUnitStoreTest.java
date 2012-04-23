@@ -27,15 +27,12 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 import java.util.Collection;
 
-import org.hisp.dhis.DhisSpringTest;
-import org.junit.Test;
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -45,13 +42,16 @@ public class OrganisationUnitStoreTest
     extends DhisSpringTest
 {
     private OrganisationUnitStore organisationUnitStore;
-    
+
+    private OrganisationUnitLevelStore organisationUnitLevelStore;
+
     @Override
     public void setUpTest()
     {
         organisationUnitStore = (OrganisationUnitStore) getBean( OrganisationUnitStore.ID );
+        organisationUnitLevelStore = (OrganisationUnitLevelStore) getBean( OrganisationUnitLevelStore.ID );
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel
     // -------------------------------------------------------------------------
@@ -61,12 +61,12 @@ public class OrganisationUnitStoreTest
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
         OrganisationUnitLevel levelB = new OrganisationUnitLevel( 2, "District" );
-        
-        int idA = organisationUnitStore.addOrganisationUnitLevel( levelA );
-        int idB = organisationUnitStore.addOrganisationUnitLevel( levelB );
-        
-        assertEquals( levelA, organisationUnitStore.getOrganisationUnitLevel( idA ) );
-        assertEquals( levelB, organisationUnitStore.getOrganisationUnitLevel( idB ) );        
+
+        int idA = organisationUnitLevelStore.save( levelA );
+        int idB = organisationUnitLevelStore.save( levelB );
+
+        assertEquals( levelA, organisationUnitLevelStore.get( idA ) );
+        assertEquals( levelB, organisationUnitLevelStore.get( idB ) );
     }
 
     @Test
@@ -74,12 +74,12 @@ public class OrganisationUnitStoreTest
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
         OrganisationUnitLevel levelB = new OrganisationUnitLevel( 2, "District" );
-        
-        organisationUnitStore.addOrganisationUnitLevel( levelA );
-        organisationUnitStore.addOrganisationUnitLevel( levelB );
-        
-        Collection<OrganisationUnitLevel> actual = organisationUnitStore.getOrganisationUnitLevels();
-        
+
+        organisationUnitLevelStore.save( levelA );
+        organisationUnitLevelStore.save( levelB );
+
+        Collection<OrganisationUnitLevel> actual = organisationUnitLevelStore.getAll();
+
         assertNotNull( actual );
         assertEquals( 2, actual.size() );
         assertTrue( actual.contains( levelA ) );
@@ -91,21 +91,21 @@ public class OrganisationUnitStoreTest
     {
         OrganisationUnitLevel levelA = new OrganisationUnitLevel( 1, "National" );
         OrganisationUnitLevel levelB = new OrganisationUnitLevel( 2, "District" );
-        
-        int idA = organisationUnitStore.addOrganisationUnitLevel( levelA );
-        int idB = organisationUnitStore.addOrganisationUnitLevel( levelB );
-        
-        assertNotNull( organisationUnitStore.getOrganisationUnitLevel( idA ) );
-        assertNotNull( organisationUnitStore.getOrganisationUnitLevel( idB ) );
-        
-        organisationUnitStore.deleteOrganisationUnitLevel( levelA );
 
-        assertNull( organisationUnitStore.getOrganisationUnitLevel( idA ) );
-        assertNotNull( organisationUnitStore.getOrganisationUnitLevel( idB ) );
+        int idA = organisationUnitLevelStore.save( levelA );
+        int idB = organisationUnitLevelStore.save( levelB );
 
-        organisationUnitStore.deleteOrganisationUnitLevel( levelB );
+        assertNotNull( organisationUnitLevelStore.get( idA ) );
+        assertNotNull( organisationUnitLevelStore.get( idB ) );
 
-        assertNull( organisationUnitStore.getOrganisationUnitLevel( idA ) );
-        assertNull( organisationUnitStore.getOrganisationUnitLevel( idB ) );        
+        organisationUnitLevelStore.delete( levelA );
+
+        assertNull( organisationUnitLevelStore.get( idA ) );
+        assertNotNull( organisationUnitLevelStore.get( idB ) );
+
+        organisationUnitLevelStore.delete( levelB );
+
+        assertNull( organisationUnitLevelStore.get( idA ) );
+        assertNull( organisationUnitLevelStore.get( idB ) );
     }
 }
