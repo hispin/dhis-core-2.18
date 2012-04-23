@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -95,6 +96,7 @@ public class DefaultObjectBridge
         registeredTypes.add( OrganisationUnit.class );
         registeredTypes.add( OrganisationUnitGroup.class );
         registeredTypes.add( OrganisationUnitGroupSet.class );
+        registeredTypes.add( DataSet.class );
     }
 
     @Override
@@ -339,7 +341,7 @@ public class DefaultObjectBridge
 
             if ( identifiableObject.getUid() != null )
             {
-                IdentifiableObject match = uidMap.get( identifiableObject.getClass() ).get( identifiableObject.getUid() );
+                IdentifiableObject match = getUidMatch( identifiableObject );
 
                 if ( match != null )
                 {
@@ -349,7 +351,7 @@ public class DefaultObjectBridge
 
             if ( identifiableObject.getCode() != null )
             {
-                IdentifiableObject match = codeMap.get( identifiableObject.getClass() ).get( identifiableObject.getCode() );
+                IdentifiableObject match = getCodeMatch( identifiableObject );
 
                 if ( match != null )
                 {
@@ -359,7 +361,7 @@ public class DefaultObjectBridge
 
             if ( identifiableObject.getName() != null )
             {
-                IdentifiableObject match = nameMap.get( identifiableObject.getClass() ).get( identifiableObject.getName() );
+                IdentifiableObject match = getNameMatch( identifiableObject );
 
                 if ( match != null )
                 {
@@ -374,7 +376,7 @@ public class DefaultObjectBridge
 
             if ( nameableObject.getShortName() != null )
             {
-                IdentifiableObject match = shortNameMap.get( nameableObject.getClass() ).get( nameableObject.getShortName() );
+                IdentifiableObject match = getShortNameMatch( nameableObject );
 
                 if ( match != null )
                 {
@@ -449,5 +451,53 @@ public class DefaultObjectBridge
                 map.put( nameableObject.getShortName(), nameableObject );
             }
         }
+    }
+
+    private IdentifiableObject getUidMatch( IdentifiableObject identifiableObject )
+    {
+        Map<String, IdentifiableObject> map = uidMap.get( identifiableObject.getClass() );
+
+        if ( map != null )
+        {
+            return map.get( identifiableObject.getUid() );
+        }
+
+        return null;
+    }
+
+    private IdentifiableObject getCodeMatch( IdentifiableObject identifiableObject )
+    {
+        Map<String, IdentifiableObject> map = codeMap.get( identifiableObject.getClass() );
+
+        if ( map != null )
+        {
+            return map.get( identifiableObject.getCode() );
+        }
+
+        return null;
+    }
+
+    private IdentifiableObject getNameMatch( IdentifiableObject identifiableObject )
+    {
+        Map<String, IdentifiableObject> map = nameMap.get( identifiableObject.getClass() );
+
+        if ( map != null )
+        {
+            return map.get( identifiableObject.getName() );
+        }
+
+        return null;
+    }
+
+    private NameableObject getShortNameMatch( NameableObject nameableObject )
+    {
+        Map<String, NameableObject> map = shortNameMap.get( nameableObject.getClass() );
+
+        if ( map != null )
+        {
+            return map.get( nameableObject.getShortName() );
+        }
+
+        return null;
     }
 }

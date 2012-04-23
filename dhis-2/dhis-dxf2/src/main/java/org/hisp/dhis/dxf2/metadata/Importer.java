@@ -39,7 +39,7 @@ public interface Importer<T>
 {
     /**
      * Import a single object, return null or a ImportConflict is there is a conflict.
-     *
+     * <p/>
      * This is meant to be a one-off import of a single object, if you want to import multiple
      * objects, then use importObjects..
      *
@@ -47,7 +47,7 @@ public interface Importer<T>
      * @param options Import options
      * @return ImportConflict instance if a conflict occurred, if not null
      */
-    ImportConflict importObject( T object, ImportOptions options );
+    List<ImportConflict> importObject( T object, ImportOptions options );
 
     /**
      * Import a collection of objects.

@@ -82,6 +82,7 @@ public class DefaultImportService
         objectBridge.init();
 
         Date startDate = new Date();
+        log.info( "Started import at " + startDate );
 
         doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
@@ -127,16 +128,14 @@ public class DefaultImportService
         doImport( metaData.getReports(), importOptions, importSummary );
         doImport( metaData.getReportTables(), importOptions, importSummary );
         doImport( metaData.getCharts(), importOptions, importSummary );
-
-        doImport( metaData.getDataSets(), importOptions, importSummary );
 */
+        doImport( metaData.getDataSets(), importOptions, importSummary );
+
         cacheManager.clearCache();
         objectBridge.destroy();
 
         Date endDate = new Date();
-        log.info( "Started import at " + startDate );
         log.info( "Finished import at " + endDate );
-
 
         return importSummary;
     }
@@ -177,10 +176,10 @@ public class DefaultImportService
 
             if ( importer != null )
             {
-                List<ImportConflict> conflicts = importer.importObjects( objects, importOptions );
+                List<ImportConflict> importConflicts = importer.importObjects( objects, importOptions );
                 ImportCount count = importer.getCurrentImportCount();
 
-                importSummary.getConflicts().addAll( conflicts );
+                importSummary.getConflicts().addAll( importConflicts );
                 // importSummary.getCounts().add( count ); //FIXME
             }
             else
@@ -188,5 +187,7 @@ public class DefaultImportService
                 log.info( "Importer for object of type " + objects.get( 0 ).getClass().getSimpleName() + " not found." );
             }
         }
+
+        log.info( "importConflicts = " + importSummary.getConflicts() );
     }
 }

@@ -103,8 +103,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      * @param object Object to import
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected ImportConflict newObject( T object )
+    protected List<ImportConflict> newObject( T object )
     {
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
 
@@ -116,18 +118,18 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections =
             scanIdentifiableObjectCollections( object );
 
-        updateIdentifiableObjects( object, scanIdentifiableObjects( object ) );
+        importConflicts.addAll( updateIdentifiableObjects( object, scanIdentifiableObjects( object ) ) );
 
         objectBridge.saveObject( object );
 
-        updateIdentifiableObjectCollections( object, identifiableObjectCollections );
+        importConflicts.addAll( updateIdentifiableObjectCollections( object, identifiableObjectCollections ) );
 
         updatePeriodTypes( object );
         objectBridge.updateObject( object );
 
         log.debug( "Save successful." );
 
-        return null;
+        return importConflicts;
     }
 
     /**
@@ -137,13 +139,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      * @param oldObject The current version of the object
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected ImportConflict updatedObject( T object, T oldObject )
+    protected List<ImportConflict> updatedObject( T object, T oldObject )
     {
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+
         log.debug( "Starting update of object " + getDisplayName( oldObject ) + " (" + oldObject.getClass()
             .getSimpleName() + ")" );
 
-        updateIdentifiableObjects( object, scanIdentifiableObjects( object ) );
-        updateIdentifiableObjectCollections( object, scanIdentifiableObjectCollections( object ) );
+        importConflicts.addAll( updateIdentifiableObjects( object, scanIdentifiableObjects( object ) ) );
+        importConflicts.addAll( updateIdentifiableObjectCollections( object, scanIdentifiableObjectCollections( object ) ) );
 
         oldObject.mergeWith( object );
         updatePeriodTypes( oldObject );
@@ -152,7 +156,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         log.debug( "Update successful." );
 
-        return null;
+        return importConflicts;
     }
 
     // FIXME to static ATM, should be refactor out.. "type handler", not idObject
@@ -177,11 +181,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @SuppressWarnings( "unchecked" )
     public List<ImportConflict> importObjects( List<T> objects, ImportOptions options )
     {
-        List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
         if ( objects.isEmpty() )
         {
-            return conflicts;
+            return importConflicts;
         }
 
         init( options );
@@ -195,19 +199,19 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
-            ImportConflict importConflict = importObjectLocal( object, options );
+            List<ImportConflict> conflicts = importObjectLocal( object, options );
 
-            if ( importConflict != null )
+            if ( !conflicts.isEmpty() )
             {
-                conflicts.add( importConflict );
+                importConflicts.addAll( conflicts );
             }
         }
 
-        return conflicts;
+        return importConflicts;
     }
 
     @Override
-    public ImportConflict importObject( T object, ImportOptions options )
+    public List<ImportConflict> importObject( T object, ImportOptions options )
     {
         init( options );
 
@@ -273,77 +277,74 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         }
     }
 
-    private ImportConflict importObjectLocal( T object, ImportOptions options )
+    private List<ImportConflict> importObjectLocal( T object, ImportOptions options )
     {
-        ImportConflict conflict = validateIdentifiableObject( object, options );
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        ImportConflict importConflict = validateIdentifiableObject( object, options );
 
-        if ( conflict == null )
+        if ( importConflict == null )
         {
-            conflict = startImport( object, options );
+            importConflicts.addAll( startImport( object, options ) );
+        }
+        else
+        {
+            importConflicts.add( importConflict );
         }
 
-        if ( conflict != null )
+        if ( importConflicts.isEmpty() )
         {
             totalIgnored++;
         }
 
-        return conflict;
+        return importConflicts;
     }
 
-    private ImportConflict startImport( T object, ImportOptions options )
+    private List<ImportConflict> startImport( T object, ImportOptions options )
     {
         T oldObject = objectBridge.getObject( object );
-        ImportConflict conflict;
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
         if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
-            conflict = newObject( object );
+            importConflicts.addAll( newObject( object ) );
 
-            if ( conflict != null )
+            if ( importConflicts.isEmpty() )
             {
-                return conflict;
+                totalImported++;
             }
-
-            totalImported++;
         }
         else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
         {
-            conflict = updatedObject( object, oldObject );
+            importConflicts.addAll( updatedObject( object, oldObject ) );
 
-            if ( conflict != null )
+            if ( importConflicts.isEmpty() )
             {
-                return conflict;
+                totalUpdated++;
             }
-
-            totalUpdated++;
         }
         else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
         {
             if ( oldObject != null )
             {
-                conflict = updatedObject( object, oldObject );
+                importConflicts.addAll( updatedObject( object, oldObject ) );
 
-                if ( conflict != null )
+                if ( importConflicts.isEmpty() )
                 {
-                    return conflict;
+                    totalUpdated++;
                 }
-
-                totalUpdated++;
             }
             else
             {
-                conflict = newObject( object );
+                importConflicts.addAll( newObject( object ) );
 
-                if ( conflict != null )
+                if ( importConflicts.isEmpty() )
                 {
-                    return conflict;
+                    totalImported++;
                 }
-
-                totalImported++;
             }
         }
 
-        return null;
+        return importConflicts;
     }
 
     private ImportConflict validateIdentifiableObject( T object, ImportOptions options )
@@ -353,7 +354,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         // FIXME add bean validation for this
         if ( object.getName() == null || object.getName().length() == 0 )
         {
-            return new ImportConflict( getDisplayName( object ), "Empty name." );
+            return new ImportConflict( getDisplayName( object ), "Empty name for object " + object );
         }
 
         if ( NameableObject.class.isInstance( object ) )
@@ -362,7 +363,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( nameableObject.getShortName() == null || nameableObject.getShortName().length() == 0 )
             {
-                return new ImportConflict( getDisplayName( object ), "Empty shortName." );
+                return new ImportConflict( getDisplayName( object ), "Empty shortName for object " + object );
             }
         }
         // end
@@ -471,9 +472,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return identifiableObjects;
     }
 
-    private void updateIdentifiableObjects( IdentifiableObject identifiableObject, Map<Field,
+    private List<ImportConflict> updateIdentifiableObjects( IdentifiableObject identifiableObject, Map<Field,
         IdentifiableObject> identifiableObjects )
     {
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+
         for ( Field field : identifiableObjects.keySet() )
         {
             IdentifiableObject idObject = identifiableObjects.get( field );
@@ -489,9 +492,16 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 if ( !OrganisationUnitGroupSet.class.isInstance( idObject ) )
                 {
                     log.warn( "Ignored reference " + idObject + " on object " + identifiableObject + "." );
+
+                    ImportConflict importConflict = new ImportConflict( getDisplayName( identifiableObject ),
+                        "Unknown reference to " + idObject + " on field " + field.getName() + ", reference has been discarded." );
+
+                    importConflicts.add( importConflict );
                 }
             }
         }
+
+        return importConflicts;
     }
 
     private Map<Field, Set<? extends IdentifiableObject>> scanIdentifiableObjectCollections( IdentifiableObject
@@ -522,9 +532,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return collected;
     }
 
-    private void updateIdentifiableObjectCollections( IdentifiableObject identifiableObject,
+    private List<ImportConflict> updateIdentifiableObjectCollections( IdentifiableObject identifiableObject,
         Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections )
     {
+        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+
         for ( Field field : identifiableObjectCollections.keySet() )
         {
             Collection<? extends IdentifiableObject> identifiableObjects = identifiableObjectCollections.get( field );
@@ -555,10 +567,17 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 else
                 {
                     log.warn( "Ignored reference " + idObject + " on object " + identifiableObject + "." );
+
+                    ImportConflict importConflict = new ImportConflict( getDisplayName( identifiableObject ),
+                        "Unknown reference to " + idObject + " on field " + field.getName() + ", reference has been discarded." );
+
+                    importConflicts.add( importConflict );
                 }
             }
 
             ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, objects );
         }
+
+        return importConflicts;
     }
 }
