@@ -82,29 +82,29 @@ public class ExportTableAction
         this.format = format;
     }
     
-    private String reportingPeriod;
-
-    public void setReportingPeriod( String reportingPeriod )
-    {
-        this.reportingPeriod = reportingPeriod;
-    }
-
-    private Integer organisationUnitId;
-
-    public void setOrganisationUnitId( Integer organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
+    private String pe;
     
+    public void setPe( String pe )
+    {
+        this.pe = pe;
+    }
+
+    private String ou;
+
+    public void setOu( String ou )
+    {
+        this.ou = ou;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
-    
-    public void setId( Integer id )
+    private String uid;
+
+    public void setUid( String uid )
     {
-        this.id = id;
+        this.uid = uid;
     }
 
     private String type;
@@ -155,11 +155,11 @@ public class ExportTableAction
         }
         else
         {
-            ReportTable reportTable = reportTableService.getReportTable( id );
+            ReportTable reportTable = reportTableService.getReportTable( uid );
 
-            Date date = reportingPeriod != null ? DateUtils.getMediumDate( reportingPeriod ) : new Date();
+            Date date = pe != null ? DateUtils.getMediumDate( pe ) : new Date();
             
-            grid = reportTableService.getReportTableGrid( id, format, date, organisationUnitId );
+            grid = reportTableService.getReportTableGrid( uid, format, date, ou );
             
             params.putAll( constantService.getConstantParameterMap() );
             params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );

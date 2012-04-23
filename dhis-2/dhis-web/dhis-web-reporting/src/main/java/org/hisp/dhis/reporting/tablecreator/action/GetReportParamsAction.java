@@ -71,16 +71,16 @@ public class GetReportParamsAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String uid;
 
-    public Integer getId()
+    public String getUid()
     {
-        return id;
+        return uid;
     }
 
-    public void setId( Integer id )
+    public void setUid( String uid )
     {
-        this.id = id;
+        this.uid = uid;
     }
 
     private String mode;
@@ -119,9 +119,9 @@ public class GetReportParamsAction
 
     public String execute()
     {
-        if ( mode != null && id != null )
+        if ( mode != null && uid != null )
         {
-            ReportTable reportTable = reportTableService.getReportTable( id, mode);
+            ReportTable reportTable = reportTableService.getReportTable( uid, mode);
             
             if ( reportTable != null )
             {
