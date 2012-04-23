@@ -80,6 +80,7 @@ public class JdbcStatisticsProvider
             objectCounts.put( Objects.AGGREGATEDINDICATORVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregatedindicatorvalue" ) );
             objectCounts.put( Objects.AGGREGATEDORGUNITDATAVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregatedorgunitdatavalue" ) );
             objectCounts.put( Objects.AGGREGATEDORGUNITINDICATORVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregatedorgunitindicatorvalue" ) );
+            objectCounts.put( Objects.AGGREGATEDDATASETCOMPLETENESS, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregateddatasetcompleteness" ) );
         }
         catch ( BadSqlGrammarException ex )
         {
