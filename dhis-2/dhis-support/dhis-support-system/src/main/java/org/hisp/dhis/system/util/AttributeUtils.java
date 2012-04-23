@@ -27,16 +27,15 @@
 
 package org.hisp.dhis.system.util;
 
+import net.sf.json.JSONObject;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.AttributeValue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import net.sf.json.JSONObject;
-
-import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.AttributeValue;
 
 /**
  * @author mortenoh
@@ -45,11 +44,11 @@ public class AttributeUtils
 {
     /**
      * Given a list of JSON formatted values (with keys: 'id' and 'value'), this
-     * method will add/update AttributeValue into the given Set.
-     * 
+     * method will add/update {@link AttributeValue} into the given {@code Set}.
+     *
      * @param jsonAttributeValues List of JSON formatted values, needs two keys:
-     *        id => ID of attribute this value belongs to value => Actual value
-     * @param attributeValues Set that will be updated
+     *                            id => ID of attribute this value belongs to value => Actual value
+     * @param attributeValues     Set that will be updated
      * @param attributeService
      */
     public static void updateAttributeValuesFromJson( Set<AttributeValue> attributeValues,
@@ -65,7 +64,7 @@ public class AttributeUtils
 
             Attribute attribute = attributeService.getAttribute( attributeValue.getId() );
 
-            if ( attribute == null )
+            if ( attribute == null || attributeValue.getValue() == null || attributeValue.getValue().length() == 0 )
             {
                 continue;
             }
@@ -91,7 +90,6 @@ public class AttributeUtils
     }
 
     /**
-     * 
      * @param attributeValues
      * @return Map of <AttributeId, ValueString>
      */
