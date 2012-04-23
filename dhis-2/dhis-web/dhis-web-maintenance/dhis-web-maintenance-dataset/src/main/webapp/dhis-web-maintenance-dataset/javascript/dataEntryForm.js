@@ -98,13 +98,6 @@ function findDataElementCountCompleted( dataSetElement )
   }
 }
 
-
-// TODO: remove this? does not seem to be used anywhere, updating to ckeditor just in case
-function onloadFunction()
-{
-  htmlCode = $("#designTextarea").ckeditorGet().getData();
-  findDataElementCount();
-} 
 // -----------------------------------------------------------------------------
 // Auto-save DataEntryForm
 // -----------------------------------------------------------------------------
@@ -134,7 +127,8 @@ function autoSaveDataEntryFormValidationCompleted( messageElement )
   }
 }
 
-function autoSaveDataEntryForm() {
+function autoSaveDataEntryForm() 
+{
 	var field = $("#designTextarea").ckeditorGet();
 	var designTextarea = htmlEncode(field.getData());
 	
