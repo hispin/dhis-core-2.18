@@ -186,9 +186,8 @@
     </action>
 
     <action name="validateDataEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.ValidateDataEntryFormAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
-      <result name="mismatch" type="velocity-xml">/dhis-web-maintenance-dataset/responseMismatch.vm</result>
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">../dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
