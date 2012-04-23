@@ -128,8 +128,9 @@ public class DefaultImportService
         doImport( metaData.getReports(), importOptions, importSummary );
         doImport( metaData.getReportTables(), importOptions, importSummary );
         doImport( metaData.getCharts(), importOptions, importSummary );
-*/
+
         doImport( metaData.getDataSets(), importOptions, importSummary );
+*/
 
         cacheManager.clearCache();
         objectBridge.destroy();
