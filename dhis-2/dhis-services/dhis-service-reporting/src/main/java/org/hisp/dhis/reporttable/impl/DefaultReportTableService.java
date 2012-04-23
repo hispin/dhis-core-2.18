@@ -144,15 +144,15 @@ public class DefaultReportTableService
         return getGrid( reportTable );
     }
 
-    public ReportTable getReportTable( Integer id, String mode )
+    public ReportTable getReportTable( String uid, String mode )
     {
         if ( mode.equals( MODE_REPORT_TABLE ) )
         {
-            return getReportTable( id );
+            return getReportTable( uid );
         }
         else if ( mode.equals( MODE_REPORT ) )
         {
-            return reportService.getReport( id ).getReportTable();
+            return reportService.getReport( uid ).getReportTable();
         }
 
         return null;

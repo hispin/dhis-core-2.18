@@ -27,11 +27,16 @@ package org.hisp.dhis.api.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserAuthorityGroups;
-import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,11 +49,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.ArrayList;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -57,9 +57,6 @@ import java.util.ArrayList;
 public class UserAuthorityGroupController
 {
     public static final String RESOURCE_PATH = "/userAuthorityGroups";
-
-    @Autowired
-    private UserGroupService userGroupService;
 
     @Autowired
     private UserService userService;

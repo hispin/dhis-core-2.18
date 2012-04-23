@@ -164,11 +164,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.RenderReportAction" class="org.hisp.dhis.reporting.reportviewer.action.RenderReportAction"
-    scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-  </bean>
-
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction" class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"
     scope="prototype">
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />

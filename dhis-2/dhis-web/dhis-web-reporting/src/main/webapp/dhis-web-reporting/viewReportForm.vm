@@ -36,8 +36,8 @@
                 <tr id="tr${report.id}">
                     <td>$encoder.htmlEncode( $report.name )</td>
                     <td style="text-align:right">
-                    	#if ( $report.hasReportTable() ) <a href="getReportParams.action?id=${report.id}&mode=report" title="$i18n.getString( 'create' )">
-                    	#else <a href="renderReport.action?id=${report.id}" title="$i18n.getString( 'create' )">#end
+                    	#if ( $report.hasReportTable() ) <a href="getReportParams.action?uid=${report.uid}&mode=report" title="$i18n.getString( 'create' )">
+                    	#else <a href="../api/reports/${report.uid}/data.pdf" title="$i18n.getString( 'create' )">#end
                     	<img src="../images/start_process.png" alt="$i18n.getString( 'create' )"></a>                   
 						<a href="displayAddReportForm.action?id=$report.id" title="$i18n.getString( 'edit_report' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit_report' )"></a>
 						<a href="javascript:addToDashboard( '$report.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>

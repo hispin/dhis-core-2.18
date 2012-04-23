@@ -30,31 +30,32 @@ function viewReport( type )
     }
     
     var mode = $( "#mode" ).val();
+    var uid = $( "#uid" ).val();
 
     setMessage( i18n_process_completed );
 
     if ( mode == MODE_REPORT )
     {
-        window.location.href = "renderReport.action?type=" + reportType + "&" + getUrlParams();
+    	window.location.href = "../api/reports/" + uid + "/data." + type + "?" + getUrlParams();
     } 
     else // MODE_TABLE
     {
-        window.location.href = "exportTable.action?type=html&" + getUrlParams();
+        window.location.href = "exportTable.action?uid=" + uid + "&type=html&" + getUrlParams();
     }
 }
 
 function getUrlParams()
 {
-    var url = "id=" + $( "#id" ).val();
+    var url = "";
 
     if ( $( "#reportingPeriod" ).length )
     {
-        url += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
+        url += "pe=" + $( "#reportingPeriod" ).val() + "&";
     }
 
     if ( selectionTreeSelection.isSelected() )
     {
-        url += "&organisationUnitId=" + selectionTreeSelection.getSelected()[0];
+        url += "ou=" + selectionTreeSelection.getSelectedUid();
     }
 
     return url;

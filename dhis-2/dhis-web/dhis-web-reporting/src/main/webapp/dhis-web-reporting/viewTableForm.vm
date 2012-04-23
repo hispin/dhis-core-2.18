@@ -38,7 +38,7 @@
 				<tr id="tr${table.id}">
 					<td onclick="showTableDetails( $table.id )">$encoder.htmlEncode( $table.name )</td>
 					<td style="text-align:right">
-						<a href="getReportParams.action?id=$table.id&mode=table" title="$i18n.getString( "create" )"><img src="../images/start_process.png" alt="$i18n.getString( "create" )"></a>
+						<a href="getReportParams.action?uid=${table.uid}&mode=table" title="$i18n.getString( "create" )"><img src="../images/start_process.png" alt="$i18n.getString( "create" )"></a>
 						<a href="displayAddTableForm.action?id=${table.id}&dimension=${table.isDimensional()}" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>						
 						<a href="javascript:addReportTableToDashboard( '$table.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeTable" ) )

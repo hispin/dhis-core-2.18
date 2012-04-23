@@ -134,10 +134,10 @@ public interface ReportTableService
      * given identifier. If report mode, this method will return the report
      * tables associated with the report.
      *
-     * @param id   the identifier.
+     * @param uid the uid.
      * @param mode the mode.
      */
-    ReportTable getReportTable( Integer id, String mode );
+    ReportTable getReportTable( String uid, String mode );
 
     Collection<ReportTable> getReportTablesBetween( int first, int max );
 
