@@ -51,40 +51,6 @@ function dataEntryFormValidationCompleted( json )
 }
 
 // -----------------------------------------------------------------------------
-// Find Selected DataElement Count in the DataEntryForm
-// -----------------------------------------------------------------------------
-
-function findDataElementCount()
-{
-  clearListById('dataElementSelector');
-  
-   jQuery.postUTF8( 'getSelectedDataElements.action',
-	{
-		dataSetId:document.getElementById( 'dataSetIdField' ).value,
-		designCode:htmlCode
-	},findDataElementCountCompleted );
-}
-
-function findDataElementCountCompleted( dataSetElement )
-{
-  var dataElements = dataSetElement.getElementsByTagName( 'dataElements' )[0];
-  var dataElementList = dataElements.getElementsByTagName( 'dataElement' );
-
-  var dataElementSelector = document.getElementById( 'dataElementSelector' );
-  
-  for ( var i = 0; i < dataElementList.length; i++ )
-  {
-    var dataElement = dataElementList[i];
-    var name = dataElement.firstChild.nodeValue;
-    var id = dataElement.getAttribute( 'id' );	
-		
-	var option = new Option( name, id );
-	    
-    dataElementSelector.add( option, null );
-  }
-}
-
-// -----------------------------------------------------------------------------
 // Auto-save DataEntryForm
 // -----------------------------------------------------------------------------
 
@@ -112,11 +78,11 @@ function autoSaveDataEntryForm()
 		dataSetIdField: getFieldValue('dataSetIdField'),
 		dataEntryFormId: dataEntryFormId
 	},
-	function( xmlObject ) 
+	function( json ) 
 	{
 		setHeaderDelayMessage( i18n_save_success ); 
 		stat = "EDIT";
-		dataEntryFormId = xmlObject.getElementsByTagName( 'message' )[0].firstChild.nodeValue;
+		dataEntryFormId = json.message;
 		enable('delete');
 	} );
 }
