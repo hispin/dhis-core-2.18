@@ -195,11 +195,6 @@
       <result name="success" type="redirect">dataSet.action</result>
     </action>
 
-    <action name="selectDataElement" class="org.hisp.dhis.dataset.action.dataentryform.SelectDataElementAction">
-      <result name="success" type="velocity">selectDataElement.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
-    </action>
-
     <action name="getSelectedDataElements" class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSelDataElementList.vm</result>
     </action>

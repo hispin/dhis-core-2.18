@@ -291,13 +291,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.dataset.action.dataentryform.SelectDataElementAction" class="org.hisp.dhis.dataset.action.dataentryform.SelectDataElementAction"
-    scope="prototype">
-    <property name="dataSetService">
-      <ref bean="org.hisp.dhis.dataset.DataSetService" />
-    </property>
-  </bean>
-
   <bean id="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction" class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction"
     scope="prototype">
     <property name="dataSetService">
