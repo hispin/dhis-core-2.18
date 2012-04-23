@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<periodTypes>
-	#foreach($periodType in $periodTypes)
-		<periodType>
-			<id>$periodType.name</id>
-			<name>$periodType.name</name>
-		</periodType>		
-	#end
-</periodTypes>
