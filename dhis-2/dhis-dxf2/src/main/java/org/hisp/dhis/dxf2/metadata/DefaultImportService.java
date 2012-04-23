@@ -35,7 +35,6 @@ import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -85,7 +84,7 @@ public class DefaultImportService
         Date startDate = new Date();
 
         doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
-        // doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
+        doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
 
