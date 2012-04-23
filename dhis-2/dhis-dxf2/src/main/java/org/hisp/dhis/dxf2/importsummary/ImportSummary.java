@@ -57,8 +57,8 @@ public class ImportSummary
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper
-    @JacksonXmlProperty
+    @JacksonXmlElementWrapper(localName = "conflicts")
+    @JacksonXmlProperty(localName = "conflict")
     public List<ImportConflict> getConflicts()
     {
         return conflicts;

@@ -87,11 +87,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     // Current import counts
     //-------------------------------------------------------------------------------------------------------
 
-    protected int imported;
+    protected int totalImported;
 
-    protected int updated;
+    protected int totalUpdated;
 
-    protected int ignored;
+    protected int totalIgnored;
 
     //-------------------------------------------------------------------------------------------------------
     // Generic implementations of newObject and updatedObject
@@ -217,7 +217,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Override
     public ImportCount getCurrentImportCount()
     {
-        return new ImportCount( imported, updated, ignored );
+        return new ImportCount( totalImported, totalUpdated, totalIgnored );
     }
 
     @Override
@@ -262,9 +262,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     private void init( ImportOptions options )
     {
-        imported = 0;
-        updated = 0;
-        ignored = 0;
+        totalImported = 0;
+        totalUpdated = 0;
+        totalIgnored = 0;
 
         if ( options.isDryRun() )
         {
@@ -284,7 +284,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         if ( conflict != null )
         {
-            ignored++;
+            totalIgnored++;
         }
 
         return conflict;
@@ -304,7 +304,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 return conflict;
             }
 
-            imported++;
+            totalImported++;
         }
         else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
         {
@@ -315,7 +315,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 return conflict;
             }
 
-            updated++;
+            totalUpdated++;
         }
         else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
         {
@@ -328,7 +328,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     return conflict;
                 }
 
-                updated++;
+                totalUpdated++;
             }
             else
             {
@@ -339,7 +339,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     return conflict;
                 }
 
-                imported++;
+                totalImported++;
             }
         }
 
