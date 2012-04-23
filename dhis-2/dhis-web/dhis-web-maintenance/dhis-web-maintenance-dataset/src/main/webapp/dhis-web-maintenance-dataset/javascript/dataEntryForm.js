@@ -17,56 +17,35 @@ function removeDataEntryForm( dataSetIdField, dataEntryFormId, dataEntryFormName
 // Validation
 // ----------------------------------------------------------------------
 
-function validateDataEntryForm()
-{  
-	$.postUTF8( 'validateDataEntryForm.action',
+function validateDataEntryForm( exit )
+{
+	$.post( 'validateDataEntryForm.action',
 	{
 		name: $( '#nameField' ).val(),
 		dataSetId: $( '#dataSetIdField' ).val(),
 		dataEntryFormId: dataEntryFormId
 	}, 
-	function( json ) 
+	function( json )
 	{
-		if ( autoSave == false )
+		if ( json.response == 'success' )
 		{
-			dataEntryFormValidationCompleted( json );
+			if ( exit )
+			{
+				$( '#saveDataEntryForm' ).submit();
+			}			
+			else
+			{
+				saveDataEntryForm();
+			}
 		}
-		else
+		else if ( json.response = 'input' )
 		{
-			autoSaveDataEntryFormValidationCompleted( json );
+			setHeaderDelayMessage( json.message );
 		}
 	} );
 }
 
-function dataEntryFormValidationCompleted( json )
-{
-	if ( json.response == 'success' )
-	{  
-		$( '#saveDataEntryForm' ).submit();
-	}
-	else if ( json.response = 'input' )
-	{
-		setHeaderDelayMessage( json.message );
-	}
-}
-
-// -----------------------------------------------------------------------------
-// Auto-save DataEntryForm
-// -----------------------------------------------------------------------------
-
-function autoSaveDataEntryFormValidationCompleted( json )
-{
-	if ( json.response == 'success' )
-	{
-		autoSaveDataEntryForm();
-	}
-	else if ( json.response = 'input' )
-	{
-		setHeaderDelayMessage( json.message );
-	}
-}
-
-function autoSaveDataEntryForm() 
+function saveDataEntryForm() 
 {
 	var field = $("#designTextarea").ckeditorGet();
 	var designTextarea = field.getData();
@@ -85,4 +64,10 @@ function autoSaveDataEntryForm()
 		dataEntryFormId = json.message;
 		enable('delete');
 	} );
+}
+
+function validateDataEntryFormTimeout()
+{
+	validateDataEntryForm( false );
+	window.setTimeout( "validateDataEntryFormTimeout();", 60000 );
 }

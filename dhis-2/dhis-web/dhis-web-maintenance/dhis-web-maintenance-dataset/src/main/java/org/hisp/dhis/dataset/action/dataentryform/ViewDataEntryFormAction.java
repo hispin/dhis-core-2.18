@@ -142,7 +142,6 @@ public class ViewDataEntryFormAction
             .getHtmlCode(), i18n ) : "";
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
-
         
         dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
 
