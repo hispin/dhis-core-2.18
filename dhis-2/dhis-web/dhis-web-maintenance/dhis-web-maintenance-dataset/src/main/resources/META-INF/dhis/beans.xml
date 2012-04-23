@@ -170,27 +170,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.dataset.action.DataElementListAction" class="org.hisp.dhis.dataset.action.DataElementListAction"
-    scope="prototype">
-    <property name="dataElementService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementService" />
-    </property>
-  </bean>
-
-  <bean id="org.hisp.dhis.dataset.action.DataElementGroupListAction" class="org.hisp.dhis.dataset.action.DataElementGroupListAction"
-    scope="prototype">
-    <property name="dataElementService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementService" />
-    </property>
-  </bean>
-
-  <bean id="org.hisp.dhis.dataset.action.IndicatorGroupListAction" class="org.hisp.dhis.dataset.action.IndicatorGroupListAction"
-    scope="prototype">
-    <property name="indicatorService">
-      <ref bean="org.hisp.dhis.indicator.IndicatorService" />
-    </property>
-  </bean>
-
   <bean id="org.hisp.dhis.dataset.action.SaveDataSetSortOrderAction" class="org.hisp.dhis.dataset.action.SaveDataSetSortOrderAction"
     scope="prototype">
     <property name="dataSetService">
