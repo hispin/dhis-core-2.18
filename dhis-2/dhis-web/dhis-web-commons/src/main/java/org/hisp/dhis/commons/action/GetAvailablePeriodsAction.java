@@ -100,7 +100,8 @@ public class GetAvailablePeriodsAction
         Calendar cal = PeriodType.createCalendarInstance();
 
         // Cannot go to next year if current year equals this year
-        if ( !(currentYear == thisYear && year > 0) )
+        
+        if ( !( currentYear == thisYear && year > 0 ) )
         {
             cal.set( Calendar.YEAR, currentYear );
             cal.add( Calendar.YEAR, year );

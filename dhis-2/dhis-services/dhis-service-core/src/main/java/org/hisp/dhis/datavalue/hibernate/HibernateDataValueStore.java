@@ -213,7 +213,12 @@ public class HibernateDataValueStore
     public Collection<DataValue> getDataValues( Collection<OrganisationUnit> sources, DataElement dataElement )
     {
         Session session = sessionFactory.getCurrentSession();
-
+        
+        if ( sources == null || sources.isEmpty() )
+        {
+            return Collections.emptySet();
+        }
+        
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.in( "source", sources ) );
         criteria.add( Restrictions.eq( "dataElement", dataElement ) );
@@ -226,7 +231,7 @@ public class HibernateDataValueStore
     {
         Period storedPeriod = periodStore.reloadPeriod( period );
 
-        if ( storedPeriod == null )
+        if ( storedPeriod == null || dataElements == null || dataElements.isEmpty() )
         {
             return Collections.emptySet();
         }
@@ -247,7 +252,7 @@ public class HibernateDataValueStore
     {
         Period storedPeriod = periodStore.reloadPeriod( period );
 
-        if ( storedPeriod == null )
+        if ( storedPeriod == null || dataElements == null || dataElements.isEmpty() || optionCombos == null || optionCombos.isEmpty() )
         {
             return Collections.emptySet();
         }
@@ -269,7 +274,7 @@ public class HibernateDataValueStore
     {
         Period storedPeriod = periodStore.reloadPeriod( period );
 
-        if ( storedPeriod == null )
+        if ( storedPeriod == null || sources == null || sources.isEmpty() )
         {
             return new HashSet<DataValue>();
         }
@@ -300,6 +305,11 @@ public class HibernateDataValueStore
             }
         }
 
+        if ( storedPeriods.isEmpty() || sources == null || sources.isEmpty() )
+        {
+            return new HashSet<DataValue>();
+        }
+
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
@@ -326,6 +336,11 @@ public class HibernateDataValueStore
             }
         }
 
+        if ( storedPeriods.isEmpty() || sources == null || sources.isEmpty() )
+        {
+            return new HashSet<DataValue>();
+        }
+
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataValue.class );
@@ -342,6 +357,11 @@ public class HibernateDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
+        if ( optionCombos == null || optionCombos.isEmpty() )
+        {
+            return new HashSet<DataValue>();
+        }
+        
         Criteria criteria = session.createCriteria( DataValue.class );
         criteria.add( Restrictions.in( "optionCombo", optionCombos ) );
 
