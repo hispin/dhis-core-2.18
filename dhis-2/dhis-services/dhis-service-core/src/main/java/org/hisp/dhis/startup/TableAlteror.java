@@ -265,8 +265,8 @@ public class TableAlteror
         executeSql( "UPDATE chart SET type='PIE' where type='pie'" );
         executeSql( "UPDATE chart SET type='PIE' where type='pie3d'" );
 
-        executeSql( "ALTER TABLE chart RENAME COLUMN title TO name" );
         executeSql( "ALTER TABLE chart ALTER COLUMN dimension DROP NOT NULL" );
+        executeSql( "ALTER TABLE chart DROP COLUMN title" );
         executeSql( "ALTER TABLE chart DROP COLUMN size" );
         executeSql( "ALTER TABLE chart DROP COLUMN verticallabels" );
         executeSql( "ALTER TABLE chart DROP COLUMN targetline" );
