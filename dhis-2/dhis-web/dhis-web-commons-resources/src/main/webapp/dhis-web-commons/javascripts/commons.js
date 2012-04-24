@@ -1530,20 +1530,30 @@ function pagingList( currentPage, pageSize )
 {
 	var baseLink = jQuery( "#baseLink" ).val();	
 	var url = baseLink + "currentPage=" + currentPage + "&pageSize=" + pageSize;
-	
-	if ( isAjax == false )
+
+	var index = url.indexOf( '?' );
+	var link = url.substring( 0, index );
+	var data = url.substring( index + 1 );
+
+	if ( !isAjax )
 	{
-		window.location.href = url;
+		var keyParam = data.split( '&' )[0];
+
+		if ( keyParam.split( '=' )[0] == "key" )
+		{
+			setFieldValue( 'key', keyParam.split( '=' )[1] )
+		}
+		
+		url = link + "?currentPage=" + currentPage + "&pageSize=" + pageSize;
+		
+		byId( 'filterKeyForm' ).action = url;
+		byId( 'filterKeyForm' ).submit();
 	}
 	else
-	{
-		var index = url.indexOf( '?' );
-		var link = url.substring( 0, index );
-		var data = url.substring( index + 1 );
-		
+	{		
 		jQuery.postUTF8( link , data, function(html)
 		{
-			if ( contentDiv == undefined )
+			if ( byId( 'contentDiv' ) == undefined )
 			{
 				setInnerHTML( 'contentDiv', html );
 			}
