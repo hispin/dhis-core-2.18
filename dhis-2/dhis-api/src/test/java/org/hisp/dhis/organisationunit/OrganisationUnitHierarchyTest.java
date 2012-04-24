@@ -30,6 +30,7 @@ package org.hisp.dhis.organisationunit;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,6 +110,35 @@ public class OrganisationUnitHierarchyTest
         
         assertFalse( hierarchy.getChildren( 5, group ).contains( 10 ) );
         assertFalse( hierarchy.getChildren( 3, group ).contains( 11 ) );
+    }
+    
+    @Test
+    public void testGetChildren()
+    {
+        Set<Integer> parentIds = new HashSet<Integer>();
+        
+        List<OrganisationUnitRelationship> relations = new ArrayList<OrganisationUnitRelationship>();
+
+        int parentMax = 1000; // Increase to stress-test
+        int childMax = 4;
+        int childId = 0;
+        
+        for ( int parentId = 0; parentId < parentMax; parentId++ )
+        {
+            parentIds.add( parentId );
+            
+            for ( int j = 0; j < childMax; j++ )
+            {
+                relations.add( new OrganisationUnitRelationship( parentId, ++childId ) );
+            }
+        }
+        
+        OrganisationUnitHierarchy hierarchy = new OrganisationUnitHierarchy( relations );
+        
+        Set<Integer> children = hierarchy.getChildren( parentIds );
+        
+        assertNotNull( children );
+        assertEquals( ( parentMax * childMax ) + 1, children.size() );
     }
     
     @Test
