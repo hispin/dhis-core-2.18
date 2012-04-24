@@ -45,6 +45,9 @@ import java.util.Set;
  */
 public class OrganisationUnitHierarchy
 {
+    /**
+     * Contains mappings between parent and immediate children.
+     */
     private Map<Integer, Set<Integer>> relationships = new HashMap<Integer, Set<Integer>>();
 
     private Map<Integer, Set<Integer>> subTrees = new HashMap<Integer, Set<Integer>>();
@@ -148,7 +151,7 @@ public class OrganisationUnitHierarchy
         
         List<Integer> children = new ArrayList<Integer>();
         
-        children.add( 0, parentId );
+        children.add( 0, parentId ); // Adds parent id to beginning of list
 
         int childCounter = 1;
         
@@ -169,8 +172,10 @@ public class OrganisationUnitHierarchy
     
     public Set<Integer> getChildren( Collection<Integer> parentIds )
     {
-        Set<Integer> children = new HashSet<Integer>();
+        int capacity = parentIds.size() + 5;
         
+        Set<Integer> children = new HashSet<Integer>( Math.max( capacity, 16 ) );
+
         for ( Integer id : parentIds )
         {
             children.addAll( getChildren( id ) );
@@ -218,7 +223,9 @@ public class OrganisationUnitHierarchy
             return getChildren( parentIds );
         }
         
-        Set<Integer> children = new HashSet<Integer>();
+        int capacity = ( parentIds.size() * groups.size() ) + 5;
+        
+        Set<Integer> children = new HashSet<Integer>( Math.max( capacity, 16 ) );
         
         for ( Integer id : parentIds )
         {

@@ -217,6 +217,8 @@ public class DefaultDataMartEngine
         organisationUnitIds = organisationUnitIds != null ? organisationUnitIds : new ArrayList<Integer>();
         organisationUnitGroupIds = organisationUnitGroupIds != null ? organisationUnitGroupIds : new ArrayList<Integer>();
         
+        clock.logTime( "Data elements: " + dataElementIds.size() + ", indicators: " + indicatorIds.size() + ", periods: " + periodIds.size() + ", org units: " + organisationUnitIds.size() );
+        
         // ---------------------------------------------------------------------
         // Get objects
         // ---------------------------------------------------------------------
