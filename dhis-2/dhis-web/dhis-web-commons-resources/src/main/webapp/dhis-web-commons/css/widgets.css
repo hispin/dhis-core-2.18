@@ -536,3 +536,29 @@ ul.pageSizeSelection input
 {
 	text-align: right;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Custom forms, put a <div id="cde-comfy"></div> around form to use          */
+/*----------------------------------------------------------------------------*/
+
+#cde-comfy table 
+{
+  border-collapse: collapse;
+}
+
+#cde-comfy table, #cde-comfy th, #cde-comfy td 
+{
+  border: 1px solid #c0c0c0;
+}
+
+#cde-comfy td, #cde-comfy th 
+{
+  height: 30px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.cde-greyfield 
+{
+  background-color: #e0e0e0;
+}
