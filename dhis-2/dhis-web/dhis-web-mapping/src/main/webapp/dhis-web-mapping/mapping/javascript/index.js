@@ -2928,17 +2928,20 @@ Ext.onReady( function() {
                 symbolLayer.setOpacity(1);
                 centroidLayer.setOpacity(1);
                 
-				if (G.vars.parameter.base === 'googlestreets') {
+				if (G.vars.parameter.base === 'googlestreets' && window.google) {
 					G.vars.map.getLayersByName('Google Streets')[0].setVisibility(true);
 				}
-				else if (G.vars.parameter.base === 'googlehybrid') {
+				else if (G.vars.parameter.base === 'googlehybrid' && window.google) {
 					G.vars.map.getLayersByName('Google Hybrid')[0].setVisibility(true);
+				}
+				else if (G.vars.parameter.base !== 'osm' && window.google) {
+					G.vars.map.getLayersByName('Google Streets')[0].setVisibility(false);
 				}
 				else if (G.vars.parameter.base === 'osm') {
 					G.vars.map.getLayersByName('OpenStreetMap')[0].setVisibility(true);
 				}
 				else {
-					G.vars.map.getLayersByName('Google Streets')[0].setVisibility(false);
+					G.vars.map.getLayersByName('OpenStreetMap')[0].setVisibility(false);
 				}
                 
                 var svg = document.getElementsByTagName('svg');
