@@ -675,7 +675,13 @@ function insertDataValues()
 	        organisationUnitId : currentOrganisationUnitId
 	    },
 	    dataType: 'json',
-	    success: function( json )
+	    error: function() // offline
+	    {
+	    	$( '#contentDiv' ).show();
+	    	$( '#completenessDiv' ).show();
+	    	$( '#infoDiv' ).hide();
+	    },
+	    success: function( json ) // online
 	    {
 	    	if ( json.locked )
 	    	{
@@ -690,8 +696,7 @@ function insertDataValues()
 	    		$( '#completenessDiv' ).show();
 	    	}
 	    	
-	        // Set data values, works for select lists too as data
-	        // value = select value
+	        // Set data values, works for selects too as data value=select value
 
 	        $.each( json.dataValues, function( i, value )
 	        {
@@ -740,7 +745,7 @@ function insertDataValues()
 
 	            if ( json.storedBy )
 	            {
-	                $( '#infoDiv' ).css( 'display', 'block' );
+	                $( '#infoDiv' ).show();
 	                $( '#completedBy' ).html( json.storedBy );
 	                $( '#completedDate' ).html( json.date );
 
@@ -751,7 +756,7 @@ function insertDataValues()
 	        {
 	            $( '#completeButton' ).removeAttr( 'disabled' );
 	            $( '#undoButton' ).attr( 'disabled', 'disabled' );
-	            $( '#infoDiv' ).css( 'display', 'none' );
+	            $( '#infoDiv' ).hide();
 	        }
 	    }
 	} );
