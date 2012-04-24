@@ -660,13 +660,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="skipInTests" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataentryform.DataEntryFormPopulator" class="org.hisp.dhis.dataentryform.DataEntryFormPopulator">
-    <property name="jdbcTemplate" ref="jdbcTemplate" />
-    <property name="statementBuilder" ref="statementBuilder" />
-    <property name="runlevel" value="5" />
-    <property name="skipInTests" value="true" />
-  </bean>
-
   <bean id="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" class="org.hisp.dhis.dataentryform.DataEntryFormUpgrader">
     <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
     <property name="runlevel" value="5" />
@@ -685,7 +678,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
           <ref local="org.hisp.dhis.startup.TableCreator" />
           <ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator" />
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
-          <ref local="org.hisp.dhis.dataentryform.DataEntryFormPopulator" />
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />
         </list>
       </list>

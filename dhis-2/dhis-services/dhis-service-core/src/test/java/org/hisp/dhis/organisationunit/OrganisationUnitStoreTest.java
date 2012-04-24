@@ -27,12 +27,15 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.DhisSpringTest;
-import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 
 import java.util.Collection;
 
-import static junit.framework.Assert.*;
+import org.hisp.dhis.DhisSpringTest;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
@@ -41,14 +44,11 @@ import static junit.framework.Assert.*;
 public class OrganisationUnitStoreTest
     extends DhisSpringTest
 {
-    private OrganisationUnitStore organisationUnitStore;
-
     private OrganisationUnitLevelStore organisationUnitLevelStore;
 
     @Override
     public void setUpTest()
     {
-        organisationUnitStore = (OrganisationUnitStore) getBean( OrganisationUnitStore.ID );
         organisationUnitLevelStore = (OrganisationUnitLevelStore) getBean( OrganisationUnitLevelStore.ID );
     }
 
