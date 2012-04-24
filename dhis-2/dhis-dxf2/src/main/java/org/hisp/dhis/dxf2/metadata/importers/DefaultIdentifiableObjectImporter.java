@@ -439,8 +439,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     private IdentifiableObject findObjectByReference( IdentifiableObject identifiableObject )
     {
-        IdentifiableObject match = null;
-
         // FIXME this is a bit too static ATM, should be refactored out into its own "type handler"
         if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
         {

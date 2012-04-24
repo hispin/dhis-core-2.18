@@ -27,20 +27,19 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.cache.HibernateCacheManager;
-import org.hisp.dhis.dxf2.importsummary.ImportConflict;
-import org.hisp.dhis.dxf2.importsummary.ImportCount;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -155,10 +154,9 @@ public class DefaultImportService
         return null;
     }
 
-    @SuppressWarnings( "unchecked" )
     private <T> Importer<T> findImporterClass( Class<?> clazz )
     {
-        for ( Importer i : importerClasses )
+        for ( Importer<T> i : importerClasses )
         {
             if ( i.canHandle( clazz ) )
             {
@@ -178,8 +176,7 @@ public class DefaultImportService
             if ( importer != null )
             {
                 List<ImportConflict> importConflicts = importer.importObjects( objects, importOptions );
-                ImportCount count = importer.getCurrentImportCount();
-
+                
                 importSummary.getConflicts().addAll( importConflicts );
                 // importSummary.getCounts().add( count ); //FIXME
             }
