@@ -376,7 +376,8 @@ function clearEntryForm()
 
     dataEntryFormIsLoaded = false;
 
-    $( '#completenessDiv' ).css( 'display', 'none' );
+    $( '#completenessDiv' ).hide();
+    $( '#infoDiv' ).hide();
 }
 
 function loadForm( dataSetId )
