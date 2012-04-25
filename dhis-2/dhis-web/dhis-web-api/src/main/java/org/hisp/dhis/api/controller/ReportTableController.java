@@ -158,6 +158,7 @@ public class ReportTableController
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
         model.addAttribute( "model", grid );
+        model.addAttribute( "view", "detailed" );
 
         return "grid";
     }
