@@ -31,6 +31,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.system.util.Clock;
+import org.hisp.dhis.system.velocity.VelocityManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
@@ -49,6 +51,9 @@ public class DefaultMessageService
     implements MessageService
 {
     private static final Log log = LogFactory.getLog( DefaultMessageService.class );
+    
+    private static final String COMPLETE_SUBJECT = "Form registered as complete";
+    private static final String COMPLETE_TEMPLATE = "completeness_message";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -157,12 +162,9 @@ public class DefaultMessageService
         {
             User sender = currentUserService.getCurrentUser();
 
-            //TODO i18n and string externalization            
-            String subject = "Form registered as complete";
-            String text = "The form " + registration.getDataSet() + " was registered as complete for period " +
-                registration.getPeriod().getName() + " and organisation unit " + registration.getSource();
+            String text = new VelocityManager().render( registration, COMPLETE_TEMPLATE );
 
-            MessageConversation conversation = new MessageConversation( subject, sender );
+            MessageConversation conversation = new MessageConversation( COMPLETE_SUBJECT, sender );
 
             conversation.addMessage( new Message( text, null, sender ) );
 
@@ -173,7 +175,7 @@ public class DefaultMessageService
 
             int id = saveMessageConversation( conversation );
 
-            invokeMessageSenders( subject, text, sender, userGroup.getMembers() );
+            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, userGroup.getMembers() );
 
             return id;
         }
