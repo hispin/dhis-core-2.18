@@ -70,7 +70,7 @@ public interface UserStore
     /**
      * Retrieves the User with the given unique identifier.
      *
-     * @param id the identifier of the User to retrieve.
+     * @param uid the identifier of the User to retrieve.
      * @return the User.
      */
     User getUser( String uid );
@@ -229,7 +229,7 @@ public interface UserStore
     /**
      * Retrieves the UserAuthorityGroup with the given identifier.
      *
-     * @param id the identifier of the UserAuthorityGroup to retrieve.
+     * @param uid the identifier of the UserAuthorityGroup to retrieve.
      * @return the UserAuthorityGroup.
      */
     UserAuthorityGroup getUserAuthorityGroup( String uid );
