@@ -122,7 +122,29 @@
 	<action name="updateCatalogType" class="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogTypeAction">
 		<result name="success" type="redirect">catalogType.action</result>
 	</action>
-				
+	
+	<!-- Remove/Delete -->
+	<action name="removeCatalogType" class="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAction">
+		<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>	
+
+	
+	<!-- Validation -->
+	<action name="validateCatalogType" class="org.hisp.dhis.coldchain.catalog.action.ValidateCatalogTypeAction">
+		<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>
+
+	
+	<!-- show details -->
+	<action name="getCatalogTypeDetails" class="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeDetailsAction">
+		<result name="success" type="velocity-json">/dhis-web-coldchain/jsonCatalogType.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>	
+							
 <!-- Inventory -->
         <action name="inventoryTypeAttributeList" class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeListAction">
             <result name="success" type="velocity">/main.vm</result>

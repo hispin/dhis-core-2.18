@@ -9,9 +9,6 @@ import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageDataElement;
 
 import com.opensymphony.xwork2.Action;
 

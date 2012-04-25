@@ -25,6 +25,6 @@ jQuery( document ).ready( function()
 			}
 		});
 		
-	//checkValueIsExist( "name", "validateProgramStage.action");	
+	checkValueIsExist( "name", "validateCatalogType.action");	
 });
 

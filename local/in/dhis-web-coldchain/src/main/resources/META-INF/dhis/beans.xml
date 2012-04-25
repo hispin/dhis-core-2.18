@@ -137,7 +137,31 @@
 		<property name="catalogTypeAttributeService"
 			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />		
 	</bean>
-				
+
+	<!-- Remove/Delete -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAction"
+		class="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAction"
+		scope="prototype">
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+	</bean>	
+
+	<!-- Validation -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.ValidateCatalogTypeAction"
+		class="org.hisp.dhis.coldchain.catalog.action.ValidateCatalogTypeAction"
+		scope="prototype">
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+	</bean>
+	
+	<!-- show details -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeDetailsAction"
+		class="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeDetailsAction"
+		scope="prototype">
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />		
+	</bean>	
+						
 <!-- Inventory -->
     <bean id="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeListAction"
         class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeListAction"

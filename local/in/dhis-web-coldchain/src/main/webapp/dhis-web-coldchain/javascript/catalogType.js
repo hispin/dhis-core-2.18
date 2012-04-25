@@ -1,4 +1,20 @@
 // -----------------------------------------------------------------------------
+// View details
+// -----------------------------------------------------------------------------
+
+function showCalatogTypeDetails( catalogTypeId )
+{
+	jQuery.getJSON( 'getCatalogTypeDetails.action', { id: catalogTypeId }, function ( json ) {
+		setInnerHTML( 'nameField', json.catalogType.name );	
+		setInnerHTML( 'descriptionField', json.catalogType.description );
+		setInnerHTML( 'catalogTypeattributesCountField', json.catalogType.catalogTypeAttributeCount );   
+	   
+		showDetails();
+	});
+}
+
+
+// -----------------------------------------------------------------------------
 // select/ Catalog Type Attributes
 // -----------------------------------------------------------------------------
 
