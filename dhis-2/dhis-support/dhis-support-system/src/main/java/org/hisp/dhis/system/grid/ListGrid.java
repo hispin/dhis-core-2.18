@@ -122,6 +122,7 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
+    @JacksonXmlProperty
     public String getTitle()
     {
         return title;
@@ -136,6 +137,7 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
+    @JacksonXmlProperty
     public String getSubtitle()
     {
         return subtitle;
@@ -150,6 +152,7 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
+    @JacksonXmlProperty
     public String getTable()
     {
         return table;
@@ -197,6 +200,7 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
+    @JacksonXmlProperty
     public int getHeight()
     {
         return (grid != null && grid.size() > 0) ? grid.size() : 0;
@@ -204,6 +208,7 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
+    @JacksonXmlProperty
     public int getWidth()
     {
         verifyGridState();
@@ -241,6 +246,8 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "rows" )
+    @JacksonXmlProperty( localName = "row" )
     public List<List<Object>> getRows()
     {
         return grid;
