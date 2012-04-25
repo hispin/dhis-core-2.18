@@ -11,6 +11,10 @@ public interface CatalogTypeService
     void updateCatalogType( CatalogType catalogType );
 
     void deleteCatalogType( CatalogType catalogType );
+    
+    CatalogType getCatalogType( int id );
+    
+    CatalogType getCatalogTypeByName( String name );
 
     Collection<CatalogType> getAllCatalogTypes();
 

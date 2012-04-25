@@ -88,3 +88,14 @@ input.autocompleted-field
 	width:25em; 
 	text-align:left;
 }
+.catalogTypeAttributeDiv
+{
+	overflow:auto; 
+	height:20em; 
+	width:30em;
+	border:1px solid #9DA1AA;
+}
+.catalogTypeAttributeDiv table
+{
+	width:100%;
+}

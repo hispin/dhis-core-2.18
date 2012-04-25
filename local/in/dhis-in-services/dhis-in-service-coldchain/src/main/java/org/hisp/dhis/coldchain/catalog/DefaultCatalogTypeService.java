@@ -48,4 +48,20 @@ public class DefaultCatalogTypeService implements CatalogTypeService
     {
         catalogTypeStore.updateCatalogType( catalogType );
     }
+    
+    @Transactional
+    @Override
+    public CatalogType getCatalogType( int id )
+    {
+        return catalogTypeStore.getCatalogType( id );
+    }
+    
+    @Transactional
+    @Override
+    public CatalogType getCatalogTypeByName( String name )
+    {
+        return catalogTypeStore.getCatalogTypeByName( name );
+    }
+    
+    
 }

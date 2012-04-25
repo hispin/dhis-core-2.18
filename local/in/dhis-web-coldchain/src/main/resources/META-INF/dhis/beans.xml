@@ -95,7 +95,49 @@
 			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />		
 	</bean>
 
+	<!-- Add Catalog Type Form -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.AddCatalogTypeFormAction"
+		class="org.hisp.dhis.coldchain.catalog.action.AddCatalogTypeFormAction"
+		scope="prototype">
+	</bean>
 
+	<!-- Catalog Type Attributes -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeAttributesAction"
+		class="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeAttributesAction"
+		scope="prototype">
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />		
+	</bean>	
+
+	<!-- Add -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.AddCatalogTypeAction"
+		class="org.hisp.dhis.coldchain.catalog.action.AddCatalogTypeAction"
+		scope="prototype">
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />		
+	</bean>	
+
+	
+	<!-- Update Form -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogTypeFormAction"
+		class="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogTypeFormAction"
+		scope="prototype">
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />		
+	</bean>
+
+	<!-- Update -->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogTypeAction"
+		class="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogTypeAction"
+		scope="prototype">
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />		
+	</bean>
+				
 <!-- Inventory -->
     <bean id="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeListAction"
         class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributeListAction"
