@@ -110,17 +110,6 @@ public class DataElement
                 dout.writeUTF( each.getName() );
             }
         }
-
-        OptionSet optionSet = this.getOptionSet();
-
-        if ( optionSet == null )
-        {
-            dout.writeInt( 0 );
-        }
-        else
-        {
-            optionSet.serialize( dout );
-        }
     }
 
 }
