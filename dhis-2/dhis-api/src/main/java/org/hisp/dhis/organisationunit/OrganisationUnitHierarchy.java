@@ -69,6 +69,11 @@ public class OrganisationUnitHierarchy
     {
         for ( OrganisationUnitRelationship relation : relations )
         {
+            if ( relation.getParentId() == relation.getChildId() )
+            {
+                continue; // Parent cannot be same as child
+            }
+            
             Set<Integer> children = relationships.get( relation.getParentId() );
             
             if ( children == null )
