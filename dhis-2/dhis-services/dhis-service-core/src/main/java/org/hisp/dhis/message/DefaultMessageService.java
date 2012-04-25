@@ -27,21 +27,21 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
-import org.hisp.dhis.system.util.Clock;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.velocity.VelocityManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -158,7 +158,9 @@ public class DefaultMessageService
     {
         UserGroup userGroup = configurationService.getConfiguration().getCompletenessRecipients();
 
-        if ( userGroup != null && userGroup.getMembers().size() > 0 )
+        DataSet dataSet = registration.getDataSet();
+        
+        if ( userGroup != null && !userGroup.getMembers().isEmpty() && dataSet != null )
         {
             User sender = currentUserService.getCurrentUser();
 
@@ -167,17 +169,23 @@ public class DefaultMessageService
             MessageConversation conversation = new MessageConversation( COMPLETE_SUBJECT, sender );
 
             conversation.addMessage( new Message( text, null, sender ) );
-
+            
             for ( User user : userGroup.getMembers() )
             {
-                conversation.addUserMessage( new UserMessage( user ) );
+                if ( user.getUserCredentials().getAllDataSets().contains( dataSet ) )
+                {
+                    conversation.addUserMessage( new UserMessage( user ) );
+                }
             }
 
-            int id = saveMessageConversation( conversation );
-
-            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, userGroup.getMembers() );
-
-            return id;
+            if ( !conversation.getUserMessages().isEmpty() )
+            {
+                int id = saveMessageConversation( conversation );
+                
+                invokeMessageSenders( COMPLETE_SUBJECT, text, sender, conversation.getUsers() );
+                
+                return id;
+            }
         }
 
         return 0;
