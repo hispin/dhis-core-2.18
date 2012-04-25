@@ -69,13 +69,16 @@ public class GenerateReportAttributeAction
 
         this.installReadTemplateFile( exportReportInstance, period, organisationUnit );
 
+        DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             Collection<ExportItem> exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
 
-            this.generateOutPutFile( exportReportInstance, exportReportItems, organisationUnit, sheet );
+            this.generateOutPutFile( defaultOptionCombo, exportReportInstance, exportReportItems, organisationUnit,
+                sheet );
         }
     }
 
@@ -83,31 +86,43 @@ public class GenerateReportAttributeAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    private void generateOutPutFile( ExportReportAttribute exportReport, Collection<ExportItem> exportReportItems,
-        OrganisationUnit organisationUnit, Sheet sheet )
+    private void generateOutPutFile( DataElementCategoryOptionCombo optionCombo, ExportReportAttribute exportReport,
+        Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
-        DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        boolean flag = false;
+        int rowBegin = 0;
 
-        for ( ExportItem exportItem : exportReportItems )
+        for ( AttributeValueGroupOrder avgOrder : exportReport.getAttributeValueOrders() )
         {
-            int rowBegin = exportItem.getRow();
+            int serial = 1;
+            DataElement de = null;
+            List<DataElement> dataElements = null;
 
-            for ( AttributeValueGroupOrder avgOrder : exportReport.getAttributeValueOrders() )
+            flag = true;
+
+            for ( String avalue : avgOrder.getAttributeValues() )
             {
-                int beginChapter = rowBegin;
+                dataElements = new ArrayList<DataElement>( localDataElementService.getDataElementsByAttribute( avgOrder
+                    .getAttribute(), avalue ) );
 
-                if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
+                Collections.sort( dataElements, new DataElementFormNameComparator() );
+
+                for ( ExportItem exportItem : exportReportItems )
                 {
-                    ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), avgOrder.getName(), ExcelUtils.TEXT,
-                        sheet, this.csText12BoldCenter );
-                }
+                    rowBegin = (rowBegin == 0 ? exportItem.getRow() : exportItem.getRow() + rowBegin - 1);
+                    // int beginChapter = rowBegin;
 
-                rowBegin++;
-                int serial = 1;
-                List<DataElement> dataElements = null;
+                    if ( flag )
+                    {
+                        if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
+                        {
+                            ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), avgOrder.getName(),
+                                ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                        }
 
-                for ( String avalue : avgOrder.getAttributeValues() )
-                {
+                        rowBegin++;
+                    }
+
                     if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                     {
                         ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), avalue, ExcelUtils.TEXT, sheet,
@@ -115,42 +130,42 @@ public class GenerateReportAttributeAction
                     }
                     else if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
                     {
-                        ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), String.valueOf( serial ),
-                            ExcelUtils.NUMBER, sheet, this.csTextSerial );
+                        ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), serial + "", ExcelUtils.NUMBER,
+                            sheet, this.csTextSerial );
                     }
                     else
                     {
-                        int innerColumn = exportItem.getColumn();
-
                         ExportItem newExportItem = new ExportItem();
 
-                        dataElements = new ArrayList<DataElement>( localDataElementService.getDataElementsByAttribute(
-                            avgOrder.getAttribute(), avalue ) );
+                        de = dataElements.get( Integer.parseInt( exportItem.getExtraExpression() ) - 1 );
 
-                        Collections.sort( dataElements, new DataElementFormNameComparator() );
-
-                        for ( DataElement de : dataElements )
+                        if ( de != null )
                         {
-                            newExportItem.setExpression( de.getId() + SEPARATOR + defaultOptionCombo.getId() );
+                            newExportItem.setExpression( de.getId() + SEPARATOR + optionCombo.getId() );
 
                             double value = this.getDataValue( newExportItem, organisationUnit );
 
-                            ExcelUtils.writeValueByPOI( rowBegin, innerColumn++, String.valueOf( value ),
+                            ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), value + "",
                                 ExcelUtils.NUMBER, sheet, this.csNumber );
                         }
                     }
-
-                    rowBegin++;
-                    serial++;
                 }
 
-                if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
-                {
-                    String columnName = ExcelUtils.convertColumnNumberToName( exportItem.getColumn() );
-                    String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
+                flag = false;
+                rowBegin++;
+                serial++;
 
-                    ExcelUtils.writeFormulaByPOI( beginChapter, exportItem.getColumn(), formula, sheet, this.csFormula );
-                }
+                // if ( exportItem.getItemType().equalsIgnoreCase(
+                // ExportItem.TYPE.DATAELEMENT ) )
+                // {
+                // String columnName = ExcelUtils.convertColumnNumberToName(
+                // exportItem.getColumn() );
+                // String formula = "SUM(" + columnName + (beginChapter + 1) +
+                // ":" + columnName + (rowBegin - 1) + ")";
+                //
+                // ExcelUtils.writeFormulaByPOI( beginChapter,
+                // exportItem.getColumn(), formula, sheet, this.csFormula );
+                // }
             }
         }
     }
