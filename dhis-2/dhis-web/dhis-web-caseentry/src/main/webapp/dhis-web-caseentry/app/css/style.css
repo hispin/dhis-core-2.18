@@ -677,4 +677,17 @@ TR.utilbody {
 	font-weight: weight;
 }
 
+#gridTable .x-btn-default-small
+{
+	height: 0px;
+	width: 0px
+}
 
+#gridTable .x-grid-row-editor-buttons {
+	height: 0px;
+	width: 0px
+}
+#gridTable .x-grid-row-editor-buttons-default {
+	height: 0px;
+	width: 0px
+}
