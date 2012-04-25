@@ -80,7 +80,8 @@ public class VelocityManager
             return writer.toString();
 
             // TODO include encoder in context
-        } catch ( Exception ex )
+        } 
+        catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to merge velocity template", ex );
         }
