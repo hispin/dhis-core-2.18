@@ -156,6 +156,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitLevelStore" class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitLevelStore">
     <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitLevel" />
     <property name="sessionFactory" ref="sessionFactory" />
+	<property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="cacheable" value="true" />
   </bean>
 
