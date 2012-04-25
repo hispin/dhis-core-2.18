@@ -11,7 +11,7 @@ jQuery( document ).ready( function()
 		});
 	});
 	
-	//checkValueIsExist( "name", "validateProgramStage.action", {id:getFieldValue('id')});	
+	checkValueIsExist( "name", "validateCatalogType.action", {id:getFieldValue('id')});	
 	
 	jQuery("#availableList").dhisAjaxSelect({
 		source: "getCatalogTypeAttributes.action",
