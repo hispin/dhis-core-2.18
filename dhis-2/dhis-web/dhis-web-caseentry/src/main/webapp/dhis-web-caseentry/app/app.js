@@ -961,7 +961,7 @@ Ext.onReady( function() {
 				viewConfig: {
 					getRowClass: function(record, rowIndex, rp, ds){ 
 						if(rowIndex == 0){
-							return 'blue-row';
+							return 'filter-row';
 						} else {
 						   return '';
 						}

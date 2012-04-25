@@ -671,23 +671,20 @@ TR.utilbody {
 	padding: 4px 0 0;
 }
 
-.blue-row {
+.filter-row {
     color: blue;
     font-style: italic;
-	font-weight: weight;
 }
 
 #gridTable .x-btn-default-small
 {
-	height: 0px;
-	width: 0px
+	display: none;
 }
 
 #gridTable .x-grid-row-editor-buttons {
-	height: 0px;
-	width: 0px
+	display: none;
 }
+
 #gridTable .x-grid-row-editor-buttons-default {
-	height: 0px;
-	width: 0px
+	display: none;
 }
