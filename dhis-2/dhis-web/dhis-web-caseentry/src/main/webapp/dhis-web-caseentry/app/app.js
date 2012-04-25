@@ -954,6 +954,7 @@ Ext.onReady( function() {
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
                 height: TR.util.viewport.getSize().y - 60,
+				id: 'gridTable',
 				columns: cols,
 				scroll: 'both',
 				title: TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report,
@@ -1053,7 +1054,7 @@ Ext.onReady( function() {
 					}
 				], 
 				plugins: [
-					  Ext.create('Ext.grid.plugin.CellEditing', {
+					  Ext.create('Ext.grid.plugin.RowEditing', {
 						clicksToEdit: 1,
 						editStyle: 'row',
 						clicksToMoveEditor: 1,
@@ -1068,10 +1069,7 @@ Ext.onReady( function() {
 								}
 							},
 							edit: function( editor, e ){
-								if( e.originalValue!=e.value )
-								{
-									TR.exe.execute();
-								}
+								TR.exe.execute();
 							}
 
 						}
@@ -1118,7 +1116,7 @@ Ext.onReady( function() {
 			if (Ext.grid.RowEditor) {
 				Ext.apply(Ext.grid.RowEditor.prototype, {
 					saveBtnText : TR.i18n.filter,
-					cancelBtnText : TR.i18n.cancel,
+					cancelBtnText : TR.i18n.cancel
 				});
 			}
 			
