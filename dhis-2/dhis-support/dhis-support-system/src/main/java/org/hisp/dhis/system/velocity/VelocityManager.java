@@ -27,12 +27,12 @@ package org.hisp.dhis.system.velocity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.StringWriter;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-
-import java.io.StringWriter;
 
 public class VelocityManager
 {
@@ -42,7 +42,7 @@ public class VelocityManager
     private static final String VM_SUFFIX = ".vm";
     private VelocityEngine velocity;
 
-    public VelocityManager() throws Exception
+    public VelocityManager()
     {
         velocity = new VelocityEngine();
         velocity.setProperty( Velocity.RESOURCE_LOADER, RESOURCE_LOADER_NAME );
@@ -61,7 +61,7 @@ public class VelocityManager
     {
         return render( null, template );
     }
-
+    
     public String render( Object object, String template )
     {
         try
