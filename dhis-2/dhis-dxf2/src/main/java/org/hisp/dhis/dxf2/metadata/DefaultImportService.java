@@ -27,19 +27,20 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -64,6 +65,9 @@ public class DefaultImportService
     @Autowired
     private HibernateCacheManager cacheManager;
 
+    @Autowired
+    private CurrentUserService currentUserService;
+
     //-------------------------------------------------------------------------------------------------------
     // ImportService Implementation
     //-------------------------------------------------------------------------------------------------------
@@ -81,7 +85,8 @@ public class DefaultImportService
         objectBridge.init();
 
         Date startDate = new Date();
-        log.info( "Started import at " + startDate );
+
+        log.info( "User " + currentUserService.getCurrentUsername() + " started import at " + startDate );
 
         doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
@@ -176,7 +181,7 @@ public class DefaultImportService
             if ( importer != null )
             {
                 List<ImportConflict> importConflicts = importer.importObjects( objects, importOptions );
-                
+
                 importSummary.getConflicts().addAll( importConflicts );
                 // importSummary.getCounts().add( count ); //FIXME
             }
