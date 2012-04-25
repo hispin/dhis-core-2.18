@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
@@ -50,5 +51,18 @@ public class HibernateLocalDataElementStore
         return getCriteria().createAlias( "attributeValues", "attributeValue" ).add(
             Restrictions.eq( "attributeValue.attribute", attribute ) ).add(
             Restrictions.eq( "attributeValue.value", value ).ignoreCase() ).list();
+    }
+
+    @Override
+    public int getDataElementCount( Integer dataElementId, Integer attributeId, String value )
+    {
+        Number rs = (Number) getCriteria()
+            .add( Restrictions.eq( "id", dataElementId ) )
+            .createAlias( "attributeValues", "attributeValue" )
+            .add( Restrictions.eq( "attributeValue.attribute.id", attributeId ) )
+            .add( Restrictions.eq( "attributeValue.value", value ).ignoreCase() )
+            .setProjection( Projections.rowCount() ).uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
     }
 }

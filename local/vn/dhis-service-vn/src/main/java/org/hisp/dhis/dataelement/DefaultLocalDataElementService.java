@@ -60,4 +60,9 @@ public class DefaultLocalDataElementService
     {
         return dataElementStore.getByAttributeValue( attribute, value );
     }
+    
+    public int getDataElementCount( Integer dataElementId, Integer attributeId, String value )
+    {
+        return dataElementStore.getDataElementCount( dataElementId, attributeId, value );
+    }
 }

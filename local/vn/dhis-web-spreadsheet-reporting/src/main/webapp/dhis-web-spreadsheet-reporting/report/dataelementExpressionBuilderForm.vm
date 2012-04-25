@@ -90,7 +90,7 @@
 	function getDataElements( id, target )
 	{
 		#if($exportReport.isCategory())
-		dataDictionary.loadDataElementsByGroup( id, target);
+		dataDictionary.loadDataElementsByGroup( id, target );
 		#else
 		dataDictionary.loadOperands( target, {id:id} );
 		#end

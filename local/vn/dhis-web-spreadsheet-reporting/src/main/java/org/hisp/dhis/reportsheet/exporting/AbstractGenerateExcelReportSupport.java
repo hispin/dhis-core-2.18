@@ -49,8 +49,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.period.DailyPeriodType;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
@@ -203,6 +207,31 @@ public abstract class AbstractGenerateExcelReportSupport
     // -------------------------------------------------------------------------
     // DataElement Value
     // -------------------------------------------------------------------------
+
+    protected String getTextValue( ExportItem exportItem, OrganisationUnit organisationUnit )
+    {
+        Period p = null;
+
+        if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.DAILY ) )
+        {
+            p = periodService.getPeriod( startDate, startDate, new DailyPeriodType() );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH ) )
+        {
+            p = periodService.getPeriod( startDate, endDate, new MonthlyPeriodType() );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.QUARTERLY ) )
+        {
+            p = periodService.getPeriod( startQuaterly, endQuaterly, new QuarterlyPeriodType() );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
+        {
+            p = periodService.getPeriod( firstDayOfYear, endDateOfYear, new YearlyPeriodType() );
+        }
+
+        return generateExpression( exportItem, p, organisationUnit, dataElementService, categoryService,
+            dataValueService );
+    }
 
     protected double getDataValue( ExportItem exportItem, OrganisationUnit organisationUnit )
     {

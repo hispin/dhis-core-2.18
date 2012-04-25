@@ -1,3 +1,4 @@
+<script type="text/javascript" src="javascript/attribute.ajax.js"></script>
 <script>
 	jQuery(document).ready(function(){	
 		validation( 'exportItem', function( form ){
@@ -97,6 +98,8 @@
 </form>
 
 <!-- EXPRESSION FORM -->
+
+#parse( "/dhis-web-spreadsheet-reporting/report/attributeValueExpressionBuilderForm.vm" )
 
 #parse( "/dhis-web-spreadsheet-reporting/report/dataelementExpressionBuilderForm.vm" )
 

@@ -148,6 +148,7 @@ public class ExcelTemplateListAction
     public List<String> getReportTypes()
     {
         this.reportTypes.add( ExportReport.TYPE.NORMAL );
+        this.reportTypes.add( ExportReport.TYPE.ATTRIBUTE );
         this.reportTypes.add( ExportReport.TYPE.CATEGORY );
         this.reportTypes.add( ExportReport.TYPE.PERIOD_COLUMN_LISTING );
         this.reportTypes.add( ExportReport.TYPE.ORGANIZATION_GROUP_LISTING );

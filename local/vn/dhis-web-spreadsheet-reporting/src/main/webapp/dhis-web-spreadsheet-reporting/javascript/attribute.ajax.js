@@ -45,11 +45,15 @@ function AttributeLib()
 
 	this.loadAttributeValuesByAttribute = function( id, curItems, sourceList, destList, isFirstLoad )
 	{
-		var target = jQuery( "#" + sourceList );
+		var source = jQuery( "#" + sourceList );
 		var dest = jQuery( "#" + destList );
-		target.empty();
+		
+		if ( source )
+		{
+			source.empty();
+		}
 
-		if ( !isFirstLoad )
+		if ( dest && !isFirstLoad )
 		{
 			dest.empty();
 		}
@@ -67,7 +71,7 @@ function AttributeLib()
 				jQuery.each( json.values, function( i, item )
 				{
 					valueList.push( new AttributeValue( item.value ) );
-					target.append( '<option value="' + item.value + '">' + item.value + '</option>' );
+					source.append( '<option value="' + item.value + '">' + item.value + '</option>' );
 				} );
 				
 				attributeValueMap[ id ] = valueList;
@@ -77,7 +81,7 @@ function AttributeLib()
 		{
 			jQuery.each( valueList, function( i, item )
 			{
-				target.append( '<option value="' + item.value + '">' + item.value + '</option>' );
+				source.append( '<option value="' + item.value + '">' + item.value + '</option>' );
 			} );
 		}
 

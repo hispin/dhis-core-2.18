@@ -144,6 +144,8 @@ public class ExportItem
     public static class TYPE
     {
         public static final String DATAELEMENT = "dataelement";
+        
+        public static final String DATAELEMENT_VALUETYPE_TEXT = "dataelement_valuetype_text";
 
         public static final String ORGANISATION = "organisation";
 
@@ -161,6 +163,7 @@ public class ExportItem
         {
             List<String> list = new ArrayList<String>();
             list.add( DATAELEMENT );
+            list.add( DATAELEMENT_VALUETYPE_TEXT );
             list.add( ORGANISATION );
             list.add( INDICATOR );
             list.add( DATAELEMENT_CODE );

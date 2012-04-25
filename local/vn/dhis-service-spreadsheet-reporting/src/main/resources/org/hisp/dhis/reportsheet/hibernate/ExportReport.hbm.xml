@@ -65,7 +65,7 @@
 		
 		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing" table="reportexcels_organizationgrouplisting">			
 			<key column="reportexcelid"/>			
-			<list  name="organisationUnitGroups" table="reportexcel_organisationgroup">
+			<list name="organisationUnitGroups" table="reportexcel_organisationgroup">
 				<key column="reportexcelid" />
 				<list-index column="grouporder" base="0"/>				
 				<many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="oganisationunitgroupid"

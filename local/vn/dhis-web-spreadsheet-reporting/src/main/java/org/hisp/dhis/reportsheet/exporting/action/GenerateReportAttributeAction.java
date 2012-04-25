@@ -27,12 +27,12 @@ package org.hisp.dhis.reportsheet.exporting.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElement;
@@ -95,7 +95,6 @@ public class GenerateReportAttributeAction
         for ( AttributeValueGroupOrder avgOrder : exportReport.getAttributeValueOrders() )
         {
             int serial = 1;
-            DataElement de = null;
             List<DataElement> dataElements = null;
 
             flag = true;
@@ -135,18 +134,24 @@ public class GenerateReportAttributeAction
                     }
                     else
                     {
-                        ExportItem newExportItem = new ExportItem();
-
-                        de = dataElements.get( Integer.parseInt( exportItem.getExtraExpression() ) - 1 );
-
-                        if ( de != null )
+                        int id = Integer.parseInt( exportItem.getExpression().split( "@" )[0] );
+                        String value = exportItem.getExpression().split( "@" )[1];
+                        
+                        for ( DataElement de : dataElements )
                         {
-                            newExportItem.setExpression( de.getId() + SEPARATOR + optionCombo.getId() );
+                            if ( localDataElementService.getDataElementCount( de.getId(), id, value ) > 0 )
+                            {
+                                ExportItem newExportItem = new ExportItem();
 
-                            double value = this.getDataValue( newExportItem, organisationUnit );
+                                newExportItem.setExpression( de.getId() + SEPARATOR + optionCombo.getId() );
 
-                            ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), value + "",
-                                ExcelUtils.NUMBER, sheet, this.csNumber );
+                                double result = this.getDataValue( newExportItem, organisationUnit );
+
+                                ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), result + "",
+                                    ExcelUtils.NUMBER, sheet, this.csNumber );
+
+                                break;
+                            }
                         }
                     }
                 }
