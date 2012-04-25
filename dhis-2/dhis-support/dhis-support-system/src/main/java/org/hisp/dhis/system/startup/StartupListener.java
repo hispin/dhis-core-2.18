@@ -46,12 +46,13 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 public class StartupListener
     implements ServletContextListener
 {
-    
     private static final Log LOG = LogFactory.getLog( StartupListener.class );
+
     // -------------------------------------------------------------------------
     // ServletContextListener implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public void contextInitialized( ServletContextEvent event )
     {
         WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext( event
@@ -70,19 +71,23 @@ public class StartupListener
         }
     }
 
+    @Override
     public void contextDestroyed( ServletContextEvent event )
     {
-        // cleanup jdbc drivers
         Enumeration<Driver> drivers = DriverManager.getDrivers();
-        while (drivers.hasMoreElements()) {
+        
+        while ( drivers.hasMoreElements() )
+        {
             Driver driver = drivers.nextElement();
-            try {
-                DriverManager.deregisterDriver(driver);
-                LOG.info("deregistering jdbc driver: " + driver);
-            } catch (SQLException e) {
-                LOG.info("Error deregistering driver " + driver + " :" + e.getMessage());
+            try
+            {
+                DriverManager.deregisterDriver( driver );
+                LOG.info( "De-registering jdbc driver: " + driver );
+            }
+            catch ( SQLException e )
+            {
+                LOG.info( "Error de-registering driver " + driver + " :" + e.getMessage() );
             }
         }
-        
     }
 }
