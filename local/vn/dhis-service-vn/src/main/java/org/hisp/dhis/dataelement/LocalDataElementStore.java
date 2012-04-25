@@ -33,10 +33,12 @@ import org.hisp.dhis.attribute.Attribute;
 
 /**
  * @author Chau Thu Tran
- *
+ * 
  * @version $LocalDataElementStore.java Mar 23, 2012 4:10:24 PM$
  */
 public interface LocalDataElementStore
 {
     Collection<DataElement> getByAttributeValue( Attribute attribute, String value );
+
+    int getDataElementCount( Integer dataElementId, Integer attributeId, String value );
 }

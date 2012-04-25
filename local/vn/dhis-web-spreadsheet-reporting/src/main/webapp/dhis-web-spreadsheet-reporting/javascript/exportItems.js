@@ -56,10 +56,7 @@ function changeItemType()
 	if( value == 'dataelement' )
 	{
 		if ( attribute ) {
-			disable( 'expression-button' );
-			setFieldValue( 'exportItem input[id=expression]', value );
-			removeValidatorRulesById( 'exportItem input[id=expression]' );
-			removeValidatorRulesById( 'dataelement textarea[id=formula]' );
+			byId('expression-button' ).onclick = avExpressionBuilderForm;
 		} else {
 			byId('expression-button' ).onclick = deExpressionBuilderForm;
 		}
@@ -92,11 +89,22 @@ function cleanFormula()
 
 function insertExpression() 
 {
-	if( category ) var expression = "[*." + getFieldValue("elementSelect")+ "]";
-	else var expression = getFieldValue("elementSelect");
-	setFieldValue( 'formula', getFieldValue( 'formula') + expression );
+	var expression = '';
 
-	getExpression();
+	if ( attribute ) {
+		expression = "[" + getFieldValue( "groupSelect" ) + "@" + getFieldValue( "elementSelect" ) + "]";
+	}
+	else if ( category ) {
+		expression = "[*." + getFieldValue( "elementSelect" )+ "]";
+	}
+	else {
+		expression = getFieldValue( "elementSelect" );
+		alert(expression);
+	}
+
+	setFieldValue( 'formula', getFieldValue( 'formula' ) + expression );
+
+	if ( !attribute ) { getExpression(); }
 }
 
 function getExpression()

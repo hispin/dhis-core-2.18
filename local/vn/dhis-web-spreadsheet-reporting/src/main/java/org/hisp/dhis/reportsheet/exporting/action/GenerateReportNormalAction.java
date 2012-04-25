@@ -83,6 +83,13 @@ public class GenerateReportNormalAction
                 ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), String.valueOf( value ),
                     ExcelUtils.NUMBER, sheet, this.csNumber );
             }
+            else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_VALUETYPE_TEXT ) )
+            {
+                String value = getTextValue( reportItem, organisationUnit );
+
+                ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), value, ExcelUtils.NUMBER,
+                    sheet, this.csText );
+            }
             else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )
             {
                 double value = getIndicatorValue( reportItem, organisationUnit );
