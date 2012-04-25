@@ -73,7 +73,6 @@ public class HibernateCatalogTypeAttributeStore implements CatalogTypeAttributeS
 
         Criteria criteria = session.createCriteria( CatalogTypeAttribute.class );
         criteria.add( Restrictions.eq( "name", name ) );
-
         return (CatalogTypeAttribute) criteria.uniqueResult();
 
     }

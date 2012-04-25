@@ -2,9 +2,12 @@ package org.hisp.dhis.coldchain.catalog.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
+import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeStore;
 
 public class HibernateCatalogTypeStore implements CatalogTypeStore
@@ -55,5 +58,37 @@ public class HibernateCatalogTypeStore implements CatalogTypeStore
 
         session.update( catalogType );        
     }
+    
+    @Override
+    public CatalogType getCatalogType( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
+        return (CatalogType) session.get( CatalogType.class, id );
+    }
+    
+    @Override
+    public CatalogType getCatalogTypeByName( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( CatalogType.class );
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (CatalogType) criteria.uniqueResult();
+
+    }
+    /*
+    @Override
+    public CatalogType getCatalogTypeByAttribute( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute)
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( CatalogType.class );
+        criteria.add( Restrictions.eq( "name", catalogTypeAttribute ) );
+
+        return (CatalogType) criteria.uniqueResult();
+
+    }
+    */
 }

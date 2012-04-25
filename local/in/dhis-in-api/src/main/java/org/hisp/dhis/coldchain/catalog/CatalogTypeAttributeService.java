@@ -15,6 +15,8 @@ public interface CatalogTypeAttributeService
     CatalogTypeAttribute getCatalogTypeAttribute( int id );
     
     CatalogTypeAttribute getCatalogTypeAttributeByName( String name );
+    
+    //CatalogType getCatalogTypeByAttribute( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute);
 
     Collection<CatalogTypeAttribute> getAllCatalogTypeAttributes();
     
