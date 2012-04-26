@@ -72,6 +72,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderStore" />
 	</bean>
 	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- ATTRIBUTEVALUE-GROUP-ORDER STORE / SERVICE                    -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<bean id="org.hisp.dhis.reportsheet.CategoryOptionGroupOrderStore"
+		class="org.hisp.dhis.reportsheet.hibernate.HibernateCategoryOptionGroupOrderStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.reportsheet.CategoryOptionGroupOrderService"
+		class="org.hisp.dhis.reportsheet.impl.DefaultCategoryOptionGroupOrderService">
+		<property name="categoryOptionGroupOrderStore"
+			ref="org.hisp.dhis.reportsheet.CategoryOptionGroupOrderStore" />
+	</bean>
+	
 	<!-- Report Location Manager -->
 
 	<bean id="org.hisp.dhis.reportsheet.ReportLocationManager"

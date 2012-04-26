@@ -188,6 +188,108 @@
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<!-- CATEGORYOPTION GROUP ORDER FOR CATEGORY OPTION 			   -->
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<action name="listCategoryOptionGroupOrderForExportReport"
+			class="org.hisp.dhis.reportsheet.exportreport.action.GetExportReportAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/listCategoryOptionGroupOrder.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="javascripts">javascript/category.ajax.js,javascript/categoryOptionGroupOrder.js</param>
+			<param name="stylesheets">style/basic.css,style/style.css</param>
+		</action>
+		
+		<action name="listCategoryOptionGroupOrderForImportReport"
+			class="org.hisp.dhis.reportsheet.importreport.action.GetImportReportAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/listCategoryOptionGroupOrder.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="javascripts">javascript/category.ajax.js,javascript/categoryOptionGroupOrder.js</param>
+			<param name="stylesheets">style/basic.css,style/style.css</param>
+		</action>	
+		
+		<action name="validateCategoryOptionGroupOrder"
+			class="org.hisp.dhis.reportsheet.cogroup.action.ValidateCategoryOptionGroupOrderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+		</action>
+		
+		<action name="addCategoryOptionGroupOrderForExportReport"
+			class="org.hisp.dhis.reportsheet.cogroup.action.SaveCategoryOptionGroupOrderAction">
+			<result name="success" type="redirect">
+				listCategoryOptionGroupOrderForExportReport.action?id=${id}</result>
+		</action>
+		
+		<action name="addCategoryOptionGroupOrderForImportReport"
+			class="org.hisp.dhis.reportsheet.cogroup.action.SaveCategoryOptionGroupOrderAction">
+			<result name="success" type="redirect">
+				listCategoryOptionGroupOrderForImportReport.action?id=${id}
+			</result>
+		</action>
+
+		<action name="updateCategoryOptionGroupOrderForExportReport"
+			class="org.hisp.dhis.reportsheet.cogroup.action.UpdateCategoryOptionGroupOrderAction">
+			<result name="success" type="redirect">
+				listCategoryOptionGroupOrderForExportReport.action?id=${id}</result>
+		</action>
+		
+		<action name="updateCategoryOptionGroupOrderForImportReport"
+			class="org.hisp.dhis.reportsheet.cogroup.action.UpdateCategoryOptionGroupOrderAction">
+			<result name="success" type="redirect">
+				listCategoryOptionGroupOrderForImportReport.action?id=${id}
+			</result>
+		</action>
+		
+		<action name="deleteCategoryOptionGroupOrder"
+			class="org.hisp.dhis.reportsheet.cogroup.action.DeleteCategoryOptionGroupOrderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+		
+		<action name="updateSortCategoryOptionGroupOrder"
+			class="org.hisp.dhis.reportsheet.cogroup.action.UpdateSortedCategoryOptionGroupOrderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+		
+		<action name="getCategoryOptionGroupOrder"
+			class="org.hisp.dhis.reportsheet.cogroup.action.GetCategoryOptionGroupOrderAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonCategoryOptionGroupOrder.vm</result>
+		</action>
+		
+		<action name="openSortCategoryOption"
+			class="org.hisp.dhis.reportsheet.cogroup.action.GetCategoryOptionGroupOrderAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/sortCategoryOptions.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="javascripts">javascript/categoryOptionGroupOrder.js</param>
+			<param name="stylesheets">style/basic.css</param>
+		</action>
+
+		<action name="updateSortedCategoryOptionsForExportReport"
+			class="org.hisp.dhis.reportsheet.cogroup.action.UpdateSortedCategoryOptionAction">
+			<result name="success" type="redirect">
+				listCategoryOptionGroupOrderForExportReport.action?id=${reportId}</result>
+		</action>
+		
+		<action name="updateSortedCategoryOptionsForImportReport"
+			class="org.hisp.dhis.reportsheet.cogroup.action.UpdateSortedCategoryOptionAction">
+			<result name="success" type="redirect">
+				listCategoryOptionGroupOrderForImportReport.action?id=${reportId}</result>
+		</action>		
+
+		<action name="getCategoryOptionsByCategory"
+			class="org.hisp.dhis.reportsheet.cogroup.action.GetCategoryOptionsByCategoryAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonCategoryOptions.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!-- DATAELEMENT GROUP ORDER FOR CATEGORY ACTION 				   -->
@@ -208,7 +310,7 @@
 			<param name="page">/dhis-web-spreadsheet-reporting/listDataElementGroupOrder.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="javascripts">javascript/dataElementGroupOrder.js</param>
-			<param name="stylesheets">style/basic.css, style/style.css</param>
+			<param name="stylesheets">style/basic.css,style/style.css</param>
 		</action>	
 		
 		<action name="validateDataElementGroupOrder"
@@ -377,7 +479,7 @@
 			class="org.hisp.dhis.reportsheet.avgroup.action.UpdateSortedAttributeValueAction">
 			<result name="success" type="redirect">
 				listAttributeValueGroupOrderForImportReport.action?id=${reportId}</result>
-		</action>		
+		</action>
 
 		<action name="getAttributeValuesByAttribute"
 			class="org.hisp.dhis.reportsheet.avgroup.action.GetAttributeValuesByAttributeAction">

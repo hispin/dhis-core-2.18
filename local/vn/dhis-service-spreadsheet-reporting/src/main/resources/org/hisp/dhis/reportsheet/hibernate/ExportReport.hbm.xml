@@ -31,38 +31,53 @@
 			<key column="reportexcelid" />
 			<many-to-many class="org.hisp.dhis.user.UserAuthorityGroup"
 				column="userroleid"  foreign-key="fk_reportexcel_userroles"/>
-		</set>		
+		</set>
 		
+		<!-- NORMAL -->
 		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportNormal" table="reportexcels_normal">
-			<key column="reportexcelid" />			
+			<key column="reportexcelid" />
 		</joined-subclass>
 		
+		<!-- PERIOD-LISTING -->
 		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportPeriodColumnListing" table="reportexcels_periodcolumnlisting">
-			<key column="reportexcelid" />		
+			<key column="reportexcelid" />
 			<set name="periodColumns" table="reportexcel_periodcolumns" cascade="all" lazy="false">
 				<key column="reportexcelid"/>
 				<one-to-many class="org.hisp.dhis.reportsheet.PeriodColumn"/>
-			</set>	
+			</set>
 		</joined-subclass>
 		
+		<!-- CATEGORY -->
 		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportCategory" table="reportexcels_category">
 			<key column="reportexcelid"/>
 			<list name="dataElementOrders" table="reportexcel_dataelementgrouporders" cascade="all" lazy="false">
 				<key column="reportexcelid"/>
 				<list-index base="0" column="dataelementgrouporder"/>
 				<one-to-many class="org.hisp.dhis.reportsheet.DataElementGroupOrder"/>
-		    </list>				
+		    </list>
 		</joined-subclass>
 		
+		<!-- CATEGORY-VERTICAL -->
+		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportVerticalCategory" table="reportexcels_verticalcategory">
+			<key column="reportexcelid"/>
+			<list name="categoryOptionGroupOrders" table="reportexcel_categoryoptiongrouporders" cascade="all" lazy="false">
+				<key column="reportexcelid"/>
+				<list-index base="0" column="categoryoptiongrouporder"/>
+				<one-to-many class="org.hisp.dhis.reportsheet.CategoryOptionGroupOrder"/>
+		    </list>
+		</joined-subclass>
+		
+		<!-- ATTRIBUTE -->
 		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportAttribute" table="reportexcels_attribute">
 			<key column="reportexcelid"/>
 			<list name="attributeValueOrders" table="reportexcel_attributevaluegrouporders" cascade="all" lazy="false">
 				<key column="reportexcelid"/>
 				<list-index base="0" column="attributevaluegrouporder"/>
 				<one-to-many class="org.hisp.dhis.reportsheet.AttributeValueGroupOrder"/>
-		    </list>				
+		    </list>
 		</joined-subclass>
 		
+		<!-- ORG-UNIT-LISTING -->
 		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing" table="reportexcels_organizationgrouplisting">			
 			<key column="reportexcelid"/>			
 			<list name="organisationUnitGroups" table="reportexcel_organisationgroup">

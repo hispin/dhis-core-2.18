@@ -1,7 +1,7 @@
-package org.hisp.dhis.reportsheet;
+package org.hisp.dhis.reportsheet.impl;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,57 +26,52 @@ package org.hisp.dhis.reportsheet;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
+
+import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
+import org.hisp.dhis.reportsheet.CategoryOptionGroupOrderService;
+import org.hisp.dhis.reportsheet.CategoryOptionGroupOrderStore;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class ExportReportCategory
-    extends ExportReport
+@Transactional
+public class DefaultCategoryOptionGroupOrderService
+    implements CategoryOptionGroupOrderService
 {
-    private List<DataElementGroupOrder> dataElementOrders;
-
     // -------------------------------------------------------------------------
-    // Constructors
+    // Dependency
     // -------------------------------------------------------------------------
 
-    public ExportReportCategory()
+    private CategoryOptionGroupOrderStore categoryOptionGroupOrderStore;
+
+    public void setCategoryOptionGroupOrderStore( CategoryOptionGroupOrderStore categoryOptionGroupOrderStore )
     {
-        super();
+        this.categoryOptionGroupOrderStore = categoryOptionGroupOrderStore;
     }
 
     // -------------------------------------------------------------------------
-    // Getters and setters
+    // Data Element Group Order
     // -------------------------------------------------------------------------
 
-    public List<DataElementGroupOrder> getDataElementOrders()
+    public CategoryOptionGroupOrder getCategoryOptionGroupOrder( Integer id )
     {
-        return dataElementOrders;
+        return categoryOptionGroupOrderStore.getCategoryOptionGroupOrder( id );
     }
 
-    public void setDataElementOrders( List<DataElementGroupOrder> dataElementOrders )
+    public void updateCategoryOptionGroupOrder( CategoryOptionGroupOrder categoryOptionGroupOrder )
     {
-        this.dataElementOrders = dataElementOrders;
+        categoryOptionGroupOrderStore.updateCategoryOptionGroupOrder( categoryOptionGroupOrder );
     }
 
-    @Override
-    public String getReportType()
+    public void deleteCategoryOptionGroupOrder( Integer id )
     {
-        return ExportReport.TYPE.CATEGORY;
+        categoryOptionGroupOrderStore.deleteCategoryOptionGroupOrder( id );
     }
 
-    @Override
-    public List<String> getItemTypes()
+    public CategoryOptionGroupOrder getCategoryOptionGroupOrder( String name, String clazzName, Integer reportId )
     {
-        List<String> types = new ArrayList<String>();
-        types.add( ExportItem.TYPE.DATAELEMENT );
-        types.add( ExportItem.TYPE.DATAELEMENT_CODE );
-        types.add( ExportItem.TYPE.DATAELEMENT_NAME );
-        types.add( ExportItem.TYPE.FORMULA_EXCEL);
-        types.add( ExportItem.TYPE.SERIAL );
-
-        return types;
+        return categoryOptionGroupOrderStore.getCategoryOptionGroupOrder( name, clazzName, reportId );
     }
 }

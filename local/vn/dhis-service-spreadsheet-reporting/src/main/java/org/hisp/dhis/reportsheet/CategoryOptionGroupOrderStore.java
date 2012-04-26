@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,57 +26,25 @@ package org.hisp.dhis.reportsheet;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class ExportReportCategory
-    extends ExportReport
+public interface CategoryOptionGroupOrderStore
 {
-    private List<DataElementGroupOrder> dataElementOrders;
+    String ID = CategoryOptionGroupOrderStore.class.getName();
 
     // -------------------------------------------------------------------------
-    // Constructors
+    // Category Option Group Order
     // -------------------------------------------------------------------------
 
-    public ExportReportCategory()
-    {
-        super();
-    }
+    public CategoryOptionGroupOrder getCategoryOptionGroupOrder( Integer id );
 
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
+    public CategoryOptionGroupOrder getCategoryOptionGroupOrder( String name, String clazzName, Integer reportId );
 
-    public List<DataElementGroupOrder> getDataElementOrders()
-    {
-        return dataElementOrders;
-    }
+    public void updateCategoryOptionGroupOrder( CategoryOptionGroupOrder attributeValueGroupOrder );
 
-    public void setDataElementOrders( List<DataElementGroupOrder> dataElementOrders )
-    {
-        this.dataElementOrders = dataElementOrders;
-    }
+    public void deleteCategoryOptionGroupOrder( Integer id );
 
-    @Override
-    public String getReportType()
-    {
-        return ExportReport.TYPE.CATEGORY;
-    }
-
-    @Override
-    public List<String> getItemTypes()
-    {
-        List<String> types = new ArrayList<String>();
-        types.add( ExportItem.TYPE.DATAELEMENT );
-        types.add( ExportItem.TYPE.DATAELEMENT_CODE );
-        types.add( ExportItem.TYPE.DATAELEMENT_NAME );
-        types.add( ExportItem.TYPE.FORMULA_EXCEL);
-        types.add( ExportItem.TYPE.SERIAL );
-
-        return types;
-    }
 }

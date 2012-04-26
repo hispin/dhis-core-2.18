@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportsheet;
+package org.hisp.dhis.reportsheet.cogroup.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -26,57 +26,75 @@ package org.hisp.dhis.reportsheet;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
+
+import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
+import org.hisp.dhis.reportsheet.CategoryOptionGroupOrderService;
+import org.hisp.dhis.reportsheet.action.ActionSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class ExportReportCategory
-    extends ExportReport
+public class ValidateCategoryOptionGroupOrderAction
+    extends ActionSupport
 {
-    private List<DataElementGroupOrder> dataElementOrders;
-
     // -------------------------------------------------------------------------
-    // Constructors
+    // Dependency
     // -------------------------------------------------------------------------
 
-    public ExportReportCategory()
+    @Autowired
+    private CategoryOptionGroupOrderService categoryOptionGroupOrderService;
+
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        super();
+        this.id = id;
+    }
+
+    private Integer reportId;
+
+    public void setReportId( Integer reportId )
+    {
+        this.reportId = reportId;
+    }
+
+    private String clazzName;
+
+    public void setClazzName( String clazzName )
+    {
+        this.clazzName = clazzName;
+    }
+
+    private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
-    // Getters and setters
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    public List<DataElementGroupOrder> getDataElementOrders()
+    public String execute()
+        throws Exception
     {
-        return dataElementOrders;
-    }
+        CategoryOptionGroupOrder match = categoryOptionGroupOrderService.getCategoryOptionGroupOrder( name, clazzName,
+            reportId );
 
-    public void setDataElementOrders( List<DataElementGroupOrder> dataElementOrders )
-    {
-        this.dataElementOrders = dataElementOrders;
-    }
+        if ( match != null && (id == null || match.getId() != id) )
+        {
+            message = i18n.getString( "name_ready_exist" );
 
-    @Override
-    public String getReportType()
-    {
-        return ExportReport.TYPE.CATEGORY;
-    }
+            return ERROR;
+        }
 
-    @Override
-    public List<String> getItemTypes()
-    {
-        List<String> types = new ArrayList<String>();
-        types.add( ExportItem.TYPE.DATAELEMENT );
-        types.add( ExportItem.TYPE.DATAELEMENT_CODE );
-        types.add( ExportItem.TYPE.DATAELEMENT_NAME );
-        types.add( ExportItem.TYPE.FORMULA_EXCEL);
-        types.add( ExportItem.TYPE.SERIAL );
-
-        return types;
+        return SUCCESS;
     }
 }

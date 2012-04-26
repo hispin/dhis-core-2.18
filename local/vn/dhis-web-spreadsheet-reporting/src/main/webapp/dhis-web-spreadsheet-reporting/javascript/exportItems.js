@@ -57,6 +57,8 @@ function changeItemType()
 	{
 		if ( attribute ) {
 			byId('expression-button' ).onclick = avExpressionBuilderForm;
+		} else if ( categoryVertical ) {
+			byId('expression-button' ).onclick = coExpressionBuilderForm;
 		} else {
 			byId('expression-button' ).onclick = deExpressionBuilderForm;
 		}
@@ -92,17 +94,21 @@ function insertExpression()
 	var expression = '';
 
 	if ( attribute ) {
-		expression = "[" + getFieldValue( "groupSelect" ) + "@" + getFieldValue( "elementSelect" ) + "]";
+		expression = "[" + getFieldValue( "attributevalue [id=groupSelect]" ) + "@" + getFieldValue( "attributevalue [id=elementSelect]" ) + "]";
+		setFieldValue( 'attributevalue [id=formula]', getFieldValue( 'attributevalue [id=formula]' ) + expression );
 	}
 	else if ( category ) {
-		expression = "[*." + getFieldValue( "elementSelect" )+ "]";
+		expression = "[*." + getFieldValue( "dataelement [id=elementSelect]" )+ "]";
+		setFieldValue( 'dataelement [id=formula]', getFieldValue( 'dataelement [id=formula]' ) + expression );
+	}
+	else if ( categoryVertical ) {
+		expression = "[*." + getFieldValue( "categoryoption [id=elementSelect]" )+ "]";
+		setFieldValue( 'categoryoption [id=formula]', getFieldValue( 'categoryoption [id=formula]' ) + expression );
 	}
 	else {
-		expression = getFieldValue( "elementSelect" );
-		alert(expression);
+		expression = getFieldValue('dataelement [id=elementSelect]');
+		setFieldValue( 'dataelement [id=formula]', getFieldValue( 'dataelement [id=formula]' ) + expression );
 	}
-
-	setFieldValue( 'formula', getFieldValue( 'formula' ) + expression );
 
 	if ( !attribute ) { getExpression(); }
 }

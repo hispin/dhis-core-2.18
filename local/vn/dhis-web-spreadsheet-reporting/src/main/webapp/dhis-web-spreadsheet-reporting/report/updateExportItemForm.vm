@@ -6,8 +6,10 @@
 		});
 	});
 	
-	var category = $!exportReport.isCategory();
 	var attribute = $!exportReport.isAttribute();
+	var category = $!exportReport.isCategory();
+	var categoryVertical = $!exportReport.isCategoryVertical();
+
 </script>
 
 <h3>$i18n.getString( 'update_export_item' )</h3>
@@ -100,10 +102,23 @@
 
 <!-- EXPRESSION FORM -->
 
-#parse( "/dhis-web-spreadsheet-reporting/report/attributeValueExpressionBuilderForm.vm" )
+#if ( $!exportReport.isAttribute() )
+	#parse( "/dhis-web-spreadsheet-reporting/report/attributeValueExpressionBuilderForm.vm" )
 
-#parse( "/dhis-web-spreadsheet-reporting/report/dataelementExpressionBuilderForm.vm" )
+#elseif ( $!exportReport.isCategory() )
+	#parse( "/dhis-web-spreadsheet-reporting/report/dataelementExpressionBuilderForm.vm" )
+	#parse( "/dhis-web-spreadsheet-reporting/report/excelFormulaExpressionBuilderForm.vm" )
 
-#parse( "/dhis-web-spreadsheet-reporting/report/indicatorExpressionBuilderForm.vm" )
+#elseif ( $!exportReport.isCategoryVertical() )
+	#parse( "/dhis-web-spreadsheet-reporting/report/categoryVerticalExpressionBuilderForm.vm" )
+	#parse( "/dhis-web-spreadsheet-reporting/report/excelFormulaExpressionBuilderForm.vm" )
 
-#parse( "/dhis-web-spreadsheet-reporting/report/excelFormulaExpressionBuilderForm.vm" )
+#elseif ( $!exportReport.isPeriodColumnListing() )
+	#parse( "/dhis-web-spreadsheet-reporting/report/dataelementExpressionBuilderForm.vm" )
+	#parse( "/dhis-web-spreadsheet-reporting/report/indicatorExpressionBuilderForm.vm" )
+
+#elseif ( $!exportReport.isNormal() || $!exportReport.isOrgUnitGroupListing() )
+	#parse( "/dhis-web-spreadsheet-reporting/report/dataelementExpressionBuilderForm.vm" )
+	#parse( "/dhis-web-spreadsheet-reporting/report/indicatorExpressionBuilderForm.vm" )
+	#parse( "/dhis-web-spreadsheet-reporting/report/excelFormulaExpressionBuilderForm.vm" )
+#end

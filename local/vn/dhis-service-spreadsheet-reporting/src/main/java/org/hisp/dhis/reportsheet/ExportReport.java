@@ -87,23 +87,43 @@ public abstract class ExportReport
         return results;
     }
 
-    public abstract boolean isAttribute();
-    
-    public abstract boolean isCategory();
+    public boolean isAttribute()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.ATTRIBUTE );
+    }
 
-    public abstract boolean isOrgUnitGroupListing();
+    public boolean isCategory()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.CATEGORY );
+    }
 
-    public abstract boolean isPeriodColumnListing();
+    public boolean isCategoryVertical()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.CATEGORY_VERTICAL );
+    }
 
-    public abstract boolean isNormal();
+    public boolean isNormal()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.NORMAL );
+    }
 
-    public abstract List<String> getItemTypes();
+    public boolean isOrgUnitGroupListing()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.ORGANIZATION_GROUP_LISTING );
+    }
+
+    public boolean isPeriodColumnListing()
+    {
+        return this.getReportType().equalsIgnoreCase( TYPE.PERIOD_COLUMN_LISTING );
+    }
 
     // -------------------------------------------------------------------------
     // Abstract methods
     // -------------------------------------------------------------------------
 
     public abstract String getReportType();
+    
+    public abstract List<String> getItemTypes();
 
     // -------------------------------------------------------------------------
     // Internal classes
@@ -114,7 +134,9 @@ public abstract class ExportReport
         public static final String NORMAL = "NORMAL";
 
         public static final String CATEGORY = "CATEGORY";
-        
+
+        public static final String CATEGORY_VERTICAL = "CATEGORY_VERTICAL";
+
         public static final String ATTRIBUTE = "ATTRIBUTE";
 
         public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";

@@ -52,40 +52,11 @@ public class ExportReportNormal
     }
 
     @Override
-    public boolean isAttribute()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isCategory()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isNormal()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isOrgUnitGroupListing()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isPeriodColumnListing()
-    {
-        return false;
-    }
-
-    @Override
     public List<String> getItemTypes()
     {
         List<String> types = new ArrayList<String>();
         types.add( ExportItem.TYPE.DATAELEMENT );
+        types.add( ExportItem.TYPE.DATAELEMENT_VALUETYPE_TEXT );
         types.add( ExportItem.TYPE.INDICATOR );
         types.add( ExportItem.TYPE.FORMULA_EXCEL );
 
