@@ -978,7 +978,7 @@ Ext.onReady( function() {
 							{
 								grid.getView().getNode(0).classList.remove('hidden');
 								var record = grid.getView().getRecord( grid.getView().getNode(0) );
-								grid.getView().getSelectionModel().select(record, false, true);
+								grid.getView().getSelectionModel().select(record, false, false);
 							}
 							else {
 								TR.exe.execute();
@@ -1122,8 +1122,11 @@ Ext.onReady( function() {
 							},
 							edit: function( editor, e ){
 								TR.exe.execute();
+							},
+							canceledit: function( grid, eOpts ){
+								var grid = TR.datatable.datatable;
+								grid.getView().getNode(0).classList.add('hidden');
 							}
-
 						}
 					})
 				],
