@@ -2,9 +2,12 @@ package org.hisp.dhis.coldchain.inventory.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
+import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeStore;
 
 public class HibernateInventoryTypeStore implements InventoryTypeStore
@@ -54,5 +57,21 @@ public class HibernateInventoryTypeStore implements InventoryTypeStore
         session.update( inventoryType );
     }
 
+    public InventoryType getInventoryTypeByName( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( InventoryType.class );
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (InventoryType) criteria.uniqueResult();
+    }
+
+    public InventoryType getInventoryType( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return (InventoryType) session.get( InventoryType.class, id );
+    }
 
 }

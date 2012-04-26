@@ -8,4 +8,11 @@
 <h2>$i18n.getString( "inventory" )</h2>
 <ul>
     <li><a href="inventoryTypeAttributeList.action">$i18n.getString( "inventorytype_attribute" )</a></li>
+    <li><a href="inventoryTypeList.action">$i18n.getString( "inventorytype" )</a></li>
+</ul>
+
+
+<h2>$i18n.getString( "equipment" )</h2>
+<ul>
+    <li><a href="enquipmentSelect.action">$i18n.getString( "equipment" )</a></li>
 </ul>

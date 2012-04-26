@@ -1,0 +1,46 @@
+
+<a href="index.action"><h2>$i18n.getString( "coldchain_management" )&nbsp;</h2></a>
+
+<ul>
+    <li><a href="enquipmentSelect.action">$i18n.getString( "equipment_registration " )</a></li>
+</ul>
+
+<br>
+#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+
+<script>
+function organisationUnitSelected( orgUnits )
+{   
+	document.getElementById('selectedOrgunitID').value = orgUnits;
+    
+	showById('selectDiv');
+    disable('listAllEquipmentBtn');
+    
+    hideById('searchEquipmentDiv');
+    hideById('listEquipmentDiv');
+    hideById('editEquipmentDiv');
+	hideById('resultSearchDiv');
+    
+	   $.getJSON( 'getOrganisationUnit.action', {orgunitId:orgUnits[0]}
+        , function( json ) 
+        {
+            var type = json.response;
+            setFieldValue('selectedOrgunitText', json.message );
+                
+            if( type == 'success' )
+            {
+                //showById('searchEquipmentDiv');
+				enable('listAllEquipmentBtn');
+                setInnerHTML('warnmessage','');
+                setFieldValue('selectedOrgunitText', json.message );
+            }
+            else if( type == 'input' )
+            {
+                setInnerHTML('warnmessage', i18n_can_not_register_patient_for_orgunit);
+                disable('listPatientBtn');
+            }
+        } );
+}
+selection.setListenerFunction( organisationUnitSelected );
+
+</script>

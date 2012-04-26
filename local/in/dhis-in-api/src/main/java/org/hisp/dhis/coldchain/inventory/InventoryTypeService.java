@@ -13,4 +13,8 @@ public interface InventoryTypeService
     void deleteInventoryType( InventoryType inventoryType );
 
     Collection<InventoryType> getAllInventoryTypes();
+    
+    InventoryType getInventoryTypeByName( String name );
+    
+    InventoryType getInventoryType( int id );
 }
