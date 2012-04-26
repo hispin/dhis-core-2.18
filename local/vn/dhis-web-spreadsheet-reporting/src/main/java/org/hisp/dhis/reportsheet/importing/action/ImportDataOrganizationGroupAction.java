@@ -52,7 +52,7 @@ public class ImportDataOrganizationGroupAction
             OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( importItemIds[i]
                 .split( "-" )[0] ) );
 
-            addDataValue( o, period, importItemIds[i].split( "-" )[1], importItemIds[i].split( "-" )[2] );
+            addDataValue( o, period, importItemIds[i].split( "_" )[1], importItemIds[i].split( "_" )[2] );
         }
     }
 }

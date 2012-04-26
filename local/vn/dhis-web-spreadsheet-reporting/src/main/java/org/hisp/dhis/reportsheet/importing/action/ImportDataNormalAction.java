@@ -48,7 +48,7 @@ public class ImportDataNormalAction
     {
         for ( int i = 0; i < importItemIds.length; i++ )
         {
-            addDataValue( organisationUnit, period, importItemIds[i].split( "-" )[0], importItemIds[i].split( "-" )[1] );
+            addDataValue( organisationUnit, period, importItemIds[i].split( "_" )[0], importItemIds[i].split( "_" )[1] );
         }
     }
 }
