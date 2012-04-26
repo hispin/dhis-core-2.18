@@ -42,23 +42,23 @@
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>
 	##providedByAnotherFacility
 	<table class='entryScreen'>	
+		#if($programStageInstance.programInstance.program.displayProvidedOtherFacility == 'true' )
 		<tr>
-			<th>
-				#if($programStageInstance.programInstance.program.displayProvidedOtherFacility == 'true' )
-					#set( $id = $programStageInstance.programStage.id + '_facility' )
-					#if( $!programStageInstance.providedByAnotherFacility)
-						#if( $!programStageInstance.providedByAnotherFacility == 'true' ) 					
-							$i18n.getString( "orgunit_provided_service" ): $programStageInstance.organisationUnit.name
-						#elseif( $!programStageInstance.providedByAnotherFacility == 'false' ) 
-							$i18n.getString( "orgunit_provided_service" ): $i18n.getString("other_facility")
-						#end
-					#else
-						$i18n.getString( "provided_elsewhere" ) 
-						<input type="checkbox" id='$id' onclick="updateProvidingFacility();" #if($programStageInstance.completed) disabled="disabled" #end >
+			<th>				
+				#set( $id = $programStageInstance.programStage.id + '_facility' )
+				#if( $!programStageInstance.providedByAnotherFacility)
+					#if( $!programStageInstance.providedByAnotherFacility == 'true' ) 					
+						$i18n.getString( "orgunit_provided_service" ): $programStageInstance.organisationUnit.name
+					#elseif( $!programStageInstance.providedByAnotherFacility == 'false' ) 
+						$i18n.getString( "orgunit_provided_service" ): $i18n.getString("other_facility")
 					#end
+				#else
+					$i18n.getString( "provided_elsewhere" ) 
+					<input type="checkbox" id='$id' onclick="updateProvidingFacility();" #if($programStageInstance.completed) disabled="disabled" #end >
 				#end
 			</th>
 		</tr>
+		#end
 	</table>
 
 	#if( $customDataEntryFormCode )
