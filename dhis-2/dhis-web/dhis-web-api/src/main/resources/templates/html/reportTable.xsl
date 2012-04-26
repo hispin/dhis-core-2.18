@@ -12,6 +12,7 @@
 		<tr>
 			<td>Resource Data</td>
 			<td><a href="{@link}/data">html</a></td>
+			<td><a href="{@link}/data.xml">xml</a></td>
 			<td><a href="{@link}/data.pdf">pdf</a></td>
 			<td><a href="{@link}/data.xls">xls</a></td>
 			<td><a href="{@link}/data.csv">csv</a></td>
