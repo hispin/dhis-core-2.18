@@ -40,6 +40,9 @@ import java.util.List;
 public class JacksonRowDataSerializer
     extends JsonSerializer<List<List<Object>>>
 {
+    private static final String ROW_NAME = "row";
+    private static final String FIELD_NAME = "field";
+    
     @Override
     public void serialize( List<List<Object>> values, JsonGenerator jgen, SerializerProvider provider ) throws IOException
     {
@@ -49,7 +52,7 @@ public class JacksonRowDataSerializer
         {
             if ( !b )
             {
-                jgen.writeFieldName( "row" );
+                jgen.writeFieldName( ROW_NAME );
             }
 
             b = false;
@@ -58,7 +61,7 @@ public class JacksonRowDataSerializer
 
             for ( Object object : value )
             {
-                jgen.writeStringField( "rowData", "" + object );
+                jgen.writeStringField( FIELD_NAME, "" + object );
             }
 
             jgen.writeEndObject();

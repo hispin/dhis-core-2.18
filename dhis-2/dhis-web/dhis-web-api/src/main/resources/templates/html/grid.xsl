@@ -14,7 +14,7 @@
   
   <xsl:template match="d:row">
 	<tr>
-	  <xsl:for-each select="d:rowData">
+	  <xsl:for-each select="d:field">
 		<td> <xsl:value-of select="."/> </td>
 	  </xsl:for-each>
 	</tr>
