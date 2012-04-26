@@ -1,6 +1,5 @@
 <h3>$i18n.getString( "anonymous_events" )</h3>	
 
-
 <div class="actions">	
 	<input type="button" class='button' id="createEventBtn" value="$i18n.getString('create_new_event')" onClick="javascript: createNewEvent();" disabled="disabled">
 	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete();" disabled="disabled" >
