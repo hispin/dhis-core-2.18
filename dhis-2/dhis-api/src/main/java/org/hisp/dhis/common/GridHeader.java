@@ -97,7 +97,7 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( isAttribute = true )
     public String getName()
     {
         return name;
@@ -110,7 +110,7 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getColumn()
     {
         return column;
@@ -123,7 +123,7 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getType()
     {
         return type;
@@ -136,7 +136,7 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isHidden()
     {
         return hidden;
@@ -149,7 +149,7 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isMeta()
     {
         return meta;

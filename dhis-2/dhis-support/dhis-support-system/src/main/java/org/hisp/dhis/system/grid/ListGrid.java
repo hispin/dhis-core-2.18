@@ -402,7 +402,9 @@ public class ListGrid
 
         for ( Object value : column )
         {
-            if ( !MathUtils.isEqual( Double.parseDouble( String.valueOf( value ) ), 0d ) ) // 0 omitted from regression
+            // 0 omitted from regression
+            
+            if ( !MathUtils.isEqual( Double.parseDouble( String.valueOf( value ) ), 0d ) ) 
             {
                 regression.addData( index++, Double.parseDouble( String.valueOf( value ) ) );
             }
@@ -414,7 +416,9 @@ public class ListGrid
         {
             final double predicted = regression.predict( i );
 
-            if ( !Double.isNaN( predicted ) ) // Enough values must exist for regression
+            // Enough values must exist for regression
+            
+            if ( !Double.isNaN( predicted ) ) 
             {
                 regressionColumn.add( getRounded( predicted, 1 ) );
             }
@@ -520,7 +524,8 @@ public class ListGrid
             {
                 addHeader( new GridHeader( rsmd.getColumnLabel( i ), false, false ) );
             }
-        } catch ( SQLException ex )
+        } 
+        catch ( SQLException ex )
         {
             throw new RuntimeException( ex );
         }
@@ -541,7 +546,8 @@ public class ListGrid
                     addValue( rs.getObject( i ) );
                 }
             }
-        } catch ( SQLException ex )
+        } 
+        catch ( SQLException ex )
         {
             throw new RuntimeException( ex );
         }
