@@ -57,13 +57,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"
-      class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction"
-      scope="prototype">
-    <property name="statisticsProvider" ref="org.hisp.dhis.statistics.StatisticsProvider" />
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-
   <!-- Databrowser Grid -->
 
   <bean id="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction"

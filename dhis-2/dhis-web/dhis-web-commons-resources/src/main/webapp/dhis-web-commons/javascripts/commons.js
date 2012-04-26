@@ -1478,8 +1478,6 @@ function isRealNumber( value )
 	return regex.test( value );
 }
 
-// Recommended in using this method
-// which same as name one from Ext
 function isNumber( value )
 {
 	var regex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
@@ -1503,7 +1501,12 @@ function isZeroNumber( value )
 
 function getRandomNumber()
 {
-	return Math.floor( 1000000 * Math.random() );
+	return Math.floor( 100000000 * Math.random() );
+}
+
+function getDC()
+{
+	return "_dc=" + getRandomNumber();
 }
 
 /**
