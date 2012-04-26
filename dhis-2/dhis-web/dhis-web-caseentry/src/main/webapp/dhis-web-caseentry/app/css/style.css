@@ -676,15 +676,11 @@ TR.utilbody {
     font-style: italic;
 }
 
-#gridTable .x-btn-default-small
+.visible
 {
-	display: none;
+	display: block;
 }
 
-#gridTable .x-grid-row-editor-buttons {
-	display: none;
-}
-
-#gridTable .x-grid-row-editor-buttons-default {
-	display: none;
+.hidden {
+    display: none;
 }
