@@ -951,6 +951,29 @@ Ext.onReady( function() {
 				menuDisabled: true
 			}
 			
+			var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+				clicksToEdit: 1,
+				editStyle: 'row',
+				autoScroll: true,
+				errorSummary: false,
+				listeners: {
+					beforeedit: function( editor, e) 
+					{
+						if( editor.rowIdx > 0 )
+						{
+							return false;
+						}
+					},
+					edit: function( editor, e ){
+						TR.exe.execute();
+					},
+					canceledit: function( grid, eOpts ){
+						var grid = TR.datatable.datatable;
+						grid.getView().getNode(0).classList.add('hidden');
+					}
+				}
+			});
+	
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
                 height: TR.util.viewport.getSize().y - 60,
@@ -979,6 +1002,7 @@ Ext.onReady( function() {
 								grid.getView().getNode(0).classList.remove('hidden');
 								var record = grid.getView().getRecord( grid.getView().getNode(0) );
 								grid.getView().getSelectionModel().select(record, false, false);
+								rowEditing.startEdit(0, 0);
 							}
 							else {
 								TR.exe.execute();
@@ -1106,30 +1130,7 @@ Ext.onReady( function() {
 						}
 					}
 				], 
-				plugins: [
-					  Ext.create('Ext.grid.plugin.RowEditing', {
-						clicksToEdit: 1,
-						editStyle: 'row',
-						autoScroll: true,
-						errorSummary: false,
-						listeners: {
-							beforeedit: function( editor, e) 
-							{
-								if( editor.rowIdx > 0 )
-								{
-									return false;
-								}
-							},
-							edit: function( editor, e ){
-								TR.exe.execute();
-							},
-							canceledit: function( grid, eOpts ){
-								var grid = TR.datatable.datatable;
-								grid.getView().getNode(0).classList.add('hidden');
-							}
-						}
-					})
-				],
+				plugins: [rowEditing],
 				store: TR.store.datatable
 			});
 										
