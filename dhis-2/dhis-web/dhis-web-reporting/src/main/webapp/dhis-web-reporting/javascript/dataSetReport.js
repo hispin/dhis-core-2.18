@@ -1,18 +1,4 @@
 
-// -----------------------------------------------------------------------------
-// Validation
-// ----------------------------------------------------------------------------
-
-function setSelectedOrganisationUnitIds( ids )
-{
-    selectedOrganisationUnitIds = ids;
-}
-
-if ( typeof ( selectionTreeSelection ) != "undefined" )
-{
-    selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
-}
-
 function getPeriods( periodTypeList, availableList, selectedList, timespan )
 {
     $( "#periodId" ).removeAttr( "disabled" );
@@ -45,9 +31,10 @@ function validateDataSetReport()
 	
     var dataSetId = $( "#dataSetId" ).val();
     var periodId = $( "#periodId" ).val();
-    var selectedUnitOnly = $( "#selectedUnitOnly" ).is( ":checked" ); 
+    var selectedUnitOnly = $( "#selectedUnitOnly" ).is( ":checked" );
+    var orgUnitId = selectionTreeSelection.getSelected()[0]; 
     
-    var currentParams = { dataSetId: dataSetId, periodId: periodId, selectedUnitOnly: selectedUnitOnly };
+    var currentParams = { dataSetId: dataSetId, periodId: periodId, selectedUnitOnly: selectedUnitOnly, orgUnitId: orgUnitId };
     
     $( '#content' ).load( 'generateDataSetReport.action', currentParams, function() {
     	hideLoader();
@@ -62,6 +49,7 @@ function exportDataSetReport( type )
 		"&dataSetId=" + $( "#dataSetId" ).val() +
 	    "&periodId=" + $( "#periodId" ).val() +
 	    "&selectedUnitOnly=" + $( "#selectedUnitOnly" ).val() +
+	    "&orgUnitId=" + selectionTreeSelection.getSelected() +
 	    "&type=" + type;
 	    
 	window.location.href = url;

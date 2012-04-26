@@ -27,11 +27,8 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
 import java.util.Set;
 
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -64,13 +61,6 @@ public class IndicatorDeletionHandler
         this.expressionService = expressionService;
     }
 
-    private AttributeService attributeService;
-
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -79,22 +69,6 @@ public class IndicatorDeletionHandler
     public String getClassName()
     {
         return Indicator.class.getSimpleName();
-    }
-
-    @Override
-    public void deleteIndicator( Indicator indicator )
-    {
-        // Delete attributeValues
-        Iterator<AttributeValue> iterator = indicator.getAttributeValues().iterator();
-
-        while ( iterator.hasNext() )
-        {
-            AttributeValue attributeValue = iterator.next();
-            iterator.remove();
-            attributeService.deleteAttributeValue( attributeValue );
-        }
-
-        indicatorService.updateIndicator( indicator );
     }
 
     @Override
