@@ -80,18 +80,16 @@
 
     <!-- Statistics -->
 
-    <action name="viewStatistics" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction">
-      <result name="success" type="velocity">/main.vm</result>
+    <action name="viewStatistics" class="org.hisp.dhis.dataadmin.action.NoAction">
+	  <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/viewStatistics.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="javascripts">javascript/statistics.js</param>
 	  <param name="requiredAuthorities">F_PERFORM_MAINTENANCE</param>
     </action>
 
-    <action name="viewStatisticsChart" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsChartAction">
-      <result name="success" type="chart">
-        <param name="width">420</param>
-        <param name="height">220</param>
-      </result>
+    <action name="getStatistics" class="org.hisp.dhis.dataadmin.action.statistics.GetStatisticsAction">
+      <result name="success" type="velocity">/dhis-web-maintenance-dataadmin/responseStatistics.vm</result>
 	  <param name="requiredAuthorities">F_PERFORM_MAINTENANCE</param>
     </action>
 

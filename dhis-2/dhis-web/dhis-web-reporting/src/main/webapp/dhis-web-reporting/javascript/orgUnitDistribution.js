@@ -11,7 +11,7 @@ function displayOrgUnitDistribution()
     displayDiv( "loaderDiv", distributionDivs );
 
     var groupSetId = $( "#groupSetId" ).val();
-    var url = "getOrgUnitDistribution.action?groupSetId=" + groupSetId + "&type=html&r=" + getRandomNumber();
+    var url = "getOrgUnitDistribution.action?groupSetId=" + groupSetId + "&type=html&" + getDC();
     $( "#tableDiv" ).load( url, function()
     {
         displayDiv( "tableDiv", distributionDivs );
@@ -27,7 +27,7 @@ function getOrgUnitDistribution( type )
     }
 
     var groupSetId = $( "#groupSetId" ).val();
-    var url = "getOrgUnitDistribution.action?groupSetId=" + groupSetId + "&type=" + type + "&r=" + getRandomNumber();
+    var url = "getOrgUnitDistribution.action?groupSetId=" + groupSetId + "&type=" + type + "&" + getDC();
     window.location.href = url;
 }
 
@@ -41,7 +41,7 @@ function displayOrgUnitDistributionChart()
     displayDiv( "chartDiv", distributionDivs );
     $( "#chartImg" ).attr( "src", "../images/ajax-loader-circle.gif" );
     var groupSetId = $( "#groupSetId" ).val();
-    var source = "getOrgUnitDistributionChart.action?groupSetId=" + groupSetId + "&r=" + getRandomNumber();
+    var source = "getOrgUnitDistributionChart.action?groupSetId=" + groupSetId + "&"  + getDC();
     $( "#chartImg" ).attr( "src", source );
 }
 
