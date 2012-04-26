@@ -159,8 +159,9 @@ Ext.onReady( function() {
             getTips: function() {
                 return {
                     trackMouse: true,
-                    height: 31,
-                    renderer: function(item) {
+                    style: 'border-width:2px; background-color:#eee',
+                    renderer: function(r, item) {
+						this.update('<span style="font-size:22px">' + item.value[1] + '</span>');
                     }
                 };
             },
@@ -202,7 +203,8 @@ Ext.onReady( function() {
                             type: 'line',
                             axis: 'left',
                             xField: project.store.bottom,
-                            yField: project.store.left[i]
+                            yField: project.store.left[i],
+							tips: DHIS.util.chart.getTips()
                         });
                     }
                     return a;
@@ -233,13 +235,12 @@ Ext.onReady( function() {
                         }
                     ];                        
                 },
-                getTips: function() {
+                getTips: function(left) {
                     return {
                         trackMouse: true,
-                        height: 47,
+						style: 'border-width:2px; background-color:#eee',
                         renderer: function(item) {
-                            this.setWidth((item.data.x.length * 8) + 15);
-                            this.setTitle('<span class="dv-chart-tips">' + item.data.x + '<br/><b>' + item.data[DHIS.store.left[0]] + '</b></span>');
+							this.update('<span style="font-size:14px">' + item.data.x + '<br/><b>' + item.data[left] + '</b></span>');
                         }
                     };
                 }
@@ -422,7 +423,6 @@ Ext.onReady( function() {
             params = params.concat(DHIS.util.dimension[project.state.series.dimension].getUrl());
             params = params.concat(DHIS.util.dimension[project.state.category.dimension].getUrl());
             params = params.concat(DHIS.util.dimension[project.state.filter.dimension].getUrl(true));
-console.log(params);            
                         
             var baseUrl = DHIS.util.string.extendUrl(project.state.conf.url) + DHIS.conf.finals.ajax.data_get;
             Ext.Array.each(params, function(item) {
@@ -539,7 +539,8 @@ console.log(params);
                         stacked: isStacked,
                         style: {
                             opacity: 0.8
-                        }
+                        },
+						tips: DHIS.util.chart.getTips()
                     }
                 ]
             });
@@ -585,7 +586,8 @@ console.log(params);
                         stacked: isStacked,
                         style: {
                             opacity: 0.8
-                        }
+                        },
+						tips: DHIS.util.chart.getTips()
                     }
                 ]
             });
@@ -668,7 +670,6 @@ console.log(params);
             DHIS.projects.push(project);
         },
         pie: function(project) {
-console.log(project.state);			
             project.chart = Ext.create('Ext.chart.Chart', {
 				renderTo: project.state.conf.el,
                 width: project.state.conf.width || this.el.getWidth(),
@@ -683,7 +684,6 @@ console.log(project.state);
                     type: 'pie',
                     field: project.store.left[0],
                     showInLegend: true,
-                    tips: DHIS.util.chart.pie.getTips(),
                     label: {
                         field: project.store.bottom[0]
                     },
@@ -694,7 +694,8 @@ console.log(project.state);
                     },
                     style: {
                         opacity: 0.9
-                    }
+                    },
+                    tips: DHIS.util.chart.pie.getTips(project.store.left[0])
                 }]
             });
             

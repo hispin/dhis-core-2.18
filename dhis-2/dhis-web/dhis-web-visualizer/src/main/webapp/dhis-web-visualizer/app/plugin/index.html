@@ -2,7 +2,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="http://extjs-public.googlecode.com/svn/tags/extjs-4.0.7/release/resources/css/ext-all-gray.css" />
     <script type="text/javascript" src="http://extjs-public.googlecode.com/svn/tags/extjs-4.0.7/release/ext-all.js"></script>
-    <script type="text/javascript" src="http://apps.dhis2.org/demo/dhis-web-visualizer/app/plugin/plugin.js"></script>
+    <script type="text/javascript" src="plugin.js"></script>
     
     <style>
 		body {margin: 0 0 0 60px;}
@@ -44,18 +44,18 @@
 	
 	<script>
 		Ext.onReady( function() {
-			var url = 'http://apps.dhis2.org/dev/';
-            
-            DHIS.getChart({
-                uid: 'EbRN2VIbPdV',
-                el: 'chart1',
-                url: url
-            });
-            			
+			var url = '../../../'; // http://apps.dhis2.org/dev/
+		
 			DHIS.getChart({
-                type: 'stackedcolumn',
-                indicators: ['Uvn6LCg7dVU', 'OdiHJayrsKo'],
-                periods: 'last12Months',
+				uid: 'gnymLKrv6l8',
+				el: 'chart1',
+				url: url
+			});
+						
+			DHIS.getChart({
+				type: 'stackedcolumn',
+				indicators: ['Uvn6LCg7dVU', 'OdiHJayrsKo'],
+				periods: 'last12Months',
 				organisationunits: ['ImspTQPwCqd'],
 				el: 'chart2',
 				url: url
