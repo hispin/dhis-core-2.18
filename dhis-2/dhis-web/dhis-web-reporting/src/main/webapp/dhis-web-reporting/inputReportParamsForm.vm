@@ -6,7 +6,6 @@ jQuery(document).ready(function() {
 	#end
 	
 	selectionTreeSelection.setMultipleSelectionAllowed( false );
-	selectionTree.clearSelectedOrganisationUnits();
 	selectionTree.buildSelectionTree();
 });
 

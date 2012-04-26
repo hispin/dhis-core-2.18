@@ -94,8 +94,6 @@
 
   <cache name="org.hisp.dhis.attribute.Attribute" maxElementsInMemory="500" />
 
-  <cache name="org.hisp.dhis.attribute.AttributeOption" maxElementsInMemory="500" />
-
   <cache name="org.hisp.dhis.attribute.AttributeValue" maxElementsInMemory="5000" />
 
   <cache name="org.hisp.dhis.option.OptionSet" maxElementsInMemory="50" />
@@ -184,11 +182,7 @@
 
   <cache name="org.hisp.dhis.user.User.organisationUnits" maxElementsInMemory="20000" />
 
-  <cache name="org.hisp.dhis.attribute.Attribute.attributeOptions" maxElementsInMemory="500" />
-
   <cache name="org.hisp.dhis.attribute.Attribute.attributeValues" maxElementsInMemory="5000" />
-
-  <cache name="org.hisp.dhis.attribute.AttributeOption.attributes" maxElementsInMemory="500" />
   
   <cache name="org.hisp.dhis.option.OptionSet.options" maxElementsInMemory="2000" />
 

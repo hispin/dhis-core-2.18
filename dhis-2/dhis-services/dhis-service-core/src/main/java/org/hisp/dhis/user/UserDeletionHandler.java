@@ -27,10 +27,6 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -52,13 +48,6 @@ public class UserDeletionHandler
         this.userService = userService;
     }
 
-    private AttributeService attributeService;
-
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -67,21 +56,6 @@ public class UserDeletionHandler
     public String getClassName()
     {
         return User.class.getSimpleName();
-    }
-
-    @Override
-    public void deleteUser( User user )
-    {
-        Iterator<AttributeValue> iterator = user.getAttributeValues().iterator();
-
-        while ( iterator.hasNext() )
-        {
-            AttributeValue attributeValue = iterator.next();
-            iterator.remove();
-            attributeService.deleteAttributeValue( attributeValue );
-        }
-
-        userService.updateUser( user );
     }
 
     @Override

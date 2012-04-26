@@ -161,6 +161,7 @@ function SelectionTree()
     this.buildSelectionTree = function()
     {
 		selectedOrganisationUnit = new Array();
+		selectedOrganisationUnitUid = new Array();
 		
         var treeTag = document.getElementById( 'selectionTree' );
         
@@ -255,6 +256,7 @@ function SelectionTree()
     function createTreeElementTag( child )
     {
         var childId = child.getAttribute( 'id' );
+        var childUid = child.getAttribute( 'uid' );
         var hasChildren = child.getAttribute( 'hasChildren' ) != '0';
 
         var toggleTag = document.createElement( 'span' );
@@ -277,7 +279,9 @@ function SelectionTree()
         if ( child.getAttribute( 'selected' ) == 'true' )
         {
             linkTag.className = 'selected';
+            
 			selectedOrganisationUnit.push( childId );
+			selectedOrganisationUnitUid.push( childUid );
 
 			if ( typeof ( window.addSelectedOrganisationUnit__ ) == 'function' )
 			{ 

@@ -27,6 +27,8 @@ package org.hisp.dhis.system.deletion;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.concept.Concept;
@@ -114,6 +116,24 @@ public abstract class DeletionHandler
     // Public methods
     // -------------------------------------------------------------------------
 
+    public void deleteAttribute( Attribute attribute )
+    {
+    }
+    
+    public String allowDeleteAttribute( Attribute attribute )
+    {
+        return null;
+    }
+    
+    public void deleteAttributeValue( AttributeValue attributeValue )
+    {
+    }
+    
+    public String allowDeleteAttributeValue( AttributeValue attributeValue )
+    {
+        return null;
+    }
+    
     public void deleteChart( Chart chart )
     {
     }

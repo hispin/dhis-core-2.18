@@ -44,7 +44,7 @@ import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.util.SessionUtils;
@@ -61,13 +61,6 @@ public class GenerateDataSetReportAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
 
     private DataSetReportService dataSetReportService;
 
@@ -95,6 +88,13 @@ public class GenerateDataSetReportAction
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     private I18nFormat format;
@@ -127,6 +127,13 @@ public class GenerateDataSetReportAction
     public void setPeriodId( String periodId )
     {
         this.periodId = periodId;
+    }
+
+    private Integer orgUnitId;
+    
+    public void setOrgUnitId( Integer orgUnitId )
+    {
+        this.orgUnitId = orgUnitId;
     }
 
     private boolean selectedUnitOnly;
@@ -217,14 +224,14 @@ public class GenerateDataSetReportAction
     public String execute()
         throws Exception
     {
-        selectedOrgunit = selectionTreeManager.getSelectedOrganisationUnit();
-
         selectedDataSet = dataSetService.getDataSet( dataSetId );
 
         if ( periodId != null )
         {
             selectedPeriod = periodService.getPeriodByExternalId( periodId );
         }
+     
+        selectedOrgunit = organisationUnitService.getOrganisationUnit( orgUnitId );
         
         String dataSetType = selectedDataSet.getDataSetType();
 

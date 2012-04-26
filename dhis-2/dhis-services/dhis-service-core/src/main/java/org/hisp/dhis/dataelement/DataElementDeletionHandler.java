@@ -29,10 +29,6 @@ package org.hisp.dhis.dataelement;
 
 import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
 
-import java.util.Iterator;
-
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -63,13 +59,6 @@ public class DataElementDeletionHandler
         this.categoryService = categoryService;
     }
 
-    private AttributeService attributeService;
-
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-    
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
@@ -85,22 +74,6 @@ public class DataElementDeletionHandler
     public String getClassName()
     {
         return DataElement.class.getSimpleName();
-    }
-
-    @Override
-    public void deleteDataElement( DataElement dataElement )
-    {
-        // Delete attributeValues
-        Iterator<AttributeValue> iterator = dataElement.getAttributeValues().iterator();
-
-        while ( iterator.hasNext() )
-        {
-            AttributeValue attributeValue = iterator.next();
-            iterator.remove();
-            attributeService.deleteAttributeValue( attributeValue );
-        }
-
-        dataElementService.updateDataElement( dataElement );
     }
 
     @Override
