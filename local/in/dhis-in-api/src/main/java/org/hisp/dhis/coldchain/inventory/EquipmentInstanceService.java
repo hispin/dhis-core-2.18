@@ -1,6 +1,9 @@
 package org.hisp.dhis.coldchain.inventory;
 
 import java.util.Collection;
+import java.util.List;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 public interface EquipmentInstanceService
 {
@@ -11,7 +14,16 @@ public interface EquipmentInstanceService
     void updateEquipmentInstance( EquipmentInstance equipmentInstance );
 
     void deleteEquipmentInstance( EquipmentInstance equipmentInstance );
+    
+    int createEquipment( EquipmentInstance equipmentInstance, List<EquipmentDetails> equipmentDetails );
 
     Collection<EquipmentInstance> getAllEquipmentInstance();
 
+    Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType );
+    
+    Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit );
+    
+    int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType );
+    
+    Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, int min, int max );
 }

@@ -2,6 +2,7 @@ package org.hisp.dhis.coldchain.inventory;
 
 import java.util.Collection;
 
+import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

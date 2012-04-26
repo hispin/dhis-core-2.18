@@ -2,6 +2,10 @@ package org.hisp.dhis.coldchain.inventory;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
 public class DefaultInventoryTypeService implements InventoryTypeService
 {
     // -------------------------------------------------------------------------
@@ -42,4 +46,14 @@ public class DefaultInventoryTypeService implements InventoryTypeService
         inventoryTypeStore.updateInventoryType( inventoryType );
     }
     
+    public InventoryType getInventoryTypeByName( String name )
+    {
+        return inventoryTypeStore.getInventoryTypeByName( name );
+    }
+    
+    public InventoryType getInventoryType( int id )
+    {
+        return inventoryTypeStore.getInventoryType( id );
+    }
+
 }
