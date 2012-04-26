@@ -38,10 +38,10 @@ function importData()
 // -----------------------------------------------------------------------------
 
 function getPreviewImportData()
-{	
+{
 	lockScreen();
 	isImport = true;
-	jQuery.postJSON( "previewDataFlow.action", { importReportId: byId( "importReportId" ).value }, previewExportReportReceived );
+	jQuery.post( "previewDataFlow.action", { importReportId: byId( "importReportId" ).value }, previewExportReportReceived, 'xml' );
 }
 
 isToggled = true;
@@ -54,7 +54,7 @@ function selectAllData( _this )
 		
 		for ( var i = 0 ; i < importlist.length ; i ++ )
 		{
-			importlist[i].className = 'ui-widget-content ui-selected';
+			importlist[i].className = 'ui-preview-table ui-preview-selected';
 			
 			idTemp = jQuery(importlist[i]).attr( 'id' ) + "_" + jQuery(importlist[i]).html();
 			
@@ -73,7 +73,7 @@ function selectAllData( _this )
 		
 		for ( var i = 0 ; i < importlist.length ; i ++ )
 		{
-			importlist[i].className = 'ui-widget-content ui-unselected';
+			importlist[i].className = 'ui-preview-table ui-preview-unselected';
 		}
 		
 		importItemIds.length = 0;

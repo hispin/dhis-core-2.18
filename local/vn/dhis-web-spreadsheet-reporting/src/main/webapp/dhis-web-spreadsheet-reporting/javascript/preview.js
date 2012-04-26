@@ -157,8 +157,8 @@ function previewExportReportReceived( parentElement )
 
 function applyStyleIntoPreview()
 {
-	importlist = jQuery( 'table.ui-widget-content tr > td.ui-preview-unselected' );
-	
+	importlist = jQuery( 'table.ui-preview-table tr > td.ui-preview-unselected' );
+
 	if ( importlist.length > 0 )
 	{
 		importlist.mouseover(function()
