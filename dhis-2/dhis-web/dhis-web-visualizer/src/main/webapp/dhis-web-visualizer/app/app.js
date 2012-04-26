@@ -1458,6 +1458,13 @@ Ext.onReady( function() {
             sortStore: function() {
                 this.sort(this.sorting.field, this.sorting.direction);
             },
+            filtersystem: function() {
+				if (!DV.init.user.isadmin) {
+					this.filterBy( function(r) {
+						return r.data.userId ? true : false;
+					});
+				}
+			},
             listeners: {
                 load: function(s) {
 					s.isloaded = !s.isloaded ? true : false;
@@ -3583,6 +3590,7 @@ Ext.onReady( function() {
                                                 text: DV.i18n.manage_favorites,
                                                 iconCls: 'dv-menu-item-edit',
                                                 handler: function() {
+													DV.store.favorite.filtersystem();
                                                     if (DV.cmp.favorite.window) {
                                                         DV.cmp.favorite.window.show();
                                                     }
@@ -4042,7 +4050,10 @@ Ext.onReady( function() {
                                                                 show: function() {                                               
                                                                     DV.cmp.favorite.save.xable();
                                                                     this.down('grid').setHeightInWindow(DV.store.favorite);
-                                                                }
+                                                                },
+                                                                hide: function() {
+																	DV.store.favorite.clearFilter();
+																}
                                                             }
                                                         });
                                                         var w = DV.cmp.favorite.window;
