@@ -564,6 +564,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype" />
 
 	<bean
+		id="org.hisp.dhis.reportsheet.exporting.action.GenerateReportVerticalCategoryAction"
+		class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportVerticalCategoryAction"
+		scope="prototype" />
+
+	<bean
 		id="org.hisp.dhis.reportsheet.exporting.action.GenerateReportAttributeAction"
 		class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportAttributeAction"
 		scope="prototype" />

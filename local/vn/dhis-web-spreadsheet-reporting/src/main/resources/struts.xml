@@ -708,6 +708,8 @@
 				generateReportAttribute.action</result>
 			<result name="CATEGORY" type="redirect">
 				generateReportCategory.action</result>
+			<result name="CATEGORY_VERTICAL" type="redirect">
+				generateReportVerticalCategory.action</result>
 			<result name="NORMAL" type="redirect">
 				generateReportNormal.action</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
@@ -724,6 +726,12 @@
 
 		<action name="generateReportCategory"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportCategoryAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+
+		<action name="generateReportVerticalCategory"
+			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportVerticalCategoryAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
@@ -859,6 +867,8 @@
 				generatePreviewAttribute.action</result>
 			<result name="CATEGORY" type="redirect">
 				generatePreviewCategory.action</result>
+			<result name="CATEGORY_VERTICAL" type="redirect">
+				generatePreviewVerticalCategory.action</result>
 			<result name="NORMAL" type="redirect">
 				generatePreviewNormal.action</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
@@ -875,6 +885,12 @@
 
 		<action name="generatePreviewCategory"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportCategoryAction">
+			<result name="success" type="redirect">exportXML.action
+			</result>
+		</action>
+
+		<action name="generatePreviewVerticalCategory"
+			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportVerticalCategoryAction">
 			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>
