@@ -42,6 +42,7 @@ public class JacksonRowDataSerializer
 {
     private static final String ROW_NAME = "row";
     private static final String FIELD_NAME = "field";
+    private static final String EMPTY = "";
     
     @Override
     public void serialize( List<List<Object>> values, JsonGenerator jgen, SerializerProvider provider ) throws IOException
@@ -61,7 +62,9 @@ public class JacksonRowDataSerializer
 
             for ( Object object : value )
             {
-                jgen.writeStringField( FIELD_NAME, "" + object );
+                object = object == null ? EMPTY : object;
+                    
+                jgen.writeStringField( FIELD_NAME, String.valueOf( object ) );
             }
 
             jgen.writeEndObject();
