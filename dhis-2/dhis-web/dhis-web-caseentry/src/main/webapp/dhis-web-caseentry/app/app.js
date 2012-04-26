@@ -2043,7 +2043,7 @@ Ext.onReady( function() {
                             name: 'resizewest',
 							cls: 'tr-toolbar-btn-2',
                             text: '<<<',
-                            tooltip: TR.i18n.show_hide_settings_panel,
+                            tooltip: TR.i18n.show_hide_settings,
                             handler: function() {
                                 var p = TR.cmp.region.west;
                                 if (p.collapsed) {
