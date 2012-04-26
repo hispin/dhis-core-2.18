@@ -430,6 +430,7 @@ Ext.onReady( function() {
             
             Ext.data.JsonP.request({
                 url: baseUrl,
+                disableCaching: false,
                 success: function(r) {
                     var json = DHIS.util.value.jsonfy(r);
                     project.values = json.values;
