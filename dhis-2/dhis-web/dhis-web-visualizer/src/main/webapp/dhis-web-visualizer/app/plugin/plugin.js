@@ -239,7 +239,7 @@ Ext.onReady( function() {
                         height: 47,
                         renderer: function(item) {
                             this.setWidth((item.data.x.length * 8) + 15);
-                            this.setTitle('<span class="dv-chart-tips">' + item.data.x + '<br/><b>' + item.data[DV.store.chart.left[0]] + '</b></span>');
+                            this.setTitle('<span class="dv-chart-tips">' + item.data.x + '<br/><b>' + item.data[DHIS.store.left[0]] + '</b></span>');
                         }
                     };
                 }
@@ -405,8 +405,8 @@ Ext.onReady( function() {
                         if (r.indicators) {
                             conf.indicators = DHIS.util.dimension.indicator.getIdsFromObjects(r.indicators);
                         }
-                        if (r.dataelements) {
-                            conf.dataelements = DHIS.util.dimension.dataelement.getIdsFromObjects(r.dataelements);
+                        if (r.dataElements) {
+                            conf.dataelements = DHIS.util.dimension.dataelement.getIdsFromObjects(r.dataElements);
                         }
                         
                         this.getState(conf);                        
@@ -422,6 +422,7 @@ Ext.onReady( function() {
             params = params.concat(DHIS.util.dimension[project.state.series.dimension].getUrl());
             params = params.concat(DHIS.util.dimension[project.state.category.dimension].getUrl());
             params = params.concat(DHIS.util.dimension[project.state.filter.dimension].getUrl(true));
+console.log(params);            
                         
             var baseUrl = DHIS.util.string.extendUrl(project.state.conf.url) + DHIS.conf.finals.ajax.data_get;
             Ext.Array.each(params, function(item) {
@@ -556,7 +557,7 @@ Ext.onReady( function() {
                 animate: true,
                 store: project.store,
                 items: DHIS.util.chart.getTitle(),
-                legend: DHIS.util.chart.getLegend(project.store.chart.bottom.length),
+                legend: DHIS.util.chart.getLegend(project.store.bottom.length),
                 axes: [
                     {
                         type: 'Category',
@@ -602,7 +603,7 @@ Ext.onReady( function() {
                 animate: true,
                 store: project.store,
                 items: DHIS.util.chart.getTitle(),
-                legend: DHIS.util.chart.getLegend(project.store.chart.left.length),
+                legend: DHIS.util.chart.getLegend(project.store.left.length),
                 axes: [
                     {
                         type: 'Numeric',
@@ -618,7 +619,7 @@ Ext.onReady( function() {
                         type: 'Category',
                         position: 'bottom',
                         fields: project.store.bottom,
-                        label: DV.util.chart.label.getCategoryLabel()
+                        label: DHIS.util.chart.label.getCategoryLabel()
                     }
                 ],
                 series: DHIS.util.chart.line.getSeriesArray(project)
@@ -634,7 +635,7 @@ Ext.onReady( function() {
                 animate: true,
                 store: project.store,
                 items: DHIS.util.chart.getTitle(),
-                legend: DHIS.util.chart.getLegend(project.store.chart.left.length),
+                legend: DHIS.util.chart.getLegend(project.store.left.length),
                 axes: [
                     {
                         type: 'Numeric',
@@ -667,6 +668,7 @@ Ext.onReady( function() {
             DHIS.projects.push(project);
         },
         pie: function(project) {
+console.log(project.state);			
             project.chart = Ext.create('Ext.chart.Chart', {
 				renderTo: project.state.conf.el,
                 width: project.state.conf.width || this.el.getWidth(),
@@ -675,8 +677,8 @@ Ext.onReady( function() {
                 shadow: true,
                 store: project.store,
                 insetPadding: 60,
-                items: DHIS.util.chart.pie.getTitle(project.state.state.filter.names[0], project.store.left[0]),
-                legend: DHIS.util.chart.getLegend(project.state.state.category.names.length),
+                items: DHIS.util.chart.pie.getTitle(project.state.filter.names[0], project.store.left[0]),
+                legend: DHIS.util.chart.getLegend(project.state.category.names.length),
                 series: [{
                     type: 'pie',
                     field: project.store.left[0],
