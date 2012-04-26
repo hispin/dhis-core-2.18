@@ -30,11 +30,11 @@
 <div class="actions">	
 	<input type="button" class='button' id="newEncounterBtn" value="$i18n.getString('create_new_encounter')" onClick="javascript: registerIrregularEncounter( getFieldValue('executionDate') );" disabled="disabled" >
 	<input type="button" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" disabled="disabled" >
-	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled" >
+	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled" style="margin-bottom:10px">
 	<input type="button" class='button' value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" >
 </div>
 		
-<div class="inputCriteria" style="width:530px;height:130px;">
+<div class="inputCriteria" style="width:480px;height:130px;">
 
 	<table> 
 		<tr>
@@ -61,7 +61,7 @@
 					
 					<tr>
 						<td class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-						<td><input type="text" id="executionDate" name="executionDate" class="criteria" value="$!format.formatDate( $programStageInstance.executionDate )" >
+						<td><input type="text" id="executionDate" name="executionDate" class="criteria" style="width:320px" value="$!format.formatDate( $programStageInstance.executionDate )" >
 							<script type="text/javascript">
 							   datePickerValid( 'executionDate', false );
 							   disable('executionDate');

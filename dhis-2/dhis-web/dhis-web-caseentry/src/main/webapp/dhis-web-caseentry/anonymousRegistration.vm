@@ -2,11 +2,11 @@
 
 <div class="actions">	
 	<input type="button" class='button' id="createEventBtn" value="$i18n.getString('create_new_event')" onClick="javascript: createNewEvent();" disabled="disabled">
-	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete();" disabled="disabled" >
+	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete();" disabled="disabled" style="margin-bottom:10px">
 	<input type="button" class='button' id="deleteCurrentEventBtn" value="$i18n.getString('delete_current_event')" onClick="javascript: deleteCurrentEvent();" disabled="disabled" >
 </div>	
 			
-<div id="dataRecordingSelectDiv" class="inputCriteria" style="width:500px;height:75px;">
+<div id="dataRecordingSelectDiv" class="inputCriteria" style="width:480px;height:75px;">
 	<input type='hidden' id="programStageId">
 	<input type='hidden' id='selectedProgramId'>
 	<table>
@@ -23,7 +23,7 @@
 		</tr>
 		<tr>
 			<td class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-			<td><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >
+			<td><input type="text" id="executionDate" name="executionDate" class="criteria" style="width:320px" value="$!format.formatDate( $programStageInstance.executionDate )" >
 				<script type="text/javascript">
 				   datePickerValid( 'executionDate', false );
 				   disable( 'executionDate' );
