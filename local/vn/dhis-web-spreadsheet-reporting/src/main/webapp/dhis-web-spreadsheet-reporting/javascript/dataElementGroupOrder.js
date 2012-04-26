@@ -1,15 +1,3 @@
-
-function addOptionToListWithToolTip( list, optionValue, optionText )
-{
-    var option = document.createElement( "option" );
-    option.value = optionValue;
-    option.text = optionText;
-	option.onmousemove = function(e) {
-		showToolTip(e, optionText);
-	}
-    list.add( option, null );
-}
-
 function showDataElementGroupOrderDetails( id )
 {
 	jQuery.post( 'getDataElementGroupOrder.action',  { id: id }, function( json ) {

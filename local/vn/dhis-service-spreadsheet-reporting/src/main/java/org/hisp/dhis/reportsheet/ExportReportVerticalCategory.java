@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,19 +30,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class ExportReportCategory
+public class ExportReportVerticalCategory
     extends ExportReport
-{
-    private List<DataElementGroupOrder> dataElementOrders;
+{    
+    private List<CategoryOptionGroupOrder> categoryOptionGroupOrders;
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public ExportReportCategory()
+    public ExportReportVerticalCategory()
     {
         super();
     }
@@ -51,20 +51,20 @@ public class ExportReportCategory
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public List<DataElementGroupOrder> getDataElementOrders()
+    public List<CategoryOptionGroupOrder> getCategoryOptionGroupOrders()
     {
-        return dataElementOrders;
+        return categoryOptionGroupOrders;
     }
 
-    public void setDataElementOrders( List<DataElementGroupOrder> dataElementOrders )
+    public void setCategoryOptionGroupOrders( List<CategoryOptionGroupOrder> categoryOptionGroupOrders )
     {
-        this.dataElementOrders = dataElementOrders;
+        this.categoryOptionGroupOrders = categoryOptionGroupOrders;
     }
 
     @Override
     public String getReportType()
     {
-        return ExportReport.TYPE.CATEGORY;
+        return ExportReport.TYPE.CATEGORY_VERTICAL;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ExportReportCategory
         types.add( ExportItem.TYPE.DATAELEMENT );
         types.add( ExportItem.TYPE.DATAELEMENT_CODE );
         types.add( ExportItem.TYPE.DATAELEMENT_NAME );
-        types.add( ExportItem.TYPE.FORMULA_EXCEL);
+        types.add( ExportItem.TYPE.FORMULA_EXCEL );
         types.add( ExportItem.TYPE.SERIAL );
 
         return types;

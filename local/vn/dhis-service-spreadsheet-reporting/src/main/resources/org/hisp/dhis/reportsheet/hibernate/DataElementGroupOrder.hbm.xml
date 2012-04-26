@@ -15,5 +15,5 @@
 			<many-to-many class="org.hisp.dhis.dataelement.DataElement"
 				column="dataelementid" foreign-key="fk_dataelementorderid_dataelementid" />
 		</list>
-  </class>
+	</class>
 </hibernate-mapping>

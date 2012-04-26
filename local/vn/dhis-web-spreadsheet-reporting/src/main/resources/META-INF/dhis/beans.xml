@@ -258,6 +258,48 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataElementGroupOrderService" ref="org.hisp.dhis.reportsheet.DataElementGroupOrderService" />
 	</bean>
+	
+	<!-- REPORT EXCEL CATEGORY-VERTICAL BEAN -->
+
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.ValidateCategoryOptionGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.ValidateCategoryOptionGroupOrderAction"
+		scope="prototype" />
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.SaveCategoryOptionGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.SaveCategoryOptionGroupOrderAction"
+		scope="prototype" />
+
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.UpdateCategoryOptionGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.UpdateCategoryOptionGroupOrderAction"
+		scope="prototype" />
+
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.DeleteCategoryOptionGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.DeleteCategoryOptionGroupOrderAction"
+		scope="prototype" />
+
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.GetCategoryOptionGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.GetCategoryOptionGroupOrderAction"
+		scope="prototype" />
+
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.UpdateSortedCategoryOptionGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.UpdateSortedCategoryOptionGroupOrderAction"
+		scope="prototype" />
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.UpdateSortedCategoryOptionAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.UpdateSortedCategoryOptionAction"
+		scope="prototype" />
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.GetCategoryOptionsByCategoryAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.GetCategoryOptionsByCategoryAction"
+		scope="prototype" />
 
 	<!-- REPORT EXCEL ATTRIBUTE BEAN -->
 

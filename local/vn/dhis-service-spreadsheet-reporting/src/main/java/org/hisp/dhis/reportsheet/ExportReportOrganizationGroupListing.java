@@ -85,36 +85,6 @@ public class ExportReportOrganizationGroupListing
     }
 
     @Override
-    public boolean isAttribute()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isCategory()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isNormal()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOrgUnitGroupListing()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isPeriodColumnListing()
-    {
-        return false;
-    }
-
-    @Override
     public List<String> getItemTypes()
     {
         List<String> types = new ArrayList<String>();
