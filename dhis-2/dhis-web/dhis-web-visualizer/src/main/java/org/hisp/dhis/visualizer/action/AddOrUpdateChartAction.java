@@ -27,7 +27,6 @@ package org.hisp.dhis.visualizer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
@@ -147,21 +146,21 @@ public class AddOrUpdateChartAction
         this.filter = filter;
     }
 
-    private List<Integer> indicatorIds = new ArrayList<Integer>();
+    private List<Integer> indicatorIds;
 
     public void setIndicatorIds( List<Integer> indicatorIds )
     {
         this.indicatorIds = indicatorIds;
     }
 
-    private List<Integer> dataElementIds = new ArrayList<Integer>();
+    private List<Integer> dataElementIds;
 
     public void setDataElementIds( List<Integer> dataElementIds )
     {
         this.dataElementIds = dataElementIds;
     }
 
-    private List<Integer> dataSetIds = new ArrayList<Integer>();
+    private List<Integer> dataSetIds;
 
     public void setDataSetIds( List<Integer> dataSetIds )
     {
@@ -343,7 +342,7 @@ public class AddOrUpdateChartAction
     public String execute()
         throws Exception
     {
-        Chart chart = null;
+        Chart chart;
 
         if ( uid != null )
         {
@@ -352,57 +351,39 @@ public class AddOrUpdateChartAction
         else
         {
             chart = new Chart();
-        }
 
-        if ( name != null )
-        {
             chart.setName( name );
         }
 
-        if ( type != null )
-        {
-            chart.setType( type );
-        }
+        chart.setType( type );
+        chart.setSeries( series );
+        chart.setCategory( category );
+        chart.setFilter( filter );
 
-        if ( series != null )
-        {
-            chart.setSeries( series );
-        }
-
-        if ( category != null )
-        {
-            chart.setCategory( category );
-        }
-
-        if ( filter != null )
-        {
-            chart.setFilter( filter );
-        }
+        chart.getIndicators().clear();
 
         if ( indicatorIds != null )
         {
-            chart.getIndicators().clear();
-
             for ( Integer id : indicatorIds )
             {
                 chart.getIndicators().add( indicatorService.getIndicator( id ) );
             }
         }
 
+        chart.getDataElements().clear();
+
         if ( dataElementIds != null )
         {
-            chart.getDataElements().clear();
-
             for ( Integer id : dataElementIds )
             {
                 chart.getDataElements().add( dataElementService.getDataElement( id ) );
             }
         }
 
+        chart.getDataSets().clear();
+
         if ( dataSetIds != null )
         {
-            chart.getDataSets().clear();
-
             for ( Integer id : dataSetIds )
             {
                 chart.getDataSets().add( dataSetService.getDataSet( id ) );
@@ -426,75 +407,43 @@ public class AddOrUpdateChartAction
             chart.setRelatives( rp );
         }
 
+        chart.getOrganisationUnits().clear();
+
         if ( organisationUnitIds != null )
         {
-            chart.getOrganisationUnits().clear();
-
             for ( Integer id : organisationUnitIds )
             {
                 chart.getOrganisationUnits().add( organisationUnitService.getOrganisationUnit( id ) );
             }
         }
 
-        if ( organisationUnitGroupSetId != null )
-        {
-            chart.setOrganisationUnitGroupSet( organisationUnitGroupService
-                .getOrganisationUnitGroupSet( organisationUnitGroupSetId ) );
-        }
+        chart.setOrganisationUnitGroupSet( organisationUnitGroupSetId != null ? organisationUnitGroupService
+            .getOrganisationUnitGroupSet( organisationUnitGroupSetId ) : null );
 
-        if ( system == null )
-        {
-            chart.setUser( currentUserService.getCurrentUser() );
-        }
-        else
-        {
-            chart.setUser( null );
-        }
+        chart.setUser( system == null ? currentUserService.getCurrentUser() : null );
 
-        if ( trendLine != null )
-        {
-            chart.setRegression( trendLine );
-        }
+        chart.setRegression( trendLine );
 
-        if ( hideSubtitle != null )
-        {
-            chart.setHideSubtitle( hideSubtitle );
-        }
+        chart.setHideSubtitle( hideSubtitle );
 
-        if ( hideLegend != null )
-        {
-            chart.setHideLegend( hideLegend );
-        }
+        chart.setHideLegend( hideLegend );
 
-        if ( userOrganisationUnit != null )
-        {
-            chart.setUserOrganisationUnit( userOrganisationUnit );
-        }
+        chart.setUserOrganisationUnit( userOrganisationUnit );
 
-        if ( userOrganisationUnitChildren != null )
-        {
-            chart.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
-        }
+        chart.setUserOrganisationUnitChildren( userOrganisationUnitChildren );
 
-        if ( showData != null )
-        {
-            chart.setShowData( showData );
-        }
+        chart.setShowData( showData );
 
-        if ( domainAxisLabel != null )
-        {
-            chart.setDomainAxisLabel( domainAxisLabel );
-        }
+        chart.setDomainAxisLabel( domainAxisLabel );
 
-        if ( rangeAxisLabel != null )
-        {
-            chart.setRangeAxisLabel( rangeAxisLabel );
-        }
+        chart.setRangeAxisLabel( rangeAxisLabel );
 
         chart.setTargetLineValue( targetLineValue );
+
         chart.setTargetLineLabel( targetLineLabel );
 
         chart.setBaseLineValue( baseLineValue );
+
         chart.setBaseLineLabel( baseLineLabel );
 
         chartService.saveOrUpdate( chart );

@@ -116,7 +116,8 @@ DV.conf = {
             organisationunitgroupset_get: 'getOrganisationUnitGroupSets.action',
             organisationunitchildren_get: 'getOrganisationUnitChildren.action',
             favorite_addorupdate: 'addOrUpdateChart.action',
-            favorite_addorupdatesystem: 'addOrUpdateSystemChart.action',            
+            favorite_addorupdatesystem: 'addOrUpdateSystemChart.action',
+            favorite_updatename: 'updateChartName.action',
             favorite_get: 'charts/',
             favorite_getall: 'getSystemAndCurrentUserCharts.action',
             favorite_delete: 'deleteCharts.action'
@@ -1273,7 +1274,7 @@ Ext.onReady( function() {
                     var r = DV.cmp.favorite.grid.getSelectionModel().getSelection()[0];
                     var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;
                     Ext.Ajax.request({
-                        url: DV.conf.finals.ajax.path_visualizer + url,
+                        url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_updatename,
                         method: 'POST',
                         params: {uid: r.data.id, name: name},
                         success: function() {

@@ -65,6 +65,12 @@
                 /dhis-web-visualizer/void.vm</result>
         </action>
 
+        <action name="updateChartName"
+            class="org.hisp.dhis.visualizer.action.UpdateChartNameAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-visualizer/void.vm</result>
+        </action>
+
         <action name="getSystemAndCurrentUserCharts"
             class="org.hisp.dhis.visualizer.action.GetSystemAndCurrentUserChartsAction">
             <result name="success" type="velocity-json">
