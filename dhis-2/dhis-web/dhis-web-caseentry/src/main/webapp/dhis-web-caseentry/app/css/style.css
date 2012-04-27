@@ -686,28 +686,5 @@ TR.utilbody {
 }
 
 .x-panel-header-default{
-	background: #FOFOFO !important;
-	background-image:-webkit-gradient(linear, 100% 100%, 100% 100%, color-stop(100%, #f0f0f0), color-stop(100%, #f0f0f0)) !important;;
-	background-image:-webkit-linear-gradient(top, #f0f0f0,#f0f0f0) !important;;
-	background-image:-moz-linear-gradient(top, #f0f0f0,#f0f0f0) !important;;
-	background-image:-o-linear-gradient(top, #f0f0f0,#f0f0f0) !important;;
-	background-image:-ms-linear-gradient(top, #f0f0f0,#f0f0f0) !important;;
-	background-image:linear-gradient(top, #f0f0f0,#f0f0f0) !important;;
-	border-width:0 !important;
+	background: #ffffff !important;
 }
-
-.x-hmenu-sort-desc 
-{
-	display:none;
-}
-
-.x-hmenu-sort-asc
-{
-	display:none;
-}
-
-.x-menu-item-separator
-{
-	display:none;
-}
-
