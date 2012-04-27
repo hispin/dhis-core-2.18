@@ -13,7 +13,7 @@ jQuery(function() {
     #introListImgItem( "displayImportDataValueForm.action?importFormat=csv" "csv_data_import" "import" )
     #introListImgItem( "displayExternalImportMenu.action" "dhis14_import" "import" )
 	
-    #introListImgItem( "displayDataValueExportForm.action?exportFormat=DXF" "data_export" "export" )
+    #introListImgItem( "displayDataValueExportForm.action" "data_export" "export" )
     #introListImgItem( "displayMetaDataExportForm.action?exportFormat=DXF" "metadata_export" "export" )
     #introListImgItem( "displayDetailedMetaDataExportForm.action?exportFormat=DXF" "detailed_metadata_export" "export" )
     #introListImgItem( "displayExternalExportMenu.action" "export_to_other_systems" "export" )
