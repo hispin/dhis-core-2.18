@@ -895,7 +895,7 @@ Ext.onReady( function() {
 	
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
-                height: TR.util.viewport.getSize().y - 60,
+                height: TR.util.viewport.getSize().y - 58,
 				id: 'gridTable',
 				columns: cols,
 				scroll: 'both',
@@ -914,7 +914,6 @@ Ext.onReady( function() {
 						xtype: 'button',
 						icon: 'images/arrowleftdouble.png',
 						id:'firstPageBtn',
-						width: 22,
 						handler: function() {
 							TR.exe.paging(1);
 						}
@@ -923,14 +922,13 @@ Ext.onReady( function() {
 						xtype: 'button',
 						icon: 'images/arrowleft.png',
 						id:'previousPageBtn',
-						width: 22,
 						handler: function() {
 							TR.exe.paging( eval(TR.cmp.settings.currentPage.rawValue) - 1 );
 						}
 					},
 					{
-						xtype: 'label',
-						text: '|'
+						xtype: 'button',
+						icon: 'images/grid-split.gif'
 					},
 					{
 						xtype: 'label',
@@ -965,7 +963,11 @@ Ext.onReady( function() {
 					},
 					{
 						xtype: 'label',
-						text: ' of ' + TR.state.total + ' | '
+						text: ' of ' + TR.state.total
+					},
+					{
+						xtype: 'button',
+						icon: 'images/grid-split.gif'
 					},
 					{
 						xtype: 'button',
@@ -984,8 +986,8 @@ Ext.onReady( function() {
 						}
 					},
 					{
-						xtype: 'label',
-						text: '|'
+						xtype: 'button',
+						icon: 'images/grid-split.gif'
 					},
 					{
 						xtype: 'button',
