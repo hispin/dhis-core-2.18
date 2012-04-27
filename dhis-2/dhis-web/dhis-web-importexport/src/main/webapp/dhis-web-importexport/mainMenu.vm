@@ -11,7 +11,7 @@
 <h2>$i18n.getString( "export" )&nbsp;</h2>
 
 <ul>
-  <li><a href="displayDataValueExportForm.action?exportFormat=DXF">$i18n.getString( "data_export" )&nbsp;</a></li>
+  <li><a href="displayDataValueExportForm.action">$i18n.getString( "data_export" )&nbsp;</a></li>
   <li><a href="displayMetaDataExportForm.action?exportFormat=DXF">$i18n.getString( "metadata_export" )&nbsp;</a></li>
   <li><a href="displayDetailedMetaDataExportForm.action?exportFormat=DXF">$i18n.getString( "detailed_metadata_export" )&nbsp;</a></li> 
   <li><a href="displayExternalExportMenu.action">$i18n.getString( "export_to_other_systems" )&nbsp;</a></li> 
