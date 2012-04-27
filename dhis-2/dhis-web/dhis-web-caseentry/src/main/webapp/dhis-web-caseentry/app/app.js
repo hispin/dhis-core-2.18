@@ -794,6 +794,7 @@ Ext.onReady( function() {
 					sortAscText: TR.i18n.asc,
 					sortDescText: TR.i18n.desc
 				}
+				i++;
 			}
 			
 			TR.cmp.params.identifierType.selected.store.each( function(r) {
@@ -894,7 +895,7 @@ Ext.onReady( function() {
 	
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
-                height: TR.util.viewport.getSize().y - 58,
+                height: TR.util.viewport.getSize().y - 60,
 				id: 'gridTable',
 				columns: cols,
 				scroll: 'both',
@@ -913,6 +914,7 @@ Ext.onReady( function() {
 						xtype: 'button',
 						icon: 'images/arrowleftdouble.png',
 						id:'firstPageBtn',
+						width: 22,
 						handler: function() {
 							TR.exe.paging(1);
 						}
@@ -921,13 +923,14 @@ Ext.onReady( function() {
 						xtype: 'button',
 						icon: 'images/arrowleft.png',
 						id:'previousPageBtn',
+						width: 22,
 						handler: function() {
 							TR.exe.paging( eval(TR.cmp.settings.currentPage.rawValue) - 1 );
 						}
 					},
 					{
-						xtype: 'button',
-						icon: 'images/grid-split.gif'
+						xtype: 'label',
+						text: '|'
 					},
 					{
 						xtype: 'label',
@@ -962,11 +965,7 @@ Ext.onReady( function() {
 					},
 					{
 						xtype: 'label',
-						text: ' of ' + TR.state.total
-					},
-					{
-						xtype: 'button',
-						icon: 'images/grid-split.gif'
+						text: ' of ' + TR.state.total + ' | '
 					},
 					{
 						xtype: 'button',
@@ -985,8 +984,8 @@ Ext.onReady( function() {
 						}
 					},
 					{
-						xtype: 'button',
-						icon: 'images/grid-split.gif'
+						xtype: 'label',
+						text: '|'
 					},
 					{
 						xtype: 'button',

@@ -222,7 +222,11 @@ public class DefaultProgramInstanceService
 
         attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "blood_group" ) );
-        attrGrid.addValue( (patient.getBloodGroup() == "") ? PatientAttributeValue.UNKNOWN : patient.getBloodGroup() );
+        attrGrid.addValue( (patient.getBloodGroup().isEmpty() ) ? PatientAttributeValue.UNKNOWN : patient.getBloodGroup() );
+
+        attrGrid.addRow();
+        attrGrid.addValue( i18n.getString( "phoneNumber" ) );
+        attrGrid.addValue( (patient.getPhoneNumber() == null && patient.getPhoneNumber().isEmpty() ) ? PatientAttributeValue.UNKNOWN : patient.getPhoneNumber() );
 
         // ---------------------------------------------------------------------
         // Add dynamic attribues
