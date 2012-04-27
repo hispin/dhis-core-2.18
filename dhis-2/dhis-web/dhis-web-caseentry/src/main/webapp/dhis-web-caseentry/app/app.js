@@ -544,6 +544,8 @@ Ext.onReady( function() {
 							TR.datatable.setPagingToolbarStatus();
 							
 							Ext.getCmp('btnReset').enable();
+							Ext.getCmp('btnFilter').enable();
+							Ext.getCmp('btnClean').enable();
 							
 							TR.util.mask.hideMask();
 						}
@@ -583,28 +585,8 @@ Ext.onReady( function() {
 			p.searchingValues = [];
 			if( TR.store.datatable && TR.store.datatable.data.length)
 			{
-				var cols = [];
 				var grid = TR.datatable.datatable;
-				var i = 0;
-				for( var index=0; index<grid.columns.length; index++)
-				{
-					var col = grid.columns[index];
-					if( col.name )
-					{
-						cols[i] = col;
-						i++;
-					}
-					var hidden = col.hidden;
-					var subCols = col.items;
-					for( var subIndex=0; subIndex<subCols.length; subIndex++)
-					{
-						var subCol = subCols.getAt(subIndex);
-						subCol.hidden = hidden ? hidden : subCol.hidden;
-						cols[i] = subCol;
-						i++;
-					}
-				}
-				
+				var cols = grid.columns;
 				var editor = grid.getStore().getAt(0);
 				var colLen = cols.length;
 				for( var i=0; i<colLen; i++ )
@@ -666,19 +648,8 @@ Ext.onReady( function() {
 			
 			if( TR.store.datatable && TR.store.datatable.data.length)
 			{
-				var cols = [];
 				var grid = TR.datatable.datatable;
-				var i = 0;
-				for( var index=1; index<grid.columns.length; index++)
-				{
-					var subCols = grid.columns[index].items;
-					for( var subIndex=0; subIndex<subCols.length; subIndex++)
-					{
-						cols[i] = subCols.getAt(subIndex);
-						i++;
-					}
-				}
-				
+				var cols = grid.columns;
 				var editor = grid.getStore().getAt(0);
 				var colLen = cols.length;
 				for( var i=0; i<colLen; i++ )
@@ -776,6 +747,7 @@ Ext.onReady( function() {
       
     TR.datatable = {
         datatable: null,
+		rowEditing: null,
 		getDataTable: function() {
 			
 			var index = 1;
@@ -785,11 +757,33 @@ Ext.onReady( function() {
 						+ TR.cmp.params.dataelement.selected.store.data.length;
 			var metaDatatColsLen = TR.value.columns.length - paramsLen ;
 			
-			var dgCols = [];
-			var i = 0;
+			// column
+			var cols = [];
+			cols[0] = {
+				header: TR.i18n.no, 
+				dataIndex: 'id',
+				width: 50,
+				height: TR.conf.layout.east_gridcolumn_height,
+				sortable: false,
+				draggable: false,
+				hideable: false,
+				menuDisabled: true
+			};
+			
+			cols[1] = {
+				header: TR.value.columns[1], 
+				dataIndex: 'col1',
+				height: TR.conf.layout.east_gridcolumn_height,
+				name:"meta_1_",
+				sortable: false,
+				draggable: false,
+				hideable: false
+			};
+				
+			index = 2;
 			for( index=2; index < metaDatatColsLen; index++ )
 			{
-				dgCols[i] = {
+				cols[index] = {
 					header: TR.value.columns[index], 
 					dataIndex: 'col' + index,
 					height: TR.conf.layout.east_gridcolumn_height,
@@ -803,11 +797,9 @@ Ext.onReady( function() {
 				i++;
 			}
 			
-			var idenCols = [];
-			i = 0;
 			TR.cmp.params.identifierType.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
-				idenCols[i] = { 
+				cols[index] = { 
 					header: r.data.name, 
 					dataIndex: dataIndex,
 					height: TR.conf.layout.east_gridcolumn_height,
@@ -821,14 +813,11 @@ Ext.onReady( function() {
 					}
 				};
 				index++;
-				i++;
 			});
 			
-			i = 0;
-			var attrCols = [];
 			TR.cmp.params.patientAttribute.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
-				attrCols[i] = { 
+				cols[index] = { 
 					header: r.data.name, 
 					dataIndex: dataIndex,
 					height: TR.conf.layout.east_gridcolumn_height,
@@ -852,14 +841,11 @@ Ext.onReady( function() {
 						}
 					};
 				index++;
-				i++;
 			});
 			
-			i = 0;
-			var deCols = [];
 			TR.cmp.params.dataelement.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
-				deCols[i] = { 
+				cols[index] = { 
 					header: r.data.name, 
 					dataIndex: dataIndex,
 					height: TR.conf.layout.east_gridcolumn_height,
@@ -882,76 +868,9 @@ Ext.onReady( function() {
 					}
 				};
 				index++;
-				i++;
 			});
 			
-						
-			// column
-			var cols = [];
-			
-			cols[0] = {
-				header: TR.i18n.no, 
-				dataIndex: 'id',
-				width: 50,
-				height: TR.conf.layout.east_gridcolumn_height,
-				sortable: false,
-				draggable: false,
-				hideable: false,
-				menuDisabled: true
-			};
-			cols[1] = {
-				header: TR.value.columns[1], 
-				dataIndex: 'col1',
-				height: TR.conf.layout.east_gridcolumn_height,
-				name:"meta_1_",
-				sortable: false,
-				draggable: false,
-				hideable: false
-			};
-				
-			index = 2;
-			if( dgCols.length > 0 )
-			{
-				cols[index]={
-					text: TR.i18n.demographics,
-					isGroupHeader: true,
-					columns: dgCols,
-					menuDisabled: true
-				}
-				index++;
-			}
-			
-			if( idenCols.length > 0 )
-			{
-				cols[index]={
-					text: TR.i18n.identifiers,
-					isGroupHeader: true,
-					columns: idenCols,
-					menuDisabled: true
-				}
-				index++;
-			}
-			
-			if( attrCols.length > 0 )
-			{
-				cols[index]={
-					text: TR.i18n.attributes,
-					isGroupHeader: true,
-					columns: attrCols,
-					menuDisabled: true
-				}
-				index++;
-			}
-			
-			// Data element group header
-			cols[index]={
-				text: TR.i18n.data_elements,
-				isGroupHeader: true,
-				columns: deCols,
-				menuDisabled: true
-			}
-			
-			var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+			this.rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
 				clicksToEdit: 1,
 				editStyle: 'row',
 				autoScroll: true,
@@ -990,60 +909,6 @@ Ext.onReady( function() {
 						}
 					}
 				},
-				tbar: [
-					{
-						xtype: 'button',
-						text: TR.i18n.filter,
-						handler: function() {
-							var grid = TR.datatable.datatable;
-							var hidden = grid.getView().getNode(0).classList.contains('hidden');
-							if( hidden )
-							{
-								grid.getView().getNode(0).classList.remove('hidden');
-								var record = grid.getView().getRecord( grid.getView().getNode(0) );
-								grid.getView().getSelectionModel().select(record, false, false);
-								rowEditing.startEdit(0, 0);
-							}
-							else {
-								TR.exe.execute();
-							}
-						}
-					},
-					{
-						xtype: 'button',
-						text: TR.i18n.clear_filter,
-						handler: function() {
-							var cols = [];
-							var grid = TR.datatable.datatable;
-							var i = 0;
-							for( var index=0; index<grid.columns.length; index++)
-							{
-								var col = grid.columns[index];
-								
-								cols[i] = col;
-								i++;
-								
-								var subCols = col.items;
-								for( var subIndex=0; subIndex<subCols.length; subIndex++)
-								{
-									cols[i] = subCols.getAt(subIndex);
-									i++;
-								}
-							}
-							
-							var editor = grid.getStore().getAt(0);
-							var colLen = cols.length;
-							for( var i=1; i<colLen; i++ )
-							{
-								var col = cols[i];
-								var dataIndex = col.dataIndex;
-								TR.store.datatable.first().data[dataIndex] = "";
-							}
-							
-							TR.exe.execute();
-						}
-					}
-				],
 				bbar: [
 					{
 						xtype: 'button',
@@ -1130,7 +995,7 @@ Ext.onReady( function() {
 						}
 					}
 				], 
-				plugins: [rowEditing],
+				plugins: [this.rowEditing],
 				store: TR.store.datatable
 			});
 										
@@ -1314,7 +1179,7 @@ Ext.onReady( function() {
 										style: 'margin-right:8px',
 										width: TR.conf.layout.west_fieldset_width / 2 - 4,
 										format: TR.i18n.format_date,
-										value: new Date(),
+										value: new Date((new Date()).setMonth((new Date()).getMonth()-3)),
 										listeners: {
 											added: function() {
 												TR.cmp.settings.startDate = this;
@@ -2062,68 +1927,107 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'tr-toolbar-btn-1',
-                            text: TR.i18n.generate,
+                            text: TR.i18n.update,
 							handler: function() {
                                 TR.exe.execute();
                             }
                         },
 						{
-							xtype: 'button',
-							cls: 'tr-toolbar-btn-2',
-							text: TR.i18n.reset,
-							id:'btnReset',
-							width: 50,
-							disabled: true,
-							listeners: {
-								click: function() {
-									TR.exe.reset();
-								}
+						xtype: 'button',
+						text: TR.i18n.filter,
+						id: 'btnFilter',
+						disabled: true,
+						handler: function() {
+							var grid = TR.datatable.datatable;
+							var hidden = grid.getView().getNode(0).classList.contains('hidden');
+							if( hidden )
+							{
+								grid.getView().getNode(0).classList.remove('hidden');
+								var record = grid.getView().getRecord( grid.getView().getNode(0) );
+								grid.getView().getSelectionModel().select(record, false, false);
+								TR.datatable.rowEditing.startEdit(0, 0);
 							}
+							else {
+								TR.exe.execute();
+							}
+						}
+					},
+					{
+						xtype: 'button',
+						text: TR.i18n.clear,
+						id: 'btnClean',
+						disabled: true,
+						handler: function() {
+							var grid = TR.datatable.datatable;
+							var cols = grid.columns;
+							var editor = grid.getStore().getAt(0);
+							var colLen = cols.length;
+							for( var i=1; i<colLen; i++ )
+							{
+								var col = cols[i];
+								var dataIndex = col.dataIndex;
+								TR.store.datatable.first().data[dataIndex] = "";
+							}
+							
+							TR.exe.execute();
+						}
+					},
+					{
+						xtype: 'button',
+						cls: 'tr-toolbar-btn-2',
+						text: TR.i18n.reset,
+						id:'btnReset',
+						width: 50,
+						disabled: true,
+						listeners: {
+							click: function() {
+								TR.exe.reset();
+							}
+						}
+					},
+					{
+						xtype: 'button',
+						text: TR.i18n.download + '..',
+						execute: function(type) {
+							TR.exe.execute( type );
 						},
-						{
-                            xtype: 'button',
-                            text: TR.i18n.download + '..',
-                            execute: function(type) {
-								TR.exe.execute( type );
-                            },
-                            listeners: {
-                                afterrender: function(b) {
-                                    this.menu = Ext.create('Ext.menu.Menu', {
-                                        margin: '2 0 0 0',
-                                        shadow: false,
-                                        showSeparator: false,
-                                        items: [
-                                            {
-                                                text: TR.i18n.xls,
-                                                iconCls: 'tr-menu-item-xls',
-                                                minWidth: 105,
-                                                handler: function() {
-                                                    b.execute(TR.conf.finals.image.xls);
-                                                }
-                                            },
-                                            {
-                                                text: TR.i18n.pdf,
-                                                iconCls: 'tr-menu-item-pdf',
-                                                minWidth: 105,
-                                                handler: function() {
-                                                    b.execute(TR.conf.finals.image.pdf);
-                                                }
-                                            }
-                                        ]                                            
-                                    });
-                                }
-                            }
-                        },
-						'->',
-                        {
-                            xtype: 'button',
-							cls: 'tr-toolbar-btn-2',
-                            text: 'Exit',
-                            handler: function() {
-                                window.location.href = TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.redirect;
-                            }
-                        },
-                    ]
+						listeners: {
+							afterrender: function(b) {
+								this.menu = Ext.create('Ext.menu.Menu', {
+									margin: '2 0 0 0',
+									shadow: false,
+									showSeparator: false,
+									items: [
+										{
+											text: TR.i18n.xls,
+											iconCls: 'tr-menu-item-xls',
+											minWidth: 105,
+											handler: function() {
+												b.execute(TR.conf.finals.image.xls);
+											}
+										},
+										{
+											text: TR.i18n.pdf,
+											iconCls: 'tr-menu-item-pdf',
+											minWidth: 105,
+											handler: function() {
+												b.execute(TR.conf.finals.image.pdf);
+											}
+										}
+									]                                            
+								});
+							}
+						}
+					},
+					'->',
+					{
+						xtype: 'button',
+						cls: 'tr-toolbar-btn-2',
+						text: 'Exit',
+						handler: function() {
+							window.location.href = TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.redirect;
+						}
+					},]
                 },
                 bbar: {
 					items: [
