@@ -257,7 +257,7 @@ public class HibernateProgramStageInstanceStore
             + "INNER JOIN programstageinstance psi ON pdv.programstageinstanceid=psi.programstageinstanceid "
             + "INNER JOIN programinstance pi ON pi.programinstanceid=psi.programinstanceid ";
 
-        if ( !programStage.getProgram().getAnonymous() )
+        /* if ( !programStage.getProgram().getAnonymous() )
         {
             condition += " INNER JOIN patient p ON p.patientid = pi.patientid ";
             if ( searchingAttrKeys != null )
@@ -270,7 +270,7 @@ public class HibernateProgramStageInstanceStore
                 condition += "INNER JOIN patientidentifier as pid ON pid.patientid = p.patientid "
                     + "INNER JOIN patientidentifiertype as pit ON pid.patientidentifiertypeid = pit.patientidentifiertypeid ";
             }
-        }
+        } */
 
         condition += " WHERE psi.executiondate >= '" + DateUtils.getMediumDateString( startDate )
             + "' AND psi.executiondate <= '" + DateUtils.getMediumDateString( endDate ) + "' "
