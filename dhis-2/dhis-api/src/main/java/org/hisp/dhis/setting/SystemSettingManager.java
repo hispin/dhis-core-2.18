@@ -75,6 +75,7 @@ public interface SystemSettingManager
     final double DEFAULT_FACTOR_OF_DEVIATION = 2.0;
     final int DEFAULT_ORGUNITGROUPSET_AGG_LEVEL = 3;    
     final String DEFAULT_GOOGLE_MAPS_API_KEY = "ABQIAAAAut6AhySExnYIXm5s2OFIkxRKNzJ-_9njnryRTbvC6CtrS4sRvRREWnxwlZUa630pLuPf3nD9i4fq9w";
+    final String DEFAULT_START_MODULE = "dhis-web-dashboard-integration";
     
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
     
