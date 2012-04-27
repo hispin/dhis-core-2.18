@@ -95,7 +95,7 @@ function showDataSqlViewForm( viewId )
 
 function exportSqlView( type )
 {
-	var url = "exportSqlView.action?type=" + type;
+	var url = "exportSqlView.action?type=" + type + "&viewTableName=" + $( "#viewTableName" ).val();
 
     window.location.href = url;
 }
