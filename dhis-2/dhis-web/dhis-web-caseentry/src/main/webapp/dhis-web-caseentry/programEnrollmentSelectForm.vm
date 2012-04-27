@@ -1,45 +1,43 @@
 <h3>$i18n.getString( "patient_info" )</h3>
 
 <div>
-	
-		<table>
+	<table>
+		<tr>
+			<td class='bold text-column'>$i18n.getString( "full_name" ):</td>
+			<td>$encoder.htmlEncode( $patient.getFullName() )</td>
+		</tr>
+		<tr>
+			<td class='bold text-column'>$i18n.getString( "gender" ):</td>
+			<td>$i18n.getString( $patient.gender )</td>
+		</tr>
+		<tr>
+			<td class='bold text-column'>$i18n.getString( "date_of_birth" ):</td>
+			<td>$format.formatDate( $patient.birthDate ) $patient.getAge()</td>
+		</tr>
+		#if( $patient.programs.size() > 0 )
 			<tr>
-				<td class='bold text-column'>$i18n.getString( "full_name" ):</td>
-				<td>$encoder.htmlEncode( $patient.getFullName() )</td>
-			</tr>
-			<tr>
-				<td class='bold text-column'>$i18n.getString( "gender" ):</td>
-				<td>$i18n.getString( $patient.gender )</td>
-			</tr>
-			<tr>
-				<td class='bold text-column'>$i18n.getString( "date_of_birth" ):</td>
-				<td>$format.formatDate( $patient.birthDate ) $patient.getAge()</td>
-			</tr>
-			#if( $patient.programs.size() > 0 )
-				<tr>
-					<td class='bold text-column'>$i18n.getString( "enrolled_for" ):</td>
-					#foreach( $program in $patient.programs ) 
-						<td>$program.name</td>
-					</tr>
-					<tr><td></td>
-					#end
+				<td class='bold text-column'>$i18n.getString( "enrolled_for" ):</td>
+				#foreach( $program in $patient.programs ) 
+					<td>$program.name</td>
 				</tr>
-			#end
-			<tr>
-				<td>&nbsp;</td>
+				<tr><td></td>
+				#end
 			</tr>
-			<tr>
-				<td colspan='2'>
-					<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" >
-				</td>
-			</tr>
-		</table>
-	
+		#end
+		<tr>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan='2'>
+				<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" >
+			</td>
+		</tr>
+	</table>
 	
 	<p></p>
 	
 	<fieldset>
-		<legend><strong>$i18n.getString( "program_enrolled_for" )</strong></legend>
+		<legend>$i18n.getString( "program_enrolled_for" )</legend>
 		<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
 			<input type="hidden" id="patientId" name="patientId" value="$patient.id">    
 
