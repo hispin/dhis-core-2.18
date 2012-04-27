@@ -912,7 +912,7 @@ Ext.onReady( function() {
 	
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
-                height: TR.util.viewport.getSize().y - 60,
+                height: TR.util.viewport.getSize().y - 58,
 				id: 'gridTable',
 				columns: cols,
 				scroll: 'both',
