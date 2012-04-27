@@ -89,7 +89,7 @@ public class ReportSelectAction
         
         programs = programService.getPrograms( orgunit );
         
-        programs.retainAll( programService.getPrograms( true, true ) );
+        programs.removeAll( programService.getPrograms( true ) );
         
         return SUCCESS;
     }
