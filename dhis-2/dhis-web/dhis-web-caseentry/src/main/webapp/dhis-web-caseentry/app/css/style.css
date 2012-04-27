@@ -684,3 +684,7 @@ TR.utilbody {
 .hidden {
     display: none;
 }
+
+.x-panel-header-default{
+	background: #ffffff !important;
+}
