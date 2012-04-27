@@ -105,7 +105,7 @@
       </ul>
       </div>
 	  
-      <span id="headerText" onclick="window.location.href='../dhis-web-commons-about/modules.action'" style="cursor:pointer">
+      <span id="headerText" onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer">
         #if ( $applicationTitle )
           $encoder.htmlEncode( $applicationTitle )
         #else
