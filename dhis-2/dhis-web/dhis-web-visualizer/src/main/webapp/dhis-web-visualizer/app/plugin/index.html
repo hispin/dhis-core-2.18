@@ -22,7 +22,7 @@
 	type                string          'column'            (Optional) Chart types: 'column', 'stackedcolumn', 'bar', 'stackedbar', 'line', 'area', 'pie'
 	indicators          [integer]                           (Required*) Indicator uids. Required if no data elements are provided.
 	dataelements        [integer]                           (Required*) Data element uids. Required if no indicators are provided.
-	periods             [string]        'monthsThisYear'    (Optional) Relative period names.
+	periods             [string]        'last12Months'      (Optional) Relative period names.
 	organisationunits   [integer]                           (Required) Organisation unit uids.
 	series              string          'data'              (Optional) Series: 'data', 'period' or 'organisationunit'
 	category            string          'period'            (Optional) Category: 'indicator', 'dataelement', 'period' or 'organisationunit'
