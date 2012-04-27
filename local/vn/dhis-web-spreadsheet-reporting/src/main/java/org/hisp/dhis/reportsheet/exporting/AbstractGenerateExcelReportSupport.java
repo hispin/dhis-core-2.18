@@ -26,7 +26,6 @@ package org.hisp.dhis.reportsheet.exporting;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndQuaterly;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndSixMonthly;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfMonth;
@@ -42,7 +41,9 @@ import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -210,27 +211,37 @@ public abstract class AbstractGenerateExcelReportSupport
 
     protected String getTextValue( ExportItem exportItem, OrganisationUnit organisationUnit )
     {
-        Period p = null;
+        String result = "";
+        Collection<Period> periods = new ArrayList<Period>();
 
         if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.DAILY ) )
         {
-            p = periodService.getPeriod( startDate, startDate, new DailyPeriodType() );
+            periods = periodService.getPeriodsBetweenDates( periodService.getPeriodTypeByName( DailyPeriodType.NAME ),
+                startDate, startDate );
         }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH ) )
         {
-            p = periodService.getPeriod( startDate, endDate, new MonthlyPeriodType() );
+            periods = periodService.getPeriodsBetweenDates(
+                periodService.getPeriodTypeByName( MonthlyPeriodType.NAME ), startDate, endDate );
         }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.QUARTERLY ) )
         {
-            p = periodService.getPeriod( startQuaterly, endQuaterly, new QuarterlyPeriodType() );
+            periods = periodService.getPeriodsBetweenDates( periodService
+                .getPeriodTypeByName( QuarterlyPeriodType.NAME ), startQuaterly, endQuaterly );
         }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
         {
-            p = periodService.getPeriod( firstDayOfYear, endDateOfYear, new YearlyPeriodType() );
+            periods = periodService.getPeriodsBetweenDates( periodService.getPeriodTypeByName( YearlyPeriodType.NAME ),
+                firstDayOfYear, endDateOfYear );
         }
 
-        return generateExpression( exportItem, p, organisationUnit, dataElementService, categoryService,
-            dataValueService );
+        for ( Period p : periods )
+        {
+            result += generateExpression( exportItem, p, organisationUnit, dataElementService, categoryService,
+                dataValueService ) + "\n";
+        }
+
+        return result;
     }
 
     protected double getDataValue( ExportItem exportItem, OrganisationUnit organisationUnit )

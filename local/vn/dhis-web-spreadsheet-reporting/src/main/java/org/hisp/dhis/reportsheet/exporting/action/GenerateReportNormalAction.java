@@ -87,7 +87,7 @@ public class GenerateReportNormalAction
             {
                 String value = getTextValue( reportItem, organisationUnit );
 
-                ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), value, ExcelUtils.NUMBER,
+                ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), value, ExcelUtils.TEXT,
                     sheet, this.csText );
             }
             else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )

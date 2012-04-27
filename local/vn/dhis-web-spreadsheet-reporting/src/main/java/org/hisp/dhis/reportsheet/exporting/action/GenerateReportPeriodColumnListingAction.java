@@ -89,6 +89,13 @@ public class GenerateReportPeriodColumnListingAction
                     {
                         value = this.getDataValue( reportItem, organisationUnit );
                     }
+                    else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_VALUETYPE_TEXT ) )
+                    {
+                        String result = this.getTextValue( reportItem, organisationUnit );
+
+                        ExcelUtils.writeValueByPOI( reportItem.getRow(), reportItem.getColumn(), result,
+                            ExcelUtils.TEXT, sheet, this.csText );
+                    }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )
                     {
                         value = this.getIndicatorValue( reportItem, organisationUnit );

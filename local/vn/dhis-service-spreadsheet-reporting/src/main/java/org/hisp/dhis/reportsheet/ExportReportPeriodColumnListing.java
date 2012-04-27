@@ -82,6 +82,7 @@ public class ExportReportPeriodColumnListing
     {
         List<String> types = new ArrayList<String>();
         types.add( ExportItem.TYPE.DATAELEMENT );
+        types.add( ExportItem.TYPE.DATAELEMENT_VALUETYPE_TEXT );
         types.add( ExportItem.TYPE.INDICATOR );
 
         return types;
