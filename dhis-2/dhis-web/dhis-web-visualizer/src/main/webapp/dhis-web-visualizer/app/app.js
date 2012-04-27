@@ -1206,7 +1206,7 @@ Ext.onReady( function() {
             }
         },
         variable: {
-			hasValue: function(str) {
+			isNotEmpty: function(str) {
 				return (str !== 0 && str !== '0' && str !== '');
 			}
 		},
@@ -1222,16 +1222,19 @@ Ext.onReady( function() {
                 values = [];
                 for (var i = 0; i < r.length; i++) {
 					var t = r[i][1];
-                    values.push({
+                    var v = {
 						value: r[i][0],
-						type: r[i][1] === 'in' ? DV.conf.finals.dimension.indicator.value :
-							  r[i][1] === 'de' ? DV.conf.finals.dimension.dataelement.value :
-							  r[i][1] === 'ds' ? DV.conf.finals.dimension.dataset.value : t,
+						type: t === 'in' ? DV.conf.finals.dimension.indicator.value :
+							  t === 'de' ? DV.conf.finals.dimension.dataelement.value :
+							  t === 'ds' ? DV.conf.finals.dimension.dataset.value : t,
 						dataid: r[i][2],
 						periodid: r[i][3],
-						organisationunitid: r[i][4],
-						organisationunitgroupid: r[i][5]
-					});
+						organisationunitid: r[i][4]
+					};
+					if (DV.util.variable.isNotEmpty(r[i][5])) {
+						v.organisationunitgroupid = r[i][5];
+					}
+					values.push(v);					
                 }
                 return values;
             }
@@ -1938,12 +1941,17 @@ Ext.onReady( function() {
 						return;
 					}
 					
-                    Ext.Array.each(DV.value.values, function(item) {
+                    Ext.Array.each(DV.value.values, function(item) {						
                         item[DV.conf.finals.dimension.data.value] = DV.util.string.getEncodedString(DV.store[item.type].available.storage[item.dataid].name);
                         item[DV.conf.finals.dimension.period.value] = DV.util.string.getEncodedString(DV.util.dimension.period.getNameById(item.periodid));
-                        item[DV.conf.finals.dimension.organisationunit.value] = DV.util.variable.hasValue(item.organisationunitgroupid) ?
-							DV.util.dimension.organisationunit.getGroupNameByGroupId(item.organisationunitgroupid) : DV.cmp.dimension.organisationunit.treepanel.findNameById(item.organisationunitid);
-                        item[DV.conf.finals.dimension.organisationunitgroup.value] = DV.util.variable.hasValue(item.organisationunitgroupid) ? DV.util.dimension.organisationunit.getGroupNameByGroupId(item.organisationunitgroupid) : null;
+                        item[DV.conf.finals.dimension.organisationunit.value] = DV.cmp.dimension.organisationunit.treepanel.findNameById(item.organisationunitid);
+                        
+                        if (item.organisationunitgroupid) {
+							var groupname = DV.util.dimension.organisationunit.getGroupNameByGroupId(item.organisationunitgroupid);
+							item[DV.conf.finals.dimension.organisationunit.value] = groupname;
+							item[DV.conf.finals.dimension.organisationunitgroup.value] = groupname;
+						}
+						
                         item.value = parseFloat(item.value);
                     });
                     
@@ -3196,7 +3204,7 @@ Ext.onReady( function() {
 														}
 													}
 												},
-												findNameById: function(id) {
+												findNameById: function(id) {					
 													var name = this.store.getNodeById(id) ? this.store.getNodeById(id).data.text : null;
 													if (!name) {
 														for (var k in this.storage) {
