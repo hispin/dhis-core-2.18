@@ -7,7 +7,9 @@
 }
 </style>
 
-<h3>$i18n.getString( "view_data_for" ) "$!viewTableName"</h3>
+<h3>$i18n.getString( "view_data_for" ) "${viewTableName}"</h3>
+
+<input type="hidden" id="viewTableName" value="${viewTableName}"/>
 
 <div>
 <input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportSqlView( 'xls' )" style="width:140px"/>
