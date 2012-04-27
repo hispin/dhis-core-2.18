@@ -742,7 +742,25 @@ Ext.onReady( function() {
 		columns: [],
 		fields: [],
 		hidden: [],
-		values: []
+		values: [],
+		getValueType: function( index )
+		{
+			if( TR.value.valueTypes[index] == null )
+			{
+				return 'textfield';
+			}
+			
+			return TR.value.valueTypes[index].valueType;
+		},
+		getSuggestedValues: function( index )
+		{
+			if( TR.value.valueTypes[index] == null )
+			{
+				return [];
+			}
+			
+			return TR.value.valueTypes[index].suggestedValues;
+		}
     };
       
     TR.datatable = {
@@ -828,7 +846,7 @@ Ext.onReady( function() {
 					draggable: true,
 					emptyText: TR.i18n.et_no_data,
 					editor: {
-							xtype: TR.value.valueTypes[index].valueType,
+							xtype: TR.value.getValueType(index),
 							queryMode: 'local',
 							editable: true,
 							valueField: 'name',
@@ -836,7 +854,7 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store:  new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.valueTypes[index].suggestedValues,
+								data: TR.value.getSuggestedValues(index),
 							})
 						}
 					};
@@ -855,7 +873,7 @@ Ext.onReady( function() {
 					sortable: false,
 					draggable: true,
 					editor: {
-						xtype: TR.value.valueTypes[index].valueType,
+						xtype: TR.value.getValueType(index),
 							queryMode: 'local',
 							editable: true,
 							valueField: 'name',
@@ -863,7 +881,7 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store: new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.valueTypes[index].suggestedValues,
+								data: TR.value.getSuggestedValues(index),
 							})
 					}
 				};
