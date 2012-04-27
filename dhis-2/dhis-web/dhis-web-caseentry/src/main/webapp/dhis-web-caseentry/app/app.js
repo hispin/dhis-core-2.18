@@ -812,7 +812,6 @@ Ext.onReady( function() {
 					sortAscText: TR.i18n.asc,
 					sortDescText: TR.i18n.desc
 				}
-				i++;
 			}
 			
 			TR.cmp.params.identifierType.selected.store.each( function(r) {
