@@ -10,9 +10,22 @@
     <html>
       <head>
         <title>DHIS Web-API</title>
-        <link rel="stylesheet" href="/api/static/css/main.css" />
-
-        <!-- stylesheets, javascript etc -->
+        <style type="text/css">
+        html {
+          font-family: sans-serif;
+          font-size: 12pt;
+        }
+        table {
+          border-collapse: collapse;
+		}
+		table, th, td {
+		  border: 1px solid #c0c0c0;
+          padding: 3px;
+        }
+		h1, h2, h3 {
+          text-transform: capitalize;
+        }
+		</style>
       </head>
 
       <body>
