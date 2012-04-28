@@ -116,8 +116,7 @@
 		<action name="addExportReportForm"
 			class="org.hisp.dhis.reportsheet.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/report/addExportReportForm.vm</param>
-			<param name="javascripts">javascript/exportReports.js</param>			
+			<param name="page">/dhis-web-spreadsheet-reporting/report/addExportReportForm.vm</param>		
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -148,8 +147,7 @@
 			class="org.hisp.dhis.reportsheet.exportreport.action.ListExportReportAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/report/exportReports.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="javascripts">javascript/exportReports.js</param>			
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>		
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 		
@@ -168,8 +166,7 @@
 		<action name="updateExportReportForm"
 			class="org.hisp.dhis.reportsheet.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/report/updateExportReportForm.vm</param>
-			<param name="javascripts">javascript/exportReports.js</param>			
+			<param name="page">/dhis-web-spreadsheet-reporting/report/updateExportReportForm.vm</param>	
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 

@@ -33,6 +33,7 @@ import org.hisp.dhis.reportsheet.ExportReportCategory;
 import org.hisp.dhis.reportsheet.ExportReportNormal;
 import org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing;
 import org.hisp.dhis.reportsheet.ExportReportPeriodColumnListing;
+import org.hisp.dhis.reportsheet.ExportReportVerticalCategory;
 
 import com.opensymphony.xwork2.Action;
 
@@ -142,6 +143,11 @@ public class AddExportReportAction
         if ( exportReportType.equalsIgnoreCase( ExportReport.TYPE.CATEGORY ) )
         {
             exportReport = new ExportReportCategory();
+        }
+
+        if ( exportReportType.equalsIgnoreCase( ExportReport.TYPE.CATEGORY_VERTICAL ) )
+        {
+            exportReport = new ExportReportVerticalCategory();
         }
 
         if ( exportReportType.equalsIgnoreCase( ExportReport.TYPE.ORGANIZATION_GROUP_LISTING ) )

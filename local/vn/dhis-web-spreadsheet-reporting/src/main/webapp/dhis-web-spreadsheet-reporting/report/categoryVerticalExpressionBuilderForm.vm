@@ -30,7 +30,7 @@
 				<textarea id="formula" name="expression" cols="40" rows="5" class="{validate:{required:true}}"></textarea><br/>
 			</td>
 			<td>
-				<select id="groupSelect" style="width:500px" onchange="dataDictionary.loadDataElementsByGroup( this.value, 'categoryoption select[id=elementSelect]' )"></select>												
+				<select id="groupSelect" style="width:500px" onchange="dataDictionary.loadDataElementsByGroup( this.value, '#categoryoption select[id=elementSelect]' )"></select>												
 				<select id="elementSelect" size="15" style="width:500px;" ondblclick="insertExpression()"></select>	
 			</td>			
 		</tr>
@@ -56,8 +56,8 @@
 <script>	
 	function coExpressionBuilderForm()
 	{
-		dataDictionary.loadDataElementGroups( "categoryoption select[id=groupSelect]" );
-		
+		dataDictionary.loadDataElementGroups( "#categoryoption select[id=groupSelect]" );
+
 		setFieldValue( 'categoryoption textarea[id=formula]', getFieldValue( 'expression' ) );
 		getExpression();
 

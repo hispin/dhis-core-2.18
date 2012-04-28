@@ -9,7 +9,7 @@
 	var attribute = $!exportReport.isAttribute();
 	var category = $!exportReport.isCategory();
 	var categoryVertical = $!exportReport.isCategoryVertical();
-
+	var i18n_expression = '$encoder.jsEscape( $i18n.getString( "expression" ) , "'")';
 </script>
 
 <h3>$i18n.getString( 'update_export_item' )</h3>

@@ -5,7 +5,6 @@
 	});
 	
 	var inExpressionDialog = null;
-	var i18n_expression = '$encoder.jsEscape( $i18n.getString( "expression" ) , "'")';
 </script>
 
 <div id="indicator">
