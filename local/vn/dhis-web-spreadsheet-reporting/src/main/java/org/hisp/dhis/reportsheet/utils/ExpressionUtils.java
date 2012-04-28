@@ -38,6 +38,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -52,6 +53,8 @@ import org.hisp.dhis.reportsheet.ExportItem;
 public class ExpressionUtils
 {
     static final String NULL_REPLACEMENT = "0";
+
+    static final String EMPTY = "";
 
     /**
      * Converts an expression on the form<br>
@@ -79,7 +82,7 @@ public class ExpressionUtils
             {
                 String replaceString = matcher.group();
 
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                replaceString = replaceString.replaceAll( "[\\[\\]]", EMPTY );
 
                 String dataElementIdString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );
                 String optionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1,
@@ -94,8 +97,7 @@ public class ExpressionUtils
                     .getDataElementCategoryOptionCombo( optionComboId );
 
                 {
-                    replaceString = getValue( dataElement, optionCombo, organisationUnit, period, dataValueService )
-                        + "";
+                    replaceString = getValue( dataElement, optionCombo, organisationUnit, period, dataValueService );
 
                     matcher.appendReplacement( buffer, replaceString );
                 }
@@ -144,7 +146,7 @@ public class ExpressionUtils
                 {
                     replaceString = getValue( dataElement, optionCombo, organisationUnit, startDate, endDate,
                         aggregationService )
-                        + "";
+                        + EMPTY;
 
                     matcher.appendReplacement( buffer, replaceString );
                 }
@@ -215,10 +217,14 @@ public class ExpressionUtils
     private static String getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
         OrganisationUnit organisationUnit, Period period, DataValueService dataValueService )
     {
-        String aggregatedValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo )
-            .getValue();
+        if ( period == null )
+        {
+            return EMPTY;
+        }
 
-        return (aggregatedValue == null) ? "" : aggregatedValue;
+        DataValue dv = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
+
+        return (dv == null ? EMPTY : dv.getValue());
     }
 
     private static double getValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo,
