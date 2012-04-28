@@ -687,7 +687,7 @@ Ext.onReady( function() {
 		validation: {
 			params: function() {
 				if (!TR.c.params.program ) {
-					TR.util.notification.error(TR.i18n.et_invalid_params_setup, TR.i18n.em_invalid_params_setup);
+					TR.util.notification.error(TR.i18n.et_no_programs, TR.i18n.et_no_programs);
 					return false;
 				}
 				return true;
@@ -695,7 +695,7 @@ Ext.onReady( function() {
 			objects: function() {
 				
 				if (TR.cmp.settings.program.getValue() == null) {
-					TR.util.notification.error(TR.i18n.et_no_programss, TR.i18n.et_no_programss);
+					TR.util.notification.error(TR.i18n.et_no_programs, TR.i18n.et_no_programs);
 					return false;
 				}
 				
@@ -1293,32 +1293,9 @@ Ext.onReady( function() {
 													added: function() {
 														TR.cmp.params.organisationunit.treepanel = this;
 													},
-													itemcontextmenu: function(v, r, h, i, e) {
-														if (v.menu) {
-															v.menu.destroy();
-														}
-														v.menu = Ext.create('Ext.menu.Menu', {
-															id: 'treepanel-contextmenu',
-															showSeparator: false
-														});
-														if (!r.data.leaf) {
-															v.menu.add({
-																id: 'treepanel-contextmenu-item',
-																text: TR.i18n.select_all_children,
-																icon: 'images/node-select-child.png',
-																handler: function() {
-																	r.expand(false, function() {
-																		v.getSelectionModel().select(r.childNodes, true);
-																		v.getSelectionModel().deselect(r);
-																	});
-																}
-															});
-														}
-														else {
-															return;
-														}
-														
-														v.menu.showAt(e.xy);
+													afterrender: function( treePanel, eOpts )
+													{
+														treePanel.getSelectionModel().select( treePanel.getRootNode() );
 													}
 												}
 											}
