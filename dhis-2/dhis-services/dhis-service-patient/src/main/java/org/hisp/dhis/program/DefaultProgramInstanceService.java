@@ -226,7 +226,7 @@ public class DefaultProgramInstanceService
 
         attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "phoneNumber" ) );
-        attrGrid.addValue( (patient.getPhoneNumber() == null && patient.getPhoneNumber().isEmpty() ) ? PatientAttributeValue.UNKNOWN : patient.getPhoneNumber() );
+        attrGrid.addValue( ( patient.getPhoneNumber() == null || patient.getPhoneNumber().isEmpty() ) ? PatientAttributeValue.UNKNOWN : patient.getPhoneNumber() );
 
         // ---------------------------------------------------------------------
         // Add dynamic attribues
