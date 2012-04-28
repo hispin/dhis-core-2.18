@@ -31,7 +31,7 @@
 					<tr id="tr${sqlViewObject.id}">
 						<td onclick="showSqlViewDetails( $sqlViewObject.id )">$!encoder.htmlEncode( $sqlViewObject.name )</td>
 						<td><a href="javascript:runSqlViewQuery( $sqlViewObject.id )" title="$i18n.getString( 'run' )"><img src="../images/start_process.png" alt="$i18n.getString( 'run' )"/></a>
-						<a href="javascript:showDataSqlViewForm( $sqlViewObject.id )" title="$i18n.getString( 'view' )"><img src="../images/view_sections.png" alt="$i18n.getString( 'view' )"/></a>
+						<a href="javascript:showDataSqlViewForm( $sqlViewObject.id )" title="$i18n.getString( 'show_sql_view' )"><img src="../images/view_sections.png" alt="$i18n.getString( 'view' )"/></a>
 						<a href="showUpdateSqlViewForm.action?id=$sqlViewObject.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 						<a href="javascript:removeSqlViewObject( $sqlViewObject.id, '$encoder.jsEncode( $sqlViewObject.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 						<a href="javascript:showSqlViewDetails( $sqlViewObject.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
