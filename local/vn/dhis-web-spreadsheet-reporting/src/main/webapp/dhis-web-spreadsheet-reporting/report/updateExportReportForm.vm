@@ -51,7 +51,7 @@
 			<td>
 				<select name="exportReportType" style="min-width:20em" disabled="true">
 					#foreach( $type in $reportTypes )
-						<option value='$type' #if( $exportReport.getReportType()==$type) selected="selected" #end>$i18n.getString($type)</option>
+						<option value='$type' #if( $exportReport.getReportType()==$type) selected="selected" #end>$i18n.getString( $type )</option>
 					#end												
 				</select>
 			</td>

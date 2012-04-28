@@ -46,11 +46,9 @@
 			<td><label>$i18n.getString('export_report_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<select name="exportReportType" style="min-width:20em">
-					<option value='NORMAL'>$i18n.getString('NORMAL')</option>					
-					<option value='ATTRIBUTE'>$i18n.getString('ATTRIBUTE')</option>					
-					<option value='CATEGORY'>$i18n.getString('CATEGORY')</option>					
-					<option value='PERIOD_COLUMN_LISTING'>$i18n.getString('PERIOD_COLUMN_LISTING')</option>	
-					<option value='ORGANIZATION_GROUP_LISTING'>$i18n.getString('ORGANIZATION_GROUP_LISTING')</option>									
+					#foreach( $type in $reportTypes )
+						<option value='$type'>$i18n.getString( $type )</option>
+					#end									
 				</select>
 			</td>
 		</tr>	
