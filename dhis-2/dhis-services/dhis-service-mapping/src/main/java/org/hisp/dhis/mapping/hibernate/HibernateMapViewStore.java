@@ -45,6 +45,14 @@ public class HibernateMapViewStore
     implements MapViewStore
 {
     @SuppressWarnings( "unchecked" )
+    public Collection<MapView> getSystemAndUserMapViews( User user )
+    {
+        return getCriteria( 
+            Restrictions.or( Restrictions.isNull( "user" ), 
+            Restrictions.eq( "user", user ) ) ).list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
     public Collection<MapView> getMapViewsByMapSourceType( String mapSourceType )
     {
         Session session = sessionFactory.getCurrentSession();

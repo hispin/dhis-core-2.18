@@ -40,6 +40,8 @@ public interface MapViewStore
 {
     String ID = MapViewStore.class.getName();
 
+    Collection<MapView> getSystemAndUserMapViews( User user );
+    
     Collection<MapView> getMapViewsByMapSourceType( String mapSourceType );
 
     Collection<MapView> getMapViewsByFeatureType( String featureType, User user );
