@@ -132,15 +132,11 @@ public class GenerateReportCategoryAction
                     else
                     {
                         ExportItem newReportItem = new ExportItem();
-                        newReportItem.setColumn( reportItem.getColumn() );
-                        newReportItem.setRow( reportItem.getRow() );
-                        newReportItem.setPeriodType( reportItem.getPeriodType() );
-                        newReportItem.setName( reportItem.getName() );
-                        newReportItem.setSheetNo( reportItem.getSheetNo() );
-                        newReportItem.setItemType( reportItem.getItemType() );
 
                         String expression = reportItem.getExpression();
                         expression = expression.replace( "*", String.valueOf( dataElement.getId() ) );
+                        
+                        newReportItem.setPeriodType( reportItem.getPeriodType() );
                         newReportItem.setExpression( expression );
 
                         double value = this.getDataValue( newReportItem, organisationUnit );

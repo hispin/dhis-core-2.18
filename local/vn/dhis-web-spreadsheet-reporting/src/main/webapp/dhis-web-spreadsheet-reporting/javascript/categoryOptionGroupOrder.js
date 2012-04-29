@@ -18,7 +18,7 @@ function resetForm()
 
 	var availableList = jQuery( '#availableCategoryOptions' );
 	availableList.empty();
-	var selectedList = jQuery( '#categoryOptions' );
+	var selectedList = jQuery( '#categoryOptionIds' );
 	selectedList.empty();
 }
 
@@ -50,14 +50,14 @@ function openUpdateCategoryOptionGroupOrder( id )
 	{
 		var categoryOptions = json.categoryOptionGroupOrder.categoryOptions;
 		var categoryId = ( categoryOptions.length > 0 ? categoryOptions[ 0 ].categoryId : "" );
-		var list = jQuery( "#categoryOptions" );
+		var list = jQuery( "#categoryOptionIds" );
 		list.empty();
 		selectedCategoryOptionMap = [];
 		var items = [];
 		
 		setFieldValue( "name", json.categoryOptionGroupOrder.name );
 		categoryLib.loadCategories( "categoryId", categoryId );
-		categoryLib.loadCategoryOptionsByCategory( categoryId, items, "availableCategoryOptions", "categoryOptions", true );
+		categoryLib.loadCategoryOptionsByCategory( categoryId, items, "availableCategoryOptions", "categoryOptionIds", true );
 		
 		for ( var i = 0 ; i < categoryOptions.length ; i++ )
 		{
@@ -67,7 +67,7 @@ function openUpdateCategoryOptionGroupOrder( id )
 
 		selectedCategoryOptionMap[ id + "-" + categoryId ] = items;
 
-		categoryLib.removeDuplicatedItem( "availableCategoryOptions", "categoryOptions" );
+		categoryLib.removeDuplicatedItem( "availableCategoryOptions", "categoryOptionIds" );
 
 		jQuery( "#categoryOptionGroupsForm" ).attr( "action", "updateCategoryOptionGroupOrderFor" + clazzName + ".action" );
 		dialog.dialog( "open" );
@@ -89,12 +89,12 @@ function validateCategoryOptionGroupOrder( _form )
 		{
 			if ( json.response == "success" )
 			{
-				if ( hasElements( 'categoryOptions' ) )
+				if ( hasElements( 'categoryOptionIds' ) )
 				{
-					selectAllById( 'categoryOptions' );
+					selectAllById( 'categoryOptionIds' );
 					_form.submit();
 				}
-				else { markInvalid( "categoryOptions", i18n_selected_list_empty ); }
+				else { markInvalid( "categoryOptionIds", i18n_selected_list_empty ); }
 			}
 			else { markInvalid( "name", json.message ); }
 		} );

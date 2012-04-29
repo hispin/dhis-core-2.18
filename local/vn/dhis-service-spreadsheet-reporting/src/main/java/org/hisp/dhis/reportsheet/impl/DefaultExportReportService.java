@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -49,12 +50,16 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
+import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
+import org.hisp.dhis.reportsheet.ExportReportAttribute;
 import org.hisp.dhis.reportsheet.ExportReportCategory;
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ExportReportStore;
+import org.hisp.dhis.reportsheet.ExportReportVerticalCategory;
 import org.hisp.dhis.reportsheet.PeriodColumn;
 import org.hisp.dhis.reportsheet.status.DataEntryStatus;
 import org.hisp.dhis.user.User;
@@ -74,6 +79,13 @@ public class DefaultExportReportService
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
 
     private DataElementService dataElementService;
 
@@ -333,7 +345,30 @@ public class DefaultExportReportService
         Set<ExportItem> items = new HashSet<ExportItem>( exportReport.getExportItemsByItemType(
             ExportItem.TYPE.DATAELEMENT, ExportItem.TYPE.INDICATOR ) );
 
-        if ( exportReport.getReportType().equalsIgnoreCase( ExportReport.TYPE.CATEGORY ) )
+        if ( exportReport.getReportType().equalsIgnoreCase( ExportReport.TYPE.ATTRIBUTE ) )
+        {
+            for ( AttributeValueGroupOrder groupOrder : ((ExportReportAttribute) exportReport)
+                .getAttributeValueOrders() )
+            {
+                if ( groupOrder.getAttribute() == null )
+                {
+                    return i18n.getString( "no_attribute_selected" );
+                }
+
+                if ( attributeService.getAttribute( groupOrder.getAttribute().getId() ) == null )
+                {
+                    return i18n.getString( "attribute_with_id" ) + ": " + groupOrder.getAttribute().getId()
+                        + i18n.getString( "does_not_exist" );
+                }
+
+                if ( groupOrder.getAttributeValues() == null || groupOrder.getAttributeValues().isEmpty() )
+                {
+                    return i18n.getString( "group_order" ) + ": " + groupOrder.getName() + " "
+                        + i18n.getString( "has_no_element" );
+                }
+            }
+        }
+        else if ( exportReport.getReportType().equalsIgnoreCase( ExportReport.TYPE.CATEGORY ) )
         {
             for ( DataElementGroupOrder groupOrder : ((ExportReportCategory) exportReport).getDataElementOrders() )
             {
@@ -361,6 +396,39 @@ public class DefaultExportReportService
                     if ( optionCombo == null )
                     {
                         return i18n.getString( "cate_option_combo_with_id" ) + ": " + optionComboId + " "
+                            + i18n.getString( "does_not_exist" );
+                    }
+                }
+            }
+        }
+        else if ( exportReport.getReportType().equalsIgnoreCase( ExportReport.TYPE.CATEGORY_VERTICAL ) )
+        {
+            for ( CategoryOptionGroupOrder groupOrder : ((ExportReportVerticalCategory) exportReport)
+                .getCategoryOptionGroupOrders() )
+            {
+                if ( groupOrder.getCategoryOptions() == null || groupOrder.getCategoryOptions().isEmpty() )
+                {
+                    return i18n.getString( "group_order" ) + ": " + groupOrder.getName() + " "
+                        + i18n.getString( "has_no_element" );
+                }
+            }
+
+            String deId = null;
+            List<String> deIds = new ArrayList<String>();
+
+            for ( ExportItem item : items )
+            {
+                deId = item.getExpression().split( "\\" + DataElementOperand.SEPARATOR )[0].replace( "[", "" );
+
+                if ( !deIds.contains( deId ) )
+                {
+                    deIds.add( deId );
+
+                    DataElement de = dataElementService.getDataElement( Integer.parseInt( deId ) );
+
+                    if ( de == null )
+                    {
+                        return i18n.getString( "dataelement_with_id" ) + ": " + deId + " "
                             + i18n.getString( "does_not_exist" );
                     }
                 }

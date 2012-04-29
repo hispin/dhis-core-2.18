@@ -48,6 +48,8 @@
 				<a href="listAttributeValueGroupOrderForExportReport.action?id=$exportReport.id" title="$i18n.getString( 'attributevalue_groups' )"><img src="images/group.jpg" alt="$i18n.getString( 'attributevalue_groups' )"/></a>				
 				#elseif( $exportReport.isCategory() )
 				<a href="listDataElementGroupOrderForExportReport.action?id=$exportReport.id" title="$i18n.getString( 'dataelement_groups' )"><img src="images/group.jpg" alt="$i18n.getString( 'dataelement_groups' )"/></a>				
+				#elseif( $exportReport.isCategoryVertical() )
+				<a href="listCategoryOptionGroupOrderForExportReport.action?id=$exportReport.id" title="$i18n.getString( 'categoryoption_groups' )"><img src="images/group.jpg" alt="$i18n.getString( 'categoryoption_groups' )"/></a>				
 				#elseif( $exportReport.isPeriodColumnListing() )
 				<a href="periodColumns.action?id=$exportReport.id" title="$i18n.getString( 'period_columns' )"><img src="images/calendar.png"/></a>
 				#end
