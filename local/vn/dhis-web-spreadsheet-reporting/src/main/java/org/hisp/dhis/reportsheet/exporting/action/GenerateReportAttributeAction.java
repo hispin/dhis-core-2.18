@@ -143,6 +143,7 @@ public class GenerateReportAttributeAction
                             {
                                 ExportItem newExportItem = new ExportItem();
 
+                                newExportItem.setPeriodType( exportItem.getPeriodType() );
                                 newExportItem.setExpression( de.getId() + SEPARATOR + optionCombo.getId() );
 
                                 double result = this.getDataValue( newExportItem, organisationUnit );

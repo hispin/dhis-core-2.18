@@ -128,18 +128,17 @@ public class ExpressionUtils
             while ( matcher.find() )
             {
                 String replaceString = matcher.group();
-
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                
+                replaceString = replaceString.replaceAll( "[\\[\\]]", EMPTY );
 
                 String dataElementIdString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );
                 String optionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1,
                     replaceString.length() );
-
+                
                 int dataElementId = Integer.parseInt( dataElementIdString );
                 int optionComboId = Integer.parseInt( optionComboIdString );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
                 DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
 

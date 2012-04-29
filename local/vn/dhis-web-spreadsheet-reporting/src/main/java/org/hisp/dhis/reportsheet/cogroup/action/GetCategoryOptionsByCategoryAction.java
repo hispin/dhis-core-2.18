@@ -57,7 +57,7 @@ public class GetCategoryOptionsByCategoryAction
 
     private Integer categoryId;
 
-    public void setAttributeId( Integer categoryId )
+    public void setCategoryId( Integer categoryId )
     {
         this.categoryId = categoryId;
     }

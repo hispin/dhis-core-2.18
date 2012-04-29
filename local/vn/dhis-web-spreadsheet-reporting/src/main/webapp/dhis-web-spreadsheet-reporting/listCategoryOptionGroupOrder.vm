@@ -46,7 +46,7 @@
 </table>
 
 <ul id="sortable"> 
-#foreach( $group in $!report.categoryOptionOrders )
+#foreach( $group in $!report.categoryOptionGroupOrders )
 	<li class="ui-state-default" name="categoryOptionGroupOrder" value="$group.id" title="$i18n.getString( 'sort_order_help' )">		
 		<table cellspacing="0" cellpadding="0" width="100%">
 			<tr>
@@ -78,27 +78,27 @@
 			<tr>
 				<td colspan="4">
 					<select id="categoryId" name="categoryId" 
-					onchange="javascript:categoryLib.loadCategoryOptionsByCategory( this.value , selectedCategoryOptionMap[ byId( 'categoryOptionGroupOrderId' ).value + '-' + this.value ], 'availableCategoryOptions', 'categoryOptions', false );"
+					onchange="javascript:categoryLib.loadCategoryOptionsByCategory( this.value , selectedCategoryOptionMap[ byId( 'categoryOptionGroupOrderId' ).value + '-' + this.value ], 'availableCategoryOptions', 'categoryOptionIds', false );"
 					style="width:300px"></select>
 				</td>
 			</tr>
 			<tr>
 				<td width="23%">
-					<select id="availableCategoryOptions" name="availableCategoryOptions" multiple="true" size="13" style="width:300px" ondblclick="javascript:moveSelectedById('availableCategoryOptions','categoryOptions');"></select>
+					<select id="availableCategoryOptions" name="availableCategoryOptions" multiple="true" size="13" style="width:300px" ondblclick="javascript:moveSelectedById('availableCategoryOptions','categoryOptionIds');"></select>
 				</td>
 				<td width="7%" align="center">
-					<input type="button" value="&gt;" onclick="javascript:moveSelectedById('availableCategoryOptions','categoryOptions');" style="width:50px"/><br/>
-					<input type="button" value="&lt;" onclick="javascript:moveSelectedById('categoryOptions' , 'availableCategoryOptions' );" style="width:50px"/><br/>
-					<input type="button" value="&gt;&gt;" onclick="javascript:moveAllById('availableCategoryOptions' , 'categoryOptions' );" style="width:50px"/><br/>
-					<input type="button" value="&lt;&lt;" onclick="javascript:moveAllById('categoryOptions' , 'availableCategoryOptions' );" style="width:50px"/>
+					<input type="button" value="&gt;" onclick="javascript:moveSelectedById('availableCategoryOptions','categoryOptionIds');" style="width:50px"/><br/>
+					<input type="button" value="&lt;" onclick="javascript:moveSelectedById('categoryOptionIds' , 'availableCategoryOptions' );" style="width:50px"/><br/>
+					<input type="button" value="&gt;&gt;" onclick="javascript:moveAllById('availableCategoryOptions' , 'categoryOptionIds' );" style="width:50px"/><br/>
+					<input type="button" value="&lt;&lt;" onclick="javascript:moveAllById('categoryOptionIds' , 'availableCategoryOptions' );" style="width:50px"/>
 				</td>
 				<td width="23%">
-					<select id="categoryOptions" name="categoryOptions" multiple="true" size="13" style="width:300px" ondblclick="moveSelectedById('categoryOptions', 'availableCategoryOptions' )"></select>
+					<select id="categoryOptionIds" name="categoryOptionIds" multiple="true" size="13" style="width:300px" ondblclick="moveSelectedById('categoryOptionIds', 'availableCategoryOptions' )"></select>
 				</td>
-				<td width="47%"><a href="javascript:moveSelectedOptionToTop( 'categoryOptions' );"><img src="../images/move_top.png" style="cursor: pointer; width: 20px;" align="absmiddle"/></a><br/><br/>
-					<a href="javascript:moveUpSelectedOption( 'categoryOptions' );"><img src="../images/move_up.png" style="cursor: pointer; width: 20px;" align="absmiddle"/></a><br/><br/>
-					<a href="javascript:moveDownSelectedOption( 'categoryOptions' );"><img src="../images/move_down.png" style="cursor: pointer; width: 20px;" align="absmiddle"/></a><br/><br/>
-					<a href="javascript:moveSelectedOptionToBottom( 'categoryOptions' );"><img src="../images/move_bottom.png" style="cursor: pointer; width: 20px;" align="absmiddle"/></a>
+				<td width="47%"><a href="javascript:moveSelectedOptionToTop( 'categoryOptionIds' );"><img src="../images/move_top.png" style="cursor: pointer; width: 20px;" align="absmiddle"/></a><br/><br/>
+					<a href="javascript:moveUpSelectedOption( 'categoryOptionIds' );"><img src="../images/move_up.png" style="cursor: pointer; width: 20px;" align="absmiddle"/></a><br/><br/>
+					<a href="javascript:moveDownSelectedOption( 'categoryOptionIds' );"><img src="../images/move_down.png" style="cursor: pointer; width: 20px;" align="absmiddle"/></a><br/><br/>
+					<a href="javascript:moveSelectedOptionToBottom( 'categoryOptionIds' );"><img src="../images/move_bottom.png" style="cursor: pointer; width: 20px;" align="absmiddle"/></a>
 				</td>
 			</tr>
 		</table>

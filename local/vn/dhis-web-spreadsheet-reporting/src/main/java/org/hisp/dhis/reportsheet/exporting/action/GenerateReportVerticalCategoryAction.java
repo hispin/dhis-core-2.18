@@ -26,7 +26,7 @@ package org.hisp.dhis.reportsheet.exporting.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+import static org.hisp.dhis.dataelement.DataElementOperand.SEPARATOR;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -88,7 +88,9 @@ public class GenerateReportVerticalCategoryAction
 
             if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
             {
-                de = dataElementService.getDataElement( Integer.parseInt( reportItem.getExpression().split( "." )[0] ) );
+                de = dataElementService.getDataElement( Integer.parseInt( reportItem.getExpression().split(
+                    "\\" + SEPARATOR )[0].replace( "[", "" ) ) );
+
                 optionCombos = de.getCategoryCombo().getOptionCombos();
             }
 
@@ -134,13 +136,14 @@ public class GenerateReportVerticalCategoryAction
                                 String expression = reportItem.getExpression();
                                 expression = expression.replace( "*", String.valueOf( optionCombo.getId() ) );
 
+                                newReportItem.setPeriodType( reportItem.getPeriodType() );
                                 newReportItem.setExpression( expression );
 
                                 double value = this.getDataValue( newReportItem, organisationUnit );
 
                                 ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( value ),
                                     ExcelUtils.NUMBER, sheet, this.csNumber );
-                                
+
                                 break;
                             }
                         }
