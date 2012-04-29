@@ -243,9 +243,6 @@ public class UserCredentials
         this.id = id;
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getPassword()
     {
         return password;

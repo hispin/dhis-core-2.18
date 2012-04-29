@@ -11,10 +11,6 @@
           <td>Username</td>
           <td> <xsl:value-of select="d:username" /> </td>
         </tr>
-        <tr>
-          <td>Password</td>
-          <td> <xsl:value-of select="d:password" /> </td>
-        </tr>
       </table>
 
       <xsl:apply-templates select="d:userAuthorityGroups" mode="short" />
