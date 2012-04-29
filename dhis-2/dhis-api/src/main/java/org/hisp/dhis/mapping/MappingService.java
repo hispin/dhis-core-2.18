@@ -152,6 +152,8 @@ public interface MappingService
     MapView getIndicatorLastYearMapView( String indicatorUid, String organisationUnitUid, int level );
 
     Collection<MapView> getAllMapViews();
+    
+    Collection<MapView> getSystemAndUserMapViews();
 
     Collection<MapView> getMapViewsByFeatureType( String featureType );
 

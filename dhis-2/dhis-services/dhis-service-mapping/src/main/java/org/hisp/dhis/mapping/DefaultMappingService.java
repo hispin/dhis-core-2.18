@@ -27,6 +27,10 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.configuration.ConfigurationService;
@@ -47,12 +51,7 @@ import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserSettingService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Jan Henrik Overland
@@ -119,13 +118,6 @@ public class DefaultMappingService
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
-    }
-
-    private UserSettingService userSettingService;
-
-    public void setUserSettingService( UserSettingService userSettingService )
-    {
-        this.userSettingService = userSettingService;
     }
 
     private AggregatedDataValueService aggregatedDataValueService;
@@ -569,10 +561,15 @@ public class DefaultMappingService
         return mapView;
     }
 
-    public Collection<MapView> getAllMapViews()
+    public Collection<MapView> getSystemAndUserMapViews()
     {
         User user = currentUserService.getCurrentUser();
-
+        
+        return mapViewStore.getSystemAndUserMapViews( user );
+    }
+    
+    public Collection<MapView> getAllMapViews()
+    {
         Collection<MapView> mapViews = mapViewStore.getAll();
 
         if ( mapViews.size() > 0 )
