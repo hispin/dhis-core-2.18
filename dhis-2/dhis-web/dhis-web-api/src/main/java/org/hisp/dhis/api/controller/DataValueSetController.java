@@ -63,7 +63,7 @@ public class DataValueSetController
     @Autowired
     private DataValueSetService dataValueSetService;
     
-    @RequestMapping( method = RequestMethod.GET )
+    @RequestMapping( method = RequestMethod.GET, headers = {"Accept=text/html"} )
     public String getDataValueSets( Model model ) throws Exception
     {
         DataValueSets dataValueSets = new DataValueSets();
