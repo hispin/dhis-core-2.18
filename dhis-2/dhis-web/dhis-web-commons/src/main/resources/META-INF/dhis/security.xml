@@ -142,6 +142,7 @@
         <value>dhis-web-commons-i18n</value>
         <value>dhis-web-commons-ajax</value>
         <value>dhis-web-commons-ajax-json</value>
+        <value>dhis-web-commons-ajax-html</value>
         <value>dhis-web-commons-stream</value>
         <value>dhis-web-commons-help</value>
         <value>dhis-web-commons-about</value>
