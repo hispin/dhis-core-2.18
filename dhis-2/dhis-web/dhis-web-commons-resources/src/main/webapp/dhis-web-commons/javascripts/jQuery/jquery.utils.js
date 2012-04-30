@@ -12,5 +12,16 @@ jQuery.extend( {
 		$.ajax( { url:url, data:data, type:'get', dataType:'html', success:function( data ) {
 			$( '#' + elementId ).html( data );
 		} } );
+	},
+	
+	toggleCss: function( elementId, property, value1, value2 ) {
+		var id = '#' + elementId;
+		var curValue = $( id ).css( property );
+		if ( curValue == value1 ) {
+			$( id ).css( property, value2 );
+		}
+		else {
+			$( id ).css( property, value1 );
+		} 
 	}
 } );
