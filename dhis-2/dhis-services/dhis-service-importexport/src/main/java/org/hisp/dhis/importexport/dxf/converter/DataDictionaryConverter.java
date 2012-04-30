@@ -125,14 +125,8 @@ public class DataDictionaryConverter
             final DataDictionary dictionary = new DataDictionary();
             
             dictionary.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
-
-            if (params.minorVersionGreaterOrEqual( "1.3") ) {
-                reader.moveToStartElement( FIELD_UID );
-                dictionary.setUid( reader.getElementValue() );
-                reader.moveToStartElement( FIELD_CODE );
-                dictionary.setCode( reader.getElementValue() );
-            }
-
+            dictionary.setUid( values.get( FIELD_UID ) );
+            dictionary.setCode( values.get( FIELD_CODE ) );
             dictionary.setName( values.get( FIELD_NAME ) );
             dictionary.setDescription( values.get( FIELD_DESCRIPTION ) );
             dictionary.setRegion( values.get( FIELD_REGION ) );
