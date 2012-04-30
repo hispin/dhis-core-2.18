@@ -14,6 +14,7 @@ function inventoryTypeChange( inventoryTypeId )
     hideById('listEquipmentDiv');
     hideById('editEquipmentDiv');
 	hideById('resultSearchDiv');
+	hideById('editEquipmentStatusDiv');
 	
 	jQuery('#loaderDiv').show();
 	
@@ -67,7 +68,8 @@ function loadAllEquipments()
 	
     hideById('editEquipmentDiv');
 	hideById('resultSearchDiv');
-
+	hideById('editEquipmentStatusDiv');
+	
 	showById('selectDiv');
 	showById('searchEquipmentDiv');
 
@@ -108,7 +110,7 @@ function loadEquipmentsByFilter( )
 	var inventoryTypeAttributeId = inventoryTypeAttribute.options[ inventoryTypeAttribute.selectedIndex ].value;
 	hideById('editEquipmentDiv');
 	hideById('resultSearchDiv');
-
+	hideById('editEquipmentStatusDiv');
 	showById('selectDiv');
 	showById('searchEquipmentDiv');
 
@@ -130,6 +132,46 @@ function loadEquipmentsByFilter( )
 }
 
 //----------------------------------------------------------------
+//Show Equipment Tracking Form
+//----------------------------------------------------------------
+
+function showEquipmentStatusForm( equipmentInstanceId )
+{
+	hideById('listEquipmentDiv');
+	hideById('editEquipmentStatusDiv');
+	hideById('selectDiv');
+	hideById('searchEquipmentDiv');
+	
+	setInnerHTML('editEquipmentDiv', '');
+	
+	jQuery('#loaderDiv').show();
+	jQuery('#editEquipmentStatusDiv').load('showEquipmentStatusForm.action',
+		{
+			equipmentInstanceId:equipmentInstanceId
+		}, function()
+		{
+			showById('editEquipmentStatusDiv');
+			jQuery('#searchEquipmentDiv').dialog('close');
+			jQuery('#loaderDiv').hide();
+		});
+		
+	jQuery('#resultSearchDiv').dialog('close');
+}
+
+function updateEquipmentStatus()
+{
+	$.ajax({
+      type: "POST",
+      url: 'updateEquipmentStatus.action',
+      data: getParamsForDiv('editEquipmentStatusDiv'),
+      success: function( json ) {
+		loadAllEquipments();
+      }
+     });
+}
+
+
+//----------------------------------------------------------------
 //Add Equipment
 //----------------------------------------------------------------
 
@@ -147,6 +189,7 @@ function showAddEquipmentForm()
 	hideById('listEquipmentDiv');
 	hideById('selectDiv');
 	hideById('searchEquipmentDiv');
+	hideById('editEquipmentStatusDiv');
 	
 	jQuery('#loaderDiv').show();
 	jQuery('#editEquipmentDiv').load('showAddEquipmentForm.action',{
@@ -169,7 +212,81 @@ function addEquipment()
       success: function(json) {
 		var type = json.response;
 		jQuery('#resultSearchDiv').dialog('close');
+		loadAllEquipments();
       }
      });
     return false;
 }
+
+//----------------------------------------------------------------
+//Update Equipment
+//----------------------------------------------------------------
+
+function showUpdateEquipmentForm( equipmentInstanceId )
+{
+	hideById('listEquipmentDiv');
+	hideById('selectDiv');
+	hideById('searchEquipmentDiv');
+	hideById('editEquipmentStatusDiv');
+	
+	setInnerHTML('editEquipmentDiv', '');
+	
+	jQuery('#loaderDiv').show();
+	jQuery('#editEquipmentDiv').load('showUpdateEquipmentForm.action',
+		{
+			equipmentInstanceId:equipmentInstanceId
+		}, function()
+		{
+			showById('editEquipmentDiv');
+			jQuery('#searchEquipmentDiv').dialog('close');
+			jQuery('#loaderDiv').hide();
+		});
+		
+	jQuery('#resultSearchDiv').dialog('close');
+}
+
+function updateEquipment()
+{
+	$.ajax({
+      type: "POST",
+      url: 'updateEquipment.action',
+      data: getParamsForDiv('editEquipmentDiv'),
+      success: function( json ) {
+		loadAllEquipments();
+      }
+     });
+}
+//----------------------------------------------------------------
+//Get Params form Div
+//----------------------------------------------------------------
+
+function getParamsForDiv( equipmentDiv )
+{
+	var params = '';
+	
+	jQuery("#" + equipmentDiv + " :input").each(function()
+		{
+			var elementId = $(this).attr('id');
+			
+			if( $(this).attr('type') == 'checkbox' )
+			{
+				var checked = jQuery(this).attr('checked') ? true : false;
+				params += elementId + "=" + checked + "&";
+			}
+			else if( $(this).attr('type') != 'button' )
+			{
+				var value = "";
+				if( jQuery(this).val() != '' )
+				{
+					value = htmlEncode(jQuery(this).val());
+				}
+				params += elementId + "="+ value + "&";
+			}
+			
+		});
+	
+	alert( params );
+	
+	return params;
+}
+

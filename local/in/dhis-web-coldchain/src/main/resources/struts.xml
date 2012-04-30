@@ -290,9 +290,33 @@
             <param name="requiredAuthorities">F_EQUIPMENT_ADD</param>
         </action>
         <action name="addEquipment"
-            class="">
+            class="org.hisp.dhis.coldchain.equipment.action.AddEquipmentAction">
             <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
             <param name="requiredAuthorities">F_EQUIPMENT_ADD</param>
+        </action>
+        <action name="showUpdateEquipmentForm"
+            class="org.hisp.dhis.coldchain.equipment.action.GetEquipmentInstanceDataAction">
+            <result name="success" type="velocity">/content.vm</result>
+            <param name="page">/dhis-web-coldchain/updateEquipmentForm.vm</param>
+            <param name="requiredAuthorities">F_EQUIPMENT_UPDATE</param>
+        </action>
+        <action name="updateEquipment"
+            class="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentAction">
+            <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+            <param name="requiredAuthorities">F_EQUIPMENT_UPDATE</param>
+        </action>
+		
+        <action name="showEquipmentStatusForm"
+            class="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentStatusFormAction">
+            <result name="success" type="velocity">/content.vm</result>
+            <param name="page">/dhis-web-coldchain/equipmentStatusForm.vm</param>
+            <param name="requiredAuthorities">F_EQUIPMENTSTATUS_UPDATE</param>
+        </action>
+
+        <action name="updateEquipmentStatus"
+            class="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentStatusAction">
+            <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+            <param name="requiredAuthorities">F_EQUIPMENTSTATUS_UPDATE</param>
         </action>
 			
 										

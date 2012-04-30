@@ -9,13 +9,13 @@ public interface EquipmentInstanceStore extends GenericStore<EquipmentInstance>
 {
     String ID = EquipmentInstanceStore.class.getName();
     
-    int addEquipmentInstance( EquipmentInstance equipmentInstance );
+    //int addEquipmentInstance( EquipmentInstance equipmentInstance );
 
-    void updateEquipmentInstance( EquipmentInstance equipmentInstance );
+    //void updateEquipmentInstance( EquipmentInstance equipmentInstance );
 
-    void deleteEquipmentInstance( EquipmentInstance equipmentInstance );
+    //void deleteEquipmentInstance( EquipmentInstance equipmentInstance );
 
-    Collection<EquipmentInstance> getAllEquipmentInstance();
+    //Collection<EquipmentInstance> getAllEquipmentInstance();
     
     Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit );
     
@@ -24,6 +24,7 @@ public interface EquipmentInstanceStore extends GenericStore<EquipmentInstance>
     int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType );
     
     Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, int min, int max );
-    
+
+    int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText );
 
 }

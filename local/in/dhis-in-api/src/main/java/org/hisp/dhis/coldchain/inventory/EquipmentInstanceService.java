@@ -17,6 +17,8 @@ public interface EquipmentInstanceService
     
     int createEquipment( EquipmentInstance equipmentInstance, List<EquipmentDetails> equipmentDetails );
 
+    EquipmentInstance getEquipmentInstance( int id );
+    
     Collection<EquipmentInstance> getAllEquipmentInstance();
 
     Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType );
@@ -26,4 +28,6 @@ public interface EquipmentInstanceService
     int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType );
     
     Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, int min, int max );
+    
+    int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText );
 }
