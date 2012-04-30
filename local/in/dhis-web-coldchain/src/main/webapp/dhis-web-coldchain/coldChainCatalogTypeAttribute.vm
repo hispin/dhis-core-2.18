@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "coldchain_catalog_type_attribute_management" )</h3>
+<h3>$i18n.getString( "coldchain_catalog_type_attribute_management" ) #openHelp( "catalogTypeAttribute" )</h3>
 <table class="mainPageTable">
   <tr>
     <td style="vertical-align:top">

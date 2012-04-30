@@ -7,8 +7,6 @@ import java.util.List;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService;
 import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeComparator;
-import org.hisp.dhis.common.IdentifiableObjectUtils;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -37,8 +35,12 @@ public class GetCatalogTypeAttributesAction implements Action
     {
         this.key = key;
     }
-
     
+    public String getKey()
+    {
+        return key;
+    }
+
     private List<CatalogTypeAttribute> catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>();
     
     public List<CatalogTypeAttribute> getCatalogTypeAttributes()

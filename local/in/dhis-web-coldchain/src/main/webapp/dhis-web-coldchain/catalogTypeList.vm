@@ -8,14 +8,15 @@
 
 </script>
 
-<h3>$i18n.getString( "catalogType_management" ) ##openHelp( "dataSet" )</h3>
+<h3>$i18n.getString( "catalogType_management" ) #openHelp( "catalogType" )</h3>
 
 <table class="mainPageTable">
   <tr>
     <td style="vertical-align:top">
 		<table width="100%">
 			<tr>
-				<td>#filterDiv( "catalogType" )</td>
+				<!--<td>#filterDiv( "catalogType" )</td>-->
+				<td>$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/></td>
 				<td colspan="9" style="text-align:right">
 					<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='addCatalogTypeForm.action'" style="width:80px"/></a>
 				</td>
@@ -46,7 +47,7 @@
 
         </table>
 		<p></p>
-  		#parse( "/dhis-web-commons/paging/paging.vm" )
+  		##parse( "/dhis-web-commons/paging/paging.vm" )
   		
     </td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">
@@ -55,8 +56,8 @@
 				<div style="float:right">
 					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
 				</div>
-				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
-				<p><label>$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
+				<p><label class="bold">$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
+				<p><label class="bold">$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
 				<p><label class="bold">$i18n.getString( "no_of_catalogTypeAttributes" ):</label><br><span id="catalogTypeattributesCountField"></span></p>
 			</div>
 			
