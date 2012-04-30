@@ -12,6 +12,12 @@ function importDataValue()
 	$( "#importForm" ).submit();
 }
 
+function toggleOptions()
+{
+	$( ".moreOptions" ).toggle();
+	$.toggleCss( "inputCriteria", "height", "144px", "200px" );
+}
+
 function pingNotificationsTimeout()
 {
 	pingNotifications( 'DATAVALUE_IMPORT', 'notificationTable', displaySummaryLink );	

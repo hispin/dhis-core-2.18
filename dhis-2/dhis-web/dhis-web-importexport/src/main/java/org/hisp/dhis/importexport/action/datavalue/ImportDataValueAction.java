@@ -36,6 +36,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -56,6 +58,8 @@ import com.opensymphony.xwork2.Action;
 public class ImportDataValueAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( ImportDataValueAction.class );
+    
     @Autowired
     private DataValueSetService dataValueSetService;
 
@@ -89,7 +93,21 @@ public class ImportDataValueAction
     {
         this.strategy = ImportStrategy.valueOf( stgy );
     }
+
+    private IdentifiableProperty dataElementIdScheme;
+
+    public void setDataElementIdScheme( IdentifiableProperty dataElementIdScheme )
+    {
+        this.dataElementIdScheme = dataElementIdScheme;
+    }
+
+    private IdentifiableProperty orgUnitIdScheme;
     
+    public void setOrgUnitIdScheme( IdentifiableProperty orgUnitIdScheme )
+    {
+        this.orgUnitIdScheme = orgUnitIdScheme;
+    }
+
     private String importFormat;
 
     public void setImportFormat( String importFormat )
@@ -109,6 +127,10 @@ public class ImportDataValueAction
     public String execute()
         throws Exception
     {
+        strategy = strategy != null ? strategy : ImportStrategy.NEW_AND_UPDATES;
+        dataElementIdScheme = dataElementIdScheme != null ? dataElementIdScheme : IdentifiableProperty.UID;        
+        orgUnitIdScheme = orgUnitIdScheme != null ? orgUnitIdScheme : IdentifiableProperty.UID;
+        
         InputStream in = new FileInputStream( upload );
         
         in = StreamUtils.wrapAndCheckZip( in );
@@ -117,7 +139,9 @@ public class ImportDataValueAction
 
         TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
 
-        ImportOptions options = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, dryRun, strategy );
+        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, strategy );
+        
+        log.info( options );
         
         scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, reader, options, taskId, importFormat ) );
         

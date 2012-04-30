@@ -8,8 +8,8 @@
 <h4>$i18n.getString( "import_count" )</h4>
 #if( $summary.dataValueCount )
 <table>
-<col width="80">
-<col width="80">
+<col width="110">
+<col width="110">
 <tr>
 	<th>$i18n.getString( "type" )</th>
 	<th style="text-align:center">$i18n.getString( "count" )</th>
@@ -34,6 +34,8 @@
 <h4>$i18n.getString( "conflicts" )</h4>
 #if( $summary.conflicts.size() > 0 )
 <table>
+<col width="110">
+<col width="110">
 <tr>
 	<th>$i18n.getString( "element" )</th>
 	<th>$i18n.getString( "description" )</th>

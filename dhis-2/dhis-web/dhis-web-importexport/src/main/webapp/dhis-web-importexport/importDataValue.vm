@@ -1,14 +1,14 @@
 
 <h3>$!i18n.getString( $importFormat ) $i18n.getString( "data_import" )</h3>
 
-<div class="inputCriteria" style="height:130px">
+<div id="inputCriteria" class="inputCriteria" style="height:144px">
 <form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importDataValue.action?importFormat=$!{importFormat}">
 <table>
-<col width="80">
+<col width="140">
 <col>
 <tr>
 	<td>$i18n.getString( "file" )</td>
-	<td><input type="file" id="upload" name="upload"></td>
+	<td><input type="file" id="upload" name="upload" style="margin-left:0px"></td>
 </tr>
 <tr>
 	<td>$i18n.getString( "dry_run" )</td>
@@ -23,6 +23,26 @@
 		<option value="NEW_AND_UPDATES">$i18n.getString( "new_and_updates" )</option>
 		<option value="NEW">$i18n.getString( "new_only" )</option>
 		<option value="UPDATES">$i18n.getString( "updates_only" )</option>
+    </select></td>
+</tr>
+<tr>
+	<td></td>
+	<td><a href="javascript:toggleOptions()">$i18n.getString( "more_options" )</a></td>
+</tr>
+<tr class="moreOptions" style="display:none">
+	<td>$i18n.getString( "data_element_id_scheme" )</td>	
+	<td><select id="dataElementIdScheme" name="dataElementIdScheme" style="width:180px">
+		<option value="UID">$i18n.getString( "uid" )</option>
+		<option value="NAME">$i18n.getString( "name" )</option>
+		<option value="CODE">$i18n.getString( "code" )</option>
+    </select></td>
+</tr>
+<tr class="moreOptions" style="display:none">
+	<td>$i18n.getString( "org_unit_id_scheme" )</td>	
+	<td><select id="orgUnitIdScheme" name="orgUnitIdScheme" style="width:180px">
+		<option value="UID">$i18n.getString( "uid" )</option>
+		<option value="NAME">$i18n.getString( "name" )</option>
+		<option value="CODE">$i18n.getString( "code" )</option>
     </select></td>
 </tr>
 <tr>
