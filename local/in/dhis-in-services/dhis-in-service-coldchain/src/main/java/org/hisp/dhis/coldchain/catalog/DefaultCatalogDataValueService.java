@@ -23,9 +23,10 @@ public class DefaultCatalogDataValueService implements CatalogDataValueService
     // -------------------------------------------------------------------------
     @Transactional
     @Override
-    public int addCatalogDataValue( CatalogDataValue catalogDataValue )
+    public void addCatalogDataValue( CatalogDataValue catalogDataValue )
     {
-        return catalogDataValueStore.addCatalogDataValue( catalogDataValue );
+        
+        catalogDataValueStore.addCatalogDataValue( catalogDataValue );
     }
     
     @Transactional
@@ -44,9 +45,30 @@ public class DefaultCatalogDataValueService implements CatalogDataValueService
     
     @Transactional
     @Override
+    public Collection<CatalogDataValue> getAllCatalogDataValuesByCatalog( Catalog catalog )
+    {
+        return catalogDataValueStore.getAllCatalogDataValuesByCatalog( catalog );
+    }
+    
+    @Transactional
+    @Override
     public void updateCatalogDataValue( CatalogDataValue catalogDataValue )
     {
         catalogDataValueStore.updateCatalogDataValue( catalogDataValue );
     }
-
+    
+    @Transactional
+    @Override
+    public CatalogDataValue catalogDataValue( Catalog catalog ,CatalogTypeAttribute catalogTypeAttribute )
+    {
+        return catalogDataValueStore.catalogDataValue( catalog, catalogTypeAttribute );
+    }
+    
+    @Transactional
+    @Override
+    public CatalogDataValue catalogDataValue( Catalog catalog ,CatalogTypeAttribute catalogTypeAttribute, CatalogTypeAttributeOption catalogTypeAttributeOption )
+    {
+        return catalogDataValueStore.catalogDataValue( catalog, catalogTypeAttribute, catalogTypeAttributeOption );
+    }
+    
 }

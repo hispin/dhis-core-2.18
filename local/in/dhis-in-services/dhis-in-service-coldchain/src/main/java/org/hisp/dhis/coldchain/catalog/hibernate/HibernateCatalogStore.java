@@ -2,12 +2,15 @@ package org.hisp.dhis.coldchain.catalog.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.coldchain.catalog.CatalogStore;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 
-public class HibernateCatalogStore implements CatalogStore
+public class HibernateCatalogStore extends HibernateGenericStore<Catalog> implements CatalogStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -52,5 +55,24 @@ public class HibernateCatalogStore implements CatalogStore
 
         return session.createCriteria( Catalog.class ).list();
     }
+    
+    @Override
+    public Catalog getCatalog( int id )
+    {
+        Session session = sessionFactory.getCurrentSession();
 
+        return (Catalog) session.get( Catalog.class, id );
+    }
+    
+    @Override
+    public Catalog getCatalogByName( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Catalog.class );
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (Catalog) criteria.uniqueResult();
+    }
+    
 }

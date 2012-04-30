@@ -41,9 +41,11 @@ function ouradioSelection( evt )
 function getOrgUnitGroups()
 {
 	var ouLevelId = document.getElementById( "orgUnitLevelCB" );
-
+	
+	$('#orgUnitLevelCB').removeAttr('disabled');
 	clearList( ouLevelId );
-  
+	$("#orgUnitListCB").attr("disabled", "disabled");
+	
 	for(var i=0; i < orgUnitGroupIds.length; i++)
 	{
         var option = document.createElement("option");
@@ -52,6 +54,13 @@ function getOrgUnitGroups()
         option.title = orgUnitGroupNames[i];
         ouLevelId.add(option, null);
 	}
+	
+	/*
+    if( selOrgUnitId != null && selOrgUnitId != "NONE" && selOrgUnitId != "")
+    {
+        getOUDeatilsForTA( selOrgUnitId );
+    }
+    */
 }
 
 
@@ -68,7 +77,7 @@ function ouSelCBChange()
          $("#orgUnitLevelCB").attr("disabled", "disabled");
         $('#ViewReport').removeAttr('disabled');
     }
-    /*
+   /*
     else
     {
 	$('#orgUnitLevelCB').removeAttr('disabled');

@@ -2,7 +2,9 @@ package org.hisp.dhis.coldchain.catalog;
 
 import java.util.Collection;
 
-public interface CatalogStore
+import org.hisp.dhis.common.GenericStore;
+
+public interface CatalogStore extends GenericStore<Catalog>
 {
 
     String ID = CatalogStore.class.getName();
@@ -12,6 +14,10 @@ public interface CatalogStore
     void updateCatalog( Catalog catalog );
 
     void deleteCatalog( Catalog catalog );
+    
+    Catalog getCatalog( int id );
+    
+    Catalog getCatalogByName( String name );
 
     Collection<Catalog> getAllCatalogs();
     

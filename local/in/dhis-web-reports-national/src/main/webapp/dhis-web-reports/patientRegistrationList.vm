@@ -148,13 +148,13 @@
 				
 				#if( $patient.getPrograms().size() !=0 )
 				  <td>
-					<input type="button" id='generateButton' value="$i18n.getString( 'generate' )" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "generate" )'>
+					<input type="button" id='generateButton' value="$i18n.getString( 'discharge' )" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "discharge" )'>
 				   <!-- <a  href="#" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "generate" )' target="_blank">$i18n.getString( "generate" )</a>-->
 				  <!--<a id="exportToExcel" name="exportToExcel" href="#" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "generate" )' target="_blank"><img src="images/GenerateButton.gif" alt='$i18n.getString( "generate" )'></a>-->
 				  </td>
 				#else
 				  <td>	
-				  <input type="button" id='generateButton' value="$i18n.getString( 'generate' )" onclick="javascript:generatePatientReport( event, '$patient.id' )" disabled="disabled" title='$i18n.getString( "generate" )'>
+				  <input type="button" id='generateButton' value="$i18n.getString( 'discharge' )" onclick="javascript:generatePatientReport( event, '$patient.id' )" disabled="disabled" title='$i18n.getString( "discharge" )'>
 				  <!--<a  href="#" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "generate" )' disabled="disabled" target="_blank">$i18n.getString( "generate" )</a>-->
 				  <!--<a id="exportToExcel" name="exportToExcel" href="#" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "generate" )' target="_blank" style='display:none'><img src="images/GenerateButton.gif" alt='$i18n.getString( "generate" )'></a>-->	  
 				  </td>
