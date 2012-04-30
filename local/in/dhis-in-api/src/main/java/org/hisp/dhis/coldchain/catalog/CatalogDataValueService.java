@@ -6,12 +6,18 @@ public interface CatalogDataValueService
 {
     String ID = CatalogDataValueService.class.getName();
     
-    int addCatalogDataValue( CatalogDataValue catalogDataValue );
+    void addCatalogDataValue( CatalogDataValue catalogDataValue );
 
     void updateCatalogDataValue( CatalogDataValue catalogDataValue );
 
     void deleteCatalogDataValue( CatalogDataValue catalogDataValue );
 
     Collection<CatalogDataValue> getAllCatalogDataValues();
+    
+    Collection<CatalogDataValue> getAllCatalogDataValuesByCatalog( Catalog catalog );
+    
+    CatalogDataValue catalogDataValue ( Catalog catalog ,CatalogTypeAttribute catalogTypeAttribute );
+    
+    CatalogDataValue catalogDataValue ( Catalog catalog ,CatalogTypeAttribute catalogTypeAttribute, CatalogTypeAttributeOption catalogTypeAttributeOption );
 
 }

@@ -328,7 +328,7 @@
 
 	var availableDataElements = new Object();	
     #foreach ( $availableDataElement in $dataElements )
-    	availableDataElements['$availableDataElement.id'] = '$encoder.jsEscape( $availableDataElement.name, "'" )';
+    	availableDataElements['D:'+'$availableDataElement.id'] = '$encoder.jsEscape( $availableDataElement.name, "'" )';
     #end
 	
 </script>
@@ -336,7 +336,7 @@
 
 	var availableIndicators = new Object();	
     #foreach ( $availableIndicator in $indicators )
-    	availableIndicators['$availableIndicator.id'] = '$encoder.jsEscape( $availableIndicator.name, "'" )';
+    	availableIndicators['I:'+'$availableIndicator.id'] = '$encoder.jsEscape( $availableIndicator.name, "'" )';
     #end
 
 </script>

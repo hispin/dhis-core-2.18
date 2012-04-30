@@ -19,7 +19,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogStore"
         class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogStore">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="clazz" value="org.hisp.dhis.coldchain.catalog.Catalog" />
+		<property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogDataValueStore"
         class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogDataValueStore">
@@ -69,6 +70,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogService"
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogService">
         <property name="catalogStore" ref="org.hisp.dhis.coldchain.catalog.CatalogStore"/>
+		<property name="catalogDataValueService" ref="org.hisp.dhis.coldchain.catalog.CatalogDataValueService"/>
     </bean>
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogDataValueService"
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogDataValueService">

@@ -7,7 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
-import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeStore;
 
 public class HibernateCatalogTypeStore implements CatalogTypeStore
