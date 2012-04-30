@@ -58,6 +58,16 @@ public class NoAction
         this.importFormat = importFormat;
     }
     
+    private String exportFormat;
+    
+    public String getExportFormat()
+    {
+        return exportFormat;
+    }
+    public void setExportFormat( String exportFormat )
+    {
+        this.exportFormat = exportFormat;
+    }
     public String execute()
     {
         return SUCCESS;
