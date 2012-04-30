@@ -1,0 +1,47 @@
+<table>
+	<tr>
+		<td>
+			<label class="bold">$i18n.getString('name') : </label>
+		</td>
+		<td>
+			$catalog.name
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label class="bold">$i18n.getString('description') : </label>
+		</td>
+		<td>
+			$catalog.description
+		</td>
+	</tr>
+	<tr>
+		<td><label class="bold">$i18n.getString('catalogType') : </label>
+		</td>
+		<td>
+			$catalogType.name
+		</td>
+	</tr>
+
+	<tr><td colspan='2'>&nbsp;</td></tr>
+	<tr>
+		<td colspan='2'><label class="bold">$i18n.getString( "attributes" )</label></td>
+	</tr>
+	#foreach( $catalogTypeAttribute in $catalogTypeAttributes )
+		#if( $catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id ) != " " )
+		<tr>
+			<td><label class="bold">$catalogTypeAttribute.name : </label>
+			</td>
+			<td>
+				#if($catalogTypeAttribute.valueType=="YES/NO")
+					$i18n.getString( $!catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id ) )
+				#else
+					$!catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id )
+				#end
+			</td>
+		</tr>
+		#end
+	#end
+	
+	<tr><td>&nbsp;</td></tr>
+</table>

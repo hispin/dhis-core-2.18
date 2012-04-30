@@ -42,9 +42,9 @@
 				<select size="15" id="availableList" name='availableList' multiple="multiple" ondblclick="selectCatalogTypeAttributes()">
 				</select>
 			</td>
-			<td valign="top" align="center">         
+			 <td>         
 				<input type="button" value="&gt;" onclick="selectCatalogTypeAttributes()" class='filterButton' /><br/>    
-				<input type="button" value="&lt;" onclick="unselectCatalogTypeAttributes()" class='filterButton' /><br/><br/>                    
+				<input type="button" value="&lt;" onclick="unselectCatalogTypeAttributes()" class='filterButton' /><br/><br/>      
 			<td>
 				<div class="catalogTypeAttributeDiv">
 					<table>

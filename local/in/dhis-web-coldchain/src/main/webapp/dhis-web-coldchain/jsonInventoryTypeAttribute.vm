@@ -4,6 +4,6 @@
     "name": "$!encoder.jsonEncode( ${inventoryTypeAttribute.name} )",
     "description": "$!encoder.jsonEncode( ${inventoryTypeAttribute.description} )",
     "mandatory":  "$!{inventoryTypeAttribute.mandatory}",
-    "valueType": "$!encoder.jsonEncode( ${inventoryTypeAttribute.valueType} )",
+    "valueType": "$!encoder.jsonEncode( ${inventoryTypeAttribute.valueType} )"
   }
 }
