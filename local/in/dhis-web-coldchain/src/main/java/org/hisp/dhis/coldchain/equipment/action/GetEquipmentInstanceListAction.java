@@ -57,6 +57,13 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
         return equipmentInstanceList;
     }
     
+    private InventoryType inventoryType;
+    
+    public InventoryType getInventoryType()
+    {
+        return inventoryType;
+    }
+
     private String orgUnitId;
     
     public void setOrgUnitId( String orgUnitId )
@@ -113,8 +120,7 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
         
         OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitId ) );
         
-        InventoryType inventoryType = inventoryTypeService.getInventoryType( Integer.parseInt( inventoryTypeId ) );
-        
+        inventoryType = inventoryTypeService.getInventoryType( Integer.parseInt( inventoryTypeId ) );
         
         if ( listAll != null && listAll )
         {
@@ -124,7 +130,7 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
         }
 
         InventoryTypeAttribute inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( Integer.parseInt( inventoryTypeAttributeId ) );
-
+        
         listEquipmentInstancesByFilter( orgUnit, inventoryType, inventoryTypeAttribute, searchText);
         //equipmentInstanceList = new ArrayList<EquipmentInstance>( equipmentInstanceService.getEquipmentInstances( orgUnit, inventoryType ) );
         
@@ -143,7 +149,9 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
     
     private void listEquipmentInstancesByFilter( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchKey )
     {
-        //total = equipmentInstanceService.getCountEquipmentInstance( orgUnit, inventoryType, inventoryTypeAttribute, searchText );
+        total = equipmentInstanceService.getCountEquipmentInstance( orgUnit, inventoryType, inventoryTypeAttribute, searchText );
+        
+        System.out.println("Total : "+total );
         
         this.paging = createPaging( total );
         

@@ -273,12 +273,45 @@
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
         <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
+		<property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
     </bean>
     <bean id="org.hisp.dhis.coldchain.equipment.action.ShowAddEquipmentFormAction"
         class="org.hisp.dhis.coldchain.equipment.action.ShowAddEquipmentFormAction"
         scope="prototype">
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.equipment.action.AddEquipmentAction"
+        class="org.hisp.dhis.coldchain.equipment.action.AddEquipmentAction"
+        scope="prototype">
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
+        <property name="inventoryTypeAttributeOptionService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService" />
+        <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.equipment.action.GetEquipmentInstanceDataAction"
+        class="org.hisp.dhis.coldchain.equipment.action.GetEquipmentInstanceDataAction"
+        scope="prototype">
+        <property name="equipmentDetailsService" ref="org.hisp.dhis.coldchain.inventory.EquipmentDetailsService" />
+        <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentAction"
+        class="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentAction"
+        scope="prototype">
+        <property name="equipmentDetailsService" ref="org.hisp.dhis.coldchain.inventory.EquipmentDetailsService" />
+        <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
+        <property name="inventoryTypeAttributeOptionService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService" />
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentStatusFormAction"
+        class="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentStatusFormAction"
+        scope="prototype">
+    </bean>
+    <bean id="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentStatusAction"
+        class="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentStatusAction"
+        scope="prototype">
+		<property name="equipmentStatusService" ref="org.hisp.dhis.coldchain.inventory.EquipmentStatusService" />
+        <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />		
     </bean>
 
 	

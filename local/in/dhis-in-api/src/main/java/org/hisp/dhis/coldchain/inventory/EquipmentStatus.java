@@ -5,6 +5,11 @@ import java.util.Date;
 
 public class EquipmentStatus implements Serializable
 {
+    public static final String STATUS_WORKING = "WORKING";
+    public static final String STATUS_NOTWORKING = "NOTWORKING";
+    public static final String STATUS_REPAIR = "REPAIR";
+    
+    
     private int id;
     
     private EquipmentInstance equipmentInstance;

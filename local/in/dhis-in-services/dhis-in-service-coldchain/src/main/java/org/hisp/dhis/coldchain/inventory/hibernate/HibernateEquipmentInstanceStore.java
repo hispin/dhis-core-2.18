@@ -3,8 +3,8 @@ package org.hisp.dhis.coldchain.inventory.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.Query;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
@@ -13,7 +13,9 @@ import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class HibernateEquipmentInstanceStore 
     extends HibernateGenericStore<EquipmentInstance>
     implements EquipmentInstanceStore
@@ -22,18 +24,21 @@ public class HibernateEquipmentInstanceStore
     // Dependencies
     // -------------------------------------------------------------------------
 
+    /*
     private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
     }
+    */
+    
 
     // -------------------------------------------------------------------------
     // EquipmentInstance
     // -------------------------------------------------------------------------
 
-    @Override
+    /*
     public int addEquipmentInstance( EquipmentInstance equipmentInstance )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -41,7 +46,7 @@ public class HibernateEquipmentInstanceStore
         return (Integer) session.save( equipmentInstance );
     }
 
-    @Override
+    
     public void deleteEquipmentInstance( EquipmentInstance equipmentInstance )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -49,7 +54,7 @@ public class HibernateEquipmentInstanceStore
         session.delete( equipmentInstance );
     }
 
-    @Override
+    
     public Collection<EquipmentInstance> getAllEquipmentInstance()
     {
         Session session = sessionFactory.getCurrentSession();
@@ -57,7 +62,7 @@ public class HibernateEquipmentInstanceStore
         return session.createCriteria( EquipmentInstance.class ).list();
     }
 
-    @Override
+    
     public void updateEquipmentInstance( EquipmentInstance equipmentInstance )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -65,18 +70,27 @@ public class HibernateEquipmentInstanceStore
         session.update( equipmentInstance );
     }
 
+    */
+    
+    @SuppressWarnings( "unchecked" )
     public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit )
     {
+        /*
         Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( InventoryTypeAttribute.class );
         criteria.add( Restrictions.eq( "organisationUnit", orgUnit ) );
 
         return criteria.list();
+        */
+        
+        return getCriteria( Restrictions.eq( "organisationUnit", orgUnit ) ).list();
     }
     
+    @SuppressWarnings( "unchecked" )
     public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType )
     {
+        /*
         Session session = sessionFactory.getCurrentSession();
         
         Criteria criteria = session.createCriteria( InventoryTypeAttribute.class );
@@ -84,6 +98,17 @@ public class HibernateEquipmentInstanceStore
         criteria.add( Restrictions.eq( "inventoryType", inventoryType ) );
 
         return criteria.list();
+        */
+        
+        Criteria crit = getCriteria();
+        Conjunction con = Restrictions.conjunction();
+
+        con.add( Restrictions.eq( "organisationUnit", orgUnit ) );
+        con.add( Restrictions.eq( "inventoryType", inventoryType ) );
+
+        crit.add( con );
+
+        return crit.list();
     }
     
     public int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType )
@@ -94,12 +119,25 @@ public class HibernateEquipmentInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @SuppressWarnings( "unchecked" )
     public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, int min, int max )
     {
-        String hql = "select e from EquipmentInstance e where e.organisationUnit = :orgUnit and e.inventoryType = :inventoryType order by e.id DESC";
+        return getCriteria( Restrictions.eq( "organisationUnit", orgUnit ) ).add( Restrictions.eq( "inventoryType", inventoryType ) ).setFirstResult( min ).setMaxResults( max ).list();
+    }
 
-        return getQuery( hql ).setEntity( "organisationUnit", orgUnit ).setFirstResult( min ).setMaxResults(
-            max ).list();
+    public int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText )
+    {
+        String hql = "select count( distinct(ed.equipmentInstance)) from EquipmentDetails ed JOIN EquipmentInstance ei " +
+                        " where ed.inventoryTypeAttribute = :inventoryTypeAttribute " +
+                        " and ei.organisationUnit = :orgUnit " +
+                        " and ei.inventoryType = :inventoryType " +
+                        " and ed.value like '%" + searchText + "%'";
+        
+        Query query = getQuery( hql );
+
+        Number rs = (Number) query.uniqueResult();
+
+        return (rs != null) ? rs.intValue() : 0;
     }
 
 }

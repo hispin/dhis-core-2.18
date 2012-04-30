@@ -5,45 +5,39 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.coldchain.inventory.EquipmentDetails;
+import org.hisp.dhis.coldchain.inventory.EquipmentDetailsService;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOption;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService;
-import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
 
-public class AddEquipmentAction implements Action
+public class UpdateEquipmentAction implements Action
 {
+
     public static final String PREFIX_ATTRIBUTE = "attr";
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnitService organisationUnitService;
-    
-    private InventoryTypeService inventoryTypeService;
     
     private InventoryTypeAttributeOptionService inventoryTypeAttributeOptionService;
     
     private EquipmentInstanceService equipmentInstanceService;
+
+    private EquipmentDetailsService equipmentDetailsService;
     
     // -------------------------------------------------------------------------
     // Input/ Output
     // -------------------------------------------------------------------------
     
-    private Integer ouId;
-    
-    private Integer itypeId;
+    private Integer equipmentInstanceID;
     
     private String message;
     
@@ -53,19 +47,11 @@ public class AddEquipmentAction implements Action
     public String execute()
     {
 
-        System.out.println("inside AddEquipmentAction : "+ouId);
+        System.out.println("inside UpdateEquipmentAction : "+equipmentInstanceID);
         
-        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouId );
+        EquipmentInstance equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceID );
         
-        InventoryType inventoryType = inventoryTypeService.getInventoryType( itypeId );
-        
-        // -----------------------------------------------------------------------------
-        // Preparing EquipmentInstance
-        // -----------------------------------------------------------------------------
-        EquipmentInstance equipmentInstance = new EquipmentInstance();
-        
-        equipmentInstance.setInventoryType( inventoryType );
-        equipmentInstance.setOrganisationUnit( orgUnit );
+        InventoryType inventoryType = equipmentInstance.getInventoryType();
         
         // -----------------------------------------------------------------------------
         // Preparing Equipment Details
@@ -74,13 +60,15 @@ public class AddEquipmentAction implements Action
         String value = null;
         
         List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
-        List<EquipmentDetails> equipmentDeatilsList = new ArrayList<EquipmentDetails>();
         
         EquipmentDetails equipmentDetails = null;
         for ( InventoryTypeAttribute attribute : inventoryTypeAttributes )
         {
             value = request.getParameter( PREFIX_ATTRIBUTE + attribute.getId() );
-            if ( StringUtils.isNotBlank( value ) )
+            
+            equipmentDetails = equipmentDetailsService.getEquipmentDetails( equipmentInstance, attribute );
+            
+            if( equipmentDetails == null && value != null )
             {
                 equipmentDetails = new EquipmentDetails();
                 equipmentDetails.setEquipmentInstance( equipmentInstance );
@@ -103,37 +91,46 @@ public class AddEquipmentAction implements Action
                 {
                     equipmentDetails.setValue( value.trim() );
                 }
-                equipmentDeatilsList.add( equipmentDetails );
+                
+                equipmentDetailsService.addEquipmentDetails( equipmentDetails );
             }
-        }
-        
-        // -----------------------------------------------------------------------------
-        // Creating Equipment Instance and saving equipment data
-        // -----------------------------------------------------------------------------
-        Integer id = equipmentInstanceService.createEquipment( equipmentInstance, equipmentDeatilsList );
+            else
+            {
+                if ( InventoryTypeAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                {
+                    InventoryTypeAttributeOption option = inventoryTypeAttributeOptionService.getInventoryTypeAttributeOption( NumberUtils.toInt( value, 0 ) );
+                    if ( option != null )
+                    {
+                        equipmentDetails.setInventoryTypeAttributeOption( option );
+                        equipmentDetails.setValue( option.getName() );
+                    }
+                    else
+                    {
+                        // Someone deleted this option ...
+                    }
+                }
+                else
+                {
+                    equipmentDetails.setValue( value.trim() );
+                }
 
-        message = id + "";
+                equipmentDetailsService.updateEquipmentDetails( equipmentDetails );
+            }
+                
+        }
+         
+        message = ""+ equipmentInstanceID;
         
         return SUCCESS;
     }
 
     // -------------------------------------------------------------------------
-    // Setters and Getters
+    // Setters & Getters
     // -------------------------------------------------------------------------
 
     public String getMessage()
     {
         return message;
-    }
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    public void setInventoryTypeService( InventoryTypeService inventoryTypeService )
-    {
-        this.inventoryTypeService = inventoryTypeService;
     }
 
     public void setInventoryTypeAttributeOptionService(
@@ -147,13 +144,15 @@ public class AddEquipmentAction implements Action
         this.equipmentInstanceService = equipmentInstanceService;
     }
 
-    public void setOuId( Integer ouId )
+    public void setEquipmentDetailsService( EquipmentDetailsService equipmentDetailsService )
     {
-        this.ouId = ouId;
+        this.equipmentDetailsService = equipmentDetailsService;
     }
 
-    public void setItypeId( Integer itypeId )
+    public void setEquipmentInstanceID( Integer equipmentInstanceID )
     {
-        this.itypeId = itypeId;
+        this.equipmentInstanceID = equipmentInstanceID;
     }
+
+
 }
