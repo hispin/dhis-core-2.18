@@ -15,7 +15,7 @@ function displayOrgUnitDistribution()
     $( "#tableDiv" ).load( url, function()
     {
         displayDiv( "tableDiv", distributionDivs );
-        pageInit();
+        setTableStyles();
     } );
 }
 

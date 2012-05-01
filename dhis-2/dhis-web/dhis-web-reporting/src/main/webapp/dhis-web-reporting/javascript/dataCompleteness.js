@@ -26,7 +26,7 @@ function displayCompleteness()
     $( "#contentDiv" ).load( url, function()
     {
         hideLoader();
-        pageInit();
+        setTableStyles();
     } );
 }
 

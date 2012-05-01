@@ -39,7 +39,7 @@ function validateDataSetReport()
     $( '#content' ).load( 'generateDataSetReport.action', currentParams, function() {
     	hideLoader();
     	showContent();
-    	pageInit();
+    	setTableStyles();
     } );
 }
 
