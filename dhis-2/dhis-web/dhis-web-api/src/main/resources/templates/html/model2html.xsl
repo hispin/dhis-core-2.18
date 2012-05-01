@@ -17,6 +17,9 @@
   <xsl:include href="resource.xsl" />
   <xsl:include href="relativePeriods.xsl" />
   <xsl:include href="map.xsl" />
+  <xsl:include href="mapLegend.xsl" />
+  <xsl:include href="mapLegendSet.xsl" />
+  <xsl:include href="mapLayer.xsl" />
   <xsl:include href="chart.xsl" />
   <xsl:include href="constant.xsl" />
   <xsl:include href="category.xsl" />
