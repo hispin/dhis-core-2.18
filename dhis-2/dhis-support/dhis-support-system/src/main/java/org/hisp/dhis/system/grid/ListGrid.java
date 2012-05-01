@@ -378,6 +378,11 @@ public class ListGrid
 
     public Grid sortGrid( int columnIndex, int order )
     {
+        if ( order == 0 )
+        {
+            return this; // No sorting
+        }
+        
         columnIndex = columnIndex - 1;
 
         if ( columnIndex < 0 || columnIndex >= getWidth() )
@@ -639,19 +644,20 @@ public class ListGrid
         @SuppressWarnings( "unchecked" )
         public int compare( List<Object> list1, List<Object> list2 )
         {
-            if ( order == 0 )
+            boolean list1Invalid = list1 == null || list1.get( columnIndex ) == null || !(list1.get( columnIndex ) instanceof Comparable<?>);
+            boolean list2Invalid = list2 == null || list2.get( columnIndex ) == null || !(list2.get( columnIndex ) instanceof Comparable<?>);
+            
+            if ( list1Invalid && list2Invalid )
             {
                 return 0;
             }
-
-            if ( list1 == null || list1.get( columnIndex ) == null || !(list1.get( columnIndex ) instanceof Comparable<?>) )
+            else if ( list1Invalid )
             {
-                return 1; // Null comes last
+                return order > 0 ? 1 : -1;
             }
-
-            if ( list2 == null || list2.get( columnIndex ) == null || !(list2.get( columnIndex ) instanceof Comparable<?>) )
+            else if ( list2Invalid )
             {
-                return -1; // Null comes last
+                return order > 0 ? -1 : 1; 
             }
 
             final Comparable<Object> value1 = (Comparable<Object>) list1.get( columnIndex );
