@@ -40,7 +40,7 @@ import org.hisp.dhis.common.view.ExportView;
 /**
  * @author Jan Henrik Overland
  */
-@JacksonXmlRootElement( localName = "mapLegendSet", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "mapLegend", namespace = Dxf2Namespace.NAMESPACE )
 public class MapLegend
     extends BaseIdentifiableObject
 {
