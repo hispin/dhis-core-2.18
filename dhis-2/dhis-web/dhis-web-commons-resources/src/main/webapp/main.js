@@ -7,22 +7,8 @@ $( document ).ready( function() { pageInit(); } );
 
 function pageInit()
 {
-	// Zebra stripes in lists
+	setTableStyles();
 	
-	$( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
-    $( "table.listTable tbody tr:even" ).addClass( "listRow" );
-
-    // Hover rows in lists
-    
-    $( "table.listTable tbody tr" ).mouseover( function()
-    {
-    	$( this ).addClass( "listHoverRow" );
-    } );
-    $( "table.listTable tbody tr" ).mouseout( function()
-    {
-        $( this ).removeClass( "listHoverRow" );
-    } );
-    
     // Hover on rightbar close image
     
     $( "#hideRightBarImg" ).mouseover( function()
@@ -134,6 +120,25 @@ function pageInit()
 	$( ".introList" ).fadeIn();
 }
 
+function setTableStyles()
+{
+	// Zebra stripes in lists
+	
+	$( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+    $( "table.listTable tbody tr:even" ).addClass( "listRow" );
+
+    // Hover rows in lists
+    
+    $( "table.listTable tbody tr" ).mouseover( function()
+    {
+    	$( this ).addClass( "listHoverRow" );
+    } );
+    $( "table.listTable tbody tr" ).mouseout( function()
+    {
+        $( this ).removeClass( "listHoverRow" );
+    } );
+}
+
 // -----------------------------------------------------------------------------
 // Menu functions
 // -----------------------------------------------------------------------------
@@ -170,7 +175,7 @@ function hideDropDown()
 
 function hideDropDownTimeout()
 {
-    closeTimer = window.setTimeout( hideDropDown, menuTimeout );
+    closeTimer = window.setTimeout( "hideDropDown()", menuTimeout );
 }
 
 function cancelHideDropDownTimeout()

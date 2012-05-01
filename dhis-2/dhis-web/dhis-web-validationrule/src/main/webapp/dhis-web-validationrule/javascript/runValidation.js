@@ -29,7 +29,7 @@ function validateRunValidation()
 	            $( 'div#analysisInput' ).hide();
 	            $( 'div#analysisResult' ).show();
 	            $( 'div#analysisResult' ).html( data );
-	            pageInit();
+	            setTableStyles();
 	        } );
 	    }
 	    else if ( json.response == 'input' )
@@ -52,7 +52,7 @@ function drillDownValidation( orgUnitId )
     {
         hideHeaderMessage();
         $( "div#analysisResult" ).html( data );
-        pageInit();
+        setTableStyles();
     } );
 }
 
