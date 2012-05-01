@@ -3,6 +3,7 @@ package org.hisp.dhis.coldchain.inventory.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
@@ -28,6 +29,13 @@ public class ShowUpdateInventoryTypeAction implements Action
     public void setInventoryTypeAttributeService( InventoryTypeAttributeService inventoryTypeAttributeService )
     {
         this.inventoryTypeAttributeService = inventoryTypeAttributeService;
+    }
+    
+    private CatalogTypeService catalogTypeService;
+
+    public void setCatalogTypeService( CatalogTypeService catalogTypeService )
+    {
+        this.catalogTypeService = catalogTypeService;
     }
     // -------------------------------------------------------------------------
     // Input/Output
@@ -59,13 +67,22 @@ public class ShowUpdateInventoryTypeAction implements Action
     {
         return selInventoryTypeAttributes;
     }
+    
+    private List<CatalogType> catalogTypes;
 
+    public List<CatalogType> getCatalogTypes()
+    {
+        return catalogTypes;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
     public String execute() throws Exception
     {
         inventoryType = inventoryTypeService.getInventoryType( Integer.parseInt( id ) );
+        
+        catalogTypes =  new ArrayList<CatalogType>( catalogTypeService.getAllCatalogTypes() );
         
         availInventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryTypeAttributeService.getAllInventoryTypeAttributes() );
         

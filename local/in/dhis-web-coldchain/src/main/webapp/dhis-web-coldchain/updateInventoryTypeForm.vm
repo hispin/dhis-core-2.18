@@ -52,12 +52,13 @@ jQuery(document).ready(function() {
     </tr>
             
     <tr>
-        <td><label for="valueType">$i18n.getString( "catalog_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><label for="catalogType">$i18n.getString( "catalogType" ) </label></td>
         <td>
             <select id="catalogType" name="catalogType">
-				#foreach( $catalogType in $catalogTypes )
-					<option value="$catalogType.id" #if( $inventoryType.catalogType.id ) selected="selected" #end>$catalogType.name</option>
-				#end
+            	<option value="">[$i18n.getString( "please_select_catalog_type" )]</option>
+					#foreach( $catalogType in $catalogTypes )
+						<option value="$catalogType.id" #if( $inventoryType.catalogType.id ) selected="selected" #end>$catalogType.name</option>
+					#end
             </select>
         </td>
         <td></td>
@@ -74,9 +75,9 @@ jQuery(document).ready(function() {
     <col style="width: 450px"/>
     <thead>
       <tr>
-        <th>$i18n.getString( "available_attributes" )</th>
+        <th>$i18n.getString( "available_inventorytype_attributes" )</th>
         <th>$i18n.getString( "filter" )</th>
-        <th>$i18n.getString( "selected_attributes" )</th>
+        <th>$i18n.getString( "selected_inventorytype_attributes" )</th>
       </tr>
     </thead>
     <tbody>

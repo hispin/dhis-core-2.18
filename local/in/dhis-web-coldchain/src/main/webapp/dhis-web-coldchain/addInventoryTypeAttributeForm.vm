@@ -49,6 +49,7 @@
                 <option value="YES/NO">$i18n.getString( "yes_no" )</option>
                 <option value="DATE">$i18n.getString( "date" )</option>
                 <option value="COMBO">$i18n.getString( "attribute_combo_type" )</option>
+                <option value="CATALOG">$i18n.getString( "catalog" )</option>
             </select>
         </td>
         <td></td>

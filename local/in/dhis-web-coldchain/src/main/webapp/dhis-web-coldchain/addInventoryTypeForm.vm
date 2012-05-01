@@ -1,19 +1,18 @@
-
-<script>
-	
-jQuery(document).ready(function() {
-    validation2('addInventoryTypeForm', function(form) {
-        form.submit();
-    }, {
-        'beforeValidateHandler' : function() {
-            selectAllById('selectedList');
-        },
-    });
-
-    checkValueIsExist("name", "validateInventoryType.action");
-
-});
-	
+<script type="text/javascript" src="javascript/addInventoryTypeForm.js"></script>
+<script type="text/javascript">
+	jQuery("#availableInventoryTypeAttributeList").dhisAjaxSelect({
+		source: "getInventoryTypeAttributes.action",
+		iterator: "inventoryTypeAttributes",
+		connectedTo: 'selectedInventoryTypeAttributeList',
+		handler: function(item) {
+			var option = jQuery("<option />");
+			option.text( item.name );
+			option.attr( "value", item.id );
+			
+			return option;
+			
+		}
+	});	
 </script>
 <h3>$i18n.getString( "create_new_inventorytype" )</h3>
 <form id="addInventoryTypeForm" action="addInventoryType.action" method="post" >
@@ -48,48 +47,51 @@ jQuery(document).ready(function() {
     </tr>
             
     <tr>
-        <td><label for="valueType">$i18n.getString( "catalog_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><label for="catalogType">$i18n.getString( "catalogType" )</label></td>
         <td>
             <select id="catalogType" name="catalogType">
-				#foreach( $catalogType in $catalogTypes )
-					<option value="$catalogType.id">$catalogType.name</option>
-				#end
+            	<option value="">[$i18n.getString( "please_select_catalog_type" )]</option>
+					#foreach( $catalogType in $catalogTypes )
+						<option value="$catalogType.id">$catalogType.name</option>
+					#end
             </select>
         </td>
         <td></td>
     </tr>  
     
     </tbody>
+    
 	</table>
-
-    <br/>&nbsp;
-
-  <table id="dataElementSelectionArea">
+	
+	<br/>&nbsp;
+  <table id="inventoryTypeMembersArea">
     <col style="width: 450px"/>
     <col/>
     <col style="width: 450px"/>
     <thead>
       <tr>
-        <th>$i18n.getString( "available_data_elements" )</th>
+        <th>$i18n.getString( "available_inventorytype_attributes" )</th>
         <th>$i18n.getString( "filter" )</th>
-        <th>$i18n.getString( "selected_data_elements" )</th>
+        <th>$i18n.getString( "selected_inventorytype_attributes" )</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>
-          <select id="availableList" name="availableList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;" ondblclick="moveSelectedById( 'availableList', 'selectedList' )">
-			#foreach( $inventoryTypeAttribute in $inventoryTypeAttributes )
-				<option value="$inventoryTypeAttribute.id">$inventoryTypeAttribute.name</option>
-			#end			
+          <select id="availableInventoryTypeAttributeList" name="availableInventoryTypeAttributeList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;" ondblclick="moveSelectedById( 'availableInventoryTypeAttributeList', 'selectedInventoryTypeAttributeList' )">
+			##foreach( $inventoryTypeAttribute in $inventoryTypeAttributes )
+				<!--<option value="$inventoryTypeAttribute.id">$inventoryTypeAttribute.name</option>-->
+			##end			
           </select>
         </td>
         <td>
-            <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onClick="moveSelectedById( 'availableList', 'selectedList' )"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onClick="moveSelectedById( 'selectedList', 'availableList' )"/><br/>
+          	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableInventoryTypeAttributeList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedInventoryTypeAttributeList' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableInventoryTypeAttributeList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedInventoryTypeAttributeList' );"/>
         </td>           
         <td>
-            <select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;" ondblclick="moveSelectedById( 'selectedList', 'availableList' )"></select>
+            <select id="selectedInventoryTypeAttributeList" name="selectedInventoryTypeAttributeList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;" ondblclick="moveSelectedById( 'selectedInventoryTypeAttributeList', 'availableInventoryTypeAttributeList' )"></select>
         </td>
       </tr>
 	  

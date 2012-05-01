@@ -52,6 +52,7 @@
                 <option value="YES/NO" #if( $inventoryTypeAttribute.valueType == 'YES/NO' ) selected="selected" #end>$i18n.getString( "yes_no" )</option>
                 <option value="DATE" #if( $inventoryTypeAttribute.valueType == 'DATE' ) selected="selected" #end>$i18n.getString( "date" )</option>
                 <option value="COMBO" #if( $inventoryTypeAttribute.valueType == 'COMBO' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
+                <option value="CATALOG" #if( $inventoryTypeAttribute.valueType == 'CATALOG' ) selected="selected" #end>$i18n.getString( "catalog" )</option>
             </select>
         </td>
     </tr>
