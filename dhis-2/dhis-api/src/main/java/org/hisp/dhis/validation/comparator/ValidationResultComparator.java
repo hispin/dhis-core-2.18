@@ -32,26 +32,28 @@ import java.util.Comparator;
 import org.hisp.dhis.validation.ValidationResult;
 
 /**
+ * Comparator sorting on the result period.
+ * 
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class ValidationResultComparator
     implements Comparator<ValidationResult>
 {
     public int compare( ValidationResult result1, ValidationResult result2 )
     {
-        if ( result1.getPeriod() == null )
+        if ( result1.getPeriod() == null && result2.getPeriod() == null )
+        {
+            return 0;
+        }
+        else if ( result1.getPeriod() == null )
+        {
+            return 1;
+        }
+        else if ( result2.getPeriod() == null )
         {
             return -1;
         }
         
-        if ( result2.getPeriod() == null )
-        {
-            return 1;
-        }
-        
-        boolean after = result1.getPeriod().getStartDate().after( result2.getPeriod().getStartDate() );
-        
-        return after ? 1 : -1;
+        return result1.getPeriod().getStartDate().compareTo( result2.getPeriod().getStartDate() );
     }
 }
