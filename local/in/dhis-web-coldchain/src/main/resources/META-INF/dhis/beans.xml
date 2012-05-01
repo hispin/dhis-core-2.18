@@ -329,6 +329,7 @@
         scope="prototype">
         <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
         <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
+		<property name="catalogTypeService" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
     </bean>
     <bean id="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeAction"
         class="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeAction"
@@ -347,6 +348,14 @@
         scope="prototype">
         <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
     </bean>
+	
+	<!-- InventoryType Attributes -->
+    <bean id="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributesAction"
+        class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributesAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
+    </bean>	
+		
 <!-- EquipmentDetails -->
     <bean id="org.hisp.dhis.coldchain.equipment.action.EquipmentSelectAction"
         class="org.hisp.dhis.coldchain.equipment.action.EquipmentSelectAction"

@@ -58,7 +58,7 @@
                 <p><label class="bold">$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
                 <p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
                 <p><label class="bold">$i18n.getString( "tracking" ):</label><br><span id="trackingField"></span></p>
-                <p><label class="bold">$i18n.getString( "catalog_type" ):</label><br><span id="catalogTypeField"></span></p>
+                <p><label class="bold">$i18n.getString( "catalogType" ):</label><br><span id="catalogTypeField"></span></p>
             </div>
 
         </td>

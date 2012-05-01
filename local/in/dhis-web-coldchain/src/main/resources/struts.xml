@@ -343,6 +343,14 @@
             <result name="success" type="velocity-json">/dhis-web-coldchain/jsonInventoryType.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
+	
+	<!-- InventoryType Attributes -->
+	<action name="getInventoryTypeAttributes" class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributesAction">
+		<result name="success" type="velocity-json">/dhis-web-coldchain/jsonInventoryTypeAttributes.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>	
+	
+	
 
 <!-- EquipmentDetails -->
         <action name="enquipmentSelect"

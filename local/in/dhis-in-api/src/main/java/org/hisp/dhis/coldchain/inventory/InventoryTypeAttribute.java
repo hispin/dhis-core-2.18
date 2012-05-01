@@ -18,6 +18,8 @@ public class InventoryTypeAttribute implements Serializable
 
     public static final String TYPE_COMBO = "COMBO";
 
+    public static final String TYPE_CATALOG = "CATALOG";
+    
     private int id;
     
     private String name;
