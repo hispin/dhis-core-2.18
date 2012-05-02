@@ -186,12 +186,20 @@ public class HibernateProgramStageInstanceStore
     }
 
     public List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
-        Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
+        Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds,
         Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max )
     {
         String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
-            searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc )
-            + statementBuilder.limitRecord( min, max );
+            searchingDEKeys, upperOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+        
+        if( bottomOrgunitIds.size() > 0 )
+        {
+            String sqlBottom = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
+                searchingDEKeys, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+            sql = "( "+ sqlBottom + ") union all ( " + sql + " ) ";
+        }
+        
+        sql += statementBuilder.limitRecord( min, max );
 
         List<Integer> ids = executeSQL( sql );
 
@@ -206,12 +214,19 @@ public class HibernateProgramStageInstanceStore
     }
 
     public List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
-        Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
+        Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds,
         Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc )
     {
         String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
-            searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
-
+            searchingDEKeys, upperOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+        
+        if( bottomOrgunitIds.size() > 0 )
+        {
+            String sqlBottom = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
+                searchingDEKeys, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+            sql = "( "+ sqlBottom + ") union all ( " + sql + " ) ";
+        }
+        
         List<Integer> ids = executeSQL( sql );
 
         List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
@@ -244,18 +259,23 @@ public class HibernateProgramStageInstanceStore
         Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc )
     {
-        String select = "SELECT distinct psi.programstageinstanceid, psi.organisationunitid , psi.executiondate ";
+        String select = "SELECT distinct psi.programstageinstanceid, ogu.name , psi.executiondate ";
+        
         String sqlID = " select distinct psi.programstageinstanceid from patientdatavalue pdv "
             + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid "
             + "INNER JOIN patientidentifier as pid ON pid.patientid = p.patientid "
             + "INNER JOIN patientidentifiertype as pit ON pid.patientidentifiertypeid = pit.patientidentifiertypeid ";
+        
         String sqlATTR = " select distinct psi.programstageinstanceid from patientdatavalue pdv "
             + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid ";
+        
         String sqlDE = " select distinct psi.programstageinstanceid from patientdatavalue pdv "
             + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid ";
+        
         String condition = "FROM patientdatavalue pdv "
             + "INNER JOIN programstageinstance psi ON pdv.programstageinstanceid=psi.programstageinstanceid "
-            + "INNER JOIN programinstance pi ON pi.programinstanceid=psi.programinstanceid ";
+            + "INNER JOIN programinstance pi ON pi.programinstanceid=psi.programinstanceid " 
+            + "INNER JOIN organisationunit ogu ON ogu.organisationunitid=psi.organisationunitid ";
 
         condition += " WHERE psi.executiondate >= '" + DateUtils.getMediumDateString( startDate )
             + "' AND psi.executiondate <= '" + DateUtils.getMediumDateString( endDate ) + "' "
@@ -363,14 +383,14 @@ public class HibernateProgramStageInstanceStore
             return "select count( distinct psi.programstageinstanceid ) " + condition;
         }
 
-        condition += " ORDER BY psi.organisationunitid ";
+        condition += " ORDER BY ogu.name ";
         condition += orderByOrgunitAsc ? "asc" : "desc";
         condition += ", psi.executiondate ";
         condition += orderByExecutionDateByAsc ? "asc" : "desc";
 
         return select + condition;
     }
-
+    
     private List<Integer> executeSQL( String sql )
     {
         StatementHolder holder = statementManager.getHolder();

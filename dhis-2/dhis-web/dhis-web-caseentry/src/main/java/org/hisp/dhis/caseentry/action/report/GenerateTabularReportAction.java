@@ -28,6 +28,7 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -290,24 +291,35 @@ public class GenerateTabularReportAction
 
         OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
 
-        Set<Integer> orgunitIds = new HashSet<Integer>();
+        Set<Integer> upperOrgunitIds = new HashSet<Integer>();
+
+        Set<Integer> bottomOrgunitIds = new HashSet<Integer>();
 
         if ( facilityLB.equals( "selected" ) )
         {
-            orgunitIds.add( orgunitId );
+            upperOrgunitIds.add( orgunitId );
+        }
+        else if ( facilityLB.equals( "childrenOnly" ) )
+        {
+            Set<OrganisationUnit> children = selectedOrgunit.getChildren();
+
+            for ( OrganisationUnit child : children )
+            {
+                upperOrgunitIds.add( child.getId() );
+            }
         }
         else
         {
             OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
 
             Set<Integer> childOrgUnitIdentifiers = hierarchy.getChildren( selectedOrgunit.getId() );
-
-            orgunitIds.addAll( childOrgUnitIdentifiers );
-
-            if ( facilityLB.equals( "childrenOnly" ) )
-            {
-                orgunitIds.remove( selectedOrgunit.getId() );
-            }
+            upperOrgunitIds.add( orgunitId );
+            upperOrgunitIds.addAll( childOrgUnitIdentifiers );
+            
+            // Get bottom orgunit
+            int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
+            bottomOrgunitIds = getOrganisationUnitsAtLevel( selectedOrgunit, maxLevel - 1 );
+            upperOrgunitIds.removeAll( bottomOrgunitIds );
         }
 
         // ---------------------------------------------------------------------
@@ -332,6 +344,10 @@ public class GenerateTabularReportAction
 
         if ( type == null )
         {
+            Set<Integer> orgunitIds = new HashSet<Integer>();
+            orgunitIds.addAll( upperOrgunitIds );
+            orgunitIds.addAll( bottomOrgunitIds );
+
             int totalRecords = programStageInstanceService.countProgramStageInstances( programStage, searchingIdenKeys,
                 searchingAttrKeys, searchingDEKeys, orgunitIds, startValue, endValue );
 
@@ -341,15 +357,16 @@ public class GenerateTabularReportAction
 
             grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
                 fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, orgunitIds, level, startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc,
-                paging.getStartPos(), paging.getPageSize(), format, i18n );
+                searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, level, startValue, endValue, orderByOrgunitAsc,
+                orderByExecutionDateByAsc, paging.getStartPos(), paging.getPageSize(), format, i18n );
 
             return SUCCESS;
         }
 
         grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
             fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys, searchingDEKeys,
-            orgunitIds, level, startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, format, i18n );
+            upperOrgunitIds, bottomOrgunitIds, level, startValue, endValue, orderByOrgunitAsc,
+            orderByExecutionDateByAsc, format, i18n );
 
         return type;
     }
@@ -496,6 +513,49 @@ public class GenerateTabularReportAction
         }
 
         return values;
+    }
+
+    private Set<Integer> getOrganisationUnitsAtLevel( OrganisationUnit orgunit, int level )
+    {
+        Set<Integer> result = new HashSet<Integer>();
+
+        if ( level < 1 )
+        {
+            throw new IllegalArgumentException( "Level must be greater than zero" );
+        }
+
+        if ( level == 1 )
+        {
+            result.add( orgunit.getId() );
+            return result;
+        }
+
+        for ( OrganisationUnit root : orgunit.getChildren() )
+        {
+            addOrganisationUnitChildrenAtLevel( root, 2, level, result );
+        }
+
+        return result;
+    }
+
+    private void addOrganisationUnitChildrenAtLevel( OrganisationUnit parent, int currentLevel, int targetLevel,
+        Set<Integer> result )
+    {
+        if ( currentLevel == targetLevel )
+        {
+            Collection<OrganisationUnit> orgunits = parent.getChildren();
+            for ( OrganisationUnit orgunit : orgunits )
+            {
+                result.add( orgunit.getId() );
+            }
+        }
+        else
+        {
+            for ( OrganisationUnit child : parent.getChildren() )
+            {
+                addOrganisationUnitChildrenAtLevel( child, currentLevel + 1, targetLevel, result );
+            }
+        }
     }
 
 }

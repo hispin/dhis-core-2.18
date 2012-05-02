@@ -217,30 +217,30 @@ public class DefaultProgramStageInstanceService
 
     public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
         Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max )
     {
         return programStageInstanceStore.get( programStage, searchingIdenKeys, searchingAttrKeys, searchingDEKeys,
-            orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc, min, max );
+            upperOrgunitIds, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc, min, max );
     }
 
     public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
         Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc )
     {
         return programStageInstanceStore.get( programStage, searchingIdenKeys, searchingAttrKeys, searchingDEKeys,
-            orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+            upperOrgunitIds, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
         List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate,
+        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage,
-            searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc,
+            searchingIdenKeys, searchingAttrKeys, searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc,
             orderByExecutionDateByAsc, min, max );
 
         return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, fixedAttributes,
@@ -250,11 +250,11 @@ public class DefaultProgramStageInstanceService
     public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
         List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate,
+        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage,
-            searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc,
+            searchingIdenKeys, searchingAttrKeys, searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc,
             orderByExecutionDateByAsc );
 
         return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, fixedAttributes,
@@ -378,7 +378,7 @@ public class DefaultProgramStageInstanceService
             if ( !hasMetaData )
             {
                 // Organisation units
-                for ( int i = level; i < maxLevel; i++ )
+                for ( int i = level; i <= maxLevel; i++ )
                 {
                     grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i )
                         .getName(), false, true ) );
@@ -394,7 +394,7 @@ public class DefaultProgramStageInstanceService
             }
             else
             {
-                for ( int i = level; i < maxLevel; i++ )
+                for ( int i = level; i <= maxLevel; i++ )
                 {
                     grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i )
                         .getName(), hiddenCols.get( index ), true ) );
@@ -462,7 +462,7 @@ public class DefaultProgramStageInstanceService
                 Map<Integer, String> hierarchyOrgunit = getHierarchyOrgunit(
                     programStageInstance.getOrganisationUnit(), level );
 
-                for ( int i = level; i < maxLevel; i++ )
+                for ( int i = level; i <= maxLevel; i++ )
                 {
                     if ( hierarchyOrgunit.get( i ) != null )
                     {
@@ -562,7 +562,8 @@ public class DefaultProgramStageInstanceService
     private Map<Integer, String> getHierarchyOrgunit( OrganisationUnit orgunit, int level )
     {
         Map<Integer, String> hierarchyOrgunit = new HashMap<Integer, String>();
-        hierarchyOrgunit.put( level, orgunit.getName() );
+        
+        hierarchyOrgunit.put( organisationUnitService.getLevelOfOrganisationUnit( orgunit.getId() ), orgunit.getName() );
 
         orgunit = orgunit.getParent();
 
