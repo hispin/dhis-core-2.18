@@ -100,4 +100,8 @@ public class DefaultEquipmentInstanceService implements EquipmentInstanceService
         return equipmentInstanceStore.getCountEquipmentInstance(  orgUnit,  inventoryType, inventoryTypeAttribute ,  searchText );
     }
 
+    public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText, int min, int max )
+    {
+        return equipmentInstanceStore.getEquipmentInstances( orgUnit, inventoryType, inventoryTypeAttribute, searchText, min, max );
+    }
 }

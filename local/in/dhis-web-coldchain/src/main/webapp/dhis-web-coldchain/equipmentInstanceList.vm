@@ -24,15 +24,21 @@
 <table class="mainPageTable">
     <tr>
     <td>    
-      <table class="listTable" id="equipmentList" width='100%'>          
-          <col/>
+      <table class="listTable" id="equipmentList" width='100%'>
+          #foreach( $inventoryTypeAttribute in $inventoryTypeAttributeList )
+			<col/>
+		  #end
+		  <col/>
           <col/>
           <col width="200"/>    
           
           <thead>
             <tr>
                 <th>#</th>
-                <th>$i18n.getString( "id" )</th>                
+				  #foreach( $inventoryTypeAttribute in $inventoryTypeAttributeList )
+					<th>$inventoryTypeAttribute.name</th>
+				  #end
+
                 <th style="text-align:center" class="{sorter: false}">$i18n.getString( "operations" )</th>
               </tr>
           </thead>
@@ -47,12 +53,16 @@
                     $nr
                 </td>
                 
-                <td>$!equipmentInstance.id</td>
+				 #foreach( $inventoryTypeAttribute in $inventoryTypeAttributeList )
+					#set( $mapId = $equipmentInstance.id + ':' + $inventoryTypeAttribute.id )
+                    <td>$!equipmentDetailsMap.get( $mapId )</td>
+                  #end
                 
                 <td>
                   <a href="javascript:showUpdateEquipmentForm( '$equipmentInstance.id' )" title='$i18n.getString( "edit_equipment" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_equipment" )'></a>
                   #if( $inventoryType.tracking )
-					<a href="javascript:showEquipmentStatusForm( '$equipmentInstance.id' ); " title='$i18n.getString( "equipment_tracking" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "migration_patient" )' style='width:25px; height:25px'></a>
+					<a href="javascript:showEquipmentStatusForm( '$equipmentInstance.id' ); " title='$i18n.getString( "equipment_tracking" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "equipment_tracking" )' style='width:25px; height:25px'></a>
+                    <a href="javascript:showEquipmentStatusHistoryForm( '$equipmentInstance.id' ); " title='$i18n.getString( "equipment_tracking_history" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "equipment_tracking_history" )' style='width:25px; height:25px'></a>
 				  #end
                   <a href="javascript:removeEquipment( '$equipmentInstance.id', '$encoder.jsEncode( $equipmentInstance.id )' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
                   <a href="javascript:showEquipmentDetails( '$equipmentInstance.id' )" title='$i18n.getString( "equipment_details" )'><img src="../images/information.png" alt='$i18n.getString( "equipment_details" )'></a>

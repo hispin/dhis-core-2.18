@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.coldchain.catalog.CatalogStore;
+import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 
 public class HibernateCatalogStore extends HibernateGenericStore<Catalog> implements CatalogStore
@@ -73,6 +74,16 @@ public class HibernateCatalogStore extends HibernateGenericStore<Catalog> implem
         criteria.add( Restrictions.eq( "name", name ) );
 
         return (Catalog) criteria.uniqueResult();
+    }
+    
+    public Collection<Catalog> getCatalogs( CatalogType catalogType )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Catalog.class );
+        criteria.add( Restrictions.eq( "catalogType", catalogType ) );
+
+        return criteria.list();
     }
     
 }

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.coldchain.catalog.Catalog;
+import org.hisp.dhis.coldchain.catalog.CatalogService;
+import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.inventory.EquipmentDetails;
 import org.hisp.dhis.coldchain.inventory.EquipmentDetailsService;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
@@ -33,6 +36,13 @@ public class GetEquipmentInstanceDataAction implements Action
         this.equipmentDetailsService = equipmentDetailsService;
     }
     
+    private CatalogService catalogService;
+    
+    public void setCatalogService( CatalogService catalogService )
+    {
+        this.catalogService = catalogService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -65,6 +75,13 @@ public class GetEquipmentInstanceDataAction implements Action
         return equipmentValueMap;
     }
 
+    private List<Catalog> catalogs;
+    
+    public List<Catalog> getCatalogs()
+    {
+        return catalogs;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -90,6 +107,13 @@ public class GetEquipmentInstanceDataAction implements Action
             }
         }
         
+        CatalogType catalogType = equipmentInstance.getInventoryType().getCatalogType();
+        
+        if( catalogType != null )
+        {
+            catalogs = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType ) );
+        }
+
         return SUCCESS;
     }
 }

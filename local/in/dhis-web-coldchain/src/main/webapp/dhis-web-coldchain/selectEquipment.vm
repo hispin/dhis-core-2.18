@@ -54,6 +54,7 @@
 <div id='listEquipmentDiv'></div> <!-- List All/Filtered Equipments -->
 <div id='editEquipmentDiv'></div> <!-- Add / Edit Equipment Form -->
 <div id='editEquipmentStatusDiv'></div> <!-- Add / Edit Equipment Status -->
+<div id='equipmentStatusHistoryDiv'></div> <!-- List Equipment Status History -->
 <div id='resultSearchDiv' style='font-size:13px'></div> <!-- List searching Equipment -->
 
 #parse( "/dhis-web-commons/loader/loader.vm" )

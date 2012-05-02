@@ -127,11 +127,11 @@ public class HibernateEquipmentInstanceStore
 
     public int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText )
     {
-        String hql = "select count( distinct(ed.equipmentInstance)) from EquipmentDetails ed JOIN EquipmentInstance ei " +
-                        " where ed.inventoryTypeAttribute = :inventoryTypeAttribute " +
-                        " and ei.organisationUnit = :orgUnit " +
-                        " and ei.inventoryType = :inventoryType " +
-                        " and ed.value like '%" + searchText + "%'";
+        String hql = "SELECT COUNT( DISTINCT ei ) FROM EquipmentInstance AS ei  " +
+                        " WHERE ei IN ( SELECT ed.equipmentInstance FROM EquipmentDetails AS ed WHERE ed.inventoryTypeAttribute.id = "+ inventoryTypeAttribute.getId()+" AND ed.value LIKE '%" + searchText + "%' ) " +
+                        " AND ei.organisationUnit.id = " + orgUnit.getId()  +
+                        " AND ei.inventoryType.id = " + inventoryType.getId();
+
         
         Query query = getQuery( hql );
 
@@ -140,4 +140,18 @@ public class HibernateEquipmentInstanceStore
         return (rs != null) ? rs.intValue() : 0;
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText, int min, int max )
+    {
+        String hql = "SELECT DISTINCT ei FROM EquipmentInstance AS ei  " +
+                        " WHERE ei IN ( SELECT ed.equipmentInstance FROM EquipmentDetails AS ed WHERE ed.inventoryTypeAttribute.id = "+ inventoryTypeAttribute.getId()+" AND ed.value like '%" + searchText + "%' ) " +
+                        " AND ei.organisationUnit.id = " + orgUnit.getId()  +
+                        " AND ei.inventoryType.id = " + inventoryType.getId();
+
+        
+        Query query = getQuery( hql ).setFirstResult( min ).setMaxResults( max );
+
+        return query.list();
+    }
+    
 }

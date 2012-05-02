@@ -3,6 +3,9 @@ package org.hisp.dhis.coldchain.equipment.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.coldchain.catalog.Catalog;
+import org.hisp.dhis.coldchain.catalog.CatalogService;
+import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
@@ -28,6 +31,13 @@ public class ShowAddEquipmentFormAction implements Action
     public void setInventoryTypeService( InventoryTypeService inventoryTypeService )
     {
         this.inventoryTypeService = inventoryTypeService;
+    }
+    
+    private CatalogService catalogService;
+    
+    public void setCatalogService( CatalogService catalogService )
+    {
+        this.catalogService = catalogService;
     }
 
     // -------------------------------------------------------------------------
@@ -69,16 +79,32 @@ public class ShowAddEquipmentFormAction implements Action
         return inventoryTypeAttributes;
     }
 
+    private List<Catalog> catalogs;
+    
+    public List<Catalog> getCatalogs()
+    {
+        return catalogs;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
     public String execute() throws Exception
     {
+        catalogs = new ArrayList<Catalog>();
+        
         organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitId ) );
         
         inventoryType = inventoryTypeService.getInventoryType( Integer.parseInt( inventoryTypeId ) );
         
         inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+              
+        CatalogType catalogType = inventoryType.getCatalogType();
+        
+        if( catalogType != null )
+        {
+            catalogs = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType ) );
+        }
         
         return SUCCESS;
     }

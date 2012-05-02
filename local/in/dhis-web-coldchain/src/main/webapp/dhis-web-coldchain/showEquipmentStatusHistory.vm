@@ -1,0 +1,21 @@
+
+<table>
+	<tr>
+		<th>Reporting Date</th>
+		<th>Date of Updation</th>
+		<th>Status</th>
+		<th>Description</th>
+		<th>Stored by</th>
+	</tr>
+	
+	#foreach( $equimentStatus in $equipmentStatusHistory )
+		<tr>
+			<td>$equimentStatus.reportingDate</td>
+			<td>$equimentStatus.updationDate</td>
+			<td>$equimentStatus.status</td>
+			<td>$equimentStatus.description</td>
+			<td>$equimentStatus.storedBy</td>
+		</tr>		
+	#end
+	
+</table>

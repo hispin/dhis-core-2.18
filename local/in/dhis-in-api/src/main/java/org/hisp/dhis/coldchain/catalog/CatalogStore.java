@@ -21,4 +21,5 @@ public interface CatalogStore extends GenericStore<Catalog>
 
     Collection<Catalog> getAllCatalogs();
     
+    Collection<Catalog> getCatalogs( CatalogType catalogType );
 }
