@@ -374,7 +374,19 @@ Ext.onReady( function() {
 				item.setValue(false);
 				item.disable();
 			});
-		}
+		},
+		getSelectedFixedAttr: function()
+		{
+			var p = [];
+			var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
+			Ext.Array.each(fixedAttributes, function(item) {
+				if( item.value )
+				{
+					p.fixedAttributes.push( item.paramName );
+				}
+			});
+			return p;
+		},
 	};
     
     TR.store = {
@@ -546,6 +558,7 @@ Ext.onReady( function() {
 							Ext.getCmp('btnReset').enable();
 							Ext.getCmp('btnFilter').enable();
 							Ext.getCmp('btnClean').enable();
+							Ext.getCmp('btnSortBy').enable();
 							
 							TR.util.mask.hideMask();
 						}
@@ -574,12 +587,12 @@ Ext.onReady( function() {
 			p.currentPage = this.currentPage;
 			
 			// Get fixed attributes
-			p.fixedAttributes = [];
-			var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
+			p.fixedAttributes = TR.util.getSelectedFixedAttr();
+			/*var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
 			Ext.Array.each(fixedAttributes, function(item) {
 				if( item.value )
 					p.fixedAttributes.push( item.paramName );
-			});
+			});*/
 			
 			// Get searching values
 			p.searchingValues = [];
@@ -808,9 +821,7 @@ Ext.onReady( function() {
 					name:"meta_" + index + "_",
 					sortable: false,
 					draggable: false,
-					hidden: eval(TR.value.hidden[index]),
-					sortAscText: TR.i18n.asc,
-					sortDescText: TR.i18n.desc
+					hidden: eval(TR.value.hidden[index])
 				}
 			}
 			
@@ -1964,6 +1975,44 @@ Ext.onReady( function() {
 							}
 							
 							TR.exe.execute();
+						}
+					},
+					{
+						xtype: 'button',
+						text: TR.i18n.sort_by,
+						id: 'btnSortBy',
+						disabled: true,
+						execute: function() {
+							TR.exe.execute();
+						},
+						listeners: {
+							afterrender: function(b) {
+								this.menu = Ext.create('Ext.menu.Menu', {
+									margin: '2 0 0 0',
+									shadow: false,
+									showSeparator: false,
+									items: [
+										{
+											text: TR.i18n.asc,
+											iconCls: 'tr-menu-item-asc',
+											minWidth: 105,
+											handler: function() {
+												TR.state.orderByOrgunitAsc = "true";
+												b.execute();
+											}
+										},
+										{
+											text: TR.i18n.desc,
+											iconCls: 'tr-menu-item-desc',
+											minWidth: 105,
+											handler: function() {
+												TR.state.orderByOrgunitAsc = "false";
+												b.execute();
+											}
+										}
+									]                                            
+								});
+							}
 						}
 					},
 					{

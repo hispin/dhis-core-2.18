@@ -710,3 +710,10 @@ TR.utilbody {
     display:none;
 }
   
+.tr-menu-item-asc {
+    background-image:url('../images/hmenu-asc.gif');
+}
+
+.tr-menu-item-desc {
+    background-image:url('../images/hmenu-desc.gif');
+}
