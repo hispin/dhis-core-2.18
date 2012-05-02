@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 
@@ -30,10 +31,10 @@ var base = "http://apps.dhis2.org/demo/";
 function setLinks() {
   jQuery("#map1").attr("src", base + "api/maps/mVHksDN1dIP/data");
   jQuery("#map2").attr("src", base + "api/maps/Y8dSQ3fH0Xe/data");
-  jQuery("#map3").attr("src", base + "api/maps/JlXSUIcLsmd/data");
   jQuery("#chart1").attr("src", base + "api/charts/j1gNXBgwKVm/data");
-  jQuery("#chart2").attr("src", base + "api/charts/R0DVGvXDUNP/data");
-  jQuery("#chart3").attr("src", base + "api/charts/EbRN2VIbPdV/data");
+  jQuery("#chart2").attr("src", base + "api/charts/EbRN2VIbPdV/data");
+  jQuery("#table1").load( base + "api/reportTables/zfFRJUAZ8II/data");
+  jQuery("#table2").load( base + "api/reportTables/NBt7kGTOQTb/data");
 }
 
 jQuery(document).ready(function() {
@@ -51,7 +52,7 @@ jQuery(document).ready(function() {
 
 <h1>Web Portal</h1>
 
-<p><a href="http://dhis2.org">Home</a></p>
+<p><a href="http://dhis2.org">Home</a> | <a href="index.html">Portal</a> | <a href="plugin.html">Plugin</a></p>
 
 <p>This page illustrates how the DHIS Web API can be used as back-end for a Web portal. All content on this 
 page is loaded dynamically from the Web API running with the demo DHIS instance. Right-click on the page and 
@@ -76,12 +77,14 @@ loading of resources.</p>
 <h3>Maps</h3>
 <img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="map1" />
 <img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="map2" />
-<img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="map3" />
 
 <h3>Charts</h3>
 <img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="chart1" />
 <img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="chart2" />
-<img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="chart3" />
+
+<h3>Embedded tables</h3>
+<div id="table1"></div>
+<div id="table2"></div>
 
 </body>
 </html>
