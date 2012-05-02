@@ -222,7 +222,7 @@ public class DefaultProgramInstanceService
 
         attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "blood_group" ) );
-        attrGrid.addValue( (patient.getBloodGroup().isEmpty() ) ? PatientAttributeValue.UNKNOWN : patient.getBloodGroup() );
+        attrGrid.addValue( ( patient.getBloodGroup() == null || patient.getBloodGroup().isEmpty() ) ? PatientAttributeValue.UNKNOWN : patient.getBloodGroup() );
 
         attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "phoneNumber" ) );

@@ -62,7 +62,7 @@
 	'items':[
 		{
 			"id":"$i18n.getString( 'filter' )",
-			#foreach( $col in $grid.getVisibleHeaders() )
+			#foreach( $col in $grid.getHeaders() )
 				#if ($velocityCount <= $metaData )
 					"col$velocityCount": "",
 				#end

@@ -71,9 +71,9 @@ public interface ProgramStageInstanceStore
     
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
     
-    List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max );
+    List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max );
     
-    List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc );
+    List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc );
 
     int count( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
     
