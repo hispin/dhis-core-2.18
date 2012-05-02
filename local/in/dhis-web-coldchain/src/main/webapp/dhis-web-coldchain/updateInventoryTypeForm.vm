@@ -1,21 +1,5 @@
-
-<script>
-	
-jQuery(document).ready(function() {
-    validation2('updateInventoryTypeForm', function(form) {
-        form.submit();
-    }, {
-        'beforeValidateHandler' : function() {
-            selectAllById('selectedList');
-        },
-    });
-
-	checkValueIsExist("name", "validateInventoryType.action", {
-            id : $organisationUnitGroupSet.id
-        });
-
-});
-	
+<script type="text/javascript" src="javascript/updateInventoryTypeForm.js"></script>
+<script type="text/javascript">
 </script>
 <h3>$i18n.getString( "edit_inventorytype" )</h3>
 <form id="updateInventoryTypeForm" action="updateInventoryType.action" method="post" >
@@ -57,7 +41,7 @@ jQuery(document).ready(function() {
             <select id="catalogType" name="catalogType">
             	<option value="">[$i18n.getString( "please_select_catalog_type" )]</option>
 					#foreach( $catalogType in $catalogTypes )
-						<option value="$catalogType.id" #if( $inventoryType.catalogType.id ) selected="selected" #end>$catalogType.name</option>
+						<option value="$catalogType.id" #if( $catalogType.id == $inventoryType.catalogType.id ) selected="selected" #end>$catalogType.name</option>
 					#end
             </select>
         </td>
@@ -67,7 +51,7 @@ jQuery(document).ready(function() {
     </tbody>
 	</table>
 
-    <br/>&nbsp;
+    <br/>
 
   <table id="dataElementSelectionArea">
     <col style="width: 450px"/>
@@ -83,20 +67,17 @@ jQuery(document).ready(function() {
     <tbody>
       <tr>
         <td>
-          <select id="availableList" name="availableList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;" ondblclick="moveSelectedById( 'availableList', 'selectedList' )">
-			#foreach( $inventoryTypeAttribute in $availInventoryTypeAttributes )
-				<option value="$inventoryTypeAttribute.id">$inventoryTypeAttribute.name</option>
-			#end			
-          </select>
-        </td>
+          <select id="availableInventoryTypeAttributeList" name="availableInventoryTypeAttributeList" multiple="multiple" style="height: 200px; width: 100%;" ondblclick="moveSelectedById( 'availableInventoryTypeAttributeList', 'selectedInventoryTypeAttributeList' )"></select>        </td>
         <td>
-            <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onClick="moveSelectedById( 'availableList', 'selectedList' )"/><br/>
-            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onClick="moveSelectedById( 'selectedList', 'availableList' )"/><br/>
+            <input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableInventoryTypeAttributeList' );"/><br/>
+            <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedInventoryTypeAttributeList' );"/><br/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableInventoryTypeAttributeList' );"/><br/>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedInventoryTypeAttributeList' );"/>
         </td>           
         <td>
-            <select id="selectedList" name="selectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;" ondblclick="moveSelectedById( 'selectedList', 'availableList' )">
-            #foreach( $inventoryTypeAttribute1 in $selInventoryTypeAttributes )
-                <option value="$inventoryTypeAttribute1.id">$inventoryTypeAttribute1.name</option>
+            <select id="selectedInventoryTypeAttributeList" name="selectedInventoryTypeAttributeList" multiple="multiple" style="height: 200px; width: 100%" ondblclick="moveSelectedById( 'selectedInventoryTypeAttributeList', 'availableInventoryTypeAttributeList' )">
+            #foreach( $inventoryTypeAttribute in $selInventoryTypeAttributes )
+                <option value="$inventoryTypeAttribute.id">$inventoryTypeAttribute.name</option>
             #end            
             </select>
         </td>

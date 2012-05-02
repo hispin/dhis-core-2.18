@@ -1,12 +1,14 @@
 package org.hisp.dhis.coldchain.inventory.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
+import org.hisp.dhis.coldchain.inventory.comparator.InventoryTypeAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,7 +54,7 @@ public class GetInventoryTypeAttributeListAction implements Action
     public String execute()
     throws Exception
     {
-        System.out.println(" Inside GetInventoryTypeAttributeListAction");
+        //System.out.println(" Inside GetInventoryTypeAttributeListAction");
         if( id != null )
         {
             InventoryType inventoryType = inventoryTypeService.getInventoryType( id );
@@ -63,6 +65,8 @@ public class GetInventoryTypeAttributeListAction implements Action
         {
             inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryTypeAttributeService.getAllInventoryTypeAttributes() );
         }
+        Collections.sort( inventoryTypeAttributes, new InventoryTypeAttributeComparator() );
+        
         
         /**
          * TODO - need to write comparator for sorting the list

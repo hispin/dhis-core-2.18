@@ -348,14 +348,7 @@
         scope="prototype">
         <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
     </bean>
-	
-	<!-- InventoryType Attributes -->
-    <bean id="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributesAction"
-        class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributesAction"
-        scope="prototype">
-        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
-    </bean>	
-		
+
 <!-- EquipmentDetails -->
     <bean id="org.hisp.dhis.coldchain.equipment.action.EquipmentSelectAction"
         class="org.hisp.dhis.coldchain.equipment.action.EquipmentSelectAction"
@@ -382,5 +375,13 @@
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
     </bean>
+
+<!-- For Mearging -->
+	<!-- InventoryType Attributes -->
+    <bean id="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributesAction"
+        class="org.hisp.dhis.coldchain.inventory.action.GetInventoryTypeAttributesAction"
+        scope="prototype">
+        <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
+    </bean>	
 	
 </beans>

@@ -3,7 +3,6 @@ package org.hisp.dhis.coldchain.inventory;
 import java.util.Collection;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.transaction.annotation.Transactional;
 

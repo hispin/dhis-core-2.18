@@ -41,7 +41,7 @@ public class GetInventoryTypeAttributeAction implements Action
 
     public String execute() throws Exception
     {
-        System.out.println("inside GetInventoryTypeAttributeAction");
+        //System.out.println("inside GetInventoryTypeAttributeAction");
         
         inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( id );
         

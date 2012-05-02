@@ -21,7 +21,7 @@
 	<set name="inventoryTypeAttributes" table="inventorytype_attributes">
       <key column="inventorytypeid" foreign-key="fk_inventorytype_attributes_inventorytypeid" />
       <many-to-many class="org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute" column="inventorytypeattributeid"
-          foreign-key="fk_inventorytype_attributes_inventorytypeattribtueid" />
+          foreign-key="fk_inventorytype_attributes_inventorytypeattributeid" />
     </set>
 	
 

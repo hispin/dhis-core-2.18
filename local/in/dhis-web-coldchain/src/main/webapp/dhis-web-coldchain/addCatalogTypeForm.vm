@@ -22,7 +22,7 @@
     <thead>
       <tr>        
         <th>$i18n.getString( "available_catalogType_attribute" )</th>
-        <th></th>
+        <th>$i18n.getString( "filter" )</th>
         <th>$i18n.getString( "selected_catalogType_attribute" )							
 			<select id="selectedCatalogTypeAttributesValidator" name='selectedCatalogTypeAttributesValidator' multiple="multiple" class="{validate:{required:true}} hidden" ></select>
 		</th>
