@@ -352,7 +352,8 @@ body {
 }
 
 .x-tip .x-tip-body {
-	padding: 5px;
+	padding: 4px 5px 5px 5px;
+	font-size: 12px;
 }
 
 /* Chart tips (tooltip) */
