@@ -1,12 +1,14 @@
-
 jQuery(document).ready(function() {
-	validation2('addInventoryTypeForm', function(form) {
+	validation2('updateInventoryTypeForm', function(form) {
 		form.submit();
 	}, {
 		'beforeValidateHandler' : function() {
             $("#selectedInventoryTypeAttributeList").find("option").attr("selected", "selected");
 		},
 	});
+	
+	checkValueIsExist( "name", "validateInventoryType.action", {id:getFieldValue('id')});	
+	
 	
 	jQuery("#availableInventoryTypeAttributeList").dhisAjaxSelect({
 		source: "inventoryTypeAttributes.action",
@@ -22,6 +24,5 @@ jQuery(document).ready(function() {
 		}
 	});		
 	
-	checkValueIsExist("name", "validateInventoryType.action");
+	
 });
-

@@ -1,5 +1,6 @@
 package org.hisp.dhis.coldchain.inventory.action;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -68,12 +69,13 @@ public class AddInventoryTypeAction implements Action
         this.tracking = tracking;
     }
     
-    private List<Integer> selectedList;
+    private List<Integer> selectedInventoryTypeAttributeList = new ArrayList<Integer>();
     
-    public void setSelectedList( List<Integer> selectedList )
+    public void setSelectedInventoryTypeAttributeList( List<Integer> selectedInventoryTypeAttributeList )
     {
-        this.selectedList = selectedList;
+        this.selectedInventoryTypeAttributeList = selectedInventoryTypeAttributeList;
     }
+
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -86,12 +88,34 @@ public class AddInventoryTypeAction implements Action
         inventoryType.setDescription( description );
         inventoryType.setTracking( tracking );
         
-        inventoryType.setCatalogType( catalogTypeService.getCatalogType( catalogType ) );
+        if( catalogType != null )
+        {
+            inventoryType.setCatalogType( catalogTypeService.getCatalogType( catalogType ) );
+        }
         
         Set<InventoryTypeAttribute> inventoryTypeSet = new HashSet<InventoryTypeAttribute>();
-        for( Integer inventoryTypeAttId : selectedList )
+        
+        if ( selectedInventoryTypeAttributeList != null && selectedInventoryTypeAttributeList.size() > 0 )
         {
-            inventoryTypeSet.add( inventoryTypeAttributeService.getInventoryTypeAttribute( inventoryTypeAttId ) );
+            for ( int i = 0; i < this.selectedInventoryTypeAttributeList.size(); i++ )
+            {
+                
+                InventoryTypeAttribute inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeList.get( i ) );
+                /*
+                System.out.println( "ID---" + inventoryTypeAttribute.getId() );
+                System.out.println( "Name---" + inventoryTypeAttribute.getName());
+                System.out.println( "ValueType---" + inventoryTypeAttribute.getValueType() );
+                */
+                inventoryTypeSet.add( inventoryTypeAttribute );
+                
+                //inventoryTypeSet.add( inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeList.get( i ) ) );
+            }
+            /*
+            for( Integer inventoryTypeAttId : selectedInventoryTypeAttributeList )
+            {
+                inventoryTypeSet.add( inventoryTypeAttributeService.getInventoryTypeAttribute( inventoryTypeAttId ) );
+            }
+            */
         }
         
         inventoryType.setInventoryTypeAttributes( inventoryTypeSet );

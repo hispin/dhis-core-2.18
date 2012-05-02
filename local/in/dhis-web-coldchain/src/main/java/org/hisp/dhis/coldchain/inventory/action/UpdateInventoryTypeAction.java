@@ -1,9 +1,12 @@
 package org.hisp.dhis.coldchain.inventory.action;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
+import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
 
@@ -73,12 +76,13 @@ public class UpdateInventoryTypeAction implements Action
         this.tracking = tracking;
     }
     
-    private List<Integer> selectedList;
+    private List<Integer> selectedInventoryTypeAttributeList;
     
-    public void setSelectedList( List<Integer> selectedList )
+    public void setSelectedInventoryTypeAttributeList( List<Integer> selectedInventoryTypeAttributeList )
     {
-        this.selectedList = selectedList;
+        this.selectedInventoryTypeAttributeList = selectedInventoryTypeAttributeList;
     }
+
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -91,16 +95,41 @@ public class UpdateInventoryTypeAction implements Action
         inventoryType.setDescription( description );
         inventoryType.setTracking( tracking );
         
-        inventoryType.setCatalogType( catalogTypeService.getCatalogType( catalogType ) );
-        
-        inventoryType.getInventoryTypeAttributes().clear();
-        
-        for( Integer inventoryTypeAttId : selectedList )
+        if( catalogType != null )
         {
-            
-            inventoryType.getInventoryTypeAttributes().add( inventoryTypeAttributeService.getInventoryTypeAttribute( inventoryTypeAttId ) );
+            inventoryType.setCatalogType( catalogTypeService.getCatalogType( catalogType ) );
         }
-
+        
+        if( inventoryType != null )
+        {
+            inventoryType.getInventoryTypeAttributes().clear();
+        }
+        
+        Set<InventoryTypeAttribute> inventoryTypeSet = new HashSet<InventoryTypeAttribute>();
+        
+        if ( selectedInventoryTypeAttributeList != null && selectedInventoryTypeAttributeList.size() > 0 )
+        {
+           
+            for ( int i = 0; i < this.selectedInventoryTypeAttributeList.size(); i++ )
+            {
+                InventoryTypeAttribute inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeList.get( i ) );
+                /*
+                System.out.println( "ID---" + inventoryTypeAttribute.getId() );
+                System.out.println( "Name---" + inventoryTypeAttribute.getName());
+                System.out.println( "ValueType---" + inventoryTypeAttribute.getValueType() );
+                */
+                inventoryTypeSet.add( inventoryTypeAttribute );
+                
+                //inventoryTypeSet.add( inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeList.get( i ) ) );
+            }
+            /*
+            for( Integer inventoryTypeAttId : selectedInventoryTypeAttributeList )
+            {
+                inventoryType.getInventoryTypeAttributes().add( inventoryTypeAttributeService.getInventoryTypeAttribute( inventoryTypeAttId ) );
+            }
+            */
+        }
+        inventoryType.setInventoryTypeAttributes( inventoryTypeSet );
         inventoryTypeService.updateInventoryType( inventoryType );
         
         return SUCCESS;

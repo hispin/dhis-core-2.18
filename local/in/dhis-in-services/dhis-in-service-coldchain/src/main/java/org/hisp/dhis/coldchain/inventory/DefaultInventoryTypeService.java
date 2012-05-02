@@ -2,9 +2,7 @@ package org.hisp.dhis.coldchain.inventory;
 
 import java.util.Collection;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DefaultInventoryTypeService implements InventoryTypeService
 {
@@ -22,24 +20,28 @@ public class DefaultInventoryTypeService implements InventoryTypeService
     // InventoryType
     // -------------------------------------------------------------------------
 
+    @Transactional
     @Override
     public int addInventoryType( InventoryType inventoryType )
     {
         return inventoryTypeStore.addInventoryType( inventoryType );
     }
 
+    @Transactional
     @Override
     public void deleteInventoryType( InventoryType inventoryType )
     {
         inventoryTypeStore.deleteInventoryType( inventoryType );
     }
 
+    @Transactional
     @Override
     public Collection<InventoryType> getAllInventoryTypes()
     {
         return inventoryTypeStore.getAllInventoryTypes();
     }
 
+    @Transactional
     @Override
     public void updateInventoryType( InventoryType inventoryType )
     {
