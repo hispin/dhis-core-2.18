@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.coldchain.catalog.Catalog;
+import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.inventory.EquipmentDetails;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
@@ -36,6 +38,8 @@ public class AddEquipmentAction implements Action
     private InventoryTypeAttributeOptionService inventoryTypeAttributeOptionService;
     
     private EquipmentInstanceService equipmentInstanceService;
+    
+    private CatalogService catalogService;
     
     // -------------------------------------------------------------------------
     // Input/ Output
@@ -99,6 +103,19 @@ public class AddEquipmentAction implements Action
                         // Someone deleted this option ...
                     }
                 }
+                else if ( InventoryTypeAttribute.TYPE_CATALOG.equalsIgnoreCase( attribute.getValueType() ) )
+                {
+                    Catalog catalog = catalogService.getCatalog( NumberUtils.toInt( value, 0 ) );
+                    if ( catalog != null )
+                    {
+                        //equipmentDetails.setInventoryTypeAttributeOption( option );
+                        equipmentDetails.setValue( catalog.getName() );
+                    }
+                    else
+                    {
+                        // Someone deleted this catalog ...
+                    }
+                }
                 else
                 {
                     equipmentDetails.setValue( value.trim() );
@@ -145,6 +162,11 @@ public class AddEquipmentAction implements Action
     public void setEquipmentInstanceService( EquipmentInstanceService equipmentInstanceService )
     {
         this.equipmentInstanceService = equipmentInstanceService;
+    }
+
+    public void setCatalogService( CatalogService catalogService )
+    {
+        this.catalogService = catalogService;
     }
 
     public void setOuId( Integer ouId )

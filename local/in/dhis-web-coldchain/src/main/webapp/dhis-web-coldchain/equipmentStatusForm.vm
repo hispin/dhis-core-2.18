@@ -63,7 +63,7 @@
     <p>
         <input type="submit" class="button" value="$i18n.getString( 'add' )"/>
         <input type="button" class="button" value="$i18n.getString( 'back' )" onclick="loadAllEquipments();"/>
-		<input type="button" class="button" value="$i18n.getString( 'show_history' )" onclick="showEquipmentStatusHistory( "$equipmentInstanceId" );" />
+		<!--<input type="button" class="button" value="$i18n.getString( 'show_history' )" onclick="showEquipmentStatusHistory( "$equipmentInstanceId" );" />-->
     </p>
 
 </form>	

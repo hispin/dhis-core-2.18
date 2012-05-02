@@ -13,5 +13,7 @@ public interface EquipmentStatusService
     void deleteEquipmentStatus( EquipmentStatus equipmentStatus );
 
     Collection<EquipmentStatus> getAllEquipmentStatus();
-
+    
+    Collection<EquipmentStatus> getEquipmentStatusHistory( EquipmentInstance equipmentInstance );
+    
 }

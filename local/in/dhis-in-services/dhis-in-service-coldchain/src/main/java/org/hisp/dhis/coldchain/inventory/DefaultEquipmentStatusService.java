@@ -3,7 +3,7 @@ package org.hisp.dhis.coldchain.inventory;
 import java.util.Collection;
 
 import org.springframework.transaction.annotation.Transactional;
-
+@Transactional
 public class DefaultEquipmentStatusService implements EquipmentStatusService
 {
     // -------------------------------------------------------------------------
@@ -20,29 +20,31 @@ public class DefaultEquipmentStatusService implements EquipmentStatusService
     // -------------------------------------------------------------------------
     // EquipmentWorkingStatus
     // -------------------------------------------------------------------------
-    @Transactional
+    
     @Override
     public int addEquipmentStatus( EquipmentStatus equipmentStatus )
     {
-        return equipmentStatusStore.addEquipmentStatus( equipmentStatus );
+        return equipmentStatusStore.save( equipmentStatus );
     }
-    @Transactional
     @Override
     public void deleteEquipmentStatus( EquipmentStatus equipmentStatus )
     {
-        equipmentStatusStore.deleteEquipmentStatus( equipmentStatus );
+        equipmentStatusStore.delete( equipmentStatus );
     }
-    @Transactional
     @Override
     public Collection<EquipmentStatus> getAllEquipmentStatus()
     {
-        return equipmentStatusStore.getAllEquipmentStatus();
+        return equipmentStatusStore.getAll();
     }
-    @Transactional
     @Override
     public void updateEquipmentStatus( EquipmentStatus equipmentStatus )
     {
-        equipmentStatusStore.updateEquipmentStatus( equipmentStatus );
+        equipmentStatusStore.update( equipmentStatus );
     }
     
+    public Collection<EquipmentStatus> getEquipmentStatusHistory( EquipmentInstance equipmentInstance )
+    {
+        return equipmentStatusStore.getEquipmentStatusHistory( equipmentInstance );
+    }
+
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class DefaultCatalogService implements CatalogService
 {
     // -------------------------------------------------------------------------
@@ -29,13 +30,12 @@ public class DefaultCatalogService implements CatalogService
     // -------------------------------------------------------------------------
     // Catalog
     // -------------------------------------------------------------------------
-    @Transactional
+    
     public int addCatalog( Catalog catalog )
     {
         return catalogStore.addCatalog( catalog );
     }
 
-    @Transactional
     public void deleteCatalog( Catalog catalog )
     {
         catalogStore.deleteCatalog( catalog );
@@ -47,26 +47,22 @@ public class DefaultCatalogService implements CatalogService
         catalogStore.delete( catalog );
     }
 
-    @Transactional
     public void updateCatalog( Catalog catalog )
     {
         catalogStore.updateCatalog( catalog );
     }
 
-    @Transactional
     public Collection<Catalog> getAllCatalogs()
     {
         return catalogStore.getAllCatalogs();
     }
     
-    @Transactional
     @Override
     public Catalog getCatalog( int id )
     {
         return catalogStore.getCatalog( id );
     }
     
-    @Transactional
     @Override
     public Catalog getCatalogByName( String name )
     {
@@ -118,5 +114,10 @@ public class DefaultCatalogService implements CatalogService
         }
         
         //catalogStore.deleteCatalog( catalog );
+    }
+    
+    public Collection<Catalog> getCatalogs( CatalogType catalogType )
+    {
+        return catalogStore.getCatalogs( catalogType );
     }
 }

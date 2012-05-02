@@ -38,6 +38,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentStatusStore"
         class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateEquipmentStatusStore">
+		<property name="clazz" value="org.hisp.dhis.coldchain.inventory.EquipmentStatus" />
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionStore"

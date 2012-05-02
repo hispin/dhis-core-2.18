@@ -21,6 +21,8 @@ public interface CatalogService
     
     Catalog getCatalogByName( String name );
     
+    Collection<Catalog> getCatalogs( CatalogType catalogType );
+    
     int createCatalog( Catalog catalog, List<CatalogDataValue> catalogDataValues );
     
     void updateCatalogAndDataValue(  Catalog catalog, List<CatalogDataValue> valuesForSave, List<CatalogDataValue> valuesForUpdate, Collection<CatalogDataValue> valuesForDelete );

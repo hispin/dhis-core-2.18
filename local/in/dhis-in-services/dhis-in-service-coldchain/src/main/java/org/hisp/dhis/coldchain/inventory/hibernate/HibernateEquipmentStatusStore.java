@@ -2,28 +2,36 @@ package org.hisp.dhis.coldchain.inventory.hibernate;
 
 import java.util.Collection;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentStatus;
 import org.hisp.dhis.coldchain.inventory.EquipmentStatusStore;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.springframework.transaction.annotation.Transactional;
 
-public class HibernateEquipmentStatusStore implements EquipmentStatusStore
+@Transactional
+public class HibernateEquipmentStatusStore 
+    extends HibernateGenericStore<EquipmentStatus>
+    implements EquipmentStatusStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    /*
     private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
     }
-
+    */
+    
     // -------------------------------------------------------------------------
     // EquipmentWorkingStatus
     // -------------------------------------------------------------------------
 
+    /*
     @Override
     public int addEquipmentStatus( EquipmentStatus equipmentStatus )
     {
@@ -55,5 +63,11 @@ public class HibernateEquipmentStatusStore implements EquipmentStatusStore
 
         session.update( equipmentStatus );
     }
-
+    */
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<EquipmentStatus> getEquipmentStatusHistory( EquipmentInstance equipmentInstance )
+    {
+        return getCriteria( Restrictions.eq( "equipmentInstance", equipmentInstance ) ).list();
+    }
 }

@@ -70,6 +70,13 @@
 								<option value="$option.id" >$option.name</option>
 							#end
 						</select>
+                    #elseif( $attribute.valueType == "CATALOG" )
+                        <select  id="attr$attribute.id" name="attr$attribute.id" class='#validate( "default"  $attribute.mandatory )'>
+                            <option value="">[$i18n.getString( "please_select" )]</option>
+                            #foreach ($catalog in $catalogs )
+                                <option value="$catalog.id" >$catalog.name</option>
+                            #end
+                        </select>
 					#else
 						<input type="text" id="attr$attribute.id" name="attr$attribute.id" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" />
 					#end

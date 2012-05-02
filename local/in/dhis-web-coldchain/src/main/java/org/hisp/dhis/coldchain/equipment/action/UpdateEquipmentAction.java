@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.coldchain.catalog.Catalog;
+import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.inventory.EquipmentDetails;
 import org.hisp.dhis.coldchain.inventory.EquipmentDetailsService;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
@@ -32,6 +34,8 @@ public class UpdateEquipmentAction implements Action
     private EquipmentInstanceService equipmentInstanceService;
 
     private EquipmentDetailsService equipmentDetailsService;
+    
+    private CatalogService catalogService;
     
     // -------------------------------------------------------------------------
     // Input/ Output
@@ -87,6 +91,19 @@ public class UpdateEquipmentAction implements Action
                         // Someone deleted this option ...
                     }
                 }
+                else if ( InventoryTypeAttribute.TYPE_CATALOG.equalsIgnoreCase( attribute.getValueType() ) )
+                {
+                    Catalog catalog = catalogService.getCatalog( NumberUtils.toInt( value, 0 ) );
+                    if ( catalog != null )
+                    {
+                        //equipmentDetails.setInventoryTypeAttributeOption( option );
+                        equipmentDetails.setValue( catalog.getName() );
+                    }
+                    else
+                    {
+                        // Someone deleted this catalog ...
+                    }
+                }
                 else
                 {
                     equipmentDetails.setValue( value.trim() );
@@ -107,6 +124,19 @@ public class UpdateEquipmentAction implements Action
                     else
                     {
                         // Someone deleted this option ...
+                    }
+                }
+                else if ( InventoryTypeAttribute.TYPE_CATALOG.equalsIgnoreCase( attribute.getValueType() ) )
+                {
+                    Catalog catalog = catalogService.getCatalog( NumberUtils.toInt( value, 0 ) );
+                    if ( catalog != null )
+                    {
+                        //equipmentDetails.setInventoryTypeAttributeOption( option );
+                        equipmentDetails.setValue( catalog.getName() );
+                    }
+                    else
+                    {
+                        // Someone deleted this catalog ...
                     }
                 }
                 else
@@ -154,5 +184,9 @@ public class UpdateEquipmentAction implements Action
         this.equipmentInstanceID = equipmentInstanceID;
     }
 
+    public void setCatalogService( CatalogService catalogService )
+    {
+        this.catalogService = catalogService;
+    }
 
 }

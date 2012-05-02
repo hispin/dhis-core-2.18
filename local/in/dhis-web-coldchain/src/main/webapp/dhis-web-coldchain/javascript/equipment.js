@@ -132,6 +132,35 @@ function loadEquipmentsByFilter( )
 }
 
 //----------------------------------------------------------------
+//Show Equipment Status History
+//----------------------------------------------------------------
+
+function showEquipmentStatusHistoryForm( equipmentInstanceId )
+{
+	//hideById('listEquipmentDiv');
+	hideById('editEquipmentStatusDiv');
+	hideById('selectDiv');
+	hideById('searchEquipmentDiv');
+	
+	setInnerHTML('editEquipmentDiv', '');
+	
+	//jQuery('#loaderDiv').show();
+	
+	jQuery('#equipmentStatusHistoryDiv').dialog('destroy').remove();
+	jQuery('<div id="equipmentStatusHistoryDiv">' ).load( 'showEquipmentStatusHistoryForm.action?equipmentInstanceId='+equipmentInstanceId ).dialog({
+		title: 'i18n_equipment_status_history',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 800,
+		height: 450
+	});
+	
+}
+
+
+//----------------------------------------------------------------
 //Show Equipment Tracking Form
 //----------------------------------------------------------------
 
