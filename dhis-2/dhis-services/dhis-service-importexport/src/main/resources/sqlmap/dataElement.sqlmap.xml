@@ -28,11 +28,11 @@
 	<!-- Statement -->
 	
 	<select id="getDataElement" resultMap="dataElementResultMap">
-		SELECT * FROM DataElement WHERE DataElementID = #value#
+		SELECT * FROM DataElement WHERE DataElementID = #value# AND Calculated = 0
 	</select>
 	
 	<select id="getDataElements" resultMap="dataElementResultMap">
-		SELECT * FROM DataElement
+		SELECT * FROM DataElement  WHERE Calculated = 0
 	</select>
 	
 	<select id="getDataElementName" parameterClass="java.lang.Integer" resultClass="java.lang.String">
