@@ -150,7 +150,7 @@ function loadDataEntry()
 }
 
 //------------------------------------------------------------------------------
-//Save value
+// Save value
 //------------------------------------------------------------------------------
 
 function saveVal( dataElementId )
@@ -161,13 +161,18 @@ function saveVal( dataElementId )
 	var field = byId( fieldId ); 
 	var fieldValue = jQuery.trim( field.value );
 
-	var data = jQuery( "#" + fieldId ).metadata({
-        type:'attr',
-        name:'data'
-    });
-	
-	var dataElementName = data.deName; 
-    var type = data.deType;
+	var arrData = jQuery( "#" + fieldId ).attr('data').replace('{','').replace('}','').replace(/'/g,"").split(',');
+	var data = new Array();
+	for( var i in arrData )
+	{	
+		var values = arrData[i].split(':');
+		var key = jQuery.trim( values[0] );
+		var value = jQuery.trim( values[1] )
+		data[key] = value;
+	}
+ 
+	var dataElementName = data['deName']; 
+    var type = data['deType'];
  
 	field.style.backgroundColor = '#ffffcc';
     
