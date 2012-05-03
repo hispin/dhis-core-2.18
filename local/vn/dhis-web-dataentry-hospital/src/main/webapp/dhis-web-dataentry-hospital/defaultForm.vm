@@ -1,5 +1,5 @@
 #set( $tabIndex = 1 )
-#set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) )
+#set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry-hospital", "saveValue" ) )
 
 #foreach( $categoryCombo in $orderedCategoryCombos )
 <table class="formSection" cellspacing="0">

@@ -1,3 +1,5 @@
+package org.hisp.dhis.de.action;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -25,74 +27,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataelement;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.AttributeValue;
-import org.hisp.dhis.attribute.LocalAttributeValueService;
-import org.hisp.dhis.system.util.AttributeUtils;
-
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 /**
- * @author Chau Thu Tran
- * 
- * @version $LoadAttributeValuesByAttributeAction.java Mar 24, 2012 9:10:52 AM$
+ * @author Lars Helge Overland
  */
-public class LoadAttributeValuesByAttributeAction
+public class PageInitAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private LocalAttributeValueService localAttributeValueService;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    private AttributeService attributeService;
-
-    // -------------------------------------------------------------------------
-    // Input && Output
-    // -------------------------------------------------------------------------
-
-    private Integer attributeId;
-
-    private Collection<String> values;
-
-    public Collection<String> getValues()
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        return values;
-    }
-
-    public void setLocalAttributeValueService( LocalAttributeValueService localAttributeValueService )
-    {
-        this.localAttributeValueService = localAttributeValueService;
-    }
-
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-
-    public void setAttributeId( Integer attributeId )
-    {
-        this.attributeId = attributeId;
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
-        throws Exception
     {
-        Attribute attribute = attributeService.getAttribute( attributeId );
-        values = localAttributeValueService.getDistinctValuesByAttribute( attribute );
+        selectionManager.clearSelectedOrganisationUnits();
+
         return SUCCESS;
     }
 }
