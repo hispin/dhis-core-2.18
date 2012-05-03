@@ -1947,7 +1947,7 @@ Ext.onReady( function() {
                         
                         if (item.organisationunitgroupid) {
 							item[DV.conf.finals.dimension.organisationunit.value] = DV.util.dimension.organisationunit.getGroupNameByGroupId(item.organisationunitgroupid);
-							item.organisationunitid = organisationunitgroupid;
+							item.organisationunitid = item.organisationunitgroupid;
 						}
 						
                         item.value = parseFloat(item.value);
