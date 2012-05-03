@@ -293,11 +293,11 @@ public class SaveTableAction
         this.quartersLastYear = quartersLastYear;
     }
 
-    private boolean last5years;
+    private boolean last5Years;
     
-    public void setLast5years( boolean last5years )
+    public void setLast5Years( boolean last5Years )
     {
-        this.last5years = last5years;
+        this.last5Years = last5Years;
     }
 
     private boolean lastYear;
@@ -438,7 +438,7 @@ public class SaveTableAction
         RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter, lastSixMonth,
             monthsThisYear, quartersThisYear, thisYear, 
             monthsLastYear, quartersLastYear, lastYear, 
-            last5years, last12Months, false, last4Quarters, last2SixMonths,
+            last5Years, last12Months, false, last4Quarters, last2SixMonths,
             thisFinancialYear, lastFinancialYear, last5FinancialYears );
         
         ReportParams reportParams = new ReportParams();
