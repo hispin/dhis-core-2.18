@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.preview.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFPatternFormatting;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -120,7 +121,7 @@ public class XMLStructureResponse
      * @exception java.io.IOException
      */
 
-    public XMLStructureResponse( String pathFileName, Collection<Integer> collectSheets, boolean bWriteDTD,
+    public XMLStructureResponse( String pathFileName, Set<Integer> collectSheets, boolean bWriteDTD,
         boolean bWriteVersion, boolean bFormat, boolean bDetailed, boolean bWriteDescription )
         throws Exception
     {

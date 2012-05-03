@@ -26,9 +26,15 @@ package org.hisp.dhis.reportsheet.exporting;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.LocalDataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportsheet.ExportReport;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -36,14 +42,25 @@ import com.opensymphony.xwork2.Action;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public abstract class AbstractGenerateExcelReportSupport
+public abstract class AbstractGenerateMultiExcelReportSupport
     extends GenerateExcelReportGeneric
     implements Action
 {
     // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
+
+    @Autowired
+    protected LocalDataElementService localDataElementService;
+
+    @Autowired
+    protected OrganisationUnitService organisationUnitService;
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
@@ -51,11 +68,16 @@ public abstract class AbstractGenerateExcelReportSupport
 
         Period period = PeriodType.createPeriodExternalId( selectionManager.getSelectedPeriodIndex() );
 
-        ExportReport exportReport = exportReportService.getExportReport( selectionManager.getSelectedReportId() );
-
         this.installPeriod( period );
 
-        executeGenerateOutputFile( exportReport, period );
+        List<ExportReport> reports = new ArrayList<ExportReport>();
+
+        for ( String id : selectionManager.getListObject() )
+        {
+            reports.add( exportReportService.getExportReport( Integer.parseInt( id ) ) );
+        }
+
+        executeGenerateOutputFile( reports, period );
 
         this.complete();
 
@@ -72,9 +94,9 @@ public abstract class AbstractGenerateExcelReportSupport
      * The process method which must be implemented by subclasses.
      * 
      * @param period
-     * @param exportReport
+     * @param reports
      * @param organisationUnit
      */
-    protected abstract void executeGenerateOutputFile( ExportReport exportReport, Period period )
+    protected abstract void executeGenerateOutputFile( List<ExportReport> reports, Period period )
         throws Exception;
 }

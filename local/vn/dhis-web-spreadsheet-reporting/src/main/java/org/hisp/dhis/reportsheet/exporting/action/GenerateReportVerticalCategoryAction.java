@@ -75,7 +75,7 @@ public class GenerateReportVerticalCategoryAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    private void generateVerticalOutPutFile( ExportReportVerticalCategory exportReport,
+    public void generateVerticalOutPutFile( ExportReportVerticalCategory exportReport,
         Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
         DataElement de = null;

@@ -20,34 +20,45 @@ htmlStyle.push( "</style>" );
 
 function validatePreviewReport( isAdvanced )
 {
-	var exportReport = getFieldValue('exportReport');
+	var exportReports = jQuery( 'select[id=exportReport]' ).children( 'option:selected' );
 
-	if ( exportReport.length == 0 )
+	if ( exportReports.length == 0 )
 	{
 		showErrorMessage( i18n_specify_export_report );
 		return;
 	}
 	
-	lockScreen();
+	var url = 'validateGenerateReport.action?';
+	
+	jQuery.each( exportReports, function ( i, item )
+	{
+		url += 'exportReportIds=' + item.value.split( "_" )[0] + '&';
+	} );
+	
+	url = url.substring( 0, url.length - 1 );
+	
+	if ( url && url != '' )
+	{
+		lockScreen();
 
-	jQuery.postJSON( 'validateGenerateReport.action',
-	{
-		'exportReportId': getFieldValue( 'exportReport' ),
-		'periodIndex': getFieldValue( 'selectedPeriodId' )
-	},
-	function( json )
-	{
-		if ( json.response == "success" ) {
-			if ( isAdvanced ) {
-				previewAdvandReport();
+		jQuery.postJSON( url,
+		{
+			'periodIndex': getFieldValue( 'selectedPeriodId' )
+		},
+		function( json )
+		{
+			if ( json.response == "success" ) {
+				if ( isAdvanced ) {
+					previewAdvandReport();
+				}
+				else previewExportReport();
 			}
-			else previewExportReport();
-		}
-		else {
-			unLockScreen();
-			showWarningMessage( json.message );
-		}
-	});
+			else {
+				unLockScreen();
+				showWarningMessage( json.message );
+			}
+		});
+	}
 }
 
 function previewExportReport()

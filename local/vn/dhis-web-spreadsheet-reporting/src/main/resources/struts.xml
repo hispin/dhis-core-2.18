@@ -713,6 +713,8 @@
 				generateReportOrgGroupListing.action</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
 				generateReportPeriodColumnListing.action</result>
+			<result name="MULTI" type="redirect">
+				generateMultiReport.action</result>
 		</action>
 
 		<action name="generateReportAttribute"
@@ -747,6 +749,12 @@
 
 		<action name="generateReportPeriodColumnListing"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportPeriodColumnListingAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+
+		<action name="generateMultiReport"
+			class="org.hisp.dhis.reportsheet.exporting.action.GenerateMultiReportAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
@@ -872,6 +880,8 @@
 				generatePreviewOrgGroupListing.action</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
 				generatePreviewPeriodColumnListing.action</result>
+			<result name="MULTI" type="redirect">
+				generatePreviewMultiReport.action</result>
 		</action>
 
 		<action name="generatePreviewAttribute"
@@ -906,6 +916,12 @@
 
 		<action name="generatePreviewPeriodColumnListing"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportPeriodColumnListingAction">
+			<result name="success" type="redirect">exportXML.action
+			</result>
+		</action>
+
+		<action name="generatePreviewMultiReport"
+			class="org.hisp.dhis.reportsheet.exporting.action.GenerateMultiReportAction">
 			<result name="success" type="redirect">exportXML.action
 			</result>
 		</action>

@@ -1,5 +1,5 @@
 <h3>$i18n.getString( "generate_export_report" ) #openHelp( "excelReportingExportReport" )</h3>
-<div class="inputCriteria" style="width:485px;height:93px;">
+<div id="exportReportDiv" class="inputCriteria" style="width:485px;height:120px;">
 <table>	
 	<tr>
 		<td><label>$i18n.getString('organisation')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -16,12 +16,30 @@
 		</td>
     </tr>
 	<tr>
+		<td><label>$i18n.getString('export_type')</label></td>
+		<td>
+			<select type="text" id="multiExport" name="multiExport" style="width:300px" onchange="changeExportType( this.value )">
+				<option value="0">$i18n.getString('export_single')</option>
+				<option value="1">$i18n.getString('export_multi')</option>
+			</select>
+		</td>
+    </tr>
+	<tr>
 		<td><label>$i18n.getString('export_reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="exportReport" name="exportReport" style="width:300px" onchange="reportSelected()"></select>
 		</td>
     </tr>
-	<tr>
+	<tr id="periodTypeRow">
+		<td><label>$i18n.getString('period_type')</label></td>
+		<td>
+			<select type="text" id="periodType" name="periodType" style="width:220px" onchange="reportSelected( this.value )">
+				<option value="Daily">$i18n.getString('Daily')</option>
+				<option value="Monthly">$i18n.getString('Monthly')</option>
+			</select>
+		</td>
+    </tr>
+	<tr id="periodRow">
 		<td><label>$i18n.getString('period')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select type="text" id="selectedPeriodId" name="selectedPeriodId" style="width:220px"></select>
@@ -48,10 +66,11 @@
 	var i18n_specify_export_report = '$encoder.jsEscape( $i18n.getString("specify_export_report"), "'" )';
 
 	#if ( $organisationUnit )
-		$(document).ready(function()
+		jQuery(document).ready(function()
 		{
 			currentOrgunitName = '$organisationUnit.name';
 			getExportReportsByGroup( currentOrgunitName );
+			changeExportType( 0 );
 		});
 	#end
 	
