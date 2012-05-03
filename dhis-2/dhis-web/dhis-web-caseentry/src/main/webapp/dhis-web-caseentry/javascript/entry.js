@@ -5,6 +5,7 @@
 
 function loadProgramStages()
 {
+	jQuery('#createNewEncounterDiv').dialog('close');
 	hideById('dataEntryFormDiv');
 	clearListById('programStageId');
 	setFieldValue('executionDate','');
@@ -637,7 +638,7 @@ function doComplete()
 					disable('completeBtn');
 					disable('executionDate');
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
-					if( irregular == 'true')
+					if( irregular == 'true' )
 					{
 						jQuery('#createNewEncounterDiv').dialog({
 								title: i18n_create_new_encounter,
@@ -651,7 +652,7 @@ function doComplete()
 					}
 					
 					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');
-					if( selectedProgram.attr('singleevent')=='true' )
+					if( selectedProgram.attr('singleevent')=='true' && irregular == 'false' )
 					{
 						selectedProgram.remove();
 					}
@@ -748,14 +749,9 @@ function registerIrregularEncounter( dueDate )
 	jQuery.postJSON( "registerIrregularEncounter.action",{ dueDate: dueDate }, 
 		function( json ) 
 		{   
-			loadDataEntry();
 			jQuery('#createNewEncounterDiv').dialog('close');
+			loadDataEntry();
 		});
-}
-
-function closeDueDateDiv()
-{
-	jQuery('#createNewEncounterDiv').dialog('close');
 }
 
 function autocompletedField( idField )

@@ -1,6 +1,7 @@
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
+	jQuery('#createNewEncounterDiv').dialog('close');
 	setInnerHTML( 'contentDiv', '' );
 	setFieldValue( 'orgunitName', orgUnitNames[0] );
 	
@@ -24,6 +25,7 @@ function showSearchForm()
 	hideById('dataEntryFormDiv');
 	showById('searchPatientDiv');
 	showById('contentDiv');
+	jQuery('#createNewEncounterDiv').dialog('close');
 }
 
 //--------------------------------------------------------------------------------------------
