@@ -1,3 +1,4 @@
+<script type="text/javascript" src="javascript/equipment.js"></script>
 ## Macro for generating the jQuery validation rules 
 #macro( validate $type $require )
   #if( $type == "NUMBER" )
@@ -33,14 +34,14 @@
 <h3>$i18n.getString( "update_equipment" )</h3>   
 
 <form id="equipmentForm" name="equipmentForm" method="post" >
-	<input type="text" id="equipmentInstanceID" name="equipmentInstanceID" value="$equipmentInstance.id" />
+	<input type="hidden" id="equipmentInstanceID" name="equipmentInstanceID" value="$equipmentInstance.id" />
 	<table>
 		<tr>
 			<td>$i18n.getString( "registering_unit" ) : </td>
 			<td>$equipmentInstance.organisationUnit.name</td>
 		</tr>	
 		<tr>
-			<td>$i18n.getString( "inventory_type" ) : </th>
+			<td>$i18n.getString( "inventorytype" ) : </th>
 			<td>$equipmentInstance.inventoryType.name</th>
 		</tr>
 

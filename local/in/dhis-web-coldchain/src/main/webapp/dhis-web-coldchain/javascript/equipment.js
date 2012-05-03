@@ -176,8 +176,8 @@ function showEquipmentStatusHistoryForm( equipmentInstanceId )
 {
 	//hideById('listEquipmentDiv');
 	hideById('editEquipmentStatusDiv');
-	hideById('selectDiv');
-	hideById('searchEquipmentDiv');
+	//hideById('selectDiv');
+	//hideById('searchEquipmentDiv');
 	
 	setInnerHTML('editEquipmentDiv', '');
 	
@@ -185,7 +185,7 @@ function showEquipmentStatusHistoryForm( equipmentInstanceId )
 	
 	jQuery('#equipmentStatusHistoryDiv').dialog('destroy').remove();
 	jQuery('<div id="equipmentStatusHistoryDiv">' ).load( 'showEquipmentStatusHistoryForm.action?equipmentInstanceId='+equipmentInstanceId ).dialog({
-		title: 'i18n_equipment_status_history',
+		title: i18n_equipment_status_history,
 		maximize: true, 
 		closable: true,
 		modal:true,
