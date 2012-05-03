@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.preview.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,8 @@ package org.hisp.dhis.reportsheet.preview.action;
  */
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
@@ -87,15 +89,29 @@ public class ExportXMLAction
     {
         try
         {
-            xmlStructureResponse = new XMLStructureResponse( selectionManager.getDownloadFilePath(),
-                exportReportService.getSheets( selectionManager.getSelectedReportId() ), false, false, true, false,
-                true ).getXml();
+            Set<Integer> sheets = new HashSet<Integer>();
+            Integer reportId = selectionManager.getSelectedReportId();
+
+            if ( reportId != null )
+            {
+                sheets = new HashSet<Integer>( exportReportService.getSheets( reportId ) );
+            }
+            else
+            {
+                for ( String id : selectionManager.getListObject() )
+                {
+                    sheets.addAll( exportReportService.getSheets( Integer.parseInt( id ) ) );
+                }
+            }
+
+            xmlStructureResponse = new XMLStructureResponse( selectionManager.getDownloadFilePath(), sheets, false,
+                false, true, false, true ).getXml();
 
             return SUCCESS;
         }
         catch ( Exception e )
         {
-            System.out.println( e.toString() );
+            System.out.println( "Error at previewing : " + e.getMessage() );
             return ERROR;
         }
     }

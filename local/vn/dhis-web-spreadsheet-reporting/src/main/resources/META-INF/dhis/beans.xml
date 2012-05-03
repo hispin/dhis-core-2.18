@@ -578,6 +578,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportPeriodColumnListingAction"
 		scope="prototype" />
 
+	<bean
+		id="org.hisp.dhis.reportsheet.exporting.action.GenerateMultiReportAction"
+		class="org.hisp.dhis.reportsheet.exporting.action.GenerateMultiReportAction"
+		scope="prototype" />
+
 	<!-- DATA ENTRY STATUS BEAN -->
 
 	<bean

@@ -71,11 +71,11 @@ public class ValidateGenerateExportReportAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String exportReportId;
+    private String[] exportReportIds;
 
-    public void setExportReportId( String exportReportId )
+    public void setExportReportIds( String[] exportReportIds )
     {
-        this.exportReportId = exportReportId;
+        this.exportReportIds = exportReportIds;
     }
 
     private String periodIndex;
@@ -92,21 +92,10 @@ public class ValidateGenerateExportReportAction
     public String execute()
         throws Exception
     {
-        Integer reportId = Integer.parseInt( exportReportId.split( "_" )[0] );
-
-        ExportReport exportReport = exportReportService.getExportReport( reportId );
-
-        if ( exportReport == null )
+        if ( exportReportIds == null || exportReportIds.length == 0 )
         {
-            message = i18n.getString( "the_specified_report_is_not_exist" );
+            message = i18n.getString( "specify_export_report" );
 
-            return ERROR;
-        }
-
-        message = exportReportService.validateEmportItems( exportReport, i18n );
-
-        if ( message != null )
-        {
             return ERROR;
         }
 
@@ -119,18 +108,46 @@ public class ValidateGenerateExportReportAction
             return ERROR;
         }
 
-        File templateFile = new File( templateDirectory, exportReport.getExcelTemplateFile() );
-
-        if ( templateFile == null || !templateFile.exists() )
+        for ( String exportReportId : exportReportIds )
         {
-            message = i18n.getString( "template_file_is_not_exist" );
+            Integer reportId = Integer.parseInt( exportReportId.split( "_" )[0] );
 
-            return ERROR;
+            ExportReport exportReport = exportReportService.getExportReport( reportId );
+
+            if ( exportReport == null )
+            {
+                message = i18n.getString( "the_specified_report_is_not_exist" );
+
+                return ERROR;
+            }
+
+            message = exportReportService.validateEmportItems( exportReport, i18n );
+
+            if ( message != null )
+            {
+                return ERROR;
+            }
+
+            File templateFile = new File( templateDirectory, exportReport.getExcelTemplateFile() );
+
+            if ( templateFile == null || !templateFile.exists() )
+            {
+                message = i18n.getString( "template_file_is_not_exist" );
+
+                return ERROR;
+            }
         }
 
         selectionManager.setSelectedPeriodIndex( periodIndex );
 
-        selectionManager.setSelectedReportId( reportId );
+        if ( exportReportIds.length == 1 )
+        {
+            selectionManager.setSelectedReportId( Integer.parseInt( exportReportIds[0] ) );
+        }
+        else
+        {
+            selectionManager.setListObject( exportReportIds );
+        }
 
         return SUCCESS;
     }

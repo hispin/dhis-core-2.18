@@ -46,10 +46,10 @@ public class GenerateExcelReportFlowAction
     // Dependency
     // -------------------------------------------------------------------------
 
-	@Autowired
+    @Autowired
     private ExportReportService exportReportService;
 
-	@Autowired
+    @Autowired
     private SelectionManager selectionManager;
 
     // -------------------------------------------------------------------------
@@ -75,7 +75,14 @@ public class GenerateExcelReportFlowAction
     public String execute()
         throws Exception
     {
-        ExportReport exportReport = exportReportService.getExportReport( selectionManager.getSelectedReportId() );
+        Integer reportId = selectionManager.getSelectedReportId();
+        
+        if ( reportId == null )
+        {
+            return "MULTI";
+        }
+        
+        ExportReport exportReport = exportReportService.getExportReport( reportId );
 
         return exportReport.getReportType();
     }
