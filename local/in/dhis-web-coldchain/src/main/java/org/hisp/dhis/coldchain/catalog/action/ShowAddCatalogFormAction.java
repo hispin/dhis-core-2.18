@@ -1,10 +1,14 @@
 package org.hisp.dhis.coldchain.catalog.action;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
+import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -32,10 +36,18 @@ implements Action
     {
         this.catalogTypeId = catalogTypeId;
     }
-
+/*
     private Collection<CatalogTypeAttribute> catalogTypeAttributes;
     
     public Collection<CatalogTypeAttribute> getCatalogTypeAttributes()
+    {
+        return catalogTypeAttributes;
+    }
+*/    
+    
+    private List<CatalogTypeAttribute> catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>();
+    
+    public List<CatalogTypeAttribute> getCatalogTypeAttributes()
     {
         return catalogTypeAttributes;
     }
@@ -49,7 +61,11 @@ implements Action
         
         CatalogType catalogType = catalogTypeService.getCatalogType( catalogTypeId );
         
-        catalogTypeAttributes = catalogType.getCatalogTypeAttributes();
+        //catalogTypeAttributes =  catalogType.getCatalogTypeAttributes();
+        
+        catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes());
+        Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
+        
         /*
         System.out.println( "Name of CatalogType is ======  :" + catalogType.getName() );
         System.out.println( "Size of catalogTypeAttributes  :" + catalogTypeAttributes.size() );

@@ -1,3 +1,39 @@
+// ----------------------------------------------------------------
+// organization Unit Selected
+// ----------------------------------------------------------------
+function organisationUnitSelected( orgUnits )
+{   
+	document.getElementById('selectedOrgunitID').value = orgUnits;
+    
+	showById('selectDiv');
+    disable('listAllEquipmentBtn');
+    
+    hideById('searchEquipmentDiv');
+    hideById('listEquipmentDiv');
+    hideById('editEquipmentDiv');
+	hideById('resultSearchDiv');
+    
+	   $.getJSON( 'getOrganisationUnit.action', {orgunitId:orgUnits[0]}
+        , function( json ) 
+        {
+            var type = json.response;
+            setFieldValue('selectedOrgunitText', json.message );
+                
+            if( type == 'success' )
+            {
+            	//showById('searchEquipmentDiv');
+				enable('listAllEquipmentBtn');
+                setInnerHTML('warnmessage','');
+                setFieldValue('selectedOrgunitText', json.message );
+            }
+            else if( type == 'input' )
+            {
+                setInnerHTML('warnmessage', i18n_can_not_register_patient_for_orgunit);
+                disable('listPatientBtn');
+            }
+        } );
+}
+selection.setListenerFunction( organisationUnitSelected );
 
 // ----------------------------------------------------------------
 // On InventoryType Change - Loading InventoryTypeAttributes
@@ -62,7 +98,8 @@ function loadAllEquipments()
 	
 	if( inventoryTypeId == 0 )
 	{	
-		alert("Plese select Inventorytype");
+		//alert("Plese select Inventorytype");
+		showWarningMessage( i18n_select_inventorytype );
 		return;
 	}
 	
