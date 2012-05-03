@@ -257,7 +257,11 @@ public class HibernatePatientAttributeValueStore
             String firstName = searchText.toString();
             String middleName = "";
             String lastName = "";
-
+            
+            // ---------------------------------------------------------------------
+            // search patients by full-name or identifier
+            // ---------------------------------------------------------------------
+            
             if ( searchText.indexOf( ' ' ) != -1 )
             {
                 firstName = searchText.substring( 0, startIndex );
@@ -281,9 +285,21 @@ public class HibernatePatientAttributeValueStore
 
             isSearchByAttribute = false;
         }
-        // -----------------------------------------------------------------
+        
+        // ---------------------------------------------------------------------
+        // search patients by birth-date
+        // ---------------------------------------------------------------------
+        
+        else if ( patientAttributeId == -1 )
+        {
+            hql += " ( SELECT p" + index + " FROM Patient AS p" + index 
+                + " WHERE p" + index + ".birthDate='" + searchText+ "'";
+            isSearchByAttribute = false; 
+        }
+        
+        // ---------------------------------------------------------------------
         // search patients by program
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------------------
         else if ( patientAttributeId == 0 )
         {
             hql += " ( SELECT p" + index + " FROM Patient AS p" + index + " " + " JOIN p" + index
