@@ -289,7 +289,11 @@ jQuery.each(attributes, function(i, item) {
 		#set( $text = $attribute.name )
 		#set( $id = $attribute.id )
 		#set( $mandatory = $attribute.mandatory )
-		#set( $value = $!args.attributeValues.get( $attribute.id ) )
+		#if( $!args.attributeValues.get( $attribute.id ) )
+			#set( $value = $!args.attributeValues.get( $attribute.id ) )
+		#else
+			#set( $value = "" )
+		#end
 
 		#if( $attribute.valueType == "string" )
 			#trTextInput( { "text": $text, "id": "attribute_$id", "mandatory": $mandatory, "value": $value } )
