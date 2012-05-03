@@ -528,6 +528,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <value>mali</value>
         <value>mozambique</value>
         <value>namibia</value>
+        <value>niger</value>
         <value>nigeria</value>
         <value>norway</value>
         <value>philippines</value>
