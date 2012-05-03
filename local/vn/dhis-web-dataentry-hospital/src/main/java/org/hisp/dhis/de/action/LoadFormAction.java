@@ -1,3 +1,5 @@
+package org.hisp.dhis.de.action;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -25,14 +27,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataelement;
-
-/**
- * @author Chau Thu Tran
- *
- * @version $LoadFormAction.java Mar 23, 2012 04:10:41 PM$
- */
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,6 +36,16 @@ import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementFormNameComparator;
+import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.LocalDataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
@@ -52,6 +56,9 @@ import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
+/**
+ * @author Torgeir Lorange Ostby
+ */
 public class LoadFormAction
     implements Action
 {
@@ -61,29 +68,33 @@ public class LoadFormAction
 
     private DataEntryFormService dataEntryFormService;
 
+    private DataElementService dataElementService;
+
+    private DataSetService dataSetService;
+
+    private AttributeService attributeService;
+
+    private LocalDataElementService localDataElementService;
+
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
     }
-
-    private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
 
-    private DataSetService dataSetService;
-
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
 
-    private AttributeService attributeService;
-    
-    private LocalDataElementService localDataElementService;
-  
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
@@ -92,16 +103,6 @@ public class LoadFormAction
     public void setLocalDataElementService( LocalDataElementService localDataElementService )
     {
         this.localDataElementService = localDataElementService;
-    }
-
-    public void setAttributeId( int attributeId )
-    {
-        this.attributeId = attributeId;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
     }
 
     private I18n i18n;
@@ -120,6 +121,20 @@ public class LoadFormAction
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
+    }
+
+    private Integer attributeId;
+
+    public void setAttributeId( Integer attributeId )
+    {
+        this.attributeId = attributeId;
+    }
+
+    private String value;
+
+    public void setValue( String value )
+    {
+        this.value = value;
     }
 
     // -------------------------------------------------------------------------
@@ -203,10 +218,6 @@ public class LoadFormAction
         return greyedFields;
     }
 
-    private Integer attributeId;
-
-    private String value;
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -231,9 +242,10 @@ public class LoadFormAction
                 value );
 
             dataElements.retainAll( dataElementsByAttr );
+
         }
 
-        Collections.sort( dataElements, new DataElementFormNameComparator()  );
+        Collections.sort( dataElements, new DataElementFormNameComparator() );
 
         orderedDataElements = dataElementService.getGroupedDataElementsByCategoryCombo( dataElements );
 
@@ -362,7 +374,7 @@ public class LoadFormAction
         {
             des = (List<DataElement>) orderedDataElements.get( categoryCombo );
 
-            Collections.sort( des, new DataElementFormNameComparator() );
+            Collections.sort( des, IdentifiableObjectNameComparator.INSTANCE );
 
             orderedDataElements.put( categoryCombo, des );
         }

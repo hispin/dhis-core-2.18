@@ -70,7 +70,8 @@ var FORMTYPE_DEFAULT = 'default';
 $( document ).ready( function()
 {
     $.ajaxSetup( {
-        type: 'POST'
+        type: 'POST',
+        cache: false
     } );
 
     selection.setListenerFunction( organisationUnitSelected );
@@ -144,7 +145,6 @@ function loadMetaData()
 
     $.ajax( {
     	url: 'getMetaData.action',
-    	cache: false,
     	dataType: 'json',
     	success: function( json )
 	    {
@@ -202,7 +202,6 @@ function uploadLocalData()
             url: 'registerCompleteDataSet.action',
             data: value,
             dataType: 'json',
-            cache: false,
             success: function( data, textStatus, jqXHR )
             {
                 if ( data.status == 2 )
@@ -255,7 +254,6 @@ function uploadLocalData()
             url: 'saveValue.action',
             data: value,
             dataType: 'json',
-            cache: false,
             success: function( data, textStatus, jqXHR )
             {
                 if ( data.c == 2 ) {
@@ -378,31 +376,32 @@ function clearEntryForm()
 
     dataEntryFormIsLoaded = false;
 
-    $( '#completenessDiv' ).css( 'display', 'none' );
+    $( '#completenessDiv' ).hide();
+    $( '#infoDiv' ).hide();
 }
 
-function loadForm( dataSetId )
+function loadForm( dataSetId, attributeId, value )
 {
-    /* if ( storageManager.formExists( dataSetId ) )
+    if ( storageManager.formExists( dataSetId, attributeId, value ) )
     {
         log( 'Loading form locally: ' + dataSetId );
 
-        var html = storageManager.getForm( dataSetId );
+        var html = storageManager.getForm( dataSetId, attributeId, value );
 
         $( '#contentDiv' ).html( html );
 
         loadDataValues();
     }
     else
-    {*/
+    {
         log( 'Loading form remotely: ' + dataSetId );
 
-        $( '#contentDiv' ).load( '../dhis-web-dataentry-hospital/loadForm.action', {
+        $( '#contentDiv' ).load( 'loadForm.action', {
             dataSetId : dataSetId,
-			attributeId: getFieldValue( 'attributeId' ),
-			value: byId( 'valueInput' ).value
+			attributeId: attributeId,
+			value: value
         }, loadDataValues );
-    //}
+    }
 }
 
 function getDataElementType( dataElementId )
@@ -518,8 +517,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
         if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
         {
             showLoader();
-			loadForm( dataSetId );
-            //loadDataValues();
+            loadDataValues();
         }
     }
     else
@@ -597,7 +595,7 @@ function dataSetSelected()
         {
             showLoader();
             $( '#selectedPeriodId' ).val( periodId );
-            loadForm( dataSetId );
+            loadForm( dataSetId, getFieldValue( 'attributeId' ), byId( 'valueInput' ).value );
         }
         else
         {
@@ -627,11 +625,11 @@ function periodSelected()
 
         //if ( dataEntryFormIsLoaded )
         //{
-        //   loadDataValues();
+        //    loadDataValues();
         //}
         //else
         //{
-            loadForm( dataSetId );
+            loadForm( dataSetId, getFieldValue( 'attributeId' ), byId( 'valueInput' ).value );
         //}
     }
 }
@@ -677,11 +675,18 @@ function insertDataValues()
 	    {
 	        periodId : periodId,
 	        dataSetId : dataSetId,
+			attributeId: getFieldValue( 'attributeId' ),
+			value: byId( 'valueInput' ).value,
 	        organisationUnitId : currentOrganisationUnitId
 	    },
-	    cache: false,
 	    dataType: 'json',
-	    success: function( json )
+	    error: function() // offline
+	    {
+	    	$( '#contentDiv' ).show();
+	    	$( '#completenessDiv' ).show();
+	    	$( '#infoDiv' ).hide();
+	    },
+	    success: function( json ) // online
 	    {
 	    	if ( json.locked )
 	    	{
@@ -696,8 +701,7 @@ function insertDataValues()
 	    		$( '#completenessDiv' ).show();
 	    	}
 	    	
-	        // Set data values, works for select lists too as data
-	        // value = select value
+	        // Set data values, works for selects too as data value=select value
 
 	        $.each( json.dataValues, function( i, value )
 	        {
@@ -746,7 +750,7 @@ function insertDataValues()
 
 	            if ( json.storedBy )
 	            {
-	                $( '#infoDiv' ).css( 'display', 'block' );
+	                $( '#infoDiv' ).show();
 	                $( '#completedBy' ).html( json.storedBy );
 	                $( '#completedDate' ).html( json.date );
 
@@ -757,7 +761,7 @@ function insertDataValues()
 	        {
 	            $( '#completeButton' ).removeAttr( 'disabled' );
 	            $( '#undoButton' ).attr( 'disabled', 'disabled' );
-	            $( '#infoDiv' ).css( 'display', 'none' );
+	            $( '#infoDiv' ).hide();
 	        }
 	    }
 	} );
@@ -862,7 +866,6 @@ function validateCompleteDataSet()
 
         $.ajax( { url: 'getValidationViolations.action',
         	data: params,
-        	cache: false,
         	dataType: 'json',
         	success: function( data )
 	        {
@@ -886,7 +889,6 @@ function registerCompleteDataSet( json )
     $.ajax( {
     	url: 'registerCompleteDataSet.action',
     	data: params,
-    	cache: false,
         dataType: 'json',
     	success: function(data)
         {
@@ -924,7 +926,6 @@ function undoCompleteDataSet()
         $.ajax( {
         	url: 'undoCompleteDataSet.action',
         	data: params,
-        	cache: false,
         	dataType: 'json',
         	success: function(data)
 	        {
@@ -1104,13 +1105,20 @@ function updateExistingLocalForms()
     {
         var localId = formIds[i];
 
-        var remoteVersion = dataSets[localId].version;
-        var localVersion = formVersions[localId];
+		if( dataSets[localId] == null )
+		{
+			storageManager.downloadForm( localId, remoteVersion );
+		}
+		else
+		{
+			var remoteVersion = dataSets[localId].version;
+			var localVersion = formVersions[localId];
 
-        if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
-        {
-            storageManager.downloadForm( localId, remoteVersion );
-        }
+			if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
+			{
+				storageManager.downloadForm( localId, remoteVersion );
+			}
+		}
     }
 }
 
@@ -1122,7 +1130,7 @@ function downloadRemoteForms()
 
         if ( !storageManager.formExists( dataSetId ) )
         {
-            storageManager.downloadForm( dataSetId, remoteVersion );
+            storageManager.downloadForm( dataSetId, getFieldValue( 'attributeId' ), byId( 'valueInput' ).value, remoteVersion );
         }
     }
 }
@@ -1142,10 +1150,10 @@ function StorageManager()
     var MAX_SIZE = new Number( 2600000 );
     var MAX_SIZE_FORMS = new Number( 1600000 );
 
-    var KEY_FORM_PREFIX = 'form-';
-    var KEY_FORM_VERSIONS = 'formversions';
-    var KEY_DATAVALUES = 'datavalues';
-    var KEY_COMPLETEDATASETS = 'completedatasets';
+    var KEY_FORM_PREFIX = 'form-ds-';
+    var KEY_FORM_VERSIONS = 'formversions-';
+    var KEY_DATAVALUES = 'datavalues-';
+    var KEY_COMPLETEDATASETS = 'completedatasets-';
 
     /**
      * Returns the total number of characters currently in the local storage.
@@ -1243,9 +1251,9 @@ function StorageManager()
      * @param dataSetId the identifier of the data set of the form.
      * @return the content of a data entry form.
      */
-    this.getForm = function( dataSetId )
+    this.getForm = function( dataSetId, attributeId, value )
     {
-        var id = KEY_FORM_PREFIX + dataSetId;
+        var id = KEY_FORM_PREFIX + dataSetId + "_" + attributeId + "_" + value;
 
         return localStorage[id];
     };
@@ -1255,9 +1263,9 @@ function StorageManager()
      *
      * @param dataSetId the identifier of the data set of the form.
      */
-    this.deleteForm = function( dataSetId )
+    this.deleteForm = function( dataSetId, attributeId, value )
     {
-    	var id = KEY_FORM_PREFIX + dataSetId;
+    	var id = KEY_FORM_PREFIX + dataSetId + "_" + attributeId + "_" + value;
 
         localStorage.removeItem( id );
     };
@@ -1294,9 +1302,9 @@ function StorageManager()
      * @param dataSetId the identifier of the data set of the form.
      * @return true if a form exists, false otherwise.
      */
-    this.formExists = function( dataSetId )
+    this.formExists = function( dataSetId, attributeId, value )
     {
-        var id = KEY_FORM_PREFIX + dataSetId;
+        var id = KEY_FORM_PREFIX + dataSetId + "_" + attributeId + "_" +  value;
 
         return localStorage[id] != null;
     };
@@ -1309,22 +1317,23 @@ function StorageManager()
      * @param dataSetId the identifier of the data set of the form.
      * @param formVersion the version of the form of the remote data set.
      */
-    this.downloadForm = function( dataSetId, formVersion )
+    this.downloadForm = function( dataSetId, attributeId, value, formVersion )
     {
         $.ajax( {
-            url: '../dhis-web-dataentry-hospital/loadForm.action',
+            url: 'loadForm.action',
             data:
             {
-                dataSetId : dataSetId
+                dataSetId : dataSetId,
+				attributeId: attributeId,
+				value: value
             },
             dataSetId: dataSetId,
             formVersion: formVersion,
-            cache: false,
             dataType: 'text',
             success: function( data, textStatus, jqXHR )
             {
-                storageManager.saveForm( this.dataSetId, data );
-                storageManager.saveFormVersion( this.dataSetId, this.formVersion );
+                storageManager.saveForm( this.dataSetId, attributeId, value, data );
+                storageManager.saveFormVersion( this.dataSetId, attributeId, value, this.formVersion );
             }
         } );
     };
@@ -1335,8 +1344,10 @@ function StorageManager()
      * @param the identifier of the data set of the form.
      * @param formVersion the version of the form.
      */
-    this.saveFormVersion = function( dataSetId, formVersion )
+    this.saveFormVersion = function( dataSetId, attributeId, value, formVersion )
     {
+		var id = dataSetId + "_" + attributeId + "_" + value;
+		
         var formVersions = {};
 
         if ( localStorage[KEY_FORM_VERSIONS] != null )
@@ -1344,7 +1355,7 @@ function StorageManager()
             formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
         }
 
-        formVersions[dataSetId] = formVersion;
+        formVersions[id] = formVersion;
 
         try
         {
@@ -1364,13 +1375,15 @@ function StorageManager()
      * @param dataSetId the identifier of the data set of the form.
      * @return the form version.
      */
-    this.getFormVersion = function( dataSetId )
+    this.getFormVersion = function( dataSetId, attributeId, value )
     {
+		var id = dataSetId + "_" + attributeId + "_" + value;
+		
         if ( localStorage[KEY_FORM_VERSIONS] != null )
         {
             var formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
 
-            return formVersions[dataSetId];
+            return formVersions[id];
         }
 
         return null;
@@ -1381,15 +1394,17 @@ function StorageManager()
      *
      * @param dataSetId the identifier of the data set of the form.
      */
-    this.deleteFormVersion = function( dataSetId )
+    this.deleteFormVersion = function( dataSetId, attributeId, value )
     {
     	if ( localStorage[KEY_FORM_VERSIONS] != null )
         {
-            var formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
+			var id = dataSetId + "_" + attributeId + "_" + value;
+		
+			var formVersions = JSON.parse( localStorage[KEY_FORM_VERSIONS] );
 
-            if ( formVersions[dataSetId] != null )
+            if ( formVersions[id] != null )
             {
-                delete formVersions[dataSetId];
+                delete formVersions[id];
                 localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
             }
         }
@@ -1645,7 +1660,7 @@ function getAttributes()
 function getSuggestedAttrValue()
 {
 	clearListById( 'value' );
-	$.getJSON( '../dhis-web-dataentry-hospital/loadAttributeValuesByAttribute.action',
+	$.getJSON( 'loadAttributeValuesByAttribute.action',
 		{
 			attributeId: getFieldValue( 'attributeId' )
 		}
@@ -1704,9 +1719,9 @@ function autoCompletedField()
 					});
 					if ( !valid ) {
 						// remove invalid value, as it didn't match anything
-						$( this ).val( "" );
-						select.val( "" );
-						input.data( "autocomplete" ).term = "";
+						//$( this ).val( "" );
+						//select.val( "" );
+						//input.data( "autocomplete" ).term = "";
 						return false;
 					}
 				}

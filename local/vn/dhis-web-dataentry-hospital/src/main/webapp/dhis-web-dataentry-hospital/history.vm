@@ -33,7 +33,7 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
                     <td style="background-color:#d54a4a; height:26px;">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
                     <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}" class="{validate:{digits:true}}" 
-                        #if( !$auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) ) disabled="disabled"#end />
+                        #if( !$auth.hasAccess( "dhis-web-dataentry-hospital", "saveMinMaxLimits" ) ) disabled="disabled"#end />
 						<i><span id="minSpan" style="color:red"></span></i>
 					</td>
                 </tr>
@@ -41,7 +41,7 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
                     <td style="background-color:#2e4e83; height:26px;">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
                     <td><input type="text" id="maxLimit" style="width:10em" value="$!{dataElementHistory.maxLimit}" class="{validate:{digits:true}}" 
-                    	#if( !$auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) ) disabled="disabled"#end />
+                    	#if( !$auth.hasAccess( "dhis-web-dataentry-hospital", "saveMinMaxLimits" ) ) disabled="disabled"#end />
 						<i><span id="maxSpan" style="color:red"></span></i>
 					</td>
                 </tr>
