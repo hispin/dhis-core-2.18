@@ -1,11 +1,11 @@
 
 <table>
 	<tr>
-		<th>Reporting Date</th>
-		<th>Date of Updation</th>
-		<th>Status</th>
-		<th>Description</th>
-		<th>Stored by</th>
+		<th>$i18n.getString( "reporting_date" )</th>
+		<th>$i18n.getString( "updation_date" )</th>
+		<th>$i18n.getString( "status" )</th>
+		<th>$i18n.getString( "description" )</th>
+		<th>$i18n.getString( "stored_by" )</th>
 	</tr>
 	
 	#foreach( $equimentStatus in $equipmentStatusHistory )

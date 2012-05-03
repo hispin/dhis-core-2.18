@@ -23,7 +23,7 @@
 <h3>$i18n.getString( "equipmentstatus" )</h3>
 
 <form id="equipmentStatusForm" name="equipmentStatusForm" method="post" >
-	<input type="text" id="equipmentInstanceId" name="equipmentInstanceId" value="$equipmentInstanceId" />
+	<input type="hidden" id="equipmentInstanceId" name="equipmentInstanceId" value="$equipmentInstanceId" />
     <table>
         <tr>
             <td>$i18n.getString( "reporting_date" ) : </td>
@@ -56,7 +56,7 @@
         </tr>
         <tr>
             <td>$i18n.getString( "description" ) : </td>
-            <td><textarea id="description" name="description" style="width: 240px; height:8em;"></textarea></td>
+            <td><textarea id="description" name="description"></textarea></td>
         </tr>
 	</table>
 

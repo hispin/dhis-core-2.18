@@ -60,6 +60,7 @@
 #parse( "/dhis-web-commons/loader/loader.vm" )
 
 <script>
+	var i18n_equipment_status_history = '$encoder.jsEscape( $i18n.getString( "equipment_status_history" ) , "'")';
     var i18n_select_inventorytype = '$encoder.jsEscape( $i18n.getString( "select_inventorytype" ) , "'")';
     var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
     var i18n_can_not_register_patient_for_orgunit = '$encoder.jsEscape( $i18n.getString( "can_not_register_patient_for_orgunit" ), "'")';   

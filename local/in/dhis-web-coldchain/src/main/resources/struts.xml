@@ -378,6 +378,7 @@
             class="org.hisp.dhis.coldchain.equipment.action.ShowAddEquipmentFormAction">
             <result name="success" type="velocity">/content.vm</result>
             <param name="page">/dhis-web-coldchain/addEquipmentForm.vm</param>
+			<param name="stylesheets">css/basic.css</param>
             <param name="requiredAuthorities">F_EQUIPMENT_ADD</param>
         </action>
         <action name="addEquipment"
@@ -389,6 +390,7 @@
             class="org.hisp.dhis.coldchain.equipment.action.GetEquipmentInstanceDataAction">
             <result name="success" type="velocity">/content.vm</result>
             <param name="page">/dhis-web-coldchain/updateEquipmentForm.vm</param>
+			<param name="stylesheets">css/basic.css</param>
             <param name="requiredAuthorities">F_EQUIPMENT_UPDATE</param>
         </action>
         <action name="updateEquipment"
@@ -401,6 +403,7 @@
             class="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentStatusFormAction">
             <result name="success" type="velocity">/content.vm</result>
             <param name="page">/dhis-web-coldchain/equipmentStatusForm.vm</param>
+			<param name="stylesheets">css/basic.css</param>
             <param name="requiredAuthorities">F_EQUIPMENTSTATUS_UPDATE</param>
         </action>
 		
@@ -414,6 +417,7 @@
             class="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentStatusHistoryFormAction">
             <result name="success" type="velocity">/content.vm</result>
             <param name="page">/dhis-web-coldchain/showEquipmentStatusHistory.vm</param>
+			<param name="stylesheets">css/basic.css</param>
             <param name="requiredAuthorities">F_EQUIPMENTSTATUSHISTORY</param>
         </action>
 									
