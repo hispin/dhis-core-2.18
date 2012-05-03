@@ -152,6 +152,7 @@
 		</action>
 		
 		<!-- Beneficiary Enrollment -->
+		
 		<action name="selectEnrollmentOrganisationUnit"
 			class="org.hisp.dhis.light.beneficiaryenrollment.action.GetBeneficiaryEnrollmentOrganisationUnitAction">
 			<result name="success" type="velocity">
@@ -195,6 +196,37 @@
 				/mobile/selectEnrollmentProgram.action?beneficiaryId=${beneficiaryId}&amp;validated=true</result>
 			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/programEnrollmentForm.vm</param>
+		</action>
+		
+		<!-- Single Event -->
+		
+		<action name="selectSingleEvent"
+			class="org.hisp.dhis.light.singleevent.action.GetSingleEventAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/selectSingleEvent.vm</param>
+		</action>
+		
+		<action name="selectSingleEventBeneficiary"
+			class="org.hisp.dhis.light.singleevent.action.GetSingleEventBeneficiaryAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/selectSingleEventBeneficiary.vm</param>
+		</action>
+		
+		<action name="showSingleEventForm"
+			class="org.hisp.dhis.light.singleevent.action.GetSingleEventFormAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/singleEventForm.vm</param>
+		</action>
+		
+		<action name="saveSingleEvent"
+			class="org.hisp.dhis.light.singleevent.action.SaveSingleEventAction">
+			<result name="success" type="redirect">
+				/mobile/selectSingleEventBeneficiary.action?programId=${programId}&amp;organisationUnitId=${organisationUnitId}&amp;validated=true</result>
+			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/singleEventForm.vm</param>
 		</action>
 		
 		<!-- Reports -->

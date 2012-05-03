@@ -290,6 +290,57 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.light.dataentry.utils.FormUtils"/>
 	</bean>
 	
+	<!-- Single Event -->
+	
+	<bean id="org.hisp.dhis.light.singleevent.action.GetSingleEventAction"
+		class="org.hisp.dhis.light.singleevent.action.GetSingleEventAction"
+		scope="prototype">
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService"/>
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.singleevent.action.GetSingleEventBeneficiaryAction"
+		class="org.hisp.dhis.light.singleevent.action.GetSingleEventBeneficiaryAction"
+		scope="prototype">
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService"/>
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService"/>
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.light.singleevent.action.GetSingleEventFormAction"
+		class="org.hisp.dhis.light.singleevent.action.GetSingleEventFormAction"
+		scope="prototype">
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.light.singleevent.action.SaveSingleEventAction"
+		class="org.hisp.dhis.light.singleevent.action.SaveSingleEventAction"
+		scope="prototype">
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService"/>
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService"/>
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+		<property name="patientDataValueService"
+			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		<property name="util"
+			ref="org.hisp.dhis.light.utils.NamebasedUtils"/>
+	</bean>
+	
 	<!-- Dashboard -->
 	
 	<bean id="org.hisp.dhis.light.dashboard.action.ProvideContentAction"
