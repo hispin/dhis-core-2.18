@@ -72,7 +72,12 @@ function searchingAttributeOnChange( this_ )
 	var element = jQuery('#' + container+ ' [id=searchText]');
 	var valueType = jQuery('#' + container+ ' [id=searchingAttributeId] option:selected').attr('valueType');
 	
-	if( attributeId == '0' )
+	if( attributeId == '-1' )
+	{
+		element.replaceWith( getDateField( container ) );
+		datePickerValid( 'searchDateField-' + container + ' [id=searchText]' );
+	}
+	else if( attributeId == '0' )
 	{
 		element.replaceWith( programComboBox );
 	}
@@ -85,6 +90,13 @@ function searchingAttributeOnChange( this_ )
 		element.replaceWith( searchTextBox );
 	}
 }
+
+function getDateField( container )
+{
+	var dateField = '<div id="searchDateField-' + container + '" > <input type="text" id="searchText" name="searchText" maxlength="30" style="width:18em" onkeyup="searchPatientsOnKeyUp( event );"></div>';
+	return dateField;
+}
+	
 //-----------------------------------------------------------------------------
 // Search Patient
 //-----------------------------------------------------------------------------
@@ -95,7 +107,7 @@ function searchPatientsOnKeyUp( event )
 	
 	if ( key==13 )// Enter
 	{
-		searchPatients();
+		searchAdvancedPatients()();
 	}
 }
 

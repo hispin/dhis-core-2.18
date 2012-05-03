@@ -22,9 +22,10 @@
 				  <select id="searchingAttributeId" name="searchingAttributeId" style="width:20.2em"  #if( $patientAttributes.size() == 0 ) disabled="disabled" #end onchange="searchingAttributeOnChange(this)">
 					<option value="">$i18n.getString( "search_by_name_identifier" )</option>
 					<option value="0">$i18n.getString( "search_by_program" )</option>
-						#foreach( $attribute in $patientAttributes )
-							<option value="$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.name )</option>
-						#end
+					<option value="-1">$i18n.getString( "date_of_birth" )</option>
+					#foreach( $attribute in $patientAttributes )
+						<option value="$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.name )</option>
+					#end
 				  </select> 
 				  <em title="$i18n.getString( "required" )" class="required">*</em></label>
 				</td>		
@@ -131,16 +132,26 @@
 	isAjax = true;
 	contentDiv = '';
 	
+	// ----------------------------------------------------------------
+	// Search field
+	// ----------------------------------------------------------------
+	
 	var searchTextBox = '<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" onkeyup="searchPatientsOnKeyUp( event );">';
+	
 	var trueFalseBox  = '<select id="searchText" name="searchText" style="width:20.2em" >';
 		trueFalseBox += '<option value="true">' + i18n_yes + '</option>';
 		trueFalseBox += '<option value="false">' + i18n_no + '</option>';
 		trueFalseBox += '</select>';
+	
 	var programComboBox = '<select id="searchText" name="searchText" style="width:20.2em" >';
 	#foreach ( $program in $programs ) 
 		programComboBox += '<option value="$program.id">$program.name</option>';
 	#end
 	programComboBox += '</select>';
+	
+	// ----------------------------------------------------------------
+	// Search field
+	// ----------------------------------------------------------------
 	
 	#if( $status == 1 )
 		setFieldValue('selectedOrgunitText', i18n_please_select_village );

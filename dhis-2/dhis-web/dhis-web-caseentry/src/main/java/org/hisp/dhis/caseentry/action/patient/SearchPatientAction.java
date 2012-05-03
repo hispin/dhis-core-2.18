@@ -181,7 +181,7 @@ public class SearchPatientAction
 
         for ( Integer attributeId : searchingAttributeId )
         {
-            if ( attributeId != null && attributeId != 0 )
+            if ( attributeId != null && attributeId > 0 )
             {
                 patientAttributes.add( patientAttributeService.getPatientAttribute( attributeId ) );
             }

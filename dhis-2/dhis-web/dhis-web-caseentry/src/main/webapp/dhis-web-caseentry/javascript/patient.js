@@ -650,7 +650,7 @@ function loadPatientList()
 	}
 	else if( statusSearching == 1 )
 	{
-		searchPatients();
+		searchAdvancedPatients();
 	}
 }
 

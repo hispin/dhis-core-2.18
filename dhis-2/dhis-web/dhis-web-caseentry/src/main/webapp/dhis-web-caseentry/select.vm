@@ -24,9 +24,10 @@
 					  <select id="searchingAttributeId" name="searchingAttributeId" style="width:20.2em"  #if( $patientAttributes.size() == 0 ) disabled="disabled" #end onchange="searchingAttributeOnChange(this)">
 						<option value="">$i18n.getString( "search_by_name_identifier" )</option>
 						<option value="0">$i18n.getString( "search_by_program" )</option>
-							#foreach( $attribute in $patientAttributes )
-								<option value="$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.name )</option>
-							#end
+						<option value="-1">$i18n.getString( "date_of_birth" )</option>
+						#foreach( $attribute in $patientAttributes )
+							<option value="$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.name )</option>
+						#end
 					  </select> 
 					  <em title="$i18n.getString( "required" )" class="required">*</em></label>
 					</td>		

@@ -27,7 +27,7 @@
       <table class="listTable" id="patientList" width='100%'>               
           <col width="30"/>
 			#foreach( $attribute in $patientAttributes )
-				<col/>
+				#if($attribute)<col/>#end
 			#end
           <col/>
           <col/>
@@ -42,7 +42,9 @@
 			<tr>
 				<th>#</th>
 				#foreach( $attribute in $patientAttributes )
+					#if($attribute)
 					<th id="patientAttributeName">$attribute.name</th>
+					#end
 				#end
 				<th>$i18n.getString( "full_name" )</th>          
 				<th>$i18n.getString( "gender" )</th>
@@ -66,14 +68,16 @@
 				</td>
 				
 				#foreach( $attribute in $patientAttributes )
-					#set ( $key = $patient.id + '-' + $attribute.id )
-					<td>
-						#if( $attribute.valueType == 'YES/NO')
-							$i18n.getString( $mapPatientPatientAttr.get($key) )
-						#else
-							$mapPatientPatientAttr.get($key)
-						#end
-					</td>
+					#if( $attribute )
+						#set ( $key = $patient.id + '-' + $attribute.id )
+						<td>
+							#if( $attribute.valueType == 'YES/NO')
+								$i18n.getString( $mapPatientPatientAttr.get($key) )
+							#else
+								$mapPatientPatientAttr.get($key)
+							#end
+						</td>
+					#end
 				#end
 					
 				<td>$!patient.getFullName()</td>
