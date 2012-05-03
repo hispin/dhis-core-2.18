@@ -5,7 +5,7 @@
         <td>&nbsp;</td>
         <td>
         #if($!listAll)
-            $i18n.getString( "list_all_equipment" )
+            $i18n.getString( "list_all_equipments" )
         #else
             $i18n.getString( "search_equipment_by_attributes" )
         #end
