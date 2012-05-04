@@ -7,6 +7,14 @@
 			<tr>
 				<td>
 					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+					&nbsp;&nbsp;
+					<label>$i18n.getString( "select_catalogType" )</label>
+        			<select id="id" name="id" style="min-width:20em" onchange="getCatalogByCatalogType( this.value )">
+            			<option value="" selected="selected" >[ $i18n.getString( "all" ) ]</option>
+           			    	 #foreach( $catalogType in $catalogTypes )
+                				<option value="$catalogType.id" #if($id==$catalogType.id) selected="selected" #end>$catalogType.name</option>
+            				#end
+        			</select>
 				</td>
 				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='addCatalogForm.action'" style="width:70px"></td>
 			</tr>
