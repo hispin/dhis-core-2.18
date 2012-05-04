@@ -524,15 +524,9 @@ public class RelativePeriods
      * @param date   the date representing now, ignored if null.
      * @return a date.
      */
-    public Date getDate( int months, Date date )
+    private Date getDate( int months, Date date )
     {
-        Calendar cal = PeriodType.createCalendarInstance();
-
-        if ( date != null ) // For testing purposes
-        {
-            cal.setTime( date );
-        }
-
+        Calendar cal = PeriodType.createCalendarInstance( date );
         cal.add( Calendar.MONTH, (months * -1) );
 
         return cal.getTime();
