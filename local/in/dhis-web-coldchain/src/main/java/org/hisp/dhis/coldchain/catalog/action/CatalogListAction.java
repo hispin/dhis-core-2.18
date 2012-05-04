@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
+import org.hisp.dhis.coldchain.catalog.CatalogType;
+import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
 import org.hisp.dhis.coldchain.catalog.comparator.CatalogComparator;
+import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -22,7 +25,13 @@ public class CatalogListAction implements Action
     {
         this.catalogService = catalogService;
     }
-
+    
+    private CatalogTypeService catalogTypeService;
+    
+    public void setCatalogTypeService( CatalogTypeService catalogTypeService )
+    {
+        this.catalogTypeService = catalogTypeService;
+    }
     
     // -------------------------------------------------------------------------
     // Output
@@ -35,17 +44,55 @@ public class CatalogListAction implements Action
         return catalogs;
     }
 
+    private Integer id;
+
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+    
+    private List<CatalogType> catalogTypes;
+    
+    public List<CatalogType> getCatalogTypes()
+    {
+        return catalogTypes;
+    }
+    
+    private CatalogType catalogType;
+    
+    public CatalogType getCatalogType()
+    {
+        return catalogType;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute() throws Exception
     {
-        catalogs = new ArrayList<Catalog>( catalogService.getAllCatalogs() );
+        catalogTypes = new ArrayList<CatalogType>( catalogTypeService.getAllCatalogTypes());
+        Collections.sort( catalogTypes, new CatalogTypeComparator() );
         
-        Collections.sort( catalogs, new CatalogComparator() );
-        
-        
+        if ( id != null )
+        {
+            catalogType = catalogTypeService.getCatalogType( id );
+            
+            catalogs = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType ) );
+            Collections.sort( catalogs, new CatalogComparator() );
+        }
+        else
+        {
+            catalogs = new ArrayList<Catalog>( catalogService.getAllCatalogs() );
+            
+            Collections.sort( catalogs, new CatalogComparator() );
+        }
+     
         return SUCCESS;
     }
     

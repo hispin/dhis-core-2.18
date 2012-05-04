@@ -169,7 +169,9 @@
 		class="org.hisp.dhis.coldchain.catalog.action.CatalogListAction"
 		scope="prototype">
 		<property name="catalogService"
-			ref="org.hisp.dhis.coldchain.catalog.CatalogService" />		
+			ref="org.hisp.dhis.coldchain.catalog.CatalogService" />
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />			
 	</bean>		
 
 	<!-- Add Catalog  Form -->

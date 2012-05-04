@@ -36,6 +36,15 @@ function catalogTypeChange()
 }
 
 //-----------------------------------------------------------------------------
+//View catalog by catalog type change
+//-----------------------------------------------------------------------------
+function getCatalogByCatalogType( catalogTypeId )
+{
+	window.location.href = "catalog.action?id=" + catalogTypeId;
+}
+
+
+//-----------------------------------------------------------------------------
 //View details
 //-----------------------------------------------------------------------------
 

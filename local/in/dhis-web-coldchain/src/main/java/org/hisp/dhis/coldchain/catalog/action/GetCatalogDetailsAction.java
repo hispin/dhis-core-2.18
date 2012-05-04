@@ -1,7 +1,7 @@
 package org.hisp.dhis.coldchain.catalog.action;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +12,7 @@ import org.hisp.dhis.coldchain.catalog.CatalogDataValueService;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
+import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -67,10 +68,17 @@ implements Action
     {
         return catalogType;
     }
-
+    /*
     private Collection<CatalogTypeAttribute> catalogTypeAttributes;
     
     public Collection<CatalogTypeAttribute> getCatalogTypeAttributes()
+    {
+        return catalogTypeAttributes;
+    }
+    */
+    private List<CatalogTypeAttribute> catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>();
+    
+    public List<CatalogTypeAttribute> getCatalogTypeAttributes()
     {
         return catalogTypeAttributes;
     }
@@ -94,7 +102,11 @@ implements Action
         
         catalogType = catalog.getCatalogType();
         
-        catalogTypeAttributes = catalogType.getCatalogTypeAttributes();
+        //catalogTypeAttributes = catalogType.getCatalogTypeAttributes();
+        
+        
+        catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes());
+        Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
         
         
         List<CatalogDataValue> catalogDataValues = new ArrayList<CatalogDataValue>( catalogDataValueService.getAllCatalogDataValuesByCatalog( catalogService.getCatalog( id )) );
