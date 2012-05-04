@@ -115,7 +115,7 @@ public class YearlyPeriodType
     }
 
     /**
-     * Generates YearlyPeriods for the last 5, current and next 5 years.
+     * Generates yearly periods for the last 5, current and next 5 years.
      */
     @Override
     public List<Period> generatePeriods( Date date )
@@ -135,6 +135,20 @@ public class YearlyPeriodType
         return periods;
     }
 
+    /**
+     * Generates the last 5 years where the last one is the year which the given 
+     * date is inside.
+     */
+    @Override
+    public List<Period> generateRollingPeriods( Date date )
+    {
+        return generateLast5Years( date );
+    }
+
+    /**
+     * Generates the last 5 years where the last one is the year which the given 
+     * date is inside.
+     */
     @Override
     public List<Period> generateLast5Years( Date date )
     {

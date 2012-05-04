@@ -155,9 +155,10 @@ public class WeeklyPeriodType
     }
 
     /**
-     * Generates the last 12 months where the last one is the month
-     * which the given date is inside.
+     * Generates the last 52 weeks where the last one is the week which the 
+     * given date is inside.
      */
+    @Override
     public List<Period> generateRollingPeriods( Date date )
     {
         Calendar cal = createCalendarInstance( date );

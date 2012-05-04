@@ -108,8 +108,8 @@ public class BiMonthlyPeriodType
     }
 
     /**
-     * Generates quarterly Periods for the whole year in which the given
-     * Period's startDate exists.
+     * Generates bimonthly Periods for the whole year in which the start date of
+     * the given Period exists.
      */
     @Override
     public List<Period> generatePeriods( Date date )
@@ -128,7 +128,12 @@ public class BiMonthlyPeriodType
 
         return periods;
     }
-    
+
+    /**
+     * Generates the last 6 bi-months where the last one is the bi-month
+     * which the given date is inside.
+     */
+    @Override
     public List<Period> generateRollingPeriods( Date date )
     {
         Calendar cal = createCalendarInstance( date );

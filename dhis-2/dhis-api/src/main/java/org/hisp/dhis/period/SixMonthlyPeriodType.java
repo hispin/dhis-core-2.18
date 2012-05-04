@@ -141,6 +141,11 @@ public class SixMonthlyPeriodType
         return periods;
     }
 
+    /**
+     * Generates the last 2 six-months where the last one is the six-month
+     * which the given date is inside.
+     */
+    @Override
     public List<Period> generateRollingPeriods( Date date )
     {
         Calendar cal = createCalendarInstance( date );
