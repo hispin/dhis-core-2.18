@@ -74,7 +74,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- ATTRIBUTEVALUE-GROUP-ORDER STORE / SERVICE                    -->
+	<!-- CATEGORYOPTION-GROUP-ORDER STORE / SERVICE                    -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	
 	<bean id="org.hisp.dhis.reportsheet.CategoryOptionGroupOrderStore"
@@ -86,6 +86,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.impl.DefaultCategoryOptionGroupOrderService">
 		<property name="categoryOptionGroupOrderStore"
 			ref="org.hisp.dhis.reportsheet.CategoryOptionGroupOrderStore" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportsheet.CategoryOptionAssociationStore"
+		class="org.hisp.dhis.reportsheet.hibernate.HibernateCategoryOptionAssociationStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.reportsheet.CategoryOptionAssociationService"
+		class="org.hisp.dhis.reportsheet.impl.DefaultCategoryOptionAssociationService">
+		<property name="categoryOptionAssociationStore"
+			ref="org.hisp.dhis.reportsheet.CategoryOptionAssociationStore" />
 	</bean>
 	
 	<!-- Report Location Manager -->
@@ -109,6 +120,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.importitem.ImportItemDeletionHandler">
 		<property name="importReportService"
 			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportsheet.CategoryOptionAssociationDeletionHandler"
+		class="org.hisp.dhis.reportsheet.CategoryOptionAssociationDeletionHandler">
+		<property name="categoryOptionAssociationService"
+			ref="org.hisp.dhis.reportsheet.CategoryOptionAssociationService" />
 	</bean>
 
 	<!-- DeletionManager -->

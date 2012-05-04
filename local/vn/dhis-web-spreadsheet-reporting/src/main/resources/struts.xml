@@ -287,6 +287,26 @@
 				/dhis-web-spreadsheet-reporting/jsonCategoryOptions.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="openCategoryOptionAssociations"
+			class="org.hisp.dhis.reportsheet.cogroup.action.OpenCategoryOptionAssociationsAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/categoryOptionAssociations.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="stylesheets">style/basic.css</param>
+		</action>
+
+		<action name="showAssociationsByCategoryOption"
+			class="org.hisp.dhis.reportsheet.cogroup.action.ShowDefineCategoryOptionAssociationsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+
+		<action name="updateCategoryOptionAssociations"
+			class="org.hisp.dhis.reportsheet.cogroup.action.UpdateCategoryOptionAssociationsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!-- DATAELEMENT GROUP ORDER FOR CATEGORY ACTION 				   -->

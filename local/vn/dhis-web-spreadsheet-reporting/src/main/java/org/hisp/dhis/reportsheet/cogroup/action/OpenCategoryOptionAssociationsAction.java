@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportsheet.exporting;
+package org.hisp.dhis.reportsheet.cogroup.action;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -26,15 +26,9 @@ package org.hisp.dhis.reportsheet.exporting;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hisp.dhis.dataelement.LocalDataElementService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reportsheet.CategoryOptionAssociationService;
-import org.hisp.dhis.reportsheet.ExportReport;
+import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
+import org.hisp.dhis.reportsheet.CategoryOptionGroupOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -43,8 +37,8 @@ import com.opensymphony.xwork2.Action;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public abstract class AbstractGenerateMultiExcelReportSupport
-    extends GenerateExcelReportGeneric
+
+public class OpenCategoryOptionAssociationsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -52,55 +46,51 @@ public abstract class AbstractGenerateMultiExcelReportSupport
     // -------------------------------------------------------------------------
 
     @Autowired
-    protected OrganisationUnitService organisationUnitService;
+    private CategoryOptionGroupOrderService groupOrderService;
 
-    @Autowired
-    protected CategoryOptionAssociationService categoryOptionAssociationService;
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
 
-    @Autowired
-    protected LocalDataElementService localDataElementService;
+    private Integer id;
+
+    private Integer reportId;
+
+    private CategoryOptionGroupOrder group;
+
+    // -------------------------------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------------------------------
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public void setReportId( Integer reportId )
+    {
+        this.reportId = reportId;
+    }
+
+    public Integer getReportId()
+    {
+        return reportId;
+    }
+
+    public CategoryOptionGroupOrder getGroup()
+    {
+        return group;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
         throws Exception
     {
-        statementManager.initialise();
-
-        Period period = PeriodType.createPeriodExternalId( selectionManager.getSelectedPeriodIndex() );
-
-        this.installPeriod( period );
-
-        List<ExportReport> reports = new ArrayList<ExportReport>();
-
-        for ( String id : selectionManager.getListObject() )
-        {
-            reports.add( exportReportService.getExportReport( Integer.parseInt( id ) ) );
-        }
-
-        executeGenerateOutputFile( reports, period );
-
-        this.complete();
-
-        statementManager.destroy();
+        group = groupOrderService.getCategoryOptionGroupOrder( id );
 
         return SUCCESS;
     }
-
-    // -------------------------------------------------------------------------
-    // Overriding abstract method(s)
-    // -------------------------------------------------------------------------
-
-    /**
-     * The process method which must be implemented by subclasses.
-     * 
-     * @param period
-     * @param reports
-     * @param organisationUnit
-     */
-    protected abstract void executeGenerateOutputFile( List<ExportReport> reports, Period period )
-        throws Exception;
 }

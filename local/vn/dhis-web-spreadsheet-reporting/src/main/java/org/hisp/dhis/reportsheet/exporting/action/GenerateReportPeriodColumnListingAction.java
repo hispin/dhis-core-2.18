@@ -74,7 +74,7 @@ public class GenerateReportPeriodColumnListingAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    public void generateOutPutFile( Set<PeriodColumn> periodColumns, Collection<ExportItem> exportReportItems,
+    private void generateOutPutFile( Set<PeriodColumn> periodColumns, Collection<ExportItem> exportReportItems,
         OrganisationUnit organisationUnit, Sheet sheet )
     {
         for ( ExportItem reportItem : exportReportItems )

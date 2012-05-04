@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportsheet.exporting;
+package org.hisp.dhis.reportsheet.cogroup.action;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -26,15 +26,16 @@ package org.hisp.dhis.reportsheet.exporting;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hisp.dhis.dataelement.LocalDataElementService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.reportsheet.CategoryOptionAssociation;
 import org.hisp.dhis.reportsheet.CategoryOptionAssociationService;
-import org.hisp.dhis.reportsheet.ExportReport;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -43,8 +44,8 @@ import com.opensymphony.xwork2.Action;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public abstract class AbstractGenerateMultiExcelReportSupport
-    extends GenerateExcelReportGeneric
+
+public class ShowDefineCategoryOptionAssociationsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -52,55 +53,48 @@ public abstract class AbstractGenerateMultiExcelReportSupport
     // -------------------------------------------------------------------------
 
     @Autowired
-    protected OrganisationUnitService organisationUnitService;
+    private DataElementCategoryService categoryService;
 
     @Autowired
-    protected CategoryOptionAssociationService categoryOptionAssociationService;
+    private CategoryOptionAssociationService associationService;
 
     @Autowired
-    protected LocalDataElementService localDataElementService;
+    private SelectionTreeManager selectionTreeManager;
+
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
+    private Integer categoryOptionId;
+
+    public void setCategoryOptionId( Integer categoryOptionId )
+    {
+        this.categoryOptionId = categoryOptionId;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
         throws Exception
     {
-        statementManager.initialise();
+        DataElementCategoryOption categoryOption = categoryService.getDataElementCategoryOption( categoryOptionId );
 
-        Period period = PeriodType.createPeriodExternalId( selectionManager.getSelectedPeriodIndex() );
+        Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
 
-        this.installPeriod( period );
-
-        List<ExportReport> reports = new ArrayList<ExportReport>();
-
-        for ( String id : selectionManager.getListObject() )
+        if ( categoryOption != null )
         {
-            reports.add( exportReportService.getExportReport( Integer.parseInt( id ) ) );
+            for ( CategoryOptionAssociation association : associationService
+                .getCategoryOptionAssociations( categoryOption ) )
+            {
+                sources.add( association.getSource() );
+            }
         }
-
-        executeGenerateOutputFile( reports, period );
-
-        this.complete();
-
-        statementManager.destroy();
+        
+        selectionTreeManager.setSelectedOrganisationUnits( sources );
 
         return SUCCESS;
     }
 
-    // -------------------------------------------------------------------------
-    // Overriding abstract method(s)
-    // -------------------------------------------------------------------------
-
-    /**
-     * The process method which must be implemented by subclasses.
-     * 
-     * @param period
-     * @param reports
-     * @param organisationUnit
-     */
-    protected abstract void executeGenerateOutputFile( List<ExportReport> reports, Period period )
-        throws Exception;
 }

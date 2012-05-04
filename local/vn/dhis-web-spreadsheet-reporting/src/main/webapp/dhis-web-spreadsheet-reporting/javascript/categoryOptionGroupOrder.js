@@ -141,3 +141,11 @@ function updateSortedCategoryOption()
 	selectAllById( 'selectedList' );
 	document.forms[0].submit();
 }
+
+/*
+ * Open Category Option Associations
+ */
+function openCategoryOptionAssociations( id )
+{
+	window.location = "openCategoryOptionAssociations.action?id="+id+"&reportId="+reportId;
+}
