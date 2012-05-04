@@ -142,9 +142,10 @@ public class QuarterlyPeriodType
     }
 
     /**
-     * Generates the last 4 quarters where the last one is the quarter
-     * which the given date is inside.
+     * Generates the last 4 quarters where the last one is the quarter which the 
+     * given date is inside.
      */
+    @Override
     public List<Period> generateRollingPeriods( Date date )
     {
         Calendar cal = createCalendarInstance( date );

@@ -99,6 +99,8 @@ public abstract class CalendarPeriodType
      */
     public abstract List<Period> generatePeriods( Date date );
     
+    public abstract List<Period> generateRollingPeriods( Date date );
+    
     /**
      * Generates a list of Periods for the last 5 years. Must be overridden by
      * CalendarPeriodTypes which do not generate periods for the current year

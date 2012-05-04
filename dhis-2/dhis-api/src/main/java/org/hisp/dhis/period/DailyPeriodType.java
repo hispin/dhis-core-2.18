@@ -142,6 +142,27 @@ public class DailyPeriodType
         return periods;
     }
 
+    /**
+     * Generates the last 365 days where the last one is the day of the given 
+     * date.
+     */
+    @Override
+    public List<Period> generateRollingPeriods( Date date )
+    {
+        Calendar cal = createCalendarInstance( date );
+        cal.set( Calendar.DAY_OF_MONTH, -364 );        
+
+        ArrayList<Period> periods = new ArrayList<Period>();
+        
+        for ( int i = 0; i < 365; i++ )
+        {
+            periods.add( createPeriod( cal ) );
+            cal.add( Calendar.MONTH, 1 );
+        }
+        
+        return periods;        
+    }
+
     @Override
     public String getIsoDate( Period period )
     {

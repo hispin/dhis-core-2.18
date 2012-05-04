@@ -156,6 +156,12 @@ public class TwoYearlyPeriodType
     }
 
     @Override
+    public List<Period> generateRollingPeriods( Date date )
+    {
+        return generateLast5Years( date );
+    }
+    
+    @Override
     public List<Period> generateLast5Years( Date date )
     {
         Calendar cal = createCalendarInstance( date );

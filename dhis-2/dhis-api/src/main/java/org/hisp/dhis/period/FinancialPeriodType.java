@@ -111,7 +111,8 @@ public abstract class FinancialPeriodType
     }
 
     /**
-     * Generates YearlyPeriods for the last 5, current and next 5 years.
+     * Generates financial yearly periods for the last 5, current and next 5 
+     * financial years.
      */
     @Override
     public List<Period> generatePeriods( Date date )
@@ -135,6 +136,16 @@ public abstract class FinancialPeriodType
         return periods;
     }
 
+    /**
+     * Generates the last 5 financial years where the last one is the financial
+     * year which the given date is inside.
+     */
+    @Override
+    public List<Period> generateRollingPeriods( Date date )
+    {
+        return generateLast5Years( date );
+    }
+    
     @Override
     public List<Period> generateLast5Years( Date date )
     {
