@@ -153,7 +153,7 @@ public class OrganisationUnit
      * @param comment
      */
     public OrganisationUnit( String name, String shortName, String code, Date openingDate, Date closedDate,
-                             boolean active, String comment )
+        boolean active, String comment )
     {
         this.name = name;
         this.shortName = shortName;
@@ -174,7 +174,7 @@ public class OrganisationUnit
      * @param comment
      */
     public OrganisationUnit( String name, OrganisationUnit parent, String shortName, String code, Date openingDate,
-                             Date closedDate, boolean active, String comment )
+        Date closedDate, boolean active, String comment )
     {
         this.name = name;
         this.parent = parent;
