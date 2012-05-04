@@ -186,11 +186,11 @@ public class DataMartTask
             return periods;
         }
         
-        List<Period> relativePeriods = new RelativePeriods().getRelativePeriods( periodTypes ).getRelativePeriods( 1 );
+        List<Period> relativePeriods = new RelativePeriods().getRelativePeriods( periodTypes ).getRelativePeriods();
         
         if ( periodTypes.contains( YearlyPeriodType.NAME ) ) // Add last year
         {
-            relativePeriods.addAll( new RelativePeriods().setLastYear( true ).getRelativePeriods( 1 ) );
+            relativePeriods.addAll( new RelativePeriods().setLastYear( true ).getRelativePeriods() );
         }
         
         final Date date = new Cal().now().subtract( Calendar.MONTH, 7 ).time();
