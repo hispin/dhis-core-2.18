@@ -781,9 +781,10 @@ public class RelativePeriods
         return thisFinancialYear;
     }
 
-    public void setThisFinancialYear( boolean thisFinancialYear )
+    public RelativePeriods setThisFinancialYear( boolean thisFinancialYear )
     {
         this.thisFinancialYear = thisFinancialYear;
+        return this;
     }
 
     @JsonProperty
@@ -793,9 +794,10 @@ public class RelativePeriods
         return lastFinancialYear;
     }
 
-    public void setLastFinancialYear( boolean lastFinancialYear )
+    public RelativePeriods setLastFinancialYear( boolean lastFinancialYear )
     {
         this.lastFinancialYear = lastFinancialYear;
+        return this;
     }
 
     @JsonProperty
@@ -805,9 +807,10 @@ public class RelativePeriods
         return last5FinancialYears;
     }
 
-    public void setLast5FinancialYears( boolean last5FinancialYears )
+    public RelativePeriods setLast5FinancialYears( boolean last5FinancialYears )
     {
         this.last5FinancialYears = last5FinancialYears;
+        return this;
     }
 
     // -------------------------------------------------------------------------
