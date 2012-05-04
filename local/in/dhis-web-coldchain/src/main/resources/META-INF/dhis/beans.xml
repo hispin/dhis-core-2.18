@@ -427,6 +427,11 @@
         <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
         <property name="equipmentStatusService" ref="org.hisp.dhis.coldchain.inventory.EquipmentStatusService" />
     </bean>
+    <bean id="org.hisp.dhis.coldchain.equipment.action.RemoveEquipmentInstanceAction"
+        class="org.hisp.dhis.coldchain.equipment.action.RemoveEquipmentInstanceAction"
+        scope="prototype">
+        <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
+    </bean>
 
 	
 </beans>

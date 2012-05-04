@@ -86,6 +86,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentInstanceService">
         <property name="equipmentInstanceStore" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceStore"/>
 		<property name="equipmentDetailsService" ref="org.hisp.dhis.coldchain.inventory.EquipmentDetailsService"/>
+		<property name="equipmentStatusService" ref="org.hisp.dhis.coldchain.inventory.EquipmentStatusService"/>
     </bean>
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentStatusService"
         class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentStatusService">
