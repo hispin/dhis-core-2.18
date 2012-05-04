@@ -250,6 +250,9 @@ public class RelativePeriods
         this.last6BiMonths = false;
         this.last4Quarters = false;
         this.last2SixMonths = false;
+        this.thisFinancialYear = false;
+        this.lastFinancialYear = false;
+        this.last5FinancialYears = false;
 
         return this;
     }
@@ -261,24 +264,29 @@ public class RelativePeriods
      */
     public PeriodType getPeriodType()
     {
-        if ( isReportingMonth() )
+        if ( isReportingMonth() || isLast12Months() )
         {
             return PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
         }
 
-        if ( isReportingBimonth() )
+        if ( isReportingBimonth() || isLast6BiMonths() )
         {
             return PeriodType.getPeriodTypeByName( BiMonthlyPeriodType.NAME );
         }
 
-        if ( isReportingQuarter() )
+        if ( isReportingQuarter() || isLast4Quarters() )
         {
             return PeriodType.getPeriodTypeByName( QuarterlyPeriodType.NAME );
         }
 
-        if ( isLastSixMonth() )
+        if ( isLastSixMonth() || isLast2SixMonths() )
         {
             return PeriodType.getPeriodTypeByName( SixMonthlyPeriodType.NAME );
+        }
+        
+        if ( isThisFinancialYear() || isLastFinancialYear() || isLast5FinancialYears() )
+        {
+            return PeriodType.getPeriodTypeByName( FinancialJulyPeriodType.NAME );
         }
 
         return PeriodType.getPeriodTypeByName( YearlyPeriodType.NAME );
@@ -828,6 +836,9 @@ public class RelativePeriods
         result = prime * result + (last6BiMonths ? 1 : 0);
         result = prime * result + (last4Quarters ? 1 : 0);
         result = prime * result + (last2SixMonths ? 1 : 0);
+        result = prime * result + (thisFinancialYear ? 1 : 0);
+        result = prime * result + (lastFinancialYear ? 1 : 0);
+        result = prime * result + (last5FinancialYears ? 1 : 0);
 
         return result;
     }
@@ -923,6 +934,21 @@ public class RelativePeriods
         }
 
         if ( !last2SixMonths == other.last2SixMonths )
+        {
+            return false;
+        }
+
+        if ( !thisFinancialYear == other.thisFinancialYear )
+        {
+            return false;
+        }
+
+        if ( !lastFinancialYear == other.lastFinancialYear )
+        {
+            return false;
+        }
+
+        if ( !last5FinancialYears == other.last5FinancialYears )
         {
             return false;
         }
