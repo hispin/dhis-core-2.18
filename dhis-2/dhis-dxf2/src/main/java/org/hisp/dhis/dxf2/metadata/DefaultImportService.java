@@ -86,7 +86,7 @@ public class DefaultImportService
 
         Date startDate = new Date();
 
-        log.info( "User " + currentUserService.getCurrentUsername() + " started import at " + startDate );
+        log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + startDate );
 
         doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
