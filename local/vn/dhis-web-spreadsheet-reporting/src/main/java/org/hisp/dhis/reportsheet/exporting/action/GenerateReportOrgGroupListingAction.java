@@ -97,7 +97,7 @@ public class GenerateReportOrgGroupListingAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    public void generateOutPutFile( ExportReportOrganizationGroupListing exportReport,
+    private void generateOutPutFile( ExportReportOrganizationGroupListing exportReport,
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels,
         Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {

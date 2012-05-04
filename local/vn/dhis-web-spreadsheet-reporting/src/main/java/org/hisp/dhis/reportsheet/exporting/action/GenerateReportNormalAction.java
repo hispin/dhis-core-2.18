@@ -71,7 +71,7 @@ public class GenerateReportNormalAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    public void generateOutPutFile( Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit,
+    private void generateOutPutFile( Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit,
         Sheet sheet )
     {
         for ( ExportItem reportItem : exportReportItems )

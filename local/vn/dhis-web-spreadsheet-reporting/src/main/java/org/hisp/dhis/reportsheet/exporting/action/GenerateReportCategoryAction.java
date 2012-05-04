@@ -80,7 +80,7 @@ public class GenerateReportCategoryAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    public void generateVerticalOutPutFile( ExportReportCategory exportReport,
+    private void generateVerticalOutPutFile( ExportReportCategory exportReport,
         Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
         for ( ExportItem reportItem : exportReportItems )
@@ -162,7 +162,7 @@ public class GenerateReportCategoryAction
         }
     }
 
-    public void generateHorizontalOutPutFile( ExportReportCategory exportReport,
+    private void generateHorizontalOutPutFile( ExportReportCategory exportReport,
         Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
         for ( ExportItem reportItem : exportReportItems )
@@ -197,7 +197,7 @@ public class GenerateReportCategoryAction
         }
     }
 
-    public boolean isVerticalCategory( Collection<ExportItem> items )
+    private boolean isVerticalCategory( Collection<ExportItem> items )
     {
         Integer previousRow = null;
 

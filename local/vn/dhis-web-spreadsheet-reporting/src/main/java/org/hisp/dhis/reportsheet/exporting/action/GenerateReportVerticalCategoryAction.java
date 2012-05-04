@@ -27,6 +27,7 @@ package org.hisp.dhis.reportsheet.exporting.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import static org.hisp.dhis.dataelement.DataElementOperand.SEPARATOR;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,12 +38,14 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.reportsheet.CategoryOptionAssociationService;
 import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportVerticalCategory;
 import org.hisp.dhis.reportsheet.exporting.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dang Duy Hieu
@@ -51,6 +54,9 @@ import org.hisp.dhis.reportsheet.utils.ExcelUtils;
 public class GenerateReportVerticalCategoryAction
     extends AbstractGenerateExcelReportSupport
 {
+    @Autowired
+    private CategoryOptionAssociationService categoryOptionAssociationService;
+
     @Override
     protected void executeGenerateOutputFile( ExportReport exportReport, Period period )
         throws Exception
@@ -75,11 +81,13 @@ public class GenerateReportVerticalCategoryAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    public void generateVerticalOutPutFile( ExportReportVerticalCategory exportReport,
+    private void generateVerticalOutPutFile( ExportReportVerticalCategory exportReport,
         Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
         DataElement de = null;
         Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
+        Set<DataElementCategoryOption> associatedCategoryOptions = new HashSet<DataElementCategoryOption>(
+            categoryOptionAssociationService.getCategoryOptions( organisationUnit ) );
 
         for ( ExportItem reportItem : exportReportItems )
         {
@@ -110,56 +118,61 @@ public class GenerateReportVerticalCategoryAction
 
                 for ( DataElementCategoryOption categoryOption : group.getCategoryOptions() )
                 {
-                    if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
+                    if ( associatedCategoryOptions.contains( categoryOption ) )
                     {
-                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), categoryOption.getName(),
-                            ExcelUtils.TEXT, sheet, this.csText10Bold );
-                    }
-                    else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
-                    {
-                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( serial ),
-                            ExcelUtils.NUMBER, sheet, this.csTextSerial );
-                    }
-                    else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
-                    {
-                        ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, csFormula );
-                    }
-                    else
-                    {
-                        for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
+                        if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                         {
-                            if ( optionCombo.getCategoryOptions().contains( categoryOption ) )
+                            ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), categoryOption.getName(),
+                                ExcelUtils.TEXT, sheet, this.csText10Bold );
+                        }
+                        else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
+                        {
+                            ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( serial ),
+                                ExcelUtils.NUMBER, sheet, this.csTextSerial );
+                        }
+                        else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
+                        {
+                            ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
+                                .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, csFormula );
+                        }
+                        else
+                        {
+                            for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
                             {
-                                ExportItem newReportItem = new ExportItem();
+                                if ( optionCombo.getCategoryOptions().contains( categoryOption ) )
+                                {
+                                    ExportItem newReportItem = new ExportItem();
 
-                                String expression = reportItem.getExpression();
-                                expression = expression.replace( "*", String.valueOf( optionCombo.getId() ) );
+                                    String expression = reportItem.getExpression();
+                                    expression = expression.replace( "*", String.valueOf( optionCombo.getId() ) );
 
-                                newReportItem.setPeriodType( reportItem.getPeriodType() );
-                                newReportItem.setExpression( expression );
+                                    newReportItem.setPeriodType( reportItem.getPeriodType() );
+                                    newReportItem.setExpression( expression );
 
-                                double value = this.getDataValue( newReportItem, organisationUnit );
+                                    double value = this.getDataValue( newReportItem, organisationUnit );
 
-                                ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( value ),
-                                    ExcelUtils.NUMBER, sheet, this.csNumber );
+                                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String
+                                        .valueOf( value ), ExcelUtils.NUMBER, sheet, this.csNumber );
 
-                                break;
+                                    break;
+                                }
                             }
                         }
+
+                        rowBegin++;
+                        serial++;
+                        run++;
+
+                        if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
+                        {
+                            String columnName = ExcelUtils.convertColumnNumberToName( reportItem.getColumn() );
+                            String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName
+                                + (rowBegin - 1) + ")";
+
+                            ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
+                                this.csFormula );
+                        }
                     }
-
-                    rowBegin++;
-                    serial++;
-                    run++;
-                }
-
-                if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
-                {
-                    String columnName = ExcelUtils.convertColumnNumberToName( reportItem.getColumn() );
-                    String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
-
-                    ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet, this.csFormula );
                 }
             }
         }

@@ -86,7 +86,7 @@ public class GenerateReportAttributeAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    public void generateOutPutFile( DataElementCategoryOptionCombo optionCombo, ExportReportAttribute exportReport,
+    private void generateOutPutFile( DataElementCategoryOptionCombo optionCombo, ExportReportAttribute exportReport,
         Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
         boolean flag = false;

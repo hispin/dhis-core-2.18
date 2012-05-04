@@ -1,0 +1,91 @@
+<script type="text/javascript">
+	var validator = null;
+
+	jQuery(document).ready( function()
+	{
+		validator = validation( "categoryOptionAssociationsForm", function( form ) { validateCategoryOptionAssociations( form ); });
+	} );
+	
+	var i18n_verify_category_option = '$encoder.jsEscape($i18n.getString( 'please_select_category_option' ) , "'")';
+</script>
+
+<h3>$i18n.getString( "define_categoryoption_associations" )</h3>
+
+<h4>$encoder.htmlEncode( $!group.name )</h4>
+
+<form id="categoryOptionAssociationsForm" action="updateCategoryOptionAssociations.action">  
+	<table>
+		<tbody>
+			<tr><th>$i18n.getString( "category_options" )</th></tr>
+			<tr>
+				<td>
+					<select id="categoryOptionId" style="width:220px" onchange="getAssociationsByCategoryOption( this.value )" class="{validate:{required:true}}">
+						<option value="">[ $i18n.getString( "select_category_option" ) ]</option>
+						#foreach( $option in $!group.categoryOptions )
+						<option value="$!option.id">$encoder.htmlEncode( $!option.name )</option>
+						#end
+					</select>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+  
+  <table id="selectionTable">
+	<tr>
+	  <td>
+		#organisationUnitSelectionTree( true, true, false )
+	  </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="submit" id="submitButton" value="$i18n.getString( 'save' )" style="width:10em"/>
+		<input type="button" onclick="window.location.href='listCategoryOptionGroupOrderForExportReport.action?id=$!reportId'" value="$i18n.getString( 'back' )" style="width:10em"/>
+      </td>
+    </tr>
+  </table>
+
+</form>
+
+<script type="text/javascript">
+
+	function getAssociationsByCategoryOption( value )
+	{
+		if ( value && value != "" )
+		{
+			jQuery.get( "showAssociationsByCategoryOption.action",
+			{
+				categoryOptionId: value
+			}, function( json )
+			{
+				if ( json.response == "success" ) {
+					selectionTree.buildSelectionTree();
+				}
+			} );
+		} else {
+			selectionTree.clearSelectedOrganisationUnits();
+			selectionTree.buildSelectionTree();
+		}
+	}
+	
+	function validateCategoryOptionAssociations( _form )
+	{
+		var categoryOptionId = getFieldValue( "categoryOptionId" );
+	
+		if ( categoryOptionId && categoryOptionId == "" )
+		{
+			markInvalid( "categoryOptionId", i18n_verify_category_option );
+			return;
+		}
+	
+		jQuery.get( _form.action,
+		{
+			categoryOptionId: categoryOptionId
+		}, function ( json ) {
+			if ( json.response == "success" ) {
+				showSuccessMessage( json.message );
+			} else {
+				showErrorMessage( json.message );
+			}
+		} );
+	}
+</script>
