@@ -224,8 +224,18 @@ Ext.onReady( function() {
                 }
             },
             unselectAll: function(a, s) {
-                s.store.removeAll();
-                a.store.clearFilter();
+                var elements = s.boundList.all.elements;
+				var index = 0;
+				var arr = [];
+				Ext.Array.each(s.store.data.items, function(item) {
+					if( elements[index].style.display != 'none' )
+					{
+					  arr.push( item.data.id );
+					}
+					index++;
+				}); 
+				s.setValue(arr);
+				this.unselect(a,s);
             },
             filterAvailable: function(a, s) {
 				a.store.filterBy( function(r) {
@@ -1778,7 +1788,7 @@ Ext.onReady( function() {
 																width: 22,
 																handler: function() {
 																	TR.util.multiselect.unselectAll(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
-																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
+																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.selected, Ext.getCmp('deFilterSelected').getValue());
 																}
 															},
 															{
@@ -1787,7 +1797,7 @@ Ext.onReady( function() {
 																width: 22,
 																handler: function() {
 																	TR.util.multiselect.unselect(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
-																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
+																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.selected, Ext.getCmp('deFilterSelected').getValue());
 																}
 															},
 															'->',
