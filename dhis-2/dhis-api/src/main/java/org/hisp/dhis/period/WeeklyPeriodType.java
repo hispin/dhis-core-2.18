@@ -128,8 +128,8 @@ public class WeeklyPeriodType
     public List<Period> generatePeriods( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.setMinimalDaysInFirstWeek(4);
-        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        cal.setMinimalDaysInFirstWeek( 4 );
+        cal.setFirstDayOfWeek( Calendar.MONDAY );
 
         // ---------------------------------------------------------------------
         // If the supplied period is the first week of a year where the start
@@ -154,6 +154,28 @@ public class WeeklyPeriodType
         return generatePeriods( cal );
     }
 
+    /**
+     * Generates the last 12 months where the last one is the month
+     * which the given date is inside.
+     */
+    public List<Period> generateRollingPeriods( Date date )
+    {
+        Calendar cal = createCalendarInstance( date );
+        cal.setFirstDayOfWeek( Calendar.MONDAY );
+        cal.set( Calendar.DAY_OF_WEEK, Calendar.MONDAY );
+        cal.add( Calendar.DAY_OF_YEAR, -357 );
+
+        ArrayList<Period> periods = new ArrayList<Period>();
+        
+        for ( int i = 0; i < 52; i++ )
+        {
+            periods.add( createPeriod( cal ) );
+            cal.add( Calendar.DAY_OF_YEAR, 1 );
+        }
+        
+        return periods;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
