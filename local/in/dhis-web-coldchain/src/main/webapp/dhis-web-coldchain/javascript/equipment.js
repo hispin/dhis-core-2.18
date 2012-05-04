@@ -322,6 +322,16 @@ function updateEquipment()
       }
      });
 }
+
+//-----------------------------------------------------------------------------
+//Remove equipment
+//-----------------------------------------------------------------------------
+
+function removeEquipment( equipmentId, name )
+{
+	removeItem( equipmentId, name, i18n_confirm_delete, 'removeEquipmentInstance.action' );
+}
+
 //----------------------------------------------------------------
 //Get Params form Div
 //----------------------------------------------------------------
@@ -356,3 +366,26 @@ function getParamsForDiv( equipmentDiv )
 	return params;
 }
 
+//----------------------------------------------------------------
+//Show EquipmentInstance Details
+//----------------------------------------------------------------
+function showEquipmentDetails( equipmentInstanceId )
+{
+	hideById('editEquipmentStatusDiv');
+	hideById('selectDiv');
+	hideById('searchEquipmentDiv');
+	
+	setInnerHTML('editEquipmentDiv', '');
+	
+	jQuery('#equipmentStatusHistoryDiv').dialog('destroy').remove();
+	jQuery('<div id="equipmentStatusHistoryDiv">' ).load( 'showEquipmentInstanceDetails.action?equipmentInstanceId='+equipmentInstanceId ).dialog({
+		title: 'i18n_equipment_details',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 500,
+		height: 450
+	});
+	
+}

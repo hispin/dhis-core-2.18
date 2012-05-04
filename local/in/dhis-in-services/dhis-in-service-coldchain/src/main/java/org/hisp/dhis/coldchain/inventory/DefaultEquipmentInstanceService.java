@@ -1,5 +1,6 @@
 package org.hisp.dhis.coldchain.inventory;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,6 +29,13 @@ public class DefaultEquipmentInstanceService implements EquipmentInstanceService
         this.equipmentDetailsService = equipmentDetailsService;
     }
     
+    private EquipmentStatusService equipmentStatusService;
+    
+    public void setEquipmentStatusService( EquipmentStatusService equipmentStatusService )
+    {
+        this.equipmentStatusService = equipmentStatusService;
+    }
+    
     // -------------------------------------------------------------------------
     // EquipmentInstance
     // -------------------------------------------------------------------------
@@ -44,6 +52,24 @@ public class DefaultEquipmentInstanceService implements EquipmentInstanceService
         //equipmentInstanceStore.deleteEquipmentInstance( equipmentInstance );
         equipmentInstanceStore.delete( equipmentInstance );
     }
+    
+    public void deleteCompleteEquipmentInstance( EquipmentInstance equipmentInstance )
+    {
+        List<EquipmentDetails> equipmentDetailsList = new ArrayList<EquipmentDetails>( equipmentDetailsService.getEquipmentDetails( equipmentInstance ) );
+        for( EquipmentDetails equipmentDetails : equipmentDetailsList )
+        {
+            equipmentDetailsService.deleteEquipmentDetails( equipmentDetails );
+        }
+        
+        List<EquipmentStatus> equipmentStatusHistory = new ArrayList<EquipmentStatus>( equipmentStatusService.getEquipmentStatusHistory( equipmentInstance ) );
+        for( EquipmentStatus equipmentStatus : equipmentStatusHistory )
+        {
+            equipmentStatusService.deleteEquipmentStatus( equipmentStatus );
+        }
+        
+        deleteEquipmentInstance( equipmentInstance );
+    }
+    
     @Override
     public Collection<EquipmentInstance> getAllEquipmentInstance()
     {

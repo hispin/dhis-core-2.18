@@ -420,6 +420,18 @@
 			<param name="stylesheets">css/basic.css</param>
             <param name="requiredAuthorities">F_EQUIPMENTSTATUSHISTORY</param>
         </action>
-									
+        <action name="showEquipmentInstanceDetails"
+            class="org.hisp.dhis.coldchain.equipment.action.GetEquipmentInstanceDataAction">
+            <result name="success" type="velocity">/content.vm</result>
+            <param name="page">/dhis-web-coldchain/showEquipmentData.vm</param>
+        </action>
+		
+        <action name="removeEquipmentInstance"
+            class="org.hisp.dhis.coldchain.equipment.action.RemoveEquipmentInstanceAction">
+            <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+            <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+            <param name="requiredAuthorities">F_EQUIPMENT_DELETE</param>
+        </action>
+
 </package>		
 </struts>

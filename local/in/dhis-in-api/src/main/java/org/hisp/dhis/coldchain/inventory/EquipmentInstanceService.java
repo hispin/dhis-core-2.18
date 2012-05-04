@@ -15,6 +15,8 @@ public interface EquipmentInstanceService
 
     void deleteEquipmentInstance( EquipmentInstance equipmentInstance );
     
+    void deleteCompleteEquipmentInstance( EquipmentInstance equipmentInstance );
+    
     int createEquipment( EquipmentInstance equipmentInstance, List<EquipmentDetails> equipmentDetails );
 
     EquipmentInstance getEquipmentInstance( int id );
