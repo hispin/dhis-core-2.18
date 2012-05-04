@@ -439,9 +439,11 @@ function getFieldValue( fieldId )
 {
 	if ( getTypeById( fieldId, 'multiple' ) )
 	{
-		return jQuery("#" + fieldId).val()[0];
+		var selectedItem = jQuery("#" + fieldId).children( "option:selected" )[0];
+		
+		return (selectedItem ? selectedItem.value : selectedItem);
 	}
-	
+
 	return jQuery("#" + fieldId).val();
 }
 
