@@ -21,15 +21,15 @@ function clearArea( area )
 
 function viewChart( url )
 {
-    var width = 700 + 20;
-    var height = 500 + 20;
+    var width = 820;
+    var height = 520;
 
     $( "#chartImage" ).attr( "src", url );
     $( "#chartView" ).dialog( {
         autoOpen : true,
         modal : true,
         height : height + 65,
-        width : width + 45,
+        width : width + 25,
         resizable : false,
         title : "Viewing Chart"
     } );
