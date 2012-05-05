@@ -140,7 +140,7 @@ public class ChartController
 
     @RequestMapping( value = {"/{uid}/data", "/{uid}/data.png"}, method = RequestMethod.GET )
     public void getChart( @PathVariable( "uid" ) String uid,
-                          @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
+                          @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
                           @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
                           HttpServletResponse response ) throws IOException, I18nManagerException
     {
@@ -159,7 +159,7 @@ public class ChartController
     public void getChart( @RequestParam( value = "in" ) String indicatorUid,
                           @RequestParam( value = "ou" ) String organisationUnitUid,
                           @RequestParam( value = "periods", required = false ) boolean periods,
-                          @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
+                          @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
                           @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
                           @RequestParam( value = "skipTitle", required = false ) boolean skipTitle,
                           HttpServletResponse response ) throws Exception
