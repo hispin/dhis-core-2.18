@@ -131,7 +131,6 @@ public class ChartPluginController
         contextUtils.configureResponse( response, CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING, null, false );
 
         model.addAttribute( "model", chartValue );
-        //JacksonUtils.toJson( response.getOutputStream(), chartValue );
         
         return "chartValues";
     }
