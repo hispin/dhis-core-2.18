@@ -144,7 +144,7 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
     // -------------------------------------------------------------------------
     public String execute() throws Exception
     {
-        System.out.println("insde GetEquipmentInstanceListAction");
+        //System.out.println("insde GetEquipmentInstanceListAction");
         
         equipmentDetailsMap = new HashMap<String, String>();
         

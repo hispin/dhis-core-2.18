@@ -8,7 +8,7 @@
             <td>$equipmentInstance.organisationUnit.name</td>
         </tr>   
         <tr>
-            <td>$i18n.getString( "inventory_type" ) : </th>
+            <td>$i18n.getString( "inventorytype" ) : </th>
             <td>$equipmentInstance.inventoryType.name</th>
         </tr>
 
