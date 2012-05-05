@@ -11,7 +11,18 @@
 <table>
 <tr><td>&nbsp;</td></tr>
 #if ( $catalogTypeAttributes.size() > 0) 	
-	<tr><th colspan="2" class="heading-column">$i18n.getString( "catalogType_attribute" )</th></tr>
+	<tr><th colspan="2" class="heading-column">$i18n.getString( "catalogType_details" )</th></tr>
+	<tr>
+		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" class="{validate:{required:true, rangelength:[4,160]}}"/></td>
+	</tr>	
+	
+	<tr>
+		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="description" name="description" class="{validate:{required:true, minlength:4}}"/></td>
+	</tr>
+##if ( $catalogTypeAttributes.size() > 0) 	
+	<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "catalogType_attribute" )</th></tr>-->
 	#foreach($attribute in $catalogTypeAttributes )
 		<tr>
 			<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>

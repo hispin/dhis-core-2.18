@@ -18,7 +18,7 @@
 	<input type="hidden" id="catalogTypeID" name="id" value="$catalog.catalogType.id">
 </div>
 <table>
-	<tr>
+<!--<tr>
 		<th colspan="2" class="heading-column">$i18n.getString( "catalog__details" )</th>
 	</tr>
 	<tr>
@@ -29,7 +29,7 @@
 		<td class='text-column'><label for="description">$i18n.getString( "description" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td class="input-column" ><input type="text" id="description" name="description" value="$!catalog.description" class="{validate:{required:true, minlength:4}}"></td>
 	</tr>
-
+-->
 	<tr>
 		<td class='text-column'><label>$i18n.getString( "catalogType" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td class="input-column" >
@@ -43,8 +43,17 @@
 	</tr>
 	<!-- ATTRIBUTES -->
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-	#if ( $catalogTypeAttributes.size() > 0) 	
-		<tr><th colspan="2" class="heading-column">$i18n.getString( "catalogType_attribute" )</th></tr>
+	<tr><th colspan="2" class="heading-column">$i18n.getString( "catalogType_details" )</th></tr>
+	#if ( $catalogTypeAttributes.size() > 0)
+	<tr>
+		<td class='text-column'><label for="name">$i18n.getString( "name" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td class="input-column" ><input type="text" id="name" name="name" value="$!catalog.name" class="{validate:{required:true, rangelength:[4,50]}}"></td>
+	</tr>
+	<tr>
+		<td class='text-column'><label for="description">$i18n.getString( "description" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td class="input-column" ><input type="text" id="description" name="description" value="$!catalog.description" class="{validate:{required:true, minlength:4}}"></td>
+	</tr>		
+		<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "catalogType_details" )</th></tr>-->
 		#foreach($attribute in $catalogTypeAttributes )
 		#set( $attributeValue = "" )
 		#set( $attributeValue = $!catalogTypeAttributeValueMap.get( $attribute.id ) )

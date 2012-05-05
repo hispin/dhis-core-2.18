@@ -139,7 +139,8 @@ function loadEquipmentsByFilter( )
 	
 	if( inventoryTypeId == 0 )
 	{	
-		alert("Plese select Inventorytype");
+		//alert("Plese select Inventorytype");
+		showWarningMessage( i18n_select_inventorytype );
 		return;
 	}
 	
@@ -248,7 +249,8 @@ function showAddEquipmentForm()
 	var inventoryTypeId = inventoryType.options[ inventoryType.selectedIndex ].value;
 	if( inventoryTypeId == 0 )
 	{	
-		alert("Plese select inventorytype");
+		//alert("Plese select inventorytype");
+		showWarningMessage( i18n_select_inventorytype );
 		return;
 	}
 
@@ -361,7 +363,7 @@ function getParamsForDiv( equipmentDiv )
 			
 		});
 	
-	alert( params );
+	//alert( params );
 	
 	return params;
 }
@@ -372,14 +374,14 @@ function getParamsForDiv( equipmentDiv )
 function showEquipmentDetails( equipmentInstanceId )
 {
 	hideById('editEquipmentStatusDiv');
-	hideById('selectDiv');
-	hideById('searchEquipmentDiv');
+	//hideById('selectDiv');
+	//hideById('searchEquipmentDiv');
 	
 	setInnerHTML('editEquipmentDiv', '');
 	
 	jQuery('#equipmentStatusHistoryDiv').dialog('destroy').remove();
 	jQuery('<div id="equipmentStatusHistoryDiv">' ).load( 'showEquipmentInstanceDetails.action?equipmentInstanceId='+equipmentInstanceId ).dialog({
-		title: 'i18n_equipment_details',
+		title: i18n_equipment_details,
 		maximize: true, 
 		closable: true,
 		modal:true,
