@@ -33,9 +33,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.validator.DateValidator;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -492,5 +495,18 @@ public class DateUtils
         }
         
         return factor;
+    }
+    
+    /**
+     * Sets the name property of each period based on the given I18nFormat.
+     */
+    public static List<Period> setNames( List<Period> periods, I18nFormat format )
+    {
+        for ( Period period : periods )
+        {
+            period.setName( format.formatPeriod( period ) );
+        }
+
+        return periods;
     }
 }
