@@ -25,7 +25,6 @@
 
   <sec:http pattern="/dhis-web-commons/javascripts/**" security="none" />
   <sec:http pattern="/dhis-web-commons/css/**" security="none" />
-  <sec:http pattern="/dhis-web-visualizer/app/plugin/**" security="none" />
   <sec:http pattern="/favicon.ico" security="none" />
 
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
