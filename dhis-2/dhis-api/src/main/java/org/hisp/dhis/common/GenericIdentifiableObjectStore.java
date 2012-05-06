@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -86,4 +87,12 @@ public interface GenericIdentifiableObjectStore<T>
      * @return the count of objects.
      */
     int getCountByName( String name );
+    
+    /**
+     * Retrieves a list of objects referenced by the given collection of uids.
+     * 
+     * @param uids a collection of uids.
+     * @return a list of objects.
+     */
+    List<T> getByUid( Collection<String> uids );
 }

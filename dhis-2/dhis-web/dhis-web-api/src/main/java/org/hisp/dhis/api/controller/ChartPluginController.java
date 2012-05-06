@@ -1,17 +1,42 @@
 package org.hisp.dhis.api.controller;
 
+/*
+ * Copyright (c) 2004-2012, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.DateUtils.setNames;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
@@ -20,7 +45,6 @@ import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.api.webdomain.ChartPluginValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.indicator.Indicator;
@@ -78,20 +102,31 @@ public class ChartPluginController
         I18nFormat format = i18nManager.getI18nFormat();
                 
         List<Period> periods = periodService.reloadPeriods( setNames( relativePeriods.getRelativePeriods(), format ) );
-        
-        List<Integer> periodIds = new ArrayList<Integer>( getIdentifiers( Period.class, periods ) );
-        
-        chartValue.setP( periodIds );
 
-        Set<OrganisationUnit> organisationUnits = organisationUnitService
-            .getOrganisationUnitsByUid( organisationUnitIds );
-
+        for ( Period period : periods )
+        {
+            chartValue.getPeriods().add( period.getName() );
+        }
+        
+        List<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsByUid( organisationUnitIds );
+        
+        for ( OrganisationUnit unit : organisationUnits )
+        {
+            chartValue.getOrgUnits().add( unit.getName() );
+        }
+        
         if ( indicatorIds != null )
         {
-            Set<Indicator> indicators = indicatorService.getIndicatorsByUid( indicatorIds );
+            List<Indicator> indicators = indicatorService.getIndicatorsByUid( indicatorIds );
 
+            for ( Indicator indicator : indicators )
+            {
+                chartValue.getData().add( indicator.getDisplayShortName() );
+            }
+            
             Collection<AggregatedIndicatorValue> indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues(
-                getIdentifiers( Indicator.class, indicators ), periodIds,
+                getIdentifiers( Indicator.class, indicators ),
+                getIdentifiers( Period.class, periods ),
                 getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
             for ( AggregatedIndicatorValue value : indicatorValues )
@@ -99,20 +134,26 @@ public class ChartPluginController
                 String[] record = new String[4];
                 
                 record[0] = String.valueOf( value.getValue() );
-                record[1] = indicatorService.getIndicator( value.getIndicatorId() ).getShortName();
+                record[1] = indicatorService.getIndicator( value.getIndicatorId() ).getDisplayShortName();
                 record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
                 record[3] = organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
                 
-                chartValue.getV().add( record );
+                chartValue.getValues().add( record );
             }
         }
 
         if ( dataElementIds != null )
         {
-            Set<DataElement> dataElements = dataElementService.getDataElementsByUid( dataElementIds );
+            List<DataElement> dataElements = dataElementService.getDataElementsByUid( dataElementIds );
+            
+            for ( DataElement element : dataElements )
+            {
+                chartValue.getData().add( element.getDisplayShortName() );
+            }
             
             Collection<AggregatedDataValue> dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( 
-                getIdentifiers( DataElement.class, dataElements ), periodIds,
+                getIdentifiers( DataElement.class, dataElements ),
+                getIdentifiers( Period.class, periods ),                
                 getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
             for ( AggregatedDataValue value : dataValues )
@@ -120,11 +161,11 @@ public class ChartPluginController
                 String[] record = new String[4];
                 
                 record[0] = String.valueOf( value.getValue() );
-                record[1] = dataElementService.getDataElement( value.getDataElementId() ).getShortName();
+                record[1] = dataElementService.getDataElement( value.getDataElementId() ).getDisplayShortName();
                 record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
                 record[3] = organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
                 
-                chartValue.getV().add( record );              
+                chartValue.getValues().add( record );              
             }
         }
         

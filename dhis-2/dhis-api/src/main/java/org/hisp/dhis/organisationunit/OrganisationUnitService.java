@@ -139,7 +139,7 @@ public interface OrganisationUnitService
      * @param uids the collection of uids.
      * @return a collection of OrganisationUnits.
      */
-    Set<OrganisationUnit> getOrganisationUnitsByUid( Collection<String> uids );
+    List<OrganisationUnit> getOrganisationUnitsByUid( Collection<String> uids );
 
     /**
      * Returns an OrganisationUnit with a given name.

@@ -143,16 +143,9 @@ public class DefaultDataElementService
         } );
     }
     
-    public Set<DataElement> getDataElementsByUid( Collection<String> uids )
+    public List<DataElement> getDataElementsByUid( Collection<String> uids )
     {
-        Set<DataElement> dataElements = new HashSet<DataElement>();
-        
-        for ( String uid : uids )
-        {
-            dataElements.add( dataElementStore.getByUid( uid ) );
-        }
-        
-        return dataElements;
+        return dataElementStore.getByUid( uids );
     }
 
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )

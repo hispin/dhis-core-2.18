@@ -41,18 +41,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         	ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     </bean>
 
-    <bean id="org.hisp.dhis.visualizer.action.GetAggregatedValuesPluginAction"
-        class="org.hisp.dhis.visualizer.action.GetAggregatedValuesPluginAction"
-        scope="prototype">
-		<property name="aggregatedDataValueService"
-			ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    </bean>
-    
     <!-- Chart -->
 
     <bean id="org.hisp.dhis.visualizer.action.AddOrUpdateChartAction"

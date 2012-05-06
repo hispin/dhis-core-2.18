@@ -29,7 +29,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.mobile.api.IProgramService" class="org.hisp.dhis.mobile.service.DefaultProgramService">
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     <property name="modelMapping" ref="org.hisp.dhis.mobile.service.ModelMapping" />
   </bean>
 

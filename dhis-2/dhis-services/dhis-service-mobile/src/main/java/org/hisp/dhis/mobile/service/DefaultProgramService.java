@@ -27,11 +27,8 @@ package org.hisp.dhis.mobile.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import org.hisp.dhis.api.mobile.IProgramService;
@@ -52,8 +49,6 @@ public class DefaultProgramService
     // -------------------------------------------------------------------------
 
     private org.hisp.dhis.program.ProgramService programService;
-
-    private org.hisp.dhis.i18n.I18nService i18nService;
 
     private org.hisp.dhis.mobile.service.ModelMapping modelMapping;
 
@@ -109,8 +104,6 @@ public class DefaultProgramService
 
     public Program getProgram( int programId, String localeString )
     {
-        Locale locale = LocaleUtil.getLocale( localeString );
-
         org.hisp.dhis.program.Program program = programService.getProgram( programId );
 
         //program = i18n( i18nService, locale, program );
@@ -165,12 +158,6 @@ public class DefaultProgramService
     public void setProgramService( org.hisp.dhis.program.ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    @Required
-    public void setI18nService( org.hisp.dhis.i18n.I18nService i18nService )
-    {
-        this.i18nService = i18nService;
     }
 
     @Required

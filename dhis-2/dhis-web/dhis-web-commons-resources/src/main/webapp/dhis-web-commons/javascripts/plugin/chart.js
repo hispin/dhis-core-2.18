@@ -54,9 +54,10 @@ Ext.onReady( function() {
         DHIS.store.pie = DHIS.store.defaultChartStore;
         
         DHIS.getChart = DHIS.exe.addToQueue;
+        DHIS.destroyChart = DHIS.exe.destroy;
     };
     
-    DHIS.projects = [];
+    DHIS.projects = {};
     
     DHIS.util = {
         dimension: {
@@ -161,7 +162,7 @@ Ext.onReady( function() {
                     trackMouse: true,
                     style: 'border-width:2px; background-color:#eee',
                     renderer: function(r, item) {
-						this.update('<span style="font-size:22px">' + item.value[1] + '</span>');
+						this.update('<span style="font-size:21px">' + '' + item.value[1] + '</span>');
                     }
                 };
             },
@@ -204,6 +205,10 @@ Ext.onReady( function() {
                             axis: 'left',
                             xField: project.store.bottom,
                             yField: project.store.left[i],
+							style: {
+								opacity: 0.8,
+								lineWidth: 3
+							},
 							tips: DHIS.util.chart.getTips()
                         });
                     }
@@ -282,7 +287,9 @@ Ext.onReady( function() {
             jsonfy: function(r) {                
                 var object = {
                     values: [],
-                    periods: r.p
+                    periods: r.p,
+                    datanames: [],
+                    organisationunitnames: []
                 };
                 for (var i = 0; i < r.v.length; i++) {
                     var obj = {};
@@ -292,6 +299,12 @@ Ext.onReady( function() {
                     obj[DHIS.conf.finals.dimension.organisationunit.value] = r.v[i][3];
                     object.values.push(obj);
                 }
+                for (var j = 0; j < r.d.length; j++) {
+					object.datanames.push(DHIS.util.string.getEncodedString(r.d[j]));
+				}
+                for (var k = 0; k < r.o.length; k++) {
+					object.organisationunitnames.push(DHIS.util.string.getEncodedString(r.o[k]));
+				}
                 return object;
             }
         }
@@ -303,9 +316,11 @@ Ext.onReady( function() {
         },
         defaultChartStore: function(project) {
             var keys = [];
+            
             Ext.Array.each(project.data, function(item) {
                 keys = Ext.Array.merge(keys, Ext.Object.getKeys(item));
             });
+            
             project.store = Ext.create('Ext.data.Store', {
                 fields: keys,
                 data: project.data
@@ -375,6 +390,10 @@ Ext.onReady( function() {
             project.state.conf.category = project.state.conf.category.toLowerCase();
             project.state.conf.filter = project.state.conf.filter.toLowerCase();
             
+            project.state.conf[project.state.conf.series] = DHIS.conf.finals.chart.series;
+            project.state.conf[project.state.conf.category] = DHIS.conf.finals.chart.category;
+            project.state.conf[project.state.conf.filter] = DHIS.conf.finals.chart.filter;
+            
             project.state.type = project.state.conf.type;
             project.state.series.dimension = project.state.conf.series;
             project.state.category.dimension = project.state.conf.category;
@@ -414,7 +433,8 @@ Ext.onReady( function() {
                     }
                 });
             }
-        }
+        },
+        storage: {}
     };
     
     DHIS.value = {
@@ -445,12 +465,12 @@ Ext.onReady( function() {
                         project.values[i][DHIS.conf.finals.dimension.data.value] = DHIS.util.string.getEncodedString(project.values[i][DHIS.conf.finals.dimension.data.value]);
                         project.values[i][DHIS.conf.finals.dimension.period.value] = DHIS.util.string.getEncodedString(project.values[i][DHIS.conf.finals.dimension.period.value]);
                         project.values[i][DHIS.conf.finals.dimension.organisationunit.value] = DHIS.util.string.getEncodedString(project.values[i][DHIS.conf.finals.dimension.organisationunit.value]);
-                    }                        
+                    }
                     
-                    Ext.Array.each(project.values, function(item) {
-                        Ext.Array.include(project.state.series.names, DHIS.util.string.getEncodedString(item[project.state.series.dimension]));
-                        Ext.Array.include(project.state.category.names, DHIS.util.string.getEncodedString(item[project.state.category.dimension]));
-                        Ext.Array.include(project.state.filter.names, DHIS.util.string.getEncodedString(item[project.state.filter.dimension]));
+                    project.state[project.state.conf.data].names = json.datanames;
+                    project.state[project.state.conf.organisationunit].names = json.organisationunitnames;
+                    Ext.Array.each(project.values, function(item) {						
+                        Ext.Array.include(project.state[project.state.conf.period].names, DHIS.util.string.getEncodedString(item[project.state[project.state.conf.period].dimension]));
                         item.v = parseFloat(item.v);
                     });
                     
@@ -503,7 +523,7 @@ Ext.onReady( function() {
             this[project.state.type](project);
             DHIS.exe.execute();
         },
-        column: function(project, isStacked) {
+        column: function(project, isStacked) {			
             project.chart = Ext.create('Ext.chart.Chart', {
 				renderTo: project.state.conf.el,
                 width: project.state.conf.width || this.el.getWidth(),
@@ -537,15 +557,16 @@ Ext.onReady( function() {
                         xField: project.store.bottom,
                         yField: project.store.left,
                         stacked: isStacked,
-                        style: {
-                            opacity: 0.8
-                        },
+						style: {
+							opacity: 0.8,
+							stroke: '#333'
+						},
 						tips: DHIS.util.chart.getTips()
                     }
                 ]
             });
             
-            DHIS.projects.push(project);
+            DHIS.projects[project.state.conf.el] = project;
         },
         stackedcolumn: function(project) {
             this.column(project, true);
@@ -584,15 +605,16 @@ Ext.onReady( function() {
                         xField: project.store.left,
                         yField: project.store.bottom,
                         stacked: isStacked,
-                        style: {
-                            opacity: 0.8
-                        },
+						style: {
+							opacity: 0.8,
+							stroke: '#333'
+						},
 						tips: DHIS.util.chart.getTips()
                     }
                 ]
             });
             
-            DHIS.projects.push(project);
+            DHIS.projects[project.state.conf.el] = project;
         },
         stackedbar: function(project) {
             this.bar(project, true);
@@ -627,7 +649,7 @@ Ext.onReady( function() {
                 series: DHIS.util.chart.line.getSeriesArray(project)
             });
             
-            DHIS.projects.push(project);
+            DHIS.projects[project.state.conf.el] = project;
         },
         area: function(project) {
             project.chart = Ext.create('Ext.chart.Chart', {
@@ -661,13 +683,14 @@ Ext.onReady( function() {
                     axis: 'left',
                     xField: project.store.bottom[0],
                     yField: project.store.left,
-                    style: {
-                        opacity: 0.65
-                    }
+					style: {
+						opacity: 0.65,
+						stroke: '#555'
+					}
                 }]
             });
             
-            DHIS.projects.push(project);
+            DHIS.projects[project.state.conf.el] = project;
         },
         pie: function(project) {
             project.chart = Ext.create('Ext.chart.Chart', {
@@ -693,13 +716,14 @@ Ext.onReady( function() {
                         }
                     },
                     style: {
-                        opacity: 0.9
+                        opacity: 0.9,
+						stroke: '#555'
                     },
                     tips: DHIS.util.chart.pie.getTips(project.store.left[0])
                 }]
             });
             
-            DHIS.projects.push(project);
+            DHIS.projects[project.state.conf.el] = project;
         }
     };
     
@@ -707,7 +731,7 @@ Ext.onReady( function() {
         allow: true,
         queue: [],
         addToQueue: function(conf) {
-            DHIS.exe.queue.push(conf);            
+            DHIS.exe.queue.push(conf);
             if (DHIS.exe.allow) {
                 DHIS.exe.allow = false;
                 DHIS.exe.execute();
@@ -716,6 +740,7 @@ Ext.onReady( function() {
         execute: function() {
             if (this.queue.length) {
                 var conf = this.queue.shift();
+                this.destroy(conf.el);
                 if (conf.uid) {
                     DHIS.state.setState(conf);
                 }
@@ -723,6 +748,14 @@ Ext.onReady( function() {
                     DHIS.state.getState(conf);
                 }
             }
+            else {
+				DHIS.exe.allow = true;
+			}
+		},
+		destroy: function(el) {
+			if (DHIS.projects[el]) {
+				DHIS.projects[el].chart.destroy();
+			}
 		}
     };
     

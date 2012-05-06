@@ -2,7 +2,7 @@ DHIS = {};
 DHIS.conf = {
     finals: {
         ajax: {
-            data_get: 'dhis-web-visualizer/getAggregatedValuesPlugin.action',
+            data_get: 'api/chartValues.jsonp',
             favorite_get: 'api/charts/'
         },        
         dimension: {
