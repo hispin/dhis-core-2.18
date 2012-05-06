@@ -157,7 +157,7 @@ public interface DataElementService
      * @param uids the collection of uids.
      * @return a collection of DataElements.
      */
-    Set<DataElement> getDataElementsByUid( Collection<String> uids );
+    List<DataElement> getDataElementsByUid( Collection<String> uids );
 
     /**
      * Returns all DataElements with types that are possible to aggregate. The

@@ -27,13 +27,16 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.*;
+import static org.hisp.dhis.i18n.I18nUtils.getCountByName;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsByName;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
@@ -135,16 +138,9 @@ public class DefaultIndicatorService
         } );
     }
     
-    public Set<Indicator> getIndicatorsByUid( Collection<String> uids )
+    public List<Indicator> getIndicatorsByUid( Collection<String> uids )
     {
-        Set<Indicator> indicators = new HashSet<Indicator>();
-        
-        for ( String uid : uids )
-        {
-            indicators.add( indicatorStore.getByUid( uid ) );
-        }
-        
-        return indicators;
+        return indicatorStore.getByUid( uids );
     }
 
     public Indicator getIndicatorByName( String name )

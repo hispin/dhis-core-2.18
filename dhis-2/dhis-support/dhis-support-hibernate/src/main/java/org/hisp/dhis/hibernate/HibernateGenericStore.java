@@ -39,6 +39,7 @@ import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -311,5 +312,18 @@ public class HibernateGenericStore<T>
         criteria.setProjection( Projections.rowCount() );
         criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
         return ((Number) criteria.uniqueResult()).intValue();
+    }
+    
+    @Override
+    public List<T> getByUid( Collection<String> uids )
+    {
+        List<T> list = new ArrayList<T>();
+        
+        for ( String uid : uids )
+        {
+            list.add( getByUid( uid ) );
+        }
+        
+        return list;
     }
 }

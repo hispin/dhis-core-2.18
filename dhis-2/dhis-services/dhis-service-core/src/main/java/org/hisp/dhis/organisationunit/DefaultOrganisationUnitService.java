@@ -180,16 +180,9 @@ public class DefaultOrganisationUnitService
         } );
     }
 
-    public Set<OrganisationUnit> getOrganisationUnitsByUid( Collection<String> uids )
+    public List<OrganisationUnit> getOrganisationUnitsByUid( Collection<String> uids )
     {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-
-        for ( String uid : uids )
-        {
-            organisationUnits.add( organisationUnitStore.getByUid( uid ) );
-        }
-
-        return organisationUnits;
+        return organisationUnitStore.getByUid( uids );
     }
 
     public OrganisationUnit getOrganisationUnit( String uid )
