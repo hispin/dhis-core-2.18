@@ -6,7 +6,7 @@
     #foreach ( $table in $reportTables )
     <tr>
         <td>
-            <a href="../dhis-web-reporting/getReportParams.action?id=${table.id}&mode=table" target="_blank">$table.name</a>
+            <a href="../dhis-web-reporting/getReportParams.action?uid=${table.uid}&mode=table">$table.name</a>
         </td>       
         <td style="width:16px">
             <a href="javascript:window.location.href='removeReportTable.action?id=$table.id'" title="$i18n.getString( 'remove' )">
