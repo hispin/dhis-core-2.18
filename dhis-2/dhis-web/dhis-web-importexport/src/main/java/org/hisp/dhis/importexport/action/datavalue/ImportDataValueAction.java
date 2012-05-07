@@ -107,6 +107,13 @@ public class ImportDataValueAction
     {
         this.orgUnitIdScheme = orgUnitIdScheme;
     }
+    
+    private boolean skipExistingCheck;
+
+    public void setSkipExistingCheck( boolean skipExistingCheck )
+    {
+        this.skipExistingCheck = skipExistingCheck;
+    }
 
     private String importFormat;
 
@@ -139,7 +146,7 @@ public class ImportDataValueAction
 
         TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
 
-        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, strategy );
+        ImportOptions options = new ImportOptions( dataElementIdScheme, orgUnitIdScheme, dryRun, strategy, skipExistingCheck );
         
         log.info( options );
         

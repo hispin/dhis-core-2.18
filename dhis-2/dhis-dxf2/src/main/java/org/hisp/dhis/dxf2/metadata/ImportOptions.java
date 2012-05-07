@@ -42,8 +42,10 @@ public class ImportOptions
     private boolean dryRun = false;
 
     private ImportStrategy importStrategy;
+    
+    private boolean skipExistingCheck;
 
-    private static final ImportOptions DEFAULT_OPTIONS = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES );
+    private static final ImportOptions DEFAULT_OPTIONS = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES, false );
 
     public static ImportOptions getDefaultImportOptions()
     {
@@ -59,12 +61,13 @@ public class ImportOptions
         this.importStrategy = importStrategy;
     }
 
-    public ImportOptions( IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy importStrategy )
+    public ImportOptions( IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy importStrategy, boolean skipExistingCheck )
     {
         this.dataElementIdScheme = dataElementIdScheme;
         this.orgUnitIdScheme = orgUnitIdScheme;
         this.dryRun = dryRun;
         this.importStrategy = importStrategy;
+        this.skipExistingCheck = skipExistingCheck;
     }
 
     //--------------------------------------------------------------------------
@@ -91,6 +94,11 @@ public class ImportOptions
         return importStrategy != null ? importStrategy : ImportStrategy.NEW_AND_UPDATES;
     }
 
+    public boolean isSkipExistingCheck()
+    {
+        return skipExistingCheck;
+    }
+
     //--------------------------------------------------------------------------
     // Set methods
     //--------------------------------------------------------------------------
@@ -114,11 +122,16 @@ public class ImportOptions
     {
         this.importStrategy = strategy != null ? ImportStrategy.valueOf( strategy.toUpperCase() ) : null;
     }
-    
+
+    public void setSkipExistingCheck( boolean skipExistingCheck )
+    {
+        this.skipExistingCheck = skipExistingCheck;
+    }
+
     @Override
     public String toString()
     {
         return "[data element id scheme: " + dataElementIdScheme + ", org unit id scheme: " + 
-            orgUnitIdScheme + ", dry run: " + dryRun + ", strategy: " + importStrategy + "]";
+            orgUnitIdScheme + ", dry run: " + dryRun + ", strategy: " + importStrategy + ", skip check: " + skipExistingCheck + "]";
     }
 }
