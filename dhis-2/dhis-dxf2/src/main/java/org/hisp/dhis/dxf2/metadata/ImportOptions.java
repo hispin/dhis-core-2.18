@@ -113,9 +113,9 @@ public class ImportOptions
         this.orgUnitIdScheme = scheme != null ? IdentifiableProperty.valueOf( scheme.toUpperCase() ) : null;
     }
 
-    public void setDryRun( Boolean dryRun )
+    public void setDryRun( boolean dryRun )
     {
-        this.dryRun = dryRun != null ? dryRun : false;
+        this.dryRun = dryRun;
     }
 
     public void setImportStrategy( String strategy )
