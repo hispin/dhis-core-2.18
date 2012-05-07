@@ -269,12 +269,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         totalImported = 0;
         totalUpdated = 0;
         totalIgnored = 0;
-
-        if ( options.isDryRun() )
-        {
-            // disable writing on the persistence layer
-            objectBridge.setWriteEnabled( false );
-        }
     }
 
     private List<ImportConflict> importObjectLocal( T object, ImportOptions options )

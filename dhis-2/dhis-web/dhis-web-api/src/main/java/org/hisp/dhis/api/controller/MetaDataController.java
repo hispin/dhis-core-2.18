@@ -62,7 +62,7 @@ public class MetaDataController
 
     @Autowired
     private ImportService importService;
-    
+
     @Autowired
     private ContextUtils contextUtils;
 
@@ -204,7 +204,7 @@ public class MetaDataController
     public void importGZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
         GZIPInputStream gzip = new GZIPInputStream( request.getInputStream() );
-        
+
         MetaData metaData = JacksonUtils.fromXml( gzip, MetaData.class );
         System.err.println( metaData );
 

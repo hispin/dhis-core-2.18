@@ -84,6 +84,11 @@ public class DefaultImportService
         ImportSummary importSummary = new ImportSummary();
         objectBridge.init();
 
+        if ( importOptions.isDryRun() )
+        {
+            objectBridge.setWriteEnabled( false );
+        }
+
         Date startDate = new Date();
 
         log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + startDate );
@@ -97,7 +102,9 @@ public class DefaultImportService
         doImport( metaData.getUsers(), importOptions, importSummary );
         doImport( metaData.getUserGroups(), importOptions, importSummary );
         doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
+*/
 
+        /*
         doImport( metaData.getConcepts(), importOptions, importSummary );
         doImport( metaData.getConstants(), importOptions, importSummary );
         doImport( metaData.getDocuments(), importOptions, importSummary );
@@ -136,7 +143,7 @@ public class DefaultImportService
         doImport( metaData.getDataSets(), importOptions, importSummary );
 */
 
-        cacheManager.clearCache();
+        // cacheManager.clearCache();
         objectBridge.destroy();
 
         Date endDate = new Date();
