@@ -9,10 +9,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogTypeAttributeOptionStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+	<!--
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeStore"
         class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogTypeAttributeStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+	-->	
+    <bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeStore"
+        class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogTypeAttributeStore">
+		<property name="clazz" value="org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute" />
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true" />
+    </bean>	
+	
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeStore"
         class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogTypeStore">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -60,10 +69,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogTypeAttributeOptionService">
         <property name="catalogTypeAttributeOptionStore" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOptionStore"/>
     </bean>
+<!--	
 	<bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService"
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogTypeAttributeService">
         <property name="catalogTypeAttributeStore" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeStore"/>
     </bean>
+-->
+	<bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService"
+        class="org.hisp.dhis.coldchain.catalog.DefaultCatalogTypeAttributeService">
+        <property name="catalogTypeAttributeStore" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeStore"/>
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+    </bean>	
+	
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeService"
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogTypeService">
         <property name="catalogTypeStore" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeStore"/>

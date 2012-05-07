@@ -5,8 +5,8 @@
     <td style="vertical-align:top">
 		<table width="100%">
 			<tr>
-				<td>
-					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+				<td>#filterDiv( "coldChainCatalogTypeAttribute" )
+					<!--$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>-->
 				</td>
 				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddColdChainCatalogTypeAttributeForm.action'" style="width:70px"></td>
 			</tr>
@@ -47,6 +47,9 @@
           </tbody>
 
         </table>
+		<p></p>
+  		#parse( "/dhis-web-commons/paging/paging.vm" )
+        
     </td>
 	
 		<td style="width:20em; padding-left:2em; vertical-align:top">

@@ -20,6 +20,14 @@ public interface CatalogTypeAttributeService
 
     Collection<CatalogTypeAttribute> getAllCatalogTypeAttributes();
     
+    //  methods
     
+    int getCatalogTypeAttributeCount();
+    
+    int getCatalogTypeAttributeCountByName( String name );
+    
+    Collection<CatalogTypeAttribute> getCatalogTypeAttributesBetween( int first, int max );
+    
+    Collection<CatalogTypeAttribute> getCatalogTypeAttributesBetweenByName( String name, int first, int max );
 
 }
