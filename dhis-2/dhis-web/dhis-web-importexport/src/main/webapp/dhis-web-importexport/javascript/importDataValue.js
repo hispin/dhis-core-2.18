@@ -15,7 +15,7 @@ function importDataValue()
 function toggleOptions()
 {
 	$( ".moreOptions" ).toggle();
-	$.toggleCss( "inputCriteria", "height", "144px", "200px" );
+	$.toggleCss( "inputCriteria", "height", "144px", "230px" );
 }
 
 function pingNotificationsTimeout()

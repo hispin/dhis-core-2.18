@@ -219,6 +219,7 @@ public class DefaultDataValueSetService
         IdentifiableProperty orgUnitIdScheme = dataValueSet.getOrgUnitIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getOrgUnitIdScheme().toUpperCase() ) : importOptions.getOrgUnitIdScheme();
         boolean dryRun = dataValueSet.getDryRun() != null ? dataValueSet.getDryRun() : importOptions.isDryRun();
         ImportStrategy strategy = dataValueSet.getStrategy() != null ? ImportStrategy.valueOf( dataValueSet.getStrategy() ) : importOptions.getImportStrategy();
+        boolean skipExistingCheck = importOptions.isSkipExistingCheck();
         
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
         Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
@@ -312,7 +313,7 @@ public class DefaultDataValueSetService
             internalValue.setComment( dataValue.getComment() );
             internalValue.setFollowup( dataValue.getFollowup() );
             
-            if ( batchHandler.objectExists( internalValue ) )
+            if ( !skipExistingCheck && batchHandler.objectExists( internalValue ) )
             {
                 if ( NEW_AND_UPDATES.equals( strategy ) || UPDATES.equals( strategy ) )
                 {
