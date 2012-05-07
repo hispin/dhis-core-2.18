@@ -717,14 +717,3 @@ TR.utilbody {
 .tr-menu-item-desc {
     background-image:url('../images/hmenu-desc.gif');
 }
-
-
-.tr-multiselect-filter { 
-	
-    -o-border-top-right-radius: 2px;
-	-icab-border-top-right-radius: 2px;
-	-khtml-border-top-right-radius: 2px;
-    -moz-border-radius-topright: 2px;
-	-webkit-border-top-right-radius: 2px;
-	border-top-right-radius: 2px;
-}
