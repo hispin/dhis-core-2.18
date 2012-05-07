@@ -1823,7 +1823,7 @@ Ext.onReady( function() {
 																xtype: 'textfield',
 																emptyText: TR.i18n.filter,
 																id: 'deFilterAvailable',
-																width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 4,
+																width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 64,
 																listeners: {			
 																	specialkey: function( textfield, e, eOpts ){
 																		if ( e.keyCode == e.ENTER )
@@ -1831,6 +1831,29 @@ Ext.onReady( function() {
 																			TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, textfield.rawValue.toLowerCase());	
 																		}
 																	}
+																}
+															},
+															{
+																xtype: 'button',
+																icon: 'images/filter.png',
+																tooltip: TR.i18n.filter,
+																width: 24,
+																handler: function() {
+																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
+																}
+															},
+															{
+																xtype: 'image',
+																src: 'images/grid-split.gif'
+															},
+															{
+																xtype: 'button',
+																icon: 'images/clear-filter.png',
+																tooltip: TR.i18n.clear,
+																width: 24,
+																handler: function() {
+																	Ext.getCmp('deFilterAvailable').setValue('');
+																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.available, Ext.getCmp('deFilterAvailable').getValue());
 																}
 															}
 														],
@@ -1862,7 +1885,7 @@ Ext.onReady( function() {
 																xtype: 'textfield',
 																emptyText: TR.i18n.filter,
 																id: 'deFilterSelected',
-																width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 4,
+																width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2 - 64,
 																listeners: {			
 																	specialkey: function( textfield, e, eOpts ){
 																		if ( e.keyCode == e.ENTER )
@@ -1870,6 +1893,29 @@ Ext.onReady( function() {
 																			TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.selected, textfield.rawValue.toLowerCase());	
 																		}
 																	}
+																}
+															},
+															{
+																xtype: 'button',
+																icon: 'images/filter.png',
+																tooltip: TR.i18n.filter,
+																width: 24,
+																handler: function() {
+																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.selected, Ext.getCmp('deFilterSelected').getValue());
+																}
+															},
+															{
+																xtype: 'image',
+																src: 'images/grid-split.gif'
+															},
+															{
+																xtype: 'button',
+																icon: 'images/clear-filter.png',
+																tooltip: TR.i18n.clear,
+																width: 24,
+																handler: function() {
+																	Ext.getCmp('deFilterSelected').setValue('');
+																	TR.util.multiselect.filterSelector( TR.cmp.params.dataelement.selected, Ext.getCmp('deFilterSelected').getValue());
 																}
 															}
 														],
