@@ -41,6 +41,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -222,6 +223,7 @@ public class DefaultDataValueSetService
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
         Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
+        Map<String, Period> periodMap = new HashMap<String, Period>();
         
         DataSet dataSet = dataValueSet.getDataSet() != null ? identifiableObjectManager.getObject( DataSet.class, IdentifiableProperty.UID, dataValueSet.getDataSet() ) : null;
         Date completeDate = getDefaultDate( dataValueSet.getCompleteDate() );
@@ -284,14 +286,24 @@ public class DefaultDataValueSetService
             {
                 categoryOptionCombo = fallbackCategoryOptionCombo;
             }
-            
+                        
             if ( dataValue.getValue() == null && dataValue.getComment() == null )
             {
                 continue;
             }
             
+            if ( periodMap.containsKey( dataValue.getPeriod() ) )
+            {
+                period = periodMap.get( dataValue.getPeriod() );
+            }
+            else
+            {
+                period = periodService.reloadPeriod( period );
+                periodMap.put( dataValue.getPeriod(), period );
+            }
+            
             internalValue.setDataElement( dataElement );
-            internalValue.setPeriod( periodService.reloadPeriod( period ) );
+            internalValue.setPeriod( period );
             internalValue.setSource( orgUnit );
             internalValue.setOptionCombo( categoryOptionCombo );
             internalValue.setValue( dataValue.getValue() );
