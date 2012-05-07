@@ -387,27 +387,27 @@ public class RelativePeriods
 
         if ( isLast5Years() )
         {
-            periods.addAll( getRelativePeriodList( new YearlyPeriodType().generateLast5Years( date ), LAST_5_YEARS, dynamicNames, format ) );
+            periods.addAll( getRollingRelativePeriodList( new YearlyPeriodType(), LAST_5_YEARS, date, dynamicNames, format ) );
         }
 
         if ( isLast12Months() )
         {
-            periods.addAll( getRelativePeriodList( new MonthlyPeriodType().generateRollingPeriods( date ), MONTHS_LAST_12, dynamicNames, format ) );
+            periods.addAll( getRollingRelativePeriodList( new MonthlyPeriodType(), MONTHS_LAST_12, date, dynamicNames, format ) );
         }
 
         if ( isLast6BiMonths() )
         {
-            periods.addAll( getRelativePeriodList( new BiMonthlyPeriodType().generateRollingPeriods( date ), BIMONTHS_LAST_6, dynamicNames, format ) );
+            periods.addAll( getRollingRelativePeriodList( new BiMonthlyPeriodType(), BIMONTHS_LAST_6, date, dynamicNames, format ) );
         }
 
         if ( isLast4Quarters() )
         {
-            periods.addAll( getRelativePeriodList( new QuarterlyPeriodType().generateRollingPeriods( date ), QUARTERS_THIS_YEAR, dynamicNames, format ) );
+            periods.addAll( getRollingRelativePeriodList( new QuarterlyPeriodType(), QUARTERS_THIS_YEAR, date, dynamicNames, format ) );
         }
 
         if ( isLast2SixMonths() )
         {
-            periods.addAll( getRelativePeriodList( new SixMonthlyPeriodType().generateRollingPeriods( date ), SIXMONHTS_LAST_2, dynamicNames, format ) );
+            periods.addAll( getRollingRelativePeriodList( new SixMonthlyPeriodType(), SIXMONHTS_LAST_2, date, dynamicNames, format ) );
         }
 
         if ( isThisFinancialYear() )
@@ -417,7 +417,7 @@ public class RelativePeriods
 
         if ( isLast5FinancialYears() )
         {
-            periods.addAll( getRelativePeriodList( new FinancialJulyPeriodType().generateLast5Years( date ), LAST_5_FINANCIAL_YEARS, dynamicNames, format ) );
+            periods.addAll( getRollingRelativePeriodList( new FinancialJulyPeriodType(), LAST_5_FINANCIAL_YEARS, date, dynamicNames, format ) );
         }
 
         date = getDate( MONTHS_IN_YEAR, date );
@@ -459,6 +459,22 @@ public class RelativePeriods
     private List<Period> getRelativePeriodList( CalendarPeriodType periodType, String[] periodNames, Date date, boolean dynamicNames, I18nFormat format )
     {
         return getRelativePeriodList( periodType.generatePeriods( date ), periodNames, dynamicNames, format );
+    }
+
+    /**
+     * Returns a list of relative rolling periods. The name will be dynamic depending on
+     * the dynamicNames argument. The short name will always be dynamic.
+     *
+     * @param periodType   the period type.
+     * @param periodNames  the array of period names.
+     * @param date         the current date.
+     * @param dynamicNames indication of whether dynamic names should be used.
+     * @param format       the I18nFormat.
+     * @return a list of periods.
+     */
+    private List<Period> getRollingRelativePeriodList( CalendarPeriodType periodType, String[] periodNames, Date date, boolean dynamicNames, I18nFormat format )
+    {
+        return getRelativePeriodList( periodType.generateRollingPeriods( date ), periodNames, dynamicNames, format );
     }
 
     /**
