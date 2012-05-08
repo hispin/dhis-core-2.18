@@ -196,6 +196,8 @@ public class DataElementGroup
         {
             DataElementGroup dataElementGroup = (DataElementGroup) other;
 
+            groupSet = null;
+
             removeAllDataElements();
 
             for ( DataElement dataElement : dataElementGroup.getMembers() )

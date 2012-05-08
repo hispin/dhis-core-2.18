@@ -187,7 +187,7 @@ public class OrganisationUnitGroup
 
     @JsonProperty( value = "organisationUnitGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( {DetailedView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public OrganisationUnitGroupSet getGroupSet()
     {
@@ -207,6 +207,8 @@ public class OrganisationUnitGroup
         if ( other.getClass().isInstance( this ) )
         {
             OrganisationUnitGroup organisationUnitGroup = (OrganisationUnitGroup) other;
+
+            groupSet = null;
 
             removeAllOrganisationUnits();
 

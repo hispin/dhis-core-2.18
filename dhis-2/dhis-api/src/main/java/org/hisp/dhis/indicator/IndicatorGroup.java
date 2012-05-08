@@ -174,7 +174,7 @@ public class IndicatorGroup
 
     @JsonProperty( value = "indicatorGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( {DetailedView.class} )
     @JacksonXmlProperty( localName = "indicatorGroupSet", namespace = Dxf2Namespace.NAMESPACE )
     public IndicatorGroupSet getGroupSet()
     {
@@ -194,6 +194,8 @@ public class IndicatorGroup
         if ( other.getClass().isInstance( this ) )
         {
             IndicatorGroup indicatorGroup = (IndicatorGroup) other;
+
+            groupSet = null;
 
             removeAllIndicators();
 
