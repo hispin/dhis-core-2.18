@@ -557,7 +557,6 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/exportReportUserRoles.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="javascripts">javascript/userRoles.js</param>
 		</action>
 
 		<action name="updateExportReportUserRole"
