@@ -598,36 +598,6 @@ public class RelativePeriods
         return cal.getTime();
     }
 
-    /**
-     * Creates an instance of RelativePeriods based on given set of PeriodType
-     * names.
-     *
-     * @return a RelativePeriods instance.
-     */
-    /*
-    public RelativePeriods getRelativePeriods( Set<String> periodTypes )
-    {
-        RelativePeriods relatives = new RelativePeriods();
-
-        if ( periodTypes == null || periodTypes.isEmpty() )
-        {
-            relatives.setLast12Months( true );
-            relatives.setLast4Quarters( true );
-            relatives.setThisYear( true );
-        }
-        else
-        {
-            relatives.setLast12Months( periodTypes.contains( MonthlyPeriodType.NAME ) );
-            relatives.setLast6BiMonths( periodTypes.contains( BiMonthlyPeriodType.NAME ) );
-            relatives.setLast4Quarters( periodTypes.contains( QuarterlyPeriodType.NAME ) );
-            relatives.setLast2SixMonths( periodTypes.contains( SixMonthlyPeriodType.NAME ) );
-            relatives.setThisYear( periodTypes.contains( YearlyPeriodType.NAME ) );
-            relatives.setThisFinancialYear( periodTypes.contains( FinancialJulyPeriodType.NAME ) );
-        }
-
-        return relatives;
-    }*/
-
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
