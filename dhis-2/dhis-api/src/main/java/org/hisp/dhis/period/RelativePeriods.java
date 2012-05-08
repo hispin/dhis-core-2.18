@@ -49,6 +49,8 @@ public class RelativePeriods
      */
     private static final long serialVersionUID = 2949655296199662273L;
 
+    private static final List<Period> NO = new ArrayList<Period>();
+    
     public static final String REPORTING_MONTH = "reporting_month";
     public static final String REPORTING_BIMONTH = "reporting_bimonth";
     public static final String REPORTING_QUARTER = "reporting_quarter";
@@ -323,7 +325,7 @@ public class RelativePeriods
      */
     public List<Period> getRelativePeriods()
     {
-        return getRelativePeriods( getDate( 1, new Date() ), null, false );
+        return getRelativePeriods( null, null, false );
     }
 
     /**
@@ -335,19 +337,23 @@ public class RelativePeriods
      */
     public List<Period> getRelativePeriods( I18nFormat format, boolean dynamicNames )
     {
-        return getRelativePeriods( getDate( 1, new Date() ), format, dynamicNames );
+        return getRelativePeriods( null, format, dynamicNames );
     }
 
     /**
      * Gets a list of Periods based on the given input and the state of this
      * RelativePeriods.
      *
-     * @param date   the date representing now.
+     * @param date the date representing now. If null the current date will be
+     *        used and an interval based on the period type will be subtracted 
+     *        from the date.
      * @param format the i18n format.
      * @return a list of relative Periods.
      */
     public List<Period> getRelativePeriods( Date date, I18nFormat format, boolean dynamicNames )
     {
+        date = date == null ? getDate( 1, new Date() ) : date;
+        
         List<Period> periods = new ArrayList<Period>();
 
         if ( isReportingMonth() )
@@ -444,7 +450,51 @@ public class RelativePeriods
         
         return periods;
     }
+    
+    /**
+     * Returns periods for the last 6 months based on the given period types.
+     * 
+     * @param periodTypes a set of period type represented as names.
+     * @return a list of periods.
+     */
+    public List<Period> getLast6Months( Set<String> periodTypes )
+    {
+        List<Period> periods = new ArrayList<Period>();
+        
+        Date date = getDate( 1, new Date() );
 
+        periods.addAll( periodTypes.contains( MonthlyPeriodType.NAME ) ? new MonthlyPeriodType().generateRollingPeriods( date ).subList( 6, 12 ) : NO );
+        periods.addAll( periodTypes.contains( BiMonthlyPeriodType.NAME ) ? new BiMonthlyPeriodType().generateRollingPeriods( date ).subList( 3, 6 ) : NO );
+        periods.addAll( periodTypes.contains( QuarterlyPeriodType.NAME ) ? new QuarterlyPeriodType().generateRollingPeriods( date ).subList( 2, 4 ) : NO );
+        periods.addAll( periodTypes.contains( SixMonthlyPeriodType.NAME ) ? new SixMonthlyPeriodType().generateRollingPeriods( date ).subList( 1, 2 ) : NO );        
+        periods.addAll( periodTypes.contains( YearlyPeriodType.NAME ) ? new YearlyPeriodType().generateRollingPeriods( date ).subList( 4, 5 ) : NO );
+        periods.addAll( periodTypes.contains( FinancialJulyPeriodType.NAME ) ? new FinancialJulyPeriodType().generateRollingPeriods( date ).subList( 4, 5 ) : NO );
+        
+        return periods;
+    }
+
+    /**
+     * Returns periods for the last 6 to 12 months based on the given period types.
+     * 
+     * @param periodTypes a set of period type represented as names.
+     * @return a list of periods.
+     */
+    public List<Period> getLast6To12Months( Set<String> periodTypes )
+    {
+        List<Period> periods = new ArrayList<Period>();
+
+        Date date = getDate( 1, new Date() );
+
+        periods.addAll( periodTypes.contains( MonthlyPeriodType.NAME ) ? new MonthlyPeriodType().generateRollingPeriods( date ).subList( 0, 6 ) : NO );
+        periods.addAll( periodTypes.contains( BiMonthlyPeriodType.NAME ) ? new BiMonthlyPeriodType().generateRollingPeriods( date ).subList( 0, 3 ) : NO );
+        periods.addAll( periodTypes.contains( QuarterlyPeriodType.NAME ) ? new QuarterlyPeriodType().generateRollingPeriods( date ).subList( 0, 2 ) : NO );
+        periods.addAll( periodTypes.contains( SixMonthlyPeriodType.NAME ) ? new SixMonthlyPeriodType().generateRollingPeriods( date ).subList( 0, 1 ) : NO );        
+        periods.addAll( periodTypes.contains( YearlyPeriodType.NAME ) ? new YearlyPeriodType().generateRollingPeriods( date ).subList( 3, 4 ) : NO );
+        periods.addAll( periodTypes.contains( FinancialJulyPeriodType.NAME ) ? new FinancialJulyPeriodType().generateRollingPeriods( date ).subList( 3, 4 ) : NO );
+        
+        return periods;
+    }
+    
     /**
      * Returns a list of relative periods. The name will be dynamic depending on
      * the dynamicNames argument. The short name will always be dynamic.
@@ -554,6 +604,7 @@ public class RelativePeriods
      *
      * @return a RelativePeriods instance.
      */
+    /*
     public RelativePeriods getRelativePeriods( Set<String> periodTypes )
     {
         RelativePeriods relatives = new RelativePeriods();
@@ -571,10 +622,11 @@ public class RelativePeriods
             relatives.setLast4Quarters( periodTypes.contains( QuarterlyPeriodType.NAME ) );
             relatives.setLast2SixMonths( periodTypes.contains( SixMonthlyPeriodType.NAME ) );
             relatives.setThisYear( periodTypes.contains( YearlyPeriodType.NAME ) );
+            relatives.setThisFinancialYear( periodTypes.contains( FinancialJulyPeriodType.NAME ) );
         }
 
         return relatives;
-    }
+    }*/
 
     // -------------------------------------------------------------------------
     // Getters & setters
