@@ -13,8 +13,12 @@ function startExport()
 	
 	var url = 'startExport.action?startDate=' + startDate + '&endDate=' + endDate;
 	
-	$( 'input[name="periodType"]').each( function() {
-		url += "&periodType=" + $( this ).val();
+	$( 'input[name="periodType"]').each( function() 
+	{
+		if ( $( this ).is( ':checked' ) )
+		{
+			url += "&periodType=" + $( this ).val();
+		}
 	} );
 	
 	$.get( url, pingNotificationsTimeout );

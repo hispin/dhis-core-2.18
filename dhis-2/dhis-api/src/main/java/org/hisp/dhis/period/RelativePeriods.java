@@ -139,7 +139,14 @@ public class RelativePeriods
         "financial_year_minus_2",
         "financial_year_minus_1",
         "financial_year_this" };
-
+    
+    public static final String[] WEEKS_LAST_52 = {
+        "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9", "w10", 
+        "w11", "w12", "w13", "w14", "w15", "w16", "w17", "w18", "w19", "w20",
+        "w21", "w22", "w23", "w24", "w25", "w26", "w27", "w28", "w29", "w30", 
+        "w31", "w32", "w33", "w34", "w35", "w36", "w37", "w38", "w39", "w40",
+        "w41", "w42", "w43", "w44", "w45", "w46", "w47", "w48", "w49", "w50", "w51", "w52" };
+    
     private static final int MONTHS_IN_YEAR = 12;
 
     private boolean reportingMonth = false; // TODO rename to lastMonth
@@ -177,6 +184,8 @@ public class RelativePeriods
     private boolean lastFinancialYear = false;
     
     private boolean last5FinancialYears = false;
+    
+    private boolean last52Weeks = false;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -206,7 +215,7 @@ public class RelativePeriods
                             boolean monthsThisYear, boolean quartersThisYear, boolean thisYear,
                             boolean monthsLastYear, boolean quartersLastYear, boolean lastYear, boolean last5Years,
                             boolean last12Months, boolean last6BiMonths, boolean last4Quarters, boolean last2SixMonths,
-                            boolean thisFinancialYear, boolean lastFinancialYear, boolean last5FinancialYears )
+                            boolean thisFinancialYear, boolean lastFinancialYear, boolean last5FinancialYears, boolean last52Weeks )
     {
         this.reportingMonth = reportingMonth;
         this.reportingBimonth = reportingBimonth;
@@ -226,6 +235,7 @@ public class RelativePeriods
         this.thisFinancialYear = thisFinancialYear;
         this.lastFinancialYear = lastFinancialYear;
         this.last5FinancialYears = last5FinancialYears;
+        this.last52Weeks = last52Weeks;
     }
 
     // -------------------------------------------------------------------------
@@ -255,6 +265,7 @@ public class RelativePeriods
         this.thisFinancialYear = false;
         this.lastFinancialYear = false;
         this.last5FinancialYears = false;
+        this.last52Weeks = false;
 
         return this;
     }
@@ -266,6 +277,11 @@ public class RelativePeriods
      */
     public PeriodType getPeriodType()
     {
+        if ( isLast52Weeks() )
+        {
+            return PeriodType.getPeriodTypeByName( WeeklyPeriodType.NAME );
+        }
+        
         if ( isReportingMonth() || isLast12Months() )
         {
             return PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
@@ -316,7 +332,7 @@ public class RelativePeriods
      */
     public String getReportingPeriodName( I18nFormat format )
     {
-        Period period = getPeriodType().createPeriod( getDate( 1, new Date() ) );
+        Period period = getPeriodType().createPeriod( subtractMonth( 1, new Date() ) );
         return format.formatPeriod( period );
     }
 
@@ -352,7 +368,7 @@ public class RelativePeriods
      */
     public List<Period> getRelativePeriods( Date date, I18nFormat format, boolean dynamicNames )
     {
-        date = date == null ? getDate( 1, new Date() ) : date;
+        date = date == null ? subtractMonth( 1, new Date() ) : date;
         
         List<Period> periods = new ArrayList<Period>();
 
@@ -426,7 +442,12 @@ public class RelativePeriods
             periods.addAll( getRollingRelativePeriodList( new FinancialJulyPeriodType(), LAST_5_FINANCIAL_YEARS, date, dynamicNames, format ) );
         }
 
-        date = getDate( MONTHS_IN_YEAR, date );
+        if ( isLast52Weeks() )
+        {
+            periods.addAll( getRollingRelativePeriodList( new WeeklyPeriodType(), WEEKS_LAST_52, date, dynamicNames, format ) );
+        }
+        
+        date = subtractMonth( MONTHS_IN_YEAR, date );
 
         if ( isMonthsLastYear() )
         {
@@ -461,8 +482,10 @@ public class RelativePeriods
     {
         List<Period> periods = new ArrayList<Period>();
         
-        Date date = getDate( 1, new Date() );
+        Date date = subtractMonth( 1, new Date() );
+        Date weekDate = subtractWeeks( 1, new Date() );
 
+        periods.addAll( periodTypes.contains( WeeklyPeriodType.NAME ) ? new WeeklyPeriodType().generateRollingPeriods( weekDate ).subList( 26, 52 ) : NO );
         periods.addAll( periodTypes.contains( MonthlyPeriodType.NAME ) ? new MonthlyPeriodType().generateRollingPeriods( date ).subList( 6, 12 ) : NO );
         periods.addAll( periodTypes.contains( BiMonthlyPeriodType.NAME ) ? new BiMonthlyPeriodType().generateRollingPeriods( date ).subList( 3, 6 ) : NO );
         periods.addAll( periodTypes.contains( QuarterlyPeriodType.NAME ) ? new QuarterlyPeriodType().generateRollingPeriods( date ).subList( 2, 4 ) : NO );
@@ -483,8 +506,10 @@ public class RelativePeriods
     {
         List<Period> periods = new ArrayList<Period>();
 
-        Date date = getDate( 1, new Date() );
+        Date date = subtractMonth( 1, new Date() );
+        Date weekDate = subtractWeeks( 1, new Date() );
 
+        periods.addAll( periodTypes.contains( WeeklyPeriodType.NAME ) ? new WeeklyPeriodType().generateRollingPeriods( weekDate ).subList( 0, 26 ) : NO );
         periods.addAll( periodTypes.contains( MonthlyPeriodType.NAME ) ? new MonthlyPeriodType().generateRollingPeriods( date ).subList( 0, 6 ) : NO );
         periods.addAll( periodTypes.contains( BiMonthlyPeriodType.NAME ) ? new BiMonthlyPeriodType().generateRollingPeriods( date ).subList( 0, 3 ) : NO );
         periods.addAll( periodTypes.contains( QuarterlyPeriodType.NAME ) ? new QuarterlyPeriodType().generateRollingPeriods( date ).subList( 0, 2 ) : NO );
@@ -587,13 +612,28 @@ public class RelativePeriods
      * Returns a date.
      *
      * @param months the number of months to subtract from the current date.
-     * @param date   the date representing now, ignored if null.
+     * @param date the date representing now, ignored if null.
      * @return a date.
      */
-    private Date getDate( int months, Date date )
+    private Date subtractMonth( int months, Date date )
     {
         Calendar cal = PeriodType.createCalendarInstance( date );
         cal.add( Calendar.MONTH, (months * -1) );
+
+        return cal.getTime();
+    }
+
+    /**
+     * Returns a date.
+     *
+     * @param months the number of weeks to subtract from the current date.
+     * @param date the date representing now, ignored if null.
+     * @return a date.
+     */
+    public Date subtractWeeks( int weeks, Date date )
+    {
+        Calendar cal = PeriodType.createCalendarInstance( date );
+        cal.add( Calendar.DAY_OF_YEAR, (weeks * -7) );
 
         return cal.getTime();
     }
@@ -835,6 +875,19 @@ public class RelativePeriods
         return this;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isLast52Weeks()
+    {
+        return last52Weeks;
+    }
+
+    public RelativePeriods setLast52Weeks( boolean last52Weeks )
+    {
+        this.last52Weeks = last52Weeks;
+        return this;
+    }
+
     // -------------------------------------------------------------------------
     // Equals, hashCode, and toString
     // -------------------------------------------------------------------------
@@ -864,6 +917,7 @@ public class RelativePeriods
         result = prime * result + (thisFinancialYear ? 1 : 0);
         result = prime * result + (lastFinancialYear ? 1 : 0);
         result = prime * result + (last5FinancialYears ? 1 : 0);
+        result = prime * result + (last52Weeks ? 1 : 0);
 
         return result;
     }
@@ -974,6 +1028,11 @@ public class RelativePeriods
         }
 
         if ( !last5FinancialYears == other.last5FinancialYears )
+        {
+            return false;
+        }
+
+        if ( !last52Weeks == other.last52Weeks )
         {
             return false;
         }

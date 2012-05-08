@@ -1,12 +1,13 @@
 <h3>$i18n.getString( "data_mart_management" ) #openHelp( "data_mart" )</h3>
 
-<div id="critiera" class="inputCriteria" style="width:420px;height:170px;">
+<div id="critiera" class="inputCriteria" style="width:430px;height:170px;">
 <table>
 <col width="100">
-<col width="270">
+<col width="290">
 <tr>
 	<td>$i18n.getString( "period_types" )</td>
-	<td><label for="monthly">$i18n.getString( "Monthly" )</label><input type="checkbox" id="monthly" name="periodType" value="Monthly" checked="checked">&nbsp;
+	<td><label for="weekly">$i18n.getString( "Weekly" )</label><input type="checkbox" id="weekly" name="periodType" value="Weekly">&nbsp;
+		<label for="monthly">$i18n.getString( "Monthly" )</label><input type="checkbox" id="monthly" name="periodType" value="Monthly" checked="checked">&nbsp;
 		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="checkbox" id="biMonthly" name="periodType" value="BiMonthly">&nbsp;
 		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="checkbox" id="quarterly" name="periodType" value="Quarterly" checked="checked"><br>
 		<label for="sixMonthly">$i18n.getString( "SixMonthly" )</label><input type="checkbox" id="sixMonthly" name="periodType" value="SixMonthly" checked="checked">&nbsp;

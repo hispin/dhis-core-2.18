@@ -14,6 +14,7 @@
 </tr>
 <tr>
 	<td>
+		<label for="weekly">$i18n.getString( "Weekly" )</label><input type="checkbox" id="weekly" class="scheduling" name="scheduledPeriodTypes" value="Weekly"#if( $scheduledPeriodTypes.contains( "Weekly" ) ) checked="checked"#end>&nbsp;
 		<label for="monthly">$i18n.getString( "Monthly" )</label><input type="checkbox" id="monthly" class="scheduling" name="scheduledPeriodTypes" value="Monthly"#if( $scheduledPeriodTypes.contains( "Monthly" ) ) checked="checked"#end>&nbsp;
 		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="checkbox" id="biMonthly" class="scheduling" name="scheduledPeriodTypes" value="BiMonthly"#if( $scheduledPeriodTypes.contains( "BiMonthly" ) ) checked="checked"#end>&nbsp;
 		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="checkbox" id="quarterly" class="scheduling" name="scheduledPeriodTypes" value="Quarterly"#if( $scheduledPeriodTypes.contains( "Quarterly" ) ) checked="checked"#end><br><br>

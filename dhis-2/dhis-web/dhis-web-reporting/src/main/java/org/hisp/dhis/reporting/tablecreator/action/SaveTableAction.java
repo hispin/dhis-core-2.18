@@ -439,7 +439,7 @@ public class SaveTableAction
             monthsThisYear, quartersThisYear, thisYear, 
             monthsLastYear, quartersLastYear, lastYear, 
             last5Years, last12Months, false, last4Quarters, last2SixMonths,
-            thisFinancialYear, lastFinancialYear, last5FinancialYears );
+            thisFinancialYear, lastFinancialYear, last5FinancialYears, false );
         
         ReportParams reportParams = new ReportParams();
         
