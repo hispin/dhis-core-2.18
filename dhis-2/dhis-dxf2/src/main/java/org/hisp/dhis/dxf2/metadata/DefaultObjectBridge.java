@@ -32,6 +32,10 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -95,6 +99,11 @@ public class DefaultObjectBridge
         registeredTypes.add( OrganisationUnit.class );
         registeredTypes.add( OrganisationUnitGroup.class );
         registeredTypes.add( OrganisationUnitGroupSet.class );
+
+        registeredTypes.add( Indicator.class );
+        registeredTypes.add( IndicatorType.class );
+        registeredTypes.add( IndicatorGroup.class );
+        registeredTypes.add( IndicatorGroupSet.class );
     }
 
     @Override

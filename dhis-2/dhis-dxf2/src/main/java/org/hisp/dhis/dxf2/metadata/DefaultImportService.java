@@ -119,12 +119,14 @@ public class DefaultImportService
         doImport( metaData.getDataElements(), importOptions, importSummary );
         doImport( metaData.getDataElementGroups(), importOptions, importSummary );
         doImport( metaData.getDataElementGroupSets(), importOptions, importSummary );
+*/
 
         doImport( metaData.getIndicatorTypes(), importOptions, importSummary );
         doImport( metaData.getIndicators(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroups(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroupSets(), importOptions, importSummary );
 
+/*
         doImport( metaData.getMaps(), importOptions, importSummary );
         doImport( metaData.getMapLegends(), importOptions, importSummary );
         doImport( metaData.getMapLegendSets(), importOptions, importSummary );

@@ -905,6 +905,10 @@ public class OrganisationUnit
             phoneNumber = organisationUnit.getPhoneNumber() == null ? phoneNumber : organisationUnit.getPhoneNumber();
             hasPatients = organisationUnit.isHasPatients();
             parent = organisationUnit.getParent();
+
+            groups.clear();
+            dataSets.clear();
+            users.clear();
         }
     }
 }
