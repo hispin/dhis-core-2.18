@@ -18,7 +18,8 @@
 		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="checkbox" id="biMonthly" class="scheduling" name="scheduledPeriodTypes" value="BiMonthly"#if( $scheduledPeriodTypes.contains( "BiMonthly" ) ) checked="checked"#end>&nbsp;
 		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="checkbox" id="quarterly" class="scheduling" name="scheduledPeriodTypes" value="Quarterly"#if( $scheduledPeriodTypes.contains( "Quarterly" ) ) checked="checked"#end><br><br>
 		<label for="sixMonthly">$i18n.getString( "SixMonthly" )</label><input type="checkbox" id="sixMonthly" class="scheduling" name="scheduledPeriodTypes" value="SixMonthly"#if( $scheduledPeriodTypes.contains( "SixMonthly" ) ) checked="checked"#end>&nbsp;
-		<label for="yearly">$i18n.getString( "Yearly" )</label><input type="checkbox" id="yearly" class="scheduling" name="scheduledPeriodTypes" class="scheduler" value="Yearly"#if( $scheduledPeriodTypes.contains( "Yearly" ) ) checked="checked"#end>			
+		<label for="yearly">$i18n.getString( "Yearly" )</label><input type="checkbox" id="yearly" class="scheduling" name="scheduledPeriodTypes" value="Yearly"#if( $scheduledPeriodTypes.contains( "Yearly" ) ) checked="checked"#end>&nbsp;
+		<label for="financialYearly">$i18n.getString( "financial_yearly" )</label><input type="checkbox" id="financialYearly" class="scheduling" name="scheduledPeriodTypes" value="FinancialJuly"#if( $scheduledPeriodTypes.contains( "FinancialJuly" ) ) checked="checked"#end>			
 	</td>
 </tr>
 <tr>
@@ -64,7 +65,7 @@
 		value="$i18n.getString( 'start' )"
 		#end
 		/>
-		<input type="button" style="width:140px" onclick="executeTasks()" value="$i18n.getString( 'execute_now' )" />
+		<input type="button" id="executeButton" style="width:140px" onclick="executeTasks()" value="$i18n.getString( 'execute_now' )" />
 	</td>
 </tr>
 </table>

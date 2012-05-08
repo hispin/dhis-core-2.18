@@ -4,10 +4,12 @@ $( document ).ready( function()
 	if ( $( '#isRunning' ).val() == 'true' )
 	{
 		$( '.scheduling' ).attr( 'disabled', 'disabled' );
+		$( '#executeButton' ).removeAttr( 'disabled' );
 	}
 	else
 	{
 		$( '.scheduling' ).removeAttr( 'disabled' );
+		$( '#executeButton' ).attr( 'disabled', 'disabled' );
 	}
 } );
 

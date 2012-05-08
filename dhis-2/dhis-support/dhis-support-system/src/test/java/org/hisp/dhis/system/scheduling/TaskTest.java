@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.period.BiMonthlyPeriodType;
+import org.hisp.dhis.period.FinancialJulyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.QuarterlyPeriodType;
@@ -50,31 +52,36 @@ public class TaskTest
     {
         Set<String> periodTypes = new HashSet<String>();
         periodTypes.add( MonthlyPeriodType.NAME );
+        periodTypes.add( BiMonthlyPeriodType.NAME );
         periodTypes.add( QuarterlyPeriodType.NAME );
         periodTypes.add( SixMonthlyPeriodType.NAME );
         periodTypes.add( YearlyPeriodType.NAME );
+        periodTypes.add( FinancialJulyPeriodType.NAME );
         
         DataMartTask dataMartTask = new DataMartTask();
-        
+
+        dataMartTask.setLast6Months( true );
+        dataMartTask.setLast6To12Months( true );
+
         List<Period> periods = dataMartTask.getPeriods( periodTypes );
         
         assertNotNull( periods );
-        assertEquals( 20, periods.size() ); // 2 Y, 2 S, 4 Q, 12 M
+        assertEquals( 28, periods.size() ); // 12 + 6 + 4 + 2 + 1 + 1 
         
         dataMartTask.setLast6Months( true );
-        dataMartTask.setFrom6To12Months( false );
+        dataMartTask.setLast6To12Months( false );
         
         periods = dataMartTask.getPeriods( periodTypes );
 
         assertNotNull( periods );
-        assertEquals( 10, periods.size() ); // 1 Y, 1 S, 2 Q, 6 M
+        assertEquals( 14, periods.size() ); // 6 + 3 + 2 + 1 + 1 + 1
         
         dataMartTask.setLast6Months( false );
-        dataMartTask.setFrom6To12Months( true );
+        dataMartTask.setLast6To12Months( true );
 
         periods = dataMartTask.getPeriods( periodTypes );
-
+        System.out.println( periods );
         assertNotNull( periods );
-        assertEquals( 10, periods.size() ); // 1 Y, 1 S, 2 Q, 6 M        
+        assertEquals( 14, periods.size() ); // 6 + 3 + 2 + 1 + 1 + 1
     }
 }

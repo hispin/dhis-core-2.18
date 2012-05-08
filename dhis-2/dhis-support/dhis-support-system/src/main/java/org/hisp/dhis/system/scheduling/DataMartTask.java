@@ -30,9 +30,8 @@ package org.hisp.dhis.system.scheduling;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_PERIOD_TYPES;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -50,16 +49,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ConversionUtils;
-import org.hisp.dhis.system.util.Filter;
-import org.hisp.dhis.system.util.FilterUtils;
 
 /**
  * @author Lars Helge Overland
@@ -104,7 +99,7 @@ public class DataMartTask
     {
         this.periods = periods;
     }
-
+    
     private boolean last6Months;
 
     public void setLast6Months( boolean last6Months )
@@ -112,11 +107,11 @@ public class DataMartTask
         this.last6Months = last6Months;
     }
 
-    private boolean from6To12Months;
-    
-    public void setFrom6To12Months( boolean from6To12Months )
+    private boolean last6To12Months;
+
+    public void setLast6To12Months( boolean last6To12Months )
     {
-        this.from6To12Months = from6To12Months;
+        this.last6To12Months = last6To12Months;
     }
 
     // -------------------------------------------------------------------------
@@ -173,12 +168,6 @@ public class DataMartTask
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    /**
-     * Generates periods based on parameters and period types argument. Returns
-     * the list of periods with class scope if it has been set and has one or
-     * more periods. Returns a list of relative periods based on the given set
-     * of period types otherwise.
-     */
     public List<Period> getPeriods( Set<String> periodTypes )
     {
         if ( periods != null && periods.size() > 0 )
@@ -186,36 +175,18 @@ public class DataMartTask
             return periods;
         }
         
-        List<Period> relativePeriods = new RelativePeriods().getRelativePeriods( periodTypes ).getRelativePeriods();
+        List<Period> relatives =  new ArrayList<Period>();
         
-        if ( periodTypes.contains( YearlyPeriodType.NAME ) ) // Add last year
+        if  ( last6Months )
         {
-            relativePeriods.addAll( new RelativePeriods().setLastYear( true ).getRelativePeriods() );
+            relatives.addAll( new RelativePeriods().getLast6Months( periodTypes ) );
         }
         
-        final Date date = new Cal().now().subtract( Calendar.MONTH, 7 ).time();
-        
-        if ( last6Months )
+        if ( last6To12Months )
         {
-            FilterUtils.filter( relativePeriods, new Filter<Period>()
-            {
-                public boolean retain( Period period )
-                {
-                    return period != null && period.getStartDate().compareTo( date ) > 0;
-                }                
-            } );
-        }
-        else if ( from6To12Months )
-        {
-            FilterUtils.filter( relativePeriods, new Filter<Period>()
-            {
-                public boolean retain( Period period )
-                {
-                    return period != null && period.getStartDate().compareTo( date ) <= 0;
-                }
-            } );
+            relatives.addAll( new RelativePeriods().getLast6To12Months( periodTypes ) );
         }
         
-        return relativePeriods;
+        return relatives;
     }
 }

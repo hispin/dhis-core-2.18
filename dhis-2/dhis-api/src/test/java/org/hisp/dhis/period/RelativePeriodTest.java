@@ -28,7 +28,6 @@ package org.hisp.dhis.period;
  */
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 import java.util.Calendar;
@@ -219,18 +218,32 @@ public class RelativePeriodTest
     @Test
     public void testGetRelativePeriods()
     {
+        List<Period> relatives = new RelativePeriods().setLast12Months( true ).getRelativePeriods();
+        
+        assertEquals( 12, relatives.size() );
+        
+        relatives = new RelativePeriods().setLast4Quarters( true ).getRelativePeriods( i18nFormat, true );
+
+        assertEquals( 4, relatives.size() );
+    }
+    
+    @Test
+    public void testGetRelativePeriodsFromPeriodTypes()
+    {
         Set<String> periodTypes = new HashSet<String>();
         periodTypes.add( MonthlyPeriodType.NAME );
         periodTypes.add( BiMonthlyPeriodType.NAME );
+        periodTypes.add( QuarterlyPeriodType.NAME );
         periodTypes.add( SixMonthlyPeriodType.NAME );
+        periodTypes.add( YearlyPeriodType.NAME );
+        periodTypes.add( FinancialJulyPeriodType.NAME );
         
-        RelativePeriods relatives = new RelativePeriods().getRelativePeriods( periodTypes );
+        List<Period> periods = new RelativePeriods().getLast6Months( periodTypes );
+
+        assertEquals( 14, periods.size() );
         
-        assertTrue( relatives.isLast12Months() );
-        assertTrue( relatives.isLast6BiMonths() );
-        assertTrue( relatives.isLast2SixMonths() );
-        
-        assertFalse( relatives.isLast4Quarters() );
-        assertFalse( relatives.isLastYear() );        
+        periods = new RelativePeriods().getLast6To12Months( periodTypes );
+
+        assertEquals( 14, periods.size() );
     }
 }
