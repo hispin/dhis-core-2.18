@@ -109,7 +109,7 @@ public class GenerateReportVerticalCategoryAction
                 if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), group.getName(), ExcelUtils.TEXT,
-                        sheet, this.csText12BoldCenter );
+                        sheet, this.csText10Bold );
                 }
 
                 run++;
@@ -123,7 +123,7 @@ public class GenerateReportVerticalCategoryAction
                         if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                         {
                             ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), categoryOption.getName(),
-                                ExcelUtils.TEXT, sheet, this.csText10Bold );
+                                ExcelUtils.TEXT, sheet, this.csText8Bold );
                         }
                         else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
                         {

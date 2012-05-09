@@ -93,7 +93,10 @@ function CategoryLib()
 			} );
 		}
 		
-		this.removeDuplicatedItem( sourceList, destList );
+		if ( source && dest )
+		{
+			this.removeDuplicatedItem( sourceList, destList );
+		}
 	};
 	
 	this.removeDuplicatedItem = function( availableList, selectedList )
@@ -114,7 +117,7 @@ function CategoryLib()
 	{
 		this.categoryMap = new Array();
 		this.categoryOptionMap = new Array();
-	}
+	};
 }
 
 
