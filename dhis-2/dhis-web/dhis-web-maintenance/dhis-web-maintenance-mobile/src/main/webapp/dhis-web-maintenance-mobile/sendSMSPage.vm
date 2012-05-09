@@ -4,8 +4,7 @@
 		
 		selectionTreeSelection.setListenerFunction( selectedOrganisationUnitSendSMS );
 
-		uncheck( "sendTypeCB" );
-		toggleSMSGUI( false );
+		toggleSMSGUI( "phone" );
 	});
 	
 	var i18n_no_recipient = '$encoder.jsEscape( $i18n.getString( "no_recipient" ) , "'")';
@@ -23,7 +22,7 @@
     }
 </style>
 
-<h3>Send SMS</h3>
+<h3>$i18n.getString( "send_sms" )</h3>
 #if ( $!gatewayMap && $!gatewayMap.size() > 0 )
 <form id="sendSMSForm" name="sendSMSForm" action="sendSMS.action">
 	<table id="detailsList">
@@ -46,12 +45,19 @@
 			</tr>
 			
 			<tr>
-				<td>$i18n.getString( "org_unit_tree" )</td>
-				<td><input type="checkbox" id="sendTypeCB" onchange="toggleSMSGUI( this.checked );"/></td>
+				<td>$i18n.getString( "send_sms_to_target" )</td>
+				<td>
+					<select id="sendTarget" name="sendTarget" onchange="javascript:toggleSMSGUI( this.value );">
+						<option value="phone">$i18n.getString( "raw_phone_number" )</option>
+						<option value="user">$i18n.getString( "assigned_user_number" )</option>
+						<option value="unit">$i18n.getString( "selected_unit_number" )</option>
+						<option value="patient">$i18n.getString( "patient_number" )</option>
+					</select>
+				</td>
 			</tr>
 			
 			<tr><th colspan="2">$i18n.getString( "message" )</th></tr>
-			<tr><td colspan="2"><textarea id="smsMessage" name="smsMessage" cols="95" rows="10" class="{validate:{required:true}}"></textarea></td></tr>
+			<tr><td colspan="2"><textarea id="smsMessage" name="smsMessage" cols="95" rows="5" class="{validate:{required:true}}"></textarea></td></tr>
 		</tbody>
 	</table>
 

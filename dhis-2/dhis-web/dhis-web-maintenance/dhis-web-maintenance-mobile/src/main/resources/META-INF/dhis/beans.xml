@@ -3,13 +3,29 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
+  <bean id="org.hisp.dhis.mobile.caseentry.state.SelectedStateManager"
+	class="org.hisp.dhis.mobile.caseentry.state.DefaultSelectedStateManager">
+	<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	<property name="selectionManager"
+		ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	<property name="programStageInstanceService"
+		ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+  </bean>
+
   <bean id="org.hisp.dhis.mobile.action.NoAction" class="org.hisp.dhis.mobile.action.NoAction"
     scope="prototype" />
 
   <bean id="org.hisp.dhis.mobile.action.ShowSendSMSFormAction" class="org.hisp.dhis.mobile.action.ShowSendSMSFormAction"
     scope="prototype" />
 
+  <bean id="org.hisp.dhis.mobile.action.ShowSendSMSBeneficiaryFormAction" class="org.hisp.dhis.mobile.action.ShowSendSMSBeneficiaryFormAction"
+    scope="prototype" />
+
   <bean id="org.hisp.dhis.mobile.action.ProcessingSendSMSAction" class="org.hisp.dhis.mobile.action.ProcessingSendSMSAction"
+	scope="prototype" />
+	
+  <bean id="org.hisp.dhis.mobile.action.SearchPatientAction" class="org.hisp.dhis.mobile.action.SearchPatientAction"
 	scope="prototype" />
 
  <!-- Patient Mobile Settings -->

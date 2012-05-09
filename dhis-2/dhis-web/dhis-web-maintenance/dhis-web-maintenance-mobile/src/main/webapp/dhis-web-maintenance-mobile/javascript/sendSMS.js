@@ -1,4 +1,4 @@
-var isChecked = false;
+var _target = "";
 var isOrgunitSelected = false;
 
 function selectedOrganisationUnitSendSMS( unitIds )
@@ -6,27 +6,43 @@ function selectedOrganisationUnitSendSMS( unitIds )
 	isOrgunitSelected = (unitIds && unitIds.length > 0);
 }
 
-function toggleSMSGUI( checked )
+function toggleSMSGUI( _value )
 {
-	if ( checked ) {
+	if ( _value == "phone" ) 
+	{
+		showById( 'phoneType' );
+		hideById( 'orgunitType' );
+	}
+	else if ( _value == "user" || _value == "unit" )
+	{
 		selectionTree.clearSelectedOrganisationUnits();
 		selectionTree.buildSelectionTree();
 	
 		hideById( 'phoneType' );
 		showById( 'orgunitType' );
-	} else {
-		showById( 'phoneType' );
-		hideById( 'orgunitType' );
+	}
+	else {
+		window.location.href = "showBeneficiarySMSForm.action";
 	}
 	
-	isChecked = checked;
+	_target = _value;
+}
+
+function toggleAll( checked )
+{
+	var list = jQuery( "input[type=checkbox][name=patientSMSCheckBox]" );
+	
+	for ( var i in list )
+	{
+		list[i].checked = checked;
+	}
 }
 
 function sendSMSMessage( _form )
 {
 	var params = "";
 
-	if ( !isChecked )
+	if ( _target == "phone" )
 	{
 		var list = getFieldValue( "recipient" );
 
@@ -48,7 +64,7 @@ function sendSMSMessage( _form )
 
 		params = "?" + params.substring( 0, params.length - 1 );
 	}
-	else
+	else if ( _target == "user" || _target == "unit" )
 	{
 		if ( !isOrgunitSelected )
 		{
@@ -56,11 +72,20 @@ function sendSMSMessage( _form )
 			return;
 		}
 	}
+	else
+	{
+		if ( hasElements( 'recipients' ) )
+		{
+			params = "?" + getParamString( 'recipients', 'recipients' );
+		}
+		else { markInvalid( "recipients", i18n_list_empty ); }
+	}
 
 	jQuery.postUTF8( _form.action + params,
 	{
 		gatewayId: getFieldValue( 'gatewayId' ),
-		smsMessage: getFieldValue( 'smsMessage' )
+		smsMessage: getFieldValue( 'smsMessage' ),
+		sendTarget: getFieldValue( 'sendTarget' )
 	}, function ( json )
 	{
 		if ( json.response == "success" ) {
