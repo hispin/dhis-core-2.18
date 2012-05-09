@@ -265,77 +265,6 @@
 			<param name="page">/dhis-web-caseentry/records.vm</param>
 		</action>
         
-        <action name="tabularReportSelect"
-			class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-caseentry/tabularReportSelect.vm</param>
-			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/tabularReport.js,javascript/commons.js</param>
-			<param name="stylesheets">style/report.css</param>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-		
-		<action name="getOrganisationUnitChildren"
-			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/jsonminOrganisationUnitChildren.vm</result>
-		</action>
-		
-		<action name="tabularInitialize"
-			class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction">
-			 <result name="success" type="velocity-json">
-                /dhis-web-caseentry/jsonTabularInitialize.vm</result>
-		</action>
-
-		<action name="getReportPrograms"
-			class="org.hisp.dhis.caseentry.action.report.LoadProgramsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPrograms.vm</result>
-		</action>
-				
-		<action name="loadReportIdentifierTypes"
-			class="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/jsonIdentifierTypes.vm</result>
-		</action>
-		
-		<action name="loadReportProgramStages"
-			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/responseProgramStages.vm</result>
-		</action>
-		
-		<action name="loadReportAttributes"
-			class="org.hisp.dhis.caseentry.action.report.LoadAttributesAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPatientAttributes.vm</result>
-		</action>
-		
-		<action name="loadDataElements"
-			class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/responseDataElements.vm</result>
-		</action>
-		
-		<action name="getTabularParams"
-			class="org.hisp.dhis.caseentry.action.report.GetTabularParamsAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/responseTabularParams.vm</result>
-		</action>
-		
-		<action name="validateTabularReport"
-			class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="input" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
-		</action>
-		
-		 <action name="generateTabularReport"
-			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonTabularReport.vm</result>
-			<result name="xls" type="gridXlsResult" />
-      		<result name="pdf" type="gridPdfResult" />
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-			
 		<!-- i18n -->
 
         <action name="i18n" class="org.hisp.dhis.caseentry.action.NoAction">
@@ -715,6 +644,109 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_RELATIONSHIP_ADD</param>
 		</action>
+		
+		<!-- Tabular report -->
+		
+		<action name="tabularReportSelect"
+			class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-caseentry/tabularReportSelect.vm</param>
+			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/tabularReport.js,javascript/commons.js</param>
+			<param name="stylesheets">style/report.css</param>
+			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
+		
+		<action name="getOrganisationUnitChildren"
+			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonminOrganisationUnitChildren.vm</result>
+		</action>
+		
+		<action name="tabularInitialize"
+			class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction">
+			 <result name="success" type="velocity-json">
+		              /dhis-web-caseentry/jsonTabularInitialize.vm</result>
+		</action>
+		
+		<action name="getReportPrograms"
+			class="org.hisp.dhis.caseentry.action.report.LoadProgramsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPrograms.vm</result>
+		</action>
+				
+		<action name="loadReportIdentifierTypes"
+			class="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonIdentifierTypes.vm</result>
+		</action>
+		
+		<action name="loadReportProgramStages"
+			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/responseProgramStages.vm</result>
+		</action>
+		
+		<action name="loadReportAttributes"
+			class="org.hisp.dhis.caseentry.action.report.LoadAttributesAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPatientAttributes.vm</result>
+		</action>
+		
+		<action name="loadDataElements"
+			class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/responseDataElements.vm</result>
+		</action>
+		
+		<action name="getTabularParams"
+			class="org.hisp.dhis.caseentry.action.report.GetTabularParamsAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/responseTabularParams.vm</result>
+		</action>
+		
+		<action name="validateTabularReport"
+			class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+		</action>
+		
+		<action name="generateTabularReport"
+			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonTabularReportResult.vm</result>
+			<result name="xls" type="gridXlsResult" />
+		    		<result name="pdf" type="gridPdfResult" />
+			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
+		</action>
+			
+		<action name="saveTabularReport"
+            class="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction">
+            <result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        </action>
+        
+        <action name="getTabularReports"
+            class="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-caseentry/jsonTabularReportList.vm</result>
+        </action>
+
+ 		<action name="getTabularReport"
+            class="org.hisp.dhis.caseentry.action.report.GetTabularReportAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-caseentry/jsonTabularReport.vm</result>
+        </action>
+        
+        <action name="updateTabularReportName"
+            class="org.hisp.dhis.caseentry.action.report.UpdateTabularReportNameAction">
+            <result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        </action>
+        
+        <action name="deleteTabularReport"
+            class="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction">
+            <result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+        </action>
 		
 	</package>
 </struts>

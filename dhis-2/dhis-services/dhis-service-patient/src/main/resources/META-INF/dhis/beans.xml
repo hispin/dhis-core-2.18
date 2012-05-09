@@ -95,11 +95,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
-   <bean id="org.hisp.dhis.patient.PatientAttributeOptionStore"
-    class="org.hisp.dhis.patient.hibernate.HibernatePatientAttributeOptionStore">
-     <property name="clazz" value="org.hisp.dhis.patient.PatientAttributeOption"/>
-     <property name="sessionFactory" ref="sessionFactory"/>
-   </bean>
+    <bean id="org.hisp.dhis.patient.PatientAttributeOptionStore"
+   		class="org.hisp.dhis.patient.hibernate.HibernatePatientAttributeOptionStore">
+     	<property name="clazz" value="org.hisp.dhis.patient.PatientAttributeOption"/>
+     	<property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 	<bean id="org.hisp.dhis.patientdatavalue.PatientDataValueStore"
 		class="org.hisp.dhis.patientdatavalue.hibernate.HibernatePatientDataValueStore">
@@ -136,6 +136,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
      <property name="clazz" value="org.hisp.dhis.program.ProgramAttributeOption"/>
      <property name="sessionFactory" ref="sessionFactory"/>
    </bean>
+   
+	<bean id="org.hisp.dhis.patientreport.PatientTabularReportStore"
+    	class="org.hisp.dhis.patientreport.hibernate.HibernatePatientTabularReportStore">
+      	<property name="clazz" value="org.hisp.dhis.patientreport.PatientTabularReport" />
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
    
 	<!-- Service definitions -->
 	
@@ -312,11 +318,16 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	</bean>
   
     <bean id="org.hisp.dhis.program.ProgramAttributeOptionService"
-     class="org.hisp.dhis.program.DefaultProgramAttributeOptionService">
-     <property name="programAttributeOptionStore"
-      ref="org.hisp.dhis.program.ProgramAttributeOptionStore"/>
-   </bean>
+    	class="org.hisp.dhis.program.DefaultProgramAttributeOptionService">
+     	<property name="programAttributeOptionStore"
+      		ref="org.hisp.dhis.program.ProgramAttributeOptionStore"/>
+    </bean>
 	
+   <bean id="org.hisp.dhis.patientreport.PatientTabularReportService"
+    	class="org.hisp.dhis.patientreport.DefaultPatientTabularReportService">
+    	<property name="tabularReportStore" ref="org.hisp.dhis.patientreport.PatientTabularReportStore" />
+    </bean>
+    
 	<!-- Aggregation engine -->
 
 	<bean
