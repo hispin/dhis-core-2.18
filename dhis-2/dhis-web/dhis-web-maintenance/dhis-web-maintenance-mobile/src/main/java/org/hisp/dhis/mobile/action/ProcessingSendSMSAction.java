@@ -34,6 +34,8 @@ import java.util.Set;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.sms.MessageSender;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -57,6 +59,9 @@ public class ProcessingSendSMSAction
 
     @Autowired
     private CurrentUserService currentUserService;
+
+    @Autowired
+    private PatientService patientService;
 
     @Autowired
     private MessageSender messageSender;
@@ -84,6 +89,13 @@ public class ProcessingSendSMSAction
     public void setSmsMessage( String smsMessage )
     {
         this.smsMessage = smsMessage;
+    }
+
+    private String sendTarget;
+
+    public void setSendTarget( String sendTarget )
+    {
+        this.sendTarget = sendTarget;
     }
 
     private Set<String> recipients = new HashSet<String>();
@@ -124,67 +136,72 @@ public class ProcessingSendSMSAction
             return ERROR;
         }
 
-        if ( smsMessage != null && !smsMessage.isEmpty() )
+        if ( smsMessage == null || smsMessage.trim().length() == 0 )
         {
-            if ( recipients != null && !recipients.isEmpty() )
+            message = i18n.getString( "no_message" );
+
+            return ERROR;
+        }
+
+        if ( sendTarget != null && sendTarget.equals( "phone" ) )
+        {
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
+                recipients, gatewayId );
+        }
+        else if ( sendTarget.equals( "user" ) )
+        {
+            Collection<OrganisationUnit> units = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+
+            if ( units != null && !units.isEmpty() )
             {
-                message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
-                    recipients, gatewayId );
+                Set<User> users = new HashSet<User>();
 
-                if ( message != null && !message.equals( "success" ) )
+                for ( OrganisationUnit unit : units )
                 {
-                    message = i18n.getString( message );
+                    users.addAll( unit.getUsers() );
+                }
 
-                    return ERROR;
+                message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(),
+                    false, users, gatewayId );
+            }
+        }
+        else if ( sendTarget.equals( "unit" ) )
+        {
+            for ( OrganisationUnit unit : selectionTreeManager.getSelectedOrganisationUnits() )
+            {
+                if ( unit.getPhoneNumber() != null && !unit.getPhoneNumber().isEmpty() )
+                {
+                    recipients.add( unit.getPhoneNumber() );
                 }
             }
-            else
+
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
+                recipients, gatewayId );
+        }
+        else
+        {
+            Patient patient = null;
+            Set<String> phones = new HashSet<String>();
+
+            for ( String patientId : recipients )
             {
-                Collection<OrganisationUnit> units = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+                patient = patientService.getPatient( Integer.parseInt( patientId ) );
 
-                if ( units != null && !units.isEmpty() )
+                if ( patient != null && patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty() )
                 {
-                    recipients.clear();
-                    Set<User> users = new HashSet<User>();
-
-                    for ( OrganisationUnit unit : units )
-                    {
-                        if ( unit.getUsers() == null || unit.getUsers().isEmpty() )
-                        {
-                            if ( unit.getPhoneNumber() != null && !unit.getPhoneNumber().isEmpty() )
-                            {  
-                                recipients.add( unit.getPhoneNumber() );
-                            }
-                        }
-                        else
-                        {
-                            users.addAll( unit.getUsers() );
-                        }
-                    }
-
-                    message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(),
-                        true, recipients, gatewayId );
-
-                    if ( message != null && (message.equals( "no_recipient" ) || message.equals( "success" )) )
-                    {   
-                        message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService
-                            .getCurrentUser(), false, users, gatewayId );
-                        
-                        if ( message != null && !message.equals( "success" ) )
-                        {
-                            message = i18n.getString( message );
-
-                            return ERROR;
-                        }
-                    }
-                    else
-                    {   
-                        message = i18n.getString( message );
-
-                        return ERROR;
-                    }
+                    phones.add( patient.getPhoneNumber() );
                 }
             }
+
+            message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
+                phones, gatewayId );
+        }
+
+        if ( message != null && !message.equals( "success" ) )
+        {
+            message = i18n.getString( message );
+
+            return ERROR;
         }
 
         return SUCCESS;
