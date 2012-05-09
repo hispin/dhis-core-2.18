@@ -64,7 +64,7 @@ implements Action
         //catalogTypeAttributes =  catalogType.getCatalogTypeAttributes();
         
         catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes());
-        Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
+        //Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
         
         /*
         System.out.println( "Name of CatalogType is ======  :" + catalogType.getName() );

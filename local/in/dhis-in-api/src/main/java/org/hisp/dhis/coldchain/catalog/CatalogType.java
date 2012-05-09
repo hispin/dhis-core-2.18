@@ -1,8 +1,11 @@
 package org.hisp.dhis.coldchain.catalog;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.dataentryform.DataEntryForm;
 
 //public class CatalogType implements Serializable
 public class CatalogType extends BaseNameableObject
@@ -18,7 +21,9 @@ public class CatalogType extends BaseNameableObject
     
     private String description;
     
-    private Set<CatalogTypeAttribute> catalogTypeAttributes;
+    private List<CatalogTypeAttribute> catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>();
+	
+    private DataEntryForm dataEntryForm;
     
     // -------------------------------------------------------------------------
     // Contructors
@@ -99,13 +104,22 @@ public class CatalogType extends BaseNameableObject
     {
         this.description = description;
     }
-    public Set<CatalogTypeAttribute> getCatalogTypeAttributes()
+
+    public DataEntryForm getDataEntryForm()
+    {
+        return dataEntryForm;
+    }
+    public void setDataEntryForm( DataEntryForm dataEntryForm )
+    {
+        this.dataEntryForm = dataEntryForm;
+    }
+    public List<CatalogTypeAttribute> getCatalogTypeAttributes()
     {
         return catalogTypeAttributes;
     }
-    public void setCatalogTypeAttributes( Set<CatalogTypeAttribute> catalogTypeAttributes )
+    public void setCatalogTypeAttributes( List<CatalogTypeAttribute> catalogTypeAttributes )
     {
         this.catalogTypeAttributes = catalogTypeAttributes;
     }
-
+    
 }
