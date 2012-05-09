@@ -1,5 +1,6 @@
 package org.hisp.dhis.coldchain.catalog;
 
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseNameableObject;
@@ -156,6 +157,4 @@ public class CatalogTypeAttribute extends BaseNameableObject
         this.attributeOptions = attributeOptions;
     }
 
-    
-    
 }

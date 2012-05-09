@@ -86,7 +86,7 @@ implements Action
         }
         //catalogType.getCatalogTypeAttributes().clear();
         
-        Set<CatalogTypeAttribute> catalogTypeAttributes = new HashSet<CatalogTypeAttribute>( );
+        List<CatalogTypeAttribute> catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>( );
         
         
         

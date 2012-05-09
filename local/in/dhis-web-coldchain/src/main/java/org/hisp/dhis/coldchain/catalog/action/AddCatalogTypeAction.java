@@ -74,7 +74,7 @@ implements Action
         //catalogType.getCatalogTypeAttributes().add( arg0 )
         //catalogTypeService.addCatalogType( catalogType );
        
-        Set<CatalogTypeAttribute> catalogTypeAttributes = new HashSet<CatalogTypeAttribute>();
+        List<CatalogTypeAttribute> catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>();
         
         for ( int i = 0; i < this.selectedCatalogTypeAttributesValidator.size(); i++ )
         {
