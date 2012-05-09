@@ -38,7 +38,7 @@
           <tbody id="list">
             #foreach( $dataSet in $dataSets )
               <tr id="tr${dataSet.id}">
-                <td onclick="showDataSetDetails( $dataSet.id )">$encoder.htmlEncode( $dataSet.name )</td>
+                <td onclick="showDataSetDetails( $dataSet.id )">$encoder.htmlEncode( $dataSet.displayName )</td>
                 <td style="text-align:right">
                   <a href="defineDataSetAssociationsForm.action?dataSetId=$dataSet.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"/></a>
               
@@ -50,7 +50,7 @@
                
                   <a href="javascript:window.location.href='displayCompulsoryDataElementsForm.action?id=${dataSet.id}'" title="$i18n.getString( 'edit_compulsory_data_elements' )"><img src="../images/edit_compulsory_data_elements.png" alt="$i18n.getString( 'edit_compulsory_data_elements' )"/></a>
                
-                  <a href="javascript:removeDataSet( '$dataSet.id', '$encoder.jsEncode( $dataSet.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+                  <a href="javascript:removeDataSet( '$dataSet.id', '$encoder.jsEncode( $dataSet.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
                
                   <a href="javascript:showDataSetDetails( $dataSet.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
                 </td>
