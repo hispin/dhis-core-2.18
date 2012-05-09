@@ -111,7 +111,9 @@ TR.conf = {
         east_gridcolumn_height: 30,
         form_label_width: 90,
 		grid_favorite_width: 420,
-		grid_favorite_height: 250
+		grid_favorite_height: 250,
+        window_favorite_ypos: 100,
+        window_confirm_width: 250,
     }
 };
 
@@ -456,9 +458,30 @@ Ext.onReady( function() {
                 update: function(fn) {
                     TR.util.crud.favorite.create(fn, true);
                 },
+				updateName: function(name) {
+                    if (TR.store.favorite.findExact('name', name) != -1) {
+                        return;
+                    }
+                    TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.renaming + '...');
+                    var r = TR.cmp.favorite.grid.getSelectionModel().getSelection()[0];
+                    Ext.Ajax.request({
+                        url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_rename,
+                        method: 'POST',
+                        params: {id: r.data.id, name: name},
+                        success: function() {
+                            TR.store.favorite.load({callback: function() {
+                                TR.cmp.favorite.rename.window.close();
+                                TR.util.mask.hideMask();
+                                TR.cmp.favorite.grid.getSelectionModel().select(TR.store.favorite.getAt(TR.store.favorite.findExact('name', name)));
+                                TR.cmp.favorite.name.setValue(name);
+                            }});
+                        }
+                    });
+                },
                 del: function(fn) {
                     TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.deleting + '...');
-                    var baseurl = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_delete,
+					var id = TR.cmp.favorite.grid.getSelectionModel().getSelection()[0].data.id;
+                    var baseurl = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_delete + "?id=" + id,
                         selection = TR.cmp.favorite.grid.getSelectionModel().getSelection();
                     Ext.Array.each(selection, function(item) {
                         baseurl = Ext.String.urlAppend(baseurl, 'uids=' + item.data.id);
@@ -579,6 +602,7 @@ Ext.onReady( function() {
 								}
 							}
 							
+							TR.cmp.params.organisationunit.treepanel.getSelectionModel().deselectAll();
 							TR.exe.execute();
 						}
 					});
@@ -938,7 +962,7 @@ Ext.onReady( function() {
 					return false;
 				}
 				
-				if (!TR.cmp.params.organisationunit.treepanel.getSelectionModel().getSelection().length) {
+				if (TR.state.orgunitId == '') {
 					TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
 					return false;
 				}
@@ -2375,6 +2399,7 @@ Ext.onReady( function() {
 														title: TR.i18n.manage_favorites,
 														iconCls: 'tr-window-title-favorite',
 														bodyStyle: 'padding:8px; background-color:#fff',
+														region: 'center',
 														width: TR.conf.layout.grid_favorite_width,
 														height: TR.conf.layout.grid_favorite_height,
 														closeAction: 'hide',
