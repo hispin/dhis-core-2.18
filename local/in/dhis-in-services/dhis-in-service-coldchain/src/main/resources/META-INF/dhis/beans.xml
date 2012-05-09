@@ -21,15 +21,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="cacheable" value="true" />
     </bean>	
-	
+<!--	
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeStore"
         class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogTypeStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+-->	
+    <bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeStore"
+        class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogTypeStore">
+		<property name="clazz" value="org.hisp.dhis.coldchain.catalog.CatalogType" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true" />
+    </bean>	
+	
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogStore"
         class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogStore">
         <property name="clazz" value="org.hisp.dhis.coldchain.catalog.Catalog" />
 		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true" />
     </bean>
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogDataValueStore"
         class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogDataValueStore">
@@ -54,15 +63,31 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateInventoryTypeAttributeOptionStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+<!--	
     <bean id="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeStore"
         class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateInventoryTypeAttributeStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+-->	
+    <bean id="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeStore"
+        class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateInventoryTypeAttributeStore">
+		<property name="clazz" value="org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true" />
+    </bean>	
+	
+<!--	
     <bean id="org.hisp.dhis.coldchain.inventory.InventoryTypeStore"
         class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateInventoryTypeStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-	
+-->
+    <bean id="org.hisp.dhis.coldchain.inventory.InventoryTypeStore"
+        class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateInventoryTypeStore">
+        <property name="clazz" value="org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute" />
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true" />
+    </bean>		
 
 	<!-- Service definitions -->
 	<bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOptionService"
@@ -80,15 +105,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="catalogTypeAttributeStore" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeStore"/>
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     </bean>	
-	
+<!--	
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeService"
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogTypeService">
         <property name="catalogTypeStore" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeStore"/>
     </bean>
+-->	
+	
+    <bean id="org.hisp.dhis.coldchain.catalog.CatalogTypeService"
+        class="org.hisp.dhis.coldchain.catalog.DefaultCatalogTypeService">
+        <property name="catalogTypeStore" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeStore"/>
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+    </bean>	
+	
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogService"
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogService">
         <property name="catalogStore" ref="org.hisp.dhis.coldchain.catalog.CatalogStore"/>
 		<property name="catalogDataValueService" ref="org.hisp.dhis.coldchain.catalog.CatalogDataValueService"/>
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     </bean>
     <bean id="org.hisp.dhis.coldchain.catalog.CatalogDataValueService"
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogDataValueService">
@@ -116,10 +150,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService"
         class="org.hisp.dhis.coldchain.inventory.DefaultInventoryTypeAttributeService">
         <property name="inventoryTypeAttributeStore" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeStore"/>
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     </bean>
     <bean id="org.hisp.dhis.coldchain.inventory.InventoryTypeService"
         class="org.hisp.dhis.coldchain.inventory.DefaultInventoryTypeService">
         <property name="inventoryTypeStore" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeStore"/>
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     </bean>
 
 	<!-- DeletionHandlers -->

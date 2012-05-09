@@ -1,9 +1,14 @@
 package org.hisp.dhis.coldchain.catalog;
 
-import java.io.Serializable;
-
-public class Catalog implements Serializable
+import org.hisp.dhis.common.BaseNameableObject;
+//public class Catalog implements Serializable
+public class Catalog extends BaseNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6551567526188061690L;
+
     private int id;
     
     private String name;

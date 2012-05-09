@@ -17,6 +17,17 @@ public interface InventoryTypeAttributeService
     InventoryTypeAttribute getInventoryTypeAttribute( int id );
     
     InventoryTypeAttribute getInventoryTypeAttributeByName( String name );
+    
+    //  methods
+    
+    int getInventoryTypeAttributeCount();
+    
+    int getInventoryTypeAttributeCountByName( String name );
+    
+    Collection<InventoryTypeAttribute> getInventoryTypeAttributesBetween( int first, int max );
+    
+    Collection<InventoryTypeAttribute> getInventoryTypeAttributesBetweenByName( String name, int first, int max );
+    
 
     
 }

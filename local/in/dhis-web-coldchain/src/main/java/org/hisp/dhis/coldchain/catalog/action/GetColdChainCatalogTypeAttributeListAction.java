@@ -9,6 +9,7 @@ import java.util.List;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService;
 import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 //public class GetColdChainCatalogTypeAttributeListAction  implements Action
@@ -71,8 +72,13 @@ public class GetColdChainCatalogTypeAttributeListAction  extends ActionPagingSup
             catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>( catalogTypeAttributeService.getCatalogTypeAttributesBetween( paging.getStartPos(), paging.getPageSize() ));
         }
         
-        Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
+        Collections.sort( catalogTypeAttributes, new IdentifiableObjectNameComparator() );
+       
+        /*
+        catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>( catalogTypeAttributeService.getAllCatalogTypeAttributes() );
         
+        Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
+        */
         return SUCCESS;
     }
     

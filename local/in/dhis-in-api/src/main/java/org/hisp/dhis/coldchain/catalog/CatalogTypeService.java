@@ -17,5 +17,14 @@ public interface CatalogTypeService
     CatalogType getCatalogTypeByName( String name );
 
     Collection<CatalogType> getAllCatalogTypes();
-
+    
+    //  methods
+    
+    int getCatalogTypeCount();
+    
+    int getCatalogTypeCountByName( String name );
+    
+    Collection<CatalogType> getCatalogTypesBetween( int first, int max );
+    
+    Collection<CatalogType> getCatalogTypesBetweenByName( String name, int first, int max );
 }

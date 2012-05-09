@@ -15,8 +15,8 @@
     <td style="vertical-align:top">
 		<table width="100%">
 			<tr>
-				<!--<td>#filterDiv( "catalogType" )</td>-->
-				<td>$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/></td>
+				<td>#filterDiv( "catalogType" )</td>
+				<!--<td>$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/></td>-->
 				<td colspan="9" style="text-align:right">
 					<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='addCatalogTypeForm.action'" style="width:80px"/></a>
 				</td>
@@ -47,7 +47,7 @@
 
         </table>
 		<p></p>
-  		##parse( "/dhis-web-commons/paging/paging.vm" )
+  		#parse( "/dhis-web-commons/paging/paging.vm" )
   		
     </td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">

@@ -1,13 +1,18 @@
 package org.hisp.dhis.coldchain.inventory;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.patient.PatientAttributeOption;
+import org.hisp.dhis.common.BaseNameableObject;
 
-public class InventoryTypeAttribute implements Serializable
+//public class InventoryTypeAttribute implements Serializable
+public class InventoryTypeAttribute extends BaseNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6551567526188061690L;
+    
     public static final String TYPE_DATE = "DATE";
 
     public static final String TYPE_STRING = "TEXT";

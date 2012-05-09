@@ -2,6 +2,8 @@ package org.hisp.dhis.coldchain.inventory;
 
 import java.util.Collection;
 
+import org.hisp.dhis.coldchain.catalog.CatalogType;
+
 public interface InventoryTypeService
 {
     String ID = InventoryTypeService.class.getName();
@@ -17,4 +19,16 @@ public interface InventoryTypeService
     InventoryType getInventoryTypeByName( String name );
     
     InventoryType getInventoryType( int id );
+    
+    //  methods
+    
+    int getInventoryTypeCount();
+    
+    int getInventoryTypeCountByName( String name );
+    
+    Collection<InventoryType> getInventoryTypesBetween( int first, int max );
+    
+    Collection<InventoryType> getInventoryTypesBetweenByName( String name, int first, int max );
+    
+    
 }

@@ -2,15 +2,19 @@ package org.hisp.dhis.coldchain.catalog;
 
 import java.util.Collection;
 
-public interface CatalogTypeStore
+import org.hisp.dhis.common.GenericNameableObjectStore;
+
+//public interface CatalogTypeStore
+public interface CatalogTypeStore extends GenericNameableObjectStore<CatalogType>
 {
     String ID = CatalogTypeStore.class.getName();
-    
+    /*
     int addCatalogType( CatalogType catalogType );
 
     void updateCatalogType( CatalogType catalogType );
 
     void deleteCatalogType( CatalogType catalogType );
+    */
     
     CatalogType getCatalogType( int id );
     

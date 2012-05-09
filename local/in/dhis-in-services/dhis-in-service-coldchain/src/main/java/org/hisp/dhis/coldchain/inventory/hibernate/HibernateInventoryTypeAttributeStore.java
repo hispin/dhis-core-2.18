@@ -2,30 +2,28 @@ package org.hisp.dhis.coldchain.inventory.hibernate;
 
 import java.util.Collection;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeStore;
-import org.hisp.dhis.reports.Report_in;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 
-public class HibernateInventoryTypeAttributeStore implements InventoryTypeAttributeStore
+public class HibernateInventoryTypeAttributeStore extends HibernateIdentifiableObjectStore<InventoryTypeAttribute> implements InventoryTypeAttributeStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    /*
     private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    /*
     @Override
     public int addInventoryTypeAttribute( InventoryTypeAttribute inventoryTypeAttribute )
     {
@@ -74,5 +72,27 @@ public class HibernateInventoryTypeAttributeStore implements InventoryTypeAttrib
 
         return (InventoryTypeAttribute) criteria.uniqueResult();
     }
+    */
+    
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<InventoryTypeAttribute> getAllInventoryTypeAttributes()
+    {
+        return sessionFactory.getCurrentSession().createCriteria( InventoryTypeAttribute.class ).list();        
+    }
+
+    public InventoryTypeAttribute getInventoryTypeAttribute( int id )
+    {
+        return (InventoryTypeAttribute) sessionFactory.getCurrentSession().get( InventoryTypeAttribute.class, id );
+    }
+    
+    public InventoryTypeAttribute getInventoryTypeAttributeByName( String name )
+    {
+        return (InventoryTypeAttribute) getCriteria( Restrictions.eq( "name", name ) ).uniqueResult();
+        
+    }    
 }

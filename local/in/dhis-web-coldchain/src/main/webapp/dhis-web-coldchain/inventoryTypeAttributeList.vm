@@ -1,4 +1,10 @@
+<script type="text/javascript">
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );
+		leftBar.showAnimated();
+	});
 
+</script>
 <h3>$i18n.getString( "inventorytype_attribute_management" ) #openHelp( "inventorytype_attribute" )</h3>
 
 <table class="mainPageTable">
@@ -6,14 +12,15 @@
     <td style="vertical-align:top">
         <table width="100%">
             <tr>
-                <td>
+               	<!--<td>
                     $i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
-                </td>
+                </td>-->
+                <td>#filterDiv( "inventoryTypeAttributeList" )</td>
                 <td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddInventoryTypeAttributeForm.action'" style="width:70px"></td>
             </tr>
         </table>
             
-        <table class="listTable">
+        <table class="listTable" id="listTable">
             <col>          
             <col width="20">
             <col width="20">
@@ -48,6 +55,8 @@
           </tbody>
 
         </table>
+		<p></p>
+  		#parse( "/dhis-web-commons/paging/paging.vm" )        
     </td>
         <td style="width:20em; padding-left:2em; vertical-align:top">
 
