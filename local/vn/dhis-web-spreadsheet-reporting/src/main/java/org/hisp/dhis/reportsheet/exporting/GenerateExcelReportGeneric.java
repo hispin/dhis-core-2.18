@@ -26,16 +26,16 @@
  */
 package org.hisp.dhis.reportsheet.exporting;
 
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndQuaterly;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndSixMonthly;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfMonth;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfYear;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getLastDayOfYear;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getStartQuaterly;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getStartSixMonthly;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getTimeRoll;
 import static org.hisp.dhis.reportsheet.utils.ExpressionUtils.generateExpression;
 import static org.hisp.dhis.reportsheet.utils.ExpressionUtils.generateIndicatorExpression;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getTimeRoll;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfMonth;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getStartQuaterly;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndQuaterly;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getStartSixMonthly;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndSixMonthly;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfYear;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getLastDayOfYear;
 import static org.hisp.dhis.reportsheet.utils.FileUtils.checkingExtensionExcelFile;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 
@@ -219,6 +219,10 @@ public class GenerateExcelReportGeneric
     protected Font csFont11Bold;
 
     protected Font csFont10Bold;
+    
+    protected Font csFont9Bold;
+    
+    protected Font csFont8Bold;
 
     protected Font csFont12BoldCenter;
 
@@ -229,6 +233,10 @@ public class GenerateExcelReportGeneric
     protected CellStyle csText;
 
     protected CellStyle csText10Bold;
+    
+    protected CellStyle csText9Bold;
+    
+    protected CellStyle csText8Bold;
 
     protected CellStyle csTextSerial;
 
@@ -287,6 +295,8 @@ public class GenerateExcelReportGeneric
     {
         sheetPOI = templateWorkbook.getSheetAt( 0 );
         csFont = templateWorkbook.createFont();
+        csFont8Bold = templateWorkbook.createFont();
+        csFont9Bold = templateWorkbook.createFont();
         csFont10Bold = templateWorkbook.createFont();
         csFont11Bold = templateWorkbook.createFont();
         csFont12BoldCenter = templateWorkbook.createFont();
@@ -294,6 +304,7 @@ public class GenerateExcelReportGeneric
         csNumber = templateWorkbook.createCellStyle();
         csFormula = templateWorkbook.createCellStyle();
         csText = templateWorkbook.createCellStyle();
+        csText10Bold = templateWorkbook.createCellStyle();
         csText10Bold = templateWorkbook.createCellStyle();
         csTextSerial = templateWorkbook.createCellStyle();
         csTextICDJustify = templateWorkbook.createCellStyle();
@@ -307,6 +318,12 @@ public class GenerateExcelReportGeneric
         initPOIStylesManager.initDefaultFont( csFont );
         initPOIStylesManager.initDefaultCellStyle( csText, csFont );
 
+        initPOIStylesManager.initFont( csFont8Bold, "Tahoma", (short) 8, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
+            .getIndex() );
+        
+        initPOIStylesManager.initFont( csFont9Bold, "Tahoma", (short) 9, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
+            .getIndex() );
+        
         initPOIStylesManager.initFont( csFont10Bold, "Tahoma", (short) 10, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
             .getIndex() );
         initPOIStylesManager.initFont( csFont11Bold, "Tahoma", (short) 11, Font.BOLDWEIGHT_BOLD,
@@ -321,6 +338,14 @@ public class GenerateExcelReportGeneric
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_ALIGN_RIGHT, true );
+        initPOIStylesManager.initCellStyle( csText8Bold, csFont8Bold, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT,
+            true );
+        initPOIStylesManager.initCellStyle( csText9Bold, csFont9Bold, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT,
+            true );
         initPOIStylesManager.initCellStyle( csText10Bold, csFont10Bold, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT,

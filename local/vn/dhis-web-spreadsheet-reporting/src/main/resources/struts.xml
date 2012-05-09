@@ -289,10 +289,11 @@
 		</action>
 		
 		<action name="openCategoryOptionAssociations"
-			class="org.hisp.dhis.reportsheet.cogroup.action.OpenCategoryOptionAssociationsAction">
+			class="org.hisp.dhis.reportsheet.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/categoryOptionAssociations.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="javascripts">javascript/category.ajax.js</param>
 			<param name="stylesheets">style/basic.css</param>
 		</action>
 

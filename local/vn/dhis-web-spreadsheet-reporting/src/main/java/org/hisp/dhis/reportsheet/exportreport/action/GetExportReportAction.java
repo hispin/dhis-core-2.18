@@ -27,6 +27,9 @@ package org.hisp.dhis.reportsheet.exportreport.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
+import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.action.ActionSupport;
@@ -93,6 +96,11 @@ public class GetExportReportAction
     public String getClazzSimpleName()
     {
         return ExportReport.class.getSimpleName();
+    }
+
+    public List<String> getPeriodTypes()
+    {
+        return ExportItem.PERIODTYPE.getPeriodTypes();
     }
 
     // -------------------------------------------------------------------------
