@@ -4,17 +4,17 @@
 Ext.ns('Ext.ux.carousel');
 
 Ext.ux.carousel.Carousel = Ext.extend(Ext.util.Observable, {
-    interval: 3,
+    interval: 4,
     transitionDuration: 600,
     transitionType: 'carousel',
-    transitionEasing: 'easeOut',
+    transitionEasing: 'easeIn',
     itemSelector: 'img',
     activeSlide: 0,
-    autoPlay: false,
-    showPlayButton: false,
+    autoPlay: true,
+    showPlayButton: true,
     pauseOnNavigate: false,
     wrap: false,
-    freezeOnHover: false,
+    freezeOnHover: true,
     navigationOnHover: false,
     hideNavigation: false,
     width: null,
@@ -80,7 +80,6 @@ Ext.ux.carousel.Carousel = Ext.extend(Ext.util.Observable, {
             width: this.slideWidth + 'px',
             height: this.slideHeight + 'px'
         });
-
         this.els.caption.setWidth((this.slideWidth - (this.els.navNext.getWidth()*2) - (this.showPlayButton ? this.els.navPlay.getWidth() : 0) - 20) + 'px')
         
         items.appendTo(this.els.slidesWrap).each(function(item) {
@@ -214,7 +213,7 @@ Ext.ux.carousel.Carousel = Ext.extend(Ext.util.Observable, {
                 this.els.navPlay.addCls('ux-carousel-playing');
             }
             this.fireEvent('play');
-        }        
+        }
         return this;
     },
 

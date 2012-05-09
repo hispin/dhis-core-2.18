@@ -19,7 +19,7 @@
 }
 
 .ux-carousel-nav {
-    height: 21px;
+    height: 24px;
     width: 100%;
     background-color: #d1ccc7;
     position: absolute;
@@ -27,11 +27,11 @@
     left: 0;
     opacity: 0.8;
     filter: alpha(opacity=80);
-    padding-right: 3px;
+    padding-right: 4px;
 }
 
 .ux-carousel-caption {
-    font-size: 14px;
+    font-size: 16px;
     float: left;
     padding: 3px 5px;
     margin: 0;
@@ -47,7 +47,7 @@
     height: 16px;
     display: block;
     float: right;
-    margin: 3px 0;
+    margin: 4px 0;
     background-position: 0 16px;
 }
 
@@ -64,16 +64,18 @@
 }
 
 .ux-carousel-nav-play {
-    background-image: url('../img/play.png');
+    background-image: url('../img/play_pause.png');
     height: 16px;
     width: 16px;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 .ux-carousel-nav-play:hover {
     background-position: 0 0; 
 }
 .ux-carousel-nav-play.ux-carousel-playing {
-    background-position: 16px 16px;
+    background-position: 16px 0px;
 }
 .ux-carousel-nav-play.ux-carousel-playing:hover {
     background-position: 16px 0;
