@@ -27,6 +27,12 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_DATA_ELEMENT;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_IDENTIFIER_TYPE;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_META_DATA;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE;
+import static org.hisp.dhis.patientreport.PatientTabularReport.VALUE_TYPE_OPTION_SET;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -63,16 +69,6 @@ import org.hisp.dhis.program.ProgramStageService;
 public class GenerateTabularReportAction
     extends ActionPagingSupport<ProgramStageInstance>
 {
-    private String PREFIX_META_DATA = "meta";
-
-    private String PREFIX_IDENTIFIER_TYPE = "iden";
-
-    private String PREFIX_PATIENT_ATTRIBUTE = "attr";
-
-    private String PREFIX_DATA_ELEMENT = "de";
-
-    private String VALUE_TYPE_OPTION_SET = "optionSet";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

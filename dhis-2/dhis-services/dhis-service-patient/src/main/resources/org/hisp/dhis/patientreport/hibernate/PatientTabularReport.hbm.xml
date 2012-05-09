@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+    [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+    >
+
+<hibernate-mapping>
+	<class name="org.hisp.dhis.patientreport.PatientTabularReport"
+		table="patienttabularreport">
+
+		<id name="id" column="patienttabularreportid">
+			<generator class="native" />
+		</id>
+		
+		&identifiableProperties;
+
+		<property name="startDate" />
+
+		<property name="endDate" />
+
+		<many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
+			column="programstageid" foreign-key="fk_patienttabularreport_programstageid" />
+		
+		<list name="attributes" cascade="all" >
+            <key column="patienttabularreportid"/>
+            <list-index column="sort_order" base="0" />
+            <one-to-many class="org.hisp.dhis.patientreport.PatientAttributeAssociation"/>
+        </list> 
+		
+		<list name="fixedAttributes" cascade="all" >
+            <key column="patienttabularreportid"/>
+            <list-index column="sort_order" base="0" />
+            <one-to-many class="org.hisp.dhis.patientreport.PatientFixedAttribueAssociation"/>
+        </list> 
+	
+		<list name="identifiers" cascade="all" >
+            <key column="patienttabularreportid"/>
+            <list-index column="sort_order" base="0" />
+            <one-to-many class="org.hisp.dhis.patientreport.PatientIdentifierTypeAssociation"/>
+        </list> 
+        
+		<list name="dataElements" cascade="all" >
+            <key column="patienttabularreportid"/>
+            <list-index column="sort_order" base="0" />
+            <one-to-many class="org.hisp.dhis.patientreport.PatientDataElementAssociation"/>
+        </list> 
+        
+		<many-to-one name="organisationUnit"
+			class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
+			foreign-key="fk_patient_organisationunitid" />
+
+		<property name="level" />
+
+		<property name="sortedOrgunitAsc" />
+
+		<property name="facilityLB" />
+		
+		<many-to-one name="user" class="org.hisp.dhis.user.User"
+			column="userid" foreign-key="fk_patienttabularreport_userid" />
+		
+	</class>
+</hibernate-mapping>

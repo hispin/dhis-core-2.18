@@ -37,6 +37,11 @@ TR.conf = {
 			dataelements_get: 'loadDataElements.action',
 			organisationunitchildren_get: 'getOrganisationUnitChildren.action',
 			generatetabularreport_get: 'generateTabularReport.action',
+			favorite_getall: 'getTabularReports.action',
+			favorite_get: 'getTabularReport.action',
+			favorite_rename: 'updateTabularReportName.action',
+			favorite_save: 'saveTabularReport.action',
+            favorite_delete: 'deleteTabularReport.action',
             redirect: 'index.action'
         },
         params: {
@@ -104,7 +109,9 @@ TR.conf = {
         west_maxheight_accordion_organisationunit: 225,
         center_tbar_height: 31,
         east_gridcolumn_height: 30,
-        form_label_width: 90
+        form_label_width: 90,
+		grid_favorite_width: 420,
+		grid_favorite_height: 250
     }
 };
 
@@ -144,7 +151,10 @@ Ext.onReady( function() {
         toolbar: {
             menuitem: {}
         },
-        statusbar: {}
+        statusbar: {},
+        favorite: {
+            rename: {}
+        }
     };
     
     TR.util = {
@@ -412,11 +422,169 @@ Ext.onReady( function() {
 			Ext.Array.each(fixedAttributes, function(item) {
 				if( item.value )
 				{
-					p.fixedAttributes.push( item.paramName );
+					p.push( item.paramName );
 				}
 			});
 			return p;
 		},
+        crud: {
+            favorite: {
+                create: function(fn, isupdate) {
+                    TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.saving + '...');
+                    
+                    var p = TR.state.getParams();
+                    p.name = TR.cmp.favorite.name.getValue();
+                    
+                    if (isupdate) {
+                        p.uid = TR.store.favorite.getAt(TR.store.favorite.findExact('name', p.name)).data.id;
+                    }
+					
+                    Ext.Ajax.request({
+                        url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_save,
+                        method: 'POST',
+                        params: p,
+                        success: function() {
+                            TR.store.favorite.load({callback: function() {
+                                TR.util.mask.hideMask();
+                                if (fn) {
+                                    fn();
+                                }
+                            }});
+                        }
+                    });
+                },
+                update: function(fn) {
+                    TR.util.crud.favorite.create(fn, true);
+                },
+                del: function(fn) {
+                    TR.util.mask.showMask(TR.cmp.favorite.window, TR.i18n.deleting + '...');
+                    var baseurl = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_delete,
+                        selection = TR.cmp.favorite.grid.getSelectionModel().getSelection();
+                    Ext.Array.each(selection, function(item) {
+                        baseurl = Ext.String.urlAppend(baseurl, 'uids=' + item.data.id);
+                    });
+                    Ext.Ajax.request({
+                        url: baseurl,
+                        method: 'POST',
+                        success: function() {
+                            TR.store.favorite.load({callback: function() {
+                                TR.util.mask.hideMask();
+                                if (fn) {
+                                    fn();
+                                }
+                            }});
+                        }
+                    }); 
+                },
+				run: function(id) {
+					Ext.Ajax.request({
+						url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_get + '?id=' + id,
+						scope: this,
+						success: function(r) {
+							var f = Ext.JSON.decode(r.responseText);
+							
+							Ext.getCmp('programCombobox').setValue( f.programId );
+							Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+							Ext.getCmp('startDate').setValue( f.startDate );
+							Ext.getCmp('endDate').setValue( f.endDate );
+							Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
+							Ext.getCmp('levelCombobox').setValue( f.level );
+							TR.state.orgunitId = f.organisationUnitId;
+							
+							TR.cmp.params.identifierType.objects = [];
+							TR.cmp.params.patientAttribute.objects = [];
+							TR.cmp.params.fixedAttributes.objects = [];
+							TR.cmp.params.dataelement.objects = [];
+							
+							// IDENTIFIER TYPE
+							TR.store.identifierType.selected.removeAll();
+							if (f.identifiers && f.anonymous == "false" ) {
+								for (var i = 0; i < f.identifiers.length; i++) {
+									TR.cmp.params.identifierType.objects.push({id: f.identifiers[i].id, name: TR.util.string.getEncodedString(f.identifiers[i].name)});
+								}
+								TR.store.identifierType.selected.add(TR.cmp.params.identifierType.objects);
+							
+								var storeIdentifierType = TR.store.identifierType.available;
+								storeIdentifierType.parent = f.programId;
+								if (TR.util.store.containsParent(storeIdentifierType)) {
+									TR.util.store.loadFromStorage(storeIdentifierType);
+									TR.util.multiselect.filterAvailable(TR.cmp.params.identifierType.available, TR.cmp.params.identifierType.selected);
+								}
+								else {
+									storeIdentifierType.load({params: {programId: f.programId}});
+								}
+							}
+							
+							// PATIENT ATTRIBUTE
+							TR.store.patientAttribute.selected.removeAll();
+							if (f.attributes && f.anonymous == "false") {
+								for (var i = 0; i < f.attributes.length; i++) {
+									TR.cmp.params.patientAttribute.objects.push({id: f.attributes[i].id, name: TR.util.string.getEncodedString(f.attributes[i].name)});
+								}
+								TR.store.patientAttribute.selected.add(TR.cmp.params.patientAttribute.objects);
+								
+								var storePatientAttribute = TR.store.patientAttribute.available;
+								storePatientAttribute.parent = f.programId;
+								if (TR.util.store.containsParent(storePatientAttribute)) {
+									TR.util.store.loadFromStorage(storePatientAttribute);
+									TR.util.multiselect.filterAvailable(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);						
+								}
+								else {
+									storePatientAttribute.load({params: {programId: f.programId}});
+								}
+							}
+							
+							// FIXED ATTRIBUTES
+							TR.util.setEnabledFixedAttr();
+							if (f.fixedAttributes && f.anonymous == "false") {
+								var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
+								Ext.Array.each(fixedAttributes, function(item) {
+									for (var i = 0; i < f.fixedAttributes.length; i++) {
+										var flag = false;
+										if( item.paramName == f.fixedAttributes[i].name )
+										{
+											item.setValue( true );
+											flag = true;
+											break;
+										}
+									}
+									if( !flag ){
+										item.setValue( false );
+									}
+								});
+							}
+							
+							// PROGRAM-STAGE										
+							var storeProgramStage = TR.store.programStage;
+							storeProgramStage.parent = f.programStageId;
+							storeProgramStage.load({params: {programId: f.programId}});
+							Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+							
+							// DATAELEMENT
+							TR.store.dataelement.selected.removeAll();
+							if (f.dataelements) {
+								for (var i = 0; i < f.dataelements.length; i++) {
+									TR.cmp.params.dataelement.objects.push({id: f.dataelements[i].id, name: TR.util.string.getEncodedString(f.dataelements[i].name)});
+								}
+								TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
+								
+								var store = TR.store.dataelement.available;
+								store.parent = f.programStageId;
+								if (TR.util.store.containsParent(store)) {
+									TR.util.store.loadFromStorage(store);
+									TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);						
+								}
+								else {
+									store.load({params: {programStageId: f.programStageId}});
+								}
+							}
+							
+							TR.exe.execute();
+						}
+					});
+				}				
+            }
+        }
 	};
     
     TR.store = {
@@ -467,7 +635,7 @@ Ext.onReady( function() {
                     load: function(s) {
 						this.isloaded = true;
                         TR.util.store.addToStorage(s);
-                        TR.util.multiselect.filterAvailable(TR.cmp.params.identifierType.available, TR.cmp.params.identifierType.selected);
+                        TR.util.multiselect.filterAvailable(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
                     }
                 }
             }),
@@ -510,12 +678,12 @@ Ext.onReady( function() {
                 isloaded: false,
                 storage: {},
                 listeners: {
-                    load: function(s) {
+					load: function(s) {
 						this.isloaded = true;
                         TR.util.store.addToStorage(s);
                         TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
                     }
-                }
+				}
             }),
             selected: Ext.create('Ext.data.Store', {
                 fields: ['id', 'name'],
@@ -539,7 +707,38 @@ Ext.onReady( function() {
 				},
 				storage: {}
 			});
-        }
+        },
+		favorite: Ext.create('Ext.data.Store', {
+            fields: ['id', 'name', 'lastUpdated'],
+            proxy: {
+                type: 'ajax',
+                url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.favorite_getall,
+                reader: {
+                    type: 'json',
+                    root: 'tabularReports'
+                }
+            },
+            isloaded: false,
+            sorting: {
+                field: 'name',
+                direction: 'ASC'
+            },
+            sortStore: function() {
+                this.sort(this.sorting.field, this.sorting.direction);
+            },
+            listeners: {
+                load: function(s) {
+					s.isloaded = !s.isloaded ? true : false;
+					
+                    s.sortStore();
+                    s.each(function(r) {
+                        r.data.lastUpdated = r.data.lastUpdated.substr(0,16);
+                        r.data.icon = '<img src="' + TR.conf.finals.ajax.path_images + 'favorite.png" />';
+                        r.commit();
+                    });
+                }
+            }
+        })
 	}
     
     TR.state = {
@@ -547,6 +746,7 @@ Ext.onReady( function() {
 		total: 1,
 		orderByOrgunitAsc: true,
 		orderByExecutionDateByAsc: true,
+		orgunitId: 0,
 		generateReport: function( type ) {
 			// Validation
 			if( !this.validation.objects() )
@@ -608,8 +808,9 @@ Ext.onReady( function() {
             p.endDate = TR.cmp.settings.endDate.rawValue;
 			p.facilityLB = TR.cmp.settings.facilityLB.getValue();
 			p.level = TR.cmp.settings.level.getValue();
+			
 			// organisation unit
-			p.orgunitId = TR.cmp.params.organisationunit.treepanel.getSelectionModel().getSelection()[0].data.id
+			p.orgunitId = TR.state.orgunitId;
 			p.orderByOrgunitAsc = this.orderByOrgunitAsc;
 			p.orderByExecutionDateByAsc= this.orderByExecutionDateByAsc;
 			
@@ -618,11 +819,6 @@ Ext.onReady( function() {
 			
 			// Get fixed attributes
 			p.fixedAttributes = TR.util.getSelectedFixedAttr();
-			/*var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
-			Ext.Array.each(fixedAttributes, function(item) {
-				if( item.value )
-					p.fixedAttributes.push( item.paramName );
-			});*/
 			
 			// Get searching values
 			p.searchingValues = [];
@@ -676,7 +872,7 @@ Ext.onReady( function() {
             p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
 			p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
 			p += "&level=" + TR.cmp.settings.level.getValue();
-			p += "&orgunitId=" + TR.cmp.params.organisationunit.treepanel.getSelectionModel().getSelection()[0].data.id
+			p += "&orgunitId=" + TR.state.orgunitId;
 			p += "&orderByOrgunitAsc=" + 'true';
 			p += "&orderByExecutionDateByAsc=" +'true';
 			p += "&programStageId=" + TR.cmp.params.programStage.getValue();
@@ -753,13 +949,6 @@ Ext.onReady( function() {
 				}
 				
 				return true;
-			},
-			
-			render: function() {
-				if (!TR.c.isrendered) {
-					TR.cmp.toolbar.datatable.enable();
-					TR.c.isrendered = true;
-				}
 			},
 			response: function(r) {
 				if (!r.responseText) {
@@ -851,7 +1040,7 @@ Ext.onReady( function() {
 					name:"meta_" + index + "_",
 					sortable: false,
 					draggable: false,
-					hidden: eval(TR.value.hidden[index])
+					hidden: eval(TR.value.hidden['col' + index])
 				}
 			}
 			
@@ -862,7 +1051,7 @@ Ext.onReady( function() {
 					dataIndex: dataIndex,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "iden_"+ r.data.id + "_",
-					hidden: eval(TR.value.hidden[index]),
+					hidden: eval(TR.value.hidden['col' + index]),
 					sortable: false,
 					draggable: true,
 					editor: {
@@ -880,7 +1069,7 @@ Ext.onReady( function() {
 					dataIndex: dataIndex,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "attr_"+ r.data.id + "_",
-					hidden: eval(TR.value.hidden[index]),
+					hidden: eval(TR.value.hidden['col' + index]),
 					flex:1,
 					sortable: false,
 					draggable: true,
@@ -908,7 +1097,7 @@ Ext.onReady( function() {
 					dataIndex: dataIndex,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "de_"+ r.data.id + "_",
-					hidden: eval(TR.value.hidden[index]),
+					hidden: eval(TR.value.hidden['col' + index]),
 					flex:1,
 					sortable: false,
 					draggable: true,
@@ -921,7 +1110,7 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store: new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.getSuggestedValues(index),
+								data: TR.value.getSuggestedValues('col' + index),
 							})
 					}
 				};
@@ -1159,6 +1348,7 @@ Ext.onReady( function() {
 								xtype: 'combobox',
 								cls: 'tr-combo',
 								name: TR.init.system.programs,
+								id: 'programCombobox',
 								emptyText: TR.i18n.please_select,
 								queryMode: 'local',
 								editable: false,
@@ -1171,25 +1361,25 @@ Ext.onReady( function() {
 										TR.cmp.settings.program = this;
 									},
 									select: function(cb) {
-										var anonymous = cb.displayTplData[0].anonymous;
-										if( anonymous=='false' )
+										var pId = cb.getValue();
+										if( cb.displayTplData[0].anonymous=='false' )
 										{
 											// IDENTIFIER TYPE
 											var storeIdentifierType = TR.store.identifierType.available;
 											TR.store.identifierType.selected.loadData([],false);
-											storeIdentifierType.parent = cb.getValue();
+											storeIdentifierType.parent = pId;
 											
 											if (TR.util.store.containsParent(storeIdentifierType)) {
 												TR.util.store.loadFromStorage(storeIdentifierType);
 												TR.util.multiselect.filterAvailable(TR.cmp.params.identifierType.available, TR.cmp.params.identifierType.selected);
 											}
 											else {
-												storeIdentifierType.load({params: {programId: cb.getValue()}});
+												storeIdentifierType.load({params: {programId: pId}});
 											}
 											
 											// PATIENT ATTRIBUTE
 											var storePatientAttribute = TR.store.patientAttribute.available;
-											storePatientAttribute.parent = cb.getValue();
+											storePatientAttribute.parent = pId;
 											TR.store.patientAttribute.selected.loadData([],false);
 											
 											if (TR.util.store.containsParent(storePatientAttribute)) {
@@ -1197,7 +1387,7 @@ Ext.onReady( function() {
 												TR.util.multiselect.filterAvailable(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
 											}
 											else {
-												storePatientAttribute.load({params: {programId: cb.getValue()}});
+												storePatientAttribute.load({params: {programId: pId}});
 											}
 											TR.util.setEnabledFixedAttr();
 										}
@@ -1215,8 +1405,8 @@ Ext.onReady( function() {
 										// PROGRAM-STAGE										
 										var storeProgramStage = TR.store.programStage;
 										TR.store.dataelement.selected.loadData([],false);
-										storeProgramStage.parent = cb.getValue();
-										storeProgramStage.load({params: {programId: cb.getValue()}});
+										storeProgramStage.parent = pId;
+										storeProgramStage.load({params: {programId: pId}});
 									}
 								}
 							},
@@ -1290,6 +1480,7 @@ Ext.onReady( function() {
 											{
 												xtype: 'treepanel',
 												cls: 'tr-tree',
+												id: 'treeOrg',
 												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
 												height: 273,
 												autoScroll: true,
@@ -1337,6 +1528,10 @@ Ext.onReady( function() {
 													afterrender: function( treePanel, eOpts )
 													{
 														treePanel.getSelectionModel().select( treePanel.getRootNode() );
+														TR.state.orgunitId = treePanel.getSelectionModel().getSelection()[0].data.id;
+													},
+													itemclick : function(view,rec,item,index,eventObj){
+														TR.state.orgunitId = TR.cmp.params.organisationunit.treepanel.getSelectionModel().getSelection()[0].data.id;
 													}
 												}
 											}
@@ -1844,7 +2039,9 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'image',
-																src: 'images/grid-split.gif'
+																src: 'images/grid-split.gif',
+																width: 3,
+																height: 10
 															},
 															{
 																xtype: 'button',
@@ -1906,7 +2103,9 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'image',
-																src: 'images/grid-split.gif'
+																src: 'images/grid-split.gif',
+																width: 3,
+																height: 10
 															},
 															{
 																xtype: 'button',
@@ -2150,6 +2349,501 @@ Ext.onReady( function() {
 						listeners: {
 							click: function() {
 								TR.exe.reset();
+							}
+						}
+					},
+					{
+						xtype: 'button',
+						cls: 'tr-toolbar-btn-2',
+						text: TR.i18n.favorites + '..',
+						listeners: {
+							afterrender: function(b) {
+								this.menu = Ext.create('Ext.menu.Menu', {
+									margin: '2 0 0 0',
+									shadow: false,
+									showSeparator: false,
+									items: [
+										{
+											text: TR.i18n.manage_favorites,
+											iconCls: 'tr-menu-item-edit',
+											handler: function() {
+												if (TR.cmp.favorite.window) {
+													TR.cmp.favorite.window.show();
+												}
+												else {
+													TR.cmp.favorite.window = Ext.create('Ext.window.Window', {
+														title: TR.i18n.manage_favorites,
+														iconCls: 'tr-window-title-favorite',
+														bodyStyle: 'padding:8px; background-color:#fff',
+														width: TR.conf.layout.grid_favorite_width,
+														height: TR.conf.layout.grid_favorite_height,
+														closeAction: 'hide',
+														resizable: false,
+														modal: true,
+														resetForm: function() {
+															TR.cmp.favorite.name.setValue('');
+														},
+														items: [
+															{
+																xtype: 'form',
+																bodyStyle: 'border-style:none',
+																items: [
+																	{
+																		xtype: 'textfield',
+																		cls: 'tr-textfield',
+																		fieldLabel: 'Name',
+																		maxLength: 160,
+																		enforceMaxLength: true,
+																		labelWidth: TR.conf.layout.form_label_width,
+																		width: TR.conf.layout.grid_favorite_width - 28,
+																		listeners: {
+																			added: function() {
+																				TR.cmp.favorite.name = this;
+																			},
+																			change: function() {
+																				TR.cmp.favorite.save.xable();
+																			}
+																		}
+																	}
+																]
+															},
+															{
+																xtype: 'grid',
+																width: TR.conf.layout.grid_favorite_width - 28,
+																scroll: 'vertical',
+																multiSelect: true,
+																columns: [
+																	{
+																		dataIndex: 'name',
+																		width: TR.conf.layout.grid_favorite_width - 139,
+																		style: 'display:none'
+																	},
+																	{
+																		dataIndex: 'lastUpdated',
+																		width: 111,
+																		style: 'display:none'
+																	}
+																],
+																setHeightInWindow: function(store) {
+																	var h = (store.getCount() * 23) + 30,
+																		sh = TR.util.viewport.getSize().y * 0.6;
+																	this.setHeight(h > sh ? sh : h);
+																	this.doLayout();
+																	this.up('window').doLayout();
+																},
+																store: TR.store.favorite,
+																tbar: {
+																	id: 'favorite_t',
+																	cls: 'dv-toolbar',
+																	height: 30,
+																	defaults: {
+																		height: 24
+																	},
+																	items: [
+																		{
+																			text: TR.i18n.sort_by + '..',
+																			cls: 'dv-toolbar-btn-2',
+																			listeners: {
+																				added: function() {
+																					TR.cmp.favorite.sortby = this;
+																				},
+																				afterrender: function(b) {
+																					this.addCls('dv-menu-togglegroup');
+																					this.menu = Ext.create('Ext.menu.Menu', {
+																						shadowOffset: 1,
+																						showSeparator: false,
+																						width: 109,
+																						height: 70,
+																						items: [
+																							{
+																								xtype: 'radiogroup',
+																								cls: 'dv-radiogroup',
+																								columns: 1,
+																								vertical: true,
+																								items: [
+																									{
+																										boxLabel: TR.i18n.name,
+																										name: 'sortby',
+																										handler: function() {
+																											if (this.getValue()) {
+																												var store = TR.store.favorite;
+																												store.sorting.field = 'name';
+																												store.sorting.direction = 'ASC';
+																												store.sortStore();
+																												this.up('menu').hide();
+																											}
+																										}
+																									},
+																									{
+																										boxLabel:  TR.i18n.last_updated,
+																										name: 'sortby',
+																										checked: true,
+																										handler: function() {
+																											if (this.getValue()) {
+																												var store = TR.store.favorite;
+																												store.sorting.field = 'lastUpdated';
+																												store.sorting.direction = 'DESC';
+																												store.sortStore();
+																												this.up('menu').hide();
+																											}
+																										}
+																									}
+																								]
+																							}
+																						]
+																					});
+																				}
+																			}
+																		},
+																		'->',
+																		{
+																			text: TR.i18n.rename,
+																			cls: 'dv-toolbar-btn-2',
+																			disabled: true,
+																			xable: function() {
+																				if (TR.cmp.favorite.grid.getSelectionModel().getSelection().length == 1) {
+																					TR.cmp.favorite.rename.button.enable();
+																				}
+																				else {
+																					TR.cmp.favorite.rename.button.disable();
+																				}
+																			},
+																			handler: function() {
+																				var selected = TR.cmp.favorite.grid.getSelectionModel().getSelection()[0];
+																				var w = Ext.create('Ext.window.Window', {
+																					title: TR.i18n.rename_favorite,
+																					layout: 'fit',
+																					width: TR.conf.layout.window_confirm_width,
+																					bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
+																					modal: true,
+																					cmp: {},
+																					items: [
+																						{
+																							xtype: 'textfield',
+																							cls: 'dv-textfield',
+																							maxLength: 160,
+																							enforceMaxLength: true,
+																							value: selected.data.name,
+																							listeners: {
+																								added: function() {
+																									this.up('window').cmp.name = this;
+																								},
+																								change: function() {
+																									this.up('window').cmp.rename.xable();
+																								}
+																							}
+																						}
+																					],
+																					bbar: [
+																						{
+																							xtype: 'label',
+																							style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:50%',
+																							listeners: {
+																								added: function() {
+																									TR.cmp.favorite.rename.label = this;
+																								}
+																							}
+																						},
+																						'->',
+																						{
+																							text: TR.i18n.cancel,
+																							handler: function() {
+																								this.up('window').close();
+																							}
+																						},
+																						{
+																							text: TR.i18n.rename,
+																							disabled: true,
+																							xable: function() {
+																								var value = this.up('window').cmp.name.getValue();
+																								if (value) {
+																									if (TR.store.favorite.findExact('name', value) == -1) {
+																										this.enable();
+																										TR.cmp.favorite.rename.label.setText('');
+																										return;
+																									}
+																									else {
+																										TR.cmp.favorite.rename.label.setText(TR.i18n.name_already_in_use);
+																									}
+																								}
+																								this.disable();
+																							},
+																							handler: function() {
+																								TR.util.crud.favorite.updateName(this.up('window').cmp.name.getValue());
+																							},
+																							listeners: {
+																								afterrender: function() {
+																									this.up('window').cmp.rename = this;
+																								},
+																								change: function() {
+																									this.xable();
+																								}
+																							}
+																						}
+																					],
+																					listeners: {
+																						afterrender: function() {
+																							TR.cmp.favorite.rename.window = this;
+																						}
+																					}
+																				});
+																				w.setPosition((screen.width/2)-(TR.conf.layout.window_confirm_width/2), TR.conf.layout.window_favorite_ypos + 100, true);
+																				w.show();
+																			},
+																			listeners: {
+																				added: function() {
+																					TR.cmp.favorite.rename.button = this;
+																				}
+																			}
+																		},
+																		{
+																			text: TR.i18n.delete_object,
+																			cls: 'dv-toolbar-btn-2',
+																			disabled: true,
+																			xable: function() {
+																				if (TR.cmp.favorite.grid.getSelectionModel().getSelection().length) {
+																					TR.cmp.favorite.del.enable();
+																				}
+																				else {
+																					TR.cmp.favorite.del.disable();
+																				}
+																			},
+																			handler: function() {
+																				var sel = TR.cmp.favorite.grid.getSelectionModel().getSelection();
+																				if (sel.length) {
+																					var str = '';
+																					for (var i = 0; i < sel.length; i++) {
+																						var out = sel[i].data.name.length > 35 ? (sel[i].data.name.substr(0,35) + '...') : sel[i].data.name;
+																						str += '<br/>' + out;
+																					}
+																					var w = Ext.create('Ext.window.Window', {
+																						title: TR.i18n.delete_favorite,
+																						width: TR.conf.layout.window_confirm_width,
+																						bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
+																						modal: true,
+																						items: [
+																							{
+																								html: TR.i18n.are_you_sure,
+																								bodyStyle: 'border-style:none'
+																							},
+																							{
+																								html: str,
+																								cls: 'dv-window-confirm-list'
+																							}                                                                                                    
+																						],
+																						bbar: [
+																							{
+																								text: TR.i18n.cancel,
+																								handler: function() {
+																									this.up('window').close();
+																								}
+																							},
+																							'->',
+																							{
+																								text: TR.i18n.delete_object,
+																								handler: function() {
+																									this.up('window').close();
+																									TR.util.crud.favorite.del(function() {
+																										TR.cmp.favorite.name.setValue('');
+																										TR.cmp.favorite.window.down('grid').setHeightInWindow(TR.store.favorite);
+																									});                                                                                                        
+																								}
+																							}
+																						]
+																					});
+																					w.setPosition((screen.width/2)-(TR.conf.layout.window_confirm_width/2), TR.conf.layout.window_favorite_ypos + 100, true);
+																					w.show();
+																				}
+																			},
+																			listeners: {
+																				added: function() {
+																					TR.cmp.favorite.del = this;
+																				}
+																			}
+																		}
+																	]
+																},
+																listeners: {
+																	added: function() {
+																		TR.cmp.favorite.grid = this;
+																	},
+																	itemclick: function(g, r) {
+																		TR.cmp.favorite.name.setValue(r.data.name);
+																		TR.cmp.favorite.rename.button.xable();
+																		TR.cmp.favorite.del.xable();
+																	},
+																	itemdblclick: function() {
+																		if (TR.cmp.favorite.save.xable()) {
+																			TR.cmp.favorite.save.handler();
+																		}
+																	}
+																}
+															}
+														],
+														bbar: [
+															{
+																xtype: 'label',
+																style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:70%',
+																listeners: {
+																	added: function() {
+																		TR.cmp.favorite.label = this;
+																	}
+																}
+															},																
+															'->',
+															{
+																text: TR.i18n.save,
+																disabled: true,
+																xable: function() {
+																	if (TR.cmp.favorite.name.getValue()) {
+																		var index = TR.store.favorite.findExact('name', TR.cmp.favorite.name.getValue());
+																		if (index != -1) {
+																			this.enable();
+																			TR.cmp.favorite.label.setText('');
+																			return true;
+																		}
+																		else {
+																			this.enable();
+																			TR.cmp.favorite.label.setText('');
+																			return true;
+																		}
+																	}
+																	else {
+																		TR.cmp.favorite.label.setText('');
+																	}
+																	
+																	this.disable();
+																	return false;
+																},
+																handler: function() {
+																	if (this.xable()) {
+																		var value = TR.cmp.favorite.name.getValue();
+																		if (TR.store.favorite.findExact('name', value) != -1) {
+																			var item = value.length > 40 ? (value.substr(0,40) + '...') : value;
+																			var w = Ext.create('Ext.window.Window', {
+																				title: TR.i18n.save_favorite,
+																				width: TR.conf.layout.window_confirm_width,
+																				bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
+																				modal: true,
+																				items: [
+																					{
+																						html: TR.i18n.are_you_sure,
+																						bodyStyle: 'border-style:none'
+																					},
+																					{
+																						html: '<br/>' + item,
+																						cls: 'dv-window-confirm-list'
+																					}
+																				],
+																				bbar: [
+																					{
+																						text: TR.i18n.cancel,
+																						handler: function() {
+																							this.up('window').close();
+																						}
+																					},
+																					'->',
+																					{
+																						text: TR.i18n.overwrite,
+																						handler: function() {
+																							this.up('window').close();
+																							TR.util.crud.favorite.update(function() {
+																								TR.cmp.favorite.window.resetForm();
+																							});
+																							
+																						}
+																					}
+																				]
+																			});
+																			w.setPosition((screen.width/2)-(TR.conf.layout.window_confirm_width/2), TR.conf.layout.window_favorite_ypos + 100, true);
+																			w.show();
+																		}
+																		else {
+																			TR.util.crud.favorite.create(function() {
+																				TR.cmp.favorite.window.resetForm();
+																				TR.cmp.favorite.window.down('grid').setHeightInWindow(TR.store.favorite);
+																			});
+																		}                                                                                    
+																	}
+																},
+																listeners: {
+																	added: function() {
+																		TR.cmp.favorite.save = this;
+																	}
+																}
+															}
+														],
+														listeners: {
+															show: function() {                                               
+																TR.cmp.favorite.save.xable();
+																this.down('grid').setHeightInWindow(TR.store.favorite);
+															}
+														}
+													});
+													var w = TR.cmp.favorite.window;
+													w.setPosition((screen.width/2)-(TR.conf.layout.grid_favorite_width/2), TR.conf.layout.window_favorite_ypos, true);
+													w.show();
+												}
+											},
+											listeners: {
+												added: function() {
+													TR.cmp.toolbar.menuitem.datatable = this;
+												}
+											}
+										},
+										'-',
+										{
+											xtype: 'grid',
+											cls: 'dv-menugrid',
+											width: 420,
+											scroll: 'vertical',
+											columns: [
+												{
+													dataIndex: 'icon',
+													width: 25,
+													style: 'display:none'
+												},
+												{
+													dataIndex: 'name',
+													width: 285,
+													style: 'display:none'
+												},
+												{
+													dataIndex: 'lastUpdated',
+													width: 110,
+													style: 'display:none'
+												}
+											],
+											setHeightInMenu: function(store) {
+												var h = store.getCount() * 26,
+													sh = TR.util.viewport.getSize().y * 0.6;
+												this.setHeight(h > sh ? sh : h);
+												this.doLayout();
+												this.up('menu').doLayout();
+											},
+											store: TR.store.favorite,
+											listeners: {
+												itemclick: function(g, r) {
+													g.getSelectionModel().select([], false);
+													this.up('menu').hide();
+													TR.util.crud.favorite.run(r.data.id);
+												}
+											}
+										}
+									],
+									listeners: {
+										show: function() {
+											if (!TR.store.favorite.isloaded) {
+												TR.store.favorite.load({scope: this, callback: function() {
+													this.down('grid').setHeightInMenu(TR.store.favorite);
+												}});
+											}
+											else {
+												this.down('grid').setHeightInMenu(TR.store.favorite);
+											}
+										}
+									}
+								});
 							}
 						}
 					},

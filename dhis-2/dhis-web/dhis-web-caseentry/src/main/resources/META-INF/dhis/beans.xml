@@ -249,89 +249,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
-		class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
-		class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
-		scope="prototype">
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-	
-	<bean id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
-		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-	
-	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramsAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadProgramsAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="identifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-	</bean>
-	
-	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.LoadAttributesAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadAttributesAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-	</bean>
-	
-	<bean id="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
-		scope="prototype">
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
-		class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
-		scope="prototype">
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="identifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
-		class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-	</bean>
-
 	<!-- Case Aggregation -->
 
 	<bean
@@ -906,6 +823,143 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.caseentry.action.patient.ValidateSearchRelationshipAction"
 		class="org.hisp.dhis.caseentry.action.patient.ValidateSearchRelationshipAction"
 		scope="prototype">
+	</bean>
+	
+	<!-- Tabular report -->
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
+		class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
+		scope="prototype">
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
+		class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
+		scope="prototype">
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
+		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramsAction"
+		class="org.hisp.dhis.caseentry.action.report.LoadProgramsAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction"
+		class="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="identifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
+		class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.LoadAttributesAction"
+		class="org.hisp.dhis.caseentry.action.report.LoadAttributesAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
+		class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
+		class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="identifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
+		class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
+		scope="prototype">
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction"
+		class="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction"
+		scope="prototype">
+		<property name="tabularReportService"
+			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction"
+		class="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction"
+		scope="prototype">
+		<property name="tabularReportService"
+			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="identifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.GetTabularReportAction"
+		class="org.hisp.dhis.caseentry.action.report.GetTabularReportAction"
+		scope="prototype">
+		<property name="tabularReportService"
+			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.UpdateTabularReportNameAction"
+		class="org.hisp.dhis.caseentry.action.report.UpdateTabularReportNameAction"
+		scope="prototype">
+		<property name="tabularReportService"
+			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction"
+		class="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction"
+		scope="prototype">
+		<property name="tabularReportService"
+			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
 	</bean>
 
 </beans>
