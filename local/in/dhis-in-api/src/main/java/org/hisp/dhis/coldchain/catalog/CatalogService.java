@@ -28,4 +28,17 @@ public interface CatalogService
     void updateCatalogAndDataValue(  Catalog catalog, List<CatalogDataValue> valuesForSave, List<CatalogDataValue> valuesForUpdate, Collection<CatalogDataValue> valuesForDelete );
 
     void deleteCatalogAndDataValue( Catalog catalog );
+    
+    
+    //  methods
+    
+    int getCatalogCount();
+    
+    int getCatalogCountByName( String name );
+    
+    Collection<Catalog> getCatalogsBetween( int first, int max );
+    
+    Collection<Catalog> getCatalogsBetweenByName( String name, int first, int max );
+    
+    
 }

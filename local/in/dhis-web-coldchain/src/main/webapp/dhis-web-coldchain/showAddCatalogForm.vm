@@ -6,7 +6,9 @@
   	{validate:{required:true}}
   #end
 #end
-
+<script type="text/javascript">
+	checkValueIsExist( "name", "validateCatalog.action");
+</script>
 <!-- ATTRIBUTES -->
 <table>
 <tr><td>&nbsp;</td></tr>

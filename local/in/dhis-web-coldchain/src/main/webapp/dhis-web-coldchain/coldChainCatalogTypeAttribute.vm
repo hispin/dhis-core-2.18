@@ -1,4 +1,9 @@
-
+<script type="text/javascript">
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );
+		leftBar.showAnimated();
+	});
+</script>
 <h3>$i18n.getString( "coldchain_catalog_type_attribute_management" ) #openHelp( "catalogTypeAttribute" )</h3>
 <table class="mainPageTable">
   <tr>
@@ -12,7 +17,7 @@
 			</tr>
 		</table>
 		
-		<table class="listTable">
+		<table class="listTable" id="listTable">
 			<col>          
 			<col width="20">
 			<col width="20">

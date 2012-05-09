@@ -1,26 +1,35 @@
-
+<script type="text/javascript">
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );	
+	});
+	
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_catalog" ) , "'" )';
+	var i18n_catalog_details = '$encoder.jsEscape( $i18n.getString( "catalog__details" ) , "'" )';
+</script>
 <h3>$i18n.getString( "catalog_management" ) #openHelp( "catalog" )</h3>
 <table class="mainPageTable">
   <tr>
     <td style="vertical-align:top">
 		<table width="100%">
 			<tr>
-				<td>
-					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
-					&nbsp;&nbsp;
-					<label>$i18n.getString( "select_catalogType" )</label>
-        			<select id="id" name="id" style="min-width:20em" onchange="getCatalogByCatalogType( this.value )">
-            			<option value="" selected="selected" >[ $i18n.getString( "all" ) ]</option>
-           			    	 #foreach( $catalogType in $catalogTypes )
-                				<option value="$catalogType.id" #if($id==$catalogType.id) selected="selected" #end>$catalogType.name</option>
-            				#end
-        			</select>
-				</td>
+				<!--<td>$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/></td>-->
+					<td>#filterDiv( "catalog" )</td>
+					<td>$i18n.getString( "select_catalogType" ):
+						<div style="inline">
+							<select id="id" name="id" style="min-width:20em" onchange="getCatalogByCatalogType( this.value )">
+            					<!--<option value="" selected="selected" >[ $i18n.getString( "all" ) ]</option>-->
+            						<option value="-1">[ $i18n.getString( "all" ) ]</option>
+           			    	 		#foreach( $catalogType in $catalogTypes )
+                						<option value="$catalogType.id" #if($id==$catalogType.id) selected="selected" #end>$catalogType.name</option>
+            						#end
+        					</select>
+						</div>	
+					</td>
 				<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='addCatalogForm.action'" style="width:70px"></td>
 			</tr>
 		</table>
 		
-		<table class="listTable">
+		<table class="listTable" id="listTable">
 			<col>          
 			<col width="20">
 			<col width="20">
@@ -56,6 +65,8 @@
           </tbody>
 
         </table>
+		<p></p>
+	  	#parse( "/dhis-web-commons/paging/paging.vm" )        
     </td>
 	
 		<td style="width:20em; padding-left:2em; vertical-align:top">
@@ -76,9 +87,4 @@
 
 <div id="detailsCatalogInfo"></div>
 
-
-<script type="text/javascript">
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_catalog" ) , "'" )';
-	var i18n_catalog_details = '$encoder.jsEscape( $i18n.getString( "catalog__details" ) , "'" )';
-</script>
 

@@ -171,7 +171,9 @@
 		<property name="catalogService"
 			ref="org.hisp.dhis.coldchain.catalog.CatalogService" />
 		<property name="catalogTypeService"
-			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />			
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />	
+		<property name="userSettingService"
+			ref="org.hisp.dhis.user.UserSettingService" />					
 	</bean>		
 
 	<!-- Add Catalog  Form -->

@@ -2,28 +2,28 @@ package org.hisp.dhis.coldchain.inventory.hibernate;
 
 import java.util.Collection;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeStore;
-
-public class HibernateInventoryTypeStore implements InventoryTypeStore
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+//public class HibernateInventoryTypeStore implements InventoryTypeStore
+public class HibernateInventoryTypeStore extends HibernateIdentifiableObjectStore<InventoryType> implements InventoryTypeStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+   /*
     private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
     }
-
+    */
     // -------------------------------------------------------------------------
     // InventoryTypeStore
     // -------------------------------------------------------------------------
+    /*
     @Override
     public int addInventoryType( InventoryType inventoryType )
     {
@@ -72,5 +72,26 @@ public class HibernateInventoryTypeStore implements InventoryTypeStore
 
         return (InventoryType) session.get( InventoryType.class, id );
     }
-
+    */
+    
+    // -------------------------------------------------------------------------
+    // InventoryTypeStore
+    // -------------------------------------------------------------------------
+    
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<InventoryType> getAllInventoryTypes()
+    {
+        return sessionFactory.getCurrentSession().createCriteria( InventoryType.class ).list();
+    }
+    @Override
+    public InventoryType getInventoryTypeByName( String name )
+    {
+        return (InventoryType) getCriteria( Restrictions.eq( "name", name ) ).uniqueResult();
+    }
+    @Override
+    public InventoryType getInventoryType( int id )
+    {
+        return (InventoryType) sessionFactory.getCurrentSession().get( InventoryType.class, id );
+    }
 }

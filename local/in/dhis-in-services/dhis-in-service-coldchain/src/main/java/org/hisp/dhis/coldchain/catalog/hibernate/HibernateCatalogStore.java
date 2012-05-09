@@ -2,9 +2,6 @@ package org.hisp.dhis.coldchain.catalog.hibernate;
 
 import java.util.Collection;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.coldchain.catalog.CatalogStore;
@@ -16,18 +13,18 @@ public class HibernateCatalogStore extends HibernateGenericStore<Catalog> implem
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    /*
     private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
     }
-    
+    */
     // -------------------------------------------------------------------------
     // Catalog
     // -------------------------------------------------------------------------
-
+    /*
     public int addCatalog( Catalog catalog )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -85,5 +82,34 @@ public class HibernateCatalogStore extends HibernateGenericStore<Catalog> implem
 
         return criteria.list();
     }
+    */
+    // -------------------------------------------------------------------------
+    // Catalog
+    // -------------------------------------------------------------------------
     
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<Catalog> getAllCatalogs()
+    {
+        return sessionFactory.getCurrentSession().createCriteria( Catalog.class ).list();
+    }
+    
+    @Override
+    public Catalog getCatalog( int id )
+    {
+        return (Catalog) sessionFactory.getCurrentSession().get( Catalog.class, id );
+    }
+    
+    @Override
+    public Catalog getCatalogByName( String name )
+    {
+        return (Catalog) getCriteria( Restrictions.eq( "name", name ) ).uniqueResult();
+    }
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<Catalog> getCatalogs( CatalogType catalogType )
+    {
+        return getCriteria( Restrictions.eq( "catalogType", catalogType ) ).list();
+    }
+       
 }

@@ -1,12 +1,18 @@
 package org.hisp.dhis.coldchain.inventory;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import org.hisp.dhis.coldchain.catalog.CatalogType;
+import org.hisp.dhis.common.BaseNameableObject;
 
-public class InventoryType implements Serializable
+//public class InventoryType implements Serializable
+public class InventoryType extends BaseNameableObject
 {
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6551567526188061690L;
+    
     private int id;
     
     private String name;
