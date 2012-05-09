@@ -67,7 +67,7 @@ DV.conf = {
 					system: {
 						rootnode: {
 							id: r.rn[0],
-							name: r.rn[1],
+							name: DV.conf.util.jsonEncode(r.rn[1]),
 							level: 1
 						},
 						periods: {},
@@ -78,7 +78,7 @@ DV.conf = {
 						isadmin: r.user.isAdmin,
 						organisationunit: {
 							id: r.user.ou[0],
-							name: r.user.ou[1]
+							name: DV.conf.util.jsonEncode(r.user.ou[1])
 						},
 						organisationunitchildren: []							
 					}
@@ -86,11 +86,11 @@ DV.conf = {
 				for (var relative in r.p) {
 					obj.system.periods[relative] = [];
 					for (var i = 0; i < r.p[relative].length; i++) {
-						obj.system.periods[relative].push({id: r.p[relative][i][0], name: r.p[relative][i][1]});
+						obj.system.periods[relative].push({id: r.p[relative][i][0], name: DV.conf.util.jsonEncode(r.p[relative][i][1])});
 					}
 				}
 				for (var i = 0; i < r.user.ouc.length; i++) {
-					obj.user.organisationunitchildren.push({id: r.user.ouc[i][0], name: r.user.ouc[i][1]});
+					obj.user.organisationunitchildren.push({id: r.user.ouc[i][0], name: DV.conf.util.jsonEncode(r.user.ouc[i][1])});
 				}
 				return obj;
 			}
@@ -233,7 +233,12 @@ DV.conf = {
         multiselect_maxheight: 250,
         multiselect_fill_default: 345,
         multiselect_fill_reportingrates: 315
-    }
+    },
+    util: {
+		jsonEncode: function(str) {
+			return str.replace(/[^a-zA-Z 0-9(){}<>_!+;:?*&%#-]+/g,'');
+		}
+	}
 };
 
 Ext.Loader.setConfig({enabled: true});
@@ -412,13 +417,13 @@ Ext.onReady( function() {
             addToStorage: function(s, records) {
                 s.each( function(r) {
                     if (!s.storage[r.data.id]) {
-                        s.storage[r.data.id] = {id: r.data.id, name: DV.util.string.getEncodedString(r.data.name), parent: s.parent};
+                        s.storage[r.data.id] = {id: r.data.id, name: r.data.name, parent: s.parent};
                     }
                 });
                 if (records) {
                     Ext.Array.each(records, function(r) {
                         if (!s.storage[r.data.id]) {
-                            s.storage[r.data.id] = {id: r.data.id, name: DV.util.string.getEncodedString(r.data.name), parent: s.parent};
+                            s.storage[r.data.id] = {id: r.data.id, name: r.data.name, parent: s.parent};
                         }
                     });
                 }                        
@@ -448,7 +453,7 @@ Ext.onReady( function() {
                 getObjects: function() {
                     var a = [];
                     DV.cmp.dimension.indicator.selected.store.each( function(r) {
-                        a.push({id: r.data.id, name: DV.util.string.getEncodedString(r.data.name)});
+                        a.push({id: r.data.id, name: r.data.name});
                     });
                     return a;
                 },
@@ -465,7 +470,7 @@ Ext.onReady( function() {
                 getObjects: function() {
 					var a = [];
 					DV.cmp.dimension.dataelement.selected.store.each( function(r) {
-						a.push({id: r.data.id, name: DV.util.string.getEncodedString(r.data.name)});
+						a.push({id: r.data.id, name: r.data.name});
 					});
 					return a;
                 },
@@ -482,7 +487,7 @@ Ext.onReady( function() {
                 getObjects: function() {
 					var a = [];
 					DV.cmp.dimension.dataset.selected.store.each( function(r) {
-						a.push({id: r.data.id, name: DV.util.string.getEncodedString(r.data.name)});
+						a.push({id: r.data.id, name: r.data.name});
 					});
 					return a;
                 },
@@ -531,7 +536,7 @@ Ext.onReady( function() {
                     Ext.Array.each(cmp, function(item) {
                         if (item.getValue()) {
                             Ext.Array.each(DV.init.system.periods[item.paramName], function(item) {
-                                a.push({id: item.id, name: DV.util.string.getEncodedString(item.name)});
+                                a.push({id: item.id, name: item.name});
                             });
                         }
                     });
@@ -614,7 +619,7 @@ Ext.onReady( function() {
 						tp.selectRoot();
 					}
 					Ext.Array.each(selection, function(r) {
-						a.push({id: r.data.id, name: DV.util.string.getEncodedString(r.data.text)});
+						a.push({id: r.data.id, name: r.data.text});
 					});
 					return a;
                 },
@@ -1210,12 +1215,6 @@ Ext.onReady( function() {
 				return (str !== 0 && str !== '0' && str !== '');
 			}
 		},
-       /*FIXME:This is probably not going to work as intended with UNICODE?*/
-        string: {
-            getEncodedString: function(text) {
-                return text.replace(/[^a-zA-Z 0-9(){}<>_!+;:?*&%#-]+/g,'');
-            }
-        },
         value: {
             jsonfy: function(r) {
                 r = Ext.JSON.decode(r.responseText),
@@ -1339,6 +1338,9 @@ Ext.onReady( function() {
                 storage: {},
                 listeners: {
                     load: function(s) {
+						s.each( function(r) {
+							r.data.name = DV.conf.util.jsonEncode(r.data.name);
+						});
                         DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
                     }
@@ -1363,6 +1365,9 @@ Ext.onReady( function() {
                 storage: {},
                 listeners: {
                     load: function(s) {
+						s.each( function(r) {
+							r.data.name = DV.conf.util.jsonEncode(r.data.name);
+						});
                         DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
                     }
@@ -1389,6 +1394,9 @@ Ext.onReady( function() {
                 listeners: {
                     load: function(s) {
 						this.isloaded = true;
+						s.each( function(r) {
+							r.data.name = DV.conf.util.jsonEncode(r.data.name);
+						});
                         DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
                     }
@@ -1534,23 +1542,23 @@ Ext.onReady( function() {
                         
                         if (f.indicators) {
 							for (var i = 0; i < f.indicators.length; i++) {
-								DV.c.indicator.objects.push({id: f.indicators[i].internalId, name: DV.util.string.getEncodedString(f.indicators[i].shortName)});
+								DV.c.indicator.objects.push({id: f.indicators[i].internalId, name: DV.conf.util.jsonEncode(f.indicators[i].shortName)});
 							}
 						}
 						
 						if (f.dataElements) {
 							for (var i = 0; i < f.dataElements.length; i++) {
-								DV.c.dataelement.objects.push({id: f.dataElements[i].internalId, name: DV.util.string.getEncodedString(f.dataElements[i].shortName)});
+								DV.c.dataelement.objects.push({id: f.dataElements[i].internalId, name: DV.conf.util.jsonEncode(f.dataElements[i].shortName)});
 							}
 						}
 						if (f.dataSets) {
 							for (var i = 0; i < f.dataSets.length; i++) {
-								DV.c.dataset.objects.push({id: f.dataSets[i].internalId, name: DV.util.string.getEncodedString(f.dataSets[i].shortName)});
+								DV.c.dataset.objects.push({id: f.dataSets[i].internalId, name: DV.conf.util.jsonEncode(f.dataSets[i].shortName)});
 							}
 						}						
 						DV.c.period.rp = f.relativePeriods;
 						for (var i = 0; i < f.organisationUnits.length; i++) {
-							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].internalId, name: DV.util.string.getEncodedString(f.organisationUnits[i].shortName)});
+							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].internalId, name: DV.conf.util.jsonEncode(f.organisationUnits[i].shortName)});
 						}
 						DV.c.organisationunit.groupsetid = f.organisationUnitGroupSet ? f.organisationUnitGroupSet.internalId : null;
 						
@@ -1941,8 +1949,8 @@ Ext.onReady( function() {
 					}
 					
                     Ext.Array.each(DV.value.values, function(item) {						
-                        item[DV.conf.finals.dimension.data.value] = DV.util.string.getEncodedString(DV.store[item.type].available.storage[item.dataid].name);
-                        item[DV.conf.finals.dimension.period.value] = DV.util.string.getEncodedString(DV.util.dimension.period.getNameById(item.periodid));
+                        item[DV.conf.finals.dimension.data.value] = DV.store[item.type].available.storage[item.dataid].name;
+                        item[DV.conf.finals.dimension.period.value] = DV.util.dimension.period.getNameById(item.periodid);
                         item[DV.conf.finals.dimension.organisationunit.value] = DV.cmp.dimension.organisationunit.treepanel.findNameById(item.organisationunitid);
                         
                         if (item.organisationunitgroupid) {
@@ -3222,6 +3230,13 @@ Ext.onReady( function() {
 														id: DV.init.system.rootnode.id,
 														text: DV.init.system.rootnode.name,
 														expanded: false
+													},
+													listeners: {
+														load: function(s, node, r) {
+															for (var i = 0; i < r.length; i++) {
+																r[i].data.text = DV.conf.util.jsonEncode(r[i].data.text);
+															}
+														}
 													}
 												}),
 												listeners: {
