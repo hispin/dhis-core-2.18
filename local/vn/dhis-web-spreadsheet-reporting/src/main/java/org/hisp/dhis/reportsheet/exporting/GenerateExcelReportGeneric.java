@@ -304,7 +304,8 @@ public class GenerateExcelReportGeneric
         csNumber = templateWorkbook.createCellStyle();
         csFormula = templateWorkbook.createCellStyle();
         csText = templateWorkbook.createCellStyle();
-        csText10Bold = templateWorkbook.createCellStyle();
+        csText8Bold = templateWorkbook.createCellStyle();
+        csText9Bold = templateWorkbook.createCellStyle();
         csText10Bold = templateWorkbook.createCellStyle();
         csTextSerial = templateWorkbook.createCellStyle();
         csTextICDJustify = templateWorkbook.createCellStyle();
@@ -320,10 +321,8 @@ public class GenerateExcelReportGeneric
 
         initPOIStylesManager.initFont( csFont8Bold, "Tahoma", (short) 8, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
             .getIndex() );
-        
         initPOIStylesManager.initFont( csFont9Bold, "Tahoma", (short) 9, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
             .getIndex() );
-        
         initPOIStylesManager.initFont( csFont10Bold, "Tahoma", (short) 10, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
             .getIndex() );
         initPOIStylesManager.initFont( csFont11Bold, "Tahoma", (short) 11, Font.BOLDWEIGHT_BOLD,
