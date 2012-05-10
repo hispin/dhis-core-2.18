@@ -564,7 +564,7 @@ Ext.onReady( function() {
 								Ext.Array.each(fixedAttributes, function(item) {
 									for (var i = 0; i < f.fixedAttributes.length; i++) {
 										var flag = false;
-										if( item.paramName == f.fixedAttributes[i].name )
+										if( item.paramName == f.fixedAttributes[i] )
 										{
 											item.setValue( true );
 											flag = true;

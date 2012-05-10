@@ -43,10 +43,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.patientreport.PatientAttributeAssociation;
-import org.hisp.dhis.patientreport.PatientDataElementAssociation;
-import org.hisp.dhis.patientreport.PatientFixedAttribueAssociation;
-import org.hisp.dhis.patientreport.PatientIdentifierTypeAssociation;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
 import org.hisp.dhis.program.ProgramStage;
@@ -211,7 +207,7 @@ public class SaveTabularReportAction
     {
         OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitId );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
-        
+
         // ---------------------------------------------------------------------
         // Get fixed-attributes
         // ---------------------------------------------------------------------
@@ -227,30 +223,15 @@ public class SaveTabularReportAction
         tabularReport.setUser( currentUserService.getCurrentUser() );
 
         // ---------------------------------------------------------------------
-        // Get fixed-attributes
-        // ---------------------------------------------------------------------
-
-        List<PatientFixedAttribueAssociation> fixedAttrAssociations = new ArrayList<PatientFixedAttribueAssociation>();
-
-        for ( String fixedAttribute : fixedAttributes )
-        {
-            PatientFixedAttribueAssociation association = new PatientFixedAttribueAssociation();
-            association.setAttributeName( fixedAttribute );
-            association.setPatientTabularReport( tabularReport );
-            fixedAttrAssociations.add( association );
-        }
-
-        // ---------------------------------------------------------------------
         // Get searching-keys
         // ---------------------------------------------------------------------
 
-        List<PatientIdentifierTypeAssociation> identifiers = new ArrayList<PatientIdentifierTypeAssociation>();
+        List<PatientIdentifierType> identifiers = new ArrayList<PatientIdentifierType>();
 
-        List<PatientAttributeAssociation> attributes = new ArrayList<PatientAttributeAssociation>();
+        List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
-        List<PatientDataElementAssociation> dataElements = new ArrayList<PatientDataElementAssociation>();
+        List<DataElement> dataElements = new ArrayList<DataElement>();
 
-        int index = 0;
         for ( String searchingValue : searchingValues )
         {
             String[] infor = searchingValue.split( "_" );
@@ -259,75 +240,21 @@ public class SaveTabularReportAction
 
             if ( objectType.equals( PREFIX_IDENTIFIER_TYPE ) )
             {
-                PatientIdentifierTypeAssociation association = new PatientIdentifierTypeAssociation();
-                PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( objectId );
-
-                association.setPatientIdentifierType( identifierType );
-                association.setPatientTabularReport( tabularReport );
-                association.setHidden( Boolean.parseBoolean( infor[2] ) );
-
-                if ( infor.length == 4 )
-                {
-                    association.setKey( infor[3].trim() );
-                }
-
-                identifiers.add( association );
-
-                index++;
+                identifiers.add( identifierTypeService.getPatientIdentifierType( objectId ) );
             }
             else if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
             {
-                PatientAttributeAssociation association = new PatientAttributeAssociation();
-                PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
-
-                association.setPatientAttribute( attribute );
-                association.setPatientTabularReport( tabularReport );
-                association.setHidden( Boolean.parseBoolean( infor[2] ) );
-
-                if ( infor.length == 4 )
-                {
-                    association.setKey( infor[3].trim() );
-                }
-
-                attributes.add( association );
-
-                index++;
+                attributes.add( patientAttributeService.getPatientAttribute( objectId ) );
             }
             else if ( objectType.equals( PREFIX_DATA_ELEMENT ) )
             {
-                PatientDataElementAssociation association = new PatientDataElementAssociation();
                 DataElement dataElement = dataElementService.getDataElement( objectId );
-
-                association.setDataElement( dataElement );
-                association.setPatientTabularReport( tabularReport );
-                association.setHidden( Boolean.parseBoolean( infor[2] ) );
-
-                if ( infor.length == 4 )
-                {
-                    association.setKey( infor[3].trim() );
-                }
-
-                dataElements.add( association );
-
-                index++;
+                dataElements.add( dataElement );
             }
 
         }
 
-        if ( fixedAttrAssociations.size() > 0 )
-        {
-            tabularReport.setFixedAttributes( fixedAttrAssociations );
-        }
-        else if ( identifiers.size() > 0 )
-        {
-            tabularReport.setIdentifiers( identifiers );
-        }
-        else if ( attributes.size() > 0 )
-        {
-            tabularReport.setAttributes( attributes );
-        } 
-        
-        tabularReport.setFixedAttributes( fixedAttrAssociations );
+        tabularReport.setFixedAttributes( fixedAttributes );
         tabularReport.setIdentifiers( identifiers );
         tabularReport.setAttributes( attributes );
         tabularReport.setDataElements( dataElements );

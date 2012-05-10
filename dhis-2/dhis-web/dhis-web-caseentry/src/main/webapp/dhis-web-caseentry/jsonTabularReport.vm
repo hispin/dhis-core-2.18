@@ -1,97 +1,56 @@
 {
-#if( $grid.getRows().size() > 0)
-	#set( $noHeader = $grid.getHeaders().size() )
-	#set ( $metaData = $noHeader - $valueTypes.size())
-	'total': "$total",
-	'valueTypes':[
-		#foreach( $col in $grid.getHeaders() )
-			#if ($velocityCount <= $metaData + 1)
-				{
-					"valueType": "textfield",
-					"suggestedValues": []
-				},
-			#end
-		#end
-		
-		#set($index = 0)
-		#foreach( $valueType in $valueTypes )
+	"id": "${tabularReport.id}",
+	"name": "$!encoder.jsonEncode( ${tabularReport.name} )",
+	"lastUpdated": "$!format.formatDate( ${tabularReport.lastUpdated} )",
+	"programId": "${tabularReport.programStage.program.id}",
+	"anonymous": "${tabularReport.programStage.program.anonymous}",
+	"programStageId": "${tabularReport.programStage.id}",
+	"programStageName": "${tabularReport.programStage.name}",
+	"startDate": "$!format.formatDate( $tabularReport.startDate )",
+	"endDate": "$!format.formatDate( ${tabularReport.endDate} )",
+	"organisationUnitId": "${tabularReport.organisationUnit.id}",
+	"level": "${tabularReport.level}",
+	"sortedOrgunitAsc": "${tabularReport.sortedOrgunitAsc}",
+	"facilityLB": "${tabularReport.facilityLB}",
+	"identifiers": [
+		#set( $size = ${tabularReport.identifiers.size()} )
+		#set( $identifiers = ${tabularReport.identifiers} )
+		#foreach( ${identifier} in $!{identifiers} )
 			{
-				"valueType": 
-					#if( $valueType == 'number' || $valueType == 'NUMBER' )
-						"textfield"
-					#elseif( $valueType == 'bool' || $valueType == 'YES/NO' ||  $valueType =='optionSet' )
-						"combobox"
-					#elseif( $valueType == 'date' || $valueType == 'DATE' )
-						"textfield"
-					#else
-						"textfield"
-					#end,
-				#set( $suggestedValues = $mapSuggestedValues.get($index) )
-				"suggestedValues":[
-					#foreach( $suggestedValue in $suggestedValues )
-						["$!encoder.jsonEncode( ${suggestedValue} )"]
-						#if( $velocityCount < $suggestedValues.size() ),#end
-					#end
-				
-				]
+				"id": "${identifier.id}",
+				"name": "${identifier.name}"
 			}
-			#if( $velocityCount < $valueTypes.size() ),#end
-			#set( $index = $index + 1 )
+			#if( $velocityCount < $size ),#end
 		#end
 	],
-	'columns':[
-		"id",
-		#foreach( $colName in $grid.getHeaders() )
-			"$colName.name"
-			#if( $velocityCount < $noHeader ),#end
-		#end
-	],
-	'fields':[
-		"id",
-		#foreach( $col in $grid.getHeaders() )
-			"col$velocityCount"
-			#if( $velocityCount < $noHeader ),#end
-		#end
-	],
-	'hidden':[
-		#foreach( $col in $grid.getHeaders() )
-			"$col.hidden"
-			#if( $velocityCount < $noHeader ),#end
-		#end
-	],
-	'items':[
-		{
-			"id":"$i18n.getString( 'filter' )",
-			#foreach( $col in $grid.getHeaders() )
-				#if ($velocityCount <= $metaData )
-					"col$velocityCount": "",
-				#end
-			#end
-			
-			#set( $index = $metaData + 1 )
-			#foreach( $value in $values )
-				"col$index": "$value"
-				#if( $velocityCount < $values.size() ),#end
-				#set( $index = $index + 1 )
-			#end
-		},
-		#foreach( $row in $grid.getRows() )
+	"attributes": [
+		#set( $size = ${tabularReport.attributes.size()} )
+		#set( $attributes = ${tabularReport.attributes} )
+		#foreach( ${attribute} in $!{attributes} )
 			{
-				#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
-				"id":$nr,
-				#foreach( $col in $row )
-					"col$velocityCount": "$!encoder.htmlEncode( $col )"
-					#if( $velocityCount < $noHeader ),#end
-				#end
-			},
+				"id": "${attribute.id}",
+				"name": "${attribute.name}"
+			}
+			#if( $velocityCount < $size ),#end
 		#end
-		]	
-#else
-	'total': 0,
-	'valueTypes':[],
-	'columns':[],
-	'fields':[],
-	'hidden':[],
-	'items':[]
-#end
+	],
+	"fixedAttributes": [
+		#set( $size = ${tabularReport.fixedAttributes.size()} )
+		#set( $fixedAttributes = ${tabularReport.fixedAttributes} )
+		#foreach( ${fixedAttribute} in $!{fixedAttributes} )
+			"${fixedAttribute}"
+			#if( $velocityCount < $size ),#end
+		#end
+	],
+	"dataelements": [
+		#set( $size = ${tabularReport.dataElements.size()} )
+		#set( $dataElements = ${tabularReport.dataElements} )
+		#foreach( ${dataElement} in $!{dataElements} )
+			{
+				"id": "${dataElement.id}",
+				"name": "${dataElement.name}"
+			}
+			#if( $velocityCount < $size ),#end
+		#end
+	]
 }
