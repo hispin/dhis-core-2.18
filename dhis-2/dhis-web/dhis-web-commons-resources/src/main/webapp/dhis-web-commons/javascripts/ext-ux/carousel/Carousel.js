@@ -4,7 +4,7 @@
 Ext.ns('Ext.ux.carousel');
 
 Ext.ux.carousel.Carousel = Ext.extend(Ext.util.Observable, {
-    interval: 4,
+    interval: 5,
     transitionDuration: 600,
     transitionType: 'carousel',
     transitionEasing: 'easeIn',
