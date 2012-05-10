@@ -21,31 +21,36 @@
 
 		<many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
 			column="programstageid" foreign-key="fk_patienttabularreport_programstageid" />
-		
-		<list name="attributes" cascade="all" >
-            <key column="patienttabularreportid"/>
-            <list-index column="sort_order" base="0" />
-            <one-to-many class="org.hisp.dhis.patientreport.PatientAttributeAssociation"/>
-        </list> 
-		
-		<list name="fixedAttributes" cascade="all" >
-            <key column="patienttabularreportid"/>
-            <list-index column="sort_order" base="0" />
-            <one-to-many class="org.hisp.dhis.patientreport.PatientFixedAttribueAssociation"/>
-        </list> 
-	
-		<list name="identifiers" cascade="all" >
-            <key column="patienttabularreportid"/>
-            <list-index column="sort_order" base="0" />
-            <one-to-many class="org.hisp.dhis.patientreport.PatientIdentifierTypeAssociation"/>
-        </list> 
-        
-		<list name="dataElements" cascade="all" >
-            <key column="patienttabularreportid"/>
-            <list-index column="sort_order" base="0" />
-            <one-to-many class="org.hisp.dhis.patientreport.PatientDataElementAssociation"/>
-        </list> 
-        
+
+		<list name="identifiers" cascade="all"
+			table="patienttabularreport_identifiers">
+			<key column="patienttabularreportid" />
+			<list-index column="sort_order" base="0" />
+			<many-to-many class="org.hisp.dhis.patient.PatientIdentifierType"
+				column="patientidentifiertypeid" foreign-key="patienttabularreport_indentifierid" />
+		</list>
+
+		<list name="attributes" cascade="all" table="patienttabularreport_attributes">
+			<key column="patienttabularreportid" />
+			<list-index column="sort_order" base="0" />
+			<many-to-many class="org.hisp.dhis.patient.PatientAttribute"
+				column="patientattributeid" foreign-key="patienttabularreport_attributeid" />
+		</list>
+
+		<list name="fixedAttributes" table="patienttabularreport_fixedattribute">
+			<key column="patienttabularreportid" foreign-key="patienttabularreport_fixedAttribute" />
+			<list-index column="sort_order" />
+			<element type="text" column="fixedAttribute" />
+		</list>
+
+		<list name="dataElements" cascade="all"
+			table="patienttabularreport_dataelements">
+			<key column="patienttabularreportid" />
+			<list-index column="sort_order" base="0" />
+			<many-to-many class="org.hisp.dhis.dataelement.DataElement"
+				foreign-key="patienttabularreport_dataelementid" />
+		</list>
+
 		<many-to-one name="organisationUnit"
 			class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
 			foreign-key="fk_patient_organisationunitid" />
@@ -55,9 +60,9 @@
 		<property name="sortedOrgunitAsc" />
 
 		<property name="facilityLB" />
-		
+
 		<many-to-one name="user" class="org.hisp.dhis.user.User"
 			column="userid" foreign-key="fk_patienttabularreport_userid" />
-		
+
 	</class>
 </hibernate-mapping>

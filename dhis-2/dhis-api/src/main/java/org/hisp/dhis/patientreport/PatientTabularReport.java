@@ -32,7 +32,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.user.User;
 
@@ -63,13 +66,13 @@ public class PatientTabularReport
 
     private ProgramStage programStage;
 
-    private List<PatientIdentifierTypeAssociation> identifiers = new ArrayList<PatientIdentifierTypeAssociation>();
+    private List<PatientIdentifierType> identifiers = new ArrayList<PatientIdentifierType>();
 
-    private List<PatientAttributeAssociation> attributes = new ArrayList<PatientAttributeAssociation>();
+    private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
-    private List<PatientFixedAttribueAssociation> fixedAttributes = new ArrayList<PatientFixedAttribueAssociation>();
+    private List<String> fixedAttributes = new ArrayList<String>();
 
-    private List<PatientDataElementAssociation> dataElements = new ArrayList<PatientDataElementAssociation>();
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
 
     private OrganisationUnit organisationUnit;
 
@@ -128,46 +131,6 @@ public class PatientTabularReport
         this.programStage = programStage;
     }
 
-    public List<PatientIdentifierTypeAssociation> getIdentifiers()
-    {
-        return identifiers;
-    }
-
-    public void setIdentifiers( List<PatientIdentifierTypeAssociation> identifiers )
-    {
-        this.identifiers = identifiers;
-    }
-
-    public List<PatientAttributeAssociation> getAttributes()
-    {
-        return attributes;
-    }
-
-    public void setAttributes( List<PatientAttributeAssociation> attributes )
-    {
-        this.attributes = attributes;
-    }
-
-    public List<PatientFixedAttribueAssociation> getFixedAttributes()
-    {
-        return fixedAttributes;
-    }
-
-    public void setFixedAttributes( List<PatientFixedAttribueAssociation> fixedAttributes )
-    {
-        this.fixedAttributes = fixedAttributes;
-    }
-
-    public List<PatientDataElementAssociation> getDataElements()
-    {
-        return dataElements;
-    }
-
-    public void setDataElements( List<PatientDataElementAssociation> dataElements )
-    {
-        this.dataElements = dataElements;
-    }
-
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -176,6 +139,46 @@ public class PatientTabularReport
     public void setOrganisationUnit( OrganisationUnit organisationUnit )
     {
         this.organisationUnit = organisationUnit;
+    }
+
+    public List<PatientIdentifierType> getIdentifiers()
+    {
+        return identifiers;
+    }
+
+    public void setIdentifiers( List<PatientIdentifierType> identifiers )
+    {
+        this.identifiers = identifiers;
+    }
+
+    public List<PatientAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    public void setAttributes( List<PatientAttribute> attributes )
+    {
+        this.attributes = attributes;
+    }
+
+    public List<String> getFixedAttributes()
+    {
+        return fixedAttributes;
+    }
+
+    public void setFixedAttributes( List<String> fixedAttributes )
+    {
+        this.fixedAttributes = fixedAttributes;
+    }
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
+    public void setDataElements( List<DataElement> dataElements )
+    {
+        this.dataElements = dataElements;
     }
 
     public int getLevel()

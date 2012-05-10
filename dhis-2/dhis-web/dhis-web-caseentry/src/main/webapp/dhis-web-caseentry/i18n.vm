@@ -69,4 +69,5 @@ save:'$encoder.jsEscape($i18n.getString( 'save' ) , "'")',
 save_favorite:'$encoder.jsEscape($i18n.getString( 'save_favorite' ) , "'")',
 overwrite:'$encoder.jsEscape($i18n.getString( 'overwrite' ) , "'")',
 et_no_programs: '$encoder.jsEscape($i18n.getString( 'et_no_programs' ) , "'")',
+favorites:'$encoder.jsEscape($i18n.getString( 'favorites' ) , "'")'
 };
