@@ -1256,13 +1256,22 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction
         resMap.put( "NURSE", "NURSE" );
         resMap.put( "DOCTOR", "DOCTOR" );
         resMap.put( "ABORTION", "M01-Abortion" );
-        resMap.put( "OPL", "OBSTRUCTED/PROLONGED LABOUR" );
-        resMap.put( "FITS", "FITS" );
+        resMap.put( "OPL", "M02-Obstructed/Prolonged labour" );
+        resMap.put( "FITS", "M03-Severe hypertension/fits" );
+        resMap.put( "SH", "M03-Severe hypertension/fits" );
+        resMap.put( "BBCD", "M04-Bleeding" );
+        resMap.put( "BACD", "M04-Bleeding" );
+        resMap.put( "HFBD", "M05-High fever" );
+        resMap.put( "HFAD", "M05-High fever" );
+        resMap.put( "MDNK", "M06-Other Causes (including cause not known)" );
+        /*resMap.put( "FITS", "FITS" );
         resMap.put( "SH", "SEVERE HYPERTENSION" );
         resMap.put( "BBCD", "BLEEDING BEFORE CHILD DELIVERY" );
         resMap.put( "BACD", "BLEEDING AFTER CHILD DELIVERY" );
         resMap.put( "HFBD", "HIGH FEVER BEFORE DELIVERY" );
         resMap.put( "HFAD", "HIGH FEVER AFTER DELIVERY" );
+        */
+        
     }
 
     public void initializeLLDeathResultMap()
