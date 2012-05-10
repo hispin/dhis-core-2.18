@@ -103,12 +103,24 @@ public class ChartPluginController
                 
         List<Period> periods = periodService.reloadPeriods( setNames( relativePeriods.getRelativePeriods(), format ) );
 
+        if ( periods.isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, "No valid periods specified" );
+            return null;
+        }
+        
         for ( Period period : periods )
         {
             chartValue.getPeriods().add( period.getName() );
         }
         
         List<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsByUid( organisationUnitIds );
+        
+        if ( organisationUnits.isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, "No valid organisation units specified" );
+            return null;
+        }
         
         for ( OrganisationUnit unit : organisationUnits )
         {
@@ -119,6 +131,12 @@ public class ChartPluginController
         {
             List<Indicator> indicators = indicatorService.getIndicatorsByUid( indicatorIds );
 
+            if ( indicators.isEmpty() )
+            {
+                ContextUtils.conflictResponse( response, "No valid indicators specified" );
+                return null;
+            }
+            
             for ( Indicator indicator : indicators )
             {
                 chartValue.getData().add( indicator.getDisplayShortName() );
@@ -145,6 +163,12 @@ public class ChartPluginController
         if ( dataElementIds != null )
         {
             List<DataElement> dataElements = dataElementService.getDataElementsByUid( dataElementIds );
+
+            if ( dataElements.isEmpty() )
+            {
+                ContextUtils.conflictResponse( response, "No valid data elements specified" );
+                return null;
+            }
             
             for ( DataElement element : dataElements )
             {
