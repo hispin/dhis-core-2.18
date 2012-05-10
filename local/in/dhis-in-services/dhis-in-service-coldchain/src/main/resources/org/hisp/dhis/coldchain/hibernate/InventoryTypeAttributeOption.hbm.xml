@@ -9,7 +9,8 @@
       <generator class="native"/>
     </id>
 
-    <property name="name" not-null="true" unique="true" length="160"/>
+    <property name="name" not-null="true" length="160"/>
+	<!--<property name="name" not-null="true" unique="true" length="160"/>-->
     
     <many-to-one name="inventoryTypeAttribute" column="inventorytypeattributeid" class="org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute"
       foreign-key="fk_inventorytypetypeattributeoption_inventorytypeattributeid" />

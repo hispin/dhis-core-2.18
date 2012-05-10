@@ -49,7 +49,8 @@
 	<!-- Remove/Delete -->
 	<action name="removeCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAttributeAction">
 		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+		<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>		
 		<param name="requiredAuthorities">F_CATALOGTYPEATTRIBUTE_DELETE</param>
 	</action>
 			
@@ -136,6 +137,7 @@
 	<action name="removeCatalogType" class="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogTypeAction">
 		<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+		<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		<param name="onExceptionReturn">plainTextError</param>
 		<param name="requiredAuthorities">F_CATALOGTYPE_DELETE</param>
 	</action>	
@@ -226,6 +228,7 @@
 	<action name="removeCatalog" class="org.hisp.dhis.coldchain.catalog.action.RemoveCatalogAction">
 		<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+		<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		<param name="onExceptionReturn">plainTextError</param>
 		<param name="requiredAuthorities">F_CATALOG_DELETE</param>
 	</action>	

@@ -75,7 +75,7 @@ public class GetInventoryTypeAttributeListAction extends ActionPagingSupport<Inv
             
             inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryTypeAttributeService.getInventoryTypeAttributesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ));
         }
-        
+        /*
         else if ( id != null )
         {
             InventoryType inventoryType = inventoryTypeService.getInventoryType( id );
@@ -86,7 +86,7 @@ public class GetInventoryTypeAttributeListAction extends ActionPagingSupport<Inv
             
             inventoryTypeAttributes = getBlockElement( inventoryTypeAttributes, paging.getStartPos(), paging.getPageSize() );
         }
-        
+        */
         else
         {
             this.paging = createPaging( inventoryTypeAttributeService.getInventoryTypeAttributeCount() );
