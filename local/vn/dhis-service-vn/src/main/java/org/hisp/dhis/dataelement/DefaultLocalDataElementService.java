@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 import java.util.Collection;
 
 import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.dataset.DataSet;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -64,5 +65,10 @@ public class DefaultLocalDataElementService
     public int getDataElementCount( Integer dataElementId, Integer attributeId, String value )
     {
         return dataElementStore.getDataElementCount( dataElementId, attributeId, value );
+    }
+    
+    public Collection<DataElement> getDataElements( DataSet dataSet, String value )
+    {
+        return dataElementStore.get( dataSet, value );
     }
 }

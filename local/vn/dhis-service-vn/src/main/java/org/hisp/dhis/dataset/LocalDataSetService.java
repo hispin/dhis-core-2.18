@@ -25,23 +25,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataelement;
+package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 
-import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $LocalDataElementStore.java Mar 23, 2012 4:10:24 PM$
+ * @version $LocalDataSetService.java May 10, 2012 7:55:22 AM$
  */
-public interface LocalDataElementStore
+public interface LocalDataSetService
 {
-    Collection<DataElement> getByAttributeValue( Attribute attribute, String value );
+    Collection<DataSet> getDataSetsByDescription( String description );
 
-    int getDataElementCount( Integer dataElementId, Integer attributeId, String value );
-    
-    Collection<DataElement> get( DataSet dataSet, String value );
+    DataElementCategoryOptionCombo getDepartmentByDataSet( DataSet dataSet );
 }

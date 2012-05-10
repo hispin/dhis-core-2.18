@@ -25,23 +25,43 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataelement;
+package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 
-import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $LocalDataElementStore.java Mar 23, 2012 4:10:24 PM$
+ * @version $DefaultLocalDataSetService.java May 10, 2012 8:00:11 AM$
  */
-public interface LocalDataElementStore
+public class DefaultLocalDataSetService
+    implements LocalDataSetService
 {
-    Collection<DataElement> getByAttributeValue( Attribute attribute, String value );
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
 
-    int getDataElementCount( Integer dataElementId, Integer attributeId, String value );
+    private LocalDataSetStore localDataSetStore;
+
+    public void setLocalDataSetStore( LocalDataSetStore localDataSetStore )
+    {
+        this.localDataSetStore = localDataSetStore;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Collection<DataSet> getDataSetsByDescription( String description )
+    {
+       return localDataSetStore.getByDescription( description );
+    }
     
-    Collection<DataElement> get( DataSet dataSet, String value );
+    public DataElementCategoryOptionCombo getDepartmentByDataSet( DataSet dataSet )
+    {
+        return localDataSetStore.getDepartmentByDataSet( dataSet );
+    }
 }

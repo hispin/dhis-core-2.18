@@ -4,7 +4,7 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-	<!-- LocalDataElementService -->
+	<!-- LocalDataElement -->
 	
 	<bean id="org.hisp.dhis.dataelement.LocalDataElementService"
 		class="org.hisp.dhis.dataelement.DefaultLocalDataElementService">
@@ -15,6 +15,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.dataelement.hibernate.HibernateLocalDataElementStore">		
 		<property name="clazz" value="org.hisp.dhis.dataelement.DataElement" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="statementManager" ref="statementManager" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 	
 	<!-- LocalAttributeValue -->
@@ -28,6 +30,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.attribute.hibernate.HibernateLocalAttributeValueStore">		
 		<property name="clazz" value="org.hisp.dhis.attribute.AttributeValue" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+	
+	<!-- LocalDataSet -->
+	
+	<bean id="org.hisp.dhis.dataset.LocalDataSetService"
+		class="org.hisp.dhis.dataset.DefaultLocalDataSetService">
+		<property name="localDataSetStore" ref="org.hisp.dhis.dataset.LocalDataSetStore"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataset.LocalDataSetStore" 
+		class="org.hisp.dhis.dataset.hibernate.HibernateLocalDataSetStore">		
+		<property name="clazz" value="org.hisp.dhis.dataset.DataSet" />
+		<property name="sessionFactory" ref="sessionFactory" />	
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	</bean>
 	
 </beans>

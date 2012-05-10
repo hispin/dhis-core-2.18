@@ -93,6 +93,18 @@
     <action name="loadAttributeValuesByAttribute" class="org.hisp.dhis.dataelement.LoadAttributeValuesByAttributeAction">
 	   <result name="success" type="velocity-json">/dhis-web-dataentry-hospital/jsonAttributeValues.vm</result>
 	</action>
+	
+	<action name="loadDataSet" class="org.hisp.dhis.de.action.LoadDataSetsAction">
+	   <result name="success" type="velocity-json">/dhis-web-dataentry-hospital/responseDataSets.vm</result>
+	</action>
+	
+	<action name="loadAttribueValues" class="org.hisp.dhis.de.action.LoadAttributeValuesAction">
+	   <result name="success" type="velocity-json">/dhis-web-dataentry-hospital/jsonAttributeValues.vm</result>
+	</action>
+	
+	<action name="loadDepartments" class="org.hisp.dhis.de.action.LoadDepartmentsAction">
+	   <result name="success" type="velocity-json">/dhis-web-dataentry-hospital/jsonDepartments.vm</result>
+	</action>
 
   </package>
 </struts>

@@ -25,56 +25,72 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.attribute;
+package org.hisp.dhis.de.action;
 
 import java.util.Collection;
 
-import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.attribute.LocalAttributeValueService;
 import org.hisp.dhis.dataset.DataSet;
-import org.springframework.transaction.annotation.Transactional;
+import org.hisp.dhis.dataset.DataSetService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $DefaultLocalAttributeValueService.java Mar 24, 2012 8:30:05 AM$
+ * @version $LoadAttributeValuesByAttributeAction.java Mar 24, 2012 9:10:52 AM$
  */
-@Transactional
-public class DefaultLocalAttributeValueService
-    implements LocalAttributeValueService
+public class LoadAttributeValuesAction
+    implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private LocalAttributeValueStore localAttributeValueStore;
+    private LocalAttributeValueService localAttributeValueService;
 
-    public void setLocalAttributeValueStore( LocalAttributeValueStore localAttributeValueStore )
+    private DataSetService dataSetService;
+
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
+
+    private Integer dataSetId;
+
+    private Collection<String> values;
+
+    public Collection<String> getValues()
     {
-        this.localAttributeValueStore = localAttributeValueStore;
+        return values;
+    }
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    public void setLocalAttributeValueService( LocalAttributeValueService localAttributeValueService )
+    {
+        this.localAttributeValueService = localAttributeValueService;
+    }
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
     }
 
     // -------------------------------------------------------------------------
-    // Implementation methods
+    // Action implementation
     // -------------------------------------------------------------------------
 
-    public Collection<AttributeValue> getAttributeValuesByAttribute( Attribute attribute )
+    @Override
+    public String execute()
+        throws Exception
     {
-        return localAttributeValueStore.getByAttribute( attribute );
-    }
-
-    public Collection<String> getDistinctValuesByAttribute( Attribute attribute )
-    {
-        return localAttributeValueStore.getDistinctValuesByAttribute( attribute );
-    }
-    
-    public boolean hasAttributesByDataSet( DataSet dataSet )
-    {
-        return localAttributeValueStore.hasAttributesByDataSet( dataSet );  
-    }
-    
-    public Collection<String> getValuesByDataSet( DataSet dataSet )
-    {
-        return localAttributeValueStore.getByDataSet( dataSet );
+        DataSet dataset = dataSetService.getDataSet( dataSetId );
+        
+        values = localAttributeValueService.getValuesByDataSet( dataset );
+            
+        return SUCCESS;
     }
 }

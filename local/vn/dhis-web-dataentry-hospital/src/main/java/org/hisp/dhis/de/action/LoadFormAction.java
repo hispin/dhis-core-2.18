@@ -50,6 +50,7 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.LocalDataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.i18n.I18n;
@@ -72,8 +73,6 @@ public class LoadFormAction
 
     private DataSetService dataSetService;
 
-    private AttributeService attributeService;
-
     private LocalDataElementService localDataElementService;
 
     // -------------------------------------------------------------------------
@@ -93,11 +92,6 @@ public class LoadFormAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
     }
 
     public void setLocalDataElementService( LocalDataElementService localDataElementService )
@@ -121,13 +115,6 @@ public class LoadFormAction
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
-    }
-
-    private Integer attributeId;
-
-    public void setAttributeId( Integer attributeId )
-    {
-        this.attributeId = attributeId;
     }
 
     private String value;
@@ -229,20 +216,16 @@ public class LoadFormAction
 
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
+        if ( value != null && !value.trim().isEmpty() )
+        {
+            Collection<DataElement> dataElementsByAttr = localDataElementService.getDataElements( dataSet, value );
+
+            dataElements.retainAll( dataElementsByAttr );
+        }
+
         if ( dataElements.isEmpty() )
         {
             return INPUT;
-        }
-
-        if ( attributeId != null )
-        {
-            Attribute attribute = attributeService.getAttribute( attributeId );
-
-            Collection<DataElement> dataElementsByAttr = localDataElementService.getDataElementsByAttribute( attribute,
-                value );
-
-            dataElements.retainAll( dataElementsByAttr );
-
         }
 
         Collections.sort( dataElements, new DataElementFormNameComparator() );
