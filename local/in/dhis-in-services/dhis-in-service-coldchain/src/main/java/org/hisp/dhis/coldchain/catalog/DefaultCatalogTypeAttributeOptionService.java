@@ -2,8 +2,6 @@ package org.hisp.dhis.coldchain.catalog;
 
 import java.util.Collection;
 
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeOption;
 import org.springframework.transaction.annotation.Transactional;
 
 public class DefaultCatalogTypeAttributeOptionService implements CatalogTypeAttributeOptionService

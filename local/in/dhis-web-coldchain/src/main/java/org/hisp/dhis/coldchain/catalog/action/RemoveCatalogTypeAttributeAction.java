@@ -64,9 +64,17 @@ implements Action
                 message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
             }
             
+            return INPUT;
+        }
+        
+        catch ( Exception ex )
+        {
+            //message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
+            message = i18n.getString( "object_not_deleted_associated_by_objects" );
+           
             return ERROR;
         }
-
+        
         return SUCCESS;
     }
 }

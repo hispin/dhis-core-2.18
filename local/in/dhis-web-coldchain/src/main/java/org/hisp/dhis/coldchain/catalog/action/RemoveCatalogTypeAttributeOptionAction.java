@@ -59,7 +59,6 @@ implements Action
     {
         CatalogTypeAttributeOption catalogTypeAttributeOption = catalogTypeAttributeOptionService.getCatalogTypeAttributeOption( id );
        
-        
         if ( catalogTypeAttributeOption != null )
         {
             /*

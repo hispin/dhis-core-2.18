@@ -1,10 +1,6 @@
 package org.hisp.dhis.coldchain.catalog.action;
 
-import java.util.Collection;
-
 import org.hisp.dhis.coldchain.catalog.Catalog;
-import org.hisp.dhis.coldchain.catalog.CatalogDataValue;
-import org.hisp.dhis.coldchain.catalog.CatalogDataValueService;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
@@ -24,7 +20,7 @@ implements Action
     {
         this.catalogService = catalogService;
     }
-    
+    /*
     private CatalogDataValueService catalogDataValueService;
     
     
@@ -32,7 +28,7 @@ implements Action
     {
         this.catalogDataValueService = catalogDataValueService;
     }
-    
+    */
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -66,8 +62,6 @@ implements Action
     {
         try
         {
-            System.out.println( "Catalog ID is ===  :" + id );
-            
             Catalog catalog = catalogService.getCatalog( id );
             
             //catalogService.deleteCatalogData( catalog );
@@ -88,9 +82,17 @@ implements Action
                 message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
             }
             
+            return INPUT;
+        }
+        
+        catch ( Exception ex )
+        {
+            message = i18n.getString( "object_not_deleted_associated_by_objects" );
+           
             return ERROR;
         }
-
+        
+        
         return SUCCESS;
     }
 }
