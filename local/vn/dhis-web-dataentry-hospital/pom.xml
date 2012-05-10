@@ -35,6 +35,11 @@
       <artifactId>dhis-service-vn</artifactId>
 	  <version>${project.version}</version>
     </dependency>
+	<dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-spreadsheet-reporting</artifactId>
+	  <version>${project.version}</version>
+    </dependency>
   </dependencies>
   
   <properties>

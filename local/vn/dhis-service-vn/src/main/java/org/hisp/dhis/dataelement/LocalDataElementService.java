@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 import java.util.Collection;
 
 import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.dataset.DataSet;
 
 /**
  * @author Chau Thu Tran
@@ -41,4 +42,6 @@ public interface LocalDataElementService
     Collection<DataElement> getDataElementsByAttribute( Attribute attribute, String value );
 
     int getDataElementCount( Integer dataElementId, Integer attributeId, String value );
+    
+    Collection<DataElement> getDataElements( DataSet dataSet, String value );
 }

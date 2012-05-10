@@ -25,56 +25,68 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.attribute;
+package org.hisp.dhis.de.action;
 
 import java.util.Collection;
+import java.util.HashSet;
 
-import org.hisp.dhis.attribute.Attribute;
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.dataset.DataSet;
-import org.springframework.transaction.annotation.Transactional;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $DefaultLocalAttributeValueService.java Mar 24, 2012 8:30:05 AM$
+ * @version $LoadDataSetsAction.java May 8, 2012 1:00:28 PM$
  */
-@Transactional
-public class DefaultLocalAttributeValueService
-    implements LocalAttributeValueService
+public class LoadDataSetsAction
+    implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private LocalAttributeValueStore localAttributeValueStore;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setLocalAttributeValueStore( LocalAttributeValueStore localAttributeValueStore )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.localAttributeValueStore = localAttributeValueStore;
+        this.selectionManager = selectionManager;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
-    // Implementation methods
+    // Output
     // -------------------------------------------------------------------------
 
-    public Collection<AttributeValue> getAttributeValuesByAttribute( Attribute attribute )
+    private Collection<DataSet> dataSets = new HashSet<DataSet>();
+
+    public Collection<DataSet> getDataSets()
     {
-        return localAttributeValueStore.getByAttribute( attribute );
+        return dataSets;
     }
 
-    public Collection<String> getDistinctValuesByAttribute( Attribute attribute )
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
     {
-        return localAttributeValueStore.getDistinctValuesByAttribute( attribute );
+        Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+
+        sources.add( selectionManager.getSelectedOrganisationUnit() );
+
+        dataSets = dataSetService.getDataSetsBySources( sources );
+
+        return SUCCESS;
     }
-    
-    public boolean hasAttributesByDataSet( DataSet dataSet )
-    {
-        return localAttributeValueStore.hasAttributesByDataSet( dataSet );  
-    }
-    
-    public Collection<String> getValuesByDataSet( DataSet dataSet )
-    {
-        return localAttributeValueStore.getByDataSet( dataSet );
-    }
+
 }

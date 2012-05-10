@@ -27,14 +27,20 @@
 
 package org.hisp.dhis.dataelement.hibernate;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashSet;
 
+import org.amplecode.quick.StatementManager;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.LocalDataElementStore;
+import org.hisp.dhis.dataset.DataSet;
 
 /**
  * @author Chau Thu Tran
@@ -45,6 +51,20 @@ public class HibernateLocalDataElementStore
     extends HibernateIdentifiableObjectStore<DataElement>
     implements LocalDataElementStore
 {
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getByAttributeValue( Attribute attribute, String value )
     {
@@ -56,13 +76,43 @@ public class HibernateLocalDataElementStore
     @Override
     public int getDataElementCount( Integer dataElementId, Integer attributeId, String value )
     {
-        Number rs = (Number) getCriteria()
-            .add( Restrictions.eq( "id", dataElementId ) )
-            .createAlias( "attributeValues", "attributeValue" )
-            .add( Restrictions.eq( "attributeValue.attribute.id", attributeId ) )
+        Number rs = (Number) getCriteria().add( Restrictions.eq( "id", dataElementId ) ).createAlias(
+            "attributeValues", "attributeValue" ).add( Restrictions.eq( "attributeValue.attribute.id", attributeId ) )
             .add( Restrictions.eq( "attributeValue.value", value ).ignoreCase() )
             .setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
+    }
+
+    @Override
+    public Collection<DataElement> get( DataSet dataSet, String value )
+    {
+        Collection<DataElement> result = new HashSet<DataElement>();
+        try
+        {
+            String sql = "select distinct(deav.dataelementid) from datasetmembers dsm "
+                + "inner join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid "
+                + "inner join attributevalue av on av.attributevalueid = deav.attributevalueid "
+                + "inner join attribute att on att.attributeid = av.attributeid " + "where dsm.datasetid = "
+                + dataSet.getId() + " and av.value='" + value + "'";
+
+            ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
+
+            while ( resultSet.next() )
+            {
+                result.add( dataElementService.getDataElement( resultSet.getInt( 1 ) ) );
+            }
+
+            return result;
+        }
+        catch ( SQLException e )
+        {
+            e.printStackTrace();
+            return new HashSet<DataElement>();
+        }
+        finally
+        {
+            statementManager.getHolder().close();
+        }
     }
 }

@@ -37,7 +37,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
     <property name="localDataElementService" ref="org.hisp.dhis.dataelement.LocalDataElementService" />
   </bean>
 
@@ -136,6 +135,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dataelement.LoadAttributeValuesByAttributeAction" class="org.hisp.dhis.dataelement.LoadAttributeValuesByAttributeAction" scope="prototype">
 	 <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
 	 <property name="localAttributeValueService" ref="org.hisp.dhis.attribute.LocalAttributeValueService" />
+  </bean>
+  
+   <bean id="org.hisp.dhis.de.action.LoadDataSetsAction" class="org.hisp.dhis.de.action.LoadDataSetsAction" scope="prototype">
+	 <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	 <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.de.action.LoadAttributeValuesAction" class="org.hisp.dhis.de.action.LoadAttributeValuesAction" scope="prototype">
+	 <property name="localAttributeValueService" ref="org.hisp.dhis.attribute.LocalAttributeValueService" />
+	 <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.de.action.LoadDepartmentsAction" class="org.hisp.dhis.de.action.LoadDepartmentsAction" scope="prototype">
+	 <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+	 <property name="associationService" ref="org.hisp.dhis.reportsheet.CategoryOptionAssociationService" />
+	 <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+	 <property name="localDataSetService" ref="org.hisp.dhis.dataset.LocalDataSetService" />
   </bean>
 
 </beans>

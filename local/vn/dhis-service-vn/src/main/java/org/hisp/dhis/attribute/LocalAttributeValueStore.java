@@ -31,6 +31,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.dataset.DataSet;
 
 /**
  * @author Chau Thu Tran
@@ -42,4 +43,8 @@ public interface LocalAttributeValueStore
     Collection<AttributeValue> getByAttribute( Attribute attribute );
 
     Collection<String> getDistinctValuesByAttribute( Attribute attribute );
+    
+    boolean hasAttributesByDataSet( DataSet dataSet );
+    
+    Collection<String> getByDataSet( DataSet dataSet );
 }

@@ -121,7 +121,7 @@ function saveVal( dataElementId, optionComboId )
 
     $( fieldId ).css( 'background-color', COLOR_YELLOW );
 
-    var periodId = $( '#selectedPeriodId' ).val();
+    var periodId = $( '#selectedPeriodId option:selected' ).val();
 
 	if ( value == null )
 	{
