@@ -376,5 +376,6 @@ public class LLDataSets
     public static final int LLMD_CAUSE_BACD = 548;
     public static final int LLMD_CAUSE_HFBD = 549;
     public static final int LLMD_CAUSE_HFAD = 550;
-    public static final int LLMD_CAUSE_NK = 551;    
+    public static final int LLMD_CAUSE_NK = 551;
+    public static final int LLMD_CAUSE_MDNK = 5725;// This dataelement should be created for state specific for linelisting maternal death Other Causes (including cause not known)
 }

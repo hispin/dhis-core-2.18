@@ -2217,7 +2217,7 @@ public class HibernateLLDataValueStore
             LLDataSets.LLMD_BY_TRAINED, LLDataSets.LLMD_BY_ANM, LLDataSets.LLMD_BY_NURSE, LLDataSets.LLMD_BY_DOCTOR,
             LLDataSets.LLMD_CAUSE_ABORTION, LLDataSets.LLMD_CAUSE_OPL, LLDataSets.LLMD_CAUSE_FITS,
             LLDataSets.LLMD_CAUSE_SH, LLDataSets.LLMD_CAUSE_BBCD, LLDataSets.LLMD_CAUSE_BACD,
-            LLDataSets.LLMD_CAUSE_HFBD, LLDataSets.LLMD_CAUSE_HFAD, LLDataSets.LLMD_CAUSE_NK
+            LLDataSets.LLMD_CAUSE_HFBD, LLDataSets.LLMD_CAUSE_HFAD, LLDataSets.LLMD_CAUSE_NK, LLDataSets.LLMD_CAUSE_MDNK
 
         };
         String[] queries = new String[aggDeIds.length];
@@ -2313,7 +2313,10 @@ public class HibernateLLDataValueStore
         // Metarnal Death Cause not known
         queries[28] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'NK'";
-
+        // Metarnal Death Other Causes (including cause not known)
+        queries[29] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+            + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'MDNK'";
+        
         try
         {
             //Connection con = jdbcTemplate.getDataSource().getConnection();
