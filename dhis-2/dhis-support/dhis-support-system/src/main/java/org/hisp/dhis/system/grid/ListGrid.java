@@ -27,34 +27,36 @@ package org.hisp.dhis.system.grid;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import static org.hisp.dhis.system.util.MathUtils.getRounded;
+
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
+
 import org.apache.commons.math.stat.regression.SimpleRegression;
-import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.adapter.JacksonRowDataSerializer;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.system.util.MathUtils;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.*;
-
-import static org.hisp.dhis.system.util.MathUtils.getRounded;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-@JacksonXmlRootElement( localName = "grid", namespace = Dxf2Namespace.NAMESPACE )
 public class ListGrid
     implements Grid
 {
@@ -117,7 +119,6 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getTitle()
     {
         return title;
@@ -132,7 +133,6 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getSubtitle()
     {
         return subtitle;
@@ -147,7 +147,6 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getTable()
     {
         return table;
@@ -171,8 +170,6 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "headers", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "header", namespace = Dxf2Namespace.NAMESPACE )
     public List<GridHeader> getHeaders()
     {
         return headers;
@@ -195,7 +192,6 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getHeight()
     {
         return (grid != null && grid.size() > 0) ? grid.size() : 0;
@@ -203,7 +199,6 @@ public class ListGrid
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getWidth()
     {
         verifyGridState();
@@ -242,8 +237,6 @@ public class ListGrid
     @JsonProperty
     @JsonSerialize( using = JacksonRowDataSerializer.class )
     @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "rows", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "row", namespace = Dxf2Namespace.NAMESPACE )
     public List<List<Object>> getRows()
     {
         return grid;

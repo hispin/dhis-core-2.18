@@ -59,6 +59,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
+import org.amplecode.staxwax.factory.XMLFactory;
+import org.amplecode.staxwax.writer.XMLWriter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.VelocityContext;
 import org.hisp.dhis.common.Grid;
@@ -99,8 +101,25 @@ public class GridUtils
     private static final String KEY_GRID = "grid";
     private static final String KEY_ENCODER = "encoder";
     private static final String KEY_PARAMS = "params";
-    private static final String TEMPLATE = "grid.vm";
+    private static final String JASPER_TEMPLATE = "grid.vm";
+    private static final String HTML_TEMPLATE = "grid-html.vm";
 
+    private static final String ATTR_GRID = "grid";
+    private static final String ATTR_TITLE = "title";
+    private static final String ATTR_SUBTITLE = "subtitle";
+    private static final String ATTR_WIDTH = "width";
+    private static final String ATTR_HEIGHT = "height";
+    private static final String ATTR_HEADERS = "headers";
+    private static final String ATTR_HEADER = "header";
+    private static final String ATTR_NAME = "name";
+    private static final String ATTR_COLUMN = "column";
+    private static final String ATTR_TYPE = "type";
+    private static final String ATTR_HIDDEN = "hidden";
+    private static final String ATTR_META = "meta";
+    private static final String ATTR_ROWS = "rows";
+    private static final String ATTR_ROW = "row";
+    private static final String ATTR_FIELD = "field";
+    
     /**
      * Writes a PDF representation of the given Grid to the given OutputStream.
      */
@@ -321,7 +340,7 @@ public class GridUtils
         
         final StringWriter writer = new StringWriter();
         
-        render( grid, params, writer );
+        render( grid, params, writer, JASPER_TEMPLATE );
         
         String report = writer.toString();
 
@@ -338,9 +357,58 @@ public class GridUtils
     public static void toJrxml( Grid grid, Map<?, ?> params, Writer writer )
         throws Exception
     {
-        render( grid, params, writer );
+        render( grid, params, writer, JASPER_TEMPLATE );
     }
 
+    /**
+     * Writes a JRXML (Jasper Reports XML) representation of the given Grid to the given Writer.
+     */
+    public static void toHtml( Grid grid, Writer writer )
+        throws Exception
+    {
+        render( grid, null, writer, HTML_TEMPLATE );
+    }
+    
+    /**
+     * Writes an XML representation of the given Grid to the given OutputStream.
+     */
+    public static void toXml( Grid grid, OutputStream out )
+    {
+        XMLWriter writer = XMLFactory.getXMLWriter( out );
+        
+        writer.openDocument();
+        writer.openElement( ATTR_GRID, ATTR_TITLE, grid.getTitle(), ATTR_SUBTITLE, grid.getSubtitle(), 
+            ATTR_WIDTH, String.valueOf( grid.getWidth() ), ATTR_HEIGHT, String.valueOf( grid.getHeight() ) );
+        
+        writer.openElement( ATTR_HEADERS );
+        
+        for ( GridHeader header : grid.getHeaders() )
+        {
+            writer.writeElement( ATTR_HEADER, null, ATTR_NAME, header.getName(), ATTR_COLUMN, header.getColumn(), 
+                ATTR_TYPE, header.getType(), ATTR_HIDDEN, String.valueOf( header.isHidden() ), ATTR_META, String.valueOf( header.isMeta() ) ); 
+        }
+        
+        writer.closeElement();        
+        writer.openElement( ATTR_ROWS );
+        
+        for ( List<Object> row : grid.getRows() )
+        {
+            writer.openElement( ATTR_ROW );
+            
+            for ( Object field : row )
+            {
+                writer.writeElement( ATTR_FIELD, field != null ? String.valueOf( field ) : EMPTY );
+            }
+            
+            writer.closeElement();
+        }
+        
+        writer.closeElement();
+        writer.closeElement();
+        
+        writer.closeDocument();
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -348,7 +416,7 @@ public class GridUtils
     /**
      * Render using Velocity.
      */
-    private static void render( Grid grid, Map<?, ?> params, Writer writer )
+    private static void render( Grid grid, Map<?, ?> params, Writer writer, String template )
         throws Exception
     {
         final VelocityContext context = new VelocityContext();
@@ -357,7 +425,7 @@ public class GridUtils
         context.put( KEY_ENCODER, ENCODER );
         context.put( KEY_PARAMS, params );
         
-        new VelocityManager().getEngine().getTemplate( TEMPLATE ).merge( context, writer );
+        new VelocityManager().getEngine().getTemplate( template ).merge( context, writer );
     }
     
     /**

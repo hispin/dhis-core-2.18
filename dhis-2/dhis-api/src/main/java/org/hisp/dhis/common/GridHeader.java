@@ -27,19 +27,17 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.view.DetailedView;
-
 import java.util.Arrays;
 import java.util.List;
+
+import org.hisp.dhis.common.view.DetailedView;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 
 /**
  * @author Lars Helge Overland
  */
-@JacksonXmlRootElement( localName = "header", namespace = Dxf2Namespace.NAMESPACE )
 public class GridHeader
 {
     private static final List<String> NUMERIC_TYPES = Arrays.asList( Float.class.getName(), Double.class.getName(), Long.class.getName(), Integer.class.getName() );
@@ -97,7 +95,6 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( isAttribute = true )
     public String getName()
     {
         return name;
@@ -110,7 +107,6 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getColumn()
     {
         return column;
@@ -123,7 +119,6 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getType()
     {
         return type;
@@ -136,7 +131,6 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isHidden()
     {
         return hidden;
@@ -149,7 +143,6 @@ public class GridHeader
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isMeta()
     {
         return meta;

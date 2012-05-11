@@ -48,7 +48,6 @@
   <xsl:include href="userGroup.xsl" />
   <xsl:include href="userAuthorityGroup.xsl" />
   <xsl:include href="userCredentials.xsl" />
-  <xsl:include href="grid.xsl" />
   <xsl:include href="messageConversations.xsl" />
   <xsl:include href="messageConversation.xsl" />
   <xsl:include href="dataValueSets.xsl" />

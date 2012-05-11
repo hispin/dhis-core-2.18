@@ -163,6 +163,52 @@ public class ReportTableController
         return "grid";
     }
 
+    @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
+    public void getReportTableHtml( @PathVariable( "uid" ) String uid,
+                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+                                   @RequestParam( value = "pe", required = false ) String period,
+                                   HttpServletResponse response ) throws Exception
+    {
+        ReportTable reportTable = reportTableService.getReportTable( uid );
+
+        if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
+        {
+            organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
+        }
+
+        Date date = period != null ? DateUtils.getMediumDate( period ) : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
+
+        Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
+
+        String filename = filenameEncode( grid.getTitle() ) + ".html";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
+
+        GridUtils.toHtml( grid, response.getWriter() );
+    }
+
+    @RequestMapping( value = "/{uid}/data.xml", method = RequestMethod.GET )
+    public void getReportTableXml( @PathVariable( "uid" ) String uid,
+                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+                                   @RequestParam( value = "pe", required = false ) String period,
+                                   HttpServletResponse response ) throws Exception
+    {
+        ReportTable reportTable = reportTableService.getReportTable( uid );
+
+        if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
+        {
+            organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
+        }
+
+        Date date = period != null ? DateUtils.getMediumDate( period ) : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
+
+        Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
+
+        String filename = filenameEncode( grid.getTitle() ) + ".xml";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
+
+        GridUtils.toXml( grid, response.getOutputStream() );
+    }
+
     @RequestMapping( value = "/{uid}/data.pdf", method = RequestMethod.GET )
     public void getReportTablePdf( @PathVariable( "uid" ) String uid,
                                    @RequestParam( value = "ou", required = false ) String organisationUnitUid,
