@@ -27,8 +27,11 @@
 			DHIS.getChart({
 				type: 'stackedcolumn',
 				indicators: ['Uvn6LCg7dVU', 'OdiHJayrsKo'],
-				periods: 'last12Months',
+				periods: 'thisYear',
+				category: 'organisationunit',
+				filter: 'period',
 				organisationunits: ['ImspTQPwCqd'],
+				orgUnitIsParent: true,
 				el: 'chart2',
 				url: url
 			});
