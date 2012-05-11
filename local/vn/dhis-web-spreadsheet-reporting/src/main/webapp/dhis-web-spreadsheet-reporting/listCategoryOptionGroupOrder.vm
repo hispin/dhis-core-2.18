@@ -52,7 +52,6 @@
 			<tr>
 				<td width="625px">$!encoder.htmlEncode( $group.name )</td>
 				<td>
-					<a href="javascript:openCategoryOptionAssociations( '$group.id' );" title="$i18n.getString( 'categoryoption_associations' )"><img src="../images/assign.png" border="1px" alt="$i18n.getString( 'categoryoption_associations' )"/></a>
 					<a href="javascript:openUpdateCategoryOptionGroupOrder( '$group.id' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 					<a href="javascript:openSortCategoryOptionForGroupOrder( '$group.id' );" title="$i18n.getString( 'sort_categoryoption' )"><img src="../images/sort.png" border="1px"/></a>
 					<a href="javascript:deleteCategoryOptionGroupOrder( '$group.id', '$group.name' );" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>

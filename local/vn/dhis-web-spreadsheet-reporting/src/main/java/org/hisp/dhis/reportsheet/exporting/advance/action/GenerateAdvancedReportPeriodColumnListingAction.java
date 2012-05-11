@@ -122,7 +122,6 @@ public class GenerateAdvancedReportPeriodColumnListingAction
 
                     for ( OrganisationUnit organisationUnit : organisationUnits )
                     {
-
                         if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
                         {
                             value += MathUtils.calculateExpression( ExpressionUtils.generateExpression( exportItem, p
@@ -135,7 +134,6 @@ public class GenerateAdvancedReportPeriodColumnListingAction
                                 .getStartdate(), p.getEnddate(), organisationUnit, dataElementService, categoryService,
                                 aggregationService ) );
                         }
-
                     }
 
                     ExcelUtils.writeValueByPOI( exportItem.getRow(), p.getColumn(), String.valueOf( value ),

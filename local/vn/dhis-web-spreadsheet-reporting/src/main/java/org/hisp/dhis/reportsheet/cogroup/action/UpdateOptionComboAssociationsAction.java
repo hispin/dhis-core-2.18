@@ -27,69 +27,95 @@ package org.hisp.dhis.reportsheet.cogroup.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
-import org.hisp.dhis.reportsheet.CategoryOptionGroupOrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.reportsheet.OptionComboAssociation;
+import org.hisp.dhis.reportsheet.OptionComboAssociationService;
+import org.hisp.dhis.reportsheet.action.ActionSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
 
-public class OpenCategoryOptionAssociationsAction
-    implements Action
+public class UpdateOptionComboAssociationsAction
+    extends ActionSupport
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
     @Autowired
-    private CategoryOptionGroupOrderService groupOrderService;
+    private DataElementCategoryService categoryService;
+
+    @Autowired
+    private OptionComboAssociationService associationService;
+
+    @Autowired
+    private SelectionTreeManager selectionTreeManager;
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer optionComboId;
 
-    private Integer reportId;
-
-    private CategoryOptionGroupOrder group;
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
-
-    public void setId( Integer id )
+    public void setOptionComboId( Integer optionComboId )
     {
-        this.id = id;
-    }
-
-    public void setReportId( Integer reportId )
-    {
-        this.reportId = reportId;
-    }
-
-    public Integer getReportId()
-    {
-        return reportId;
-    }
-
-    public CategoryOptionGroupOrder getGroup()
-    {
-        return group;
+        this.optionComboId = optionComboId;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action Implementation
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        group = groupOrderService.getCategoryOptionGroupOrder( id );
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+
+        Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
+
+        if ( optionCombo != null )
+        {
+            for ( OptionComboAssociation association : associationService.getOptionComboAssociations( optionCombo ) )
+            {
+                sources.add( association.getSource() );
+            }
+        }
+
+        Set<OrganisationUnit> cloneSources = new HashSet<OrganisationUnit>( sources );
+
+        Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+
+        sources.removeAll( selectedUnits );
+
+        if ( sources != null && !sources.isEmpty() )
+        {
+            associationService.deleteOptionComboAssociations( sources, optionCombo );
+        }
+
+        selectedUnits.removeAll( cloneSources );
+
+        for ( OrganisationUnit newSource : selectedUnits )
+        {
+            OptionComboAssociation association = new OptionComboAssociation( newSource, optionCombo );
+
+            associationService.saveOptionComboAssociation( association );
+        }
+
+        sources = null;
+        cloneSources = null;
+        selectedUnits = null;
+
+        message = i18n.getString( "update_associations_successful" );
 
         return SUCCESS;
     }
