@@ -98,6 +98,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="categoryOptionAssociationStore"
 			ref="org.hisp.dhis.reportsheet.CategoryOptionAssociationStore" />
 	</bean>
+
+	<bean id="org.hisp.dhis.reportsheet.OptionComboAssociationStore"
+		class="org.hisp.dhis.reportsheet.hibernate.HibernateOptionComboAssociationStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.reportsheet.OptionComboAssociationService"
+		class="org.hisp.dhis.reportsheet.impl.DefaultOptionComboAssociationService">
+		<property name="optionComboAssociationStore"
+			ref="org.hisp.dhis.reportsheet.OptionComboAssociationStore" />
+	</bean>
 	
 	<!-- Report Location Manager -->
 
@@ -126,6 +137,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.CategoryOptionAssociationDeletionHandler">
 		<property name="categoryOptionAssociationService"
 			ref="org.hisp.dhis.reportsheet.CategoryOptionAssociationService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.reportsheet.OptionComboAssociationDeletionHandler"
+		class="org.hisp.dhis.reportsheet.OptionComboAssociationDeletionHandler">
+		<property name="optionComboAssociationService"
+			ref="org.hisp.dhis.reportsheet.OptionComboAssociationService" />
 	</bean>
 
 	<!-- DeletionManager -->

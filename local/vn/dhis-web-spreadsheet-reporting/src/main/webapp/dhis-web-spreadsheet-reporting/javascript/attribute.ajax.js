@@ -10,23 +10,30 @@ function AttributeLib()
 		target.children().remove();
 
 		if ( attributeMap.length == 0 )
-		{	
-			jQuery.getJSON( '../dhis-web-commons-ajax-json/getAttributes.action', function( json )
+		{
+			jQuery.ajax(
 			{
-				attributeMap.push( new Attribute( -1, '[ ' + i18n_label + ' ]' ) );
-				target.append( '<option value="-1">[ ' + i18n_label + ' ]</option>' );
-				
-				jQuery.each( json.attributes, function( i, item )
+				type: 'GET',
+				url: '../dhis-web-commons-ajax-json/getAttributes.action',
+				dataType: 'json',
+				async: false,
+				success: function( json )
 				{
-					if ( id && item.id == id ) {
-						target.append( '<option value="' + item.id + '" selected="true">' + item.name + '</option>' );
-					}
-					else {
-						target.append( '<option value="' + item.id + '">' + item.name + '</option>' );
-					}
+					attributeMap.push( new Attribute( -1, '[ ' + i18n_label + ' ]' ) );
+					target.append( '<option value="-1">[ ' + i18n_label + ' ]</option>' );
 					
-					attributeMap.push( new Attribute( item.id, item.name ) );
-				} );
+					jQuery.each( json.attributes, function( i, item )
+					{
+						if ( id && item.id == id ) {
+							target.append( '<option value="' + item.id + '" selected="true">' + item.name + '</option>' );
+						}
+						else {
+							target.append( '<option value="' + item.id + '">' + item.name + '</option>' );
+						}
+						
+						attributeMap.push( new Attribute( item.id, item.name ) );
+					} );
+				}
 			} );
 		}
 		else
@@ -64,17 +71,23 @@ function AttributeLib()
 		{
 			valueList = new Array();
 
-			jQuery.getJSON( 'getAttributeValuesByAttribute.action', {
-				attributeId : id
-			}, function( json )
+			jQuery.ajax(
 			{
-				jQuery.each( json.values, function( i, item )
+				type: 'GET',
+				url: 'getAttributeValuesByAttribute.action',
+				data: 'attributeId=' + id,
+				dataType: 'json',
+				async: false,
+				success: function( json )
 				{
-					valueList.push( new AttributeValue( item.value ) );
-					source.append( '<option value="' + item.value + '">' + item.value + '</option>' );
-				} );
-				
-				attributeValueMap[ id ] = valueList;
+					jQuery.each( json.values, function( i, item )
+					{
+						valueList.push( new AttributeValue( item.value ) );
+						source.append( '<option value="' + item.value + '">' + item.value + '</option>' );
+					} );
+					
+					attributeValueMap[ id ] = valueList;
+				}
 			} );
 		}
 		else

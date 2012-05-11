@@ -309,6 +309,28 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
+		
+		<action name="openOptionComboAssociations"
+			class="org.hisp.dhis.reportsheet.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/optionComboAssociations.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="javascripts">javascript/category.ajax.js</param>
+			<param name="stylesheets">style/basic.css</param>
+		</action>
+
+		<action name="showAssociationsByOptionCombo"
+			class="org.hisp.dhis.reportsheet.cogroup.action.ShowDefineOptionComboAssociationsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+
+		<action name="updateOptionComboAssociations"
+			class="org.hisp.dhis.reportsheet.cogroup.action.UpdateOptionComboAssociationsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!-- DATAELEMENT GROUP ORDER FOR CATEGORY ACTION 				   -->
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

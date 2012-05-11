@@ -316,6 +316,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.cogroup.action.UpdateCategoryOptionAssociationsAction"
 		scope="prototype" />
 
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.OpenOptionComboAssociationsAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.OpenOptionComboAssociationsAction"
+		scope="prototype" />
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.ShowDefineOptionComboAssociationsAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.ShowDefineOptionComboAssociationsAction"
+		scope="prototype" />
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.cogroup.action.UpdateOptionComboAssociationsAction"
+		class="org.hisp.dhis.reportsheet.cogroup.action.UpdateOptionComboAssociationsAction"
+		scope="prototype" />
+
 	<!-- REPORT EXCEL ATTRIBUTE BEAN -->
 
 	<bean
