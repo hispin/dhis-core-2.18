@@ -38,7 +38,8 @@ DHIS.conf = {
             stackedbar: 'stackedbar',
             line: 'line',
             area: 'area',
-            pie: 'pie'
+            pie: 'pie',
+            orgUnitIsParent: 'orgUnitIsParent'
         }
     }
 };
@@ -281,6 +282,12 @@ Ext.onReady( function() {
                     url += '/';
                 }
                 return url;
+            },
+            appendUrlIfTrue: function(url, param, expression) {
+            	if (expression && expression == true) {
+            		url = Ext.String.urlAppend(url, param + '=true');
+            	}
+            	return url;            	
             }
         },
         value: {
@@ -381,6 +388,7 @@ Ext.onReady( function() {
                 filter: 'organisationunit',
                 el: '',
                 legendPosition: false,
+                orgUnitIsParent: false,
                 url: ''
             };
             
@@ -398,6 +406,7 @@ Ext.onReady( function() {
             project.state.series.dimension = project.state.conf.series;
             project.state.category.dimension = project.state.conf.category;
             project.state.filter.dimension = project.state.conf.filter;
+            project.state.orgUnitIsParent = project.state.conf.orgUnitIsParent;
             
             DHIS.state.state = project.state;
             
@@ -445,6 +454,8 @@ Ext.onReady( function() {
             params = params.concat(DHIS.util.dimension[project.state.filter.dimension].getUrl(true));
                         
             var baseUrl = DHIS.util.string.extendUrl(project.state.conf.url) + DHIS.conf.finals.ajax.data_get;
+            baseUrl = DHIS.util.string.appendUrlIfTrue(baseUrl, DHIS.conf.finals.chart.orgUnitIsParent, project.state.orgUnitIsParent);
+            
             Ext.Array.each(params, function(item) {
                 baseUrl = Ext.String.urlAppend(baseUrl, item);
             });
