@@ -27,12 +27,12 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -40,34 +40,25 @@ import java.util.List;
 public class JacksonRowDataSerializer
     extends JsonSerializer<List<List<Object>>>
 {
-    private static final String ROW_NAME = "row";
-    private static final String FIELD_NAME = "field";
     private static final String EMPTY = "";
     
     @Override
     public void serialize( List<List<Object>> values, JsonGenerator jgen, SerializerProvider provider ) throws IOException
     {
-        boolean b = true;
-
-        for ( List<Object> value : values )
+        jgen.writeStartArray();
+        
+        for ( List<Object> row : values )
         {
-            if ( !b )
+            jgen.writeStartArray();
+            
+            for ( Object field : row )
             {
-                jgen.writeFieldName( ROW_NAME );
+                jgen.writeString( field != null ? String.valueOf( field ) : EMPTY );
             }
-
-            b = false;
-
-            jgen.writeStartObject();
-
-            for ( Object object : value )
-            {
-                object = object == null ? EMPTY : object;
-                    
-                jgen.writeStringField( FIELD_NAME, String.valueOf( object ) );
-            }
-
-            jgen.writeEndObject();
+            
+            jgen.writeEndArray();
         }
+        
+        jgen.writeEndArray();
     }
 }
