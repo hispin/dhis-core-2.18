@@ -124,7 +124,6 @@ public class LoadDepartmentsAction
         {
             departmentInOrgunit.addAll( association.getCategoryOption().getCategoryOptionCombos() );
         }
-   System.out.println("\n\n === \n departmentInOrgunit : " + departmentInOrgunit );     
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         String description = dataSet.getDescription();
@@ -132,14 +131,13 @@ public class LoadDepartmentsAction
         {
             Collection<DataSet> dataSets = localDataSetService.getDataSetsByDescription( description );
             dataSets.remove( dataSet );
-System.out.println("\n\n dataSets : " + dataSets );  
+
             for ( DataSet relativedataSet : dataSets )
             {
                 if ( relativedataSet.getDataEntryForm() != null )
                 {
                     DataElementCategoryOptionCombo optionCombo = localDataSetService.getDepartmentByDataSet( relativedataSet );
-System.out.println("\n\n optionCombo : " + optionCombo );
-System.out.println("\n\n departmentInOrgunit.contains( optionCombo ) : " + departmentInOrgunit.contains( optionCombo ) ); 
+
                     if( departmentInOrgunit.contains( optionCombo ) )
                     {
                         mapDataSets.put( relativedataSet.getId(), optionCombo.getName() );

@@ -34,6 +34,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserAuthorityGroup;
 
 import com.opensymphony.xwork2.Action;
 
@@ -63,6 +65,13 @@ public class LoadDataSetsAction
         this.dataSetService = dataSetService;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -85,6 +94,13 @@ public class LoadDataSetsAction
         sources.add( selectionManager.getSelectedOrganisationUnit() );
 
         dataSets = dataSetService.getDataSetsBySources( sources );
+        
+        Collection<UserAuthorityGroup> authorityGroups = currentUserService.getCurrentUser().getUserCredentials().getUserAuthorityGroups();
+        
+        for( UserAuthorityGroup UserAuthorityGroup : authorityGroups )
+        {
+            dataSets.retainAll( UserAuthorityGroup.getDataSets() );
+        }
 
         return SUCCESS;
     }
