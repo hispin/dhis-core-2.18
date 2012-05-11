@@ -27,10 +27,14 @@
 
 package org.hisp.dhis.de.action;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetNameComparator;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
@@ -76,7 +80,7 @@ public class LoadDataSetsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<DataSet> dataSets = new HashSet<DataSet>();
+    private List<DataSet> dataSets = new ArrayList<DataSet>();
 
     public Collection<DataSet> getDataSets()
     {
@@ -93,15 +97,18 @@ public class LoadDataSetsAction
 
         sources.add( selectionManager.getSelectedOrganisationUnit() );
 
-        dataSets = dataSetService.getDataSetsBySources( sources );
+        Collection<DataSet> _dataSets = dataSetService.getDataSetsBySources( sources );
         
         Collection<UserAuthorityGroup> authorityGroups = currentUserService.getCurrentUser().getUserCredentials().getUserAuthorityGroups();
         
         for( UserAuthorityGroup UserAuthorityGroup : authorityGroups )
         {
-            dataSets.retainAll( UserAuthorityGroup.getDataSets() );
+            _dataSets.retainAll( UserAuthorityGroup.getDataSets() );
         }
 
+        dataSets.addAll( _dataSets );
+        Collections.sort( dataSets, new DataSetNameComparator() );
+        
         return SUCCESS;
     }
 
