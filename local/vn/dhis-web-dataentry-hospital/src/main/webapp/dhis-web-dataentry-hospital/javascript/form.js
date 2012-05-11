@@ -196,7 +196,7 @@ function loadForm( dataSetId, value )
 		dataSetId : dataSetId,
 		value: value
 	}, function(html){
-		loadDataValues();
+		loadDataValues(dataSetId);
 	});
 }
 
@@ -451,23 +451,22 @@ function periodSelected()
 // Form
 // -----------------------------------------------------------------------------
 
-function loadDataValues()
+function loadDataValues(dataSetId)
 {
     $( '#completeButton' ).removeAttr( 'disabled' );
     $( '#undoButton' ).attr( 'disabled', 'disabled' );
     $( '#infoDiv' ).css( 'display', 'none' );
 
-    insertDataValues();
+    insertDataValues(dataSetId);
     displayEntryFormCompleted();
 }
 
-function insertDataValues()
+function insertDataValues(dataSetId)
 {
     var dataValueMap = [];
 	currentMinMaxValueMap = []; // Reset
 
     var periodId = $( '#selectedPeriodId option:selected' ).val();
-    var dataSetId = $( '#selectedDataSetId option:selected' ).val();
 
     // Clear existing values and colors, grey disabled fields
 
