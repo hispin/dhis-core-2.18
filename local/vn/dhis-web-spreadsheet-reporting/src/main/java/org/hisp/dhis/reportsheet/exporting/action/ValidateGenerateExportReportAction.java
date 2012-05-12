@@ -121,12 +121,13 @@ public class ValidateGenerateExportReportAction
                 return ERROR;
             }
 
-            message = exportReportService.validateEmportItems( exportReport, i18n );
-
-            if ( message != null )
-            {
-                return ERROR;
-            }
+            // message = exportReportService.validateEmportItems( exportReport,
+            // i18n );
+            //
+            // if ( message != null )
+            // {
+            // return ERROR;
+            // }
 
             File templateFile = new File( templateDirectory, exportReport.getExcelTemplateFile() );
 
