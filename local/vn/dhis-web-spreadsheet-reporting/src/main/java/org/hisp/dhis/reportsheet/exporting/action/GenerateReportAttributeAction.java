@@ -134,8 +134,8 @@ public class GenerateReportAttributeAction
                     }
                     else
                     {
-                        int id = Integer.parseInt( exportItem.getExpression().split( "@" )[0] );
-                        String value = exportItem.getExpression().split( "@" )[1];
+                        int id = Integer.parseInt( exportItem.getExpression().split( "@" )[0].replace( "[", "" ) );
+                        String value = exportItem.getExpression().split( "@" )[1].replace( "]", "" );
                         
                         for ( DataElement de : dataElements )
                         {
