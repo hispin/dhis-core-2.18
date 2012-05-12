@@ -301,11 +301,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.cogroup.action.GetCategoryOptionsByCategoryAction"
 		scope="prototype" />
 	
-	<bean
-		id="org.hisp.dhis.reportsheet.cogroup.action.OpenCategoryOptionAssociationsAction"
-		class="org.hisp.dhis.reportsheet.cogroup.action.OpenCategoryOptionAssociationsAction"
-		scope="prototype" />
-	
+	<!-- CATEGORY-OPTION-ASSOCIATION -->
 	<bean
 		id="org.hisp.dhis.reportsheet.cogroup.action.ShowDefineCategoryOptionAssociationsAction"
 		class="org.hisp.dhis.reportsheet.cogroup.action.ShowDefineCategoryOptionAssociationsAction"
@@ -315,13 +311,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportsheet.cogroup.action.UpdateCategoryOptionAssociationsAction"
 		class="org.hisp.dhis.reportsheet.cogroup.action.UpdateCategoryOptionAssociationsAction"
 		scope="prototype" />
-
 	
-	<bean
-		id="org.hisp.dhis.reportsheet.cogroup.action.OpenOptionComboAssociationsAction"
-		class="org.hisp.dhis.reportsheet.cogroup.action.OpenOptionComboAssociationsAction"
-		scope="prototype" />
-	
+	<!-- CATEGORY-OPTION-COMBO-ASSOCIATION -->
 	<bean
 		id="org.hisp.dhis.reportsheet.cogroup.action.ShowDefineOptionComboAssociationsAction"
 		class="org.hisp.dhis.reportsheet.cogroup.action.ShowDefineOptionComboAssociationsAction"
