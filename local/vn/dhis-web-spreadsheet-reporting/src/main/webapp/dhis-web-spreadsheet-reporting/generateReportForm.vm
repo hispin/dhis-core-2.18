@@ -47,7 +47,7 @@
 		</td>
     </tr>
 	<tr>
-		<td><label class='bold'>$i18n.getString('export_type')</label>&nbsp;&nbsp;<input type="checkbox" id="exportTypeCB" onchange="changeExportType( this );"/></td>
+		<td><label class='bold'>$i18n.getString('export_multi')</label>&nbsp;&nbsp;<input type="checkbox" id="exportTypeCB" onchange="changeExportType( this );"/></td>
 	</tr>
 	<tr>
 		<td><label class='bold'>$i18n.getString('export_reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
