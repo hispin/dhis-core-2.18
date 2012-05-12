@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.comparator.ExportReportNameComparator;
@@ -79,9 +79,9 @@ public class GetExportReportsByGroupAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<Integer> idMap = new ArrayList<Integer>();
+    private Map<Integer, String> idMap;
 
-    public List<Integer> getIdMap()
+    public Map<Integer, String> getIdMap()
     {
         return idMap;
     }
@@ -126,25 +126,9 @@ public class GetExportReportsByGroupAction
 
             exportReports.retainAll( reportAssociation );
 
+            idMap = exportReportService.getPeriodTypeIdentifierMap( exportReports );
+            
             Collections.sort( exportReports, new ExportReportNameComparator() );
-
-            String periodTypeName = null;
-
-            for ( ExportReport exportReport : exportReports )
-            {
-                for ( ExportItem exportItem : exportReport.getExportItems() )
-                {
-                    periodTypeName = exportItem.getPeriodType();
-
-                    if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.DAILY )
-                        || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_MONTH )
-                        || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_QUARTER ) )
-                    {
-                        idMap.add( exportReport.getId() );
-                        break;
-                    }
-                }
-            }
         }
 
         return SUCCESS;

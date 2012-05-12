@@ -37,31 +37,31 @@ function getExportReportsByGroup( selectedOrgUnitName ) {
 		{
 			jQuery('#exportReport').empty();
 			jQuery.each( json.exportReports, function(i, item){
-				addOptionById( 'exportReport', item.id + '_' + item.flag + '_' + item.reportType, item.name );
+				addOptionById( 'exportReport', item.id + '_' + item.periodType + '_' + item.reportType, item.name );
 			});
 
 			currentPeriodOffset = 0;
+
 			reportSelected();
 			displayPeriodsInternal();
 		});
 	}
 }
 
-function changeExportType( value )
+function changeExportType( _this )
 {
-	if ( value == 0 )
+	if ( _this.checked )
 	{
-		byId( "exportReportDiv" ).style.height = "120px";
-		byId( "exportReport" ).multiple = false;
-		hideById( "periodTypeRow" );
-		reportSelected();
+		byId( "exportReport" ).multiple = true;
+		enable( "periodType" );
+		reportSelected( getFieldValue( "periodType" ) );
 	}
 	else
 	{
-		byId( "exportReportDiv" ).style.height = "200px";
-		byId( "exportReport" ).multiple = true;
-		showById( "periodTypeRow" );
-		reportSelected( getFieldValue( "periodType" ) );
+		byId( "exportReport" ).multiple = false;
+		deselectAllById( "periodType" );
+		disable( "periodType" );
+		reportSelected();
 	}
 	
 	displayPeriodsInternal();
@@ -74,23 +74,23 @@ function reportSelected( _periodType )
 	{
 		currentPeriodTypeName = _periodType;
 	}
-	else if ( getFieldValue( "multiExport" ) == 0 )
+	else if ( !isChecked( 'exportTypeCB' ) )
 	{
 		var value = getFieldValue( 'exportReport' );
 
 		if ( value && value != null )
 		{
-			currentPeriodTypeName = (value.split( '_' )[1] == "true") ? 'Daily' : 'Monthly';
+			currentPeriodTypeName = value.split( '_' )[1];
 			currentReportTypeName = value.split( '_' )[2];
 
 			if ( currentReportTypeName == "P" ) {
-				hideById( "periodRow" );
+				hideById( "periodCol" );
 			}else {
-				showById( "periodRow" );
+				showById( "periodCol" );
 			}
 		}
 	}
-	
+
 	displayPeriodsInternal();
 }
 
@@ -106,6 +106,35 @@ function displayPeriodsInternal()
 		for ( i in periods )
 		{
 			addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
+		}
+	}
+	
+	getRelativePeriods( getFieldValue( "selectedPeriodId" ) );
+}
+
+function getRelativePeriods( value )
+{
+	if ( value )
+	{
+		var periodType = value.split( "_" )[0];
+		var date = value.split( "_" )[1];
+		var submitDateId = "";
+		
+		if ( periodType == "Weekly" )
+		{
+		}
+		else if ( periodType == "Quarterly" || periodType == "Yearly" || periodType == "SixMonthly" )
+		{
+			submitDateId = "Monthly" + "_" + date;
+		}
+		else // Daily, Monthly
+		{
+			submitDateId = periodType + "_" + date;
+		}
+		
+		if ( submitDateId && submitDateId != "" )
+		{
+			setFieldValue( 'selectedPeriodId2', submitDateId );
 		}
 	}
 }
@@ -125,6 +154,18 @@ function getPreviousPeriod()
     displayPeriodsInternal();
 }
 
+function hideExportDiv()
+{
+	hideById( 'exportReportDiv' );
+	showById( 'showButtonDiv' );
+}
+
+function showExportDiv()
+{
+	showById( 'exportReportDiv' );
+	hideById( 'showButtonDiv' );
+}
+
 function validateGenerateReport( isAdvanced )
 {
 	var exportReports = jQuery( 'select[id=exportReport]' ).children( 'option:selected' );
@@ -132,6 +173,14 @@ function validateGenerateReport( isAdvanced )
 	if ( exportReports.length == 0 )
 	{
 		showErrorMessage( i18n_specify_export_report );
+		return;
+	}
+	
+	var periodIndex = getFieldValue( 'selectedPeriodId2' );
+	
+	if ( periodIndex.length == 0 )
+	{
+		showErrorMessage( i18n_specify_periodtype_or_period );
 		return;
 	}
 	
@@ -146,11 +195,12 @@ function validateGenerateReport( isAdvanced )
 	
 	if ( url && url != '' )
 	{
+		hideExportDiv();
 		lockScreen();
 
 		jQuery.postJSON( url,
 		{
-			'periodIndex': getFieldValue( 'selectedPeriodId' )
+			'periodIndex': periodIndex
 		},
 		function( json )
 		{
