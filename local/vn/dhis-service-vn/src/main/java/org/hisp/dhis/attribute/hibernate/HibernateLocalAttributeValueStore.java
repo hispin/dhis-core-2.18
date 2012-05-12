@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.amplecode.quick.StatementManager;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.attribute.Attribute;
@@ -56,7 +57,7 @@ public class HibernateLocalAttributeValueStore
     {
         this.statementManager = statementManager;
     }
-    
+
     @SuppressWarnings( "unchecked" )
     @Override
     public Collection<AttributeValue> getByAttribute( Attribute attribute )
@@ -69,38 +70,39 @@ public class HibernateLocalAttributeValueStore
     public Collection<String> getDistinctValuesByAttribute( Attribute attribute )
     {
         return getCriteria().add( Restrictions.eq( "attribute", attribute ) ).add( Restrictions.ne( "value", "" ) )
-            .setProjection( Projections.distinct( Projections.property( "value" ) ) ).list();
+            .setProjection( Projections.distinct( Projections.property( "value" ) ) ).addOrder( Order.asc( "value" ) )
+            .list();
     }
-    
+
     public boolean hasAttributesByDataSet( DataSet dataSet )
     {
-        String sql = "select count(*) from datasetmembers dsm " +
-        		"inner join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid " +
-        		"inner join attributevalue av on av.attributevalueid = deav.attributevalueid " +
-        		"inner join attribute att on att.attributeid = av.attributeid " +
-        		"where dsm.datasetid = " + dataSet.getId();
-        
-        return ( statementManager.getHolder().queryForInteger( sql ) > 0 ) ? true : false;
+        String sql = "select count(*) from datasetmembers dsm "
+            + "inner join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid "
+            + "inner join attributevalue av on av.attributevalueid = deav.attributevalueid "
+            + "inner join attribute att on att.attributeid = av.attributeid " + "where dsm.datasetid = "
+            + dataSet.getId();
+
+        return (statementManager.getHolder().queryForInteger( sql ) > 0) ? true : false;
     }
-    
+
     public Collection<String> getByDataSet( DataSet dataSet )
     {
         Collection<String> result = new HashSet<String>();
         try
         {
-            String sql = "select distinct(av.value) from datasetmembers dsm " +
-                    "inner join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid " +
-                    "inner join attributevalue av on av.attributevalueid = deav.attributevalueid " +
-                    "inner join attribute att on att.attributeid = av.attributeid " +
-                    "where dsm.datasetid = " + dataSet.getId();
-        
+            String sql = "select distinct(av.value) from datasetmembers dsm "
+                + "inner join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid "
+                + "inner join attributevalue av on av.attributevalueid = deav.attributevalueid "
+                + "inner join attribute att on att.attributeid = av.attributeid " + "where dsm.datasetid = "
+                + dataSet.getId();
+
             ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
-            
-            while( resultSet.next() )
+
+            while ( resultSet.next() )
             {
                 result.add( resultSet.getString( 1 ) );
             }
-            
+
             return result;
         }
         catch ( SQLException e )
@@ -112,6 +114,6 @@ public class HibernateLocalAttributeValueStore
         {
             statementManager.getHolder().close();
         }
-              
+
     }
 }
