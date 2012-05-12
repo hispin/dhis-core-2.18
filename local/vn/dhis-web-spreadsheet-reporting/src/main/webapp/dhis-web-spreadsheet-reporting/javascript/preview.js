@@ -28,6 +28,14 @@ function validatePreviewReport( isAdvanced )
 		return;
 	}
 	
+	var periodIndex = getFieldValue( 'selectedPeriodId2' );
+	
+	if ( periodIndex.length == 0 )
+	{
+		showErrorMessage( i18n_specify_periodtype_or_period );
+		return;
+	}
+	
 	var url = 'validateGenerateReport.action?';
 	
 	jQuery.each( exportReports, function ( i, item )
@@ -39,11 +47,12 @@ function validatePreviewReport( isAdvanced )
 	
 	if ( url && url != '' )
 	{
+		hideExportDiv();
 		lockScreen();
 
 		jQuery.postJSON( url,
 		{
-			'periodIndex': getFieldValue( 'selectedPeriodId' )
+			'periodIndex': periodIndex
 		},
 		function( json )
 		{

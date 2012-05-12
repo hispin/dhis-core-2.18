@@ -219,9 +219,9 @@ public class GenerateExcelReportGeneric
     protected Font csFont11Bold;
 
     protected Font csFont10Bold;
-    
+
     protected Font csFont9Bold;
-    
+
     protected Font csFont8Bold;
 
     protected Font csFont12BoldCenter;
@@ -233,9 +233,9 @@ public class GenerateExcelReportGeneric
     protected CellStyle csText;
 
     protected CellStyle csText10Bold;
-    
+
     protected CellStyle csText9Bold;
-    
+
     protected CellStyle csText8Bold;
 
     protected CellStyle csTextSerial;
@@ -367,7 +367,7 @@ public class GenerateExcelReportGeneric
     {
         Calendar calendar = Calendar.getInstance();
 
-        // Monthly period
+        // Daily (or Monthly) period
         startDate = period.getStartDate();
         endDate = period.getEndDate();
 
@@ -510,6 +510,11 @@ public class GenerateExcelReportGeneric
             value = calculateExpression( generateExpression( exportItem, startQuaterly, endDate, organisationUnit,
                 dataElementService, categoryService, aggregationService ) );
         }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_YEAR ) )
+        {
+            value = calculateExpression( generateExpression( exportItem, firstDayOfYear, endDate, organisationUnit,
+                dataElementService, categoryService, aggregationService ) );
+        }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH ) )
         {
             value = calculateExpression( generateExpression( exportItem, startDate, endDate, organisationUnit,
@@ -534,11 +539,6 @@ public class GenerateExcelReportGeneric
         {
             value = calculateExpression( generateExpression( exportItem, startSixMonthly, endSixMonthly,
                 organisationUnit, dataElementService, categoryService, aggregationService ) );
-        }
-        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_YEAR ) )
-        {
-            value = calculateExpression( generateExpression( exportItem, firstDayOfYear, endDate, organisationUnit,
-                dataElementService, categoryService, aggregationService ) );
         }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
         {

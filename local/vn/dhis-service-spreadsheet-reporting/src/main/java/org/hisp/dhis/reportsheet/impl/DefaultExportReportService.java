@@ -31,8 +31,10 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -49,7 +51,12 @@ import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.DailyPeriodType;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.period.SixMonthlyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
 import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
@@ -478,5 +485,55 @@ public class DefaultExportReportService
         }
 
         return null;
+    }
+
+    @Override
+    public Map<Integer, String> getPeriodTypeIdentifierMap( Collection<ExportReport> reports )
+    {
+        String periodTypeName = null;
+        Map<Integer, String> idMap = new HashMap<Integer, String>();
+
+        for ( ExportReport exportReport : reports )
+        {
+            for ( ExportItem exportItem : exportReport.getExportItems() )
+            {
+                periodTypeName = exportItem.getPeriodType();
+
+                if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.DAILY )
+                    || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_MONTH )
+                    || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_QUARTER ) )
+                {
+                    idMap.put( exportReport.getId(), DailyPeriodType.NAME );
+                    break;
+                }
+                else if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH )
+                    || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.LAST_3_MONTH )
+                    || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.LAST_6_MONTH )
+                    || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_YEAR ) )
+                {
+                    idMap.put( exportReport.getId(), MonthlyPeriodType.NAME );
+                    break;
+                }
+                else if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.QUARTERLY ) )
+                {
+                    idMap.put( exportReport.getId(), QuarterlyPeriodType.NAME );
+                    break;
+                }
+                else if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SIX_MONTH ) )
+                {
+                    idMap.put( exportReport.getId(), SixMonthlyPeriodType.NAME );
+                    break;
+                }
+                else if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
+                {
+                    idMap.put( exportReport.getId(), YearlyPeriodType.NAME );
+                    break;
+                }
+            }
+        }
+
+        periodTypeName = null;
+
+        return idMap;
     }
 }

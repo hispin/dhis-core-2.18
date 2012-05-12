@@ -27,6 +27,7 @@
 package org.hisp.dhis.reportsheet;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
@@ -126,4 +127,10 @@ public interface ExportReportService
     public void updatePeriodColumn( PeriodColumn periodColumn );
     
     public String validateEmportItems( ExportReport exportReport, I18n i18n );
+    
+    // -------------------------------------------------------------------------
+    // Others
+    // -------------------------------------------------------------------------
+    
+    public Map<Integer, String> getPeriodTypeIdentifierMap( Collection<ExportReport> reports );
 }
