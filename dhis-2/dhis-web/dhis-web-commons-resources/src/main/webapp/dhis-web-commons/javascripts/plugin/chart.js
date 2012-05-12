@@ -416,6 +416,7 @@ Ext.onReady( function() {
             if (conf.uid) {
                 Ext.data.JsonP.request({
                     url: conf.url + DHIS.conf.finals.ajax.favorite_get + conf.uid + '.jsonp',
+                    disableCaching: false,
                     scope: this,
                     success: function(r) {
                         if (!r) {
