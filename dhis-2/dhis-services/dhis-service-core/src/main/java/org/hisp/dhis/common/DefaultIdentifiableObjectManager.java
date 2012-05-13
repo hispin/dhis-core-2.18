@@ -168,6 +168,24 @@ public class DefaultIdentifiableObjectManager
     }
 
     @Override
+    public <T extends IdentifiableObject> T search( Class<T> clazz, String query )
+    {
+        T object = get( clazz, query );
+        
+        if ( object == null )
+        {
+            object = getByCode( clazz, query );
+        }
+        
+        if ( object == null )
+        {
+            object = getByName( clazz, query );
+        }
+        
+        return object;
+    }
+    
+    @Override
     @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz )
     {

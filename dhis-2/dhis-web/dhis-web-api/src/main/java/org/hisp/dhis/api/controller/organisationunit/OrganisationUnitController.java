@@ -4,6 +4,7 @@ import org.hisp.dhis.api.controller.dataelement.DataElementController;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -17,6 +18,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +41,9 @@ public class OrganisationUnitController
 
     @Autowired
     private ObjectPersister objectPersister;
+    
+    @Autowired
+    private IdentifiableObjectManager identifiableObjectManager;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -86,6 +91,22 @@ public class OrganisationUnitController
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
             listener.addLinks( organisationUnit );
+        }
+
+        model.addAttribute( "model", organisationUnit );
+        model.addAttribute( "view", "detailed" );
+
+        return "organisationUnit";
+    }
+    
+    @RequestMapping( value = "/search/{query}", method = RequestMethod.GET )
+    public String searchOrganisationUnit( @PathVariable String query, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    {
+        OrganisationUnit organisationUnit = identifiableObjectManager.search( OrganisationUnit.class, query );
+        
+        if ( params.hasLinks() )
+        {
+            new WebLinkPopulator( request ).addLinks( organisationUnit );
         }
 
         model.addAttribute( "model", organisationUnit );

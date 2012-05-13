@@ -47,6 +47,8 @@ public interface IdentifiableObjectManager
     <T extends IdentifiableObject> T getByCode( Class<T> clazz, String code );
 
     <T extends IdentifiableObject> T getByName( Class<T> clazz, String name );
+    
+    <T extends IdentifiableObject> T search( Class<T> clazz, String query );
 
     <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz );
 
