@@ -54,7 +54,7 @@
     </action>
 
     <action name="addUser" class="org.hisp.dhis.user.action.AddUserAction">
-      <result name="success" type="redirect">alluser.action</result>
+      <result name="success" type="redirect">user.action</result>
       <result name="error" type="redirect">showAddUserForm.action</result>
       <param name="requiredAuthorities">F_USER_ADD</param>
     </action>
@@ -67,7 +67,7 @@
     </action>
 
     <action name="updateUser" class="org.hisp.dhis.user.action.UpdateUserAction">
-      <result name="success" type="redirect">alluser.action</result>
+      <result name="success" type="redirect">user.action</result>
       <result name="error" type="redirect">showUpdateUserForm.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_USER_UPDATE</param>
     </action>
