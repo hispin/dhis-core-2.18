@@ -251,6 +251,8 @@ public class DefaultReportTableService
         // Reporting period report parameter / current reporting period
         // ---------------------------------------------------------------------
 
+        log.info( "Running report table: " + reportTable.getName() );
+        
         if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
         {
             reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods(
