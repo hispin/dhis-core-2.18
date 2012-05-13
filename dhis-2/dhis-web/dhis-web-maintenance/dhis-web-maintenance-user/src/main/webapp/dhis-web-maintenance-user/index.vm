@@ -8,8 +8,8 @@ jQuery(function() {
 <h3>$i18n.getString( "dhis-web-maintenance-user" ) #openHelp( "users" )</h3>
 
 <ul class="introList">
-    #introListImgItem( "alluser.action" "user" "user" )
     #introListImgItem( "user.action" "user_by_orgunit" "user" )
+    #introListImgItem( "alluser.action" "user" "user" )
     #introListImgItem( "allRole.action" "user_role" "user" )
     #introListImgItem( "getAllUserGroups.action" "user_group" "user" )
 </ul>
