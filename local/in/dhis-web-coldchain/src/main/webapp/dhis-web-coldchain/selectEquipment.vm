@@ -1,5 +1,5 @@
 
-<input type="hidden" id='selectedOrgunitID' />
+<input type="hidden" id='selectedOrgunitID' value="$!organisationUnit.id" />
 
 <div id='selectDiv'>
     

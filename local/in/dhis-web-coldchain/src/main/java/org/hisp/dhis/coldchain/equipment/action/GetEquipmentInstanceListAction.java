@@ -181,6 +181,8 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
             Iterator<InventoryTypeAttribute> iterator = inventoryTypeAttributeList.iterator();
             while( iterator.hasNext() )
             {
+                iterator.next();
+                
                 if( count > 3 )
                     iterator.remove();
                 
