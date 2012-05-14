@@ -1,14 +1,11 @@
 package org.hisp.dhis.coldchain.catalog.action;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
-import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
