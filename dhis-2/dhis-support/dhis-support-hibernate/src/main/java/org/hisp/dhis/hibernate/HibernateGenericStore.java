@@ -41,6 +41,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -313,25 +314,34 @@ public class HibernateGenericStore<T>
         criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
         return ((Number) criteria.uniqueResult()).intValue();
     }
-    
+
     @Override
     public List<T> getByUid( Collection<String> uids )
     {
         List<T> list = new ArrayList<T>();
-        
-        if ( uids != null )
+
+        for ( String uid : uids )
         {
-            for ( String uid : uids )
+            if ( uids != null )
             {
                 T object = getByUid( uid );
-                
+
                 if ( object != null )
                 {
                     list.add( object );
                 }
             }
         }
-        
+
         return list;
+    }
+
+    @Override
+    public List<T> getByLastUpdated( Date lastUpdated )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.or( Restrictions.eq( "lastUpdated", lastUpdated ), Restrictions.gt( "lastUpdated", lastUpdated ) ) );
+
+        return criteria.list();
     }
 }

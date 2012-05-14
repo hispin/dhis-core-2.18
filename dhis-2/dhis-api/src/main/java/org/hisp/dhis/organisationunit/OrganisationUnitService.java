@@ -29,10 +29,7 @@ package org.hisp.dhis.organisationunit;
 
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Defines methods for working with OrganisationUnits.
@@ -156,6 +153,14 @@ public interface OrganisationUnitService
      * @return the OrganisationUnit with the given name, or null if not match.
      */
     OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name );
+
+    /**
+     * Returns all objects that are equal to or newer than given date
+     *
+     * @param lastUpdated Date to compare to
+     * @return All objects equal or newer than given date
+     */
+    List<OrganisationUnit> getOrganisationUnitsByLastUpdated(Date lastUpdated);
 
     /**
      * Returns all root OrganisationUnits. A root OrganisationUnit is an

@@ -98,13 +98,10 @@ public class DefaultImportService
         doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
 
-/*
         doImport( metaData.getUsers(), importOptions, importSummary );
         doImport( metaData.getUserGroups(), importOptions, importSummary );
         doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
-*/
 
-        /*
         doImport( metaData.getConcepts(), importOptions, importSummary );
         doImport( metaData.getConstants(), importOptions, importSummary );
         doImport( metaData.getDocuments(), importOptions, importSummary );
@@ -119,14 +116,12 @@ public class DefaultImportService
         doImport( metaData.getDataElements(), importOptions, importSummary );
         doImport( metaData.getDataElementGroups(), importOptions, importSummary );
         doImport( metaData.getDataElementGroupSets(), importOptions, importSummary );
-*/
 
         doImport( metaData.getIndicatorTypes(), importOptions, importSummary );
         doImport( metaData.getIndicators(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroups(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroupSets(), importOptions, importSummary );
 
-/*
         doImport( metaData.getMaps(), importOptions, importSummary );
         doImport( metaData.getMapLegends(), importOptions, importSummary );
         doImport( metaData.getMapLegendSets(), importOptions, importSummary );
@@ -143,9 +138,8 @@ public class DefaultImportService
         doImport( metaData.getCharts(), importOptions, importSummary );
 
         doImport( metaData.getDataSets(), importOptions, importSummary );
-*/
 
-        // cacheManager.clearCache();
+        cacheManager.clearCache();
         objectBridge.destroy();
 
         Date endDate = new Date();

@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -95,4 +96,12 @@ public interface GenericIdentifiableObjectStore<T>
      * @return a list of objects.
      */
     List<T> getByUid( Collection<String> uids );
+
+    /**
+     * Returns all objects that are equal to or newer than given date
+     *
+     * @param lastUpdate Date to compare to
+     * @return All objects equal or newer than given date
+     */
+    List<T> getByLastUpdated(Date lastUpdate);
 }

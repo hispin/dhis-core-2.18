@@ -18,7 +18,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +40,7 @@ public class OrganisationUnitController
 
     @Autowired
     private ObjectPersister objectPersister;
-    
+
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
 
@@ -54,7 +53,11 @@ public class OrganisationUnitController
     {
         OrganisationUnits organisationUnits = new OrganisationUnits();
 
-        if ( params.isPaging() )
+        if(params.getLastUpdated() != null)
+        {
+            organisationUnits.setOrganisationUnits( organisationUnitService.getOrganisationUnitsByLastUpdated( params.getLastUpdated() ) );
+        }
+        else if ( params.isPaging() )
         {
             int total = organisationUnitService.getNumberOfOrganisationUnits();
 
@@ -98,12 +101,12 @@ public class OrganisationUnitController
 
         return "organisationUnit";
     }
-    
+
     @RequestMapping( value = "/search/{query}", method = RequestMethod.GET )
     public String searchOrganisationUnit( @PathVariable String query, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnit organisationUnit = identifiableObjectManager.search( OrganisationUnit.class, query );
-        
+
         if ( params.hasLinks() )
         {
             new WebLinkPopulator( request ).addLinks( organisationUnit );
