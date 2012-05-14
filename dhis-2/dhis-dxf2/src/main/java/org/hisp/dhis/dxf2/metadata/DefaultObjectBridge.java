@@ -29,19 +29,38 @@ package org.hisp.dhis.dxf2.metadata;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.dataelement.*;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.document.Document;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.mapping.MapLayer;
+import org.hisp.dhis.mapping.MapLegend;
+import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,6 +114,20 @@ public class DefaultObjectBridge
     static
     {
         registeredTypes.add( PeriodType.class );
+        registeredTypes.add( Document.class );
+        registeredTypes.add( Constant.class );
+        registeredTypes.add( Attribute.class );
+        // registeredTypes.add( Concept.class );
+        registeredTypes.add( SqlView.class );
+        registeredTypes.add( Chart.class );
+        registeredTypes.add( Report.class );
+        registeredTypes.add( ReportTable.class );
+        // registeredTypes.add( DataDictionary.class );
+
+        registeredTypes.add( User.class );
+        registeredTypes.add( UserGroup.class );
+        registeredTypes.add( UserAuthorityGroup.class );
+
         registeredTypes.add( OrganisationUnitLevel.class );
         registeredTypes.add( OrganisationUnit.class );
         registeredTypes.add( OrganisationUnitGroup.class );
@@ -104,6 +137,25 @@ public class DefaultObjectBridge
         registeredTypes.add( IndicatorType.class );
         registeredTypes.add( IndicatorGroup.class );
         registeredTypes.add( IndicatorGroupSet.class );
+
+        registeredTypes.add( DataElement.class );
+        registeredTypes.add( OptionSet.class );
+        registeredTypes.add( DataElementGroup.class );
+        registeredTypes.add( DataElementGroupSet.class );
+        registeredTypes.add( DataElementCategory.class );
+        registeredTypes.add( DataElementCategoryOption.class );
+        registeredTypes.add( DataElementCategoryCombo.class );
+        registeredTypes.add( DataElementCategoryOptionCombo.class );
+
+        registeredTypes.add( ValidationRule.class );
+        registeredTypes.add( ValidationRuleGroup.class );
+
+        registeredTypes.add( DataSet.class );
+
+        registeredTypes.add( MapView.class );
+        registeredTypes.add( MapLayer.class );
+        registeredTypes.add( MapLegend.class );
+        registeredTypes.add( MapLegendSet.class );
     }
 
     @Override
@@ -243,7 +295,7 @@ public class DefaultObjectBridge
         }
         else
         {
-            log.warn( "Trying to save unsupported type.. object discarded." );
+            log.warn( "Trying to save unsupported type + " + object.getClass() + " with object " + object + " object discarded." );
         }
     }
 
@@ -262,7 +314,7 @@ public class DefaultObjectBridge
         }
         else
         {
-            log.warn( "Trying to update unsupported type.. object discarded." );
+            log.warn( "Trying to update unsupported type + " + object.getClass() + " with object " + object + " object discarded." );
         }
     }
 
@@ -277,11 +329,11 @@ public class DefaultObjectBridge
         }
         else if ( objects.size() > 1 )
         {
-            log.debug( "Multiple objects found.. object discarded, returning null." );
+            log.debug( "Multiple objects found for " + object + ", object discarded, returning null." );
         }
         else
         {
-            log.debug( "No object found, returning null." );
+            log.debug( "No object found for " + object + ", returning null." );
         }
 
         return null;

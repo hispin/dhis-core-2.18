@@ -205,6 +205,12 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitByNameIgnoreCase( name );
     }
 
+    @Override
+    public List<OrganisationUnit> getOrganisationUnitsByLastUpdated( Date lastUpdated )
+    {
+        return organisationUnitStore.getByLastUpdated( lastUpdated );
+    }
+
     public Collection<OrganisationUnit> getRootOrganisationUnits()
     {
         return organisationUnitStore.getRootOrganisationUnits();
