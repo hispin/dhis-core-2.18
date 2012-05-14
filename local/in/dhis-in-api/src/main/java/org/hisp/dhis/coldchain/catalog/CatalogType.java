@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.common.BaseNameableObject;
-import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 
 //public class CatalogType implements Serializable

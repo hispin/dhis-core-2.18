@@ -105,6 +105,15 @@ public class ShowAddEquipmentFormAction implements Action
         {
             catalogs = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType ) );
         }
+        /*
+        System.out.println( "Size of catalogs is --- "  + catalogs.size() );
+        
+        for( Catalog catalog : catalogs)
+        {
+            System.out.println( "Catalog name is "  + catalog.getName() );
+            System.out.println( "Catalog Id is "  + catalog.getId() );
+        }
+        */
         
         return SUCCESS;
     }

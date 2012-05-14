@@ -1,9 +1,11 @@
 package org.hisp.dhis.coldchain.inventory;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.dataentryform.DataEntryForm;
 
 //public class InventoryType implements Serializable
 public class InventoryType extends BaseNameableObject
@@ -23,7 +25,12 @@ public class InventoryType extends BaseNameableObject
     
     private CatalogType catalogType;
     
-    private Set<InventoryTypeAttribute> inventoryTypeAttributes;
+   // private Set<InventoryTypeAttribute> inventoryTypeAttributes;
+    
+    private List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>();
+    
+    private DataEntryForm dataEntryForm;
+    
 
     // -------------------------------------------------------------------------
     // Contructors
@@ -123,6 +130,7 @@ public class InventoryType extends BaseNameableObject
     {
         this.catalogType = catalogType;
     }
+    /*
     public Set<InventoryTypeAttribute> getInventoryTypeAttributes()
     {
         return inventoryTypeAttributes;
@@ -131,5 +139,24 @@ public class InventoryType extends BaseNameableObject
     {
         this.inventoryTypeAttributes = inventoryTypeAttributes;
     }
+    */
+    public List<InventoryTypeAttribute> getInventoryTypeAttributes()
+    {
+        return inventoryTypeAttributes;
+    }
+    public void setInventoryTypeAttributes( List<InventoryTypeAttribute> inventoryTypeAttributes )
+    {
+        this.inventoryTypeAttributes = inventoryTypeAttributes;
+    }
+    public DataEntryForm getDataEntryForm()
+    {
+        return dataEntryForm;
+    }
+    public void setDataEntryForm( DataEntryForm dataEntryForm )
+    {
+        this.dataEntryForm = dataEntryForm;
+    }
+    
+    
     
 }

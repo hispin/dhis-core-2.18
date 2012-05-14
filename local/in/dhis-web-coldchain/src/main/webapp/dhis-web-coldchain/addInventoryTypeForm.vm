@@ -77,6 +77,11 @@
         <td>
             <select id="selectedInventoryTypeAttributeList" name="selectedInventoryTypeAttributeList" multiple="multiple" style="height: 200px; width: 100%" ondblclick="moveSelectedById( 'selectedInventoryTypeAttributeList', 'availableInventoryTypeAttributeList' )"></select>
         </td>
+		<td>
+            <a href="javascript:moveUpSelectedOption( 'selectedInventoryTypeAttributeList' )"><img src="../images/move_up.png"/></a><br/><br/>
+            <a href="javascript:moveDownSelectedOption( 'selectedInventoryTypeAttributeList' )"><img src="../images/move_down.png"/></a><br/><br/>
+        </td>                  
+        
       </tr>
 	  
 	  <tr>

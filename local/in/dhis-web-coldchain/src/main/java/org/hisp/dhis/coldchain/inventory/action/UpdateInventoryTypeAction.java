@@ -1,8 +1,7 @@
 package org.hisp.dhis.coldchain.inventory.action;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
@@ -105,7 +104,9 @@ public class UpdateInventoryTypeAction implements Action
             inventoryType.getInventoryTypeAttributes().clear();
         }
         
-        Set<InventoryTypeAttribute> inventoryTypeSet = new HashSet<InventoryTypeAttribute>();
+        //Set<InventoryTypeAttribute> inventoryTypeSet = new HashSet<InventoryTypeAttribute>();
+        
+        List<InventoryTypeAttribute> inventoryTypeSet = new ArrayList<InventoryTypeAttribute>( );
         
         if ( selectedInventoryTypeAttributeList != null && selectedInventoryTypeAttributeList.size() > 0 )
         {
