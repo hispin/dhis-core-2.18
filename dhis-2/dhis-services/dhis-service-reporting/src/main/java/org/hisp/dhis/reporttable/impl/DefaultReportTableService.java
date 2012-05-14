@@ -144,6 +144,17 @@ public class DefaultReportTableService
         return getGrid( reportTable );
     }
 
+    public Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
+    {
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
+
+        Integer organisationUnitId = organisationUnit != null ? organisationUnit.getId() : null;
+        
+        reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
+
+        return getGrid( reportTable );
+    }
+    
     public ReportTable getReportTable( String uid, String mode )
     {
         if ( mode.equals( MODE_REPORT_TABLE ) )
