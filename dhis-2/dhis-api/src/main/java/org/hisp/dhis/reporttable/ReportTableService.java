@@ -118,6 +118,17 @@ public interface ReportTableService
     Grid getReportTableGrid( int id, I18nFormat format, Date reportingPeriod, Integer organisationUnitId );
 
     /**
+     *
+     * 
+     * @param reportTable
+     * @param format
+     * @param reportingPeriod
+     * @param organisationUnitUid
+     * @return
+     */
+    Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid );
+    
+    /**
      * Instantiates and populates a Grid populated with data from the ReportTable
      * with the given identifier.
      *

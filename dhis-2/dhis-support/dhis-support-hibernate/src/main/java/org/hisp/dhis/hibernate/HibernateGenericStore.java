@@ -319,13 +319,16 @@ public class HibernateGenericStore<T>
     {
         List<T> list = new ArrayList<T>();
         
-        for ( String uid : uids )
+        if ( uids != null )
         {
-            T object = getByUid( uid );
-            
-            if ( object != null )
+            for ( String uid : uids )
             {
-                list.add( object );
+                T object = getByUid( uid );
+                
+                if ( object != null )
+                {
+                    list.add( object );
+                }
             }
         }
         

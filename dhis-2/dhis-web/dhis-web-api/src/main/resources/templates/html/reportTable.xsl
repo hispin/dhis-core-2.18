@@ -27,7 +27,27 @@
 			<td colspan="4">period yyyy-MM-dd (opt)</td>
 		</tr>
 	  </table><br/>
-	  	  
+	  
+	  
+	  <table>
+		<tr>
+			<td>Dynamic Data</td>
+			<td><a href="data.json">json</a></td>
+		</tr>
+		<tr>
+			<td>in</td>
+			<td>indicator uids</td>
+		</tr>
+		<tr>
+			<td>de</td>
+			<td>data element uids</td>
+		</tr>
+		<tr>
+			<td>ou</td>
+			<td>org unit uids</td>
+		</tr>
+      </table></tr>
+	  
       <table>
         <tr>
           <td>ID</td>
