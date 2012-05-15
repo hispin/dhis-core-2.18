@@ -246,7 +246,6 @@ Ext.Loader.setPath('Ext.ux', DV.conf.finals.ajax.path_lib + 'ext-ux');
 Ext.require('Ext.ux.form.MultiSelect');
 
 Ext.onReady( function() {
-    Ext.override(Ext.form.FieldSet,{setExpanded:function(a){var b=this,c=b.checkboxCmp,d=b.toggleCmp,e;a=!!a;if(c){c.setValue(a)}if(d){d.setType(a?"up":"down")}if(a){e="expand";b.removeCls(b.baseCls+"-collapsed")}else{e="collapse";b.addCls(b.baseCls+"-collapsed")}b.collapsed=!a;b.doComponentLayout();b.fireEvent(e,b);return b}});
     Ext.QuickTips.init();
     document.body.oncontextmenu = function(){return false;}; 
     
@@ -254,7 +253,7 @@ Ext.onReady( function() {
         url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.initialize,
         success: function(r) {
             
-    DV.init = DV.conf.init.ajax.jsonfy(r);    
+    DV.init = DV.conf.init.ajax.jsonfy(r);
     DV.init.initialize = function() {
 		DV.c = DV.chart.model;
         DV.util.combobox.filter.category();
@@ -1052,7 +1051,10 @@ Ext.onReady( function() {
 						}
 						if (DV.c.targetlinevalue) {
 							colors.push('#051a2e');
-						}						
+						}
+						if (DV.c.baselinevalue) {
+							colors.push('#051a2e');
+						}
 						Ext.chart.theme.dv1 = Ext.extend(Ext.chart.theme.Base, {
 							constructor: function(config) {
 								Ext.chart.theme.Base.prototype.constructor.call(this, Ext.apply({
@@ -1200,7 +1202,7 @@ Ext.onReady( function() {
             },
             allValuesAreIntegers: function(values) {
                 for (var i = 0; i < values.length; i++) {
-                    if (!this.isInteger(values[i].v)) {
+                    if (!this.isInteger(values[i].value)) {
                         return false;
                     }
                 }
@@ -1511,7 +1513,7 @@ Ext.onReady( function() {
     };
     
     DV.state = {
-        setChart: function(exe, id) {
+		setChart: function(exe, id) {
 			DV.chart.reset();
 			
 			if (id) {
@@ -1576,7 +1578,7 @@ Ext.onReady( function() {
                         DV.c.baselinelabel = f.baseLineLabel ? f.baseLineLabel : null;
                         
                         if (exe) {
-							this.expandChart(exe, id);
+							this.extendChart(exe, id);
 						}
 					}
 				});
@@ -1595,11 +1597,11 @@ Ext.onReady( function() {
 				this.setOptions();
                         
 				if (exe) {
-					this.expandChart(exe);
+					this.extendChart(exe);
 				}
 			}
 		},
-		expandChart: function(exe, id) {
+		extendChart: function(exe, id) {
 			DV.chart.warnings = [];
 			
 			if (!this.validation.dimensions()) {
@@ -1674,7 +1676,7 @@ Ext.onReady( function() {
             DV.c.baselinevalue = parseFloat(DV.cmp.favorite.baselinevalue.getValue());
             DV.c.baselinelabel = DV.cmp.favorite.baselinelabel.getValue();
 		},
-        getParams: function() {
+		getParams: function() {
             var p = {};
             p.type = DV.c.type.toUpperCase();
             p.series = DV.c.dimension.series.toUpperCase();
@@ -1778,7 +1780,7 @@ Ext.onReady( function() {
 				DV.cmp.dimension.organisationunit.panel.groupsets.setValue(DV.store.isloaded ? DV.conf.finals.cmd.none : DV.i18n.none);
 			}
 		},
-        validation: {
+		validation: {
 			dimensions: function() {
 				if (!DV.c.dimension.series || !DV.c.dimension.category || !DV.c.dimension.filter) {
 					DV.util.notification.error(DV.i18n.et_invalid_dimension_setup, DV.i18n.em_invalid_dimension_setup);
@@ -1922,7 +1924,7 @@ Ext.onReady( function() {
 				return true;
 			}
 		}
-    };
+	};
     
     DV.value = {
         values: [],

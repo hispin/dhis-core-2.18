@@ -26,3 +26,6 @@
 table.x-datepicker-inner .x-datepicker-selected span{font-weight:700}
 .x-btn-disabled span,.x-menu-item-disabled,.x-ie .x-menu-item-disabled .x-menu-item-icon{filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);opacity:.5}
 table.x-datepicker-inner th span{display:block;padding-right:7px}
+.dv-chart-tips, .dv-chart-tips-pie {border-width:2px;background-color:#eee;padding:2px 4px 0;}
+.dv-chart-tips .x-tip-body {font-size:22px;font-family:arial,sans-serif,ubuntu,consolas}
+.dv-chart-tips-pie .x-tip-body {font-size:17px;font-family:arial,sans-serif,ubuntu,consolas}
