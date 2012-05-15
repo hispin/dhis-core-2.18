@@ -296,6 +296,11 @@ public class DefaultDataSetService
 
         return dataElements;
     }
+    
+    public List<DataSet> getDataSetsByUid( Collection<String> uids )
+    {
+        return dataSetStore.getByUid( uids );
+    }
 
     public Collection<DataElement> getDataElements( DataSet dataSet )
     {

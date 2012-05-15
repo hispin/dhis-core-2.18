@@ -28,9 +28,7 @@
         <td>pe</td>
         <td colspan="4">period yyyy-MM-dd (opt)</td>
       </tr>
-	  </table>
-
-    <br/>
+	  </table><br/>
 
 	  <table>
       <tr>
@@ -46,10 +44,26 @@
         <td>data element uids</td>
       </tr>
       <tr>
+        <td>ds</td>
+        <td>data set uids</td>
+      </tr>
+      <tr>
         <td>ou</td>
         <td>org unit uids</td>
       </tr>
-    </table>
+      <tr>
+        <td>crosstab</td>
+        <td>crosstab dimensions</td>
+      </tr>
+      <tr>
+        <td>orgUnitIsParent</td>
+        <td>org unit is parent</td>
+      </tr>
+      <tr>
+        <td>[relative periods]</td>
+        <td>[boolean values]</td>
+      </tr>
+      </table><br/>
 	  
       <table>
         <tr>
