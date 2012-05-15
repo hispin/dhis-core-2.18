@@ -9,8 +9,8 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
-import org.hisp.dhis.coldchain.inventory.EquipmentDetails;
-import org.hisp.dhis.coldchain.inventory.EquipmentDetailsService;
+import org.hisp.dhis.coldchain.inventory.Equipment;
+import org.hisp.dhis.coldchain.inventory.EquipmentService;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
@@ -33,7 +33,7 @@ public class UpdateEquipmentAction implements Action
     
     private EquipmentInstanceService equipmentInstanceService;
 
-    private EquipmentDetailsService equipmentDetailsService;
+    private EquipmentService equipmentService;
     
     private CatalogService catalogService;
     
@@ -51,7 +51,7 @@ public class UpdateEquipmentAction implements Action
     public String execute()
     {
 
-        System.out.println("inside UpdateEquipmentAction : "+equipmentInstanceID);
+        //System.out.println("inside UpdateEquipmentAction : "+ equipmentInstanceID);
         
         EquipmentInstance equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceID );
         
@@ -65,16 +65,16 @@ public class UpdateEquipmentAction implements Action
         
         List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
         
-        EquipmentDetails equipmentDetails = null;
+        Equipment equipmentDetails = null;
         for ( InventoryTypeAttribute attribute : inventoryTypeAttributes )
         {
             value = request.getParameter( PREFIX_ATTRIBUTE + attribute.getId() );
             
-            equipmentDetails = equipmentDetailsService.getEquipmentDetails( equipmentInstance, attribute );
+            equipmentDetails = equipmentService.getEquipment( equipmentInstance, attribute );
             
             if( equipmentDetails == null && value != null )
             {
-                equipmentDetails = new EquipmentDetails();
+                equipmentDetails = new Equipment();
                 equipmentDetails.setEquipmentInstance( equipmentInstance );
                 equipmentDetails.setInventoryTypeAttribute( attribute );
 
@@ -109,7 +109,7 @@ public class UpdateEquipmentAction implements Action
                     equipmentDetails.setValue( value.trim() );
                 }
                 
-                equipmentDetailsService.addEquipmentDetails( equipmentDetails );
+                equipmentService.addEquipment( equipmentDetails );
             }
             else
             {
@@ -144,7 +144,7 @@ public class UpdateEquipmentAction implements Action
                     equipmentDetails.setValue( value.trim() );
                 }
 
-                equipmentDetailsService.updateEquipmentDetails( equipmentDetails );
+                equipmentService.updateEquipment( equipmentDetails );
             }
                 
         }
@@ -174,9 +174,9 @@ public class UpdateEquipmentAction implements Action
         this.equipmentInstanceService = equipmentInstanceService;
     }
 
-    public void setEquipmentDetailsService( EquipmentDetailsService equipmentDetailsService )
+    public void setEquipmentService( EquipmentService equipmentService )
     {
-        this.equipmentDetailsService = equipmentDetailsService;
+        this.equipmentService = equipmentService;
     }
 
     public void setEquipmentInstanceID( Integer equipmentInstanceID )

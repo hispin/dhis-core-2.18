@@ -22,13 +22,13 @@ public class DefaultEquipmentInstanceService implements EquipmentInstanceService
         this.equipmentInstanceStore = equipmentInstanceStore;
     }
 
-    private EquipmentDetailsService equipmentDetailsService;
+    private EquipmentService equipmentService;
     
-    public void setEquipmentDetailsService( EquipmentDetailsService equipmentDetailsService )
+    public void setEquipmentService( EquipmentService equipmentService )
     {
-        this.equipmentDetailsService = equipmentDetailsService;
+        this.equipmentService = equipmentService;
     }
-    
+
     private EquipmentStatusService equipmentStatusService;
     
     public void setEquipmentStatusService( EquipmentStatusService equipmentStatusService )
@@ -55,10 +55,10 @@ public class DefaultEquipmentInstanceService implements EquipmentInstanceService
     
     public void deleteCompleteEquipmentInstance( EquipmentInstance equipmentInstance )
     {
-        List<EquipmentDetails> equipmentDetailsList = new ArrayList<EquipmentDetails>( equipmentDetailsService.getEquipmentDetails( equipmentInstance ) );
-        for( EquipmentDetails equipmentDetails : equipmentDetailsList )
+        List<Equipment> equipmentDetailsList = new ArrayList<Equipment>( equipmentService.getEquipments( equipmentInstance ) );
+        for( Equipment equipmentDetails : equipmentDetailsList )
         {
-            equipmentDetailsService.deleteEquipmentDetails( equipmentDetails );
+            equipmentService.deleteEquipment( equipmentDetails );
         }
         
         List<EquipmentStatus> equipmentStatusHistory = new ArrayList<EquipmentStatus>( equipmentStatusService.getEquipmentStatusHistory( equipmentInstance ) );
@@ -83,13 +83,13 @@ public class DefaultEquipmentInstanceService implements EquipmentInstanceService
         equipmentInstanceStore.update( equipmentInstance );
     }
     
-    public int createEquipment( EquipmentInstance equipmentInstance, List<EquipmentDetails> equipmentDetails )
+    public int createEquipment( EquipmentInstance equipmentInstance, List<Equipment> equipmentDetails )
     {
         int equipmentInstanceId = addEquipmentInstance( equipmentInstance );
         
-        for( EquipmentDetails equipment : equipmentDetails )
+        for( Equipment equipment : equipmentDetails )
         {
-            equipmentDetailsService.addEquipmentDetails( equipment );
+            equipmentService.addEquipment( equipment );
         }
         
         return equipmentInstanceId;

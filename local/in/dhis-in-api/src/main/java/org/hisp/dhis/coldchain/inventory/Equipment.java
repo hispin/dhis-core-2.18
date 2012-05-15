@@ -1,10 +1,14 @@
 package org.hisp.dhis.coldchain.inventory;
 
-import java.io.Serializable;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 
-public class EquipmentDetails implements Serializable
+public class Equipment extends BaseIdentifiableObject
 {
-
+    /**
+     * Determines if a de-serialized file is compatible with this class.
+     */
+    private static final long serialVersionUID = -6551567526188061690L;
+    
     private EquipmentInstance equipmentInstance;
     
     private InventoryTypeAttribute inventoryTypeAttribute;
@@ -17,11 +21,11 @@ public class EquipmentDetails implements Serializable
     // Constructor
     // -------------------------------------------------------------------------
 
-    public EquipmentDetails()
+    public Equipment()
     {
         
     }
-    public EquipmentDetails( EquipmentInstance equipmentInstance, InventoryTypeAttribute inventoryTypeAttribute, String value )
+    public Equipment( EquipmentInstance equipmentInstance, InventoryTypeAttribute inventoryTypeAttribute, String value )
     {
         this.equipmentInstance = equipmentInstance;
         this.inventoryTypeAttribute = inventoryTypeAttribute;
@@ -44,12 +48,12 @@ public class EquipmentDetails implements Serializable
             return false;
         }
 
-        if ( !(o instanceof EquipmentDetails) )
+        if ( !(o instanceof Equipment) )
         {
             return false;
         }
 
-        final EquipmentDetails other = (EquipmentDetails) o;
+        final Equipment other = (Equipment) o;
 
         return equipmentInstance.equals( other.getEquipmentInstance() ) && inventoryTypeAttribute.equals( other.getInventoryTypeAttribute() );
 

@@ -8,8 +8,8 @@ import java.util.Map;
 import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
-import org.hisp.dhis.coldchain.inventory.EquipmentDetails;
-import org.hisp.dhis.coldchain.inventory.EquipmentDetailsService;
+import org.hisp.dhis.coldchain.inventory.Equipment;
+import org.hisp.dhis.coldchain.inventory.EquipmentService;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
@@ -29,12 +29,13 @@ public class GetEquipmentInstanceDataAction implements Action
         this.equipmentInstanceService = equipmentInstanceService;
     }
     
-    private EquipmentDetailsService equipmentDetailsService;
-
-    public void setEquipmentDetailsService( EquipmentDetailsService equipmentDetailsService )
+    private EquipmentService equipmentService;
+    
+    public void setEquipmentService( EquipmentService equipmentService )
     {
-        this.equipmentDetailsService = equipmentDetailsService;
+        this.equipmentService = equipmentService;
     }
+
     
     private CatalogService catalogService;
     
@@ -93,9 +94,9 @@ public class GetEquipmentInstanceDataAction implements Action
         
         equipmentValueMap = new HashMap<Integer, String>();
         
-        List<EquipmentDetails> equipmentDetailsList = new ArrayList<EquipmentDetails>( equipmentDetailsService.getEquipmentDetails( equipmentInstance ) );
+        List<Equipment> equipmentDetailsList = new ArrayList<Equipment>( equipmentService.getEquipments( equipmentInstance ) );
         
-        for( EquipmentDetails equipmentDetails : equipmentDetailsList )
+        for( Equipment equipmentDetails : equipmentDetailsList )
         {
             if ( InventoryTypeAttribute.TYPE_COMBO.equalsIgnoreCase( equipmentDetails.getInventoryTypeAttribute().getValueType() ) )
             {

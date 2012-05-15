@@ -9,11 +9,8 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.coldchain.catalog.CatalogDataValue;
 import org.hisp.dhis.coldchain.catalog.CatalogDataValueStore;
-import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOption;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reports.Report_in;
 
 public class HibernateCatalogDataValueStore implements CatalogDataValueStore
 {
