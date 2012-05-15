@@ -1,5 +1,5 @@
 {
-#if( $grid.getRows().size() > 0)
+#if( $grid && $grid.getRows().size() > 0)
 	#set( $noHeader = $grid.getHeaders().size() )
 	#set ( $metaData = $noHeader - $valueTypes.size())
 	'total': "$total",
@@ -56,8 +56,8 @@
 	'hidden':[
 		#set( $index = 2 )
 		#set($col="col" + $index )
-		#foreach( $col in $grid.getHeaders() )
-			{"$col":"$col.hidden"}
+		#foreach( $header in $grid.getHeaders() )
+			{"$col":"$header.hidden"}
 			#if( $velocityCount < $noHeader ),#end
 			#set( $index = $index + 1 )
 		#end

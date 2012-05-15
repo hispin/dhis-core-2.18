@@ -42,7 +42,7 @@
 			#if( $velocityCount < $size ),#end
 		#end
 	],
-	"dataelements": [
+	"dataElements": [
 		#set( $size = ${tabularReport.dataElements.size()} )
 		#set( $dataElements = ${tabularReport.dataElements} )
 		#foreach( ${dataElement} in $!{dataElements} )

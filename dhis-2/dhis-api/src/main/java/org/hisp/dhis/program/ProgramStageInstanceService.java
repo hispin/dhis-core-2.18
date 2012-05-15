@@ -88,9 +88,7 @@ public interface ProgramStageInstanceService
     List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
-            
-    List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max );
-
+    
     Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes, List<DataElement> dataElements, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n );
     
     Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes, List<DataElement> dataElements, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n );

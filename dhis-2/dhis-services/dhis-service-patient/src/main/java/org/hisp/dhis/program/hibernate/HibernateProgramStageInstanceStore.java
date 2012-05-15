@@ -27,10 +27,12 @@
 package org.hisp.dhis.program.hibernate;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,7 @@ import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -58,7 +61,6 @@ public class HibernateProgramStageInstanceStore
     extends HibernateGenericStore<ProgramStageInstance>
     implements ProgramStageInstanceStore
 {
-
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -185,99 +187,176 @@ public class HibernateProgramStageInstanceStore
             .setFirstResult( min ).setMaxResults( max ).list();
     }
 
-    public List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
-        Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds,
-        Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max )
+    public Map<String, String> get( ProgramStage programStage, List<String> keys,
+        Map<Integer, String> searchingIdenKeys, List<String> fixedAttributes, Map<Integer, String> searchingAttrKeys,
+        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds,
+        Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc,
+        boolean orderByExecutionDateByAsc, int min, int max )
     {
-        String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
+        String sql = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
             searchingDEKeys, upperOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
-        
-        if( bottomOrgunitIds.size() > 0 )
+
+        if ( bottomOrgunitIds.size() > 0 )
         {
-            String sqlBottom = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
-            sql = "( "+ sqlBottom + ") union all ( " + sql + " ) ";
+            String sqlBottom = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes,
+                searchingAttrKeys, searchingDEKeys, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc,
+                orderByExecutionDateByAsc );
+            sql = "( " + sqlBottom + ") union all ( " + sql + " ) ";
         }
-        
+
         sql += statementBuilder.limitRecord( min, max );
-
         List<Integer> ids = executeSQL( sql );
-
-        List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
-
-        for ( Integer id : ids )
+        if ( ids != null && ids.size() > 0 )
         {
-            programStageInstances.add( get( id ) );
+            sql = getTabularReportStatement( ids, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
+                orderByOrgunitAsc, orderByExecutionDateByAsc );
+            return executeSQL( sql, keys, fixedAttributes );
         }
 
-        return programStageInstances;
+        return null;
     }
 
-    public List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
-        Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds,
-        Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc )
+    public Map<String, String> get( ProgramStage programStage, List<String> keys,
+        Map<Integer, String> searchingIdenKeys, List<String> fixedAttributes, Map<Integer, String> searchingAttrKeys,
+        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds,
+        Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc,
+        boolean orderByExecutionDateByAsc )
     {
-        String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
+        String sql = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
             searchingDEKeys, upperOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
-        
-        if( bottomOrgunitIds.size() > 0 )
+
+        if ( bottomOrgunitIds.size() > 0 )
         {
-            String sqlBottom = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
-            sql = "( "+ sqlBottom + ") union all ( " + sql + " ) ";
+            String sqlBottom = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes,
+                searchingAttrKeys, searchingDEKeys, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc,
+                orderByExecutionDateByAsc );
+            sql = "( " + sqlBottom + ") union all ( " + sql + " ) ";
         }
-        
+
         List<Integer> ids = executeSQL( sql );
-
-        List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
-
-        for ( Integer id : ids )
+        if ( ids != null && ids.size() > 0 )
         {
-            programStageInstances.add( get( id ) );
+            sql = getTabularReportStatement( ids, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
+                orderByOrgunitAsc, orderByExecutionDateByAsc );
+
+            return executeSQL( sql, keys, fixedAttributes );
         }
 
-        return programStageInstances;
+        return null;
     }
 
     public int count( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
         Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
         Date startDate, Date endDate )
     {
-        String sql = getTabularReportStatement( true, programStage, searchingIdenKeys, searchingAttrKeys,
+        String sql = getTabularReportStatement( 0, programStage, searchingIdenKeys, null, searchingAttrKeys,
             searchingDEKeys, orgunitIds, startDate, endDate, true, true );
-        List<Integer> countRow = executeSQL( sql );
 
-        return (countRow != null && countRow.size() > 0) ? countRow.get( 0 ) : 0;
+        return executeCountSQL( sql );
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
-    private String getTabularReportStatement( boolean isCount, ProgramStage programStage,
-        Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
+
+    private String getData( int mark, Map<Integer, String> searchingIdenKeys, List<String> fixedAttributes,
+        Map<Integer, String> searchingAttrKeys )
+    {
+        String select = "";
+        switch ( mark )
+        {
+        // count result
+        case 0:
+            select = "select count( distinct psi.programstageinstanceid ) ";
+            break;
+        // Get data with limit
+        case 1:
+            select = "SELECT distinct psi.programstageinstanceid, ogu.name , psi.executiondate ";
+            break;
+        case 2:
+            select = "SELECT psi.programstageinstanceid AS psiid, ogu.organisationunitid AS orgunitid, ogu.name AS orgunitname, psi.executiondate AS "
+                + PatientTabularReport.PREFIX_EXECUTION_DATE;
+
+            if ( fixedAttributes != null )
+            {
+                for ( String fixedAttribute : fixedAttributes )
+                {
+                    select += ",p." + fixedAttribute + " AS " + PatientTabularReport.PREFIX_FIXED_ATTRIBUTE + "_"
+                        + fixedAttribute;
+                }
+            }
+            if ( searchingIdenKeys.size() > 0 )
+            {
+                select += ",pid.patientidentifiertypeid AS " + PatientTabularReport.PREFIX_IDENTIFIER_TYPE
+                    + "_id, pid.identifier AS " + PatientTabularReport.PREFIX_IDENTIFIER_TYPE + "_value";
+            }
+            if ( searchingAttrKeys.size() > 0 )
+            {
+                select += ",pav.patientattributeid AS " + PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE
+                    + "_id, pav.value AS " + PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE + "_value ";
+            }
+            break;
+        default:
+            return "";
+        }
+
+        if ( mark == 2 )
+        {
+            select += ",pdv.dataelementid AS " + PatientTabularReport.PREFIX_DATA_ELEMENT + "_id, pdv.value AS "
+                + PatientTabularReport.PREFIX_DATA_ELEMENT + "_value FROM programstageinstance AS psi "
+                + " INNER JOIN patientdatavalue AS pdv ON pdv.programstageinstanceid=psi.programstageinstanceid "
+                + " INNER JOIN programinstance pi ON pi.programinstanceid=psi.programinstanceid "
+                + " INNER JOIN organisationunit ogu ON ogu.organisationunitid=psi.organisationunitid ";
+
+            if ( (fixedAttributes != null && fixedAttributes.size() > 0) || searchingIdenKeys.size() > 0
+                || searchingAttrKeys.size() > 0 )
+            {
+                select += " INNER JOIN patient AS p on p.patientid = pi.patientid ";
+            }
+
+            if ( searchingIdenKeys.size() > 0 )
+            {
+                select += " INNER JOIN patientidentifier AS pid ON pid.patientid = p.patientid ";
+            }
+            if ( searchingAttrKeys.size() > 0 )
+            {
+                select += " INNER JOIN patientattributevalue AS pav ON pav.patientid = p.patientid ";
+            }
+        }
+        else
+        {
+            select += " FROM programstageinstance AS psi "
+                + " INNER JOIN patientdatavalue AS pdv ON pdv.programstageinstanceid=psi.programstageinstanceid "
+                + " INNER JOIN programinstance pi ON pi.programinstanceid=psi.programinstanceid "
+                + " INNER JOIN organisationunit ogu ON ogu.organisationunitid=psi.organisationunitid ";
+        }
+
+        return select;
+    }
+
+    private String getTabularReportStatement( int mark, ProgramStage programStage,
+        Map<Integer, String> searchingIdenKeys, List<String> fixedAttributes, Map<Integer, String> searchingAttrKeys,
         Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc )
     {
-        String select = "SELECT distinct psi.programstageinstanceid, ogu.name , psi.executiondate ";
-        
+        String select = getData( mark, searchingIdenKeys, fixedAttributes, searchingAttrKeys );
+
         String sqlID = " select distinct psi.programstageinstanceid from patientdatavalue pdv "
             + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid "
             + "INNER JOIN patientidentifier as pid ON pid.patientid = p.patientid "
             + "INNER JOIN patientidentifiertype as pit ON pid.patientidentifiertypeid = pit.patientidentifiertypeid ";
-        
-        String sqlATTR = " select distinct psi.programstageinstanceid from patientdatavalue pdv "
-            + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid ";
-        
+
+        String sqlATTR = " SELECT distinct psi.programstageinstanceid " + "FROM programstageinstance AS psi "
+            + "INNER JOIN patientdatavalue AS pdv ON pdv.programstageinstanceid=psi.programstageinstanceid "
+            + "INNER JOIN programinstance pi ON pi.programinstanceid=psi.programinstanceid "
+            + "INNER JOIN organisationunit ogu ON ogu.organisationunitid=psi.organisationunitid "
+            + "INNER JOIN patient AS p on p.patientid = pi.patientid "
+            + "INNER JOIN patientattributevalue AS pav ON pav.patientid = p.patientid ";
+
         String sqlDE = " select distinct psi.programstageinstanceid from patientdatavalue pdv "
             + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid ";
         
-        String condition = "FROM patientdatavalue pdv "
-            + "INNER JOIN programstageinstance psi ON pdv.programstageinstanceid=psi.programstageinstanceid "
-            + "INNER JOIN programinstance pi ON pi.programinstanceid=psi.programinstanceid " 
-            + "INNER JOIN organisationunit ogu ON ogu.organisationunitid=psi.organisationunitid ";
-
-        condition += " WHERE psi.executiondate >= '" + DateUtils.getMediumDateString( startDate )
+        String condition = " WHERE psi.executiondate >= '" + DateUtils.getMediumDateString( startDate )
             + "' AND psi.executiondate <= '" + DateUtils.getMediumDateString( endDate ) + "' "
             + " AND psi.organisationunitid in " + splitListHelper( orgunitIds ) + " AND psi.programstageid = "
             + programStage.getId() + " ";
@@ -378,9 +457,9 @@ public class HibernateProgramStageInstanceStore
             condition += ") ";
         }
 
-        if ( isCount )
+        if ( mark == 0 )
         {
-            return "select count( distinct psi.programstageinstanceid ) " + condition;
+            return select + condition;
         }
 
         condition += " ORDER BY ogu.name ";
@@ -390,12 +469,49 @@ public class HibernateProgramStageInstanceStore
 
         return select + condition;
     }
-    
-    private List<Integer> executeSQL( String sql )
+
+    private String getTabularReportStatement( List<Integer> ids, Map<Integer, String> searchingIdenKeys,
+        List<String> fixedAttributes, Map<Integer, String> searchingAttrKeys, boolean orderByOrgunitAsc,
+        boolean orderByExecutionDateByAsc )
+    {
+        String sql = getData( 2, searchingIdenKeys, fixedAttributes, searchingAttrKeys );
+
+        sql += " WHERE psi.programstageinstanceid in " + splitListHelper( ids ) + " ";
+        sql += " ORDER BY ogu.name ";
+        sql += orderByOrgunitAsc ? "asc" : "desc";
+        sql += ", psi.executiondate ";
+        sql += orderByExecutionDateByAsc ? "asc" : "desc";
+
+        return sql;
+    }
+
+    private Map<String, String> executeSQL( String sql, List<String> keys, List<String> fixedAttributes )
     {
         StatementHolder holder = statementManager.getHolder();
 
-        List<Integer> ids = new ArrayList<Integer>();
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement.executeQuery( sql );
+
+            return gridMapping( resultSet, fixedAttributes, keys );
+        }
+        catch ( Exception ex )
+        {
+            return null;
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    private List<Integer> executeSQL( String sql )
+    {
+        List<Integer> result = new ArrayList<Integer>();
+
+        StatementHolder holder = statementManager.getHolder();
 
         try
         {
@@ -405,18 +521,36 @@ public class HibernateProgramStageInstanceStore
 
             while ( resultSet.next() )
             {
-                int id = resultSet.getInt( 1 );
-
-                ids.add( id );
+                result.add( resultSet.getInt( 1 ) );
             }
 
-            return ids;
-
+            return result;
         }
         catch ( Exception ex )
         {
-            ex.printStackTrace();
-            return new ArrayList<Integer>();
+            return null;
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    private int executeCountSQL( String sql )
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement.executeQuery( sql );
+
+            return (resultSet != null && resultSet.next()) ? resultSet.getInt( 1 ) : 0;
+        }
+        catch ( Exception ex )
+        {
+            return 0;
         }
         finally
         {
@@ -453,4 +587,96 @@ public class HibernateProgramStageInstanceStore
         return sb.toString();
     }
 
+    private Map<String, String> gridMapping( ResultSet resultSet, List<String> fixedAttributes, List<String> keys )
+    {
+        Map<String, String> valuesMap = new HashMap<String, String>();
+
+        try
+        {
+            ResultSetMetaData meta = resultSet.getMetaData();
+
+            while ( resultSet.next() )
+            {
+                String key = resultSet.getString( "psiid" );
+
+                // Get execution-date
+                if ( !keys.contains( key ) )
+                {
+                    keys.add( key );
+                }
+
+                valuesMap.put( key + "_" + PatientTabularReport.PREFIX_EXECUTION_DATE, resultSet
+                    .getString( PatientTabularReport.PREFIX_EXECUTION_DATE ) );
+
+                // Get orgunit-id
+                valuesMap.put( key + "_" + PatientTabularReport.PREFIX_ORGUNIT, resultSet.getString( "orgunitid" ) );
+
+                for ( String fixedAttr : fixedAttributes )
+                {
+                    // Get fixed-attributes
+                    key = resultSet.getInt( "psiid" ) + "_" + PatientTabularReport.PREFIX_FIXED_ATTRIBUTE + "_"
+                        + fixedAttr;
+                    valuesMap.put( key, resultSet.getString( fixedAttr ) );
+                }
+
+                // Get idens
+                String colname = PatientTabularReport.PREFIX_IDENTIFIER_TYPE + "_id";
+                if ( existedCol( colname, meta ) )
+                {
+                    key = resultSet.getInt( "psiid" ) + "_" + PatientTabularReport.PREFIX_IDENTIFIER_TYPE + "_"
+                        + resultSet.getString( colname );
+                    valuesMap.put( key, resultSet.getString( PatientTabularReport.PREFIX_IDENTIFIER_TYPE + "_value" ) );
+                }
+
+                // Get dynmic-attributes
+                colname = PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE + "_id";
+                if ( existedCol( colname, meta ) )
+                {
+                    key = resultSet.getInt( "psiid" ) + "_" + PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE + "_"
+                        + resultSet.getString( colname );
+                    valuesMap
+                        .put( key, resultSet.getString( PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE + "_value" ) );
+                }
+
+                // Get data-elements
+                colname = PatientTabularReport.PREFIX_DATA_ELEMENT + "_id";
+                if ( existedCol( colname, meta ) )
+                {
+                    key = resultSet.getInt( "psiid" ) + "_" + PatientTabularReport.PREFIX_DATA_ELEMENT + "_"
+                        + resultSet.getString( colname );
+                    valuesMap.put( key, resultSet.getString( PatientTabularReport.PREFIX_DATA_ELEMENT + "_value" ) );
+                }
+            }
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+
+        return valuesMap;
+    }
+
+    private boolean existedCol( String colname, ResultSetMetaData meta )
+    {
+        int numCol = 0;
+        try
+        {
+            numCol = meta.getColumnCount();
+
+            for ( int i = 1; i < numCol + 1; i++ )
+            {
+                if ( meta.getColumnName( i ).equals( colname ) )
+                {
+                    return true;
+                }
+
+            }
+        }
+        catch ( Exception e )
+        {
+            return false;
+        }
+
+        return false;
+    }
 }

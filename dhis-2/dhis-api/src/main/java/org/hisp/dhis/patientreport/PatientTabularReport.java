@@ -49,10 +49,16 @@ public class PatientTabularReport
 {
     private static final long serialVersionUID = -2880334669266185058L;
 
+    public static String PREFIX_EXECUTION_DATE = "executiondate";
+    
+    public static String  PREFIX_ORGUNIT = "orgunit";
+    
     public static String PREFIX_META_DATA = "meta";
-
+    
     public static String PREFIX_IDENTIFIER_TYPE = "iden";
 
+    public static String PREFIX_FIXED_ATTRIBUTE = "fixedAttr";
+    
     public static String PREFIX_PATIENT_ATTRIBUTE = "attr";
 
     public static String PREFIX_DATA_ELEMENT = "de";
