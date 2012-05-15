@@ -27,7 +27,10 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.hisp.dhis.api.mobile.model.Activity;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.DataElement;
@@ -36,6 +39,8 @@ import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
@@ -43,7 +48,6 @@ import com.opensymphony.xwork2.Action;
 public class GetProgramStageFormAction
     implements Action
 {
-    private static final String INCOMPLETE = "incomplete";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -79,6 +83,19 @@ public class GetProgramStageFormAction
     {
         this.programStageInstanceService = programStageInstanceService;
     }
+    
+    private PatientDataValueService patientDataValueService;
+    
+    public PatientDataValueService getPatientDataValueService()
+    {
+        return patientDataValueService;
+    }
+
+    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    {
+        this.patientDataValueService = patientDataValueService;
+    }
+    
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -204,6 +221,13 @@ public class GetProgramStageFormAction
     }
 
     private boolean current;
+    
+    private Map<String, String> prevDataValues = new HashMap<String, String>();
+
+    public Map<String, String> getPrevDataValues()
+    {
+        return prevDataValues;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -225,10 +249,14 @@ public class GetProgramStageFormAction
     {
         // organisationUnit = organisationUnitService.getOrganisationUnit(
         // Integer.parseInt( orgUnitId ) );
-
+        prevDataValues.clear();
         programStage = util.getProgramStage( Integer.parseInt( programId ), Integer.parseInt( programStageId ) );
         dataElements = programStage.getDataElements();
-       
+        Collection<PatientDataValue> patientDataValues =  patientDataValueService.getPatientDataValues( programStageInstanceService.getProgramStageInstance( programStageInstanceId ) );
+        for (PatientDataValue patientDataValue : patientDataValues) {
+            prevDataValues.put( "DE" + patientDataValue.getDataElement().getId() + "OC" + 4, patientDataValue.getValue() );
+        }
+        
         return SUCCESS;
 
     }

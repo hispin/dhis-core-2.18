@@ -177,6 +177,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils"/>
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
+		<property name="patientDataValueService"
+			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.light.utils.NamebasedUtils"
