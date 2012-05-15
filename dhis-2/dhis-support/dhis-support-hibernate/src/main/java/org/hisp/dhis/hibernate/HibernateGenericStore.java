@@ -320,9 +320,9 @@ public class HibernateGenericStore<T>
     {
         List<T> list = new ArrayList<T>();
 
-        for ( String uid : uids )
+        if ( uids != null )
         {
-            if ( uids != null )
+            for ( String uid : uids )
             {
                 T object = getByUid( uid );
 
@@ -337,6 +337,7 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
     public List<T> getByLastUpdated( Date lastUpdated )
     {
         Criteria criteria = getCriteria();
