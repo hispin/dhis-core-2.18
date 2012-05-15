@@ -1,20 +1,29 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="../../../dhis-web-commons/javascripts/plugin/css/chart.css" />
+    <link rel="stylesheet" type="text/css" href="../../../dhis-web-commons/javascripts/ext/resources/css/ext-all-gray.css" />
     <script type="text/javascript" src="../../../dhis-web-commons/javascripts/ext/ext-all.js"></script>
     <script type="text/javascript" src="../../../dhis-web-commons/javascripts/plugin/chart.js"></script>
+    <script type="text/javascript" src="../../../dhis-web-commons/javascripts/plugin/table.js"></script>
     
-    <style>
-		body {margin: 0 0 0 60px;}
+    <style type="text/css">
+		body {font-family: sans-serif; margin: 0 0 0 60px;}
 		
 		h1 {font-size: 20px; margin: 20px 0;}
 		
 		#chart1 {width: 900px; height: 400px; border: 2px solid #d1d1d1; margin-bottom: 100px; border-radius: 3px;}
 
-		#chart2 {width: 1200px; height: 400px; border: 2px solid #d1d1d1; margin-bottom: 100px;  border-radius: 3px;}
+		#chart2 {width: 1000px; height: 400px; border: 2px solid #d1d1d1; margin-bottom: 100px;  border-radius: 3px;}
+		
+		#table1, #table2 {width: 1000px;}
+		
+		table {border-collapse: collapse;}
+		
+		table th, td {text-align: left; border: 1px solid #ccc;}
+		
+		table .val {text-align: center;}
     </style>
     
-	<script>
+	<script type="text/javascript">
 		Ext.onReady( function() {
 			var url = '../../../'; // http://apps.dhis2.org/dev/
 		
@@ -36,6 +45,27 @@
 				url: url
 			});
 			
+			DHIS.getTable({
+				indicators: ['Uvn6LCg7dVU'],
+				periods: ['last12Months'],
+				orgunits: ['ImspTQPwCqd'],
+				crosstab: ['periods'],
+				orgUnitIsParent: true,
+				useExtGrid: false,
+				el: 'table1',
+				url: url
+			});
+			
+			DHIS.getTable({
+				indicators: ['OdiHJayrsKo'],
+				periods: ['last12Months'],
+				orgunits: ['ImspTQPwCqd'],
+				crosstab: ['periods'],
+				orgUnitIsParent: true,
+				useExtGrid: true,
+				el: 'table2',
+				url: url
+			});
 		});
 	</script>
 	
@@ -66,5 +96,11 @@
     
     <h1>My chart 2</h1>
 	<div id="chart2"></div>
+	
+	<h1>My table 1</h1>
+	<div id="table1"></div>
+		
+	<h1>My table 2</h1>
+	<div id="table2"></div>
 </body>
 </html>
