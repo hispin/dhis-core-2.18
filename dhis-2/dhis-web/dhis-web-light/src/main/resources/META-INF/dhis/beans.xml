@@ -175,6 +175,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils"/>
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.light.utils.NamebasedUtils"
@@ -193,6 +195,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService"
 			ref="org.hisp.dhis.dataelement.DataElementService"/>
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils"/>
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
 	</bean>
 	
 	<bean
@@ -200,6 +203,38 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction">
 		<property name="patientService"
 			ref="org.hisp.dhis.patient.PatientService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction">
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction">
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction">
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction">
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService"/>
 	</bean>
 	
 	<!-- Beneficiary Registration -->

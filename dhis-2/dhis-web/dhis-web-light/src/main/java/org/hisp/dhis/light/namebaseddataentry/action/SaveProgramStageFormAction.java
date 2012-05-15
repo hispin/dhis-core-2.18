@@ -43,6 +43,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.util.ContextUtils;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -88,18 +89,30 @@ public class SaveProgramStageFormAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private PatientService patientService;
+
+    public PatientService getPatientService()
+    {
+        return patientService;
+    }
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String orgUnitId;
+    private int orgUnitId;
 
-    public void setOrgUnitId( String orgUnitId )
+    public void setOrgUnitId( int orgUnitId )
     {
         this.orgUnitId = orgUnitId;
     }
 
-    public String getOrgUnitId()
+    public int getOrgUnitId()
     {
         return orgUnitId;
     }
@@ -116,6 +129,18 @@ public class SaveProgramStageFormAction
     public void setProgramStageInstanceId( String programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
+    }
+
+    private String programInstanceId;
+
+    public String getProgramInstanceId()
+    {
+        return programInstanceId;
+    }
+
+    public void setProgramInstanceId( String programInstanceId )
+    {
+        this.programInstanceId = programInstanceId;
     }
 
     private String beneficiaryId;
@@ -199,7 +224,14 @@ public class SaveProgramStageFormAction
     public String execute()
         throws Exception
     {
-        organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitId ) );
+        if ( orgUnitId != 0 )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit(  orgUnitId  );
+        }
+        else
+        {
+            organisationUnit = patientService.getPatient( Integer.parseInt( beneficiaryId ) ).getOrganisationUnit();
+        }
 
         programStage = util.getProgramStage( Integer.parseInt( programId ), Integer.parseInt( programStageId ) );
 
@@ -265,11 +297,18 @@ public class SaveProgramStageFormAction
         catch ( NotAllowedException e )
         {
             e.printStackTrace();
-
             return ERROR;
         }
 
-        return SUCCESS;
+        if ( orgUnitId != 0 )
+        {
+            return SUCCESS;
+        }
+        else
+        {
+            return "success_find";
+        }
+
     }
 
 }

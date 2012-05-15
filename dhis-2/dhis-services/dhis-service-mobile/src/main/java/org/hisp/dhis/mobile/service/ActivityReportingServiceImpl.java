@@ -235,7 +235,6 @@ public class ActivityReportingServiceImpl
 
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( activityValue
             .getProgramInstanceId() );
-
         if ( programStageInstance == null )
         {
             throw NotAllowedException.INVALID_PROGRAM_STAGE;

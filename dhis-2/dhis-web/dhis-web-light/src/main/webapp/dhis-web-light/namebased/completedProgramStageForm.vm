@@ -13,7 +13,6 @@
 
 <form action="saveProgramStageForm.action" method="POST">
 
-<input type="hidden" value=$programInstanceId name="programInstanceId"/>
 <input type="hidden" value=$programStageInstanceId name="programStageInstanceId"/>
 <input type="hidden" value=$programStageId name="programStageId"/>
 <input type="hidden" value=$orgUnitId name="orgUnitId"/>
@@ -50,7 +49,7 @@
 					#else 
 						"$dataElement.type" 
 					#end 
-					name="$key" value="$!prevDataValues.get($key)" />
+					name="$key" value="$!prevDataValues.get($key)" DISABLED/>
 				
 				#elseif ($dataElement.getCategoryOptionCombos().getModels().size() > 1)
 					
@@ -72,7 +71,7 @@
 					#else 
 						"$dataElement.type"
 					#end 
-					name="$key" />
+					name="$key" DISABLED/>
 				
 					#set( $selected=false )
 
@@ -106,7 +105,7 @@
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
-	<li><a href="trackingMenu.action"> $i18n.getString("tracking_menu")</a></li>
+	<li><li><a href="trackingMenu.action"> $i18n.getString("tracking_menu")</a> </li></li>
 	<li><a href="index.action">$i18n.getString("home")</a></li>
 </ul>
 </div>
