@@ -9,4 +9,4 @@
 
 <br>
 
-#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+#parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
