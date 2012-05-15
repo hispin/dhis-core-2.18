@@ -21,12 +21,19 @@ DHIS.table.finals = {
 	}
 };
 
+DHIS.table.tables = []; // element id -> grid panel
+
 DHIS.table.utils = {
     appendUrlIfTrue: function(url, param, expression) {
     	if (expression && expression == true) {
     		url = Ext.String.urlAppend(url, param + '=true');
     	}
     	return url;            	
+    },
+    destroy: function(el) {
+    	if (DHIS.table.tables[el]) {
+    		DHIS.table.tables[el].destroy();
+    	}
     },
     getDataUrl: function(conf) {
 		var url = conf.url + DHIS.table.finals.dataGet;
@@ -77,11 +84,12 @@ DHIS.table.grid = {
 		return store;
 	},
 	render: function(conf) {
+		DHIS.table.utils.destroy(conf.el);
 		Ext.data.JsonP.request({
 			url: DHIS.table.utils.getDataUrl(conf),
 			disableCaching: false,
 			success: function(data) {
-				var grid = Ext.create('Ext.grid.Panel', {
+				DHIS.table.tables[conf.el] = Ext.create('Ext.grid.Panel', {
 					store: DHIS.table.grid.getStore(data),
 					columns: DHIS.table.grid.getColumnArray(data),
 					renderTo: conf.el
