@@ -11,9 +11,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Actions -->
 
-  <bean id="org.hisp.dhis.de.action.PageInitAction" class="org.hisp.dhis.de.action.PageInitAction" scope="prototype">
-    <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-  </bean>
+  <bean id="org.hisp.dhis.de.action.ShowHospitalEntryFormAction" class="org.hisp.dhis.de.action.ShowHospitalEntryFormAction"
+	  scope="prototype"/>
 
   <bean id="org.hisp.dhis.de.action.GetMetaDataAction" class="org.hisp.dhis.de.action.GetMetaDataAction"
       scope="prototype">

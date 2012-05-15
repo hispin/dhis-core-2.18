@@ -27,24 +27,35 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-public class PageInitAction
+public class ShowHospitalEntryFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private OrganisationUnit unit;
+
+    public OrganisationUnit getUnit()
     {
-        this.selectionManager = selectionManager;
+        return unit;
     }
 
     // -------------------------------------------------------------------------
@@ -53,7 +64,7 @@ public class PageInitAction
 
     public String execute()
     {
-        selectionManager.clearSelectedOrganisationUnits();
+        unit = selectionManager.getSelectedOrganisationUnit();
 
         return SUCCESS;
     }

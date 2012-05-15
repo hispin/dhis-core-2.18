@@ -25,26 +25,31 @@ selection.setListenerFunction( organisationUnitSelected );
 
 function getExportReportsByGroup( selectedOrgUnitName ) {
 
+	var groupId = getFieldValue( 'group' );
+
 	if ( selectedOrgUnitName )
 	{
 		setInnerHTML( "selectedOrganisationUnit", selectedOrgUnitName );
-		
-		jQuery.postJSON( 'getExportReportsByGroup.action',
+
+		if ( groupId )
 		{
-			group: getFieldValue( 'group' )
-		},
-		function ( json )
-		{
-			jQuery('#exportReport').empty();
-			jQuery.each( json.exportReports, function(i, item){
-				addOptionById( 'exportReport', item.id + '_' + item.periodType + '_' + item.reportType, item.name );
+			jQuery.postJSON( 'getExportReportsByGroup.action',
+			{
+				group: groupId
+			},
+			function ( json )
+			{
+				jQuery('#exportReport').empty();
+				jQuery.each( json.exportReports, function(i, item){
+					addOptionById( 'exportReport', item.id + '_' + item.periodType + '_' + item.reportType, item.name );
+				});
+
+				currentPeriodOffset = 0;
+
+				reportSelected();
+				displayPeriodsInternal();
 			});
-
-			currentPeriodOffset = 0;
-
-			reportSelected();
-			displayPeriodsInternal();
-		});
+		}
 	}
 }
 

@@ -8,7 +8,7 @@
 
   <package name="dhis-web-dataentry-hospital" extends="dhis-web-commons" namespace="/dhis-web-dataentry-hospital">
 
-    <action name="index" class="org.hisp.dhis.de.action.PageInitAction">
+    <action name="index" class="org.hisp.dhis.de.action.ShowHospitalEntryFormAction">
       <interceptor-ref name="organisationUnitTreeStack" />
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dataentry-hospital/select.vm</param>
