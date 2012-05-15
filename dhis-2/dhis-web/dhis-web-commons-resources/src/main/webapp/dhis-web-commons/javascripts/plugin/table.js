@@ -71,8 +71,8 @@ DHIS.table.grid = {
 	},
 	getStore: function(data) {
 		var store = Ext.create('Ext.data.ArrayStore', {
-        	fields: DHIS.table.grid.getHeaderArray(data),
-        	data: data.rows
+			fields: DHIS.table.grid.getHeaderArray(data),
+			data: data.rows
 		});
 		return store;
 	},
@@ -81,11 +81,10 @@ DHIS.table.grid = {
 			url: DHIS.table.utils.getDataUrl(conf),
 			disableCaching: false,
 			success: function(data) {
-				var el = conf.el;
 				var grid = Ext.create('Ext.grid.Panel', {
 					store: DHIS.table.grid.getStore(data),
 					columns: DHIS.table.grid.getColumnArray(data),
-					renderTo: el
+					renderTo: conf.el
 				});
 			}
 		});
@@ -123,8 +122,7 @@ DHIS.table.plain = {
 			disableCaching: false,
 			success: function(data) {
 				var html = DHIS.table.plain.getMarkup(data);
-				var el = conf.el;
-				Ext.get(el).update(html);
+				Ext.get(conf.el).update(html);
 			}
 		});
 	}
