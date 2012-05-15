@@ -431,7 +431,7 @@ public class GenerateTabularReportAction
                     String value = infor[3].trim();
                     if ( attribute.getValueType().equals( PatientAttribute.TYPE_BOOL ) )
                     {
-                        value = value.equals( i18n.getString( "yes" ) ) ? "true" : "false";
+                        value = (value.indexOf( i18n.getString( "yes" ) ) != -1) ? "true" : "false";
                     }
                     values.add( value );
                 }
@@ -454,12 +454,16 @@ public class GenerateTabularReportAction
 
                 if ( infor.length == 4 )
                 {
-                    searchingDEKeys.put( objectId, infor[3].trim() );
                     String value = infor[3].trim();
                     if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
                     {
-                        value = value.equals( i18n.getString( "yes" ) ) ? "true" : "false";
-                    }
+                        int startIndx = value.indexOf( '\'' ) + 1;
+                        int endIndx = value.lastIndexOf( '\'' );
+                        String key = value.substring( startIndx, endIndx );
+                                              
+                        value = (key.equals(i18n.getString( "yes" ))) ? value.replace( key, "true" ) : value.replace( key, "false" );
+                    }                   
+                    searchingDEKeys.put( objectId, value );
                     values.add( value );
                 }
                 else

@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
@@ -44,13 +43,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,20 +81,6 @@ public class DefaultProgramStageInstanceService
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private PatientIdentifierService identifierService;
-
-    public void setIdentifierService( PatientIdentifierService identifierService )
-    {
-        this.identifierService = identifierService;
-    }
-
-    private PatientAttributeValueService patientAttributeValueService;
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
     }
 
     // -------------------------------------------------------------------------
@@ -215,50 +197,46 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( patient, completed );
     }
 
-    public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
-        Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate,
-        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max )
+    public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
+        List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
+        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds,
+        Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc,
+        boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
     {
-        return programStageInstanceStore.get( programStage, searchingIdenKeys, searchingAttrKeys, searchingDEKeys,
-            upperOrgunitIds, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc, min, max );
-    }
+        List<String> keys = new ArrayList<String>();
+        Map<String, String> valuesMap = programStageInstanceStore.get( programStage, keys, searchingIdenKeys,
+            fixedAttributes, searchingAttrKeys, searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate,
+            orderByOrgunitAsc, orderByExecutionDateByAsc, min, max );
 
-    public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
-        Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate,
-        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc )
-    {
-        return programStageInstanceStore.get( programStage, searchingIdenKeys, searchingAttrKeys, searchingDEKeys,
-            upperOrgunitIds, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+        if ( keys != null && keys.size() > 0 )
+        {
+            return createTabularGrid( level, hiddenCols, programStage, keys, valuesMap, idens, fixedAttributes,
+                attributes, dataElements, startDate, endDate, format, i18n );
+        }
+
+        return null;
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
         List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate,
-        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
+        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds,
+        Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc,
+        boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n )
     {
-        List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage,
-            searchingIdenKeys, searchingAttrKeys, searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc,
-            orderByExecutionDateByAsc, min, max );
+        List<String> keys = new ArrayList<String>();
+        Map<String, String> valuesMap = programStageInstanceStore.get( programStage, keys, searchingIdenKeys,
+            fixedAttributes, searchingAttrKeys, searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate,
+            orderByOrgunitAsc, orderByExecutionDateByAsc );
 
-        return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, fixedAttributes,
-            attributes, dataElements, startDate, endDate, format, i18n );
-    }
+        if ( keys != null && keys.size() > 0 )
+        {
+            return createTabularGrid( level, hiddenCols, programStage, keys, valuesMap, idens, fixedAttributes,
+                attributes, dataElements, startDate, endDate, format, i18n );
+        }
 
-    public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
-        List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes,
-        List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate,
-        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n )
-    {
-        List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage,
-            searchingIdenKeys, searchingAttrKeys, searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc,
-            orderByExecutionDateByAsc );
-
-        return createTabularGrid( level, hiddenCols, programStage, programStageInstances, idens, fixedAttributes,
-            attributes, dataElements, startDate, endDate, format, i18n );
+        return null;
     }
 
     @Override
@@ -344,225 +322,217 @@ public class DefaultProgramStageInstanceService
     // -------------------------------------------------------------------------
 
     private Grid createTabularGrid( Integer level, List<Boolean> hiddenCols, ProgramStage programStage,
-        List<ProgramStageInstance> programStageInstances, List<PatientIdentifierType> idens,
+        List<String> keys, Map<String, String> valuesMap, List<PatientIdentifierType> idens,
         List<String> fixedAttributes, List<PatientAttribute> attributes, List<DataElement> dataElements,
         Date startDate, Date endDate, I18nFormat format, I18n i18n )
     {
         Grid grid = new ListGrid();
 
-        if ( programStageInstances.size() > 0 )
+        Program program = programStage.getProgram();
+
+        // ---------------------------------------------------------------------
+        // Create a grid
+        // ---------------------------------------------------------------------
+
+        grid.setTitle( program.getName() + " - " + programStage.getName() );
+        grid.setSubtitle( i18n.getString( "from" ) + " " + format.formatDate( startDate ) + " " + i18n.getString( "to" )
+            + " " + format.formatDate( endDate ) );
+
+        // ---------------------------------------------------------------------
+        // Headers
+        // ---------------------------------------------------------------------
+
+        // Report-date
+        grid.addHeader( new GridHeader( i18n.getString( "report_date" ), false, true ) );
+
+        // Organisation units
+        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
+
+        boolean hasMetaData = !(hiddenCols.size() == idens.size() + attributes.size() + dataElements.size());
+        int index = 0;
+        
+        if ( !hasMetaData )
         {
-            Program program = programStage.getProgram();
-
-            // ---------------------------------------------------------------------
-            // Create a grid
-            // ---------------------------------------------------------------------
-
-            grid.setTitle( program.getName() + " - " + programStage.getName() );
-            grid.setSubtitle( i18n.getString( "from" ) + " " + format.formatDate( startDate ) + " "
-                + i18n.getString( "to" ) + " " + format.formatDate( endDate ) );
-
-            // ---------------------------------------------------------------------
-            // Headers
-            // ---------------------------------------------------------------------
-
-            // Report-date
-            grid.addHeader( new GridHeader( i18n.getString( "report_date" ), false, true ) );
-
             // Organisation units
-            int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
-
-            boolean hasMetaData = !(hiddenCols.size() == idens.size() + attributes.size() + dataElements.size());
-            int index = 0;
-            
-            if ( !hasMetaData )
+            for ( int i = level; i <= maxLevel; i++ )
             {
-                // Organisation units
-                for ( int i = level; i <= maxLevel; i++ )
-                {
-                    grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i )
-                        .getName(), false, true ) );
-                }
-                // Fixed Attributes
-                if ( fixedAttributes != null && fixedAttributes.size() > 0 )
-                {
-                    for ( String fixedAttribute : fixedAttributes )
-                    {
-                        grid.addHeader( new GridHeader( i18n.getString( fixedAttribute), false, true ) );
-                    }
-                }
-            }
-            else
-            {
-                for ( int i = level; i <= maxLevel; i++ )
-                {
-                    grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i )
-                        .getName(), hiddenCols.get( index ), true ) );
-                    index++;
-                }
-                // Fixed Attributes
-                if ( fixedAttributes != null && fixedAttributes.size() > 0 )
-                {
-                    for ( String fixedAttribute : fixedAttributes )
-                    {
-                        grid.addHeader( new GridHeader( i18n.getString( fixedAttribute), hiddenCols.get( index ), true ) );
-                        index ++;
-                    }
-                }
+                grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i ).getName(),
+                    false, true ) );
             }
 
-            // Identifier types
-            if ( idens != null && idens.size() > 0 )
+            // Fixed Attributes
+            if ( fixedAttributes != null && fixedAttributes.size() > 0 )
             {
-                for ( PatientIdentifierType identifierType : idens )
+                for ( String fixedAttribute : fixedAttributes )
                 {
-                    grid.addHeader( new GridHeader( identifierType.getName(), hiddenCols.get( index ), true ) );
+                    grid.addHeader( new GridHeader( i18n.getString( fixedAttribute ), false, true ) );
+                }
+            }
+        }
+        else
+        {
+            for ( int i = level; i <= maxLevel; i++ )
+            {
+                grid.addHeader( new GridHeader( organisationUnitService.getOrganisationUnitLevelByLevel( i ).getName(),
+                    hiddenCols.get( index ), true ) );
+                index++;
+            }
+            // Fixed Attributes
+            if ( fixedAttributes != null && fixedAttributes.size() > 0 )
+            {
+                for ( String fixedAttribute : fixedAttributes )
+                {
+                    grid.addHeader( new GridHeader( i18n.getString( fixedAttribute ), hiddenCols.get( index ), true ) );
                     index++;
                 }
             }
+        }
 
-            // Attributes
-            if ( attributes != null && attributes.size() > 0 )
+        // Identifier types
+        if ( idens != null && idens.size() > 0 )
+        {
+            for ( PatientIdentifierType identifierType : idens )
             {
-                for ( PatientAttribute attribute : attributes )
+                grid.addHeader( new GridHeader( identifierType.getName(), hiddenCols.get( index ), true ) );
+                index++;
+            }
+        }
+
+        // Attributes
+        if ( attributes != null && attributes.size() > 0 )
+        {
+            for ( PatientAttribute attribute : attributes )
+            {
+                grid.addHeader( new GridHeader( attribute.getName(), hiddenCols.get( index ), true ) );
+                index++;
+            }
+        }
+
+        // Dataelements
+        if ( dataElements != null && dataElements.size() > 0 )
+        {
+            for ( DataElement dataElement : dataElements )
+            {
+                grid.addHeader( new GridHeader( dataElement.getName(), hiddenCols.get( index ), true ) );
+                index++;
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Get patient-identifiers
+        // ---------------------------------------------------------------------
+
+        for ( String key : keys )
+        {
+            grid.addRow();
+
+            // -------------------------------------------------------------
+            // Report-date
+            // -------------------------------------------------------------
+
+            grid.addValue( valuesMap.get( key + "_" + PatientTabularReport.PREFIX_EXECUTION_DATE ) );
+
+            // -------------------------------------------------------------
+            // Add organisation units
+            // -------------------------------------------------------------
+
+            Integer orgunitId = Integer.parseInt( valuesMap.get( key + "_" + PatientTabularReport.PREFIX_ORGUNIT ) );
+            Map<Integer, String> hierarchyOrgunit = getHierarchyOrgunit( orgunitId, level );
+
+            for ( int i = level; i <= maxLevel; i++ )
+            {
+                if ( hierarchyOrgunit.get( i ) != null )
                 {
-                    grid.addHeader( new GridHeader( attribute.getName(), hiddenCols.get( index ), true ) );
-                    index++;
+                    grid.addValue( hierarchyOrgunit.get( i ) );
+                }
+                else
+                {
+                    grid.addValue( "" );
                 }
             }
 
-            // Dataelements
-            if ( dataElements != null && dataElements.size() > 0 )
+            // -------------------------------------------------------------
+            // Fixed Attributes
+            // -------------------------------------------------------------
+
+            if ( fixedAttributes != null && fixedAttributes.size() > 0 )
             {
-                for ( DataElement dataElement : dataElements )
+                for ( String fixedAttr : fixedAttributes )
                 {
-                    grid.addHeader( new GridHeader( dataElement.getName(), hiddenCols.get( index ), true ) );
-                    index++;
+                    grid.addValue( valuesMap.get( key + "_" + PatientTabularReport.PREFIX_FIXED_ATTRIBUTE + "_"
+                        + fixedAttr ) );
                 }
+            }
+
+            // -------------------------------------------------------------
+            // Add patient-identifiers
+            // -------------------------------------------------------------
+
+            for ( PatientIdentifierType identifierType : idens )
+            {
+                String value = valuesMap.get( key + "_" + PatientTabularReport.PREFIX_IDENTIFIER_TYPE + "_"
+                    + identifierType.getId() );
+                value = (value == null) ? "" : value;
+                grid.addValue( value );
             }
 
             // ---------------------------------------------------------------------
-            // Get patient-identifiers
+            // Get patient-attribute-values
             // ---------------------------------------------------------------------
 
-            for ( ProgramStageInstance programStageInstance : programStageInstances )
+            for ( PatientAttribute attribute : attributes )
             {
-                grid.addRow();
+                String value = valuesMap.get( key + "_" + PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE + "_"
+                    + attribute.getId() );
 
-                // -------------------------------------------------------------
-                // Report-date
-                // -------------------------------------------------------------
+                value = (value == null) ? "" : value;
 
-                grid.addValue( format.formatDate( programStageInstance.getExecutionDate() ) );
-
-                // -------------------------------------------------------------
-                // Add organisation units
-                // -------------------------------------------------------------
-
-                Map<Integer, String> hierarchyOrgunit = getHierarchyOrgunit(
-                    programStageInstance.getOrganisationUnit(), level );
-
-                for ( int i = level; i <= maxLevel; i++ )
+                if ( attribute.getValueType().equals( PatientAttribute.TYPE_BOOL ) )
                 {
-                    if ( hierarchyOrgunit.get( i ) != null )
+                    if ( value.equals( "true" ) )
                     {
-                        grid.addValue( hierarchyOrgunit.get( i ) );
+                        value = i18n.getString( "yes" );
                     }
-                    else
+                    else if ( value.equals( "false" ) )
                     {
-                        grid.addValue( "" );
+                        value = i18n.getString( "no" );
                     }
                 }
 
-                // -------------------------------------------------------------
-                // Fixed Attributes
-                // -------------------------------------------------------------
+                grid.addValue( value );
+            }
 
-                if ( fixedAttributes != null && fixedAttributes.size() > 0 )
+            for ( DataElement dataElement : dataElements )
+            {
+                String value = valuesMap.get( key + "_" + PatientTabularReport.PREFIX_DATA_ELEMENT + "_"
+                    + dataElement.getId() );
+                value = (value == null) ? "" : value;
+                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
                 {
-                    Patient patient = programStageInstance.getProgramInstance().getPatient();
-                    for ( String fixedAttribute : fixedAttributes )
+                    if ( value.equals( "true" ) )
                     {
-                        String value = getValueByFixedAttribute( patient, fixedAttribute, format );
-                        grid.addValue( value );
+                        value = i18n.getString( "yes" );
+                    }
+                    else if ( value.equals( "false" ) )
+                    {
+                        value = i18n.getString( "no" );
                     }
                 }
-
-                // -------------------------------------------------------------
-                // Add patient-identifiers
-                // -------------------------------------------------------------
-
-                for ( PatientIdentifierType identifierType : idens )
-                {
-                    Patient patient = programStageInstance.getProgramInstance().getPatient();
-
-                    PatientIdentifier patientIdentifier = identifierService.getPatientIdentifier( identifierType,
-                        patient );
-
-                    if ( patientIdentifier != null )
-                    {
-                        grid.addValue( i18n.getString( patientIdentifier.getIdentifier() ) );
-                    }
-                    else
-                    {
-                        grid.addValue( "" );
-                    }
-                }
-
-                // ---------------------------------------------------------------------
-                // Get patient-attribute-values
-                // ---------------------------------------------------------------------
-
-                for ( PatientAttribute attribute : attributes )
-                {
-                    Patient patient = programStageInstance.getProgramInstance().getPatient();
-
-                    PatientAttributeValue patientAttributeValue = patientAttributeValueService
-                        .getPatientAttributeValue( patient, attribute );
-
-                    if ( patientAttributeValue != null )
-                    {
-                        grid.addValue( i18n.getString( patientAttributeValue.getValue() ) );
-                    }
-                    else
-                    {
-                        grid.addValue( "" );
-                    }
-                }
-
-                for ( DataElement dataElement : dataElements )
-                {
-                    PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue(
-                        programStageInstance, dataElement );
-
-                    if ( patientDataValue != null )
-                    {
-                        if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
-                        {
-                            grid.addValue( i18n.getString( patientDataValue.getValue() ) );
-                        }
-                        else
-                        {
-                            grid.addValue( patientDataValue.getValue() );
-                        }
-                    }
-                    else
-                    {
-                        grid.addValue( "" );
-                    }
-                }
-
-            }// end for
+                
+                grid.addValue( value );
+            }
 
         }
 
         return grid;
     }
 
-    private Map<Integer, String> getHierarchyOrgunit( OrganisationUnit orgunit, int level )
+    private Map<Integer, String> getHierarchyOrgunit( int orgunitid, int level )
     {
+        OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitid );
+
         Map<Integer, String> hierarchyOrgunit = new HashMap<Integer, String>();
-        
+
         hierarchyOrgunit.put( organisationUnitService.getLevelOfOrganisationUnit( orgunit.getId() ), orgunit.getName() );
 
         orgunit = orgunit.getParent();
@@ -577,26 +547,4 @@ public class DefaultProgramStageInstanceService
 
         return hierarchyOrgunit;
     }
-
-    private String getValueByFixedAttribute( Patient patient, String propertyName, I18nFormat format )
-    {
-        propertyName = StringUtils.capitalize( propertyName );
-
-        try
-        {
-            Object object = Patient.class.getMethod( "get" + propertyName ).invoke( patient );
-            
-            if( object instanceof Date )
-            {
-                return format.formatDate( (Date) object );
-            }
-            
-            return object.toString();
-        }
-        catch ( Exception e )
-        {
-           return "";
-        }
-    }
-
 }

@@ -253,7 +253,7 @@ Ext.onReady( function() {
 				a.store.filterBy( function(r) {
                     var filter = true;
                     s.store.each( function(r2) {
-                        if (r.data.id === r2.data.id) {
+                        if (r.data.id == r2.data.id) {
                             filter = false;
                         }
                     });
@@ -585,9 +585,9 @@ Ext.onReady( function() {
 							
 							// DATAELEMENT
 							TR.store.dataelement.selected.removeAll();
-							if (f.dataelements) {
-								for (var i = 0; i < f.dataelements.length; i++) {
-									TR.cmp.params.dataelement.objects.push({id: f.dataelements[i].id, name: TR.util.string.getEncodedString(f.dataelements[i].name)});
+							if (f.dataElements) {
+								for (var i = 0; i < f.dataElements.length; i++) {
+									TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: TR.util.string.getEncodedString(f.dataElements[i].name)});
 								}
 								TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
 								
@@ -595,7 +595,7 @@ Ext.onReady( function() {
 								store.parent = f.programStageId;
 								if (TR.util.store.containsParent(store)) {
 									TR.util.store.loadFromStorage(store);
-									TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);						
+									TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
 								}
 								else {
 									store.load({params: {programStageId: f.programStageId}});
@@ -857,18 +857,19 @@ Ext.onReady( function() {
 					var col = cols[i];	
 					var dataIndex = col.dataIndex;
 					
-					if( dataIndex== 'col1' ) 
-					{
-						p.searchingValues.push( col.name + col.hidden + "_" );
-					}
-					else if( col.name )
+					if( col.name )
 					{
 						var value = editor.data[dataIndex];
+						var hidden = (col.hidden==undefined)? false : col.hidden;
 						if( value!=null && value!= '')
 						{
 							value = TR.util.getValueFormula(value);
+							p.searchingValues.push( col.name + hidden + "_" + value );
 						}
-						p.searchingValues.push( col.name + col.hidden + "_" + value );
+						else
+						{
+							p.searchingValues.push( col.name + hidden + "_" );
+						}
 					}
 				}
 			}
@@ -926,7 +927,8 @@ Ext.onReady( function() {
 						{
 							value = TR.util.getValueFormula(value);
 						}
-						p += "&searchingValues=" +  col.name + col.hidden + "_" + value;
+						var hidden = (col.hidden==undefined)? false : col.hidden;
+						p += "&searchingValues=" +  col.name + hidden + "_" + value;
 					}
 				}
 			}
@@ -945,6 +947,7 @@ Ext.onReady( function() {
 					p += "&searchingValues=" + 'de_' + r.data.id + '_false_';
 				});
 			}
+			
             return p;
         },
 		validation: {
@@ -1005,7 +1008,6 @@ Ext.onReady( function() {
 			{
 				return 'textfield';
 			}
-			
 			return TR.value.valueTypes[index].valueType;
 		},
 		getSuggestedValues: function( index )
@@ -1014,7 +1016,6 @@ Ext.onReady( function() {
 			{
 				return [];
 			}
-			
 			return TR.value.valueTypes[index].suggestedValues;
 		}
     };
@@ -1048,7 +1049,6 @@ Ext.onReady( function() {
 				header: TR.value.columns[1], 
 				dataIndex: 'col1',
 				height: TR.conf.layout.east_gridcolumn_height,
-				name:"meta_1_",
 				sortable: false,
 				draggable: false,
 				hideable: false
@@ -1107,7 +1107,7 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store:  new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.getSuggestedValues(index),
+								data: TR.value.TR.value.valueTypes(index)
 							})
 						}
 					};
@@ -1134,7 +1134,7 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store: new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.getSuggestedValues('col' + index),
+								data: TR.value.getSuggestedValues(index)
 							})
 					}
 				};
@@ -1390,7 +1390,7 @@ Ext.onReady( function() {
 										{
 											// IDENTIFIER TYPE
 											var storeIdentifierType = TR.store.identifierType.available;
-											TR.store.identifierType.selected.loadData([],false);
+											TR.store.identifierType.selected.removeAll();
 											storeIdentifierType.parent = pId;
 											
 											if (TR.util.store.containsParent(storeIdentifierType)) {
@@ -1404,7 +1404,7 @@ Ext.onReady( function() {
 											// PATIENT ATTRIBUTE
 											var storePatientAttribute = TR.store.patientAttribute.available;
 											storePatientAttribute.parent = pId;
-											TR.store.patientAttribute.selected.loadData([],false);
+											TR.store.patientAttribute.selected.removeAll();
 											
 											if (TR.util.store.containsParent(storePatientAttribute)) {
 												TR.util.store.loadFromStorage(storePatientAttribute);
@@ -1419,16 +1419,17 @@ Ext.onReady( function() {
 										{
 											TR.util.setDisabledFixedAttr();
 											
-											TR.store.identifierType.available.loadData([],false);
-											TR.store.identifierType.selected.loadData([],false);
+											TR.store.identifierType.available.removeAll();
+											TR.store.identifierType.selected.removeAll();
 											
-											TR.store.patientAttribute.available.loadData([],false);
-											TR.store.patientAttribute.selected.loadData([],false);
+											TR.store.patientAttribute.available.removeAll();
+											TR.store.patientAttribute.selected.removeAll();
 										}
 										
 										// PROGRAM-STAGE										
 										var storeProgramStage = TR.store.programStage;
-										TR.store.dataelement.selected.loadData([],false);
+										TR.store.dataelement.available.removeAll();
+										TR.store.dataelement.selected.removeAll();
 										storeProgramStage.parent = pId;
 										storeProgramStage.load({params: {programId: pId}});
 									}
