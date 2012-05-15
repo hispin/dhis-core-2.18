@@ -46,6 +46,8 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -91,6 +93,9 @@ public class ReportTableController
     
     @Autowired
     private DataElementService dataElementService;
+    
+    @Autowired
+    private DataSetService dataSetService;
     
     @Autowired
     private I18nManager i18nManager;
@@ -155,6 +160,7 @@ public class ReportTableController
     @RequestMapping( value = "/data", method = RequestMethod.GET )
     public String getReportTableDynamicData( @RequestParam(required=false, value="in") List<String> indicators,
                                              @RequestParam(required=false, value="de") List<String> dataElements,
+                                             @RequestParam(required=false, value="ds") List<String> dataSets,
                                              @RequestParam(value="ou") List<String> orgUnits,
                                              @RequestParam(required=false) List<String> crossTab,
                                              @RequestParam(required=false) boolean orgUnitIsParent,
@@ -164,11 +170,12 @@ public class ReportTableController
     {
         List<Indicator> indicators_ = indicatorService.getIndicatorsByUid( indicators );
         List<DataElement> dataElements_ = dataElementService.getDataElementsByUid( dataElements );
+        List<DataSet> dataSets_ = dataSetService.getDataSetsByUid( dataSets );
         List<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsByUid( orgUnits );
         
-        if ( indicators_.isEmpty() && dataElements_.isEmpty() )
+        if ( indicators_.isEmpty() && dataElements_.isEmpty() && dataSets_.isEmpty() )
         {
-            ContextUtils.conflictResponse( response, "No indicators or data elements specified" );
+            ContextUtils.conflictResponse( response, "No valid indicators, data elements or data sets specified" );
             return null;
         }
         

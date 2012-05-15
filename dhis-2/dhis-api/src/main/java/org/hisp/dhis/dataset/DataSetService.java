@@ -27,14 +27,14 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -201,6 +201,14 @@ public interface DataSetService
      */
     Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers );
 
+    /**
+     * Returns a list of data sets with the given uids.
+     * 
+     * @param uids the collection of uids.
+     * @return a list of data sets.
+     */
+    List<DataSet> getDataSetsByUid( Collection<String> uids );
+    
     /**
      * Returns a collection of data elements associated with the given
      * corresponding data set.
