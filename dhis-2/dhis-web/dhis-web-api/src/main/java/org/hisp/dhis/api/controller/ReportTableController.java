@@ -162,8 +162,9 @@ public class ReportTableController
                                              @RequestParam(required=false, value="de") List<String> dataElements,
                                              @RequestParam(required=false, value="ds") List<String> dataSets,
                                              @RequestParam(value="ou") List<String> orgUnits,
-                                             @RequestParam(required=false) List<String> crossTab,
+                                             @RequestParam(required=false, value="crosstab") List<String> crossTab,
                                              @RequestParam(required=false) boolean orgUnitIsParent,
+                                             @RequestParam(required=false) boolean minimal,
                                              RelativePeriods relatives,
                                              Model model, 
                                              HttpServletResponse response ) throws Exception
@@ -209,7 +210,7 @@ public class ReportTableController
         
         table.setRelatives( relatives );
         
-        Grid grid = reportTableService.getReportTableGrid( table, i18nManager.getI18nFormat(), new Date(), null );
+        Grid grid = reportTableService.getReportTableGrid( table, i18nManager.getI18nFormat(), new Date(), null, minimal );
 
         model.addAttribute( "model", grid );
         model.addAttribute( "view", "detailed" );

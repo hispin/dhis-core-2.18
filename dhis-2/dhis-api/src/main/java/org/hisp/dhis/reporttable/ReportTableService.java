@@ -109,37 +109,39 @@ public interface ReportTableService
      * Instantiates and populates a Grid populated with data from the ReportTable
      * with the given identifier.
      *
-     * @param id                 the ReportTable identifier.
-     * @param format             the I18nFormat.
-     * @param reportingPeriod    the reporting period number.
-     * @param organisationUnitId the organisation unit number.
+     * @param id the ReportTable identifier.
+     * @param format the I18nFormat.
+     * @param reportingPeriod the reporting date.
+     * @param organisationUnitId the organisation unit identifier.
      * @return a Grid.
      */
     Grid getReportTableGrid( int id, I18nFormat format, Date reportingPeriod, Integer organisationUnitId );
 
     /**
-     *
-     * 
-     * @param reportTable
-     * @param format
-     * @param reportingPeriod
-     * @param organisationUnitUid
-     * @return
-     */
-    Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid );
-    
-    /**
      * Instantiates and populates a Grid populated with data from the ReportTable
      * with the given identifier.
      *
-     * @param uid                 the ReportTable unique identifier.
-     * @param format              the I18nFormat.
-     * @param reportingPeriod     the reporting period number.
-     * @param organisationUnitUid the organisation unit number.
+     * @param uid the ReportTable unique identifier.
+     * @param format the I18nFormat.
+     * @param reportingPeriod the reporting date.
+     * @param organisationUnitUid the organisation unit uid.
      * @return a Grid.
      */
     Grid getReportTableGrid( String uid, I18nFormat format, Date reportingPeriod, String organisationUnitUid );
 
+    /**
+     * Instantiates and populates a Grid populated with data from the given 
+     * ReportTable.
+     * 
+     * @param reportTable the ReportTable.
+     * @param format the I18nFormat.
+     * @param reportingPeriod the reporting date.
+     * @param organisationUnitUid the organisation unit uid.
+     * @param minimal indicates whether to include visible columns only in the Grid.
+     * @return a Grid.
+     */
+    Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid, boolean minimal );
+    
     /**
      * If report table mode, this method will return the report table with the
      * given identifier. If report mode, this method will return the report

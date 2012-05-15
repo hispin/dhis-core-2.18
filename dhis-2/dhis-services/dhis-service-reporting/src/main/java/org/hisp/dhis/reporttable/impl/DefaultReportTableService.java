@@ -141,10 +141,10 @@ public class DefaultReportTableService
 
         reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
 
-        return getGrid( reportTable );
+        return getGrid( reportTable, false );
     }
 
-    public Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
+    public Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid, boolean minimal )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
 
@@ -152,7 +152,7 @@ public class DefaultReportTableService
         
         reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
 
-        return getGrid( reportTable );
+        return getGrid( reportTable, minimal );
     }
     
     public ReportTable getReportTable( String uid, String mode )
@@ -360,7 +360,7 @@ public class DefaultReportTableService
      * @param reportTable the report table.
      * @return a grid.
      */
-    private Grid getGrid( ReportTable reportTable )
+    private Grid getGrid( ReportTable reportTable, boolean minimal )
     {
         final String subtitle = StringUtils.trimToEmpty( reportTable.getParentOrganisationUnitName() ) + SPACE
             + StringUtils.trimToEmpty( reportTable.getReportingPeriodName() );
@@ -373,14 +373,17 @@ public class DefaultReportTableService
         // Headers
         // ---------------------------------------------------------------------
 
-        for ( String column : reportTable.getIndexColumns() ) // Index columns
+        if ( !minimal )
         {
-            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) );
-        }
-
-        for ( String column : reportTable.getIndexUidColumns() ) // Index uid columns
-        {
-            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
+            for ( String column : reportTable.getIndexColumns() ) // Index columns
+            {
+                grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) );
+            }
+    
+            for ( String column : reportTable.getIndexUidColumns() ) // Index uid columns
+            {
+                grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
+            }
         }
 
         for ( String column : reportTable.getIndexNameColumns() ) // Index name columns
@@ -388,22 +391,25 @@ public class DefaultReportTableService
             grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) );
         }
 
-        for ( String column : reportTable.getIndexCodeColumns() ) // Index code columns
+        if ( !minimal )
         {
-            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
+            for ( String column : reportTable.getIndexCodeColumns() ) // Index code columns
+            {
+                grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
+            }
+    
+            for ( String column : reportTable.getIndexDescriptionColumns() ) // Index description columns
+            {
+                grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
+            }
+    
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( REPORTING_MONTH_COLUMN_NAME ), REPORTING_MONTH_COLUMN_NAME,
+                String.class.getName(), true, true ) );
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( PARAM_ORGANISATIONUNIT_COLUMN_NAME ),
+                PARAM_ORGANISATIONUNIT_COLUMN_NAME, String.class.getName(), true, true ) );
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME ),
+                ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, String.class.getName(), true, true ) );
         }
-
-        for ( String column : reportTable.getIndexDescriptionColumns() ) // Index description columns
-        {
-            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
-        }
-
-        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( REPORTING_MONTH_COLUMN_NAME ), REPORTING_MONTH_COLUMN_NAME,
-            String.class.getName(), true, true ) );
-        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( PARAM_ORGANISATIONUNIT_COLUMN_NAME ),
-            PARAM_ORGANISATIONUNIT_COLUMN_NAME, String.class.getName(), true, true ) );
-        grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME ),
-            ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, String.class.getName(), true, true ) );
 
         final int startColumnIndex = grid.getHeaders().size();
         final int numberOfColumns = reportTable.getColumns().size();
@@ -437,14 +443,17 @@ public class DefaultReportTableService
         {
             grid.addRow();
 
-            for ( NameableObject object : row ) // Index columns
+            if ( !minimal )
             {
-                grid.addValue( object.getId() );
-            }
-
-            for ( NameableObject object : row ) // Index uid columns
-            {
-                grid.addValue( object.getUid() );
+                for ( NameableObject object : row ) // Index columns
+                {
+                    grid.addValue( object.getId() );
+                }
+    
+                for ( NameableObject object : row ) // Index uid columns
+                {
+                    grid.addValue( object.getUid() );
+                }
             }
 
             for ( NameableObject object : row ) // Index name columns
@@ -452,20 +461,23 @@ public class DefaultReportTableService
                 grid.addValue( object.getName() );
             }
 
-            for ( NameableObject object : row ) // Index code columns
+            if ( !minimal )
             {
-                grid.addValue( object.getCode() );
+                for ( NameableObject object : row ) // Index code columns
+                {
+                    grid.addValue( object.getCode() );
+                }
+    
+                for ( NameableObject object : row ) // Index description columns
+                {
+                    grid.addValue( object.getDescription() );
+                }
+    
+                grid.addValue( reportTable.getReportingPeriodName() );
+                grid.addValue( reportTable.getParentOrganisationUnitName() );
+                grid.addValue( isCurrentParent( row ) ? YES : NO );
             }
-
-            for ( NameableObject object : row ) // Index description columns
-            {
-                grid.addValue( object.getDescription() );
-            }
-
-            grid.addValue( reportTable.getReportingPeriodName() );
-            grid.addValue( reportTable.getParentOrganisationUnitName() );
-            grid.addValue( isCurrentParent( row ) ? YES : NO );
-
+            
             for ( List<NameableObject> column : reportTable.getColumns() ) // Values
             {
                 grid.addValue( map.get( getIdentifier( row, column ) ) );
