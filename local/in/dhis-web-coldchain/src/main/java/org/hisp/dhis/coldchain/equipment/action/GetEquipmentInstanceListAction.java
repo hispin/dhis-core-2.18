@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.coldchain.inventory.EquipmentDetails;
-import org.hisp.dhis.coldchain.inventory.EquipmentDetailsService;
+import org.hisp.dhis.coldchain.inventory.Equipment;
+import org.hisp.dhis.coldchain.inventory.EquipmentService;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
@@ -53,13 +53,13 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
         this.inventoryTypeAttributeService = inventoryTypeAttributeService;
     }
     
-    private EquipmentDetailsService equipmentDetailsService;
-    
-    public void setEquipmentDetailsService( EquipmentDetailsService equipmentDetailsService )
+    private EquipmentService equipmentService;
+
+    public void setEquipmentService( EquipmentService equipmentService )
     {
-        this.equipmentDetailsService = equipmentDetailsService;
+        this.equipmentService = equipmentService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -194,7 +194,7 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
         {
             for( InventoryTypeAttribute inventoryTypeAttribute1 : inventoryTypeAttributeList )
             {
-                EquipmentDetails equipmentDetails = equipmentDetailsService.getEquipmentDetails( equipmentInstance, inventoryTypeAttribute1 );
+                Equipment equipmentDetails = equipmentService.getEquipment( equipmentInstance, inventoryTypeAttribute1 );
                 if( equipmentDetails != null && equipmentDetails.getValue() != null )
                 {
                     equipmentDetailsMap.put( equipmentInstance.getId()+":"+inventoryTypeAttribute1.getId(), equipmentDetails.getValue() );

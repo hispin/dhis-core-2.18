@@ -44,11 +44,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.catalog.hibernate.HibernateCatalogDataValueStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-	
+<!--	
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentDetailsStore"
         class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateEquipmentDetailsStore">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+-->	
+	
+    <bean id="org.hisp.dhis.coldchain.inventory.EquipmentStore"
+        class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateEquipmentStore">
+		<property name="clazz" value="org.hisp.dhis.coldchain.inventory.Equipment" />
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="cacheable" value="true" />
+    </bean>	
+	
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentInstanceStore"
         class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateEquipmentInstanceStore">
 		<property name="clazz" value="org.hisp.dhis.coldchain.inventory.EquipmentInstance" />
@@ -128,15 +137,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogDataValueService">
         <property name="catalogDataValueStore" ref="org.hisp.dhis.coldchain.catalog.CatalogDataValueStore"/>
     </bean>
-
+<!--
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentDetailsService"
         class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentDetailsService">
         <property name="equipmentDetailsStore" ref="org.hisp.dhis.coldchain.inventory.EquipmentDetailsStore"/>
     </bean>
+-->	
+    <bean id="org.hisp.dhis.coldchain.inventory.EquipmentService"
+        class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentService">
+        <property name="equipmentStore" ref="org.hisp.dhis.coldchain.inventory.EquipmentStore"/>
+    </bean>	
+	
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService"
         class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentInstanceService">
         <property name="equipmentInstanceStore" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceStore"/>
-		<property name="equipmentDetailsService" ref="org.hisp.dhis.coldchain.inventory.EquipmentDetailsService"/>
+		<property name="equipmentService" ref="org.hisp.dhis.coldchain.inventory.EquipmentService"/>
 		<property name="equipmentStatusService" ref="org.hisp.dhis.coldchain.inventory.EquipmentStatusService"/>
     </bean>
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentStatusService"

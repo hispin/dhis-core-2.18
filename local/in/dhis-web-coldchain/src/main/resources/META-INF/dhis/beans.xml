@@ -380,7 +380,7 @@
         <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
         <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
         <property name="inventoryTypeAttributeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService" />
-		<property name="equipmentDetailsService" ref="org.hisp.dhis.coldchain.inventory.EquipmentDetailsService" />
+		<property name="equipmentService" ref="org.hisp.dhis.coldchain.inventory.EquipmentService" />
     </bean>
     <bean id="org.hisp.dhis.coldchain.equipment.action.ShowAddEquipmentFormAction"
         class="org.hisp.dhis.coldchain.equipment.action.ShowAddEquipmentFormAction"
@@ -401,14 +401,14 @@
     <bean id="org.hisp.dhis.coldchain.equipment.action.GetEquipmentInstanceDataAction"
         class="org.hisp.dhis.coldchain.equipment.action.GetEquipmentInstanceDataAction"
         scope="prototype">
-        <property name="equipmentDetailsService" ref="org.hisp.dhis.coldchain.inventory.EquipmentDetailsService" />
+        <property name="equipmentService" ref="org.hisp.dhis.coldchain.inventory.EquipmentService" />
         <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
 		<property name="catalogService" ref="org.hisp.dhis.coldchain.catalog.CatalogService" />
     </bean>
     <bean id="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentAction"
         class="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentAction"
         scope="prototype">
-        <property name="equipmentDetailsService" ref="org.hisp.dhis.coldchain.inventory.EquipmentDetailsService" />
+        <property name="equipmentService" ref="org.hisp.dhis.coldchain.inventory.EquipmentService" />
         <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
         <property name="inventoryTypeAttributeOptionService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService" />
 		<property name="catalogService" ref="org.hisp.dhis.coldchain.catalog.CatalogService" />

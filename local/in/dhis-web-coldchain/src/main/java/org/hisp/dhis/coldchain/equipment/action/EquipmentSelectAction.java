@@ -79,7 +79,7 @@ public class EquipmentSelectAction implements Action
         }
         else
         {
-            System.out.println("Organisationunit is not null"+ orgUnitId);
+            System.out.println("Organisationunit is not null" + orgUnitId);
         }
         
         if( organisationUnit == null && orgUnitId != null )

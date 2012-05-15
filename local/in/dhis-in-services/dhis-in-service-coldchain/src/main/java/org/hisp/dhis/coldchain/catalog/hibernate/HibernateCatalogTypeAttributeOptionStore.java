@@ -10,8 +10,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOption;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOptionStore;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.reports.Report_in;
 
 public class HibernateCatalogTypeAttributeOptionStore implements CatalogTypeAttributeOptionStore
 {

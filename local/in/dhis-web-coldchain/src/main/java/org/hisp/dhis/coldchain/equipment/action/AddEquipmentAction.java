@@ -10,7 +10,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.coldchain.catalog.CatalogService;
-import org.hisp.dhis.coldchain.inventory.EquipmentDetails;
+import org.hisp.dhis.coldchain.inventory.Equipment;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
@@ -78,15 +78,15 @@ public class AddEquipmentAction implements Action
         String value = null;
         
         List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
-        List<EquipmentDetails> equipmentDeatilsList = new ArrayList<EquipmentDetails>();
+        List<Equipment> equipmentDeatilsList = new ArrayList<Equipment>();
         
-        EquipmentDetails equipmentDetails = null;
+        Equipment equipmentDetails = null;
         for ( InventoryTypeAttribute attribute : inventoryTypeAttributes )
         {
             value = request.getParameter( PREFIX_ATTRIBUTE + attribute.getId() );
             if ( StringUtils.isNotBlank( value ) )
             {
-                equipmentDetails = new EquipmentDetails();
+                equipmentDetails = new Equipment();
                 equipmentDetails.setEquipmentInstance( equipmentInstance );
                 equipmentDetails.setInventoryTypeAttribute( attribute );
 
