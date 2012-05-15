@@ -98,17 +98,18 @@ public class LoadDataSetsAction
         sources.add( selectionManager.getSelectedOrganisationUnit() );
 
         Collection<DataSet> _dataSets = dataSetService.getDataSetsBySources( sources );
-        
-        Collection<UserAuthorityGroup> authorityGroups = currentUserService.getCurrentUser().getUserCredentials().getUserAuthorityGroups();
-        
-        for( UserAuthorityGroup UserAuthorityGroup : authorityGroups )
+
+        Collection<UserAuthorityGroup> authorityGroups = currentUserService.getCurrentUser().getUserCredentials()
+            .getUserAuthorityGroups();
+
+        for ( UserAuthorityGroup UserAuthorityGroup : authorityGroups )
         {
             _dataSets.retainAll( UserAuthorityGroup.getDataSets() );
         }
 
         dataSets.addAll( _dataSets );
         Collections.sort( dataSets, new DataSetNameComparator() );
-        
+
         return SUCCESS;
     }
 

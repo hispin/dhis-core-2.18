@@ -31,6 +31,9 @@ var metaDataIsLoaded = false;
 // Currently selected organisation unit identifier
 var currentOrganisationUnitId = null;
 
+// The current selected orgunit name
+var currentOrganisationUnitName = "";
+
 // Currently selected data set identifier
 var currentDataSetId = null;
 
@@ -68,42 +71,53 @@ var FORMTYPE_DEFAULT = 'default';
  * download updated forms from server
  */
 
-function organisationUnitSelected( orgUnits, orgUnitNames )
+function organisationUnitSelectedHospitals( orgUnits, orgUnitNames )
 {
 	clearEntryForm();
-	
+
     currentOrganisationUnitId = orgUnits[0];
-    var organisationUnitName = orgUnitNames[0];
+    currentOrganisationUnitName = orgUnitNames[0];
 
-    $( '#selectedOrganisationUnit' ).html( organisationUnitName );
-    $( '#currentOrganisationUnit' ).html( organisationUnitName );
+	loadDataSets( currentOrganisationUnitName );
+}
+
+selection.setListenerFunction( organisationUnitSelectedHospitals );
+
+function loadDataSets( _unitName )
+{
+	if ( _unitName )
+	{
+		jQuery( '#selectedOrganisationUnit' ).html( _unitName );
+		jQuery( '#currentOrganisationUnit' ).html( _unitName );
 	
-	$.ajax({
-    	url: 'loadDataSet.action',
-    	dataType: 'json',
-    	success: function( json )
-	    {
-			var dataSetList = json.dataSets;
-
-			$( '#selectedDataSetId' ).removeAttr( 'disabled' );
-
-			var dataSetId = $( '#selectedDataSetId option:selected' ).val();
-			var periodId = $( '#selectedPeriodId option:selected' ).val();
-
-			clearListById( 'selectedDataSetId' );
-			//addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
-
-			var dataSetValid = false;
-
-			for ( i in dataSetList )
+		jQuery.ajax({
+			type: 'GET',
+			url: 'loadDataSet.action',
+			dataType: 'json',
+			//async: false,
+			success: function( json )
 			{
-				$('#selectedDataSetId').append('<option value=' + dataSetList[i].id  + ' formType="'+ dataSetList[i].formType + '" periodType="' + dataSetList[i].periodType + '" >' + dataSetList[i].name + '</option>');
+				var dataSetList = json.dataSets;
+
+				$( '#selectedDataSetId' ).removeAttr( 'disabled' );
+
+				var dataSetId = $( '#selectedDataSetId option:selected' ).val();
+				var periodId = $( '#selectedPeriodId option:selected' ).val();
+
+				clearListById( 'selectedDataSetId' );
+				//addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
+
+				var dataSetValid = false;
+
+				for ( i in dataSetList )
+				{
+					$('#selectedDataSetId').append('<option value=' + dataSetList[i].id  + ' formType="'+ dataSetList[i].formType + '" periodType="' + dataSetList[i].periodType + '" >' + dataSetList[i].name + '</option>');
+				}
+				
+				enable('selectedDataSetId');
 			}
-			
-			enable('selectedDataSetId');
-		}
-		
-	});
+		});
+	}
 }
 
 function addEventListeners()
