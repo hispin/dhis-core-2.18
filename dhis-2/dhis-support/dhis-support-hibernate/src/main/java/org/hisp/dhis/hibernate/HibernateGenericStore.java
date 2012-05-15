@@ -340,9 +340,6 @@ public class HibernateGenericStore<T>
     @SuppressWarnings( "unchecked" )
     public List<T> getByLastUpdated( Date lastUpdated )
     {
-        Criteria criteria = getCriteria();
-        criteria.add( Restrictions.or( Restrictions.eq( "lastUpdated", lastUpdated ), Restrictions.gt( "lastUpdated", lastUpdated ) ) );
-
-        return criteria.list();
+        return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).list();
     }
 }
