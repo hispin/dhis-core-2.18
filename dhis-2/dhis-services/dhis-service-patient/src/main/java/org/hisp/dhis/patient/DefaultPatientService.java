@@ -253,6 +253,35 @@ public class DefaultPatientService
     }
 
     @Override
+    public Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId )
+    {
+        int countPatientName = patientStore.countGetPatientsByName( searchText );
+        int countPatientIndentifier = patientIdentifierService.countGetPatientsByIdentifier( searchText );
+
+        Set<Patient> patients = new HashSet<Patient>();
+        patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, countPatientIndentifier ) );
+
+        Collection<Patient> patientByName = getPatientsByNames( searchText, 0, countPatientName );
+
+        if ( orgUnitId != 0 )
+        {
+            for ( Patient patient : patientByName )
+            {
+                if ( patient.getOrganisationUnit().getId() != orgUnitId )
+                {
+                    patientByName.remove( patient );
+                }
+            }
+        }
+        else
+        {
+            patients.addAll( patientByName );
+        }
+
+        return patients;
+    }
+
+    @Override
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit )
     {
         return patientStore.getByOrgUnit( organisationUnit );

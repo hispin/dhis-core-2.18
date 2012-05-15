@@ -74,6 +74,14 @@
 		
 		<!-- Namebased Data Entry -->
 		
+		<action name="trackingMenu"
+			class="org.hisp.dhis.light.action.NoAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/trackingMenu.vm</param>
+		</action>
+		
 		<action name="selectNamebasedOrganisationUnit"
 			class="org.hisp.dhis.light.namebaseddataentry.action.GetNamebasedOrganisationUnitsAction">
 			<result name="success" type="velocity">
@@ -110,10 +118,19 @@
 			<param name="page">/dhis-web-light/programStageForm.vm</param>
 		</action>
 		
+		<action name="showCompletedProgramStageForm"
+			class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/namebased/completedProgramStageForm.vm</param>
+		</action>
+		
 		<action name="saveProgramStageForm"
 			class="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction">
 			<result name="success" type="redirect">
 				/mobile/selectBeneficiary.action?organisationUnitId=${orgUnitId}&amp;current=${current}&amp;validated=true</result>
+			<result name="success_find" type="redirect">
+				/mobile/showPatientProgramStageList.action?patientId=${beneficiaryId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=true</result>
 			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/programStageForm.vm</param>
 		</action>
@@ -123,6 +140,46 @@
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/beneficiaryDetail.vm</param>
+		</action>
+		
+		<action name="showBeneficiaryDetailInSearchPage"
+			class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">/dhis-web-light/beneficiaryDetail.vm</param>
+			<param name="previouspage">showPatientProgramList.action?patientId=${beneficiaryId}</param>
+		</action>
+		
+		<action name="showFindBeneficiaryForm"
+			class="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/namebased/findBeneficiaryForm.vm</param>
+		</action>
+		
+		<action name="findBeneficiary"
+			class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/namebased/beneficiaryList.vm</param>
+		</action>
+		
+		<action name="showPatientProgramList"
+			class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/namebased/beneficiaryProgramList.vm</param>
+		</action>
+		
+		<action name="showPatientProgramStageList"
+			class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageListAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/namebased/beneficiaryProgramStageList.vm</param>
 		</action>
 		
 		<!-- Beneficiary Registration -->

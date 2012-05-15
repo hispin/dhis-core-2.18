@@ -109,6 +109,15 @@ public interface PatientService
     Collection<Patient> getPatients( String searchText, int min, int max );
     
     /**
+     * Search Patient for mobile base on identifier value
+     * 
+     * @param searchText value
+     * @param orgUnitId
+     * @return Patient List
+     */
+    Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId );
+    
+    /**
      * Search Patient base on organization unit with result limited
      * 
      * @param organisationUnit organisationUnit

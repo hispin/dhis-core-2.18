@@ -1,4 +1,4 @@
-<h2>$i18n.getString("details_for") $patient.firstName $patient.middleName $patient.lastName   </h2>
+<h2>$i18n.getString("details_for") $!encoder.htmlEncode( ${patient.getFullName()} )   </h2>
 <p>
 
 <ul>
@@ -15,6 +15,10 @@
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
-	<li><a href="selectActivity.action?organisationUnitId=$organisationUnitId&beneficiaryId=$patient.id&current=$current"> $i18n.getString("activity_list")</a></li>
+	#if($organisationUnitId == "0")
+		<li><a href="showPatientProgramList.action?patientId=$patient.id">$!encoder.htmlEncode( ${patient.getFullName()} )</a></li>
+	#else
+		<li><a href="selectActivity.action?organisationUnitId=$organisationUnitId&beneficiaryId=$patient.id&current=$current"> $i18n.getString("activity_list")</a></li>
+	#end
 	<li><a href="index.action">$i18n.getString("home")</a></li>
 </ul>

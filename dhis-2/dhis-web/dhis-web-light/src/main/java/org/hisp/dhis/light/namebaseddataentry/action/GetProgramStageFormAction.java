@@ -36,12 +36,15 @@ import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
 public class GetProgramStageFormAction
     implements Action
 {
+    private static final String INCOMPLETE = "incomplete";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -65,18 +68,42 @@ public class GetProgramStageFormAction
         return util;
     }
 
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public ProgramStageInstanceService getProgramStageInstanceService()
+    {
+        return programStageInstanceService;
+    }
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String programStageInstanceId;
+    private int programInstanceId;
 
-    public String getProgramStageInstanceId()
+    public int getProgramInstanceId()
+    {
+        return programInstanceId;
+    }
+
+    public void setProgramInstanceId( int programInstanceId )
+    {
+        this.programInstanceId = programInstanceId;
+    }
+    
+    private int programStageInstanceId;
+    
+    public int getProgramStageInstanceId()
     {
         return programStageInstanceId;
     }
 
-    public void setProgramStageInstanceId( String programStageInstanceId )
+    public void setProgramStageInstanceId( int programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
     }
@@ -99,8 +126,7 @@ public class GetProgramStageFormAction
     {
         return this.organisationUnit;
     }
-    
-    
+
     public void setOrganisationUnit( OrganisationUnit organisationUnit )
     {
         this.organisationUnit = organisationUnit;
@@ -176,9 +202,9 @@ public class GetProgramStageFormAction
     {
         return this.program;
     }
-    
+
     private boolean current;
-    
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -197,12 +223,13 @@ public class GetProgramStageFormAction
     public String execute()
         throws Exception
     {
-        organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitId ) );
+        // organisationUnit = organisationUnitService.getOrganisationUnit(
+        // Integer.parseInt( orgUnitId ) );
 
         programStage = util.getProgramStage( Integer.parseInt( programId ), Integer.parseInt( programStageId ) );
-
         dataElements = programStage.getDataElements();
-
+       
         return SUCCESS;
+
     }
 }
