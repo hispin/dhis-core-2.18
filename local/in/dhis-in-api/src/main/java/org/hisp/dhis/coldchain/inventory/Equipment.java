@@ -1,8 +1,8 @@
 package org.hisp.dhis.coldchain.inventory;
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
+import java.io.Serializable;
 
-public class Equipment extends BaseIdentifiableObject
+public class Equipment implements Serializable
 {
     /**
      * Determines if a de-serialized file is compatible with this class.

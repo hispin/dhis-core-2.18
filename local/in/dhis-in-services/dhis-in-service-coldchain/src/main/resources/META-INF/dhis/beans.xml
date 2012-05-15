@@ -53,9 +53,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentStore"
         class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateEquipmentStore">
-		<property name="clazz" value="org.hisp.dhis.coldchain.inventory.Equipment" />
         <property name="sessionFactory" ref="sessionFactory"/>
-		<property name="cacheable" value="true" />
     </bean>	
 	
     <bean id="org.hisp.dhis.coldchain.inventory.EquipmentInstanceStore"

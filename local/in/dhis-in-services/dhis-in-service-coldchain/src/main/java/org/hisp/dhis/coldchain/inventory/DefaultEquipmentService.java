@@ -17,65 +17,29 @@ public class DefaultEquipmentService implements EquipmentService
         this.equipmentStore = equipmentStore;
     }
 
-    
-
     // -------------------------------------------------------------------------
     // EquipmentDetails
     // -------------------------------------------------------------------------
-
- /*   
-    @Override
-    public void addEquipmentDetails( Equipment equipmentDetails )
-    {
-        equipmentStore.addEquipmentDetails( equipmentDetails );
-    }
-    @Override
-    public void deleteEquipmentDetails( Equipment equipmentDetails )
-    {
-        equipmentStore.deleteEquipmentDetails( equipmentDetails );
-    }
-    @Override
-    public Collection<Equipment> getAllEquipmentDetails()
-    {
-        return equipmentStore.getAllEquipmentDetails();
-    }
-    @Override
-    public void updateEquipmentDetails( Equipment equipmentDetails )
-    {
-        equipmentStore.updateEquipmentDetails( equipmentDetails );
-    }
     
-    public Collection<Equipment> getEquipmentDetails( EquipmentInstance equipmentInstance)
-    {
-        return equipmentStore.getEquipmentDetails( equipmentInstance );
-    }
-
-    public Equipment getEquipmentDetails( EquipmentInstance equipmentInstance, InventoryTypeAttribute inventoryTypeAttribute )
-    {
-        return equipmentStore.getEquipmentDetails( equipmentInstance, inventoryTypeAttribute );
-    }
-    */
     @Override
     public void addEquipment( Equipment equipment )
     {
-         equipmentStore.save( equipment );
+        equipmentStore.addEquipment( equipment );
     }
     @Override
     public void deleteEquipment( Equipment equipment )
     {
-        equipmentStore.delete( equipment );
+        equipmentStore.deleteEquipment( equipment );
     }
-
-    @Override
-    public void updateEquipment( Equipment equipment )
-    {
-        equipmentStore.update( equipment );
-    }
-    
     @Override
     public Collection<Equipment> getAllEquipments()
     {
         return equipmentStore.getAllEquipments();
+    }
+    @Override
+    public void updateEquipment( Equipment equipment )
+    {
+        equipmentStore.updateEquipment( equipment );
     }
     
     public Collection<Equipment> getEquipments( EquipmentInstance equipmentInstance)
@@ -87,4 +51,5 @@ public class DefaultEquipmentService implements EquipmentService
     {
         return equipmentStore.getEquipment( equipmentInstance, inventoryTypeAttribute );
     }
+    
 }

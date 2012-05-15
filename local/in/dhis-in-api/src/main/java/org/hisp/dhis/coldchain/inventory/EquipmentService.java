@@ -6,8 +6,6 @@ public interface EquipmentService
 {
     String ID = EquipmentService.class.getName();
     
-    //void addEquipmentDetails( Equipment equipment );
-    
     void addEquipment( Equipment equipment );
 
     void updateEquipment( Equipment equipment );
@@ -16,7 +14,7 @@ public interface EquipmentService
 
     Collection<Equipment> getAllEquipments();
 
-    Collection<Equipment> getEquipments( EquipmentInstance equipmentInstance);
+    Collection<Equipment> getEquipments( EquipmentInstance equipmentInstance );
     
     Equipment getEquipment( EquipmentInstance equipmentInstance, InventoryTypeAttribute inventoryTypeAttribute );
 }

@@ -2,49 +2,50 @@ package org.hisp.dhis.coldchain.inventory.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.coldchain.inventory.Equipment;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentStore;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
 
-public class HibernateEquipmentStore extends HibernateGenericStore<Equipment> implements EquipmentStore
+public class HibernateEquipmentStore implements EquipmentStore
 {
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    /*
+    
     private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
     }
-    */
+    
     // -------------------------------------------------------------------------
     // EquipmentDetails
     // -------------------------------------------------------------------------
-    /*
+    
     @Override
-    public void addEquipmentDetails( Equipment equipmentDetails )
+    public void addEquipment( Equipment equipment )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        session.save( equipmentDetails );
+        session.save( equipment );
     }
 
     @Override
-    public void deleteEquipmentDetails( Equipment equipmentDetails )
+    public void deleteEquipment( Equipment equipment )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        session.delete( equipmentDetails );
+        session.delete( equipment );
     }
 
     @Override
-    public Collection<Equipment> getAllEquipmentDetails()
+    public Collection<Equipment> getAllEquipments()
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -52,24 +53,15 @@ public class HibernateEquipmentStore extends HibernateGenericStore<Equipment> im
     }
 
     @Override
-    public void updateEquipmentDetails( Equipment equipmentDetails )
+    public void updateEquipment( Equipment equipment )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        session.update( equipmentDetails );
+        session.update( equipment );
     }
     
     
-    @Override
-    public Collection<Equipment> getAllEquipmentDetails()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.createCriteria( Equipment.class ).list();
-    }
-    
-    
-    public Collection<Equipment> getEquipmentDetails( EquipmentInstance equipmentInstance )
+    public Collection<Equipment> getEquipments( EquipmentInstance equipmentInstance )
     {
         Session session = sessionFactory.getCurrentSession();
         
@@ -80,7 +72,7 @@ public class HibernateEquipmentStore extends HibernateGenericStore<Equipment> im
         return criteria.list();
     }
 
-    public Equipment getEquipmentDetails( EquipmentInstance equipmentInstance, InventoryTypeAttribute inventoryTypeAttribute )
+    public Equipment getEquipment( EquipmentInstance equipmentInstance, InventoryTypeAttribute inventoryTypeAttribute )
     {
         Session session = sessionFactory.getCurrentSession();
         
@@ -91,24 +83,5 @@ public class HibernateEquipmentStore extends HibernateGenericStore<Equipment> im
         
         return (Equipment) criteria.uniqueResult();
     }
-    */
     
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<Equipment> getAllEquipments()
-    {
-        return sessionFactory.getCurrentSession().createCriteria( Equipment.class ).list();
-    }
-    
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public Collection<Equipment> getEquipments( EquipmentInstance equipmentInstance )
-    {
-        return getCriteria( Restrictions.eq( "equipmentInstance", equipmentInstance ) ).list();
-    }
-
-    public Equipment getEquipment( EquipmentInstance equipmentInstance, InventoryTypeAttribute inventoryTypeAttribute )
-    {
-        return (Equipment) getCriteria( Restrictions.eq( "equipmentInstance", equipmentInstance ),Restrictions.eq( "inventoryTypeAttribute", inventoryTypeAttribute ) ).uniqueResult();
-    }
 }

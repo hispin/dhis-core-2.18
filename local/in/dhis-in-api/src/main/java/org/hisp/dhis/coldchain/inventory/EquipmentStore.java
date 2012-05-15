@@ -2,24 +2,19 @@ package org.hisp.dhis.coldchain.inventory;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
-
-public interface EquipmentStore extends GenericNameableObjectStore<Equipment>
+public interface EquipmentStore
 {
     String ID = EquipmentStore.class.getName();
     
-    /*
-    void addEquipmentDetails( Equipment equipmentDetails );
+    void addEquipment( Equipment equipment );
+
+    void updateEquipment( Equipment equipment );
+
+    void deleteEquipment( Equipment equipment );
     
-    int addEquipmentDetails( Equipment equipment );
-
-    void updateEquipmentDetails( Equipment equipmentDetails );
-
-    void deleteEquipmentDetails( Equipment equipmentDetails );
-    */
     Collection<Equipment> getAllEquipments();
 
-    Collection<Equipment> getEquipments( EquipmentInstance equipmentInstance);
+    Collection<Equipment> getEquipments( EquipmentInstance equipmentInstance );
     
     Equipment getEquipment( EquipmentInstance equipmentInstance, InventoryTypeAttribute inventoryTypeAttribute );
     
