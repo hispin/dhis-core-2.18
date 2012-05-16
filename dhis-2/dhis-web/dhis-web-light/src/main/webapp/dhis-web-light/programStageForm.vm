@@ -29,9 +29,9 @@
 			#else
 				#set( $dataElementName = $dataElement.name )
 			#end
-				#if ($dataElement.getCategoryOptionCombos().getModels().size() == 1)			
+				#if (! $dataElement.getOptionSet())			
 					#set( $categoryOptionCombo = $dataElement.getCategoryOptionCombos().getModels().get( 0 ) )
-					#set( $key = "DE${dataElement.id}OC${categoryOptionCombo.id}" )
+					#set( $key = "DE${dataElement.id}" )
 
 					<label>$encoder.htmlEncode( $dataElementName ) #if( $categoryOptionCombo.name!="(default)")$encoder.htmlEncode( $categoryOptionCombo.name )#end 
 					#if($dataElement.type=="date") [yyyy-MM-dd] #end
@@ -52,10 +52,10 @@
 					#end 
 					name="$key" value="$!prevDataValues.get($key)" />
 				
-				#elseif ($dataElement.getCategoryOptionCombos().getModels().size() > 1)
+				#elseif ($dataElement.getOptionSet())
 					
-					#set( $categoryOptionCombo = $dataElement.getCategoryOptionCombos().getModels().get( 0 ) )
-					#set( $key = "DE${dataElement.id}OC${categoryOptionCombo.id}" )
+					#set( $options = $dataElement.getOptionSet().getOptions() )
+					#set( $key = "DE${dataElement.id}" )
 
 					$dataElementName
 
@@ -76,13 +76,13 @@
 				
 					#set( $selected=false )
 
-					#foreach ($categoryOptionCombo in $dataElement.categoryOptionCombos.models)
-						<option value="$categoryOptionCombo.name"
-						#if( !$typeViolations.containsKey( $key ) && $prevDataValues.get( $key ) == $categoryOptionCombo.name ) 
+					#foreach ($option in $options)
+						<option value="$option"
+						#if( $prevDataValues.get( $key ) == $option ) 
 							selected
 							#set( $selected=true )
 						#end
-						> $categoryOptionCombo.name </option>
+						> $option </option>
 					#end
 
 					#if( !$selected ) 

@@ -83,9 +83,9 @@ public class GetProgramStageFormAction
     {
         this.programStageInstanceService = programStageInstanceService;
     }
-    
+
     private PatientDataValueService patientDataValueService;
-    
+
     public PatientDataValueService getPatientDataValueService()
     {
         return patientDataValueService;
@@ -95,7 +95,6 @@ public class GetProgramStageFormAction
     {
         this.patientDataValueService = patientDataValueService;
     }
-    
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -112,9 +111,9 @@ public class GetProgramStageFormAction
     {
         this.programInstanceId = programInstanceId;
     }
-    
+
     private int programStageInstanceId;
-    
+
     public int getProgramStageInstanceId()
     {
         return programStageInstanceId;
@@ -221,7 +220,7 @@ public class GetProgramStageFormAction
     }
 
     private boolean current;
-    
+
     private Map<String, String> prevDataValues = new HashMap<String, String>();
 
     public Map<String, String> getPrevDataValues()
@@ -247,16 +246,15 @@ public class GetProgramStageFormAction
     public String execute()
         throws Exception
     {
-        // organisationUnit = organisationUnitService.getOrganisationUnit(
-        // Integer.parseInt( orgUnitId ) );
         prevDataValues.clear();
         programStage = util.getProgramStage( Integer.parseInt( programId ), Integer.parseInt( programStageId ) );
         dataElements = programStage.getDataElements();
-        Collection<PatientDataValue> patientDataValues =  patientDataValueService.getPatientDataValues( programStageInstanceService.getProgramStageInstance( programStageInstanceId ) );
-        for (PatientDataValue patientDataValue : patientDataValues) {
-            prevDataValues.put( "DE" + patientDataValue.getDataElement().getId() + "OC" + 4, patientDataValue.getValue() );
+        Collection<PatientDataValue> patientDataValues = patientDataValueService
+            .getPatientDataValues( programStageInstanceService.getProgramStageInstance( programStageInstanceId ) );
+        for ( PatientDataValue patientDataValue : patientDataValues )
+        {
+            prevDataValues.put( "DE" + patientDataValue.getDataElement().getId(), patientDataValue.getValue() );
         }
-        
         return SUCCESS;
 
     }
