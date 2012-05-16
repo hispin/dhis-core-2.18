@@ -215,7 +215,7 @@ public class DefaultProgramStageInstanceService
                 attributes, dataElements, startDate, endDate, format, i18n );
         }
 
-        return null;
+        return new ListGrid();
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
@@ -236,7 +236,7 @@ public class DefaultProgramStageInstanceService
                 attributes, dataElements, startDate, endDate, format, i18n );
         }
 
-        return null;
+        return new ListGrid();
     }
 
     @Override
