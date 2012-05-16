@@ -1078,7 +1078,8 @@ Ext.onReady( function() {
 /* TABLE */
 
 DHIS.table.finals = {
-	dataGet: 'api/reportTables/data.jsonp?minimal=true',
+	tableDataGet: 'api/reportTables/data.jsonp?minimal=true',
+	dynamicDataGet: 'api/reportTables/data',
 	data: 'data',
 	periods: 'periods',
 	orgunits: 'orgunits',
@@ -1094,6 +1095,7 @@ DHIS.table.finals = {
 		orgUnitIsParent: false,
 		hiddenCols: [],
 		useExtGrid: false,
+		format: 'html',
 		el: '',
 		url: ''
 	}
@@ -1113,10 +1115,8 @@ DHIS.table.utils = {
     		DHIS.table.tables[el].destroy();
     	}
     },
-    getDataUrl: function(conf) {
-		var url = conf.url + DHIS.table.finals.dataGet;
-		
-		Ext.Array.each(conf.indicators, function(item) {
+    getDataQuery: function(conf,url) {    	
+    	Ext.Array.each(conf.indicators, function(item) {
 			url = Ext.String.urlAppend(url, 'in=' + item);
 		});
 		Ext.Array.each(conf.dataelements, function(item) {
@@ -1135,7 +1135,16 @@ DHIS.table.utils = {
 			url = Ext.String.urlAppend(url, 'crosstab=' + item);
 		});
 		url = DHIS.table.utils.appendUrlIfTrue(url, DHIS.table.finals.orgUnitIsParent, conf.orgUnitIsParent);
+		
 		return url;
+    },
+    getTableDataUrl: function(conf) {
+		var url = conf.url + DHIS.table.finals.tableDataGet;
+		return this.getDataQuery(conf, url);
+	},
+	getDynamicDataUrl: function(conf) {
+		var url = conf.url + DHIS.table.finals.dynamicDataGet + '.' + conf.format;
+		return this.getDataQuery(conf, url);
 	}
 };
 
@@ -1166,7 +1175,7 @@ DHIS.table.grid = {
 	render: function(conf) {
 		DHIS.table.utils.destroy(conf.el);
 		Ext.data.JsonP.request({
-			url: DHIS.table.utils.getDataUrl(conf),
+			url: DHIS.table.utils.getTableDataUrl(conf),
 			disableCaching: false,
 			success: function(data) {
 				DHIS.table.tables[conf.el] = Ext.create('Ext.grid.Panel', {
@@ -1206,7 +1215,7 @@ DHIS.table.plain = {
 	},	
 	render: function(conf) {
 		Ext.data.JsonP.request({
-			url: DHIS.table.utils.getDataUrl(conf),
+			url: DHIS.table.utils.getTableDataUrl(conf),
 			disableCaching: false,
 			success: function(data) {
 				var html = DHIS.table.plain.getMarkup(data);
@@ -1219,13 +1228,18 @@ DHIS.table.plain = {
 DHIS.table.impl = {
 	render: function(conf) {
 		conf = Ext.applyIf(conf, DHIS.table.finals.defaultConf);
-		if ( conf.useExtGrid ) {
+		if (conf.useExtGrid) {
 			DHIS.table.grid.render(conf);
 		}
 		else {
 			DHIS.table.plain.render(conf);
 		}
+	},
+	getUrl: function(conf) {
+		conf = Ext.applyIf(conf, DHIS.table.finals.defaultConf);
+		return DHIS.table.utils.getDynamicDataUrl(conf);
 	}
 }
 
 DHIS.getTable = DHIS.table.impl.render;
+DHIS.getUrl = DHIS.table.impl.getUrl;

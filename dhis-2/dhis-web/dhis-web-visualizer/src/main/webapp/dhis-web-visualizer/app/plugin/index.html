@@ -74,6 +74,18 @@
 				el: 'table2',
 				url: url
 			});
+			
+			var url1 = DHIS.getUrl({
+				indicators: ['OdiHJayrsKo'],
+				periods: ['last12Months'],
+				orgunits: ['ImspTQPwCqd'],
+				crosstab: ['periods'],
+				orgUnitIsParent: true,
+				format: 'pdf',
+				url: url
+			});
+			
+			Ext.get('url1').update(url1);
 		});
 	</script>
 	
@@ -119,5 +131,8 @@
 		
 	<h1>My table 2</h1>
 	<div id="table2"></div>
+	
+	<h1>My URL</h1>
+	<div id="url1"></div>
 </body>
 </html>
