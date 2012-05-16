@@ -171,20 +171,20 @@ public class DefaultIdentifiableObjectManager
     public <T extends IdentifiableObject> T search( Class<T> clazz, String query )
     {
         T object = get( clazz, query );
-        
+
         if ( object == null )
         {
             object = getByCode( clazz, query );
         }
-        
+
         if ( object == null )
         {
             object = getByName( clazz, query );
         }
-        
+
         return object;
     }
-    
+
     @Override
     @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz )
@@ -199,6 +199,54 @@ public class DefaultIdentifiableObjectManager
         }
 
         return (Collection<T>) store.getAll();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Collection<T> getBetween( Class<T> clazz, int first, int max )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getBetween)." );
+
+            return new ArrayList<T>();
+        }
+
+        return (Collection<T>) store.getBetween( first, max );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Collection<T> getBetweenByName( Class<T> clazz, String name, int first, int max )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getBetween)." );
+
+            return new ArrayList<T>();
+        }
+
+        return (Collection<T>) store.getBetweenByName( name, first, max );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Collection<T> getByLastUpdated( Class<T> clazz, Date lastUpdated )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getBetween)." );
+
+            return new ArrayList<T>();
+        }
+
+        return (Collection<T>) store.getByLastUpdated( lastUpdated );
     }
 
     @Override
