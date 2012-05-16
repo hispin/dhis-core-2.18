@@ -31,6 +31,7 @@ import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.common.NameableObject.NameableProperty;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -47,10 +48,16 @@ public interface IdentifiableObjectManager
     <T extends IdentifiableObject> T getByCode( Class<T> clazz, String code );
 
     <T extends IdentifiableObject> T getByName( Class<T> clazz, String name );
-    
+
     <T extends IdentifiableObject> T search( Class<T> clazz, String query );
 
     <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz );
+
+    <T extends IdentifiableObject> Collection<T> getBetween( Class<T> clazz, int first, int max );
+
+    <T extends IdentifiableObject> Collection<T> getBetweenByName( Class<T> clazz, String name, int first, int max );
+
+    <T extends IdentifiableObject> Collection<T> getByLastUpdated( Class<T> clazz, Date lastUpdated );
 
     void delete( IdentifiableObject object );
 

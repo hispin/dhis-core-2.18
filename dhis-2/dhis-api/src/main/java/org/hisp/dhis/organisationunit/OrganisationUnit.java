@@ -576,7 +576,6 @@ public class OrganisationUnit
         this.parent = parent;
     }
 
-    @JsonIgnore
     public String getAlternativeName()
     {
         return getShortName();

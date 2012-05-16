@@ -100,8 +100,8 @@ public interface GenericIdentifiableObjectStore<T>
     /**
      * Returns all objects that are equal to or newer than given date
      *
-     * @param lastUpdate Date to compare to
+     * @param lastUpdated Date to compare to
      * @return All objects equal or newer than given date
      */
-    List<T> getByLastUpdated(Date lastUpdate);
+    List<T> getByLastUpdated(Date lastUpdated);
 }

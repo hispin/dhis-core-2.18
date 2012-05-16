@@ -34,7 +34,9 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.document.Document;
@@ -117,16 +119,16 @@ public class DefaultObjectBridge
         registeredTypes.add( Document.class );
         registeredTypes.add( Constant.class );
         registeredTypes.add( Attribute.class );
-        // registeredTypes.add( Concept.class );
+        registeredTypes.add( Concept.class );
         registeredTypes.add( SqlView.class );
         registeredTypes.add( Chart.class );
         registeredTypes.add( Report.class );
         registeredTypes.add( ReportTable.class );
-        // registeredTypes.add( DataDictionary.class );
+        registeredTypes.add( DataDictionary.class );
 
-        registeredTypes.add( User.class );
-        registeredTypes.add( UserGroup.class );
-        registeredTypes.add( UserAuthorityGroup.class );
+        // registeredTypes.add( User.class );
+        // registeredTypes.add( UserGroup.class );
+        // registeredTypes.add( UserAuthorityGroup.class );
 
         registeredTypes.add( OrganisationUnitLevel.class );
         registeredTypes.add( OrganisationUnit.class );
