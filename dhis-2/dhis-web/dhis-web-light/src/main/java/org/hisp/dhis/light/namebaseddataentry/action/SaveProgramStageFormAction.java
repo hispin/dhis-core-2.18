@@ -39,6 +39,7 @@ import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.DataElement;
 import org.hisp.dhis.api.mobile.model.DataValue;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -99,6 +100,18 @@ public class SaveProgramStageFormAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    private DataElementCategoryService dataElementCategoryService;
+
+    public DataElementCategoryService getDataElementCategoryService()
+    {
+        return dataElementCategoryService;
+    }
+
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    {
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -226,7 +239,7 @@ public class SaveProgramStageFormAction
     {
         if ( orgUnitId != 0 )
         {
-            organisationUnit = organisationUnitService.getOrganisationUnit(  orgUnitId  );
+            organisationUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         }
         else
         {
@@ -236,7 +249,7 @@ public class SaveProgramStageFormAction
         programStage = util.getProgramStage( Integer.parseInt( programId ), Integer.parseInt( programStageId ) );
 
         dataElements = programStage.getDataElements();
-
+        int defaultCategoryOptionId = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId();
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
             ServletActionContext.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
@@ -248,11 +261,10 @@ public class SaveProgramStageFormAction
 
         for ( String key : parameterMap.keySet() )
         {
-            if ( key.startsWith( "DE" ) && key.indexOf( "OC" ) != -1 )
+            if ( key.startsWith( "DE" ) )
             {
-                String[] splitKey = key.split( "OC" );
-                Integer dataElementId = Integer.parseInt( splitKey[0].substring( 2 ) );
-                Integer categoryOptComboId = Integer.parseInt( splitKey[1] );
+                Integer dataElementId = Integer.parseInt( key.substring( 2, key.length()) );
+                // Integer categoryOptComboId = Integer.parseInt( splitKey[1] );
                 String value = parameterMap.get( key );
 
                 // validate types
@@ -275,7 +287,8 @@ public class SaveProgramStageFormAction
                 DataValue dataValue = new DataValue();
                 dataValue.setId( dataElementId );
                 dataValue.setValue( value );
-                dataValue.setCategoryOptComboID( categoryOptComboId );
+
+                dataValue.setCategoryOptComboID( defaultCategoryOptionId );
 
                 dataValues.add( dataValue );
             }
