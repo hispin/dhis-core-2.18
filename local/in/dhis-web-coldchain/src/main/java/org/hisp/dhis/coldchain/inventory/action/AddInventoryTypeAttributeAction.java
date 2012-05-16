@@ -74,6 +74,16 @@ public class AddInventoryTypeAttributeAction implements Action
     {
         this.noChars = noChars;
     }
+    
+    private boolean display;
+    
+    public void setDisplay( boolean display )
+    {
+        this.display = display;
+    }
+
+
+
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -89,6 +99,7 @@ public class AddInventoryTypeAttributeAction implements Action
         inventoryTypeAttribute.setMandatory( mandatory );
         inventoryTypeAttribute.setNoChars( noChars );
         inventoryTypeAttribute.setValueType( valueType );
+        inventoryTypeAttribute.setDisplay( display );
         
         inventoryTypeAttributeService.addInventoryTypeAttribute( inventoryTypeAttribute );
         

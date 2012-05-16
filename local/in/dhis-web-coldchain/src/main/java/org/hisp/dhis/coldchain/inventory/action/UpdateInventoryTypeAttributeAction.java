@@ -88,6 +88,14 @@ public class UpdateInventoryTypeAttributeAction implements Action
         this.noChars = noChars;
     }
     
+   private boolean display;
+    
+    public void setDisplay( boolean display )
+    {
+        this.display = display;
+    }
+    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -101,6 +109,7 @@ public class UpdateInventoryTypeAttributeAction implements Action
         inventoryTypeAttribute.setMandatory( mandatory );
         inventoryTypeAttribute.setNoChars( noChars );
         inventoryTypeAttribute.setValueType( valueType );
+        inventoryTypeAttribute.setDisplay( display );
 
         HttpServletRequest request = ServletActionContext.getRequest();
         Collection<InventoryTypeAttributeOption> attributeOptions = inventoryTypeAttributeOptionService.get( inventoryTypeAttribute );

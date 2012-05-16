@@ -17,6 +17,7 @@
       foreign-key="fk_inventorytype_catalogypeid" />
 
     <property name="tracking" column="tracking" />
+	
 <!--	
 	<set name="inventoryTypeAttributes" table="inventorytype_attributes">
       <key column="inventorytypeid" foreign-key="fk_inventorytype_attributes_inventorytypeid" />

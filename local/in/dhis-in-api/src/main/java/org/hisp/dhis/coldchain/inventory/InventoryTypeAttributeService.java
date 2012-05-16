@@ -28,6 +28,9 @@ public interface InventoryTypeAttributeService
     
     Collection<InventoryTypeAttribute> getInventoryTypeAttributesBetweenByName( String name, int first, int max );
     
+    
+    //Collection<InventoryTypeAttribute> getAllInventoryTypeAttributesForDisplay( InventoryTypeAttribute inventoryTypeAttribute );
+    
 
     
 }

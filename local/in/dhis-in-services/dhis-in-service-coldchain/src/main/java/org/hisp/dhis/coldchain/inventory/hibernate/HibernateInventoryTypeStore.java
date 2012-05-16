@@ -94,4 +94,15 @@ public class HibernateInventoryTypeStore extends HibernateIdentifiableObjectStor
     {
         return (InventoryType) sessionFactory.getCurrentSession().get( InventoryType.class, id );
     }
+    /*
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<InventoryTypeAttribute> getAllInventoryTypeAttributesForDisplay( InventoryType inventoryType )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( InventoryTypeAttribute.class );
+        criteria.setProjection( Projections.property( "display" ) );
+        return criteria.list();
+    }
+    */
+    
 }

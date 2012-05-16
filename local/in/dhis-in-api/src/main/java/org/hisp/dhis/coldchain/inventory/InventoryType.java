@@ -23,6 +23,8 @@ public class InventoryType extends BaseNameableObject
     
     private boolean tracking;
     
+    
+ 
     private CatalogType catalogType;
     
    // private Set<InventoryTypeAttribute> inventoryTypeAttributes;
@@ -53,6 +55,8 @@ public class InventoryType extends BaseNameableObject
         this.tracking = tracking;
         this.catalogType = catalogType;
     }
+    
+    
     
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
@@ -156,7 +160,5 @@ public class InventoryType extends BaseNameableObject
     {
         this.dataEntryForm = dataEntryForm;
     }
-    
-    
     
 }

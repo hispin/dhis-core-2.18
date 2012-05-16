@@ -94,5 +94,17 @@ public class HibernateInventoryTypeAttributeStore extends HibernateIdentifiableO
     {
         return (InventoryTypeAttribute) getCriteria( Restrictions.eq( "name", name ) ).uniqueResult();
         
-    }    
+    }
+    /*
+    @SuppressWarnings( "unchecked" )
+    public Collection<InventoryTypeAttribute> getAllInventoryTypeAttributesForDisplay( InventoryTypeAttribute inventoryTypeAttribute )
+    {
+        //return sessionFactory.getCurrentSession().createCriteria( InventoryTypeAttribute.class,inventoryTypeAttribute.isDisplay() ).list();
+        
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( InventoryTypeAttribute.class );
+        criteria.setProjection( Projections.property( "display" ) );
+        return criteria.list();
+    }
+    */
+    
 }

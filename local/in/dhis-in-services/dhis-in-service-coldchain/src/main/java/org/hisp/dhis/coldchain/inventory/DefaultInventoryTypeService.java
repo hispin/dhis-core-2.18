@@ -4,7 +4,9 @@ import static org.hisp.dhis.i18n.I18nUtils.getCountByName;
 import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
 import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,8 @@ public class DefaultInventoryTypeService implements InventoryTypeService
     {
         i18nService = service;
     }
+
+    
     // -------------------------------------------------------------------------
     // InventoryType
     // -------------------------------------------------------------------------
@@ -71,6 +75,7 @@ public class DefaultInventoryTypeService implements InventoryTypeService
     */
     
    
+ 
     @Override
     public int addInventoryType( InventoryType inventoryType )
     {
@@ -124,6 +129,29 @@ public class DefaultInventoryTypeService implements InventoryTypeService
     public Collection<InventoryType> getInventoryTypesBetweenByName( String name, int first, int max )
     {
         return getObjectsBetweenByName( i18nService, inventoryTypeStore, name, first, max );
-    }    
+    } 
+    /*
+    public Collection<InventoryTypeAttribute> getAllInventoryTypeAttributesForDisplay( InventoryType inventoryType )
+    {
+        return inventoryTypeStore.getAllInventoryTypeAttributesForDisplay( inventoryType );
+    }
+    */
+    public Collection<InventoryTypeAttribute> getAllInventoryTypeAttributesForDisplay( InventoryType inventoryType )
+    {
+        List<InventoryTypeAttribute> inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>();
+        List<InventoryTypeAttribute> tempInventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+        
+        for ( InventoryTypeAttribute inventoryTypeAttribute : tempInventoryTypeAttributeList )
+        {
+            if ( inventoryTypeAttribute.isDisplay())
+            {
+                inventoryTypeAttributeList.add( inventoryTypeAttribute );
+            }
+        }
 
+        return inventoryTypeAttributeList;
+    }
+    
+    
+    
 }
