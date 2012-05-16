@@ -7,9 +7,9 @@
 }
 </style>
 
-<input type="hidden" id="dataSetId" value="${selectedDataSet.id}">
-<input type="hidden" id="periodId" value="${selectedPeriod.externalId}">
-<input type="hidden" id="selectedUnitOnly" value="${selectedUnitOnly}">
+<input type="hidden" id="currentDataSetId" value="${selectedDataSet.id}">
+<input type="hidden" id="currentPeriodId" value="${selectedPeriod.externalId}">
+<input type="hidden" id="currentSelectedUnitOnly" value="${selectedUnitOnly}">
 <div id="userInfo" class="page"></div>
 
 <h3>$encoder.htmlEncode( $selectedOrgunit.name ) - $format.formatPeriod( $selectedPeriod )</h3>
