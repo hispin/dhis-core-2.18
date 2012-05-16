@@ -33,6 +33,17 @@
         </td>       
         <td></td>               
     </tr>
+
+      <tr>
+        <td><label for="display">$i18n.getString( "display" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td>
+            <select id="display" name="display">
+                <option value="true" #if( $inventoryTypeAttribute.display ) selected="selected" #end>$i18n.getString( "yes" )</option>
+                <option value="false" #if( !$inventoryTypeAttribute.display ) selected="selected" #end>$i18n.getString( "no" )</option>
+            </select>
+        </td>       
+        <td></td>               
+    </tr>
     
     <tr>
         <td><label for="noChar">$i18n.getString( "no_of_char" )</label></td>

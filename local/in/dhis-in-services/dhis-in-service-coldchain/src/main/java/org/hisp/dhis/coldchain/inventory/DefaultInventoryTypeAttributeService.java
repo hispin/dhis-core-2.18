@@ -129,4 +129,10 @@ public class DefaultInventoryTypeAttributeService implements InventoryTypeAttrib
     {
         return getObjectsBetweenByName( i18nService, inventoryTypeAttributeStore, name, first, max );
     }
+    /*
+    public Collection<InventoryTypeAttribute> getAllInventoryTypeAttributesForDisplay( InventoryTypeAttribute inventoryTypeAttribute )
+    {
+        return inventoryTypeAttributeStore.getAllInventoryTypeAttributesForDisplay( inventoryTypeAttribute );
+    }
+    */
 }

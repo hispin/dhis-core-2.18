@@ -21,4 +21,6 @@ public interface InventoryTypeStore extends GenericNameableObjectStore<Inventory
     InventoryType getInventoryTypeByName( String name );
     
     InventoryType getInventoryType( int id );
+    
+    //Collection<InventoryTypeAttribute> getAllInventoryTypeAttributesForDisplay( InventoryType inventoryType );
 }

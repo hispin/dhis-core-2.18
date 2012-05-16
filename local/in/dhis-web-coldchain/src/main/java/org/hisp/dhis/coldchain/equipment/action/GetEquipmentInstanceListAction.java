@@ -172,24 +172,50 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
     
     private void getInventoryTypeAttributeData()
     {
-        inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+        //InventoryTypeAttribute tempInventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( Integer.parseInt( inventoryTypeAttributeId ) );
         
-        Collections.sort( inventoryTypeAttributeList, new InventoryTypeAttributeMandatoryComparator() );
-        if( inventoryTypeAttributeList != null && inventoryTypeAttributeList.size() > 3 )
+        inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryTypeService.getAllInventoryTypeAttributesForDisplay( inventoryType ));
+        
+        /*
+        List<InventoryTypeAttribute> tempinventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() ) ;
+        
+        if( tempinventoryTypeAttributeList != null )
         {
-            int count = 1;
-            Iterator<InventoryTypeAttribute> iterator = inventoryTypeAttributeList.iterator();
-            while( iterator.hasNext() )
+            
+            for( InventoryTypeAttribute tempInventoryTypeAttribute : tempinventoryTypeAttributeList )
             {
-                iterator.next();
-                
-                if( count > 3 )
-                    iterator.remove();
-                
-                count++;
-            }            
+                if ( tempInventoryTypeAttribute.isDisplay() )
+                {
+                    inventoryTypeAttributeList.add( tempInventoryTypeAttribute );
+                }
+            }
         }
+        */
+        //inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+       
+        //System.out.println("size of inventoryTypeAttributeList " + inventoryTypeAttributeList.size() );
         
+        if( inventoryTypeAttributeList == null || inventoryTypeAttributeList.size() == 0  )
+        {
+            inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+            Collections.sort( inventoryTypeAttributeList, new InventoryTypeAttributeMandatoryComparator() );
+            if( inventoryTypeAttributeList != null && inventoryTypeAttributeList.size() > 3 )
+            {
+                int count = 1;
+                Iterator<InventoryTypeAttribute> iterator = inventoryTypeAttributeList.iterator();
+                while( iterator.hasNext() )
+                {
+                    iterator.next();
+                    
+                    if( count > 3 )
+                        iterator.remove();
+                    
+                    count++;
+                }            
+            }
+            
+        }
+
         for( EquipmentInstance equipmentInstance : equipmentInstanceList )
         {
             for( InventoryTypeAttribute inventoryTypeAttribute1 : inventoryTypeAttributeList )

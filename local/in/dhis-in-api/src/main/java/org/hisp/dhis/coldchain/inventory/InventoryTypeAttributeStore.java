@@ -22,4 +22,7 @@ public interface InventoryTypeAttributeStore extends GenericNameableObjectStore<
     
     InventoryTypeAttribute getInventoryTypeAttributeByName( String name );
     
+    //Collection<InventoryTypeAttribute> getAllInventoryTypeAttributesForDisplay( InventoryTypeAttribute inventoryTypeAttribute );
+    
+    
 }

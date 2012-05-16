@@ -391,3 +391,47 @@ function showEquipmentDetails( equipmentInstanceId )
 	});
 	
 }
+
+
+function catalogDetails( catalogId )
+{	
+	jQuery('#detailsCatalogInfo').load('getCatalogDetails.action',{
+		id: catalogId
+	},
+	function(){
+		showById('detailsCatalogInfo');
+	});
+	
+	
+	
+	/*
+	jQuery.getJSON( 'getCatalogDetails.action', { id: catalogId }, function ( json ) {
+		//setInnerHTML( 'nameField', json.catalog.name );	
+		//setInnerHTML( 'descriptionField', json.catalog.description );
+		//setInnerHTML( 'catalogTypeField', json.catalog.catalogType );   
+	   
+		showById('detailsCatalogInfo');
+		//showDetails();
+	});
+		
+	
+	//showById('detailsCatalogInfo');
+	
+	
+	
+	$('#detailsCatalogInfo').load("getCatalogDetails.action", 
+				{
+					id:catalogId
+				}
+				, function( ){
+				}).dialog({
+					title: 'Catalog details',
+					maximize: true, 
+					closable: true,
+					modal:true,
+					overlay:{background:'#000000', opacity:0.1},
+					width: 400,
+					height: 400
+				});;
+	*/
+}

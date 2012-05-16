@@ -34,7 +34,9 @@ public class InventoryTypeAttribute extends BaseNameableObject
     private String valueType;
     
     private boolean mandatory;
-
+    
+    private boolean display;
+    
     private Integer noChars;
 
     private Set<InventoryTypeAttributeOption> attributeOptions;
@@ -165,5 +167,15 @@ public class InventoryTypeAttribute extends BaseNameableObject
         if ( attributeOptions == null )
             attributeOptions = new HashSet<InventoryTypeAttributeOption>();
         attributeOptions.add( option );
+    }
+    
+    public boolean isDisplay()
+    {
+        return display;
+    }
+
+    public void setDisplay( boolean display )
+    {
+        this.display = display;
     }
 }
