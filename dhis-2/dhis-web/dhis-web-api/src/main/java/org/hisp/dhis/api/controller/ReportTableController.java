@@ -184,6 +184,27 @@ public class ReportTableController
         return grid != null ? "reportTableData" : null;
     }
 
+    @RequestMapping( value = "/data.xml", method = RequestMethod.GET )
+    public void getReportTableDynamicDataXml( @RequestParam(required=false, value="in") List<String> indicators,
+                                             @RequestParam(required=false, value="de") List<String> dataElements,
+                                             @RequestParam(required=false, value="ds") List<String> dataSets,
+                                             @RequestParam(value="ou") List<String> orgUnits,
+                                             @RequestParam(required=false, value="crosstab") List<String> crossTab,
+                                             @RequestParam(required=false) boolean orgUnitIsParent,
+                                             @RequestParam(required=false) boolean minimal,
+                                             RelativePeriods relatives,
+                                             Model model, 
+                                             HttpServletResponse response ) throws Exception
+    {
+        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets, 
+            orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
+
+        String filename = DATA_NAME + ".xml";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
+
+        GridUtils.toXml( grid, response.getOutputStream() );
+    }
+
     @RequestMapping( value = "/data.html", method = RequestMethod.GET )
     public void getReportTableDynamicDataHtml( @RequestParam(required=false, value="in") List<String> indicators,
                                              @RequestParam(required=false, value="de") List<String> dataElements,
