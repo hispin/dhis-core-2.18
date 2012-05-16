@@ -71,6 +71,18 @@ var FORMTYPE_DEFAULT = 'default';
  * download updated forms from server
  */
 
+function hideExportDiv()
+{
+	hideById( 'inputCriteria' );
+	showById( 'showButtonDiv' );
+}
+
+function showExportDiv()
+{
+	showById( 'inputCriteria' );
+	hideById( 'showButtonDiv' );
+}
+ 
 function organisationUnitSelectedHospitals( orgUnits, orgUnitNames )
 {
 	clearEntryForm();
@@ -205,7 +217,9 @@ function clearEntryForm()
 
 function loadForm( dataSetId, value )
 {
+	hideExportDiv();
 	showLoader();
+
 	$( '#contentDiv' ).load( 'loadForm.action', {
 		dataSetId : dataSetId,
 		value: value
