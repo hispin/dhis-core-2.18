@@ -46,9 +46,9 @@ function validateDataSetReport()
 function exportDataSetReport( type )
 {
 	var url = "generateDataSetReport.action?useLast=true" + 
-		"&dataSetId=" + $( "#dataSetId" ).val() +
-	    "&periodId=" + $( "#periodId" ).val() +
-	    "&selectedUnitOnly=" + $( "#selectedUnitOnly" ).val() +
+		"&dataSetId=" + $( "#currentDataSetId" ).val() +
+	    "&periodId=" + $( "#currentPeriodId" ).val() +
+	    "&selectedUnitOnly=" + $( "#currentSelectedUnitOnly" ).val() +
 	    "&orgUnitId=" + selectionTreeSelection.getSelected() +
 	    "&type=" + type;
 	    
