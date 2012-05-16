@@ -29,7 +29,6 @@ package org.hisp.dhis.dxf2.metadata.importers;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.SessionFactory;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
@@ -42,7 +41,6 @@ import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
@@ -435,8 +433,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     private IdentifiableObject findObjectByReference( IdentifiableObject identifiableObject )
     {
+        if ( identifiableObject == null )
+        {
+            return null;
+        }
         // FIXME this is a bit too static ATM, should be refactored out into its own "type handler"
-        if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
+        else if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
         {
             Period period = (Period) identifiableObject;
             return periodService.reloadPeriod( period );

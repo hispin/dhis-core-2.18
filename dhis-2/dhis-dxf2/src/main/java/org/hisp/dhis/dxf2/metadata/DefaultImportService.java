@@ -33,10 +33,6 @@ import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -146,6 +142,11 @@ public class DefaultImportService
         doImport( metaData.getCharts(), importOptions, importSummary );
 
         doImport( metaData.getDataSets(), importOptions, importSummary );
+
+        if ( importOptions.isDryRun() )
+        {
+            sessionFactory.getCurrentSession().clear();
+        }
 
         cacheManager.clearCache();
         objectBridge.destroy();
