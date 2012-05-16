@@ -108,7 +108,6 @@ public class DataSet
     /**
      * The Sections associated with the DataSet.
      */
-    @Scanned
     private Set<Section> sections = new HashSet<Section>();
 
     /**

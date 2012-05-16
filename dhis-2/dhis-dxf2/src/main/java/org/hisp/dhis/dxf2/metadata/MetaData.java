@@ -39,6 +39,7 @@ import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -141,6 +142,8 @@ public class MetaData
     private List<MapLayer> mapLayers = new ArrayList<MapLayer>();
 
     private List<DataDictionary> dataDictionaries = new ArrayList<DataDictionary>();
+
+    private List<Section> sections = new ArrayList<Section>(  );
 
     private List<DataSet> dataSets = new ArrayList<DataSet>();
 
@@ -435,6 +438,19 @@ public class MetaData
     }
 
     @JsonProperty
+    @JacksonXmlElementWrapper( localName = "sections", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "section", namespace = Dxf2Namespace.NAMESPACE )
+    public List<Section> getSections()
+    {
+        return sections;
+    }
+
+    public void setSections( List<Section> sections )
+    {
+        this.sections = sections;
+    }
+
+    @JsonProperty
     @JacksonXmlElementWrapper( localName = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataSet> getDataSets()
@@ -642,6 +658,7 @@ public class MetaData
             ", organisationUnitGroups=" + organisationUnitGroups.size() +
             ", organisationUnitGroupSets=" + organisationUnitGroupSets.size() +
             ", organisationUnitLevels=" + organisationUnitLevels.size() +
+            ", sections=" + sections.size() +
             ", dataSets=" + dataSets.size() +
             ", validationRules=" + validationRules.size() +
             ", validationRuleGroups=" + validationRuleGroups.size() +

@@ -101,7 +101,6 @@ public class DefaultImportService
         doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
-
         doImport( metaData.getUsers(), importOptions, importSummary );
         doImport( metaData.getUserGroups(), importOptions, importSummary );
         doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
@@ -126,6 +125,7 @@ public class DefaultImportService
         doImport( metaData.getIndicatorGroups(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroupSets(), importOptions, importSummary );
 
+/*
         doImport( metaData.getMaps(), importOptions, importSummary );
         doImport( metaData.getMapLegends(), importOptions, importSummary );
         doImport( metaData.getMapLegendSets(), importOptions, importSummary );
@@ -140,8 +140,10 @@ public class DefaultImportService
         doImport( metaData.getReports(), importOptions, importSummary );
         doImport( metaData.getReportTables(), importOptions, importSummary );
         doImport( metaData.getCharts(), importOptions, importSummary );
+*/
 
         doImport( metaData.getDataSets(), importOptions, importSummary );
+        doImport( metaData.getSections(), importOptions, importSummary );
 
         if ( importOptions.isDryRun() )
         {
