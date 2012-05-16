@@ -1551,8 +1551,15 @@ function pagingList( currentPage, pageSize )
 		
 		url = link + "?currentPage=" + currentPage + "&pageSize=" + pageSize;
 		
-		byId( 'filterKeyForm' ).action = url;
-		byId( 'filterKeyForm' ).submit();
+		if ( $( '#filterKeyForm' ).length )
+		{
+			$( '#filterKeyForm' ).attr( 'action', url );
+			$( '#filterKeyForm' ).submit();
+		}
+		else
+		{
+			window.location.href = url;
+		}
 	}
 	else
 	{		
