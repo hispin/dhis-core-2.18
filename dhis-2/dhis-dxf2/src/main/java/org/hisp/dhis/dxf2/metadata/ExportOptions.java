@@ -95,6 +95,8 @@ public class ExportOptions
 
     private boolean dataSets = true;
 
+    private boolean sections = true;
+
     private boolean validationRules = true;
 
     private boolean validationRuleGroups = true;
@@ -353,6 +355,16 @@ public class ExportOptions
     public void setDataSets( boolean dataSets )
     {
         this.dataSets = dataSets;
+    }
+
+    public boolean isSections()
+    {
+        return sections;
+    }
+
+    public void setSections( boolean sections )
+    {
+        this.sections = sections;
     }
 
     public boolean isValidationRules()

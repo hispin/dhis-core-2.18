@@ -39,6 +39,7 @@ import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -153,6 +154,7 @@ public class DefaultObjectBridge
         registeredTypes.add( ValidationRuleGroup.class );
 
         registeredTypes.add( DataSet.class );
+        registeredTypes.add( Section.class );
 
         registeredTypes.add( MapView.class );
         registeredTypes.add( MapLayer.class );

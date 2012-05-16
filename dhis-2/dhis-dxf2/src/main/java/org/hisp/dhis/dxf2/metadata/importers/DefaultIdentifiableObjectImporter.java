@@ -487,13 +487,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 // FIXME special case, possible forward reference.. so just skip it..
                 if ( !OrganisationUnitGroupSet.class.isInstance( idObject ) )
                 {
-                    log.warn( "Ignored reference " + idObject + " on object " + identifiableObject + "." );
-
-                    ImportConflict importConflict = new ImportConflict( getDisplayName( identifiableObject ),
-                        "Unknown reference to " + idObject + " on field " + field.getName() + ", reference has been discarded." );
-
-                    importConflicts.add( importConflict );
                 }
+
+                log.warn( "Ignored reference " + idObject + " (" + idObject.getClass() + ") " + " on object " + identifiableObject + "." );
+
+                ImportConflict importConflict = new ImportConflict( getDisplayName( identifiableObject ),
+                    "Unknown reference to " + idObject + " (" + idObject.getClass() + ") " + " on field " + field.getName() + ", reference has been discarded." );
+
+                importConflicts.add( importConflict );
             }
         }
 
@@ -562,10 +563,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    log.warn( "Ignored reference " + idObject + " on object " + identifiableObject + "." );
+                    log.warn( "Ignored reference " + idObject + " (" + idObject.getClass() + ") " + " on object " + identifiableObject + "." );
 
                     ImportConflict importConflict = new ImportConflict( getDisplayName( identifiableObject ),
-                        "Unknown reference to " + idObject + " on field " + field.getName() + ", reference has been discarded." );
+                        "Unknown reference to " + idObject + " (" + idObject.getClass() + ") " + " on field " + field.getName() + ", reference has been discarded." );
 
                     importConflicts.add( importConflict );
                 }

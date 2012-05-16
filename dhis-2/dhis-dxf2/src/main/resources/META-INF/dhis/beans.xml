@@ -68,6 +68,10 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.constant.Constant" />
   </bean>
 
+  <bean id="sectionImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.dataset.Section" />
+  </bean>
+
   <bean id="dataSetImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.dataset.DataSet" />
   </bean>
