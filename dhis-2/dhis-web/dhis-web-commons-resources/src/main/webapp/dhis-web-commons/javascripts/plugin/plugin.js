@@ -1092,6 +1092,7 @@ DHIS.table.finals = {
 		orgunits: [],
 		crosstab: ['data'],
 		orgUnitIsParent: false,
+		hiddenCols: [],
 		useExtGrid: false,
 		el: '',
 		url: ''
@@ -1146,10 +1147,12 @@ DHIS.table.grid = {
 		});
 		return headers;
 	},
-	getColumnArray: function(data) {
+	getColumnArray: function(conf,data) {
 		var columns = [];
 		Ext.Array.each(data.headers, function(header, index) {
-			columns.push({text: header.name, dataIndex: header.name});
+			if (!Ext.Array.contains(conf.hiddenCols, index) && !Ext.Array.contains(conf.hiddenCols, header)) {
+				columns.push({text: header.name, dataIndex: header.name});
+			}
 		});
 		return columns;
 	},
@@ -1168,7 +1171,7 @@ DHIS.table.grid = {
 			success: function(data) {
 				DHIS.table.tables[conf.el] = Ext.create('Ext.grid.Panel', {
 					store: DHIS.table.grid.getStore(data),
-					columns: DHIS.table.grid.getColumnArray(data),
+					columns: DHIS.table.grid.getColumnArray(conf,data),
 					renderTo: conf.el
 				});
 			}
