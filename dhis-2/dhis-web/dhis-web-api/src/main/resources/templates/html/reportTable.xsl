@@ -21,19 +21,22 @@
 
       <tr>
         <td>ou</td>
-        <td colspan="4">organisation unit uid (opt)</td>
+        <td colspan="6">organisation unit uid (opt)</td>
       </tr>
 
       <tr>
         <td>pe</td>
-        <td colspan="4">period yyyy-MM-dd (opt)</td>
+        <td colspan="6">period yyyy-MM-dd (opt)</td>
       </tr>
 	  </table><br/>
 
 	  <table>
       <tr>
         <td>Dynamic Data</td>
+        <td><a href="data.html">html</a></td>
         <td><a href="data.json">json</a></td>
+        <td><a href="data.xls">xls</a></td>
+        <td><a href="data.pdf">pdf</a></td>
       </tr>
       <tr>
         <td>in</td>
@@ -57,7 +60,11 @@
       </tr>
       <tr>
         <td>orgUnitIsParent</td>
-        <td>org unit is parent</td>
+        <td>true/false</td>
+      </tr>
+      <tr>
+        <td>minimal</td>
+        <td>true/false</td>
       </tr>
       <tr>
         <td>[relative periods]</td>
