@@ -113,8 +113,13 @@ function displayPeriodsInternal()
 			addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
 		}
 	}
-	
-	getRelativePeriods( getFieldValue( "selectedPeriodId" ) );
+
+	if ( currentReportTypeName == "P" ) {
+		getRelativePeriods ( jQuery('#selectedPeriodId option:first' ).val() );
+	}
+	else {
+		getRelativePeriods( getFieldValue( "selectedPeriodId" ) );
+	}
 }
 
 function getRelativePeriods( value )
