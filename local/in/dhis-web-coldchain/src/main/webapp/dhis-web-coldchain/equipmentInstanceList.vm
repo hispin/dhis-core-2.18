@@ -61,6 +61,7 @@
                   #end
                 <td>
                   <a href="javascript:showUpdateEquipmentForm( '$equipmentInstance.id' )" title='$i18n.getString( "edit_equipment" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_equipment" )'></a>
+				  <a href="javascript:showEquipmentDataEntryForm( '$equipmentInstance.id' ); " title='$i18n.getString( "equipment_dataentry" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "equipment_tracking" )' style='width:25px; height:25px'></a>	
                   #if( $inventoryType.tracking )
 					<a href="javascript:showEquipmentStatusForm( '$equipmentInstance.id' ); " title='$i18n.getString( "equipment_tracking" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "equipment_tracking" )' style='width:25px; height:25px'></a>
                     <a href="javascript:showEquipmentStatusHistoryForm( '$equipmentInstance.id' ); " title='$i18n.getString( "equipment_tracking_history" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "equipment_tracking_history" )' style='width:25px; height:25px'></a>

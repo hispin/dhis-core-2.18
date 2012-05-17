@@ -402,8 +402,6 @@ function catalogDetails( catalogId )
 		showById('detailsCatalogInfo');
 	});
 	
-	
-	
 	/*
 	jQuery.getJSON( 'getCatalogDetails.action', { id: catalogId }, function ( json ) {
 		//setInnerHTML( 'nameField', json.catalog.name );	
@@ -413,11 +411,8 @@ function catalogDetails( catalogId )
 		showById('detailsCatalogInfo');
 		//showDetails();
 	});
-		
 	
 	//showById('detailsCatalogInfo');
-	
-	
 	
 	$('#detailsCatalogInfo').load("getCatalogDetails.action", 
 				{
@@ -434,4 +429,45 @@ function catalogDetails( catalogId )
 					height: 400
 				});;
 	*/
+}
+
+
+//------------------------------------------------------------------------------
+// Equipment Routine Data Entry
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+//Update Equipment Data
+//------------------------------------------------------------------------------
+
+function showEquipmentDataEntryForm( equipmentInstanceId )
+{
+	hideById('listEquipmentDiv');
+	hideById('selectDiv');
+	hideById('searchEquipmentDiv');
+	hideById('editEquipmentStatusDiv');
+	
+	jQuery('#loaderDiv').show();
+	jQuery('#editEquipmentDataDiv').load('showEquipmentDataEntryForm.action',
+		{
+			equipmentInstanceId:equipmentInstanceId
+		}, function()
+		{
+			showById('editEquipmentDataDiv');
+			jQuery('#loaderDiv').hide();
+		});
+		
+	jQuery('#resultSearchDiv').dialog('close');
+}
+
+function updateEquipmentDataEntry()
+{
+	$.ajax({
+    type: "POST",
+    url: 'updateEquipmentData.action',
+    data: getParamsForDiv('editEquipmentDataDiv'),
+    success: function( json ) {
+		loadAllEquipments();
+    }
+   });
 }
