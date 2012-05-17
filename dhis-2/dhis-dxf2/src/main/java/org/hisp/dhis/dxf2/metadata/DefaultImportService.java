@@ -97,6 +97,13 @@ public class DefaultImportService
 
         log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + startDate );
 
+        doImport( metaData.getSqlViews(), importOptions, importSummary );
+        doImport( metaData.getConcepts(), importOptions, importSummary );
+        doImport( metaData.getConstants(), importOptions, importSummary );
+        doImport( metaData.getDocuments(), importOptions, importSummary );
+        doImport( metaData.getOptionSets(), importOptions, importSummary );
+        doImport( metaData.getAttributeTypes(), importOptions, importSummary );
+
         doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
@@ -105,13 +112,6 @@ public class DefaultImportService
         // doImport( metaData.getUsers(), importOptions, importSummary );
         // doImport( metaData.getUserGroups(), importOptions, importSummary );
         // doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
-
-        doImport( metaData.getSqlViews(), importOptions, importSummary );
-        doImport( metaData.getConcepts(), importOptions, importSummary );
-        doImport( metaData.getConstants(), importOptions, importSummary );
-        doImport( metaData.getDocuments(), importOptions, importSummary );
-        doImport( metaData.getAttributeTypes(), importOptions, importSummary );
-        doImport( metaData.getOptionSets(), importOptions, importSummary );
 
         doImport( metaData.getCategoryOptions(), importOptions, importSummary );
         doImport( metaData.getCategories(), importOptions, importSummary );

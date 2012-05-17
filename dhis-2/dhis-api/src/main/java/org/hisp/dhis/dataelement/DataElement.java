@@ -582,12 +582,10 @@ public class DataElement
         this.numberType = numberType;
     }
 
-    /*
     @JsonProperty( value = "attributes" )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
-    */
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
