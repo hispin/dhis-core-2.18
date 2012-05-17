@@ -124,7 +124,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         // FIXME add uidValidator.. part of bean validation impl?
         // object.setUid( CodeGenerator.generateCode() );
 
-        log.debug( "Trying to save new object => " + getDisplayName( object ) );
+        log.debug( "Trying to save new object => " + getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
 
         Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections =
             scanIdentifiableObjectCollections( object );
@@ -210,8 +210,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
-            log.info( "Currently importing: " + object + " (" + object.getClass().getSimpleName() + ")" );
-
             List<ImportConflict> conflicts = importObjectLocal( object, options );
 
             if ( !options.isDryRun() )
@@ -461,7 +459,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             Period period = (Period) identifiableObject;
             period = periodStore.reloadForceAddPeriod( period );
 
-            if(!options.isDryRun())
+            if ( !options.isDryRun() )
             {
                 sessionFactory.getCurrentSession().flush();
             }
