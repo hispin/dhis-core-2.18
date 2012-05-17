@@ -13,8 +13,7 @@
 <h3>$i18n.getString( "generate_export_report" ) #openHelp( "excelReportingExportReport" )</h3>
 
 <div id="showButtonDiv" style="display:none">
-	<a title="$i18n.getString( 'hide_params' )" href="javascript:showExportDiv();">
-	<img width="16" height="16" title="$i18n.getString( 'show_export_params' )" src="images/arrow_down.png"/></a>
+	<input type="button" onclick="showExportDiv();" value="$i18n.getString( 'show_export_params' )"/>
 </div>
 
 <div id="exportReportDiv" class="inputCriteria" style="width:680px;height:350px;">
