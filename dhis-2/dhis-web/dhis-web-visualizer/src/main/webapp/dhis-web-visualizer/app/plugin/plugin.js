@@ -754,7 +754,7 @@ Ext.onReady( function() {
             params = params.concat(DHIS.chart.util.dimension[project.state.filter.dimension].getUrl(true));
                         
             var baseUrl = DHIS.chart.util.string.extendUrl(project.state.conf.url) + DHIS.chart.conf.finals.ajax.data_get;
-            baseUrl = DHIS.chart.util.string.appendUrlIfTrue(baseUrl, DHIS.chart.conf.finals.chart.orgUnitIsParent, project.state.orgUnitIsParent);
+            baseUrl = DHIS.chart.util.string.appendUrlIfTrue(baseUrl, DHIS.chart.conf.finals.chart.orgUnitIsParent, project.state.conf.orgUnitIsParent);
             
             Ext.Array.each(params, function(item) {
                 baseUrl = Ext.String.urlAppend(baseUrl, item);
