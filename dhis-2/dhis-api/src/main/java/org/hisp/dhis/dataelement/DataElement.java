@@ -38,6 +38,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
@@ -581,10 +582,12 @@ public class DataElement
         this.numberType = numberType;
     }
 
+    /*
     @JsonProperty( value = "attributes" )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
+    */
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -629,6 +632,9 @@ public class DataElement
             sortOrder = dataElement.getSortOrder() == null ? sortOrder : dataElement.getSortOrder();
             url = dataElement.getUrl() == null ? url : dataElement.getUrl();
             optionSet = dataElement.getOptionSet() == null ? optionSet : dataElement.getOptionSet();
+
+            groups.clear();
+            dataSets.clear();
 
             removeAllCategoryLevels();
             aggregationLevels.addAll( dataElement.getAggregationLevels() );

@@ -301,7 +301,7 @@ public class BaseIdentifiableObject
     public String toString()
     {
         return "{" + "id=" + id + ", uid='" + uid + '\'' + ", code='" +
-            code + '\'' + ", name='" + name + '\'' + ", lastUpdated=" + lastUpdated + "} ";
+            code + '\'' + ", name='" + name + '\'' + ", lastUpdated=" + lastUpdated + "}";
     }
 
     @Override

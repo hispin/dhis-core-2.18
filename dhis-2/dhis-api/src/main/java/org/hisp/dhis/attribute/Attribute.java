@@ -193,6 +193,9 @@ public class Attribute
             userAttribute = attribute.isUserAttribute();
             mandatory = attribute.isMandatory();
             sortOrder = attribute.getSortOrder() == null ? sortOrder : attribute.getSortOrder();
+
+            attributeValues.clear();
+            attributeValues.addAll( attribute.getAttributeValues() );
         }
     }
 }
