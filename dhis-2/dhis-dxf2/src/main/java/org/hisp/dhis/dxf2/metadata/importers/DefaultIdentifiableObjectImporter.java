@@ -37,7 +37,6 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -45,14 +44,12 @@ import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ReflectionUtils;
-import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
@@ -211,13 +208,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
-            Set<AttributeValue> attributeValues = getAttributeValues( object );
-
-            if ( attributeValues.size() > 0 )
-            {
-                setAttributeValues( object, new HashSet<AttributeValue>() );
-            }
-
+            Set<AttributeValue> attributeValues = getAndClearAttributeValues( object );
             List<ImportConflict> conflicts = importObjectLocal( object, options );
 
             if ( !options.isDryRun() )
@@ -225,28 +216,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 sessionFactory.getCurrentSession().flush();
             }
 
-            if ( attributeValues.size() > 0 )
-            {
-                updateAttributeValues( attributeValues );
-
-                for ( AttributeValue attributeValue : attributeValues )
-                {
-                    attributeService.addAttributeValue( attributeValue );
-                }
-
-                if ( !options.isDryRun() )
-                {
-                    sessionFactory.getCurrentSession().flush();
-                }
-
-                setAttributeValues( object, attributeValues );
-
-                if ( !options.isDryRun() )
-                {
-                    sessionFactory.getCurrentSession().flush();
-                }
-            }
-
+            updateAttributeValues( object, attributeValues, options.isDryRun() );
 
             if ( !conflicts.isEmpty() )
             {
@@ -262,44 +232,57 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         ReflectionUtils.invokeSetterMethod( "attributeValues", object, attributeValues );
     }
 
-    private Set<AttributeValue> getAttributeValues( T object )
+    private Set<AttributeValue> getAndClearAttributeValues( T object )
     {
-        if ( DataElement.class.isInstance( object ) )
+        Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+
+        if ( ReflectionUtils.findGetterMethod( "attributeValues", object ) != null )
         {
-            return ((DataElement) object).getAttributeValues();
-        }
-        else if ( Indicator.class.isInstance( object ) )
-        {
-            return ((Indicator) object).getAttributeValues();
-        }
-        else if ( OrganisationUnit.class.isInstance( object ) )
-        {
-            return ((OrganisationUnit) object).getAttributeValues();
-        }
-        else if ( User.class.isInstance( object ) )
-        {
-            return ((User) object).getAttributeValues();
+            attributeValues = ReflectionUtils.invokeGetterMethod( "attributeValues", object );
+
+            if ( attributeValues.size() > 0 )
+            {
+                setAttributeValues( object, new HashSet<AttributeValue>() );
+            }
         }
 
-        return new HashSet<AttributeValue>();
+        return attributeValues;
     }
 
-    private void updateAttributeValues( Set<AttributeValue> attributeValues )
+    private void updateAttributeValues( T object, Set<AttributeValue> attributeValues, boolean dryRun )
     {
-        for ( AttributeValue attributeValue : attributeValues )
+        if ( attributeValues.size() > 0 )
         {
-            Attribute attribute = objectBridge.getObject( attributeValue.getAttribute() );
-
-            log.info( "Attribute: " + attribute );
-
-            if ( attribute == null )
+            for ( AttributeValue attributeValue : attributeValues )
             {
-                log.warn( "Unknown reference to " + attributeValue.getAttribute() + " on object " + attributeValue );
-                continue;
+                Attribute attribute = objectBridge.getObject( attributeValue.getAttribute() );
+
+                if ( attribute == null )
+                {
+                    log.warn( "Unknown reference to " + attributeValue.getAttribute() + " on object " + attributeValue );
+                    continue;
+                }
+
+                attributeValue.setId( 0 );
+                attributeValue.setAttribute( attribute );
             }
 
-            attributeValue.setId( 0 );
-            attributeValue.setAttribute( attribute );
+            for ( AttributeValue attributeValue : attributeValues )
+            {
+                attributeService.addAttributeValue( attributeValue );
+            }
+
+            if ( !dryRun )
+            {
+                sessionFactory.getCurrentSession().flush();
+            }
+
+            setAttributeValues( object, attributeValues );
+
+            if ( !dryRun )
+            {
+                sessionFactory.getCurrentSession().flush();
+            }
         }
     }
 

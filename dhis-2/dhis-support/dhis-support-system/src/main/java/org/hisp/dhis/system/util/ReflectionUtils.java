@@ -217,9 +217,10 @@ public class ReflectionUtils
             return object.getClass().getMethod( "get" + StringUtils.capitalize( fieldName ), classes );
         } catch ( NoSuchMethodException e )
         {
-            log.info( "Getter method was not found for fieldName: " + fieldName );
-            return null;
+            // log.warn( "Getter method was not found for fieldName: " + fieldName );
         }
+
+        return null;
     }
 
     public static Method findSetterMethod( String fieldName, Object object, Class<?>... classes )
@@ -248,7 +249,7 @@ public class ReflectionUtils
 
         if ( method == null )
         {
-            log.info( "Setter method was not found for fieldName: " + fieldName );
+            // log.warn( "Setter method was not found for fieldName: " + fieldName );
         }
 
         return method;
@@ -269,11 +270,11 @@ public class ReflectionUtils
             return (T) method.invoke( object );
         } catch ( InvocationTargetException e )
         {
-            log.info( "InvocationTargetException for fieldName: " + fieldName );
+            log.warn( "InvocationTargetException for fieldName: " + fieldName );
             return null;
         } catch ( IllegalAccessException e )
         {
-            log.info( "IllegalAccessException for fieldName: " + fieldName );
+            log.warn( "IllegalAccessException for fieldName: " + fieldName );
             return null;
         }
     }
@@ -293,11 +294,11 @@ public class ReflectionUtils
             return (T) method.invoke( object, objects );
         } catch ( InvocationTargetException e )
         {
-            log.info( "InvocationTargetException for fieldName: " + fieldName );
+            log.warn( "InvocationTargetException for fieldName: " + fieldName );
             return null;
         } catch ( IllegalAccessException e )
         {
-            log.info( "IllegalAccessException for fieldName: " + fieldName );
+            log.warn( "IllegalAccessException for fieldName: " + fieldName );
             return null;
         }
     }
