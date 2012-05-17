@@ -38,6 +38,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
@@ -340,10 +341,12 @@ public class Indicator
         this.dataSets = dataSets;
     }
 
+    /*
     @JsonProperty( value = "attributes" )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
+    */
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -371,6 +374,9 @@ public class Indicator
             explodedNumerator = indicator.getExplodedNumerator() == null ? explodedNumerator : indicator.getExplodedNumerator();
             explodedDenominator = indicator.getExplodedDenominator() == null ? explodedDenominator : indicator.getExplodedDenominator();
             indicatorType = indicator.getIndicatorType() == null ? indicatorType : indicator.getIndicatorType();
+
+            dataSets.clear();
+            groups.clear();
 
             removeAllAttributeValues();
             attributeValues.addAll( indicator.getAttributeValues() );

@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
     [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
     >
-	
+
 <hibernate-mapping>
   <class name="org.hisp.dhis.report.Report" table="report">
 
@@ -18,9 +18,9 @@
     <property name="designContent" type="text" />
 
     <many-to-one name="reportTable" class="org.hisp.dhis.reporttable.ReportTable" column="reporttableid"
-      foreign-key="fk_report_reporttableid" />
-	  
-	<property name="usingOrgUnitGroupSets"/>
-	  
+        foreign-key="fk_report_reporttableid" />
+
+    <property name="usingOrgUnitGroupSets" />
+
   </class>
 </hibernate-mapping>

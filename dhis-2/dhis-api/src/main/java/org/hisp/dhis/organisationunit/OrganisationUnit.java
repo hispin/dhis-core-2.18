@@ -40,6 +40,7 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -813,10 +814,12 @@ public class OrganisationUnit
         this.users = users;
     }
 
+    /*
     @JsonProperty( value = "attributes" )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
+    */
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -906,8 +909,11 @@ public class OrganisationUnit
             parent = organisationUnit.getParent();
 
             groups.clear();
-            dataSets.clear();
             users.clear();
+            dataSets.clear();
+
+            attributeValues.clear();
+            attributeValues.addAll( organisationUnit.getAttributeValues() );
         }
     }
 }

@@ -101,10 +101,12 @@ public class DefaultImportService
         doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
-        doImport( metaData.getUsers(), importOptions, importSummary );
-        doImport( metaData.getUserGroups(), importOptions, importSummary );
-        doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
 
+        // doImport( metaData.getUsers(), importOptions, importSummary );
+        // doImport( metaData.getUserGroups(), importOptions, importSummary );
+        // doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
+
+        doImport( metaData.getSqlViews(), importOptions, importSummary );
         doImport( metaData.getConcepts(), importOptions, importSummary );
         doImport( metaData.getConstants(), importOptions, importSummary );
         doImport( metaData.getDocuments(), importOptions, importSummary );
@@ -125,25 +127,23 @@ public class DefaultImportService
         doImport( metaData.getIndicatorGroups(), importOptions, importSummary );
         doImport( metaData.getIndicatorGroupSets(), importOptions, importSummary );
 
-/*
-        doImport( metaData.getMaps(), importOptions, importSummary );
-        doImport( metaData.getMapLegends(), importOptions, importSummary );
-        doImport( metaData.getMapLegendSets(), importOptions, importSummary );
-        doImport( metaData.getMapLayers(), importOptions, importSummary );
-        // doImport( metaData.getMessageConversations(), importOptions, importSummary );
-        doImport( metaData.getSqlViews(), importOptions, importSummary );
-
         doImport( metaData.getValidationRules(), importOptions, importSummary );
         doImport( metaData.getValidationRuleGroups(), importOptions, importSummary );
 
-        doImport( metaData.getDataDictionaries(), importOptions, importSummary );
-        doImport( metaData.getReports(), importOptions, importSummary );
-        doImport( metaData.getReportTables(), importOptions, importSummary );
-        doImport( metaData.getCharts(), importOptions, importSummary );
-*/
+        // doImport( metaData.getMessageConversations(), importOptions, importSummary );
 
+        doImport( metaData.getDataDictionaries(), importOptions, importSummary );
         doImport( metaData.getDataSets(), importOptions, importSummary );
         doImport( metaData.getSections(), importOptions, importSummary );
+
+        doImport( metaData.getReportTables(), importOptions, importSummary );
+        doImport( metaData.getReports(), importOptions, importSummary );
+        doImport( metaData.getCharts(), importOptions, importSummary );
+
+        // doImport( metaData.getMaps(), importOptions, importSummary );
+        doImport( metaData.getMapLegends(), importOptions, importSummary );
+        doImport( metaData.getMapLegendSets(), importOptions, importSummary );
+        doImport( metaData.getMapLayers(), importOptions, importSummary );
 
         if ( importOptions.isDryRun() )
         {

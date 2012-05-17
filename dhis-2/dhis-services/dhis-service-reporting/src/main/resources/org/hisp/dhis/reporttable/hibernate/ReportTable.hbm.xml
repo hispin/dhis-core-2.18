@@ -92,9 +92,9 @@
       <property name="last12Months" />
       <property name="last4Quarters" />
       <property name="last2SixMonths" />
-	  <property name="thisFinancialYear" />
-	  <property name="lastFinancialYear" />
-	  <property name="last5FinancialYears" />
+      <property name="thisFinancialYear" />
+      <property name="lastFinancialYear" />
+      <property name="last5FinancialYears" />
     </component>
 
     <component name="reportParams">

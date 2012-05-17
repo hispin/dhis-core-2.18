@@ -461,8 +461,8 @@ public class DefaultExpressionService
             
             for ( Indicator indicator : indicators )
             {
-                indicator.setExplodedNumerator( explodeExpression( indicator.getExplodedNumerator(), dataElementMap ) );
-                indicator.setExplodedDenominator( explodeExpression( indicator.getExplodedDenominator(), dataElementMap ) );
+                indicator.setExplodedNumerator( explodeExpression( indicator.getExplodedNumerator() != null ? indicator.getExplodedNumerator() : "", dataElementMap ) );
+                indicator.setExplodedDenominator( explodeExpression( indicator.getExplodedDenominator() != null ? indicator.getExplodedDenominator() : "", dataElementMap ) );
             }     
         }
     }

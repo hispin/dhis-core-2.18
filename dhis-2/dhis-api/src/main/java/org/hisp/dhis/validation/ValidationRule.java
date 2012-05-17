@@ -207,9 +207,11 @@ public class ValidationRule
         this.type = type;
     }
 
+    /*
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    */
     public Expression getLeftSide()
     {
         return leftSide;
@@ -220,9 +222,11 @@ public class ValidationRule
         this.leftSide = leftSide;
     }
 
+    /*
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    */
     public Expression getRightSide()
     {
         return rightSide;
@@ -263,6 +267,8 @@ public class ValidationRule
             leftSide = validationRule.getLeftSide() == null ? leftSide : validationRule.getLeftSide();
             rightSide = validationRule.getRightSide() == null ? rightSide : validationRule.getRightSide();
             periodType = validationRule.getPeriodType() == null ? periodType : validationRule.getPeriodType();
+
+            groups.clear();
         }
     }
 }

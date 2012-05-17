@@ -32,6 +32,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
@@ -54,8 +55,10 @@ public class Section
 
     private DataSet dataSet;
 
+    @Scanned
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
+    @Scanned
     private Set<DataElementOperand> greyedFields = new HashSet<DataElementOperand>();
 
     private int sortOrder;

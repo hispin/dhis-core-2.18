@@ -94,16 +94,6 @@ public class User
     // -------------------------------------------------------------------------
 
     @Override
-    public String toString()
-    {
-        return "[" + surname + " " + firstName + "]";
-    }
-
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    @Override
     public int hashCode()
     {
         final int prime = 31;
@@ -117,6 +107,10 @@ public class User
 
         return result;
     }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
 
     // TODO fix, users might very well have the same name, should use credentials
 
@@ -349,10 +343,12 @@ public class User
         this.organisationUnits = organisationUnits;
     }
 
+    /*
     @JsonProperty( value = "attributes" )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
+    */
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

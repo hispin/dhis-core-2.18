@@ -29,10 +29,14 @@ package org.hisp.dhis.dxf2.metadata.importers;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.SessionFactory;
+import org.hisp.dhis.attribute.AttributeStore;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -40,13 +44,15 @@ import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ReflectionUtils;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
@@ -70,7 +76,16 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private PeriodService periodService;
 
     @Autowired
+    private PeriodStore periodStore;
+
+    @Autowired
+    private AttributeStore attributeStore;
+
+    @Autowired
     private ObjectBridge objectBridge;
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     //-------------------------------------------------------------------------------------------------------
     // Constructor
@@ -199,6 +214,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
+            sessionFactory.getCurrentSession().flush();
+            log.info( "Currently importing: " + object + " (" + object.getClass().getSimpleName() + ")" );
+
             List<ImportConflict> conflicts = importObjectLocal( object, options );
 
             if ( !conflicts.isEmpty() )
@@ -441,7 +459,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         else if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
         {
             Period period = (Period) identifiableObject;
-            return periodService.reloadPeriod( period );
+
+            // return periodStore.reloadForceAddPeriod( period );
+            return null;
         }
 
         return objectBridge.getObject( identifiableObject );
@@ -478,24 +498,21 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             IdentifiableObject idObject = identifiableObjects.get( field );
             IdentifiableObject ref = findObjectByReference( idObject );
 
-            if ( ref != null )
+            if ( ref == null )
             {
-                ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, ref );
-            }
-            else
-            {
-                // FIXME special case, possible forward reference.. so just skip it..
-                if ( !OrganisationUnitGroupSet.class.isInstance( idObject ) )
-                {
-                }
+                String referenceName = idObject != null ? idObject.getClass().getSimpleName() : "null";
+                String objectName = identifiableObject != null ? identifiableObject.getClass().getSimpleName() : "null";
 
-                log.warn( "Ignored reference " + idObject + " (" + idObject.getClass() + ") " + " on object " + identifiableObject + "." );
+                String logMsg = "Unknown reference to " + idObject + " (" + referenceName + ")" +
+                    " on object " + identifiableObject + " (" + objectName + ").";
 
-                ImportConflict importConflict = new ImportConflict( getDisplayName( identifiableObject ),
-                    "Unknown reference to " + idObject + " (" + idObject.getClass() + ") " + " on field " + field.getName() + ", reference has been discarded." );
+                log.warn( logMsg );
 
+                ImportConflict importConflict = new ImportConflict( getDisplayName( identifiableObject ), logMsg );
                 importConflicts.add( importConflict );
             }
+
+            ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, ref );
         }
 
         return importConflicts;
@@ -563,11 +580,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    log.warn( "Ignored reference " + idObject + " (" + idObject.getClass() + ") " + " on object " + identifiableObject + "." );
+                    String referenceName = idObject != null ? idObject.getClass().getSimpleName() : "null";
+                    String objectName = identifiableObject != null ? identifiableObject.getClass().getSimpleName() : "null";
 
-                    ImportConflict importConflict = new ImportConflict( getDisplayName( identifiableObject ),
-                        "Unknown reference to " + idObject + " (" + idObject.getClass() + ") " + " on field " + field.getName() + ", reference has been discarded." );
+                    String logMsg = "Unknown reference to " + idObject + " (" + referenceName + ")" +
+                        " on object " + identifiableObject + " (" + objectName + ").";
 
+                    log.warn( logMsg );
+
+                    ImportConflict importConflict = new ImportConflict( getDisplayName( identifiableObject ), logMsg );
                     importConflicts.add( importConflict );
                 }
             }
