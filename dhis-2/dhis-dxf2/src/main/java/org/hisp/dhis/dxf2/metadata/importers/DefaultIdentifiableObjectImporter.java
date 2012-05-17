@@ -211,8 +211,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
-            log.info( "Object: " + object + " (" + object.getClass().getSimpleName() + ")" );
-
             Set<AttributeValue> attributeValues = getAttributeValues( object );
 
             if ( attributeValues.size() > 0 )
