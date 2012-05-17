@@ -6,7 +6,6 @@ import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOption;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOptionService;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService;
-import org.hisp.dhis.patient.PatientAttribute;
 
 import com.opensymphony.xwork2.Action;
 

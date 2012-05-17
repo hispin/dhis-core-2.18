@@ -341,6 +341,34 @@
             <result name="success" type="redirect">inventoryTypeList.action</result>
             <param name="requiredAuthorities">F_INVENTORYTYPE_UPDATE</param>
         </action>
+	
+	
+        <action name="showInventoryTypeDataSetForm"
+            class="org.hisp.dhis.coldchain.inventory.action.ShowInventoryTypeDataSetFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-coldchain/inventoryTypeDataSetForm.vm</param>
+            <param name="javascripts">javascript/inventoryType.js,../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js</param>
+            <param name="stylesheets">css/basic.css</param>
+            <param name="requiredAuthorities">F_INVENTORYTYPE_DATASET</param>
+        </action>	
+	
+	
+	
+		<action name="dataSetList" 
+			class="org.hisp.dhis.coldchain.inventory.action.GetDataSetListAction">
+			<result name="success" type="velocity-json">/dhis-web-coldchain/jsonDataSetList.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>	
+	
+
+        <action name="updateInventoryTypeDataSetForm"
+            class="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeDataSetAction">
+            <result name="success" type="redirect">inventoryTypeList.action</result>
+            <param name="requiredAuthorities">F_INVENTORYTYPE_DATASET</param>
+        </action>
+	
+	
+	
         <action name="removeInventoryType"
             class="org.hisp.dhis.coldchain.inventory.action.RemoveInventoryTypeAction">
             <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>

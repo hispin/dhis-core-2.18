@@ -359,6 +359,29 @@
         <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
     </bean>
 	
+	
+	
+	
+    <bean id="org.hisp.dhis.coldchain.inventory.action.ShowInventoryTypeDataSetFormAction"
+        class="org.hisp.dhis.coldchain.inventory.action.ShowInventoryTypeDataSetFormAction"
+        scope="prototype">
+        <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
+    </bean>	
+	
+    <bean id="org.hisp.dhis.coldchain.inventory.action.GetDataSetListAction"
+        class="org.hisp.dhis.coldchain.inventory.action.GetDataSetListAction"
+        scope="prototype">
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    </bean>		
+
+    <bean id="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeDataSetAction"
+        class="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeDataSetAction"
+        scope="prototype">
+        <property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    </bean>	
+	
+			
 		
 <!-- EquipmentDetails -->
     <bean id="org.hisp.dhis.coldchain.equipment.action.EquipmentSelectAction"

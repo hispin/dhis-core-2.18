@@ -106,7 +106,7 @@ public class UpdateInventoryTypeAction implements Action
         
         //Set<InventoryTypeAttribute> inventoryTypeSet = new HashSet<InventoryTypeAttribute>();
         
-        List<InventoryTypeAttribute> inventoryTypeSet = new ArrayList<InventoryTypeAttribute>( );
+        List<InventoryTypeAttribute> inventoryTypeList = new ArrayList<InventoryTypeAttribute>( );
         
         if ( selectedInventoryTypeAttributeList != null && selectedInventoryTypeAttributeList.size() > 0 )
         {
@@ -119,7 +119,7 @@ public class UpdateInventoryTypeAction implements Action
                 System.out.println( "Name---" + inventoryTypeAttribute.getName());
                 System.out.println( "ValueType---" + inventoryTypeAttribute.getValueType() );
                 */
-                inventoryTypeSet.add( inventoryTypeAttribute );
+                inventoryTypeList.add( inventoryTypeAttribute );
                 
                 //inventoryTypeSet.add( inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeList.get( i ) ) );
             }
@@ -130,7 +130,7 @@ public class UpdateInventoryTypeAction implements Action
             }
             */
         }
-        inventoryType.setInventoryTypeAttributes( inventoryTypeSet );
+        inventoryType.setInventoryTypeAttributes( inventoryTypeList );
         inventoryTypeService.updateInventoryType( inventoryType );
         
         return SUCCESS;
