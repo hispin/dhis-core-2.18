@@ -7,9 +7,11 @@ It consists of two files:
 
 - The backupdir must be created manually (mkdir pg_backups)
 - The backupdir owner must be changed to postgres (chown postgres pg_backups)
+- Script must be copied to /usr/local/bin/
 - Script must be made executable (chmod 755 pg_backup.sh)
 - Script must be invoked by postgres user so load crontab as postgres
-- Script must be copied to /usr/local/bin/
+- Postgres user must have a home dir (usermod -d /home/postgres postgres) and private/public key pair (ssh-keygen -t rsa)
+- Postgres user public key must be uploaded to remote server (if remote copy)
 
 2) pg_backup.cron - crontab file invoking the script every day at 23:00
 
