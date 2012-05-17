@@ -345,7 +345,6 @@ function dataSetSelected()
 
     if ( dataSetId != -1 )
     {
-        
         //addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
 
         for ( i in periods )
@@ -386,6 +385,9 @@ function loadSubDataSets( dataSetId )
 				{ 
 					$('#subDataSetId').append('<option value=' + json.department[i].id + '>' + json.department[i].name + '</option>');
 				}
+				
+				byId( 'inputCriteria' ).style.width = '840px';
+				showById('departmentTitleDiv');
 				showById('departmentDiv');
 				
 				jQuery("#valueInput").unbind('change');
@@ -395,6 +397,9 @@ function loadSubDataSets( dataSetId )
 			else 
 			{
 				loadAttributeValues( dataSetId );
+				
+				byId( 'inputCriteria' ).style.width = '620px';
+				hideById('departmentTitleDiv');
 				hideById('departmentDiv');
 			}
 		} );
