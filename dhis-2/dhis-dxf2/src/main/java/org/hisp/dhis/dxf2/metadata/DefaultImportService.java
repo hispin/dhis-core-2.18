@@ -140,7 +140,7 @@ public class DefaultImportService
         doImport( metaData.getReports(), importOptions, importSummary );
         doImport( metaData.getCharts(), importOptions, importSummary );
 
-        // doImport( metaData.getMaps(), importOptions, importSummary );
+        doImport( metaData.getMaps(), importOptions, importSummary );
         doImport( metaData.getMapLegends(), importOptions, importSummary );
         doImport( metaData.getMapLegendSets(), importOptions, importSummary );
         doImport( metaData.getMapLayers(), importOptions, importSummary );
