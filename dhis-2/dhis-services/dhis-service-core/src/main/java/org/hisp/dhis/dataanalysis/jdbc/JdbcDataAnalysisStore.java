@@ -75,14 +75,14 @@ public class JdbcDataAnalysisStore
 
     public Double getStandardDeviation( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, OrganisationUnit organisationUnit )
     {
-         final String sql = statementBuilder.getStandardDeviation(dataElement.getId(), categoryOptionCombo.getId(), organisationUnit.getId() );
+         final String sql = statementBuilder.getStandardDeviation( dataElement.getId(), categoryOptionCombo.getId(), organisationUnit.getId() );
         
         return statementManager.getHolder().queryForDouble( sql );
     }
     
     public Double getAverage( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, OrganisationUnit organisationUnit )
     {
-        final String sql =  statementBuilder.getStandardDeviation(dataElement.getId(), categoryOptionCombo.getId(), organisationUnit.getId() );
+        final String sql =  statementBuilder.getAverage( dataElement.getId(), categoryOptionCombo.getId(), organisationUnit.getId() );
            
         return statementManager.getHolder().queryForDouble( sql );
     }
