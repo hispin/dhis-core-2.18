@@ -31,12 +31,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.attribute.AttributeStore;
-import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -44,7 +42,6 @@ import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
@@ -52,7 +49,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ReflectionUtils;
-import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
@@ -214,10 +210,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
-            sessionFactory.getCurrentSession().flush();
             log.info( "Currently importing: " + object + " (" + object.getClass().getSimpleName() + ")" );
 
             List<ImportConflict> conflicts = importObjectLocal( object, options );
+
+            if ( !options.isDryRun() )
+            {
+                sessionFactory.getCurrentSession().flush();
+            }
 
             if ( !conflicts.isEmpty() )
             {
@@ -459,9 +459,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         else if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
         {
             Period period = (Period) identifiableObject;
+            period = periodStore.reloadForceAddPeriod( period );
 
-            // return periodStore.reloadForceAddPeriod( period );
-            return null;
+            sessionFactory.getCurrentSession().flush();
+
+            return period;
         }
 
         return objectBridge.getObject( identifiableObject );
