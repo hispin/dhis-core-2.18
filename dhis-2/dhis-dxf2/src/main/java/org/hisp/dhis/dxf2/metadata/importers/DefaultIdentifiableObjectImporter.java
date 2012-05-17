@@ -30,11 +30,14 @@ package org.hisp.dhis.dxf2.metadata.importers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
-import org.hisp.dhis.attribute.AttributeStore;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -42,13 +45,14 @@ import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ReflectionUtils;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
@@ -69,13 +73,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     //-------------------------------------------------------------------------------------------------------
 
     @Autowired
-    private PeriodService periodService;
-
-    @Autowired
     private PeriodStore periodStore;
 
     @Autowired
-    private AttributeStore attributeStore;
+    private AttributeService attributeService;
 
     @Autowired
     private ObjectBridge objectBridge;
@@ -210,12 +211,44 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
+            log.info( "Object: " + object + " (" + object.getClass().getSimpleName() + ")" );
+
+            Set<AttributeValue> attributeValues = getAttributeValues( object );
+
+            if ( attributeValues.size() > 0 )
+            {
+                setAttributeValues( object, new HashSet<AttributeValue>() );
+            }
+
             List<ImportConflict> conflicts = importObjectLocal( object, options );
 
             if ( !options.isDryRun() )
             {
                 sessionFactory.getCurrentSession().flush();
             }
+
+            if ( attributeValues.size() > 0 )
+            {
+                updateAttributeValues( attributeValues );
+
+                for ( AttributeValue attributeValue : attributeValues )
+                {
+                    attributeService.addAttributeValue( attributeValue );
+                }
+
+                if ( !options.isDryRun() )
+                {
+                    sessionFactory.getCurrentSession().flush();
+                }
+
+                setAttributeValues( object, attributeValues );
+
+                if ( !options.isDryRun() )
+                {
+                    sessionFactory.getCurrentSession().flush();
+                }
+            }
+
 
             if ( !conflicts.isEmpty() )
             {
@@ -224,6 +257,52 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         }
 
         return importConflicts;
+    }
+
+    private void setAttributeValues( T object, Set<AttributeValue> attributeValues )
+    {
+        ReflectionUtils.invokeSetterMethod( "attributeValues", object, attributeValues );
+    }
+
+    private Set<AttributeValue> getAttributeValues( T object )
+    {
+        if ( DataElement.class.isInstance( object ) )
+        {
+            return ((DataElement) object).getAttributeValues();
+        }
+        else if ( Indicator.class.isInstance( object ) )
+        {
+            return ((Indicator) object).getAttributeValues();
+        }
+        else if ( OrganisationUnit.class.isInstance( object ) )
+        {
+            return ((OrganisationUnit) object).getAttributeValues();
+        }
+        else if ( User.class.isInstance( object ) )
+        {
+            return ((User) object).getAttributeValues();
+        }
+
+        return new HashSet<AttributeValue>();
+    }
+
+    private void updateAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        for ( AttributeValue attributeValue : attributeValues )
+        {
+            Attribute attribute = objectBridge.getObject( attributeValue.getAttribute() );
+
+            log.info( "Attribute: " + attribute );
+
+            if ( attribute == null )
+            {
+                log.warn( "Unknown reference to " + attributeValue.getAttribute() + " on object " + attributeValue );
+                continue;
+            }
+
+            attributeValue.setId( 0 );
+            attributeValue.setAttribute( attribute );
+        }
     }
 
     @Override

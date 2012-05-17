@@ -343,12 +343,10 @@ public class User
         this.organisationUnits = organisationUnits;
     }
 
-    /*
     @JsonProperty( value = "attributes" )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
-    */
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -378,11 +376,7 @@ public class User
             attributeValues.addAll( user.getAttributeValues() );
 
             removeAllOrganisationUnits();
-
-            for ( OrganisationUnit organisationUnit : user.getOrganisationUnits() )
-            {
-                addOrganisationUnit( organisationUnit );
-            }
+            organisationUnits.addAll( user.getOrganisationUnits() );
         }
     }
 }
