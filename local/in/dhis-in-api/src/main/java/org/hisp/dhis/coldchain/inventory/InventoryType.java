@@ -1,11 +1,14 @@
 package org.hisp.dhis.coldchain.inventory;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.dataset.DataSet;
 
 //public class InventoryType implements Serializable
 public class InventoryType extends BaseNameableObject
@@ -31,6 +34,12 @@ public class InventoryType extends BaseNameableObject
     
     private List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>();
     
+    /**
+     * All DataSets associated with this InventoryType.
+     */
+    private Set<DataSet> dataSets = new HashSet<DataSet>();
+    
+
     private DataEntryForm dataEntryForm;
     
 
@@ -159,6 +168,15 @@ public class InventoryType extends BaseNameableObject
     public void setDataEntryForm( DataEntryForm dataEntryForm )
     {
         this.dataEntryForm = dataEntryForm;
+    }
+    
+    public Set<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+    public void setDataSets( Set<DataSet> dataSets )
+    {
+        this.dataSets = dataSets;
     }
     
 }
