@@ -193,15 +193,29 @@ public class HibernateProgramStageInstanceStore
         Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc,
         boolean orderByExecutionDateByAsc, int min, int max )
     {
-        String sql = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
-            searchingDEKeys, upperOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
-
-        if ( bottomOrgunitIds.size() > 0 )
+        String sql = "";
+        if ( upperOrgunitIds != null && upperOrgunitIds.size() > 0 )
         {
-            String sqlBottom = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes,
+            sql = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
+                searchingDEKeys, upperOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+        }
+
+        String sqlBottom = "";
+
+        if ( bottomOrgunitIds != null && bottomOrgunitIds.size() > 0 )
+        {
+            sqlBottom = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes,
                 searchingAttrKeys, searchingDEKeys, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc,
                 orderByExecutionDateByAsc );
-            sql = "( " + sqlBottom + ") union all ( " + sql + " ) ";
+
+            if ( sql.isEmpty() )
+            {
+                sql = sqlBottom;
+            }
+            else
+            {
+                sql = "( " + sqlBottom + ") union all ( " + sql + " ) ";
+            }
         }
 
         sql += statementBuilder.limitRecord( min, max );
@@ -222,15 +236,28 @@ public class HibernateProgramStageInstanceStore
         Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc,
         boolean orderByExecutionDateByAsc )
     {
-        String sql = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
-            searchingDEKeys, upperOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+        String sql = "";
+        
+        if ( upperOrgunitIds != null && upperOrgunitIds.size() > 0 )
+        {
+            getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
+                searchingDEKeys, upperOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
+        }
+        String sqlBottom = "";
 
         if ( bottomOrgunitIds.size() > 0 )
         {
-            String sqlBottom = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes,
+            sqlBottom = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes,
                 searchingAttrKeys, searchingDEKeys, bottomOrgunitIds, startDate, endDate, orderByOrgunitAsc,
                 orderByExecutionDateByAsc );
-            sql = "( " + sqlBottom + ") union all ( " + sql + " ) ";
+            if ( sql.isEmpty() )
+            {
+                sql = sqlBottom;
+            }
+            else
+            {
+                sql = "( " + sqlBottom + ") union all ( " + sql + " ) ";
+            }
         }
 
         List<Integer> ids = executeSQL( sql );
@@ -355,7 +382,7 @@ public class HibernateProgramStageInstanceStore
 
         String sqlDE = " select distinct psi.programstageinstanceid from patientdatavalue pdv "
             + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid ";
-        
+
         String condition = " WHERE psi.executiondate >= '" + DateUtils.getMediumDateString( startDate )
             + "' AND psi.executiondate <= '" + DateUtils.getMediumDateString( endDate ) + "' "
             + " AND psi.organisationunitid in " + splitListHelper( orgunitIds ) + " AND psi.programstageid = "
