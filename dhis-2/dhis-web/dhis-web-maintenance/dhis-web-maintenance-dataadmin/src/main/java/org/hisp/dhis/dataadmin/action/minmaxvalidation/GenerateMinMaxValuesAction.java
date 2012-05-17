@@ -43,9 +43,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $Id$
  */
-
 public class GenerateMinMaxValuesAction
     implements Action
 {
@@ -63,11 +61,6 @@ public class GenerateMinMaxValuesAction
 
     private SelectionTreeManager selectionTreeManager;
 
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
     // -------------------------------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------------------------------
@@ -82,14 +75,29 @@ public class GenerateMinMaxValuesAction
     // Setters
     // -------------------------------------------------------------------------------------------------
 
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    public void setMinMaxValuesGenerationService( MinMaxValuesGenerationService minMaxValuesGenerationService )
+    {
+        this.minMaxValuesGenerationService = minMaxValuesGenerationService;
+    }
+
+    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
+    {
+        this.minMaxDataElementService = minMaxDataElementService;
+    }
+
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
     }
 
-    public void setDataSetService( DataSetService dataSetService )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.dataSetService = dataSetService;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     public void setMessage( String message )
@@ -107,16 +115,6 @@ public class GenerateMinMaxValuesAction
         this.i18n = i18n;
     }
 
-    public void setMinMaxValuesGenerationService( MinMaxValuesGenerationService minMaxValuesGenerationService )
-    {
-        this.minMaxValuesGenerationService = minMaxValuesGenerationService;
-    }
-
-    public void setMinMaxDataElementService( MinMaxDataElementService minMaxDataElementService )
-    {
-        this.minMaxDataElementService = minMaxDataElementService;
-    }
-
     public void setDataSets( Integer[] dataSets )
     {
         this.dataSets = dataSets;
@@ -130,12 +128,6 @@ public class GenerateMinMaxValuesAction
     public String execute()
         throws Exception
     {
-        // if ( dataSetIds == null )
-        // {
-        // selectionTreeManager.clearSelectedOrganisationUnits();
-        // return INPUT;
-        // }
-
         Collection<OrganisationUnit> orgUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
         if ( orgUnits == null || orgUnits.size() == 0 )
@@ -144,25 +136,20 @@ public class GenerateMinMaxValuesAction
             return INPUT;
         }
 
-        // Get factor
         Double factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION,
             2.0 );
 
         for ( Integer dataSetId : dataSets )
         {
-            // Get dataset
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
             for ( OrganisationUnit orgUnit : orgUnits )
             {
                 if ( orgUnit.getDataSets().contains( dataSet ) )
                 {
-
-                    // Get min/max values for dataelements into dataset
                     Collection<MinMaxDataElement> minMaxDataElements = (Collection<MinMaxDataElement>) minMaxValuesGenerationService
                         .getMinMaxValues( orgUnit, dataSet.getDataElements(), factor );
 
-                    // Save min / max value
                     for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
                     {
                         MinMaxDataElement minMaxValue = minMaxDataElementService.getMinMaxDataElement(

@@ -27,10 +27,6 @@ package org.hisp.dhis.dataadmin.action.minmaxvalidation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * @author Chau Thu Tran
- * @version $Id$
- */
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -45,6 +41,9 @@ import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
 
+/**
+ * @author Chau Thu Tran
+ */
 public class RemoveMinMaxValueAction
     implements Action
 {
@@ -137,30 +136,23 @@ public class RemoveMinMaxValueAction
             return INPUT;
         }
 
-        // Get factor
-        Double factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION,
-            2.0 );
+        Double factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
 
         for ( Integer dataSetId : dataSets )
         {
-            // Get dataset
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
             for ( OrganisationUnit orgUnit : orgUnits )
             {
                 if ( orgUnit.getDataSets().contains( dataSet ) )
                 {
-
-                    // Get min/max values for dataelements into dataset
                     Collection<MinMaxDataElement> minMaxDataElements = (Collection<MinMaxDataElement>) minMaxValuesGenerationService
                         .getMinMaxValues( orgUnit, dataSet.getDataElements(), factor );
 
-                    // Save min / max value
                     for ( MinMaxDataElement minMaxDataElement : minMaxDataElements )
                     {
                         MinMaxDataElement minMaxValue = minMaxDataElementService.getMinMaxDataElement(
-                            minMaxDataElement.getSource(), minMaxDataElement.getDataElement(), minMaxDataElement
-                                .getOptionCombo() );
+                            minMaxDataElement.getSource(), minMaxDataElement.getDataElement(), minMaxDataElement.getOptionCombo() );
 
                         if ( minMaxValue != null )
                         {

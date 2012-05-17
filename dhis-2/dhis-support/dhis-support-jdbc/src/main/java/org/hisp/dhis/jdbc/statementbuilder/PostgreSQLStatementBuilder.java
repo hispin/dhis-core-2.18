@@ -129,7 +129,6 @@ public class PostgreSQLStatementBuilder
 	         "WHERE dataelementid='" + dataElementId + "' " +
 	         "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
 	         "AND sourceid='" + organisationUnitId + "'";
-        
     }
     
     public String getAverage( int dataElementId, int categoryOptionComboId, int organisationUnitId )
