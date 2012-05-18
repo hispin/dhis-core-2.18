@@ -90,6 +90,7 @@ public class DefaultConceptService
     public void generateDefaultConcept()
     {
         Concept defaultConcept = new Concept( "default" );
+        
         conceptStore.save( defaultConcept );
     }
 
