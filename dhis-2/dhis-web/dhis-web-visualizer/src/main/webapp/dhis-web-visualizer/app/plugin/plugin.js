@@ -200,7 +200,7 @@ Ext.onReady( function() {
 				getChart: function(project, axes, series, elWidth, elHeight) {
 					return Ext.create('Ext.chart.Chart', {
 						renderTo: project.state.conf.el,
-						animate: true,
+						animate: !project.state.conf.skipAnimation,
 						store: project.store,
 						insetPadding: DHIS.chart.conf.chart.style.inset,						
 						items: project.state.conf.hideSubtitle ? false : DHIS.chart.util.chart.def.getTitle(project),
@@ -683,6 +683,7 @@ Ext.onReady( function() {
                 el: '',
                 legendPosition: false,
                 orgUnitIsParent: false,
+                skipAnimation: false,
                 showData: false,
                 trendLine: false,
                 hideLegend: false,
@@ -1009,7 +1010,7 @@ Ext.onReady( function() {
 				renderTo: project.state.conf.el,
                 width: project.state.conf.width || this.el.getWidth(),
                 height: project.state.conf.height || this.el.getHeight(),
-                animate: true,
+                animate: !project.state.conf.skipAnimation,
                 shadow: true,
                 store: project.store,
                 insetPadding: 60,
