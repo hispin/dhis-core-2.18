@@ -86,15 +86,13 @@ public class DataElementDefaultDimensionPopulator
     public void execute()
         throws Exception
     {
-        String defaultConceptName = Concept.DEFAULT_CONCEPT_NAME;
-
-        Concept defaultConcept = conceptService.getConceptByName( defaultConceptName );
+        Concept defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
 
         if ( defaultConcept == null )
         {
             conceptService.generateDefaultConcept();
 
-            defaultConcept = conceptService.getConceptByName( defaultConceptName );
+            defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
 
             log.info( "Added default concept" );
         }
