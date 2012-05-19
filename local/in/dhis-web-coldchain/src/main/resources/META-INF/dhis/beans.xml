@@ -461,4 +461,29 @@
     </bean>
 
 	
+    <bean id="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentDataEntryFormAction"
+        class="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentDataEntryFormAction"
+        scope="prototype">
+        <property name="equipmentInstanceService" ref="org.hisp.dhis.coldchain.inventory.EquipmentInstanceService" />
+		<property name="inventoryTypeService" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeService" />
+		<property name="equipmentService" ref="org.hisp.dhis.coldchain.inventory.EquipmentService" />
+    </bean>	
+
+	  <bean id="org.hisp.dhis.coldchain.equipment.action.GetMetaDataAction" class="org.hisp.dhis.coldchain.equipment.action.GetMetaDataAction"
+		  scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	  </bean>		
+
+	  <bean id="org.hisp.dhis.coldchain.equipment.action.LoadFormAction" class="org.hisp.dhis.coldchain.equipment.action.LoadFormAction"
+		  scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />  
+	  </bean>	
+		
+	
 </beans>

@@ -1,0 +1,105 @@
+<script type="text/javascript">
+	//loadMetaData();	
+	
+var i18n_select_period = '$encoder.jsEscape( $i18n.getString( "select_period" ) , "'")';
+</script>
+
+<h3>$i18n.getString( "equipment_dataentry" ) #openHelp( "equipmentDataEntry" )</h3>
+<!--
+<div id="currentSelection">
+	<span style="float:left;cursor:pointer;margin-right:5px;"><img src="../images/hide.png" title="$i18n.getString( 'close' )" onclick="closeCurrentSelection()"></span>
+	<span id="currentOrganisationUnit">$i18n.getString( "no_organisationunit_selected" )</span> - <span id="currentPeriod">$i18n.getString( "no_period_selected" )</span/><br>
+	<span id="currentDataElement">$i18n.getString( "no_dataelement_selected" )</span>
+</div>
+-->
+<!--
+#foreach( $dataSet in $dataSetList )
+	$dataSet.PeriodType.id --------- $dataSet.PeriodType.name
+	<br>
+#end
+-->
+<div class="inputCriteria" style="width:600px;height:150px;">
+<table>
+	<tr>
+		<td><label for="selectedOrganisationUnit">$i18n.getString( "registering_unit" )</label></td>
+		<td><input type="text" id="selectedOrganisationUnit" readonly="readonly" value="$!organisationUnit.name" style="width:367px"></td>
+	</tr>
+	<tr>
+		<td><label for="selectedInventorytype">$i18n.getString( "inventorytype" )</label></td>
+		<td><input type="text" id="selectedInventorytype" readonly="readonly" value="$!inventoryType.name" style="width:367px"></td>
+	</tr>
+	<tr>
+		<td><label for="inventoryTypeAttribute">$i18n.getString( "inventorytype_attribute" )</label></td>
+		<td>$inventoryTypeAttributeName</td>
+	</tr>
+	<tr>
+		<td><label for="selectedInventorytype">$i18n.getString( "equipment_details" )</label></td>
+		<td>$inventoryTypeAttributeValue</td>
+	</tr>				
+	<tr>
+		<td><label for="selectedDataSetId">$i18n.getString( "dataset" )</label></td>
+		<td><select id="selectedDataSetId" name="selectedDataSetId" style="width:371px" onchange="getPeriods( 'periodType', 'periodId', 'periodId', '0' )">
+				<option value="0">$i18n.getString( "please_select" )</option>
+				#foreach( $dataSet in $dataSetList )
+					<!--$dataSet.periodtype.id --------- $dataSet.periodtype.name-->
+					<option value="$dataSet.id:$dataSet.PeriodType.name">$dataSet.name</option>
+				#end
+			</select>
+			<span id="loaderSpan" style="display:none"><img src='../images/ajax-loader-bar.gif'></span></td>
+	</tr>	
+	<tr>
+		<td><label for="selectedPeriodId">$i18n.getString( "period" )</label></td>
+		<td><select id="periodId" name="periodId" style="width:220px" disabled="disabled" onchange="dataEntryForm()"></select>
+			<input type="button" id="prevButton" style="width:75px" value="$i18n.getString( 'prev_year' )" title="$i18n.getString('earlier_periods')" onclick="getAvailablePeriodsPre( 'selectedDataSetId', 'periodId', 'periodId', '-1' )" disabled="disabled">
+			<input type="button" id="nextButton" style="width:75px" value="$i18n.getString( 'next_year' )" title="$i18n.getString('later_periods')" onclick="getAvailablePeriodsNext( 'selectedDataSetId', 'periodId', 'periodId', '1' )" disabled="disabled">
+		</td>
+	</tr>	
+</table>
+</div>
+
+#parse( "dhis-web-commons/loader/loader.vm" )
+
+<div id="contentDiv" class="page" style="margin-left:2px;margin-bottom:8px;"></div>
+
+<div id="historyDiv" class="page"></div>
+
+<div id="validationDiv" class="page"></div>
+
+<div id="completenessDiv" class="page inputCriteria" style="display:none;width:386px;height:29px;">
+<input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()" style="width:120px">
+<input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'incomplete' )" onclick="undoCompleteDataSet()" style="width:120px">
+<input type="button" value="$i18n.getString( 'run_validation' )" onclick="validate()" style="width:120px">
+</div>
+
+<div id="infoDiv" class="page inputCriteria" style="display:none;width:386px;height:20px;">
+<span style="color:#505050">$i18n.getString( "completed_by" ): </span><span id="completedBy"></span>
+<span style="color:#505050"> $i18n.getString( "at" ): </span><span id="completedDate"></span>
+<a href="javascript:displayUserDetails()">$i18n.getString( "see_details" )</a>
+</div>
+
+
+<div id="completedByDiv" style="display:none" class="page">
+<h3><span id="userFullName"></span></h3>
+<table>
+	<tr>
+		<td><label>$i18n.getString( "username" ):</label></td>
+		<td><span id="userUsername"></span></td>
+	</tr>
+	<tr>
+		<td><label>$i18n.getString( "email" ):</label></td>
+		<td><span id="userEmail"></span></td>
+	</tr>
+	<tr>
+		<td><label>$i18n.getString( "phone_number" ):</label></td>
+		<td><span id="userPhoneNumber"></span></td>
+	</tr>
+	<tr>
+		<td><label>$i18n.getString( "organisation_units" ):</label></td>
+		<td><span id="userOrganisationUnits"></span></td>
+	</tr>
+	<tr>
+		<td><label>$i18n.getString( "user_roles" ):</label></td>
+		<td><span id="userUserRoles"></span></td>
+	</tr>
+</table>
+</div>

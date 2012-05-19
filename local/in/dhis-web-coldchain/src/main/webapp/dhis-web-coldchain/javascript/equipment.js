@@ -442,6 +442,9 @@ function catalogDetails( catalogId )
 
 function showEquipmentDataEntryForm( equipmentInstanceId )
 {
+	
+	window.location.href = "showEquipmentDataEntryForm.action?equipmentInstanceId=" + equipmentInstanceId;
+	/*
 	hideById('listEquipmentDiv');
 	hideById('selectDiv');
 	hideById('searchEquipmentDiv');
@@ -458,6 +461,7 @@ function showEquipmentDataEntryForm( equipmentInstanceId )
 		});
 		
 	jQuery('#resultSearchDiv').dialog('close');
+	*/
 }
 
 function updateEquipmentDataEntry()
