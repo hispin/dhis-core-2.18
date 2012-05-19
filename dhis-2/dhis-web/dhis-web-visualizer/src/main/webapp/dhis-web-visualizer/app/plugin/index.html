@@ -27,7 +27,7 @@
 			var url = '../../../'; // http://apps.dhis2.org/dev/
 		
 			DHIS.getChart({
-				uid: 'EbRN2VIbPdV',
+				uid: 'Y8iXMrjxDZ4',
 				el: 'chart1',
 				url: url
 			});
@@ -36,17 +36,19 @@
 				type: 'stackedcolumn',
 				indicators: ['Uvn6LCg7dVU'],
 				periods: 'last12Months',
-				category: 'period',
-				filter: 'organisationunit',
+				category: 'organisationunit',
+				filter: 'period',
 				organisationunits: ['ImspTQPwCqd'],
 				orgUnitIsParent: false,
 				showData: true,
 				trendLine: true,
 				hideLegend: false,
 				hideSubtitle: false,
+				userOrganisationUnit: false,
+				userOrganisationUnitChildren: true,
 				targetLineValue: 80,
 				targetLineLabel: null,				
-				baseLineValue: 20,
+				baseLineValue: null,
 				baseLineLabel: null,	
 				el: 'chart2',
 				url: url

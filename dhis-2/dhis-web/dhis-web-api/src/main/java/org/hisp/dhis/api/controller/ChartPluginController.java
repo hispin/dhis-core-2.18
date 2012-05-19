@@ -55,6 +55,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,7 +68,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ChartPluginController
 {
     public static final String RESOURCE_PATH = "/chartValues";
-    
+
     @Autowired
     private AggregatedDataValueService aggregatedDataValueService;
 
@@ -84,23 +85,26 @@ public class ChartPluginController
     private OrganisationUnitService organisationUnitService;
 
     @Autowired
+    private CurrentUserService currentUserService;
+
+    @Autowired
     private I18nManager i18nManager;
 
     @Autowired
     private ContextUtils contextUtils;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getChartValues( @RequestParam(required=false) Set<String> indicatorIds,
-                                @RequestParam(required=false) Set<String> dataElementIds,
-                                @RequestParam Set<String> organisationUnitIds,
-                                @RequestParam(required=false) boolean orgUnitIsParent, 
-                                RelativePeriods relativePeriods,
-                                Model model, 
-                                HttpServletResponse response )
+    public String getChartValues( @RequestParam( required = false )
+    Set<String> indicatorIds, @RequestParam( required = false )
+    Set<String> dataElementIds, @RequestParam
+    Set<String> organisationUnitIds, @RequestParam( required = false )
+    boolean orgUnitIsParent, @RequestParam( required = false )
+    boolean userOrganisationUnit, @RequestParam( required = false )
+    boolean userOrganisationUnitChildren, RelativePeriods relativePeriods, Model model, HttpServletResponse response )
         throws Exception
     {
         ChartPluginValue chartValue = new ChartPluginValue();
-        
+
         I18nFormat format = i18nManager.getI18nFormat();
 
         // ---------------------------------------------------------------------
@@ -114,7 +118,7 @@ public class ChartPluginController
             ContextUtils.conflictResponse( response, "No valid periods specified" );
             return null;
         }
-        
+
         for ( Period period : periods )
         {
             chartValue.getPeriods().add( period.getName() );
@@ -124,26 +128,45 @@ public class ChartPluginController
         // Organisation units
         // ---------------------------------------------------------------------
 
-        List<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsByUid( organisationUnitIds );
-        
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+
+        if ( userOrganisationUnit || userOrganisationUnitChildren )
+        {
+            if ( userOrganisationUnit )
+            {
+                organisationUnits.add( currentUserService.getCurrentUser().getOrganisationUnit() );
+            }
+
+            if ( userOrganisationUnitChildren )
+            {
+                organisationUnits.addAll( new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser()
+                    .getOrganisationUnit().getChildren() ) );
+            }
+        }
+
+        else
+        {
+            organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsByUid( organisationUnitIds ) );
+        }
+
         if ( organisationUnits.isEmpty() )
         {
             ContextUtils.conflictResponse( response, "No valid organisation units specified" );
             return null;
         }
-        
+
         if ( orgUnitIsParent )
         {
             List<OrganisationUnit> childOrganisationUnits = new ArrayList<OrganisationUnit>();
-            
+
             for ( OrganisationUnit unit : organisationUnits )
             {
                 childOrganisationUnits.addAll( unit.getChildren() );
             }
-            
+
             organisationUnits = childOrganisationUnits;
         }
-        
+
         for ( OrganisationUnit unit : organisationUnits )
         {
             chartValue.getOrgUnits().add( unit.getName() );
@@ -162,26 +185,25 @@ public class ChartPluginController
                 ContextUtils.conflictResponse( response, "No valid indicators specified" );
                 return null;
             }
-            
+
             for ( Indicator indicator : indicators )
             {
                 chartValue.getData().add( indicator.getDisplayShortName() );
             }
-            
-            Collection<AggregatedIndicatorValue> indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues(
-                getIdentifiers( Indicator.class, indicators ),
-                getIdentifiers( Period.class, periods ),
-                getIdentifiers( OrganisationUnit.class, organisationUnits ) );
+
+            Collection<AggregatedIndicatorValue> indicatorValues = aggregatedDataValueService
+                .getAggregatedIndicatorValues( getIdentifiers( Indicator.class, indicators ),
+                    getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
             for ( AggregatedIndicatorValue value : indicatorValues )
             {
                 String[] record = new String[4];
-                
+
                 record[0] = String.valueOf( value.getValue() );
                 record[1] = indicatorService.getIndicator( value.getIndicatorId() ).getDisplayShortName();
                 record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
                 record[3] = organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
-                
+
                 chartValue.getValues().add( record );
             }
         }
@@ -199,34 +221,33 @@ public class ChartPluginController
                 ContextUtils.conflictResponse( response, "No valid data elements specified" );
                 return null;
             }
-            
+
             for ( DataElement element : dataElements )
             {
                 chartValue.getData().add( element.getDisplayShortName() );
             }
-            
-            Collection<AggregatedDataValue> dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( 
-                getIdentifiers( DataElement.class, dataElements ),
-                getIdentifiers( Period.class, periods ),                
+
+            Collection<AggregatedDataValue> dataValues = aggregatedDataValueService.getAggregatedDataValueTotals(
+                getIdentifiers( DataElement.class, dataElements ), getIdentifiers( Period.class, periods ),
                 getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
             for ( AggregatedDataValue value : dataValues )
             {
                 String[] record = new String[4];
-                
+
                 record[0] = String.valueOf( value.getValue() );
                 record[1] = dataElementService.getDataElement( value.getDataElementId() ).getDisplayShortName();
                 record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
                 record[3] = organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
-                
-                chartValue.getValues().add( record );              
+
+                chartValue.getValues().add( record );
             }
         }
-        
+
         contextUtils.configureResponse( response, CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING, null, false );
 
         model.addAttribute( "model", chartValue );
-        
+
         return "chartValues";
     }
 }
