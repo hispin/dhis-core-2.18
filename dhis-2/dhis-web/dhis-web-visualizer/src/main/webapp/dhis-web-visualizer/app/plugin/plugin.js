@@ -688,10 +688,12 @@ Ext.onReady( function() {
                 trendLine: false,
                 hideLegend: false,
                 hideSubtitle: false,
+                userOrganisationUnit: false,
+                userOrganisationUnitChildren: false,
                 targetLineValue: null,
                 targetLineLabel: null,
                 baseLineValue: null,
-                baseLineLabel: null,                
+                baseLineLabel: null,
                 url: ''
             };
             
@@ -731,6 +733,16 @@ Ext.onReady( function() {
                         conf.series = r.series.toLowerCase();
                         conf.category = r.category.toLowerCase();
                         conf.filter = r.filter.toLowerCase();
+                        conf.showData = r.showData || false,
+						conf.trendLine = r.regression || false,
+						conf.hideLegend = r.hideLegend || false,
+						conf.hideSubtitle = r.hideSubtitle || false,
+						conf.userOrganisationUnit = r.userOrganisationUnit || false,
+						conf.userOrganisationUnitChildren = r.userOrganisationUnitChildren || false,
+						conf.targetLineValue = r.targetLineValue || null,
+						conf.targetLineLabel = r.targetLineLabel || null,
+						conf.baseLineValue = r.baseLineValue || null,
+						conf.baseLineLabel = r.baseLineLabel || null,
                         conf.legendPosition = conf.legendPosition || false;
                         
                         if (r.indicators) {
@@ -760,6 +772,13 @@ Ext.onReady( function() {
             Ext.Array.each(params, function(item) {
                 baseUrl = Ext.String.urlAppend(baseUrl, item);
             });
+            
+            if (project.state.conf.userOrganisationUnit) {
+				baseUrl = Ext.String.urlAppend(baseUrl, 'userOrganisationUnit=true');
+			}
+			if (project.state.conf.userOrganisationUnitChildren) {
+				baseUrl = Ext.String.urlAppend(baseUrl, 'userOrganisationUnitChildren=true');
+			}
             
             Ext.data.JsonP.request({
                 url: baseUrl,
