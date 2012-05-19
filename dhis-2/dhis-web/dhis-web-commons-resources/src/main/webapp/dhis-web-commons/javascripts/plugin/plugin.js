@@ -1138,7 +1138,7 @@ DHIS.table.utils = {
     		DHIS.table.tables[el].destroy();
     	}
     },
-    getDataQuery: function(conf,url) {    	
+    getDataQuery: function(conf, url) {    	
     	Ext.Array.each(conf.indicators, function(item) {
 			url = Ext.String.urlAppend(url, 'in=' + item);
 		});
@@ -1179,7 +1179,7 @@ DHIS.table.grid = {
 		});
 		return headers;
 	},
-	getColumnArray: function(conf,data) {
+	getColumnArray: function(conf, data) {
 		var columns = [];
 		Ext.Array.each(data.headers, function(header, index) {
 			if (!Ext.Array.contains(conf.hiddenCols, index) && !Ext.Array.contains(conf.hiddenCols, header)) {
@@ -1212,14 +1212,16 @@ DHIS.table.grid = {
 };
 
 DHIS.table.plain = {
-	getMarkup: function(data) {
+	getMarkup: function(conf, data) {
 		var html = '<table><tr>';
 		var classMap = []; /* Col index -> class markup */
 		
 		Ext.Array.each(data.headers, function(header, index) {
-			var clazz = !header.meta ? ' class=\"val\"' : '';	
-			classMap[index] = clazz;
-			html += '<th' + clazz + '>' + header.name + '<\/th>';	
+			if (!Ext.Array.contains(conf.hiddenCols, index)) {
+				var clazz = !header.meta ? ' class=\"val\"' : '';	
+				classMap[index] = clazz;
+				html += '<th' + clazz + '>' + header.name + '<\/th>';
+			}	
 		});
 		
 		html += '<\/tr>';
@@ -1227,8 +1229,10 @@ DHIS.table.plain = {
 		Ext.Array.each(data.rows, function(row) {
 			html += '<tr>';
 			Ext.Array.each(row, function(field, index) {
-				var clazz = classMap[index];				
-				html += '<td' + clazz + '>' + field + '<\/td>';
+				if (!Ext.Array.contains(conf.hiddenCols, index)) {
+					var clazz = classMap[index];				
+					html += '<td' + clazz + '>' + field + '<\/td>';
+				}
 			});
 			html += '<\/tr>';
 		});
@@ -1241,7 +1245,7 @@ DHIS.table.plain = {
 			url: DHIS.table.utils.getTableDataUrl(conf),
 			disableCaching: false,
 			success: function(data) {
-				var html = DHIS.table.plain.getMarkup(data);
+				var html = DHIS.table.plain.getMarkup(conf, data);
 				Ext.get(conf.el).update(html);
 			}
 		});
