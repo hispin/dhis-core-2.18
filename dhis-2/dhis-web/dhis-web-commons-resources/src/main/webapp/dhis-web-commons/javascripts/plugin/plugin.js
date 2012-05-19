@@ -270,7 +270,7 @@ Ext.onReady( function() {
 						return {
 							type: 'Numeric',
 							position: 'left',
-							title: project.state.conf.rangeAxisLabel || false,
+							title: project.state.conf.rangeAxisLabel,
 							labelTitle: {
 								font: '17px ' + DHIS.chart.conf.chart.style.font
 							},
@@ -297,7 +297,7 @@ Ext.onReady( function() {
 						return {
 							type: 'Category',
 							position: 'bottom',
-							title: project.state.conf.domainAxisLabel || false,
+							title: project.state.conf.domainAxisLabel,
 							labelTitle: {
 								font: '17px ' + DHIS.chart.conf.chart.style.font
 							},
@@ -694,6 +694,8 @@ Ext.onReady( function() {
                 targetLineLabel: null,
                 baseLineValue: null,
                 baseLineLabel: null,
+                domainAxisLabel: null,
+                rangeAxisLabel: null,
                 url: ''
             };
             
@@ -733,17 +735,18 @@ Ext.onReady( function() {
                         conf.series = r.series.toLowerCase();
                         conf.category = r.category.toLowerCase();
                         conf.filter = r.filter.toLowerCase();
-                        conf.showData = r.showData || false,
-						conf.trendLine = r.regression || false,
-						conf.hideLegend = r.hideLegend || false,
-						conf.hideSubtitle = r.hideSubtitle || false,
-						conf.userOrganisationUnit = r.userOrganisationUnit || false,
-						conf.userOrganisationUnitChildren = r.userOrganisationUnitChildren || false,
-						conf.targetLineValue = r.targetLineValue || null,
-						conf.targetLineLabel = r.targetLineLabel || null,
-						conf.baseLineValue = r.baseLineValue || null,
-						conf.baseLineLabel = r.baseLineLabel || null,
-                        conf.legendPosition = conf.legendPosition || false;
+                        conf.showData = r.showData || false;
+						conf.trendLine = r.regression || false;
+						conf.hideLegend = r.hideLegend || false;
+						conf.hideSubtitle = r.hideSubtitle || false;
+						conf.userOrganisationUnit = r.userOrganisationUnit || false;
+						conf.userOrganisationUnitChildren = r.userOrganisationUnitChildren || false;
+						conf.targetLineValue = r.targetLineValue || null;
+						conf.targetLineLabel = r.targetLineLabel || null;
+						conf.baseLineValue = r.baseLineValue || null;
+						conf.baseLineLabel = r.baseLineLabel || null;
+						conf.domainAxisLabel = r.domainAxisLabel || null;
+                        conf.rangeAxisLabel = r.rangeAxisLabel || null;
                         
                         if (r.indicators) {
                             conf.indicators = DHIS.chart.util.dimension.indicator.getIdsFromObjects(r.indicators);
