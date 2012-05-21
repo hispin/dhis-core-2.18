@@ -417,9 +417,12 @@ public class DataSet
         this.indicators = indicators;
     }
 
+    /*
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "compulsoryDataElementOperands", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "compulsoryDataElementOperand", namespace = Dxf2Namespace.NAMESPACE )
+    */
     public Set<DataElementOperand> getCompulsoryDataElementOperands()
     {
         return compulsoryDataElementOperands;
