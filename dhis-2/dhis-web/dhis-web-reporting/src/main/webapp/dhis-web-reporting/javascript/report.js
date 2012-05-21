@@ -1,5 +1,11 @@
 function addReport()
 {
+	if ( !hasText( "upload" ) )
+	{
+		setMessage( i18n_please_specify_file );
+		return false;
+	}
+	
 	$.postJSON( "validateReport.action", { id:$( "#id" ).val(), "name":$( "#name" ).val() }, function( json )
 	{
 		if ( json.response == "input" )

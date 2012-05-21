@@ -1,3 +1,6 @@
+<script type="text/javascript">
+	var i18n_please_specify_file = '$encoder.jsEscape( $i18n.getString( "please_specify_file" ) , "'")';
+</script>
 
 <h3>$i18n.getString( 'create_new_report' )</h3>
 
@@ -15,7 +18,7 @@
         <td><input type="text" id="name" name="name" style="width:95%" value="$!report.name"></td>
     </tr>
 	<tr>
-		<td><label for="upload">$i18n.getString( "design" )</label></td>
+		<td><label for="upload">$i18n.getString( "jasper_design" )</label></td>
 		<td><input type="file" id="upload" name="upload" size="35" /></td>
 	</tr>
 	<tr>
