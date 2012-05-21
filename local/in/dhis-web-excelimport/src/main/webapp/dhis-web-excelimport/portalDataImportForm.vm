@@ -18,7 +18,7 @@
 </style>
 
 <div id="overlay">
-	<div id="overlayImg"><img  width="50" height="50" src="images/ajax-loader.gif" /></div>
+	<div id="overlayImg"><img  width="50" height="50" src="ima	ges/ajax-loader.gif" /></div>
 </div>
 
 <script>
@@ -31,6 +31,7 @@
 	var datasetIds = new HashTable();
 	var orgunitGroupIds = new HashTable();
 	var facilityStarts = new HashTable();
+	var periodicityTable = new HashTable();
 
 	#foreach ( $excelImportSheet in $excelImportSheetList )
 		var excelImportSheetId = ""+"$excelImportSheet.xmlTemplateName";
@@ -41,6 +42,7 @@
         datasetIds.put( excelImportSheetId, "$excelImportSheet.datasetId" );
 		orgunitGroupIds.put( excelImportSheetId, "$excelImportSheet.orgunitGroupId" );
 		facilityStarts.put( excelImportSheetId, "$excelImportSheet.facilityStart" );
+		periodicityTable.put( excelImportSheetId, "$excelImportSheet.periodicity" );
 	#end
 
     function formValidations()
@@ -57,6 +59,7 @@
         document.dataImportForm.datasetId.value = datasetIds.get( importSheetList.options[importSheetListSelectedIndex].value );
         document.dataImportForm.orgunitGroupId.value = orgunitGroupIds.get( importSheetList.options[importSheetListSelectedIndex].value );
         document.dataImportForm.facilityStart.value = facilityStarts.get( importSheetList.options[importSheetListSelectedIndex].value );
+		document.dataImportForm.selectedPeriodicity.value = periodicityTable.get( importSheetList.options[importSheetListSelectedIndex].value );
 		
 		showOverlay();
         
@@ -125,6 +128,7 @@
                 <input type="hidden" name="datasetId" id="datasetId" />
 				<input type="hidden" name="orgunitGroupId" id="orgunitGroupId" />
 				<input type="hidden" name="facilityStart" id="facilityStart" />
+				<input type="hidden" name="selectedPeriodicity" id="selectedPeriodicity" />
             </td>
         </tr>
 	</table>

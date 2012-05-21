@@ -224,6 +224,13 @@ public class PortalExcelImportResultAction implements Action
     {
         return lockStatus;
     }
+	
+	String selectedPeriodicity;
+    
+    public void setSelectedPeriodicity( String selectedPeriodicity )
+    {
+        this.selectedPeriodicity = selectedPeriodicity;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -430,8 +437,8 @@ public class PortalExcelImportResultAction implements Action
         monthMap.put( "December", "12" );
         
         String selectedMonth = "";
-        String selectedPeriodicity = "";
-        String selectedFinancialYear = "";
+        
+		String selectedFinancialYear = "";
         String selectedFormat = "";
         String selectedParentName = "";
         
@@ -472,10 +479,12 @@ public class PortalExcelImportResultAction implements Action
             {
                 selectedParentName = cellContent;
             }
+			/*
             else if( header.getExpression().equalsIgnoreCase( ExcelImport_Header.HEADER_PERIODICITY ) )
             {
                 selectedPeriodicity = cellContent;
             }
+			*/
         }
         
         String selStartDate = "";
@@ -492,6 +501,9 @@ public class PortalExcelImportResultAction implements Action
             }
         }
 
+        System.out.println( "******* " +selStartDate + " : " + selectedMonth + " : " + selectedFinancialYear + " : " +  selectedPeriodicity );
+        
+        
         PeriodType periodType = periodService.getPeriodTypeByName( selectedPeriodicity );
         Period selectedPeriod = getSelectedPeriod( selStartDate, periodType );
         SimpleDateFormat periodFormat;
@@ -580,7 +592,8 @@ public class PortalExcelImportResultAction implements Action
                     if( portalOrgUnit != null && orgUnitList.contains( portalOrgUnit ) )
                     {
                         System.out.println("--------Importing started for :"+portalOrgUnit.getName() + "-------------" );
-                        lockStatus = dataSetService.isLocked( dataSet, selectedPeriod, portalOrgUnit, null );
+                        
+						lockStatus = dataSetService.isLocked( dataSet, selectedPeriod, portalOrgUnit, null );
                         //DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, portalOrgUnit );
                         //if( dataSetLock != null )
                         if( lockStatus )
@@ -599,6 +612,7 @@ public class PortalExcelImportResultAction implements Action
                         for( ExcelImport_DeCode deCode : deCodeList )
                         {
                             String deCodeExpression = deCode.getExpression();
+							System.out.println( deCodeExpression );
                             if( deCodeExpression != null && !deCodeExpression.trim().equals( "" ) )
                             {
                                 Integer deId = Integer.parseInt( deCodeExpression.split( "\\." )[0] );
@@ -928,12 +942,14 @@ public class PortalExcelImportResultAction implements Action
                 return orgUnitId;
             }
         }
-        
+			
         return null;
     }
 
     public Integer getOrgUnitIdByURL( String url )
     {
+        url = url.replace("'","\\'");
+		System.out.println(url);
         String query = "SELECT organisationunitid FROM organisationunit WHERE url LIKE '"+ url +"'";
         SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
         if ( sqlResultSet != null && sqlResultSet.next() )
