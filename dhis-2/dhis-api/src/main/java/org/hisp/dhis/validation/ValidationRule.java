@@ -86,7 +86,7 @@ public class ValidationRule
     }
 
     public ValidationRule( String name, String description, String type,
-                           Operator operator, Expression leftSide, Expression rightSide )
+        Operator operator, Expression leftSide, Expression rightSide )
     {
         this.name = name;
         this.description = description;
@@ -207,11 +207,9 @@ public class ValidationRule
         this.type = type;
     }
 
-    /*
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    */
     public Expression getLeftSide()
     {
         return leftSide;
@@ -222,11 +220,9 @@ public class ValidationRule
         this.leftSide = leftSide;
     }
 
-    /*
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    */
     public Expression getRightSide()
     {
         return rightSide;

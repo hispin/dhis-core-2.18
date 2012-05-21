@@ -37,17 +37,19 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
+import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +72,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     //-------------------------------------------------------------------------------------------------------
 
     @Autowired
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
     @Autowired
     private AttributeService attributeService;
@@ -208,7 +210,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
+            log.info( "Importing object " + object + " (" + object.getClass().getSimpleName() + ")" );
+
             Set<AttributeValue> attributeValues = getAndClearAttributeValues( object );
+            Set<DataElementOperand> greyedFields = getAndClearDataElementOperands( object, "greyedFields" );
+            Set<DataElementOperand> compulsoryDataElementOperands = getAndClearDataElementOperands( object, "compulsoryDataElementOperands" );
+            Expression leftSide = getAndClearExpression( object, "leftSide" );
+            Expression rightSide = getAndClearExpression( object, "rightSide" );
+
             List<ImportConflict> conflicts = importObjectLocal( object, options );
 
             if ( !options.isDryRun() )
@@ -227,11 +236,43 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return importConflicts;
     }
 
-    private void setAttributeValues( T object, Set<AttributeValue> attributeValues )
+    // FIXME add type check
+    private Expression getAndClearExpression( T object, String field )
     {
-        ReflectionUtils.invokeSetterMethod( "attributeValues", object, attributeValues );
+        Expression expression = null;
+
+        if ( ReflectionUtils.findGetterMethod( field, object ) != null )
+        {
+            expression = ReflectionUtils.invokeGetterMethod( field, object );
+
+            if ( expression != null )
+            {
+                ReflectionUtils.invokeSetterMethod( field, object, new Object[]{null} );
+            }
+        }
+
+        return expression;
     }
 
+    // FIXME add type check
+    private Set<DataElementOperand> getAndClearDataElementOperands( T object, String field )
+    {
+        Set<DataElementOperand> dataElementOperands = new HashSet<DataElementOperand>();
+
+        if ( ReflectionUtils.findGetterMethod( field, object ) != null )
+        {
+            dataElementOperands = ReflectionUtils.invokeGetterMethod( field, object );
+
+            if ( dataElementOperands.size() > 0 )
+            {
+                ReflectionUtils.invokeSetterMethod( field, object, new HashSet<DataElementOperand>() );
+            }
+        }
+
+        return dataElementOperands;
+    }
+
+    // FIXME add type check
     private Set<AttributeValue> getAndClearAttributeValues( T object )
     {
         Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
@@ -242,7 +283,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( attributeValues.size() > 0 )
             {
-                setAttributeValues( object, new HashSet<AttributeValue>() );
+                ReflectionUtils.invokeSetterMethod( "attributeValues", object, new HashSet<AttributeValue>() );
             }
         }
 
@@ -277,7 +318,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 sessionFactory.getCurrentSession().flush();
             }
 
-            setAttributeValues( object, attributeValues );
+            ReflectionUtils.invokeSetterMethod( "attributeValues", object, attributeValues );
 
             if ( !dryRun )
             {
@@ -517,7 +558,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         else if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
         {
             Period period = (Period) identifiableObject;
-            period = periodStore.reloadForceAddPeriod( period );
+            period = periodService.reloadPeriod( period );
 
             if ( !options.isDryRun() )
             {
@@ -544,7 +585,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 if ( ref != null )
                 {
                     identifiableObjects.put( field, ref );
-                    ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, new Object[]{ null } );
+                    ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, new Object[]{null} );
                 }
             }
 
