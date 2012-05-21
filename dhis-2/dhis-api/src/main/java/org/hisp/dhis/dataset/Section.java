@@ -233,10 +233,12 @@ public class Section
         this.sortOrder = sortOrder;
     }
 
+    /*
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "greyedFields", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "greyedField", namespace = Dxf2Namespace.NAMESPACE )
+    */
     public Set<DataElementOperand> getGreyedFields()
     {
         return greyedFields;

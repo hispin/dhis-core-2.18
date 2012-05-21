@@ -484,7 +484,7 @@ public class DefaultExpressionService
                 if ( operand.isTotal() )
                 {
                     final StringBuilder replace = new StringBuilder( PAR_OPEN );
-                    
+
                     for ( Integer categoryOptionCombo : dataElementMap.get( operand.getDataElementId() ) )
                     {
                         replace.append( EXP_OPEN ).append( operand.getDataElementId() ).append( SEPARATOR ).append(
