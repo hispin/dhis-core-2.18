@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "assign_program_to_orgunits_for_registering" )</h3>
+<h3>$i18n.getString( "assign_program_to_orgunits" )</h3>
 
 <h4>$encoder.htmlEncode( $program.name )</h4>
 
