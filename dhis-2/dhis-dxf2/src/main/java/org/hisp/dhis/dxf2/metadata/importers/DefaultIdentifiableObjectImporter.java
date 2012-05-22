@@ -318,7 +318,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    // FIXME add warning
+                    log.warn( "Unknown reference " + dataElement + " on expression " + expression );
                 }
             }
 
@@ -334,7 +334,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    // FIXME add warning
+                    log.warn( "Unknown reference " + dataElementCategoryOptionCombo + " on expression " + expression );
                 }
             }
 
