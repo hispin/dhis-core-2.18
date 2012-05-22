@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
@@ -94,11 +95,13 @@ public class Expression
     /**
      * A reference to the DataElements in the Expression.
      */
+    @Scanned
     private Set<DataElement> dataElementsInExpression = new HashSet<DataElement>();
 
     /**
      * A reference to the optionCombos in the Expression.
      */
+    @Scanned
     private Set<DataElementCategoryOptionCombo> optionCombosInExpression = new HashSet<DataElementCategoryOptionCombo>();
 
     // -------------------------------------------------------------------------
