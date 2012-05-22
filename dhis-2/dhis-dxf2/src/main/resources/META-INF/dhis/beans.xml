@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-  <context:component-scan base-package="org.hisp.dhis.dxf2" />
+  <bean id="org.hisp.dhis.dxf2.metadata.ExportService" class="org.hisp.dhis.dxf2.metadata.DefaultExportService" />
+
+  <bean id="org.hisp.dhis.dxf2.metadata.ImportService" class="org.hisp.dhis.dxf2.metadata.DefaultImportService" />
+
+  <bean id="org.hisp.dhis.dxf2.metadata.ObjectBridge" class="org.hisp.dhis.dxf2.metadata.DefaultObjectBridge" />
 
   <bean id="org.hisp.dhis.dxf2.datavalueset.DataValueSetService"
       class="org.hisp.dhis.dxf2.datavalueset.DefaultDataValueSetService" />
@@ -122,7 +125,8 @@
         value="org.hisp.dhis.organisationunit.OrganisationUnit" />
   </bean>
 
-  <bean id="organisationUnitLevelImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+  <bean id="organisationUnitLevelImporter"
+      class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
     <constructor-arg name="importerClass" type="java.lang.Class"
         value="org.hisp.dhis.organisationunit.OrganisationUnitLevel" />
   </bean>

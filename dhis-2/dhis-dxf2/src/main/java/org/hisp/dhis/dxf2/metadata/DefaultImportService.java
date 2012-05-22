@@ -47,7 +47,6 @@ import java.util.Set;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Transactional
-@Service
 public class DefaultImportService
     implements ImportService
 {
