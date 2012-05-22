@@ -4,7 +4,7 @@
 	<table style="margin-bottom:8px">    
 		<tr>
 			<td>
-				<label>$i18n.getString( "registering_unit" )</label>
+				<label>$i18n.getString( "orgunit" )</label>
 			</td>
 			<td>
 				<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:350px">
