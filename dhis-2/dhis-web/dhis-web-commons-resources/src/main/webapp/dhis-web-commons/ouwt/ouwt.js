@@ -113,7 +113,7 @@ function Selection()
                 return true;
             }
 
-            if(localRoots === undefined || localRoots.length == 0)
+            if(localRoots == null || localRoots.length == 0)
             {
                 return true;
             }
