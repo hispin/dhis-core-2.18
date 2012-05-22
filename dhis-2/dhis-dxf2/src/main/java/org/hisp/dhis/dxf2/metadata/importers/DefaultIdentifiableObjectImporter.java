@@ -37,7 +37,10 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -45,6 +48,7 @@ import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.dxf2.metadata.ObjectBridge;
 import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
 import org.hisp.dhis.expression.Expression;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
@@ -76,6 +80,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     @Autowired
     private AttributeService attributeService;
+
+    @Autowired
+    private ExpressionService expressionService;
+
+    @Autowired
+    private DataElementOperandService dataElementOperandService;
 
     @Autowired
     private ObjectBridge objectBridge;
@@ -210,26 +220,26 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
-            log.info( "Importing object " + object + " (" + object.getClass().getSimpleName() + ")" );
-
             Set<AttributeValue> attributeValues = getAndClearAttributeValues( object );
-            Set<DataElementOperand> greyedFields = getAndClearDataElementOperands( object, "greyedFields" );
             Set<DataElementOperand> compulsoryDataElementOperands = getAndClearDataElementOperands( object, "compulsoryDataElementOperands" );
+            Set<DataElementOperand> greyedFields = getAndClearDataElementOperands( object, "greyedFields" );
             Expression leftSide = getAndClearExpression( object, "leftSide" );
             Expression rightSide = getAndClearExpression( object, "rightSide" );
 
             List<ImportConflict> conflicts = importObjectLocal( object, options );
+            importConflicts.addAll( conflicts );
 
             if ( !options.isDryRun() )
             {
                 sessionFactory.getCurrentSession().flush();
-            }
 
-            updateAttributeValues( object, attributeValues, options.isDryRun() );
+                newAttributeValues( object, attributeValues );
+                newExpression( object, "leftSide", leftSide );
+                newExpression( object, "rightSide", rightSide );
+                newDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
+                newDataElementOperands( object, "greyedFields", greyedFields );
 
-            if ( !conflicts.isEmpty() )
-            {
-                importConflicts.addAll( conflicts );
+                sessionFactory.getCurrentSession().flush();
             }
         }
 
@@ -247,7 +257,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( expression != null )
             {
-                ReflectionUtils.invokeSetterMethod( field, object, new Object[]{null} );
+                ReflectionUtils.invokeSetterMethod( field, object, new Object[]{ null } );
             }
         }
 
@@ -290,7 +300,71 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return attributeValues;
     }
 
-    private void updateAttributeValues( T object, Set<AttributeValue> attributeValues, boolean dryRun )
+    private void newExpression( T object, String field, Expression expression )
+    {
+        if ( expression != null )
+        {
+            expression.setId( 0 );
+
+            Set<DataElement> dataElements = new HashSet<DataElement>();
+
+            for ( DataElement dataElement : expression.getDataElementsInExpression() )
+            {
+                DataElement de = objectBridge.getObject( dataElement );
+
+                if ( de != null )
+                {
+                    dataElements.add( de );
+                }
+                else
+                {
+                    // FIXME add warning
+                }
+            }
+
+            Set<DataElementCategoryOptionCombo> dataElementCategoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
+
+            for ( DataElementCategoryOptionCombo dataElementCategoryOptionCombo : expression.getOptionCombosInExpression() )
+            {
+                DataElementCategoryOptionCombo optionCombo = objectBridge.getObject( dataElementCategoryOptionCombo );
+
+                if ( optionCombo != null )
+                {
+                    dataElementCategoryOptionCombos.add( dataElementCategoryOptionCombo );
+                }
+                else
+                {
+                    // FIXME add warning
+                }
+            }
+
+            expression.setDataElementsInExpression( dataElements );
+            expression.setOptionCombosInExpression( dataElementCategoryOptionCombos );
+
+            expressionService.addExpression( expression );
+
+            sessionFactory.getCurrentSession().flush();
+
+            ReflectionUtils.invokeSetterMethod( field, object, expression );
+        }
+    }
+
+    private void newDataElementOperands( T object, String field, Set<DataElementOperand> dataElementOperands )
+    {
+        if ( dataElementOperands.size() > 0 )
+        {
+            for ( DataElementOperand dataElementOperand : dataElementOperands )
+            {
+                dataElementOperand.setId( 0 );
+                dataElementOperandService.addDataElementOperand( dataElementOperand );
+                sessionFactory.getCurrentSession().flush();
+            }
+
+            ReflectionUtils.invokeSetterMethod( field, object, dataElementOperands );
+        }
+    }
+
+    private void newAttributeValues( T object, Set<AttributeValue> attributeValues )
     {
         if ( attributeValues.size() > 0 )
         {
@@ -313,17 +387,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 attributeService.addAttributeValue( attributeValue );
             }
 
-            if ( !dryRun )
-            {
-                sessionFactory.getCurrentSession().flush();
-            }
-
             ReflectionUtils.invokeSetterMethod( "attributeValues", object, attributeValues );
-
-            if ( !dryRun )
-            {
-                sessionFactory.getCurrentSession().flush();
-            }
         }
     }
 
@@ -585,7 +649,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 if ( ref != null )
                 {
                     identifiableObjects.put( field, ref );
-                    ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, new Object[]{null} );
+                    ReflectionUtils.invokeSetterMethod( field.getName(), identifiableObject, new Object[]{ null } );
                 }
             }
 

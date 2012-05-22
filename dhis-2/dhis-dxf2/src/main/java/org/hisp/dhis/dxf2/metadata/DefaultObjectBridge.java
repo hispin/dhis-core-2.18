@@ -59,6 +59,9 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +73,6 @@ import java.util.*;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Component
-@Transactional( readOnly = true )
 public class DefaultObjectBridge
     implements ObjectBridge
 {
@@ -188,13 +189,13 @@ public class DefaultObjectBridge
     public void destroy()
     {
         masterMap = null;
-
         uidMap = null;
         codeMap = null;
         nameMap = null;
         shortNameMap = null;
-
         periodTypeMap = null;
+
+        writeEnabled = true;
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -284,7 +285,6 @@ public class DefaultObjectBridge
     //-------------------------------------------------------------------------------------------------------
 
     @Override
-    @Transactional( readOnly = false )
     public void saveObject( Object object )
     {
         if ( _typeSupported( object.getClass() ) && IdentifiableObject.class.isInstance( object ) )
@@ -301,7 +301,6 @@ public class DefaultObjectBridge
     }
 
     @Override
-    @Transactional( readOnly = false )
     public void updateObject( Object object )
     {
         if ( _typeSupported( object.getClass() ) && IdentifiableObject.class.isInstance( object ) )
