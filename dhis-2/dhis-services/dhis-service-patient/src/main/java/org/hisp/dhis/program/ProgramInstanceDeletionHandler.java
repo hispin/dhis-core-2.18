@@ -34,8 +34,6 @@ import java.util.Set;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.programattributevalue.ProgramAttributeValue;
-import org.hisp.dhis.programattributevalue.ProgramAttributeValueService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -68,13 +66,6 @@ public class ProgramInstanceDeletionHandler
     public void setProgramStageDEService( ProgramStageDataElementService programStageDEService )
     {
         this.programStageDEService = programStageDEService;
-    }
-
-    private ProgramAttributeValueService programAttributeValueService;
-
-    public void setProgramAttributeValueService( ProgramAttributeValueService programAttributeValueService )
-    {
-        this.programAttributeValueService = programAttributeValueService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
@@ -118,21 +109,6 @@ public class ProgramInstanceDeletionHandler
                     {
                         patientDataValueService.deletePatientDataValue( dataValue );
                     }
-                }
-            }
-
-            // ---------------------------------------------------------------------
-            // Delete Program attribute values
-            // ---------------------------------------------------------------------
-
-            for ( ProgramInstance programInstance : programInstances )
-            {
-                Collection<ProgramAttributeValue> attributeValues = programAttributeValueService
-                    .getProgramAttributeValues( programInstance );
-
-                for ( ProgramAttributeValue attributeValue : attributeValues )
-                {
-                    programAttributeValueService.deleteProgramAttributeValue( attributeValue );
                 }
             }
 
@@ -187,22 +163,6 @@ public class ProgramInstanceDeletionHandler
             {
                 patientDataValueService.deletePatientDataValue( dataValue );
             }
-        }
-
-        // ---------------------------------------------------------------------
-        // Delete Program attribute values
-        // ---------------------------------------------------------------------
-
-        for ( ProgramInstance programInstance : programInstances )
-        {
-            Collection<ProgramAttributeValue> attributeValues = programAttributeValueService
-                .getProgramAttributeValues( programInstance );
-
-            for ( ProgramAttributeValue attributeValue : attributeValues )
-            {
-                programAttributeValueService.deleteProgramAttributeValue( attributeValue );
-            }
-
         }
 
         // ---------------------------------------------------------------------

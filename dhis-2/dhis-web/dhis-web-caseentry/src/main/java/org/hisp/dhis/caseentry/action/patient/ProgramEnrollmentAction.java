@@ -49,8 +49,6 @@ import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramAttribute;
-import org.hisp.dhis.program.ProgramAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
@@ -85,8 +83,6 @@ public class ProgramEnrollmentAction
 
     private PatientAttributeValueService patientAttributeValueService;
 
-    private ProgramAttributeService programAttributeService;
-
     private SelectedStateManager selectedStateManager;
 
     // -------------------------------------------------------------------------
@@ -115,8 +111,6 @@ public class ProgramEnrollmentAction
 
     private Map<Integer, String> patientAttributeValueMap = new HashMap<Integer, String>();
 
-    private Collection<ProgramAttribute> programAttributes;
-
     private Boolean hasDataEntry;
 
     // -------------------------------------------------------------------------
@@ -131,16 +125,6 @@ public class ProgramEnrollmentAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
-    }
-
-    public Collection<ProgramAttribute> getProgramAttributes()
-    {
-        return programAttributes;
-    }
-
-    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
-    {
-        this.programAttributeService = programAttributeService;
     }
 
     public Collection<PatientAttribute> getNoGroupAttributes()
@@ -267,12 +251,6 @@ public class ProgramEnrollmentAction
             loadIdentifierTypes();
 
             loadPatientAttributes();
-
-            // -----------------------------------------------------------------
-            // Load patient-attributes of the selected program
-            // -----------------------------------------------------------------
-
-            programAttributes = programAttributeService.getAllProgramAttributes();
         }
 
         hasDataEntry = showDataEntry( orgunit, program, programInstance );

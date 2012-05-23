@@ -105,7 +105,7 @@ public class GetSingleEventAction
 
         for ( Program program : allProgram )
         {
-            if ( program.getSingleEvent() && !program.getAnonymous() )
+            if ( program.getType() == Program.SINGLE_EVENT_WITH_REGISTRATION )
             {
                 singleEventList.add( program );
             }
