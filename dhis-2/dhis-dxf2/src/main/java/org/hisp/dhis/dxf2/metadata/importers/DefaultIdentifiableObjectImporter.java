@@ -44,12 +44,11 @@ import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.dxf2.metadata.ObjectBridge;
-import org.hisp.dhis.dxf2.utils.OrganisationUnitUtils;
+import org.hisp.dhis.dxf2.metadata.handlers.FieldHandler;
+import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandler;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -90,6 +89,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired( required = false )
+    private List<ObjectHandler> objectHandlers;
+
+    @Autowired( required = false )
+    private List<FieldHandler> fieldHandlers;
 
     //-------------------------------------------------------------------------------------------------------
     // Constructor
@@ -211,15 +216,13 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         init( options );
 
-        // FIXME a bit too static.. implement "pre handler" for types?
-        if ( OrganisationUnit.class.isAssignableFrom( objects.get( 0 ).getClass() ) )
-        {
-            OrganisationUnitUtils.updateParents( (Collection<OrganisationUnit>) objects );
-            Collections.sort( (List<OrganisationUnit>) objects, new OrganisationUnitComparator() );
-        }
+        preObjectsHandlers( objects );
 
         for ( T object : objects )
         {
+            preObjectHandlers( object );
+
+            // FIXME add to scanner, and use field handlers for this
             Set<AttributeValue> attributeValues = getAndClearAttributeValues( object );
             Set<DataElementOperand> compulsoryDataElementOperands = getAndClearDataElementOperands( object, "compulsoryDataElementOperands" );
             Set<DataElementOperand> greyedFields = getAndClearDataElementOperands( object, "greyedFields" );
@@ -241,9 +244,68 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
                 sessionFactory.getCurrentSession().flush();
             }
+
+            postObjectHandlers( object );
         }
 
+        postObjectsHandlers( objects );
+
         return importConflicts;
+    }
+
+
+    @SuppressWarnings( "unchecked" )
+    private void preObjectHandlers( T object )
+    {
+        for ( ObjectHandler objectHandler : objectHandlers )
+        {
+            if ( objectHandler.canHandle( object.getClass() ) )
+            {
+                objectHandler.preImportObject( object );
+            }
+        }
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private void postObjectHandlers( T object )
+    {
+        for ( ObjectHandler objectHandler : objectHandlers )
+        {
+            if ( objectHandler.canHandle( object.getClass() ) )
+            {
+                objectHandler.postImportObject( object );
+            }
+        }
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private void preObjectsHandlers( List<T> objects )
+    {
+        if ( objects.size() > 0 )
+        {
+            for ( ObjectHandler objectHandler : objectHandlers )
+            {
+                if ( objectHandler.canHandle( objects.get( 0 ).getClass() ) )
+                {
+                    objectHandler.preImportObjects( objects );
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private void postObjectsHandlers( List<T> objects )
+    {
+        if ( objects.size() > 0 )
+        {
+            for ( ObjectHandler objectHandler : objectHandlers )
+            {
+                if ( objectHandler.canHandle( objects.get( 0 ).getClass() ) )
+                {
+                    objectHandler.postImportObjects( objects );
+                }
+            }
+        }
     }
 
     // FIXME add type check
