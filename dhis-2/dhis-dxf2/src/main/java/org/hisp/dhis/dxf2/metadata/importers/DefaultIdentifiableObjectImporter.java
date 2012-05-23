@@ -141,16 +141,16 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         log.debug( "Trying to save new object => " + getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
 
-        Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections =
-            scanIdentifiableObjectCollections( object );
+        Map<Field, Object> fields = detachFields( object );
+        importConflicts.addAll( reattachFields( object, fields ) );
 
-        importConflicts.addAll( updateIdentifiableObjects( object, scanIdentifiableObjects( object ) ) );
+        Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
         objectBridge.saveObject( object );
 
-        importConflicts.addAll( updateIdentifiableObjectCollections( object, identifiableObjectCollections ) );
-
         updatePeriodTypes( object );
+        importConflicts.addAll( reattachCollectionFields( object, collectionFields ) );
+
         objectBridge.updateObject( object );
 
         log.debug( "Save successful." );
@@ -172,11 +172,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         log.debug( "Starting update of object " + getDisplayName( oldObject ) + " (" + oldObject.getClass()
             .getSimpleName() + ")" );
 
-        importConflicts.addAll( updateIdentifiableObjects( object, scanIdentifiableObjects( object ) ) );
-        importConflicts.addAll( updateIdentifiableObjectCollections( object, scanIdentifiableObjectCollections( object ) ) );
+        Map<Field, Object> fields = detachFields( object );
+        importConflicts.addAll( reattachFields( object, fields ) );
+
+        Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
         oldObject.mergeWith( object );
         updatePeriodTypes( oldObject );
+
+        importConflicts.addAll( reattachCollectionFields( object, collectionFields ) );
 
         objectBridge.updateObject( oldObject );
 
@@ -368,7 +372,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     {
         if ( expression != null )
         {
-            updateIdentifiableObjectCollections( expression, scanIdentifiableObjectCollections( expression ) );
+            Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( expression );
+            reattachCollectionFields( expression, identifiableObjectCollections );
 
             expression.setId( 0 );
             expressionService.addExpression( expression );
@@ -385,7 +390,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             for ( DataElementOperand dataElementOperand : dataElementOperands )
             {
-                updateIdentifiableObjects( dataElementOperand, scanIdentifiableObjects( dataElementOperand ) );
+                Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
+                reattachFields( dataElementOperand, identifiableObjects );
 
                 dataElementOperand.setId( 0 );
                 dataElementOperandService.addDataElementOperand( dataElementOperand );
@@ -673,37 +679,37 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return objectBridge.getObject( identifiableObject );
     }
 
-    private Map<Field, IdentifiableObject> scanIdentifiableObjects( Object object )
+    private Map<Field, Object> detachFields( Object object )
     {
-        Map<Field, IdentifiableObject> identifiableObjects = new HashMap<Field, IdentifiableObject>();
+        Map<Field, Object> fieldMap = new HashMap<Field, Object>();
         Field[] fields = object.getClass().getDeclaredFields();
 
         for ( Field field : fields )
         {
+
             if ( ReflectionUtils.isType( field, IdentifiableObject.class ) )
             {
-                IdentifiableObject ref = ReflectionUtils.invokeGetterMethod( field.getName(), object );
+                Object ref = ReflectionUtils.invokeGetterMethod( field.getName(), object );
 
                 if ( ref != null )
                 {
-                    identifiableObjects.put( field, ref );
+                    fieldMap.put( field, ref );
                     ReflectionUtils.invokeSetterMethod( field.getName(), object, new Object[]{ null } );
                 }
             }
 
         }
 
-        return identifiableObjects;
+        return fieldMap;
     }
 
-    private List<ImportConflict> updateIdentifiableObjects( Object object,
-        Map<Field, IdentifiableObject> identifiableObjects )
+    private List<ImportConflict> reattachFields( Object object, Map<Field, Object> fields )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
-        for ( Field field : identifiableObjects.keySet() )
+        for ( Field field : fields.keySet() )
         {
-            IdentifiableObject idObject = identifiableObjects.get( field );
+            IdentifiableObject idObject = (IdentifiableObject) fields.get( field );
             IdentifiableObject ref = findObjectByReference( idObject );
 
             if ( ref == null )
@@ -729,9 +735,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return importConflicts;
     }
 
-    private Map<Field, Set<? extends IdentifiableObject>> scanIdentifiableObjectCollections( Object object )
+    private Map<Field, Collection<Object>> detachCollectionFields( Object object )
     {
-        Map<Field, Set<? extends IdentifiableObject>> collected = new HashMap<Field, Set<? extends IdentifiableObject>>();
+        Map<Field, Collection<Object>> collected = new HashMap<Field, Collection<Object>>();
         Field[] fields = object.getClass().getDeclaredFields();
 
         for ( Field field : fields )
@@ -741,13 +747,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( b )
             {
-                Collection<IdentifiableObject> objects = ReflectionUtils.invokeGetterMethod( field.getName(),
-                    object );
+                Collection<Object> objects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
 
                 if ( objects != null && !objects.isEmpty() )
                 {
-                    Set<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>( objects );
-                    collected.put( field, identifiableObjects );
+                    collected.put( field, objects );
                     objects.clear();
                 }
             }
@@ -756,23 +760,22 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return collected;
     }
 
-    private List<ImportConflict> updateIdentifiableObjectCollections( Object object,
-        Map<Field, Set<? extends IdentifiableObject>> identifiableObjectCollections )
+    private List<ImportConflict> reattachCollectionFields( Object object, Map<Field, Collection<Object>> collectionFields )
     {
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
-        for ( Field field : identifiableObjectCollections.keySet() )
+        for ( Field field : collectionFields.keySet() )
         {
-            Collection<? extends IdentifiableObject> identifiableObjects = identifiableObjectCollections.get( field );
-            Collection<IdentifiableObject> objects;
+            Collection<Object> identifiableObjects = collectionFields.get( field );
+            Collection<Object> objects;
 
             if ( List.class.isAssignableFrom( field.getType() ) )
             {
-                objects = new ArrayList<IdentifiableObject>();
+                objects = new ArrayList<Object>();
             }
             else if ( Set.class.isAssignableFrom( field.getType() ) )
             {
-                objects = new HashSet<IdentifiableObject>();
+                objects = new HashSet<Object>();
             }
             else
             {
@@ -780,9 +783,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 continue;
             }
 
-            for ( IdentifiableObject idObject : identifiableObjects )
+            for ( Object idObject : identifiableObjects )
             {
-                IdentifiableObject ref = findObjectByReference( idObject );
+                IdentifiableObject ref = findObjectByReference( (IdentifiableObject) idObject );
 
                 if ( ref != null )
                 {
