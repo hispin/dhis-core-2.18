@@ -8,7 +8,7 @@
 <ul>
 #foreach( $programInstance in $programInstances )
 	<li>
-		<a href="showPatientProgramStageList.action?patientId=$patientId&programInstanceId=$programInstance.getId()&programId=$programInstance.getProgram().getId()">
+		<a href="showPatientProgramStageList.action?patientId=$patientId&programInstanceId=$programInstance.getId()&programId=$programInstance.getProgram().getId()&validated=false">
 			 $programInstance.getProgram().getName()
 		</a> 
 	</li>

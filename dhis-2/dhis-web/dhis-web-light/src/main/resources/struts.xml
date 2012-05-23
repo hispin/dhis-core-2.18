@@ -87,14 +87,14 @@
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
 			<param name="page">
-				/dhis-web-light/selectNamebasedOrganisationUnits.vm</param>
+				/dhis-web-light/namebased/selectNamebasedOrganisationUnits.vm</param>
 		</action>
 		
 		<action name="selectActivityType"
 			class="org.hisp.dhis.light.namebaseddataentry.action.ShowActivityTypeAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/selectActivityType.vm</param>
+			<param name="page">/dhis-web-light/namebased/selectActivityType.vm</param>
 		</action>
 		
 		<action name="selectBeneficiary"
@@ -108,14 +108,14 @@
 			class="org.hisp.dhis.light.namebaseddataentry.action.GetActivityListAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/selectActivity.vm</param>
+			<param name="page">/dhis-web-light/namebased/selectActivity.vm</param>
 		</action>
 		
 		<action name="showProgramStageForm"
 			class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/programStageForm.vm</param>
+			<param name="page">/dhis-web-light/namebased/programStageForm.vm</param>
 		</action>
 		
 		<action name="showCompletedProgramStageForm"
@@ -132,21 +132,21 @@
 			<result name="success_find" type="redirect">
 				/mobile/showPatientProgramStageList.action?patientId=${beneficiaryId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=true</result>
 			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/programStageForm.vm</param>
+			<param name="page">/dhis-web-light/namebased/programStageForm.vm</param>
 		</action>
 		
 		<action name="showBeneficiaryDetail"
 			class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/beneficiaryDetail.vm</param>
+			<param name="page">/dhis-web-light/namebased/beneficiaryDetail.vm</param>
 		</action>
 		
 		<action name="showBeneficiaryDetailInSearchPage"
 			class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/beneficiaryDetail.vm</param>
+			<param name="page">/dhis-web-light/namebased/beneficiaryDetail.vm</param>
 			<param name="previouspage">showPatientProgramList.action?patientId=${beneficiaryId}</param>
 		</action>
 		
@@ -189,7 +189,7 @@
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
 			<param name="page">
-				/dhis-web-light/selectRegistrationOrganisationUnits.vm</param>
+				/dhis-web-light/registration/selectRegistrationOrganisationUnits.vm</param>
 		</action>
 		
 		<action name="registerBeneficiary"
@@ -197,7 +197,7 @@
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
 			<param name="page">
-				/dhis-web-light/beneficiaryRegistrationForm.vm</param>
+				/dhis-web-light/registration/beneficiaryRegistrationForm.vm</param>
 		</action>
 		
 		<action name="saveBeneficiary"
@@ -205,7 +205,7 @@
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
 			<param name="page">
-				/dhis-web-light/beneficiaryRegistrationForm.vm</param>
+				/dhis-web-light/registration/beneficiaryRegistrationForm.vm</param>
 		</action>
 		
 		<!-- Beneficiary Enrollment -->
@@ -215,7 +215,7 @@
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
 			<param name="page">
-				/dhis-web-light/selectEnrollmentOrganisationUnits.vm</param>
+				/dhis-web-light/enrollment/selectEnrollmentOrganisationUnits.vm</param>
 		</action>
 		
 		<action name="showBeneficiarySearchingForm"
@@ -223,28 +223,28 @@
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
 			<param name="page">
-				/dhis-web-light/beneficiarySearchingForm.vm</param>
+				/dhis-web-light/enrollment/beneficiarySearchingForm.vm</param>
 		</action>
 		
 		<action name="searchBeneficiary"
 			class="org.hisp.dhis.light.beneficiaryenrollment.action.SearchBeneficiaryAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page"> /dhis-web-light/beneficiarySearchResult.vm</param>
+			<param name="page"> /dhis-web-light/enrollment/beneficiarySearchResult.vm</param>
 		</action>
 		
 		<action name="selectEnrollmentProgram"
 			class="org.hisp.dhis.light.beneficiaryenrollment.action.GetEnrollmentProgramListAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page"> /dhis-web-light/enrollmentProgramList.vm</param>
+			<param name="page"> /dhis-web-light/enrollment/enrollmentProgramList.vm</param>
 		</action>
 		
 		<action name="showProgramEnrollmentForm"
 			class="org.hisp.dhis.light.beneficiaryenrollment.action.GetProgramEnrollmentFormAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page"> /dhis-web-light/programEnrollmentForm.vm</param>
+			<param name="page"> /dhis-web-light/enrollment/programEnrollmentForm.vm</param>
 		</action>
 		
 		<action name="saveMobileProgramEnrollment"
@@ -252,7 +252,7 @@
 			<result name="success" type="redirect">
 				/mobile/selectEnrollmentProgram.action?beneficiaryId=${beneficiaryId}&amp;validated=true</result>
 			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/programEnrollmentForm.vm</param>
+			<param name="page">/dhis-web-light/enrollment/programEnrollmentForm.vm</param>
 		</action>
 		
 		<!-- Single Event -->
@@ -261,21 +261,21 @@
 			class="org.hisp.dhis.light.singleevent.action.GetSingleEventAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/selectSingleEvent.vm</param>
+			<param name="page">/dhis-web-light/singleevent/selectSingleEvent.vm</param>
 		</action>
 		
 		<action name="selectSingleEventBeneficiary"
 			class="org.hisp.dhis.light.singleevent.action.GetSingleEventBeneficiaryAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/selectSingleEventBeneficiary.vm</param>
+			<param name="page">/dhis-web-light/registration/selectSingleEventBeneficiary.vm</param>
 		</action>
 		
 		<action name="showSingleEventForm"
 			class="org.hisp.dhis.light.singleevent.action.GetSingleEventFormAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/singleEventForm.vm</param>
+			<param name="page">/dhis-web-light/singleevent/singleEventForm.vm</param>
 		</action>
 		
 		<action name="saveSingleEvent"
@@ -283,7 +283,7 @@
 			<result name="success" type="redirect">
 				/mobile/selectSingleEventBeneficiary.action?programId=${programId}&amp;organisationUnitId=${organisationUnitId}&amp;validated=true</result>
 			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/singleEventForm.vm</param>
+			<param name="page">/dhis-web-light/singleevent/singleEventForm.vm</param>
 		</action>
 		
 		<!-- Reports -->
