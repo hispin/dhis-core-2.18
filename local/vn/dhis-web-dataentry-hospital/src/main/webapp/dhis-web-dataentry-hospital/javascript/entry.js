@@ -248,7 +248,7 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
 
     this.save = function()
     {
-        storageManager.saveDataValue( dataValue );
+        //storageManager.saveDataValue( dataValue );
 
         $.ajax( {
             url: 'saveValue.action',
@@ -265,7 +265,7 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
 
         if ( code == 0 ) // Value successfully saved on server
         {
-        	storageManager.clearDataValueJSON( dataValue );
+        	//storageManager.clearDataValueJSON( dataValue );
             markValue( resultColor );
         }
         else if(code == 2)
@@ -282,8 +282,8 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
 
     function handleError( jqXHR, textStatus, errorThrown )
     {
-        setHeaderMessage( i18n_offline_notification );
-        markValue( resultColor );
+        setHeaderDelayMessage( i18n_disconnect_server );
+        markValue( COLOR_PINK );
     }
 
     function markValue( color )

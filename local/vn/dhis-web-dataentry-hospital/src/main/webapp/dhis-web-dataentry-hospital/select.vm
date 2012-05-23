@@ -27,6 +27,7 @@ var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmar
 var i18n_operation_not_available_offline = '$encoder.jsEscape( $i18n.getString( "operation_not_available_offline" ) , "'")';
 var i18n_online_notification = '$encoder.jsEscape( $i18n.getString( "online_notification" ) , "'")';
 var i18n_offline_notification = '$encoder.jsEscape( $i18n.getString( "offline_notification" ) , "'")';
+var i18n_disconnect_server = '$encoder.jsEscape( $i18n.getString( "disconnect_server" ) , "'")';
 var i18n_need_to_sync_notification = '$encoder.jsEscape( $i18n.getString( "need_to_sync_notification" ) , "'")';
 var i18n_sync_now = '$encoder.jsEscape( $i18n.getString( "sync_now" ) , "'")';
 var i18n_sync_success = '$encoder.jsEscape( $i18n.getString( "sync_success" ) , "'")';
@@ -40,6 +41,7 @@ var i18n_unregister_complete_failed_dataset_is_locked = '$encoder.jsEscape( $i18
 var i18n_please_select_attribute = "[ " + '$encoder.jsEscape( $i18n.getString( "please_select_attribute" ) , "'")' + " ]";
 var i18n_show_all_items = '$encoder.jsEscape( $i18n.getString( "show_all_items" ) , "'")';
 var i18n_please_select_department = "[ " + '$encoder.jsEscape( $i18n.getString( "please_select_department" ) , "'")' + " ]";
+var i18n_please_select_unit = "[ " + '$encoder.jsEscape( $i18n.getString( "please_select_organisation_unit" ) , "'")' + " ]";
 </script>
 
 <h3>$i18n.getString( "data_entry" ) #openHelp( "dataEntry" )</h3>
@@ -57,6 +59,8 @@ var i18n_please_select_department = "[ " + '$encoder.jsEscape( $i18n.getString( 
 <div id="showButtonDiv" style="display:none">
 	<input type="button" onclick="showExportDiv();" value="$i18n.getString( 'show_export_params' )"/>
 </div>
+
+<br/>
 
 <div class="inputCriteria" id='inputCriteria' style="width:620px;height:270px;">
 <input type='hidden' id='dataSetId' name='dataSetId'>
