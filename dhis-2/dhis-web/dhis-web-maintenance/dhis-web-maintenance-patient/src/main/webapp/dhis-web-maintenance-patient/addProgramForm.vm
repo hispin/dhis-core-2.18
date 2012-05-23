@@ -25,26 +25,21 @@
 		</tr>	
 		
 		<tr>
-			<td><label>$i18n.getString( "single_event" )</label></td>
-			<td><input type="checkbox" id="singleEvent" name="singleEvent" value='true' onchange="singleEventOnChange();"></td>
-			<td></td>
-		</tr>
-		
-		<tr>
-			<td><label>$i18n.getString( "anonymous" )</label></td>
-			<td><input type="checkbox" id="anonymous" name="anonymous" value='true' disabled='disabled'></td>
+			<td><label>$i18n.getString( "type" )</label></td>
+			<td>
+				<select id="type" name="type" onchange='programTypeOnChange();'>
+					<option value=''>[$i18n.getString('please_select')]</option>
+					<option value='1'>$i18n.getString('multiple_events_with_registration')</option>
+					<option value='2'>$i18n.getString('single_event_with_registration')</option>
+					<option value='3'>$i18n.getString('single_event_without_registration')</option>
+				</select>
+			</td>
 			<td></td>
 		</tr>
 		
 		<tr>
 			<td><label>$i18n.getString( "hide_provided_other_facility" )</label></td>
 			<td><input type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='false'></td>
-			<td></td>
-		</tr>
-		
-		<tr>
-			<td><label>$i18n.getString( "hide_date_of_incident" )</label></td>
-			<td><input type="checkbox" id="hideDateOfIncident" name="hideDateOfIncident" value='true' onchange='hideIncidentDateOnchange();'></td>
 			<td></td>
 		</tr>
 		
@@ -61,7 +56,7 @@
 		</tr>	
 		
 		<tr>
-			<td><label>$i18n.getString( "no_max_days_allowed_input_data" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label>$i18n.getString( "duration_in_days" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" class="{validate:{required:true,number:true}}"></td>
 			<td></td>
 		</tr>	

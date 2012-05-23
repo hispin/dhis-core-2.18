@@ -127,7 +127,7 @@ public class LoadDataEntryAction
     {
         this.patientDataValueService = patientDataValueService;
     }
-    
+
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -188,18 +188,20 @@ public class LoadDataEntryAction
 
             if ( programStageInstance != null )
             {
-                if( program.getAnonymous() && programStageInstance.isCompleted() )
+                if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION
+                    && programStageInstance.isCompleted() )
                 {
                     return SUCCESS;
                 }
-                
+
                 selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
-                
+
                 // ---------------------------------------------------------------------
                 // Get data values
                 // ---------------------------------------------------------------------
-               
-                programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
+
+                programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage
+                    .getProgramStageDataElements() );
 
                 Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
@@ -210,7 +212,7 @@ public class LoadDataEntryAction
 
                 for ( PatientDataValue patientDataValue : patientDataValues )
                 {
-                    int key = patientDataValue.getDataElement().getId() ;
+                    int key = patientDataValue.getDataElement().getId();
                     patientDataValueMap.put( key, patientDataValue );
                 }
 
@@ -223,8 +225,8 @@ public class LoadDataEntryAction
                 if ( dataEntryForm != null )
                 {
                     customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
-                        .getHtmlCode(), patientDataValues, program.getDisplayProvidedOtherFacility().toString(), i18n, programStage, programStageInstance,
-                        organisationUnit );
+                        .getHtmlCode(), patientDataValues, program.getDisplayProvidedOtherFacility().toString(), i18n,
+                        programStage, programStageInstance, organisationUnit );
                 }
             }
         }

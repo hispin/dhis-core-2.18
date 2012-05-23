@@ -98,7 +98,7 @@ public class ShowUpdatePatientAttributeAction
         
         programs = programService.getAllPrograms();
         
-        programs.removeAll( programService.getPrograms( true, true ) );
+        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
         
         return SUCCESS;
     }

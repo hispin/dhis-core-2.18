@@ -16,7 +16,7 @@
 				<select id='programId' name='programId' class='criteria' onchange='loadEventForm();'>
 					<option value="">[ $i18n.getString('please_select') ]</option>
 					#foreach( $programInstance in $programInstances)
-						<option value="$programInstance.program.id" singleevent='$programInstance.program.singleEvent' programInstanceId='$programInstance.id'>$programInstance.program.name</option>
+						<option value="$programInstance.program.id" type='$programInstance.program.type' programInstanceId='$programInstance.id'>$programInstance.program.name</option>
 					#end
 				</select>
 			</td>

@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.caseentry;
 import java.util.Date;
 import java.util.Set;
 
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -112,7 +113,7 @@ public class CompleteDataEntryAction
         // ProgramInstance
         // ----------------------------------------------------------------------
 
-        if ( !programStageInstance.getProgramInstance().getProgram().getAnonymous() )
+        if ( !programStageInstance.getProgramInstance().getProgram().getType().equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
         {
             ProgramInstance programInstance = programStageInstance.getProgramInstance();
 

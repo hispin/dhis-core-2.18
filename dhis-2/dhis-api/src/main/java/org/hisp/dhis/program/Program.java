@@ -47,6 +47,13 @@ public class Program
      */
     private static final long serialVersionUID = -2581751965520009382L;
 
+    public static final int MULTIPLE_EVENTS_WITH_REGISTRATION = 1;
+
+    public static final int SINGLE_EVENT_WITH_REGISTRATION = 2;
+
+    public static final int SINGLE_EVENT_WITHOUT_REGISTRATION = 3;
+    
+
     private String description;
 
     private Integer version;
@@ -73,13 +80,9 @@ public class Program
 
     private Integer maxDaysAllowedInputData;
 
-    private Boolean singleEvent;
-
-    private Boolean anonymous;
+    private Integer type;
 
     private Boolean displayProvidedOtherFacility;
-
-    private Boolean hideDateOfIncident;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -212,16 +215,6 @@ public class Program
         this.maxDaysAllowedInputData = maxDaysAllowedInputData;
     }
 
-    public Boolean getSingleEvent()
-    {
-        return singleEvent;
-    }
-
-    public void setSingleEvent( Boolean singleEvent )
-    {
-        this.singleEvent = singleEvent;
-    }
-
     public String getDateOfIncidentDescription()
     {
         return dateOfIncidentDescription;
@@ -232,14 +225,14 @@ public class Program
         this.dateOfIncidentDescription = dateOfIncidentDescription;
     }
 
-    public Boolean getHideDateOfIncident()
+    public Integer getType()
     {
-        return hideDateOfIncident;
+        return type;
     }
 
-    public void setHideDateOfIncident( Boolean hideDateOfIncident )
+    public void setType( Integer type )
     {
-        this.hideDateOfIncident = hideDateOfIncident;
+        this.type = type;
     }
 
     public Set<ValidationCriteria> getPatientValidationCriteria()
@@ -250,16 +243,6 @@ public class Program
     public void setPatientValidationCriteria( Set<ValidationCriteria> patientValidationCriteria )
     {
         this.patientValidationCriteria = patientValidationCriteria;
-    }
-
-    public Boolean getAnonymous()
-    {
-        return anonymous;
-    }
-
-    public void setAnonymous( Boolean anonymous )
-    {
-        this.anonymous = anonymous;
     }
 
     // -------------------------------------------------------------------------

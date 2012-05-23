@@ -39,13 +39,9 @@
     
     <property name="maxDaysAllowedInputData" />
 
-    <property name="singleEvent" />
-    
-    <property name="anonymous" />
+    <property name="type" />
     
     <property name="displayProvidedOtherFacility" />
-    
-    <property name="hideDateOfIncident" />
-    
+        
   </class>
 </hibernate-mapping>

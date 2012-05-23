@@ -117,20 +117,30 @@ public class DefaultProgramService
 
         return programs;
     }
-
-    public Collection<Program> getPrograms( boolean singleEvent )
+    
+    public Collection<Program> getPrograms( int type )
     {
-        return programStore.get( singleEvent );
-    }
-
-    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymous )
-    {
-        return programStore.get( singleEvent, anonymous );
+        return programStore.getByType( type );
     }
     
-    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit )
+    public Collection<Program> getPrograms( int type, OrganisationUnit orgunit )
     {
-        return programStore.get( singleEvent, anonymous, orgunit );
+        return programStore.get( type, orgunit );
     }
+
+//    public Collection<Program> getPrograms( boolean singleEvent )
+//    {
+//        return programStore.get( singleEvent );
+//    }
+//
+//    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymous )
+//    {
+//        return programStore.get( singleEvent, anonymous );
+//    }
+//    
+//    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit )
+//    {
+//        return programStore.get( singleEvent, anonymous, orgunit );
+//    }
 
 }

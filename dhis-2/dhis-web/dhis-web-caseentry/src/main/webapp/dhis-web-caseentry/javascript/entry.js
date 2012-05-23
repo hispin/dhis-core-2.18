@@ -33,9 +33,9 @@ function loadProgramStages()
 				addOptionById( 'programStageId', json.programStages[i].id, json.programStages[i].name );
 			} 
 			
-			var singleEvent = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('singleevent');
+			var type = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('type');
 				
-			if(singleEvent=='true' || json.programStages.length == 1)
+			if( type=='2' || type=='3' || json.programStages.length == 1)
 			{
 				byId('programStageId').selectedIndex = 1;
 				jQuery('#programStageIdTR').attr('class','hidden');
@@ -657,7 +657,7 @@ function doComplete()
 					}
 					
 					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');
-					if( selectedProgram.attr('singleevent')=='true' && irregular == 'false' )
+					if( selectedProgram.attr('type')=='2' && irregular == 'false' )
 					{
 						selectedProgram.remove();
 					}

@@ -119,14 +119,14 @@ public class DataRecordingSelectAction
         // Get single programs with un-completed program-instances
         // ---------------------------------------------------------------------
 
-        Collection<ProgramInstance> programInstances = programInstanceService
-            .getProgramInstances( patient, true );
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, true );
 
         Collection<Program> completedPrograms = new HashSet<Program>();
 
         for ( ProgramInstance programInstance : programInstances )
         {
-            if( programInstance.getProgram().getSingleEvent() )
+            if ( programInstance.getProgram().getType() == Program.SINGLE_EVENT_WITH_REGISTRATION 
+                || programInstance.getProgram().getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
             {
                 completedPrograms.add( programInstance.getProgram() );
             }
@@ -139,8 +139,8 @@ public class DataRecordingSelectAction
         programs = programService.getPrograms( orgunit );
 
         programs.retainAll( patient.getPrograms() );
-        
-        programs.addAll( programService.getPrograms( true, false, orgunit ) );
+
+        programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, orgunit ) );
 
         programs.removeAll( completedPrograms );
 

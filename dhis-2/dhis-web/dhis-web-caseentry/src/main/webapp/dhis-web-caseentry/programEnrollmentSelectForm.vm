@@ -48,7 +48,7 @@
 						<select id="programId" name="programId" onchange="showProgramEnrollmentForm('$patient.id', this.value);" >
 							<option value="0">[$i18n.getString( "select" )]</option>
 							#foreach( $program in $programs )
-								<option value="$program.id" singleevent='$program.singleEvent' hideDateOfIncident='$program.hideDateOfIncident'>$encoder.htmlEncode( $program.name )</option>
+								<option value="$program.id" type='$program.type'>$encoder.htmlEncode( $program.name )</option>
 							#end
 						</select>
 					</td>

@@ -94,7 +94,7 @@ public class LoadAnonymousProgramsAction
 
         if ( orgunit != null )
         {
-            Collection<Program> programs = programService.getPrograms( true, true, orgunit );
+            Collection<Program> programs = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, orgunit );
 
             if ( programs != null && programs.size() > 0 )
             {

@@ -7,7 +7,7 @@ TR.conf = {
 				for (var program in r.programs) {
 					obj.system.program = [];
 					for (var i = 0; i < r.programs.length; i++) {
-						obj.system.program.push({id: r.programs[i].id, name: r.programs[i].name, anonymous: r.programs[i].anonymous });
+						obj.system.program.push({id: r.programs[i].id, name: r.programs[i].name, type: r.programs[i].type });
 					}
 				}
 				
@@ -521,7 +521,7 @@ Ext.onReady( function() {
 							
 							// IDENTIFIER TYPE
 							TR.store.identifierType.selected.removeAll();
-							if (f.identifiers && f.anonymous == "false" ) {
+							if (f.identifiers && f.type != "3" ) {
 								for (var i = 0; i < f.identifiers.length; i++) {
 									TR.cmp.params.identifierType.objects.push({id: f.identifiers[i].id, name: TR.util.string.getEncodedString(f.identifiers[i].name)});
 								}
@@ -540,7 +540,7 @@ Ext.onReady( function() {
 							
 							// PATIENT ATTRIBUTE
 							TR.store.patientAttribute.selected.removeAll();
-							if (f.attributes && f.anonymous == "false") {
+							if (f.attributes && f.type != "3") {
 								for (var i = 0; i < f.attributes.length; i++) {
 									TR.cmp.params.patientAttribute.objects.push({id: f.attributes[i].id, name: TR.util.string.getEncodedString(f.attributes[i].name)});
 								}
@@ -559,7 +559,7 @@ Ext.onReady( function() {
 							
 							// FIXED ATTRIBUTES
 							TR.util.setEnabledFixedAttr();
-							if (f.fixedAttributes && f.anonymous == "false") {
+							if (f.fixedAttributes && f.type != "3") {
 								var fixedAttributes = TR.cmp.params.fixedAttributes.checkbox;
 								Ext.Array.each(fixedAttributes, function(item) {
 									for (var i = 0; i < f.fixedAttributes.length; i++) {
@@ -613,7 +613,7 @@ Ext.onReady( function() {
     
     TR.store = {
         program: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 'anonymous'],
+                fields: ['id', 'name', 'type'],
 				data:TR.init.system.program
             }),
 		identifierType: {
@@ -1386,7 +1386,7 @@ Ext.onReady( function() {
 									},
 									select: function(cb) {
 										var pId = cb.getValue();
-										if( cb.displayTplData[0].anonymous=='false' )
+										if( cb.displayTplData[0].type !='3' )
 										{
 											// IDENTIFIER TYPE
 											var storeIdentifierType = TR.store.identifierType.available;

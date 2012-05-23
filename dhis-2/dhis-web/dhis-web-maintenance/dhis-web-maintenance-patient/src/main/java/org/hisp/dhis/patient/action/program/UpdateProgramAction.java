@@ -108,18 +108,11 @@ public class UpdateProgramAction
         this.maxDaysAllowedInputData = maxDaysAllowedInputData;
     }
 
-    private Boolean singleEvent;
+    private Integer type;
 
-    public void setSingleEvent( Boolean singleEvent )
+    public void setType( Integer type )
     {
-        this.singleEvent = singleEvent;
-    }
-
-    private Boolean anonymous;
-
-    public void setAnonymous( Boolean anonymous )
-    {
-        this.anonymous = anonymous;
+        this.type = type;
     }
 
     private Boolean displayProvidedOtherFacility;
@@ -129,13 +122,6 @@ public class UpdateProgramAction
         this.displayProvidedOtherFacility = displayProvidedOtherFacility;
     }
 
-    private Boolean hideDateOfIncident;
-
-    public void setHideDateOfIncident( Boolean hideDateOfIncident )
-    {
-        this.hideDateOfIncident = hideDateOfIncident;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -143,10 +129,7 @@ public class UpdateProgramAction
     public String execute()
         throws Exception
     {
-        singleEvent = (singleEvent == null) ? false : singleEvent;
-        anonymous = (anonymous == null) ? false : anonymous;
         displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? true : displayProvidedOtherFacility;
-        hideDateOfIncident = (hideDateOfIncident == null) ? false : hideDateOfIncident;
 
         Program program = programService.getProgram( id );
         program.setName( name );
@@ -155,10 +138,8 @@ public class UpdateProgramAction
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
-        program.setSingleEvent( singleEvent );
-        program.setAnonymous( anonymous );
+        program.setType( type );
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
-        program.setHideDateOfIncident( hideDateOfIncident );
 
         programService.updateProgram( program );
 
