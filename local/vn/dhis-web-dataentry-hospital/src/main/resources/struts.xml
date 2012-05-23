@@ -13,9 +13,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dataentry-hospital/select.vm</param>
       <param name="menu">/dhis-web-dataentry-hospital/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js,javascript/history.js</param>
+      <param name="javascripts">
+		../dhis-web-commons/ouwt/ouwt.js,
+		javascript/form.js,javascript/entry.js,
+		javascript/history.js</param>
       <param name="stylesheets">style/dhis-web-dataentry.css</param>
-      <param name="offline">true</param>
+      <param name="offline">false</param>
     </action>
 
     <action name="getMetaData" class="org.hisp.dhis.de.action.GetMetaDataAction">
