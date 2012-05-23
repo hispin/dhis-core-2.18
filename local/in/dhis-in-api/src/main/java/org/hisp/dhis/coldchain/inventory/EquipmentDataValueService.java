@@ -20,5 +20,7 @@ public interface EquipmentDataValueService
     void deleteEquipmentDataValue( EquipmentDataValue equipmentDataValue );
     
     Collection<EquipmentDataValue> getEquipmentDataValues( EquipmentInstance equipmentInstance, Period period, Collection<DataElement> dataElements );
-
+    
+    EquipmentDataValue getEquipmentDataValue( EquipmentInstance equipmentInstance, Period period, DataElement dataElement );
+    
 }

@@ -2,13 +2,10 @@ package org.hisp.dhis.coldchain.equipment.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.coldchain.inventory.Equipment;
-import org.hisp.dhis.coldchain.inventory.EquipmentDataValueService;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
 import org.hisp.dhis.coldchain.inventory.EquipmentService;
@@ -28,14 +25,14 @@ public class ShowEquipmentDataEntryFormAction implements Action
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
-
+    /*
     private EquipmentDataValueService equipmentDataValueService;
     
     public void setEquipmentDataValueService( EquipmentDataValueService equipmentDataValueService )
     {
         this.equipmentDataValueService = equipmentDataValueService;
     }
-    
+    */
     private EquipmentInstanceService equipmentInstanceService;
     
     public void setEquipmentInstanceService( EquipmentInstanceService equipmentInstanceService )
@@ -66,21 +63,26 @@ public class ShowEquipmentDataEntryFormAction implements Action
     {
         this.equipmentInstanceId = equipmentInstanceId;
     }
-
+    
+    public Integer getEquipmentInstanceId()
+    {
+        return equipmentInstanceId;
+    }
+    /*
     private Integer dataSetId;
     
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
-
+    
     private Integer periodId;
     
     public void setPeriodId( Integer periodId )
     {
         this.periodId = periodId;
     }
-
+    */
     private List<DataSet> dataSetList;
     
     public List<DataSet> getDataSetList()
@@ -155,12 +157,12 @@ public class ShowEquipmentDataEntryFormAction implements Action
         dataSetList = new ArrayList<DataSet>(  equipmentInstance.getInventoryType().getDataSets() );
         
         Collections.sort( dataSetList, IdentifiableObjectNameComparator.INSTANCE );
-        
+        /*
         for( DataSet dataSet : dataSetList )
         {
             System.out.println( dataSet.getPeriodType().getId() +"--------" +dataSet.getPeriodType().getName());
         }
-        
+        */
         
         inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryTypeService.getAllInventoryTypeAttributesForDisplay( inventoryType ));
         
@@ -197,7 +199,7 @@ public class ShowEquipmentDataEntryFormAction implements Action
         
         inventoryTypeAttributeValue = tempNameValue[1];
         
-        System.out.println( inventoryTypeAttributeName + "---" + inventoryTypeAttributeValue );
+        //System.out.println( inventoryTypeAttributeName + "---" + inventoryTypeAttributeValue );
         
        /*
         for( InventoryTypeAttribute inventoryTypeAttribute : inventoryTypeAttributeList )
@@ -236,6 +238,33 @@ public class ShowEquipmentDataEntryFormAction implements Action
             }
         }
         */
+        
+        // data entry parts
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         return SUCCESS;
     }
