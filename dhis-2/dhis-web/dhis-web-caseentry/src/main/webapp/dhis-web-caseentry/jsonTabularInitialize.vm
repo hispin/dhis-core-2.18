@@ -18,7 +18,7 @@
 		  {
 			"id":  "${program.id}" ,
 			"name": "$!encoder.jsonEncode( ${program.name} )",
-			"anonymous": "$program.anonymous"
+			"type": "$program.type"
 		  }#if( $velocityCount < $programs.size() ),#end
 		#end
 	],

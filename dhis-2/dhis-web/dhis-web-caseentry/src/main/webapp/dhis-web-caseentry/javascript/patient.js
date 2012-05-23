@@ -429,18 +429,18 @@ function showProgramEnrollmentForm( patientId, programId )
 			showById('programEnrollmentDiv');
 			showEnrolmentField();
 			
-			var singleEvent = jQuery('#enrollmentDiv [name=programId] option:selected').attr('singleevent');
+			var type = jQuery('#enrollmentDiv [name=programId] option:selected').attr('type');
 			
-			if(singleEvent=='true')
+			if(type=='2')
 			{
 				hideEnrolmentField();
 			}
 			else
 			{
 				showEnrolmentField();
-				var hideDateOfIncident = jQuery('#programEnrollmentSelectDiv [name=programId] option:selected').attr('hidedateofincident');
+				var type = jQuery('#programEnrollmentSelectDiv [name=programId] option:selected').attr('type');
 					
-				if( hideDateOfIncident=='true')
+				if( type=='2')
 				{
 					hideById( 'dateOfIncidentTR');
 				}

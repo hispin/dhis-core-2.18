@@ -53,6 +53,8 @@ public class PatientDataValue
 
     private String value;
 
+    //private boolean providedElsewhere;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------

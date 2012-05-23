@@ -111,18 +111,11 @@ public class AddProgramAction
         this.maxDaysAllowedInputData = maxDaysAllowedInputData;
     }
 
-    private Boolean singleEvent;
+    private Integer type;
 
-    public void setSingleEvent( Boolean singleEvent )
+    public void setType( Integer type )
     {
-        this.singleEvent = singleEvent;
-    }
-
-    private Boolean anonymous;
-
-    public void setAnonymous( Boolean anonymous )
-    {
-        this.anonymous = anonymous;
+        this.type = type;
     }
 
     private Boolean displayProvidedOtherFacility;
@@ -132,13 +125,6 @@ public class AddProgramAction
         this.displayProvidedOtherFacility = displayProvidedOtherFacility;
     }
 
-    private Boolean hideDateOfIncident;
-
-    public void setHideDateOfIncident( Boolean hideDateOfIncident )
-    {
-        this.hideDateOfIncident = hideDateOfIncident;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -146,10 +132,7 @@ public class AddProgramAction
     public String execute()
         throws Exception
     {
-        singleEvent = (singleEvent == null) ? false : singleEvent;
-        anonymous = (anonymous == null) ? false : anonymous;
         displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? true : displayProvidedOtherFacility;
-        hideDateOfIncident = (hideDateOfIncident == null) ? false : displayProvidedOtherFacility;
 
         Program program = new Program();
 
@@ -159,14 +142,13 @@ public class AddProgramAction
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
-        program.setSingleEvent( singleEvent );
-        program.setAnonymous( anonymous );
+        program.setType( type );
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
-        program.setHideDateOfIncident( hideDateOfIncident );
         
         programService.saveProgram( program );
 
-        if ( singleEvent )
+        if ( program.getType().equals( Program.SINGLE_EVENT_WITH_REGISTRATION ) || 
+            program.getType().equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ))
         {
             ProgramStage programStage = new ProgramStage();
 
@@ -183,7 +165,7 @@ public class AddProgramAction
         // create program-instance for anonymous program
         // ---------------------------------------------------------------------
 
-        if ( program.getAnonymous() )
+        if ( program.getType().equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
         {
             // Add a new program-instance
             ProgramInstance programInstance = new ProgramInstance();

@@ -46,7 +46,7 @@
 							<select id="programId" name="programId" class="criteria" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
 								<option value="0">[$i18n.getString( "select" )]</option>
 								#foreach( $program in $programs )
-									<option value="$program.id" singleevent="$program.singleEvent" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
+									<option value="$program.id" type="$program.type" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
 								#end
 							</select>
 						</td>

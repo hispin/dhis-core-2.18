@@ -81,8 +81,13 @@ public class TableAlteror
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN storedby" );  
         executeSql( "DROP TABLE patientchart" ); 
         
-        executeSql( "UPDATE program set hideDateOfIncident=false WHERE hideDateOfIncident is null" );
-
+        executeSql( "ALTER TABLE program DROP COLUMN hidedateofincident" );
+        
+        executeSql( "UPDATE program SET type=2 where singleevent=true" );
+        executeSql( "UPDATE program SET type=3 where anonymous=true" );
+        executeSql( "ALTER TABLE program DROP COLUMN singleevent" );
+        executeSql( "ALTER TABLE program DROP COLUMN anonymous" ); 
+        executeSql( "UPDATE program SET type=1 where type is null" );
     }
 
     // -------------------------------------------------------------------------

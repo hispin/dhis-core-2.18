@@ -62,7 +62,7 @@ public class DefaultActivityPlanService
     // -------------------------------------------------------------------------
 
     private ActivityPlanStore activityPlanStore;
-    
+
     public void setActivityPlanStore( ActivityPlanStore activityPlanStore )
     {
         this.activityPlanStore = activityPlanStore;
@@ -116,7 +116,8 @@ public class DefaultActivityPlanService
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
-        Collection<Program> programs = programService.getPrograms( false, false, organisationUnit );
+        Collection<Program> programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION,
+            organisationUnit );
 
         for ( Program program : programs )
         {
@@ -155,7 +156,7 @@ public class DefaultActivityPlanService
     {
         Collection<Activity> activities = new ArrayList<Activity>();
 
-        Collection<Program> programs = programService.getPrograms( false, false, organisationUnit );
+        Collection<Program> programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION, organisationUnit );
 
         if ( programs.size() > 0 )
         {
@@ -181,7 +182,7 @@ public class DefaultActivityPlanService
 
         Collection<Activity> activities = new ArrayList<Activity>();
 
-        if ( programService.getPrograms( false, false, organisationUnit ).containsAll( programs ) )
+        if ( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION, organisationUnit ).containsAll( programs ) )
         {
             Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs, false );
 
@@ -284,14 +285,14 @@ public class DefaultActivityPlanService
 
     }
 
-
     public Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit, int min, int max )
     {
-        Collection<Integer> programStageInstanceIds = activityPlanStore.getActivitiesByProvider ( organisationUnit.getId(), min, max);
+        Collection<Integer> programStageInstanceIds = activityPlanStore.getActivitiesByProvider( organisationUnit
+            .getId(), min, max );
 
         Collection<Activity> activities = new ArrayList<Activity>();
 
-        for( Integer id : programStageInstanceIds )
+        for ( Integer id : programStageInstanceIds )
         {
             ProgramStageInstance instance = programStageInstanceService.getProgramStageInstance( id );
             Activity activity = new Activity();
@@ -300,15 +301,15 @@ public class DefaultActivityPlanService
             activity.setDueDate( instance.getDueDate() );
             activities.add( activity );
         }
-        
+
         return activities;
     }
 
-    public int countActivitiesByProvider ( OrganisationUnit organisationUnit )
+    public int countActivitiesByProvider( OrganisationUnit organisationUnit )
     {
         return activityPlanStore.countActivitiesByProvider( organisationUnit.getId() );
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

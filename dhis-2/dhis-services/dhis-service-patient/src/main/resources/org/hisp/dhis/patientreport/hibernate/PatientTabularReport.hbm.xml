@@ -22,7 +22,7 @@
 		<many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
 			column="programstageid" foreign-key="fk_patienttabularreport_programstageid" />
 
-		<list name="identifiers" cascade="all"
+		<list name="identifiers"
 			table="patienttabularreport_identifiers">
 			<key column="patienttabularreportid" />
 			<list-index column="sort_order" base="0" />
@@ -30,7 +30,7 @@
 				column="patientidentifiertypeid" foreign-key="patienttabularreport_indentifierid" />
 		</list>
 
-		<list name="attributes" cascade="all" table="patienttabularreport_attributes">
+		<list name="attributes" table="patienttabularreport_attributes">
 			<key column="patienttabularreportid" />
 			<list-index column="sort_order" base="0" />
 			<many-to-many class="org.hisp.dhis.patient.PatientAttribute"
@@ -43,7 +43,7 @@
 			<element type="text" column="fixedAttribute" />
 		</list>
 
-		<list name="dataElements" cascade="all"
+		<list name="dataElements"
 			table="patienttabularreport_dataelements">
 			<key column="patienttabularreportid" />
 			<list-index column="sort_order" base="0" />

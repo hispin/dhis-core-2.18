@@ -147,7 +147,7 @@ public class LoadProgramStagesAction
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
-        if ( program.getAnonymous() )
+        if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
         {
             programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program,
                 false ) );
@@ -173,5 +173,4 @@ public class LoadProgramStagesAction
 
         return SUCCESS;
     }
-
 }

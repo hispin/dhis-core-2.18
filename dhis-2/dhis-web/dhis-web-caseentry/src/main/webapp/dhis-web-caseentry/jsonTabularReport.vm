@@ -3,7 +3,7 @@
 	"name": "$!encoder.jsonEncode( ${tabularReport.name} )",
 	"lastUpdated": "$!format.formatDate( ${tabularReport.lastUpdated} )",
 	"programId": "${tabularReport.programStage.program.id}",
-	"anonymous": "${tabularReport.programStage.program.anonymous}",
+	"type": "${tabularReport.programStage.program.type}",
 	"programStageId": "${tabularReport.programStage.id}",
 	"programStageName": "${tabularReport.programStage.name}",
 	"startDate": "$!format.formatDate( $tabularReport.startDate )",

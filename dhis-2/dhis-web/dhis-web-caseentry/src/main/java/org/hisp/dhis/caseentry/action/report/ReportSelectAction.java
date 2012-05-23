@@ -89,8 +89,9 @@ public class ReportSelectAction
         
         programs = programService.getPrograms( orgunit );
         
-        programs.removeAll( programService.getPrograms( true ) );
-        
+        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
+        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+
         return SUCCESS;
     }
 }

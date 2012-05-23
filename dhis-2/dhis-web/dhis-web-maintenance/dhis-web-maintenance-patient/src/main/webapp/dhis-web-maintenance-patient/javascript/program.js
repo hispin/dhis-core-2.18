@@ -10,11 +10,12 @@ function showProgramDetails( programId )
 		setInnerHTML( 'nameField', json.program.name );
 		setInnerHTML( 'descriptionField', json.program.description );
 		
-		var singleEvent = ( json.program.singleEvent == 'true') ? i18n_yes : i18n_no;
-		setInnerHTML( 'singleEventField', singleEvent );  
-		
-		var anonymous = ( json.program.anonymous == 'true') ? i18n_yes : i18n_no;
-		setInnerHTML( 'anonymousField', anonymous );   		
+		var type = i18n_multiple_events_with_registration;
+		if( json.program.type == "2" )
+			type = i18n_single_event_with_registration;
+		else if( json.program.type == "3"  )
+			type = i18n_single_event_without_registration;
+		setInnerHTML( 'typeField', type );  
 		
 		var displayProvidedOtherFacility = ( json.program.displayProvidedOtherFacility == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'displayProvidedOtherFacilityField', displayProvidedOtherFacility );   	
@@ -22,10 +23,7 @@ function showProgramDetails( programId )
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );
-		setInnerHTML( 'maxDaysFromStartField',  json.program.maxDay );
-		
-		var hideIncidentDateField = ( json.program.hideDateOfIncident == 'true') ? i18n_yes : i18n_no;
-		setInnerHTML( 'hideIncidentDateField',  hideIncidentDateField );
+		setInnerHTML( 'durationInDaysField',  json.program.maxDay );
 		
 		showDetails();
 	});   
@@ -40,20 +38,26 @@ function removeProgram( programId, name )
 	removeItem( programId, name, i18n_confirm_delete, 'removeProgram.action' );
 }
 
-function singleEventOnChange()
+function programTypeOnChange()
 {
-	var checked = byId('singleEvent').checked;
+	var type = getFieldValue('type');
 	
-	if(checked)
+	// anonymous
+	if(type == "3")
 	{
 		disable('dateOfEnrollmentDescription');
-		enable('anonymous');
+		disable('dateOfIncidentDescription');
+	}
+	// single-event
+	else if( type=='2')
+	{
+		enable('dateOfEnrollmentDescription');
+		disable('dateOfIncidentDescription');
 	}
 	else
 	{
 		enable('dateOfEnrollmentDescription');
-		byId('anonymous').checked = false;
-		disable('anonymous');
+		enable('dateOfIncidentDescription');
 	}
 }
 

@@ -58,6 +58,8 @@ public class ProgramStageDataElement
      * programStage
      */
     private boolean compulsory = false;
+    
+    //private boolean allowProvidedElsewhere;
 
     private Integer sortOrder;
 

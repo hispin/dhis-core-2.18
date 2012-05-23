@@ -3,12 +3,12 @@
 <script>
 	jQuery("#entryFormContainer").ready(function(){
 	
-		#if( $!programStageInstance.programStage.program.anonymous=="true" && $!programStageInstance.completed=='true')
+		#if( $!programStageInstance.programStage.program.type=="3" && $!programStageInstance.completed=='true')
 			hideById('entryFormContainer');
 		#elseif( $programStageInstance )
 			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
-		#elseif( $program.singleEvent == "true" )
+		#elseif( $program.type == "2" )
 		{
 			disable("dueDate");
 		}

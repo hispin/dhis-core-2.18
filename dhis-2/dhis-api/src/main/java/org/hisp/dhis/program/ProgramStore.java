@@ -34,16 +34,22 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Chau Thu Tran
- *
+ * 
  * @version $Id: ProgramStore.java Dec 14, 2011 9:22:17 AM $
  */
-public interface ProgramStore extends GenericNameableObjectStore<Program>
-{ 
+public interface ProgramStore
+    extends GenericNameableObjectStore<Program>
+{
     String ID = ProgramStore.class.getName();
 
-    Collection<Program> get( boolean singleEvent );
+    Collection<Program> getByType( int type );
+    
+    Collection<Program> get( int type, OrganisationUnit orgunit );
 
-    Collection<Program> get( boolean singleEvent, boolean anonymous );
-
-    Collection<Program> get( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit );
+    // Collection<Program> get( boolean singleEvent );
+    //
+    // Collection<Program> get( boolean singleEvent, boolean anonymous );
+    //
+    // Collection<Program> get( boolean singleEvent, boolean anonymous,
+    // OrganisationUnit orgunit );
 }

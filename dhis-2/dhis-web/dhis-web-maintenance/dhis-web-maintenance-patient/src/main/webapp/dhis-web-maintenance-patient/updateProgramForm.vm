@@ -24,16 +24,17 @@
 	  </tr>
 	  
       <tr>
-		<td><label>$i18n.getString( "single_event" )</td>
-		<td><input type="checkbox" id="singleEvent" value='true' name="singleEvent" #if( $program.singleEvent=='true' ) checked #end onchange="singleEventOnChange();"></td>
+		<td><label>$i18n.getString( "type" )</label></td>
+		<td>
+			<select id="type" name="type" onchange='programTypeOnChange();'>
+				<option value=''>[$i18n.getString('please_select')]</option>
+				<option value='1' #if( $program.type=='1' ) selected #end>$i18n.getString('multiple_events_with_registration')</option>
+				<option value='2' #if( $program.type=='2' ) selected #end>$i18n.getString('single_event_with_registration')</option>
+				<option value='3' #if( $program.type=='3' ) selected #end>$i18n.getString('single_event_without_registration')</option>
+			</select>
+		</td>
 		<td></td>
-	 </tr>
-	 
-	 <tr>
-		<td><label>$i18n.getString( "anonymous" )</label></td>
-		<td><input type="checkbox" id="anonymous" name="anonymous" value='true' #if( $program.anonymous=='true' ) checked #end #if( $program.singleEvent=='false' ) disabled='disabled' #end #></td>
-		<td></td>
-	 </tr>
+	</tr>
 		
 	<tr>
 		<td><label>$i18n.getString( "hide_provided_other_facility" )</label></td>
@@ -42,29 +43,23 @@
 	</tr>
 		
 	<tr>
-		<td><label>$i18n.getString( "hide_date_of_incident" )</label></td>
-		<td><input type="checkbox" id="hideDateOfIncident" name="hideDateOfIncident" value='true' onchange='hideIncidentDateOnchange();' #if( $program.hideDateOfIncident=='true' ) checked #end ></td>
-		<td></td>
-	</tr>
-	
-	<tr>
 		<td><label>$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="version" name="version" value="$program.version" class="{validate:{required:true,number:true}}"></td>
 		<td></td>
 	</tr>		
 	<tr>
 		<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$!program.dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}" #if( $program.singleEvent=='true' ) disabled #end></td>
+		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$!program.dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}" #if( $program.type=='3' ) disabled #end></td>
 		<td></td>
 	</tr>	
 	<tr>
 		<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$!program.dateOfIncidentDescription" class="{validate:{required:true,minlength:4}}" #if( $program.hideDateOfIncident=='true' ) disabled #end ></td>
+		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$!program.dateOfIncidentDescription" class="{validate:{required:true,minlength:4}}" #if( $program.type=='2' || $program.type=='3') disabled #end ></td>
 		<td></td>
 	</tr>
 	
 	  <tr>
-		<td><label>$i18n.getString( "no_max_days_allowed_input_data" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label>$i18n.getString( "duration_in_days" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" value="$!program.maxDaysAllowedInputData" class="{validate:{required:true,number:true}}"></td>
 		<td></td>
 	  </tr>	

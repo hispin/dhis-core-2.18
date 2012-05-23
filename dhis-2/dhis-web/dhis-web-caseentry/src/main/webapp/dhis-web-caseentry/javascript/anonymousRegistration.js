@@ -20,11 +20,11 @@ function organisationUnitSelected( orgUnits )
 			{ 
 				if( preSelectedProgramId == json.programInstances[i].id )
 				{
-					$('#programId').append('<option selected value=' + json.programInstances[i].id + ' singleevent="true" programInstanceId=' + json.programInstances[i].programInstanceId + '>' + json.programInstances[i].name + '</option>');
+					$('#programId').append('<option selected value=' + json.programInstances[i].id + ' type="3" programInstanceId=' + json.programInstances[i].programInstanceId + '>' + json.programInstances[i].name + '</option>');
 				}
 				else
 				{
-					$('#programId').append('<option value=' + json.programInstances[i].id + ' singleevent="true" programInstanceId=' + json.programInstances[i].programInstanceId + '>' + json.programInstances[i].name + '</option>');
+					$('#programId').append('<option value=' + json.programInstances[i].id + ' type="3" programInstanceId=' + json.programInstances[i].programInstanceId + '>' + json.programInstances[i].name + '</option>');
 				}
 			}
 

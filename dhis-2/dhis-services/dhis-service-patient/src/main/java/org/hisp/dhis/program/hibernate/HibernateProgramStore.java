@@ -46,26 +46,44 @@ public class HibernateProgramStore
 {
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Program> get( boolean singleEvent )
+    public Collection<Program> getByType( int type )
     {
-        return getCriteria( Restrictions.eq( "singleEvent", singleEvent )).list();
+        return getCriteria( Restrictions.eq( "type", type ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Program> get( boolean singleEvent, boolean anonymous )
+    public Collection<Program> get( int type, OrganisationUnit orgunit )
     {
-        return getCriteria( Restrictions.eq( "singleEvent", singleEvent ),
-            Restrictions.eq( "anonymous", anonymous ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    @Override
-    public Collection<Program> get( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit )
-    {
-        return getCriteria( Restrictions.eq( "singleEvent", singleEvent ),
-            Restrictions.eq( "anonymous", anonymous ) ).createAlias( "organisationUnits", "orgunit" ).add(
+        return getCriteria( Restrictions.eq( "type", type ) ).createAlias( "organisationUnits", "orgunit" ).add(
             Restrictions.eq( "orgunit.id", orgunit.getId() ) ).list();
     }
+
+    // @SuppressWarnings( "unchecked" )
+    // @Override
+    // public Collection<Program> get( boolean singleEvent )
+    // {
+    // return getCriteria( Restrictions.eq( "singleEvent", singleEvent
+    // )).list();
+    // }
+    //
+    // @SuppressWarnings( "unchecked" )
+    // @Override
+    // public Collection<Program> get( boolean singleEvent, boolean anonymous )
+    // {
+    // return getCriteria( Restrictions.eq( "singleEvent", singleEvent ),
+    // Restrictions.eq( "anonymous", anonymous ) ).list();
+    // }
+    //
+    // @SuppressWarnings( "unchecked" )
+    // @Override
+    // public Collection<Program> get( boolean singleEvent, boolean anonymous,
+    // OrganisationUnit orgunit )
+    // {
+    // return getCriteria( Restrictions.eq( "singleEvent", singleEvent ),
+    // Restrictions.eq( "anonymous", anonymous ) ).createAlias(
+    // "organisationUnits", "orgunit" ).add(
+    // Restrictions.eq( "orgunit.id", orgunit.getId() ) ).list();
+    // }
 
 }

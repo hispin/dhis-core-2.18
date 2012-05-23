@@ -3,8 +3,7 @@
   #foreach( ${programStage} in $!{programStages} )
   {
 	"id": "${programStage.id}",
-	"name": "$!encoder.jsonEncode( ${programStage.name} )",
-	"anonymous": "${programStage.anonymous}"
+	"name": "$!encoder.jsonEncode( ${programStage.name} )"
   }#if( $velocityCount < $size ),#end
   #end
   ]
