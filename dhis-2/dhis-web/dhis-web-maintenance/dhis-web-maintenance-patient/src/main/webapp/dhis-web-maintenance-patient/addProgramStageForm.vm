@@ -28,12 +28,12 @@
 
 		<tr>
 			<td><label>$i18n.getString( "repeatable" )</label></td>
-			<td><input type="checkbox" id="irregular" name="irregular" value='true' onchange='repeatableOnChange();'/></td>
+			<td><input type="checkbox" id="irregular" name="irregular" value='true' onchange='repeatableOnChange();' /></td>
 		</tr>	
 		
 		<tr>
 			<td><label>$i18n.getString( "standard_interval" )</label></td>
-			<td><input type="text" id="standardInterval" name="standardInterval" class="{validate:{number:true}}" disabled/></td>
+			<td><input type="text" id="standardInterval" name="standardInterval" class="{validate:{required:true,number:true}}" disabled /></td>
 		</tr>
 		  
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr> 
@@ -46,7 +46,7 @@
         <th>$i18n.getString( "available_data_elements" )</th>
         <th></th>
         <th>$i18n.getString( "selected_data_elements" )							
-			<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="{validate:{required:true}} hidden" ></select>
+			<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="hidden" ></select>
 			<select id="compulsories" name='compulsories' multiple="multiple" class="hidden"></select>     
 		</th>
       </tr>
