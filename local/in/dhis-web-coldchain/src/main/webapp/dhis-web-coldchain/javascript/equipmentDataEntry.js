@@ -197,6 +197,8 @@ function loadDataEntryForm()
 	//alert("mmmmm");
 	
 	$( '#dataEntryFormDiv' ).html('');
+	
+	$( '#saveButton' ).removeAttr( 'disabled' );
 	//alert("mmmmm");
 	//setInnerHTML('dataEntryFormDiv', '');
 	//hideById('dataEntryFormDiv');
@@ -213,25 +215,36 @@ function loadDataEntryForm()
 	
 	var selectedPeriodId = $( '#selectedPeriodId' ).val();
 	
-	//setInnerHTML('dataEntryFormDiv', '');
-	//alert( dataSetId +"---"+ selectedPeriodId +"----"+ equipmentInstanceId );
+	if ( selectedPeriodId == "-1" )
+	{
+		$( '#dataEntryFormDiv' ).html('');
+		document.getElementById( "saveButton" ).disabled = true;
+		return false;
+	}
 	
-	//hideById('dataEntryFormDiv');
-    jQuery('#loaderDiv').show();
-    
-    //contentDiv = 'dataEntryFormDiv';
-	
-	jQuery('#dataEntryFormDiv').load('loadDataEntryForm.action',
-		{
-			dataSetId:dataSetId,
-			selectedPeriodId:selectedPeriodId,
-			equipmentInstanceId:equipmentInstanceId
-		}, function()
-		{
-			showById('dataEntryFormDiv');
-			jQuery('#loaderDiv').hide();
-		});
-	hideLoader();
+	else
+	{
+		//setInnerHTML('dataEntryFormDiv', '');
+		//alert( dataSetId +"---"+ selectedPeriodId +"----"+ equipmentInstanceId );
+		
+		//hideById('dataEntryFormDiv');
+	    jQuery('#loaderDiv').show();
+	    
+	    //contentDiv = 'dataEntryFormDiv';
+		
+		jQuery('#dataEntryFormDiv').load('loadDataEntryForm.action',
+			{
+				dataSetId:dataSetId,
+				selectedPeriodId:selectedPeriodId,
+				equipmentInstanceId:equipmentInstanceId
+			}, function()
+			{
+				showById('dataEntryFormDiv');
+				jQuery('#loaderDiv').hide();
+			});
+		hideLoader();
+	}
+
 }
 
 
