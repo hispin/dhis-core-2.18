@@ -236,7 +236,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 newAttributeValues( object, attributeValues );
                 newExpression( object, "leftSide", leftSide );
                 newExpression( object, "rightSide", rightSide );
-                newDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
+                // newDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
                 newDataElementOperands( object, "greyedFields", greyedFields );
 
                 sessionFactory.getCurrentSession().flush();
@@ -271,10 +271,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         if ( ReflectionUtils.findGetterMethod( field, object ) != null )
         {
-            dataElementOperands = ReflectionUtils.invokeGetterMethod( field, object );
+            Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( field, object );
+            dataElementOperands = new HashSet<DataElementOperand>( detachedDataElementOperands );
 
-            if ( dataElementOperands.size() > 0 )
+            if ( detachedDataElementOperands.size() > 0 )
             {
+                detachedDataElementOperands.clear();
                 ReflectionUtils.invokeSetterMethod( field, object, new HashSet<DataElementOperand>() );
             }
         }
@@ -325,7 +327,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
                 dataElementOperand.setId( 0 );
                 dataElementOperandService.addDataElementOperand( dataElementOperand );
-                sessionFactory.getCurrentSession().flush();
             }
 
             ReflectionUtils.invokeSetterMethod( field, object, dataElementOperands );
