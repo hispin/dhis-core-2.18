@@ -20,13 +20,15 @@ div.olLayerDiv {
 }
 .olLayerGoogleV3.olLayerGoogleCopyright {
     right: auto !important;
+    display: none !important; /* Temp solution to hide popup - fixed in openlayers trunk */
 }
 .olLayerGooglePoweredBy {
     left: 2px;
-    bottom: 15px;   
+    bottom: 15px;
 }
 .olLayerGoogleV3.olLayerGooglePoweredBy {
     bottom: 15px !important;
+    display: none !important; /* Temp solution to hide popup - fixed in openlayers trunk */
 }
 .olControlAttribution {
     font-size: smaller; 
