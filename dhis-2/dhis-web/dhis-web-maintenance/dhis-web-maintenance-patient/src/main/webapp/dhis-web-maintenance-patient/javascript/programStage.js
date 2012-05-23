@@ -42,7 +42,12 @@ function showProgramStageDetails( programStageId )
 		setInnerHTML( 'nameField', json.programStage.name );	
 		setInnerHTML( 'descriptionField', json.programStage.description );
 		setInnerHTML( 'stageInProgramField', json.programStage.stageInProgram );   
-		setInnerHTML( 'minDaysFromStartField', json.programStage.minDaysFromStart );    
+		setInnerHTML( 'scheduledDaysFromStartField', json.programStage.minDaysFromStart ); 
+
+		var irregular = (json.programStage.irregular=='true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'irregularField', irregular );  
+		setInnerHTML( 'standardIntervalField', json.programStage.standardInterval );  
+		
 		setInnerHTML( 'dataElementCountField', json.programStage.dataElementCount );   
 	   
 		showDetails();
@@ -131,4 +136,18 @@ function select( element )
 	element = jQuery( element ).parent();
 	if( element.hasClass( 'selected') ) element.removeClass( 'selected' );
 	else element.addClass( 'selected' );
+}
+
+function repeatableOnChange()
+{
+	var checked = byId('irregular').checked;
+	if( checked )
+	{
+		enable('standardInterval');
+	}
+	else
+	{
+		disable('standardInterval');
+		setFieldValue('standardInterval', '0');
+	}
 }

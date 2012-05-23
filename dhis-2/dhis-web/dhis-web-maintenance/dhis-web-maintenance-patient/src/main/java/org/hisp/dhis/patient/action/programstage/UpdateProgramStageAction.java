@@ -134,6 +134,13 @@ public class UpdateProgramStageAction
         this.irregular = irregular;
     }
 
+    private Integer standardInterval;
+
+    public void setStandardInterval( Integer standardInterval )
+    {
+        this.standardInterval = standardInterval;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -145,11 +152,12 @@ public class UpdateProgramStageAction
 
         programStage.setName( name );
         programStage.setDescription( description );
+        programStage.setStandardInterval( standardInterval );
 
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
 
-        irregular = (irregular==null) ? false : irregular;
+        irregular = (irregular == null) ? false : irregular;
         programStage.setIrregular( irregular );
 
         programStageService.updateProgramStage( programStage );
@@ -163,7 +171,7 @@ public class UpdateProgramStageAction
 
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
-            
+
             if ( programStageDataElement == null )
             {
                 programStageDataElement = new ProgramStageDataElement( programStage, dataElement, this.compulsories
@@ -173,7 +181,7 @@ public class UpdateProgramStageAction
             else
             {
                 programStageDataElement.setCompulsory( this.compulsories.get( i ) );
-                
+
                 programStageDataElement.setSortOrder( new Integer( i ) );
 
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );

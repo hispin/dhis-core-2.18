@@ -5,7 +5,8 @@
 	  {
 		"id":  ${programStage.id} ,
 		"name": "$!encoder.jsonEncode( ${programStage.name} )",
-		"irregular": "${programStage.irregular}"
+		"irregular": "${programStage.irregular}",
+		"standardInterval": "$!programStage.standardInterval"
 	  }#if( $velocityCount < $size ),#end
 	#end],
 	

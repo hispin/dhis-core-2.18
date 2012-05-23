@@ -132,7 +132,7 @@ public class AddProgramAction
     public String execute()
         throws Exception
     {
-        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? true : displayProvidedOtherFacility;
+        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
 
         Program program = new Program();
 

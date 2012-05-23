@@ -30,7 +30,7 @@ function loadProgramStages()
 			addOptionById( 'programStageId', "0", i18n_select );
 			for ( i in json.programStages ) 
 			{
-				addOptionById( 'programStageId', json.programStages[i].id, json.programStages[i].name );
+				$('#programStageId').append("<option value='" + json.programStages[i].id + "' standardInterval='" + json.programStages[i].standardInterval + "' >" + json.programStages[i].name +  '</option>');
 			} 
 			
 			var type = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('type');
@@ -654,6 +654,16 @@ function doComplete()
 								width: 300,
 								height: 100
 							}).show('fast');
+							
+						var standardInterval =  jQuery('#dataRecordingSelectDiv [name=programStageId] option:selected').attr('standardInterval');
+						
+						var date = new Date();
+						var d = date.getDate();
+						var m = date.getMonth();
+						var y = date.getFullYear();
+						var edate= new Date(y, m, d+standardInterval);						
+						jQuery('#dueDateNewEncounter').datepicker( "setDate" , edate )
+	 
 					}
 					
 					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');

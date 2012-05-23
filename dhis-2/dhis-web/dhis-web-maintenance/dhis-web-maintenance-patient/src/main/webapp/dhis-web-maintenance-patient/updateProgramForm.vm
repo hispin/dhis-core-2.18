@@ -37,7 +37,7 @@
 	</tr>
 		
 	<tr>
-		<td><label>$i18n.getString( "hide_provided_other_facility" )</label></td>
+		<td><label>$i18n.getString( "show_provided_provided_elsewhere" )</label></td>
 		<td><input type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='false' #if( $program.displayProvidedOtherFacility=='false' ) checked #end ></td>
 		<td></td>
 	</tr>

@@ -56,6 +56,8 @@ public class ProgramStage
     private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
 
     private DataEntryForm dataEntryForm;
+    
+    private Integer standardInterval;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -128,6 +130,16 @@ public class ProgramStage
     public String getDescription()
     {
         return description;
+    }
+
+    public Integer getStandardInterval()
+    {
+        return standardInterval;
+    }
+
+    public void setStandardInterval( Integer standardInterval )
+    {
+        this.standardInterval = standardInterval;
     }
 
     public void setDescription( String description )
