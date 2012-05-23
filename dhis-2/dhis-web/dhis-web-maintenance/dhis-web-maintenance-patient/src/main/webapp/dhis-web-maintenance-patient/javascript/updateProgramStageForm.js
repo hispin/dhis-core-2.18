@@ -1,5 +1,6 @@
 jQuery( document ).ready( function()
-{validation( 'updateProgramStageForm', function( form ){ 
+{
+	validation( 'updateProgramStageForm', function( form ){ 
 		form.submit() ;
 	}, function(){
 		selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );

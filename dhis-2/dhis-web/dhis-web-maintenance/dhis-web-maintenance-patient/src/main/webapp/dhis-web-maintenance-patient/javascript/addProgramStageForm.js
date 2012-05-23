@@ -3,8 +3,6 @@ jQuery( document ).ready( function()
 	validation( 'addProgramStageForm', function( form ){ 
 		form.submit();
 	}, function(){
-		selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );
-		selectedDataElementsValidator.empty();
 		
 		compulsories = jQuery( "#compulsories" );
 		compulsories.empty();
