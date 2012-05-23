@@ -350,9 +350,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <property name="dataElementCategoryService"
         ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>     
   </bean>
-	
-	
-	
+		
    <!-- DataElement Targets -->
    <bean id="org.hisp.dhis.detarget.action.DeTargetListAction"
       class="org.hisp.dhis.detarget.action.DeTargetListAction" 

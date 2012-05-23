@@ -170,6 +170,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="inventoryTypeStore" ref="org.hisp.dhis.coldchain.inventory.InventoryTypeStore"/>
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     </bean>
+	
+    <bean id="org.hisp.dhis.coldchain.inventory.EquipmentDataValueService"
+        class="org.hisp.dhis.coldchain.inventory.DefaultEquipmentDataValueService">
+        <property name="equipmentDataValueStore" ref="org.hisp.dhis.coldchain.inventory.EquipmentDataValueStore"/>
+    </bean>	
+	
+    <bean id="org.hisp.dhis.coldchain.inventory.EquipmentDataValueStore"
+        class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateEquipmentDataValueStore">
+        <property name="sessionFactory" ref="sessionFactory"/>
+		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore"/>
+    </bean>		
 
 	<!-- DeletionHandlers -->
 	
