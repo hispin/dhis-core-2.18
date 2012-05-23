@@ -139,6 +139,13 @@ public class AddProgramStageAction
         this.irregular = irregular;
     }
 
+    private Integer standardInterval;
+
+    public void setStandardInterval( Integer standardInterval )
+    {
+        this.standardInterval = standardInterval;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -155,6 +162,7 @@ public class AddProgramStageAction
         programStage.setDescription( description );
         programStage.setStageInProgram( program.getProgramStages().size() + 1 );
         programStage.setProgram( program );
+        programStage.setStandardInterval( standardInterval );
 
         irregular = (irregular == null) ? false : irregular;
         programStage.setIrregular( irregular );

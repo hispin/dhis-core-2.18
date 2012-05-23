@@ -129,7 +129,7 @@ public class UpdateProgramAction
     public String execute()
         throws Exception
     {
-        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? true : displayProvidedOtherFacility;
+        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
 
         Program program = programService.getProgram( id );
         program.setName( name );

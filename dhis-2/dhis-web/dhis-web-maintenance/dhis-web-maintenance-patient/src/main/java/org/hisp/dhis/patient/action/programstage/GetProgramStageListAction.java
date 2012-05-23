@@ -35,7 +35,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.program.comparator.ProgramNameComparator;
 import org.hisp.dhis.program.comparator.ProgramStageNameComparator;
 import org.hisp.dhis.program.comparator.ProgramStageOrderComparator;
 
@@ -93,19 +92,7 @@ public class GetProgramStageListAction
     {
         this.associations = associations;
     }
-
-    private List<Program> programs;
-
-    public List<Program> getPrograms()
-    {
-        return programs;
-    }
-
-    public void setPrograms( List<Program> programs )
-    {
-        this.programs = programs;
-    }
-
+    
     private Program program;
 
     public Program getProgram()
@@ -120,10 +107,6 @@ public class GetProgramStageListAction
     public String execute()
         throws Exception
     {
-        programs = new ArrayList<Program>( programService.getAllPrograms() );
-
-        Collections.sort( programs, new ProgramNameComparator() );
-
         if ( id != null )
         {
             program = programService.getProgram( id );
