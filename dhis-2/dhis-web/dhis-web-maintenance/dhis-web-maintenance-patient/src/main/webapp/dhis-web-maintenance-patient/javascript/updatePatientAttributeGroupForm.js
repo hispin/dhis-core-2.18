@@ -15,7 +15,7 @@ jQuery(document).ready(	function() {
 	checkValueIsExist( "name", "validatePatientAttributeGroup.action", {id:getFieldValue('id')});
 	
 	jQuery("#availableAttributes").dhisAjaxSelect({
-		source: 'getProgramAttributeWithoutGroup.action',
+		source: 'getPatientAttributeWithoutGroup.action',
 		iterator: 'patientAttributes',
 		connectedTo: 'selectedAttributes',
 		handler: function(item){

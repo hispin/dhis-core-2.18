@@ -14,7 +14,6 @@ jQuery(function() {
     #introListImgItem( "relationshipType.action" "relationship_type" "patient" )
 	#introListImgItem( "defineOrgunitRegistrationForm.action" "patient_organisation_unit_registration" "patient" )
     #introListImgItem( "program.action" "program" "program" )
-	#introListImgItem( "programAttribute.action" "program_attribute" "program" )
     #introListImgItem( "caseAggregation.action" "beneficiary_aggregation_query_builder" "caseaggregationmapping" )
 	#introListImgItem( "validationCriteria.action" "validation_criteria" "validationcriteria" )
 </ul>

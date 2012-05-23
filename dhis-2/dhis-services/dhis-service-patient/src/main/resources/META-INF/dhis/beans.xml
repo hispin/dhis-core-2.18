@@ -119,29 +119,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
      <property name="sessionFactory" ref="sessionFactory"/>
    </bean>
    
-   <bean id="org.hisp.dhis.program.ProgramAttributeStore"
-		class="org.hisp.dhis.program.hibernate.HibernateProgramAttributeStore">
-		<property name="clazz" value="org.hisp.dhis.program.ProgramAttribute" />
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
-	<bean id="org.hisp.dhis.programattributevalue.ProgramAttributeValueStore"
-		class="org.hisp.dhis.programattributevalue.hibernate.HibernateProgramAttributeValueStore">
-		<property name="clazz" value="org.hisp.dhis.programattributevalue.ProgramAttributeValue" />
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
-  	<bean id="org.hisp.dhis.program.ProgramAttributeOptionStore"
-    class="org.hisp.dhis.program.hibernate.HibernateProgramAttributeOptionStore">
-     <property name="clazz" value="org.hisp.dhis.program.ProgramAttributeOption"/>
-     <property name="sessionFactory" ref="sessionFactory"/>
-   </bean>
-   
-	<bean id="org.hisp.dhis.patientreport.PatientTabularReportStore"
+   <bean id="org.hisp.dhis.patientreport.PatientTabularReportStore"
     	class="org.hisp.dhis.patientreport.hibernate.HibernatePatientTabularReportStore">
       	<property name="clazz" value="org.hisp.dhis.patientreport.PatientTabularReport" />
     	<property name="sessionFactory" ref="sessionFactory" />
-    </bean>
+   </bean>
    
 	<!-- Service definitions -->
 	
@@ -302,23 +284,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	  		ref="org.hisp.dhis.program.ProgramStageDataElementStore" />
   	</bean>
   
-  	<bean id="org.hisp.dhis.program.ProgramAttributeService" class="org.hisp.dhis.program.DefaultProgramAttributeService">
-		<property name="programAttributeStore" ref="org.hisp.dhis.program.ProgramAttributeStore" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.programattributevalue.ProgramAttributeValueService"
-		class="org.hisp.dhis.programattributevalue.DefaultProgramAttributeValueService">
-		<property name="programAttributeValueStore"
-			ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueStore" />
-	</bean>
-  
-    <bean id="org.hisp.dhis.program.ProgramAttributeOptionService"
-    	class="org.hisp.dhis.program.DefaultProgramAttributeOptionService">
-     	<property name="programAttributeOptionStore"
-      		ref="org.hisp.dhis.program.ProgramAttributeOptionStore"/>
-    </bean>
-	
    <bean id="org.hisp.dhis.patientreport.PatientTabularReportService"
     	class="org.hisp.dhis.patientreport.DefaultPatientTabularReportService">
     	<property name="tabularReportStore" ref="org.hisp.dhis.patientreport.PatientTabularReportStore" />
@@ -345,7 +310,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.program.ProgramInstanceDeletionHandler">
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService"/>
 		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
-		<property name="programAttributeValueService" ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueService"/>
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
 	</bean>
 	
@@ -363,12 +327,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.program.ProgramDeletionHandler" 
 		class="org.hisp.dhis.program.ProgramDeletionHandler">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService"/>
-	</bean>
-	
-	<bean id="org.hisp.dhis.programattributevalue.ProgramAttributeValueDeletionHandler" 
-		class="org.hisp.dhis.programattributevalue.ProgramAttributeValueDeletionHandler">
-		<property name="programAttributeValueService" ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueService"/>
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.patient.PatientDeletionHandler" 
@@ -412,12 +370,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="skipInTests" value="true" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.patient.startup.ProgramAttributePopulator" class="org.hisp.dhis.patient.startup.ProgramAttributePopulator">
-		<property name="programAttributeService" ref="org.hisp.dhis.program.ProgramAttributeService" />
-		<property name="name" value="ProgramAttributePopulator" />
-		<property name="runlevel" value="5" />
-	</bean>
-	
 	<bean
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject"
@@ -426,7 +378,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="arguments">
 			<list>
 				<list>
-					<ref local="org.hisp.dhis.patient.startup.ProgramAttributePopulator" />
 					<ref local="org.hisp.dhis.patient.startup.TableAlteror" />
 				</list>
 			</list>
@@ -451,7 +402,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			  <ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"/>
-			  <ref local="org.hisp.dhis.programattributevalue.ProgramAttributeValueDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler"/>
 			  
@@ -495,10 +445,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		  <aop:before 
 		      pointcut="execution( * org.hisp.dhis.program.ProgramInstanceService.delete*(..) )" 
 		      method="intercept"/>
-		  <aop:before 
-		      pointcut="execution( * org.hisp.dhis.programattributevalue.ProgramAttributeValueService.delete*(..) )" 
-		      method="intercept"/>
-		  <aop:before 
+		 <aop:before 
 		      pointcut="execution( * org.hisp.dhis.program.ProgramStageService.delete*(..) )" 
 		      method="intercept"/>
 	      <aop:before 

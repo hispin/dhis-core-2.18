@@ -3,7 +3,7 @@ jQuery(document).ready(	function(){
 		jQuery('name').focus();
 		
 		jQuery("#availableAttributes").dhisAjaxSelect({
-			source: 'getProgramAttributeWithoutGroup.action',
+			source: 'getPatientAttributeWithoutGroup.action',
 			iterator: 'patientAttributes',
 			connectedTo: 'selectedAttributes',
 			handler: function(item){

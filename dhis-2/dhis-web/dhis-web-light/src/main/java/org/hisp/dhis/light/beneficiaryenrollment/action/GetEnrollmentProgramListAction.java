@@ -152,7 +152,7 @@ public class GetEnrollmentProgramListAction
         patient = patientService.getPatient( Integer.parseInt( beneficiaryId ) );
         for ( Program program :  programService.getPrograms( patient.getOrganisationUnit() ) )
         {
-            if ( !program.getAnonymous() && !program.getSingleEvent() )
+            if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
             {
                 if ( programInstanceService.getProgramInstances( patient, program ).size() > 0 )
                 {

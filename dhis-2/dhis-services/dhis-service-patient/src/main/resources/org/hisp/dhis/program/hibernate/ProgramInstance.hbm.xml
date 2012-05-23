@@ -29,10 +29,5 @@
       <one-to-many class="org.hisp.dhis.program.ProgramStageInstance" />
     </set>
 
-    <set name="attributes" table="programinstance_attributes">
-      <key column="programinstanceid" foreign-key="fk_programinstance_attributes_programinstanceid" />
-      <many-to-many class="org.hisp.dhis.program.ProgramAttribute" column="programattributeid" foreign-key="fk_program_programattributeid" />
-    </set>
-
   </class>
 </hibernate-mapping>

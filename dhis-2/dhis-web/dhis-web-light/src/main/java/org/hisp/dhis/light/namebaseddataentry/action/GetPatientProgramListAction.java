@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import com.opensymphony.xwork2.Action;
@@ -95,7 +96,7 @@ public class GetPatientProgramListAction
     }
 
     private Patient patient;
-    
+
     public Patient getPatient()
     {
         return patient;
@@ -114,8 +115,9 @@ public class GetPatientProgramListAction
         patient = patientService.getPatient( patientId );
         for ( ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ) )
         {
-            if (!programInstance.getProgram().getAnonymous() && !programInstance.getProgram().getSingleEvent()) {
-            programInstances.add( programInstance );
+            if ( programInstance.getProgram().getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
+            {
+                programInstances.add( programInstance );
             }
         }
 
