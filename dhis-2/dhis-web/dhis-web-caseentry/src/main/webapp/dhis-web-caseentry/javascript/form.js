@@ -108,7 +108,8 @@ function searchValidationCompleted( messageElement )
 		$('#contentDiv').load( 'searchPatient.action', 
 			{
 				searchingAttributeId: getFieldValue('searchingAttributeId'), 
-				searchText: getFieldValue('searchText')
+				searchText: getFieldValue('searchText'),
+				searchBySelectedOrgunit: byId('searchBySelectedOrgunit').checked
 			},
 			function()
 			{

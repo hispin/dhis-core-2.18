@@ -36,6 +36,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -246,14 +247,28 @@ public class DefaultPatientAttributeValueService
     {
         patientAttributeValueStore.updatePatientAttributeValues( patientAttributeOption );
     }
-    
+
     public Collection<PatientAttributeValue> getPatientAttributeValues( Patient patient, Program program )
     {
         return patientAttributeValueStore.get( patient, program );
     }
-    
+
     public Collection<PatientAttributeValue> getPatientAttributeValuesWithoutProgram( Patient patient )
     {
         return patientAttributeValueStore.getWithoutProgram( patient );
+    }
+
+    @Override
+    public int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts,
+        OrganisationUnit orgunit )
+    {
+        return patientAttributeValueStore.countSearchPatients( patientAttributeIds, searchTexts, orgunit );
+    }
+
+    @Override
+    public Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts,
+        OrganisationUnit orgunit, int min, int max )
+    {
+        return patientAttributeValueStore.searchPatients( patientAttributeIds, searchTexts, orgunit, min, max );
     }
 }

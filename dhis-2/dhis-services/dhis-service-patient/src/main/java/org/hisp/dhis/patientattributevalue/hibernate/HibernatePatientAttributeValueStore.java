@@ -33,6 +33,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -334,4 +335,52 @@ public class HibernatePatientAttributeValueStore
 
     }
 
+    @Override
+    public int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts,
+        OrganisationUnit orgunit )
+    {
+        String hql = "SELECT COUNT( DISTINCT p ) FROM Patient as p WHERE p in ";
+        String end = "";
+
+        int index = 0;
+        for ( Integer patientAttributeId : patientAttributeIds )
+        {
+            end += ")";
+
+            hql += createHQL( patientAttributeId, searchTexts.get( index ), index, patientAttributeIds.size() );
+
+            index++;
+        }
+
+        Query query = getQuery( hql + end + " AND p.organisationUnit.id=" + orgunit.getId() );
+
+        Number rs = (Number) query.uniqueResult();
+
+        return (rs != null) ? rs.intValue() : 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts,
+        OrganisationUnit orgunit, int min, int max )
+    {
+        String hql = "SELECT DISTINCT p FROM Patient as p WHERE p in ";
+        String end = "";
+        
+        int index = 0;
+        for ( Integer patientAttributeId : patientAttributeIds )
+        {
+            end += ")";
+
+            hql += createHQL( patientAttributeId, searchTexts.get( index ), index, patientAttributeIds.size() );
+
+            index++;
+        }
+
+        hql += " ORDER BY p.id ASC";
+
+        Query query = getQuery( hql + end + " AND p.organisationUnit.id=" + orgunit.getId() ).setFirstResult( min ).setMaxResults( max );
+
+        return query.list();
+    }
 }
