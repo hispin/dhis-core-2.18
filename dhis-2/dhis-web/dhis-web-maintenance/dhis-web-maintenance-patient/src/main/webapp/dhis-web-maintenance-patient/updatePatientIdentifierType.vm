@@ -25,23 +25,17 @@
 		</tr>	
 		
 		<tr>
-			<td><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="mandatory">$i18n.getString( "mandatory" )</label></td>
 			<td>
-				<select id="mandatory" name="mandatory">
-					<option value="true" #if( $patientIdentifierType.mandatory ) selected="selected" #end>$i18n.getString( "yes" )</option>
-					<option value="false" #if( !$patientIdentifierType.mandatory ) selected="selected" #end>$i18n.getString( "no" )</option>
-				</select>
+				<input type='checkbox' id="mandatory" name="mandatory" #if( $patientIdentifierType.mandatory ) checked #end >
 			</td>		
 			<td></td>				
 		</tr>
 		
 		<tr>
-			<td><label for="related">$i18n.getString( "related" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="related">$i18n.getString( "related" )</label></td>
 			<td>
-				<select id="related" name="related" class="{validate:{required:true}}">
-					<option value="true" #if( $patientIdentifierType.related ) selected="selected" #end>$i18n.getString( "yes" )</option>
-					<option value="false" #if( !$patientIdentifierType.related ) selected="selected" #end>$i18n.getString( "no" )</option>
-				</select>
+				<input type='checkbox' name="related" #if( $patientIdentifierType.related ) checked #end >
 			</td>		
 			<td></td>				
 		</tr>

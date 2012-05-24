@@ -135,8 +135,13 @@ public class UpdatePatientIdentifierTypeAction
         {
             identifierType.setName( name );
             identifierType.setDescription( description );
-            identifierType.setMandatory( mandatory.booleanValue() );
-            identifierType.setRelated( related.booleanValue() );
+            
+            related = (related == null) ? false : true;
+            identifierType.setRelated( related );
+            
+            mandatory = (mandatory == null) ? false : true;
+            identifierType.setMandatory( mandatory );
+            
             identifierType.setNoChars( noChars );
             identifierType.setType( type );
 

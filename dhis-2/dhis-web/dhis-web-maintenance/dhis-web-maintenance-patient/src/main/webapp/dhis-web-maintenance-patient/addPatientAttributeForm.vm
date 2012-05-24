@@ -22,7 +22,7 @@
     </tr>
     
     <tr>
-		<td><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="mandatory">$i18n.getString( "mandatory" )</label></td>
 		<td>
 			<input type='checkbox' id="mandatory" name="mandatory" value='true'>
 		</td>		
@@ -30,7 +30,7 @@
 	</tr>
     
     <tr>
-    	<td><label for="inheritable">$i18n.getString( "inheritable" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+    	<td><label for="inheritable">$i18n.getString( "inheritable" )</label></td>
 		<td>
 			<input type='checkbox' id="inheritable" name="inheritable" value='true'>
 		</td>		
