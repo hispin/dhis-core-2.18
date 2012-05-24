@@ -1107,7 +1107,7 @@ Ext.onReady( function() {
 							allowBlank: true,
 							store:  new Ext.data.ArrayStore({
 								fields: ['name'],
-								data: TR.value.TR.value.valueTypes(index)
+								data: TR.value.getSuggestedValues(index)
 							})
 						}
 					};
