@@ -72,6 +72,8 @@ public class SearchPatientAction
 
     private List<Integer> searchingAttributeId = new ArrayList<Integer>();
 
+    private Boolean searchBySelectedOrgunit;
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -120,6 +122,11 @@ public class SearchPatientAction
         this.patientAttributeValueService = patientAttributeValueService;
     }
 
+    public void setSearchBySelectedOrgunit( Boolean searchBySelectedOrgunit )
+    {
+        this.searchBySelectedOrgunit = searchBySelectedOrgunit;
+    }
+
     public void setSearchText( List<String> searchText )
     {
         this.searchText = searchText;
@@ -162,7 +169,7 @@ public class SearchPatientAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit selectOrgunit = selectedStateManager.getSelectedOrganisationUnit();
 
         // ---------------------------------------------------------------------
         // Get all of patients into the selected organisation unit
@@ -170,7 +177,7 @@ public class SearchPatientAction
 
         if ( listAll != null && listAll )
         {
-            listAllPatient( organisationUnit );
+            listAllPatient( selectOrgunit );
 
             return SUCCESS;
         }
@@ -186,11 +193,10 @@ public class SearchPatientAction
                 patientAttributes.add( patientAttributeService.getPatientAttribute( attributeId ) );
             }
         }
-
-        searchPatientByAttributes( searchingAttributeId, searchText );
+        searchBySelectedOrgunit = (searchBySelectedOrgunit == null) ? false : searchBySelectedOrgunit;
+        searchPatientByAttributes( searchingAttributeId, searchText, selectOrgunit, searchBySelectedOrgunit );
 
         return SUCCESS;
-
     }
 
     // -------------------------------------------------------------------------
@@ -206,21 +212,33 @@ public class SearchPatientAction
             .getPageSize() ) );
     }
 
-    private void searchPatientByAttributes( List<Integer> searchingAttributeId, List<String> searchText )
+    private void searchPatientByAttributes( List<Integer> searchingAttributeId, List<String> searchText,
+        OrganisationUnit orgunit, Boolean searchBySelectedOrgunit )
     {
-        total = patientAttributeValueService.countSearchPatients( searchingAttributeId, searchText );
-
-        this.paging = createPaging( total );
-
-        patients = patientAttributeValueService.searchPatients( searchingAttributeId, searchText, paging.getStartPos(),
-            paging.getPageSize() );
+        if ( searchBySelectedOrgunit )
+        {
+            total = patientAttributeValueService.countSearchPatients( searchingAttributeId, searchText, orgunit );
+            this.paging = createPaging( total );
+            patients = patientAttributeValueService.searchPatients( searchingAttributeId, searchText, orgunit, paging
+                .getStartPos(), paging.getPageSize() );
+        }
+        else
+        {
+            total = patientAttributeValueService.countSearchPatients( searchingAttributeId, searchText );
+            this.paging = createPaging( total );
+            patients = patientAttributeValueService.searchPatients( searchingAttributeId, searchText, paging
+                .getStartPos(), paging.getPageSize() );
+        }
 
         Collection<PatientAttributeValue> attributeValues = patientAttributeValueService
             .getPatientAttributeValues( patients );
 
         for ( Patient patient : patients )
         {
-            mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+            if ( !searchBySelectedOrgunit )
+            {
+                mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+            }
 
             for ( PatientAttributeValue attributeValue : attributeValues )
             {
