@@ -142,7 +142,7 @@
 						#end
 					</select>
 				#else 
-					<input type="text" id="attr$attribute.id" name="attr$attribute.id" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" />
+					<input type="text" id="attr$attribute.id" name="attr$attribute.id" class="{validate:{required:$attribute.mandatory #if($attribute.valueType=='NUMBER'),number:true #end }}" />
 				#end
 			</td>		
 		</tr>
@@ -180,7 +180,7 @@
 						#end
 					</select>
 				#else 
-					<input type="text" id="attr$attribute.id" name="attr$attribute.id" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" />
+					<input type="text" id="attr$attribute.id" name="attr$attribute.id" class="{validate:{required:$attribute.mandatory #if($attribute.valueType=='NUMBER'),number:true #end }}" />
 				#end
 			</td>		
 		</tr>

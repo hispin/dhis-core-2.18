@@ -39,7 +39,7 @@
 		
 		<tr>
 			<td><label>$i18n.getString( "show_provided_provided_elsewhere" )</label></td>
-			<td><input type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='false'></td>
+			<td><input type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='true'></td>
 			<td></td>
 		</tr>
 		

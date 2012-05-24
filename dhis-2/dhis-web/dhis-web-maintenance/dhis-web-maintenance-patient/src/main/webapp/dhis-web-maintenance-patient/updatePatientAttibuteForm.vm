@@ -27,10 +27,7 @@
       <tr>
 		<td><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="mandatory" name="mandatory">
-				<option value="true" #if( $patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "yes" )</option>
-				<option value="false" #if( !$patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "no" )</option>
-			</select>
+			<input type='checkbox' id="mandatory" name="mandatory" value='true' #if( $patientAttribute.mandatory ) checked #end>
 		</td>		
 		<td></td>				
 	</tr>
@@ -38,17 +35,7 @@
 	<tr>
 		<td><label for="inheritable">$i18n.getString( "inheritable" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="inheritable" name="inheritable">
-				<option value="true" #if( $patientAttribute.inheritable) selected="selected" #end>$i18n.getString( "yes" )</option>
-				<option value="false" #if( !$patientAttribute.inheritable) selected="selected" #end>$i18n.getString( "no" )</option>
-			</select>
-		</td>		
-		<td></td>				
-	</tr>
-	<tr>
-		<td><label for="noChar">$i18n.getString( "no_of_char" )</label></td>
-		<td>
-			<input type="text" name="noChars" id="noChars" class="{validate:{required:false, number:true}}" value="$!patientAttribute.noChars">
+			<input type='checkbox' id="inheritable" name="inheritable" value='true' #if( $patientAttribute.inheritable) checked #end>		
 		</td>		
 		<td></td>				
 	</tr>
@@ -93,10 +80,6 @@
 		<td></td>				
 	</tr> 
 	
-	<tr>
-    	<td><label for="groupBy">$i18n.getString( "groupBy" )</td>
-    	<td><input type="checkbox" name="groupBy" value="true" #if( $patientAttribute.groupBy == 'true' ) checked #end></td>
-    </tr>
     </tbody>
 	
 	<tr>
