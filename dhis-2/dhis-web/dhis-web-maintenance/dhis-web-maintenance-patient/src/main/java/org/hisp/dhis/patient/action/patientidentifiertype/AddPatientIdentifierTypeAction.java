@@ -126,8 +126,13 @@ public class AddPatientIdentifierTypeAction
         PatientIdentifierType identifierType = new PatientIdentifierType();
         identifierType.setName( name );
         identifierType.setDescription( description );
-        identifierType.setRelated( related.booleanValue() );
-        identifierType.setMandatory( mandatory.booleanValue() );
+        
+        related = (related == null) ? false : true;
+        identifierType.setRelated( related );
+        
+        mandatory = (mandatory == null) ? false : true;
+        identifierType.setMandatory( mandatory );
+        
         identifierType.setNoChars( noChars );
         identifierType.setType( type );
 
