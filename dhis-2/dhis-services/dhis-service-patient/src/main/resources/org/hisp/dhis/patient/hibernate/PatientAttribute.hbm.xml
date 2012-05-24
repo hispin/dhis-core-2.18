@@ -22,8 +22,6 @@
 
     <property name="inheritable" column="inheritable" />
 
-    <property name="noChars" />
-
     <property name="groupBy" column="groupby" />
 
     <many-to-one name="patientAttributeGroup" column="patientattributegroupid" class="org.hisp.dhis.patient.PatientAttributeGroup"

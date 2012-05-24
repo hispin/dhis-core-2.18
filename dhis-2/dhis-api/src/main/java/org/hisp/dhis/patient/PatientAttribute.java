@@ -69,8 +69,6 @@ public class PatientAttribute
 
     private boolean inheritable;
 
-    private Integer noChars;
-
     private Boolean groupBy;
 
     private PatientAttributeGroup patientAttributeGroup;
@@ -145,16 +143,6 @@ public class PatientAttribute
         if ( attributeOptions == null )
             attributeOptions = new HashSet<PatientAttributeOption>();
         attributeOptions.add( option );
-    }
-
-    public Integer getNoChars()
-    {
-        return noChars;
-    }
-
-    public void setNoChars( Integer noChars )
-    {
-        this.noChars = noChars;
     }
 
     public Boolean isGroupBy()

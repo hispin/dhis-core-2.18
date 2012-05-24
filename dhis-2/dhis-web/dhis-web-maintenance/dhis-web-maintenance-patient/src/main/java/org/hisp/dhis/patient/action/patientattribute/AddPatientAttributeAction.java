@@ -95,16 +95,16 @@ public class AddPatientAttributeAction
         this.valueType = valueType;
     }
 
-    private boolean mandatory;
+    private Boolean mandatory;
 
-    public void setMandatory( boolean mandatory )
+    public void setMandatory( Boolean mandatory )
     {
         this.mandatory = mandatory;
     }
 
-    private boolean inheritable;
+    private Boolean inheritable;
 
-    public void setInheritable( boolean inheritable )
+    public void setInheritable( Boolean inheritable )
     {
         this.inheritable = inheritable;
     }
@@ -114,20 +114,6 @@ public class AddPatientAttributeAction
     public void setAttrOptions( List<String> attrOptions )
     {
         this.attrOptions = attrOptions;
-    }
-
-    private Integer noChars;
-
-    public void setNoChars( Integer noChars )
-    {
-        this.noChars = noChars;
-    }
-
-    private boolean groupBy;
-
-    public void setGroupBy( boolean groupBy )
-    {
-        this.groupBy = groupBy;
     }
 
     private Integer programId;
@@ -149,24 +135,16 @@ public class AddPatientAttributeAction
         patientAttribute.setName( name );
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
+        
+        mandatory = (mandatory == null) ? false : true;
         patientAttribute.setMandatory( mandatory );
+        
+        inheritable = (inheritable == null) ? false : true;
         patientAttribute.setInheritable( inheritable );
-        patientAttribute.setNoChars( noChars );
-
+        
         Program program = (programId != null) ? programService.getProgram( programId ) : null;
         patientAttribute.setProgram( program );
 
-        patientAttribute.setGroupBy( groupBy );
-        if ( groupBy )
-        {
-            PatientAttribute patientAtt = patientAttributeService.getPatientAttributeByGroupBy( true );
-            if ( patientAtt != null )
-            {
-                patientAtt.setGroupBy( false );
-                patientAttributeService.updatePatientAttribute( patientAtt );
-            }
-            patientAttribute.setMandatory( true );
-        }
         patientAttributeService.savePatientAttribute( patientAttribute );
 
         if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
