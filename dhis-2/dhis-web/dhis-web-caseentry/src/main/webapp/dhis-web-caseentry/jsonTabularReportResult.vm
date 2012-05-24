@@ -1,100 +1,89 @@
+#set( $noRows = $grid.getRows().size() )
 {
-#if( $grid && $grid.getRows().size() > 0)
-	#set( $noHeader = $grid.getHeaders().size() )
-	#set ( $metaData = $noHeader - $valueTypes.size())
-	'total': "$total",
-	'valueTypes':[
-		#foreach( $col in $grid.getHeaders() )
-			#if ($velocityCount <= $metaData + 1)
-				{
-					"valueType": "textfield",
-					"suggestedValues": []
-				},
-			#end
-		#end
-		
-		#set($index = 0)
-		#foreach( $valueType in $valueTypes )
-			{
-				"valueType": 
-					#if( $valueType == 'number' || $valueType == 'NUMBER' )
-						"textfield"
-					#elseif( $valueType == 'bool' || $valueType == 'YES/NO' ||  $valueType =='optionSet' )
-						"combobox"
-					#elseif( $valueType == 'date' || $valueType == 'DATE' )
-						"textfield"
-					#else
-						"textfield"
-					#end,
-				#set( $suggestedValues = $mapSuggestedValues.get($index) )
-				"suggestedValues":[
-					#foreach( $suggestedValue in $suggestedValues )
-						["$!encoder.jsonEncode( ${suggestedValue} )"]
-						#if( $velocityCount < $suggestedValues.size() ),#end
-					#end
-				
-				]
-			}
-			#if( $velocityCount < $valueTypes.size() ),#end
-			#set( $index = $index + 1 )
-		#end
-	],
-	'columns':[
-		"id",
-		#foreach( $colName in $grid.getHeaders() )
-			"$colName.name"
-			#if( $velocityCount < $noHeader ),#end
-		#end
-	],
-	'fields':[
-		"id",
-		#foreach( $col in $grid.getHeaders() )
-			"col$velocityCount"
-			#if( $velocityCount < $noHeader ),#end
-		#end
-	],
-	'hidden':[
-		#set( $index = 2 )
-		#set($col="col" + $index )
-		#foreach( $header in $grid.getHeaders() )
-			{"$col":"$header.hidden"}
-			#if( $velocityCount < $noHeader ),#end
-			#set( $index = $index + 1 )
-		#end
-	],
-	'items':[
-		{
-			"id":"$i18n.getString( 'filter' )",
-			#foreach( $col in $grid.getHeaders() )
-				#if ($velocityCount <= $metaData )
-					"col$velocityCount": "",
-				#end
-			#end
-			
-			#set( $index = $metaData + 1 )
-			#foreach( $value in $values )
-				"col$index": "$value"
-				#if( $velocityCount < $values.size() ),#end
-				#set( $index = $index + 1 )
-			#end
-		},
-		#foreach( $row in $grid.getRows() )
-			{
-				#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
-				"id":$nr,
-				#foreach( $col in $row )
-					"col$velocityCount": "$!encoder.htmlEncode( $col )"
-					#if( $velocityCount < $noHeader ),#end
-				#end
-			},
-		#end
-		]	
+#if( $grid && $noRows > 0)
+#set( $noHeader = $grid.getHeaders().size() )
+#set( $metaData = $noHeader - $valueTypes.size() )
+"total": "$total",
+"valueTypes":[
+#foreach( $col in $grid.getHeaders() )
+#if ($velocityCount <= $metaData + 1)
+{
+  "valueType": "textfield",
+  "suggestedValues": []
+},
+#end
+#end
+#set($index = 0)
+#foreach( $valueType in $valueTypes )
+{
+  "valueType": 
+  #if( $valueType == 'number' || $valueType == 'NUMBER' )
+  "textfield"
+  #elseif( $valueType == 'bool' || $valueType == 'YES/NO' ||  $valueType =='optionSet' )
+  "combobox"
+  #elseif( $valueType == 'date' || $valueType == 'DATE' )
+  "textfield"
+  #else
+  "textfield"
+  #end,
+  #set( $suggestedValues = $mapSuggestedValues.get($index) )
+  "suggestedValues":[
+  #foreach( $suggestedValue in $suggestedValues )
+  ["$!encoder.jsonEncode( ${suggestedValue} )"]#if( $velocityCount < $suggestedValues.size() ),#end
+  #end
+  ] }#if( $velocityCount < $valueTypes.size() ),#end
+  #set( $index = $index + 1 )
+  #end
+  ],
+  "columns":[
+    "id",
+    #foreach( $colName in $grid.getHeaders() )
+    "$colName.name"#if( $velocityCount < $noHeader ),#end
+    #end
+  ],
+  "fields":[
+    "id",
+    #foreach( $col in $grid.getHeaders() )
+    "col${velocityCount}"#if( $velocityCount < $noHeader ),#end
+    #end
+  ],
+  "hidden":[
+  #set( $index = 2 )
+  #set($col="col" + $index )
+  #foreach( $header in $grid.getHeaders() )
+    {"$col":"$header.hidden"}#if( $velocityCount < $noHeader ),#end
+    #set( $index = $index + 1 )
+  #end
+  ],
+  "items":[
+  {
+    "id":"$i18n.getString( 'filter' )",
+    #foreach( $col in $grid.getHeaders() )
+    #if ($velocityCount <= $metaData )
+    "col${velocityCount}": "",
+    #end
+    #end
+    #set( $index = $metaData + 1 )
+    #foreach( $value in $values )
+    "col${index}": "${value}"#if( $velocityCount < $values.size() ),#end
+    #set( $index = $index + 1 )
+    #end
+  },
+  #foreach( $row in $grid.getRows() )
+  {
+    #set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+    "id": ${nr},
+    #foreach( $col in $row )
+    "col${velocityCount}": "$!encoder.htmlEncode( $col )"#if( $velocityCount < $noHeader ),#end
+    #end
+  }#if( $velocityCount < $noRows ),#end
+  #end ]	
 #else
-	'total': 0,
-	'valueTypes':[],
-	'columns':[],
-	'fields':[],
-	'hidden':[],
-	'items':[]
+  "total": 0,
+  "valueTypes":[],
+  "columns":[],
+  "fields":[],
+  "hidden":[],
+  "items":[]
 #end
 }

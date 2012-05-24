@@ -698,7 +698,7 @@
 			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonTabularReportResult.vm</result>
 			<result name="xls" type="gridXlsResult" />
-		    		<result name="pdf" type="gridPdfResult" />
+		    <result name="pdf" type="gridPdfResult" />
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 			
