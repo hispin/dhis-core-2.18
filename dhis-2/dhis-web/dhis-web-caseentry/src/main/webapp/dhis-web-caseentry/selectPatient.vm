@@ -23,6 +23,10 @@
 					<option value="">$i18n.getString( "search_by_name_identifier" )</option>
 					<option value="0">$i18n.getString( "search_by_program" )</option>
 					<option value="-1">$i18n.getString( "date_of_birth" )</option>
+					<option value="-2">$i18n.getString( "gender" )</option>
+					<!-- option value="-3">$i18n.getString( "age" )</option -->
+					<option value="-4">$i18n.getString( "blood_group" )</option>
+					<option value="-5">$i18n.getString( "phone_number" )</option>
 					#foreach( $attribute in $patientAttributes )
 						<option value="$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.name )</option>
 					#end
@@ -145,6 +149,23 @@
 		trueFalseBox += '<option value="true">' + i18n_yes + '</option>';
 		trueFalseBox += '<option value="false">' + i18n_no + '</option>';
 		trueFalseBox += '</select>';
+		
+	var genderSelector = '<select id="searchText" name="searchText" style="width:20.2em" >';
+		genderSelector += '<option value="M">$i18n.getString( "male" )</option>';
+		genderSelector += '<option value="F">$i18n.getString( "female" )</option>';
+		genderSelector += '</select>';
+		
+	var bloodTypeSelector  = "<select id='searchText' name='searchText' style='width:20.2em' >";
+		bloodTypeSelector += "<option value=''>[$i18n.getString( "please_select" ) ]</option>";
+		bloodTypeSelector += "<option value='A+'>A+</option>";
+		bloodTypeSelector += "<option value='A-'>A-</option>";
+		bloodTypeSelector += "<option value='AB+'>AB+</option>";
+		bloodTypeSelector += "<option value='AB-'>AB-</option>";
+		bloodTypeSelector += "<option value='B+'>B+</option>";
+		bloodTypeSelector += "<option value='B-'>B-</option>";
+		bloodTypeSelector += "<option value='O+'>O+</option>";
+		bloodTypeSelector += "<option value='O-'>O-</option>";
+		bloodTypeSelector += '</select>';
 	
 	var programComboBox = '<select id="searchText" name="searchText" style="width:20.2em" >';
 	#foreach ( $program in $programs ) 

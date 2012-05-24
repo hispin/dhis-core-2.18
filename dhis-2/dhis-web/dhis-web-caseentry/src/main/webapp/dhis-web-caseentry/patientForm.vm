@@ -62,7 +62,7 @@
 <tr>
 	<td class='text-column'><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
 	<td class="input-column">
-		<select type="text" id="bloodGroup" name="bloodGroup">
+		<select id="bloodGroup" name="bloodGroup">
 			<option value="">[$i18n.getString( "please_select" )]</option>
 			<option value="A+">A+</option>
 			<option value="A-">A-</option>
