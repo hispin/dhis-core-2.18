@@ -118,11 +118,7 @@ public class ShowSendSMSBeneficiaryFormAction
         {
             status = 1;
         }
-        else if ( !organisationUnit.isHasPatients() )
-        {
-            status = 2;
-        }
-
+        
         return SUCCESS;
     }
 }
