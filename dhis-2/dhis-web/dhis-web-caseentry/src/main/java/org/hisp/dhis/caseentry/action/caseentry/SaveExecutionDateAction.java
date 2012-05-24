@@ -187,7 +187,7 @@ public class SaveExecutionDateAction
                     programStageInstanceService.addProgramStageInstance( programStageInstance );
                     selectedStateManager.setSelectedProgramInstance( programInstance );
                 }
-                else if ( type == Program.SINGLE_EVENT_WITH_REGISTRATION )
+                else if ( type == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
                 {
                     ProgramInstance programInstance = programInstanceService.getProgramInstances( patient, program ).iterator().next();
                     
@@ -214,8 +214,7 @@ public class SaveExecutionDateAction
                 programStageInstance.setStoredBy( storedBy );
                 programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
 
-                if ( programStageInstance.getProgramInstance().getProgram().getType() == Program.SINGLE_EVENT_WITH_REGISTRATION  ||
-                    programStageInstance.getProgramInstance().getProgram().getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
+                if ( programStageInstance.getProgramInstance().getProgram().isSingleEvent() )
                 {
                     programStageInstance.setDueDate( dateValue );
                 }

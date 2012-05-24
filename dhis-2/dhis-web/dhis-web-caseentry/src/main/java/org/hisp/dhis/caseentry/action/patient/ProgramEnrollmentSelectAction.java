@@ -130,8 +130,7 @@ public class ProgramEnrollmentSelectAction
 
         for ( ProgramInstance programInstance : programInstances )
         {
-            int type = programInstance.getProgram().getType();
-            if ( type == Program.SINGLE_EVENT_WITH_REGISTRATION || type == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
+            if ( programInstance.getProgram().isSingleEvent() )
             {
                 completedPrograms.add( programInstance.getProgram() );
             }

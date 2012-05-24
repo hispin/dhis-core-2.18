@@ -72,6 +72,8 @@ public class SearchPatientAction
 
     private List<Integer> searchingAttributeId = new ArrayList<Integer>();
 
+    private String facilityLB;
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -108,6 +110,11 @@ public class SearchPatientAction
     public List<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
+    }
+
+    public void setFacilityLB( String facilityLB )
+    {
+        this.facilityLB = facilityLB;
     }
 
     public Map<Integer, String> getMapPatientOrgunit()

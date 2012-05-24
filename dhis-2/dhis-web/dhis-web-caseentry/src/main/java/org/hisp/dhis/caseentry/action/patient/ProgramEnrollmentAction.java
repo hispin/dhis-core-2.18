@@ -320,7 +320,7 @@ public class ProgramEnrollmentAction
         {
             return false;
         }
-        else if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION && programInstance == null )
+        else if ( !program.isSingleEvent() && programInstance == null )
         {
             return false;
         }
