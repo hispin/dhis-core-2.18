@@ -153,7 +153,7 @@
 	<!-- UNDERAGE -->
 
 	<tr>
-		<td class='text-column'>$i18n.getString("is_underage")</td>
+		<td class='text-column'>$i18n.getString("has_guardian")</td>
 		<td>
 			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($!patient.underAge == "true") checked="checked" #end/>
 		</td>
