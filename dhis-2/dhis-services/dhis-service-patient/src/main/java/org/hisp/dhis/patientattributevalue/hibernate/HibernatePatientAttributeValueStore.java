@@ -294,7 +294,7 @@ public class HibernatePatientAttributeValueStore
         else if ( patientAttributeId == -1 )
         {
             hql += " ( SELECT p" + index + " FROM Patient AS p" + index 
-                + " WHERE p" + index + ".birthDate='" + searchText+ "'";
+                + " WHERE p" + index + ".birthDate " + searchText;
             isSearchByAttribute = false; 
         }
         

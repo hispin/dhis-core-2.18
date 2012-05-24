@@ -59,7 +59,7 @@ function addAttributeOption()
 function removeAttributeOption( rowId )
 {
 	jQuery( '#' + rowId ).remove();
-}		
+}	
 
 //------------------------------------------------------------------------------
 // Search patients by selected attribute
@@ -69,15 +69,19 @@ function searchingAttributeOnChange( this_ )
 {	
 	var container = jQuery(this_).parent().parent().attr('id');
 	var attributeId = jQuery('#' + container+ ' [id=searchingAttributeId]').val(); 
-	var element = jQuery('#' + container+ ' [id=searchText]');
+	var element = jQuery('#' + container + ' [id=searchText]');
 	var valueType = jQuery('#' + container+ ' [id=searchingAttributeId] option:selected').attr('valueType');
 	
 	if( attributeId == '-1' )
 	{
 		element.replaceWith( getDateField( container ) );
-		datePickerValid( 'searchDateField-' + container + ' [id=searchText]' );
+		datePickerValid( container + ' [id=searchText]' );
+		return;
 	}
-	else if( attributeId == '0' )
+	
+	$('#' + container+ ' [id=searchText]').datepicker("destroy");
+	$('#' + container+ ' [id=dateOperator]').replaceWith("");
+	if( attributeId == '0' )
 	{
 		element.replaceWith( programComboBox );
 	}
@@ -93,7 +97,8 @@ function searchingAttributeOnChange( this_ )
 
 function getDateField( container )
 {
-	var dateField = '<div id="searchDateField-' + container + '" > <input type="text" id="searchText" name="searchText" maxlength="30" style="width:18em" onkeyup="searchPatientsOnKeyUp( event );"></div>';
+	var dateField = '<select id="dateOperator" name="dateOperator" ><option value=">"> > </option><option value="="> = </option><option value="<"> < </option></select>';
+	dateField += '<input type="text" id="searchText" name="searchText" maxlength="30" style="width:18em" onkeyup="searchPatientsOnKeyUp( event );">';
 	return dateField;
 }
 	
@@ -164,6 +169,7 @@ function isDeathOnChange()
 function getParamsForDiv( patientDiv)
 {
 	var params = '';
+	var dateOperator = '';
 	jQuery("#" + patientDiv + " :input").each(function()
 		{
 			var elementId = $(this).attr('id');
@@ -173,12 +179,21 @@ function getParamsForDiv( patientDiv)
 				var checked = jQuery(this).attr('checked') ? true : false;
 				params += elementId + "=" + checked + "&";
 			}
+			else if( elementId =='dateOperator' )
+			{
+				dateOperator = jQuery(this).val();
+			}
 			else if( $(this).attr('type') != 'button' )
 			{
 				var value = "";
 				if( jQuery(this).val() != '' )
 				{
 					value = htmlEncode(jQuery(this).val());
+				}
+				if( dateOperator != '' )
+				{
+					value = dateOperator + "'" + value + "'";
+					dateOperator = "";
 				}
 				params += elementId + "="+ value + "&";
 			}
