@@ -382,6 +382,7 @@ public class GenerateTabularReportAction
         // ---------------------------------------------------------------------
         // Get Patient-Identifier searching-keys
         // ---------------------------------------------------------------------
+        
         int index = 0;
         for ( String searchingValue : searchingValues )
         {
