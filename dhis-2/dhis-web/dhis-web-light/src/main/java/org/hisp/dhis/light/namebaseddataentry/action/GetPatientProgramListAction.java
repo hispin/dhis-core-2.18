@@ -115,7 +115,7 @@ public class GetPatientProgramListAction
         patient = patientService.getPatient( patientId );
         for ( ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ) )
         {
-            if ( programInstance.getProgram().getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION )
+            if ( !programInstance.getProgram().isSingleEvent() )
             {
                 programInstances.add( programInstance );
             }
@@ -123,5 +123,4 @@ public class GetPatientProgramListAction
 
         return SUCCESS;
     }
-
 }

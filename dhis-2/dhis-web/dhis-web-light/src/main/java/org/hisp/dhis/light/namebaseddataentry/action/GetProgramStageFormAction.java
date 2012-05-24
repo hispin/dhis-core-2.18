@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.hisp.dhis.api.mobile.model.Activity;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.DataElement;
@@ -255,7 +256,7 @@ public class GetProgramStageFormAction
         {
             prevDataValues.put( "DE" + patientDataValue.getDataElement().getId(), patientDataValue.getValue() );
         }
+        
         return SUCCESS;
-
     }
 }

@@ -305,4 +305,14 @@ public class Program
     {
         return Patient.class.getMethod( "get" + property ).invoke( patient );
     }
+    
+    public boolean isSingleEvent()
+    {
+        return type != null && ( SINGLE_EVENT_WITH_REGISTRATION == type || SINGLE_EVENT_WITHOUT_REGISTRATION == type ); 
+    }
+    
+    public boolean isRegistration()
+    {
+        return type != null && ( SINGLE_EVENT_WITH_REGISTRATION == type || MULTIPLE_EVENTS_WITH_REGISTRATION == type ); 
+    }
 }

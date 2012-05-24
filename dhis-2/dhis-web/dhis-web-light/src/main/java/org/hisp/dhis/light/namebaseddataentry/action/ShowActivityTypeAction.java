@@ -5,7 +5,6 @@ import com.opensymphony.xwork2.Action;
 public class ShowActivityTypeAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -38,8 +37,8 @@ public class ShowActivityTypeAction
     public String execute()
         throws Exception
     {
-         this.organisationUnitId = orgUnitId;
+        this.organisationUnitId = orgUnitId;
+        
         return SUCCESS;
     }
-
 }
