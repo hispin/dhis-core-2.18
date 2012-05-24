@@ -125,8 +125,7 @@ public class DataRecordingSelectAction
 
         for ( ProgramInstance programInstance : programInstances )
         {
-            if ( programInstance.getProgram().getType() == Program.SINGLE_EVENT_WITH_REGISTRATION 
-                || programInstance.getProgram().getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
+            if ( programInstance.getProgram().isSingleEvent() )
             {
                 completedPrograms.add( programInstance.getProgram() );
             }
