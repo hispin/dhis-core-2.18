@@ -240,7 +240,7 @@ public class HibernateProgramStageInstanceStore
         
         if ( upperOrgunitIds != null && upperOrgunitIds.size() > 0 )
         {
-            getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
+            sql = getTabularReportStatement( 1, programStage, searchingIdenKeys, fixedAttributes, searchingAttrKeys,
                 searchingDEKeys, upperOrgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
         }
         String sqlBottom = "";
