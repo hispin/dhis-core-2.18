@@ -59,28 +59,28 @@ public class GetProgramEnrollmentFormAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String programId;
+    private Integer programId;
 
-    public String getProgramId()
+    public Integer getProgramId()
     {
         return programId;
     }
 
-    public void setProgramId( String programId )
+    public void setProgramId( Integer programId )
     {
         this.programId = programId;
     }
-    
-    private String beneficiaryId;
-    
-    public String getBeneficiaryId()
+
+    private Integer patientId;
+
+    public Integer getPatientId()
     {
-        return beneficiaryId;
+        return patientId;
     }
 
-    public void setBeneficiaryId( String beneficiaryId )
+    public void setPatientId( Integer patientId )
     {
-        this.beneficiaryId = beneficiaryId;
+        this.patientId = patientId;
     }
 
     private Patient patient;
@@ -111,8 +111,8 @@ public class GetProgramEnrollmentFormAction
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( Integer.parseInt( beneficiaryId ) );
-        program = programService.getProgram( Integer.parseInt( programId ) );
+        patient = patientService.getPatient( patientId );
+        program = programService.getProgram( programId );
         return SUCCESS;
     }
 

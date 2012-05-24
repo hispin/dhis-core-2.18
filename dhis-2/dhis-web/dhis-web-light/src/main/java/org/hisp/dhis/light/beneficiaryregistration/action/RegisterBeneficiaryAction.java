@@ -32,15 +32,15 @@ import com.opensymphony.xwork2.Action;
 public class RegisterBeneficiaryAction implements Action
 {
     
-    private String orgUnitId;
+    private Integer orgUnitId;
     
-    public String getOrgUnitId()
+    public Integer getOrgUnitId()
     {
         return orgUnitId;
     }
 
 
-    public void setOrgUnitId( String orgUnitId )
+    public void setOrgUnitId( Integer orgUnitId )
     {
         this.orgUnitId = orgUnitId;
     }

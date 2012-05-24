@@ -32,7 +32,7 @@
 		
 		<input type="hidden" name="organisationUnitId" value="$organisationUnitId" />
 		<input type="hidden" name="programId" value="$programId" />
-		<input type="hidden" name="beneficiaryId" value="$beneficiaryId" />
+		<input type="hidden" name="patientId" value="$patientId" />
 
 		<input type="submit" value=$i18n.getString("Submit") />
 	    </p>

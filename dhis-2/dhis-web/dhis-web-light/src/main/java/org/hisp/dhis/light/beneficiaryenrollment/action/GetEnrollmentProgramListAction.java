@@ -84,17 +84,18 @@ public class GetEnrollmentProgramListAction
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+    
+    private Integer patientId;
+    
+    public Integer getPatientId()
 
-    private String beneficiaryId;
-
-    public String getBeneficiaryId()
     {
-        return beneficiaryId;
+        return patientId;
     }
 
-    public void setBeneficiaryId( String beneficiaryId )
+    public void setPatientId( Integer patientId )
     {
-        this.beneficiaryId = beneficiaryId;
+        this.patientId = patientId;
     }
 
     private List<Program> programList = new ArrayList<Program>();
@@ -149,9 +150,10 @@ public class GetEnrollmentProgramListAction
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( Integer.parseInt( beneficiaryId ) );
 
-        for ( Program program : programService.getPrograms( patient.getOrganisationUnit() ) )
+        patient = patientService.getPatient(  patientId  );
+        for ( Program program :  programService.getPrograms( patient.getOrganisationUnit() ) )
+
         {
             if ( !program.isSingleEvent() )
             {

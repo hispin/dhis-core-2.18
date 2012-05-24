@@ -43,7 +43,7 @@ public class GetSingleEventAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private ProgramService programService;
 
     public ProgramService getProgramService()
@@ -67,7 +67,7 @@ public class GetSingleEventAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -84,14 +84,14 @@ public class GetSingleEventAction
         this.singleEventList = singleEventList;
     }
 
-    private String organisationUnitId;
+    private Integer organisationUnitId;
 
-    public String getOrganisationUnitId()
+    public Integer getOrganisationUnitId()
     {
         return organisationUnitId;
     }
 
-    public void setOrganisationUnitId( String organisationUnitId )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
@@ -100,7 +100,7 @@ public class GetSingleEventAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( organisationUnitId ) );
+        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Collection<Program> allProgram = programService.getPrograms( orgUnit );
 
         for ( Program program : allProgram )

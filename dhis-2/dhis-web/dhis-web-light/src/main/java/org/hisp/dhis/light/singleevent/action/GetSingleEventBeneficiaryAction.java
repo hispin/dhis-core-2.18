@@ -111,32 +111,32 @@ public class GetSingleEventBeneficiaryAction
         this.singleEventBeneficiaryList = singleEventBeneficiaryList;
     }
 
-    private String organisationUnitId;
+    private Integer organisationUnitId;
 
-    public String getOrganisationUnitId()
+    public Integer getOrganisationUnitId()
     {
         return organisationUnitId;
     }
 
-    public void setOrganisationUnitId( String organisationUnitId )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
 
-    private String programId;
+    private Integer programId;
 
-    public String getProgramId()
+    public Integer getProgramId()
     {
         return programId;
     }
 
-    public void setProgramId( String programId )
+    public void setProgramId( Integer programId )
     {
         this.programId = programId;
     }
-    
+
     private boolean validated;
-    
+
     public boolean isValidated()
     {
         return validated;
@@ -151,8 +151,8 @@ public class GetSingleEventBeneficiaryAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( organisationUnitId ) );
-        Program program = programService.getProgram( Integer.parseInt( programId ) ); 
+        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        Program program = programService.getProgram( programId );
         Collection<Patient> allPatient = patientService.getPatients( orgUnit );
         for ( Patient patient : allPatient )
         {

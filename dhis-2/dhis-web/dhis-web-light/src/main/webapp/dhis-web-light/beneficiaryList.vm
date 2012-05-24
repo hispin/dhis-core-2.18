@@ -9,7 +9,7 @@
 <p>
 <ul>
 #foreach( $beneficiary in $beneficiaries )
-	<li><a href="selectActivity.action?organisationUnitId=$organisationUnit.id&beneficiaryId=$beneficiary.id&current=$current">$!encoder.htmlEncode( ${beneficiary.getFullName()} )</a></li>
+	<li><a href="selectActivity.action?organisationUnitId=$organisationUnit.id&patientId=$beneficiary.id&current=$current">$!encoder.htmlEncode( ${beneficiary.getFullName()} )</a></li>
 #end
 </ul>
 </p>

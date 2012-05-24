@@ -9,26 +9,26 @@ public class ShowActivityTypeAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String orgUnitId;
+    private Integer orgUnitId;
 
-    public void setOrgUnitId( String orgUnitId )
+    public void setOrgUnitId( Integer orgUnitId )
     {
         this.orgUnitId = orgUnitId;
     }
 
-    public String getOrgUnitId( String orgUnitId )
+    public Integer getOrgUnitId( Integer orgUnitId )
     {
         return this.orgUnitId;
     }
     
-    private String organisationUnitId;
+    private Integer organisationUnitId;
 
-    public String getOrganisationUnitId()
+    public Integer getOrganisationUnitId()
     {
         return organisationUnitId;
     }
 
-    public void setOrganisationUnitId( String organisationUnitId )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }

@@ -75,14 +75,14 @@ public class SaveBeneficiaryAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String orgUnitId;
+    private Integer orgUnitId;
 
-    public String getOrgUnitId()
+    public Integer getOrgUnitId()
     {
         return orgUnitId;
     }
 
-    public void setOrgUnitId( String orgUnitId )
+    public void setOrgUnitId( Integer orgUnitId )
     {
         this.orgUnitId = orgUnitId;
     }
@@ -177,7 +177,7 @@ public class SaveBeneficiaryAction
     {
         Patient patient = new Patient();
 
-        patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitId ) ) );
+        patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
         if ( this.patientFullName.trim().equals( "" ) )
         {

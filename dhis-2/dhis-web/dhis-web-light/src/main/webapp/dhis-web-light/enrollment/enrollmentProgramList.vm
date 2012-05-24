@@ -18,7 +18,7 @@
 <p>
 <ul>
 #foreach( $program in $programList )
-	<li><a href="showProgramEnrollmentForm.action?beneficiaryId=$patient.Id&programId=$program.Id">$program.getName()</a></li>
+	<li><a href="showProgramEnrollmentForm.action?patientId=$patient.Id&programId=$program.Id">$program.getName()</a></li>
 #end
 </ul>
 </p>

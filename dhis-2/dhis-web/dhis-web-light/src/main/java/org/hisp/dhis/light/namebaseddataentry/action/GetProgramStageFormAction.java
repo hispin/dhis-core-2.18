@@ -39,7 +39,8 @@ import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -53,13 +54,6 @@ public class GetProgramStageFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
 
     private NamebasedUtils util;
 
@@ -96,45 +90,58 @@ public class GetProgramStageFormAction
     {
         this.patientDataValueService = patientDataValueService;
     }
+    
+    private PatientService patientService;
+    
+    public PatientService getPatientService()
+    {
+        return patientService;
+    }
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
+    
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private int programInstanceId;
+    private Integer programInstanceId;
 
-    public int getProgramInstanceId()
+    public Integer getProgramInstanceId()
     {
         return programInstanceId;
     }
 
-    public void setProgramInstanceId( int programInstanceId )
+    public void setProgramInstanceId( Integer programInstanceId )
     {
         this.programInstanceId = programInstanceId;
     }
 
-    private int programStageInstanceId;
+    private Integer programStageInstanceId;
 
-    public int getProgramStageInstanceId()
+    public Integer getProgramStageInstanceId()
     {
         return programStageInstanceId;
     }
 
-    public void setProgramStageInstanceId( int programStageInstanceId )
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
     }
 
-    private String beneficiaryId;
+    private Integer patientId;
 
-    public void setBeneficiaryId( String beneficiaryId )
+    public Integer getPatientId()
     {
-        this.beneficiaryId = beneficiaryId;
+        return patientId;
     }
 
-    public String getBeneficiaryId()
+    public void setPatientId( Integer patientId )
     {
-        return this.beneficiaryId;
+        this.patientId = patientId;
     }
 
     private OrganisationUnit organisationUnit;
@@ -163,38 +170,38 @@ public class GetProgramStageFormAction
         return this.programStage;
     }
 
-    private String programId;
+    private Integer programId;
 
-    public void setProgramId( String programId )
+    public void setProgramId( Integer programId )
     {
         this.programId = programId;
     }
 
-    public String getProgramId()
+    public Integer getProgramId()
     {
         return programId;
     }
 
-    private String programStageId;
+    private Integer programStageId;
 
-    public void setProgramStageId( String programStageId )
+    public void setProgramStageId( Integer programStageId )
     {
         this.programStageId = programStageId;
     }
 
-    public String getProgramStageId()
+    public Integer getProgramStageId()
     {
         return programStageId;
     }
 
-    private String orgUnitId;
+    private Integer orgUnitId;
 
-    public void setOrgUnitId( String orgUnitId )
+    public void setOrgUnitId( Integer orgUnitId )
     {
         this.orgUnitId = orgUnitId;
     }
 
-    public String getOrgUnitId()
+    public Integer getOrgUnitId()
     {
         return this.orgUnitId;
     }
@@ -228,6 +235,18 @@ public class GetProgramStageFormAction
     {
         return prevDataValues;
     }
+    
+    private Patient patient;
+    
+    public Patient getPatient()
+    {
+        return patient;
+    }
+
+    public void setPatient( Patient patient )
+    {
+        this.patient = patient;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -248,7 +267,8 @@ public class GetProgramStageFormAction
         throws Exception
     {
         prevDataValues.clear();
-        programStage = util.getProgramStage( Integer.parseInt( programId ), Integer.parseInt( programStageId ) );
+        programStage = util.getProgramStage( programId, programStageId );
+        patient = patientService.getPatient( patientId );
         dataElements = programStage.getDataElements();
         Collection<PatientDataValue> patientDataValues = patientDataValueService
             .getPatientDataValues( programStageInstanceService.getProgramStageInstance( programStageInstanceId ) );

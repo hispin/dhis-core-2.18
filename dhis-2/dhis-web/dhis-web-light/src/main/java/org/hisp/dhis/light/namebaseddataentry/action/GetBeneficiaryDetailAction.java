@@ -29,28 +29,28 @@ public class GetBeneficiaryDetailAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String organisationUnitId;
+    private Integer organisationUnitId;
 
-    public String getOrganisationUnitId()
+    public Integer getOrganisationUnitId()
     {
         return organisationUnitId;
     }
 
-    public void setOrganisationUnitId( String organisationUnitId )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
 
-    private String beneficiaryId;
+    private Integer patientId;
 
-    public void setBeneficiaryId( String beneficiaryId )
+    public Integer getPatientId()
     {
-        this.beneficiaryId = beneficiaryId;
+        return patientId;
     }
 
-    public String getBeneficiaryId()
+    public void setPatientId( Integer patientId )
     {
-        return this.beneficiaryId;
+        this.patientId = patientId;
     }
 
     private Patient patient;
@@ -85,7 +85,7 @@ public class GetBeneficiaryDetailAction
     public String execute()
         throws Exception
     {
-        this.patient = patientService.getPatient( Integer.parseInt( beneficiaryId ) );
+        this.patient = patientService.getPatient( patientId  );
         return SUCCESS;
     }
 

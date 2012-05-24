@@ -13,10 +13,10 @@
 #foreach( $programStageInstance in $programStageInstances )
 	<li>
 		 #if( $programStageInstance.isCompleted() == true )
-		 	<a href="showCompletedProgramStageForm.action?programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&beneficiaryId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">
+		 	<a href="showCompletedProgramStageForm.action?programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&patientId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">
 			$programStageInstance.getProgramStage().getName()<img src="../dhis-web-light/images/checkmark.jpg" /></a>
 		 #else 
-		 	<a href="showProgramStageForm.action?programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&beneficiaryId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">
+		 	<a href="showProgramStageForm.action?programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&patientId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">
 		 	$programStageInstance.getProgramStage().getName()</a>
 		 #end
 	</li>
