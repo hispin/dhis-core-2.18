@@ -97,7 +97,4 @@ public interface OrganisationUnitStore
      */
     void updateOrganisationUnitParent( int organisationUnitId, int parentId );
 
-    void update( Collection<OrganisationUnit> units );
-
-    Collection<OrganisationUnit> get( Boolean hasPatients );
 }

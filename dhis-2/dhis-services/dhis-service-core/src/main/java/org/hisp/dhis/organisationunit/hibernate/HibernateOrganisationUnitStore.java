@@ -27,20 +27,28 @@ package org.hisp.dhis.organisationunit.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.organisationunit.*;
-import org.hisp.dhis.system.objectmapper.OrganisationUnitRelationshipRowMapper;
-import org.springframework.jdbc.core.RowCallbackHandler;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.OrganisationUnitStore;
+import org.hisp.dhis.system.objectmapper.OrganisationUnitRelationshipRowMapper;
+import org.springframework.jdbc.core.RowCallbackHandler;
 
 /**
  * @author Kristian Nordal
@@ -191,47 +199,5 @@ public class HibernateOrganisationUnitStore
             + now + "' " + "where organisationunitid=" + organisationUnitId;
 
         jdbcTemplate.execute( sql );
-    }
-
-    @Override
-    public void update( Collection<OrganisationUnit> units )
-    {
-        Timestamp now = new Timestamp( new Date().getTime() );
-
-        Collection<Integer> unitIds = new HashSet<Integer>();
-
-        for ( OrganisationUnit orgunit : units )
-        {
-            unitIds.add( orgunit.getId() );
-        }
-
-        if ( unitIds.size() > 0 )
-        {
-            String sql = "update OrganisationUnit set hasPatients=true,lastUpdated='" + now +
-                "' where organisationunitid in (:unitIds)";
-            Query query = sessionFactory.getCurrentSession().createQuery( sql );
-            query.setParameterList( "unitIds", unitIds );
-            query.executeUpdate();
-
-            sql = "UPDATE OrganisationUnit SET hasPatients=false,lastUpdated='" + now +
-                "' WHERE organisationunitid not in ( :unitIds )";
-            query = sessionFactory.getCurrentSession().createQuery( sql );
-            query.setParameterList( "unitIds", unitIds );
-            query.executeUpdate();
-        }
-        else
-        {
-            String sql = "update OrganisationUnit set hasPatients=false,,lastUpdated='" + now + "'";
-            Query query = sessionFactory.getCurrentSession().createQuery( sql );
-            query.executeUpdate();
-        }
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<OrganisationUnit> get( Boolean hasPatients )
-    {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnit.class );
-
-        return criteria.add( Restrictions.eq( "hasPatients", hasPatients ) ).list();
     }
 }

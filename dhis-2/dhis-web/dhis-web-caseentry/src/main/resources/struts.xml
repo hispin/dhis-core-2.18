@@ -351,14 +351,6 @@
 			<param name="requiredAuthorities">F_PATIENT_MANAGEMENT</param>
 		</action>
 
-		<action name="organisationUnitHasPatients"
-			class="org.hisp.dhis.caseentry.action.patient.VerifyOrganisationUnitHasParentAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="input" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
-		</action>
-
 		<action name="searchRegistrationPatient"
 			class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction">
 			<result name="success" type="velocity">/content.vm</result>
@@ -460,14 +452,6 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/patientLocation.vm</param>			
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
-		</action>
-		
-		<action name="verifyOrgunitRegistration"
-			class="org.hisp.dhis.caseentry.action.patient.VerifyOrgunitRegistrationAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="input" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		</action>
 		
 		<action name="registerPatientLocation"

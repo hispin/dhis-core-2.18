@@ -5,38 +5,17 @@ var COLOR_ORANGE = '#ff6600';
 var COLOR_RED = '#ff8a8a';
 var COLOR_GREY = '#cccccc';
 
-function organisationUnitSelected( orgUnits )
+function organisationUnitSelected( orgUnits, orgUnitNames )
 {	
 	showById('selectDiv');
-	disable('listPatientBtn');
-	
-	hideById('searchPatientDiv');
+	showById('searchPatientDiv');
 	hideById('listPatientDiv');
 	hideById('editPatientDiv');
 	hideById('enrollmentDiv');
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
 	hideById('migrationPatientDiv');
-	
-	$.getJSON( 'organisationUnitHasPatients.action', {orgunitId:orgUnits[0]}
-		, function( json ) 
-		{
-			var type = json.response;
-			setFieldValue('selectedOrgunitText', json.message );
-				
-			if( type == 'success' )
-			{
-				showById('searchPatientDiv');
-				enable('listPatientBtn');
-				setInnerHTML('warnmessage','');
-				setFieldValue('selectedOrgunitText', json.message );
-			}
-			else if( type == 'input' )
-			{
-				setInnerHTML('warnmessage', i18n_can_not_register_patient_for_orgunit);
-				disable('listPatientBtn');
-			}
-		} );
+	setFieldValue("selectedOrgunitText", orgUnitNames[0]);
 }
 
 selection.setListenerFunction( organisationUnitSelected );
@@ -873,23 +852,6 @@ function getPatientLocation( patientId )
 			showById( 'migrationPatientDiv' );
 			jQuery( "#loaderDiv" ).hide();
 		});
-}
-
-function verifyOrgunitRegistration( patientId )
-{
-	$.getJSON( 'verifyOrgunitRegistration.action', {}
-		, function( json ) 
-		{
-			var type = json.response;
-			if( type == 'success' )
-			{
-				registerPatientLocation( patientId );
-			}
-			else if( type == 'input' )
-			{
-				showWarningMessage( i18n_can_not_register_patient_for_orgunit);
-			}
-		} );
 }
 
 function registerPatientLocation( patientId )

@@ -332,10 +332,6 @@ public interface OrganisationUnitService
 
     int getMaxOfOrganisationUnitLevels();
 
-    void updateOrganisationUnits( Collection<OrganisationUnit> units );
-
-    Collection<OrganisationUnit> getOrganisationUnits( Boolean hasPatients );
-
     // -------------------------------------------------------------------------
     // Version
     // -------------------------------------------------------------------------

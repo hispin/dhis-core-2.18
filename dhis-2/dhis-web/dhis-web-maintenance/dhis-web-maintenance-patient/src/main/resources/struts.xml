@@ -176,22 +176,6 @@
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_DELETE</param>
 		</action>
 
-		<!-- Patient -->
-
-		<action name="defineOrgunitRegistrationForm"
-			class="org.hisp.dhis.patient.action.orgunitregistration.GetPatientOrgnunitRegistrationAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/orgunitRegistration.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
-		</action>
-
-		<action name="defineOrgunitRegistration"
-			class="org.hisp.dhis.patient.action.orgunitregistration.DefinePatientOrgnunitRegistrationAction">
-			<result name="success" type="redirect">index.action</result>
-			<param name="requiredAuthorities">F_ORGANISATION_REGISTRATION</param>
-		</action>
-
 		<!-- Program -->
 
 		<action name="program"

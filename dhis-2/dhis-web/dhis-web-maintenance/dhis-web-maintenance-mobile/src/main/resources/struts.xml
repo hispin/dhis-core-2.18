@@ -51,14 +51,6 @@
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>	
-
-	<action name="organisationUnitHasPatients"
-		class="org.hisp.dhis.caseentry.action.patient.VerifyOrganisationUnitHasParentAction">
-		<result name="success" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-		<result name="input" type="velocity-json">
-			/dhis-web-commons/ajax/jsonResponseInput.vm</result>
-	</action>
 	
 	<action name="searchRegistrationPatient"
 		class="org.hisp.dhis.mobile.action.SearchPatientAction">

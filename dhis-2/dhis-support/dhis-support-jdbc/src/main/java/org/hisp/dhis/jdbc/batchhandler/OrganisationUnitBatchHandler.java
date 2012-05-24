@@ -103,7 +103,6 @@ public class OrganisationUnitBatchHandler
         statementBuilder.setColumn( "featuretype" );
         statementBuilder.setColumn( "coordinates" );
         statementBuilder.setColumn( "lastupdated" );
-        statementBuilder.setColumn( "haspatients" );
     }
     
     protected void setValues( OrganisationUnit unit )
@@ -121,6 +120,5 @@ public class OrganisationUnitBatchHandler
         statementBuilder.setValue( unit.getFeatureType() );
         statementBuilder.setValue( unit.getCoordinates() );
         statementBuilder.setValue( unit.getLastUpdated() );
-        statementBuilder.setValue( unit.isHasPatients() );
     }
 }

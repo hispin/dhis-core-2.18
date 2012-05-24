@@ -102,8 +102,6 @@ public class OrganisationUnit
 
     private String phoneNumber;
 
-    private boolean hasPatients;
-
     private Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
 
     private Set<DataSet> dataSets = new HashSet<DataSet>();
@@ -746,19 +744,6 @@ public class OrganisationUnit
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public boolean isHasPatients()
-    {
-        return hasPatients;
-    }
-
-    public void setHasPatients( boolean hasPatients )
-    {
-        this.hasPatients = hasPatients;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getType()
     {
         return type;
@@ -903,7 +888,6 @@ public class OrganisationUnit
             address = organisationUnit.getAddress() == null ? address : organisationUnit.getAddress();
             email = organisationUnit.getEmail() == null ? email : organisationUnit.getEmail();
             phoneNumber = organisationUnit.getPhoneNumber() == null ? phoneNumber : organisationUnit.getPhoneNumber();
-            hasPatients = organisationUnit.isHasPatients();
             parent = organisationUnit.getParent();
 
             groups.clear();

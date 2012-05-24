@@ -687,18 +687,6 @@ public class DefaultOrganisationUnitService
         return organisationUnitLevelStore.getMaxLevels();
     }
 
-    @Override
-    public void updateOrganisationUnits( Collection<OrganisationUnit> units )
-    {
-        organisationUnitStore.update( units );
-    }
-
-    @Override
-    public Collection<OrganisationUnit> getOrganisationUnits( Boolean hasPatients )
-    {
-        return organisationUnitStore.get( hasPatients );
-    }
-
     // -------------------------------------------------------------------------
     // Version
     // -------------------------------------------------------------------------

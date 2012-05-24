@@ -37,10 +37,6 @@
           <td>Active</td>
           <td> <xsl:value-of select="d:active" /> </td>
         </tr>
-        <tr>
-          <td>Has Patients</td>
-          <td> <xsl:value-of select="d:hasPatients" /> </td>
-        </tr>
 
       </table>
 

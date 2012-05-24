@@ -158,28 +158,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 	
-	<!-- Organisation Registration -->
-
-	<bean
-		id="org.hisp.dhis.patient.action.orgunitregistration.GetPatientOrgnunitRegistrationAction"
-		class="org.hisp.dhis.patient.action.orgunitregistration.GetPatientOrgnunitRegistrationAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.orgunitregistration.DefinePatientOrgnunitRegistrationAction"
-		class="org.hisp.dhis.patient.action.orgunitregistration.DefinePatientOrgnunitRegistrationAction"
-		scope="prototype">
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
 	<!-- Program -->
 
 	<bean id="org.hisp.dhis.patient.action.program.AddProgramAction"

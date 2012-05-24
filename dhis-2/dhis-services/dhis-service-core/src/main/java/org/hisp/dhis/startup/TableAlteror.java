@@ -154,6 +154,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicator DROP COLUMN extendeddataelementid" );
         executeSql( "DROP TABLE extendeddataelement" );
         
+        executeSql( "ALTER TABLE organisationunit DROP COLUMN hasPatients" );
+        
         // ---------------------------------------------------------------------
         // Update tables for dimensional model
         // ---------------------------------------------------------------------
