@@ -86,16 +86,16 @@ public class GetSingleEventFormAction
         return this.eventName;
     }
 
-    private Integer beneficiaryId;
+    private Integer patientId;
 
-    public Integer getBeneficiaryId()
+    public Integer getPatientId()
     {
-        return beneficiaryId;
+        return patientId;
     }
 
-    public void setBeneficiaryId( Integer beneficiaryId )
+    public void setPatientId( Integer patientId )
     {
-        this.beneficiaryId = beneficiaryId;
+        this.patientId = patientId;
     }
 
     private Integer instId;

@@ -136,16 +136,16 @@ public class SaveSingleEventAction
         this.programId = programId;
     }
 
-    private Integer beneficiaryId;
+    private Integer patientId;
 
-    public Integer getBeneficiaryId()
+    public Integer getPatientId()
     {
-        return beneficiaryId;
+        return patientId;
     }
 
-    public void setBeneficiaryId( Integer beneficiaryId )
+    public void setPatientId( Integer patientId )
     {
-        this.beneficiaryId = beneficiaryId;
+        this.patientId = patientId;
     }
 
     private Patient patient;
@@ -244,7 +244,7 @@ public class SaveSingleEventAction
         Program program = programService.getProgram( programId );
         eventName = program.getName();
 
-        Patient patient = patientService.getPatient( beneficiaryId );
+        Patient patient = patientService.getPatient( patientId );
         ProgramStage programStage = program.getProgramStages().iterator().next();
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 

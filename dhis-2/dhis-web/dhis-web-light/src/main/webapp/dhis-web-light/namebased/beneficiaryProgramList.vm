@@ -2,7 +2,7 @@
 <p>
 	<ul>
 		<li>
-			<a href="showBeneficiaryDetail.action?beneficiaryId=$patient.getId()&current=true&organisationUnitId=0"> $i18n.getString( "details" ) </a>
+			<a href="showBeneficiaryDetail.action?patientId=$patient.getId()&current=true&organisationUnitId=0"> $i18n.getString( "details" ) </a>
 		</li> 
 	</ul>
 <ul>
@@ -19,7 +19,7 @@
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
-	<li><a href="trackingMenu.action">$i18n.getString("tracking")</a></li>
+	<li> <a href="showFindBeneficiaryForm.action"> $i18n.getString("find_beneficiary")</a></li>
 	<li><a href="index.action">$i18n.getString("home")</a></li>
 </ul>
 </div>

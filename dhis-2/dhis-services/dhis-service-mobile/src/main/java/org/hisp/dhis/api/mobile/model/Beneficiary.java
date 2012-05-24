@@ -339,5 +339,11 @@ public class Beneficiary
         // FIXME: Get implementation from client
 
     }
-
+    
+    @Override
+    public boolean equals( Object otherObject )
+    {
+        Beneficiary otherBeneficiary = (Beneficiary) otherObject;
+        return this.getId() == otherBeneficiary.getId();
+    }
 }

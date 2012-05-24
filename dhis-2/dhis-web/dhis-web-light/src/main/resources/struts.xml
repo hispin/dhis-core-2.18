@@ -130,7 +130,7 @@
 			<result name="success" type="redirect">
 				/mobile/selectBeneficiary.action?organisationUnitId=${orgUnitId}&amp;current=${current}&amp;validated=true</result>
 			<result name="success_find" type="redirect">
-				/mobile/showPatientProgramStageList.action?patientId=${beneficiaryId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=true</result>
+				/mobile/showPatientProgramStageList.action?patientId=${patientId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=true</result>
 			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/namebased/programStageForm.vm</param>
 		</action>
@@ -147,7 +147,7 @@
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/namebased/beneficiaryDetail.vm</param>
-			<param name="previouspage">showPatientProgramList.action?patientId=${beneficiaryId}</param>
+			<param name="previouspage">showPatientProgramList.action?patientId=${patientId}</param>
 		</action>
 		
 		<action name="showFindBeneficiaryForm"
@@ -250,7 +250,7 @@
 		<action name="saveMobileProgramEnrollment"
 			class="org.hisp.dhis.light.beneficiaryenrollment.action.SaveMobileProgramEnrollmentAction">
 			<result name="success" type="redirect">
-				/mobile/selectEnrollmentProgram.action?beneficiaryId=${beneficiaryId}&amp;validated=true</result>
+				/mobile/selectEnrollmentProgram.action?patientId=${patientId}&amp;validated=true</result>
 			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/enrollment/programEnrollmentForm.vm</param>
 		</action>
@@ -268,7 +268,7 @@
 			class="org.hisp.dhis.light.singleevent.action.GetSingleEventBeneficiaryAction">
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
-			<param name="page">/dhis-web-light/registration/selectSingleEventBeneficiary.vm</param>
+			<param name="page">/dhis-web-light/singleevent/selectSingleEventBeneficiary.vm</param>
 		</action>
 		
 		<action name="showSingleEventForm"

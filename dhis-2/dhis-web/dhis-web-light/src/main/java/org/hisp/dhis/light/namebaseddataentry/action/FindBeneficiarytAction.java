@@ -78,14 +78,14 @@ public class FindBeneficiarytAction
         this.keyword = keyword;
     }
 
-    private int organisationUnitId;
+    private Integer organisationUnitId;
 
-    public int getOrganisationUnitId()
+    public Integer getOrganisationUnitId()
     {
         return organisationUnitId;
     }
 
-    public void setOrganisationUnitId( int organisationUnitId )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }

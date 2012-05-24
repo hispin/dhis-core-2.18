@@ -27,8 +27,11 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.hisp.dhis.api.mobile.ActivityReportingService;
 import org.hisp.dhis.api.mobile.model.Activity;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
@@ -87,7 +90,7 @@ public class GetBeneficiaryListAction
         this.validated = validated;
     }
 
-    private List<Beneficiary> beneficiaries;
+    private Set<Beneficiary> beneficiaries;
 
     private OrganisationUnit organisationUnit;
 
@@ -96,14 +99,14 @@ public class GetBeneficiaryListAction
         return this.organisationUnit;
     }
 
-    private String organisationUnitId;
+    private Integer organisationUnitId;
 
-    public void setOrganisationUnitId( String organisationUnitId )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
 
-    public String getOrganisationUnitId( String organisationUnitId )
+    public Integer getOrganisationUnitId( Integer organisationUnitId )
     {
         return this.organisationUnitId;
     }
@@ -122,7 +125,7 @@ public class GetBeneficiaryListAction
         return this.activities;
     }
 
-    public List<Beneficiary> getBeneficiaries()
+    public Set<Beneficiary> getBeneficiaries()
     {
         return this.beneficiaries;
     }
@@ -135,9 +138,9 @@ public class GetBeneficiaryListAction
     public String execute()
         throws Exception
     {
-        beneficiaries = new ArrayList<Beneficiary>();
+        beneficiaries = new HashSet<Beneficiary>();
 
-        organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( organisationUnitId ) );
+        organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         if ( current )
         {
@@ -145,7 +148,7 @@ public class GetBeneficiaryListAction
         }
         else
         {
-            activityPlan = activityReportingService.getAllActivityPlan(organisationUnit, "");
+            activityPlan = activityReportingService.getAllActivityPlan( organisationUnit, "" );
         }
 
         if ( activityPlan == null )
@@ -155,12 +158,16 @@ public class GetBeneficiaryListAction
 
         if ( activities == null )
             return SUCCESS;
-
+        
+        Map<Integer, String> compareMap = new HashMap<Integer, String>();
         for ( Activity activity : activities )
         {
-            beneficiaries.add( activity.getBeneficiary() );
+            if (compareMap.get( activity.getBeneficiary().getId() ) == null) {
+                beneficiaries.add( activity.getBeneficiary() );
+                compareMap.put( activity.getBeneficiary().getId(), "" );
+            }
+            
         }
-
         return SUCCESS;
     }
 

@@ -2,13 +2,13 @@
 <p>
 	<ul>
 		<li>
-			<a href="showBeneficiaryDetail.action?organisationUnitId=$organisationUnitId&beneficiaryId=$beneficiaryId&current=$current"> $i18n.getString( "details" ) </a>
+			<a href="showBeneficiaryDetail.action?organisationUnitId=$organisationUnitId&patientId=$patientId&current=$current"> $i18n.getString( "details" ) </a>
 		</li> 
 	</ul>
 <ul>
 #foreach( $activity in $activities )
 	<li>
-		<a href="showProgramStageForm.action?orgUnitId=$organisationUnitId&programStageId=$activity.getTask().getProgramStageId()&programId=$activity.getTask().getProgramId()&programStageInstanceId=$activity.task.id&current=$current&beneficiaryId=$beneficiaryId">
+		<a href="showProgramStageForm.action?orgUnitId=$organisationUnitId&programStageId=$activity.getTask().getProgramStageId()&programId=$activity.getTask().getProgramId()&programStageInstanceId=$activity.task.id&current=$current&patientId=$patientId">
 			 $util.getProgramStage($activity.getTask().getProgramId(), $activity.getTask().getProgramStageId()).getName()
 		</a> 
 	</li>

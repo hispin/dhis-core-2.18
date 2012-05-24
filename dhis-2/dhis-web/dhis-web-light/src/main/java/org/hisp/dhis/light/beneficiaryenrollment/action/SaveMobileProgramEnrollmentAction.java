@@ -72,26 +72,26 @@ public class SaveMobileProgramEnrollmentAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String beneficiaryId;
+    private Integer patientId;
 
-    public String getBeneficiaryId()
+    public Integer getPatientId()
     {
-        return beneficiaryId;
+        return patientId;
     }
 
-    public void setBeneficiaryId( String beneficiaryId )
+    public void setPatientId( Integer patientId )
     {
-        this.beneficiaryId = beneficiaryId;
+        this.patientId = patientId;
     }
 
-    private String programId;
+    private Integer programId;
 
-    public void setProgramId( String programId )
+    public void setProgramId( Integer programId )
     {
         this.programId = programId;
     }
 
-    public String getProgramId()
+    public Integer getProgramId()
     {
         return programId;
     }
@@ -174,7 +174,7 @@ public class SaveMobileProgramEnrollmentAction
         {
             validationMap.put( "enrollmentDate", "is_invalid_date" );
         }
-        
+
         if ( !FormUtils.isDate( incidentDate ) )
         {
             validationMap.put( "incidentDate", "is_invalid_date" );
@@ -187,12 +187,12 @@ public class SaveMobileProgramEnrollmentAction
             validated = false;
             return ERROR;
         }
-        
-        System.out.println("service: " + patientService);
-        
-        patient = patientService.getPatient( Integer.parseInt( beneficiaryId ) );
-        
-        program = programService.getProgram( Integer.parseInt( programId ) );
+
+        System.out.println( "service: " + patientService );
+
+        patient = patientService.getPatient( patientId );
+
+        program = programService.getProgram(  programId );
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
             false );

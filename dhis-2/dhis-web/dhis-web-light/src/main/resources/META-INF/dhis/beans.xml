@@ -172,13 +172,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils"/>
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.light.utils.NamebasedUtils"

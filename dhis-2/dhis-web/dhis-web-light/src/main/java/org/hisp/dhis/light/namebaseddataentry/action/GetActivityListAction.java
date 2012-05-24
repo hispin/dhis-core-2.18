@@ -75,16 +75,16 @@ public class GetActivityListAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String beneficiaryId;
+    private Integer patientId;
 
-    public void setBeneficiaryId( String beneficiaryId )
+    public Integer getPatientId()
     {
-        this.beneficiaryId = beneficiaryId;
+        return patientId;
     }
 
-    public String getBeneficiaryId()
+    public void setPatientId( Integer patientId )
     {
-        return this.beneficiaryId;
+        this.patientId = patientId;
     }
 
     private boolean current;
@@ -101,14 +101,14 @@ public class GetActivityListAction
 
     private OrganisationUnit organisationUnit;
 
-    public String getOrganisationUnitId()
+    public Integer getOrganisationUnitId()
     {
         return this.organisationUnitId;
     }
 
-    private String organisationUnitId;
+    private Integer organisationUnitId;
 
-    public void setOrganisationUnitId( String organisationUnitId )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
@@ -130,7 +130,7 @@ public class GetActivityListAction
         throws Exception
     {
         activities = new ArrayList<Activity>();
-        organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( organisationUnitId ) );
+        organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         ActivityPlan activityPlan;
         if ( current )
         {
@@ -143,7 +143,7 @@ public class GetActivityListAction
         List<Activity> allActivities = activityPlan.getActivitiesList();
         for ( Activity activity : allActivities )
         {
-            if ( activity.getBeneficiary().getId() == Integer.parseInt( beneficiaryId ) )
+            if ( activity.getBeneficiary().getId() == patientId )
             {
                 activities.add( activity );
             }
