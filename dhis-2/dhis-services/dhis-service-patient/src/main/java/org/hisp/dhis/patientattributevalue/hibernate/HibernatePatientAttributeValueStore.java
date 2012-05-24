@@ -296,7 +296,36 @@ public class HibernatePatientAttributeValueStore
             hql += " ( SELECT p" + index + " FROM Patient AS p" + index 
                 + " WHERE p" + index + ".birthDate " + searchText;
             isSearchByAttribute = false; 
+        } 
+        // gender
+        else if ( patientAttributeId == -2 )
+        {
+            hql += " ( SELECT p" + index + " FROM Patient AS p" + index 
+                + " WHERE p" + index + ".gender='" + searchText + "'";
+            isSearchByAttribute = false; 
         }
+        // age
+        else if ( patientAttributeId == -3 )
+        {
+            hql += " ( SELECT p" + index + " FROM Patient AS p" + index 
+                + " WHERE p" + index + ".integerValueOfAge='" + searchText + "'";
+            isSearchByAttribute = false; 
+        }
+        // blood-group
+        else if ( patientAttributeId == -4 )
+        {
+            hql += " ( SELECT p" + index + " FROM Patient AS p" + index 
+                + " WHERE p" + index + ".bloodGroup='" + searchText + "'";
+            isSearchByAttribute = false; 
+        }
+        // phone number
+        else if ( patientAttributeId == -5 )
+        {
+            hql += " ( SELECT p" + index + " FROM Patient AS p" + index 
+                + " WHERE p" + index + ".phoneNumber='" + searchText + "'";
+            isSearchByAttribute = false; 
+        }
+        
         
         // ---------------------------------------------------------------------
         // search patients by program
