@@ -65,10 +65,6 @@ td.error {padding-left:1em}
 .togglePanel.open {height:25px;padding-left:25px; background-image:  url(../images/open.gif) ; background-repeat: no-repeat; background-position: top left}
 .togglePanel.close {height:25px;padding-left:25px;  background-image:  url(../images/close.gif) ; background-repeat: no-repeat; background-position: top left}
 
-.warnmessage {
-	color: red;
-}
-
 #facilityCol
 {
 	width: 130px;
