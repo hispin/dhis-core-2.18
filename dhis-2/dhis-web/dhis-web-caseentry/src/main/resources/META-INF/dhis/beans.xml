@@ -400,14 +400,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.caseentry.action.patient.VerifyOrganisationUnitHasParentAction"
-		class="org.hisp.dhis.caseentry.action.patient.VerifyOrganisationUnitHasParentAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.caseentry.action.patient.SearchPatientAction"
 		class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction"
 		scope="prototype">
@@ -554,14 +546,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.caseentry.action.patient.GetPatientLocationAction"
 		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.patient.VerifyOrgunitRegistrationAction"
-		class="org.hisp.dhis.caseentry.action.patient.VerifyOrgunitRegistrationAction"
-		scope="prototype">
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
 	</bean>

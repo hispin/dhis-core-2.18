@@ -115,15 +115,6 @@ public class SelectAction
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        if ( organisationUnit == null )
-        {
-            status = 1;
-        }
-        else if ( !organisationUnit.isHasPatients() )
-        {
-            status = 2;
-        }
-
         return SUCCESS;
     }
 }

@@ -44,8 +44,6 @@
 
     <property name="url" />
 
-    <property name="hasPatients" not-null="true" />
-
     <set name="dataSets" table="datasetsource" inverse="true">
       <cache usage="read-write" />
       <key column="sourceid" />

@@ -74,7 +74,6 @@
 				<td><label>$i18n.getString( "registering_unit" )</label></td>
 				<td><input type="text" id='selectedOrgunitText' readonly style="min-width:16em"></td>
 				<td><input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick='loadAllPatients();'></td>
-				<td><span id='warnmessage' style='color:red'></span></td>
 			</tr>	
 		
 			<tr id='advSearchBox0'>	       

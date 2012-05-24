@@ -7,14 +7,16 @@
 		<tr>
 			<td><label>$i18n.getString( "registering_unit" )</label></td>
 			<td style="padding-right:5px"><input type="text" id='selectedOrgunitText' readonly style="min-width:16em"></td>
-			<td style="padding-right:5px"><input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick='loadAllPatients();'></td>
-			<td><span id='warnmessage' style='color:red'></span></td>
+			<td style="padding-right:5px">
+				<input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick='loadAllPatients();'>
+			</td>
+			<td><input type="button" value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();"></td>
 		</tr>
 	</table>
 
 </div>
 
-<div id='searchPatientDiv' style='display:none'>
+<div id='searchPatientDiv'>
 	<table id='advancedSearchTB'>	
 		<tbody>
 			<tr id='advSearchBox0'>	       
@@ -38,7 +40,6 @@
 					<input type="button" value='$i18n.getString( "search" )' onclick='searchAdvancedPatients();'>
 				</td>
 				<td>&nbsp;</td>
-				<td><input type="button" value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();"></td>
 			</tr>
 		</tbody>
 	</table>

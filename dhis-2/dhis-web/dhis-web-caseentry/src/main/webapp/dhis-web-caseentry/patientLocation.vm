@@ -10,7 +10,7 @@
 		</tr>
 		<tr>
 			<td>
-				<input type="button" class='button' value="$i18n.getString('save')" style="width:10em" onclick='verifyOrgunitRegistration( "$patientId" )'>
+				<input type="button" class='button' value="$i18n.getString('save')" style="width:10em" onclick='registerPatientLocation( "$patientId" )'>
 				<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" >
 			</td>
 			<td></td>
