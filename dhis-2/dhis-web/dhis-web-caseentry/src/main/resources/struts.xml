@@ -637,7 +637,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/tabularReportSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/tabularReport.js,javascript/commons.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js</param>
 			<param name="stylesheets">style/report.css</param>
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
