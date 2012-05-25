@@ -180,7 +180,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         oldObject.mergeWith( object );
         updatePeriodTypes( oldObject );
 
-        importConflicts.addAll( reattachCollectionFields( object, collectionFields ) );
+        importConflicts.addAll( reattachCollectionFields( oldObject, collectionFields ) );
 
         objectBridge.updateObject( oldObject );
 
@@ -737,7 +737,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     private Map<Field, Collection<Object>> detachCollectionFields( Object object )
     {
-        Map<Field, Collection<Object>> collected = new HashMap<Field, Collection<Object>>();
+        Map<Field, Collection<Object>> collectionFields = new HashMap<Field, Collection<Object>>();
         Field[] fields = object.getClass().getDeclaredFields();
 
         for ( Field field : fields )
@@ -751,13 +751,21 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
                 if ( objects != null && !objects.isEmpty() )
                 {
-                    collected.put( field, objects );
-                    objects.clear();
+                    collectionFields.put( field, objects );
+
+                    if ( List.class.isAssignableFrom( field.getType() ) )
+                    {
+                        ReflectionUtils.invokeSetterMethod( field.getName(), object, new ArrayList<Object>() );
+                    }
+                    else if ( Set.class.isAssignableFrom( field.getType() ) )
+                    {
+                        ReflectionUtils.invokeSetterMethod( field.getName(), object, new HashSet<Object>() );
+                    }
                 }
             }
         }
 
-        return collected;
+        return collectionFields;
     }
 
     private List<ImportConflict> reattachCollectionFields( Object object, Map<Field, Collection<Object>> collectionFields )
@@ -766,7 +774,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( Field field : collectionFields.keySet() )
         {
-            Collection<Object> identifiableObjects = collectionFields.get( field );
+            Collection<Object> collection = collectionFields.get( field );
             Collection<Object> objects;
 
             if ( List.class.isAssignableFrom( field.getType() ) )
@@ -783,7 +791,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 continue;
             }
 
-            for ( Object idObject : identifiableObjects )
+            for ( Object idObject : collection )
             {
                 IdentifiableObject ref = findObjectByReference( (IdentifiableObject) idObject );
 

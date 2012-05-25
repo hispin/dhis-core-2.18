@@ -33,15 +33,13 @@ import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -92,57 +90,30 @@ public class DefaultImportService
             objectBridge.setWriteEnabled( false );
         }
 
-        Date startDate = new Date();
+        log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + new Date() );
 
-        log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + startDate );
+        for ( Map.Entry<String, Class<?>> entry : ExchangeClasses.getImportMap().entrySet() )
+        {
+            Object value = ReflectionUtils.invokeGetterMethod( entry.getKey(), metaData );
 
-        doImport( metaData.getSqlViews(), importOptions, importSummary );
-        doImport( metaData.getConcepts(), importOptions, importSummary );
-        doImport( metaData.getConstants(), importOptions, importSummary );
-        doImport( metaData.getDocuments(), importOptions, importSummary );
-        doImport( metaData.getOptionSets(), importOptions, importSummary );
-        doImport( metaData.getAttributeTypes(), importOptions, importSummary );
-
-        doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
-        doImport( metaData.getOrganisationUnitLevels(), importOptions, importSummary );
-        doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
-        doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
-
-        // doImport( metaData.getUsers(), importOptions, importSummary );
-        // doImport( metaData.getUserGroups(), importOptions, importSummary );
-        // doImport( metaData.getUserAuthorityGroups(), importOptions, importSummary );
-
-        doImport( metaData.getCategoryOptions(), importOptions, importSummary );
-        doImport( metaData.getCategories(), importOptions, importSummary );
-        doImport( metaData.getCategoryCombos(), importOptions, importSummary );
-        doImport( metaData.getCategoryOptionCombos(), importOptions, importSummary );
-
-        doImport( metaData.getDataElements(), importOptions, importSummary );
-        doImport( metaData.getDataElementGroups(), importOptions, importSummary );
-        doImport( metaData.getDataElementGroupSets(), importOptions, importSummary );
-
-        doImport( metaData.getIndicatorTypes(), importOptions, importSummary );
-        doImport( metaData.getIndicators(), importOptions, importSummary );
-        doImport( metaData.getIndicatorGroups(), importOptions, importSummary );
-        doImport( metaData.getIndicatorGroupSets(), importOptions, importSummary );
-
-        doImport( metaData.getValidationRules(), importOptions, importSummary );
-        doImport( metaData.getValidationRuleGroups(), importOptions, importSummary );
-
-        // doImport( metaData.getMessageConversations(), importOptions, importSummary );
-
-        doImport( metaData.getDataDictionaries(), importOptions, importSummary );
-        doImport( metaData.getDataSets(), importOptions, importSummary );
-        doImport( metaData.getSections(), importOptions, importSummary );
-
-        doImport( metaData.getReportTables(), importOptions, importSummary );
-        doImport( metaData.getReports(), importOptions, importSummary );
-        doImport( metaData.getCharts(), importOptions, importSummary );
-
-        doImport( metaData.getMaps(), importOptions, importSummary );
-        doImport( metaData.getMapLegends(), importOptions, importSummary );
-        doImport( metaData.getMapLegendSets(), importOptions, importSummary );
-        doImport( metaData.getMapLayers(), importOptions, importSummary );
+            if ( value != null )
+            {
+                if ( Collection.class.isAssignableFrom( value.getClass() ) )
+                {
+                    List<?> objects = new ArrayList<Object>( (Collection<?>) value );
+                    log.info( "Importing " + objects.size() + " " + StringUtils.capitalize( entry.getKey() ) );
+                    doImport( objects, importOptions, importSummary );
+                }
+                else
+                {
+                    log.warn( "Getter for '" + entry.getKey() + "' did not return a collection." );
+                }
+            }
+            else
+            {
+                log.warn( "Can not find getter for '" + entry.getKey() + "'." );
+            }
+        }
 
         if ( importOptions.isDryRun() )
         {
@@ -152,8 +123,7 @@ public class DefaultImportService
         cacheManager.clearCache();
         objectBridge.destroy();
 
-        Date endDate = new Date();
-        log.info( "Finished import at " + endDate );
+        log.info( "Finished import at " + new Date() );
 
         return importSummary;
     }
@@ -172,6 +142,7 @@ public class DefaultImportService
         return null;
     }
 
+    @SuppressWarnings( "unchecked" )
     private <T> Importer<T> findImporterClass( Class<?> clazz )
     {
         for ( Importer<T> i : importerClasses )

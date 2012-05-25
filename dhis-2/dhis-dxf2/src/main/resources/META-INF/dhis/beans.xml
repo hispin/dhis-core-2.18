@@ -181,5 +181,10 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.validation.ValidationRuleGroup" />
   </bean>
 
+  <bean id="dataDictionaryImporter"
+      class="org.hisp.dhis.dxf2.metadata.importers.DefaultIdentifiableObjectImporter">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.datadictionary.DataDictionary" />
+  </bean>
+
 
 </beans>
