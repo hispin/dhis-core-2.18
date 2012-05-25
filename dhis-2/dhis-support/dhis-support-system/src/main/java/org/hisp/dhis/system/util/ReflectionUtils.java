@@ -94,9 +94,9 @@ public class ReflectionUtils
      */
     public static void setProperty( Object object, String name, String value )
     {
-        Object[] arguments = new Object[]{value};
+        Object[] arguments = new Object[]{ value };
 
-        Class<?>[] parameterTypes = new Class<?>[]{String.class};
+        Class<?>[] parameterTypes = new Class<?>[]{ String.class };
 
         if ( name.length() > 0 )
         {

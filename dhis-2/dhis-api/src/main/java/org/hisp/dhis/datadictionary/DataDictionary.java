@@ -134,8 +134,8 @@ public class DataDictionary
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDescription()
     {
         return description;
@@ -147,8 +147,8 @@ public class DataDictionary
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getRegion()
     {
         return region;
@@ -161,9 +161,9 @@ public class DataDictionary
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataElements" )
-    @JacksonXmlProperty( localName = "dataElement" )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( namespace = Dxf2Namespace.NAMESPACE, localName = "dataElements" )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE, localName = "dataElement" )
     public Set<DataElement> getDataElements()
     {
         return dataElements;
@@ -176,9 +176,9 @@ public class DataDictionary
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "indicators" )
-    @JacksonXmlProperty( localName = "indicator" )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( namespace = Dxf2Namespace.NAMESPACE, localName = "indicators" )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE, localName = "indicator" )
     public Set<Indicator> getIndicators()
     {
         return indicators;
