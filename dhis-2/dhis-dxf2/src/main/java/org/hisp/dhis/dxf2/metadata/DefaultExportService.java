@@ -75,6 +75,8 @@ public class DefaultExportService
 
         log.info( "User '" + currentUserService.getCurrentUsername() + "' started export at " + new Date() );
 
+        Date lastUpdated = options.getDate( "lastUpdated" );
+
         for ( Map.Entry<String, Class<?>> entry : ExchangeClasses.getExportMap().entrySet() )
         {
             if ( !options.isEnabled( entry.getKey() ) )
@@ -85,19 +87,26 @@ public class DefaultExportService
             @SuppressWarnings( "unchecked" )
             Class<? extends IdentifiableObject> idObjectClass = (Class<? extends IdentifiableObject>) entry.getValue();
 
-            Collection<? extends IdentifiableObject> idObjects = manager.getAll( idObjectClass );
+            Collection<? extends IdentifiableObject> idObjects = null;
 
-            if ( idObjects != null )
+            if ( lastUpdated != null )
             {
-                log.info( "Exporting " + idObjects.size() + " " + StringUtils.capitalize( entry.getKey() ) );
-
-                List<? extends IdentifiableObject> idObjectsList = new ArrayList<IdentifiableObject>( idObjects );
-                ReflectionUtils.invokeSetterMethod( entry.getKey(), metaData, idObjectsList );
+                idObjects = manager.getByLastUpdated( idObjectClass, lastUpdated );
             }
             else
             {
-                log.warn( "Skipping objects of type '" + entry.getValue().getSimpleName() + "'." );
+                idObjects = manager.getAll( idObjectClass );
             }
+
+            if ( idObjects.isEmpty() )
+            {
+                continue;
+            }
+
+            log.info( "Exporting " + idObjects.size() + " " + StringUtils.capitalize( entry.getKey() ) );
+
+            List<? extends IdentifiableObject> idObjectsList = new ArrayList<IdentifiableObject>( idObjects );
+            ReflectionUtils.invokeSetterMethod( entry.getKey(), metaData, idObjectsList );
         }
 
         log.info( "Finished export at " + new Date() );

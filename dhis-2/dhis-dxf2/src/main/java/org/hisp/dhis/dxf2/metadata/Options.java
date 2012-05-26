@@ -27,6 +27,9 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,14 +49,31 @@ public class Options
         return DEFAULT_OPTIONS;
     }
 
-    private static boolean isTrue( String bool )
+    private static Date stringAsDate( String str )
     {
-        return bool != null && bool.equalsIgnoreCase( "true" );
+        if ( str == null )
+        {
+            return null;
+        }
+
+        try
+        {
+            return new SimpleDateFormat( "dd/MM/yyyy" ).parse( str );
+        } catch ( ParseException ignored )
+        {
+        }
+
+        return null;
     }
 
-    private static boolean isFalse( String bool )
+    private static boolean stringAsBoolean( String str )
     {
-        return !isTrue( bool );
+        return str != null && str.equalsIgnoreCase( "true" );
+    }
+
+    private static boolean isTrue( String str )
+    {
+        return stringAsBoolean( str );
     }
 
     //--------------------------------------------------------------------------
@@ -79,16 +99,12 @@ public class Options
 
     public Options( Map<String, String> options )
     {
-        System.err.println("Options: " + options);
-
         this.options = options;
         this.assumeTrue = options.get( "assumeTrue" ) == null || options.get( "assumeTrue" ).equalsIgnoreCase( "true" );
     }
 
     public Options( Map<String, String> options, boolean assumeTrue )
     {
-        System.err.println("Options: " + options);
-
         this.options = options;
         this.assumeTrue = assumeTrue;
     }
@@ -107,6 +123,11 @@ public class Options
     public boolean isDisabled( String type )
     {
         return !isEnabled( type );
+    }
+
+    public Date getDate( String key )
+    {
+        return stringAsDate( options.get( key ));
     }
 
     //--------------------------------------------------------------------------
