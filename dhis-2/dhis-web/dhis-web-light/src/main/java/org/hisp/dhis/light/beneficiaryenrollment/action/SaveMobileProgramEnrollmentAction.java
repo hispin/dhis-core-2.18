@@ -188,8 +188,6 @@ public class SaveMobileProgramEnrollmentAction
             return ERROR;
         }
 
-        System.out.println( "service: " + patientService );
-
         patient = patientService.getPatient( patientId );
 
         program = programService.getProgram(  programId );

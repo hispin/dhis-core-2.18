@@ -45,6 +45,7 @@ import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.util.ContextUtils;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -52,6 +53,9 @@ import com.opensymphony.xwork2.ActionContext;
 public class SaveProgramStageFormAction
     implements Action
 {
+    private static final String SUCCESS_AND_BACK_TO_PROGRAMSTAGE = "success_back_to_programstage";
+
+    private static final String REGISTER_NEXT_DUEDATE = "register_next_duedate";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -114,6 +118,18 @@ public class SaveProgramStageFormAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
+    private ProgramStageService programStageService;
+
+    public ProgramStageService getProgramStageService()
+    {
+        return programStageService;
+    }
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -144,17 +160,17 @@ public class SaveProgramStageFormAction
         this.programStageInstanceId = programStageInstanceId;
     }
 
-//    private Integer programInstanceId;
-//
-//    public Integer getProgramInstanceId()
-//    {
-//        return programInstanceId;
-//    }
-//
-//    public void setProgramInstanceId( Integer programInstanceId )
-//    {
-//        this.programInstanceId = programInstanceId;
-//    }
+    // private Integer programInstanceId;
+    //
+    // public Integer getProgramInstanceId()
+    // {
+    // return programInstanceId;
+    // }
+    //
+    // public void setProgramInstanceId( Integer programInstanceId )
+    // {
+    // this.programInstanceId = programInstanceId;
+    // }
 
     private Integer patientId;
 
@@ -313,13 +329,18 @@ public class SaveProgramStageFormAction
             return ERROR;
         }
 
+        if ( programStageService.getProgramStage( programStageId ).getIrregular() )
+        {
+            return REGISTER_NEXT_DUEDATE;
+        }
+
         if ( orgUnitId != 0 )
         {
             return SUCCESS;
         }
         else
         {
-            return "success_find";
+            return SUCCESS_AND_BACK_TO_PROGRAMSTAGE;
         }
     }
 }

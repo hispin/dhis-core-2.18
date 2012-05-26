@@ -27,12 +27,13 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
+import java.util.HashSet;
 import java.util.Set;
-
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import com.opensymphony.xwork2.Action;
 
@@ -42,9 +43,9 @@ public class GetProgramStageListAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private PatientService patientService;
-    
+
     public PatientService getPatientService()
     {
         return patientService;
@@ -54,9 +55,9 @@ public class GetProgramStageListAction
     {
         this.patientService = patientService;
     }
-    
+
     private ProgramInstanceService programInstanceService;
-    
+
     public ProgramInstanceService getProgramInstanceService()
     {
         return programInstanceService;
@@ -66,13 +67,13 @@ public class GetProgramStageListAction
     {
         this.programInstanceService = programInstanceService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
     private Set<ProgramStageInstance> programStageInstances;
-    
+
     public Set<ProgramStageInstance> getProgramStageInstances()
     {
         return programStageInstances;
@@ -82,9 +83,9 @@ public class GetProgramStageListAction
     {
         this.programStageInstances = programStageInstances;
     }
-    
+
     private int programInstanceId;
-    
+
     public int getProgramInstanceId()
     {
         return programInstanceId;
@@ -94,9 +95,9 @@ public class GetProgramStageListAction
     {
         this.programInstanceId = programInstanceId;
     }
-    
+
     private Integer patientId;
-    
+
     public Integer getPatientId()
     {
         return patientId;
@@ -106,9 +107,9 @@ public class GetProgramStageListAction
     {
         this.patientId = patientId;
     }
-    
+
     private Patient patient;
-    
+
     public Patient getPatient()
     {
         return patient;
@@ -118,9 +119,9 @@ public class GetProgramStageListAction
     {
         this.patient = patient;
     }
-    
+
     private int programId;
-    
+
     public int getProgramId()
     {
         return programId;
@@ -130,9 +131,9 @@ public class GetProgramStageListAction
     {
         this.programId = programId;
     }
-    
+
     private boolean validated;
-    
+
     public boolean isValidated()
     {
         return validated;
@@ -143,6 +144,18 @@ public class GetProgramStageListAction
         this.validated = validated;
     }
 
+    private Set<ProgramStage> repeatableStages;
+    
+    public Set<ProgramStage> getRepeatableStages()
+    {
+        return repeatableStages;
+    }
+
+    public void setRepeatableStages( Set<ProgramStage> repeatableStages )
+    {
+        this.repeatableStages = repeatableStages;
+    }
+
     @Override
     public String execute()
         throws Exception
@@ -150,6 +163,20 @@ public class GetProgramStageListAction
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
         patient = patientService.getPatient( patientId );
         programStageInstances = programInstance.getProgramStageInstances();
+        repeatableStages = new HashSet<ProgramStage>();
+        
+        for ( ProgramStageInstance programStageInstance : programStageInstances )
+        {
+           ProgramStage programStage =  programStageInstance.getProgramStage();
+           if (programStage.getIrregular()) {
+               repeatableStages.add( programStage );
+           }
+           
+           if (programStage.getIrregular() && !programStageInstance.isCompleted()) {
+               repeatableStages.remove(programStage);
+           }
+        }
+        System.out.println("Size: " + repeatableStages.size());
         return SUCCESS;
     }
 

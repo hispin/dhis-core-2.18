@@ -24,103 +24,78 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.hisp.dhis.light.namebaseddataentry.action;
 
-import java.util.HashSet;
-import java.util.Set;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
+
 import com.opensymphony.xwork2.Action;
 
-public class GetPatientProgramListAction
+public class GetRepeatableEventRegistrationFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private ProgramStageService programStageService;
 
-    private ProgramInstanceService programInstanceService;
-
-    public ProgramInstanceService getProgramInstanceService()
+    public ProgramStageService getProgramStageService()
     {
-        return programInstanceService;
+        return programStageService;
     }
 
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    public void setProgramStageService( ProgramStageService programStageService )
     {
-        this.programInstanceService = programInstanceService;
+        this.programStageService = programStageService;
     }
-
-    private PatientService patientService;
-
-    public PatientService getPatientService()
-    {
-        return patientService;
-    }
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
+    private Integer programInstanceId;
 
-    public Integer getPatientId()
+    public Integer getProgramInstanceId()
     {
-        return patientId;
+        return programInstanceId;
     }
 
-    public void setPatientId( Integer patientId )
+    public void setProgramInstanceId( Integer programInstanceId )
     {
-        this.patientId = patientId;
+        this.programInstanceId = programInstanceId;
     }
 
-    private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
+    private Integer programStageId;
 
-    public Set<ProgramInstance> getProgramInstances()
+    public Integer getProgramStageId()
     {
-        return programInstances;
+        return programStageId;
     }
 
-    public void setProgramInstances( Set<ProgramInstance> programInstances )
+    public void setProgramStageId( Integer programStageId )
     {
-        this.programInstances = programInstances;
+        this.programStageId = programStageId;
+    }
+    
+    private ProgramStage programStage;
+    
+    public ProgramStage getProgramStage()
+    {
+        return programStage;
     }
 
-    private Patient patient;
-
-    public Patient getPatient()
+    public void setProgramStage( ProgramStage programStage )
     {
-        return patient;
-    }
-
-    public void setPatient( Patient patient )
-    {
-        this.patient = patient;
+        this.programStage = programStage;
     }
 
     @Override
     public String execute()
         throws Exception
     {
-        programInstances.clear();
-        patient = patientService.getPatient( patientId );
-        for ( ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ) )
-        {
-            if ( !programInstance.getProgram().isSingleEvent() )
-            {
-                programInstances.add( programInstance );
-            }
-        }
-        
+        programStage = programStageService.getProgramStage( programStageId );
         return SUCCESS;
     }
+
 }

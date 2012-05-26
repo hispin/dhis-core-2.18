@@ -129,7 +129,7 @@
 			class="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction">
 			<result name="success" type="redirect">
 				/mobile/selectBeneficiary.action?organisationUnitId=${orgUnitId}&amp;current=${current}&amp;validated=true</result>
-			<result name="success_find" type="redirect">
+			<result name="success_back_to_programstage" type="redirect">
 				/mobile/showPatientProgramStageList.action?patientId=${patientId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=true</result>
 			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/namebased/programStageForm.vm</param>
@@ -180,6 +180,14 @@
 				/dhis-web-light/main.vm</result>
 			<param name="page">
 				/dhis-web-light/namebased/beneficiaryProgramStageList.vm</param>
+		</action>
+		
+		<action name="showRepeatableEventRegistrationForm"
+			class="org.hisp.dhis.light.namebaseddataentry.action.GetRepeatableEventRegistrationFormAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/namebased/repeatableEventRegistrationForm.vm</param>
 		</action>
 		
 		<!-- Beneficiary Registration -->
