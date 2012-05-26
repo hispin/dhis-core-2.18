@@ -71,6 +71,7 @@ import org.hisp.dhis.system.util.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.system.velocity.VelocityManager;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfPTable;
@@ -407,6 +408,24 @@ public class GridUtils
         writer.closeElement();
         
         writer.closeDocument();
+    }
+    
+    /**
+     * Writes all rows in the SqlRowSet to the given Grid.
+     */
+    public static void addRows( Grid grid, SqlRowSet rs )
+    {
+        int cols = rs.getMetaData().getColumnCount();
+        
+        while ( rs.next() )
+        {
+            grid.addRow();
+            
+            for ( int i = 1; i <= cols; i++ )
+            {
+                grid.addValue( rs.getObject( i ) );
+            }
+        }
     }
     
     // -------------------------------------------------------------------------

@@ -510,7 +510,7 @@ public class ListGrid
     // SQL utility methods
     // -------------------------------------------------------------------------
 
-    public void addHeaders( ResultSet rs )
+    public Grid addHeaders( ResultSet rs )
     {
         try
         {
@@ -527,19 +527,21 @@ public class ListGrid
         {
             throw new RuntimeException( ex );
         }
+        
+        return this;
     }
 
-    public void addRow( ResultSet rs )
+    public Grid addRow( ResultSet rs )
     {
         try
         {
-            int columnNo = rs.getMetaData().getColumnCount();
+            int cols = rs.getMetaData().getColumnCount();
 
             while ( rs.next() )
             {
                 addRow();
 
-                for ( int i = 1; i <= columnNo; i++ )
+                for ( int i = 1; i <= cols; i++ )
                 {
                     addValue( rs.getObject( i ) );
                 }
@@ -549,8 +551,10 @@ public class ListGrid
         {
             throw new RuntimeException( ex );
         }
+        
+        return this;
     }
-
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

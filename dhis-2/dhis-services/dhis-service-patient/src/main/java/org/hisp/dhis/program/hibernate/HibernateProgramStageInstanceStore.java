@@ -42,16 +42,26 @@ import org.amplecode.quick.StatementManager;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceStore;
+import org.hisp.dhis.system.grid.GridUtils;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * @author Abyot Asalefew
@@ -77,6 +87,13 @@ public class HibernateProgramStageInstanceStore
     public void setStatementBuilder( StatementBuilder statementBuilder )
     {
         this.statementBuilder = statementBuilder;
+    }
+    
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -187,6 +204,93 @@ public class HibernateProgramStageInstanceStore
             .setFirstResult( min ).setMaxResults( max ).list();
     }
 
+    public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
+        List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
+        Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
+        int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
+        int min, int max, I18nFormat format, I18n i18n )
+    {
+        Grid grid = new ListGrid();
+        
+        String sql = getTabularReportSql( identifiers, fixedAttributes, attributes, dataElements, identifierKeys, attributeKeys, dataElementKeys,
+            orgUnits, level, maxLevel, startDate, endDate, descOrder, min, max );
+        System.out.println(sql);
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+        //TODO headers
+        GridUtils.addRows( grid, rowSet );
+        
+        return grid;
+    }
+    
+    private String getTabularReportSql( List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
+        Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
+        int level, int maxLevel, Date startDate, Date endDate, boolean descOrder, int min, int max )
+    {
+        String sDate = DateUtils.getMediumDateString( startDate );
+        String eDate = DateUtils.getMediumDateString( endDate );
+        
+        String sql = "select * from ( select psi.executiondate, ";
+        
+        for ( int i = 0; i < maxLevel; i++ )
+        {
+            sql += "(select name from organisationunit where organisationunitid=ous.idlevel1) as ou_level_" + i + ", ";
+        }
+
+        int count = 0;
+        
+        for ( PatientIdentifierType type : identifiers )
+        {
+            sql += "(select identifier from patientidentifier where patientid=p.patientid and patientidentifiertypeid=" + type.getId() + ") as identifier" + count++ + ", ";
+        }
+        
+        for ( String attribute : fixedAttributes )
+        {
+            sql += "p." + attribute + ", ";
+        }
+
+        count = 0;
+        
+        for ( PatientAttribute attribute : attributes )
+        {
+            sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid=" + attribute.getId() + ") as attribute" + count++ + ", ";
+        }
+
+        count = 0;
+        
+        for ( DataElement element : dataElements )
+        {
+            sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid=" + element.getId() + ") as element" + count++ + ", ";
+        }
+        
+        sql = sql.substring( 0, sql.length() - 2 ) + " "; // Remove last comma
+
+        sql += "from programstageinstance psi ";
+        sql += "left join programinstance pi on (psi.programinstanceid=pi.programinstanceid) ";
+        sql += "left join patient p on (pi.patientid=p.patientid) ";
+        sql += "join organisationunit ou on (ou.organisationunitid=psi.organisationunitid) ";
+        sql += "join _orgunitstructure ous on (psi.organisationunitid=ous.organisationunitid) ";
+        
+        sql += "where psi.executiondate >= '" + sDate + "' ";
+        sql += "and psi.executiondate < '" + eDate + "' ";
+
+        //TODO org unit criteria
+        
+        sql += "order by ";
+        
+        for ( int i = 0; i < dataElements.size(); i++ )
+        {
+            sql += "element" + i + ", ";
+        }
+        
+        sql += "psi.executiondate) ";
+        sql += descOrder ? "desc " : "";
+        sql += "as tabular offset 0 limit 50"; //TODO page and filter
+        
+        return sql;
+    }
+    
     public Map<String, String> get( ProgramStage programStage, List<String> keys,
         Map<Integer, String> searchingIdenKeys, List<String> fixedAttributes, Map<Integer, String> searchingAttrKeys,
         Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds,

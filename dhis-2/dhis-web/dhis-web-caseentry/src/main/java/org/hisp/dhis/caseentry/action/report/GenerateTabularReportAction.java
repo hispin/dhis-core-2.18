@@ -292,6 +292,8 @@ public class GenerateTabularReportAction
 
         Set<Integer> bottomOrgunitIds = new HashSet<Integer>();
 
+        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels() - 1;
+        
         if ( facilityLB.equals( "selected" ) )
         {
             upperOrgunitIds.add( orgunitId );
@@ -315,11 +317,10 @@ public class GenerateTabularReportAction
             
             // Get bottom org unit
             
-            int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels() - 1;
             Collection<OrganisationUnit> orgUnits = organisationUnitService.getOrganisationUnitsAtLevel( maxLevel, selectedOrgunit );
             bottomOrgunitIds = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class, orgUnits ) );
             
-            upperOrgunitIds.removeAll( bottomOrgunitIds );
+            upperOrgunitIds.removeAll( bottomOrgunitIds ); //TODO fix
         }
 
         // ---------------------------------------------------------------------
@@ -369,6 +370,8 @@ public class GenerateTabularReportAction
                 orderByExecutionDateByAsc, format, i18n );
         }
 
+        System.out.println();
+        System.out.println(grid);
         return type == null ? SUCCESS : type;
     }
 

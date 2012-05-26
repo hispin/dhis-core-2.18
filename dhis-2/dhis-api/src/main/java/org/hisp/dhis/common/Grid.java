@@ -193,7 +193,7 @@ public interface Grid
      * Adds a regression column to the grid. Column must hold numeric data.
      * 
      * @param columnIndex the index of the base column.
-     * @oaram addHeader indicates whether to add a grid header for the regression column.
+     * @param addHeader indicates whether to add a grid header for the regression column.
      */
     Grid addRegressionColumn( int columnIndex, boolean addHeader );
     
@@ -210,7 +210,7 @@ public interface Grid
      * 
      * @param rs the result set.
      */
-    void addHeaders( ResultSet rs );
+    Grid addHeaders( ResultSet rs );
     
     /**
      * Moves the cursor the next row and adds values for each column of the given
@@ -218,5 +218,5 @@ public interface Grid
      * 
      * @param rs the result set.
      */
-    void addRow( ResultSet rs );
+    Grid addRow( ResultSet rs );
 }
