@@ -204,6 +204,20 @@ public class DefaultProgramStageInstanceService
         Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc,
         boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
     {
+        /*
+        System.out.println("identifiers "+identifiers);
+        System.out.println("fixedAttributes "+fixedAttributes);
+        System.out.println("attributes "+attributes);
+        System.out.println("dataElements "+dataElements);
+        System.out.println("identifierKeys "+identifierKeys);
+        System.out.println("attributeKeys "+attributeKeys);
+        System.out.println("dataElementKeys "+dataElementKeys);
+
+        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels() - 1;
+        
+        return programStageInstanceStore.getTabularReport( programStage, hiddenCols, identifiers, fixedAttributes, attributes, 
+            dataElements, identifierKeys, attributeKeys, dataElementKeys, upperOrgunitIds, level, maxLevel, startDate, endDate, !orderByOrgunitAsc, min, max, format, i18n );
+            */
         List<String> keys = new ArrayList<String>();
         
         Map<String, String> valuesMap = programStageInstanceStore.get( programStage, keys, identifierKeys,

@@ -32,8 +32,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientIdentifierType;
 
 /**
  * @author Abyot Asalefew
@@ -70,6 +76,13 @@ public interface ProgramStageInstanceStore
     List<ProgramStageInstance> get( Patient patient, Boolean completed);
     
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
+    
+    Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
+        List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
+        Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
+        int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
+        int min, int max, I18nFormat format, I18n i18n );
     
     /** Get all values and put it on the map.
      *  @return key: key-word_object-id
