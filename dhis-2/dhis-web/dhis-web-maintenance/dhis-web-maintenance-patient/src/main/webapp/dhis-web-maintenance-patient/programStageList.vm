@@ -60,7 +60,7 @@
 				<p><label class="bold">$i18n.getString( "stage_in_program" ):</label><br><span id="stageInProgramField"></span></p>
 				<p><label class="bold">$i18n.getString( "scheduled_days_from_start" ):</label><br><span id="scheduledDaysFromStartField"></span></p>
 				<p><label class="bold">$i18n.getString( "irregular" ):</label><br><span id="irregularField"></span></p>
-				<p><label class="bold">$i18n.getString( "standard_interval" ):</label><br><span id="standardIntervalField"></span></p>
+				<p><label class="bold">$i18n.getString( "standard_interval_days" ):</label><br><span id="standardIntervalField"></span></p>
 				<p><label class="bold">$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>			  		
 			</div>
 

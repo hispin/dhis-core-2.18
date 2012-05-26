@@ -716,19 +716,12 @@ Ext.onReady( function() {
         },
         datatable: null,
         getDataTableStore: function() {
-			
-			this.datatable = Ext.create('Ext.data.Store', {
+
+			this.datatable = Ext.create('Ext.data.ArrayStore', {
 				fields: TR.value.fields,
 				data: TR.value.values,
 				remoteSort:true,
 				autoLoad: false,
-				proxy: {
-					type: 'memory',
-					reader: {
-						type: 'json',
-						root: 'items'
-					}
-				},
 				storage: {}
 			});
         },
@@ -797,11 +790,18 @@ Ext.onReady( function() {
 					success: function(r) {
 						var json = Ext.JSON.decode(r.responseText);
 						TR.state.total = json.total;
-						TR.value.valueTypes = json.valueTypes;
-						TR.value.fields = json.fields;
-						TR.value.hidden= json.hidden;
 						TR.value.columns = json.columns;
-						TR.value.values = json.items;
+						TR.value.values=json.items;
+						
+						var fields = [];
+						fields[0] = "id";
+						for( var index=0; index < TR.value.columns.length; index++ )
+						{
+							var i = index + 1;
+							fields[i] = 'col' + i;
+						}
+		
+						TR.value.fields = fields;
 						
 						if ( json.items.length > 1 )
 						{
@@ -997,27 +997,9 @@ Ext.onReady( function() {
     };
     
     TR.value = {
-		valueTypes: [],
 		columns: [],
 		fields: [],
-		hidden: [],
-		values: [],
-		getValueType: function( index )
-		{
-			if( TR.value.valueTypes[index] == null )
-			{
-				return 'textfield';
-			}
-			return TR.value.valueTypes[index].valueType;
-		},
-		getSuggestedValues: function( index )
-		{
-			if( TR.value.valueTypes[index] == null )
-			{
-				return [];
-			}
-			return TR.value.valueTypes[index].suggestedValues;
-		}
+		values: []
     };
       
     TR.datatable = {
@@ -1030,7 +1012,7 @@ Ext.onReady( function() {
 			var paramsLen = TR.cmp.params.identifierType.selected.store.data.length
 						+ TR.cmp.params.patientAttribute.selected.store.data.length
 						+ TR.cmp.params.dataelement.selected.store.data.length;
-			var metaDatatColsLen = TR.value.columns.length - paramsLen ;
+			var metaDatatColsLen = TR.value.columns.length - paramsLen;
 			
 			// column
 			var cols = [];
@@ -1045,97 +1027,87 @@ Ext.onReady( function() {
 				menuDisabled: true
 			};
 			
-			cols[1] = {
-				header: TR.value.columns[1], 
-				dataIndex: 'col1',
-				height: TR.conf.layout.east_gridcolumn_height,
-				sortable: false,
-				draggable: false,
-				hideable: false
-			};
-				
-			index = 2;
-			for( index=2; index < metaDatatColsLen; index++ )
+			// report-date && orgunits
+			var index=0;
+			for( index=0; index < paramsLen; index++ )
 			{
-				cols[index] = {
-					header: TR.value.columns[index], 
-					dataIndex: 'col' + index,
+				cols[index + 1] = {
+					header: TR.value.columns[index].name, 
+					dataIndex: 'col' + eval(index + 1),
 					height: TR.conf.layout.east_gridcolumn_height,
 					name:"meta_" + index + "_",
 					sortable: false,
 					draggable: false,
-					hidden: eval(TR.value.hidden['col' + index])
+					hidden: eval(TR.value.columns[index].hidden )
 				}
 			}
 			
+			// identifier
 			TR.cmp.params.identifierType.selected.store.each( function(r) {
 				var dataIndex = "col" + index;
-				cols[index] = { 
-					header: r.data.name, 
-					dataIndex: dataIndex,
+				cols[index + 1] = {
+					header: TR.value.columns[index].name, 
+					dataIndex: 'col' + eval(index + 1),
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "iden_"+ r.data.id + "_",
-					hidden: eval(TR.value.hidden['col' + index]),
+					sortable: false,
+					draggable: false,
+					hidden: eval(TR.value.columns[index].hidden )
+				}
+				index++;
+			});
+			
+			// patient-attributes
+			TR.cmp.params.patientAttribute.selected.store.each( function(r) {
+				var dataIndex = "col" + eval(index + 1);
+				cols[index + 1] = { 
+					header: TR.value.columns[index].name, 
+					dataIndex: dataIndex,
+					height: TR.conf.layout.east_gridcolumn_height,
+					name: "attr_"+ r.data.id + "_",
+					hidden: eval(TR.value.columns[index].hidden ),
 					sortable: false,
 					draggable: true,
+					emptyText: TR.i18n.et_no_data,
 					editor: {
-						xtype: 'textfield',
-						allowBlank: true
+						xtype: TR.value.columns[index].valueType,
+						queryMode: 'local',
+						editable: true,
+						valueField: 'name',
+						displayField: 'name',
+						allowBlank: true,
+						store:  new Ext.data.ArrayStore({
+							fields: ['name'],
+							data: TR.value.columns[index].suggested
+						})
 					}
 				};
 				index++;
 			});
 			
-			TR.cmp.params.patientAttribute.selected.store.each( function(r) {
-				var dataIndex = "col" + index;
-				cols[index] = { 
-					header: r.data.name, 
+			// Dataelements
+			TR.cmp.params.dataelement.selected.store.each( function(r) {
+				var dataIndex = "col" + eval(index + 1);
+				cols[index + 1] = { 
+					header: TR.value.columns[index].name, 
 					dataIndex: dataIndex,
 					height: TR.conf.layout.east_gridcolumn_height,
-					name: "attr_"+ r.data.id + "_",
-					hidden: eval(TR.value.hidden['col' + index]),
-					flex:1,
+					name: "de_"+ r.data.id + "_",
+					hidden: eval(TR.value.columns[index].hidden ),
 					sortable: false,
 					draggable: true,
 					emptyText: TR.i18n.et_no_data,
 					editor: {
-							xtype: TR.value.getValueType(index),
-							queryMode: 'local',
-							editable: true,
-							valueField: 'name',
-							displayField: 'name',
-							allowBlank: true,
-							store:  new Ext.data.ArrayStore({
-								fields: ['name'],
-								data: TR.value.getSuggestedValues(index)
-							})
-						}
-					};
-				index++;
-			});
-			
-			TR.cmp.params.dataelement.selected.store.each( function(r) {
-				var dataIndex = "col" + index;
-				cols[index] = { 
-					header: r.data.name, 
-					dataIndex: dataIndex,
-					height: TR.conf.layout.east_gridcolumn_height,
-					name: "de_"+ r.data.id + "_",
-					hidden: eval(TR.value.hidden['col' + index]),
-					flex:1,
-					sortable: false,
-					draggable: true,
-					editor: {
-						xtype: TR.value.getValueType(index),
-							queryMode: 'local',
-							editable: true,
-							valueField: 'name',
-							displayField: 'name',
-							allowBlank: true,
-							store: new Ext.data.ArrayStore({
-								fields: ['name'],
-								data: TR.value.getSuggestedValues(index)
-							})
+						xtype: TR.value.columns[index].valueType,
+						queryMode: 'local',
+						editable: true,
+						valueField: 'name',
+						displayField: 'name',
+						allowBlank: true,
+						store:  new Ext.data.ArrayStore({
+							fields: ['name'],
+							data: TR.value.columns[index].suggested
+						})
 					}
 				};
 				index++;
