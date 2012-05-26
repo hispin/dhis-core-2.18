@@ -198,20 +198,21 @@ public class DefaultProgramStageInstanceService
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
-        List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes,
-        List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds,
+        List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
+        Map<Integer, String> dataElementKeys, Collection<Integer> upperOrgunitIds,
         Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc,
         boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
     {
         List<String> keys = new ArrayList<String>();
-        Map<String, String> valuesMap = programStageInstanceStore.get( programStage, keys, searchingIdenKeys,
-            fixedAttributes, searchingAttrKeys, searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate,
+        
+        Map<String, String> valuesMap = programStageInstanceStore.get( programStage, keys, identifierKeys,
+            fixedAttributes, attributeKeys, dataElementKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate,
             orderByOrgunitAsc, orderByExecutionDateByAsc, min, max );
 
         if ( keys != null && keys.size() > 0 )
         {
-            return createTabularGrid( level, hiddenCols, programStage, keys, valuesMap, idens, fixedAttributes,
+            return createTabularGrid( level, hiddenCols, programStage, keys, valuesMap, identifiers, fixedAttributes,
                 attributes, dataElements, startDate, endDate, format, i18n );
         }
 
@@ -219,20 +220,21 @@ public class DefaultProgramStageInstanceService
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
-        List<PatientIdentifierType> idens, List<String> fixedAttributes, List<PatientAttribute> attributes,
-        List<DataElement> dataElements, Map<Integer, String> searchingIdenKeys, Map<Integer, String> searchingAttrKeys,
-        Map<Integer, String> searchingDEKeys, Collection<Integer> upperOrgunitIds,
+        List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
+        Map<Integer, String> dataElementKeys, Collection<Integer> upperOrgunitIds,
         Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc,
         boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n )
     {
         List<String> keys = new ArrayList<String>();
-        Map<String, String> valuesMap = programStageInstanceStore.get( programStage, keys, searchingIdenKeys,
-            fixedAttributes, searchingAttrKeys, searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate,
+        
+        Map<String, String> valuesMap = programStageInstanceStore.get( programStage, keys, identifierKeys,
+            fixedAttributes, attributeKeys, dataElementKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate,
             orderByOrgunitAsc, orderByExecutionDateByAsc );
 
         if ( keys != null && keys.size() > 0 )
         {
-            return createTabularGrid( level, hiddenCols, programStage, keys, valuesMap, idens, fixedAttributes,
+            return createTabularGrid( level, hiddenCols, programStage, keys, valuesMap, identifiers, fixedAttributes,
                 attributes, dataElements, startDate, endDate, format, i18n );
         }
 
