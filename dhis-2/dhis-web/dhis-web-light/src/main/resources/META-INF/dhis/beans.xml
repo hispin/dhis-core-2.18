@@ -240,6 +240,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramInstanceService"/>
 	</bean>
 	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.GetRepeatableEventRegistrationFormAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetRepeatableEventRegistrationFormAction">
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEvemtAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEvemtAction">
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService"/>
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService"/>
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
+	</bean>
+	
 	<!-- Beneficiary Registration -->
 	
 	<bean

@@ -95,7 +95,6 @@ public class RegisterIrregularEncounterAction
         programStageInstance.setDueDate( format.parseDate( dueDate ) );
 
         programStageInstanceService.addProgramStageInstance( programStageInstance );
-
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
         return SUCCESS;

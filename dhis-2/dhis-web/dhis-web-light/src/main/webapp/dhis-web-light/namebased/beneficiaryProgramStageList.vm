@@ -10,7 +10,9 @@
 
 <p>
 <ul>
+#set($programInstanceId = 0)
 #foreach( $programStageInstance in $programStageInstances )
+	#set($programInstanceId = $programStageInstance.getProgramInstance().getId())
 	<li>
 		 #if( $programStageInstance.isCompleted() == true )
 		 	<a href="showCompletedProgramStageForm.action?programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&patientId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">
@@ -21,6 +23,11 @@
 		 #end
 	</li>
 #end
+<br/>
+#foreach($programStage in $repeatableStages)
+	<li><a href="showRepeatableEventRegistrationForm.action?programInstanceId=$programInstanceId&programStageId=$programStage.getId()&">[+]$i18n.getString("add") $programStage.getName()</a></li>
+#end
+
 </ul>
 </p>
 
