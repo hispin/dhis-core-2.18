@@ -22,7 +22,7 @@
 		</tr>
 			
 		<tr>
-			<td><label>$i18n.getString( "min_days_from_start" )</label></td>
+			<td><label>$i18n.getString( "scheduled_days_from_start" )</label></td>
 			<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" class="{validate:{number:true,min:0}}"/></td>
 		</tr>
 
@@ -32,7 +32,7 @@
 		</tr>	
 		
 		<tr>
-			<td><label>$i18n.getString( "standard_interval" )</label></td>
+			<td><label>$i18n.getString( "standard_interval_days" )</label></td>
 			<td><input type="text" id="standardInterval" name="standardInterval" class="{validate:{required:true,number:true}}" disabled /></td>
 		</tr>
 		  

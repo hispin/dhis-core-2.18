@@ -4,49 +4,32 @@
 
 		currentDiv = 'patientForm';
 		checkedDuplicate = false;
-		isSubmit = true;
 		
 		jQuery("#patientForm").validate({
 				 meta:"validate"
 				,errorElement:"span"
 				,submitHandler: function(form)
 					{
-						if( isSubmit ) 
-						{
-							validateAddPatient();
-						}
+						validateAddPatient();
 					}
 				,beforeValidateHandler: function(form)
 					{
-						var checked = byId( 'verified' ).checked;
+						var dobType = $('#patientForm [id=dobType]').val();
 						
-						var birthDate = $('#patientForm [id=birthDate]').val();
-						var age = $('#patientForm [id=age]').val();
-						if( birthDate != '' && age!='' )
+						if( dobType=='V' || dobType=='D' ) 
 						{
-							$("#patientForm [id=memberValidator]").val("birthDate");
-							showById( 'validateBirthdate' );
-							jQuery('#age').focus();
-							isSubmit = false;
-							return;
+							var birthDate = $('#patientForm [id=birthDate]').val();
+							if( birthDate != '' ){
+								$("#patientForm [id=memberValidator]").val(birthDate);
+							}
+						}else{
+							var age = $('#patientForm [id=age]').val();
+							$("#patientForm [id=memberValidator]").val(age);
 						}
-						else if( birthDate == '' && age == '' ) {
-							$("#patientForm [id=memberValidator]").val("");
-						}
-						else if ( birthDate != '' )
-						{
-							$("#patientForm [id=memberValidator]").val("birthDate");
-						}
-						else if ( age!='' )
-						{
-							$("#patientForm [id=memberValidator]").val("age");
-						}
-						isSubmit = true;
 					}
 			});
 		
 		datePickerValid( 'patientForm [id=registrationDate]' );
-		datePickerValid( 'patientForm [id=birthDate]' );
 		addEventForPatientForm( 'patientForm' );
 	});	
 	

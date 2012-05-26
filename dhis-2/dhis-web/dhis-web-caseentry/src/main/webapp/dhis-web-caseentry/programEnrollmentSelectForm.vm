@@ -92,7 +92,8 @@
 
 <script>
 	var i18n_enroll_to_program = '$encoder.jsEscape( $i18n.getString( "enroll_to_program" ) , "'")';
-	
+	var i18n_program_stage = '$encoder.jsEscape( $i18n.getString( "program_stage" ) , "'")';
+
 	jQuery('#programEnrollmentSelectDiv').ready(function()
 		{
 			validation( 'programEnrollmentSelectDiv', function(form){

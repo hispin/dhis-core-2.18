@@ -110,6 +110,8 @@ public class UpdatePatientAction
 
     private Integer relationshipTypeId;
 
+    private Character dobType;
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -176,13 +178,6 @@ public class UpdatePatientAction
 
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
-
-        Character dobType = (verified) ? 'V' : 'D';
-
-        if ( !verified && age != null )
-        {
-            dobType = 'A';
-        }
 
         if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
         {
@@ -337,6 +332,11 @@ public class UpdatePatientAction
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
     }
 
     public void setFormat( I18nFormat format )

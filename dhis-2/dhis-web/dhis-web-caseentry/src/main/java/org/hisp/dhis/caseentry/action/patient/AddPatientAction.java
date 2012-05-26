@@ -106,6 +106,8 @@ public class AddPatientAction
 
     private String registrationDate;
 
+    private Character dobType;
+
     private boolean underAge;
 
     private Integer representativeId;
@@ -322,6 +324,11 @@ public class AddPatientAction
     public void setVerified( Boolean verified )
     {
         this.verified = verified;
+    }
+
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
     }
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
