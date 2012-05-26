@@ -239,7 +239,7 @@ public class GenerateTabularReportAction
         this.type = type;
     }
 
-    private String facilityLB;
+    private String facilityLB; // All, children, current
 
     public void setFacilityLB( String facilityLB )
     {
