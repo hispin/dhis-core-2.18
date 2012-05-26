@@ -40,6 +40,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -204,7 +205,6 @@ public class DefaultProgramStageInstanceService
         Collection<Integer> bottomOrgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc,
         boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
     {
-        /*
         System.out.println("identifiers "+identifiers);
         System.out.println("fixedAttributes "+fixedAttributes);
         System.out.println("attributes "+attributes);
@@ -215,24 +215,12 @@ public class DefaultProgramStageInstanceService
 
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels() - 1;
         
-        return programStageInstanceStore.getTabularReport( programStage, hiddenCols, identifiers, fixedAttributes, attributes, 
-            dataElements, identifierKeys, attributeKeys, dataElementKeys, upperOrgunitIds, level, maxLevel, startDate, endDate, !orderByOrgunitAsc, min, max, format, i18n );
-            */
-        List<String> keys = new ArrayList<String>();
+        Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
         
-        Map<String, String> valuesMap = programStageInstanceStore.get( programStage, keys, identifierKeys,
-            fixedAttributes, attributeKeys, dataElementKeys, upperOrgunitIds, bottomOrgunitIds, startDate, endDate,
-            orderByOrgunitAsc, orderByExecutionDateByAsc, min, max );
-
-        if ( keys != null && keys.size() > 0 )
-        {
-            return createTabularGrid( level, hiddenCols, programStage, keys, valuesMap, identifiers, fixedAttributes,
-                attributes, dataElements, startDate, endDate, format, i18n );
-        }
-
-        return new ListGrid();
+        return programStageInstanceStore.getTabularReport( programStage, hiddenCols, orgUnitLevelMap, identifiers, fixedAttributes, attributes, 
+            dataElements, identifierKeys, attributeKeys, dataElementKeys, upperOrgunitIds, level, maxLevel, startDate, endDate, !orderByOrgunitAsc, min, max, format, i18n );
     }
-
+    
     public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
         List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,

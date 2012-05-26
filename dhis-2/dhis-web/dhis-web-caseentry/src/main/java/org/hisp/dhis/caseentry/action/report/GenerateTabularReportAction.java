@@ -320,7 +320,7 @@ public class GenerateTabularReportAction
             Collection<OrganisationUnit> orgUnits = organisationUnitService.getOrganisationUnitsAtLevel( maxLevel, selectedOrgunit );
             bottomOrgunitIds = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class, orgUnits ) );
             
-            upperOrgunitIds.removeAll( bottomOrgunitIds ); //TODO fix
+            //upperOrgunitIds.removeAll( bottomOrgunitIds ); //TODO fix
         }
 
         // ---------------------------------------------------------------------
