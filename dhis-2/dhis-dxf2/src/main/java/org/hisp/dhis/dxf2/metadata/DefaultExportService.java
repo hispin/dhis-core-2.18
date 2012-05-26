@@ -65,11 +65,11 @@ public class DefaultExportService
     @Override
     public MetaData getMetaData()
     {
-        return getMetaData( ExportOptions.getDefaultExportOptions() );
+        return getMetaData( Options.getDefaultOptions() );
     }
 
     @Override
-    public MetaData getMetaData( ExportOptions exportOptions )
+    public MetaData getMetaData( Options options )
     {
         MetaData metaData = new MetaData();
 
@@ -77,6 +77,11 @@ public class DefaultExportService
 
         for ( Map.Entry<String, Class<?>> entry : ExchangeClasses.getExportMap().entrySet() )
         {
+            if ( !options.isEnabled( entry.getKey() ) )
+            {
+                continue;
+            }
+
             @SuppressWarnings( "unchecked" )
             Class<? extends IdentifiableObject> idObjectClass = (Class<? extends IdentifiableObject>) entry.getValue();
 

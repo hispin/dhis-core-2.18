@@ -34,5 +34,5 @@ public interface ExportService
 {
     MetaData getMetaData();
 
-    MetaData getMetaData( ExportOptions options );
+    MetaData getMetaData( Options options );
 }
