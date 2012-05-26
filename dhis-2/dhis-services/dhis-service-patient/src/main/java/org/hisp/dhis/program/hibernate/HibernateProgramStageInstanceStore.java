@@ -39,16 +39,20 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
@@ -71,6 +75,8 @@ public class HibernateProgramStageInstanceStore
     extends HibernateGenericStore<ProgramStageInstance>
     implements ProgramStageInstanceStore
 {
+    private static final Log log = LogFactory.getLog( HibernateProgramStageInstanceStore.class );
+    
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -204,7 +210,7 @@ public class HibernateProgramStageInstanceStore
             .setFirstResult( min ).setMaxResults( max ).list();
     }
 
-    public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
+    public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
         List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
@@ -213,55 +219,48 @@ public class HibernateProgramStageInstanceStore
     {
         Grid grid = new ListGrid();
         
-        String sql = getTabularReportSql( identifiers, fixedAttributes, attributes, dataElements, identifierKeys, attributeKeys, dataElementKeys,
-            orgUnits, level, maxLevel, startDate, endDate, descOrder, min, max );
-        System.out.println(sql);
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-        //TODO headers
-        GridUtils.addRows( grid, rowSet );
-        
-        return grid;
-    }
-    
-    private String getTabularReportSql( List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
-        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
-        Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
-        int level, int maxLevel, Date startDate, Date endDate, boolean descOrder, int min, int max )
-    {
         String sDate = DateUtils.getMediumDateString( startDate );
         String eDate = DateUtils.getMediumDateString( endDate );
+        
+        grid.addHeader( new GridHeader( "Report date", false, true ) );
         
         String sql = "select * from ( select psi.executiondate, ";
         
         for ( int i = 0; i < maxLevel; i++ )
         {
-            sql += "(select name from organisationunit where organisationunitid=ous.idlevel1) as ou_level_" + i + ", ";
+            int l = i + 1;
+            String name = orgUnitLevelMap.containsKey( l ) ? orgUnitLevelMap.get( l ).getName() : "Level " + l;
+            grid.addHeader( new GridHeader( name, false, true ) );
+            
+            sql += "(select name from organisationunit where organisationunitid=ous.idlevel1) as level_" + i + ", ";
         }
 
-        int count = 0;
-        
         for ( PatientIdentifierType type : identifiers )
         {
-            sql += "(select identifier from patientidentifier where patientid=p.patientid and patientidentifiertypeid=" + type.getId() + ") as identifier" + count++ + ", ";
+            grid.addHeader( new GridHeader( type.getName(), false, true ) );
+            
+            sql += "(select identifier from patientidentifier where patientid=p.patientid and patientidentifiertypeid=" + type.getId() + ") as identifier_" + type.getId() + ", ";
         }
         
         for ( String attribute : fixedAttributes )
         {
+            grid.addHeader( new GridHeader( attribute, false, true ) );
+            
             sql += "p." + attribute + ", ";
         }
 
-        count = 0;
-        
         for ( PatientAttribute attribute : attributes )
         {
-            sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid=" + attribute.getId() + ") as attribute" + count++ + ", ";
+            grid.addHeader( new GridHeader( attribute.getName(), false, true ) );
+            
+            sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid=" + attribute.getId() + ") as attribute_" + attribute.getId() + ", ";
         }
 
-        count = 0;
-        
         for ( DataElement element : dataElements )
         {
-            sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid=" + element.getId() + ") as element" + count++ + ", ";
+            grid.addHeader( new GridHeader( element.getDisplayName(), false, true ) );
+            
+            sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid=" + element.getId() + ") as element_" + element.getId() + ", ";
         }
         
         sql = sql.substring( 0, sql.length() - 2 ) + " "; // Remove last comma
@@ -279,16 +278,44 @@ public class HibernateProgramStageInstanceStore
         
         sql += "order by ";
         
-        for ( int i = 0; i < dataElements.size(); i++ )
+        for ( int i = 0; i < maxLevel; i++ )
         {
-            sql += "element" + i + ", ";
+            sql += "level_" + i + ", ";
         }
         
-        sql += "psi.executiondate) ";
+        sql += "psi.executiondate ";
         sql += descOrder ? "desc " : "";
-        sql += "as tabular offset 0 limit 50"; //TODO page and filter
+        sql += "offset 0 limit 50 ";
+        sql += ") as tabular "; //TODO page and filter
         
-        return sql;
+        String operator = "where ";
+        
+        for ( Integer key : identifierKeys.keySet() )
+        {
+            sql += operator + "identifier_" + key + identifierKeys.get( key ) + ", ";
+            operator = "and ";
+        }
+        
+        for ( Integer key : attributeKeys.keySet() )
+        {
+            sql += operator + "attribute_" + key + attributeKeys.get( key ) + ", ";
+            operator = "and ";
+        }
+        
+        for ( Integer key : dataElementKeys.keySet() )
+        {
+            sql += operator + "element_" + key + dataElementKeys.get( key ) + ", ";
+        }
+
+        sql = sql.substring( 0, sql.length() - 2 ) + " "; // Remove last comma
+
+        log.info(sql);
+        
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+        
+        GridUtils.addRows( grid, rowSet );
+        
+        return grid;
     }
     
     public Map<String, String> get( ProgramStage programStage, List<String> keys,
