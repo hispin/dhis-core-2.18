@@ -70,4 +70,6 @@ public interface IdentifiableObjectManager
     IdentifiableObject getObject( String uid, String simpleClassName );
 
     IdentifiableObject getObject( int id, String simpleClassName );
+
+    <T extends IdentifiableObject> int getCount( Class<T> clazz );
 }

@@ -111,7 +111,7 @@ public class ConstantController
         }
 
         model.addAttribute( "model", constant );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "constant";
     }

@@ -2,7 +2,6 @@ package org.hisp.dhis.api.controller.organisationunit;
 
 import org.hisp.dhis.api.controller.dataelement.DataElementController;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.Pager;
@@ -37,9 +36,6 @@ public class OrganisationUnitController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
-
-    @Autowired
-    private ObjectPersister objectPersister;
 
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
@@ -97,7 +93,7 @@ public class OrganisationUnitController
         }
 
         model.addAttribute( "model", organisationUnit );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "organisationUnit";
     }
@@ -113,7 +109,7 @@ public class OrganisationUnitController
         }
 
         model.addAttribute( "model", organisationUnit );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "organisationUnit";
     }
@@ -126,8 +122,7 @@ public class OrganisationUnitController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
     public void postOrganisationUnitXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        //OrganisationUnit organisationUnit = Jaxb2Utils.unmarshal( OrganisationUnit.class, input );
-        //postOrganisationUnit( organisationUnit, response );
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
@@ -137,6 +132,7 @@ public class OrganisationUnitController
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
+    /*
     public void postOrganisationUnit( OrganisationUnit organisationUnit, HttpServletResponse response )
     {
         if ( organisationUnit == null )
@@ -164,6 +160,7 @@ public class OrganisationUnitController
             }
         }
     }
+    */
 
     //-------------------------------------------------------------------------------------------------------
     // PUT

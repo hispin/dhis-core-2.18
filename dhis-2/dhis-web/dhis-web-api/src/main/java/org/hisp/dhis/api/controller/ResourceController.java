@@ -62,7 +62,7 @@ public class ResourceController
         }
 
         model.addAttribute( "model", resources );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "resources";
     }

@@ -154,7 +154,7 @@ public class ReportTableController
         }
 
         model.addAttribute( "model", reportTable );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "reportTable";
     }
@@ -179,7 +179,7 @@ public class ReportTableController
             orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
         
         model.addAttribute( "model", grid );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
         
         return grid != null ? "reportTableData" : null;
     }
@@ -349,7 +349,7 @@ public class ReportTableController
                                       HttpServletResponse response ) throws Exception
     {
         model.addAttribute( "model", getReportTableGrid( uid, organisationUnitUid, period ) );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
         
         return "grid";
     }

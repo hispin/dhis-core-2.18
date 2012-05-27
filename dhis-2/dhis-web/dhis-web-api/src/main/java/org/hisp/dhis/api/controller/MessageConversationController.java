@@ -115,7 +115,7 @@ public class MessageConversationController
         }
 
         model.addAttribute( "model", messageConversation );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "message";
     }

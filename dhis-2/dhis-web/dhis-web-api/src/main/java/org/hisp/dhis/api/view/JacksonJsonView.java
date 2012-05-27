@@ -84,7 +84,7 @@ public class JacksonJsonView
     protected void renderMergedOutputModel( Map<String, Object> model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         Object object = model.get( "model" );
-        Class<?> viewClass = JacksonUtils.getViewClass( model.get( "view" ) );
+        Class<?> viewClass = JacksonUtils.getViewClass( model.get( "viewClass" ) );
         response.setContentType( getContentType() );
 
         if ( withPadding )

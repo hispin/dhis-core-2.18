@@ -91,7 +91,7 @@ public class MapLayerController
         }
 
         model.addAttribute( "model", mapLayer );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "mapLayer";
     }

@@ -111,7 +111,7 @@ public class ValidationRuleGroupController
         }
 
         model.addAttribute( "model", validationRuleGroup );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "validationRuleGroup";
     }

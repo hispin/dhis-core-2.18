@@ -93,7 +93,7 @@ public class MapLegendController
         }
 
         model.addAttribute( "model", mapLegend );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "mapLegend";
     }

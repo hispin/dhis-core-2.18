@@ -95,7 +95,7 @@ public class UserGroupController
         }
 
         model.addAttribute( "model", userGroup );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "userGroup";
     }

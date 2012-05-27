@@ -1,7 +1,7 @@
 package org.hisp.dhis.api.controller.dataelement;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,182 +27,17 @@ package org.hisp.dhis.api.controller.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.ObjectPersister;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.DataElements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = DataElementController.RESOURCE_PATH )
+@RequestMapping( value = "/dataElements" )
 public class DataElementController
+    extends AbstractCrudController<DataElement>
 {
-    public static final String RESOURCE_PATH = "/dataElements";
-
-    @Autowired
-    private DataElementService dataElementService;
-
-    @Autowired
-    private ObjectPersister objectPersister;
-
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getDataElements( IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        DataElements dataElements = new DataElements();
-
-        if ( params.isPaging() )
-        {
-            int total = dataElementService.getDataElementCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            dataElements.setPager( pager );
-
-            List<DataElement> dataElementList = new ArrayList<DataElement>(
-                dataElementService.getDataElementsBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            dataElements.setDataElements( dataElementList );
-        }
-        else
-        {
-            dataElements.setDataElements( new ArrayList<DataElement>( dataElementService.getAllDataElements() ) );
-        }
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElements );
-        }
-
-        model.addAttribute( "model", dataElements );
-
-        return "dataElements";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElement( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        DataElement dataElement = dataElementService.getDataElement( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElement );
-        }
-
-        model.addAttribute( "model", dataElement );
-        model.addAttribute( "view", "detailed" );
-
-        return "dataElement";
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // POST
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
-    public void postDataElementXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        //DataElement dataElement = Jaxb2Utils.unmarshal( DataElement.class, input );
-        //postDataElement( dataElement, response );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
-    public void postDataElementJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-        //DataElement dataElement = JacksonUtils.readValueAs( DataElement.class, input );
-        //postDataElement( dataElement, response );
-    }
-
-    public void postDataElement( DataElement dataElement, HttpServletResponse response )
-    {
-        if ( dataElement == null )
-        {
-            response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
-        }
-        else
-        {
-            try
-            {
-                dataElement = objectPersister.persistDataElement( dataElement );
-
-                if ( dataElement.getUid() == null )
-                {
-                    response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-                }
-                else
-                {
-                    response.setStatus( HttpServletResponse.SC_CREATED );
-                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + dataElement.getUid() );
-                }
-            } catch ( Exception e )
-            {
-                response.setStatus( HttpServletResponse.SC_CONFLICT );
-            }
-        }
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // PUT
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
-    public void putDataElementXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
-    public void putDataElementJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // DELETE
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_DELETE')" )
-    public void deleteDataElement( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        DataElement dataElement = dataElementService.getDataElement( uid );
-
-        if ( dataElement != null )
-        {
-            dataElementService.deleteDataElement( dataElement );
-        }
-    }
 }

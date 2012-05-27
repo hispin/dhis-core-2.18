@@ -96,7 +96,7 @@ public class UserAuthorityGroupController
         }
 
         model.addAttribute( "model", userAuthorityGroup );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "userGroup";
     }

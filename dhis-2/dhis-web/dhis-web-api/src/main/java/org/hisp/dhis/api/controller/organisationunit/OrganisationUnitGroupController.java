@@ -2,7 +2,6 @@ package org.hisp.dhis.api.controller.organisationunit;
 
 import org.hisp.dhis.api.controller.dataelement.DataElementController;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -36,9 +35,6 @@ public class OrganisationUnitGroupController
 
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
-
-    @Autowired
-    private ObjectPersister objectPersister;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -89,7 +85,7 @@ public class OrganisationUnitGroupController
         }
 
         model.addAttribute( "model", organisationUnitGroup );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "organisationUnitGroup";
     }
@@ -102,8 +98,7 @@ public class OrganisationUnitGroupController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUP_ADD')" )
     public void postOrganisationUnitGroupXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        //OrganisationUnitGroup organisationUnitGroup = Jaxb2Utils.unmarshal( OrganisationUnitGroup.class, input );
-        //postOrganisationUnitGroup( organisationUnitGroup, response );
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
@@ -111,34 +106,6 @@ public class OrganisationUnitGroupController
     public void postOrganisationUnitGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    public void postOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup, HttpServletResponse response )
-    {
-        if ( organisationUnitGroup == null )
-        {
-            response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
-        }
-        else
-        {
-            try
-            {
-                organisationUnitGroup = objectPersister.persistOrganisationUnitGroup( organisationUnitGroup );
-
-                if ( organisationUnitGroup.getUid() == null )
-                {
-                    response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-                }
-                else
-                {
-                    response.setStatus( HttpServletResponse.SC_CREATED );
-                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + organisationUnitGroup.getUid() );
-                }
-            } catch ( Exception ex )
-            {
-                response.setStatus( HttpServletResponse.SC_CONFLICT );
-            }
-        }
     }
 
     //-------------------------------------------------------------------------------------------------------

@@ -111,7 +111,7 @@ public class CategoryController
         }
 
         model.addAttribute( "model", category );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "category";
     }

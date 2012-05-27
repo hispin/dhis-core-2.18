@@ -75,7 +75,7 @@ public class DefaultExportService
 
         log.info( "User '" + currentUserService.getCurrentUsername() + "' started export at " + new Date() );
 
-        Date lastUpdated = options.getDate( "lastUpdated" );
+        Date lastUpdated = options.getLastUpdated();
 
         for ( Map.Entry<String, Class<?>> entry : ExchangeClasses.getExportMap().entrySet() )
         {

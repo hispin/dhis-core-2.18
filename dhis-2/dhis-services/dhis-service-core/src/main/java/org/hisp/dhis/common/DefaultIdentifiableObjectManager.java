@@ -385,6 +385,23 @@ public class DefaultIdentifiableObjectManager
         return null;
     }
 
+    @Override
+    public <T extends IdentifiableObject> int getCount( Class<T> clazz )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store != null )
+        {
+            return store.getCount();
+        }
+        else
+        {
+            log.warn( "No IdentifiableObject store found for " + clazz + " (getCount)." );
+        }
+
+        return 0;
+    }
+
     private <T extends IdentifiableObject> GenericIdentifiableObjectStore<IdentifiableObject> getIdentifiableObjectStore( Class<T> clazz )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = identifiableObjectStoreMap.get( clazz );
