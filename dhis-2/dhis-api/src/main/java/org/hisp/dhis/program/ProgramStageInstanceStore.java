@@ -34,8 +34,6 @@ import java.util.Map;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
@@ -78,21 +76,14 @@ public interface ProgramStageInstanceStore
     
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
     
-    Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
+    Grid getTabularReport( List<Boolean> hiddenCols, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
         List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
-        int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
-        Integer min, Integer max, I18nFormat format, I18n i18n );
+        int level, int maxLevel, Date startDate, Date endDate, boolean descOrder, Integer min, Integer max );
     
-    /** Get all values and put it on the map.
-     *  @return key: key-word_object-id
-     *          value: value 
-     **/
-    Map<String, String> get( ProgramStage programStage, List<String> keys, Map<Integer,String> searchingIdenKeys, List<String> fixedAttributes, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max );
-    
-    Map<String, String> get( ProgramStage programStage, List<String> keys, Map<Integer,String> searchingIdenKeys, List<String> fixedAttributes, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> upperOrgunitIds, Collection<Integer> bottomOrgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc );
-
-    int count( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
-    
+    int getTabularReportCount( List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
+        Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
+        int level, int maxLevel, Date startDate, Date endDate );
 }

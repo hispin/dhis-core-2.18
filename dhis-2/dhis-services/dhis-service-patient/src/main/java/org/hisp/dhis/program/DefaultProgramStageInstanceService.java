@@ -197,38 +197,31 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( patient, completed );
     }
 
-    public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
+    public Grid getTabularReport( List<Boolean> hiddenCols, 
         List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
-        int level, Date startDate, Date endDate, boolean descOrder,
-        Integer min, Integer max, I18nFormat format, I18n i18n )
+        int level, Date startDate, Date endDate, boolean descOrder, Integer min, Integer max )
     {
-        System.out.println("identifiers "+identifiers);
-        System.out.println("fixedAttributes "+fixedAttributes);
-        System.out.println("attributes "+attributes);
-        System.out.println("dataElements "+dataElements);
-        System.out.println("identifierKeys "+identifierKeys);
-        System.out.println("attributeKeys "+attributeKeys);
-        System.out.println("dataElementKeys "+dataElementKeys);
-
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
         
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
         
-        return programStageInstanceStore.getTabularReport( programStage, hiddenCols, orgUnitLevelMap, identifiers, fixedAttributes, attributes, 
-            dataElements, identifierKeys, attributeKeys, dataElementKeys, organisationUnits, level, maxLevel, startDate, endDate, descOrder, min, max, format, i18n );
+        return programStageInstanceStore.getTabularReport( hiddenCols, orgUnitLevelMap, identifiers, fixedAttributes, attributes, 
+            dataElements, identifierKeys, attributeKeys, dataElementKeys, organisationUnits, level, maxLevel, startDate, endDate, descOrder, min, max );
     }
     
-    @Override
-    public int countProgramStageInstances( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
-        Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
-        Date startDate, Date endDate )
+    public int getTabularReportCount( List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
+        Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
+        int level, Date startDate, Date endDate )
     {
-        return programStageInstanceStore.count( programStage, searchingIdenKeys, searchingAttrKeys, searchingDEKeys,
-            orgunitIds, startDate, endDate );
+        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
+        
+        return programStageInstanceStore.getTabularReportCount( identifiers, fixedAttributes, attributes, 
+            dataElements, identifierKeys, attributeKeys, dataElementKeys, organisationUnits, level, maxLevel, startDate, endDate );
     }
-
+    
     public List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n )
     {
         List<Grid> grids = new ArrayList<Grid>();
