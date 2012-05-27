@@ -232,7 +232,7 @@ public class HibernateProgramStageInstanceStore
             String name = orgUnitLevelMap.containsKey( l ) ? orgUnitLevelMap.get( l ).getName() : "Level " + l;
             grid.addHeader( new GridHeader( name, false, true ) );
             
-            sql += "(select name from organisationunit where organisationunitid=ous.idlevel1) as level_" + i + ", ";
+            sql += "(select name from organisationunit where organisationunitid=ous.idlevel" + l + ") as level_" + i + ", ";
         }
 
         for ( PatientIdentifierType type : identifiers )
@@ -263,7 +263,7 @@ public class HibernateProgramStageInstanceStore
             sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid=" + element.getId() + ") as element_" + element.getId() + ", ";
         }
         
-        sql = sql.substring( 0, sql.length() - 2 ) + " "; // Remove last comma
+        sql = sql.substring( 0, sql.length() - 2 ) + " "; // Removing last comma
 
         sql += "from programstageinstance psi ";
         sql += "left join programinstance pi on (psi.programinstanceid=pi.programinstanceid) ";
@@ -286,7 +286,7 @@ public class HibernateProgramStageInstanceStore
         sql += "psi.executiondate ";
         sql += descOrder ? "desc " : "";
         sql += "offset 0 limit 50 ";
-        sql += ") as tabular "; //TODO page and filter
+        sql += ") as tabular "; //TODO page
         
         String operator = "where ";
         
@@ -305,6 +305,7 @@ public class HibernateProgramStageInstanceStore
         for ( Integer key : dataElementKeys.keySet() )
         {
             sql += operator + "element_" + key + dataElementKeys.get( key ) + ", ";
+            operator = "and ";
         }
 
         sql = sql.substring( 0, sql.length() - 2 ) + " "; // Remove last comma

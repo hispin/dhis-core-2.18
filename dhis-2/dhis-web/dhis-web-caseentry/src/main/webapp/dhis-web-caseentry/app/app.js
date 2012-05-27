@@ -3,7 +3,13 @@ TR.conf = {
 		ajax: {
 			jsonfy: function(r) {
 				r = Ext.JSON.decode(r.responseText);
-				var obj = {system: {rootnode: {id: r.rn[0], name: r.rn[1], level: 1}, user: {id: r.user.id, isadmin: r.user.isAdmin, organisationunit: {id: r.user.ou[0], name: r.user.ou[1]}}}};
+				var obj = { 
+					system: {
+						rootnode: {id: r.rn[0], name: r.rn[1], level: 1}, 
+						user: {id: r.user.id, isadmin: r.user.isAdmin, organisationunit: {id: r.user.ou[0], name: r.user.ou[1]}},
+						maxLevels: r.levels.length
+					}
+				};
 				for (var program in r.programs) {
 					obj.system.program = [];
 					for (var i = 0; i < r.programs.length; i++) {
@@ -720,7 +726,7 @@ Ext.onReady( function() {
 			this.datatable = Ext.create('Ext.data.ArrayStore', {
 				fields: TR.value.fields,
 				data: TR.value.values,
-				remoteSort:true,
+				remoteSort: true,
 				autoLoad: false,
 				storage: {}
 			});
@@ -1007,18 +1013,20 @@ Ext.onReady( function() {
 		rowEditing: null,
 		getDataTable: function() {
 			
-			var index = 1;
-			
 			var paramsLen = TR.cmp.params.identifierType.selected.store.data.length
 						+ TR.cmp.params.patientAttribute.selected.store.data.length
 						+ TR.cmp.params.dataelement.selected.store.data.length;
 			var metaDatatColsLen = TR.value.columns.length - paramsLen;
 			
-			// column
+			var orgUnitCols = ( TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue() );
+			var index = 0;
 			var cols = [];
-			cols[0] = {
-				header: TR.i18n.no, 
-				dataIndex: 'id',
+			
+			// Report date column
+			
+			cols[index] = {
+				header: TR.value.columns[index].name, 
+				dataIndex: 'col' + index,
 				width: 50,
 				height: TR.conf.layout.east_gridcolumn_height,
 				sortable: false,
@@ -1026,45 +1034,44 @@ Ext.onReady( function() {
 				hideable: false,
 				menuDisabled: true
 			};
+						
+			// Org unit level columns
 			
-			// report-date && orgunits
-			var index=0;
-			for( index=0; index < paramsLen; index++ )
+			for( var i = 0; i < orgUnitCols; i++ )
 			{
-				cols[index + 1] = {
+				cols[++index] = {
 					header: TR.value.columns[index].name, 
-					dataIndex: 'col' + eval(index + 1),
+					dataIndex: 'col' + index,
 					height: TR.conf.layout.east_gridcolumn_height,
-					name:"meta_" + index + "_",
+					name: 'meta_' + index + '_',
 					sortable: false,
 					draggable: false,
-					hidden: eval(TR.value.columns[index].hidden )
+					hidden: eval(TR.value.columns[index].hidden)
 				}
 			}
 			
-			// identifier
+			// Identifier columns
+			
 			TR.cmp.params.identifierType.selected.store.each( function(r) {
-				var dataIndex = "col" + index;
-				cols[index + 1] = {
+				cols[++index] = {
 					header: TR.value.columns[index].name, 
-					dataIndex: 'col' + eval(index + 1),
+					dataIndex: 'col' + index,
 					height: TR.conf.layout.east_gridcolumn_height,
-					name: "iden_"+ r.data.id + "_",
+					name: 'iden_' + r.data.id + '_',
 					sortable: false,
 					draggable: false,
 					hidden: eval(TR.value.columns[index].hidden )
 				}
-				index++;
 			});
 			
-			// patient-attributes
-			TR.cmp.params.patientAttribute.selected.store.each( function(r) {
-				var dataIndex = "col" + eval(index + 1);
-				cols[index + 1] = { 
+			// Attribute columns
+			
+			TR.cmp.params.patientAttribute.selected.store.each( function(r) {	
+				cols[++index] = {
 					header: TR.value.columns[index].name, 
-					dataIndex: dataIndex,
+					dataIndex: 'col' + index,
 					height: TR.conf.layout.east_gridcolumn_height,
-					name: "attr_"+ r.data.id + "_",
+					name: 'attr_' + r.data.id + '_',
 					hidden: eval(TR.value.columns[index].hidden ),
 					sortable: false,
 					draggable: true,
@@ -1082,15 +1089,18 @@ Ext.onReady( function() {
 						})
 					}
 				};
-				index++;
 			});
 			
-			// Dataelements
+			// Data element columns
+			
 			TR.cmp.params.dataelement.selected.store.each( function(r) {
-				var dataIndex = "col" + eval(index + 1);
-				cols[index + 1] = { 
+				++index;
+				console.log(TR.value.columns);
+				console.log(r);
+				
+				cols[index] = {
 					header: TR.value.columns[index].name, 
-					dataIndex: dataIndex,
+					dataIndex: 'col' + index,
 					height: TR.conf.layout.east_gridcolumn_height,
 					name: "de_"+ r.data.id + "_",
 					hidden: eval(TR.value.columns[index].hidden ),
@@ -1110,7 +1120,6 @@ Ext.onReady( function() {
 						})
 					}
 				};
-				index++;
 			});
 			
 			this.rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
