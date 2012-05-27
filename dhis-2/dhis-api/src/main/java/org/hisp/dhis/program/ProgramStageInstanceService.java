@@ -89,14 +89,16 @@ public interface ProgramStageInstanceService
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
     
-    Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols,
+    Grid getTabularReport( List<Boolean> hiddenCols, 
         List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
-        int level, Date startDate, Date endDate, boolean descOrder,
-        Integer min, Integer max, I18nFormat format, I18n i18n );
+        int level, Date startDate, Date endDate, boolean descOrder, Integer min, Integer max );
     
-    int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
+    int getTabularReportCount( List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
+        Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
+        int level, Date startDate, Date endDate );
     
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
     

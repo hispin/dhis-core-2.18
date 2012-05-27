@@ -34,7 +34,6 @@ import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_PATIENT_AT
 import static org.hisp.dhis.patientreport.PatientTabularReport.VALUE_TYPE_OPTION_SET;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,7 +47,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -167,13 +165,6 @@ public class GenerateTabularReportAction
     public void setOrderByOrgunitAsc( boolean orderByOrgunitAsc )
     {
         this.orderByOrgunitAsc = orderByOrgunitAsc;
-    }
-
-    private boolean orderByExecutionDateByAsc;
-
-    public void setOrderByExecutionDateByAsc( boolean orderByExecutionDateByAsc )
-    {
-        this.orderByExecutionDateByAsc = orderByExecutionDateByAsc;
     }
 
     private Integer level;
@@ -309,6 +300,8 @@ public class GenerateTabularReportAction
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
+        //TODO include program stage in sql query
+        
         Date startValue = format.parseDate( startDate );
 
         Date endValue = format.parseDate( endDate );
@@ -325,25 +318,25 @@ public class GenerateTabularReportAction
 
         if ( type == null ) // Tabular report
         {
-            int totalRecords = programStageInstanceService.countProgramStageInstances( programStage, searchingIdenKeys,
-                searchingAttrKeys, searchingDEKeys, organisationUnits, startValue, endValue );
+            int totalRecords = programStageInstanceService.getTabularReportCount( identifierTypes, fixedAttributes, patientAttributes, dataElements, 
+                searchingIdenKeys, searchingAttrKeys, searchingDEKeys, organisationUnits, level, startValue, endValue );
 
             total = getNumberOfPages( totalRecords );
             
             this.paging = createPaging( totalRecords );
             //total = paging.getTotal(); //TODO
             
-            grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
+            grid = programStageInstanceService.getTabularReport( hiddenCols, identifierTypes,
                 fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
                 searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc,
-                paging.getStartPos(), paging.getPageSize(), format, i18n );
+                paging.getStartPos(), paging.getPageSize() );
         }
         else // Download as Excel
         {
-            grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
+            grid = programStageInstanceService.getTabularReport( hiddenCols, identifierTypes,
                 fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
                 searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc,
-                null, null, format, i18n );
+                null, null );
         }
 
         System.out.println();
