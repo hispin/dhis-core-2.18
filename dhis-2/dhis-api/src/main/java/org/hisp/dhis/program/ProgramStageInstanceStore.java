@@ -77,12 +77,13 @@ public interface ProgramStageInstanceStore
     List<ProgramStageInstance> get( Patient patient, Boolean completed);
     
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
+    
     Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
         List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
         int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
-        int min, int max, I18nFormat format, I18n i18n );
+        Integer min, Integer max, I18nFormat format, I18n i18n );
     
     /** Get all values and put it on the map.
      *  @return key: key-word_object-id

@@ -286,41 +286,21 @@ public class GenerateTabularReportAction
         // Get orgunitIds
         // ---------------------------------------------------------------------
 
-        OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
+        Set<Integer> organisationUnits = new HashSet<Integer>();
 
-        Set<Integer> upperOrgunitIds = new HashSet<Integer>();
-
-        Set<Integer> bottomOrgunitIds = new HashSet<Integer>();
-
-        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels() - 1;
-        
         if ( facilityLB.equals( "selected" ) )
         {
-            upperOrgunitIds.add( orgunitId );
+            organisationUnits.add( orgunitId );
         }
         else if ( facilityLB.equals( "childrenOnly" ) )
         {
-            Set<OrganisationUnit> children = selectedOrgunit.getChildren();
-
-            for ( OrganisationUnit child : children )
-            {
-                upperOrgunitIds.add( child.getId() );
-            }
+            OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
+            organisationUnits.addAll( new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class, selectedOrgunit.getChildren() ) ) );
         }
         else
         {
-            OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
-
-            Set<Integer> childOrgUnitIdentifiers = hierarchy.getChildren( selectedOrgunit.getId() );
-            upperOrgunitIds.add( orgunitId );
-            upperOrgunitIds.addAll( childOrgUnitIdentifiers );
-            
-            // Get bottom org unit
-            
-            Collection<OrganisationUnit> orgUnits = organisationUnitService.getOrganisationUnitsAtLevel( maxLevel, selectedOrgunit );
-            bottomOrgunitIds = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class, orgUnits ) );
-            
-            //upperOrgunitIds.removeAll( bottomOrgunitIds ); //TODO fix
+            Set<Integer> children = organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunitId );
+            organisationUnits.addAll( children );
         }
 
         // ---------------------------------------------------------------------
@@ -345,12 +325,8 @@ public class GenerateTabularReportAction
 
         if ( type == null ) // Tabular report
         {
-            Set<Integer> orgunitIds = new HashSet<Integer>();
-            orgunitIds.addAll( upperOrgunitIds );
-            orgunitIds.addAll( bottomOrgunitIds );
-
             int totalRecords = programStageInstanceService.countProgramStageInstances( programStage, searchingIdenKeys,
-                searchingAttrKeys, searchingDEKeys, orgunitIds, startValue, endValue );
+                searchingAttrKeys, searchingDEKeys, organisationUnits, startValue, endValue );
 
             total = getNumberOfPages( totalRecords );
             
@@ -359,15 +335,15 @@ public class GenerateTabularReportAction
             
             grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
                 fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, upperOrgunitIds, bottomOrgunitIds, level, startValue, endValue, orderByOrgunitAsc,
-                orderByExecutionDateByAsc, paging.getStartPos(), paging.getPageSize(), format, i18n );
+                searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc,
+                paging.getStartPos(), paging.getPageSize(), format, i18n );
         }
         else // Download as Excel
         {
             grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
-                fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys, searchingDEKeys,
-                upperOrgunitIds, bottomOrgunitIds, level, startValue, endValue, orderByOrgunitAsc,
-                orderByExecutionDateByAsc, format, i18n );
+                fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
+                searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc,
+                null, null, format, i18n );
         }
 
         System.out.println();
