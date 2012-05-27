@@ -73,79 +73,79 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "metaData", namespace = Dxf2Namespace.NAMESPACE )
 public class MetaData
 {
-    private List<Attribute> attributeTypes = new ArrayList<Attribute>();
+    private List<Attribute> attributeTypeList = new ArrayList<Attribute>();
 
-    private List<Document> documents = new ArrayList<Document>();
+    private List<Document> documentList = new ArrayList<Document>();
 
-    private List<Constant> constants = new ArrayList<Constant>();
+    private List<Constant> constantList = new ArrayList<Constant>();
 
-    private List<Concept> concepts = new ArrayList<Concept>();
+    private List<Concept> conceptList = new ArrayList<Concept>();
 
-    private List<User> users = new ArrayList<User>();
+    private List<User> userList = new ArrayList<User>();
 
-    private List<UserAuthorityGroup> userAuthorityGroups = new ArrayList<UserAuthorityGroup>();
+    private List<UserAuthorityGroup> userAuthorityGroupList = new ArrayList<UserAuthorityGroup>();
 
-    private List<UserGroup> userGroups = new ArrayList<UserGroup>();
+    private List<UserGroup> userGroupList = new ArrayList<UserGroup>();
 
-    private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
+    private List<MessageConversation> messageConversationList = new ArrayList<MessageConversation>();
 
-    private List<OptionSet> optionSets = new ArrayList<OptionSet>();
+    private List<OptionSet> optionSetList = new ArrayList<OptionSet>();
 
-    private List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
+    private List<DataElementCategory> categoryList = new ArrayList<DataElementCategory>();
 
-    private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+    private List<DataElementCategoryOption> categoryOptionList = new ArrayList<DataElementCategoryOption>();
 
-    private List<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
+    private List<DataElementCategoryCombo> categoryComboList = new ArrayList<DataElementCategoryCombo>();
 
-    private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private List<DataElementCategoryOptionCombo> categoryOptionComboList = new ArrayList<DataElementCategoryOptionCombo>();
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<DataElement> dataElementList = new ArrayList<DataElement>();
 
-    private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
+    private List<DataElementGroup> dataElementGroupList = new ArrayList<DataElementGroup>();
 
-    private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
+    private List<DataElementGroupSet> dataElementGroupSetList = new ArrayList<DataElementGroupSet>();
 
-    private List<Indicator> indicators = new ArrayList<Indicator>();
+    private List<Indicator> indicatorList = new ArrayList<Indicator>();
 
-    private List<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
+    private List<IndicatorGroup> indicatorGroupList = new ArrayList<IndicatorGroup>();
 
-    private List<IndicatorGroupSet> indicatorGroupSets = new ArrayList<IndicatorGroupSet>();
+    private List<IndicatorGroupSet> indicatorGroupSetList = new ArrayList<IndicatorGroupSet>();
 
-    private List<IndicatorType> indicatorTypes = new ArrayList<IndicatorType>();
+    private List<IndicatorType> indicatorTypeList = new ArrayList<IndicatorType>();
 
-    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+    private List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>();
 
-    private List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+    private List<OrganisationUnitGroup> organisationUnitGroupList = new ArrayList<OrganisationUnitGroup>();
 
-    private List<OrganisationUnitGroupSet> organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>();
+    private List<OrganisationUnitGroupSet> organisationUnitGroupSetList = new ArrayList<OrganisationUnitGroupSet>();
 
-    private List<OrganisationUnitLevel> organisationUnitLevels = new ArrayList<OrganisationUnitLevel>();
+    private List<OrganisationUnitLevel> organisationUnitLevelList = new ArrayList<OrganisationUnitLevel>();
 
-    private List<ValidationRule> validationRules = new ArrayList<ValidationRule>();
+    private List<ValidationRule> validationRuleList = new ArrayList<ValidationRule>();
 
-    private List<ValidationRuleGroup> validationRuleGroups = new ArrayList<ValidationRuleGroup>();
+    private List<ValidationRuleGroup> validationRuleGroupList = new ArrayList<ValidationRuleGroup>();
 
-    private List<SqlView> sqlViews = new ArrayList<SqlView>();
+    private List<SqlView> sqlViewList = new ArrayList<SqlView>();
 
-    private List<Chart> charts = new ArrayList<Chart>();
+    private List<Chart> chartList = new ArrayList<Chart>();
 
-    private List<Report> reports = new ArrayList<Report>();
+    private List<Report> reportList = new ArrayList<Report>();
 
-    private List<ReportTable> reportTables = new ArrayList<ReportTable>();
+    private List<ReportTable> reportTableList = new ArrayList<ReportTable>();
 
-    private List<MapView> maps = new ArrayList<MapView>();
+    private List<MapView> mapList = new ArrayList<MapView>();
 
-    private List<MapLegend> mapLegends = new ArrayList<MapLegend>();
+    private List<MapLegend> mapLegendList = new ArrayList<MapLegend>();
 
-    private List<MapLegendSet> mapLegendSets = new ArrayList<MapLegendSet>();
+    private List<MapLegendSet> mapLegendSetList = new ArrayList<MapLegendSet>();
 
-    private List<MapLayer> mapLayers = new ArrayList<MapLayer>();
+    private List<MapLayer> mapLayerList = new ArrayList<MapLayer>();
 
-    private List<DataDictionary> dataDictionaries = new ArrayList<DataDictionary>();
+    private List<DataDictionary> dataDictionaryList = new ArrayList<DataDictionary>();
 
-    private List<Section> sections = new ArrayList<Section>(  );
+    private List<Section> sectionList = new ArrayList<Section>(  );
 
-    private List<DataSet> dataSets = new ArrayList<DataSet>();
+    private List<DataSet> dataSetList = new ArrayList<DataSet>();
 
     public MetaData()
     {
@@ -154,525 +154,525 @@ public class MetaData
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "attributeTypes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "attributeType", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Attribute> getAttributeTypes()
+    public List<Attribute> getAttributeTypeList()
     {
-        return attributeTypes;
+        return attributeTypeList;
     }
 
-    public void setAttributeTypes( List<Attribute> attributeTypes )
+    public void setAttributeTypeList( List<Attribute> attributeTypeList )
     {
-        this.attributeTypes = attributeTypes;
+        this.attributeTypeList = attributeTypeList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "users", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "user", namespace = Dxf2Namespace.NAMESPACE )
-    public List<User> getUsers()
+    public List<User> getUserList()
     {
-        return users;
+        return userList;
     }
 
-    public void setUsers( List<User> users )
+    public void setUserList( List<User> userList )
     {
-        this.users = users;
+        this.userList = userList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "userAuthorityGroups", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "userAuthorityGroup", namespace = Dxf2Namespace.NAMESPACE )
-    public List<UserAuthorityGroup> getUserAuthorityGroups()
+    public List<UserAuthorityGroup> getUserAuthorityGroupList()
     {
-        return userAuthorityGroups;
+        return userAuthorityGroupList;
     }
 
-    public void setUserAuthorityGroups( List<UserAuthorityGroup> userAuthorityGroups )
+    public void setUserAuthorityGroupList( List<UserAuthorityGroup> userAuthorityGroupList )
     {
-        this.userAuthorityGroups = userAuthorityGroups;
+        this.userAuthorityGroupList = userAuthorityGroupList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "userGroups", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "userGroup", namespace = Dxf2Namespace.NAMESPACE )
-    public List<UserGroup> getUserGroups()
+    public List<UserGroup> getUserGroupList()
     {
-        return userGroups;
+        return userGroupList;
     }
 
-    public void setUserGroups( List<UserGroup> userGroups )
+    public void setUserGroupList( List<UserGroup> userGroupList )
     {
-        this.userGroups = userGroups;
+        this.userGroupList = userGroupList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "messageConversations", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "messageConversation", namespace = Dxf2Namespace.NAMESPACE )
-    public List<MessageConversation> getMessageConversations()
+    public List<MessageConversation> getMessageConversationList()
     {
-        return messageConversations;
+        return messageConversationList;
     }
 
-    public void setMessageConversations( List<MessageConversation> messageConversations )
+    public void setMessageConversationList( List<MessageConversation> messageConversationList )
     {
-        this.messageConversations = messageConversations;
+        this.messageConversationList = messageConversationList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "dataElements", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElement> getDataElements()
+    public List<DataElement> getDataElementList()
     {
-        return dataElements;
+        return dataElementList;
     }
 
-    public void setDataElements( List<DataElement> dataElements )
+    public void setDataElementList( List<DataElement> dataElementList )
     {
-        this.dataElements = dataElements;
+        this.dataElementList = dataElementList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "optionSets", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "optionSet", namespace = Dxf2Namespace.NAMESPACE )
-    public List<OptionSet> getOptionSets()
+    public List<OptionSet> getOptionSetList()
     {
-        return optionSets;
+        return optionSetList;
     }
 
-    public void setOptionSets( List<OptionSet> optionSets )
+    public void setOptionSetList( List<OptionSet> optionSetList )
     {
-        this.optionSets = optionSets;
+        this.optionSetList = optionSetList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "dataElementGroups", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "dataElementGroup", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementGroup> getDataElementGroups()
+    public List<DataElementGroup> getDataElementGroupList()
     {
-        return dataElementGroups;
+        return dataElementGroupList;
     }
 
-    public void setDataElementGroups( List<DataElementGroup> dataElementGroups )
+    public void setDataElementGroupList( List<DataElementGroup> dataElementGroupList )
     {
-        this.dataElementGroups = dataElementGroups;
+        this.dataElementGroupList = dataElementGroupList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "dataElementGroupSets", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "dataElementGroupSet", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementGroupSet> getDataElementGroupSets()
+    public List<DataElementGroupSet> getDataElementGroupSetList()
     {
-        return dataElementGroupSets;
+        return dataElementGroupSetList;
     }
 
-    public void setDataElementGroupSets( List<DataElementGroupSet> dataElementGroupSets )
+    public void setDataElementGroupSetList( List<DataElementGroupSet> dataElementGroupSetList )
     {
-        this.dataElementGroupSets = dataElementGroupSets;
+        this.dataElementGroupSetList = dataElementGroupSetList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "concepts", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "concept", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Concept> getConcepts()
+    public List<Concept> getConceptList()
     {
-        return concepts;
+        return conceptList;
     }
 
-    public void setConcepts( List<Concept> concepts )
+    public void setConceptList( List<Concept> conceptList )
     {
-        this.concepts = concepts;
+        this.conceptList = conceptList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "categories", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "category", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementCategory> getCategories()
+    public List<DataElementCategory> getCategoryList()
     {
-        return categories;
+        return categoryList;
     }
 
-    public void setCategories( List<DataElementCategory> categories )
+    public void setCategoryList( List<DataElementCategory> categoryList )
     {
-        this.categories = categories;
+        this.categoryList = categoryList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "categoryOptions", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "categoryOption", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementCategoryOption> getCategoryOptions()
+    public List<DataElementCategoryOption> getCategoryOptionList()
     {
-        return categoryOptions;
+        return categoryOptionList;
     }
 
-    public void setCategoryOptions( List<DataElementCategoryOption> categoryOptions )
+    public void setCategoryOptionList( List<DataElementCategoryOption> categoryOptionList )
     {
-        this.categoryOptions = categoryOptions;
+        this.categoryOptionList = categoryOptionList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "categoryCombos", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "categoryCombo", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementCategoryCombo> getCategoryCombos()
+    public List<DataElementCategoryCombo> getCategoryComboList()
     {
-        return categoryCombos;
+        return categoryComboList;
     }
 
-    public void setCategoryCombos( List<DataElementCategoryCombo> categoryCombos )
+    public void setCategoryComboList( List<DataElementCategoryCombo> categoryComboList )
     {
-        this.categoryCombos = categoryCombos;
+        this.categoryComboList = categoryComboList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "categoryOptionCombos", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "categoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementCategoryOptionCombo> getCategoryOptionCombos()
+    public List<DataElementCategoryOptionCombo> getCategoryOptionComboList()
     {
-        return categoryOptionCombos;
+        return categoryOptionComboList;
     }
 
-    public void setCategoryOptionCombos( List<DataElementCategoryOptionCombo> categoryOptionCombos )
+    public void setCategoryOptionComboList( List<DataElementCategoryOptionCombo> categoryOptionComboList )
     {
-        this.categoryOptionCombos = categoryOptionCombos;
+        this.categoryOptionComboList = categoryOptionComboList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "indicators", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "indicator", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Indicator> getIndicators()
+    public List<Indicator> getIndicatorList()
     {
-        return indicators;
+        return indicatorList;
     }
 
-    public void setIndicators( List<Indicator> indicators )
+    public void setIndicatorList( List<Indicator> indicatorList )
     {
-        this.indicators = indicators;
+        this.indicatorList = indicatorList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "indicatorGroups", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "indicatorGroup", namespace = Dxf2Namespace.NAMESPACE )
-    public List<IndicatorGroup> getIndicatorGroups()
+    public List<IndicatorGroup> getIndicatorGroupList()
     {
-        return indicatorGroups;
+        return indicatorGroupList;
     }
 
-    public void setIndicatorGroups( List<IndicatorGroup> indicatorGroups )
+    public void setIndicatorGroupList( List<IndicatorGroup> indicatorGroupList )
     {
-        this.indicatorGroups = indicatorGroups;
+        this.indicatorGroupList = indicatorGroupList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "indicatorGroupSets", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "indicatorGroupSet", namespace = Dxf2Namespace.NAMESPACE )
-    public List<IndicatorGroupSet> getIndicatorGroupSets()
+    public List<IndicatorGroupSet> getIndicatorGroupSetList()
     {
-        return indicatorGroupSets;
+        return indicatorGroupSetList;
     }
 
-    public void setIndicatorGroupSets( List<IndicatorGroupSet> indicatorGroupSets )
+    public void setIndicatorGroupSetList( List<IndicatorGroupSet> indicatorGroupSetList )
     {
-        this.indicatorGroupSets = indicatorGroupSets;
+        this.indicatorGroupSetList = indicatorGroupSetList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "indicatorTypes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "indicatorType", namespace = Dxf2Namespace.NAMESPACE )
-    public List<IndicatorType> getIndicatorTypes()
+    public List<IndicatorType> getIndicatorTypeList()
     {
-        return indicatorTypes;
+        return indicatorTypeList;
     }
 
-    public void setIndicatorTypes( List<IndicatorType> indicatorTypes )
+    public void setIndicatorTypeList( List<IndicatorType> indicatorTypeList )
     {
-        this.indicatorTypes = indicatorTypes;
+        this.indicatorTypeList = indicatorTypeList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
-    public List<OrganisationUnit> getOrganisationUnits()
+    public List<OrganisationUnit> getOrganisationUnitList()
     {
-        return organisationUnits;
+        return organisationUnitList;
     }
 
-    public void setOrganisationUnits( List<OrganisationUnit> organisationUnits )
+    public void setOrganisationUnitList( List<OrganisationUnit> organisationUnitList )
     {
-        this.organisationUnits = organisationUnits;
+        this.organisationUnitList = organisationUnitList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
-    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
+    public List<OrganisationUnitGroup> getOrganisationUnitGroupList()
     {
-        return organisationUnitGroups;
+        return organisationUnitGroupList;
     }
 
-    public void setOrganisationUnitGroups( List<OrganisationUnitGroup> organisationUnitGroups )
+    public void setOrganisationUnitGroupList( List<OrganisationUnitGroup> organisationUnitGroupList )
     {
-        this.organisationUnitGroups = organisationUnitGroups;
+        this.organisationUnitGroupList = organisationUnitGroupList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "organisationUnitGroupSets", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "organisationUnitGroupSet", namespace = Dxf2Namespace.NAMESPACE )
-    public List<OrganisationUnitGroupSet> getOrganisationUnitGroupSets()
+    public List<OrganisationUnitGroupSet> getOrganisationUnitGroupSetList()
     {
-        return organisationUnitGroupSets;
+        return organisationUnitGroupSetList;
     }
 
-    public void setOrganisationUnitGroupSets( List<OrganisationUnitGroupSet> organisationUnitGroupSets )
+    public void setOrganisationUnitGroupSetList( List<OrganisationUnitGroupSet> organisationUnitGroupSetList )
     {
-        this.organisationUnitGroupSets = organisationUnitGroupSets;
+        this.organisationUnitGroupSetList = organisationUnitGroupSetList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "organisationUnitLevels", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "organisationUnitLevel", namespace = Dxf2Namespace.NAMESPACE )
-    public List<OrganisationUnitLevel> getOrganisationUnitLevels()
+    public List<OrganisationUnitLevel> getOrganisationUnitLevelList()
     {
-        return organisationUnitLevels;
+        return organisationUnitLevelList;
     }
 
-    public void setOrganisationUnitLevels( List<OrganisationUnitLevel> organisationUnitLevels )
+    public void setOrganisationUnitLevelList( List<OrganisationUnitLevel> organisationUnitLevelList )
     {
-        this.organisationUnitLevels = organisationUnitLevels;
+        this.organisationUnitLevelList = organisationUnitLevelList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "sections", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "section", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Section> getSections()
+    public List<Section> getSectionList()
     {
-        return sections;
+        return sectionList;
     }
 
-    public void setSections( List<Section> sections )
+    public void setSectionList( List<Section> sectionList )
     {
-        this.sections = sections;
+        this.sectionList = sectionList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataSet> getDataSets()
+    public List<DataSet> getDataSetList()
     {
-        return dataSets;
+        return dataSetList;
     }
 
-    public void setDataSets( List<DataSet> dataSets )
+    public void setDataSetList( List<DataSet> dataSetList )
     {
-        this.dataSets = dataSets;
+        this.dataSetList = dataSetList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "validationRules", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "validationRule", namespace = Dxf2Namespace.NAMESPACE )
-    public List<ValidationRule> getValidationRules()
+    public List<ValidationRule> getValidationRuleList()
     {
-        return validationRules;
+        return validationRuleList;
     }
 
-    public void setValidationRules( List<ValidationRule> validationRules )
+    public void setValidationRuleList( List<ValidationRule> validationRuleList )
     {
-        this.validationRules = validationRules;
+        this.validationRuleList = validationRuleList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "validationRuleGroups", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "validationRuleGroup", namespace = Dxf2Namespace.NAMESPACE )
-    public List<ValidationRuleGroup> getValidationRuleGroups()
+    public List<ValidationRuleGroup> getValidationRuleGroupList()
     {
-        return validationRuleGroups;
+        return validationRuleGroupList;
     }
 
-    public void setValidationRuleGroups( List<ValidationRuleGroup> validationRuleGroups )
+    public void setValidationRuleGroupList( List<ValidationRuleGroup> validationRuleGroupList )
     {
-        this.validationRuleGroups = validationRuleGroups;
+        this.validationRuleGroupList = validationRuleGroupList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "sqlViews", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "sqlView", namespace = Dxf2Namespace.NAMESPACE )
-    public List<SqlView> getSqlViews()
+    public List<SqlView> getSqlViewList()
     {
-        return sqlViews;
+        return sqlViewList;
     }
 
-    public void setSqlViews( List<SqlView> sqlViews )
+    public void setSqlViewList( List<SqlView> sqlViewList )
     {
-        this.sqlViews = sqlViews;
+        this.sqlViewList = sqlViewList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "charts", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "chart", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Chart> getCharts()
+    public List<Chart> getChartList()
     {
-        return charts;
+        return chartList;
     }
 
-    public void setCharts( List<Chart> charts )
+    public void setChartList( List<Chart> chartList )
     {
-        this.charts = charts;
+        this.chartList = chartList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "reports", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "report", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Report> getReports()
+    public List<Report> getReportList()
     {
-        return reports;
+        return reportList;
     }
 
-    public void setReports( List<Report> reports )
+    public void setReportList( List<Report> reportList )
     {
-        this.reports = reports;
+        this.reportList = reportList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "reportTables", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "reportTable", namespace = Dxf2Namespace.NAMESPACE )
-    public List<ReportTable> getReportTables()
+    public List<ReportTable> getReportTableList()
     {
-        return reportTables;
+        return reportTableList;
     }
 
-    public void setReportTables( List<ReportTable> reportTables )
+    public void setReportTableList( List<ReportTable> reportTableList )
     {
-        this.reportTables = reportTables;
+        this.reportTableList = reportTableList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "documents", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "document", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Document> getDocuments()
+    public List<Document> getDocumentList()
     {
-        return documents;
+        return documentList;
     }
 
-    public void setDocuments( List<Document> documents )
+    public void setDocumentList( List<Document> documentList )
     {
-        this.documents = documents;
+        this.documentList = documentList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "constants", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "constant", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Constant> getConstants()
+    public List<Constant> getConstantList()
     {
-        return constants;
+        return constantList;
     }
 
-    public void setConstants( List<Constant> constants )
+    public void setConstantList( List<Constant> constantList )
     {
-        this.constants = constants;
+        this.constantList = constantList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "maps", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "map", namespace = Dxf2Namespace.NAMESPACE )
-    public List<MapView> getMaps()
+    public List<MapView> getMapList()
     {
-        return maps;
+        return mapList;
     }
 
-    public void setMaps( List<MapView> maps )
+    public void setMapList( List<MapView> mapList )
     {
-        this.maps = maps;
+        this.mapList = mapList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "mapLegends", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "mapLegend", namespace = Dxf2Namespace.NAMESPACE )
-    public List<MapLegend> getMapLegends()
+    public List<MapLegend> getMapLegendList()
     {
-        return mapLegends;
+        return mapLegendList;
     }
 
-    public void setMapLegends( List<MapLegend> mapLegends )
+    public void setMapLegendList( List<MapLegend> mapLegendList )
     {
-        this.mapLegends = mapLegends;
+        this.mapLegendList = mapLegendList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "mapLegendSets", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "mapLegendSet", namespace = Dxf2Namespace.NAMESPACE )
-    public List<MapLegendSet> getMapLegendSets()
+    public List<MapLegendSet> getMapLegendSetList()
     {
-        return mapLegendSets;
+        return mapLegendSetList;
     }
 
-    public void setMapLegendSets( List<MapLegendSet> mapLegendSets )
+    public void setMapLegendSetList( List<MapLegendSet> mapLegendSetList )
     {
-        this.mapLegendSets = mapLegendSets;
+        this.mapLegendSetList = mapLegendSetList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "mapLayers", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "mapLayer", namespace = Dxf2Namespace.NAMESPACE )
-    public List<MapLayer> getMapLayers()
+    public List<MapLayer> getMapLayerList()
     {
-        return mapLayers;
+        return mapLayerList;
     }
 
-    public void setMapLayers( List<MapLayer> mapLayers )
+    public void setMapLayerList( List<MapLayer> mapLayerList )
     {
-        this.mapLayers = mapLayers;
+        this.mapLayerList = mapLayerList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "dataDictionaries", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "dataDictionary", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataDictionary> getDataDictionaries()
+    public List<DataDictionary> getDataDictionaryList()
     {
-        return dataDictionaries;
+        return dataDictionaryList;
     }
 
-    public void setDataDictionaries( List<DataDictionary> dataDictionaries )
+    public void setDataDictionaryList( List<DataDictionary> dataDictionaryList )
     {
-        this.dataDictionaries = dataDictionaries;
+        this.dataDictionaryList = dataDictionaryList;
     }
 
     @Override
     public String toString()
     {
         return "MetaData{" +
-            "attributeTypes=" + attributeTypes.size() +
-            ", users=" + users.size() +
-            ", userAuthorityGroups=" + userAuthorityGroups.size() +
-            ", userGroups=" + userGroups.size() +
-            ", messageConversations=" + messageConversations.size() +
-            ", dataElements=" + dataElements.size() +
-            ", optionSets=" + optionSets.size() +
-            ", dataElementGroups=" + dataElementGroups.size() +
-            ", dataElementGroupSets=" + dataElementGroupSets.size() +
-            ", concepts=" + concepts.size() +
-            ", categories=" + categories.size() +
-            ", categoryOptions=" + categoryOptions.size() +
-            ", categoryCombos=" + categoryCombos.size() +
-            ", categoryOptionCombos=" + categoryOptionCombos.size() +
-            ", indicators=" + indicators.size() +
-            ", indicatorGroups=" + indicatorGroups.size() +
-            ", indicatorGroupSets=" + indicatorGroupSets.size() +
-            ", indicatorTypes=" + indicatorTypes.size() +
-            ", organisationUnits=" + organisationUnits.size() +
-            ", organisationUnitGroups=" + organisationUnitGroups.size() +
-            ", organisationUnitGroupSets=" + organisationUnitGroupSets.size() +
-            ", organisationUnitLevels=" + organisationUnitLevels.size() +
-            ", sections=" + sections.size() +
-            ", dataSets=" + dataSets.size() +
-            ", validationRules=" + validationRules.size() +
-            ", validationRuleGroups=" + validationRuleGroups.size() +
-            ", sqlViews=" + sqlViews.size() +
-            ", charts=" + charts.size() +
-            ", reports=" + reports.size() +
-            ", reportTables=" + reportTables.size() +
-            ", documents=" + documents.size() +
-            ", constants=" + constants.size() +
-            ", maps=" + maps.size() +
-            ", mapLegends=" + mapLegends.size() +
-            ", mapLegendSets=" + mapLegendSets.size() +
-            ", mapLayers=" + mapLayers.size() +
-            ", dataDictionaries=" + dataDictionaries.size() +
+            "attributeTypes=" + attributeTypeList.size() +
+            ", users=" + userList.size() +
+            ", userAuthorityGroups=" + userAuthorityGroupList.size() +
+            ", userGroups=" + userGroupList.size() +
+            ", messageConversations=" + messageConversationList.size() +
+            ", dataElements=" + dataElementList.size() +
+            ", optionSets=" + optionSetList.size() +
+            ", dataElementGroups=" + dataElementGroupList.size() +
+            ", dataElementGroupSets=" + dataElementGroupSetList.size() +
+            ", concepts=" + conceptList.size() +
+            ", categories=" + categoryList.size() +
+            ", categoryOptions=" + categoryOptionList.size() +
+            ", categoryCombos=" + categoryComboList.size() +
+            ", categoryOptionCombos=" + categoryOptionComboList.size() +
+            ", indicators=" + indicatorList.size() +
+            ", indicatorGroups=" + indicatorGroupList.size() +
+            ", indicatorGroupSets=" + indicatorGroupSetList.size() +
+            ", indicatorTypes=" + indicatorTypeList.size() +
+            ", organisationUnits=" + organisationUnitList.size() +
+            ", organisationUnitGroups=" + organisationUnitGroupList.size() +
+            ", organisationUnitGroupSets=" + organisationUnitGroupSetList.size() +
+            ", organisationUnitLevels=" + organisationUnitLevelList.size() +
+            ", sections=" + sectionList.size() +
+            ", dataSets=" + dataSetList.size() +
+            ", validationRules=" + validationRuleList.size() +
+            ", validationRuleGroups=" + validationRuleGroupList.size() +
+            ", sqlViews=" + sqlViewList.size() +
+            ", charts=" + chartList.size() +
+            ", reports=" + reportList.size() +
+            ", reportTables=" + reportTableList.size() +
+            ", documents=" + documentList.size() +
+            ", constants=" + constantList.size() +
+            ", maps=" + mapList.size() +
+            ", mapLegends=" + mapLegendList.size() +
+            ", mapLegendSets=" + mapLegendSetList.size() +
+            ", mapLayers=" + mapLayerList.size() +
+            ", dataDictionaries=" + dataDictionaryList.size() +
             '}';
     }
 }

@@ -93,7 +93,7 @@ public class OrganisationUnitLevelController
         }
 
         model.addAttribute( "model", organisationUnitLevel );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "organisationUnitLevel";
     }

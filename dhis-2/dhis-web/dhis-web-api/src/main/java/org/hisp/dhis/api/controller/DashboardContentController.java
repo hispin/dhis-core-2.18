@@ -95,7 +95,7 @@ public class DashboardContentController
         */
 
         model.addAttribute( "model", dashboardContent );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "dashboardContent";
     }

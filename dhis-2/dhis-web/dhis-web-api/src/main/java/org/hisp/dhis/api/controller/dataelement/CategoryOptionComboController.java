@@ -88,7 +88,7 @@ public class CategoryOptionComboController
         }
 
         model.addAttribute( "model", categoryOptionCombo );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "categoryOptionCombo";
     }

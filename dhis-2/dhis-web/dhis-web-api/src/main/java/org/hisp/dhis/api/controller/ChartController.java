@@ -133,7 +133,7 @@ public class ChartController
         }
 
         model.addAttribute( "model", chart );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "chart";
     }

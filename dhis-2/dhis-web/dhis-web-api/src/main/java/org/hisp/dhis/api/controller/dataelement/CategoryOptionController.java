@@ -111,7 +111,7 @@ public class CategoryOptionController
         }
 
         model.addAttribute( "model", categoryOption );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "categoryOption";
     }

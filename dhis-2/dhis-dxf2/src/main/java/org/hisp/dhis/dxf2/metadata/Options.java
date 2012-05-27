@@ -49,29 +49,101 @@ public class Options
         return DEFAULT_OPTIONS;
     }
 
-    private static Date stringAsDate( String str )
+    protected static String stringAsString( String str, String defaultValue )
+    {
+        if ( str == null )
+        {
+            str = defaultValue;
+        }
+
+        return str;
+    }
+
+    protected static Date stringAsDate( String str )
     {
         if ( str == null )
         {
             return null;
         }
 
-        try
+        String patterns[] = new String[]{
+            "dd/MM/yyyy",
+            "MM/yyyy",
+            "yyyy"
+        };
+
+        for(String pattern : patterns)
         {
-            return new SimpleDateFormat( "dd/MM/yyyy" ).parse( str );
-        } catch ( ParseException ignored )
-        {
+            Date date = getDateByPattern(str, pattern);
+
+            if(date != null)
+            {
+                return date;
+            }
         }
 
         return null;
     }
 
-    private static boolean stringAsBoolean( String str )
+    protected static Date getDateByPattern( String str, String pattern )
     {
-        return str != null && str.equalsIgnoreCase( "true" );
+        if ( str != null )
+        {
+            try
+            {
+                return new SimpleDateFormat( pattern ).parse( str );
+            } catch ( ParseException ignored )
+            {
+            }
+        }
+
+        return null;
     }
 
-    private static boolean isTrue( String str )
+    protected static boolean stringAsBoolean( String str )
+    {
+        return stringAsBoolean( str, false );
+    }
+
+    protected static boolean stringAsBoolean( String str, boolean defaultValue )
+    {
+        if ( str != null )
+        {
+            if ( str.equalsIgnoreCase( "true" ) )
+            {
+                return true;
+            }
+            else if ( str.equalsIgnoreCase( "false" ) )
+            {
+                return false;
+            }
+        }
+
+        return defaultValue;
+    }
+
+
+    protected static int stringAsInt( String str )
+    {
+        return stringAsInt( str, 0 );
+    }
+
+    protected static int stringAsInt( String str, int defaultValue )
+    {
+        if ( str != null )
+        {
+            try
+            {
+                return Integer.parseInt( str );
+            } catch ( NumberFormatException ignored )
+            {
+            }
+        }
+
+        return defaultValue;
+    }
+
+    protected static boolean isTrue( String str )
     {
         return stringAsBoolean( str );
     }
@@ -80,9 +152,9 @@ public class Options
     // Internal State
     //--------------------------------------------------------------------------
 
-    private Map<String, String> options = new HashMap<String, String>();
+    protected Map<String, String> options = new HashMap<String, String>();
 
-    private boolean assumeTrue;
+    protected boolean assumeTrue;
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -127,7 +199,7 @@ public class Options
 
     public Date getDate( String key )
     {
-        return stringAsDate( options.get( key ));
+        return stringAsDate( options.get( key ) );
     }
 
     //--------------------------------------------------------------------------
@@ -152,5 +224,14 @@ public class Options
     public void setAssumeTrue( boolean assumeTrue )
     {
         this.assumeTrue = assumeTrue;
+    }
+
+    //--------------------------------------------------------------------------
+    // Getters for standard options
+    //--------------------------------------------------------------------------
+
+    public Date getLastUpdated()
+    {
+        return getDate( "lastUpdated" );
     }
 }

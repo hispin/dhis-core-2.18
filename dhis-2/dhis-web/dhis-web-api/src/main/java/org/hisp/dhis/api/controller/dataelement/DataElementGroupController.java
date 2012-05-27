@@ -28,7 +28,6 @@ package org.hisp.dhis.api.controller.dataelement;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -59,9 +58,6 @@ public class DataElementGroupController
 
     @Autowired
     private DataElementService dataElementService;
-
-    @Autowired
-    private ObjectPersister objectPersister;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -112,7 +108,7 @@ public class DataElementGroupController
         }
 
         model.addAttribute( "model", dataElementGroup );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "dataElementGroup";
     }
@@ -125,8 +121,7 @@ public class DataElementGroupController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUP_ADD')" )
     public void postDataElementGroupXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        //DataElementGroup dataElementGroup = Jaxb2Utils.unmarshal( DataElementGroup.class, input );
-        //postDataElementGroup( dataElementGroup, response );
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
@@ -134,34 +129,6 @@ public class DataElementGroupController
     public void postDataElementGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    public void postDataElementGroup( DataElementGroup dataElementGroup, HttpServletResponse response )
-    {
-        if ( dataElementGroup == null )
-        {
-            response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
-        }
-        else
-        {
-            try
-            {
-                dataElementGroup = objectPersister.persistDataElementGroup( dataElementGroup );
-
-                if ( dataElementGroup.getUid() == null )
-                {
-                    response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-                }
-                else
-                {
-                    response.setStatus( HttpServletResponse.SC_CREATED );
-                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + dataElementGroup.getUid() );
-                }
-            } catch ( Exception e )
-            {
-                response.setStatus( HttpServletResponse.SC_CONFLICT );
-            }
-        }
     }
 
     //-------------------------------------------------------------------------------------------------------

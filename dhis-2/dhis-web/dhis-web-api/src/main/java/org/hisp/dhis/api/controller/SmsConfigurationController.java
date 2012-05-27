@@ -83,7 +83,7 @@ public class SmsConfigurationController
         smsConfiguration.setGateways( Collections.singletonList( gatewayConfig ) );
         
         model.addAttribute( "model", smsConfiguration );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "viewClass", "detailed" );
 
         return "smsConfiguration";
     }
