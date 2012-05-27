@@ -3,6 +3,8 @@
 #set( $noHeader = $grid.getHeaders().size() )
 #set ( $metaData = $noHeader - $valueTypes.size() )
 "total": "${total}",
+"currentPage": "$paging.currentPage",
+"pageSize": "$paging.pageSize",
 "columns":[
   #set($index = 0)
   #foreach( $col in $grid.getHeaders() )
@@ -22,12 +24,10 @@
 "items":[
   [
   "$i18n.getString( 'filter' )",
-  #foreach( $col in [1..${noHeader}] )""#if( $velocityCount < $noHeader ),#end#end
+  #foreach( $col in [2..${noHeader}] )""#if( $velocityCount < $noHeader - 1 ),#end#end
   ],
   #foreach( $row in $grid.getRows() )
   [
-    #set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
-    ${nr},
     #foreach( $col in $row )
 	#set($colName = "col"+ $velocityCount)
     "$!encoder.htmlEncode( $col )"#if( $velocityCount < $noHeader ),#end

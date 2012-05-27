@@ -213,7 +213,7 @@ public class DefaultProgramStageInstanceService
         System.out.println("attributeKeys "+attributeKeys);
         System.out.println("dataElementKeys "+dataElementKeys);
 
-        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels() - 1;
+        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
         
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
         
