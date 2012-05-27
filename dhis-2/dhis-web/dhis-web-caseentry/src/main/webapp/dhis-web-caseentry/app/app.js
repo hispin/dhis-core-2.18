@@ -1094,11 +1094,7 @@ Ext.onReady( function() {
 			// Data element columns
 			
 			TR.cmp.params.dataelement.selected.store.each( function(r) {
-				++index;
-				console.log(TR.value.columns);
-				console.log(r);
-				
-				cols[index] = {
+				cols[++index] = {
 					header: TR.value.columns[index].name, 
 					dataIndex: 'col' + index,
 					height: TR.conf.layout.east_gridcolumn_height,

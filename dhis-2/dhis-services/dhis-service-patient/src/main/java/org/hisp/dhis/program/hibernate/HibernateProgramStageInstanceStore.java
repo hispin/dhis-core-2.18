@@ -215,7 +215,7 @@ public class HibernateProgramStageInstanceStore
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
         int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
-        int min, int max, I18nFormat format, I18n i18n )
+        Integer min, Integer max, I18nFormat format, I18n i18n )
     {
         Grid grid = new ListGrid();
         
@@ -285,8 +285,8 @@ public class HibernateProgramStageInstanceStore
         
         sql += "psi.executiondate ";
         sql += descOrder ? "desc " : "";
-        sql += "offset 0 limit 50 ";
-        sql += ") as tabular "; //TODO page
+        sql += min != null && max != null ? "offset 0 limit 50 " : ""; //TODO page size
+        sql += ") as tabular ";
         
         String operator = "where ";
         
