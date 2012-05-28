@@ -343,6 +343,9 @@ function dataSetSelected()
 	clearListById( 'selectedPeriodId' );
 	hideById('attributeDiv');
 	
+	$( '#valueInput' ).unbind( 'change' );
+	$( '#value' ).unbind( 'select' );
+	$( '#selectedPeriodId' ).unbind( 'change' );
 	$( '#selectedPeriodId' ).removeAttr( 'disabled' );
     $( '#prevButton' ).removeAttr( 'disabled' );
     $( '#nextButton' ).removeAttr( 'disabled' );
@@ -387,9 +390,10 @@ function loadSubDataSets( dataSetId )
 		},
 		function( json ) 
 		{
-			if( json.department.length > 0 )
+			clearListById( 'subDataSetId' );
+		
+			if ( json.department.length > 0 )
 			{
-				clearListById( 'subDataSetId' );
 				$('#subDataSetId').append('<option value=-1>' + i18n_please_select_department + '</option>');
 				for ( i in json.department ) 
 				{ 
@@ -397,12 +401,11 @@ function loadSubDataSets( dataSetId )
 				}
 				
 				byId( 'inputCriteria' ).style.width = '840px';
-				showById('departmentTitleDiv');
-				showById('departmentDiv');
+				showById( 'departmentTitleDiv' );
+				showById( 'departmentDiv' );
 				
-				jQuery("#valueInput").unbind('change');
-				jQuery("#value").unbind('select');
-				jQuery('#selectedPeriodId').bind('change', periodSelected);
+				jQuery( '#valueInput' ).unbind( 'change' );
+				jQuery( '#value' ).unbind( 'select' );
 			}
 			else 
 			{
@@ -412,41 +415,43 @@ function loadSubDataSets( dataSetId )
 				hideById('departmentTitleDiv');
 				hideById('departmentDiv');
 			}
+
+			jQuery( '#selectedPeriodId' ).bind( 'change', periodSelected );
 		} );
 }
 
 function loadAttributeValues( dataSetId )
 {
 	$.getJSON( 'loadAttribueValues.action',
+	{
+		dataSetId: dataSetId
+	}
+	, function( json )
+	{
+		clearListById( 'value' );
+	
+		if( json.attributeValues.length > 0 )
 		{
-			dataSetId: dataSetId
-		}
-		, function( json ) 
-		{
-			if( json.attributeValues.length > 0 )
-			{
-				clearListById( 'value' );
-				for ( i in json.attributeValues ) 
-				{ 
-					$('#value').append('<option value="' + json.attributeValues[i] + '">' + json.attributeValues[i] + '</option>');
-				}
-
-				autoCompletedField();
-
-				jQuery("#valueInput").bind('change', periodSelected('bind change'));
-				jQuery("#value").bind('select', periodSelected('bind select'));
-				
-				showById('attributeDiv');
+			for ( i in json.attributeValues ) 
+			{ 
+				jQuery( '#value' ).append( '<option value="' + json.attributeValues[i] + '">' + json.attributeValues[i] + '</option>' );
 			}
-			else
-			{
-				jQuery("#valueInput").unbind('change');
-				jQuery("#value").unbind('select');
-				hideById('attributeDiv');
-			}
+
+			autoCompletedField();
+
+			jQuery( '#valueInput' ).bind( 'change', periodSelected() );
+			jQuery( '#value' ).bind( 'select', periodSelected() );
 			
-			jQuery('#selectedPeriodId').bind('change', periodSelected);
-		} );
+			showById( 'attributeDiv' );
+		}
+		else
+		{
+			jQuery( '#valueInput' ).unbind( 'change' );
+			jQuery( '#value' ).unbind( 'select' );
+
+			hideById( 'attributeDiv' );
+		}
+	} );
 }
 
 // -----------------------------------------------------------------------------
@@ -480,16 +485,21 @@ function periodSelected()
 
     $( '#currentPeriod' ).html( periodName );
 
-    var periodId = $( '#selectedPeriodId' ).val();
+    var periodId = getFieldValue( 'selectedPeriodId' );
 
     if ( periodId && periodId != -1 )
     {
-		if ( hasElements( 'subDataSetId' ) && getFieldValue( 'subDataSetId' ) == null ) {
+		if ( hasElements( 'subDataSetId' ) && getFieldValue( 'subDataSetId' ) == null )
+		{
 			return;
-		} else {
-			showLoader();
-			loadForm( dataSetId, getFieldValue( 'valueInput' ) );
 		}
+		else if ( getFieldValue( 'subDataSetId' ) )
+		{
+			dataSetId = $( '#subDataSetId option:selected' ).val();
+		}
+
+		showLoader();
+		loadForm( dataSetId, getFieldValue( 'valueInput' ) );
     }
 	else
 	{
