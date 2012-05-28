@@ -27,24 +27,11 @@
 
 package org.hisp.dhis.light.beneficiaryenrollment.action;
 
-import org.hisp.dhis.user.CurrentUserService;
-
 import com.opensymphony.xwork2.Action;
 
 public class GetBeneficiarySearchingFormAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------

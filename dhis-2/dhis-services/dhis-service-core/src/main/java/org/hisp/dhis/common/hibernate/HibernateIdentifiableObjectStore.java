@@ -31,9 +31,6 @@ import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 
-import java.util.Date;
-import java.util.List;
-
 /**
  * @author bobj
  */
