@@ -109,6 +109,7 @@ TR.conf = {
     layout: {
         west_width: 424,
         west_fieldset_width: 402,
+		west_multiselect: 100,
         west_width_subtractor: 18,
         west_fill: 117,
         west_fill_accordion_organisationunit: 50,
@@ -198,8 +199,8 @@ Ext.onReady( function() {
                 return ((screen.height/2)-((cmp.height/2)-100));
             },
             resizeParams: function() {
-				var a = [TR.cmp.params.identifierType.panel, TR.cmp.params.patientAttribute.panel, 
-						 TR.cmp.params.dataelement.panel, TR.cmp.params.organisationunit.treepanel];
+				var a = [TR.cmp.params.identifierType.panel, TR.cmp.params.dataelement.panel, 
+						 TR.cmp.params.organisationunit.treepanel];
 				for (var i = 0; i < a.length; i++) {
 					if (!a[i].collapsed) {
 						a[i].fireEvent('expand');
@@ -284,7 +285,7 @@ Ext.onReady( function() {
             },
             setHeight: function(ms, panel, fill) {
 				for (var i = 0; i < ms.length; i++) {
-					ms[i].setHeight(panel.getHeight() - 45);
+					ms[i].setHeight(panel.getHeight() - 250);
 				}
 			}
         },
@@ -691,6 +692,29 @@ Ext.onReady( function() {
 							  this.callParent();
 						 }
 					});
+					
+					if( TR.store.programStage.data.items.length > 1 )
+					{
+						Ext.getCmp('programStageCombobox').setVisible(true);
+					}
+					else
+					{
+						Ext.getCmp('programStageCombobox').setVisible(false);
+						var programStageId = TR.store.programStage.data.items[0].raw.id;
+						Ext.getCmp('programStageCombobox').setValue( programStageId );
+						var store = TR.store.dataelement.available;
+						TR.store.dataelement.available.loadData([],false);
+						TR.store.dataelement.selected.loadData([],false);
+						store.parent =programStageId;
+						
+						if (TR.util.store.containsParent(store)) {
+							TR.util.store.loadFromStorage(store);
+							TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+						}
+						else {
+							store.load({params: {programStageId: programStageId}});
+						}
+					}
 				}
 			}
 		}),
@@ -800,11 +824,9 @@ Ext.onReady( function() {
 						TR.value.values=json.items;
 						
 						var fields = [];
-						fields[0] = "id";
 						for( var index=0; index < TR.value.columns.length; index++ )
 						{
-							var i = index + 1;
-							fields[i] = 'col' + i;
+							fields[index] = 'col' + index;
 						}
 		
 						TR.value.fields = fields;
@@ -815,7 +837,6 @@ Ext.onReady( function() {
 							TR.datatable.getDataTable();
 							TR.datatable.setPagingToolbarStatus();
 							
-							Ext.getCmp('btnReset').enable();
 							Ext.getCmp('btnFilter').enable();
 							Ext.getCmp('btnClean').enable();
 							Ext.getCmp('btnSortBy').enable();
@@ -852,7 +873,7 @@ Ext.onReady( function() {
 			
 			// Get searching values
 			p.searchingValues = [];
-			if( TR.store.datatable && TR.store.datatable.data.length)
+			if( !TR.state.paramChanged() )
 			{
 				var grid = TR.datatable.datatable;
 				var cols = grid.columns;
@@ -916,7 +937,7 @@ Ext.onReady( function() {
 					p+="&fixedAttributes=" + item.paramName;
 			});
 			
-			if( TR.store.datatable && TR.store.datatable.data.length)
+			if( !TR.state.paramChanged() )
 			{
 				var grid = TR.datatable.datatable;
 				var cols = grid.columns;
@@ -956,6 +977,33 @@ Ext.onReady( function() {
 			
             return p;
         },
+		paramChanged: function() {
+			if( TR.store.datatable && TR.store.datatable.data.length)
+			{
+				var colNames = new Array();
+				TR.cmp.params.identifierType.selected.store.each( function(r) {
+					colNames.push( 'iden_' + r.data.id + '_' );
+				});
+				TR.cmp.params.patientAttribute.selected.store.each( function(r) {
+					colNames.push( 'attr_' + r.data.id + '_' );
+				});
+				TR.cmp.params.dataelement.selected.store.each( function(r) {
+					colNames.push( 'de_' + r.data.id + '_' );
+				});
+					
+				var cols = TR.datatable.datatable.columns;
+				for( var i=0; i<cols.length; i++ )
+				{
+					var col = cols[i];
+					if( col.name && col.name.indexOf('meta_')==-1 && colNames.indexOf(col.name) == -1 )
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			return true;
+		},
 		validation: {
 			params: function() {
 				if (!TR.c.params.program ) {
@@ -1044,6 +1092,24 @@ Ext.onReady( function() {
 					hidden: eval(TR.value.columns[index].hidden)
 				}
 			}
+			
+			// Fixed attributes
+			
+			Ext.Array.each(TR.cmp.params.fixedAttributes.checkbox, function(item) {
+				if( item.value )
+				{
+					cols[++index] = {
+						header: TR.value.columns[index].name, 
+						dataIndex: 'col' + index,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: item.paramName,
+						sortable: false,
+						draggable: false,
+						hidden: eval(TR.value.columns[index].hidden )
+					}
+				}
+			});
+			
 			
 			// Identifier columns
 			
@@ -1543,20 +1609,159 @@ Ext.onReady( function() {
 										}
 									},
 									
-									// IDENTIFIER TYPE
+									// IDENTIFIER TYPE and PATIENT-ATTRIBUTE
 									{
-										title: '<div style="height:17px">' + TR.i18n.identifiers + '</div>',
+										title: '<div style="height:17px">' + TR.i18n.identifiers_and_attributes + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
 												xtype: 'panel',
 												layout: 'column',
+												bodyStyle: 'border-style:none; padding:0px 0 0px 0px;',
+												items: [
+													{
+														xtype: 'checkbox',
+														id: 'selectAll',
+														handler: function() {
+															var checked = Ext.getCmp('selectAll').value;
+															Ext.Array.each(TR.cmp.params.fixedAttributes.checkbox, function(item) {
+																item.setValue( checked );
+															});
+														}
+													},{
+														xtype: 'label',
+														text: TR.i18n.fixed_attributes,
+														style: 'font-size:11px; font-weight:bold; color:#444; padding:0 0 0 3px'
+													}
+													
+												]
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'border-style:none; padding:5px 0 5px 8px;',
+												items: [
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:0 0 0 5px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'checkbox',
+																paramName: 'fullName',
+																boxLabel: TR.i18n.full_name
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'gender',
+																boxLabel: TR.i18n.gender
+															}
+														]
+													},
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:0 0 0 5px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'checkbox',
+																paramName: 'birthDate',
+																boxLabel: TR.i18n.date_of_birth
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'dobType',
+																boxLabel: TR.i18n.dob_type
+															}
+														]
+													},
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:0 0 0 5px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'checkbox',
+																paramName: 'phoneNumber',
+																boxLabel: TR.i18n.phone_number
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'deathdate',
+																boxLabel: TR.i18n.death_date
+															}
+														]
+													},
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:0 0 0 5px',
+														defaults: {
+															labelSeparator: '',
+															listeners: {
+																added: function(chb) {
+																	if (chb.xtype === 'checkbox') {
+																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
+																	}
+																}
+															}
+														},
+														items: [
+															{
+																xtype: 'checkbox',
+																paramName: 'dobType',
+																boxLabel: TR.i18n.dob_type
+															}
+														]
+													}
+												]
+											},
+											{
+												xtype: 'label',
+												text: TR.i18n.identifiers,
+												style: 'font-size:11px; font-weight:bold; color:#444; padding:0 0 0 3px'
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
 												bodyStyle: 'border-style:none',
 												items: [
-													Ext.create('Ext.ux.form.MultiSelect', {
+													{
+														xtype: 'multiselect',
 														name: 'availableIdentifierTypes',
 														cls: 'tr-toolbar-multiselect-left',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
+														height: TR.conf.layout.west_multiselect,
 														displayField: 'name',
 														valueField: 'id',
 														queryMode: 'local',
@@ -1596,12 +1801,13 @@ Ext.onReady( function() {
 																}, this);
 															}
 														}
-													}),                                            
+													},                                            
 													{
 														xtype: 'multiselect',
 														name: 'selectedIdentifierTypes',
 														cls: 'tr-toolbar-multiselect-right',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
+														height: TR.conf.layout.west_multiselect,
 														displayField: 'name',
 														valueField: 'id',
 														ddReorder: true,
@@ -1644,6 +1850,117 @@ Ext.onReady( function() {
 														}
 													}
 												]
+											},
+											{
+												xtype: 'panel',
+												bodyStyle: 'border-style:none;padding:5px 0 10px 0px;',
+												items: [
+													{
+														xtype: 'label',
+														text: TR.i18n.dynamic_attributes,
+														style: 'font-size:11px; font-weight:bold; color:#444; padding:0 0 0 3px'
+													},
+													{
+														xtype: 'panel',
+														layout: 'column',
+														bodyStyle: 'border-style:none',														
+														items: [
+															{
+																xtype: 'multiselect',
+																name: 'availablePatientAttributes',
+																cls: 'tr-toolbar-multiselect-left',
+																width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
+																height: TR.conf.layout.west_multiselect,
+																displayField: 'name',
+																valueField: 'id',
+																queryMode: 'local',
+																store: TR.store.patientAttribute.available,
+																tbar: [
+																	{
+																		xtype: 'label',
+																		text: TR.i18n.available,
+																		cls: 'tr-toolbar-multiselect-left-label'
+																	},
+																	'->',
+																	{
+																		xtype: 'button',
+																		icon: 'images/arrowright.png',
+																		width: 22,
+																		handler: function() {
+																			TR.util.multiselect.select(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
+																		}
+																	},
+																	{
+																		xtype: 'button',
+																		icon: 'images/arrowrightdouble.png',
+																		width: 22,
+																		handler: function() {
+																			TR.util.multiselect.selectAll(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
+																		}
+																	},
+																	' '
+																],
+																listeners: {
+																	added: function() {
+																		TR.cmp.params.patientAttribute.available = this;
+																	},                                                                
+																	afterrender: function() {
+																		this.boundList.on('itemdblclick', function() {
+																			TR.util.multiselect.select(this, TR.cmp.params.patientAttribute.selected);
+																		}, this);
+																	}
+																}
+															},                                            
+															{
+																xtype: 'multiselect',
+																name: 'selectedPatientAttribute',
+																cls: 'tr-toolbar-multiselect-right',
+																width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
+																height: TR.conf.layout.west_multiselect,
+																displayField: 'name',
+																valueField: 'id',
+																ddReorder: true,
+																queryMode: 'local',
+																store: TR.store.patientAttribute.selected,
+																tbar: [
+																	' ',
+																	{
+																		xtype: 'button',
+																		icon: 'images/arrowleftdouble.png',
+																		width: 22,
+																		handler: function() {
+																			TR.util.multiselect.unselectAll(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
+																		}
+																	},
+																	{
+																		xtype: 'button',
+																		icon: 'images/arrowleft.png',
+																		width: 22,
+																		handler: function() {
+																			TR.util.multiselect.unselect(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
+																		}
+																	},
+																	'->',
+																	{
+																		xtype: 'label',
+																		text: TR.i18n.selected,
+																		cls: 'tr-toolbar-multiselect-right-label'
+																	}
+																],
+																listeners: {
+																	added: function() {
+																		TR.cmp.params.patientAttribute.selected = this;
+																	},          
+																	afterrender: function() {
+																		this.boundList.on('itemdblclick', function() {
+																			TR.util.multiselect.unselect(TR.cmp.params.patientAttribute.available, this);
+																		}, this);
+																	}
+																}
+															}
+														]
+													}
+												]
 											}
 										],
 										listeners: {
@@ -1651,6 +1968,7 @@ Ext.onReady( function() {
 												TR.cmp.params.identifierType.panel = this;
 											},
 											expand: function() {
+												// IDENTIFIER TYPE
 												TR.util.multiselect.setHeight(
 													[TR.cmp.params.identifierType.available, TR.cmp.params.identifierType.selected],
 													TR.cmp.params.identifierType.panel
@@ -1660,230 +1978,8 @@ Ext.onReady( function() {
 												if (programId != null && !TR.store.identifierType.available.isloaded) {
 													TR.store.identifierType.available.load({params: {programId: programId}});
 												}
-											}
-										}
-									},
-									
-									// PATIENT-ATTRIBUTE
-									{
-										title: '<div style="height:17px">' + TR.i18n.attributes + '</div>',
-										hideCollapseTool: true,
-										items: [
-											{
-												xtype: 'label',
-												text: TR.i18n.fixed_attributes,
-												style: 'font-size:11px; font-weight:bold; color:#444; padding:0 0 0 3px'
-											},
-											{
-												xtype: 'panel',
-												layout: 'column',
-												bodyStyle: 'border-style:none; padding:5px 0 10px 8px;',
-												items: [
-													{
-														xtype: 'panel',
-														layout: 'anchor',
-														bodyStyle: 'border-style:none; padding:0 0 0 5px',
-														defaults: {
-															labelSeparator: '',
-															listeners: {
-																added: function(chb) {
-																	if (chb.xtype === 'checkbox') {
-																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
-																	}
-																}
-															}
-														},
-														items: [
-															{
-																xtype: 'checkbox',
-																paramName: 'fullName',
-																boxLabel: TR.i18n.full_name
-															},
-															{
-																xtype: 'checkbox',
-																paramName: 'gender',
-																boxLabel: TR.i18n.gender
-															},
-															{
-																xtype: 'checkbox',
-																paramName: 'birthDate',
-																boxLabel: TR.i18n.date_of_birth
-															}
-														]
-													},
-													{
-														xtype: 'panel',
-														layout: 'anchor',
-														bodyStyle: 'border-style:none; padding:0 0 0 32px',
-														defaults: {
-															labelSeparator: '',
-															listeners: {
-																added: function(chb) {
-																	if (chb.xtype === 'checkbox') {
-																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
-																	}
-																}
-															}
-														},
-														items: [
-															{
-																xtype: 'checkbox',
-																paramName: 'bloodGroup',
-																boxLabel: TR.i18n.blood_group
-															},
-															{
-																xtype: 'checkbox',
-																paramName: 'phoneNumber',
-																boxLabel: TR.i18n.phone_number
-															},
-															{
-																xtype: 'checkbox',
-																paramName: 'deathdate',
-																boxLabel: TR.i18n.death_date
-															}
-														]
-													},
-													
-													{
-														xtype: 'panel',
-														layout: 'anchor',
-														bodyStyle: 'border-style:none; padding:0 0 0 32px',
-														defaults: {
-															labelSeparator: '',
-															listeners: {
-																added: function(chb) {
-																	if (chb.xtype === 'checkbox') {
-																		TR.cmp.params.fixedAttributes.checkbox.push(chb);
-																	}
-																}
-															}
-														},
-														items: [
-															{
-																xtype: 'checkbox',
-																paramName: 'registrationDate',
-																boxLabel: TR.i18n.registration_date
-															},
-															{
-																xtype: 'checkbox',
-																paramName: 'dobType',
-																boxLabel: TR.i18n.dob_type
-															}
-														]
-													}
-													
-												]
-											},											
-											{
-												xtype: 'label',
-												text: TR.i18n.dynamic_attributes,
-												style: 'font-size:11px; font-weight:bold; color:#444; padding:0 0 0 3px'
-											},
-											{
-												xtype: 'panel',
-												layout: 'column',
-												bodyStyle: 'border-style:none; padding:5px 0 0 0',
-												items: [
-													Ext.create('Ext.ux.form.MultiSelect', {
-														name: 'availablePatientAttributes',
-														cls: 'tr-toolbar-multiselect-left',
-														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 159,
-														displayField: 'name',
-														valueField: 'id',
-														queryMode: 'local',
-														store: TR.store.patientAttribute.available,
-														tbar: [
-															{
-																xtype: 'label',
-																text: TR.i18n.available,
-																cls: 'tr-toolbar-multiselect-left-label'
-															},
-															'->',
-															{
-																xtype: 'button',
-																icon: 'images/arrowright.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.select(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
-																}
-															},
-															{
-																xtype: 'button',
-																icon: 'images/arrowrightdouble.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.selectAll(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
-																}
-															},
-															' '
-														],
-														listeners: {
-															added: function() {
-																TR.cmp.params.patientAttribute.available = this;
-															},                                                                
-															afterrender: function() {
-																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.select(this, TR.cmp.params.patientAttribute.selected);
-																}, this);
-															}
-														}
-													}),                                            
-													{
-														xtype: 'multiselect',
-														name: 'selectedPatientAttribute',
-														cls: 'tr-toolbar-multiselect-right',
-														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 159,
-														displayField: 'name',
-														valueField: 'id',
-														ddReorder: true,
-														queryMode: 'local',
-														store: TR.store.patientAttribute.selected,
-														tbar: [
-															' ',
-															{
-																xtype: 'button',
-																icon: 'images/arrowleftdouble.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.unselectAll(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
-																}
-															},
-															{
-																xtype: 'button',
-																icon: 'images/arrowleft.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.patientAttribute.available, TR.cmp.params.patientAttribute.selected);
-																}
-															},
-															'->',
-															{
-																xtype: 'label',
-																text: TR.i18n.selected,
-																cls: 'tr-toolbar-multiselect-right-label'
-															}
-														],
-														listeners: {
-															added: function() {
-																TR.cmp.params.patientAttribute.selected = this;
-															},          
-															afterrender: function() {
-																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.patientAttribute.available, this);
-																}, this);
-															}
-														}
-													}
-												]
-											}
-										],
-										listeners: {
-											added: function() {
-												TR.cmp.params.patientAttribute.panel = this;
-											},
-											expand: function() {
+												
+												// PATIENT-ATTRIBUTE
 												var programId = TR.cmp.settings.program.getValue();													
 												if ( programId!=null && !TR.store.patientAttribute.available.isloaded ) {
 													TR.store.patientAttribute.available.load({params: {programId: programId}});
@@ -2333,19 +2429,6 @@ Ext.onReady( function() {
 										}
 									]                                            
 								});
-							}
-						}
-					},
-					{
-						xtype: 'button',
-						cls: 'tr-toolbar-btn-2',
-						text: TR.i18n.reset,
-						id:'btnReset',
-						width: 50,
-						disabled: true,
-						listeners: {
-							click: function() {
-								TR.exe.reset();
 							}
 						}
 					},
@@ -2944,4 +3027,4 @@ Ext.onReady( function() {
     });
     
     }});
-});
+}); 
