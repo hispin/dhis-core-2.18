@@ -300,7 +300,7 @@ public class GenerateTabularReportAction
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        //TODO include program stage in sql query
+        //TODO check sql traffic
         
         Date startValue = format.parseDate( startDate );
 
@@ -318,7 +318,7 @@ public class GenerateTabularReportAction
 
         if ( type == null ) // Tabular report
         {
-            int totalRecords = programStageInstanceService.getTabularReportCount( identifierTypes, fixedAttributes, patientAttributes, dataElements, 
+            int totalRecords = programStageInstanceService.getTabularReportCount( programStage, identifierTypes, fixedAttributes, patientAttributes, dataElements, 
                 searchingIdenKeys, searchingAttrKeys, searchingDEKeys, organisationUnits, level, startValue, endValue );
 
             total = getNumberOfPages( totalRecords );
@@ -326,14 +326,14 @@ public class GenerateTabularReportAction
             this.paging = createPaging( totalRecords );
             //total = paging.getTotal(); //TODO
             
-            grid = programStageInstanceService.getTabularReport( hiddenCols, identifierTypes,
+            grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
                 fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
                 searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc,
                 paging.getStartPos(), paging.getPageSize() );
         }
         else // Download as Excel
         {
-            grid = programStageInstanceService.getTabularReport( hiddenCols, identifierTypes,
+            grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
                 fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
                 searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc,
                 null, null );

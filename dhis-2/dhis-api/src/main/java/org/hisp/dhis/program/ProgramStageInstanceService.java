@@ -89,13 +89,13 @@ public interface ProgramStageInstanceService
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
     
-    Grid getTabularReport( List<Boolean> hiddenCols, 
+    Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, 
         List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
         int level, Date startDate, Date endDate, boolean descOrder, Integer min, Integer max );
     
-    int getTabularReportCount( List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+    int getTabularReportCount( ProgramStage programStage, List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
         int level, Date startDate, Date endDate );

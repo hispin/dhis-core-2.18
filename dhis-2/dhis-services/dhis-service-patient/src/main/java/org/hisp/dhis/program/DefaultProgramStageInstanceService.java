@@ -197,7 +197,7 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( patient, completed );
     }
 
-    public Grid getTabularReport( List<Boolean> hiddenCols, 
+    public Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, 
         List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
@@ -207,18 +207,18 @@ public class DefaultProgramStageInstanceService
         
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
         
-        return programStageInstanceStore.getTabularReport( hiddenCols, orgUnitLevelMap, identifiers, fixedAttributes, attributes, 
+        return programStageInstanceStore.getTabularReport( programStage, hiddenCols, orgUnitLevelMap, identifiers, fixedAttributes, attributes, 
             dataElements, identifierKeys, attributeKeys, dataElementKeys, organisationUnits, level, maxLevel, startDate, endDate, descOrder, min, max );
     }
     
-    public int getTabularReportCount( List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+    public int getTabularReportCount( ProgramStage programStage, List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
         int level, Date startDate, Date endDate )
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
         
-        return programStageInstanceStore.getTabularReportCount( identifiers, fixedAttributes, attributes, 
+        return programStageInstanceStore.getTabularReportCount( programStage, identifiers, fixedAttributes, attributes, 
             dataElements, identifierKeys, attributeKeys, dataElementKeys, organisationUnits, level, maxLevel, startDate, endDate );
     }
     
