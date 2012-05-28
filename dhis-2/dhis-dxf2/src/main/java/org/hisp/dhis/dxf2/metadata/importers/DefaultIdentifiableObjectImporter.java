@@ -313,17 +313,17 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     }
 
     // FIXME add type check
-    private Expression getAndClearExpression( T object, String field )
+    private Expression getAndClearExpression( T object, String fieldName )
     {
         Expression expression = null;
 
-        if ( ReflectionUtils.findGetterMethod( field, object ) != null )
+        if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
         {
-            expression = ReflectionUtils.invokeGetterMethod( field, object );
+            expression = ReflectionUtils.invokeGetterMethod( fieldName, object );
 
             if ( expression != null )
             {
-                ReflectionUtils.invokeSetterMethod( field, object, new Object[]{ null } );
+                ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[] { null } );
             }
         }
 
@@ -331,19 +331,19 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     }
 
     // FIXME add type check
-    private Set<DataElementOperand> getAndClearDataElementOperands( T object, String field )
+    private Set<DataElementOperand> getAndClearDataElementOperands( T object, String fieldName )
     {
         Set<DataElementOperand> dataElementOperands = new HashSet<DataElementOperand>();
 
-        if ( ReflectionUtils.findGetterMethod( field, object ) != null )
+        if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
         {
-            Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( field, object );
+            Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
             dataElementOperands = new HashSet<DataElementOperand>( detachedDataElementOperands );
 
             if ( detachedDataElementOperands.size() > 0 )
             {
                 detachedDataElementOperands.clear();
-                ReflectionUtils.invokeSetterMethod( field, object, new HashSet<DataElementOperand>() );
+                ReflectionUtils.invokeSetterMethod( fieldName, object, new HashSet<DataElementOperand>() );
             }
         }
 
@@ -694,7 +694,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 if ( ref != null )
                 {
                     fieldMap.put( field, ref );
-                    ReflectionUtils.invokeSetterMethod( field.getName(), object, new Object[]{ null } );
+                    ReflectionUtils.invokeSetterMethod( field.getName(), object, new Object[] { null } );
                 }
             }
 

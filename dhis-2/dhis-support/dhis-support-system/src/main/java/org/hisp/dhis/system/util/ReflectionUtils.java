@@ -211,8 +211,7 @@ public class ReflectionUtils
         return false;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public static <T> T invokeGetterMethod( String fieldName, Object target )
+    public static Method findGetterMethod( String fieldName, Object target )
     {
         String[] getterNames = new String[] {
             "get",
@@ -229,15 +228,28 @@ public class ReflectionUtils
 
             if ( method != null )
             {
-                return invokeMethod( target, method );
+                return method;
             }
+        }
+
+        return null;
+
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public static <T> T invokeGetterMethod( String fieldName, Object target )
+    {
+        Method method = findGetterMethod( fieldName, target );
+
+        if ( method != null )
+        {
+            return invokeMethod( target, method );
         }
 
         return null;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public static <T> T invokeSetterMethod( String fieldName, Object target, Object... args )
+    public static Method findSetterMethod( String fieldName, Object target )
     {
         String[] setterNames = new String[] {
             "set"
@@ -252,8 +264,21 @@ public class ReflectionUtils
 
             if ( method != null )
             {
-                return invokeMethod( target, method, args );
+                return method;
             }
+        }
+
+        return null;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public static <T> T invokeSetterMethod( String fieldName, Object target, Object... args )
+    {
+        Method method = findSetterMethod( fieldName, target );
+
+        if ( method != null )
+        {
+            return invokeMethod( target, method, args );
         }
 
         return null;
