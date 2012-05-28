@@ -12,7 +12,7 @@
 		"$!{rootNode.id}",
 		"$!encoder.jsonEncode(${rootNode.name})"
 	],
-		
+	
 	"programs": [
 		#foreach( $program in $programs )
 		  {

@@ -1,6 +1,7 @@
 TR.i18n = {
 title:'$encoder.jsEscape($i18n.getString( 'title' ) , "'")',
 programs: '$encoder.jsEscape($i18n.getString( 'program' ) , "'")',
+identifiers_and_attributes:'$encoder.jsEscape($i18n.getString( 'identifiers_and_attributes' ) , "'")',
 identifiers:'$encoder.jsEscape($i18n.getString( 'identifiers' ) , "'")',
 attributes:'$encoder.jsEscape($i18n.getString( 'attributes' ) , "'")',
 start_date:'$encoder.jsEscape($i18n.getString( 'start_date' ) , "'")',

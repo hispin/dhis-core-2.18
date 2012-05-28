@@ -1,30 +1,34 @@
+
 #set( $noRows = $grid.getRows().size() )
 {
 #set( $noHeader = $grid.getHeaders().size() )
-#set ( $metaData = $noHeader - $valueTypes.size() )
-"total": "${total}",
-"currentPage": "$paging.currentPage",
-"pageSize": "$paging.pageSize",
+#set( $metaData = $noHeader - $valueTypes.size() )
+"total": "$total",
 "columns":[
-  #set($index = 0)
-  #foreach( $col in $grid.getHeaders() )
-  {
-    #set( $mapIndx = $index - $metaData  )
-    "valueType": #if( $index > $metaData && $mapSuggestedValues.get($mapIndx).size() > 0 )"combobox"#else"textfield"#end,
-    "suggested": [#set( $suggestedValues = $mapSuggestedValues.get($mapIndx) )
-    #foreach( $suggestedValue in $suggestedValues )
-    ["$!encoder.jsonEncode( ${suggestedValue} )"]#if( $velocityCount < $suggestedValues.size() ),#end
-    #end],
-    "name": "${col.name}",
-    "hidden": "${col.hidden}"
-  }#if( $velocityCount < $noHeader ),#end
-  #set( $index = $index + 1 )
-  #end
+	#set($index = 0)
+	#foreach( $col in $grid.getHeaders() )
+	{
+	  #set( $mapIndx = $index - $metaData  )
+	  "sfas": "$grid.getHeaders().size()",
+	  "valueType": 	#if( $index > $metaData && $mapSuggestedValues.get($mapIndx).size() > 0 )
+						"combobox"
+					#else
+						"textfield"
+					#end,
+      "suggested":  [#set( $suggestedValues = $mapSuggestedValues.get($mapIndx) )
+					#foreach( $suggestedValue in $suggestedValues )
+						["$!encoder.jsonEncode( ${suggestedValue} )"]
+						#if( $velocityCount < $suggestedValues.size() ),#end
+					#end],
+      "name": "$col.name",
+      "hidden": "$col.hidden"
+    }#if( $velocityCount < $noHeader ),#end
+	#set($index = $index + 1)
+	#end
 ],
 "items":[
   [
-  "$i18n.getString( 'filter' )",
-  #foreach( $col in [2..${noHeader}] )""#if( $velocityCount < $noHeader - 1 ),#end#end
+    #foreach( $col in $grid.getHeaders() )"",#end
   ],
   #foreach( $row in $grid.getRows() )
   [
