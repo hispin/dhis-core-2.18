@@ -230,7 +230,7 @@ public class Chart
         {
             if ( isOrganisationUnitGroupBased() )
             {
-                list.addAll( getAllOrganisationUnits() ); //TODO groups
+                list.addAll( organisationUnitGroupSet.getOrganisationUnitGroups() );
             }
             else
             {
