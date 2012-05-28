@@ -222,13 +222,16 @@ public class ReflectionUtils
         Field field = _findField( target.getClass(), StringUtils.uncapitalize( fieldName ) );
         Method method;
 
-        for ( String getterName : getterNames )
+        if ( field != null )
         {
-            method = _findMethod( target.getClass(), getterName + StringUtils.capitalize( field.getName() ), field.getType() );
-
-            if ( method != null )
+            for ( String getterName : getterNames )
             {
-                return method;
+                method = _findMethod( target.getClass(), getterName + StringUtils.capitalize( field.getName() ), field.getType() );
+
+                if ( method != null )
+                {
+                    return method;
+                }
             }
         }
 
@@ -258,13 +261,16 @@ public class ReflectionUtils
         Field field = _findField( target.getClass(), StringUtils.uncapitalize( fieldName ) );
         Method method;
 
-        for ( String setterName : setterNames )
+        if ( field != null )
         {
-            method = _findMethod( target.getClass(), setterName + StringUtils.capitalize( field.getName() ), field.getType() );
-
-            if ( method != null )
+            for ( String setterName : setterNames )
             {
-                return method;
+                method = _findMethod( target.getClass(), setterName + StringUtils.capitalize( field.getName() ), field.getType() );
+
+                if ( method != null )
+                {
+                    return method;
+                }
             }
         }
 

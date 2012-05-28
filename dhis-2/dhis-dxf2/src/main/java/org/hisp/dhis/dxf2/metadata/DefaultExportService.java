@@ -106,7 +106,9 @@ public class DefaultExportService
             log.info( "Exporting " + idObjects.size() + " " + StringUtils.capitalize( entry.getKey() ) );
 
             List<? extends IdentifiableObject> idObjectsList = new ArrayList<IdentifiableObject>( idObjects );
-            ReflectionUtils.invokeSetterMethod( entry.getKey(), metaData, idObjectsList );
+
+            String fieldName = entry.getValue().getSimpleName() + "List";
+            ReflectionUtils.invokeSetterMethod( fieldName, metaData, idObjectsList );
         }
 
         log.info( "Finished export at " + new Date() );

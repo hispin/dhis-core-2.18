@@ -94,7 +94,8 @@ public class DefaultImportService
 
         for ( Map.Entry<String, Class<?>> entry : ExchangeClasses.getImportMap().entrySet() )
         {
-            Object value = ReflectionUtils.invokeGetterMethod( entry.getKey(), metaData );
+            String fieldName = entry.getValue().getSimpleName() + "List";
+            Object value = ReflectionUtils.invokeGetterMethod( fieldName, metaData );
 
             if ( value != null )
             {
