@@ -288,6 +288,17 @@ public class HibernateGenericStore<T>
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public List<T> getBetweenOrderderByLastUpdated( int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.addOrder( Order.desc( "lastUpdated" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        return criteria.list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getBetweenByName( String name, int first, int max )
     {
         Criteria criteria = getCriteria();
