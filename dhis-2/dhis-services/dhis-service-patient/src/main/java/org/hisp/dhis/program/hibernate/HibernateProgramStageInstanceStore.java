@@ -53,6 +53,7 @@ import org.hisp.dhis.program.ProgramStageInstanceStore;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -296,7 +297,10 @@ public class HibernateProgramStageInstanceStore
         sql += "and psi.executiondate >= '" + sDate + "' ";
         sql += "and psi.executiondate < '" + eDate + "' ";
 
-        //TODO org unit criteria
+        if ( orgUnits != null )
+        {
+            sql += "and ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnits ) + ") ";
+        }
         
         sql += "order by ";
         
