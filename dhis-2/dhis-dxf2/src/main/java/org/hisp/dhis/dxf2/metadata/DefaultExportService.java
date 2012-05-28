@@ -87,7 +87,6 @@ public class DefaultExportService
                 continue;
             }
 
-            @SuppressWarnings( "unchecked" )
             Class<? extends IdentifiableObject> idObjectClass = entry.getKey();
 
             Collection<? extends IdentifiableObject> idObjects;

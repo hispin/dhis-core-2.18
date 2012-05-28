@@ -29,11 +29,12 @@ package org.hisp.dhis.light.namebaseddataentry.action;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+
 import com.opensymphony.xwork2.Action;
 
 public class GetPatientProgramListAction
