@@ -95,6 +95,7 @@ public class TableAlteror
         executeSql( "DROP TABLE programattribute" );
         
         executeSql( "ALTER TABLE patientattribute DROP COLUMN noChars" );
+        executeSql( "ALTER TABLE programstageinstance ALTER executiondate TYPE date" );
     }
 
     // -------------------------------------------------------------------------

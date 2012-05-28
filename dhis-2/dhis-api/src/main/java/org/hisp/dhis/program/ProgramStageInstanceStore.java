@@ -76,13 +76,13 @@ public interface ProgramStageInstanceStore
     
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
     
-    Grid getTabularReport( List<Boolean> hiddenCols, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
+    Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
         List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
         int level, int maxLevel, Date startDate, Date endDate, boolean descOrder, Integer min, Integer max );
     
-    int getTabularReportCount( List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
+    int getTabularReportCount( ProgramStage programStage, List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
         List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
         Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
         int level, int maxLevel, Date startDate, Date endDate );
