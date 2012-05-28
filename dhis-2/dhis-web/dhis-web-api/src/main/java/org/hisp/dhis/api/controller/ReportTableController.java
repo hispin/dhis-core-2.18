@@ -27,23 +27,9 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -57,20 +43,23 @@ import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.reporttable.ReportTables;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -79,9 +68,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 @RequestMapping( value = ReportTableController.RESOURCE_PATH )
 public class ReportTableController
+    extends AbstractCrudController<ReportTable>
 {
     public static final String RESOURCE_PATH = "/reportTables";
-    
+
     private static final String DATA_NAME = "data";
 
     @Autowired
@@ -92,13 +82,13 @@ public class ReportTableController
 
     @Autowired
     private IndicatorService indicatorService;
-    
+
     @Autowired
     private DataElementService dataElementService;
-    
+
     @Autowired
     private DataSetService dataSetService;
-    
+
     @Autowired
     private I18nManager i18nManager;
 
@@ -106,97 +96,42 @@ public class ReportTableController
     private ContextUtils contextUtils;
 
     //--------------------------------------------------------------------------
-    // GET
-    //--------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getReportTables( IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        ReportTables reportTables = new ReportTables();
-
-        if ( params.isPaging() )
-        {
-            int total = reportTableService.getReportTableCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            reportTables.setPager( pager );
-
-            List<ReportTable> reportTableList = new ArrayList<ReportTable>(
-                reportTableService.getReportTablesBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            reportTables.setReportTables( reportTableList );
-        }
-        else
-        {
-            reportTables.setReportTables( new ArrayList<ReportTable>( reportTableService.getAllReportTables() ) );
-        }
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( reportTables );
-        }
-
-        model.addAttribute( "model", reportTables );
-
-        return "reportTables";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getReportTable( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        ReportTable reportTable = reportTableService.getReportTable( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( reportTable );
-        }
-
-        model.addAttribute( "model", reportTable );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "reportTable";
-    }
-
-    //--------------------------------------------------------------------------
     // GET - Dynamic data
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/data", method = RequestMethod.GET )
-    public String getReportTableDynamicData( @RequestParam(required=false, value="in") List<String> indicators,
-                                             @RequestParam(required=false, value="de") List<String> dataElements,
-                                             @RequestParam(required=false, value="ds") List<String> dataSets,
-                                             @RequestParam(value="ou") List<String> orgUnits,
-                                             @RequestParam(required=false, value="crosstab") List<String> crossTab,
-                                             @RequestParam(required=false) boolean orgUnitIsParent,
-                                             @RequestParam(required=false) boolean minimal,
-                                             RelativePeriods relatives,
-                                             Model model, 
-                                             HttpServletResponse response ) throws Exception
+    public String getReportTableDynamicData( @RequestParam( required = false, value = "in" ) List<String> indicators,
+        @RequestParam( required = false, value = "de" ) List<String> dataElements,
+        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
+        @RequestParam( value = "ou" ) List<String> orgUnits,
+        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
+        @RequestParam( required = false ) boolean orgUnitIsParent,
+        @RequestParam( required = false ) boolean minimal,
+        RelativePeriods relatives,
+        Model model,
+        HttpServletResponse response ) throws Exception
     {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets, 
+        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
             orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-        
+
         model.addAttribute( "model", grid );
         model.addAttribute( "viewClass", "detailed" );
-        
+
         return grid != null ? "reportTableData" : null;
     }
 
     @RequestMapping( value = "/data.xml", method = RequestMethod.GET )
-    public void getReportTableDynamicDataXml( @RequestParam(required=false, value="in") List<String> indicators,
-                                             @RequestParam(required=false, value="de") List<String> dataElements,
-                                             @RequestParam(required=false, value="ds") List<String> dataSets,
-                                             @RequestParam(value="ou") List<String> orgUnits,
-                                             @RequestParam(required=false, value="crosstab") List<String> crossTab,
-                                             @RequestParam(required=false) boolean orgUnitIsParent,
-                                             @RequestParam(required=false) boolean minimal,
-                                             RelativePeriods relatives,
-                                             Model model, 
-                                             HttpServletResponse response ) throws Exception
+    public void getReportTableDynamicDataXml( @RequestParam( required = false, value = "in" ) List<String> indicators,
+        @RequestParam( required = false, value = "de" ) List<String> dataElements,
+        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
+        @RequestParam( value = "ou" ) List<String> orgUnits,
+        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
+        @RequestParam( required = false ) boolean orgUnitIsParent,
+        @RequestParam( required = false ) boolean minimal,
+        RelativePeriods relatives,
+        HttpServletResponse response ) throws Exception
     {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets, 
+        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
             orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
 
         String filename = DATA_NAME + ".xml";
@@ -206,18 +141,17 @@ public class ReportTableController
     }
 
     @RequestMapping( value = "/data.html", method = RequestMethod.GET )
-    public void getReportTableDynamicDataHtml( @RequestParam(required=false, value="in") List<String> indicators,
-                                             @RequestParam(required=false, value="de") List<String> dataElements,
-                                             @RequestParam(required=false, value="ds") List<String> dataSets,
-                                             @RequestParam(value="ou") List<String> orgUnits,
-                                             @RequestParam(required=false, value="crosstab") List<String> crossTab,
-                                             @RequestParam(required=false) boolean orgUnitIsParent,
-                                             @RequestParam(required=false) boolean minimal,
-                                             RelativePeriods relatives,
-                                             Model model, 
-                                             HttpServletResponse response ) throws Exception
+    public void getReportTableDynamicDataHtml( @RequestParam( required = false, value = "in" ) List<String> indicators,
+        @RequestParam( required = false, value = "de" ) List<String> dataElements,
+        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
+        @RequestParam( value = "ou" ) List<String> orgUnits,
+        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
+        @RequestParam( required = false ) boolean orgUnitIsParent,
+        @RequestParam( required = false ) boolean minimal,
+        RelativePeriods relatives,
+        HttpServletResponse response ) throws Exception
     {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets, 
+        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
             orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
 
         String filename = DATA_NAME + ".html";
@@ -227,18 +161,17 @@ public class ReportTableController
     }
 
     @RequestMapping( value = "/data.pdf", method = RequestMethod.GET )
-    public void getReportTableDynamicDataPdf( @RequestParam(required=false, value="in") List<String> indicators,
-                                             @RequestParam(required=false, value="de") List<String> dataElements,
-                                             @RequestParam(required=false, value="ds") List<String> dataSets,
-                                             @RequestParam(value="ou") List<String> orgUnits,
-                                             @RequestParam(required=false, value="crosstab") List<String> crossTab,
-                                             @RequestParam(required=false) boolean orgUnitIsParent,
-                                             @RequestParam(required=false) boolean minimal,
-                                             RelativePeriods relatives,
-                                             Model model, 
-                                             HttpServletResponse response ) throws Exception
+    public void getReportTableDynamicDataPdf( @RequestParam( required = false, value = "in" ) List<String> indicators,
+        @RequestParam( required = false, value = "de" ) List<String> dataElements,
+        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
+        @RequestParam( value = "ou" ) List<String> orgUnits,
+        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
+        @RequestParam( required = false ) boolean orgUnitIsParent,
+        @RequestParam( required = false ) boolean minimal,
+        RelativePeriods relatives,
+        HttpServletResponse response ) throws Exception
     {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets, 
+        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
             orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
 
         String filename = DATA_NAME + ".pdf";
@@ -248,20 +181,19 @@ public class ReportTableController
     }
 
     @RequestMapping( value = "/data.xls", method = RequestMethod.GET )
-    public void getReportTableDynamicDataXls( @RequestParam(required=false, value="in") List<String> indicators,
-                                             @RequestParam(required=false, value="de") List<String> dataElements,
-                                             @RequestParam(required=false, value="ds") List<String> dataSets,
-                                             @RequestParam(value="ou") List<String> orgUnits,
-                                             @RequestParam(required=false, value="crosstab") List<String> crossTab,
-                                             @RequestParam(required=false) boolean orgUnitIsParent,
-                                             @RequestParam(required=false) boolean minimal,
-                                             RelativePeriods relatives,
-                                             Model model, 
-                                             HttpServletResponse response ) throws Exception
+    public void getReportTableDynamicDataXls( @RequestParam( required = false, value = "in" ) List<String> indicators,
+        @RequestParam( required = false, value = "de" ) List<String> dataElements,
+        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
+        @RequestParam( value = "ou" ) List<String> orgUnits,
+        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
+        @RequestParam( required = false ) boolean orgUnitIsParent,
+        @RequestParam( required = false ) boolean minimal,
+        RelativePeriods relatives,
+        HttpServletResponse response ) throws Exception
     {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets, 
+        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
             orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-        
+
         String filename = DATA_NAME + ".xls";
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
 
@@ -269,96 +201,93 @@ public class ReportTableController
     }
 
     @RequestMapping( value = "/data.csv", method = RequestMethod.GET )
-    public void getReportTableDynamicDataCsv( @RequestParam(required=false, value="in") List<String> indicators,
-                                             @RequestParam(required=false, value="de") List<String> dataElements,
-                                             @RequestParam(required=false, value="ds") List<String> dataSets,
-                                             @RequestParam(value="ou") List<String> orgUnits,
-                                             @RequestParam(required=false, value="crosstab") List<String> crossTab,
-                                             @RequestParam(required=false) boolean orgUnitIsParent,
-                                             @RequestParam(required=false) boolean minimal,
-                                             RelativePeriods relatives,
-                                             Model model, 
-                                             HttpServletResponse response ) throws Exception
+    public void getReportTableDynamicDataCsv( @RequestParam( required = false, value = "in" ) List<String> indicators,
+        @RequestParam( required = false, value = "de" ) List<String> dataElements,
+        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
+        @RequestParam( value = "ou" ) List<String> orgUnits,
+        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
+        @RequestParam( required = false ) boolean orgUnitIsParent,
+        @RequestParam( required = false ) boolean minimal,
+        RelativePeriods relatives,
+        HttpServletResponse response ) throws Exception
     {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets, 
+        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
             orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-        
+
         String filename = DATA_NAME + ".csv";
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
 
         GridUtils.toCsv( grid, response.getOutputStream() );
     }
 
-    private Grid getReportTableDynamicGrid( List<String> indicators, List<String> dataElements, List<String> dataSets, 
-        List<String> orgUnits, List<String> crossTab, boolean orgUnitIsParent, boolean minimal, RelativePeriods relatives, HttpServletResponse response )  throws Exception
+    private Grid getReportTableDynamicGrid( List<String> indicators, List<String> dataElements, List<String> dataSets,
+        List<String> orgUnits, List<String> crossTab, boolean orgUnitIsParent, boolean minimal, RelativePeriods relatives, HttpServletResponse response ) throws Exception
     {
         List<Indicator> indicators_ = indicatorService.getIndicatorsByUid( indicators );
         List<DataElement> dataElements_ = dataElementService.getDataElementsByUid( dataElements );
         List<DataSet> dataSets_ = dataSetService.getDataSetsByUid( dataSets );
         List<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsByUid( orgUnits );
-        
+
         if ( indicators_.isEmpty() && dataElements_.isEmpty() && dataSets_.isEmpty() )
         {
             ContextUtils.conflictResponse( response, "No valid indicators, data elements or data sets specified" );
             return null;
         }
-        
+
         if ( orgUnitIsParent )
         {
             List<OrganisationUnit> childUnits = new ArrayList<OrganisationUnit>();
-            
+
             for ( OrganisationUnit unit : organisationUnits )
             {
                 childUnits.addAll( unit.getChildren() );
             }
-            
+
             organisationUnits = childUnits;
         }
-        
+
         if ( organisationUnits.isEmpty() )
         {
             ContextUtils.conflictResponse( response, "No valid organisation units specified" );
             return null;
         }
-        
+
         ReportTable table = new ReportTable();
-        
+
         table.setIndicators( indicators_ );
         table.setDataElements( dataElements_ );
         table.setUnits( organisationUnits );
-        
+
         table.setDoIndicators( crossTab != null && crossTab.contains( "data" ) );
         table.setDoPeriods( crossTab != null && crossTab.contains( "periods" ) );
         table.setDoUnits( crossTab != null && crossTab.contains( "orgunits" ) );
-        
+
         table.setRelatives( relatives );
-        
-        Grid grid = reportTableService.getReportTableGrid( table, i18nManager.getI18nFormat(), new Date(), null, minimal );
-        
-        return grid;
+
+        return reportTableService.getReportTableGrid( table, i18nManager.getI18nFormat(), new Date(), null, minimal );
     }
-    
+
     //--------------------------------------------------------------------------
     // GET - Report table data
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
     public String getReportTableData( @PathVariable( "uid" ) String uid, Model model,
-                                      @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                      @RequestParam( value = "pe", required = false ) String period,
-                                      HttpServletResponse response ) throws Exception
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletResponse response ) throws Exception
     {
         model.addAttribute( "model", getReportTableGrid( uid, organisationUnitUid, period ) );
         model.addAttribute( "viewClass", "detailed" );
-        
+
         return "grid";
     }
-    
+
     @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
     public void getReportTableHtml( @PathVariable( "uid" ) String uid,
-                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                   @RequestParam( value = "pe", required = false ) String period,
-                                   HttpServletResponse response ) throws Exception
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletResponse response ) throws Exception
     {
         Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
 
@@ -370,12 +299,12 @@ public class ReportTableController
 
     @RequestMapping( value = "/{uid}/data.xml", method = RequestMethod.GET )
     public void getReportTableXml( @PathVariable( "uid" ) String uid,
-                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                   @RequestParam( value = "pe", required = false ) String period,
-                                   HttpServletResponse response ) throws Exception
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletResponse response ) throws Exception
     {
         Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
-        
+
         String filename = filenameEncode( grid.getTitle() ) + ".xml";
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
 
@@ -384,9 +313,9 @@ public class ReportTableController
 
     @RequestMapping( value = "/{uid}/data.pdf", method = RequestMethod.GET )
     public void getReportTablePdf( @PathVariable( "uid" ) String uid,
-                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                   @RequestParam( value = "pe", required = false ) String period,
-                                   HttpServletResponse response ) throws Exception
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletResponse response ) throws Exception
     {
         Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
 
@@ -398,9 +327,9 @@ public class ReportTableController
 
     @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
     public void getReportTableXls( @PathVariable( "uid" ) String uid,
-                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                   @RequestParam( value = "pe", required = false ) String period,
-                                   HttpServletResponse response ) throws Exception
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletResponse response ) throws Exception
     {
         Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
 
@@ -412,9 +341,9 @@ public class ReportTableController
 
     @RequestMapping( value = "/{uid}/data.csv", method = RequestMethod.GET )
     public void getReportTableCsv( @PathVariable( "uid" ) String uid,
-                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                   @RequestParam( value = "pe", required = false ) String period,
-                                   HttpServletResponse response ) throws Exception
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletResponse response ) throws Exception
     {
         Grid grid = getReportTableGrid( uid, organisationUnitUid, period );
 
@@ -436,60 +365,6 @@ public class ReportTableController
 
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
 
-        Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
-
-        return grid;
-    }
-
-    //--------------------------------------------------------------------------
-    // POST
-    //--------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_ADD')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postReportTableXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_ADD')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postReportTableJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    //--------------------------------------------------------------------------
-    // PUT
-    //--------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_ADD')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putReportTableXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_ADD')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putReportTableJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //--------------------------------------------------------------------------
-    // DELETE
-    //--------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_DELETE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteReportTable( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        return reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
     }
 }

@@ -73,7 +73,7 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "metaData", namespace = Dxf2Namespace.NAMESPACE )
 public class MetaData
 {
-    private List<Attribute> attributeTypeList = new ArrayList<Attribute>();
+    private List<Attribute> attributeList = new ArrayList<Attribute>();
 
     private List<Document> documentList = new ArrayList<Document>();
 
@@ -91,13 +91,13 @@ public class MetaData
 
     private List<OptionSet> optionSetList = new ArrayList<OptionSet>();
 
-    private List<DataElementCategory> categoryList = new ArrayList<DataElementCategory>();
+    private List<DataElementCategory> dataElementCategoryList = new ArrayList<DataElementCategory>();
 
-    private List<DataElementCategoryOption> categoryOptionList = new ArrayList<DataElementCategoryOption>();
+    private List<DataElementCategoryOption> dataElementCategoryOptionList = new ArrayList<DataElementCategoryOption>();
 
-    private List<DataElementCategoryCombo> categoryComboList = new ArrayList<DataElementCategoryCombo>();
+    private List<DataElementCategoryCombo> dataElementCategoryComboList = new ArrayList<DataElementCategoryCombo>();
 
-    private List<DataElementCategoryOptionCombo> categoryOptionComboList = new ArrayList<DataElementCategoryOptionCombo>();
+    private List<DataElementCategoryOptionCombo> dataElementCategoryOptionComboList = new ArrayList<DataElementCategoryOptionCombo>();
 
     private List<DataElement> dataElementList = new ArrayList<DataElement>();
 
@@ -133,7 +133,7 @@ public class MetaData
 
     private List<ReportTable> reportTableList = new ArrayList<ReportTable>();
 
-    private List<MapView> mapList = new ArrayList<MapView>();
+    private List<MapView> mapViewList = new ArrayList<MapView>();
 
     private List<MapLegend> mapLegendList = new ArrayList<MapLegend>();
 
@@ -143,7 +143,7 @@ public class MetaData
 
     private List<DataDictionary> dataDictionaryList = new ArrayList<DataDictionary>();
 
-    private List<Section> sectionList = new ArrayList<Section>(  );
+    private List<Section> sectionList = new ArrayList<Section>();
 
     private List<DataSet> dataSetList = new ArrayList<DataSet>();
 
@@ -154,14 +154,14 @@ public class MetaData
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "attributeTypes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "attributeType", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Attribute> getAttributeTypeList()
+    public List<Attribute> getAttributeList()
     {
-        return attributeTypeList;
+        return attributeList;
     }
 
-    public void setAttributeTypeList( List<Attribute> attributeTypeList )
+    public void setAttributeList( List<Attribute> attributeList )
     {
-        this.attributeTypeList = attributeTypeList;
+        this.attributeList = attributeList;
     }
 
     @JsonProperty
@@ -284,53 +284,53 @@ public class MetaData
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "categories", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "category", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementCategory> getCategoryList()
+    public List<DataElementCategory> getDataElementCategoryList()
     {
-        return categoryList;
+        return dataElementCategoryList;
     }
 
-    public void setCategoryList( List<DataElementCategory> categoryList )
+    public void setDataElementCategoryList( List<DataElementCategory> dataElementCategoryList )
     {
-        this.categoryList = categoryList;
+        this.dataElementCategoryList = dataElementCategoryList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "categoryOptions", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "categoryOption", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementCategoryOption> getCategoryOptionList()
+    public List<DataElementCategoryOption> getDataElementCategoryOptionList()
     {
-        return categoryOptionList;
+        return dataElementCategoryOptionList;
     }
 
-    public void setCategoryOptionList( List<DataElementCategoryOption> categoryOptionList )
+    public void setDataElementCategoryOptionList( List<DataElementCategoryOption> dataElementCategoryOptionList )
     {
-        this.categoryOptionList = categoryOptionList;
+        this.dataElementCategoryOptionList = dataElementCategoryOptionList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "categoryCombos", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "categoryCombo", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementCategoryCombo> getCategoryComboList()
+    public List<DataElementCategoryCombo> getDataElementCategoryComboList()
     {
-        return categoryComboList;
+        return dataElementCategoryComboList;
     }
 
-    public void setCategoryComboList( List<DataElementCategoryCombo> categoryComboList )
+    public void setDataElementCategoryComboList( List<DataElementCategoryCombo> dataElementCategoryComboList )
     {
-        this.categoryComboList = categoryComboList;
+        this.dataElementCategoryComboList = dataElementCategoryComboList;
     }
 
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "categoryOptionCombos", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "categoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE )
-    public List<DataElementCategoryOptionCombo> getCategoryOptionComboList()
+    public List<DataElementCategoryOptionCombo> getDataElementCategoryOptionComboList()
     {
-        return categoryOptionComboList;
+        return dataElementCategoryOptionComboList;
     }
 
-    public void setCategoryOptionComboList( List<DataElementCategoryOptionCombo> categoryOptionComboList )
+    public void setDataElementCategoryOptionComboList( List<DataElementCategoryOptionCombo> dataElementCategoryOptionComboList )
     {
-        this.categoryOptionComboList = categoryOptionComboList;
+        this.dataElementCategoryOptionComboList = dataElementCategoryOptionComboList;
     }
 
     @JsonProperty
@@ -570,14 +570,14 @@ public class MetaData
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "maps", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "map", namespace = Dxf2Namespace.NAMESPACE )
-    public List<MapView> getMapList()
+    public List<MapView> getMapViewList()
     {
-        return mapList;
+        return mapViewList;
     }
 
-    public void setMapList( List<MapView> mapList )
+    public void setMapViewList( List<MapView> mapViewList )
     {
-        this.mapList = mapList;
+        this.mapViewList = mapViewList;
     }
 
     @JsonProperty
@@ -636,7 +636,7 @@ public class MetaData
     public String toString()
     {
         return "MetaData{" +
-            "attributeTypes=" + attributeTypeList.size() +
+            "attributeTypes=" + attributeList.size() +
             ", users=" + userList.size() +
             ", userAuthorityGroups=" + userAuthorityGroupList.size() +
             ", userGroups=" + userGroupList.size() +
@@ -646,10 +646,10 @@ public class MetaData
             ", dataElementGroups=" + dataElementGroupList.size() +
             ", dataElementGroupSets=" + dataElementGroupSetList.size() +
             ", concepts=" + conceptList.size() +
-            ", categories=" + categoryList.size() +
-            ", categoryOptions=" + categoryOptionList.size() +
-            ", categoryCombos=" + categoryComboList.size() +
-            ", categoryOptionCombos=" + categoryOptionComboList.size() +
+            ", categories=" + dataElementCategoryList.size() +
+            ", categoryOptions=" + dataElementCategoryOptionList.size() +
+            ", categoryCombos=" + dataElementCategoryComboList.size() +
+            ", categoryOptionCombos=" + dataElementCategoryOptionComboList.size() +
             ", indicators=" + indicatorList.size() +
             ", indicatorGroups=" + indicatorGroupList.size() +
             ", indicatorGroupSets=" + indicatorGroupSetList.size() +
@@ -668,7 +668,7 @@ public class MetaData
             ", reportTables=" + reportTableList.size() +
             ", documents=" + documentList.size() +
             ", constants=" + constantList.size() +
-            ", maps=" + mapList.size() +
+            ", maps=" + mapViewList.size() +
             ", mapLegends=" + mapLegendList.size() +
             ", mapLegendSets=" + mapLegendSetList.size() +
             ", mapLayers=" + mapLayerList.size() +

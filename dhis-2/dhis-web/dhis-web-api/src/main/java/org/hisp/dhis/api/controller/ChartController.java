@@ -28,12 +28,8 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.Charts;
-import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.indicator.Indicator;
@@ -44,19 +40,14 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 
@@ -67,6 +58,7 @@ import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 @Controller
 @RequestMapping( value = ChartController.RESOURCE_PATH )
 public class ChartController
+    extends AbstractCrudController<Chart>
 {
     public static final String RESOURCE_PATH = "/charts";
 
@@ -85,64 +77,11 @@ public class ChartController
     @Autowired
     private ContextUtils contextUtils;
 
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getCharts( IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        Charts charts = new Charts();
-
-        if ( params.isPaging() )
-        {
-            int total = chartService.getChartCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            charts.setPager( pager );
-
-            List<Chart> chartList = new ArrayList<Chart>( chartService.getChartsBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            charts.setCharts( chartList );
-        }
-        else
-        {
-            charts.setCharts( new ArrayList<Chart>( chartService.getAllCharts() ) );
-        }
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( charts );
-        }
-
-        model.addAttribute( "model", charts );
-
-        return "charts";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getChart( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        Chart chart = chartService.getChart( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( chart );
-        }
-
-        model.addAttribute( "model", chart );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "chart";
-    }
-
-    @RequestMapping( value = {"/{uid}/data", "/{uid}/data.png"}, method = RequestMethod.GET )
+    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
     public void getChart( @PathVariable( "uid" ) String uid,
-                          @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
-                          @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
-                          HttpServletResponse response ) throws IOException, I18nManagerException
+        @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
+        @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
+        HttpServletResponse response ) throws IOException, I18nManagerException
     {
         JFreeChart jFreeChart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
 
@@ -155,14 +94,14 @@ public class ChartController
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), jFreeChart, width, height );
     }
 
-    @RequestMapping( value = {"/data", "/data.png"}, method = RequestMethod.GET )
+    @RequestMapping( value = { "/data", "/data.png" }, method = RequestMethod.GET )
     public void getChart( @RequestParam( value = "in" ) String indicatorUid,
-                          @RequestParam( value = "ou" ) String organisationUnitUid,
-                          @RequestParam( value = "periods", required = false ) boolean periods,
-                          @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
-                          @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
-                          @RequestParam( value = "skipTitle", required = false ) boolean skipTitle,
-                          HttpServletResponse response ) throws Exception
+        @RequestParam( value = "ou" ) String organisationUnitUid,
+        @RequestParam( value = "periods", required = false ) boolean periods,
+        @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
+        @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
+        @RequestParam( value = "skipTitle", required = false ) boolean skipTitle,
+        HttpServletResponse response ) throws Exception
     {
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
@@ -181,57 +120,5 @@ public class ChartController
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "chart.png", false );
 
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // POST
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_ADD')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postChartXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_ADD')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postChartJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // PUT
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_UPDATE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putChartXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_UPDATE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putChartJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // DELETE
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_DELETE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteChart( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
 }

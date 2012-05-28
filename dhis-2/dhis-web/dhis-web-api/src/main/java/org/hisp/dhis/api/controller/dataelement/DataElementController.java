@@ -36,8 +36,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/dataElements" )
+@RequestMapping( value = DataElementController.RESOURCE_PATH )
 public class DataElementController
     extends AbstractCrudController<DataElement>
 {
+    public static final String RESOURCE_PATH = "/dataElements";
 }

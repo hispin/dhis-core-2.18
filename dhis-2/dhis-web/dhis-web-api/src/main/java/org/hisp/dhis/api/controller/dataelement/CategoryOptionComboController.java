@@ -27,69 +27,47 @@ package org.hisp.dhis.api.controller.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombos;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = CategoryOptionComboController.RESOURCE_PATH )
+@RequestMapping( value = "/categoryOptionCombos" )
 public class CategoryOptionComboController
+    extends AbstractCrudController<DataElementCategoryOptionCombo>
 {
-    public static final String RESOURCE_PATH = "/categoryOptionCombos";
-
-    @Autowired
-    private DataElementCategoryService dataElementCategoryService;
-
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getCategoryOptionCombos( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    // need custom implementation of this since DataElementCategoryOptionCombo does not persist
+    // name (clashes with getBetween)
+    // FIXME add paging also for this?
+    @Override
+    protected List<DataElementCategoryOptionCombo> getEntityList( WebMetaData metaData, WebOptions options )
     {
-        DataElementCategoryOptionCombos categoryOptionCombos = new DataElementCategoryOptionCombos();
-        categoryOptionCombos.setCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
+        List<DataElementCategoryOptionCombo> entityList;
 
-        if ( params.hasLinks() )
+        Date lastUpdated = options.getLastUpdated();
+
+        if ( lastUpdated != null )
         {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( categoryOptionCombos );
+            entityList = new ArrayList<DataElementCategoryOptionCombo>( manager.getByLastUpdated( getEntityClass(), lastUpdated ) );
+        }
+        else
+        {
+            entityList = new ArrayList<DataElementCategoryOptionCombo>( manager.getAll( getEntityClass() ) );
+            Collections.sort( entityList, new IdentifiableObjectNameComparator() );
         }
 
-        model.addAttribute( "model", categoryOptionCombos );
-
-        return "categoryOptionCombos";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getCategoryOptionCombo( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        DataElementCategoryOptionCombo categoryOptionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( categoryOptionCombo );
-        }
-
-        model.addAttribute( "model", categoryOptionCombo );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "categoryOptionCombo";
+        return entityList;
     }
 }

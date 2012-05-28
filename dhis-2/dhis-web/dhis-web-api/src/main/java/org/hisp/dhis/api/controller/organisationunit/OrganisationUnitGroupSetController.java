@@ -27,29 +27,10 @@ package org.hisp.dhis.api.controller.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.controller.dataelement.DataElementController;
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -57,113 +38,7 @@ import java.util.List;
 @Controller
 @RequestMapping( value = OrganisationUnitGroupSetController.RESOURCE_PATH )
 public class OrganisationUnitGroupSetController
+    extends AbstractCrudController<OrganisationUnitGroupSet>
 {
     public static final String RESOURCE_PATH = "/organisationUnitGroupSets";
-
-    @Autowired
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getOrganisationUnitGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        OrganisationUnitGroupSets organisationUnitGroupSets = new OrganisationUnitGroupSets();
-
-        if ( params.isPaging() )
-        {
-            int total = organisationUnitGroupService.getOrganisationUnitGroupSetCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            organisationUnitGroupSets.setPager( pager );
-
-            List<OrganisationUnitGroupSet> organisationUnitGroupSetList = new ArrayList<OrganisationUnitGroupSet>(
-                organisationUnitGroupService.getOrganisationUnitGroupSetsBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            organisationUnitGroupSets.setOrganisationUnitGroupSets( organisationUnitGroupSetList );
-        }
-        else
-        {
-            organisationUnitGroupSets.setOrganisationUnitGroupSets( new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() ) );
-        }
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( organisationUnitGroupSets );
-        }
-
-        model.addAttribute( "model", organisationUnitGroupSets );
-
-        return "organisationUnitGroupSets";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getOrganisationUnitGroupSet( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        OrganisationUnitGroupSet organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( organisationUnitGroupSet );
-        }
-
-        model.addAttribute( "model", organisationUnitGroupSet );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "organisationUnitGroupSet";
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // POST
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_ADD')" )
-    public void postOrganisationUnitGroupSetXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_ADD')" )
-    public void postOrganisationUnitGroupSetJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // PUT
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_UPDATE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putOrganisationUnitGroupSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_UPDATE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putOrganisationUnitGroupSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // DELETE
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_DELETE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteOrganisationUnitGroupSet( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
-    }
 }
