@@ -27,26 +27,10 @@ package org.hisp.dhis.api.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.mapping.MapLegendSet;
-import org.hisp.dhis.mapping.MapLegendSets;
-import org.hisp.dhis.mapping.MappingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -54,94 +38,7 @@ import java.util.ArrayList;
 @Controller
 @RequestMapping( value = MapLegendSetController.RESOURCE_PATH )
 public class MapLegendSetController
+    extends AbstractCrudController<MapLegendSet>
 {
     public static final String RESOURCE_PATH = "/mapLegendSets";
-
-    @Autowired
-    private MappingService mappingService;
-
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getMapLegendSets( IdentifiableObjectParams params, Model model, HttpServletRequest request ) throws IOException
-    {
-        MapLegendSets mapLegendSets = new MapLegendSets();
-        mapLegendSets.setMapLegendSets( new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() ) );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( mapLegendSets );
-        }
-
-        model.addAttribute( "model", mapLegendSets );
-
-        return "mapLegendSets";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getMapLegendSet( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        MapLegendSet mapLegendSet = mappingService.getMapLegendSet( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( mapLegendSet );
-        }
-
-        model.addAttribute( "model", mapLegendSet );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "mapLegendSet";
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // POST
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postMapLegendSetXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postMapLegendSetJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // PUT
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putMapLegendSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putMapLegendSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // DELETE
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteMapLegendSet( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
-    }
 }

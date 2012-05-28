@@ -27,32 +27,24 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
-import org.hisp.dhis.report.Reports;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 
@@ -63,6 +55,7 @@ import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 @Controller
 @RequestMapping( value = ReportController.RESOURCE_PATH )
 public class ReportController
+    extends AbstractCrudController<Report>
 {
     public static final String RESOURCE_PATH = "/reports";
 
@@ -78,75 +71,20 @@ public class ReportController
     @Autowired
     private ContextUtils contextUtils;
 
-    // -------------------------------------------------------------------------------------------------------
-    // GET
-    // -------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getReports( IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        Reports reports = new Reports();
-
-        if ( params.isPaging() )
-        {
-            int total = reportService.getReportCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            reports.setPager( pager );
-
-            List<Report> reportList = new ArrayList<Report>(
-                reportService.getReportsBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            reports.setReports( reportList );
-        }
-        else
-        {
-            reports.setReports( new ArrayList<Report>( reportService.getAllReports() ) );
-        }
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( reports );
-        }
-
-        model.addAttribute( "model", reports );
-
-        return "reports";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getReport( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model,
-                             HttpServletRequest request )
-    {
-        Report report = reportService.getReport( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( report );
-        }
-
-        model.addAttribute( "model", report );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "report";
-    }
-
-    @RequestMapping( value = {"/{uid}/data", "/{uid}/data.pdf"}, method = RequestMethod.GET )
+    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.pdf" }, method = RequestMethod.GET )
     public void getReportAsPdf( @PathVariable( "uid" ) String uid,
-                                @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                @RequestParam( value = "pe", required = false ) String period, 
-                                HttpServletResponse response ) throws Exception
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletResponse response ) throws Exception
     {
         getReport( uid, organisationUnitUid, period, response, "pdf", ContextUtils.CONTENT_TYPE_PDF, false );
     }
 
     @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
     public void getReportAsXls( @PathVariable( "uid" ) String uid,
-                                @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                @RequestParam( value = "pe", required = false ) String period, 
-                                HttpServletResponse response ) throws Exception
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletResponse response ) throws Exception
     {
         getReport( uid, organisationUnitUid, period, response, "xls", ContextUtils.CONTENT_TYPE_EXCEL, true );
     }
@@ -156,7 +94,7 @@ public class ReportController
     // -------------------------------------------------------------------------------------------------------
 
     private void getReport( String uid, String organisationUnitUid, String period,
-                            HttpServletResponse response, String type, String contentType, boolean attachment ) throws Exception
+        HttpServletResponse response, String type, String contentType, boolean attachment ) throws Exception
     {
         Report report = reportService.getReport( uid );
 

@@ -27,28 +27,10 @@ package org.hisp.dhis.api.controller.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
-import org.hisp.dhis.indicator.IndicatorGroupSets;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -56,115 +38,7 @@ import java.util.List;
 @Controller
 @RequestMapping( value = IndicatorGroupSetController.RESOURCE_PATH )
 public class IndicatorGroupSetController
+    extends AbstractCrudController<IndicatorGroupSet>
 {
     public static final String RESOURCE_PATH = "/indicatorGroupSets";
-
-    @Autowired
-    private IndicatorService indicatorService;
-
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getIndicatorGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        IndicatorGroupSets indicatorGroupSets = new IndicatorGroupSets();
-
-        if ( params.isPaging() )
-        {
-            int total = indicatorService.getIndicatorGroupSetCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            indicatorGroupSets.setPager( pager );
-
-            List<IndicatorGroupSet> indicatorGroupSetList = new ArrayList<IndicatorGroupSet>(
-                indicatorService.getIndicatorGroupSetsBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            indicatorGroupSets.setIndicatorGroupSets( indicatorGroupSetList );
-        }
-        else
-        {
-            indicatorGroupSets.setIndicatorGroupSets( new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() ) );
-        }
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( indicatorGroupSets );
-        }
-
-        model.addAttribute( "model", indicatorGroupSets );
-
-        return "indicatorGroupSets";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getIndicatorGroupSet( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        IndicatorGroupSet indicatorGroupSet = indicatorService.getIndicatorGroupSet( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( indicatorGroupSet );
-        }
-
-        model.addAttribute( "model", indicatorGroupSet );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "indicatorGroupSet";
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // POST
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_ADD')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postIndicatorGroupSetXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_ADD')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postIndicatorGroupSetJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // PUT
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_UPDATE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putIndicatorGroupSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_UPDATE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putIndicatorGroupSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // DELETE
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_DELETE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteIndicatorGroupSet( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
-    }
 }

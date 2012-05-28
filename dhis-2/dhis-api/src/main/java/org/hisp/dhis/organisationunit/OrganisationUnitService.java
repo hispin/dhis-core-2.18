@@ -155,14 +155,6 @@ public interface OrganisationUnitService
     OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name );
 
     /**
-     * Returns all objects that are equal to or newer than given date
-     *
-     * @param lastUpdated Date to compare to
-     * @return All objects equal or newer than given date
-     */
-    List<OrganisationUnit> getOrganisationUnitsByLastUpdated(Date lastUpdated);
-
-    /**
      * Returns all root OrganisationUnits. A root OrganisationUnit is an
      * OrganisationUnit with no parent/the parent set to null.
      *

@@ -27,17 +27,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-import static org.hisp.dhis.system.util.DateUtils.setNames;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
@@ -62,6 +51,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.DateUtils.setNames;
 
 @Controller
 @RequestMapping( value = ChartPluginController.RESOURCE_PATH )
@@ -94,14 +93,13 @@ public class ChartPluginController
     private ContextUtils contextUtils;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getChartValues( @RequestParam( required = false )
-    Set<String> indicatorIds, @RequestParam( required = false )
-    Set<String> dataElementIds, @RequestParam
-    Set<String> organisationUnitIds, @RequestParam( required = false )
-    boolean orgUnitIsParent, @RequestParam( required = false )
-    boolean userOrganisationUnit, @RequestParam( required = false )
-    boolean userOrganisationUnitChildren, RelativePeriods relativePeriods, Model model, HttpServletResponse response )
-        throws Exception
+    public String getChartValues( @RequestParam( required = false ) Set<String> indicatorIds,
+        @RequestParam( required = false ) Set<String> dataElementIds,
+        @RequestParam Set<String> organisationUnitIds,
+        @RequestParam( required = false ) boolean orgUnitIsParent,
+        @RequestParam( required = false ) boolean userOrganisationUnit,
+        @RequestParam( required = false ) boolean userOrganisationUnitChildren,
+        RelativePeriods relativePeriods, Model model, HttpServletResponse response ) throws Exception
     {
         ChartPluginValue chartValue = new ChartPluginValue();
 

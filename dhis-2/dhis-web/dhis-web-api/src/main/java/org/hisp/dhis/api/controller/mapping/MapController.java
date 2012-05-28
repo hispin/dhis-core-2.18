@@ -27,34 +27,24 @@ package org.hisp.dhis.api.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.mapping.Maps;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 
 import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 
@@ -65,12 +55,13 @@ import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 @Controller
 @RequestMapping( value = MapController.RESOURCE_PATH )
 public class MapController
+    extends AbstractCrudController<MapView>
 {
     public static final String RESOURCE_PATH = "/maps";
-    
+
     @Autowired
     private MappingService mappingService;
-    
+
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
@@ -80,117 +71,32 @@ public class MapController
     @Autowired
     private ContextUtils contextUtils;
 
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getMaps(IdentifiableObjectParams params, Model model, HttpServletRequest request ) throws IOException
-    {
-        Maps maps = new Maps();
-        maps.setMaps( new ArrayList<MapView>( mappingService.getAllMapViews() ) );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( maps );
-        }
-        
-        model.addAttribute( "model", maps );
-
-        return "maps";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getMap( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        MapView mapView = mappingService.getMapView( uid );
-        
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( mapView );
-        }
-
-        model.addAttribute( "model", mapView );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "map";
-    }
-    
-    @RequestMapping( value = {"/{uid}/data","/{uid}/data.png"}, method = RequestMethod.GET )
+    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
     public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception
     {
-        MapView mapView = mappingService.getMapView( uid );
-        
+        MapView mapView = getEntity( uid );
+
         renderMapViewPng( mapView, response );
     }
-    
-    @RequestMapping( value = {"/data","/data.png"}, method = RequestMethod.GET )
+
+    @RequestMapping( value = { "/data", "/data.png" }, method = RequestMethod.GET )
     public void getMap( Model model,
-                        @RequestParam( value = "in" ) String indicatorUid, 
-                        @RequestParam( value = "ou" ) String organisationUnitUid,
-                        @RequestParam( value = "level", required = false ) Integer level,
-                        HttpServletResponse response ) throws Exception
+        @RequestParam( value = "in" ) String indicatorUid,
+        @RequestParam( value = "ou" ) String organisationUnitUid,
+        @RequestParam( value = "level", required = false ) Integer level,
+        HttpServletResponse response ) throws Exception
     {
         if ( level == null )
         {
             OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
-            
+
             level = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() );
             level++;
         }
-        
+
         MapView mapView = mappingService.getIndicatorLastYearMapView( indicatorUid, organisationUnitUid, level );
-        
+
         renderMapViewPng( mapView, response );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // POST
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postMapXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postMapJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // PUT
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putMapXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putMapJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // DELETE
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteMap( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -201,11 +107,11 @@ public class MapController
         throws Exception
     {
         BufferedImage image = mapGenerationService.generateMapImage( mapView );
-        
+
         if ( image != null )
         {
             contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "mapview.png", false );
-            
+
             ImageIO.write( image, "PNG", response.getOutputStream() );
         }
         else

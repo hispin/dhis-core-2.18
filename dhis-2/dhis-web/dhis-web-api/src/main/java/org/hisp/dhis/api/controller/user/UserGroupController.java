@@ -1,7 +1,7 @@
 package org.hisp.dhis.api.controller.user;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,26 +27,10 @@ package org.hisp.dhis.api.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserGroups;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.ArrayList;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -54,101 +38,7 @@ import java.util.ArrayList;
 @Controller
 @RequestMapping( value = UserGroupController.RESOURCE_PATH )
 public class UserGroupController
+    extends AbstractCrudController<UserGroup>
 {
     public static final String RESOURCE_PATH = "/userGroups";
-
-    @Autowired
-    private UserGroupService userGroupService;
-
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    @PreAuthorize( "hasRole('ALL')" )
-    public String getUserGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        UserGroups userGroups = new UserGroups();
-        userGroups.setUserGroups( new ArrayList<UserGroup>( userGroupService.getAllUserGroups() ) );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( userGroups );
-        }
-
-        model.addAttribute( "model", userGroups );
-
-        return "userGroups";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    @PreAuthorize( "hasRole('ALL')" )
-    public String getUserGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        UserGroup userGroup = userGroupService.getUserGroup( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( userGroup );
-        }
-
-        model.addAttribute( "model", userGroup );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "userGroup";
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // POST
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postUserGroupXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postUserGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // PUT
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putUserGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putUserGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // DELETE
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteUserGroup( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
-    }
 }

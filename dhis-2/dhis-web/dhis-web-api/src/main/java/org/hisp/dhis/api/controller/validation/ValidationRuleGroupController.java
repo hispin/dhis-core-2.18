@@ -1,7 +1,7 @@
 package org.hisp.dhis.api.controller.validation;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,28 +27,10 @@ package org.hisp.dhis.api.controller.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.validation.ValidationRuleGroup;
-import org.hisp.dhis.validation.ValidationRuleGroups;
-import org.hisp.dhis.validation.ValidationRuleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -56,115 +38,7 @@ import java.util.List;
 @Controller
 @RequestMapping( value = ValidationRuleGroupController.RESOURCE_PATH )
 public class ValidationRuleGroupController
+    extends AbstractCrudController<ValidationRuleGroup>
 {
     public static final String RESOURCE_PATH = "/validationRuleGroups";
-
-    @Autowired
-    private ValidationRuleService validationRuleService;
-
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getValidationRuleGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        ValidationRuleGroups validationRuleGroups = new ValidationRuleGroups();
-
-        if ( params.isPaging() )
-        {
-            int total = validationRuleService.getValidationRuleGroupCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            validationRuleGroups.setPager( pager );
-
-            List<ValidationRuleGroup> validationRuleGroupList = new ArrayList<ValidationRuleGroup>(
-                validationRuleService.getValidationRuleGroupsBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            validationRuleGroups.setValidationRuleGroups( validationRuleGroupList );
-        }
-        else
-        {
-            validationRuleGroups.setValidationRuleGroups( new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
-        }
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( validationRuleGroups );
-        }
-
-        model.addAttribute( "model", validationRuleGroups );
-
-        return "validationRuleGroups";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getValidationRuleGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        ValidationRuleGroup validationRuleGroup = validationRuleService.getValidationRuleGroup( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( validationRuleGroup );
-        }
-
-        model.addAttribute( "model", validationRuleGroup );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "validationRuleGroup";
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // POST
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_ADD')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postValidationRuleGroupXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_ADD')" )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postValidationRuleGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // PUT
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_UPDATE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putValidationRuleGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_UPDATE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putValidationRuleGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // DELETE
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_DELETE')" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteValidationGroupRule( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
-    }
 }
