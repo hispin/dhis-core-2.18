@@ -286,12 +286,20 @@ public class GenerateTabularReportAction
         else if ( facilityLB.equals( "childrenOnly" ) )
         {
             OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
-            organisationUnits.addAll( new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class, selectedOrgunit.getChildren() ) ) );
+            organisationUnits = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class, selectedOrgunit.getChildren() ) );
         }
         else
         {
-            Set<Integer> children = organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunitId );
-            organisationUnits.addAll( children );
+            OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
+            
+            if ( selectedOrgunit.getParent() == null )
+            {
+                organisationUnits = null; // Ignore org unit criteria when root
+            }
+            else
+            {
+                organisationUnits = organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunitId );
+            }
         }
 
         // ---------------------------------------------------------------------
@@ -450,7 +458,6 @@ public class GenerateTabularReportAction
                 }
                 index++;
             }
-
         }
     }
 

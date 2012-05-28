@@ -1012,12 +1012,7 @@ Ext.onReady( function() {
         datatable: null,
 		rowEditing: null,
 		getDataTable: function() {
-			
-			var paramsLen = TR.cmp.params.identifierType.selected.store.data.length
-						+ TR.cmp.params.patientAttribute.selected.store.data.length
-						+ TR.cmp.params.dataelement.selected.store.data.length;
-			var metaDatatColsLen = TR.value.columns.length - paramsLen;
-			
+						
 			var orgUnitCols = ( TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue() );
 			var index = 0;
 			var cols = [];
