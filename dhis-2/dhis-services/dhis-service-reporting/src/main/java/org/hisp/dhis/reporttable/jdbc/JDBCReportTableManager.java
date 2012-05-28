@@ -29,12 +29,15 @@ package org.hisp.dhis.reporttable.jdbc;
 
 import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -74,32 +77,53 @@ public class JDBCReportTableManager
     {
         if ( reportTable.isOrganisationUnitGroupBased() )
         {
-            return getAggregatedValueMapOrgUnitGroups( reportTable );
+            return getAggregatedValueMapOrgUnitGroups( reportTable.getDataElements(), reportTable.getIndicators(),
+                reportTable.getAllPeriods(), reportTable.getAllUnits(), reportTable.getParentOrganisationUnit() );
         }
         else
         {
-            return getAggregatedValueMapOrgUnitHierarchy( reportTable );
+            return getAggregatedValueMapOrgUnitHierarchy( reportTable.getDataElements(), reportTable.getIndicators(), reportTable.getDataSets(),
+                reportTable.getAllPeriods(), reportTable.getAllUnits(), reportTable.getCategoryCombo(), reportTable.isDimensional(), reportTable.doTotal() );
         }
     }
     
-    public Map<String, Double> getAggregatedValueMapOrgUnitGroups( ReportTable reportTable )
+    public Map<String, Double> getAggregatedValueMap( Chart chart )
+    {
+        if ( chart.isOrganisationUnitGroupBased() )
+        {
+            return getAggregatedValueMapOrgUnitGroups( chart.getDataElements(), chart.getIndicators(),
+                chart.getRelativePeriods(), chart.getOrganisationUnitGroupSet().getOrganisationUnitGroups(), chart.getFirstOrganisationUnit() );
+        }
+        else
+        {
+            return getAggregatedValueMapOrgUnitHierarchy( chart.getDataElements(), chart.getIndicators(), chart.getDataSets(),
+                chart.getRelativePeriods(), chart.getAllOrganisationUnits(), null, false, false );
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Org unit groups
+    // -------------------------------------------------------------------------
+
+    private Map<String, Double> getAggregatedValueMapOrgUnitGroups( List<DataElement> dataElements, List<Indicator> indicators, 
+        List<Period> periods, Collection<? extends NameableObject> groups, OrganisationUnit organisationUnit )        
     {
         Map<String, Double> map = new HashMap<String, Double>();
         
         String dataElementIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( DataElement.class, reportTable.getDataElements() ) );
+            ConversionUtils.getIdentifiers( DataElement.class, dataElements ) );
         String indicatorIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( Indicator.class, reportTable.getIndicators() ) );
+            ConversionUtils.getIdentifiers( Indicator.class, indicators ) );
         String periodIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( Period.class, reportTable.getAllPeriods() ) );
-        String unitIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( NameableObject.class, reportTable.getAllUnits() ) );
+            ConversionUtils.getIdentifiers( Period.class, periods ) );
+        String groupIds = TextUtils.getCommaDelimitedString( 
+            ConversionUtils.getIdentifiers( NameableObject.class, groups ) );
 
-        if ( reportTable.hasDataElements() )
+        if ( dataElementIds != null && !dataElementIds.isEmpty() )
         {
             final String sql = "SELECT dataelementid, periodid, organisationunitgroupid, SUM(value) FROM aggregatedorgunitdatavalue " + 
-                "WHERE dataelementid IN (" + dataElementIds + ") AND periodid IN (" + periodIds + ") AND organisationunitgroupid IN (" + unitIds + ") " + 
-                "AND organisationunitid = " + reportTable.getParentOrganisationUnit().getId() + " " +
+                "WHERE dataelementid IN (" + dataElementIds + ") AND periodid IN (" + periodIds + ") AND organisationunitgroupid IN (" + groupIds + ") " + 
+                "AND organisationunitid = " + organisationUnit.getId() + " " +
                 "GROUP BY dataelementid, periodid, organisationunitgroupid"; // Sum of category option combos
 
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
@@ -114,11 +138,11 @@ public class JDBCReportTableManager
             }
         }
 
-        if ( reportTable.hasIndicators() )
+        if ( indicatorIds != null && !indicatorIds.isEmpty() )
         {
             final String sql = "SELECT indicatorid, periodid, organisationunitgroupid, value FROM aggregatedorgunitindicatorvalue " + 
-                "WHERE indicatorid IN (" + indicatorIds + ") AND periodid IN (" + periodIds + ") AND organisationunitgroupid IN (" + unitIds + ") " +
-                "AND organisationunitid = " + reportTable.getParentOrganisationUnit().getId();
+                "WHERE indicatorid IN (" + indicatorIds + ") AND periodid IN (" + periodIds + ") AND organisationunitgroupid IN (" + groupIds + ") " +
+                "AND organisationunitid = " + organisationUnit.getId();
 
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
             
@@ -134,23 +158,29 @@ public class JDBCReportTableManager
 
         return map;
     }
-    
-    public Map<String, Double> getAggregatedValueMapOrgUnitHierarchy( ReportTable reportTable )
+
+    // -------------------------------------------------------------------------
+    // Org unit hierarchy
+    // -------------------------------------------------------------------------
+
+    private Map<String, Double> getAggregatedValueMapOrgUnitHierarchy( List<DataElement> dataElements, List<Indicator> indicators, 
+        List<DataSet> dataSets, List<Period> periods, Collection<? extends NameableObject> organisationUnits, DataElementCategoryCombo categoryCombo,
+        boolean isDimensional, boolean doTotal )
     {
         Map<String, Double> map = new HashMap<String, Double>();
 
         String dataElementIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( DataElement.class, reportTable.getDataElements() ) );
+            ConversionUtils.getIdentifiers( DataElement.class, dataElements ) );
         String indicatorIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( Indicator.class, reportTable.getIndicators() ) );
+            ConversionUtils.getIdentifiers( Indicator.class, indicators ) );
         String dataSetIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( DataSet.class,reportTable.getDataSets() ) );
+            ConversionUtils.getIdentifiers( DataSet.class, dataSets ) );
         String periodIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( Period.class, reportTable.getAllPeriods() ) );
+            ConversionUtils.getIdentifiers( Period.class, periods ) );
         String unitIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( NameableObject.class, reportTable.getAllUnits() ) );
+            ConversionUtils.getIdentifiers( NameableObject.class, organisationUnits ) );
 
-        if ( reportTable.hasDataElements() )
+        if ( dataElementIds != null && !dataElementIds.isEmpty() )
         {
             final String sql = "SELECT dataelementid, periodid, organisationunitid, SUM(value) FROM aggregateddatavalue " + 
                 "WHERE dataelementid IN (" + dataElementIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ") " + 
@@ -168,7 +198,7 @@ public class JDBCReportTableManager
             }
         }
         
-        if ( reportTable.hasIndicators() )
+        if ( indicatorIds != null && !indicatorIds.isEmpty() )
         {
             final String sql = "SELECT indicatorid, periodid, organisationunitid, value FROM aggregatedindicatorvalue " + 
                 "WHERE indicatorid IN (" + indicatorIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ")";
@@ -185,7 +215,7 @@ public class JDBCReportTableManager
             }
         }
 
-        if ( reportTable.hasDataSets() )
+        if ( dataSetIds != null && !dataSetIds.isEmpty() )
         {
             final String sql = "SELECT datasetid, periodid, organisationunitid, value FROM aggregateddatasetcompleteness " + 
                 "WHERE datasetid IN (" + dataSetIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ")";
@@ -202,7 +232,7 @@ public class JDBCReportTableManager
             }
         }
         
-        if ( reportTable.isDimensional() )
+        if ( isDimensional )
         {
             final String sql = "SELECT dataelementid, categoryoptioncomboid, periodid, organisationunitid, value FROM aggregateddatavalue " + 
                 "WHERE dataelementid IN (" + dataElementIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ")";
@@ -220,9 +250,9 @@ public class JDBCReportTableManager
             }
         }
         
-        if ( reportTable.doTotal() )
+        if ( doTotal )
         {
-            for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() )
+            for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() ) //categorycombo
             {
                 String cocIds = TextUtils.getCommaDelimitedString( 
                     ConversionUtils.getIdentifiers( DataElementCategoryOptionCombo.class, categoryOption.getCategoryOptionCombos() ) );
@@ -246,78 +276,6 @@ public class JDBCReportTableManager
             }
         }
 
-        return map;
-    }
-
-    public Map<String, Double> getAggregatedValueMap( Chart chart )
-    {
-        // A bit misplaced but we will merge chart and report table
-
-        Map<String, Double> map = new HashMap<String, Double>();
-
-        String dataElementIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( DataElement.class, chart.getDataElements() ) );
-        String indicatorIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( Indicator.class, chart.getIndicators() ) );
-        String dataSetIds = TextUtils.getCommaDelimitedString(
-            ConversionUtils.getIdentifiers( DataSet.class, chart.getDataSets() ) );
-        String periodIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( Period.class, chart.getRelativePeriods() ) );
-        String unitIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( OrganisationUnit.class, chart.getAllOrganisationUnits() ) );
-
-        if ( chart.hasDataElements() )
-        {
-            final String sql = "SELECT dataelementid, periodid, organisationunitid, SUM(value) FROM aggregateddatavalue " + 
-                "WHERE dataelementid IN (" + dataElementIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ") " + 
-                "GROUP BY dataelementid, periodid, organisationunitid"; // Sum of category option combos
-
-            SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-            
-            while ( rowSet.next() )
-            {
-                String id = getIdentifier( getIdentifier( DataElement.class, rowSet.getInt( 1 ) ),
-                    getIdentifier( Period.class, rowSet.getInt( 2 ) ),
-                    getIdentifier( OrganisationUnit.class, rowSet.getInt( 3 ) ) );
-
-                map.put( id, rowSet.getDouble( 4 ) );
-            }
-        }
-        
-        if ( chart.hasIndicators() )
-        {
-            final String sql = "SELECT indicatorid, periodid, organisationunitid, value FROM aggregatedindicatorvalue " + 
-                "WHERE indicatorid IN (" + indicatorIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ")";
-
-            SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-            
-            while ( rowSet.next() )
-            {
-                String id = getIdentifier( getIdentifier( Indicator.class, rowSet.getInt( 1 ) ),
-                    getIdentifier( Period.class, rowSet.getInt( 2 ) ),
-                    getIdentifier( OrganisationUnit.class, rowSet.getInt( 3 ) ) );
-
-                map.put( id, rowSet.getDouble( 4 ) );
-            }
-        }
-        
-        if ( chart.hasDataSets() )
-        {
-            final String sql = "SELECT datasetid, periodid, organisationunitid, value FROM aggregateddatasetcompleteness " +
-                "WHERE datasetid IN (" + dataSetIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ")";
-
-            SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
-            
-            while ( rowSet.next() )
-            {
-                String id = getIdentifier( getIdentifier( DataSet.class, rowSet.getInt( 1 ) ),
-                    getIdentifier( Period.class, rowSet.getInt( 2 ) ),
-                    getIdentifier( OrganisationUnit.class, rowSet.getInt( 3 ) ) );
-
-                map.put( id, rowSet.getDouble( 4 ) );
-            }
-        }
-        
         return map;
     }
 }
