@@ -40,7 +40,7 @@ function getDataElementsByDataset()
 		});
 }
 
-function autoCompletedField( )
+function autoCompletedField()
 {
 	var select = jQuery( "#aggregationDataElementId" );
 	$( "#dataElementsButton" ).unbind('click');
