@@ -203,6 +203,12 @@ public class Chart
             return organisationUnits;
         }
     }
+    
+    public OrganisationUnit getFirstOrganisationUnit()
+    {
+        List<OrganisationUnit> units = getAllOrganisationUnits();
+        return units != null && !units.isEmpty() ? units.iterator().next() : null;
+    }
 
     private List<NameableObject> dimensionToList( String dimension )
     {
@@ -244,10 +250,6 @@ public class Chart
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
     /**
      * Indicates whether this report table is based on organisation unit groups
      * or the organisation unit hierarchy.
@@ -256,7 +258,7 @@ public class Chart
     {
         return organisationUnitGroupSet != null && organisationUnitGroupSet.getOrganisationUnitGroups() != null;
     }
-
+    
     public void removeAllOrganisationUnits()
     {
         organisationUnits.clear();
