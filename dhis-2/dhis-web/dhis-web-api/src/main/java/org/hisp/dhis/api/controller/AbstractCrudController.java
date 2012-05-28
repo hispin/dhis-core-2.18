@@ -66,7 +66,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // GET
     //-------------------------------------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     @RequestMapping( method = RequestMethod.GET )
     public String getObjectList( @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
     {
@@ -236,13 +235,16 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         try
         {
             return (T) Class.forName( getEntityName() ).newInstance();
-        } catch ( InstantiationException e )
+        }
+        catch ( InstantiationException e )
         {
             throw new RuntimeException( e );
-        } catch ( IllegalAccessException e )
+        }
+        catch ( IllegalAccessException e )
         {
             throw new RuntimeException( e );
-        } catch ( ClassNotFoundException e )
+        }
+        catch ( ClassNotFoundException e )
         {
             throw new RuntimeException( e );
         }
