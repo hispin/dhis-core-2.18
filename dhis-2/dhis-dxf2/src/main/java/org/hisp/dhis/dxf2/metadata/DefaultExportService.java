@@ -37,7 +37,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -77,17 +80,17 @@ public class DefaultExportService
 
         Date lastUpdated = options.getLastUpdated();
 
-        for ( Map.Entry<String, Class<?>> entry : ExchangeClasses.getExportMap().entrySet() )
+        for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getExportMap().entrySet() )
         {
-            if ( !options.isEnabled( entry.getKey() ) )
+            if ( !options.isEnabled( entry.getValue() ) )
             {
                 continue;
             }
 
             @SuppressWarnings( "unchecked" )
-            Class<? extends IdentifiableObject> idObjectClass = (Class<? extends IdentifiableObject>) entry.getValue();
+            Class<? extends IdentifiableObject> idObjectClass = entry.getKey();
 
-            Collection<? extends IdentifiableObject> idObjects = null;
+            Collection<? extends IdentifiableObject> idObjects;
 
             if ( lastUpdated != null )
             {
@@ -103,12 +106,9 @@ public class DefaultExportService
                 continue;
             }
 
-            log.info( "Exporting " + idObjects.size() + " " + StringUtils.capitalize( entry.getKey() ) );
+            log.info( "Exporting " + idObjects.size() + " " + StringUtils.capitalize( entry.getValue() ) );
 
-            List<? extends IdentifiableObject> idObjectsList = new ArrayList<IdentifiableObject>( idObjects );
-
-            String fieldName = entry.getValue().getSimpleName() + "List";
-            ReflectionUtils.invokeSetterMethod( fieldName, metaData, idObjectsList );
+            ReflectionUtils.invokeSetterMethod( entry.getValue(), metaData, new ArrayList<IdentifiableObject>( idObjects ) );
         }
 
         log.info( "Finished export at " + new Date() );

@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.system.util.ReflectionUtils;
@@ -92,27 +93,26 @@ public class DefaultImportService
 
         log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + new Date() );
 
-        for ( Map.Entry<String, Class<?>> entry : ExchangeClasses.getImportMap().entrySet() )
+        for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getImportMap().entrySet() )
         {
-            String fieldName = entry.getValue().getSimpleName() + "List";
-            Object value = ReflectionUtils.invokeGetterMethod( fieldName, metaData );
+            Object value = ReflectionUtils.invokeGetterMethod( entry.getValue(), metaData );
 
             if ( value != null )
             {
                 if ( Collection.class.isAssignableFrom( value.getClass() ) )
                 {
                     List<?> objects = new ArrayList<Object>( (Collection<?>) value );
-                    log.info( "Importing " + objects.size() + " " + StringUtils.capitalize( entry.getKey() ) );
+                    log.info( "Importing " + objects.size() + " " + StringUtils.capitalize( entry.getValue() ) );
                     doImport( objects, importOptions, importSummary );
                 }
                 else
                 {
-                    log.warn( "Getter for '" + entry.getKey() + "' did not return a collection." );
+                    log.warn( "Getter for '" + entry.getValue() + "' did not return a collection." );
                 }
             }
             else
             {
-                log.warn( "Can not find getter for '" + entry.getKey() + "'." );
+                log.warn( "Can not find getter for '" + entry.getValue() + "'." );
             }
         }
 

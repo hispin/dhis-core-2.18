@@ -31,6 +31,7 @@ import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -73,7 +74,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         WebMetaData metaData = new WebMetaData();
         List<T> entityList = getEntityList( metaData, options );
 
-        ReflectionUtils.invokeSetterMethod( getEntitySimpleName() + "List", metaData, entityList );
+        ReflectionUtils.invokeSetterMethod( ExchangeClasses.getExportMap().get( getEntityClass() ), metaData, entityList );
 
         if ( options.hasLinks() )
         {
