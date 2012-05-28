@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.metadata;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.datadictionary.DataDictionary;
@@ -52,6 +53,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 
@@ -62,83 +66,83 @@ import java.util.*;
  */
 final public class ExchangeClasses
 {
-    final private static Map<String, Class<?>> exportClasses;
+    final private static Map<Class<? extends IdentifiableObject>, String> exportClasses;
 
-    final private static Map<String, Class<?>> importClasses;
+    final private static Map<Class<? extends IdentifiableObject>, String> importClasses;
 
     static
     {
-        exportClasses = new LinkedHashMap<String, Class<?>>();
+        exportClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>();
 
-        exportClasses.put( "sqlViews", SqlView.class );
-        exportClasses.put( "concepts", Concept.class );
-        exportClasses.put( "constants", Constant.class );
-        exportClasses.put( "documents", Document.class );
-        exportClasses.put( "optionSets", OptionSet.class );
-        exportClasses.put( "attributeTypes", Attribute.class );
+        exportClasses.put( SqlView.class, "sqlViews" );
+        exportClasses.put( Concept.class, "concepts" );
+        exportClasses.put( Constant.class, "constants" );
+        exportClasses.put( Document.class, "documents" );
+        exportClasses.put( OptionSet.class, "optionSets" );
+        exportClasses.put( Attribute.class, "attributeTypes" );
 
-        exportClasses.put( "organisationUnits", OrganisationUnit.class );
-        exportClasses.put( "organisationUnitLevels", OrganisationUnitLevel.class );
-        exportClasses.put( "organisationUnitGroups", OrganisationUnitGroup.class );
-        exportClasses.put( "organisationUnitGroupSets", OrganisationUnitGroupSet.class );
+        exportClasses.put( OrganisationUnit.class, "organisationUnits" );
+        exportClasses.put( OrganisationUnitLevel.class, "organisationUnitLevels" );
+        exportClasses.put( OrganisationUnitGroup.class, "organisationUnitGroups" );
+        exportClasses.put( OrganisationUnitGroupSet.class, "organisationUnitGroupSets" );
 
-        exportClasses.put( "categoryOptions", DataElementCategoryOption.class );
-        exportClasses.put( "categories", DataElementCategory.class );
-        exportClasses.put( "categoryCombos", DataElementCategoryCombo.class );
-        exportClasses.put( "categoryOptionCombos", DataElementCategoryOptionCombo.class );
+        exportClasses.put( DataElementCategoryOption.class, "categoryOptions" );
+        exportClasses.put( DataElementCategory.class, "categories" );
+        exportClasses.put( DataElementCategoryCombo.class, "categoryCombos" );
+        exportClasses.put( DataElementCategoryOptionCombo.class, "categoryOptionCombos" );
 
-        exportClasses.put( "dataElements", DataElement.class );
-        exportClasses.put( "dataElementGroups", DataElementGroup.class );
-        exportClasses.put( "dataElementGroupSets", DataElementGroupSet.class );
+        exportClasses.put( DataElement.class, "dataElements" );
+        exportClasses.put( DataElementGroup.class, "dataElementGroups" );
+        exportClasses.put( DataElementGroupSet.class, "dataElementGroupSets" );
 
-        exportClasses.put( "indicatorTypes", IndicatorType.class );
-        exportClasses.put( "indicators", Indicator.class );
-        exportClasses.put( "indicatorGroups", IndicatorGroup.class );
-        exportClasses.put( "indicatorGroupSets", IndicatorGroupSet.class );
+        exportClasses.put( IndicatorType.class, "indicatorTypes" );
+        exportClasses.put( Indicator.class, "indicators" );
+        exportClasses.put( IndicatorGroup.class, "indicatorGroups" );
+        exportClasses.put( IndicatorGroupSet.class, "indicatorGroupSets" );
 
-        exportClasses.put( "dataDictionaries", DataDictionary.class );
+        exportClasses.put( DataDictionary.class, "dataDictionaries" );
 
-        exportClasses.put( "dataSets", DataSet.class );
-        exportClasses.put( "sections", Section.class );
+        exportClasses.put( DataSet.class, "dataSets" );
+        exportClasses.put( Section.class, "sections" );
 
-        exportClasses.put( "reportTables", ReportTable.class );
-        exportClasses.put( "reports", Report.class );
-        exportClasses.put( "charts", Chart.class );
+        exportClasses.put( ReportTable.class, "reportTables" );
+        exportClasses.put( Report.class, "reports" );
+        exportClasses.put( Chart.class, "charts" );
 
-        exportClasses.put( "validationRules", ValidationRule.class );
-        exportClasses.put( "validationRuleGroups", ValidationRuleGroup.class );
+        exportClasses.put( ValidationRule.class, "validationRules" );
+        exportClasses.put( ValidationRuleGroup.class, "validationRuleGroups" );
 
-        exportClasses.put( "maps", MapView.class );
-        exportClasses.put( "mapLegends", MapLegend.class );
-        exportClasses.put( "mapLegendSets", MapLegendSet.class );
-        exportClasses.put( "mapLayers", MapLayer.class );
+        exportClasses.put( MapView.class, "maps" );
+        exportClasses.put( MapLegend.class, "mapLegends" );
+        exportClasses.put( MapLegendSet.class, "mapLegendSets" );
+        exportClasses.put( MapLayer.class, "mapLayers" );
+
+        exportClasses.put( User.class, "users" );
+        exportClasses.put( UserGroup.class, "userGroups" );
+        exportClasses.put( UserAuthorityGroup.class, "userRoles" );
 
         importClasses = exportClasses;
 
-
-        // exportClasses.put( "users", User.class );
-        // exportClasses.put( "userGroups", UserGroup.class );
-        // exportClasses.put( "userRoles", UserAuthorityGroup.class );
         // exportClasses.put( "messageConversations", MessageConversation.class );
     }
 
-    public static Map<String, Class<?>> getExportMap()
+    public static Map<Class<? extends IdentifiableObject>, String> getExportMap()
     {
         return Collections.unmodifiableMap( exportClasses );
     }
 
-    public static List<Class<?>> getExportClasses()
+    public static List<Class<? extends IdentifiableObject>> getExportClasses()
     {
-        return new ArrayList<Class<?>>( exportClasses.values() );
+        return new ArrayList<Class<? extends IdentifiableObject>>( exportClasses.keySet() );
     }
 
-    public static Map<String, Class<?>> getImportMap()
+    public static Map<Class<? extends IdentifiableObject>, String> getImportMap()
     {
         return Collections.unmodifiableMap( importClasses );
     }
 
-    public static List<Class<?>> getImportClasses()
+    public static List<Class<? extends IdentifiableObject>> getImportClasses()
     {
-        return new ArrayList<Class<?>>( importClasses.values() );
+        return new ArrayList<Class<? extends IdentifiableObject>>( importClasses.keySet() );
     }
 }
