@@ -432,16 +432,16 @@ function loadAttributeValues( dataSetId )
 				}
 
 				autoCompletedField();
-				
-				jQuery("#valueInput").bind('change', periodSelected);
-				jQuery("#value").bind('select', periodSelected);
+
+				jQuery("#valueInput").bind('change', periodSelected('bind change'));
+				jQuery("#value").bind('select', periodSelected('bind select'));
 				
 				showById('attributeDiv');
 			}
 			else
 			{
 				jQuery("#valueInput").unbind('change');
-				jQuery("#value").unbind('change');
+				jQuery("#value").unbind('select');
 				hideById('attributeDiv');
 			}
 			
@@ -455,7 +455,7 @@ function loadAttributeValues( dataSetId )
 
 function loadDepartmentFormSelected()
 {
-    var periodName = $( '#selectedPeriodId  option:selected' ).text();
+    var periodName = $( '#selectedPeriodId option:selected' ).text();
     var dataSetId = $( '#subDataSetId option:selected' ).val();
 
     $( '#currentPeriod' ).html( periodName );
@@ -465,7 +465,7 @@ function loadDepartmentFormSelected()
     if ( periodId && periodId != -1 && dataSetId != -1 )
     {
         showLoader();
-        loadForm( dataSetId, byId( 'valueInput' ).value );
+        loadForm( dataSetId, getFieldValue( 'valueInput' ) );
     }
 	else
 	{
@@ -475,7 +475,7 @@ function loadDepartmentFormSelected()
 
 function periodSelected()
 {
-    var periodName = $( '#selectedPeriodId option:selected' ).text();
+	var periodName = $( '#selectedPeriodId option:selected' ).text();
     var dataSetId = $( '#selectedDataSetId option:selected' ).val();
 
     $( '#currentPeriod' ).html( periodName );
@@ -484,8 +484,12 @@ function periodSelected()
 
     if ( periodId && periodId != -1 )
     {
-        showLoader();
-        loadForm( dataSetId, getFieldValue( 'valueInput' ) );
+		if ( hasElements( 'subDataSetId' ) && getFieldValue( 'subDataSetId' ) == null ) {
+			return;
+		} else {
+			showLoader();
+			loadForm( dataSetId, getFieldValue( 'valueInput' ) );
+		}
     }
 	else
 	{
@@ -1585,21 +1589,8 @@ function autoCompletedField()
 			},
 			select: function( event, ui ) {
 				ui.item.option.selected = true;
-			},
-			change: function( event, ui ) {
-				if ( !ui.item ) {
-					var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
-					valid = false;
-					select.children( "option" ).each(function() {
-						if ( $( this ).text().match( matcher ) ) {
-							this.selected = valid = true;
-							return false;
-						}
-					});
-					if ( !valid ) {
-						return false;
-					}
-				}
+				setFieldValue( 'valueInput', ui.item.option.value );
+				periodSelected();
 			}
 		}).addClass( "ui-widget ui-widget-content ui-corner-left" );
 
@@ -1610,6 +1601,14 @@ function autoCompletedField()
 			.appendTo( ul );
 	};
 
+	input.keypress( function( e )
+	{
+		code= (e.keyCode ? e.keyCode : e.which);
+		if ( code == 13 ) {
+			periodSelected();
+		}
+	});
+	
 	showById('valueButton');
 	var button = $( "#valueButton" )
 		.attr( "title", i18n_show_all_items )
