@@ -42,7 +42,6 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 @SuppressWarnings( "unchecked" )
 public class ReportStoreTest

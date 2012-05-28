@@ -71,6 +71,16 @@ public interface GenericIdentifiableObjectStore<T>
     Collection<T> getBetween( int first, int max );
 
     /**
+     * Retrieves the objects determined by the given first result and max result.
+     * The returned list is ordered by the last updated property descending. 
+     * 
+     * @param first the first result object to return.
+     * @param max the max number of result objects to return. 
+     * @return collection of objects.
+     */
+    List<T> getBetweenOrderderByLastUpdated( int first, int max );
+    
+    /**
      * Retrieves the objects determined by the given first result and max result
      * which name is like the given name.
      * 

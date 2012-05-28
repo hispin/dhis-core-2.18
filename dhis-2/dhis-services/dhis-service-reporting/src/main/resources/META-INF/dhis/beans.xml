@@ -247,6 +247,18 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
+  
+  <!-- Interpretation -->
+  
+  <bean id="org.hisp.dhis.interpretation.InterpretationService" class="org.hisp.dhis.interpretation.impl.DefaultInterpretationService">
+	<property name="interpretationStore" ref="org.hisp.dhis.interpretation.InterpretationStore" />
+  </bean>
+
+  <bean id="org.hisp.dhis.interpretation.InterpretationStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+	<property name="clazz" value="org.hisp.dhis.interpretation.Interpretation" />
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
+  </bean>
 
   <!-- Scheduling -->
 
