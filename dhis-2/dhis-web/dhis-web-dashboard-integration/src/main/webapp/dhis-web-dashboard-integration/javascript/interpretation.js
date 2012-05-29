@@ -35,6 +35,8 @@ function postComment( uid )
 				"<div class=\"interpretationText\">${text}<\/div>";
 			
 			$.tmpl( template, { "userId": currentUser.id, "userName": currentUser.name, created: created, text: text } ).appendTo( "#comments" + uid );
+			
+			$( "#commentArea" + uid ).val( "" );
 		}		
 	} );
 }

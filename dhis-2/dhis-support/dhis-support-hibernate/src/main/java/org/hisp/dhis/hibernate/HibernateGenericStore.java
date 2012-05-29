@@ -353,4 +353,12 @@ public class HibernateGenericStore<T>
     {
         return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).list();
     }
+    
+    @Override
+    public long getCountByLastUpdated( Date lastUpdated )
+    {
+        Object count  = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).setProjection( Projections.rowCount() ).list().get( 0 );
+        
+        return count != null ? (Long) count : -1;
+    }
 }

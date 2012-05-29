@@ -45,6 +45,7 @@ import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,6 +74,8 @@ public class User
     private String email;
 
     private String phoneNumber;
+
+    private Date lastCheckedInterpretations;
     
     private UserCredentials userCredentials;
 
@@ -313,6 +316,16 @@ public class User
     public void setPhoneNumber( String phoneNumber )
     {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Date getLastCheckedInterpretations()
+    {
+        return lastCheckedInterpretations;
+    }
+
+    public void setLastCheckedInterpretations( Date lastCheckedInterpretations )
+    {
+        this.lastCheckedInterpretations = lastCheckedInterpretations;
     }
 
     @JsonProperty

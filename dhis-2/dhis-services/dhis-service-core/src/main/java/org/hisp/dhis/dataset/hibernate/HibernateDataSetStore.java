@@ -43,7 +43,6 @@ import java.util.Collection;
 
 /**
  * @author Kristian Nordal
- * @version $Id: HibernateDataSetStore.java 3303 2007-05-14 13:39:34Z larshelg $
  */
 public class HibernateDataSetStore
     extends HibernateIdentifiableObjectStore<DataSet>

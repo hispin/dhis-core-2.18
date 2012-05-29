@@ -155,4 +155,16 @@ public class InterpretationServiceTest
         assertNotNull( interpretationA.getComments() );
         assertEquals( 2, interpretationA.getComments().size() );
     }
+    
+    @Test
+    public void testGetNewCount()
+    {
+        interpretationService.saveInterpretation( interpretationA );
+        interpretationService.saveInterpretation( interpretationB );
+        interpretationService.saveInterpretation( interpretationC );
+        
+        long count = interpretationService.getNewInterpretationCount();
+        
+        assertEquals( 3, count );
+    }
 }
