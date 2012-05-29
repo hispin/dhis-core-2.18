@@ -27,8 +27,11 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
+
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -40,14 +43,38 @@ public class Interpretation
     
     private String text;
 
+    private User user;
+    
+    private Date created;
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public Interpretation()
     {
+        this.created = new Date();
     }
-    
+
     public Interpretation( Chart chart, String text )
     {
+        this.chart = chart;
+        this.text = text;
+        this.created = new Date();
     }
-    
+
+    public Interpretation( Chart chart, String text, User user )
+    {
+        this.chart = chart;
+        this.text = text;
+        this.user = user;
+        this.created = new Date();
+    }
+
+    // -------------------------------------------------------------------------
+    // Get and set methods
+    // -------------------------------------------------------------------------
+
     public Chart getChart()
     {
         return chart;
@@ -66,5 +93,25 @@ public class Interpretation
     public void setText( String text )
     {
         this.text = text;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser( User user )
+    {
+        this.user = user;
+    }
+
+    public Date getCreated()
+    {
+        return created;
+    }
+
+    public void setCreated( Date created )
+    {
+        this.created = created;
     }
 }

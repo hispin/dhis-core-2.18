@@ -8,6 +8,7 @@
 <ul>
 	<li><a href="index.action">$i18n.getString( "dashboard" )&nbsp;</a></li>
 	<li><a href="message.action">$i18n.getString( "messages" )&nbsp;</a></li>
+	<li><a href="interpretation.action">$i18n.getString( "interpretations" )&nbsp;</a></li>
 </ul>
 
 <h2>$i18n.getString( "dhis2_online" )&nbsp;</h2>

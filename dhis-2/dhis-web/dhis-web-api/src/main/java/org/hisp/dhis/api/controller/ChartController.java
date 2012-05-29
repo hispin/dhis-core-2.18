@@ -40,6 +40,7 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 
@@ -79,13 +81,14 @@ public class ChartController
 
     @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
     public void getChart( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "date", required = false ) @DateTimeFormat( pattern = "yyyy-MM-dd" ) Date date,
         @RequestParam( value = "width", defaultValue = "800", required = false ) int width,
         @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
         HttpServletResponse response ) throws IOException, I18nManagerException
     {
-        JFreeChart jFreeChart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
-
         Chart chart = chartService.getChart( uid );
+
+        JFreeChart jFreeChart = chartService.getJFreeChart( chart, date, i18nManager.getI18nFormat() );
 
         String filename = CodecUtils.filenameEncode( chart.getName() ) + ".png";
 

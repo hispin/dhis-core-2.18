@@ -57,7 +57,7 @@
 
 .labelText
 {
-  color:#808080;
+  color:#888;
   padding:3px;
 }
 
@@ -119,3 +119,46 @@ div#selectionTree
 {
   height:200px;
 }
+
+.grey
+{
+  color: #555;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Interpretation                                                             */
+/*----------------------------------------------------------------------------*/
+
+#interpretationFeed
+{
+  width: 550px;
+  border-top: 1px solid #ccc;
+}
+
+#shareLink
+{
+  color: #777;
+  font-size: 11pt;
+  margin-bottom: 9px;
+}
+
+.interpretation
+{
+  border-bottom: 1px solid #ccc;
+  padding: 22px;
+}
+
+.interpretationName
+{
+  margin-bottom: 8px;
+}
+
+.interpretationText
+{
+  margin-bottom: 18px;
+}
+
+.interpretationChart
+{
+}
+

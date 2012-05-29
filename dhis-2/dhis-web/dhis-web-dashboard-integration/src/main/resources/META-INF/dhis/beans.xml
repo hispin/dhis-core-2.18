@@ -97,5 +97,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
+  
+  <!-- Interpretations -->
+  
+  <bean id="org.hisp.dhis.dashboard.interpretation.action.GetInterpretationsAction" class="org.hisp.dhis.dashboard.interpretation.action.GetInterpretationsAction"
+	scope="prototype">
+	<property name="interpretationService" ref="org.hisp.dhis.interpretation.InterpretationService" />
+  </bean>
 
 </beans>

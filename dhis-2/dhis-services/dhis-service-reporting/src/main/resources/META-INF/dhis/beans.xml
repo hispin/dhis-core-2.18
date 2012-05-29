@@ -252,6 +252,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.interpretation.InterpretationService" class="org.hisp.dhis.interpretation.impl.DefaultInterpretationService">
 	<property name="interpretationStore" ref="org.hisp.dhis.interpretation.InterpretationStore" />
+	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.interpretation.InterpretationStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
