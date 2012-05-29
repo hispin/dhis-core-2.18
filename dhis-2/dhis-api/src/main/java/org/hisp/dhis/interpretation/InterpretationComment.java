@@ -27,67 +27,32 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
  */
-public class Interpretation
+public class InterpretationComment
     extends BaseIdentifiableObject
 {
-    private Chart chart;
-    
     private String text;
-
+    
     private User user;
     
     private Date created;
     
-    private List<InterpretationComment> comments = new ArrayList<InterpretationComment>();
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public Interpretation()
+    public InterpretationComment()
     {
         this.created = new Date();
-    }
-
-    public Interpretation( Chart chart, String text )
-    {
-        this.chart = chart;
-        this.text = text;
-        this.created = new Date();
-    }
-
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    public void addComment( InterpretationComment comment )
-    {
-        this.comments.add( comment );
     }
     
-    // -------------------------------------------------------------------------
-    // Get and set methods
-    // -------------------------------------------------------------------------
-
-    public Chart getChart()
+    public InterpretationComment( String text )
     {
-        return chart;
-    }
-
-    public void setChart( Chart chart )
-    {
-        this.chart = chart;
+        this.text = text;
+        this.created = new Date();
     }
 
     public String getText()
@@ -118,15 +83,5 @@ public class Interpretation
     public void setCreated( Date created )
     {
         this.created = created;
-    }
-
-    public List<InterpretationComment> getComments()
-    {
-        return comments;
-    }
-
-    public void setComments( List<InterpretationComment> comments )
-    {
-        this.comments = comments;
     }
 }

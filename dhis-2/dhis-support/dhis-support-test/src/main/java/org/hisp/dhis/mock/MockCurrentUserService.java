@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.interpretation.action;
+package org.hisp.dhis.mock;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,49 +27,40 @@ package org.hisp.dhis.dashboard.interpretation.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
-import org.hisp.dhis.interpretation.Interpretation;
-import org.hisp.dhis.interpretation.InterpretationService;
-
-import com.opensymphony.xwork2.Action;
-
-/**
- * @author Lars Helge Overland
- */
-public class GetInterpretationsAction
-    implements Action
+public class MockCurrentUserService
+    implements CurrentUserService
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private InterpretationService interpretationService;
-
-    public void setInterpretationService( InterpretationService interpretationService )
-    {
-        this.interpretationService = interpretationService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private List<Interpretation> interpretations;
+    private User currentUser;
     
-    public List<Interpretation> getInterpretations()
+    public MockCurrentUserService( User currentUser )
     {
-        return interpretations;
+        this.currentUser = currentUser;
+    }
+    
+    @Override
+    public String getCurrentUsername()
+    {
+        return currentUser.getUsername();
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
+    @Override
+    public User getCurrentUser()
     {
-        interpretations = interpretationService.getInterpretations( 0, 10 );
-        
-        return SUCCESS;
+        return currentUser;
+    }
+
+    @Override
+    public boolean currentUserIsSuper()
+    {
+        return true;
+    }
+
+    @Override
+    public void clearCurrentUser()
+    {
+        currentUser = null;
     }
 }

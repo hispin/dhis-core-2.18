@@ -37,6 +37,8 @@ import java.util.List;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.mock.MockCurrentUserService;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.junit.Before;
@@ -72,12 +74,14 @@ public class InterpretationServiceTest
         userA = createUser( 'A' );
         userService.addUser( userA );
         
+        setDependency( interpretationService, "currentUserService", new MockCurrentUserService( userA ), CurrentUserService.class );
+        
         chartA = new Chart( "ChartA" );
         chartService.saveChart( chartA );
         
-        interpretationA = new Interpretation( chartA, "Interpration of chart A", userA );
-        interpretationB = new Interpretation( chartA, "Interpration of chart B", userA );
-        interpretationC = new Interpretation( chartA, "Interpration of chart C", userA );
+        interpretationA = new Interpretation( chartA, "Interpration of chart A" );
+        interpretationB = new Interpretation( chartA, "Interpration of chart B" );
+        interpretationC = new Interpretation( chartA, "Interpration of chart C" );
     }
     
     @Test
@@ -135,5 +139,20 @@ public class InterpretationServiceTest
         assertTrue( interpretations.contains( interpretationA ) );
         assertTrue( interpretations.contains( interpretationB ) );
         assertTrue( interpretations.contains( interpretationC ) );
+    }
+    
+    @Test
+    public void testAddComment()
+    {
+        interpretationService.saveInterpretation( interpretationA );
+        String uid = interpretationA.getUid();        
+        assertNotNull( uid );
+        
+        interpretationService.addInterpretationComment( uid, "This interpretation is good" );
+        interpretationService.addInterpretationComment( uid, "This interpretation is bad" );
+        
+        interpretationA = interpretationService.getInterpretation( uid );
+        assertNotNull( interpretationA.getComments() );
+        assertEquals( 2, interpretationA.getComments().size() );
     }
 }

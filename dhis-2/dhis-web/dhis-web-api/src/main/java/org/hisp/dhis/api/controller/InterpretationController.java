@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.interpretation.action;
+package org.hisp.dhis.api.controller;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,49 +27,36 @@ package org.hisp.dhis.dashboard.interpretation.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.io.IOException;
 
-import org.hisp.dhis.interpretation.Interpretation;
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.interpretation.InterpretationService;
-
-import com.opensymphony.xwork2.Action;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetInterpretationsAction
-    implements Action
+@Controller
+@RequestMapping( value = InterpretationController.RESOURCE_PATH )
+public class InterpretationController
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private InterpretationService interpretationService;
-
-    public void setInterpretationService( InterpretationService interpretationService )
-    {
-        this.interpretationService = interpretationService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private List<Interpretation> interpretations;
+    public static final String RESOURCE_PATH = "/interpretations";
     
-    public List<Interpretation> getInterpretations()
+    @Autowired
+    private InterpretationService interpretationService;
+    
+    @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST )
+    public void postComment( @PathVariable( "uid" ) String uid, @RequestBody String text, HttpServletResponse response ) throws IOException
     {
-        return interpretations;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-    {
-        interpretations = interpretationService.getInterpretations( 0, 10 );
+        interpretationService.addInterpretationComment( uid, text );
         
-        return SUCCESS;
+        ContextUtils.okResponse( response, "Comment created" );        
     }
 }

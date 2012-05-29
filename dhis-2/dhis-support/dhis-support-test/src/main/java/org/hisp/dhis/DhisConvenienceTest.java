@@ -98,6 +98,8 @@ import org.hisp.dhis.validation.ValidationCriteriaService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
 
 /**
  * @author Lars Helge Overland
@@ -314,7 +316,9 @@ public abstract class DhisConvenienceTest
     protected void setDependency( Object targetService, String fieldName, Object dependency, Class<?> clazz )
     {
         try
-        {
+        {            
+            targetService = getRealObject( targetService );
+            
             String setMethodName = "set" + fieldName.substring( 0, 1 ).toUpperCase()
                 + fieldName.substring( 1, fieldName.length() );
 
@@ -330,6 +334,24 @@ public abstract class DhisConvenienceTest
         }
     }
 
+    /**
+     * If the given class is advised by Spring AOP it will return the target class,
+     * i.e. the advised class. If not the given class is returned unchanged.
+     * 
+     * @param object the object.
+     */
+    @SuppressWarnings("unchecked")
+    private <T> T getRealObject( T object )
+        throws Exception
+    {
+        if ( AopUtils.isAopProxy( object ) )
+        {
+            return (T) ((Advised) object).getTargetSource().getTarget();
+        }
+        
+        return object;
+    }
+    
     // -------------------------------------------------------------------------
     // Create object methods
     // -------------------------------------------------------------------------

@@ -43,4 +43,6 @@ public interface InterpretationService
     void deleteInterpretation( Interpretation interpretation );
     
     List<Interpretation> getInterpretations( int first, int max );
+    
+    void addInterpretationComment( String uid, String text );
 }
