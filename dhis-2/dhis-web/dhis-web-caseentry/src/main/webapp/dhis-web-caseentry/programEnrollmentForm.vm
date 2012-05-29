@@ -12,10 +12,10 @@
 	<!-- Enroll program TAB -->
 	<div id="tab-1">
 		<form id='programEnrollmentInforForm' name='programEnrollmentInforForm' action='#' method="POST" >
-			<input type='hidden' id='programId' name='programId' value='$programInstance.program.id'>
-			<input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id'>
-			<!-- IDENTIFIERS -->
-			#if( $identifierTypes || $noGroupAttributes || $attributeGroups )
+			#if( $identifierTypes.size() > 0 || $noGroupAttributes.size() > 0 || $attributeGroups.size() > 0 )
+				<input type='hidden' id='programId' name='programId' value='$programInstance.program.id'>
+				<input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id'>
+				<!-- IDENTIFIERS -->
 				<table class='mainPageTable' id='enrollmentInforDiv' name='enrollmentInforDiv' >
 					<col id="stageCol">    
 					<col id="entryCol">    
@@ -188,24 +188,21 @@
 	});
 
 	#if( $programInstance || $hasDataEntry == 'true')
-		
 		$('#tabs').tabs();
-		
-		#if( $identifierTypes && $noGroupAttributes && $attributeGroups )
-			$( "#tabs" ).tabs( "option", "selected", 1 );
-			$( "#tabs" ).tabs( "option", "disabled", [0] );
-		#end
-		
-		#if( $programInstance )
-		#else
-			$( "#tabs" ).tabs( "option", "selected", 2 );
-			$( "#tabs" ).tabs( "option", "disabled", [0,1] );
-		#end
 		
 		#if( $hasDataEntry == 'true' )
 			showSelectedDataRecoding( getFieldValue('patientId') );
 		#else
+			var disabled = $( ".selector" ).tabs( "option", "disabled" );
 			$( "#tabs" ).tabs( "option", "disabled", [2] );
+			$("#tabs").tabs("remove", 2);
+		#end
+		
+		#if( $identifierTypes.size() > 0 || $noGroupAttributes.size() > 0 || $attributeGroups.size() > 0 )
+			$( "#tabs" ).tabs( "option", "selected", 0 );
+		#else
+			$( "#tabs" ).tabs( "option", "selected", 1 );
+			$("#tabs").tabs("remove", 0);
 		#end
 	#end
 	
