@@ -99,6 +99,16 @@
   padding-bottom:15px;
 }
 
+.replyArea
+{
+  width:495px;
+  height:80px;
+  border: 1px solid #ccc;
+  resize: none;
+  overflow: auto;
+  padding: 4px 0px 0px 6px;
+}
+
 .page a
 {
   text-decoration:none;
