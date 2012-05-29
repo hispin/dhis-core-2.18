@@ -37,6 +37,7 @@ import org.hisp.dhis.interpretation.InterpretationComment;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -62,6 +63,13 @@ public class DefaultInterpretationService
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+    
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -118,5 +126,32 @@ public class DefaultInterpretationService
         interpretation.addComment( comment );
         
         interpretationStore.update( interpretation );
+    }
+    
+    public void updateCurrentUserLastChecked()
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        user.setLastCheckedInterpretations( new Date() );
+        
+        userService.updateUser( user );
+    }
+    
+    public long getNewInterpretationCount()
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        long count = 0;
+        
+        if ( user != null && user.getLastCheckedInterpretations() != null )
+        {
+            count = interpretationStore.getCountByLastUpdated( user.getLastCheckedInterpretations() );
+        }
+        else
+        {
+            count = interpretationStore.getCount();
+        }
+        
+        return count;
     }
 }

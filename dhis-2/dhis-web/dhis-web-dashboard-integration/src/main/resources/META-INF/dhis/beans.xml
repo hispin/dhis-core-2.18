@@ -11,6 +11,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+	<property name="interpretationService" ref="org.hisp.dhis.interpretation.InterpretationService" />
   </bean>
 
   <bean id="org.hisp.dhis.dashboard.action.SetAreaItemAction" class="org.hisp.dhis.dashboard.action.SetAreaItemAction"

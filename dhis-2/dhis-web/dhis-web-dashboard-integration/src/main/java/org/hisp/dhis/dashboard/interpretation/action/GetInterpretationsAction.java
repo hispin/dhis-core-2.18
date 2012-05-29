@@ -68,7 +68,9 @@ public class GetInterpretationsAction
 
     public String execute()
     {
-        interpretations = interpretationService.getInterpretations( 0, 10 );
+        interpretationService.updateCurrentUserLastChecked();
+        
+        interpretations = interpretationService.getInterpretations( 0, 20 );
         
         return SUCCESS;
     }

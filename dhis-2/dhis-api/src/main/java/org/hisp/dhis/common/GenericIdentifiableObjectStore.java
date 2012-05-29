@@ -108,10 +108,18 @@ public interface GenericIdentifiableObjectStore<T>
     List<T> getByUid( Collection<String> uids );
 
     /**
-     * Returns all objects that are equal to or newer than given date
+     * Returns all objects that are equal to or newer than given date.
      *
-     * @param lastUpdated Date to compare to
-     * @return All objects equal or newer than given date
+     * @param lastUpdated Date to compare to.
+     * @return All objects equal or newer than given date.
      */
-    List<T> getByLastUpdated(Date lastUpdated);
+    List<T> getByLastUpdated( Date lastUpdated );
+
+    /**
+     * Returns the number of objects that are equal to or newer than given date.
+     *
+     * @param lastUpdated Date to compare to.
+     * @return the number of objects equal or newer than given date.
+     */
+    long getCountByLastUpdated( Date lastUpdated );
 }

@@ -68,21 +68,20 @@ public class DateUtils
     }
 
     /**
-     * Formats a Date to the IXF date format which is YYYY-MM-DD'T'HH:MM:SS.
+     * Formats a Date to the format yyyy-MM-dd HH:mm:ss.
      * 
      * @param date the Date to parse.
      * @return A formatted date string.
      */
     public static String getLongDateString( Date date )
     {
-        final SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
+        final SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
 
         return date != null ? format.format( date ) : null;
     }
 
     /**
-     * Formats the current Date to the IXF date format which is
-     * YYYY-MM-DD'T'HH:MM:SS.
+     * Formats a Date to the format yyyy-MM-dd HH:mm:ss.
      * 
      * @return A formatted date string.
      */

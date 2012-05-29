@@ -40,6 +40,7 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dashboard.DashboardManager;
+import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -84,6 +85,13 @@ public class ProvideContentAction
     {
         this.messageService = messageService;
     }
+    
+    private InterpretationService interpretationService;
+
+    public void setInterpretationService( InterpretationService interpretationService )
+    {
+        this.interpretationService = interpretationService;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -115,6 +123,13 @@ public class ProvideContentAction
     public long getMessageCount()
     {
         return messageCount;
+    }
+    
+    private long interpretationCount;
+
+    public long getInterpretationCount()
+    {
+        return interpretationCount;
     }
 
     // -------------------------------------------------------------------------
@@ -150,6 +165,8 @@ public class ProvideContentAction
         }
 
         messageCount = messageService.getUnreadMessageConversationCount();
+        
+        interpretationCount = interpretationService.getNewInterpretationCount();
 
         return SUCCESS;
     }
