@@ -37,6 +37,8 @@ import java.util.List;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +50,15 @@ public class InterpretationServiceTest
     extends DhisSpringTest
 {
     @Autowired
+    private UserService userService;
+    
+    @Autowired
     private ChartService chartService;
     
     @Autowired
     private InterpretationService interpretationService;
+    
+    private User userA;
     
     private Chart chartA;
     
@@ -62,12 +69,15 @@ public class InterpretationServiceTest
     @Before    
     public void beforeTest()
     {
+        userA = createUser( 'A' );
+        userService.addUser( userA );
+        
         chartA = new Chart( "ChartA" );
         chartService.saveChart( chartA );
         
-        interpretationA = new Interpretation( chartA, "Interpration of chart A" );
-        interpretationB = new Interpretation( chartA, "Interpration of chart B" );
-        interpretationC = new Interpretation( chartA, "Interpration of chart C" );
+        interpretationA = new Interpretation( chartA, "Interpration of chart A", userA );
+        interpretationB = new Interpretation( chartA, "Interpration of chart B", userA );
+        interpretationC = new Interpretation( chartA, "Interpration of chart C", userA );
     }
     
     @Test

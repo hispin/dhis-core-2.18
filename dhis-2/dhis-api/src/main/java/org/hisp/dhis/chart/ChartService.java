@@ -28,6 +28,7 @@ package org.hisp.dhis.chart;
  */
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -48,12 +49,12 @@ public interface ChartService
 {
     String ID = ChartService.class.getName();
 
-    JFreeChart getJFreeChart( String uid, I18nFormat format );
-
     JFreeChart getJFreeChart( int id, I18nFormat format );
 
     JFreeChart getJFreeChart( Chart chart, I18nFormat format );
 
+    JFreeChart getJFreeChart( Chart chart, Date date, I18nFormat format );
+    
     JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format );
 
     JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title, I18nFormat format );

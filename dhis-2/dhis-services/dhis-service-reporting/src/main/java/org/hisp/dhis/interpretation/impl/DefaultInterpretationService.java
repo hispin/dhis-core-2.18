@@ -32,6 +32,8 @@ import java.util.List;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -49,6 +51,13 @@ public class DefaultInterpretationService
     {
         this.interpretationStore = interpretationStore;
     }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // InterpretationService implementation
@@ -56,6 +65,13 @@ public class DefaultInterpretationService
 
     public int saveInterpretation( Interpretation interpretation )
     {
+        User user = currentUserService.getCurrentUser();
+        
+        if ( user != null )
+        {
+            interpretation.setUser( user );
+        }
+        
         return interpretationStore.save( interpretation );
     }
     

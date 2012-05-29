@@ -43,6 +43,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -173,13 +174,6 @@ public class DefaultChartService
     // Logic
     // -------------------------------------------------------------------------
 
-    public JFreeChart getJFreeChart( String uid, I18nFormat format )
-    {
-        Chart chart = getChart( uid );
-        
-        return chart != null ? getJFreeChart( chart, format ) : null;
-    }
-
     public JFreeChart getJFreeChart( int id, I18nFormat format )
     {
         Chart chart = getChart( id );
@@ -189,10 +183,15 @@ public class DefaultChartService
 
     public JFreeChart getJFreeChart( Chart chart, I18nFormat format )
     {
+        return getJFreeChart( chart, null, format );
+    }
+    
+    public JFreeChart getJFreeChart( Chart chart, Date date, I18nFormat format )
+    {
         if ( chart.getRelatives() != null )
         {
-            chart.setRelativePeriods( periodService.reloadPeriods( chart.getRelatives().getRelativePeriods( format,
-                true ) ) );
+            chart.setRelativePeriods( periodService.reloadPeriods( chart.getRelatives().getRelativePeriods( 
+                date, format, true ) ) );
         }
 
         User user = currentUserService.getCurrentUser();
