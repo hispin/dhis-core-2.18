@@ -44,7 +44,7 @@
 #end
 </div>
 
-<div id="userInfo" class="page"></div>
+<div id="userInfo" class="page" style="display:none"></div>
 
 <script type="text/javascript">
 var currentUser = {
