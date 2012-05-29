@@ -32,8 +32,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   	<property name="sessionFactory" ref="sessionFactory" />
   </bean>
   
-  <bean id="org.hisp.dhis.sms.inbound.ModemService" class="org.hisp.dhis.sms.inbound.DefaultModemService"/>
-  
   <bean id="org.hisp.dhis.sms.incoming.IncomingSmsService" class="org.hisp.dhis.sms.inbound.DefaultInboundSmsService"/>
   
 </beans>
