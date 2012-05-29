@@ -364,7 +364,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror" >
 		<property name="statementManager" ref="statementManager" />
-		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="name" value="PatientTableAlteror" />
 		<property name="runlevel" value="4" />
 		<property name="skipInTests" value="true" />
