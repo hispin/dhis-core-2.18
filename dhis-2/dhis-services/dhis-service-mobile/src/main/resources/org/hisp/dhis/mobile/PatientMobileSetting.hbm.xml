@@ -16,8 +16,6 @@
 
     <property name="birthdate" column="birthdate" not-null="true" />
 
-    <property name="bloodgroup" column="bloodgroup" not-null="true" />
-
     <property name="registrationdate" column="registrationdate" not-null="true" />
 
     <list name="patientAttributes">

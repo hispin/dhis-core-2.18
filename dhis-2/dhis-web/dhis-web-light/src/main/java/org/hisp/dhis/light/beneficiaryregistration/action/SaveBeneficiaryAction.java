@@ -98,19 +98,7 @@ public class SaveBeneficiaryAction
     {
         this.patientFullName = patientFullName;
     }
-
-    private String bloodGroup;
-
-    public String getBloodGroup()
-    {
-        return bloodGroup;
-    }
-
-    public void setBloodGroup( String bloodGroup )
-    {
-        this.bloodGroup = bloodGroup;
-    }
-
+    
     private String gender;
 
     public String getGender()
@@ -215,7 +203,6 @@ public class SaveBeneficiaryAction
         }
 
         patient.setGender( gender );
-        patient.setBloodGroup( bloodGroup );
         patient.setRegistrationDate( new Date() );
         try
         {
@@ -233,7 +220,6 @@ public class SaveBeneficiaryAction
             this.validated = false;
             this.previousValues.put( "fullName", this.patientFullName );
             this.previousValues.put( "gender", this.gender );
-            this.previousValues.put( "bloodGroup", this.bloodGroup );
             this.previousValues.put( "dob", this.dateOfBirth );
             return SUCCESS;
         }

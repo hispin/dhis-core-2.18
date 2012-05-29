@@ -62,23 +62,6 @@
 		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 	</td>
 </tr>
-	
-<tr>
-	<td class='text-column'><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
-	<td class="input-column" colspan='2'>
-		<select id="bloodGroup" name="bloodGroup">
-			<option value="">[$i18n.getString( "please_select" )]</option>
-			<option value="A+">A+</option>
-			<option value="A-">A-</option>
-			<option value="AB+">AB+</option>
-			<option value="AB-">AB-</option>
-			<option value="B+">B+</option>
-			<option value="B-">B-</option>
-			<option value="O+">O+</option>
-			<option value="O-">O-</option>
-		</select>
-	</td>		
-</tr>
 
 <tr>
 	<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>

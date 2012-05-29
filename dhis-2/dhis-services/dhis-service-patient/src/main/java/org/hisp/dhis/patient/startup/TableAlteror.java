@@ -35,6 +35,8 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,6 +63,13 @@ public class TableAlteror
         this.statementManager = statementManager;
     }
 
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -78,24 +87,28 @@ public class TableAlteror
         executeSql( "ALTER TABLE patientdatavalue DROP COLUMN categoryoptioncomboid" );
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN providedbyanotherfacility" );
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN organisationunitid" );
-        executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN storedby" );  
-        executeSql( "DROP TABLE patientchart" ); 
-        
+        executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN storedby" );
+        executeSql( "DROP TABLE patientchart" );
+
         executeSql( "ALTER TABLE program DROP COLUMN hidedateofincident" );
-        
+
         executeSql( "UPDATE program SET type=2 where singleevent=true" );
         executeSql( "UPDATE program SET type=3 where anonymous=true" );
         executeSql( "ALTER TABLE program DROP COLUMN singleevent" );
-        executeSql( "ALTER TABLE program DROP COLUMN anonymous" ); 
+        executeSql( "ALTER TABLE program DROP COLUMN anonymous" );
         executeSql( "UPDATE program SET type=1 where type is null" );
-        
+
         executeSql( "DROP TABLE programattributevalue" );
-        executeSql( "DROP TABLE programinstance_attributes");
+        executeSql( "DROP TABLE programinstance_attributes" );
         executeSql( "DROP TABLE programattributeoption" );
         executeSql( "DROP TABLE programattribute" );
-        
+
         executeSql( "ALTER TABLE patientattribute DROP COLUMN noChars" );
         executeSql( "ALTER TABLE programstageinstance ALTER executiondate TYPE date" );
+        
+        createPatientAttribute();
+        executeSql( "ALTER TABLE patientidentifier ALTER COLUMN patientid DROP NOT NULL" );
+        //executeSql( "ALTER TABLE patientmobilesetting DROP COLUMN bloodGroup" );
     }
 
     // -------------------------------------------------------------------------
@@ -112,7 +125,7 @@ public class TableAlteror
 
             ResultSet resultSet = statement
                 .executeQuery( "SELECT distinct programstageinstanceid, organisationunitid, providedByAnotherFacility FROM patientdatavalue" );
-            
+
             while ( resultSet.next() )
             {
                 executeSql( "UPDATE programstageinstance SET organisationunitid=" + resultSet.getInt( 2 )
@@ -134,6 +147,47 @@ public class TableAlteror
         }
     }
 
+    private void createPatientAttribute()
+    {
+        PatientAttribute patientAttribute = patientAttributeService.getPatientAttributeByName( "Blood group" );
+        if( patientAttribute == null )
+        {
+            patientAttribute = new PatientAttribute();
+            patientAttribute.setName( "Blood group" );
+            patientAttribute.setDescription( "Blood group" );
+            patientAttribute.setValueType( PatientAttribute.TYPE_STRING );
+            patientAttribute.setMandatory( false );
+            patientAttribute.setInheritable( false );
+            patientAttribute.setGroupBy( false );
+            int patientAttributeId = patientAttributeService.savePatientAttribute( patientAttribute );
+            
+            StatementHolder holder = statementManager.getHolder();
+
+            try
+            {
+                Statement statement = holder.getStatement();
+
+                ResultSet resultSet = statement.executeQuery( "SELECT patientid, bloodgroup FROM patient where bloodgroup is not null and bloodgroup != '' " );
+
+                while ( resultSet.next() )
+                {
+                    executeSql( "INSERT INTO patientattributevalue(patientid, patientattributeid, value) VALUES ( " +
+                        resultSet.getInt( 1 )+ "," + patientAttributeId + ",'" + resultSet.getString( 2 ) + "' )" );
+                }
+
+                executeSql( "ALTER TABLE patient DROP COLUMN bloodgroup" );
+            }
+            catch ( Exception ex )
+            {
+                log.error( ex );
+            }
+            finally
+            {
+                holder.close();
+            }
+        }
+    }
+    
     private int executeSql( String sql )
     {
         try

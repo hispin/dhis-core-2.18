@@ -311,15 +311,8 @@ public class HibernatePatientAttributeValueStore
                 + " WHERE p" + index + ".integerValueOfAge='" + searchText + "'";
             isSearchByAttribute = false; 
         }
-        // blood-group
-        else if ( patientAttributeId == -4 )
-        {
-            hql += " ( SELECT p" + index + " FROM Patient AS p" + index 
-                + " WHERE p" + index + ".bloodGroup='" + searchText + "'";
-            isSearchByAttribute = false; 
-        }
         // phone number
-        else if ( patientAttributeId == -5 )
+        else if ( patientAttributeId == -4 )
         {
             hql += " ( SELECT p" + index + " FROM Patient AS p" + index 
                 + " WHERE p" + index + ".phoneNumber='" + searchText + "'";

@@ -105,7 +105,6 @@ function showPersons( divContainer, xmlElement )
 		sPatient += "<tr><td class='bold'>" + i18n_patient_gender + "</td><td>" + $( patient ).find('gender').text() + "</td></tr>" ;
 		sPatient += "<tr><td class='bold'>" + i18n_patient_date_of_birth + "</td><td>" + $( patient ).find('dateOfBirth').text() + "</td></tr>" ;
 		sPatient += "<tr><td class='bold'>" + i18n_patient_age + "</td><td>" + $( patient ).find('age').text() + "</td></tr>" ;
-		sPatient += "<tr><td class='bold'>" + i18n_patient_blood_group + "</td><td>" + $( patient ).find('bloodGroup').text() + "</td></tr>";
 		sPatient += "<tr><td class='bold'>" + i18n_patient_phone_number + "</td><td>" + $( patient ).find('phoneNumber').text() + "</td></tr>";
 		
 		var identifiers =  $( patient ).find('identifier');

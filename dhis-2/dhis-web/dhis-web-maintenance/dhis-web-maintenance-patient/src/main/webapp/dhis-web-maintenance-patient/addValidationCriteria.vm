@@ -25,7 +25,6 @@
 						<option value="dobType">$i18n.getString( "dob_type" )</option>
 						<option value="birthDate">$i18n.getString( "date_of_birth" )</option>
 						<option value="integerValueOfAge">$i18n.getString( "age" )</option>
-						<option value="bloodGroup">$i18n.getString( "blood_group" )</option>
 					</select>
 
 					<!-- Operator -->
@@ -70,20 +69,6 @@
 					</script> 
 				</div>
 				
-				<!-- bloodGroup -->
-				<div id="bloodGroupDiv" style="display:none ">
-					<select id="bloodGroupValue" name="bloodGroupValue" onChange="fillValue(this.value);" style="width: 16em">
-						<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
-						<option value="A+">A+</option>
-						<option value="A-">A-</option>
-						<option value="AB+">AB+</option>
-						<option value="AB-">AB-</option>
-						<option value="B+">B+</option>
-						<option value="B-">B-</option>
-						<option value="O+">O+</option>
-						<option value="O-">O-</option>
-					</select>
-				</div>
 				<!-- value -->
 				<input type="hidden" id="value" name="value" class="{validate:{required:true,rangelength:[1,160]}}"/>
 				</td>

@@ -76,8 +76,6 @@ public class Patient
 
     private Date birthDate;
 
-    private String bloodGroup;
-
     private String phoneNumber;
 
     private Date deathDate;
@@ -531,17 +529,7 @@ public class Patient
 
         return name;
     }
-
-    public String getBloodGroup()
-    {
-        return bloodGroup;
-    }
-
-    public void setBloodGroup( String bloodGroup )
-    {
-        this.bloodGroup = bloodGroup;
-    }
-
+    
     public String getPhoneNumber()
     {
         return phoneNumber;

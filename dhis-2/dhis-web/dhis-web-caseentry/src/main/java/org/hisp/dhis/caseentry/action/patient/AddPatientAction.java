@@ -100,8 +100,6 @@ public class AddPatientAction
 
     private String gender;
 
-    private String bloodGroup;
-
     private String phoneNumber;
 
     private String registrationDate;
@@ -168,7 +166,6 @@ public class AddPatientAction
 
         patient.setGender( gender );
         patient.setIsDead( false );
-        patient.setBloodGroup( bloodGroup );
         patient.setPhoneNumber( phoneNumber );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
@@ -382,11 +379,6 @@ public class AddPatientAction
     public void setGender( String gender )
     {
         this.gender = gender;
-    }
-
-    public void setBloodGroup( String bloodGroup )
-    {
-        this.bloodGroup = bloodGroup;
     }
 
     public void setPhoneNumber( String phoneNumber )

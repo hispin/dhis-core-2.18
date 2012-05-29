@@ -28,7 +28,6 @@
 								<option value="birthDate" #if("$validationCriteria.property" == "birthDate") selected #end>$i18n.getString( "date_of_birth" )</option>
 								<option value="dobType" #if("$validationCriteria.property" == "dobType") selected #end>$i18n.getString( "dob_type" )</option>
 								<option value="integerValueOfAge" #if("$validationCriteria.property" == "integerValueOfAge") selected #end>$i18n.getString( "age" )</option>
-								<option value="bloodGroup" #if("$validationCriteria.property" == "bloodGroup") selected #end>$i18n.getString( "blood_group" )</option>
 							</select>
 								<select id='operator' name='operator' style='width: 7em'>
 								<option value='-1' #if( "$validationCriteria.operator"=='-1') selected #end>$i18n.getString('operator_less_then')</option>
@@ -69,20 +68,6 @@
 								<script type="text/javascript">datePickerValid( 'birthDateValue' );</script> 
 							</div>
 
-							<!-- bloodGroup -->
-							<div id="bloodGroupDiv" style="display:none ">
-								<select id="bloodGroupValue" name="bloodGroupValue" onChange="fillValue(this.value);" style="width: 16em">
-									<option value="">[$i18n.getString( "please_select" )]</option>
-									<option value="A+">A+</option>
-									<option value="A-">A-</option>
-									<option value="AB+">AB+</option>
-									<option value="AB-">AB-</option>
-									<option value="B+">B+</option>
-									<option value="B-">B-</option>
-									<option value="O+">O+</option>
-									<option value="O-">O-</option>
-								</select>
-							</div>
 							<input type='hidden' id='value' name='value' value="$validationCriteria.value" class="{validate:{required:true}}"/>
 						</td>
 					</tr>

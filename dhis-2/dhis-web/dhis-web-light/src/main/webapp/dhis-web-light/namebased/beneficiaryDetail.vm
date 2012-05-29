@@ -8,7 +8,6 @@
 	#set($month = $patient.birthDate.month+1)
 	#set($year = $patient.birthDate.year + 1900)
 	<li><b>$i18n.getString("date_of_birth"):</b>  $year - $month - $day </li>			
-	<li><b>$i18n.getString("blood_group"):</b>  $patient.bloodGroup</li>
 </ul>
 
 <p>

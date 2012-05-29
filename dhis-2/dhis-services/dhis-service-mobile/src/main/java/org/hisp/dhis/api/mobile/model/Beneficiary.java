@@ -75,8 +75,6 @@ public class Beneficiary
 
     private Date birthDate;
 
-    private String bloodGroup;
-
     private Date registrationDate;
 
     private Character dobType;
@@ -140,16 +138,6 @@ public class Beneficiary
     public void setBirthDate( Date birthDate )
     {
         this.birthDate = birthDate;
-    }
-
-    public String getBloodGroup()
-    {
-        return bloodGroup;
-    }
-
-    public void setBloodGroup( String bloodGroup )
-    {
-        this.bloodGroup = bloodGroup;
     }
 
     public Date getRegistrationDate()
@@ -274,16 +262,6 @@ public class Beneficiary
         {
             dout.writeBoolean( true );
             dout.writeLong( birthDate.getTime() );
-        }
-        else
-        {
-            dout.writeBoolean( false );
-        }
-
-        if ( bloodGroup != null )
-        {
-            dout.writeBoolean( true );
-            dout.writeUTF( bloodGroup );
         }
         else
         {

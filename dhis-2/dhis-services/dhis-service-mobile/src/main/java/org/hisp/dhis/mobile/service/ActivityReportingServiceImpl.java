@@ -341,10 +341,6 @@ public class ActivityReportingServiceImpl
             {
                 beneficiary.setBirthDate( patient.getBirthDate() );
             }
-            if ( setting.getBloodgroup() )
-            {
-                beneficiary.setBloodGroup( patient.getBloodGroup() );
-            }
             if ( setting.getRegistrationdate() )
             {
                 beneficiary.setRegistrationDate( patient.getRegistrationDate() );
