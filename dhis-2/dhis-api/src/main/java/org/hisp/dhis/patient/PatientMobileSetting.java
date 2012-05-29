@@ -36,7 +36,10 @@ public class PatientMobileSetting extends BaseIdentifiableObject
 
     private static final long serialVersionUID = -5947521380646718129L;
 
-    private Boolean gender, dobtype, birthdate, bloodgroup, registrationdate;
+    private Boolean gender;
+    private Boolean dobtype;
+    private Boolean birthdate;
+    private Boolean registrationdate;
     
     private List<PatientAttribute> patientAttributes;
 
@@ -82,16 +85,6 @@ public class PatientMobileSetting extends BaseIdentifiableObject
     public void setBirthdate( Boolean birthdate )
     {
         this.birthdate = birthdate;
-    }
-
-    public Boolean getBloodgroup()
-    {
-        return bloodgroup;
-    }
-
-    public void setBloodgroup( Boolean bloodgroup )
-    {
-        this.bloodgroup = bloodgroup;
     }
 
     public Boolean getRegistrationdate()

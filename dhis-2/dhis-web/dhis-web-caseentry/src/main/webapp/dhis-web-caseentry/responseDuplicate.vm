@@ -7,7 +7,6 @@
   <gender>$encoder.xmlEncode( $i18n.getString($patient.gender ))</gender>
   <dateOfBirth>$format.formatDate( $patient.birthDate )</dateOfBirth>
   <age>$encoder.xmlEncode( $patient.getAge() )</age>
-  <bloodGroup>#if( $patient.bloodGroup ) $encoder.xmlEncode( $patient.bloodGroup ) #else N/A #end</bloodGroup>
   #foreach( $identifier in $patient.identifiers )
   	#if( $identifier.identifierType )
 	    <identifier>

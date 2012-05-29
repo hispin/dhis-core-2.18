@@ -20,10 +20,6 @@
 			<td><input type="checkbox" id="birthdate" name="birthdate" value="true" #if( $setting.birthdate == 'true' ) checked #end/></td>
 		</tr>
 		<tr>
-			<td>$i18n.getString( "blood_group" )</td>
-			<td><input type="checkbox" id="bloodgroup" name="bloodgroup" value="true" #if( $setting.bloodgroup == 'true' ) checked #end/></td>
-		</tr>
-		<tr>
 			<td>$i18n.getString( "registration_date" )</td>
 			<td><input type="checkbox" id="registrationdate" name="registrationdate" value="true" #if( $setting.registrationdate == 'true' ) checked #end/></td>
 		</tr>

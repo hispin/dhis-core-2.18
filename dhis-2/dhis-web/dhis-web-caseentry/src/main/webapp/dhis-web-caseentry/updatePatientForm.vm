@@ -115,23 +115,6 @@
 			<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 		</td>
 	</tr>
-
-	<tr>
-		<td class='text-column'><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
-		<td class="input-column" colspan='2'>
-			<select type="text" id="bloodGroup" name="bloodGroup">
-				 <option value="">[$i18n.getString( "please_select" )]</option>
-				<option value="A+"  #if($!patient.bloodGroup == "A+") selected="selected" #end>A+</option>
-				<option value="A-"  #if($!patient.bloodGroup == "A-") selected="selected" #end>A-</option>
-				<option value="AB+" #if($!patient.bloodGroup == "AB+") selected="selected" #end>AB+</option>
-				<option value="AB-" #if($!patient.bloodGroup == "AB-") selected="selected" #end>AB-</option>
-				<option value="B+"  #if($!patient.bloodGroup == "B+") selected="selected" #end>B+</option>
-				<option value="B-"  #if($!patient.bloodGroup == "B-") selected="selected" #end>B-</option>
-				<option value="O+"  #if($!patient.bloodGroup == "O+") selected="selected" #end>O+</option>
-				<option value="O-"  #if($!patient.bloodGroup == "O-") selected="selected" #end>O-</option>
-			</select>
-		</td>		
-	</tr>
 	
 	<tr>
 		<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
@@ -188,7 +171,7 @@
 				##set( $identifier = '' )
 				#set( $identifier = $identiferMap.get( $identifierType.id ) )
 				<tr>
-					<td class='text-column'><label for="bloodGroup">$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+					<td class='text-column'><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 					<td class="input-column" colspan='2'><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$!identifier" data="{related:$identifierType.related}" #if($identifierType.related && $!patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>	
 				</tr>
 			#end
@@ -296,10 +279,6 @@
 		<tr>
 			<td class="bold text-column">$i18n.getString("age"):</td>
 			<td> $!representative.getAge() </td>
-		</tr>
-		<tr>
-			<td class="bold text-column">$i18n.getString("blood_group"):</td>
-			<td>$!representative.getBloodGroup()</td>
 		</tr>
 		#foreach( $patientIdentifier in $representative.identifiers )
 		  <tr>  

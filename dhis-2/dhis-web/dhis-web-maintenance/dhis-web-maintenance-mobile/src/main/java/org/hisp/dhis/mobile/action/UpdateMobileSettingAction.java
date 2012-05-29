@@ -81,7 +81,7 @@ public class UpdateMobileSettingAction
         this.selectedList = selectedList;
     }
 
-    private String gender, dobtype, birthdate, bloodgroup, registrationdate;
+    private String gender, dobtype, birthdate, registrationdate;
 
     public void setGender( String gender )
     {
@@ -96,16 +96,6 @@ public class UpdateMobileSettingAction
     public void setBirthdate( String birthdate )
     {
         this.birthdate = birthdate;
-    }
-
-    public void setBloodgroup( String bloodgroup )
-    {
-        this.bloodgroup = bloodgroup;
-    }
-
-    public void setRegistrationdate( String registrationdate )
-    {
-        this.registrationdate = registrationdate;
     }
 
     // -------------------------------------------------------------------------
@@ -129,7 +119,6 @@ public class UpdateMobileSettingAction
                 setting.setGender( Boolean.parseBoolean( gender ) );
                 setting.setDobtype( Boolean.parseBoolean( dobtype ) );
                 setting.setBirthdate( Boolean.parseBoolean( birthdate ) );
-                setting.setBloodgroup( Boolean.parseBoolean( bloodgroup ) );
                 setting.setRegistrationdate( Boolean.parseBoolean( registrationdate ) );
                 patientMobileSettingService.updatePatientMobileSetting( setting );
             }
@@ -141,7 +130,6 @@ public class UpdateMobileSettingAction
                 setting.setGender( Boolean.parseBoolean( gender ) );
                 setting.setDobtype( Boolean.parseBoolean( dobtype ) );
                 setting.setBirthdate( Boolean.parseBoolean( birthdate ) );
-                setting.setBloodgroup( Boolean.parseBoolean( bloodgroup ) );
                 setting.setRegistrationdate( Boolean.parseBoolean( registrationdate ) );
                 fillValues( attributes );
                 patientMobileSettingService.savePatientMobileSetting( setting );
@@ -158,7 +146,6 @@ public class UpdateMobileSettingAction
                 setting.setGender( Boolean.parseBoolean( gender ) );
                 setting.setDobtype( Boolean.parseBoolean( dobtype ) );
                 setting.setBirthdate( Boolean.parseBoolean( birthdate ) );
-                setting.setBloodgroup( Boolean.parseBoolean( bloodgroup ) );
                 setting.setRegistrationdate( Boolean.parseBoolean( registrationdate ) );
                 fillValues( attributes );
                 patientMobileSettingService.updatePatientMobileSetting( setting );
@@ -171,7 +158,6 @@ public class UpdateMobileSettingAction
                 setting.setGender( Boolean.parseBoolean( gender ) );
                 setting.setDobtype( Boolean.parseBoolean( dobtype ) );
                 setting.setBirthdate( Boolean.parseBoolean( birthdate ) );
-                setting.setBloodgroup( Boolean.parseBoolean( bloodgroup ) );
                 setting.setRegistrationdate( Boolean.parseBoolean( registrationdate ) );
                 fillValues( attributes );
                 patientMobileSettingService.savePatientMobileSetting( setting );

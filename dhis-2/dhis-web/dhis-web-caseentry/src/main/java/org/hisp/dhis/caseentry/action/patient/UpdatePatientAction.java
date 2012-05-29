@@ -99,9 +99,7 @@ public class UpdatePatientAction
     private Boolean verified;
 
     private String gender;
-
-    private String bloodGroup;
-
+    
     private String phoneNumber;
 
     private boolean underAge;
@@ -167,7 +165,6 @@ public class UpdatePatientAction
 
         patient.setGender( gender );
         patient.setIsDead( isDead );
-        patient.setBloodGroup( bloodGroup );
         patient.setPhoneNumber( phoneNumber );
 
         if ( deathDate != null )
@@ -232,7 +229,7 @@ public class UpdatePatientAction
                 else if ( identifier != null )
                 {
                     patient.getIdentifiers().remove( identifier );
-                    patientIdentifierService.deletePatientIdentifier( identifier );
+//                    patientIdentifierService.deletePatientIdentifier( identifier );
                 }
             }
         }
@@ -398,12 +395,7 @@ public class UpdatePatientAction
     {
         this.gender = gender;
     }
-
-    public void setBloodGroup( String bloodGroup )
-    {
-        this.bloodGroup = bloodGroup;
-    }
-
+    
     public void setPhoneNumber( String phoneNumber )
     {
         this.phoneNumber = phoneNumber;

@@ -80,8 +80,6 @@ public class AddRepresentativeAction
 
     private String gender;
 
-    private String bloodGroup;
-
     private String registrationDate;
 
     private Integer relationshipTypeId;
@@ -120,7 +118,7 @@ public class AddRepresentativeAction
         String middleName = "";
         String lastName = "";
 
-        if ( fullName.indexOf( ' ' ) != -1 ) // TODO fix hack
+        if ( fullName.indexOf( ' ' ) != -1 ) 
         {
             firstName = fullName.substring( 0, startIndex );
             if ( startIndex == endIndex )
@@ -145,7 +143,6 @@ public class AddRepresentativeAction
 
         patient.setGender( gender );
         patient.setIsDead( false );
-        patient.setBloodGroup( bloodGroup );
         patient.setOrganisationUnit( organisationUnit );
 
         if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
@@ -274,11 +271,6 @@ public class AddRepresentativeAction
     public void setGender( String gender )
     {
         this.gender = gender;
-    }
-
-    public void setBloodGroup( String bloodGroup )
-    {
-        this.bloodGroup = bloodGroup;
     }
 
     public Integer getRelationshipTypeId()

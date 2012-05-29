@@ -44,19 +44,6 @@
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
      	#end
 		<input type="text" name="dateOfBirth" value="$!previousValues.get("dob")" />
-		
-		<label>$i18n.getString( "blood_group" )</label>
-		<select name="bloodGroup">
-			<option value="">[Please select]</option>
-			#set($bloodGroups = ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"])
-			#foreach($item in $bloodGroups) 
-			<option value="$item"
-			#if($previousValues.get("bloodGroup") == $item)
-				selected
-			#end
-			>$item</option>
-			#end
-		</select>
 	</p>
 </div>
 

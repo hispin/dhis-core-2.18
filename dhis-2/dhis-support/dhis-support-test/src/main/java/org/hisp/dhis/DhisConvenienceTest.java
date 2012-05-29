@@ -891,7 +891,6 @@ public abstract class DhisConvenienceTest
         patient.setLastName( "LastName" + uniqueChar );
         patient.setGender( Patient.MALE );
         patient.setBirthDate( getDate( 1970, 1, 1 ) );
-        patient.setBloodGroup( "A" );
         patient.setRegistrationDate( new Date() );
 
         return patient;

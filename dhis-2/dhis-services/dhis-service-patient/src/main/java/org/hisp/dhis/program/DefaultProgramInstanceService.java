@@ -221,10 +221,6 @@ public class DefaultProgramInstanceService
         attrGrid.addValue( i18n.getString( patient.getDobType() + "" ) );
 
         attrGrid.addRow();
-        attrGrid.addValue( i18n.getString( "blood_group" ) );
-        attrGrid.addValue( ( patient.getBloodGroup() == null || patient.getBloodGroup().isEmpty() ) ? PatientAttributeValue.UNKNOWN : patient.getBloodGroup() );
-
-        attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "phoneNumber" ) );
         attrGrid.addValue( ( patient.getPhoneNumber() == null || patient.getPhoneNumber().isEmpty() ) ? PatientAttributeValue.UNKNOWN : patient.getPhoneNumber() );
 

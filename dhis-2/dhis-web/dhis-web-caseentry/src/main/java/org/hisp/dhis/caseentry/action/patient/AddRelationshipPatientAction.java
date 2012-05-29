@@ -102,8 +102,6 @@ public class AddRelationshipPatientAction
     private Character dobType;
 
     private String gender;
-
-    private String bloodGroup;
     
     private String phoneNumber;
 
@@ -174,7 +172,6 @@ public class AddRelationshipPatientAction
 
         patient.setGender( gender );
         patient.setIsDead( false );
-        patient.setBloodGroup( bloodGroup );
         patient.setPhoneNumber( phoneNumber );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
@@ -381,11 +378,6 @@ public class AddRelationshipPatientAction
     public void setGender( String gender )
     {
         this.gender = gender;
-    }
-
-    public void setBloodGroup( String bloodGroup )
-    {
-        this.bloodGroup = bloodGroup;
     }
 
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
