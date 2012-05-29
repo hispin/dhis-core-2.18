@@ -32,6 +32,24 @@
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/sendSMS.js</param>
 	  <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
     </action>
+    
+    <!-- Receiving SMS Action -->
+    
+    <action name="showReceivingPage" class="org.hisp.dhis.mobile.action.incoming.ReceivingSMSAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-mobile/receiveSMSPage.vm</param>
+      <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
+    </action>
+    
+    <action name="checkNewMessage" class="org.hisp.dhis.mobile.action.incoming.ReceivingSMSAction">
+      <result name="success" type="velocity-json">/dhis-web-maintenance-mobile/jsonCheckMessage.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="deleteReceiveSMS" class="org.hisp.dhis.mobile.action.incoming.DeleteReceiveSMSAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
   
 	<action name="showBeneficiarySMSForm" class="org.hisp.dhis.mobile.action.ShowSendSMSBeneficiaryFormAction">
       <result name="success" type="velocity">/main.vm</result>

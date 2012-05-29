@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public interface ReceiveSMSService
 {
-
+	
     String ID = ReceiveSMSService.class.getName();
     
     void addReceiveSMS ( ReceiveSMS receiveSMS );

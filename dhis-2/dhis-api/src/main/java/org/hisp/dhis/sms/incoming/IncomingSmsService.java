@@ -1,5 +1,10 @@
 package org.hisp.dhis.sms.incoming;
 
+import java.util.List;
+
+import org.hisp.dhis.sms.config.ModemGatewayConfig;
+import org.smslib.InboundMessage;
+
 /*
  * Copyright (c) 2011, University of Oslo
  * All rights reserved.
@@ -45,4 +50,8 @@ public interface IncomingSmsService
     IncomingSms get(int id);
     
     void update( IncomingSms sms );
+    
+    List<IncomingSms> listAllMessage ();
+
+    List<InboundMessage> getMsgList();
 }

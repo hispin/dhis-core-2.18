@@ -1,0 +1,4 @@
+{
+  "message": "$!encoder.jsonEncode( ${message} )",
+  "currentMessages": "${currentMessages}"
+}
