@@ -27,7 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.Pager;
@@ -77,8 +77,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( options.hasLinks() )
         {
-            WebLinkPopulator populator = new WebLinkPopulator( request );
-            populator.addLinks( metaData );
+            WebUtils.generateLinks( metaData );
         }
 
         model.addAttribute( "model", metaData );
@@ -95,8 +94,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( options.hasLinks() )
         {
-            WebLinkPopulator populator = new WebLinkPopulator( request );
-            populator.addLinks( entity );
+            WebUtils.generateLinks( entity );
         }
 
         model.addAttribute( "model", entity );
@@ -235,16 +233,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         try
         {
             return (T) Class.forName( getEntityName() ).newInstance();
-        }
-        catch ( InstantiationException e )
+        } catch ( InstantiationException e )
         {
             throw new RuntimeException( e );
-        }
-        catch ( IllegalAccessException e )
+        } catch ( IllegalAccessException e )
         {
             throw new RuntimeException( e );
-        }
-        catch ( ClassNotFoundException e )
+        } catch ( ClassNotFoundException e )
         {
             throw new RuntimeException( e );
         }
