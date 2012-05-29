@@ -27,17 +27,22 @@ package org.hisp.dhis.interpretation.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.interpretation.Interpretation;
+import org.hisp.dhis.interpretation.InterpretationComment;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  */
+@Transactional
 public class DefaultInterpretationService
     implements InterpretationService
 {
@@ -93,5 +98,25 @@ public class DefaultInterpretationService
     public List<Interpretation> getInterpretations( int first, int max )
     {
         return interpretationStore.getBetweenOrderderByLastUpdated( first, max );
+    }
+    
+    public void addInterpretationComment( String uid, String text )
+    {
+        Interpretation interpretation = getInterpretation( uid );
+
+        User user = currentUserService.getCurrentUser();
+        
+        InterpretationComment comment = new InterpretationComment( text );
+        comment.setLastUpdated( new Date() );
+        comment.setUid( CodeGenerator.generateCode() );
+        
+        if ( user != null )
+        {
+            comment.setUser( user );
+        }
+        
+        interpretation.addComment( comment );
+        
+        interpretationStore.update( interpretation );
     }
 }

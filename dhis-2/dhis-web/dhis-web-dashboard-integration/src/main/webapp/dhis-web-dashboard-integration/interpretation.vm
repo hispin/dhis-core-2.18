@@ -6,15 +6,49 @@
 <div id="interpretationFeed">
 #foreach( $ip in $interpretations )
 <div class="interpretation">
-	<div class="interpretationName"><span class="bold" style="cursor:pointer" onclick="showUserInfo( '${ip.user.id}' )">${ip.user.name}</span>&nbsp; <span class="grey">${format.formatDate( $ip.created )}</span></div>
-	<div class="interpretationText">${ip.text}</div>
+
+	<div class="interpretationName">
+		<span class="bold" style="cursor:pointer" onclick="showUserInfo( '${ip.user.id}' )">${ip.user.name}</span>&nbsp;
+		<span class="grey">${format.formatDate( $ip.created )}</span>
+	</div>
+	<div class="interpretationText">
+		${ip.text}
+	</div>
 	<div class="interpretationChart">
 		<img style="cursor:pointer" 
 		     src="../api/charts/${ip.chart.uid}/data?date=${format.formatDate( $ip.created )}&width=530&height=300" 
-		     onclick="javascript:window.location.href='../dhis-web-visualizer/app/index.html?id=${ip.chart.uid}&date=${format.formatDate( $ip.created )}'">
+		     onclick="javascript:window.location.href='../dhis-web-visualizer/app/index.html?id=${ip.chart.uid}&date=${format.formatDate( $ip.created )}'"
+		     title="Click to view in Data Visualizer">
 	</div>
+	
+	#set( $comments = $ip.comments )
+	<div class="interpretationCommentArea">
+		<div id="comments${ip.uid}">
+		#foreach( $comment in $comments )
+		<div>
+			<div class="interpretationName">
+				<span class="bold pointer" onclick="showUserInfo( '${comment.user.id}' )">${comment.user.name}</span>&nbsp;
+				<span class="grey">${format.formatDate( $comment.created )}</span>
+			</div>
+		</div>
+		<div class="interpretationText">
+			${comment.text}
+		</div>
+		#end
+		</div>
+		<textarea id="commentArea${ip.uid}" class="commentArea" placeholder="Add a comment..."></textarea>
+		<input type="button" class="commentButton" value="Post comment" onclick="postComment( '${ip.uid}' )">
+	</div>
+	
 </div>
 #end
 </div>
 
 <div id="userInfo" class="page"></div>
+
+<script type="text/javascript">
+var currentUser = {
+	id: "${currentUser.id}",
+	name: "${currentUser.name}"
+};	
+</script>

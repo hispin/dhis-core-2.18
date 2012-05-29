@@ -53,7 +53,7 @@ public class CacheInterceptor
     {
         HttpServletResponse response = ServletActionContext.getResponse();
         
-        response.setHeader( "Cache-Control", "max-age=" + seconds );
+        response.setHeader( "Cache-Control", "public, max-age=" + seconds );
         
         return invocation.invoke();
     }
