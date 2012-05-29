@@ -666,6 +666,12 @@
 				/dhis-web-caseentry/jsonIdentifierTypes.vm</result>
 		</action>
 		
+		<action name="loadPatientProperties"
+			class="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonPatientProperties.vm</result>
+		</action>
+		
 		<action name="loadReportProgramStages"
 			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responseProgramStages.vm</result>

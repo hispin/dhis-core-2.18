@@ -834,6 +834,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 	</bean>
 	
+	<bean id="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction"
+		class="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="identifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="attributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
 		class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
 		scope="prototype">
