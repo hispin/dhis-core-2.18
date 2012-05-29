@@ -15,9 +15,10 @@
 	"patientProperties": [
 		#set( $fixedAttributes = ${tabularReport.fixedAttributes} )
 		#foreach( ${fixedAttribute} in $!{fixedAttributes} )
-			{
+			{	
+				#set( $attr = $i18n.getString($fixedAttribute) )
 				"id": "fixedAttr_${fixedAttribute}",
-				"name": "${fixedAttribute}"
+				"name": "$attr"
 			},
 		#end
 		#set( $identifiers = ${tabularReport.identifiers} )
