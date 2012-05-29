@@ -18,6 +18,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.mobile.action.ShowSendSMSFormAction" class="org.hisp.dhis.mobile.action.ShowSendSMSFormAction"
     scope="prototype" />
+    
+  <bean id="org.hisp.dhis.mobile.action.incoming.ReceivingSMSAction" class="org.hisp.dhis.mobile.action.incoming.ReceivingSMSAction"
+    scope="prototype" >
+    <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService"/>
+  </bean>
+  
+  <bean id="org.hisp.dhis.mobile.action.incoming.DeleteReceiveSMSAction" class="org.hisp.dhis.mobile.action.incoming.DeleteReceiveSMSAction"
+    scope="prototype" >
+    <property name="incomingSmsService" ref="org.hisp.dhis.sms.incoming.IncomingSmsService"/>
+  </bean>  
 
   <bean id="org.hisp.dhis.mobile.action.ShowSendSMSBeneficiaryFormAction" class="org.hisp.dhis.mobile.action.ShowSendSMSBeneficiaryFormAction"
     scope="prototype" />

@@ -7,11 +7,11 @@ public interface ReceiveSMSStore
 
     String ID = ReceiveSMSService.class.getName();
     
-    void addReceiveSMS( ReceiveSMS receiveSMS );
+    void addReceiveSMS ( ReceiveSMS receiveSMS );
     
     void updateReceiveSMS ( ReceiveSMS receiveSMS );
     
-    void deleteReceiveSMS( ReceiveSMS receiveSMS );
+    void deleteReceiveSMS ( ReceiveSMS receiveSMS );
     
     Collection<ReceiveSMS> getReceiveSMS( int start, int end );
     

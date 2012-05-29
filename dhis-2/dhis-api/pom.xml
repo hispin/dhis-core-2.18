@@ -49,6 +49,11 @@
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.smslib</groupId>
+      <artifactId>smslib</artifactId>
+      <version>3.5.2-r2307</version>
+    </dependency>
 
   </dependencies>
 
