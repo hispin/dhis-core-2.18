@@ -2,7 +2,7 @@
 { "dataElements": [
 #foreach( $psDataElement in $psDataElements )
   {
-    "id": $!{psDataElement.dataElement.id},
+    "id": "de_$!{psDataElement.dataElement.id}",
     "name": "$encoder.xmlEncode(${psDataElement.dataElement.name} )"
   }#if( $velocityCount < $size ),#end
 	#end]

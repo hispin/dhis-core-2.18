@@ -31,6 +31,7 @@ import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_DATA_ELEME
 import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_IDENTIFIER_TYPE;
 import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_META_DATA;
 import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_FIXED_ATTRIBUTE;
 import static org.hisp.dhis.patientreport.PatientTabularReport.VALUE_TYPE_OPTION_SET;
 
 import java.util.ArrayList;
@@ -347,8 +348,6 @@ public class GenerateTabularReportAction
                 null, null );
         }
 
-        System.out.println();
-        System.out.println(grid);
         return type == null ? SUCCESS : type;
     }
 
@@ -373,14 +372,19 @@ public class GenerateTabularReportAction
         {
             String[] infor = searchingValue.split( "_" );
             String objectType = infor[0];
-            int objectId = Integer.parseInt( infor[1] );
-
+            
             if ( objectType.equals( PREFIX_META_DATA ) )
             {
                 hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
             }
+            else if ( objectType.equals( PREFIX_FIXED_ATTRIBUTE ) )
+            {
+                fixedAttributes.add( infor[1] );
+                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
+            }
             else if ( objectType.equals( PREFIX_IDENTIFIER_TYPE ) )
             {
+                int objectId = Integer.parseInt( infor[1] );
                 PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( objectId );
                 identifierTypes.add( identifierType );
 
@@ -402,6 +406,7 @@ public class GenerateTabularReportAction
             }
             else if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
             {
+                int objectId = Integer.parseInt( infor[1] );
                 PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
                 patientAttributes.add( attribute );
 
@@ -429,6 +434,7 @@ public class GenerateTabularReportAction
             }
             else if ( objectType.equals( PREFIX_DATA_ELEMENT ) )
             {
+                int objectId = Integer.parseInt( infor[1] );
                 DataElement dataElement = dataElementService.getDataElement( objectId );
                 dataElements.add( dataElement );
 

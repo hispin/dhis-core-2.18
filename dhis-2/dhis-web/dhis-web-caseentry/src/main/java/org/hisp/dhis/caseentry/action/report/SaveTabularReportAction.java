@@ -28,6 +28,7 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_DATA_ELEMENT;
+import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_FIXED_ATTRIBUTE;
 import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_IDENTIFIER_TYPE;
 import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE;
 
@@ -131,8 +132,6 @@ public class SaveTabularReportAction
 
     private Integer programStageId;
 
-    private List<String> fixedAttributes = new ArrayList<String>();
-
     private List<String> searchingValues = new ArrayList<String>();
 
     private Integer orgunitId;
@@ -170,11 +169,6 @@ public class SaveTabularReportAction
     public void setOrderByOrgunitAsc( boolean orderByOrgunitAsc )
     {
         this.orderByOrgunitAsc = orderByOrgunitAsc;
-    }
-
-    public void setFixedAttributes( List<String> fixedAttributes )
-    {
-        this.fixedAttributes = fixedAttributes;
     }
 
     public void setEndDate( String endDate )
@@ -231,23 +225,30 @@ public class SaveTabularReportAction
         List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
         List<DataElement> dataElements = new ArrayList<DataElement>();
-
+        List<String> fixedAttributes = new ArrayList<String>();
+        
         for ( String searchingValue : searchingValues )
         {
             String[] infor = searchingValue.split( "_" );
             String objectType = infor[0];
-            int objectId = Integer.parseInt( infor[1] );
 
             if ( objectType.equals( PREFIX_IDENTIFIER_TYPE ) )
             {
+                int objectId = Integer.parseInt( infor[1] );
                 identifiers.add( identifierTypeService.getPatientIdentifierType( objectId ) );
+            }
+            else if ( objectType.equals( PREFIX_FIXED_ATTRIBUTE ) )
+            {
+                fixedAttributes.add( infor[1] );
             }
             else if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
             {
+                int objectId = Integer.parseInt( infor[1] );
                 attributes.add( patientAttributeService.getPatientAttribute( objectId ) );
             }
             else if ( objectType.equals( PREFIX_DATA_ELEMENT ) )
             {
+                int objectId = Integer.parseInt( infor[1] );
                 DataElement dataElement = dataElementService.getDataElement( objectId );
                 dataElements.add( dataElement );
             }
