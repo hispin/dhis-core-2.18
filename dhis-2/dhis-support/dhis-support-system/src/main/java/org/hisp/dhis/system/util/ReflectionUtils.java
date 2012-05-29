@@ -33,8 +33,10 @@ import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -171,10 +173,9 @@ public class ReflectionUtils
     {
         Field field;
 
-        try
-        {
-            field = object.getClass().getDeclaredField( fieldName );
-        } catch ( NoSuchFieldException e )
+        field = _findField( object.getClass(), fieldName );
+
+        if ( field == null )
         {
             return false;
         }
@@ -226,7 +227,7 @@ public class ReflectionUtils
         {
             for ( String getterName : getterNames )
             {
-                method = _findMethod( target.getClass(), getterName + StringUtils.capitalize( field.getName() ), field.getType() );
+                method = _findMethod( target.getClass(), getterName + StringUtils.capitalize( field.getName() ) );
 
                 if ( method != null )
                 {
@@ -234,6 +235,8 @@ public class ReflectionUtils
                 }
             }
         }
+
+        System.err.println( "Did not find getter" );
 
         return null;
 
@@ -325,6 +328,20 @@ public class ReflectionUtils
         return null;
     }
 
+    public static List<Field> getAllFields( Class<?> clazz )
+    {
+        Class<?> searchType = clazz;
+        List<Field> fields = new ArrayList<Field>();
+
+        while ( !Object.class.equals( searchType ) && searchType != null )
+        {
+            fields.addAll( Arrays.asList( searchType.getDeclaredFields() ) );
+            searchType = searchType.getSuperclass();
+        }
+
+        return fields;
+    }
+
     private static Method _findMethod( Class<?> clazz, String name )
     {
         return _findMethod( clazz, name, new Class[0] );
@@ -341,7 +358,6 @@ public class ReflectionUtils
             for ( Method method : methods )
             {
                 if ( name.equals( method.getName() ) && (paramTypes == null || Arrays.equals( paramTypes, method.getParameterTypes() )) )
-
                 {
                     return method;
                 }
@@ -351,6 +367,21 @@ public class ReflectionUtils
         }
 
         return null;
+    }
+
+    public static List<Method> getAllMethods( Class<?> clazz )
+    {
+        Class<?> searchType = clazz;
+        List<Method> methods = new ArrayList<Method>();
+
+        while ( searchType != null )
+        {
+            Method[] methodArray = (searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods());
+            methods.addAll( Arrays.asList( methodArray ) );
+            searchType = searchType.getSuperclass();
+        }
+
+        return methods;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -366,5 +397,11 @@ public class ReflectionUtils
         {
             throw new RuntimeException( e );
         }
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public static <T> T getFieldObject( Field field, T target )
+    {
+        return (T) invokeGetterMethod( field.getName(), target );
     }
 }
