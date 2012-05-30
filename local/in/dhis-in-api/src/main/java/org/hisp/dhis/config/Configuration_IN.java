@@ -39,7 +39,7 @@ public class Configuration_IN
     public static final String DEFAULT_REPORTFOLDER = "ra_national";
     
     public static final String DEFAULT_TEMPFOLDER = "temp";
-
+    
     private int id;
     
     private String key;

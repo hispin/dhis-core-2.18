@@ -25,10 +25,10 @@
                 		<option value="$catalogType.id">$encoder.htmlEncode( $catalogType.name )</option>
 	                #end
             </select>
-        </td>		
+        </td>
 	</tr>
     <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table>   
+</table>  
 
 <div id='addCatalogFormDiv'></div> <!-- Add Catalog Form -->  	  	
 

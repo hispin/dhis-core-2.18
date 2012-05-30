@@ -68,7 +68,6 @@
             <artifactId>dhis-in-service-coldchain</artifactId>
             <version>${project.version}</version>
         </dependency>
-			
 		<!-- Other -->
 		<dependency>
 			<groupId>net.sourceforge.jexcelapi</groupId>

@@ -1,7 +1,10 @@
 package org.hisp.dhis.coldchain.catalog.action;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +16,6 @@ import org.hisp.dhis.coldchain.catalog.CatalogService;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
-import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -58,7 +60,6 @@ implements Action
         this.id = id;
     }
 
-
     private Catalog catalog;
     
 
@@ -96,10 +97,48 @@ implements Action
         return catalogTypeAttributes;
     }
     
+    private String cataLogImage;
+    
+    
+    private byte[] bimage;
+    
+    public byte[] getBimage()
+    {
+        return bimage;
+    }
+    
+    private OutputStream outPutStream;
+    
+    public OutputStream getOutPutStream()
+    {
+        return outPutStream;
+    }
+    
+    private BufferedImage bufferedImage;
+    
+    public BufferedImage getBufferedImage()
+    {
+        return bufferedImage;
+    }
+    
+    private URL url;
+    
+    public URL getUrl()
+    {
+        return url;
+    }
+
+
+ 
+    public String getCataLogImage()
+    {
+        return cataLogImage;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
+    
     public String execute() throws Exception
     {
         
@@ -107,7 +146,97 @@ implements Action
         
         catalogTypes = new ArrayList<CatalogType>( catalogTypeService.getAllCatalogTypes());
         
- 
+        
+        cataLogImage = catalog.getCatalogImage();
+        
+        //String outputFilePath = System.getenv( "DHIS2_HOME" ) + File.separator +  Catalog.DEFAULT_CCEMFOLDER + File.separator + cataLogImage;
+        
+        System.out.println( "Catalog Image Name is   :" + cataLogImage );
+        
+        cataLogImage = System.getenv( "DHIS2_HOME" ) + File.separator +  Catalog.DEFAULT_CCEMFOLDER + File.separator + cataLogImage;
+        
+        System.out.println( "Complete Path of Image  is   :" + cataLogImage );
+        
+        
+        /*
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.reset();
+        response.setContentType("multipart/form-data"); 
+
+        
+        bimage = catalog.getImage();
+
+        OutputStream out = response.getOutputStream();
+        out.write( bimage );
+        out.flush();
+        out.close();
+        */
+        
+        /*
+        bimage = catalog.getImage();
+        System.out.println( " Image  is   :" + bimage );
+        System.out.println( " lenght is     :" + bimage.length );
+        System.out.println( " String is     :" + bimage.toString() );
+        try
+        {
+            
+            int len = bimage.toString().length();
+            byte [] rb = new byte[len];
+            //InputStream readImg = rs.getBinaryStream(1);
+            //int index=readImg.read(rb, 0, len);  
+            outPutStream.write( rb,0,len );
+            
+            
+            
+            //outPutStream
+            //FileOutputStream fos = new FileOutputStream("cataLogImage"); 
+           // outPutStream = new FileOutputStream( cataLogImage ); 
+            //outPutStream.write( bimage );
+            //outPutStream.close();
+        }
+        catch(Exception e)
+        {
+            //e.printStackTrace();
+        }
+        
+        */
+        
+        
+        
+        /*
+        String filePath = cataLogImage;
+        File f1 = new File( filePath );
+
+        ImageInputStream imgStream1 = ImageIO.createImageInputStream( f1 );
+        long size = imgStream1.length();
+
+        
+        //bufferedImage = ImageIO.read( f1 );
+        
+        BufferedImage bufferedImage1 = ImageIO.read( f1 );
+        //boolean success = ImageIO.write( bufferedImage1,"gif",socket.getOutputStream());
+        
+        
+        try 
+        {
+            url = new URL( getCodeBase(), cataLogImage );
+            
+            bufferedImage = ImageIO.read( url );
+         } 
+        catch (IOException e) 
+        {
+            
+        }
+        
+        System.out.println( "IMAGE  is   :" + bufferedImage );
+        System.out.println( "URL is   :" + url );
+        
+       
+        //outPutStream.w.write( bufferedImage1 );
+        
+        */
+        
+        
         // -------------------------------------------------------------------------
         // Get catalog attribute values
         // -------------------------------------------------------------------------
@@ -150,6 +279,21 @@ implements Action
         return SUCCESS;
 
     }
-
+/*
+    private URL getCodeBase()
+    {
+        //URL url = null;
+        try 
+        {
+            url = new URL( "catalog.getCatalogImage()" );
+        } 
+        catch (IOException e) 
+        {
+            
+        }
+        System.out.println( "URL in method is   :" + url );
+        return url;
+    }
+*/
 }
 

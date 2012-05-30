@@ -24,6 +24,8 @@ public class CatalogType extends BaseNameableObject
 	
     private DataEntryForm dataEntryForm;
     
+    private String catalogTypeImage;
+ 
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -121,4 +123,12 @@ public class CatalogType extends BaseNameableObject
         this.catalogTypeAttributes = catalogTypeAttributes;
     }
     
+    public String getCatalogTypeImage()
+    {
+        return catalogTypeImage;
+    }
+    public void setCatalogTypeImage( String catalogTypeImage )
+    {
+        this.catalogTypeImage = catalogTypeImage;
+    }
 }

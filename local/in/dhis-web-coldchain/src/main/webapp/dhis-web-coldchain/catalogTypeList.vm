@@ -36,6 +36,7 @@
               <tr id="tr${catalogType.id}">
                 <td onclick="showCalatogTypeDetails( $catalogType.id )">$encoder.htmlEncode( $catalogType.name )</td>
                 <td style="text-align:right">
+                  <a href="showUploadCatalogTypeImageForm.action?id=$catalogType.id" title="$i18n.getString( 'upload_image' )"><img src="images/upload.png" alt="$i18n.getString( 'upload_image' )"></a>		
                   <a href="editCatalogTypeForm.action?id=$catalogType.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
                   <a href="javascript:removeItem( '$catalogType.id', '$encoder.jsEncode( $catalogType.name )', i18n_confirm_delete , 'removeCatalogType.action' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
 				  <a href="viewCatalogTypeDataEntryForm.action?catalogTypeId=$catalogType.id" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>					
