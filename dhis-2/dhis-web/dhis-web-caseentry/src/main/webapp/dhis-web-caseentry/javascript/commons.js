@@ -100,10 +100,6 @@ function searchingAttributeOnChange( this_ )
 	{
 		element.replaceWith( genderSelector );
 	}
-	else if ( attributeId=='-4' )
-	{
-		element.replaceWith( bloodTypeSelector );
-	}
 	else if ( valueType=='YES/NO' )
 	{
 		element.replaceWith( trueFalseBox );
