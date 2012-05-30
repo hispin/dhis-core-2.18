@@ -27,46 +27,17 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebUtils;
-import org.hisp.dhis.api.webdomain.Resource;
-import org.hisp.dhis.api.webdomain.Resources;
+import org.hisp.dhis.option.OptionSet;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = ResourceController.RESOURCE_PATH )
-public class ResourceController
+@RequestMapping( value = OptionSetController.RESOURCE_PATH )
+public class OptionSetController
+    extends AbstractCrudController<OptionSet>
 {
-    public static final String RESOURCE_PATH = "/resources";
-
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getResources( IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        Resources resources = new Resources();
-
-        if ( params.hasLinks() )
-        {
-            for ( Resource resource : resources.getResources() )
-            {
-                resource.setLink( WebUtils.getPath( resource.getClazz() ) );
-            }
-        }
-
-        model.addAttribute( "model", resources );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "resources";
-    }
+    public static final String RESOURCE_PATH = "/optionSets";
 }
