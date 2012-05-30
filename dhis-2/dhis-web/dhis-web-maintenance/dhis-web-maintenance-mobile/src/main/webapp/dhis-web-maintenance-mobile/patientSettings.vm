@@ -23,6 +23,17 @@
 			<td>$i18n.getString( "registration_date" )</td>
 			<td><input type="checkbox" id="registrationdate" name="registrationdate" value="true" #if( $setting.registrationdate == 'true' ) checked #end/></td>
 		</tr>
+		<tr>
+			<td>$i18n.getString( "activity_grouping_attribute" )</td>
+			<td>
+				<select id="groupingAttributeId" name="groupingAttributeId">
+						<option value="0">$i18n.getString( "please_select" )</option>
+					#foreach( $att in $allAttributes )
+              			<option value="$att.id" #if($att.isGroupBy()) selected="selected" #end>$encoder.htmlEncode( $att.name )</option>
+          			#end
+				</select>
+			</td>
+		</tr>
 	</table>
   <br/>
   <table id="dataElementSelectionArea">

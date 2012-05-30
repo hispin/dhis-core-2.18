@@ -89,6 +89,18 @@ public class GetRepeatableEventRegistrationFormAction
     {
         this.programStage = programStage;
     }
+    
+    private Integer currentProgramStageInstanceId;
+    
+    public Integer getCurrentProgramStageInstanceId()
+    {
+        return currentProgramStageInstanceId;
+    }
+
+    public void setCurrentProgramStageInstanceId( Integer currentProgramStageInstanceId )
+    {
+        this.currentProgramStageInstanceId = currentProgramStageInstanceId;
+    }
 
     @Override
     public String execute()

@@ -98,6 +98,18 @@ public class ShowMobileSettingFormAction
     {
         this.attributes = attributes;
     }
+    
+    private List<PatientAttribute> allAttributes;
+    
+    public List<PatientAttribute> getAllAttributes()
+    {
+        return allAttributes;
+    }
+
+    public void setAllAttributes( List<PatientAttribute> allAttributes )
+    {
+        this.allAttributes = allAttributes;
+    }
 
     private PatientMobileSetting setting;
 
@@ -110,7 +122,7 @@ public class ShowMobileSettingFormAction
     {
         this.setting = setting;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -120,6 +132,7 @@ public class ShowMobileSettingFormAction
         throws Exception
     {
         attributes = patientAttributeService.getAllPatientAttributes();
+        allAttributes = new ArrayList<PatientAttribute>(attributes);
 
         Collection<PatientMobileSetting> paSettings = new HashSet<PatientMobileSetting>( patientMobileSettingService
             .getCurrentSetting() );

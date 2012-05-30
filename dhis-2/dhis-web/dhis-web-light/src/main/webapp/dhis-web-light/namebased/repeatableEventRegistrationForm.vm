@@ -1,8 +1,9 @@
 <h2>$i18n.getString( "register_due_date_for" ) $programStage.getName()</h2>
-<form action="saveMobileProgramEnrollment.action" method="POST">
+<form action="saveRepeatableEvent.action" method="POST">
 <div class="header-box" align="center">
-<input type="hidden" name="patientId" value="$patientId"/>	
-<input type="hidden" name="programId" value="$programId"/>	
+<input type="hidden" name="programInstanceId" value="$programInstanceId"/>	
+<input type="hidden" name="programStageId" value="$programStageId"/>
+<input type="hidden" name="currentProgramStageInstanceId" value="$currentProgramStageInstanceId"/>		
 	<p style="text-align: left;">
 		<label>$i18n.getString( "due_date" ) [yyyy-MM-dd] </label>
 		#if( $validationMap.get( "enrollmentDate" ) )
@@ -14,7 +15,7 @@
 
 <div class="header-box" align="center">
 	<p>
-		<input type="submit" style="width: 100%;" value="$i18n.getString("enroll")" />
+		<input type="submit" style="width: 100%;" value="$i18n.getString("register")" />
 	</p>
 </div>
 

@@ -248,8 +248,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean
-		id="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEvemtAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEvemtAction">
+		id="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEventAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEventAction">
 		<property name="programInstanceService"
 			ref="org.hisp.dhis.program.ProgramInstanceService"/>
 		<property name="programStageService"
