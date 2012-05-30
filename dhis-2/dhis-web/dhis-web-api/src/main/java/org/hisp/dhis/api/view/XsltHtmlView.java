@@ -60,11 +60,12 @@ public class XsltHtmlView
         throws Exception
     {
         Object object = model.get( "model" );
+        Class<?> viewClass = JacksonUtils.getViewClass( model.get( "viewClass" ) );
         response.setContentType( getContentType() );
 
         Assert.notNull( object );
 
-        InputStream input = new ByteArrayInputStream( JacksonUtils.toXmlAsString( object ).getBytes() );
+        InputStream input = new ByteArrayInputStream( JacksonUtils.toXmlWithViewAsString( object, viewClass ).getBytes() );
         Source xmlSource = new StreamSource( input );
 
         Transformer transformer = TransformCacheImpl.instance().getHtmlTransformer();
