@@ -27,11 +27,9 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,23 +38,59 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * @author Lars Helge Overland
  */
 @Controller
 @RequestMapping( value = InterpretationController.RESOURCE_PATH )
 public class InterpretationController
+    extends AbstractCrudController<Interpretation>
 {
     public static final String RESOURCE_PATH = "/interpretations";
-    
+
     @Autowired
     private InterpretationService interpretationService;
-    
+
+    @Override
+    protected List<Interpretation> getEntityList( WebMetaData metaData, WebOptions options )
+    {
+        List<Interpretation> entityList;
+
+        Date lastUpdated = options.getLastUpdated();
+
+        if ( lastUpdated != null )
+        {
+            entityList = new ArrayList<Interpretation>( manager.getByLastUpdated( getEntityClass(), lastUpdated ) );
+        }
+        else if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
+
+            Pager pager = new Pager( options.getPage(), count );
+            metaData.setPager( pager );
+
+            entityList = new ArrayList<Interpretation>( interpretationService.getInterpretations( pager.getOffset(), pager.getPageSize() ) );
+
+        }
+        else
+        {
+            entityList = new ArrayList<Interpretation>( manager.getAll( getEntityClass() ) );
+        }
+
+        return entityList;
+    }
+
     @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST )
     public void postComment( @PathVariable( "uid" ) String uid, @RequestBody String text, HttpServletResponse response ) throws IOException
     {
         interpretationService.addInterpretationComment( uid, text );
-        
-        ContextUtils.okResponse( response, "Comment created" );        
+
+        ContextUtils.okResponse( response, "Comment created" );
     }
 }

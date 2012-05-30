@@ -27,28 +27,39 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.user.User;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.user.User;
-
 /**
  * @author Lars Helge Overland
  */
+@JacksonXmlRootElement( localName = "interpretation", namespace = Dxf2Namespace.NAMESPACE )
 public class Interpretation
     extends BaseIdentifiableObject
 {
     private Chart chart;
-    
+
     private String text;
 
     private User user;
-    
+
     private Date created;
-    
+
+    @Scanned
     private List<InterpretationComment> comments = new ArrayList<InterpretationComment>();
 
     // -------------------------------------------------------------------------
@@ -75,11 +86,15 @@ public class Interpretation
     {
         this.comments.add( comment );
     }
-    
+
     // -------------------------------------------------------------------------
     // Get and set methods
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonDeserialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Chart getChart()
     {
         return chart;
@@ -90,6 +105,9 @@ public class Interpretation
         this.chart = chart;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getText()
     {
         return text;
@@ -100,6 +118,10 @@ public class Interpretation
         this.text = text;
     }
 
+    @JsonProperty
+    @JsonDeserialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public User getUser()
     {
         return user;
@@ -110,6 +132,9 @@ public class Interpretation
         this.user = user;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Date getCreated()
     {
         return created;
@@ -120,6 +145,10 @@ public class Interpretation
         this.created = created;
     }
 
+    @JsonProperty
+    @JsonDeserialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public List<InterpretationComment> getComments()
     {
         return comments;

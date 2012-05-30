@@ -41,6 +41,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
@@ -123,6 +124,7 @@ final public class ExchangeClasses
         exportClasses.put( UserAuthorityGroup.class, "userRoles" );
 
         exportClasses.put( MessageConversation.class, "messageConversations" );
+        exportClasses.put( Interpretation.class, "interpretations" );
 
         importClasses = exportClasses;
     }

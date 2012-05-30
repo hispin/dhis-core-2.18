@@ -27,34 +27,46 @@ package org.hisp.dhis.interpretation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.user.User;
+
+import java.util.Date;
 
 /**
  * @author Lars Helge Overland
  */
+@JacksonXmlRootElement( localName = "interpretationComment", namespace = Dxf2Namespace.NAMESPACE )
 public class InterpretationComment
     extends BaseIdentifiableObject
 {
     private String text;
-    
+
     private User user;
-    
+
     private Date created;
-    
+
     public InterpretationComment()
     {
         this.created = new Date();
     }
-    
+
     public InterpretationComment( String text )
     {
         this.text = text;
         this.created = new Date();
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getText()
     {
         return text;
@@ -65,6 +77,10 @@ public class InterpretationComment
         this.text = text;
     }
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public User getUser()
     {
         return user;
@@ -75,6 +91,9 @@ public class InterpretationComment
         this.user = user;
     }
 
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Date getCreated()
     {
         return created;
