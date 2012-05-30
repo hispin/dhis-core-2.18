@@ -491,18 +491,29 @@ public class DefaultChartService
         if ( chart.isType( TYPE_LINE ) || chart.isType( TYPE_AREA ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
+            plot.setOrientation( PlotOrientation.VERTICAL );
         }
-        else if ( chart.isType( TYPE_BAR ) || chart.isType( TYPE_COLUMN ) )
+        else if ( chart.isType( TYPE_COLUMN ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
+            plot.setOrientation( PlotOrientation.VERTICAL );
+        }
+        else if ( chart.isType( TYPE_BAR ) )
+        {
+            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
+            plot.setOrientation( PlotOrientation.HORIZONTAL );
         }
         else if ( chart.isType( TYPE_PIE ) )
         {
             return getMultiplePieChart( chart, dataSets );
         }
-        else if ( chart.isType( TYPE_STACKED_BAR ) || chart.isType( TYPE_STACKED_COLUMN ) )
+        else if ( chart.isType( TYPE_STACKED_COLUMN ) )
         {
-            return getStackedBarChart( chart, dataSets[0] );
+            return getStackedBarChart( chart, dataSets[0], false );
+        }
+        else if ( chart.isType( TYPE_STACKED_BAR ) )
+        {
+            return getStackedBarChart( chart, dataSets[0], true );
         }
 
         if ( chart.isRegression() )
@@ -528,23 +539,18 @@ public class DefaultChartService
             jFreeChart.addSubtitle( getSubTitle( chart ) );
         }
 
-        // ---------------------------------------------------------------------
-        // Plot orientation
-        // ---------------------------------------------------------------------
-
-        plot.setOrientation( PlotOrientation.VERTICAL );
         plot.setDatasetRenderingOrder( DatasetRenderingOrder.FORWARD );
 
         // ---------------------------------------------------------------------
         // Category label positions
         // ---------------------------------------------------------------------
 
-        CategoryAxis xAxis = plot.getDomainAxis();
-        xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
-        xAxis.setLabel( chart.getDomainAxisLabel() );
+        CategoryAxis domainAxis = plot.getDomainAxis();
+        domainAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
+        domainAxis.setLabel( chart.getDomainAxisLabel() );
 
-        ValueAxis yAxis = plot.getRangeAxis();
-        yAxis.setLabel( chart.getRangeAxisLabel() );
+        ValueAxis rangeAxis = plot.getRangeAxis();
+        rangeAxis.setLabel( chart.getRangeAxisLabel() );
 
         // ---------------------------------------------------------------------
         // Color & antialias
@@ -556,7 +562,7 @@ public class DefaultChartService
         return jFreeChart;
     }
     
-    private JFreeChart getStackedBarChart( Chart chart, CategoryDataset dataSet )
+    private JFreeChart getStackedBarChart( Chart chart, CategoryDataset dataSet, boolean horizontal )
     {
         JFreeChart stackedBarChart = null;
 
@@ -574,6 +580,7 @@ public class DefaultChartService
         CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
         plot.setBackgroundPaint( Color.WHITE );
         plot.setOutlinePaint( Color.WHITE );
+        plot.setOrientation( horizontal ? PlotOrientation.HORIZONTAL : PlotOrientation.VERTICAL );
 
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
