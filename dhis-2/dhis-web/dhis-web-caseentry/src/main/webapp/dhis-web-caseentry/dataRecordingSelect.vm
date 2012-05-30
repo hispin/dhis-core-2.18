@@ -89,7 +89,7 @@
 			<td>$i18n.getString( 'due_date' )</td>
 			<td><input id='dueDateNewEncounter' name='dueDateNewEncounter' ></td>
 			<script type="text/javascript">
-			   datePickerValid( 'dueDateNewEncounter', false );
+			   datePicker( 'dueDateNewEncounter', false );
 			</script>
 		</tr>
 		<tr>
