@@ -20,7 +20,7 @@
 				#foreach( $program in $programs )
 				  <tr id="tr${program.id}">
 				  
-					<td>$encoder.htmlEncode( $program.name )</td>                
+					<td onclick="showProgramDetails( $program.id )">$encoder.htmlEncode( $program.name )</td>                
 					
 					<td style="text-align:center">
 					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_orgunits' )"><img src="../images/assign.png" alt="$i18n.getString( 'assign_program_to_orgunits' )"></a>					  

@@ -30,8 +30,8 @@
 		  <tbody id="list">
 			#foreach( $association in $associations )
 			  <tr id="tr${association.id}">			  
-				<td>$encoder.htmlEncode( $association.name )</td>                
-				<td>$encoder.htmlEncode( $association.description )</td>
+				<td onclick="showProgramStageDetails( $association.id )">$encoder.htmlEncode( $association.name )</td>                
+				<td onclick="showProgramStageDetails( $association.id )">$encoder.htmlEncode( $association.description )</td>
 				
 				<td style="text-align:center"#alternate( $mark )>
 				  <a href="showUpdateProgramStageForm.action?id=$association.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
