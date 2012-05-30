@@ -32,7 +32,7 @@
 		  
 			<tr>
 				<td><label>$i18n.getString( "standard_interval_days" )</label></td>
-				<td><input type="text" id="standardInterval" name="standardInterval" value='$!programStage.standardInterval' class="{validate:{required:true,number:true}}" #if( $programStage.irregular=='false' ) disabled #end /></td>
+				<td><input type="text" id="standardInterval" name="standardInterval" value='$!programStage.standardInterval' class="{validate:{required:true,number:true}}" #if( $programStage.irregular=='true' ) disabled #end /></td>
 			</tr>
 			<tr><td>&nbsp;</td></tr>       
 		  

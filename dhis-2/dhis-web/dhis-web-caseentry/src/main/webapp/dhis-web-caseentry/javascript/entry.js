@@ -13,7 +13,6 @@ function loadProgramStages()
 	disable('completeBtn');
 	disable('validationBtn');
 	disable('newEncounterBtn');
-	disable('executionDate');
 		
 	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
 	if ( programId == 0 )
@@ -24,7 +23,7 @@ function loadProgramStages()
 	jQuery.getJSON( "loadProgramStages.action",
 		{
 			programId: programId
-		}, 
+		},  
 		function( json ) 
 		{    
 			addOptionById( 'programStageId', "0", i18n_select );
@@ -35,6 +34,7 @@ function loadProgramStages()
 			
 			var type = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('type');
 				
+			// Single-event program or normal program with only one program-stage
 			if( type=='2' || type=='3' || json.programStages.length == 1)
 			{
 				byId('programStageId').selectedIndex = 1;
@@ -47,7 +47,6 @@ function loadProgramStages()
 			}
 			else
 			{
-				
 				// show history / plan
 				setInnerHTML( 'currentSelection', '' ); 
 				var history = '<table class="history">';
@@ -126,17 +125,13 @@ function loadDataEntry()
 			var completed = jQuery('#entryFormContainer input[id=completed]').val();
 			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
 			
-			enable('executionDate');
 			if( executionDate != '' && completed == 'false' )
 			{
-				enable('validationBtn');
 				enable('completeBtn');
 			}
 			else if( completed == 'true' )
 			{
-				disable('validationBtn');
 				disable('completeBtn');
-				disable('executionDate');
 			}
 			
 			if( completed == 'true' && irregular == 'true' )
@@ -593,12 +588,8 @@ function toggleContentForReportDate(show)
 {
     if( show ){
         jQuery("#entryForm").show();
-        jQuery("#completeBtn").removeAttr('disabled');
-		jQuery("#validationBtn").removeAttr('disabled');
     }else {
         jQuery("#entryForm").hide();
-        jQuery("#completeBtn").attr('disabled', 'disabled');
-		jQuery("#validationBtn").attr('disabled', 'disabled');
     }
 }
 
@@ -629,19 +620,7 @@ function doComplete()
 				},
 				function (data)
 				{
-					jQuery("#dataEntryFormDiv :input").each(function()
-					{
-						disable( jQuery(this).attr('id') );
-					});
-					
-					jQuery("#dataEntryFormDiv").find(".ui-button").each(function()
-					{
-						jQuery(this).autocomplete( "option", "disabled" );
-					});
-					
-					disable('validationBtn');
 					disable('completeBtn');
-					disable('executionDate');
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					if( irregular == 'true' )
 					{
@@ -656,14 +635,13 @@ function doComplete()
 							}).show('fast');
 							
 						var standardInterval =  jQuery('#dataRecordingSelectDiv [name=programStageId] option:selected').attr('standardInterval');
-						
 						var date = new Date();
-						var d = date.getDate();
+						var d = date.getDate() + eval(standardInterval);
 						var m = date.getMonth();
 						var y = date.getFullYear();
-						var edate= new Date(y, m, d+standardInterval);						
+						var edate= new Date(y, m, d);
+												
 						jQuery('#dueDateNewEncounter').datepicker( "setDate" , edate )
-	 
 					}
 					
 					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');
@@ -680,6 +658,11 @@ function doComplete()
 				});
 		}
     }
+}
+
+function closeDueDateDiv()
+{
+	jQuery('#createNewEncounterDiv').dialog('close');
 }
 
 TOGGLE = {

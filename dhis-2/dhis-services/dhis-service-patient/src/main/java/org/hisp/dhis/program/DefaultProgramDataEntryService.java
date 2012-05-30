@@ -171,7 +171,6 @@ public class DefaultProgramDataEntryService
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
-
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
@@ -340,7 +339,6 @@ public class DefaultProgramDataEntryService
         Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
-
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
@@ -507,7 +505,7 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
 
                 disabled = "";
-                if ( programStageId != programStage.getId() || programStageInstance.isCompleted() )
+                if ( programStageId != programStage.getId() )
                 {
                     disabled = "disabled";
                 }
@@ -710,7 +708,7 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
 
                 disabled = "";
-                if ( programStageId != programStage.getId() || programStageInstance.isCompleted() )
+                if ( programStageId != programStage.getId() )
                 {
                     disabled = "disabled=\"\"";
                 }
@@ -909,7 +907,7 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
 
                 disabled = "";
-                if ( programStageId != programStage.getId() || programStageInstance.isCompleted() )
+                if ( programStageId != programStage.getId() )
                 {
                     disabled = "disabled=\"\"";
                 }

@@ -88,6 +88,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN singleevent" );
         executeSql( "ALTER TABLE program DROP COLUMN anonymous" );
         executeSql( "UPDATE program SET type=1 where type is null" );
+        
+        executeSql( "UPDATE programstage set irregular=false where irregular is null" );
 
         executeSql( "DROP TABLE programattributevalue" );
         executeSql( "DROP TABLE programinstance_attributes" );

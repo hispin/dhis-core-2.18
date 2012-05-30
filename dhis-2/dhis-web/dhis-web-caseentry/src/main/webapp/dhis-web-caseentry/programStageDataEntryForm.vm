@@ -63,7 +63,7 @@
     </tr>   
     <tr>
 		<td>&nbsp;</td>
-		<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" #if($programStageInstance.executionDate) #else disabled #end>
+		<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" #if($programStageInstance.completed=='true') disabled #end>
 			<input type="button" id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" style="width:12em " #if($programStageInstance.executionDate) #else disabled #end>
 		</td>
 		<td></td>
