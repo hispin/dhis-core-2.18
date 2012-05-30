@@ -223,17 +223,27 @@ public class DefaultMessageService
 
     public List<MessageConversation> getMessageConversations( int first, int max )
     {
-        return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), first, max );
+        return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), false, false, first, max );
+    }
+
+    public List<MessageConversation> getMessageConversations( boolean followUpOnly, boolean unreadOnly, int first, int max )
+    {
+        return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), followUpOnly, unreadOnly, first, max );
     }
     
     public int getMessageConversationCount()
     {
-        return messageConversationStore.getMessageConversationCount( currentUserService.getCurrentUser() );
+        return messageConversationStore.getMessageConversationCount( currentUserService.getCurrentUser(), false, false );
+    }
+
+    public int getMessageConversationCount( boolean followUpOnly, boolean unreadOnly )
+    {
+        return messageConversationStore.getMessageConversationCount( currentUserService.getCurrentUser(), followUpOnly, unreadOnly );
     }
     
     public List<MessageConversation> getAllMessageConversations()
     {
-        return messageConversationStore.getMessageConversations( null, null, null );
+        return messageConversationStore.getMessageConversations( null, false, false, null, null );
     }
 
     public void deleteMessages( User user )

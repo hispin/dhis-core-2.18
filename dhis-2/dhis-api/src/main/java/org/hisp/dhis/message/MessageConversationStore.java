@@ -47,9 +47,9 @@ public interface MessageConversationStore
      * @param max the max number of records to return, or all if null.
      * @return a list of MessageConversations.
      */
-    List<MessageConversation> getMessageConversations( User user, Integer first, Integer max );
+    List<MessageConversation> getMessageConversations( User user, boolean followUpOnly, boolean unreadOnly, Integer first, Integer max );
     
-    int getMessageConversationCount( User user );
+    int getMessageConversationCount( User user, boolean followUpOnly, boolean unreadOnly );
     
     long getUnreadUserMessageConversationCount( User user );
     
