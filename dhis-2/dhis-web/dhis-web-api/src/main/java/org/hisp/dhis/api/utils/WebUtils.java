@@ -82,7 +82,7 @@ public class WebUtils
 
         if ( metaData.getPager() != null && baseType != null )
         {
-            String basePath = getBasePath( baseType );
+            String basePath = getPath( baseType );
             Pager pager = metaData.getPager();
 
             if ( pager.getPage() < pager.getPageCount() )
@@ -140,12 +140,12 @@ public class WebUtils
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
-    private static String getPathWithUid( IdentifiableObject identifiableObject )
+    public static String getPathWithUid( IdentifiableObject identifiableObject )
     {
-        return getBasePath( identifiableObject.getClass() ) + "/" + identifiableObject.getUid();
+        return getPath( identifiableObject.getClass() ) + "/" + identifiableObject.getUid();
     }
 
-    private static String getBasePath( Class<?> clazz )
+    public static String getPath( Class<?> clazz )
     {
         if ( ProxyObject.class.isAssignableFrom( clazz ) )
         {
