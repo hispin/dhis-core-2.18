@@ -37,7 +37,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import com.opensymphony.xwork2.Action;
 
-public class SaveRepeatableEvemtAction
+public class SaveRepeatableEventAction
     implements Action
 {
 

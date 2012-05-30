@@ -98,6 +98,18 @@ public class UpdateMobileSettingAction
         this.birthdate = birthdate;
     }
 
+    private Integer groupingAttributeId;
+
+    public Integer getGroupingAttributeId()
+    {
+        return groupingAttributeId;
+    }
+
+    public void setGroupingAttributeId( Integer groupingAttributeId )
+    {
+        this.groupingAttributeId = groupingAttributeId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -163,6 +175,19 @@ public class UpdateMobileSettingAction
                 patientMobileSettingService.savePatientMobileSetting( setting );
             }
         }
+
+        Collection<PatientAttribute> allPatientAttributes = patientAttributeService.getAllPatientAttributes();
+
+        for ( PatientAttribute patientAttribute : allPatientAttributes )
+        {
+            patientAttribute.setGroupBy( false );
+            if ( patientAttribute.getId() == groupingAttributeId )
+            {
+                patientAttribute.setGroupBy( true );
+            }
+            patientAttributeService.updatePatientAttribute( patientAttribute );
+        }
+
         return SUCCESS;
     }
 
