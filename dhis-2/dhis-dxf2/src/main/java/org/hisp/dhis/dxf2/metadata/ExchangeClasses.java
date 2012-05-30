@@ -45,6 +45,7 @@ import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -121,9 +122,9 @@ final public class ExchangeClasses
         exportClasses.put( UserGroup.class, "userGroups" );
         exportClasses.put( UserAuthorityGroup.class, "userRoles" );
 
-        importClasses = exportClasses;
+        exportClasses.put( MessageConversation.class, "messageConversations" );
 
-        // exportClasses.put( "messageConversations", MessageConversation.class );
+        importClasses = exportClasses;
     }
 
     public static Map<Class<? extends IdentifiableObject>, String> getExportMap()

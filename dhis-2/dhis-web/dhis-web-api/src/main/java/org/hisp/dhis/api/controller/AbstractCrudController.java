@@ -108,7 +108,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = { "Content-Type=application/xml, text/xml" } )
-    public void postXmlObject( HttpServletResponse response, InputStream input ) throws Exception
+    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }

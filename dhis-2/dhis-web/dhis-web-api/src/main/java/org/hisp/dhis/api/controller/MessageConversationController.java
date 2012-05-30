@@ -28,27 +28,23 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.dxf2.message.Message;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.dxf2.message.Message;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.message.MessageConversation;
-import org.hisp.dhis.message.MessageConversations;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,6 +53,7 @@ import java.util.List;
 @Controller
 @RequestMapping( value = MessageConversationController.RESOURCE_PATH )
 public class MessageConversationController
+    extends AbstractCrudController<MessageConversation>
 {
     public static final String RESOURCE_PATH = "/messageConversations";
 
@@ -66,67 +63,41 @@ public class MessageConversationController
     @Autowired
     private UserService userService;
 
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.GET )
-    public String getMessageConversations( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    @Override
+    protected List<MessageConversation> getEntityList( WebMetaData metaData, WebOptions options )
     {
-        MessageConversations messageConversations = new MessageConversations();
+        List<MessageConversation> entityList;
 
-        if ( params.isPaging() )
+        Date lastUpdated = options.getLastUpdated();
+
+        if ( lastUpdated != null )
         {
-            int total = messageService.getMessageConversationCount();
+            entityList = new ArrayList<MessageConversation>( manager.getByLastUpdated( getEntityClass(), lastUpdated ) );
+        }
+        else if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
 
-            Pager pager = new Pager( params.getPage(), total );
-            messageConversations.setPager( pager );
+            Pager pager = new Pager( options.getPage(), count );
+            metaData.setPager( pager );
 
-            List<MessageConversation> list = new ArrayList<MessageConversation>(
-                messageService.getMessageConversations( pager.getOffset(), pager.getPageSize() ) );
-
-            messageConversations.setMessageConversations( list );
+            entityList = new ArrayList<MessageConversation>( messageService.getMessageConversations( pager.getOffset(), pager.getPageSize() ) );
         }
         else
         {
-            messageConversations.setMessageConversations( new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, 1000 ) ) );
+            entityList = new ArrayList<MessageConversation>( manager.getAll( getEntityClass() ) );
         }
 
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( messageConversations );
-        }
-
-        model.addAttribute( "model", messageConversations );
-
-        return "messages";
-    }
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getMessageConversation( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
-    {
-        MessageConversation messageConversation = messageService.getMessageConversation( uid );
-
-        if ( params.hasLinks() )
-        {
-            WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( messageConversation );
-        }
-
-        model.addAttribute( "model", messageConversation );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "message";
+        return entityList;
     }
 
     //-------------------------------------------------------------------------------------------------------
     // POST for new MessageConversation
     //-------------------------------------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @Override
     @PreAuthorize( "hasRole('ALL') or hasRole('F_SEND_MESSAGE')" )
-    public void postMessageConversationXML( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws IOException
+    public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         Message message = JacksonUtils.fromXml( input, Message.class );
 
@@ -148,19 +119,13 @@ public class MessageConversationController
         response.setHeader( "Location", MessageConversationController.RESOURCE_PATH + "/" + m.getUid() );
     }
 
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_SEND_MESSAGE')" )
-    public void postMessageConversationJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-    }
-
     //-------------------------------------------------------------------------------------------------------
     // POST for reply on existing MessageConversation
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.POST )
     public void postMessageConversationReply( @PathVariable( "uid" ) String uid, @RequestBody String body,
-                                              HttpServletRequest request, HttpServletResponse response ) throws Exception
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
@@ -175,7 +140,7 @@ public class MessageConversationController
 
     @RequestMapping( value = "/feedback", method = RequestMethod.POST )
     public void postMessageConversationFeedback( @RequestParam( "subject" ) String subject, @RequestBody String body,
-                                                 HttpServletRequest request, HttpServletResponse response ) throws Exception
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
