@@ -5,36 +5,20 @@
 <tr>
     <td style="vertical-align:top">    
     <table class="listTable">
-        <col/>
-        #foreach( $programStage in $program.programStages )
-		<col/>
-        #end       
-        <tr>
-			<th>#</th>
-            <th style="text-align:center">$i18n.getString( "full_name" )</th>
-            #foreach( $programStage in $program.programStages )
-                <th style="text-align:center">$encoder.htmlEncode( $programStage.name )</th>
-            #end                
-        </tr>
-      
-        <tbody id="list">
+        <tbody id="list" style="width:300px; overflow:auto;">
             #set( $mark = false )                 
             #foreach( $programInstance in $programInstances )
                 <tr #alternate( $mark )>                
-                    <td>
-						#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
-						$nr
-					</td>
-					<td><a href="javascript:showPatientHistory( $programInstance.patient.id )" title='$i18n.getString( "patient_details_and_history" )'>$programInstance.patient.getFullName()</a></td>                    
+					<td>
+						<a href="javascript:showPatientHistory( $programInstance.patient.id )" title='$i18n.getString( "patient_details_and_history" )'>$programInstance.patient.getFullName()</a>
+					</td>				
                     #foreach( $programStageInstance in $programInstance.programStageInstances )
-                        #if( $programStageInstance.executionDate )
-                            <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
-                                <a href="javascript:viewRecords( $programStageInstance.id )">
-                                $format.formatDate( $programStageInstance.executionDate )
-                            </td>
-                        #else
-                            <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">$format.formatDate( $programStageInstance.dueDate ) </td>
-                        #end
+						<td>
+							<img src='images/rightarrow.png'>
+						</td>
+						<td width='100px;'>
+							<input type='button' class='buttonInfo' style='border-color:$colorMap.get( $programStageInstance.id );' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:viewRecords( $programStageInstance.id )'>
+						</td>
                     #end
                 </tr>
                 #if( $mark )
