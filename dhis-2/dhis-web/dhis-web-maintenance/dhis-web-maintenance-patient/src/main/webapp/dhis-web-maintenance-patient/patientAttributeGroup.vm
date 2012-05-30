@@ -26,7 +26,7 @@
             #foreach( $patientAttributeGroup in $patientAttributeGroups )
               <tr id="tr${patientAttributeGroup.id}">
               
-                <td>$encoder.htmlEncode( $patientAttributeGroup.name )</td>                
+                <td onclick="showPatientAttributeGroupDetails( $patientAttributeGroup.id )">$encoder.htmlEncode( $patientAttributeGroup.name )</td>                
                 
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="showUpdatePatientAttributeGroupForm.action?id=$patientAttributeGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>

@@ -23,7 +23,7 @@
             #foreach( $identifierType in $identifierTypes )
               <tr id="tr${identifierType.id}">
               
-                <td>$encoder.htmlEncode( $identifierType.name )</td>                
+                <td onclick="showPatientIdentifierTypeDetails( $identifierType.id )">$encoder.htmlEncode( $identifierType.name )</td>                
                 
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="showUpdatePatientIdentifierTypeForm.action?id=$identifierType.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
