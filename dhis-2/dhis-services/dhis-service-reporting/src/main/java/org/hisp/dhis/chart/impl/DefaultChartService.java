@@ -115,10 +115,10 @@ public class DefaultChartService
 
     private static final String TREND_PREFIX = "Trend - ";
 
-    private static final Color[] colors = {Color.decode( "#d54a4a" ), Color.decode( "#2e4e83" ),
-        Color.decode( "#75e077" ), Color.decode( "#e3e274" ), Color.decode( "#e58c6d" ), Color.decode( "#df6ff3" ),
-        Color.decode( "#88878e" ), Color.decode( "#6ff3e8" ), Color.decode( "#6fc3f3" ), Color.decode( "#aaf36f" ),
-        Color.decode( "#9d6ff3" ), Color.decode( "#474747" )};
+    private static final Color[] colors = {Color.decode( "#9ebe3b" ), Color.decode( "#3b6286" ),
+        Color.decode( "#b7404c" ), Color.decode( "#ff9f3a" ), Color.decode( "#968f8f" ), Color.decode( "#b7409f" ),
+        Color.decode( "#ffda64" ), Color.decode( "#4fbdae" ), Color.decode( "#b78040" ), Color.decode( "#676767" ),
+        Color.decode( "#6a33cf" ), Color.decode( "#4a7833" )};
 
     // -------------------------------------------------------------------------
     // Dependencies
