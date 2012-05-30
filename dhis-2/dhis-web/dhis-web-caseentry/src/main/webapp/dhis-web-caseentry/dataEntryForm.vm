@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="javascript/customcheckbox/prettyCheckboxes.css" type="text/css" media="screen" title="prettyComment main stylesheet" charset="utf-8" />
-
 <script>
 	jQuery("#entryFormContainer").ready(function(){
 	

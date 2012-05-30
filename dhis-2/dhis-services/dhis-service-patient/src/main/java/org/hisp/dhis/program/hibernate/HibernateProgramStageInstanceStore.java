@@ -194,6 +194,8 @@ public class HibernateProgramStageInstanceStore
     {
         Grid grid = new ListGrid();
         
+        grid.addHeader( new GridHeader( "id", true, true ) );
+        
         grid.addHeader( new GridHeader( "Report date", false, true ) );
         
         //TODO hidden cols
@@ -257,7 +259,7 @@ public class HibernateProgramStageInstanceStore
         
         String selector = count ? "count(*) " : "* ";
         
-        String sql = "select " + selector + "from ( select psi.executiondate,";
+        String sql = "select " + selector + "from ( select psi.programstageinstanceid, psi.executiondate,";
         
         for ( int i = 0; i < maxLevel; i++ )
         {

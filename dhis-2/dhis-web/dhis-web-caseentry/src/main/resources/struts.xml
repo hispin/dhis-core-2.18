@@ -737,6 +737,13 @@
             <result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
         </action>
+        
+        <action name="viewRecord"
+			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
+			<param name="stylesheets">../style/dataEntry.css</param>
+		</action>
 		
 	</package>
 </struts>
