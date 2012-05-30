@@ -40,6 +40,8 @@ public interface InterpretationService
     
     Interpretation getInterpretation( String uid );
     
+    void updateInterpretation( Interpretation interpretation );
+    
     void deleteInterpretation( Interpretation interpretation );
     
     List<Interpretation> getInterpretations( int first, int max );
