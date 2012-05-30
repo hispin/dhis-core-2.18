@@ -47,6 +47,9 @@ TR.conf = {
 			favorite_rename: 'updateTabularReportName.action',
 			favorite_save: 'saveTabularReport.action',
             favorite_delete: 'deleteTabularReport.action',
+			datavalue_save: 'saveValue.action',
+			datavalue_view: 'viewRecord.action',
+			datavalue_delete: 'removeCurrentEncounter.action',
             redirect: 'index.action'
         },
         params: {
@@ -116,6 +119,8 @@ TR.conf = {
 		grid_favorite_height: 250,
         window_favorite_ypos: 100,
         window_confirm_width: 250,
+		window_record_width: 450,
+		window_record_height: 300,
     }
 };
 
@@ -644,13 +649,9 @@ Ext.onReady( function() {
         },
         datatable: null,
         getDataTableStore: function() {
-
 			this.datatable = Ext.create('Ext.data.ArrayStore', {
 				fields: TR.value.fields,
-				data: TR.value.values,
-				remoteSort: true,
-				autoLoad: false,
-				storage: {}
+				data: TR.value.values
 			});
         },
 		favorite: Ext.create('Ext.data.Store', {
@@ -722,7 +723,8 @@ Ext.onReady( function() {
 						TR.value.values=json.items;
 						
 						var fields = [];
-						for( var index=0; index < TR.value.columns.length; index++ )
+						fields[0] = 'id';
+						for( var index=1; index < TR.value.columns.length; index++ )
 						{
 							fields[index] = 'col' + index;
 						}
@@ -950,21 +952,87 @@ Ext.onReady( function() {
     TR.value = {
 		columns: [],
 		fields: [],
-		values: []
+		values: [],
+		save: function( psiId, deId, value)
+		{
+			var params = 'programStageInstanceId=' + psiId; 
+				params += '&dataElementId=' + deId;
+				params += '&value=' ;
+			if( value != '')
+				params += value;
+			
+			Ext.Ajax.request({
+				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_save,
+				method: 'POST',
+				params: params,
+				success: function() {}
+			});
+		},
+		view: function( psiId )
+		{
+			var params = 'programStageInstanceId=' + psiId;
+			Ext.Ajax.request({
+				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_view,
+				method: 'GET',
+				params: params,
+				success: function ( response, request ) { 
+					var htmlWindow = Ext.create('Ext.window.Window', {
+						title: TR.i18n.data_entry_form,
+						cls: 'tr-messagebox',
+						modal: true,
+						width: TR.conf.layout.window_record_width,
+						height: TR.conf.layout.window_record_height,
+						autoScroll: true,
+					}).show();
+					
+					htmlWindow.update(response.responseText);
+					document.getElementById('programDiv').style.display = 'none';
+				}
+			});
+		},
+		remove: function( psiId, rowIdx )
+		{
+			Ext.Msg.confirm( TR.i18n.confirmation, TR.i18n.are_you_sure, function(btn){
+				if (btn == 'yes')
+				{
+					var params = 'programStageInstanceId=' + psiId; 
+					Ext.Ajax.request({
+						url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_delete,
+						method: 'GET',
+						params: params,
+						success: function() {
+							var grid = TR.datatable.datatable;
+							grid.getView().getNode(rowIdx).classList.add('hidden');
+						}
+					});
+				}
+            });
+		}
     };
       
     TR.datatable = {
         datatable: null,
-		rowEditing: null,
+		cellEditing: null,
 		getDataTable: function() {
 						
 			var orgUnitCols = ( TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue() );
 			var index = 0;
 			var cols = [];
 			
-			// Report date column
+			// id of event
 			
 			cols[index] = {
+				header: TR.value.columns[index].name, 
+				dataIndex: 'id',
+				width: 50,
+				height: TR.conf.layout.east_gridcolumn_height,
+				sortable: false,
+				draggable: false,
+				hidden: true,
+				menuDisabled: true
+			};
+			
+			cols[++index] = {
 				header: TR.value.columns[index].name, 
 				dataIndex: 'col' + index,
 				width: 50,
@@ -1027,7 +1095,9 @@ Ext.onReady( function() {
 					hidden: eval(TR.value.columns[index].hidden ),
 					sortable: false,
 					draggable: true,
+					isEditAllowed: true,
 					emptyText: TR.i18n.et_no_data,
+					selectOnTab: true,
 					editor: {
 						xtype: TR.value.columns[index].valueType,
 						queryMode: 'local',
@@ -1043,25 +1113,71 @@ Ext.onReady( function() {
 				};
 			});
 			
-			this.rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+			cols[++index]={
+				xtype:'actioncolumn',
+				width:50,
+				//locked: true,
+				items: [{
+					icon: 'images/view.png',  // Use a URL in the icon config
+					tooltip: TR.i18n.view,
+					handler: function(grid, rowIndex, colIndex) {
+						var psiId = grid.getStore().getAt(rowIndex).data['id'];
+						TR.value.view( psiId );
+					}
+				},
+				'->',
+				{
+					icon: 'images/delete.png',
+					tooltip: 'Delete',
+					handler: function(grid, rowIndex, colIndex) {
+						var psiId = grid.getStore().getAt(rowIndex).data['id'];
+						TR.value.remove( psiId, rowIndex );
+					}
+				}]
+			}
+			
+			this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
 				clicksToEdit: 1,
-				editStyle: 'row',
 				autoScroll: true,
-				errorSummary: false,
+				errorSummary: true,
 				listeners: {
-					beforeedit: function( editor, e) 
+					beforeedit: function( e, editor) 
 					{
-						if( editor.rowIdx > 0 )
+						if( e.rowIdx > 0 && !e.column.isEditAllowed )
 						{
 							return false;
 						}
 					},
 					edit: function( editor, e ){
-						TR.exe.execute();
+						var grid = TR.datatable.datatable;
+						grid.getView().getNode(e.rowIdx).classList.remove('hidden');
+						
+						var oldValue = e.originalValue;
+						var newValue = e.value;
+						if( newValue != oldValue)
+						{
+							// filter
+							if( e.rowIdx==0 ){
+								TR.exe.execute();
+							}
+							// save data-value of data element
+							else{
+								var psiId = TR.store.datatable.getAt(e.rowIdx).data['id'];
+								var deId = e.column.name.split('_')[1];
+								TR.value.save( psiId, deId, newValue);
+								//e.record.commit();
+							}
+						}
 					},
 					canceledit: function( grid, eOpts ){
-						var grid = TR.datatable.datatable;
-						grid.getView().getNode(0).classList.add('hidden');
+						if( e.rowIdx == 0 ){
+							var grid = TR.datatable.datatable;
+							grid.getView().getNode(0).classList.add('hidden');
+						}
+					},
+					validateedit: function( editor, e, eOpts )
+					{
+						return true;
 					}
 				}
 			});
@@ -1073,6 +1189,7 @@ Ext.onReady( function() {
 				columns: cols,
 				scroll: 'both',
 				title: TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report,
+				selType: 'cellmodel',
 				viewConfig: {
 					getRowClass: function(record, rowIndex, rp, ds){ 
 						if(rowIndex == 0){
@@ -1168,12 +1285,12 @@ Ext.onReady( function() {
 						}
 					}
 				], 
-				plugins: [this.rowEditing],
+				plugins: [this.cellEditing],
 				store: TR.store.datatable
 			});
 										
 			if (Ext.grid.RowEditor) {
-				Ext.apply(Ext.grid.RowEditor.prototype, {
+				Ext.apply(Ext.grid.CellEditor.prototype, {
 					saveBtnText : TR.i18n.filter,
 					cancelBtnText : TR.i18n.cancel
 				});
@@ -1266,7 +1383,7 @@ Ext.onReady( function() {
                             items: [
                             {
 								xtype: 'label',
-								text: TR.i18n.programs,
+								text: TR.i18n.program,
 								style: 'font-size:11px; font-weight:bold; padding:0 0 0 3px'
 							},
 							{ bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
@@ -1960,10 +2077,9 @@ Ext.onReady( function() {
 								grid.getView().getNode(0).classList.remove('hidden');
 								var record = grid.getView().getRecord( grid.getView().getNode(0) );
 								grid.getView().getSelectionModel().select(record, false, false);
-								TR.datatable.rowEditing.startEdit(0, 0);
 							}
 							else {
-								TR.exe.execute();
+								grid.getView().getNode(0).classList.add('hidden');
 							}
 						}
 					},

@@ -35,7 +35,7 @@
 </table>
 #end
 
-<table>    
+<table id='programDiv'>    
    <tr>
         <td><label for="programId">$i18n.getString( "program" )</label></td>
         <td>

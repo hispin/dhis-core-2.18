@@ -101,6 +101,13 @@ public class SaveValueAction
         this.dataElementId = dataElementId;
     }
 
+    private Integer programStageInstanceId;
+
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
+    }
+
     public int getDataElementId()
     {
         return dataElementId;
@@ -113,6 +120,8 @@ public class SaveValueAction
         return statusCode;
     }
 
+    private ProgramStageInstance programStageInstance;
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -120,7 +129,14 @@ public class SaveValueAction
     public String execute()
         throws Exception
     {
-        ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
+        if ( programStageInstanceId == null )
+        {
+            programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
+        }
+        else
+        {
+            programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
+        }
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
