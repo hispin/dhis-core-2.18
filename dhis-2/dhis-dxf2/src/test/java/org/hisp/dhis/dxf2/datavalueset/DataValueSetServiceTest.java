@@ -54,6 +54,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -120,6 +121,13 @@ public class DataValueSetServiceTest
         dsA.setUid( "pBOMPrpg1QX" );
         ouA.setUid( "DiszpKrYNg8" );
         ouB.setUid( "BdfsJfj87js" );
+
+        deA.setCode( "DE_A" );
+        deB.setCode( "DE_B" );
+        deC.setCode( "DE_C" );
+        dsA.setCode( "DS_A" );
+        ouA.setCode( "OU_A" );
+        ouB.setCode( "OU_B" );
         
         dataElementService.addDataElement( deA );
         dataElementService.addDataElement( deB );
@@ -162,6 +170,17 @@ public class DataValueSetServiceTest
         throws Exception
     {
         ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream() );
+        
+        assertImportDataValues( summary );
+    }
+    
+    @Ignore
+    @Test
+    public void testImportDataValuesXmlWithCode()
+        throws Exception
+    {
+        ImportOptions options = new ImportOptions( CODE, CODE, false, NEW_AND_UPDATES, false );
+        ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream(), options );
         
         assertImportDataValues( summary );
     }
