@@ -63,13 +63,7 @@ public class HibernateMessageConversationStore
     public List<MessageConversation> getMessageConversations( User user, Integer first, Integer max )
     {
         String sql = 
-            "select mc.messageconversationid, mc.uid, mc.subject, mc.lastmessage, ui.surname, ui.firstname, ( " +
-                "select isread from usermessage " +
-                "where usermessage.usermessageid=mu.usermessageid " +
-                "and mu.messageconversationid=mc.messageconversationid ) as isread, ( " +
-                "select isfollowup from usermessage " + 
-                "where usermessage.usermessageid=mu.usermessageid " +
-                "and mu.messageconversationid=mc.messageconversationid ) as isfollowup " +
+            "select mc.messageconversationid, mc.uid, mc.subject, mc.lastmessage, ui.surname, ui.firstname, um.isread, um.isfollowup " +
             "from messageconversation mc " +
             "left join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid " +
             "left join usermessage um on mu.usermessageid=um.usermessageid " +
