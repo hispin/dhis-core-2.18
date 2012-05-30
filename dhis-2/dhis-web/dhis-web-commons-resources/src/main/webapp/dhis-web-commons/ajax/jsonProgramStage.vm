@@ -6,6 +6,7 @@
 	"stageInProgram": "${programStage.stageInProgram}",
 	"minDaysFromStart": "${programStage.minDaysFromStart}",
 	"dataElementCount": "${programStageDataElements.size()}",
+	"standardInterval": "${programStage.standardInterval}",
 	
 	#set( $size = ${programStageDataElements.size()} )
 	"dataElement": [
