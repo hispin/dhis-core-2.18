@@ -13,6 +13,7 @@
     
     <property name="description" not-null="false" length="250"/>
 	
+	<property name="catalogTypeImage" not-null="false" column="imageName" length="160"/>   
 	<!--
 	<set name="catalogTypeAttributes" table="catalogtype_attributes">
       <key column="catalogtypeid" foreign-key="fk_catalogtype_attributes_catalogtypeid" />

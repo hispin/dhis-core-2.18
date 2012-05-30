@@ -1,5 +1,8 @@
 package org.hisp.dhis.coldchain.catalog;
 
+import java.io.File;
+import java.sql.Blob;
+
 import org.hisp.dhis.common.BaseNameableObject;
 //public class Catalog implements Serializable
 public class Catalog extends BaseNameableObject
@@ -8,15 +11,26 @@ public class Catalog extends BaseNameableObject
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = -6551567526188061690L;
-
+    
+    public static final String DEFAULT_CCEMFOLDER = "CCEMIMAGES";
+    
     private int id;
     
     private String name;
     
     private String description;
+    
+    private String catalogImage;
+    
+    //private Blob image;
 
     private CatalogType catalogType;
     
+   // private File image;
+    
+    //private byte[] image;
+    
+
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -37,10 +51,25 @@ public class Catalog extends BaseNameableObject
         this.description = description;
         this.catalogType = catalogType;
     }
+    
+    /*
+    public Catalog( Blob image ) 
+    {
+        this.image = image;
+    }
+    
+   
+    public Catalog( byte[] image ) 
+    {
+        this.image = image;
+    }
+    */
 
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
+
+
 
     @Override
     public int hashCode()
@@ -114,5 +143,60 @@ public class Catalog extends BaseNameableObject
     {
         this.catalogType = catalogType;
     }
+    
+    public String getCatalogImage()
+    {
+        return catalogImage;
+    }
+
+    public void setCatalogImage( String catalogImage )
+    {
+        this.catalogImage = catalogImage;
+    }
+    /*
+    public File getImage()
+    {
+        return image;
+    }
+
+    public void setImage( File image )
+    {
+        this.image = image;
+    }
+    
+    public void setBinaryStream( Blob image )
+    {
+        this.image = image;
+    }
+    
+    public Blob getBinaryStream()
+    {
+        return image;
+    }
+    
+    public Blob getImage()
+    {
+        return image;
+    }
+
+    public void setImage( Blob image )
+    {
+        this.image = image;
+    }
+    
+    
+    public byte[] getImage()
+    {
+        return image;
+    }
+
+    public void setImage( byte[] image )
+    {
+        this.image = image;
+    }
+    */
+
+    
+    
     
 }

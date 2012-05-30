@@ -497,5 +497,46 @@
 	  </bean>
 	
 		
-				
+	<!-- Upload Image Form Catalog-->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.ShowUploadCatalogImageFormAction"
+		class="org.hisp.dhis.coldchain.catalog.action.ShowUploadCatalogImageFormAction"
+		scope="prototype">
+		<property name="catalogService" ref="org.hisp.dhis.coldchain.catalog.CatalogService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.coldchain.catalog.action.UploadCatalogImageAction"
+		class="org.hisp.dhis.coldchain.catalog.action.UploadCatalogImageAction"
+		scope="prototype">
+		<property name="catalogService" ref="org.hisp.dhis.coldchain.catalog.CatalogService" />
+	</bean>	
+
+	
+	<bean id="org.hisp.dhis.coldchain.catalog.action.ShowImageAction"
+		class="org.hisp.dhis.coldchain.catalog.action.ShowImageAction"
+		scope="prototype">
+		<property name="catalogService" ref="org.hisp.dhis.coldchain.catalog.CatalogService" />
+	</bean>	
+		
+	<!-- Upload Image Form Catalog Type-->
+	<bean id="org.hisp.dhis.coldchain.catalog.action.ShowUploadCatalogTypeImageFormAction"
+		class="org.hisp.dhis.coldchain.catalog.action.ShowUploadCatalogTypeImageFormAction"
+		scope="prototype">
+		<property name="catalogTypeService" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+	</bean>	
+		
+
+	<bean id="org.hisp.dhis.coldchain.catalog.action.UploadCatalogTypeImageAction"
+		class="org.hisp.dhis.coldchain.catalog.action.UploadCatalogTypeImageAction"
+		scope="prototype">
+		<property name="catalogTypeService" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+	</bean>			
+			
+	
+	<bean id="org.hisp.dhis.coldchain.catalog.action.ShowCatalogTypeImageAction"
+		class="org.hisp.dhis.coldchain.catalog.action.ShowCatalogTypeImageAction"
+		scope="prototype">
+		<property name="catalogTypeService" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+	</bean>	
+	
+		
 </beans>

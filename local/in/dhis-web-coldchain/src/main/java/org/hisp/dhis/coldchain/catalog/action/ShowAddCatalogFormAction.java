@@ -49,14 +49,20 @@ implements Action
         return catalogTypeAttributes;
     }
     
+    private CatalogType catalogType;
+    
+    public CatalogType getCatalogType()
+    {
+        return catalogType;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        
-        CatalogType catalogType = catalogTypeService.getCatalogType( catalogTypeId );
+        catalogType = catalogTypeService.getCatalogType( catalogTypeId );
         
         //catalogTypeAttributes =  catalogType.getCatalogTypeAttributes();
         
