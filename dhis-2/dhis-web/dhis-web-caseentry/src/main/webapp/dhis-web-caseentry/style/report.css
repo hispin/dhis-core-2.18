@@ -57,3 +57,13 @@ input[type="button"], input[type="submit"]
 {
 	display: block;
 }
+
+.buttonInfo
+{
+	width: 100px;
+	height: 40px;
+    white-space: normal;
+	border:2px solid; 
+	background-color:#ffffff;
+	cursor:pointer;
+}

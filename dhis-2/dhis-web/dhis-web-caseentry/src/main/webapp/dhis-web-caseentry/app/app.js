@@ -1000,7 +1000,19 @@ Ext.onReady( function() {
 					name: r.data.id,
 					sortable: false,
 					draggable: false,
-					hidden: eval(TR.value.columns[index].hidden )
+					hidden: eval(TR.value.columns[index].hidden ),
+					editor: {
+						xtype: TR.value.columns[index].valueType,
+						queryMode: 'local',
+						editable: true,
+						valueField: 'name',
+						displayField: 'name',
+						allowBlank: true,
+						store:  new Ext.data.ArrayStore({
+							fields: ['name'],
+							data: TR.value.columns[index].suggested
+						})
+					}
 				}
 			});
 			
