@@ -31,39 +31,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.attribute.Attributes;
-import org.hisp.dhis.chart.Charts;
 import org.hisp.dhis.common.BaseCollection;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.constant.Constants;
-import org.hisp.dhis.dataelement.*;
-import org.hisp.dhis.dataset.DataSets;
-import org.hisp.dhis.document.Documents;
-import org.hisp.dhis.indicator.IndicatorGroupSets;
-import org.hisp.dhis.indicator.IndicatorGroups;
-import org.hisp.dhis.indicator.IndicatorTypes;
-import org.hisp.dhis.indicator.Indicators;
-import org.hisp.dhis.mapping.MapLayers;
-import org.hisp.dhis.mapping.MapLegendSets;
-import org.hisp.dhis.mapping.MapLegends;
-import org.hisp.dhis.mapping.Maps;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.message.MessageConversations;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroups;
-import org.hisp.dhis.organisationunit.OrganisationUnits;
-import org.hisp.dhis.report.Reports;
-import org.hisp.dhis.reporttable.ReportTables;
-import org.hisp.dhis.sqlview.SqlViews;
-import org.hisp.dhis.user.UserAuthorityGroups;
-import org.hisp.dhis.user.UserGroups;
-import org.hisp.dhis.user.Users;
-import org.hisp.dhis.validation.ValidationRuleGroups;
-import org.hisp.dhis.validation.ValidationRules;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * At some point this class will be extended to show all available options
@@ -95,9 +74,9 @@ public class Resources
         this.resources = resources;
     }
 
-    //-----------------------------------------------
+    //----------------------------------------------------------------------------------------------
     // Helpers
-    //-----------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
     private void generateResources()
     {
@@ -110,38 +89,11 @@ public class Resources
         mediaTypes.add( MediaType.APPLICATION_XML.toString() );
         mediaTypes.add( new MediaType( "application", "javascript" ).toString() );
 
-        resources.add( new Resource( "AttributeTypes", Attributes.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Categories", DataElementCategories.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "CategoryCombos", DataElementCategoryCombos.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "CategoryOptions", DataElementCategoryOptions.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "CategoryOptionCombos", DataElementCategoryOptionCombos.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElements", DataElements.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElementGroups", DataElementGroups.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElementGroupSets", DataElementGroupSets.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Charts", Charts.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Constants", Constants.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataSets", DataSets.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataValueSets", DataValueSets.class, requestMethods, mediaTypes.subList( 0, 0 ) ) );
-        resources.add( new Resource( "Documents", Documents.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Indicators", Indicators.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "IndicatorTypes", IndicatorTypes.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "IndicatorGroups", IndicatorGroups.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "IndicatorGroupSets", IndicatorGroupSets.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Maps", Maps.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "MapLegends", MapLegends.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "MapLegendSets", MapLegendSets.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "MapLayers", MapLayers.class, requestMethods, mediaTypes ) );
+        for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getExportMap().entrySet() )
+        {
+            resources.add( new Resource( StringUtils.capitalize( entry.getValue() ), entry.getKey(), requestMethods, mediaTypes ) );
+        }
+
         resources.add( new Resource( "MessageConversations", MessageConversations.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "OrganisationUnits", OrganisationUnits.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "OrganisationUnitGroups", OrganisationUnitGroups.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "OrganisationUnitGroupSets", OrganisationUnitGroupSets.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Reports", Reports.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "ReportTables", ReportTables.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "SqlViews", SqlViews.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Users", Users.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "UserGroups", UserGroups.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "UserAuthorityGroups", UserAuthorityGroups.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "ValidationRules", ValidationRules.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "ValidationRuleGroups", ValidationRuleGroups.class, requestMethods, mediaTypes ) );
     }
 }
