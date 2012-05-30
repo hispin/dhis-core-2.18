@@ -174,13 +174,12 @@ public class DataValueSetServiceTest
         assertImportDataValues( summary );
     }
     
-    @Ignore
     @Test
     public void testImportDataValuesXmlWithCode()
         throws Exception
     {
         ImportOptions options = new ImportOptions( CODE, CODE, false, NEW_AND_UPDATES, false );
-        ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream(), options );
+        ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetBcode.xml" ).getInputStream(), options );
         
         assertImportDataValues( summary );
     }
