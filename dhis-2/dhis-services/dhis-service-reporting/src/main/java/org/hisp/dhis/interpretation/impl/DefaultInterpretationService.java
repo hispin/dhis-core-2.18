@@ -98,6 +98,11 @@ public class DefaultInterpretationService
         return interpretationStore.getByUid( uid );
     }
     
+    public void updateInterpretation( Interpretation interpretation )
+    {
+        interpretationStore.update( interpretation );
+    }
+    
     public void deleteInterpretation( Interpretation interpretation )
     {
         interpretationStore.delete( interpretation );
