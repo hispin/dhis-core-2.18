@@ -1,4 +1,4 @@
-package org.hisp.dhis.message;
+package org.hisp.dhis.system.util;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,50 +27,22 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-import java.util.Set;
-
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
-import org.hisp.dhis.user.User;
-
 /**
  * @author Lars Helge Overland
  */
-public interface MessageService
+public class SqlHelper
 {
-    final String ID = MessageService.class.getName();
-
-    final String META_USER_AGENT = "User-agent: ";
+    private boolean whereAndInvoked = false;
     
-    int sendMessage( String subject, String text, String metaData, Set<User> users );
-    
-    int sendFeedback( String subject, String text, String metaData );
-    
-    void sendReply( MessageConversation conversation, String text, String metaData );
-    
-    int saveMessageConversation( MessageConversation conversation );
-    
-    void updateMessageConversation( MessageConversation conversation );
-    
-    int sendCompletenessMessage( CompleteDataSetRegistration registration );
-
-    MessageConversation getMessageConversation( int id );
-
-    MessageConversation getMessageConversation( String uid );
-    
-    long getUnreadMessageConversationCount();
-    
-    long getUnreadMessageConversationCount( User user );
-    
-    List<MessageConversation> getMessageConversations( int first, int max );
-    
-    List<MessageConversation> getMessageConversations( boolean followUpOnly, boolean unreadOnly, int first, int max );
-    
-    int getMessageConversationCount();
-    
-    int getMessageConversationCount( boolean followUpOnly, boolean unreadOnly );
-    
-    List<MessageConversation> getAllMessageConversations();    
-
-    void deleteMessages( User sender );
+    /**
+     * Returns "where" the first time it is invoked, then "and" for subsequent invocations.
+     */
+    public String whereAnd()
+    {
+        String str = whereAndInvoked ? "and" : "where";
+        
+        whereAndInvoked = true;
+        
+        return str;
+    }
 }

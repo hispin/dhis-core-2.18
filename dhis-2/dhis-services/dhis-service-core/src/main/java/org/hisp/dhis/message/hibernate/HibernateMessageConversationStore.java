@@ -36,6 +36,7 @@ import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
+import org.hisp.dhis.system.util.SqlHelper;
 import org.hisp.dhis.user.User;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -60,8 +61,10 @@ public class HibernateMessageConversationStore
     // Implementation methods
     // -------------------------------------------------------------------------
 
-    public List<MessageConversation> getMessageConversations( User user, Integer first, Integer max )
+    public List<MessageConversation> getMessageConversations( User user, boolean followUpOnly, boolean unreadOnly, Integer first, Integer max )
     {
+        SqlHelper sh = new SqlHelper();
+        
         String sql = 
             "select mc.messageconversationid, mc.uid, mc.subject, mc.lastmessage, ui.surname, ui.firstname, um.isread, um.isfollowup " +
             "from messageconversation mc " +
@@ -71,7 +74,17 @@ public class HibernateMessageConversationStore
         
         if ( user != null )
         {
-            sql += "where um.userid=" + user.getId() + " ";
+            sql += sh.whereAnd() + " um.userid=" + user.getId() + " ";
+        }
+        
+        if ( followUpOnly )
+        {
+            sql += sh.whereAnd() + " um.isfollowup=true ";
+        }
+        
+        if ( unreadOnly )
+        {
+            sql += sh.whereAnd() + " um.isread=false ";
         }
         
         sql += "order by mc.lastmessage desc ";
@@ -103,14 +116,24 @@ public class HibernateMessageConversationStore
         return conversations;
     }
 
-    public int getMessageConversationCount( User user )
+    public int getMessageConversationCount( User user, boolean followUpOnly, boolean unreadOnly )
     {
         String sql = 
             "select count(*) from messageconversation mc " +
             "left join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid " +
             "left join usermessage um on mu.usermessageid=um.usermessageid " +
-            "where um.userid=" + user.getId();
+            "where um.userid=" + user.getId() + " ";
 
+        if ( followUpOnly )
+        {
+            sql += "and um.isfollowup=true ";
+        }
+        
+        if ( unreadOnly )
+        {
+            sql += "and um.isread=false ";
+        }
+        
         return jdbcTemplate.queryForInt( sql );
     }
     
