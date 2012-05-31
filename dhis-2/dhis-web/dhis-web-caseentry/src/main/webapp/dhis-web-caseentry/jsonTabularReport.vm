@@ -58,7 +58,12 @@
 		#foreach( ${dataElement} in $!{dataElements} )
 			{
 				"id": "de_${dataElement.id}",
-				"name": "${dataElement.name}"
+				"name": "${dataElement.name}",
+				"valueType": #if( $dataElement.optionSet )
+								"list"
+							 #else
+								"${dataElement.type}"
+							 #end
 			}
 			#if( $velocityCount < $size ),#end
 		#end
