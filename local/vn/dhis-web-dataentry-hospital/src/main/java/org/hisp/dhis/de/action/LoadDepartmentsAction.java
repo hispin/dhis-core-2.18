@@ -29,7 +29,6 @@ package org.hisp.dhis.de.action;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -37,8 +36,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.LocalDataSetService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.reportsheet.CategoryOptionAssociation;
-import org.hisp.dhis.reportsheet.CategoryOptionAssociationService;
+import org.hisp.dhis.reportsheet.OptionComboAssociation;
+import org.hisp.dhis.reportsheet.OptionComboAssociationService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,9 +60,9 @@ public class LoadDepartmentsAction
         this.selectionManager = selectionManager;
     }
 
-    private CategoryOptionAssociationService associationService;
+    private OptionComboAssociationService associationService;
 
-    public void setAssociationService( CategoryOptionAssociationService associationService )
+    public void setAssociationService( OptionComboAssociationService associationService )
     {
         this.associationService = associationService;
     }
@@ -93,9 +92,9 @@ public class LoadDepartmentsAction
         this.dataSetId = dataSetId;
     }
 
-    private Collection<CategoryOptionAssociation> associations;
+    private Collection<OptionComboAssociation> associations;
 
-    public Collection<CategoryOptionAssociation> getAssociations()
+    public Collection<OptionComboAssociation> getAssociations()
     {
         return associations;
     }
@@ -115,18 +114,13 @@ public class LoadDepartmentsAction
     public String execute()
         throws Exception
     {
-        associations = associationService
-            .getCategoryOptionAssociations( selectionManager.getSelectedOrganisationUnit() );
-        
-        Collection<DataElementCategoryOptionCombo> departmentInOrgunit = new HashSet<DataElementCategoryOptionCombo>();
-        
-        for( CategoryOptionAssociation association : associations )
-        {
-            departmentInOrgunit.addAll( association.getCategoryOption().getCategoryOptionCombos() );
-        }
+        Collection<DataElementCategoryOptionCombo> departmentInOrgunit = associationService
+            .getOptionCombos( selectionManager.getSelectedOrganisationUnit() );
+
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         String description = dataSet.getDescription();
+
         if ( description != null && !description.trim().isEmpty() )
         {
             Collection<DataSet> dataSets = localDataSetService.getDataSetsByDescription( description );
@@ -136,9 +130,10 @@ public class LoadDepartmentsAction
             {
                 if ( relativedataSet.getDataEntryForm() != null )
                 {
-                    DataElementCategoryOptionCombo optionCombo = localDataSetService.getDepartmentByDataSet( relativedataSet );
+                    DataElementCategoryOptionCombo optionCombo = localDataSetService
+                        .getDepartmentByDataSet( relativedataSet );
 
-                    if( departmentInOrgunit.contains( optionCombo ) )
+                    if ( departmentInOrgunit.contains( optionCombo ) )
                     {
                         mapDataSets.put( relativedataSet.getId(), optionCombo.getName() );
                     }

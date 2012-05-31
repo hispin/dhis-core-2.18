@@ -149,7 +149,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.de.action.LoadDepartmentsAction" class="org.hisp.dhis.de.action.LoadDepartmentsAction" scope="prototype">
 	 <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-	 <property name="associationService" ref="org.hisp.dhis.reportsheet.CategoryOptionAssociationService" />
+	 <property name="associationService" ref="org.hisp.dhis.reportsheet.OptionComboAssociationService" />
 	 <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	 <property name="localDataSetService" ref="org.hisp.dhis.dataset.LocalDataSetService" />
   </bean>
