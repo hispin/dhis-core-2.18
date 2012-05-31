@@ -36,7 +36,7 @@
 		</div>
 		#end
 		</div>
-		<textarea id="commentArea${ip.uid}" class="commentArea" placeholder="$i18n.getString( 'add_a_comment' )..."></textarea>
+		<textarea id="commentArea${ip.uid}" class="commentArea" placeholder="$i18n.getString( 'add_a_comment' )..."></textarea><br>
 		<input type="button" class="commentButton" value="Post comment" onclick="postComment( '${ip.uid}' )">
 	</div>
 	

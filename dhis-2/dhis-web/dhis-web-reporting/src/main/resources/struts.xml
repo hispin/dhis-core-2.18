@@ -186,6 +186,7 @@
       <param name="page">/dhis-web-reporting/reportTableGrid.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/generateReport.js</param>
+	  <param name="stylesheets">style/dhis-web-reporting.css</param>
     </action>
 
     <action name="getCategoryComboDataElements" class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction">
