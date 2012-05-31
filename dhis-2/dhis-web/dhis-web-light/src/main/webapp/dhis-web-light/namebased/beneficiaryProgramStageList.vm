@@ -29,7 +29,10 @@
 #end
 <br/>
 #foreach($programStage in $repeatableStages)
-	<li><a href="showRepeatableEventRegistrationForm.action?programInstanceId=$programInstanceId&programStageId=$programStage.getId()&currentProgramStageInstanceId=$currentProgramStageInstanceId">[+] $i18n.getString("add") $programStage.getName()</a></li>
+	#set($exclusedStage = $exclusedRepeatableStages.get( $programStage.getId() ))
+	#if(!$exclusedStage)
+		<li><a href="showRepeatableEventRegistrationForm.action?programInstanceId=$programInstanceId&programStageId=$programStage.getId()&currentProgramStageInstanceId=$currentProgramStageInstanceId">[+] $i18n.getString("add") $programStage.getName()</a></li>
+	#end
 #end
 
 </ul>

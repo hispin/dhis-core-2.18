@@ -27,7 +27,9 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
@@ -155,28 +157,44 @@ public class GetProgramStageListAction
     {
         this.repeatableStages = repeatableStages;
     }
+    
+    private Map<Integer, ProgramStage> exclusedRepeatableStages;
+    
+    public Map<Integer, ProgramStage> getExclusedRepeatableStages()
+    {
+        return exclusedRepeatableStages;
+    }
+
+    public void setExclusedRepeatableStages( Map<Integer, ProgramStage> exclusedRepeatableStages )
+    {
+        this.exclusedRepeatableStages = exclusedRepeatableStages;
+    }
 
     @Override
     public String execute()
         throws Exception
     {
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
+        exclusedRepeatableStages = new HashMap<Integer, ProgramStage>();
         patient = patientService.getPatient( patientId );
         programStageInstances = programInstance.getProgramStageInstances();
         repeatableStages = new HashSet<ProgramStage>();
+        Set<ProgramStage> programStages = programInstance.getProgram().getProgramStages();
+        
+        for (ProgramStage programStage : programStages) {
+            if (programStage.getIrregular()) {
+                repeatableStages.add( programStage );
+            }
+        }
         
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
            ProgramStage programStage =  programStageInstance.getProgramStage();
-           if (programStage.getIrregular()) {
-               repeatableStages.add( programStage );
-           }
-           
            if (programStage.getIrregular() && !programStageInstance.isCompleted()) {
-               repeatableStages.remove(programStage);
+               exclusedRepeatableStages.put( programStage.getId(), programStage );
            }
         }
-        System.out.println("Size: " + repeatableStages.size());
+        
         return SUCCESS;
     }
 

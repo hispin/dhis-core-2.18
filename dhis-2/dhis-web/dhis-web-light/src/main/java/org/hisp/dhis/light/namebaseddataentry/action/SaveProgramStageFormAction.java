@@ -329,10 +329,10 @@ public class SaveProgramStageFormAction
             return ERROR;
         }
 
-        if ( programStageService.getProgramStage( programStageId ).getIrregular() )
-        {
-            return REGISTER_NEXT_DUEDATE;
-        }
+//        if ( programStageService.getProgramStage( programStageId ).getIrregular() )
+//        {
+//            return REGISTER_NEXT_DUEDATE;
+//        }
 
         if ( orgUnitId != 0 )
         {

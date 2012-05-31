@@ -190,6 +190,11 @@
 				/dhis-web-light/namebased/repeatableEventRegistrationForm.vm</param>
 		</action>
 		
+		<action name="saveRepeatableEvent"
+			class="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEventAction">
+			<result name="success" type="redirect">showPatientProgramStageList.action?patientId=${patientId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=false</result>
+		</action>
+		
 		<!-- Beneficiary Registration -->
 		
 		<action name="selectRegistrationOrganisationUnit"
