@@ -651,19 +651,7 @@
 		<action name="tabularInitialize"
 			class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction">
 			 <result name="success" type="velocity-json">
-		              /dhis-web-caseentry/jsonTabularInitialize.vm</result>
-		</action>
-		
-		<action name="getReportPrograms"
-			class="org.hisp.dhis.caseentry.action.report.LoadProgramsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPrograms.vm</result>
-		</action>
-				
-		<action name="loadReportIdentifierTypes"
-			class="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/jsonIdentifierTypes.vm</result>
+		        /dhis-web-caseentry/jsonTabularInitialize.vm</result>
 		</action>
 		
 		<action name="loadPatientProperties"
@@ -676,12 +664,7 @@
 			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responseProgramStages.vm</result>
 		</action>
-		
-		<action name="loadReportAttributes"
-			class="org.hisp.dhis.caseentry.action.report.LoadAttributesAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPatientAttributes.vm</result>
-		</action>
-		
+	
 		<action name="loadDataElements"
 			class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responseDataElements.vm</result>
