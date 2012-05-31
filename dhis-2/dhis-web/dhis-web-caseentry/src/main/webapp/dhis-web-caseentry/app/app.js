@@ -1000,8 +1000,13 @@ Ext.onReady( function() {
 						autoScroll: true,
 					}).show();
 					
-					htmlWindow.update(response.responseText);
+					htmlWindow.update("<style>input{width:220px;} select{width:225px;}</style>" + response.responseText);
 					document.getElementById('programDiv').style.display = 'none';
+					var form = document.getElementById('dataEntryFormDiv');
+					for (var i = 0; i < form.elements.length; i++)
+					{
+						form.elements[i].disabled = true;
+					}
 					TR.util.mask.hideMask();
 				}
 			});

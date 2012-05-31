@@ -75,9 +75,9 @@
 </form>
 <p></p>
 #parse( "dhis-web-commons/loader/loader.vm" )
-<div id='dataEntryFormDiv' name='dataEntryFormDiv'>
+<form id='dataEntryFormDiv' name='dataEntryFormDiv' >
 	#parse( "dhis-web-caseentry/dataEntryForm.vm" )
-</div>
+</form>
 
 <script type="text/javascript">
 	var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
