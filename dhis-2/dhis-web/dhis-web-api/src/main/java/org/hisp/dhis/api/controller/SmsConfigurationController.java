@@ -89,9 +89,9 @@ public class SmsConfigurationController
     }
 
     
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // POST
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.PUT )
     public String putSmsConfig( @RequestBody SmsConfiguration smsConfiguration, Model model  ) throws Exception

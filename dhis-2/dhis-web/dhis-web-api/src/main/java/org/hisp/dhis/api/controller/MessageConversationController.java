@@ -91,9 +91,9 @@ public class MessageConversationController
         return entityList;
     }
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // POST for new MessageConversation
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @Override
     @PreAuthorize( "hasRole('ALL') or hasRole('F_SEND_MESSAGE')" )
@@ -119,9 +119,9 @@ public class MessageConversationController
         response.setHeader( "Location", MessageConversationController.RESOURCE_PATH + "/" + m.getUid() );
     }
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // POST for reply on existing MessageConversation
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.POST )
     public void postMessageConversationReply( @PathVariable( "uid" ) String uid, @RequestBody String body,
@@ -134,9 +134,9 @@ public class MessageConversationController
         messageService.sendReply( messageConversation, body, metaData );
     }
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // POST for feedback
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/feedback", method = RequestMethod.POST )
     public void postMessageConversationFeedback( @RequestParam( "subject" ) String subject, @RequestBody String body,

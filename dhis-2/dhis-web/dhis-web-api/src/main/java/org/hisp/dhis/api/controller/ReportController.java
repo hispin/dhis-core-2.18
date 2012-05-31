@@ -89,9 +89,9 @@ public class ReportController
         getReport( uid, organisationUnitUid, period, response, "xls", ContextUtils.CONTENT_TYPE_EXCEL, true );
     }
 
-    // -------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Supportive methods
-    // -------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private void getReport( String uid, String organisationUnitUid, String period,
         HttpServletResponse response, String type, String contentType, boolean attachment ) throws Exception

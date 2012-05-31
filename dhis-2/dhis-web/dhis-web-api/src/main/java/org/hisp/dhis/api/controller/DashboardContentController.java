@@ -58,9 +58,9 @@ public class DashboardContentController
     @Autowired
     private DashboardService dashboardService;
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // GET
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
     public String getDashboardContents( IdentifiableObjectParams params, Model model, HttpServletRequest request )
@@ -100,9 +100,9 @@ public class DashboardContentController
         return "dashboardContent";
     }
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // POST
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.CREATED )
@@ -118,9 +118,9 @@ public class DashboardContentController
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // PUT
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
@@ -136,9 +136,9 @@ public class DashboardContentController
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // DELETE
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
