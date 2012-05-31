@@ -36,7 +36,6 @@ TR.conf = {
             path_api: '../../api/',
             path_images: 'images/',
 			initialize: 'tabularInitialize.action',
-			program_get: 'getReportPrograms.action',
 			patientproperties_get: 'loadPatientProperties.action',
 			programstages_get: 'loadReportProgramStages.action',
 			dataelements_get: 'loadDataElements.action',
@@ -927,6 +926,12 @@ Ext.onReady( function() {
 					return false;
 				}
 				
+				if( TR.cmp.settings.startDate.getValue() > TR.cmp.settings.endDate.getValue() )
+				{
+					TR.util.notification.error(TR.i18n.start_date_must_be_less_then_or_equals_to_end_date, TR.i18n.start_date_must_be_less_then_or_equals_to_end_date);
+					return false;
+				}
+			
 				if (TR.state.orgunitId == '') {
 					TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
 					return false;
@@ -979,7 +984,7 @@ Ext.onReady( function() {
 		},
 		view: function( psiId )
 		{
-			TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);asdf
+			TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 			var params = 'programStageInstanceId=' + psiId;
 			Ext.Ajax.request({
 				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_view,
