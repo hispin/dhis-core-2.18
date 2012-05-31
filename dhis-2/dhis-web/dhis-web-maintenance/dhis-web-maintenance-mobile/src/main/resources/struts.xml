@@ -63,11 +63,6 @@
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
 	  <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
     </action>
-  
-	<action name="loadProgramsByUnit" class="org.hisp.dhis.mobile.action.LoadProgramsByUnitAction">
-      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonPrograms.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
 
     <action name="sendSMS" class="org.hisp.dhis.mobile.action.ProcessingSendSMSAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
