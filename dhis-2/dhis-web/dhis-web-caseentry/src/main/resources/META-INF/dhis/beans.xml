@@ -820,20 +820,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramsAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadProgramsAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="identifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-	</bean>
-	
 	<bean id="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction"
 		class="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction"
 		scope="prototype">
@@ -848,15 +834,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.LoadAttributesAction"
-		class="org.hisp.dhis.caseentry.action.report.LoadAttributesAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
