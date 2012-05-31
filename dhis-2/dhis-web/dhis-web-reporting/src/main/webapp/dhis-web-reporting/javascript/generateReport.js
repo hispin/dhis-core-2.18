@@ -84,13 +84,17 @@ function viewShareForm()
 	} );
 }
 
-function shareInterpretation( uid )
+function shareInterpretation( uid, ou )
 {
     var text = $( "#interpretationArea" ).val();
     
-    if ( text.length )
+    if ( text.length && $.trim( text ).length )
     {
+    	text = $.trim( text );
+    	
 	    var url = "../api/interpretations/reportTable/" + uid;
+	    
+	    url += ( ou && ou.length ) ? "?ou=" + ou : "";
 	    
 	    $.ajax( url, {
 	    	type: "POST",

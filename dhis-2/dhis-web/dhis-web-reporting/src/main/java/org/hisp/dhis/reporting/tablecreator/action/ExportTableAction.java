@@ -81,20 +81,6 @@ public class ExportTableAction
     {
         this.format = format;
     }
-    
-    private String pe;
-    
-    public void setPe( String pe )
-    {
-        this.pe = pe;
-    }
-
-    private String ou;
-
-    public void setOu( String ou )
-    {
-        this.ou = ou;
-    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -112,6 +98,25 @@ public class ExportTableAction
         this.uid = uid;
     }
 
+    private String pe;
+    
+    public void setPe( String pe )
+    {
+        this.pe = pe;
+    }
+
+    private String ou;
+
+    public String getOu()
+    {
+        return ou;
+    }
+
+    public void setOu( String ou )
+    {
+        this.ou = ou;
+    }
+    
     private String type;
 
     public void setType( String type )

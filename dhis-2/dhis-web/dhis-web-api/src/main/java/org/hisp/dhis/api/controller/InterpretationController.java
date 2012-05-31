@@ -33,6 +33,8 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -66,6 +69,9 @@ public class InterpretationController
     
     @Autowired
     private ReportTableService reportTableService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
     
     @Override
     protected List<Interpretation> getEntityList( WebMetaData metaData, WebOptions options )
@@ -97,13 +103,15 @@ public class InterpretationController
     }
 
     @RequestMapping( value = "/chart/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
-    public void shareChartInterpretation( @PathVariable( "uid" ) String chartUid, @RequestBody String text, HttpServletResponse response ) throws IOException
+    public void shareChartInterpretation( 
+        @PathVariable( "uid" ) String chartUid, 
+        @RequestBody String text, HttpServletResponse response ) throws IOException
     {
         Chart chart = chartService.getChart( chartUid );
         
         if ( chart == null )
         {
-            ContextUtils.conflictResponse( response, "Chart identifier not valid" );
+            ContextUtils.conflictResponse( response, "Chart identifier not valid: " + chartUid);
             return;
         }
         
@@ -115,17 +123,33 @@ public class InterpretationController
     }
 
     @RequestMapping( value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
-    public void shareReportTableInterpretation( @PathVariable( "uid" ) String reportTableUid, @RequestBody String text, HttpServletResponse response ) throws IOException
+    public void shareReportTableInterpretation( 
+        @PathVariable( "uid" ) String reportTableUid, 
+        @RequestParam( value = "ou", required = false ) String orgUnitUid, 
+        @RequestBody String text, HttpServletResponse response ) throws IOException
     {
         ReportTable reportTable = reportTableService.getReportTable( reportTableUid );
         
         if ( reportTable == null )
         {
-            ContextUtils.conflictResponse( response, "Report table identifier not valid" );
+            ContextUtils.conflictResponse( response, "Report table identifier not valid: " + reportTableUid );
             return;
         }
         
-        Interpretation interpretation = new Interpretation( reportTable, text );
+        OrganisationUnit orgUnit = null;
+        
+        if ( orgUnitUid != null )
+        {
+            orgUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+            
+            if ( orgUnit == null )
+            {
+                ContextUtils.conflictResponse( response, "Organisation unit identifier not valid: " + orgUnitUid );
+                return;
+            }
+        }
+        
+        Interpretation interpretation = new Interpretation( reportTable, orgUnit, text );
         
         interpretationService.saveInterpretation( interpretation );
         
@@ -133,7 +157,9 @@ public class InterpretationController
     }
     
     @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
-    public void postComment( @PathVariable( "uid" ) String uid, @RequestBody String text, HttpServletResponse response ) throws IOException
+    public void postComment( 
+        @PathVariable( "uid" ) String uid, 
+        @RequestBody String text, HttpServletResponse response ) throws IOException
     {
         interpretationService.addInterpretationComment( uid, text );
 

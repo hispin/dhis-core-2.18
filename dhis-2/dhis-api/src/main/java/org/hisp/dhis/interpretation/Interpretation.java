@@ -38,6 +38,7 @@ import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 
@@ -55,6 +56,8 @@ public class Interpretation
     private Chart chart;
 
     private ReportTable reportTable;
+    
+    private OrganisationUnit organisationUnit; // Applicable to report table only
     
     private String text;
 
@@ -81,9 +84,10 @@ public class Interpretation
         this.created = new Date();
     }
 
-    public Interpretation( ReportTable reportTable, String text )
+    public Interpretation( ReportTable reportTable, OrganisationUnit organisationUnit, String text )
     {
         this.reportTable = reportTable;
+        this.organisationUnit = organisationUnit;
         this.text = text;
         this.created = new Date();
     }
@@ -97,6 +101,16 @@ public class Interpretation
         this.comments.add( comment );
     }
 
+    public boolean isChartInterpretation()
+    {
+        return chart != null;
+    }
+    
+    public boolean isReportTableInterpretation()
+    {
+        return reportTable != null;
+    }
+        
     // -------------------------------------------------------------------------
     // Get and set methods
     // -------------------------------------------------------------------------
@@ -127,6 +141,20 @@ public class Interpretation
     public void setReportTable( ReportTable reportTable )
     {
         this.reportTable = reportTable;
+    }
+
+    @JsonProperty
+    @JsonDeserialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
     }
 
     @JsonProperty
