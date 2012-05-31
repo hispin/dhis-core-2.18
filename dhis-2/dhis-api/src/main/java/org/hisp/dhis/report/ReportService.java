@@ -75,6 +75,12 @@ public interface ReportService
      * @return the total number of reports.
      */
     int getReportCount();
+    
+    /**
+     * Returns the number of reports which names are like the given name.
+     * Returns the number of reports which names are like the given name.
+     */
+    int getReportCountByName( String name );
 
     /**
      * Retrieves the given number of maximum reports starting at the given start

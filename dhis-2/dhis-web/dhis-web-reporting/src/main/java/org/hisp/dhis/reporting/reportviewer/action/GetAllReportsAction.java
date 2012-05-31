@@ -30,17 +30,14 @@ package org.hisp.dhis.reporting.reportviewer.action;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class GetAllReportsAction
     extends ActionPagingSupport<Report>
@@ -86,40 +83,19 @@ public class GetAllReportsAction
     public String execute() 
         throws Exception
     {
-        reports = new ArrayList<Report>( reportService.getAllReports() );
-        
-        Collections.sort( reports, IdentifiableObjectNameComparator.INSTANCE );
-        
         if ( isNotBlank( key ) )
         {
-            reports = searchByName( reports, key );
+            this.paging = createPaging( reportService.getReportCountByName( key ) );
             
-            this.paging = createPaging( reports.size() );
-            
-            reports = getBlockElement( reports, paging.getStartPos(), paging.getPageSize() );           
+            reports = new ArrayList<Report>( reportService.getReportsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else 
         {
-            this.paging = createPaging( reports.size() );
+            this.paging = createPaging( reportService.getReportCount() );
                 
-            reports = getBlockElement( reports, paging.getStartPos(), paging.getPageSize() );
+            reports = new ArrayList<Report>( reportService.getReportsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
         return SUCCESS;
-    }
-    
-    private List<Report> searchByName( List<Report> reports, String key )
-    {
-        List<Report> result = new ArrayList<Report>();
-
-        for ( Report each : reports )
-        {
-            if ( each.getName().toLowerCase().contains( key.toLowerCase() ) )
-            {
-                result.add( each );
-            }
-        }
-        
-        return result;
     }
 }
