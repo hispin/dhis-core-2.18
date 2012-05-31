@@ -27,12 +27,21 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
+import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -44,12 +53,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -72,6 +75,9 @@ public class InterpretationController
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private MappingService mappingService;
     
     @Override
     protected List<Interpretation> getEntityList( WebMetaData metaData, WebOptions options )
@@ -111,7 +117,7 @@ public class InterpretationController
         
         if ( chart == null )
         {
-            ContextUtils.conflictResponse( response, "Chart identifier not valid: " + chartUid);
+            ContextUtils.conflictResponse( response, "Chart identifier not valid: " + chartUid );
             return;
         }
         
@@ -120,6 +126,26 @@ public class InterpretationController
         interpretationService.saveInterpretation( interpretation );
         
         ContextUtils.okResponse( response, "Chart interpretation created" );
+    }
+
+    @RequestMapping( value = "/map/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    public void shareMapInterpretation( 
+        @PathVariable( "uid" ) String mapViewUid, 
+        @RequestBody String text, HttpServletResponse response ) throws IOException
+    {
+        MapView mapView = mappingService.getMapView( mapViewUid );
+        
+        if ( mapView == null )
+        {
+            ContextUtils.conflictResponse( response, "Map view identifier not valid: " + mapViewUid );
+            return;
+        }
+        
+        Interpretation interpretation = new Interpretation( mapView, text );
+        
+        interpretationService.saveInterpretation( interpretation );
+        
+        ContextUtils.okResponse( response, "Map view interpretation created" );
     }
 
     @RequestMapping( value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -165,5 +191,4 @@ public class InterpretationController
 
         ContextUtils.okResponse( response, "Comment created" );
     }
-    
 }
