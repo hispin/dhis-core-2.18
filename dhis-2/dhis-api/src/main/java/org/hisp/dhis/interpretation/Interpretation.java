@@ -38,6 +38,7 @@ import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 
 import java.util.ArrayList;
@@ -53,6 +54,8 @@ public class Interpretation
 {
     private Chart chart;
 
+    private ReportTable reportTable;
+    
     private String text;
 
     private User user;
@@ -74,6 +77,13 @@ public class Interpretation
     public Interpretation( Chart chart, String text )
     {
         this.chart = chart;
+        this.text = text;
+        this.created = new Date();
+    }
+
+    public Interpretation( ReportTable reportTable, String text )
+    {
+        this.reportTable = reportTable;
         this.text = text;
         this.created = new Date();
     }
@@ -103,6 +113,20 @@ public class Interpretation
     public void setChart( Chart chart )
     {
         this.chart = chart;
+    }
+
+    @JsonProperty
+    @JsonDeserialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public ReportTable getReportTable()
+    {
+        return reportTable;
+    }
+
+    public void setReportTable( ReportTable reportTable )
+    {
+        this.reportTable = reportTable;
     }
 
     @JsonProperty

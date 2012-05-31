@@ -28,9 +28,13 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +61,12 @@ public class InterpretationController
     @Autowired
     private InterpretationService interpretationService;
 
+    @Autowired
+    private ChartService chartService;
+    
+    @Autowired
+    private ReportTableService reportTableService;
+    
     @Override
     protected List<Interpretation> getEntityList( WebMetaData metaData, WebOptions options )
     {
@@ -86,11 +96,46 @@ public class InterpretationController
         return entityList;
     }
 
-    @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST )
+    @RequestMapping( value = "/chart/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    public void shareChartInterpretation( @PathVariable( "uid" ) String chartUid, @RequestBody String text, HttpServletResponse response ) throws IOException
+    {
+        Chart chart = chartService.getChart( chartUid );
+        
+        if ( chart == null )
+        {
+            ContextUtils.conflictResponse( response, "Chart identifier not valid" );
+        }
+        
+        Interpretation interpretation = new Interpretation( chart, text );
+        
+        interpretationService.saveInterpretation( interpretation );
+        
+        ContextUtils.okResponse( response, "Chart interpretation created" );
+    }
+
+    @RequestMapping( value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    public void shareReportTableInterpretation( @PathVariable( "uid" ) String reportTableUid, @RequestBody String text, HttpServletResponse response ) throws IOException
+    {
+        ReportTable reportTable = reportTableService.getReportTable( reportTableUid );
+        
+        if ( reportTable == null )
+        {
+            ContextUtils.conflictResponse( response, "Report table identifier not valid" );
+        }
+        
+        Interpretation interpretation = new Interpretation( reportTable, text );
+        
+        interpretationService.saveInterpretation( interpretation );
+        
+        ContextUtils.okResponse( response, "Report table interpretation created" );
+    }
+    
+    @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void postComment( @PathVariable( "uid" ) String uid, @RequestBody String text, HttpServletResponse response ) throws IOException
     {
         interpretationService.addInterpretationComment( uid, text );
 
         ContextUtils.okResponse( response, "Comment created" );
     }
+    
 }
