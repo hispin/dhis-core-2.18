@@ -1,12 +1,22 @@
 <style>
-	.overlaps {
-    background-color: #BAFFBC;
-    border: 1px solid #12CD17;
-    display: none;
-    margin: 1em;
-    padding: 1em;
-    width: 500px;
-}
+	.generalOverlaps
+	{
+		border: 1px solid #12CD17;
+		display: none;
+		margin: 1em;
+		padding: 1em;
+		width: 500px;
+	}
+	
+	.overlaps
+	{
+		background-color: #BAFFBC;
+	}
+	
+	.overlapsWarning
+	{
+		background-color: #F08080;
+	}
 </style>
 
 <script type="text/javascript">
@@ -49,9 +59,15 @@
     <tbody>
 		<tr>
 			<td colspan="2">
-				<div class="overlaps" id="noOverlapsDiv" style="display: block;">
+				#if( $!smsConfig )
+				<div class="generalOverlaps overlaps" id="noOverlapsDiv" style="display: block;">
 					$i18n.getString( $!encoder.htmlEncode( $!smsServiceStatus ) )
 				</div>
+				#else
+				<div class="generalOverlaps overlapsWarning" id="noOverlapsDiv" style="display: block;">
+					$i18n.getString( "sms_configuration_not_initialized" )
+				</div>
+				#end
 			</td>
 		</tr>
 		<tr>
@@ -70,16 +86,18 @@
 
 	<tbody>
 		<tr>
-			<td>$i18n.getString("polling_interval_in_seconds"):</td>
+			<td><label for="pollingInterval">$i18n.getString( "polling_interval_in_seconds" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><input type="text" id="pollingInterval" name="pollingInterval" style="width:20em" value="$!smsConfig.pollingInterval"/></td>
 		</tr>
 		<tr>
-			<td>$i18n.getString("server_phone_number"):</td>
+			<td><label for="serverPhoneNumber">$i18n.getString( "server_phone_number" )</label></td>
 			<td><input type="text" id="serverPhoneNumber" name="serverPhoneNumber" style="width:20em" value="$!smsConfig.longNumber"/>
 			<input type="submit" value="$i18n.getString( 'save_settings' )" style="width:13em"/></td>
 		</tr>
 		<tr>
-			<td align="right" colspan="2"><input type="button" value="$i18n.getString( 'add_update_gw' )" style="width:13em#if( !$smsServiceStatus );display:none#end" onclick="window.location.href='showUpdateGateWayConfigForm.action'"/></td>
+			<td align="right" colspan="2">
+				<input type="button" value="$i18n.getString( 'add_update_gw' )" style="width:13em" #if( !$smsConfig )disabled="true"#end onclick="window.location.href='showUpdateGateWayConfigForm.action'"/>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -97,7 +115,6 @@
 							#set( $gw = $!gatewayConfigMap1.get( $key ) )
 							<td>$!encoder.htmlEncode( $gw.name )</td>
 							<td style="text-align:right">
-							  <!--a title="$i18n.getString( 'edit' )" href="editGateWayConfig.action?gateWayID="><img alt="$i18n.getString( 'edit' )" src="../images/edit.png"/></a-->
 							  <a href="javascript:removeGateway( $key, '$!encoder.jsEncode( $gw.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 							</td>
 						</tr>
