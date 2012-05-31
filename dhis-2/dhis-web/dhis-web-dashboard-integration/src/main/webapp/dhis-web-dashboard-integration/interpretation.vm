@@ -14,19 +14,23 @@
 	<div class="interpretationText">
 		${ip.text}
 	</div>
-	#if( $ip.chartInterpretation )
 	<div class="interpretationChart">
+	#if( $ip.chartInterpretation )	
 		<img style="cursor:pointer" 
 		     src="../api/charts/${ip.chart.uid}/data?date=${format.formatDate( $ip.created )}&width=530&height=300" 
 		     onclick="javascript:window.location.href='../dhis-web-visualizer/app/index.html?id=${ip.chart.uid}&date=${format.formatDate( $ip.created )}'"
-		     title="Click to view in Data Visualizer">
-	</div>
+		     title="$i18n.getString( 'click_to_view_in_data_visualizer' )">
+	#elseif( $ip.mapViewInterpretation )
+		<a class="bold" 
+		   title="$i18n.getString( 'click_to_view_in_gis' )" 
+		   href="../dhis-web-mapping/mapping/index.html?id=${ip.mapView.uid}">$encoder.htmlEncode( $ip.mapView.name )</a>
 	#else
-	<div class="interpretationChart">
 		#if( $ip.organisationUnit )#set( $ou = "&ou=" + $ip.organisationUnit.uid )#else#set( $ou = "" )#end		
-		<a class="bold" title="$i18n.getString( 'click_to_view_report_table' )" href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}?pe=${format.formatDate( $ip.created )}${ou}">$encoder.htmlEncode( $ip.reportTable.name )</a>
-	</div>
+		<a class="bold" 
+		   title="$i18n.getString( 'click_to_view_report_table' )" 
+		   href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}?pe=${format.formatDate( $ip.created )}${ou}">$encoder.htmlEncode( $ip.reportTable.name )</a>
 	#end
+	</div>
 	
 	#set( $comments = $ip.comments )
 	<div class="interpretationCommentArea">
