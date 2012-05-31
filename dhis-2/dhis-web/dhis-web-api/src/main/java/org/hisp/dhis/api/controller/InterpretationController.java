@@ -104,6 +104,7 @@ public class InterpretationController
         if ( chart == null )
         {
             ContextUtils.conflictResponse( response, "Chart identifier not valid" );
+            return;
         }
         
         Interpretation interpretation = new Interpretation( chart, text );
@@ -121,6 +122,7 @@ public class InterpretationController
         if ( reportTable == null )
         {
             ContextUtils.conflictResponse( response, "Report table identifier not valid" );
+            return;
         }
         
         Interpretation interpretation = new Interpretation( reportTable, text );
