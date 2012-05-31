@@ -23,20 +23,23 @@ function postComment( uid )
 	
 	var created = getCurrentDate();
 	
-	$.ajax( url, {
-		type: "POST",
-		contentType: "text/html",
-		data: text,
-		success: function() {			
-			var template = 
-				"<div><div class=\"interpretationName\"><span class=\"bold pointer\" " +
-				"onclick=\"showUserInfo( \'${userId}\' )\">${userName}<\/span>&nbsp; " +
-				"<span class=\"grey\">${created}<\/span><\/div><\/div>" +
-				"<div class=\"interpretationText\">${text}<\/div>";
-			
-			$.tmpl( template, { "userId": currentUser.id, "userName": currentUser.name, created: created, text: text } ).appendTo( "#comments" + uid );
-			
-			$( "#commentArea" + uid ).val( "" );
-		}		
-	} );
+	if ( text.length && $.trim( text ).length )
+	{
+		$.ajax( url, {
+			type: "POST",
+			contentType: "text/html",
+			data: $.trim( text ),
+			success: function() {			
+				var template = 
+					"<div><div class=\"interpretationName\"><span class=\"bold pointer\" " +
+					"onclick=\"showUserInfo( \'${userId}\' )\">${userName}<\/span>&nbsp; " +
+					"<span class=\"grey\">${created}<\/span><\/div><\/div>" +
+					"<div class=\"interpretationText\">${text}<\/div>";
+				
+				$.tmpl( template, { "userId": currentUser.id, "userName": currentUser.name, created: created, text: text } ).appendTo( "#comments" + uid );
+				
+				$( "#commentArea" + uid ).val( "" );
+			}		
+		} );
+	}
 }
