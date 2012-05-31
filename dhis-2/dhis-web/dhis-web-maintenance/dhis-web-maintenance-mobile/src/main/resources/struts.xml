@@ -50,6 +50,11 @@
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
+    
+    <action name="importReceiveSMS" class="org.hisp.dhis.mobile.action.incoming.ImportReceiveSMSAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
   
 	<action name="showBeneficiarySMSForm" class="org.hisp.dhis.mobile.action.ShowSendSMSBeneficiaryFormAction">
       <result name="success" type="velocity">/main.vm</result>

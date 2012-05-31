@@ -37,8 +37,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsStore;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
+import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings( "unchecked" )
+@Transactional
 public class HibernateIncomingSmsStore
     implements IncomingSmsStore
 {

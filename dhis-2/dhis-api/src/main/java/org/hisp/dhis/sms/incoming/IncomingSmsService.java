@@ -54,4 +54,6 @@ public interface IncomingSmsService
     List<IncomingSms> listAllMessage ();
 
     List<InboundMessage> getMsgList();
+    
+    void save ( IncomingSms sms );
 }
