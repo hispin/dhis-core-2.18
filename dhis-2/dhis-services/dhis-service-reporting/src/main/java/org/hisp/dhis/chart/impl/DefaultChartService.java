@@ -115,7 +115,7 @@ public class DefaultChartService
 
     private static final String TREND_PREFIX = "Trend - ";
 
-    private static final Color[] colors = {Color.decode( "#9ebe3b" ), Color.decode( "#3b6286" ),
+    private static final Color[] colors = {Color.decode( "#88be3b" ), Color.decode( "#3b6286" ),
         Color.decode( "#b7404c" ), Color.decode( "#ff9f3a" ), Color.decode( "#968f8f" ), Color.decode( "#b7409f" ),
         Color.decode( "#ffda64" ), Color.decode( "#4fbdae" ), Color.decode( "#b78040" ), Color.decode( "#676767" ),
         Color.decode( "#6a33cf" ), Color.decode( "#4a7833" )};
