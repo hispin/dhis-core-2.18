@@ -25,7 +25,8 @@
 	
 	checked = false;
 	
-	function checkAll(){
+	function checkAll()
+	{
 		var aa = document.getElementById( 'receiveSmsPage' );
 		if (checked == false)
 		{
@@ -69,7 +70,38 @@
 		else
 		{
 			showErrorMessage( "$i18n.getString( 'error_delete' )", 7000 );
-		}	
+		}
+	};
+	
+	function importChecked()
+	{
+		var aa = document.getElementById( 'receiveSmsPage' );
+		var result = "";
+		for (var i = 0; i < aa.elements.length; i++) 
+		{
+			if ( aa.elements[i].checked )
+			
+			{
+				result += "ids=" + aa.elements[i].value + "&";
+			}
+		}
+		result = result.substring(0 , result.length - 1);
+		
+		if ( result != "" )
+		{
+			jQuery.get( 'importReceiveSMS.action?' + result, {},
+				function ( json ) {
+					if ( json.response == "success") {
+						showSuccessMessage( "Import Successfully!" );
+					} else {
+						showErrorMessage( "eggor!" );
+					}
+				})
+		}
+		else
+		{
+			showErrorMessage( "$i18n.getString( 'error_import' )", 7000 );
+		}		
 	};
 	function removeSingleItem( key, name )
 	{
@@ -82,6 +114,7 @@
 <h3>$i18n.getString( "show_receive_sms_form" )</h3>
 
 <form id="receiveSmsPage" name="receiveSmsPage" action="showReceivingPage.action" method="post" >
+
 	<input type="hidden" id="currentMessageHidden" value="$currentMessages"/>
 	<br/>
 	<table id="detailsSmsList" class="listTable" style="width:800px">
@@ -111,6 +144,6 @@
 	<br/>
 	<input type="button" name="btnShowConfig" value="Configurate My Modem" onclick="window.location='showSMSConfigureForm.action'"/>
 	<input type="button" name="btnDelete" value="Delete Checked Options" onclick="deleteChecked()"/>
-	<input type="button" name="btnImport" value="Import"/>		
+	<input type="button" name="btnImport" value="Import" onclick="importChecked()"/>		
 	
 </form>

@@ -28,10 +28,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <!-- Inbound SMS service -->
   
-  <bean id="inboundSmsStore" class="org.hisp.dhis.sms.inbound.HibernateIncomingSmsStore">
+  <bean id="org.hisp.dhis.sms.incoming.IncomingSmsStore" class="org.hisp.dhis.sms.inbound.HibernateIncomingSmsStore">
   	<property name="sessionFactory" ref="sessionFactory" />
   </bean>
   
-  <bean id="org.hisp.dhis.sms.incoming.IncomingSmsService" class="org.hisp.dhis.sms.inbound.DefaultInboundSmsService"/>
+  <bean id="org.hisp.dhis.sms.incoming.IncomingSmsService" class="org.hisp.dhis.sms.inbound.DefaultInboundSmsService">
+  	<property name="incomingSmsStore" ref="org.hisp.dhis.sms.incoming.IncomingSmsStore"/>
+  </bean>
   
 </beans>
