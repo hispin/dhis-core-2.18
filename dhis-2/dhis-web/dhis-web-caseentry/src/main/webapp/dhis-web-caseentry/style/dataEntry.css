@@ -100,7 +100,7 @@ div.actions
 }
 
 .small-button {
-	font-size: .8em !important;
+	font-size: .7.5em !important;
 }
 
 .ui-autocomplete { height: 100px; overflow-y: scroll; overflow-x: hidden;}
