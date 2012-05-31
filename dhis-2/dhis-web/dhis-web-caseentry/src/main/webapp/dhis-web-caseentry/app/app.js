@@ -511,13 +511,8 @@ Ext.onReady( function() {
 								else {
 									storePatientProperty.load({params: {programId: f.programId}});
 								}
-							}
 							
-							// Program stage									
-							var storeProgramStage = TR.store.programStage;
-							storeProgramStage.parent = f.programStageId;
-							storeProgramStage.load({params: {programId: f.programId}});
-							Ext.getCmp('programStageCombobox').setValue( f.programStageId );
+							}
 							
 							// Data element
 							TR.store.dataelement.selected.removeAll();
@@ -527,16 +522,27 @@ Ext.onReady( function() {
 								}
 								TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
 								
-								var store = TR.store.dataelement.available;
-								store.parent = f.programStageId;
-								if (TR.util.store.containsParent(store)) {
-									TR.util.store.loadFromStorage(store);
-									TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
-								}
-								else {
-									store.load({params: {programStageId: f.programStageId}});
+								if( f.singleEvent == 'false' )
+								{
+									var store = TR.store.dataelement.available;
+									store.parent = f.programStageId;
+									if (TR.util.store.containsParent(store)) {
+										TR.util.store.loadFromStorage(store);
+										TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
+									}
+									else {
+										store.load({params: {programStageId: f.programStageId}});
+									}
 								}
 							}
+							
+							// Program stage									
+							var storeProgramStage = TR.store.programStage;
+							storeProgramStage.parent = f.programStageId;
+							storeProgramStage.isLoadFromFavorite = true;
+							storeProgramStage.load({params: {programId: f.programId}});
+							
+							Ext.getCmp('programStageCombobox').setValue( f.programStageId );
 							
 							TR.cmp.params.organisationunit.treepanel.getSelectionModel().deselectAll();
 							TR.exe.execute();
@@ -588,6 +594,7 @@ Ext.onReady( function() {
 					root: 'programStages'
 				}
 			},
+			isLoadFromFavorite: false,
 			listeners:{
 				load: function(s) {
 					Ext.override(Ext.LoadMask, {
@@ -607,8 +614,11 @@ Ext.onReady( function() {
 						Ext.getCmp('programStageCombobox').setValue( programStageId );
 						var store = TR.store.dataelement.available;
 						TR.store.dataelement.available.loadData([],false);
-						TR.store.dataelement.selected.loadData([],false);
-						store.parent =programStageId;
+						if( !TR.store.programStage.isLoadFromFavorite)
+						{
+							TR.store.dataelement.selected.loadData([],false);
+						}
+						store.parent = programStageId;
 						
 						if (TR.util.store.containsParent(store)) {
 							TR.util.store.loadFromStorage(store);
@@ -710,7 +720,6 @@ Ext.onReady( function() {
 			else
 			{
 				TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
-			
 				Ext.Ajax.request({
 					url: url,
 					method: "POST",
@@ -970,6 +979,7 @@ Ext.onReady( function() {
 		},
 		view: function( psiId )
 		{
+			TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);asdf
 			var params = 'programStageInstanceId=' + psiId;
 			Ext.Ajax.request({
 				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_view,
@@ -987,6 +997,7 @@ Ext.onReady( function() {
 					
 					htmlWindow.update(response.responseText);
 					document.getElementById('programDiv').style.display = 'none';
+					TR.util.mask.hideMask();
 				}
 			});
 		},
@@ -1024,7 +1035,6 @@ Ext.onReady( function() {
 			cols[index] = {
 				header: TR.value.columns[index].name, 
 				dataIndex: 'id',
-				width: 50,
 				height: TR.conf.layout.east_gridcolumn_height,
 				sortable: false,
 				draggable: false,
@@ -1035,7 +1045,6 @@ Ext.onReady( function() {
 			cols[++index] = {
 				header: TR.value.columns[index].name, 
 				dataIndex: 'col' + index,
-				width: 50,
 				height: TR.conf.layout.east_gridcolumn_height,
 				sortable: false,
 				draggable: false,
@@ -1432,6 +1441,7 @@ Ext.onReady( function() {
 										TR.store.dataelement.available.removeAll();
 										TR.store.dataelement.selected.removeAll();
 										storeProgramStage.parent = pId;
+										TR.store.dataelement.isLoadFromFavorite = false;
 										storeProgramStage.load({params: {programId: pId}});
 									}
 								}

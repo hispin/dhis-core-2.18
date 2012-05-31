@@ -3,6 +3,12 @@
 	"name": "$!encoder.jsonEncode( ${tabularReport.name} )",
 	"lastUpdated": "$!format.formatDate( ${tabularReport.lastUpdated} )",
 	"programId": "${tabularReport.programStage.program.id}",
+	"singleEvent": 
+		#if($tabularReport.programStage.program.programStages.size() == 1 )
+			"true",
+		#else
+			"false",
+		#end
 	"type": "${tabularReport.programStage.program.type}",
 	"programStageId": "${tabularReport.programStage.id}",
 	"programStageName": "${tabularReport.programStage.name}",
