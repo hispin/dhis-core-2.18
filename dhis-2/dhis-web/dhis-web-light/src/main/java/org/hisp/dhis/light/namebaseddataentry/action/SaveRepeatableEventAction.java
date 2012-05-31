@@ -133,22 +133,57 @@ public class SaveRepeatableEventAction
         this.currentProgramStageInstanceId = currentProgramStageInstanceId;
     }
 
+    private Integer patientId;
+
+    public Integer getPatientId()
+    {
+        return patientId;
+    }
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
+
+    private Integer programId;
+
+    public Integer getProgramId()
+    {
+        return programId;
+    }
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
+
         ProgramStageInstance currentStageInstance = programStageInstanceService
             .getProgramStageInstance( currentProgramStageInstanceId );
         DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
+        patientId = programInstance.getPatient().getId();
+        programId = programInstance.getProgram().getId();
+
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
-        programStageInstance.setDueDate( sdf.parseDateTime( nextDueDate ).toDate() );
+        try
+        {
+            programStageInstance.setDueDate( sdf.parseDateTime( nextDueDate ).toDate() );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+
         programStageInstance.setProgramInstance( programInstance );
         programStageInstance.setProgramStage( programStage );
         programStageInstance.setStageInProgram( currentStageInstance.getStageInProgram() );
-        
         programStageInstanceService.addProgramStageInstance( programStageInstance );
         return SUCCESS;
     }

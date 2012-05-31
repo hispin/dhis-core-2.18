@@ -199,6 +199,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils"/>
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
 		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		<property name="programStageService"
+			ref="org.hisp.dhis.program.ProgramStageService"/>
 	</bean>
 	
 	<bean
