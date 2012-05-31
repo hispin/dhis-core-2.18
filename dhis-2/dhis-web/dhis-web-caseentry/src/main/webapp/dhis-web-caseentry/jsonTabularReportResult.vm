@@ -9,7 +9,6 @@
 	#foreach( $col in $grid.getHeaders() )
 	{
 	  #set( $mapIndx = $index - $metaData  )
-	  "sfas": "$grid.getHeaders().size()",
 	  "valueType": 	#if( $index > $metaData && $mapSuggestedValues.get($mapIndx).size() > 0 )
 						"combobox"
 					#else
