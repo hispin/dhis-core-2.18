@@ -126,6 +126,10 @@ TR.conf = {
 Ext.Loader.setConfig({enabled: true});
 Ext.Loader.setPath('Ext.ux', TR.conf.finals.ajax.path_lib + 'ext-ux');
 Ext.require('Ext.ux.form.MultiSelect');
+Ext.require([
+    'Ext.ux.grid.FiltersFeature'
+]);
+
 
 Ext.onReady( function() {
     Ext.override(Ext.form.FieldSet,{setExpanded:function(a){var b=this,c=b.checkboxCmp,d=b.toggleCmp,e;a=!!a;if(c){c.setValue(a)}if(d){d.setType(a?"up":"down")}if(a){e="expand";b.removeCls(b.baseCls+"-collapsed")}else{e="collapse";b.addCls(b.baseCls+"-collapsed")}b.collapsed=!a;b.doComponentLayout();b.fireEvent(e,b);return b}});
@@ -517,7 +521,7 @@ Ext.onReady( function() {
 							TR.store.dataelement.selected.removeAll();
 							if (f.dataElements) {
 								for (var i = 0; i < f.dataElements.length; i++) {
-									TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: TR.util.string.getEncodedString(f.dataElements[i].name)});
+									TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: TR.util.string.getEncodedString(f.dataElements[i].name), valueType:f.dataElements[i].valueType });
 								}
 								TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
 								
@@ -632,7 +636,7 @@ Ext.onReady( function() {
 		}),
 		dataelement: {
             available: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name'],
+                fields: ['id', 'name', 'valueType'],
                 proxy: {
                     type: 'ajax',
                     url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.dataelements_get,
@@ -652,7 +656,7 @@ Ext.onReady( function() {
 				}
             }),
             selected: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name'],
+                fields: ['id', 'name', 'valueType'],
                 data: []
             })
         },
@@ -967,6 +971,48 @@ Ext.onReady( function() {
 		columns: [],
 		fields: [],
 		values: [],
+		covertValueType: function( type )
+		{
+			type = type.toLowerCase();
+			if( type == 'date' || type == 'list')
+			{
+				return type;
+			}
+			if(type == 'number')
+			{
+				return 'float';
+			}
+			if( type == 'int' || type == 'positiveNumber'  || type == 'negativeNumber' )
+			{
+				return 'numeric';
+			}
+			if( type == 'bool' || type == 'yes/no' )
+			{
+				return 'boolean';
+			}
+			if( type == 'combo')
+			{
+				return 'list';
+			}
+			return 'string';
+		},
+		covertXType: function( type )
+		{
+			type = type.toLowerCase();
+			if( type == 'date' )
+			{
+				return 'datefield';
+			}
+			if( type == 'number' || type == 'int' || type == 'positiveNumber'  || type == 'negativeNumber' )
+			{
+				return 'numberfield';
+			}
+			if( type == 'combo' || type == 'list' )
+			{
+				return 'combobox';
+			}
+			return 'textfield';
+		},
 		save: function( psiId, deId, value)
 		{
 			var params = 'programStageInstanceId=' + psiId; 
@@ -1035,7 +1081,7 @@ Ext.onReady( function() {
         datatable: null,
 		cellEditing: null,
 		getDataTable: function() {
-						
+			
 			var orgUnitCols = ( TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue() );
 			var index = 0;
 			var cols = [];
@@ -1049,6 +1095,7 @@ Ext.onReady( function() {
 				sortable: false,
 				draggable: false,
 				hidden: true,
+				hideable: false,
 				menuDisabled: true
 			};
 			
@@ -1089,7 +1136,7 @@ Ext.onReady( function() {
 					draggable: false,
 					hidden: eval(TR.value.columns[index].hidden ),
 					editor: {
-						xtype: TR.value.columns[index].valueType,
+						xtype: TR.value.columns[index].xtype,
 						queryMode: 'local',
 						editable: true,
 						valueField: 'name',
@@ -1106,38 +1153,79 @@ Ext.onReady( function() {
 			// Data element columns
 			
 			TR.cmp.params.dataelement.selected.store.each( function(r) {
-				cols[++index] = {
-					header: TR.value.columns[index].name, 
-					dataIndex: 'col' + index,
-					height: TR.conf.layout.east_gridcolumn_height,
-					name: r.data.id,
-					hidden: eval(TR.value.columns[index].hidden ),
-					sortable: false,
-					draggable: true,
-					isEditAllowed: true,
-					emptyText: TR.i18n.et_no_data,
-					selectOnTab: true,
-					editor: {
-						xtype: TR.value.columns[index].valueType,
-						queryMode: 'local',
-						editable: true,
-						valueField: 'name',
-						displayField: 'name',
-						allowBlank: true,
-						store:  new Ext.data.ArrayStore({
-							fields: ['name'],
-							data: TR.value.columns[index].suggested
-						})
+				if( r.data.valueType.toLowerCase() == 'date' )
+				{
+					cols[++index] = {
+						header: TR.value.columns[index].name, 
+						dataIndex: 'col' + index,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: r.data.id,
+						hidden: eval(TR.value.columns[index].hidden ),
+						sortable: false,
+						draggable: true,
+						isEditAllowed: true,
+						emptyText: TR.i18n.et_no_data,
+						renderer: Ext.util.Format.dateRenderer( TR.i18n.format_date ),
+						filterable: true,
+						filter: {
+							type:TR.value.covertValueType( r.data.valueType )						
+						},
+						editor: {
+							xtype: TR.value.covertXType( r.data.valueType ),
+							format: TR.i18n.format_date,
+							queryMode: 'local',
+							editable: true,
+							valueField: 'name',
+							displayField: 'name',
+							allowBlank: true,
+							store:  new Ext.data.ArrayStore({
+								fields: ['name'],
+								data: TR.value.columns[index].suggested
+							})
+						}
 					}
-				};
+				}
+				else
+				{
+					cols[++index] = {
+						header: TR.value.columns[index].name, 
+						dataIndex: 'col' + index,
+						height: TR.conf.layout.east_gridcolumn_height,
+						name: r.data.id,
+						hidden: eval(TR.value.columns[index].hidden ),
+						sortable: false,
+						draggable: true,
+						isEditAllowed: true,
+						emptyText: TR.i18n.et_no_data,
+						filterable: true,
+						filter: {
+							type:TR.value.covertValueType( r.data.valueType ),
+							options: TR.value.columns[index].suggested
+						},
+						editor: {
+							xtype: TR.value.covertXType( r.data.valueType ),
+							queryMode: 'local',
+							editable: true,
+							valueField: 'name',
+							displayField: 'name',
+							allowBlank: true,
+							store:  new Ext.data.ArrayStore({
+								fields: ['name'],
+								data: TR.value.columns[index].suggested
+							})
+						}
+					}
+				}
 			});
 			
 			cols[++index]={
 				xtype:'actioncolumn',
 				width:50,
-				//locked: true,
+				sortable: false,
+				draggable: false,
+				hideable: false,
 				items: [{
-					icon: 'images/view.png',  // Use a URL in the icon config
+					icon: 'images/view.png',
 					tooltip: TR.i18n.view,
 					handler: function(grid, rowIndex, colIndex) {
 						var psiId = grid.getStore().getAt(rowIndex).data['id'];
@@ -1172,7 +1260,7 @@ Ext.onReady( function() {
 						grid.getView().getNode(e.rowIdx).classList.remove('hidden');
 						
 						var oldValue = e.originalValue;
-						var newValue = e.value;
+						var newValue = editor.editors.items[0].field.rawValue;
 						if( newValue != oldValue)
 						{
 							// filter
@@ -1184,7 +1272,6 @@ Ext.onReady( function() {
 								var psiId = TR.store.datatable.getAt(e.rowIdx).data['id'];
 								var deId = e.column.name.split('_')[1];
 								TR.value.save( psiId, deId, newValue);
-								//e.record.commit();
 							}
 						}
 					},
@@ -1209,6 +1296,10 @@ Ext.onReady( function() {
 				scroll: 'both',
 				title: TR.cmp.settings.program.rawValue + " - " + TR.cmp.params.programStage.rawValue + " " + TR.i18n.report,
 				selType: 'cellmodel',
+				features: [{
+					ftype: 'filters',
+					filters: []
+				}],
 				viewConfig: {
 					getRowClass: function(record, rowIndex, rp, ds){ 
 						if(rowIndex == 0){

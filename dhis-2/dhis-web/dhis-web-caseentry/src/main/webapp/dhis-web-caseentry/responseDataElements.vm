@@ -3,7 +3,12 @@
 #foreach( $psDataElement in $psDataElements )
   {
     "id": "de_$!{psDataElement.dataElement.id}",
-    "name": "$encoder.xmlEncode(${psDataElement.dataElement.name} )"
+    "name": "$encoder.xmlEncode(${psDataElement.dataElement.name} )",
+	"valueType": #if( $psDataElement.dataElement.optionSet )
+					"list"
+				 #else
+					"${psDataElement.dataElement.type}"
+				 #end
   }#if( $velocityCount < $size ),#end
 	#end]
 }
