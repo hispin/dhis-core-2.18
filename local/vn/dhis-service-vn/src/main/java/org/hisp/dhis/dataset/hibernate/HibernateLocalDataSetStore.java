@@ -80,12 +80,14 @@ public class HibernateLocalDataSetStore
         // Iterate through all matching data element fields
         // ---------------------------------------------------------------------
         DataElementCategoryOptionCombo optionCombo = null;
-        
+        String dataElementCode = null;
+        String inputHTML = null;
+
         while ( inputMatcher.find() )
         {
-            String dataElementCode = inputMatcher.group( 1 );
+            dataElementCode = inputMatcher.group( 1 );
 
-            String inputHTML = inputMatcher.group();
+            inputHTML = inputMatcher.group();
             inputHTML = inputHTML.replace( ">", "" );
 
             Matcher identifierMatcher = ProgramDataEntryService.IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
@@ -93,11 +95,13 @@ public class HibernateLocalDataSetStore
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
+
                 optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+
                 return optionCombo;
             }
         }
-        
+
         return null;
     }
 }
