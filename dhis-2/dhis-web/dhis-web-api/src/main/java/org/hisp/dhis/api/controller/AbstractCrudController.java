@@ -170,7 +170,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             metaData.setPager( pager );
 
             entityList = new ArrayList<T>( manager.getBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
-
         }
         else
         {
@@ -233,13 +232,16 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         try
         {
             return (T) Class.forName( getEntityName() ).newInstance();
-        } catch ( InstantiationException e )
+        }
+        catch ( InstantiationException e )
         {
             throw new RuntimeException( e );
-        } catch ( IllegalAccessException e )
+        }
+        catch ( IllegalAccessException e )
         {
             throw new RuntimeException( e );
-        } catch ( ClassNotFoundException e )
+        }
+        catch ( ClassNotFoundException e )
         {
             throw new RuntimeException( e );
         }

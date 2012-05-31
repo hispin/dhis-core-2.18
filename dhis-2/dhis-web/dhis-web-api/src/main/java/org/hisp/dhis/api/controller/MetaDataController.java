@@ -68,9 +68,9 @@ public class MetaDataController
     @Autowired
     private ContextUtils contextUtils;
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Export
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( value = MetaDataController.RESOURCE_PATH, method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
@@ -143,16 +143,15 @@ public class MetaDataController
         JacksonUtils.toJsonWithView( gzip, metaData, ExportView.class );
     }
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Import
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( value = MetaDataController.RESOURCE_PATH, method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/*"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
         MetaData metaData = JacksonUtils.fromXml( request.getInputStream(), MetaData.class );
-        System.err.println( metaData );
 
         ImportSummary summary = importService.importMetaData( metaData, importOptions );
 
@@ -165,7 +164,6 @@ public class MetaDataController
     public void importJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         MetaData metaData = JacksonUtils.fromJson( request.getInputStream(), MetaData.class );
-        System.err.println( metaData );
 
         ImportSummary summary = importService.importMetaData( metaData, importOptions );
 
@@ -181,7 +179,6 @@ public class MetaDataController
         zip.getNextEntry();
 
         MetaData metaData = JacksonUtils.fromXml( zip, MetaData.class );
-        System.err.println( metaData );
 
         ImportSummary summary = importService.importMetaData( metaData, importOptions );
 
@@ -197,7 +194,6 @@ public class MetaDataController
         zip.getNextEntry();
 
         MetaData metaData = JacksonUtils.fromJson( zip, MetaData.class );
-        System.err.println( metaData );
 
         ImportSummary summary = importService.importMetaData( metaData, importOptions );
 
@@ -213,7 +209,6 @@ public class MetaDataController
         GZIPInputStream gzip = new GZIPInputStream( request.getInputStream() );
 
         MetaData metaData = JacksonUtils.fromXml( gzip, MetaData.class );
-        System.err.println( metaData );
 
         ImportSummary summary = importService.importMetaData( metaData, importOptions );
 
@@ -228,7 +223,6 @@ public class MetaDataController
         GZIPInputStream gzip = new GZIPInputStream( request.getInputStream() );
 
         MetaData metaData = JacksonUtils.fromJson( gzip, MetaData.class );
-        System.err.println( metaData );
 
         ImportSummary summary = importService.importMetaData( metaData, importOptions );
 

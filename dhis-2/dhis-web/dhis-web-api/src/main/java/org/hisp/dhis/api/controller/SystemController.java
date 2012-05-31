@@ -44,9 +44,9 @@ public class SystemController
 {
     public static final String RESOURCE_PATH = "/system";
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // UID Generator
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/uid", method = RequestMethod.GET )
     public void getUid( HttpServletResponse response ) throws IOException
