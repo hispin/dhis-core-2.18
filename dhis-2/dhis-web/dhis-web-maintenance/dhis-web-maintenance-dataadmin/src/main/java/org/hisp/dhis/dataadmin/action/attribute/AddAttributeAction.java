@@ -27,10 +27,9 @@
 
 package org.hisp.dhis.dataadmin.action.attribute;
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author mortenoh
@@ -81,11 +80,25 @@ public class AddAttributeAction
         this.dataElementAttribute = dataElementAttribute;
     }
 
+    private Boolean dataElementGroupAttribute = false;
+
+    public void setDataElementGroupAttribute( Boolean dataElementGroupAttribute )
+    {
+        this.dataElementGroupAttribute = dataElementGroupAttribute;
+    }
+
     private Boolean indicatorAttribute = false;
 
     public void setIndicatorAttribute( Boolean indicatorAttribute )
     {
         this.indicatorAttribute = indicatorAttribute;
+    }
+
+    private Boolean indicatorGroupAttribute = false;
+
+    public void setIndicatorGroupAttribute( Boolean indicatorGroupAttribute )
+    {
+        this.indicatorGroupAttribute = indicatorGroupAttribute;
     }
 
     private Boolean organisationUnitAttribute = false;
@@ -95,11 +108,25 @@ public class AddAttributeAction
         this.organisationUnitAttribute = organisationUnitAttribute;
     }
 
+    private Boolean organisationUnitGroupAttribute = false;
+
+    public void setOrganisationUnitGroupAttribute( Boolean organisationUnitGroupAttribute )
+    {
+        this.organisationUnitGroupAttribute = organisationUnitGroupAttribute;
+    }
+
     private Boolean userAttribute = false;
 
     public void setUserAttribute( Boolean userAttribute )
     {
         this.userAttribute = userAttribute;
+    }
+
+    private Boolean userGroupAttribute = false;
+
+    public void setUserGroupAttribute( Boolean userGroupAttribute )
+    {
+        this.userGroupAttribute = userGroupAttribute;
     }
 
     // -------------------------------------------------------------------------
@@ -112,9 +139,13 @@ public class AddAttributeAction
         Attribute attribute = new Attribute( name, valueType );
         attribute.setMandatory( mandatory );
         attribute.setDataElementAttribute( dataElementAttribute );
+        attribute.setDataElementGroupAttribute( dataElementGroupAttribute );
         attribute.setIndicatorAttribute( indicatorAttribute );
+        attribute.setIndicatorGroupAttribute( indicatorGroupAttribute );
         attribute.setOrganisationUnitAttribute( organisationUnitAttribute );
+        attribute.setOrganisationUnitGroupAttribute( organisationUnitGroupAttribute );
         attribute.setUserAttribute( userAttribute );
+        attribute.setUserGroupAttribute( userGroupAttribute );
 
         attributeService.addAttribute( attribute );
 

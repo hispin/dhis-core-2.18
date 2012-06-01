@@ -56,11 +56,19 @@ public class Attribute
 
     private boolean dataElementAttribute;
 
+    private Boolean dataElementGroupAttribute = false;
+
     private boolean indicatorAttribute;
+
+    private Boolean indicatorGroupAttribute = false;
 
     private boolean organisationUnitAttribute;
 
+    private Boolean organisationUnitGroupAttribute = false;
+
     private boolean userAttribute;
+
+    private Boolean userGroupAttribute = false;
 
     private boolean mandatory;
 
@@ -80,7 +88,7 @@ public class Attribute
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getValueType()
     {
@@ -93,7 +101,7 @@ public class Attribute
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isMandatory()
     {
@@ -106,7 +114,7 @@ public class Attribute
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isDataElementAttribute()
     {
@@ -119,7 +127,20 @@ public class Attribute
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isDataElementGroupAttribute()
+    {
+        return dataElementGroupAttribute == null ? false : dataElementGroupAttribute;
+    }
+
+    public void setDataElementGroupAttribute( Boolean dataElementGroupAttribute )
+    {
+        this.dataElementGroupAttribute = dataElementGroupAttribute;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isIndicatorAttribute()
     {
@@ -132,7 +153,20 @@ public class Attribute
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isIndicatorGroupAttribute()
+    {
+        return indicatorGroupAttribute == null ? false : indicatorGroupAttribute;
+    }
+
+    public void setIndicatorGroupAttribute( Boolean indicatorGroupAttribute )
+    {
+        this.indicatorGroupAttribute = indicatorGroupAttribute;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isOrganisationUnitAttribute()
     {
@@ -145,7 +179,20 @@ public class Attribute
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isOrganisationUnitGroupAttribute()
+    {
+        return organisationUnitGroupAttribute == null ? false : organisationUnitGroupAttribute;
+    }
+
+    public void setOrganisationUnitGroupAttribute( Boolean organisationUnitGroupAttribute )
+    {
+        this.organisationUnitGroupAttribute = organisationUnitGroupAttribute;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isUserAttribute()
     {
@@ -155,6 +202,19 @@ public class Attribute
     public void setUserAttribute( boolean userAttribute )
     {
         this.userAttribute = userAttribute;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isUserGroupAttribute()
+    {
+        return userGroupAttribute == null ? false : userGroupAttribute;
+    }
+
+    public void setUserGroupAttribute( Boolean userGroupAttribute )
+    {
+        this.userGroupAttribute = userGroupAttribute;
     }
 
     public Set<AttributeValue> getAttributeValues()

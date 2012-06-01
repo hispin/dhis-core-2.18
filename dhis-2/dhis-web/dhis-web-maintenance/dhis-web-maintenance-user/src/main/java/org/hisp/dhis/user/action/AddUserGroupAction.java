@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
@@ -59,6 +61,13 @@ public class AddUserGroupAction
         this.userGroupService = userGroupService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Parameters
     // -------------------------------------------------------------------------
@@ -77,6 +86,13 @@ public class AddUserGroupAction
         this.name = name;
     }
 
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -93,6 +109,12 @@ public class AddUserGroupAction
         }
 
         UserGroup userGroup = new UserGroup( name, userList );
+
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
 
         userGroupService.addUserGroup( userGroup );
 

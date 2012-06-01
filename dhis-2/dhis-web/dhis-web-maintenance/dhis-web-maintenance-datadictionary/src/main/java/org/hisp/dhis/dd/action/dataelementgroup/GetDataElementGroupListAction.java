@@ -59,7 +59,7 @@ public class GetDataElementGroupListAction
     // -------------------------------------------------------------------------
 
     private String key;
-        
+
     public String getKey()
     {
         return key;
@@ -80,7 +80,7 @@ public class GetDataElementGroupListAction
     {
         return dataElementGroups;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class GetDataElementGroupListAction
         if ( isNotBlank( key ) )
         {
             this.paging = createPaging( dataElementService.getDataElementGroupCountByName( key ) );
-            
+
             dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getDataElementGroupsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else

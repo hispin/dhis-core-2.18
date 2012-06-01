@@ -218,6 +218,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.action.EditUserGroupFormAction" class="org.hisp.dhis.user.action.EditUserGroupFormAction"
@@ -229,6 +230,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
     <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.action.RemoveUserGroupAction" class="org.hisp.dhis.user.action.RemoveUserGroupAction"

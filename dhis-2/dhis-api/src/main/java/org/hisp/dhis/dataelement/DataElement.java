@@ -27,13 +27,12 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataset.DataSet.NO_EXPIRY;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
@@ -46,12 +45,12 @@ import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.hisp.dhis.dataset.DataSet.NO_EXPIRY;
 
 /**
  * A DataElement is a definition (meta-information about) of the entities that
@@ -236,16 +235,6 @@ public class DataElement
     // Logic
     // -------------------------------------------------------------------------
 
-    public void removeAllAttributeValues()
-    {
-        attributeValues.clear();
-    }
-
-    public void removeAllCategoryLevels()
-    {
-        aggregationLevels.clear();
-    }
-
     public void addDataElementGroup( DataElementGroup group )
     {
         groups.add( group );
@@ -412,7 +401,7 @@ public class DataElement
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getFormName()
     {
@@ -425,7 +414,7 @@ public class DataElement
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isActive()
     {
@@ -438,7 +427,7 @@ public class DataElement
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDomainType()
     {
@@ -451,7 +440,7 @@ public class DataElement
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getType()
     {
@@ -464,7 +453,7 @@ public class DataElement
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getAggregationOperator()
     {
@@ -478,7 +467,7 @@ public class DataElement
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public DataElementCategoryCombo getCategoryCombo()
     {
@@ -501,7 +490,7 @@ public class DataElement
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getUrl()
     {
@@ -515,7 +504,7 @@ public class DataElement
 
     @JsonProperty( value = "dataElementGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class} )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "dataElementGroups", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "dataElementGroup", namespace = Dxf2Namespace.NAMESPACE )
     public Set<DataElementGroup> getGroups()
@@ -530,7 +519,7 @@ public class DataElement
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class} )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlElementWrapper( localName = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
     public Set<DataSet> getDataSets()
@@ -544,7 +533,7 @@ public class DataElement
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public List<Integer> getAggregationLevels()
     {
@@ -557,7 +546,7 @@ public class DataElement
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isZeroIsSignificant()
     {
@@ -570,7 +559,7 @@ public class DataElement
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getNumberType()
     {
@@ -583,7 +572,7 @@ public class DataElement
     }
 
     @JsonProperty( value = "attributes" )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
     public Set<AttributeValue> getAttributeValues()
@@ -598,7 +587,7 @@ public class DataElement
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public OptionSet getOptionSet()
     {
@@ -634,10 +623,10 @@ public class DataElement
             groups.clear();
             dataSets.clear();
 
-            removeAllCategoryLevels();
+            aggregationLevels.clear();
             aggregationLevels.addAll( dataElement.getAggregationLevels() );
 
-            removeAllAttributeValues();
+            attributeValues.clear();
             attributeValues.addAll( dataElement.getAttributeValues() );
         }
     }

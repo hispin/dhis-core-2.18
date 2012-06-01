@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -59,6 +60,11 @@ public class DataElementGroup
     private Set<DataElement> members = new HashSet<DataElement>();
 
     private DataElementGroupSet groupSet;
+
+    /**
+     * Set of the dynamic attributes values that belong to this dataElement group.
+     */
+    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -160,7 +166,7 @@ public class DataElementGroup
 
     @JsonProperty( value = "dataElements" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "dataElements", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
     public Set<DataElement> getMembers()
@@ -175,7 +181,7 @@ public class DataElementGroup
 
     @JsonProperty( value = "dataElementGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class} )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public DataElementGroupSet getGroupSet()
     {
@@ -185,6 +191,20 @@ public class DataElementGroup
     public void setGroupSet( DataElementGroupSet groupSet )
     {
         this.groupSet = groupSet;
+    }
+
+    @JsonProperty( value = "attributes" )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
+    public Set<AttributeValue> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
+    public void setAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
     }
 
     @Override
@@ -204,6 +224,9 @@ public class DataElementGroup
             {
                 addDataElement( dataElement );
             }
+
+            attributeValues.clear();
+            attributeValues.addAll( dataElementGroup.getAttributeValues() );
         }
     }
 }

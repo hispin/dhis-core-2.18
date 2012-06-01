@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
@@ -60,6 +61,11 @@ public class OrganisationUnitGroup
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
 
     private OrganisationUnitGroupSet groupSet;
+
+    /**
+     * Set of the dynamic attributes values that belong to this organisationUnit group.
+     */
+    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -172,7 +178,7 @@ public class OrganisationUnitGroup
 
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
     public Set<OrganisationUnit> getMembers()
@@ -187,7 +193,7 @@ public class OrganisationUnitGroup
 
     @JsonProperty( value = "organisationUnitGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class} )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public OrganisationUnitGroupSet getGroupSet()
     {
@@ -197,6 +203,20 @@ public class OrganisationUnitGroup
     public void setGroupSet( OrganisationUnitGroupSet groupSet )
     {
         this.groupSet = groupSet;
+    }
+
+    @JsonProperty( value = "attributes" )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
+    public Set<AttributeValue> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
+    public void setAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
     }
 
     @Override
@@ -216,6 +236,9 @@ public class OrganisationUnitGroup
             {
                 addOrganisationUnit( organisationUnit );
             }
+
+            attributeValues.clear();
+            attributeValues.addAll( organisationUnitGroup.getAttributeValues() );
         }
     }
 }

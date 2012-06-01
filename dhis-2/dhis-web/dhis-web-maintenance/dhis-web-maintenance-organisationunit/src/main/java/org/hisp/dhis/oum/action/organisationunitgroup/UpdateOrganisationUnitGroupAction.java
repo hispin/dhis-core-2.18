@@ -27,20 +27,22 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-
+import com.opensymphony.xwork2.ActionSupport;
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.system.util.AttributeUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author Torgeir Lorange Ostby
  */
-@SuppressWarnings("serial")
+@SuppressWarnings( "serial" )
 public class UpdateOrganisationUnitGroupAction
     extends ActionSupport
 {
@@ -62,6 +64,13 @@ public class UpdateOrganisationUnitGroupAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -80,6 +89,13 @@ public class UpdateOrganisationUnitGroupAction
         this.name = name;
     }
 
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -94,6 +110,12 @@ public class UpdateOrganisationUnitGroupAction
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
         organisationUnitGroup.updateOrganisationUnits( new HashSet<OrganisationUnit>( selectedOrganisationUnits ) );
+
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( organisationUnitGroup.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
 
         organisationUnitGroupService.updateOrganisationUnitGroup( organisationUnitGroup );
 

@@ -47,11 +47,25 @@ public interface AttributeStore
     Set<Attribute> getDataElementAttributes();
 
     /**
+     * Get all attributes that are enabled for data element groups.
+     *
+     * @return All attributes with attribute.dataElementGroup = true
+     */
+    Set<Attribute> getDataElementGroupAttributes();
+
+    /**
      * Get all attributes that are enabled for indicators.
      * 
      * @return All attributes with attribute.indicator = true
      */
     Set<Attribute> getIndicatorAttributes();
+
+    /**
+     * Get all attributes that are enabled for indicator groups.
+     *
+     * @return All attributes with attribute.indicatorGroup = true
+     */
+    Set<Attribute> getIndicatorGroupAttributes();
 
     /**
      * Get all attributes that are enabled for organisation units.
@@ -61,9 +75,23 @@ public interface AttributeStore
     Set<Attribute> getOrganisationUnitAttributes();
 
     /**
+     * Get all attributes that are enabled for organisation unit groups.
+     *
+     * @return All attributes with attribute.organisationUnitGroup = true
+     */
+    Set<Attribute> getOrganisationUnitGroupAttributes();
+
+    /**
      * Get all attributes that are enabled for users.
      * 
      * @return All attributes with attribute.organisationUnit = true
      */
     Set<Attribute> getUserAttributes();
+
+    /**
+     * Get all attributes that are enabled for user group.
+     *
+     * @return All attributes with attribute.organisationUnitGroup = true
+     */
+    Set<Attribute> getUserGroupAttributes();
 }

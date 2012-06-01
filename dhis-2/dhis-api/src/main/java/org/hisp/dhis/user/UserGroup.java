@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -57,6 +58,11 @@ public class UserGroup
      */
     @Scanned
     private Set<User> members = new HashSet<User>();
+
+    /**
+     * Set of the dynamic attributes values that belong to this user group.
+     */
+    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -122,7 +128,7 @@ public class UserGroup
 
     @JsonProperty( value = "users" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "users", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "user", namespace = Dxf2Namespace.NAMESPACE )
     public Set<User> getMembers()
@@ -133,6 +139,20 @@ public class UserGroup
     public void setMembers( Set<User> members )
     {
         this.members = members;
+    }
+
+    @JsonProperty( value = "attributes" )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
+    public Set<AttributeValue> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
+    public void setAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
     }
 
     @Override
@@ -146,6 +166,9 @@ public class UserGroup
 
             removeAllUsers();
             members.addAll( userGroup.getMembers() );
+
+            attributeValues.clear();
+            attributeValues.addAll( userGroup.getAttributeValues() );
         }
     }
 }

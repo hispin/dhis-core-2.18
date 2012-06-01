@@ -28,12 +28,15 @@ package org.hisp.dhis.dd.action.dataelementgroup;
  */
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.system.util.AttributeUtils;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -54,6 +57,13 @@ public class AddDataElementGroupAction
         this.dataElementService = dataElementService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -70,6 +80,13 @@ public class AddDataElementGroupAction
     public void setGroupMembers( Set<String> groupMembers )
     {
         this.groupMembers = groupMembers;
+    }
+
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -95,7 +112,13 @@ public class AddDataElementGroupAction
         {
             dataElementGroup.addDataElement( dataElementService.getDataElement( Integer.parseInt( id ) ) );
         }
-        
+
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( dataElementGroup.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
+
         dataElementService.addDataElementGroup( dataElementGroup );
 
         return SUCCESS;

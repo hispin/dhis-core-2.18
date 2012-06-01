@@ -27,14 +27,16 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
+import com.opensymphony.xwork2.ActionSupport;
+import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.system.util.AttributeUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -61,6 +63,13 @@ public class AddOrganisationUnitGroupAction
         this.selectionTreeManager = selectionTreeManager;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -72,6 +81,14 @@ public class AddOrganisationUnitGroupAction
         this.name = name;
     }
 
+
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -80,13 +97,19 @@ public class AddOrganisationUnitGroupAction
         throws Exception
     {
         OrganisationUnitGroup organisationUnitGroup = new OrganisationUnitGroup( name );
-        
+
         Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
             .getReloadedSelectedOrganisationUnits();
 
         for ( OrganisationUnit unit : selectedOrganisationUnits )
         {
             organisationUnitGroup.addOrganisationUnit( unit );
+        }
+
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( organisationUnitGroup.getAttributeValues(), jsonAttributeValues,
+                attributeService );
         }
 
         organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
