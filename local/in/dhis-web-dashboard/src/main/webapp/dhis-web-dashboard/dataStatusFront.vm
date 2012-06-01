@@ -68,6 +68,9 @@
     <input type="hidden" name="selectedButton" id="selectedButton"/>
 </form>
 <div id="contentDiv"></div>
+
+#parse( "/dhis-web-commons/loader/loader.vm" )
+
 <script>
     getdSetPeriods();
 </script>

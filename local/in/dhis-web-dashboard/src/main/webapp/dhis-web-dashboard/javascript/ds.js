@@ -242,7 +242,9 @@ function generateDataStatusResult( url )
 	url += getParamsStringBySelected( 'periodLB', 'periodLB' )+ "&"
 	*/	
 	//alert(url);
-	jQuery( "#contentDiv" ).load( url,
+	jQuery('#loaderDiv').show();
+	jQuery('#contentDiv').dialog('destroy').remove();
+	jQuery( '<div id="contentDiv">' ).load( url,
 	{
 		selectedDataSets : getFieldValue( 'selectedDataSets' ),
 		facilityLB : getFieldValue( 'facilityLB' ),
@@ -259,7 +261,8 @@ function generateDataStatusResult( url )
 		overlay:{ background:'#000000', opacity:0.1 },
 		width: 1000,
 		height: 800
-	} );	
+	} );
+	jQuery('#loaderDiv').hide();
 }
 
 function getParamsStringBySelected( elementId, param )
