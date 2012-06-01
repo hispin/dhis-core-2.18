@@ -27,21 +27,21 @@
 
 package org.hisp.dhis.dd.action.dataelementgroup;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.system.util.AttributeUtils;
 
-import com.opensymphony.xwork2.Action;
+import java.util.*;
 
 /**
  * @author Chau Thu Tran
  * @version $ ShowUpdateDataElementGroupAction.java May 30, 2011 2:26:15 PM $
- * 
  */
 public class ShowUpdateDataElementGroupFormAction
     implements Action
@@ -57,6 +57,13 @@ public class ShowUpdateDataElementGroupFormAction
         this.dataElementService = dataElementService;
     }
 
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -66,6 +73,20 @@ public class ShowUpdateDataElementGroupFormAction
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    private List<Attribute> attributes;
+
+    public List<Attribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getAttributeValues()
+    {
+        return attributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -100,7 +121,12 @@ public class ShowUpdateDataElementGroupFormAction
 
         groupMembers = new ArrayList<DataElement>( dataElementGroup.getMembers() );
 
+        attributes = new ArrayList<Attribute>( attributeService.getDataElementGroupAttributes() );
+
+        attributeValues = AttributeUtils.getAttributeValueMap( dataElementGroup.getAttributeValues() );
+
         Collections.sort( groupMembers, new IdentifiableObjectNameComparator() );
+        Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         return SUCCESS;
     }

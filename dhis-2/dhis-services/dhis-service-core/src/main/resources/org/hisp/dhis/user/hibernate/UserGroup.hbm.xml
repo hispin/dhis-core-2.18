@@ -18,5 +18,13 @@
       <many-to-many column="userid" class="org.hisp.dhis.user.User" foreign-key="fk_usergroup_userid" />
     </set>
 
+    <!-- Dynamic attribute values -->
+
+    <set name="attributeValues" table="usergroupattributevalues">
+      <cache usage="read-write" />
+      <key column="usergroupid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" unique="true" />
+    </set>
+
   </class>
 </hibernate-mapping>

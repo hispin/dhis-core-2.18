@@ -85,7 +85,7 @@ public class ShowDataElementGroupEditorAction
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
         dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-        
+
         Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;

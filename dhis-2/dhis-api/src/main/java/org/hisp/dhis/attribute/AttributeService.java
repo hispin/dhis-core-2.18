@@ -56,11 +56,19 @@ public interface AttributeService
 
     Set<Attribute> getDataElementAttributes();
 
+    Set<Attribute> getDataElementGroupAttributes();
+
     Set<Attribute> getIndicatorAttributes();
+
+    Set<Attribute> getIndicatorGroupAttributes();
 
     Set<Attribute> getOrganisationUnitAttributes();
 
+    Set<Attribute> getOrganisationUnitGroupAttributes();
+
     Set<Attribute> getUserAttributes();
+
+    Set<Attribute> getUserGroupAttributes();
 
     int getAttributeCount();
 

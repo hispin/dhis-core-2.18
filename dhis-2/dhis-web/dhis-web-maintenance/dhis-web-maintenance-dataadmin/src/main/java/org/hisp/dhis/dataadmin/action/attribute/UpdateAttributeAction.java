@@ -88,11 +88,25 @@ public class UpdateAttributeAction
         this.dataElementAttribute = dataElementAttribute;
     }
 
+    private Boolean dataElementGroupAttribute = false;
+
+    public void setDataElementGroupAttribute( Boolean dataElementGroupAttribute )
+    {
+        this.dataElementGroupAttribute = dataElementGroupAttribute;
+    }
+
     private Boolean indicatorAttribute = false;
 
     public void setIndicatorAttribute( Boolean indicatorAttribute )
     {
         this.indicatorAttribute = indicatorAttribute;
+    }
+
+    private Boolean indicatorGroupAttribute = false;
+
+    public void setIndicatorGroupAttribute( Boolean indicatorGroupAttribute )
+    {
+        this.indicatorGroupAttribute = indicatorGroupAttribute;
     }
 
     private Boolean organisationUnitAttribute = false;
@@ -102,11 +116,25 @@ public class UpdateAttributeAction
         this.organisationUnitAttribute = organisationUnitAttribute;
     }
 
+    private Boolean organisationUnitGroupAttribute = false;
+
+    public void setOrganisationUnitGroupAttribute( Boolean organisationUnitGroupAttribute )
+    {
+        this.organisationUnitGroupAttribute = organisationUnitGroupAttribute;
+    }
+
     private Boolean userAttribute = false;
 
     public void setUserAttribute( Boolean userAttribute )
     {
         this.userAttribute = userAttribute;
+    }
+
+    private Boolean userGroupAttribute = false;
+
+    public void setUserGroupAttribute( Boolean userGroupAttribute )
+    {
+        this.userGroupAttribute = userGroupAttribute;
     }
     
     // -------------------------------------------------------------------------
@@ -124,9 +152,13 @@ public class UpdateAttributeAction
             attribute.setValueType( valueType );
             attribute.setMandatory( mandatory );
             attribute.setDataElementAttribute( dataElementAttribute );
+            attribute.setDataElementGroupAttribute( dataElementGroupAttribute );
             attribute.setIndicatorAttribute( indicatorAttribute );
+            attribute.setIndicatorGroupAttribute( indicatorGroupAttribute );
             attribute.setOrganisationUnitAttribute( organisationUnitAttribute );
+            attribute.setOrganisationUnitGroupAttribute( organisationUnitGroupAttribute );
             attribute.setUserAttribute( userAttribute );
+            attribute.setUserGroupAttribute( userGroupAttribute );
 
             attributeService.updateAttribute( attribute );
 

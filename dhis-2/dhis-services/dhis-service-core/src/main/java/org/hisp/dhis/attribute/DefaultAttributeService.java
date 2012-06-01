@@ -23,11 +23,11 @@
 
 package org.hisp.dhis.attribute;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hisp.dhis.common.GenericStore;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author mortenoh
@@ -87,7 +87,7 @@ public class DefaultAttributeService
     {
         return attributeStore.getByUid( uid );
     }
-    
+
     @Override
     public Attribute getAttributeByName( String name )
     {
@@ -107,9 +107,21 @@ public class DefaultAttributeService
     }
 
     @Override
+    public Set<Attribute> getDataElementGroupAttributes()
+    {
+        return attributeStore.getDataElementGroupAttributes();
+    }
+
+    @Override
     public Set<Attribute> getIndicatorAttributes()
     {
         return attributeStore.getIndicatorAttributes();
+    }
+
+    @Override
+    public Set<Attribute> getIndicatorGroupAttributes()
+    {
+        return attributeStore.getIndicatorGroupAttributes();
     }
 
     @Override
@@ -119,9 +131,21 @@ public class DefaultAttributeService
     }
 
     @Override
+    public Set<Attribute> getOrganisationUnitGroupAttributes()
+    {
+        return attributeStore.getOrganisationUnitGroupAttributes();
+    }
+
+    @Override
     public Set<Attribute> getUserAttributes()
     {
         return attributeStore.getUserAttributes();
+    }
+
+    @Override
+    public Set<Attribute> getUserGroupAttributes()
+    {
+        return attributeStore.getUserGroupAttributes();
     }
 
     @Override

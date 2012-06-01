@@ -38,27 +38,59 @@ public class HibernateAttributeStore
     extends HibernateIdentifiableObjectStore<Attribute>
     implements AttributeStore
 {
+    @Override
     @SuppressWarnings( "unchecked" )
     public Set<Attribute> getDataElementAttributes()
     {
         return new HashSet<Attribute>( getCriteria( Restrictions.eq( "dataElementAttribute", true ) ).list() );
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Set<Attribute> getDataElementGroupAttributes()
+    {
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "dataElementGroupAttribute", true ) ).list() );
+    }
+
+    @Override
     @SuppressWarnings( "unchecked" )
     public Set<Attribute> getIndicatorAttributes()
     {
         return new HashSet<Attribute>( getCriteria( Restrictions.eq( "indicatorAttribute", true ) ).list() );
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Set<Attribute> getIndicatorGroupAttributes()
+    {
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "indicatorGroupAttribute", true ) ).list() );
+    }
+
+    @Override
     @SuppressWarnings( "unchecked" )
     public Set<Attribute> getOrganisationUnitAttributes()
     {
         return new HashSet<Attribute>( getCriteria( Restrictions.eq( "organisationUnitAttribute", true ) ).list() );
     }
 
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Set<Attribute> getOrganisationUnitGroupAttributes()
+    {
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "organisationUnitGroupAttribute", true ) ).list() );
+    }
+
+    @Override
     @SuppressWarnings( "unchecked" )
     public Set<Attribute> getUserAttributes()
     {
         return new HashSet<Attribute>( getCriteria( Restrictions.eq( "userAttribute", true ) ).list() );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Set<Attribute> getUserGroupAttributes()
+    {
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "userGroupAttribute", true ) ).list() );
     }
 }

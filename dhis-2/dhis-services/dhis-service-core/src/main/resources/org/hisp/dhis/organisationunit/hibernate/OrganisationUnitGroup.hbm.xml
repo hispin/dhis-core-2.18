@@ -22,6 +22,14 @@
         foreign-key="fk_orgunitgroup_organisationunitid" />
     </set>
 
+    <!-- Dynamic attribute values -->
+
+    <set name="attributeValues" table="orgunitgroupattributevalues">
+      <cache usage="read-write" />
+      <key column="orgunitgroupid" />
+      <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" unique="true" />
+    </set>
+
     <join table="orgunitgroupsetmembers" inverse="true">
       <key column="orgunitgroupid" />
       <many-to-one column="orgunitgroupsetid" name="groupSet" />

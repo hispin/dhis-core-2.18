@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -59,6 +60,11 @@ public class IndicatorGroup
     private Set<Indicator> members = new HashSet<Indicator>();
 
     private IndicatorGroupSet groupSet;
+
+    /**
+     * Set of the dynamic attributes values that belong to this indicator group.
+     */
+    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -159,7 +165,7 @@ public class IndicatorGroup
 
     @JsonProperty( value = "indicators" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "indicators", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "indicator", namespace = Dxf2Namespace.NAMESPACE )
     public Set<Indicator> getMembers()
@@ -174,7 +180,7 @@ public class IndicatorGroup
 
     @JsonProperty( value = "indicatorGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class} )
+    @JsonView( { DetailedView.class } )
     @JacksonXmlProperty( localName = "indicatorGroupSet", namespace = Dxf2Namespace.NAMESPACE )
     public IndicatorGroupSet getGroupSet()
     {
@@ -184,6 +190,20 @@ public class IndicatorGroup
     public void setGroupSet( IndicatorGroupSet groupSet )
     {
         this.groupSet = groupSet;
+    }
+
+    @JsonProperty( value = "attributes" )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
+    public Set<AttributeValue> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
+    public void setAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
     }
 
     @Override
@@ -203,6 +223,9 @@ public class IndicatorGroup
             {
                 addIndicator( indicator );
             }
+
+            attributeValues.clear();
+            attributeValues.addAll( indicatorGroup.getAttributeValues() );
         }
     }
 }

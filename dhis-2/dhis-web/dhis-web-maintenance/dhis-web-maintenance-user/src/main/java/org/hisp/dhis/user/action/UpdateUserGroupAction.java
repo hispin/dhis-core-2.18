@@ -27,19 +27,21 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class UpdateUserGroupAction implements Action
-{ 
+public class UpdateUserGroupAction
+    implements Action
+{
     private UserService userService;
 
     public void setUserService( UserService userService )
@@ -52,6 +54,13 @@ public class UpdateUserGroupAction implements Action
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
+    }
+
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
+    {
+        this.attributeService = attributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -73,12 +82,19 @@ public class UpdateUserGroupAction implements Action
     }
 
     private Integer userGroupId;
-    
+
     public void setUserGroupId( Integer userGroupId )
     {
         this.userGroupId = userGroupId;
     }
-    
+
+    private List<String> jsonAttributeValues;
+
+    public void setJsonAttributeValues( List<String> jsonAttributeValues )
+    {
+        this.jsonAttributeValues = jsonAttributeValues;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -95,12 +111,18 @@ public class UpdateUserGroupAction implements Action
         }
 
         UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
-        
+
         userGroup.setName( name );
         userGroup.setMembers( userList );
 
-        userGroupService.updateUserGroup( userGroup);
-        
+        if ( jsonAttributeValues != null )
+        {
+            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues,
+                attributeService );
+        }
+
+        userGroupService.updateUserGroup( userGroup );
+
         return SUCCESS;
     }
 }

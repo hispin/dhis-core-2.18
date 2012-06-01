@@ -1,4 +1,4 @@
-package org.hisp.dhis.dd.action.indicatorgroup;
+package org.hisp.dhis.dd.action.dataelementgroup;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,36 +27,21 @@ package org.hisp.dhis.dd.action.indicatorgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorService;
-
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.system.util.AttributeUtils;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
 
-/**
- * @author Torgeir Lorange Ostby
- * @version $Id: UpdateIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z
- *          larshelg $
- */
-public class UpdateIndicatorGroupAction
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class ShowAddDataElementGroupForm
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
 
     private AttributeService attributeService;
 
@@ -66,42 +51,14 @@ public class UpdateIndicatorGroupAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private List<Attribute> attributes;
 
-    public void setId( Integer id )
+    public List<Attribute> getAttributes()
     {
-        this.id = id;
-    }
-
-    private String name;
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    private Set<String> groupMembers = new HashSet<String>();
-
-    public void setGroupMembers( Set<String> groupMembers )
-    {
-        this.groupMembers = groupMembers;
-    }
-
-    private IndicatorGroup indicatorGroup;
-
-    public IndicatorGroup getIndicatorGroup()
-    {
-        return indicatorGroup;
-    }
-
-    private List<String> jsonAttributeValues;
-
-    public void setJsonAttributeValues( List<String> jsonAttributeValues )
-    {
-        this.jsonAttributeValues = jsonAttributeValues;
+        return attributes;
     }
 
     // -------------------------------------------------------------------------
@@ -110,29 +67,8 @@ public class UpdateIndicatorGroupAction
 
     public String execute()
     {
-        indicatorGroup = indicatorService.getIndicatorGroup( id );
-
-        if ( name != null && name.trim().length() > 0 )
-        {
-            indicatorGroup.setName( name );
-        }
-
-        Set<Indicator> members = new HashSet<Indicator>();
-
-        for ( String memberId : groupMembers )
-        {
-            members.add( indicatorService.getIndicator( Integer.parseInt( memberId ) ) );
-        }
-
-        if ( jsonAttributeValues != null )
-        {
-            AttributeUtils.updateAttributeValuesFromJson( indicatorGroup.getAttributeValues(), jsonAttributeValues,
-                attributeService );
-        }
-
-        indicatorGroup.updateIndicators( members );
-
-        indicatorService.updateIndicatorGroup( indicatorGroup );
+        attributes = new ArrayList<Attribute>( attributeService.getDataElementGroupAttributes() );
+        Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         return SUCCESS;
     }

@@ -166,6 +166,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.UpdateOrganisationUnitGroupAction" class="org.hisp.dhis.oum.action.organisationunitgroup.UpdateOrganisationUnitGroupAction"
@@ -176,6 +177,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.RemoveOrganisationUnitGroupAction" class="org.hisp.dhis.oum.action.organisationunitgroup.RemoveOrganisationUnitGroupAction"

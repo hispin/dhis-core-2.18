@@ -140,7 +140,7 @@
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
     </action>
 
-    <action name="showAddDataElementGroupForm" class="org.hisp.dhis.dd.action.NoAction">
+    <action name="showAddDataElementGroupForm" class="org.hisp.dhis.dd.action.dataelementgroup.ShowAddDataElementGroupForm">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addDataElementGroupForm.vm</param>
       <param name="javascripts">javascript/dataElementGroup.js</param>

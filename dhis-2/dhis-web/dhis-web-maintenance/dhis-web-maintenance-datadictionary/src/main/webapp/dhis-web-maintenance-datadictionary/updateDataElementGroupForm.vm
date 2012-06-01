@@ -1,6 +1,20 @@
-<script type="text/javascript" src="javascript/updateDataElementGroupForm.js"></script>
 <script type="text/javascript">
 	jQuery(function() {
+        validation2( 'updateDataElementGroupForm', function( form )
+        {
+            form.submit();
+        }, {
+            'beforeValidateHandler' : function() {
+                beforeSubmit();
+                #tblDynamicAttributesJavascript()
+            },
+            'rules' : getValidationRules( "dataElementGroup" )
+        } );
+
+        checkValueIsExist( "name", "validateDataElementGroup.action", {
+            id : getFieldValue( 'id' )
+        } );
+
 		jQuery("#availableDataElementsList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getDataElements.action",
 			iterator: "dataElements",
@@ -25,18 +39,20 @@
 </div>
 
 <table>
+    <col width="200px" />
+   	<col width="240px" />
+
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementGroup.name )" style="width:20em"/>	
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElementGroup.name )" style="width:240px"/>
 		</td>
 	</tr>
-	<tr>
-		<td colspan="2" height="15px"></td>
-	</tr>
 </table>
+
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 
 <table>
     <col style="width: 450px"/>

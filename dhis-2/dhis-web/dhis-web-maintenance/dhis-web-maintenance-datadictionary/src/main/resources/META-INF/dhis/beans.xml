@@ -37,6 +37,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementGroupMembersAction" class="org.hisp.dhis.dd.action.dataelement.GetDataElementGroupMembersAction"
@@ -129,6 +130,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Data Element Group -->
 
+  <bean id="org.hisp.dhis.dd.action.dataelementgroup.ShowAddDataElementGroupForm" class="org.hisp.dhis.dd.action.dataelementgroup.ShowAddDataElementGroupForm">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
   <bean id="org.hisp.dhis.dd.action.dataelementgroup.ShowDataElementGroupEditorAction" class="org.hisp.dhis.dd.action.dataelementgroup.ShowDataElementGroupEditorAction"
     scope="prototype">
     <property name="dataElementService">
@@ -179,6 +184,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction" class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction"
@@ -186,6 +192,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelementgroup.ValidateDataElementGroupAction" class="org.hisp.dhis.dd.action.dataelementgroup.ValidateDataElementGroupAction"
@@ -289,6 +296,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicatorgroup.ShowUpdateIndicatorGroupFormAction" class="org.hisp.dhis.dd.action.indicatorgroup.ShowUpdateIndicatorGroupFormAction"
@@ -303,6 +311,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicatorgroup.RenameIndicatorGroupNameEditorAction" class="org.hisp.dhis.dd.action.indicatorgroup.RenameIndicatorGroupNameEditorAction"
