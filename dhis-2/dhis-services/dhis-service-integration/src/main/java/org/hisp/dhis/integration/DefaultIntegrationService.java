@@ -1,4 +1,4 @@
-package org.hisp.dhis.integration.components;
+package org.hisp.dhis.integration;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -28,34 +28,41 @@ package org.hisp.dhis.integration.components;
  */
 
 import java.io.InputStream;
-import org.apache.camel.Exchange;
-import org.apache.camel.impl.DefaultProducer;
+import org.apache.camel.CamelContext;
+import org.apache.camel.EndpointInject;
+import org.apache.camel.ProducerTemplate;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.integration.routes.SDMXDataIn;
+import org.hisp.dhis.integration.routes.XMLDataIn;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
+ *
  * @author bobj
  */
-public class Dxf2DataProducer 
-    extends DefaultProducer
+public class DefaultIntegrationService implements IntegrationService
 {
-    public Dxf2DataProducer( Dxf2DataEndpoint endpoint )
+    @Autowired
+    CamelContext camelContext;
+    
+    @EndpointInject(uri = XMLDataIn.XMLDATA_IN)
+    private ProducerTemplate xmlIn;
+
+    @EndpointInject(uri = SDMXDataIn.SDMXDATA_IN)
+    private ProducerTemplate sdmxIn;
+
+
+    @Override
+    public ImportSummary importXMLDataValueSet( InputStream in, ImportOptions importOptions )
     {
-        super( endpoint );
+       return (ImportSummary) xmlIn.requestBodyAndHeader( in, "ImportOptions", importOptions);
     }
 
     @Override
-    public void process( Exchange exchange ) throws Exception
+    public ImportSummary importSDMXDataValueSet( InputStream in, ImportOptions importOptions )
     {
-        log.info( this.getEndpoint().getEndpointUri() + " : " + exchange.getIn().getBody() );
-        
-        Dxf2DataEndpoint endpoint =  (Dxf2DataEndpoint) this.getEndpoint();
-        
-        ImportSummary summary = endpoint.getDataValueSetService().saveDataValueSet( (InputStream)exchange.getIn().getBody(), 
-             endpoint.getImportOptions() );
-        
-        //exchange.getOut().setBody(JacksonUtils.toXmlAsString( summary ) );
-        exchange.getOut().setBody( summary );
-        log.info( this.getEndpoint().getEndpointUri() + " : " + JacksonUtils.toXmlAsString(exchange.getOut().getBody()) );
+       return (ImportSummary) sdmxIn.requestBodyAndHeader( in, "ImportOptions", importOptions);
     }
+    
 }

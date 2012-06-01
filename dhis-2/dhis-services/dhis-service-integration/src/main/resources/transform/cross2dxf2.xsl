@@ -16,10 +16,10 @@
 
             <xsl:for-each select="*[local-name()='Section']">
               <xsl:for-each select="*[local-name()='OBS_VALUE']">
-                <xsl:variable name="orgunit" select="@*[local-name()='FACILITY']"/>
+                <xsl:variable name="orgUnit" select="@*[local-name()='FACILITY']"/>
                 <xsl:variable name="dataElement" select="@*[local-name()='DATAELEMENT']"/>
                 <xsl:variable name="value" select="@*[local-name()='value']"/>
-                <d:dataValue dataElement='{$dataElement}' orgunit='{$orgunit}' value='{$value}' />
+                <d:dataValue dataElement='{$dataElement}' orgUnit='{$orgUnit}' value='{$value}' />
               </xsl:for-each>
             </xsl:for-each>
           </d:dataValueSet>
