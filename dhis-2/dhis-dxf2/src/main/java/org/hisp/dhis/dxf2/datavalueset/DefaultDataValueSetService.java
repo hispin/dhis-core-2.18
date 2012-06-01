@@ -75,14 +75,12 @@ import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * @author Lars Helge Overland
  */
-@Transactional
 public class DefaultDataValueSetService
     implements DataValueSetService
 {
@@ -161,7 +159,7 @@ public class DefaultDataValueSetService
         
         dataValueSetStore.writeDataValueSetXml( null, null, null, null, getDataElements( dataSets ), periods, getOrgUnits( orgUnits ), out );
     }
-    
+
     public void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer )
     {
         Set<Period> periods = new HashSet<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
@@ -206,7 +204,7 @@ public class DefaultDataValueSetService
             throw ex;
         }
     }
-    
+
     private ImportSummary saveDataValueSet( ImportOptions importOptions, TaskId id, DataValueSet dataValueSet )
     {
         notifier.clear( id, DATAVALUE_IMPORT ).notify( id, DATAVALUE_IMPORT, "Process started" );
@@ -367,7 +365,9 @@ public class DefaultDataValueSetService
             summary.getConflicts().add( new ImportConflict( Period.class.getSimpleName(), ERROR_OBJECT_NEEDED_TO_COMPLETE ) );
             return;
         }
-
+        
+        period = periodService.reloadPeriod( period );
+        
         CompleteDataSetRegistration completeAlready = registrationService.getCompleteDataSetRegistration( dataSet, period, orgUnit );
 
         String username = currentUserService.getCurrentUsername();
