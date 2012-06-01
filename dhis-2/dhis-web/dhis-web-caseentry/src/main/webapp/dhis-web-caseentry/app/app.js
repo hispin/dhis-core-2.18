@@ -706,7 +706,7 @@ Ext.onReady( function() {
 		orderByOrgunitAsc: true,
 		orderByExecutionDateByAsc: true,
 		orgunitId: 0,
-		generateReport: function( type ) {
+		generateReport: function( type, isFilter ) {
 			// Validation
 			if( !this.validation.objects() )
 			{
@@ -749,7 +749,6 @@ Ext.onReady( function() {
 							TR.datatable.getDataTable();
 							TR.datatable.setPagingToolbarStatus();
 							
-							Ext.getCmp('btnFilter').enable();
 							Ext.getCmp('btnClean').enable();
 							Ext.getCmp('btnSortBy').enable();
 							
@@ -764,6 +763,32 @@ Ext.onReady( function() {
 				});
 			}
 			TR.util.notification.ok();
+		},
+		filterReport: function() {
+			TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
+			var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generatetabularreport_get;
+			Ext.Ajax.request({
+				url: url,
+				method: "POST",
+				scope: this,
+				params: this.getParams(),
+				success: function(r) {
+					var json = Ext.JSON.decode(r.responseText);
+					if ( json.items.length > 1 )
+					{
+						TR.store.datatable.loadData(json.items,false);
+						Ext.getCmp('btnClean').enable();
+						Ext.getCmp('btnSortBy').enable();
+						TR.util.notification.ok();
+						TR.util.mask.hideMask();
+					}
+					else
+					{
+						TR.util.mask.hideMask();
+						TR.util.notification.error(TR.i18n.et_no_data, TR.i18n.et_no_data);
+					}
+				}
+			})
 		},
 		getParams: function() {
 			var p = {};
@@ -930,6 +955,20 @@ Ext.onReady( function() {
 					return false;
 				}
 				
+				if( !TR.cmp.settings.startDate.isValid() )
+				{
+					var message = TR.i18n.start_date + " " + TR.i18n.is_not_valid;
+					TR.util.notification.error( message, message);
+					return false;
+				}
+				
+				if( !TR.cmp.settings.endDate.isValid() )
+				{
+					var message = TR.i18n.end_date + " " + TR.i18n.is_not_valid;
+					TR.util.notification.error( message, message);
+					return false;
+				}
+				
 				if( TR.cmp.settings.startDate.getValue() > TR.cmp.settings.endDate.getValue() )
 				{
 					TR.util.notification.error(TR.i18n.start_date_must_be_less_then_or_equals_to_end_date, TR.i18n.start_date_must_be_less_then_or_equals_to_end_date);
@@ -974,7 +1013,7 @@ Ext.onReady( function() {
 		covertValueType: function( type )
 		{
 			type = type.toLowerCase();
-			if( type == 'date' || type == 'list')
+			if( type == 'date' )
 			{
 				return type;
 			}
@@ -1153,69 +1192,7 @@ Ext.onReady( function() {
 			// Data element columns
 			
 			TR.cmp.params.dataelement.selected.store.each( function(r) {
-				if( r.data.valueType.toLowerCase() == 'date' )
-				{
-					cols[++index] = {
-						header: TR.value.columns[index].name, 
-						dataIndex: 'col' + index,
-						height: TR.conf.layout.east_gridcolumn_height,
-						name: r.data.id,
-						hidden: eval(TR.value.columns[index].hidden ),
-						sortable: false,
-						draggable: true,
-						isEditAllowed: true,
-						emptyText: TR.i18n.et_no_data,
-						renderer: Ext.util.Format.dateRenderer( TR.i18n.format_date ),
-						filterable: true,
-						filter: {
-							type:TR.value.covertValueType( r.data.valueType )						
-						},
-						editor: {
-							xtype: TR.value.covertXType( r.data.valueType ),
-							format: TR.i18n.format_date,
-							queryMode: 'local',
-							editable: true,
-							valueField: 'name',
-							displayField: 'name',
-							allowBlank: true,
-							store:  new Ext.data.ArrayStore({
-								fields: ['name'],
-								data: TR.value.columns[index].suggested
-							})
-						}
-					}
-				}
-				else
-				{
-					cols[++index] = {
-						header: TR.value.columns[index].name, 
-						dataIndex: 'col' + index,
-						height: TR.conf.layout.east_gridcolumn_height,
-						name: r.data.id,
-						hidden: eval(TR.value.columns[index].hidden ),
-						sortable: false,
-						draggable: true,
-						isEditAllowed: true,
-						emptyText: TR.i18n.et_no_data,
-						filterable: true,
-						filter: {
-							type:TR.value.covertValueType( r.data.valueType ),
-							options: TR.value.columns[index].suggested
-						},
-						editor: {
-							xtype: TR.value.covertXType( r.data.valueType ),
-							queryMode: 'local',
-							editable: true,
-							valueField: 'name',
-							displayField: 'name',
-							allowBlank: true,
-							store:  new Ext.data.ArrayStore({
-								fields: ['name'],
-								data: TR.value.columns[index].suggested
-							})
-						}
-					}
-				}
+				cols[++index] = TR.datatable.createColumn( r.data.valueType, r.data.id, cols, index );
 			});
 			
 			cols[++index]={
@@ -1243,50 +1220,7 @@ Ext.onReady( function() {
 				}]
 			}
 			
-			this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-				clicksToEdit: 1,
-				autoScroll: true,
-				errorSummary: true,
-				listeners: {
-					beforeedit: function( e, editor) 
-					{
-						if( e.rowIdx > 0 && !e.column.isEditAllowed )
-						{
-							return false;
-						}
-					},
-					edit: function( editor, e ){
-						var grid = TR.datatable.datatable;
-						grid.getView().getNode(e.rowIdx).classList.remove('hidden');
-						
-						var oldValue = e.originalValue;
-						var newValue = editor.editors.items[0].field.rawValue;
-						if( newValue != oldValue)
-						{
-							// filter
-							if( e.rowIdx==0 ){
-								TR.exe.execute();
-							}
-							// save data-value of data element
-							else{
-								var psiId = TR.store.datatable.getAt(e.rowIdx).data['id'];
-								var deId = e.column.name.split('_')[1];
-								TR.value.save( psiId, deId, newValue);
-							}
-						}
-					},
-					canceledit: function( grid, eOpts ){
-						if( e.rowIdx == 0 ){
-							var grid = TR.datatable.datatable;
-							grid.getView().getNode(0).classList.add('hidden');
-						}
-					},
-					validateedit: function( editor, e, eOpts )
-					{
-						return true;
-					}
-				}
-			});
+			TR.datatable.initCellEditing();
 	
 			// grid
 			this.datatable = Ext.create('Ext.grid.Panel', {
@@ -1298,6 +1232,28 @@ Ext.onReady( function() {
 				selType: 'cellmodel',
 				features: [{
 					ftype: 'filters',
+					autoReload: true,
+					encode: true,
+					local: false,
+					buildQuery : function (filters) {
+						for( var i=0;i<filters.length;i++)
+						{
+							var filter = filters[i];
+							var field = filter.field;
+							var compare = '=';
+							if( filter.data.comparison == 'lt')
+								compare = '<' ;
+							else ( filter.data.comparison == 'gt' )
+								compare = '>' ;
+								
+							var value = compare + "'"+ filter.data.value + "'";
+							
+							var grid = TR.datatable.datatable;
+							var record = grid.getView().getRecord( grid.getView().getNode(0) );
+							record.set(field, value);
+						}
+						TR.exe.filter();
+					},
 					filters: []
 				}],
 				viewConfig: {
@@ -1417,6 +1373,114 @@ Ext.onReady( function() {
             return this.datatable;
             
         },
+		initCellEditing: function(){
+			this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+				clicksToEdit: 1,
+				autoScroll: true,
+				errorSummary: true,
+				listeners: {
+					beforeedit: function( e, editor) 
+					{
+						if( e.rowIdx > 0 && !e.column.isEditAllowed )
+						{
+							return false;
+						}
+					},
+					edit: function( editor, e ){
+						var grid = TR.datatable.datatable;
+						grid.getView().getNode(e.rowIdx).classList.remove('hidden');
+						
+						var oldValue = e.originalValue;
+						var newValue = editor.editors.items[0].field.rawValue;
+						if( newValue != oldValue)
+						{
+							// filter
+							if( e.rowIdx==0 ){
+								TR.exe.execute();
+							}
+							// save data-value of data element
+							else{
+								var psiId = TR.store.datatable.getAt(e.rowIdx).data['id'];
+								var deId = e.column.name.split('_')[1];
+								TR.value.save( psiId, deId, newValue);
+							}
+						}
+					},
+					canceledit: function( grid, eOpts ){
+						if( e.rowIdx == 0 ){
+							var grid = TR.datatable.datatable;
+							grid.getView().getNode(0).classList.add('hidden');
+						}
+					},
+					validateedit: function( editor, e, eOpts )
+					{
+						return true;
+					}
+				}
+			});
+		},
+		createColumn: function( type, id, cols, index )
+		{
+			if( type.toLowerCase() == 'date' )
+			{
+				return {
+					header: TR.value.columns[index].name, 
+					dataIndex: 'col' + index,
+					name: id,
+					hidden: eval(TR.value.columns[index].hidden ),
+					sortable: false,
+					draggable: true,
+					isEditAllowed: true,
+					renderer: Ext.util.Format.dateRenderer( TR.i18n.format_date ),
+					filter: {
+						type:TR.value.covertValueType( type ),
+						dateFormat: TR.i18n.format_date,
+						beforeText: TR.i18n.before,
+						afterText: TR.i18n.after,
+						onText: TR.i18n.on
+					},
+					editor: {
+						xtype: TR.value.covertXType( type ),
+						format: TR.i18n.format_date,
+						queryMode: 'local',
+						editable: true,
+						valueField: 'name',
+						displayField: 'name',
+						allowBlank: true,
+						store:  new Ext.data.ArrayStore({
+							fields: ['name'],
+							data: TR.value.columns[index].suggested
+						})
+					}
+				}
+			}
+			
+			return {
+				header: TR.value.columns[index].name, 
+				dataIndex: 'col' + index,
+				name: id,
+				hidden: eval(TR.value.columns[index].hidden ),
+				sortable: false,
+				draggable: true,
+				isEditAllowed: true,
+				filter: {
+					type:TR.value.covertValueType( type ),
+					options: TR.value.columns[index].suggested
+				},
+				editor: {
+					xtype: TR.value.covertXType( type ),
+					queryMode: 'local',
+					editable: true,
+					valueField: 'name',
+					displayField: 'name',
+					allowBlank: true,
+					store:  new Ext.data.ArrayStore({
+						fields: ['name'],
+						data: TR.value.columns[index].suggested
+					})
+				}
+			}
+		},
         setPagingToolbarStatus: function() {
 			if( TR.state.currentPage == TR.state.total 
 				&& TR.state.total== 1 )
@@ -1452,7 +1516,10 @@ Ext.onReady( function() {
         
 	TR.exe = {
 		execute: function( type ) {
-			TR.state.generateReport(type);
+			TR.state.generateReport( type );
+		},
+		filter: function() {
+			TR.state.filterReport();
 		},
 		paging: function( currentPage )
 		{
@@ -1560,7 +1627,9 @@ Ext.onReady( function() {
 										labelStyle: 'padding-left:3px; font-weight:bold',
 										labelAlign: 'top',
 										labelSeparator: '',
-										editable: false,
+										editable: true,
+										allowBlank:false,
+										invalidText: TR.i18n.the_date_is_not_valid,
 										style: 'margin-right:8px',
 										width: TR.conf.layout.west_fieldset_width / 2 - 4,
 										format: TR.i18n.format_date,
@@ -1580,7 +1649,9 @@ Ext.onReady( function() {
 										labelWidth: TR.conf.layout.form_label_width,
 										labelAlign: 'top',
 										labelSeparator: '',
-										editable: false,
+										editable: true,
+										allowBlank:false,
+										invalidText: TR.i18n.the_date_is_not_valid,
 										width: TR.conf.layout.west_fieldset_width / 2 - 4,
 										format: TR.i18n.format_date,
 										value: new Date(),
@@ -2175,28 +2246,9 @@ Ext.onReady( function() {
                                 TR.exe.execute();
                             }
                         },
-						{
-						xtype: 'button',
-						text: TR.i18n.filter,
-						id: 'btnFilter',
-						disabled: true,
-						handler: function() {
-							var grid = TR.datatable.datatable;
-							var hidden = grid.getView().getNode(0).classList.contains('hidden');
-							if( hidden )
-							{
-								grid.getView().getNode(0).classList.remove('hidden');
-								var record = grid.getView().getRecord( grid.getView().getNode(0) );
-								grid.getView().getSelectionModel().select(record, false, false);
-							}
-							else {
-								grid.getView().getNode(0).classList.add('hidden');
-							}
-						}
-					},
 					{
 						xtype: 'button',
-						text: TR.i18n.clear,
+						text: TR.i18n.clear_filter,
 						id: 'btnClean',
 						disabled: true,
 						handler: function() {
