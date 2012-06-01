@@ -54,6 +54,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -243,4 +244,19 @@ public class DataValueSetServiceTest
         assertNotNull( dataValues );
         assertEquals( 0, dataValues.size() );
     }
+
+    // Testing importing datavalues where period is not pre-existing fails
+    @Ignore
+    @Test
+    public void testImportDataValuesWithNewPeriod()
+        throws Exception
+    {
+        ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetC.xml" ).getInputStream() );
+        
+        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+        
+        assertNotNull( dataValues );
+        assertEquals( 3, dataValues.size() );
+    }
+
 }
