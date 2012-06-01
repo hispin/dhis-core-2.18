@@ -263,6 +263,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Indicator Group -->
 
+  <bean id="org.hisp.dhis.dd.action.indicatorgroup.ShowAddIndicatorGroupForm" class="org.hisp.dhis.dd.action.indicatorgroup.ShowAddIndicatorGroupForm">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
   <bean id="org.hisp.dhis.dd.action.indicatorgroup.ShowIndicatorGroupEditorAction" class="org.hisp.dhis.dd.action.indicatorgroup.ShowIndicatorGroupEditorAction"
     scope="prototype">
     <property name="indicatorService">
@@ -304,6 +308,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction" class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction"
@@ -433,6 +438,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <!-- Indicator -->
+
+  <bean id="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm" class="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction" class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction"
     scope="prototype">

@@ -1,6 +1,17 @@
-<script type="text/javascript" src="javascript/updateIndicatorGroupForm.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
+        validation2( 'updateIndicatorGroupForm', function( form )
+        {
+            form.submit();
+        }, {
+            'beforeValidateHandler' : function()
+            {
+                listValidator( 'memberValidator', 'groupMembers' );
+                #tblDynamicAttributesJavascript()
+            },
+            'rules' : getValidationRules( "indicatorGroup" )
+        } );
+
 		jQuery("#availableIndicatorsList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getIndicators.action",
 			iterator: "indicators",
@@ -27,17 +38,19 @@
 </div>
 
 <table>
+    <col width="200px" />
+   	<col width="260px" />
+
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )" style="width:20em"/></td>
-	</tr>
-	<tr>
-		<td colspan="2" height="15px"></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )" style="width:240px;"/></td>
 	</tr>
 </table>
+
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 
 <table>
     <col style="width: 450px"/>

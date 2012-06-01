@@ -1,5 +1,7 @@
+package org.hisp.dhis.dd.action.indicatorgroup;
+
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,37 +27,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dd.action.indicatorgroup;
-
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.system.util.AttributeUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * @author Chau Thu Tran
- * @version $ ShowUpdateIndicatorGroupFormAction.java May 30, 2011 3:01:41 PM $
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ShowUpdateIndicatorGroupFormAction
+public class ShowAddIndicatorGroupForm
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
 
     private AttributeService attributeService;
 
@@ -68,39 +57,11 @@ public class ShowUpdateIndicatorGroupFormAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    private IndicatorGroup indicatorGroup;
-
-    public IndicatorGroup getIndicatorGroup()
-    {
-        return indicatorGroup;
-    }
-
-    private List<Indicator> groupMembers = new ArrayList<Indicator>();
-
-    public List<Indicator> getGroupMembers()
-    {
-        return groupMembers;
-    }
-
     private List<Attribute> attributes;
 
     public List<Attribute> getAttributes()
     {
         return attributes;
-    }
-
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
-
-    public Map<Integer, String> getAttributeValues()
-    {
-        return attributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -109,15 +70,7 @@ public class ShowUpdateIndicatorGroupFormAction
 
     public String execute()
     {
-        indicatorGroup = indicatorService.getIndicatorGroup( id, true );
-
-        groupMembers = new ArrayList<Indicator>( indicatorGroup.getMembers() );
-
-        attributes = new ArrayList<Attribute>( attributeService.getIndicatorGroupAttributes() );
-
-        attributeValues = AttributeUtils.getAttributeValueMap( indicatorGroup.getAttributeValues() );
-
-        Collections.sort( groupMembers, new IdentifiableObjectNameComparator() );
+        attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         return SUCCESS;

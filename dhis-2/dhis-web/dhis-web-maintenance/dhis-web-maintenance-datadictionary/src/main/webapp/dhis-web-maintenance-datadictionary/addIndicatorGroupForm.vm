@@ -1,6 +1,23 @@
-<script type="text/javascript" src="javascript/addIndicatorGroupForm.js"></script>
 <script type="text/javascript">
 	jQuery(function() {
+        validation2( 'addIndicatorGroupForm', function( form )
+        {
+            form.submit();
+        }, {
+            'beforeValidateHandler' : function()
+            {
+                listValidator( 'memberValidator', 'groupMembers' );
+                #tblDynamicAttributesJavascript()
+            },
+            'rules' : getValidationRules( "indicatorGroup" )
+        } );
+
+        checkValueIsExist( "name", "validateIndicatorGroup.action" );
+
+        var nameField = document.getElementById( 'name' );
+        nameField.select();
+        nameField.focus();
+
 		jQuery("#availableIndicatorsList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getIndicators.action",
 			iterator: "indicators",
@@ -21,17 +38,20 @@
 <form id="addIndicatorGroupForm" action="addIndicatorGroup.action" method="post" >
 
 <table>
-	<tr>
-		<th colspan="2">$i18n.getString( "details" )</th>
-	</tr>
+    <col width="200px" />
+   	<col width="240px" />
+
+    <tr>
+   		<th colspan="2">$i18n.getString( "details" )</th>
+   	</tr>
+
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em"/></td>
-	</tr>
-	<tr>
-		<td colspan="2" height="15px"></td>
+		<td><input type="text" id="name" name="name" style="width:240px;"/></td>
 	</tr>
 </table>
+
+#tblDynamicAttributes( { "attributes": $attributes } )
 
 <table>
     <col style="width: 450px"/>
