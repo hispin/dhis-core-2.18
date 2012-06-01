@@ -1,6 +1,20 @@
-<script type="text/javascript" src="javascript/addUserGroupForm.js"></script>
 <script type="text/javascript">
 	jQuery(function() {
+        validation2( 'addUserGroupForm', function( form )
+        {
+            form.submit();
+        }, {
+            'beforeValidateHandler' : function()
+            {
+                listValidator( 'memberValidator', 'groupMembersList' );
+                #tblDynamicAttributesJavascript()
+            },
+            'rules' : getValidationRules( "userGroup" )
+        } );
+
+        /* remote validation */
+        checkValueIsExist( "name", "validateUserGroup.action" );
+
 		jQuery("#availableUsersList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getUsers.action",
 			iterator: "users",
@@ -21,21 +35,20 @@
 <form id="addUserGroupForm" name="addUserGroupForm" action="addUserGroup.action" method="post" >
  
 <table id="detailsList">
-	<col/>
-	<col/>
-	<thead>
-	<tr>
-		<th colspan="2">$i18n.getString( "user_group_details" )</th>
-	</tr>
-	</thead>
-	<tbody>
+    <col style="width: 200px"/>
+    <col style="width: 270px"/>
+
+    <tr>
+        <th colspan="2">$i18n.getString( "user_group_details" )</th>
+    </tr>
+
 	<tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" style="width:240px"></td>
 	</tr>
-	<tr><td colspan="2" style="height:15px"></td></tr>
-	</tbody>
 </table>
+
+#tblDynamicAttributes( { "attributes": $attributes } )
 
 <table>
     <col style="width: 450px"/>

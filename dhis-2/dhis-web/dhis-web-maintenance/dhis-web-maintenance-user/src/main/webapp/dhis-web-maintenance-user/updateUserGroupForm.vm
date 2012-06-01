@@ -1,6 +1,17 @@
-<script type="text/javascript" src="javascript/updateUserGroupForm.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
+        validation2( 'editUserGroupForm', function( form )
+        {
+            form.submit();
+        }, {
+            'beforeValidateHandler' : function()
+            {
+                listValidator( 'memberValidator', 'groupMembersList' );
+                #tblDynamicAttributesJavascript();
+            },
+            'rules' : getValidationRules( "userGroup" )
+        } );
+
 		jQuery("#availableUsersList").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getUsers.action",
 			iterator: "users",
@@ -27,21 +38,21 @@
 	
 <input type="hidden" name="userGroupId" id="userGroupId" value="$group.id" />
 <table id="detailsList">
-	<col/>
-	<col/>
-    <thead>
+    <col style="width: 200px"/>
+    <col style="width: 270px"/>
+
 	<tr>
 		<th colspan="2">$i18n.getString( "user_group_details" )</th>
 	</tr>
-	</thead>
-	<tbody>
+
 	<tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value ="$encoder.htmlEncode( $group.name )" style="width:20em"></td>
+		<td><input type="text" id="name" name="name" value ="$encoder.htmlEncode( $group.name )" style="width: 240px"></td>
 	</tr>
-	<tr><td colspan="2" style="height:15px"></td></tr>
-    </tbody>
+
 </table>
+
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 
 <table>
     <col style="width: 450px"/>

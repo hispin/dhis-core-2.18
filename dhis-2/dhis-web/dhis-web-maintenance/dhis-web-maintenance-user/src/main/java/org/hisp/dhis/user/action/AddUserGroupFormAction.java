@@ -31,26 +31,17 @@ import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.system.util.AttributeUtils;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class EditUserGroupFormAction
+public class AddUserGroupFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private UserGroupService userGroupService;
-
-    public void setUserGroupService( UserGroupService userGroupService )
-    {
-        this.userGroupService = userGroupService;
-    }
 
     private AttributeService attributeService;
 
@@ -63,44 +54,11 @@ public class EditUserGroupFormAction
     // Parameters
     // -------------------------------------------------------------------------
 
-    private Integer userGroupId;
-
-    public void setUserGroupId( Integer userGroupId )
-    {
-        this.userGroupId = userGroupId;
-    }
-
-    public Integer getUserGroupId()
-    {
-        return userGroupId;
-    }
-
-    private List<User> groupMembers = new ArrayList<User>();
-
-    public List<User> getGroupMembers()
-    {
-        return groupMembers;
-    }
-
-    private UserGroup group;
-
-    public UserGroup getGroup()
-    {
-        return group;
-    }
-
     private List<Attribute> attributes;
 
     public List<Attribute> getAttributes()
     {
         return attributes;
-    }
-
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
-
-    public Map<Integer, String> getAttributeValues()
-    {
-        return attributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -110,14 +68,7 @@ public class EditUserGroupFormAction
     public String execute()
         throws Exception
     {
-        group = userGroupService.getUserGroup( userGroupId );
-
-        groupMembers = new ArrayList<User>( group.getMembers() );
-
         attributes = new ArrayList<Attribute>( attributeService.getUserGroupAttributes() );
-
-        attributeValues = AttributeUtils.getAttributeValueMap( group.getAttributeValues() );
-
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
