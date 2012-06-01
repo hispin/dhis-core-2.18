@@ -18,7 +18,6 @@
 	} );
 </script>
 
-
 <h3>$i18n.getString( "edit_indicator" )</h3>
 
 <form id="updateIndicatorForm" action="updateIndicator.action" method="post" >

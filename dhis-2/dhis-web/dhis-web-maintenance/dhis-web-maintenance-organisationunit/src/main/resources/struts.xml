@@ -33,7 +33,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="showAddOrganisationUnitForm" class="org.hisp.dhis.oum.action.organisationunit.PrepareAddOrganisationUnitAction">
+    <action name="showAddOrganisationUnitForm" class="org.hisp.dhis.oum.action.organisationunit.ShowAddOrganisationUnitFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitForm.vm</param>
       <param name="javascripts">javascript/shortName.js,../dhis-web-commons/ouwt/ouwt.js</param>
@@ -115,7 +115,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="openAddOrganisationUnitGroup" class="org.hisp.dhis.oum.action.NoAction">
+    <action name="openAddOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.ShowAddOrganisationUnitGroupFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupForm.vm</param>
       <param name="requiredAuthorities">F_ORGUNITGROUP_ADD</param>
@@ -188,7 +188,7 @@
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
     </action>
 
-    <action name="showUpdateOrganisationUnitGroupSetForm" class="org.hisp.dhis.oum.action.organisationunitgroupset.PrepareUpdateGroupSetAction">
+    <action name="showUpdateOrganisationUnitGroupSetForm" class="org.hisp.dhis.oum.action.organisationunitgroupset.ShowUpdateGroupSetFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupSetForm.vm</param>
       <param name="javascripts">javascript/organisationUnitGroupSet.js</param>

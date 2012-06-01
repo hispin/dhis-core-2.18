@@ -1,7 +1,7 @@
-package org.hisp.dhis.oum.action.organisationunitgroup;
+package org.hisp.dhis.oum.action.organisationunit;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,35 +31,39 @@ import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.system.util.AttributeUtils;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.period.Cal;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
- * @author Torgeir Lorange Ostby
+ * @author Nguyen Dang Quang
  */
-public class GetOrganisationUnitGroupAction
+public class ShowAddOrganisationUnitFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
-    }
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
     }
 
     private AttributeService attributeService;
@@ -70,28 +74,28 @@ public class GetOrganisationUnitGroupAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Date defaultDate;
 
-    public void setId( Integer id )
+    public Date getDefaultDate()
     {
-        this.id = id;
+        return defaultDate;
     }
 
-    private OrganisationUnitGroup organisationUnitGroup;
+    private List<DataSet> dataSets;
 
-    public OrganisationUnitGroup getOrganisationUnitGroup()
+    public List<DataSet> getDataSets()
     {
-        return organisationUnitGroup;
+        return dataSets;
     }
 
-    private int memberCount;
+    private List<OrganisationUnitGroupSet> groupSets;
 
-    public int getMemberCount()
+    public List<OrganisationUnitGroupSet> getGroupSets()
     {
-        return memberCount;
+        return groupSets;
     }
 
     private List<Attribute> attributes;
@@ -101,32 +105,23 @@ public class GetOrganisationUnitGroupAction
         return attributes;
     }
 
-    public Map<Integer, String> attributeValues = new HashMap<Integer, String>();
-
-    public Map<Integer, String> getAttributeValues()
-    {
-        return attributeValues;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( id );
+        defaultDate = new Cal().set( 1900, 1, 1 ).time();
 
-        memberCount = organisationUnitGroup.getMembers().size();
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
-        selectionTreeManager.clearSelectedOrganisationUnits();
+        groupSets = new ArrayList<OrganisationUnitGroupSet>(
+            organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
 
-        selectionTreeManager.setSelectedOrganisationUnits( organisationUnitGroup.getMembers() );
+        attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitAttributes() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitGroupAttributes() );
-
-        attributeValues = AttributeUtils.getAttributeValueMap( organisationUnitGroup.getAttributeValues() );
-
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;

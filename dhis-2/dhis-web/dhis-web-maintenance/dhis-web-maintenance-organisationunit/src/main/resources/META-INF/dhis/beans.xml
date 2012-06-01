@@ -96,7 +96,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.oum.action.organisationunit.PrepareAddOrganisationUnitAction" class="org.hisp.dhis.oum.action.organisationunit.PrepareAddOrganisationUnitAction"
+  <bean id="org.hisp.dhis.oum.action.organisationunit.ShowAddOrganisationUnitFormAction" class="org.hisp.dhis.oum.action.organisationunit.ShowAddOrganisationUnitFormAction"
     scope="prototype">
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService" />
@@ -124,6 +124,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- OrganisationUnitGroup -->
 
+  <bean id="org.hisp.dhis.oum.action.organisationunitgroup.ShowAddOrganisationUnitGroupFormAction" class="org.hisp.dhis.oum.action.organisationunitgroup.ShowAddOrganisationUnitGroupFormAction">
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+  </bean>
+
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupListAction" class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupListAction"
     scope="prototype">
     <property name="organisationUnitGroupService">
@@ -139,6 +143,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionTreeManager">
       <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
     </property>
+    <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
   <bean id="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupMembersAction" class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupMembersAction"
@@ -231,7 +236,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.oum.action.organisationunitgroupset.PrepareUpdateGroupSetAction" class="org.hisp.dhis.oum.action.organisationunitgroupset.PrepareUpdateGroupSetAction"
+  <bean id="org.hisp.dhis.oum.action.organisationunitgroupset.ShowUpdateGroupSetFormAction" class="org.hisp.dhis.oum.action.organisationunitgroupset.ShowUpdateGroupSetFormAction"
     scope="prototype">
     <property name="organisationUnitGroupService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />

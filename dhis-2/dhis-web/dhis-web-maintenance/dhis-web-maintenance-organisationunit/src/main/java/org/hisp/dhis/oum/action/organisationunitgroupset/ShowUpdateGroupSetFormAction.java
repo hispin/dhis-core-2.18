@@ -41,7 +41,7 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Lars Helge Overland
  */
-public class PrepareUpdateGroupSetAction
+public class ShowUpdateGroupSetFormAction
     implements Action
 {
     // -------------------------------------------------------------------------

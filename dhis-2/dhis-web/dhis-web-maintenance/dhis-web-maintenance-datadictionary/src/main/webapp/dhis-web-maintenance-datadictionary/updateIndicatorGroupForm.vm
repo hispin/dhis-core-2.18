@@ -39,7 +39,7 @@
 
 <table>
     <col width="200px" />
-   	<col width="260px" />
+   	<col width="275px" />
 
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
