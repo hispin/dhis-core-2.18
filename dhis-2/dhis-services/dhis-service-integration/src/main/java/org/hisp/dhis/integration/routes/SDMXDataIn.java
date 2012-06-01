@@ -1,4 +1,4 @@
-package org.hisp.dhis.integration.components;
+package org.hisp.dhis.integration.routes;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,35 +27,37 @@ package org.hisp.dhis.integration.components;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import org.apache.camel.Exchange;
-import org.apache.camel.impl.DefaultProducer;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.DescriptionDefinition;
 
 /**
+ * SDMXDataIn route takes an SDMX cross-sectional message, transforms to dxf2 datavalueset
+ * and sends to dxf2 endpoint
+ * 
  * @author bobj
  */
-public class Dxf2DataProducer 
-    extends DefaultProducer
+public class SDMXDataIn extends RouteBuilder
 {
-    public Dxf2DataProducer( Dxf2DataEndpoint endpoint )
-    {
-        super( endpoint );
-    }
+ 
+    // DataInput endpoint
 
+    public static final String SDMXDATA_IN = "direct:sdmxDataIn";
+    
+    // Route description texts
+    
+    public static final String SDMXDATA_IN_DESC = "Internal: SDMX Data to DXF2 Input";
+ 
+    
     @Override
-    public void process( Exchange exchange ) throws Exception
+    public void configure() throws Exception
     {
-        log.info( this.getEndpoint().getEndpointUri() + " : " + exchange.getIn().getBody() );
+        DescriptionDefinition desc = new DescriptionDefinition();
+        desc.setText( "SDMX Data to DXF2 Input");
         
-        Dxf2DataEndpoint endpoint =  (Dxf2DataEndpoint) this.getEndpoint();
-        
-        ImportSummary summary = endpoint.getDataValueSetService().saveDataValueSet( (InputStream)exchange.getIn().getBody(), 
-             endpoint.getImportOptions() );
-        
-        //exchange.getOut().setBody(JacksonUtils.toXmlAsString( summary ) );
-        exchange.getOut().setBody( summary );
-        log.info( this.getEndpoint().getEndpointUri() + " : " + JacksonUtils.toXmlAsString(exchange.getOut().getBody()) );
-    }
+        from(SDMXDATA_IN).
+            convertBodyTo( java.lang.String.class, "UTF-8" ).to( "log:org.hisp.dhis.integration?level=INFO").
+            to("xslt:transform/cross2dxf2.xsl").convertBodyTo( java.io.InputStream.class).
+            to("dhis2:data?orgUnitIdScheme=CODE&dataElementIdScheme=CODE&importStrategy=NEW_AND_UPDATES").
+            setDescription( desc );
+    }    
 }

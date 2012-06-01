@@ -72,6 +72,16 @@ public class Dxf2DataEndpoint
         importOptions.setDryRun( dryRun );
     }
 
+    public void setDataElementIdScheme( String dataElementIdScheme )
+    {
+        importOptions.setDataElementIdScheme( dataElementIdScheme );
+    }
+
+    public void setOrgUnitIdScheme( String orgUnitIdScheme )
+    {
+        importOptions.setOrgUnitIdScheme( orgUnitIdScheme );
+    }
+    
     public Dxf2DataEndpoint( String uri, Dxf2Component component, DataValueSetService dataValueSetService )
     {
         super( uri, component );

@@ -1,4 +1,4 @@
-package org.hisp.dhis.integration.components;
+package org.hisp.dhis.integration;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -28,34 +28,16 @@ package org.hisp.dhis.integration.components;
  */
 
 import java.io.InputStream;
-import org.apache.camel.Exchange;
-import org.apache.camel.impl.DefaultProducer;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 
 /**
+ *
  * @author bobj
  */
-public class Dxf2DataProducer 
-    extends DefaultProducer
+public interface IntegrationService
 {
-    public Dxf2DataProducer( Dxf2DataEndpoint endpoint )
-    {
-        super( endpoint );
-    }
+    ImportSummary importXMLDataValueSet(InputStream in, ImportOptions options);
 
-    @Override
-    public void process( Exchange exchange ) throws Exception
-    {
-        log.info( this.getEndpoint().getEndpointUri() + " : " + exchange.getIn().getBody() );
-        
-        Dxf2DataEndpoint endpoint =  (Dxf2DataEndpoint) this.getEndpoint();
-        
-        ImportSummary summary = endpoint.getDataValueSetService().saveDataValueSet( (InputStream)exchange.getIn().getBody(), 
-             endpoint.getImportOptions() );
-        
-        //exchange.getOut().setBody(JacksonUtils.toXmlAsString( summary ) );
-        exchange.getOut().setBody( summary );
-        log.info( this.getEndpoint().getEndpointUri() + " : " + JacksonUtils.toXmlAsString(exchange.getOut().getBody()) );
-    }
+    ImportSummary importSDMXDataValueSet(InputStream in, ImportOptions options);
 }

@@ -7,18 +7,24 @@
 
   <bean id="importService" class="org.hisp.dhis.dxf2.metadata.DefaultImportService" />
   
+  <bean id="integrationService" class="org.hisp.dhis.integration.DefaultIntegrationService" />
+  
   <!-- Custom lifecycle strategy -->
   
   <bean id="lifecyclestrategy" class="org.hisp.dhis.integration.management.DHIS2LifecycleStrategy" />
   
   <camel:camelContext id="camel-builtin">
-
+    
+    <!-- route scanner -->
     <camel:packageScan>
       <camel:package>org.hisp.dhis.integration.routes</camel:package>
       <camel:excludes>**.*Excluded*</camel:excludes>
       <camel:includes>**.*</camel:includes>
     </camel:packageScan>
 
+    <!--  producer templates -->
+    <camel:template id="web-api"/>
+    
   </camel:camelContext>
 
 </beans>

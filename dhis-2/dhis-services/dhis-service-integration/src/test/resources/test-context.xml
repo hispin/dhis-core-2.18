@@ -9,6 +9,8 @@
   <!-- custom lifecycle strategy -->
   <bean id="lifecyclestrategy" class="org.hisp.dhis.integration.management.DHIS2LifecycleStrategy" />
   
+  <bean id="integrationService" class="org.hisp.dhis.integration.DefaultIntegrationService" />
+
   <camel:camelContext id="camel-builtin">
 
     <camel:packageScan>

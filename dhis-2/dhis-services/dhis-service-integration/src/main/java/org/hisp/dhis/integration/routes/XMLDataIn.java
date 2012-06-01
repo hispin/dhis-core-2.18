@@ -1,4 +1,4 @@
-package org.hisp.dhis.integration.components;
+package org.hisp.dhis.integration.routes;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,35 +27,44 @@ package org.hisp.dhis.integration.components;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import org.apache.camel.Exchange;
-import org.apache.camel.impl.DefaultProducer;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.builder.xml.Namespaces;
+import org.apache.camel.model.DescriptionDefinition;
 
 /**
+ * XMLDataIn route implements a Content Based Routing pattern
+ * 
+ * 
  * @author bobj
  */
-public class Dxf2DataProducer 
-    extends DefaultProducer
+public class XMLDataIn extends RouteBuilder
 {
-    public Dxf2DataProducer( Dxf2DataEndpoint endpoint )
-    {
-        super( endpoint );
-    }
 
+    // DataInput endpoint
+    
+    public static final String XMLDATA_IN = "direct:xmlDataIn"; 
+
+    // Route description texts
+    
+    public static final String XMLDATA_IN_DESC = "Internal: XML Data to DXF2 Input";
+    
+    // Route definitions
     @Override
-    public void process( Exchange exchange ) throws Exception
+    public void configure() throws Exception
     {
-        log.info( this.getEndpoint().getEndpointUri() + " : " + exchange.getIn().getBody() );
+        // add namespaces to the XPath context
+        Namespaces ns = new Namespaces( "m", "http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message");
+        ns.add( "d", "http://dhis2.org/schema/dxf/2.0");
         
-        Dxf2DataEndpoint endpoint =  (Dxf2DataEndpoint) this.getEndpoint();
+        DescriptionDefinition xmlDesc = new DescriptionDefinition();
+        xmlDesc.setText( XMLDATA_IN_DESC);
         
-        ImportSummary summary = endpoint.getDataValueSetService().saveDataValueSet( (InputStream)exchange.getIn().getBody(), 
-             endpoint.getImportOptions() );
-        
-        //exchange.getOut().setBody(JacksonUtils.toXmlAsString( summary ) );
-        exchange.getOut().setBody( summary );
-        log.info( this.getEndpoint().getEndpointUri() + " : " + JacksonUtils.toXmlAsString(exchange.getOut().getBody()) );
+        from(XMLDATA_IN).convertBodyTo(java.lang.String.class, "UTF-8")
+            .choice()
+            .when().xpath( "boolean(/d:dataValueSet)", ns).convertBodyTo( java.io.InputStream.class).to("dhis2:data")
+            .when().xpath( "boolean(/m:CrossSectionalData)", ns).to("direct:sdmxDataIn")
+            .otherwise().to("log:org.hisp.dhis.integration?level=DEBUG" )
+            .end()
+            .setDescription( xmlDesc );
     }
 }
