@@ -28,7 +28,10 @@
 <input type="hidden" id="denominatorDescription" name="denominatorDescription" value=""/>
 
 <table>
-	<tr style="width: 450px;">
+    <col width="200px" />
+   	<col width="240px" />
+
+	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>

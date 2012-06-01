@@ -260,7 +260,7 @@
       <param name="requiredAuthorities">F_INDICATOR_DELETE</param>
     </action>
 
-    <action name="showAddIndicatorForm" class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
+    <action name="showAddIndicatorForm" class="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorForm.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/indicator.js</param>
@@ -353,7 +353,7 @@
       <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
     </action>
 
-    <action name="showAddIndicatorGroupForm" class="org.hisp.dhis.dd.action.NoAction">
+    <action name="showAddIndicatorGroupForm" class="org.hisp.dhis.dd.action.indicatorgroup.ShowAddIndicatorGroupForm">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/addIndicatorGroupForm.vm</param>
 	  <param name="javascripts">javascript/indicatorGroup.js</param>

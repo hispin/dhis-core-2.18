@@ -10,7 +10,7 @@
 	        },
 	        'rules' : getValidationRules( "indicator" )
 	    } );
-	
+
 	    checkValueIsExist( "name", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
 	    checkValueIsExist( "shortName", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
 	    checkValueIsExist( "alternativeName", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
@@ -28,33 +28,36 @@
 <input type="hidden" id="denominatorDescription" name="denominatorDescription" value="$!indicator.denominatorDescription"/>
 
 <table>
+    <col width="200px" />
+   	<col width="275px" />
+
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
 		<td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicator.name )" style="width:20em"/></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicator.name )" style="width:240px;"/></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $indicator.shortName )" style="width:20em"/></td>
+		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $indicator.shortName )" style="width:240px;"/></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $indicator.alternativeName )" style="width:20em"/></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $indicator.alternativeName )" style="width:240px;"/></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $indicator.code )" style="width:20em"/></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $indicator.code )" style="width:240px;"/></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:8em">$!encoder.htmlEncode( $indicator.description )</textarea></td>
+		<td><textarea id="description" name="description" style="width:240px;; height:8em">$!encoder.htmlEncode( $indicator.description )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="annualized">$i18n.getString( "annualized" )</label></td>
 		<td>
-			<select id="annualized" name="annualized" style="width:20em">
+			<select id="annualized" name="annualized" style="width:246px;">
 				<option value="false">$i18n.getString( "no" )</option>
 				<option value="true"#if( $indicator.annualized ) selected="selected"#end>$i18n.getString( "yes" )</option>
 			</select>
@@ -63,7 +66,7 @@
 	<tr>
 		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" onchange='indicatorTypeChanged();'>			
+			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:246px" onchange='indicatorTypeChanged();'>
 			#foreach( $indicatorType in $indicatorTypes )
 				<option value="$indicatorType.id" number="$indicatorType.number" #if( $indicator.indicatorType.id == $indicatorType.id ) selected="selected"#end>$encoder.htmlEncode( $indicatorType.name )</option>
 			#end
@@ -72,7 +75,7 @@
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $indicator.url )" style="width:20em"/></td>
+        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $indicator.url )" style="width:240px"/></td>
     </tr>
 </table>
 
@@ -82,14 +85,14 @@
 	<tr>
 		<td style="width:200px"></td>
 		<td>
-			<input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="indicatorNumeratorForm()" style="width:20em"/>
+			<input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="indicatorNumeratorForm()" style="width:246px"/>
 			<input type="hidden" id="numerator" name="numerator" value="$!indicator.numerator"/>
 		</td>		
 	</tr>
 	<tr>
 		<td style="width:200px"></td>
 		<td>
-			<input type="button" id="denominatorButton" name="denominatorButton" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em"  #if($!indicator.indicatorType.number=='true') disabled #end/>
+			<input type="button" id="denominatorButton" name="denominatorButton" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:246px"  #if($!indicator.indicatorType.number=='true') disabled #end/>
 			<input type="hidden" id="denominator" name="denominator" value="$!indicator.denominator"/>
 			<input type="hidden" id="denominatorFormula" name="denominatorFormula" value="$!indicator.denominator"/>
 		</td>
@@ -99,7 +102,7 @@
 #if( $groupSets.size() > 0 )
 <table>
 	<col width="200px" />
-	<col width="240px" />
+	<col width="260px" />
 
 	<tr>
 		<td style="height:15px" colspan="2">
