@@ -26,23 +26,23 @@ a, a:hover
   left: 15px;
   border: 1px solid #ddd;
   border-radius: 2px;
-  width: 135px;
+  width: 120px;
   margin-bottom: 5%;
 }
 
 #titleArea
 {
   position: absolute;
-  top: 15px;
-  left: 180px;
-  font-size: 20px;
+  top: 17px;
+  left: 170px;
+  font-size: 19px;
 }
 
 #loginField
 {
   position: relative;
   margin: 7% auto 0 auto;
-  width: 330px;
+  width: 380px;
   text-align: center;
 }
 
@@ -63,8 +63,10 @@ a, a:hover
   border-width: 1px;
   border-color: #D0D0D0;
   padding: 11px;
+  margin-top: 20px;
   display: block;
-  width: 400px;
+  width: 350px;
+  border-radius: 2px;
 }
 
 #footerArea
