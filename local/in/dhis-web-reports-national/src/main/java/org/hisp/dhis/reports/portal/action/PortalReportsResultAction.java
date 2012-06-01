@@ -973,7 +973,12 @@ public class PortalReportsResultAction implements Action
                                         } 
                                         else if ( deCodeString.equalsIgnoreCase( "BloodGroup" ) )
                                         {
-                                            String bloodGroup = patient.getBloodGroup();
+                                            /**
+                                             * TODO
+                                             * BloodGroup is removed from Patient Object, so need to change this accordingly
+                                             */
+                                            String bloodGroup = ""; 
+                                                //patient.getBloodGroup();
                                             if ( !bloodGroup.trim().equalsIgnoreCase( "" ) )
                                             {
                                                 if ( dhisPortalMap.containsKey( bloodGroup ) )
@@ -1669,7 +1674,13 @@ public class PortalReportsResultAction implements Action
                                         } 
                                         else if ( deCodeString.equalsIgnoreCase( "BloodGroup" ) )
                                         {
-                                            String bloodGroup = patient.getBloodGroup();
+                                            /**
+                                             * TODO
+                                             * BloodGroup is removed from Patient Object, so need to change this accordingly
+                                             */
+
+                                            String bloodGroup = ""; 
+                                                //patient.getBloodGroup();
                                             if ( !bloodGroup.trim().equalsIgnoreCase( "" ) )
                                             {
                                                 if ( dhisPortalMap.containsKey( bloodGroup ) )

@@ -421,7 +421,11 @@ public class NBITSReportResultAction implements Action
                         colCount++;
                         sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( patient.getBirthDate() ), getCellFormat2() ) );
                         colCount++;
-                        sheet0.addCell( new Label( colCount, rowCount, patient.getBloodGroup(), getCellFormat2() ) );
+                        /**
+                         * TODO
+                         * BloodGroup is removed from Patient Object, so need to change this accordingly
+                         */
+                        sheet0.addCell( new Label( colCount, rowCount, ""/*patient.getBloodGroup()*/, getCellFormat2() ) );
                         colCount++;
                         sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( patient.getRegistrationDate() ), getCellFormat2() ) );
                         colCount++;
