@@ -54,10 +54,10 @@
         <interceptor-ref name="staticParams" />
         <interceptor-ref name="params" />
         <interceptor-ref name="i18nInterceptor" />
+        <interceptor-ref name="systemSettingInterceptor" />
         <!-- The securityInterceptor is put after the i18nInterceptor so that the access denied error pages can use internationalisation. -->
         <interceptor-ref name="securityInterceptor" />
         <interceptor-ref name="loginInterceptor" />
-        <interceptor-ref name="systemSettingInterceptor" />
         <interceptor-ref name="userSettingInterceptor" />
         <interceptor-ref name="contextInterceptor" />
         <interceptor-ref name="portalParamsInterceptor" />

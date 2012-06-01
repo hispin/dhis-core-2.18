@@ -25,6 +25,7 @@
 
   <sec:http pattern="/dhis-web-commons/javascripts/**" security="none" />
   <sec:http pattern="/dhis-web-commons/css/**" security="none" />
+  <sec:http pattern="/dhis-web-commons/flags/**" security="none" />
   <sec:http pattern="/dhis-web-commons/fonts/**" security="none" />
   <sec:http pattern="/favicon.ico" security="none" />
 

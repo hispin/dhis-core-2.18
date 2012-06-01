@@ -56,7 +56,7 @@
   </head>
   
   <body>    
-    #parse( "macros.vm" )        
+    #parse( "macros.vm" )
     <div id="header">
       <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png" 
         onclick="window.location.href='../dhis-web-commons-about/modules.action'" style="cursor:pointer" title="$i18n.getString( 'go_to_system_overview' )">
