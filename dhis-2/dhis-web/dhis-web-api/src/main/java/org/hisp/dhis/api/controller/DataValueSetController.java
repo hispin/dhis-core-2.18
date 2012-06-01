@@ -43,6 +43,7 @@ import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.integration.IntegrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -59,9 +60,12 @@ public class DataValueSetController
     public static final String RESOURCE_PATH = "/dataValueSets";
 
     private static final Log log = LogFactory.getLog( DataValueSetController.class );
-
+    
     @Autowired
     private DataValueSetService dataValueSetService;
+
+    @Autowired
+    private IntegrationService integrationService;
     
     @RequestMapping( method = RequestMethod.GET, headers = {"Accept=text/html"} )
     public String getDataValueSets( Model model ) throws Exception
@@ -74,7 +78,6 @@ public class DataValueSetController
         return "dataValueSets";
     }
 
-    @RequestMapping( method = RequestMethod.GET, headers = {"Accept=application/xml"} )
     public void getDataValueSet( @RequestParam String dataSet,
                                  @RequestParam String period,
                                  @RequestParam String orgUnit,
@@ -86,9 +89,9 @@ public class DataValueSetController
         dataValueSetService.writeDataValueSet( dataSet, period, orgUnit, response.getOutputStream() );
     }
 
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/dxf2+xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
-    public void postDataValueSet( ImportOptions importOptions,
+    public void postDxf2DataValueSet( ImportOptions importOptions,
                                   HttpServletResponse response, 
                                   InputStream in,
                                   Model model ) throws IOException
@@ -101,6 +104,36 @@ public class DataValueSetController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
     
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/sdmx+xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
+    public void postSDMXDataValueSet( ImportOptions importOptions,
+                                  HttpServletResponse response, 
+                                  InputStream in,
+                                  Model model ) throws IOException
+    {
+        ImportSummary summary = integrationService.importSDMXDataValueSet( in, importOptions );
+        
+        log.info( "Data values set saved " + importOptions );    
+
+        response.setContentType( CONTENT_TYPE_XML );        
+        JacksonUtils.toXml( response.getOutputStream(), summary );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
+    public void postDataValueSet( ImportOptions importOptions,
+                                  HttpServletResponse response, 
+                                  InputStream in,
+                                  Model model ) throws IOException
+    {
+        ImportSummary summary = integrationService.importXMLDataValueSet( in, importOptions );
+
+        log.info( "Data values set saved " + importOptions );    
+
+        response.setContentType( CONTENT_TYPE_XML );        
+        JacksonUtils.toXml( response.getOutputStream(), summary );
+    }
+        
     @ExceptionHandler(IllegalArgumentException.class)
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )
         throws IOException
@@ -108,3 +141,4 @@ public class DataValueSetController
         ContextUtils.conflictResponse( response, ex.getMessage() );
     }
 }
+                                                
