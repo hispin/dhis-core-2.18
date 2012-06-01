@@ -30,8 +30,10 @@ package org.hisp.dhis.dxf2.datavalueset;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
-import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.*;
-import static org.hisp.dhis.importexport.ImportStrategy.*;
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.CODE;
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.UID;
+import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
+import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
 
 import java.io.InputStreamReader;
 import java.util.Collection;
@@ -54,7 +56,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -245,18 +246,15 @@ public class DataValueSetServiceTest
         assertEquals( 0, dataValues.size() );
     }
 
-    // Testing importing datavalues where period is not pre-existing fails
-    @Ignore
     @Test
     public void testImportDataValuesWithNewPeriod()
         throws Exception
     {
-        ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetC.xml" ).getInputStream() );
+        dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetC.xml" ).getInputStream() );
         
         Collection<DataValue> dataValues = dataValueService.getAllDataValues();
         
         assertNotNull( dataValues );
         assertEquals( 3, dataValues.size() );
     }
-
 }
