@@ -28,7 +28,7 @@
 		#if( $ip.organisationUnit )#set( $ou = "&ou=" + $ip.organisationUnit.uid )#else#set( $ou = "" )#end		
 		<a class="bold" 
 		   title="$i18n.getString( 'click_to_view_report_table' )" 
-		   href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}?pe=${format.formatDate( $ip.created )}${ou}">$encoder.htmlEncode( $ip.reportTable.name )</a>
+		   href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}&pe=${format.formatDate( $ip.created )}${ou}">$encoder.htmlEncode( $ip.reportTable.name )</a>
 	#end
 	</div>
 	
