@@ -181,7 +181,7 @@
         /dhis-web-commons/ajax/jsonUserGroup.vm</result>
     </action>
 
-    <action name="addUserGroupForm" class="org.hisp.dhis.user.action.NoAction">
+    <action name="addUserGroupForm" class="org.hisp.dhis.user.action.AddUserGroupFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-user/addUserGroupForm.vm</param>
       <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
