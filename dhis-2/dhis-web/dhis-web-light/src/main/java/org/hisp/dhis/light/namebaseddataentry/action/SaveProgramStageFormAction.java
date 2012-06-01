@@ -160,17 +160,17 @@ public class SaveProgramStageFormAction
         this.programStageInstanceId = programStageInstanceId;
     }
 
-    // private Integer programInstanceId;
-    //
-    // public Integer getProgramInstanceId()
-    // {
-    // return programInstanceId;
-    // }
-    //
-    // public void setProgramInstanceId( Integer programInstanceId )
-    // {
-    // this.programInstanceId = programInstanceId;
-    // }
+    private Integer programInstanceId;
+
+    public Integer getProgramInstanceId()
+    {
+        return programInstanceId;
+    }
+
+    public void setProgramInstanceId( Integer programInstanceId )
+    {
+        this.programInstanceId = programInstanceId;
+    }
 
     private Integer patientId;
 
@@ -329,10 +329,11 @@ public class SaveProgramStageFormAction
             return ERROR;
         }
 
-//        if ( programStageService.getProgramStage( programStageId ).getIrregular() )
-//        {
-//            return REGISTER_NEXT_DUEDATE;
-//        }
+        // if ( programStageService.getProgramStage( programStageId
+        // ).getIrregular() )
+        // {
+        // return REGISTER_NEXT_DUEDATE;
+        // }
 
         if ( orgUnitId != 0 )
         {

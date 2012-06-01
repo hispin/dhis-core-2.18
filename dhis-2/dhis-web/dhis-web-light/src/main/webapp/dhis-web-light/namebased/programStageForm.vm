@@ -42,16 +42,24 @@
             			<br /><span style="color: #990000;">$prevDataValues.get($key) $i18n.getString($typeViolation)</span>
             		#end
 					
-					<input type=
-					#if($dataElement.type=="string") 
-						"text"
-					#elseif ($dataElement.type=="int" ) 
-						"text" 
-					#else 
-						"$dataElement.type" 
-					#end 
-					name="$key" value="$!prevDataValues.get($key)" />
-				
+					#if($dataElement.type=="bool")
+						<select name="$key">
+							<option value="">$i18n.getString("please_select")</option>
+							<option #if( $prevDataValues.get( $key ) == "true" ) selected="selected" #end value="true">$i18n.getString("yes")</option>
+							<option #if( $prevDataValues.get( $key ) == "false" ) selected="selected" #end value="false">$i18n.getString("no")</option>
+						</select>
+					#else
+						<input type=
+						#if($dataElement.type=="string") 
+							"text"
+						#elseif ($dataElement.type=="int" ) 
+							"text" 
+						#else 
+							"$dataElement.type" 
+						#end 
+						name="$key" value="$!prevDataValues.get($key)" />
+					#end
+
 				#elseif ($dataElement.getOptionSet())
 					
 					#set( $options = $dataElement.getOptionSet().getOptions() )
