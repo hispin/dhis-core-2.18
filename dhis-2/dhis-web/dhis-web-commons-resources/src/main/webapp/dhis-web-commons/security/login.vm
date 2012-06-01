@@ -19,11 +19,19 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div class="loginField" align="center">
-            <div><img alt="" src="logo_banner.png"></div>
+    	<div id="headerArea">		
+		#if ( $keyFlag )
+			<img id="flagArea" src="../flags/${keyFlagImage}">
+		#end
+		#if ( $applicationTitle )
+        	<span id="titleArea">$encoder.htmlEncode( $applicationTitle )</span>
+        #end
+	    </div>
+        <div id="loginField">
+            <div id="bannerArea"><a href="http://dhis2.org"><img alt="" src="logo_banner.png"></a></div>
             
-            <div style="margin-top:2%">
-            <form id='loginForm' action="../../dhis-web-commons-security/login.action" method="post">
+            <div>
+            <form id="loginForm" action="../../dhis-web-commons-security/login.action" method="post">
                 <table>
                     <tr>
                         <td><label for="j_username">Username</label></td>
@@ -44,8 +52,11 @@
             </form>
             </div>
             #if( $failed == true )
-            <span class="loginMessage">Wrong username or password. Please try again.</span>
+            <span id="loginMessage">Wrong username or password. Please try again.</span>
 			#end            
+        </div>
+        <div id="footerArea">
+			<a href="http://dhis2.org">Powered by DHIS 2</a>
         </div>
     </body>
 </html>
