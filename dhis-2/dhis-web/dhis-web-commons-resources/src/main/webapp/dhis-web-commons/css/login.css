@@ -1,7 +1,7 @@
 
 *
 {
-  font-family: tahoma, sans-serif;
+  font-family: LiberationSansRegular, sans-serif;
   line-height: 125%;
 }
 
@@ -9,7 +9,7 @@ html,body
 {
   background-color: #1d5288;  
   color: white;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .loginField
@@ -20,11 +20,6 @@ html,body
 .loginField td
 {
   padding-right: 5px;
-}
-
-.headerText
-{
-  font-size: 20px;
 }
 
 .loginMessage
@@ -39,6 +34,7 @@ html,body
 }
 
 .button {
+  font-family: LiberationSansBold, arial;
   background: -webkit-linear-gradient(top, #f1f1f1, #d1d1d1);
   background: -moz-linear-gradient(top, #f1f1f1, #d1d1d1);
   background: -ms-linear-gradient(top, #f1f1f1, #d1d1d1);
@@ -47,7 +43,6 @@ html,body
   border: 1px solid #444;
   border-radius: 3px;
   color: #222;
-  font-weight: bold;
 }
 
 .button:hover {
@@ -56,4 +51,26 @@ html,body
   background: -ms-linear-gradient(top, #fafafa, #dadada);
   background: -o-linear-gradient(top, #fafafa, #dadada);
   border: 1px solid #333333;
+}
+
+@font-face {
+    font-family: 'LiberationSansRegular';
+    src: url('../fonts/LiberationSans-Regular-webfont.eot');
+    src: url('../fonts/LiberationSans-Regular-webfont.eot?#iefix') format('eot'),
+         url('../fonts/LiberationSans-Regular-webfont.woff') format('woff'),
+         url('../fonts/LiberationSans-Regular-webfont.ttf') format('truetype'),
+         url('../fonts/LiberationSans-Regular-webfont.svg#webfontc8rbNdBe') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'LiberationSansBold';
+    src: url('../fonts/LiberationSans-Bold-webfont.eot');
+    src: url('../fonts/LiberationSans-Bold-webfont.eot?#iefix') format('eot'),
+         url('../fonts/LiberationSans-Bold-webfont.woff') format('woff'),
+         url('../fonts/LiberationSans-Bold-webfont.ttf') format('truetype'),
+         url('../fonts/LiberationSans-Bold-webfont.svg#webfontHyWb8e07') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
