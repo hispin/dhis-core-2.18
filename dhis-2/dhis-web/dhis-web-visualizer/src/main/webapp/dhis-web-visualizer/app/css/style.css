@@ -296,26 +296,22 @@ body {
 }
 
 /* Button border */
-.x-btn-default-toolbar-small {
+.x-btn-default-toolbar-small, .x-btn-default-toolbar-small-over, .x-btn-default-toolbar-small-pressed {
     -moz-border-radius: 2px 2px 2px 2px;
     -webkit-border-radius: 2px 2px 2px 2px;
     -o-border-radius: 2px 2px 2px 2px;
     -ms-border-radius: 2px 2px 2px 2px;
     -khtml-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
-    border-width: 1px;
+    border: 1px solid transparent;
 }
 
 .x-btn-default-toolbar-small-over {
-    -moz-border-radius: 2px 2px 2px 2px;
-    -webkit-border-radius: 2px 2px 2px 2px;
-    -o-border-radius: 2px 2px 2px 2px;
-    -ms-border-radius: 2px 2px 2px 2px;
-    -khtml-border-radius: 2px 2px 2px 2px;
-    border-radius: 2px 2px 2px 2px;
+    border-color: #ccc;
+}
+
+.x-btn-default-toolbar-small-pressed {
     border-color: #aaa;
-    border-style: solid;
-    border-width: 1px;
 }
 
 /* Toolbar separator */
@@ -521,6 +517,10 @@ body {
 .dv-window-title-favorite {
     padding-left: 19px;
     background-image: url('../images/favorite.png');
+}
+.dv-window-title-interpretation {
+    padding-left: 19px;
+    background-image: url('../images/interpretation.png');
 }
 .dv-window-title-datatable {
     padding-left: 19px;
