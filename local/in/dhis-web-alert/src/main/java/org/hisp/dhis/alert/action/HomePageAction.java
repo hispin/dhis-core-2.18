@@ -1,7 +1,5 @@
 package org.hisp.dhis.alert.action;
 
-import com.opensymphony.xwork2.Action;
-
 /*
  * Copyright (c) 2004-2007, University of Oslo
  * All rights reserved.
@@ -29,32 +27,34 @@ import com.opensymphony.xwork2.Action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class HomePageAction implements Action
+import com.opensymphony.xwork2.Action;
+
+/**
+ * @author Samta Bajpai
+ * 
+ * @version TrackerDashBoardAction.java May 28, 2012 12:45 PM
+ */
+
+public class HomePageAction
+    implements Action
 {
-    private static final String DASHBOARD_PAGE = "dashboardpage";
-    
-    // ---------------------------------------------------------------
-    // Dependencies
-    // ---------------------------------------------------------------
+    private static final String TRACKER_DASHBOARD_PAGE = "trackerdashboardpage";
 
-    
-    // ---------------------------------------------------------------
-    // Input & Output
-    // ---------------------------------------------------------------
+    String drillDownOrgUnitId;
 
-    
+    public void setDrillDownOrgUnitId( String drillDownOrgUnitId )
+    {
+        this.drillDownOrgUnitId = drillDownOrgUnitId;
+    }
+
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
-    public String execute() throws Exception
+
+    public String execute()
+        throws Exception
     {
-        String resultPage = DASHBOARD_PAGE;
-        
-        if( resultPage.equalsIgnoreCase( DASHBOARD_PAGE ) )
-        {
-            return resultPage;
-        }
-        
-        return SUCCESS;
+        return TRACKER_DASHBOARD_PAGE;
+
     }
 }

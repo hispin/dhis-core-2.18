@@ -240,7 +240,7 @@ public class DashBoardHomePageAction
     public String execute()
         throws Exception
     {
-        statementManager.initialise();
+        //statementManager.initialise();
 
         immChildrenList = new ArrayList<OrganisationUnit>();
         totalEnrollCountMap = new HashMap<String, Integer>();
@@ -381,7 +381,7 @@ public class DashBoardHomePageAction
             }
         }
         
-        statementManager.destroy();
+        //statementManager.destroy();
 
         return SUCCESS;
     }
