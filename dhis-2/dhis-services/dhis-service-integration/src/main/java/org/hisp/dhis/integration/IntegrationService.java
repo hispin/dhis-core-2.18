@@ -37,6 +37,8 @@ import org.hisp.dhis.dxf2.metadata.ImportOptions;
  */
 public interface IntegrationService
 {
+    public static final String IMPORT_OPTIONS_HDR = "ImportOptions";
+
     ImportSummary importXMLDataValueSet(InputStream in, ImportOptions options);
 
     ImportSummary importSDMXDataValueSet(InputStream in, ImportOptions options);
