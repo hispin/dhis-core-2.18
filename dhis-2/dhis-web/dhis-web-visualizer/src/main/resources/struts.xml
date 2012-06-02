@@ -46,7 +46,7 @@
         <action name="addOrUpdateSystemChart"
             class="org.hisp.dhis.visualizer.action.AddOrUpdateChartAction">
             <result name="success" type="velocity-json">
-                /dhis-web-visualizer/void.vm</result>
+                /dhis-web-visualizer/stringChartId.vm</result>
             <param name="requiredAuthorities">F_DV_ADMIN</param>
             <param name="system">true</param>
         </action>
@@ -54,7 +54,7 @@
         <action name="addOrUpdateChart"
             class="org.hisp.dhis.visualizer.action.AddOrUpdateChartAction">
             <result name="success" type="velocity-json">
-                /dhis-web-visualizer/void.vm</result>
+                /dhis-web-visualizer/stringChartId.vm</result>
         </action>
 
         <action name="updateChartName"

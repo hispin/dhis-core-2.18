@@ -282,7 +282,8 @@ Ext.onReady( function() {
         statusbar: {},
         favorite: {
             rename: {}
-        }
+        },
+        share: {}
     };
     
     DV.util = {
@@ -764,6 +765,7 @@ Ext.onReady( function() {
 				getChart: function(axes, series) {
 					return Ext.create('Ext.chart.Chart', {
 						animate: true,
+						shadow: false,
 						store: DV.store.chart,
 						insetPadding: DV.conf.chart.style.inset,
 						items: DV.c.hidesubtitle ? false : DV.util.chart.def.getTitle(),
@@ -1190,7 +1192,14 @@ Ext.onReady( function() {
                     }
                 }
             }
-        },                
+        },
+        toolbar: {
+			separator: {
+				xtype: 'tbseparator',
+				height: 18,
+				style: 'border-left: 1px solid #bbb; border-right: 1px solid #ececec'
+			}
+		},
         number: {
             isInteger: function(n) {
                 var str = new String(n);
@@ -1257,8 +1266,10 @@ Ext.onReady( function() {
                         url: DV.conf.finals.ajax.path_visualizer + url,
                         method: 'POST',
                         params: p,
-                        success: function() {
+                        success: function(r) {
                             DV.store.favorite.load({callback: function() {
+								DV.c.shareid = r.responseText;
+								DV.cmp.toolbar.share.xable();
                                 DV.util.mask.hideMask();
                                 if (fn) {
                                     fn();
@@ -1895,9 +1906,9 @@ Ext.onReady( function() {
 				}
 			},
 			render: function() {
-				if (!DV.c.isrendered) {
+				if (!DV.c.rendered) {
 					DV.cmp.toolbar.datatable.enable();
-					DV.c.isrendered = true;
+					DV.c.rendered = true;
 				}
 			},
 			response: function(r) {
@@ -1995,7 +2006,8 @@ Ext.onReady( function() {
 			targetlinelabel: null,
 			baselinevalue: null,
 			baselinelabel: null,
-			isrendered: false
+			rendered: false,
+			shareid: null
 		},
 		reset: function() {
 			this.model.type = DV.conf.finals.chart.column;
@@ -2229,7 +2241,7 @@ Ext.onReady( function() {
 			DV.util.chart.pie.series.setTheme();
             this.chart = Ext.create('Ext.chart.Chart', {
                 animate: true,
-                shadow: true,
+                shadow: false,
                 store: DV.store.chart,
                 insetPadding: 60,
                 items: DV.c.hidesubtitle ? false : DV.util.chart.pie.getTitle(),
@@ -2284,6 +2296,7 @@ Ext.onReady( function() {
             }
             
             DV.init.cmd = false;
+			DV.cmp.toolbar.share.xable();
         }
     };
     
@@ -2365,7 +2378,6 @@ Ext.onReady( function() {
     DV.viewport = Ext.create('Ext.container.Viewport', {
         layout: 'border',
         renderTo: Ext.getBody(),
-        isrendered: false,
         items: [
             {
                 region: 'west',
@@ -3199,7 +3211,7 @@ Ext.onReady( function() {
 												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor,
 												autoScroll: true,
 												multiSelect: true,
-												isrendered: false,
+												rendered: false,
 												storage: {},
 												addToStorage: function(objects) {
 													for (var i = 0; i < objects.length; i++) {
@@ -3207,7 +3219,7 @@ Ext.onReady( function() {
 													}
 												},
 												selectRoot: function() {
-													if (this.isrendered) {
+													if (this.rendered) {
 														if (!this.getSelectionModel().getSelection().length) {
 															this.getSelectionModel().select(this.getRootNode());
 														}
@@ -3596,9 +3608,11 @@ Ext.onReady( function() {
 							cls: 'dv-toolbar-btn-1',
                             text: DV.i18n.update,
                             handler: function() {
+								DV.c.shareid = null;
                                 DV.exe.execute();
                             }
                         },
+						' ', DV.util.toolbar.separator, ' ',
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
@@ -3779,7 +3793,7 @@ Ext.onReady( function() {
                                                                             },
                                                                             '->',
                                                                             {
-                                                                                text: DV.i18n.rename,
+                                                                                text: DV.i18n.rename + '..',
                                                                                 cls: 'dv-toolbar-btn-2',
                                                                                 disabled: true,
                                                                                 xable: function() {
@@ -3879,7 +3893,7 @@ Ext.onReady( function() {
                                                                                 }
                                                                             },
                                                                             {
-                                                                                text: DV.i18n.delete_object,
+                                                                                text: DV.i18n.delete_object + '..',
                                                                                 cls: 'dv-toolbar-btn-2',
                                                                                 disabled: true,
                                                                                 xable: function() {
@@ -3978,7 +3992,7 @@ Ext.onReady( function() {
                                                                     text: DV.i18n.save,
                                                                     disabled: true,
                                                                     xable: function() {
-                                                                        if (DV.c.isrendered) {
+                                                                        if (DV.c.rendered) {
                                                                             if (DV.cmp.favorite.name.getValue()) {
                                                                                 var index = DV.store.favorite.findExact('name', DV.cmp.favorite.name.getValue());
                                                                                 if (index != -1) {
@@ -4126,6 +4140,7 @@ Ext.onReady( function() {
                                                     itemclick: function(g, r) {
                                                         g.getSelectionModel().select([], false);
                                                         this.up('menu').hide();
+                                                        DV.c.shareid = r.data.id;
                                                         DV.exe.execute(r.data.id);
                                                     }
                                                 }
@@ -4147,6 +4162,94 @@ Ext.onReady( function() {
                                 }
                             }
                         },
+                        {
+							xtype: 'button',
+							cls: 'dv-toolbar-btn-2',
+							text: DV.i18n.share + '..',
+							disabled: true,
+							xable: function() {
+								if (DV.c.shareid) {
+									this.enable();
+								}
+								else {
+									this.disable();
+								}
+							},
+							handler: function() {
+								if (DV.cmp.share.window) {
+									DV.cmp.share.window.show();
+								}
+								else {
+									DV.cmp.share.window = Ext.create('Ext.window.Window', {
+										title: DV.i18n.share + ' ' + DV.i18n.interpretation,
+										iconCls: 'dv-window-title-interpretation',
+										layout: 'fit',
+										bodyStyle: 'padding:8px 8px 4px 8px; background-color:#fff',
+										width: DV.conf.layout.grid_favorite_width,
+										height: 250,
+										emptyText: 'Write your interpretation..',										
+										closeAction: 'hide',
+										resizable: true,
+										modal: true,
+										items: [
+											{
+												xtype: 'textarea',
+												style: 'font-size:11px',
+												enableKeyEvents: true,
+												listeners: {
+													added: function() {
+														DV.cmp.share.textarea = this;
+													},
+													keyup: function() {
+														DV.cmp.share.button.xable();
+													}
+												}
+											}
+										],
+										bbar: [
+											'->',
+											{
+												text: DV.i18n.share,
+												disabled: true,
+												xable: function() {
+													if (DV.cmp.share.textarea.getValue()) {
+														this.enable();
+													}
+													else {
+														this.disable();
+													}
+												},
+												handler: function() {
+													if (DV.cmp.share.textarea.getValue() && DV.c.shareid) {
+														Ext.Ajax.request({
+															url: DV.conf.finals.ajax.path_api + 'interpretations/chart/' + DV.c.shareid,
+															method: 'POST',
+															params: DV.cmp.share.textarea.getValue(),
+															headers: {'Content-Type': 'text/html'},
+															success: function() {
+																DV.cmp.share.textarea.reset();
+																DV.cmp.share.button.disable();
+																DV.cmp.share.window.hide();
+															}
+														});
+													}
+												},
+												listeners: {
+													added: function() {
+														DV.cmp.share.button = this;
+													}
+												}
+											}
+										]
+									}).show();
+								}
+							},
+                            listeners: {
+                                added: function() {
+                                    DV.cmp.toolbar.share = this;
+                                }
+                            }
+						},
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',

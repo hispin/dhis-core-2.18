@@ -336,6 +336,17 @@ public class AddOrUpdateChartAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String chartId;
+
+    public String getChartId()
+    {
+        return chartId;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
@@ -447,6 +458,8 @@ public class AddOrUpdateChartAction
         chart.setBaseLineLabel( baseLineLabel );
 
         chartService.saveOrUpdate( chart );
+        
+        chartId = chart.getUid();
 
         return SUCCESS;
     }
