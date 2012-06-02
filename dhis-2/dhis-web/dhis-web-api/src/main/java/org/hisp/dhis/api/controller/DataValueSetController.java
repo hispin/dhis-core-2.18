@@ -89,7 +89,7 @@ public class DataValueSetController
         dataValueSetService.writeDataValueSet( dataSet, period, orgUnit, response.getOutputStream() );
     }
 
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/dxf2+xml"} )
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/xml" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void postDxf2DataValueSet( ImportOptions importOptions,
                                   HttpServletResponse response, 
@@ -104,7 +104,7 @@ public class DataValueSetController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
     
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/sdmx+xml"} )
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/sdmx+xml" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void postSDMXDataValueSet( ImportOptions importOptions,
                                   HttpServletResponse response, 
@@ -119,7 +119,7 @@ public class DataValueSetController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/dhis+xml" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void postDataValueSet( ImportOptions importOptions,
                                   HttpServletResponse response, 
@@ -133,7 +133,7 @@ public class DataValueSetController
         response.setContentType( CONTENT_TYPE_XML );        
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
-        
+    
     @ExceptionHandler(IllegalArgumentException.class)
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )
         throws IOException
