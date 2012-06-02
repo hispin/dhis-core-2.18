@@ -28,14 +28,12 @@ package org.hisp.dhis.integration;
  */
 
 import java.io.InputStream;
-import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.ProducerTemplate;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.integration.routes.SDMXDataIn;
 import org.hisp.dhis.integration.routes.XMLDataIn;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -43,8 +41,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class DefaultIntegrationService implements IntegrationService
 {
-    @Autowired
-    CamelContext camelContext;
     
     @EndpointInject(uri = XMLDataIn.XMLDATA_IN)
     private ProducerTemplate xmlIn;
@@ -56,13 +52,13 @@ public class DefaultIntegrationService implements IntegrationService
     @Override
     public ImportSummary importXMLDataValueSet( InputStream in, ImportOptions importOptions )
     {
-       return (ImportSummary) xmlIn.requestBodyAndHeader( in, "ImportOptions", importOptions);
+       return (ImportSummary) xmlIn.requestBodyAndHeader( in, IMPORT_OPTIONS_HDR, importOptions);
     }
 
     @Override
     public ImportSummary importSDMXDataValueSet( InputStream in, ImportOptions importOptions )
     {
-       return (ImportSummary) sdmxIn.requestBodyAndHeader( in, "ImportOptions", importOptions);
+       return (ImportSummary) sdmxIn.requestBodyAndHeader( in, IMPORT_OPTIONS_HDR, importOptions);
     }
     
 }
