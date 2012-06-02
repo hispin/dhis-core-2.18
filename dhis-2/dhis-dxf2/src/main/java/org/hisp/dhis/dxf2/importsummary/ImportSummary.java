@@ -38,11 +38,25 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "importSummary" )
 public class ImportSummary
 {
+    private String description;
+    
     private ImportCount dataValueCount;
 
     private List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
 
     private String dataSetComplete;
+
+    @JsonProperty
+    @JacksonXmlProperty
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
 
     @JsonProperty
     @JacksonXmlProperty
