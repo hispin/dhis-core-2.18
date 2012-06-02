@@ -8,21 +8,41 @@
 	<package name="dhis-web-alert" extends="dhis-web-commons"
 		namespace="/dhis-web-alert">
 		
+		<!-- Index action -->
         <action name="index"
             class="org.hisp.dhis.alert.action.HomePageAction">
-			<result name="dashboardpage" type="redirect">dashboardPage.action</result>
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-alert/welcome.vm</param>
-            <param name="menu">/dhis-web-alert/menu.vm</param>
+			<result name="trackerdashboardpage" type="redirect">trackerDashboardPage.action</result>
         </action>
 		
+		<!-- Tracker Dashboard -->
+		<action name="trackerDashboardPage"
+            class="org.hisp.dhis.alert.tdb.action.TrackerDashBoardAction">
+            <result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-alert/welcome.vm</param>            
+            <param name="javascripts">javascript/ext-all.js,javascript/db.js</param>
+            <param name="stylesheets">css/ext-all.css,example.css</param>
+        </action>
+		
+		<action name="getPatientDataRecords" class="org.hisp.dhis.alert.tdb.action.GetPatientDataRecordsAction">
+		  <result name="success" type="velocity">/content.vm</result>
+		  <param name="page">/dhis-web-alert/viewPatientDataRecords.vm</param>
+		  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+		</action>
+
+		<action name="getPatientDetails" class="org.hisp.dhis.alert.tdb.action.GetPatientDetailsAction">
+		  <result name="success" type="velocity-xml">/dhis-web-alert/responsePatient.vm</result>
+		  <param name="onExceptionReturn">plainTextError</param>
+		</action>               
+		
+		<!-- Dashboard Page based on Dataentry screen design -->
         <action name="dashboardPage"
-            class="org.hisp.dhis.alert.action.DashBoardAction">
+            class="org.hisp.dhis.alert.db.action.DashBoardAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-alert/dashboardPage.vm</param>
             <param name="menu">/dhis-web-alert/menu.vm</param>
         </action>
 
+		<!-- Common Actions -->
         <action name="exportToExcel"
             class="org.hisp.dhis.alert.action.ExportToExcelAction">
             <result name="success" type="stream">
@@ -33,7 +53,7 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
-						
+		
 	</package>
 
 </struts>
