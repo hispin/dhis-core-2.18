@@ -27,9 +27,6 @@ package org.hisp.dhis.dashboard.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.user.UserSettingService.DEFAULT_CHARTS_IN_DASHBOARD;
-import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,9 +37,6 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dashboard.DashboardManager;
-import org.hisp.dhis.interpretation.InterpretationService;
-import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
@@ -72,25 +66,15 @@ public class ProvideContentAction
         this.chartService = chartService;
     }
 
-    private UserSettingService userSettingService;
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
-    public void setUserSettingService( UserSettingService userSettingService )
+    private Integer noCharts;
+
+    public void setNoCharts( Integer noCharts )
     {
-        this.userSettingService = userSettingService;
-    }
-
-    private MessageService messageService;
-
-    public void setMessageService( MessageService messageService )
-    {
-        this.messageService = messageService;
-    }
-    
-    private InterpretationService interpretationService;
-
-    public void setInterpretationService( InterpretationService interpretationService )
-    {
-        this.interpretationService = interpretationService;
+        this.noCharts = noCharts;
     }
 
     // -------------------------------------------------------------------------
@@ -118,20 +102,6 @@ public class ProvideContentAction
         return chartAreas;
     }
 
-    private long messageCount;
-
-    public long getMessageCount()
-    {
-        return messageCount;
-    }
-    
-    private long interpretationCount;
-
-    public long getInterpretationCount()
-    {
-        return interpretationCount;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -148,9 +118,9 @@ public class ProvideContentAction
 
         Collections.sort( charts, IdentifiableObjectNameComparator.INSTANCE );
 
-        int chartsInDashboardCount = (Integer) userSettingService.getUserSetting( KEY_CHARTS_IN_DASHBOARD, DEFAULT_CHARTS_IN_DASHBOARD );
+        noCharts = noCharts == null ? 6 : noCharts;
 
-        for ( int i = 1; i <= chartsInDashboardCount; i++ )
+        for ( int i = 1; i <= noCharts; i++ )
         {
             Object id = content.get( DashboardManager.CHART_AREA_PREFIX + i );
 
@@ -163,10 +133,6 @@ public class ProvideContentAction
             
             chartAreas.add( chart );
         }
-
-        messageCount = messageService.getUnreadMessageConversationCount();
-        
-        interpretationCount = interpretationService.getNewInterpretationCount();
 
         return SUCCESS;
     }
