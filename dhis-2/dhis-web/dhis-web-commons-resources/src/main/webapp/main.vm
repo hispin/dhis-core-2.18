@@ -120,6 +120,11 @@
       </span>
     </div>
 
+    #if( $hideMenu && $hideMenu == "true" )
+    <style type="text/css">
+      #mainPage { margin-left: 35px; }
+    </style>
+    #else
     <div id="leftBar">    
       <span id="hideLeftBar">
         <a href="index.action" title="$i18n.getString( "show_main_menu" )" id="showMainMenuLink">
@@ -132,6 +137,7 @@
         #parse( $menu )
       </div>
     </div>
+    #end
         
     <div id="headerMessage" class="bold"></div>
         

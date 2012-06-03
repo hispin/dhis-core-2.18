@@ -15,6 +15,12 @@
   border-bottom:1px solid #cad5e5;
 }
 
+#contentDiv
+{
+  position:relative;
+  top: 38px;
+}
+
 .linkArea
 {
   border:1px solid #d0d0d0;
@@ -23,11 +29,6 @@
   width:305px;
   overflow:hidden;
   margin-bottom:15px;
-}
-
-.linkArea div
-{
-  position:absolute;
 }
 
 .linkArea div
@@ -59,6 +60,41 @@
 {
   color:#888;
   padding:3px;
+}
+
+#subMenu
+{
+  position:absolute;
+  margin-top: 22px;
+}
+
+#subMenu ul
+{
+  list-style-type:none;
+  margin: 0;
+}
+
+#subMenu li
+{
+  float:left;
+}
+
+#subMenu a
+{
+  padding: 6px 10px;
+  height: 25px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  margin-right: 4px;
+  font-family: LiberationSansBold, arial;
+  color: #666;
+  background-color: #f3f3f3;
+}
+
+#subMenu a:hover
+{
+  text-decoration: none;
+  background-color: #f8f8f8;
 }
 
 /*----------------------------------------------------------------------------*/
