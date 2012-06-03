@@ -5,6 +5,10 @@
 #if( $interpretationCount > 0 )&#8226; <a href="interpretation.action">$interpretationCount #if( $interpretationCount > 1 )$i18n.getString( "new_interpretations" )#else$i18n.getString( "new_interpretation" )#end</a> #end
 </h3>
 
+<div id="subMenu">
+	<ul><li><a href="">Dashboard</a></li><li><a href="message.action">Messages</a></li><li><a href="interpretation.action">Interpretations</a></li></ul>
+</div>
+
 <div id="contentDiv"></div>
 
 <div id="chartView" style="display:none; padding:0; margin:0;">
