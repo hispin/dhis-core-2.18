@@ -58,7 +58,7 @@
     <repository>
       <id>amplecode_maven2_repo</id>
       <name>AmpleCode Maven 2 repository</name>
-      <url>http://www.amplecode.org/maven2</url>
+      <url>http://maven.dhis2.org/amplecode-local</url>
     </repository>
     <repository>
       <id>dhis.uio.no</id>
@@ -451,6 +451,11 @@
         <groupId>org.amplecode</groupId>
         <artifactId>quick</artifactId>
         <version>1.7.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.amplecode</groupId>
+        <artifactId>staxwax</artifactId>
+        <version>1.0.9</version>
       </dependency>
       <dependency>
         <groupId>com.lowagie</groupId>

@@ -40,6 +40,10 @@
 	  <groupId>net.sf.opencsv</groupId>
 	  <artifactId>opencsv</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.amplecode</groupId>
+      <artifactId>staxwax</artifactId>
+    </dependency>
 	
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

@@ -49,6 +49,8 @@ import java.util.Set;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
@@ -61,6 +63,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
+import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.importexport.ImportStrategy;
@@ -84,6 +87,8 @@ import au.com.bytecode.opencsv.CSVReader;
 public class DefaultDataValueSetService
     implements DataValueSetService
 {
+    private static final Log log = LogFactory.getLog( DefaultDataValueSetService.class );
+    
     private static final String ERROR_INVALID_DATA_SET = "Invalid data set: ";
     private static final String ERROR_INVALID_PERIOD = "Invalid period: ";
     private static final String ERROR_INVALID_ORG_UNIT = "Invalid org unit: ";
@@ -186,8 +191,9 @@ public class DefaultDataValueSetService
         }
         catch ( RuntimeException ex )
         {
-            notifier.notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );            
-            throw ex;
+            log.error( ex );
+            notifier.notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );
+            return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
         }
     }
 
@@ -200,8 +206,9 @@ public class DefaultDataValueSetService
         }
         catch ( RuntimeException ex )
         {
-            notifier.clear( id, DATAVALUE_IMPORT ).notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );            
-            throw ex;
+            log.error( ex );
+            notifier.clear( id, DATAVALUE_IMPORT ).notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );
+            return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
         }
     }
 
@@ -337,11 +344,13 @@ public class DefaultDataValueSetService
             }
         }
         
+        batchHandler.flush();
+
         int ignores = totalCount - importCount - updateCount;
         
         summary.setDataValueCount( new ImportCount( importCount, updateCount, ignores ) );
-        
-        batchHandler.flush();
+        summary.setStatus( ImportStatus.SUCCESS );
+        summary.setDescription( "Import process completed successfully" );
         
         notifier.notify( id, DATAVALUE_IMPORT, INFO, "Import done", true ).addTaskSummary( id, DATAVALUE_IMPORT, summary );
         

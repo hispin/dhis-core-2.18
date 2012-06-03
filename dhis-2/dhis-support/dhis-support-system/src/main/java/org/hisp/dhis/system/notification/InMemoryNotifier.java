@@ -133,7 +133,7 @@ public class InMemoryNotifier
         
         return this;
     }
-
+    
     @Override
     public Notifier addTaskSummary( TaskId id, TaskCategory category, Object taskSummary )
     {

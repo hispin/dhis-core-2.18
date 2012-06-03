@@ -25,6 +25,10 @@
     <!-- Other -->
 
     <dependency>
+      <groupId>org.amplecode</groupId>
+      <artifactId>staxwax</artifactId>
+    </dependency>
+    <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
     </dependency>
