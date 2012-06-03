@@ -1,3 +1,20 @@
+
+$( document ).ready( function()
+{
+	var viewportWidth = parseInt( $( window ).width() );
+	var linkWidth = parseInt( 355 );
+	var chartWidth = parseInt( 325 );
+	
+	if ( viewportWidth == undefined )
+	{
+		viewportWidth = parseInt( 1366 );
+	}
+	
+	var noCharts = 2 * Math.floor( ( viewportWidth - linkWidth ) / chartWidth ); 
+		
+	$( "#contentDiv" ).load( "provideContent.action?noCharts=" + noCharts + "&_dc=" + getRandomNumber() );
+} );
+
 function setAreaItem( area, item )
 {
     $.get( "setAreaItem.action", {

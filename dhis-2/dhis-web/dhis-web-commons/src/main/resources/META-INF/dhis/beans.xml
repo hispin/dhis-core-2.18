@@ -45,6 +45,7 @@
       <set>
         <value>page</value>
         <value>menu</value>
+		<value>hideMenu</value>
         <value>offline</value>
       </set>
     </property>
