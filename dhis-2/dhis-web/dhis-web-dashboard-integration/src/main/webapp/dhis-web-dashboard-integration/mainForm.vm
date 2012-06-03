@@ -6,7 +6,7 @@
 </h3>
 
 <div id="subMenu">
-	<ul><li><a href="">Dashboard</a></li><li><a href="message.action">Messages</a></li><li><a href="interpretation.action">Interpretations</a></li></ul>
+	<ul><li><a href="message.action">Messages</a></li><li><a href="interpretation.action">Interpretations</a></li></ul>
 </div>
 
 <div id="contentDiv"></div>

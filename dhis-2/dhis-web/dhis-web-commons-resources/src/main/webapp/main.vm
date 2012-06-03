@@ -122,7 +122,7 @@
 
     #if( $hideMenu && $hideMenu == "true" )
     <style type="text/css">
-      #mainPage { margin-left: 35px; }
+      #mainPage { margin-left: 28px; }
     </style>
     #else
     <div id="leftBar">    
