@@ -1,24 +1,38 @@
-<table>
-	<tr>
-		<td class='text-column' >$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>
-		#if($!listAll)
-			$i18n.getString( "list_all_patients" )
-		#else
-			$i18n.getString( "search_patients_by_attributes" )
-		#end
-		</td>
-	</tr>	
-	
-	<tr>
-		<td class='text-column' >$i18n.getString( "total_result" )</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>$!total</td>
-	</tr>
-</table>
+<style>
+	.overlaps
+	{
+		background-color: #BAFFBC;
+		border: 1px solid #12CD17;
+		display: none;
+		margin: 1em;
+		padding: 1em;
+		width: 500px;
+	}
+</style>
+
+<div class="overlaps" style="display:block;">
+	<table>
+		<tr>
+			<td class='text-column' ><strong>$i18n.getString( "search_result_matching_the_search_criteria" ):</strong></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>
+				#if( $!listAll )
+					$i18n.getString( "list_all_patients" )
+				#else
+					$i18n.getString( "search_patients_by_attributes" )
+				#end
+			</td>
+		</tr>	
+		
+		<tr>
+			<td class='text-column' ><strong>$i18n.getString( "total_result" )</strong></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>$!total</td>
+		</tr>
+	</table>
+</div>
 
 #if( $patients.size() > 0 )
 <table class="mainPageTable">
@@ -88,17 +102,15 @@
 				
 				<td>$!patient.getAge()</td>
 				
-				#if($mapPatientOrgunit.size()!=0)
-				
-					<td>$!mapPatientOrgunit.get($patient.id)</td>
-				
+				#if( $mapPatientOrgunit.size() > 0 )
+				<td>$!mapPatientOrgunit.get($patient.id)</td>
 				#end
 
 				<td>
 					#if ( $!patient.phoneNumber() && $!patient.phoneNumber() != "" )					
 					<a href="javascript:addPhoneToList( 'recipients', '$patient.id', '$patient.getFullName()', '$!patient.phoneNumber' )" title='$i18n.getString( "add_phone_to_list" )'><img src="../images/move_down.png" alt='$i18n.getString( "add_phone_to_list" )'></a>
 					#else
-					<img src="../images/question2.png" alt='$i18n.getString( "no_phone" )'>
+					<img src="images/question.png" title='$i18n.getString( "no_phone" )'/>
 					#end
 				</td>
 				
