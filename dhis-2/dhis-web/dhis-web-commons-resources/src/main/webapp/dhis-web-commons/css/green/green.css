@@ -5,7 +5,7 @@
 
 * 
 {
-  font-family: LiberationSansRegular, arial;
+  font-family: LiberationSansRegular, arial, sans-serif;
   line-height: 140%;
 }
 
@@ -45,23 +45,6 @@ a:hover
 a:visited
 {
   color:#3b73b8;
-}
-
-.ui-widget 
-{
-	font-family: LiberationSansRegular, arial, sans-serif !important;
-	font-size: 11px;
-}
-
-.ui-widget .ui-widget 
-{
-	font-size: 11px;
-}
-
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button 
-{
-	font-family: LiberationSansRegular, arial, sans-serif !important;
-	font-size: 11px;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -450,15 +433,6 @@ div#menuDropDown3
   font-family: LiberationSansBold, arial;
   color: #3c533c;
   font-size: 13px;
-}
-
-/*----------------------------------------------------------------------------*/
-/* jQuery overrides                                                           */
-/*----------------------------------------------------------------------------*/
-
-.ui-datepicker th {
-  padding: 0.5em 0;
-  font-size: 11px;
 }
 
 /*----------------------------------------------------------------------------*/
