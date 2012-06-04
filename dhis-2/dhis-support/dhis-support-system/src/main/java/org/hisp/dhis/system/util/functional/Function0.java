@@ -30,7 +30,7 @@ package org.hisp.dhis.system.util.functional;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface Function0<R>
+public interface Function0
 {
-    R apply();
+    void apply();
 }
