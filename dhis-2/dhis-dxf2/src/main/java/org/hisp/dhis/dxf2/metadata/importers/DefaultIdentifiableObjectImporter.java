@@ -753,15 +753,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 if ( objects != null && !objects.isEmpty() )
                 {
                     collectionFields.put( field, objects );
-
-                    if ( List.class.isAssignableFrom( field.getType() ) )
-                    {
-                        ReflectionUtils.invokeSetterMethod( field.getName(), object, new ArrayList<Object>() );
-                    }
-                    else if ( Set.class.isAssignableFrom( field.getType() ) )
-                    {
-                        ReflectionUtils.invokeSetterMethod( field.getName(), object, new HashSet<Object>() );
-                    }
+                    Collection<Object> emptyCollection = ReflectionUtils.newCollectionInstance( field.getType() );
+                    ReflectionUtils.invokeSetterMethod( field.getName(), object, emptyCollection );
                 }
             }
         } );
@@ -776,21 +769,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         for ( Field field : collectionFields.keySet() )
         {
             Collection<Object> collection = collectionFields.get( field );
-            Collection<Object> objects;
-
-            if ( List.class.isAssignableFrom( field.getType() ) )
-            {
-                objects = new ArrayList<Object>();
-            }
-            else if ( Set.class.isAssignableFrom( field.getType() ) )
-            {
-                objects = new HashSet<Object>();
-            }
-            else
-            {
-                log.warn( "Unknown Collection type." );
-                continue;
-            }
+            Collection<Object> objects = ReflectionUtils.newCollectionInstance( field.getType() );
 
             for ( Object idObject : collection )
             {

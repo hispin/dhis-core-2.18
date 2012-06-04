@@ -35,10 +35,7 @@ import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Lars Helge Overland
@@ -455,5 +452,21 @@ public class ReflectionUtils
         }
 
         return fields;
+    }
+
+    public static <E> Collection<E> newCollectionInstance( Class<?> clazz )
+    {
+        if ( List.class.isAssignableFrom( clazz ) )
+        {
+            return new ArrayList<E>();
+        }
+        else if ( Set.class.isAssignableFrom( clazz ) )
+        {
+            return new HashSet<E>();
+        }
+        else
+        {
+            throw new RuntimeException( "Unknown Collection type." );
+        }
     }
 }
