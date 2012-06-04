@@ -85,7 +85,7 @@ public class MetaDataController
         return "export";
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.GET, headers = {"Accept=application/xml, text/*"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.GET, produces = { "application/xml", "text/*" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedXML( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
@@ -101,7 +101,7 @@ public class MetaDataController
         JacksonUtils.toXmlWithView( zip, metaData, ExportView.class );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.GET, headers = {"Accept=application/json"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.GET, produces = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedJSON( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
@@ -117,7 +117,7 @@ public class MetaDataController
         JacksonUtils.toJsonWithView( zip, metaData, ExportView.class );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.GET, headers = {"Accept=application/xml, text/*"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.GET, produces = { "application/xml", " text/*" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportGZippedXML( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
@@ -130,7 +130,7 @@ public class MetaDataController
         JacksonUtils.toXmlWithView( gzip, metaData, ExportView.class );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.GET, headers = {"Accept=application/json"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.GET, produces = { "application/json" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportGZippedJSON( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
@@ -147,7 +147,7 @@ public class MetaDataController
     // Import
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH, method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/*"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH, method = RequestMethod.POST, consumes = { "application/xml", "text/*" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
@@ -159,7 +159,7 @@ public class MetaDataController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH, method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH, method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
@@ -171,7 +171,7 @@ public class MetaDataController
         JacksonUtils.toJson( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
@@ -186,7 +186,7 @@ public class MetaDataController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importZippedJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
@@ -202,7 +202,7 @@ public class MetaDataController
     }
 
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importGZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
@@ -216,7 +216,7 @@ public class MetaDataController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importGZippedJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
