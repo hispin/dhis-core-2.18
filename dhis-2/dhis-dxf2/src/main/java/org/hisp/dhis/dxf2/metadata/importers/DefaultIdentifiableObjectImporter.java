@@ -36,7 +36,6 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
@@ -52,11 +51,16 @@ import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.FunctionalUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
+import org.hisp.dhis.system.util.functional.Function1;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 import java.util.*;
+
+import static org.hisp.dhis.system.util.PredicateUtils.idObjectCollectionsWithScanned;
+import static org.hisp.dhis.system.util.PredicateUtils.idObjects;
 
 /**
  * Importer that can handle IdentifiableObject and NameableObject.
@@ -679,14 +683,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return objectBridge.getObject( identifiableObject );
     }
 
-    private Map<Field, Object> detachFields( Object object )
+    private Map<Field, Object> detachFields( final Object object )
     {
-        Map<Field, Object> fieldMap = new HashMap<Field, Object>();
-        Field[] fields = object.getClass().getDeclaredFields();
+        final Map<Field, Object> fieldMap = new HashMap<Field, Object>();
+        final Collection<Field> fieldCollection = ReflectionUtils.collectFields( object.getClass(), idObjects );
 
-        for ( Field field : fields )
+        FunctionalUtils.forEach( fieldCollection, new Function1<Field>()
         {
-            if ( ReflectionUtils.isType( field, IdentifiableObject.class ) )
+            @Override
+            public void apply( Field field )
             {
                 Object ref = ReflectionUtils.invokeGetterMethod( field.getName(), object );
 
@@ -696,8 +701,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     ReflectionUtils.invokeSetterMethod( field.getName(), object, new Object[] { null } );
                 }
             }
-
-        }
+        } );
 
         return fieldMap;
     }
@@ -734,17 +738,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return importConflicts;
     }
 
-    private Map<Field, Collection<Object>> detachCollectionFields( Object object )
+    private Map<Field, Collection<Object>> detachCollectionFields( final Object object )
     {
-        Map<Field, Collection<Object>> collectionFields = new HashMap<Field, Collection<Object>>();
-        Field[] fields = object.getClass().getDeclaredFields();
+        final Map<Field, Collection<Object>> collectionFields = new HashMap<Field, Collection<Object>>();
+        final Collection<Field> fieldCollection = ReflectionUtils.collectFields( object.getClass(), idObjectCollectionsWithScanned );
 
-        for ( Field field : fields )
+        FunctionalUtils.forEach( fieldCollection, new Function1<Field>()
         {
-            boolean b = ReflectionUtils.isCollection( field.getName(), object, IdentifiableObject.class,
-                Scanned.class );
-
-            if ( b )
+            @Override
+            public void apply( Field field )
             {
                 Collection<Object> objects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
 
@@ -762,7 +764,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     }
                 }
             }
-        }
+        } );
 
         return collectionFields;
     }

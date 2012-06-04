@@ -238,8 +238,6 @@ public class ReflectionUtils
             }
         }
 
-        System.err.println( "Did not find getter" );
-
         return null;
 
     }
@@ -422,7 +420,7 @@ public class ReflectionUtils
 
             for ( Field field : fields )
             {
-                if ( predicate != null && !predicate.evaluate( field ) )
+                if ( Modifier.isStatic( field.getModifiers() ) || (predicate != null && !predicate.evaluate( field )) )
                 {
                     continue;
                 }
@@ -445,7 +443,7 @@ public class ReflectionUtils
 
             for ( Field field : declaredFields )
             {
-                if ( predicate != null && !predicate.evaluate( field ) )
+                if ( Modifier.isStatic( field.getModifiers() ) || (predicate != null && !predicate.evaluate( field )) )
                 {
                     continue;
                 }

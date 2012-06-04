@@ -33,6 +33,8 @@ import org.hisp.dhis.system.util.functional.Predicate;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
@@ -40,7 +42,7 @@ import java.util.Collection;
  */
 public class PredicateUtils
 {
-    public static Predicate<Field> idObjects= new ObjectWithTypePredicate( IdentifiableObject.class );
+    public static Predicate<Field> idObjects = new ObjectWithTypePredicate( IdentifiableObject.class );
 
     public static Predicate<Field> collections = new CollectionPredicate();
 
@@ -77,9 +79,15 @@ public class PredicateUtils
         {
             if ( collectionPredicate.evaluate( field ) )
             {
-                if ( type.isAssignableFrom( field.getType() ) )
+                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+                Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+
+                if ( actualTypeArguments.length > 0 )
                 {
-                    return true;
+                    if ( type.isAssignableFrom( (Class<?>) actualTypeArguments[0] ) )
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -102,9 +110,9 @@ public class PredicateUtils
         @Override
         public boolean evaluate( Field field )
         {
-            if ( collectionPredicate.evaluate( field ) )
+            if ( field.isAnnotationPresent( annotation ) )
             {
-                if ( field.isAnnotationPresent( annotation ) )
+                if ( collectionPredicate.evaluate( field ) )
                 {
                     return true;
                 }
@@ -130,9 +138,9 @@ public class PredicateUtils
         @Override
         public boolean evaluate( Field field )
         {
-            if ( collectionWithTypePredicate.evaluate( field ) )
+            if ( field.isAnnotationPresent( annotation ) )
             {
-                if ( field.isAnnotationPresent( annotation ) )
+                if ( collectionWithTypePredicate.evaluate( field ) )
                 {
                     return true;
                 }
@@ -153,9 +161,9 @@ public class PredicateUtils
         }
 
         @Override
-        public boolean evaluate( Field object )
+        public boolean evaluate( Field field )
         {
-            return type.isAssignableFrom( object.getClass() );
+            return type.isAssignableFrom( field.getType() );
         }
     }
 }
