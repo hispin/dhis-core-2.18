@@ -257,6 +257,13 @@ public class DefaultIdentifiableObjectManager
 
         GenericIdentifiableObjectStore<T> store = (GenericIdentifiableObjectStore<T>) getIdentifiableObjectStore( clazz );
 
+        if ( store == null )
+        {
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty map (getIdMap)." );
+
+            return map;
+        }
+
         Collection<T> objects = store.getAll();
 
         for ( T object : objects )

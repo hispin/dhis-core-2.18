@@ -119,9 +119,11 @@ final public class ExchangeClasses
         exportClasses.put( MapLegendSet.class, "mapLegendSets" );
         exportClasses.put( MapLayer.class, "mapLayers" );
 
+        /*
         exportClasses.put( User.class, "users" );
         exportClasses.put( UserGroup.class, "userGroups" );
         exportClasses.put( UserAuthorityGroup.class, "userRoles" );
+        */
 
         exportClasses.put( MessageConversation.class, "messageConversations" );
         exportClasses.put( Interpretation.class, "interpretations" );
