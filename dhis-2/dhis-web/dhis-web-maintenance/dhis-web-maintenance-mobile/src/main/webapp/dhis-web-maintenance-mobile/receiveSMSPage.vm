@@ -53,7 +53,7 @@
 		
 		if( result != "")
 		{
-			var confirmation = window.confirm( "i18n.getString( 'confirm_delete_items' )" );
+			var confirmation = window.confirm( "$i18n.getString( 'confirm_delete_items' )" );
 			if ( confirmation )
 			{
 				jQuery.get( 'deleteReceiveSMS.action?' + result, {},
