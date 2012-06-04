@@ -100,13 +100,14 @@ public class SaveExecutionDateAction
     {
         this.format = format;
     }
-    
+
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -157,11 +158,12 @@ public class SaveExecutionDateAction
                 ProgramStage programStage = programStageService.getProgramStage( programStageId );
                 Program program = programStage.getProgram();
                 int type = program.getType();
-
+                ProgramInstance programInstance = null;
+                
                 if ( type == Program.SINGLE_EVENT_WITH_REGISTRATION )
                 {
                     // Add a new program-instance
-                    ProgramInstance programInstance = new ProgramInstance();
+                    programInstance = new ProgramInstance();
                     programInstance.setEnrollmentDate( dateValue );
                     programInstance.setDateOfIncident( dateValue );
                     programInstance.setProgram( program );
@@ -172,40 +174,25 @@ public class SaveExecutionDateAction
                     patientService.updatePatient( patient );
 
                     programInstanceService.addProgramInstance( programInstance );
-
-                    // Add a new program-stage-instance
-                    programStageInstance = new ProgramStageInstance();
-                    programStageInstance.setProgramInstance( programInstance );
-                    programStageInstance.setProgramStage( programStage );
-                    programStageInstance.setStageInProgram( programStage.getStageInProgram() );
-                    programStageInstance.setDueDate( dateValue );
-                    programStageInstance.setExecutionDate( dateValue );
-                    programStageInstance.setStoredBy( storedBy );
-                    programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
-                    programStageInstance.setProvidedByAnotherFacility( false );
-
-                    programStageInstanceService.addProgramStageInstance( programStageInstance );
-                    selectedStateManager.setSelectedProgramInstance( programInstance );
                 }
                 else if ( type == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
                 {
-                    ProgramInstance programInstance = programInstanceService.getProgramInstances( patient, program ).iterator().next();
-                    
-                    // Add a new program-stage-instance
-                    programStageInstance = new ProgramStageInstance();
-                    programStageInstance.setProgramInstance( programInstance );
-                    programStageInstance.setProgramStage( programStage );
-                    programStageInstance.setStageInProgram( programStage.getStageInProgram() );
-                    programStageInstance.setDueDate( dateValue );
-                    programStageInstance.setExecutionDate( dateValue );
-                    programStageInstance.setStoredBy( storedBy );
-                    programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
-                    programStageInstance.setProvidedByAnotherFacility( false );
-
-                    programStageInstanceService.addProgramStageInstance( programStageInstance );
-                    selectedStateManager.setSelectedProgramInstance( programInstance );
+                    programInstance = programInstanceService.getProgramInstances( patient, program )
+                        .iterator().next();
                 }
 
+                // Add a new program-stage-instance
+                programStageInstance = new ProgramStageInstance();
+                programStageInstance.setProgramInstance( programInstance );
+                programStageInstance.setProgramStage( programStage );
+                programStageInstance.setStageInProgram( programStage.getStageInProgram() );
+                programStageInstance.setDueDate( dateValue );
+                programStageInstance.setExecutionDate( dateValue );
+                programStageInstance.setStoredBy( storedBy );
+                programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
+
+                programStageInstanceService.addProgramStageInstance( programStageInstance );
+                selectedStateManager.setSelectedProgramInstance( programInstance );
                 selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
             }
             else

@@ -227,13 +227,13 @@ function saveOpt( dataElementId )
     valueSaver.save();
 }
 
-function updateProvidingFacility()
+function updateProvidingFacility( dataElementId, checkField )
 {
 	var programStageId = byId( 'programStageId' ).value;
-	var checkField = byId( programStageId + '_facility');
+	var checked= checkField.checked;
     checkField.style.backgroundColor = '#ffffcc';
 	
-    var facilitySaver = new FacilitySaver( checkField.checked, '#ccffcc' );
+    var facilitySaver = new FacilitySaver( dataElementId, checked, '#ccffcc' );
     facilitySaver.save();
     
 }
@@ -381,6 +381,7 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
     var ERROR = '#ccccff';
 	
     var dataElementId = dataElementId_;
+	var providedElsewhereId = getFieldValue('programStageId') + "_" + dataElementId_ + "_facility";
 	var value = value_;
 	var type = dataElementType_;
     var resultColor = resultColor_;
@@ -388,7 +389,8 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
     this.save = function()
     {
 		var params  = 'dataElementId=' + dataElementId;
-			params += '&value=' ;
+			params += '&value=';
+			params += '&providedElsewhere=' + byId( providedElsewhereId ).checked;
 		if( value != '')
 			params += htmlEncode(value);
 		
@@ -442,17 +444,19 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
     }
 }
 
-function FacilitySaver( providedByAnotherFacility_, resultColor_ )
+function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
 {
     var SUCCESS = 'success';
     var ERROR = '#error';
 	
-    var providedByAnotherFacility = providedByAnotherFacility_;
+    var dataElementId = dataElementId_;
+	var providedElsewhere = providedElsewhere_;
     var resultColor = resultColor_;
 
     this.save = function()
     {
-		var params = 'providedByAnotherFacility=' + providedByAnotherFacility ;
+		var params  = 'dataElementId=' + dataElementId;
+			params += '&providedElsewhere=' + providedElsewhere ;
 		$.ajax({
 			   type: "POST",
 			   url: "saveProvidingFacility.action",

@@ -38,27 +38,6 @@
 <input type='hidden' name='completed' id='completed' value='$!programStageInstance.completed'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>
-	##providedByAnotherFacility
-	<table class='entryScreen'>	
-		#if($programStageInstance.programInstance.program.displayProvidedOtherFacility == 'true' )
-		<tr>
-			<th>				
-				#set( $id = $programStageInstance.programStage.id + '_facility' )
-				#if( $!programStageInstance.providedByAnotherFacility)
-					#if( $!programStageInstance.providedByAnotherFacility == 'true' ) 					
-						$i18n.getString( "orgunit_provided_service" ): $programStageInstance.organisationUnit.name
-					#elseif( $!programStageInstance.providedByAnotherFacility == 'false' ) 
-						$i18n.getString( "orgunit_provided_service" ): $i18n.getString("other_facility")
-					#end
-				#else
-					$i18n.getString( "provided_elsewhere" ) 
-					<input type="checkbox" id='$id' onclick="updateProvidingFacility();">
-				#end
-			</th>
-		</tr>
-		#end
-	</table>
-
 	#if( $customDataEntryFormCode )
 		<div id="customEntryScreenContainer">
 		   $customDataEntryFormCode
@@ -76,6 +55,7 @@
 			<tr>
 				<th>$i18n.getString( "data_element" )</th>                   
 				<th>$i18n.getString( "entry" )</th>
+				<th>$i18n.getString( "provided_elsewhere" )</th>
 			</tr>
 		#set( $dataElementRowCount = 0 )
 		#set( $mark = true )
@@ -118,10 +98,19 @@
 					#else
 						<input name="entryfield" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex">
 					#end
-				</td>  
+				</td> 
+				
+				<td>
+					#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
+					#if( $programStageDataElement.allowProvidedElsewhere == 'true')
+						<input name="$id" id="$id" type="checkbox" 
+							onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" 
+							#if($patientDataValue.providedElsewhere == 'true') checked #end />
+					#end
+				</td>
 			</tr>
-			#set( $tabIndex = $tabIndex + 1 )
-		#end
+		#end				
+		#set( $tabIndex = $tabIndex + 1 )
 		</table>
 	#end
 </div>

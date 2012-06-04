@@ -46,9 +46,9 @@ public class ProgramStageInstance
     public static final String COLOR_RED = "#fb4754";
 
     public static final String COLOR_YELLOW = "#f9f95a";
-    
+
     public static final String COLOR_GREEN = "#8ffe8f";
-    
+
     public static final String COLOR_LIGHTRED = "#fb6bfb";
 
     private int id;
@@ -62,13 +62,11 @@ public class ProgramStageInstance
     private Date dueDate;
 
     private Date executionDate;
-    
+
     private OrganisationUnit organisationUnit;
 
     private boolean completed = false;
 
-    private Boolean providedByAnotherFacility = false;
-    
     private String storedBy;
 
     // -------------------------------------------------------------------------
@@ -122,7 +120,7 @@ public class ProgramStageInstance
         result = result * prime + programInstance.hashCode();
         result = result * prime + programStage.hashCode();
         result = result * prime + dueDate.hashCode();
-        result = result * prime + ( ( executionDate == null) ? 0 : executionDate.hashCode() );
+        result = result * prime + ((executionDate == null) ? 0 : executionDate.hashCode());
         result = result * prime + stageInProgram;
 
         return result;
@@ -227,7 +225,7 @@ public class ProgramStageInstance
     {
         return stageInProgram;
     }
-    
+
     /**
      * @return the completed
      */
@@ -252,15 +250,6 @@ public class ProgramStageInstance
     public void setOrganisationUnit( OrganisationUnit organisationUnit )
     {
         this.organisationUnit = organisationUnit;
-    }
-    public void setProvidedByAnotherFacility( Boolean providedByAnotherFacility )
-    {
-        this.providedByAnotherFacility = providedByAnotherFacility;
-    }
-
-    public Boolean isProvidedByAnotherFacility()
-    {
-        return providedByAnotherFacility;
     }
 
     public String getStoredBy()

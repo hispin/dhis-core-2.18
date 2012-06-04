@@ -28,9 +28,11 @@
 package org.hisp.dhis.caseentry.action.caseentry;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,22 +54,36 @@ public class SaveProvidingFacilityAction
         this.selectedStateManager = selectedStateManager;
     }
 
-    private ProgramStageInstanceService programStageInstanceService;
+    private DataElementService dataElementService;
 
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.programStageInstanceService = programStageInstanceService;
+        this.dataElementService = dataElementService;
+    }
+
+    private PatientDataValueService patientDataValueService;
+
+    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    {
+        this.patientDataValueService = patientDataValueService;
     }
 
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private boolean providedByAnotherFacility;
+    private int dataElementId;
 
-    public void setProvidedByAnotherFacility( boolean providedByAnotherFacility )
+    public void setDataElementId( int dataElementId )
     {
-        this.providedByAnotherFacility = providedByAnotherFacility;
+        this.dataElementId = dataElementId;
+    }
+
+    private Boolean providedElsewhere;
+
+    public void setProvidedElsewhere( Boolean providedElsewhere )
+    {
+        this.providedElsewhere = providedElsewhere;
     }
 
     private int statusCode;
@@ -86,20 +102,17 @@ public class SaveProvidingFacilityAction
     {
         ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
 
-        if ( programStageInstance != null )
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+        PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
+            dataElement );
+
+        if ( patientDataValue != null )
         {
-            if ( programStageInstance.getOrganisationUnit() == null )
-            {
-                OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-                programStageInstance.setOrganisationUnit( organisationUnit );
-            }
-            
-            programStageInstance.setProvidedByAnotherFacility( providedByAnotherFacility );
+            patientDataValue.setProvidedElsewhere( providedElsewhere );
 
-            programStageInstanceService.updateProgramStageInstance( programStageInstance );
+            patientDataValueService.updatePatientDataValue( patientDataValue );
         }
-
-        statusCode = 0;
 
         return SUCCESS;
     }

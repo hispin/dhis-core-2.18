@@ -16,6 +16,8 @@
     <property name="value" />
 
     <property name="timestamp" type="date" />
+    
+    <property name="providedElsewhere" />
 
   </class>
 </hibernate-mapping>

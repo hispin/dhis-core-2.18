@@ -9,13 +9,21 @@ jQuery( document ).ready( function()
 		compulsories = jQuery( "#compulsories" );
 		compulsories.empty();
 		
+		allowProvidedElsewhere = jQuery( "#allowProvidedElsewhere" );
+		allowProvidedElsewhere.empty();
+		
 		jQuery("#selectedList").find("tr").each( function( i, item ){ 
+			
 			selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
+			
 			var compulsory = jQuery( item ).find( "input[name='compulsory']:first");
-			var isShow = jQuery( item ).find( "input[name='isShow']:first");
-
 			var checked = compulsory.attr('checked') ? true : false;
 			compulsories.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+			
+			
+			var allowProvided = jQuery( item ).find( "input[name='allowProvided']:first");
+			checked = allowProvided.attr('checked') ? true : false;
+			allowProvidedElsewhere.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 		});
 	});
 	

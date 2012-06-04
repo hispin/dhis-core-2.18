@@ -119,7 +119,12 @@ public class UpdateProgramStageAction
     {
         this.compulsories = compulsories;
     }
-
+ private List<Boolean> allowProvidedElsewhere = new ArrayList<Boolean>();
+    
+    public void setAllowProvidedElsewhere( List<Boolean> allowProvidedElsewhere )
+    {
+        this.allowProvidedElsewhere = allowProvidedElsewhere;
+    }
     private int programId;
 
     public int getProgramId()
@@ -184,6 +189,8 @@ public class UpdateProgramStageAction
 
                 programStageDataElement.setSortOrder( new Integer( i ) );
 
+                programStageDataElement.setAllowProvidedElsewhere( allowProvidedElsewhere.get( i ) );
+                
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
 
                 programStageDataElements.remove( programStageDataElement );
