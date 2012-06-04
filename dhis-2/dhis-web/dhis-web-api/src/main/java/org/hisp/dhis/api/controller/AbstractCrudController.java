@@ -107,13 +107,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // POST
     //--------------------------------------------------------------------------
 
-    @RequestMapping( method = RequestMethod.POST, headers = { "Content-Type=application/xml, text/xml" } )
+    @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
-    @RequestMapping( method = RequestMethod.POST, headers = { "Content-Type=application/json" } )
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     public void postJsonObject( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -123,14 +123,14 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     // PUT
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = { "Content-Type=application/xml, text/xml" } )
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putXmlObject( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = { "Content-Type=application/json" } )
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putJsonObject( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -232,16 +232,13 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         try
         {
             return (T) Class.forName( getEntityName() ).newInstance();
-        }
-        catch ( InstantiationException e )
+        } catch ( InstantiationException e )
         {
             throw new RuntimeException( e );
-        }
-        catch ( IllegalAccessException e )
+        } catch ( IllegalAccessException e )
         {
             throw new RuntimeException( e );
-        }
-        catch ( ClassNotFoundException e )
+        } catch ( ClassNotFoundException e )
         {
             throw new RuntimeException( e );
         }
