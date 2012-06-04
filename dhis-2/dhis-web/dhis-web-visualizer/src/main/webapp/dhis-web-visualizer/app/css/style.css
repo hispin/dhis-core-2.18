@@ -341,15 +341,15 @@ body {
     -ms-border-radius: 2px 2px 2px 2px;
     -khtml-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
-    padding: 0 2px;
-    border-width: 2px;
-    border-style: solid;
-    background-color: #f1f1f1;
+    padding: 3px 4px;
+    border: 1px solid #444;
+    background-color: #444;
 }
 
 .x-tip .x-tip-body {
-	padding: 4px 5px 5px 5px;
-	font-size: 12px;
+	font-size: 11px;
+	font-weight: bold;
+	color: #fff;
 }
 
 /* Chart tips (tooltip) */
@@ -506,11 +506,30 @@ body {
 }
 
 /* Chart tips */
-.dv-chart-tips .x-tip-body {
-    font-size: 27px;
+.dv-chart-tips, .dv-chart-tips-pie {
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    -o-border-radius: 2px 2px 2px 2px;
+    -ms-border-radius: 2px 2px 2px 2px;
+    -khtml-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    padding: 3px 4px 2px;
+    border: 2px solid #777;
+    background-color: #f1f1f1;
+}
+.dv-chart-tips-pie {
+    padding: 3px 4px;
+}
+
+.dv-chart-tips .x-tip-body, .dv-chart-tips-pie .x-tip-body {
+    padding: 4px;
+    background-color: #f1f1f1;
+    font-size: 20px;
+    font-weight: normal;
+    color: #444;
 }
 .dv-chart-tips-pie .x-tip-body {
-    font-size: 17px;
+	font-size: 13px;
 }
 
 /* Window */

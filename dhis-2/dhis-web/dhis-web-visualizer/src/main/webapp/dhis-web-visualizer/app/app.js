@@ -1918,6 +1918,7 @@ Ext.onReady( function() {
 			render: function() {
 				if (!DV.c.rendered) {
 					DV.cmp.toolbar.datatable.enable();
+					DV.cmp.toolbar.datatable.setTooltip('');
 					DV.c.rendered = true;
 				}
 			},
@@ -2421,7 +2422,6 @@ Ext.onReady( function() {
 								xtype: 'button',
                                 icon: 'images/column.png',
                                 name: DV.conf.finals.chart.column,
-                                tooltip: DV.i18n.column_chart,
 								width: 40,
                                 pressed: true
                             },
@@ -2429,42 +2429,36 @@ Ext.onReady( function() {
 								xtype: 'button',
                                 icon: 'images/column-stacked.png',
                                 name: DV.conf.finals.chart.stackedcolumn,
-                                tooltip: DV.i18n.stacked_column_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar.png',
                                 name: DV.conf.finals.chart.bar,
-                                tooltip: DV.i18n.bar_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar-stacked.png',
                                 name: DV.conf.finals.chart.stackedbar,
-                                tooltip: DV.i18n.stacked_bar_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/line.png',
                                 name: DV.conf.finals.chart.line,
-                                tooltip: DV.i18n.line_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/area.png',
                                 name: DV.conf.finals.chart.area,
-                                tooltip: DV.i18n.area_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/pie.png',
                                 name: DV.conf.finals.chart.pie,
-                                tooltip: DV.i18n.pie_chart,
 								width: 40
                             }
                         ]
@@ -3597,7 +3591,6 @@ Ext.onReady( function() {
                             name: 'resizewest',
 							cls: 'dv-toolbar-btn-2',
                             text: '<<<',
-                            tooltip: DV.i18n.show_hide_chart_settings,
                             handler: function() {
                                 var p = DV.cmp.region.west;
                                 if (p.collapsed) {
@@ -4183,9 +4176,11 @@ Ext.onReady( function() {
 							xable: function() {
 								if (DV.c.currentFavorite) {
 									this.enable();
+									this.setTooltip('');
 								}
 								else {
 									this.disable();
+									this.setTooltip(DV.i18n.save_load_favorite_before_sharing);
 								}
 							},
 							handler: function() {
@@ -4324,6 +4319,7 @@ Ext.onReady( function() {
 							cls: 'dv-toolbar-btn-2',
                             text: DV.i18n.data_table,
                             disabled: true,
+                            tooltip: DV.i18n.create_chart_before_datatable,
                             handler: function() {
                                 var p = DV.cmp.region.east;
                                 if (p.collapsed && p.items.length) {
@@ -4356,7 +4352,6 @@ Ext.onReady( function() {
                             name: 'resizeeast',
 							cls: 'dv-toolbar-btn-2',
                             text: '>>>',
-                            tooltip: DV.i18n.hide_data_table,
                             hidden: true,
                             handler: function() {
                                 DV.cmp.region.east.collapse();
