@@ -48,6 +48,11 @@ import java.util.regex.Pattern;
 public class DataEntryForm
     implements Serializable, ImportableObject
 {
+    public static final String STYLE_COMFORTABLE = "comfortable";
+    public static final String STYLE_REGULAR = "regular";
+    public static final String STYLE_COMPACT = "compact";
+    public static final String STYLE_NONE = "none";
+    
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -65,6 +70,11 @@ public class DataEntryForm
      * Name of DataEntryForm. Required and unique.
      */
     private String name;
+    
+    /**
+     * The display style to use to render the form.
+     */
+    private String style;
 
     /**
      * HTML Code of DataEntryForm
@@ -87,6 +97,13 @@ public class DataEntryForm
     public DataEntryForm( String name, String htmlCode )
     {
         this.name = name;
+        this.htmlCode = htmlCode;
+    }
+
+    public DataEntryForm( String name, String style, String htmlCode )
+    {
+        this.name = name;
+        this.style = style;
         this.htmlCode = htmlCode;
     }
 
@@ -141,7 +158,7 @@ public class DataEntryForm
             throw new IllegalArgumentException( message );
         }
     }
-
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -200,6 +217,19 @@ public class DataEntryForm
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public String getStyle()
+    {
+        return style;
+    }
+
+    public void setStyle( String style )
+    {
+        this.style = style;
     }
 
     @JsonProperty

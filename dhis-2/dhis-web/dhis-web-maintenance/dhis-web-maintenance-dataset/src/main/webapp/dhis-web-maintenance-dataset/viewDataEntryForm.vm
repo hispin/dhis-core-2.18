@@ -82,11 +82,6 @@
 </script>
 
 <style type="text/css">
-#message_{
-	display:block;
-	color:red;
-}
-
 .ui-state-active2, .ui-widget-content .ui-state-active2, .ui-widget-header .ui-state-active2 {
 	border: 1px solid #79b7e7;
 	background: #f5f8f9;
@@ -124,6 +119,17 @@
         <td><input type="text" value="$dataSet.name" style="width:20em" disabled /></td>
       </tr>
       <tr>
+        <td><label>$i18n.getString( "style" )</label></td>
+        <td>
+        <select id="style" name="style" style="width:20em">
+          <option value="regular"#if( !$dataEntryForm.style || "regular" == $dataEntryForm.style ) selected=selected#end>$i18n.getString( "regular" )</option>
+          <option value="comfortable"#if( "comfortable" == $dataEntryForm.style ) selected=selected#end>$i18n.getString( "comfortable" )</option>
+          <option value="compact"#if( "compact" == $dataEntryForm.style ) selected=selected#end>$i18n.getString( "compact" )</option>
+          <option value="none"#if( "none" == $dataEntryForm.style ) selected=selected#end>$i18n.getString( "none" )</option>
+        </select>
+        </td>
+      </tr>
+      <tr>
         <td colspan="2">&nbsp;</td>
       </tr>
     </tbody>
@@ -159,34 +165,31 @@
   <input type="hidden" name="dataSetIdField" id="dataSetIdField" value="${dataSet.id}" />
 </form>
 
-<div id="selectionDialog" title="Selection Box">
+<div id="selectionDialog" title="$i18n.getString( 'insert_data_elements_totals_indicators' )">
 <div id="tabs">
 		<table style="width: 100%;">
 			<tr id="dataElementsTab">
-				<td colspan="2">
+				<td>
 					<select id="dataElementSelector" multiple="multiple" style="height: 200px; width: 100%;"></select>
 				</td>
 			</tr>
 			<tr id="totalsTab">
-				<td colspan="2">
+				<td>
 					<select id="totalSelector" multiple="multiple" style="height: 200px; width: 100%;"></select>
 				</td>
 			</tr>
 			<tr id="indicatorsTab">
-				<td colspan="2">
+				<td>
 					<select id="indicatorSelector" multiple="multiple" style="height: 200px; width: 100%;"></select>
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td style="height: 45px">
 					<button type="button" id="dataElementsButton">$i18n.getString( "data_elements" )</button>
 					<button type="button" id="totalsButton">$i18n.getString( "totals" )</button>
 					<button type="button" id="indicatorsButton">$i18n.getString( "indicators" )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 					<button type="button" id="insertButton">$i18n.getString( "insert" )</button>
 					<input type="checkbox" id="greyedField"><label for="greyedField">$i18n.getString( "grey_field" )</label>
-				</td>
-				<td style="width:145px">
-					<span id="message_"></span>
 				</td>
 			</tr>
 		</table>		

@@ -77,6 +77,13 @@ public class SaveDataEntryFormAction
         this.nameField = nameField;
     }
 
+    private String style;
+    
+    public void setStyle( String style )
+    {
+        this.style = style;
+    }
+
     private String designTextarea;
 
     public void setDesignTextarea( String designTextarea )
@@ -95,24 +102,26 @@ public class SaveDataEntryFormAction
 
         designTextarea = dataEntryFormService.prepareDataEntryFormForSave( designTextarea );
         
-        DataEntryForm dataEntryForm = dataset.getDataEntryForm();
+        DataEntryForm form = dataset.getDataEntryForm();
 
-        if ( !( dataEntryForm != null && dataEntryForm.getHtmlCode().equals( designTextarea ) ) )
+        if ( ( form != null && form.getStyle() != null && !form.getStyle().equals( style ) ) ||
+            ( form != null && form.getHtmlCode() != null && !form.getHtmlCode().equals( designTextarea ) ) )
         {
             dataset.increaseVersion(); // Check if version must be updated
         }
         
-        if ( dataEntryForm == null )
+        if ( form == null )
         {
-            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
-            dataEntryFormService.addDataEntryForm( dataEntryForm );
-            dataset.setDataEntryForm( dataEntryForm );
+            form = new DataEntryForm( nameField, style, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
+            dataEntryFormService.addDataEntryForm( form );
+            dataset.setDataEntryForm( form );
         }
         else
         {
-            dataEntryForm.setName( nameField );
-            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
-            dataEntryFormService.updateDataEntryForm( dataEntryForm );
+            form.setName( nameField );
+            form.setStyle( style );
+            form.setHtmlCode( dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
+            dataEntryFormService.updateDataEntryForm( form );
         }
         
         dataSetService.updateDataSet( dataset );
