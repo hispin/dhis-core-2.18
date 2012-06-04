@@ -2,7 +2,7 @@
 $( document ).ready( function()
 {
 	var viewportWidth = parseInt( $( window ).width() );
-	var linkWidth = parseInt( 355 );
+	var linkWidth = parseInt( 338 );
 	var chartWidth = parseInt( 325 );
 	
 	if ( viewportWidth == undefined )
