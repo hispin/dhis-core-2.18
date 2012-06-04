@@ -117,6 +117,13 @@ public class LoadFormAction
     {
         return this.customDataEntryFormCode;
     }
+    
+    private DataEntryForm dataEntryForm;
+
+    public DataEntryForm getDataEntryForm()
+    {
+        return dataEntryForm;
+    }
 
     private List<Section> sections;
 
@@ -312,7 +319,7 @@ public class LoadFormAction
 
     private void getOtherDataEntryForm( List<DataElement> dataElements, DataSet dataSet )
     {
-        DataEntryForm dataEntryForm = dataSet.getDataEntryForm();
+        dataEntryForm = dataSet.getDataEntryForm();
 
         if ( dataEntryForm != null )
         {

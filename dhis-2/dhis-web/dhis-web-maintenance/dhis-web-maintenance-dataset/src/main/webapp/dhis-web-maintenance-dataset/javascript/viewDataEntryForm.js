@@ -188,15 +188,6 @@ function filterSelectList( select_id, filter )
 	$sorted.appendTo( select_selector );
 }
 
-function showThenFadeOutMessage( message )
-{
-	$("#message_").html(message);
-	$("#message_").fadeOut(3000, function() {
-		$("#message_").html("");
-		$("#message_").show();
-	});
-}
-
 function insertDataElement() {
 	var oEditor = $("#designTextarea").ckeditorGet();
 	var $option = $("#dataElementSelector option:selected");
@@ -232,10 +223,10 @@ function insertDataElement() {
 		if (!checkExisted(dataEntryId)) {
 			oEditor.insertHtml(html);
 		} else {
-			showThenFadeOutMessage( "<b>" + i18n_dataelement_already_inserted + "</b>" );
+			setHeaderDelayMessage( i18n_dataelement_already_inserted );
 		}
 	} else {
-		showThenFadeOutMessage( "<b>" + i18n_no_dataelement_was_selected + "</b>" );
+		setHeaderDelayMessage( i18n_no_dataelement_was_selected );
 	}
 }
 
@@ -253,10 +244,10 @@ function insertTotal() {
 		if(!checkExisted(dataEntryId)) {
 			oEditor.insertHtml( template );
 		} else {
-			showThenFadeOutMessage( "<b>" + i18n_dataelement_already_inserted + "</b>" );
+			setHeaderDelayMessage( i18n_dataelement_already_inserted );
 		}
 	} else {
-		showThenFadeOutMessage( "<b>" + i18n_no_dataelement_was_selected + "</b>" );
+		setHeaderDelayMessage( i18n_no_dataelement_was_selected );
 	}
 }
 
@@ -272,10 +263,10 @@ function insertIndicator() {
 		if(!checkExisted("indicator" + id)) {
 			oEditor.insertHtml( template );
 		} else {
-			showThenFadeOutMessage( "<b>" + i18n_indicator_already_inserted + "</b>" );
+			setHeaderDelayMessage( i18n_indicator_already_inserted );
 		}
 	} else {
-		showThenFadeOutMessage( "<b>" + i18n_no_indicator_was_selected + "</b>" );
+		setHeaderDelayMessage( i18n_no_indicator_was_selected );
 	}
 }
 

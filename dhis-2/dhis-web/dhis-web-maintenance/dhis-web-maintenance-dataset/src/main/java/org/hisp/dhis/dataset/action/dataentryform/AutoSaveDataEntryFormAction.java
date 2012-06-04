@@ -77,6 +77,13 @@ public class AutoSaveDataEntryFormAction
         this.nameField = nameField;
     }
 
+    private String style;
+    
+    public void setStyle( String style )
+    {
+        this.style = style;
+    }
+
     private String designTextarea;
 
     public void setDesignTextarea( String designTextarea )
@@ -100,23 +107,24 @@ public class AutoSaveDataEntryFormAction
     {
         DataSet dataset = dataSetService.getDataSet( dataSetIdField );
 
-        DataEntryForm dataEntryForm = dataset.getDataEntryForm();
+        DataEntryForm form = dataset.getDataEntryForm();
 
-        if ( dataEntryForm == null )
+        if ( form == null )
         {
-            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
-            int id = dataEntryFormService.addDataEntryForm( dataEntryForm );
+            form = new DataEntryForm( nameField, style, dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
+            int id = dataEntryFormService.addDataEntryForm( form );
             message = String.valueOf( id );
             
-            dataset.setDataEntryForm( dataEntryForm );
+            dataset.setDataEntryForm( form );
             dataSetService.updateDataSet( dataset );
         }
         else
         {
-            dataEntryForm.setName( nameField );
-            dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
-            dataEntryFormService.updateDataEntryForm( dataEntryForm );
-            message = String.valueOf( dataEntryForm.getId() );
+            form.setName( nameField );
+            form.setStyle( style );
+            form.setHtmlCode( dataEntryFormService.prepareDataEntryFormForSave( designTextarea ) );
+            dataEntryFormService.updateDataEntryForm( form );
+            message = String.valueOf( form.getId() );
         }
 
         return SUCCESS;

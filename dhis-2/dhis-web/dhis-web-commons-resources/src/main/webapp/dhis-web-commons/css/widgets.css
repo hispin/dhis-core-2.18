@@ -538,29 +538,39 @@ ul.pageSizeSelection input
 }
 
 /*----------------------------------------------------------------------------*/
-/* Custom forms, put a <div id="cde-comfy"></div> around form to use          */
+/* Custom forms dynamic style                                                 */
 /*----------------------------------------------------------------------------*/
 
-#cde-comfy table 
+.cde table 
 {
   border-collapse: collapse;
-}
-
-#cde-comfy table, #cde-comfy th, #cde-comfy td 
-{
-  border: 1px solid #c0c0c0;
-}
-
-#cde-comfy td, #cde-comfy th 
-{
-  height: 30px;
-  padding: 10px;
-  margin: 10px;
 }
 
 .cde-greyfield 
 {
   background-color: #e0e0e0;
+}
+
+.cde-regular td, .cde-regular th 
+{
+  padding: 12px;
+  border: 1px solid #c0c0c0;
+}
+
+.cde-comfortable td, .cde-comfortable th 
+{
+  padding: 18px;
+  border: 1px solid #c0c0c0;
+}
+
+.cde-compact td, .cde-compact th 
+{
+  padding: 5px;
+  border: 1px solid #c0c0c0;
+}
+
+.cde-none
+{
 }
 
 /*----------------------------------------------------------------------------*/
@@ -585,3 +595,11 @@ ul.pageSizeSelection input
   font-weight: normal;
   font-size: 10pt;
 }
+
+.ui-button-text
+{
+  font-family: LiberationSansBold, arial, sans-serif;
+  font-weight: normal;
+  font-size: 9pt;
+}
+

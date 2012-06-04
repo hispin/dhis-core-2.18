@@ -574,7 +574,7 @@ function setHeaderDelayMessage( message )
 	
 	window.clearTimeout( headerMessageTimeout );
 	
-	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 8000 );
+	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 7000 );
 }
 
 /**
@@ -586,7 +586,7 @@ function setHeaderWaitDelayMessage( message )
 	
 	window.clearTimeout( headerMessageTimeout );
 	
-	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 8000 );
+	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 7000 );
 }
 
 /**

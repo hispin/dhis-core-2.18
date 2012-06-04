@@ -141,7 +141,6 @@ public class ChartPluginController
                     .getOrganisationUnit().getChildren() ) );
             }
         }
-
         else
         {
             organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsByUid( organisationUnitIds ) );

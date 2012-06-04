@@ -12,6 +12,8 @@
 
     <property name="name" not-null="true" unique="true" length="160" />
 
+    <property name="style" length="40" />
+
     <property name="htmlCode" column="htmlcode" type="text" />
 
   </class>
