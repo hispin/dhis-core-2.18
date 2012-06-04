@@ -23,14 +23,18 @@ package org.hisp.dhis.attribute;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -44,14 +48,14 @@ public class AttributeValueDeletionHandler
     {
         this.attributeService = attributeService;
     }
-    
+
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -66,53 +70,55 @@ public class AttributeValueDeletionHandler
     public String allowDeleteAttribute( Attribute attribute )
     {
         String sql = "select count(*) from attributevalue where attributeid=" + attribute.getId();
-        
+
         return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
-        
+
     @Override
     public void deleteDataElement( DataElement dataElement )
     {
-        Iterator<AttributeValue> iterator = dataElement.getAttributeValues().iterator();
+        removeAttributeValues( dataElement.getAttributeValues() );
+    }
 
-        while ( iterator.hasNext() )
-        {
-            AttributeValue attributeValue = iterator.next();
-            iterator.remove();
-            attributeService.deleteAttributeValue( attributeValue );
-        }
+    @Override
+    public void deleteDataElementGroup( DataElementGroup dataElementGroup )
+    {
+        removeAttributeValues( dataElementGroup.getAttributeValues() );
     }
 
     @Override
     public void deleteIndicator( Indicator indicator )
     {
-        Iterator<AttributeValue> iterator = indicator.getAttributeValues().iterator();
-
-        while ( iterator.hasNext() )
-        {
-            AttributeValue attributeValue = iterator.next();
-            iterator.remove();
-            attributeService.deleteAttributeValue( attributeValue );
-        }
+        removeAttributeValues( indicator.getAttributeValues() );
     }
 
     @Override
-    public void deleteOrganisationUnit( OrganisationUnit unit )
+    public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        Iterator<AttributeValue> iterator = unit.getAttributeValues().iterator();
-
-        while ( iterator.hasNext() )
-        {
-            AttributeValue attributeValue = iterator.next();
-            iterator.remove();
-            attributeService.deleteAttributeValue( attributeValue );
-        }
+        removeAttributeValues( indicatorGroup.getAttributeValues() );
     }
 
     @Override
-    public void deleteUser( User user )
+    public void deleteOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        Iterator<AttributeValue> iterator = user.getAttributeValues().iterator();
+        removeAttributeValues( organisationUnit.getAttributeValues() );
+    }
+
+    @Override
+    public void deleteOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
+    {
+        removeAttributeValues( organisationUnitGroup.getAttributeValues() );
+    }
+
+    @Override
+    public void deleteUserGroup( UserGroup userGroup )
+    {
+        removeAttributeValues( userGroup.getAttributeValues() );
+    }
+
+    private void removeAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        Iterator<AttributeValue> iterator = attributeValues.iterator();
 
         while ( iterator.hasNext() )
         {
