@@ -14,6 +14,7 @@
     <a href="javascript:clearArea( '${areaDivId}' )">$i18n.getString( "clear" )</a>
     #if( $chart )
     <a href="javascript:explore( '${chart.uid}' )">$i18n.getString( "explore" )</a>
+    <a href="javascript:viewShareForm( '${chart.uid}' )">$i18n.getString( "share" )</a>
     #end
 </div>
 #end
