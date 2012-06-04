@@ -59,10 +59,14 @@ public class ProgramStageDataElement
      */
     private boolean compulsory = false;
     
-    //private boolean allowProvidedElsewhere;
+    private boolean allowProvidedElsewhere;
 
     private Integer sortOrder;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+    
     public ProgramStageDataElement( ProgramStage programStage, DataElement dataElement, boolean compulsory )
     {
         this.programStage = programStage;
@@ -101,6 +105,16 @@ public class ProgramStageDataElement
     public void setDataElement( DataElement dataElement )
     {
         this.dataElement = dataElement;
+    }
+
+    public boolean isAllowProvidedElsewhere()
+    {
+        return allowProvidedElsewhere;
+    }
+
+    public void setAllowProvidedElsewhere( boolean allowProvidedElsewhere )
+    {
+        this.allowProvidedElsewhere = allowProvidedElsewhere;
     }
 
     public boolean isCompulsory()

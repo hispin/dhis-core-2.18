@@ -56,8 +56,8 @@
 		</tr>	
 		
 		<tr>
-			<td><label>$i18n.getString( "duration_in_days" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" class="{validate:{required:true,number:true}}"></td>
+			<td><label>$i18n.getString( "duration_in_days" )</label></td>
+			<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" class="{validate:{number:true}}"></td>
 			<td></td>
 		</tr>	
 		
