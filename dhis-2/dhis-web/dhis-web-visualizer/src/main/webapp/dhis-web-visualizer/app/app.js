@@ -225,6 +225,7 @@ DV.conf = {
         form_label_width: 55,
         window_favorite_ypos: 100,
         window_confirm_width: 250,
+        window_share_width: 500,
         grid_favorite_width: 420,
         treepanel_minheight: 135,
         treepanel_maxheight: 400,
@@ -744,6 +745,10 @@ Ext.onReady( function() {
 			ok: function() {
 				DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
 				DV.cmp.statusbar.panel.update('<img src="' + DV.conf.finals.ajax.path_images + DV.conf.statusbar.icon.ok + '" style="padding:0 5px 0 0"/>&nbsp;&nbsp;');
+			},
+			interpretation: function(text) {
+				DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
+				DV.cmp.statusbar.panel.update('<img src="' + DV.conf.finals.ajax.path_images + DV.conf.statusbar.icon.ok + '" style="padding:0 5px 0 0"/>' + text);
 			}				
 		},
         mask: {
@@ -1267,8 +1272,13 @@ Ext.onReady( function() {
                         method: 'POST',
                         params: p,
                         success: function(r) {
-                            DV.store.favorite.load({callback: function() {
-								DV.c.shareid = r.responseText;
+                            DV.store.favorite.load({callback: function() {								
+								var id = r.responseText;
+								var name = DV.store.favorite.getAt(DV.store.favorite.findExact('id', id)).data.name;
+								DV.c.currentFavorite = {
+									id: id,
+									name: name
+								};								
 								DV.cmp.toolbar.share.xable();
                                 DV.util.mask.hideMask();
                                 if (fn) {
@@ -2007,7 +2017,7 @@ Ext.onReady( function() {
 			baselinevalue: null,
 			baselinelabel: null,
 			rendered: false,
-			shareid: null
+			currentFavorite: null
 		},
 		reset: function() {
 			this.model.type = DV.conf.finals.chart.column;
@@ -2578,7 +2588,7 @@ Ext.onReady( function() {
 								height: 430,
 								items: [
 									{
-										title: '<div style="height:17px">' + DV.i18n.indicators + '</div>',
+										title: '<div style="height:17px; background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.indicators + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -2739,7 +2749,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										title: '<div style="height:17px">' + DV.i18n.data_elements + '</div>',
+										title: '<div style="height:17px; background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.data_elements + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -2899,7 +2909,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										title: '<div style="height:17px">' + DV.i18n.reporting_rates + '</div>',
+										title: '<div style="height:17px; background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.reporting_rates + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -3019,7 +3029,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										title: '<div style="height:17px">' + DV.i18n.periods + '</div>',
+										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.periods + '</div>',
 										hideCollapseTool: true,
 										autoScroll: true,
 										items: [
@@ -3182,7 +3192,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										title: '<div style="height:17px">' + DV.i18n.organisation_units + '</div>',
+										title: '<div style="height:17px; background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.organisation_units + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -3299,7 +3309,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										title: '<div style="height:17px">' + DV.i18n.chart_options + '</div>',
+										title: '<div style="height:17px; background-image:url(images/options.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.chart_options + '</div>',
 										hideCollapseTool: true,
 										cls: 'dv-accordion-options',
 										items: [
@@ -3608,7 +3618,7 @@ Ext.onReady( function() {
 							cls: 'dv-toolbar-btn-1',
                             text: DV.i18n.update,
                             handler: function() {
-								DV.c.shareid = null;
+								DV.c.currentFavorite = null;
                                 DV.exe.execute();
                             }
                         },
@@ -4140,7 +4150,10 @@ Ext.onReady( function() {
                                                     itemclick: function(g, r) {
                                                         g.getSelectionModel().select([], false);
                                                         this.up('menu').hide();
-                                                        DV.c.shareid = r.data.id;
+                                                        DV.c.currentFavorite = {
+															id: r.data.id,
+															name: r.data.name
+														};
                                                         DV.exe.execute(r.data.id);
                                                     }
                                                 }
@@ -4168,7 +4181,7 @@ Ext.onReady( function() {
 							text: DV.i18n.share + '..',
 							disabled: true,
 							xable: function() {
-								if (DV.c.shareid) {
+								if (DV.c.currentFavorite) {
 									this.enable();
 								}
 								else {
@@ -4181,20 +4194,21 @@ Ext.onReady( function() {
 								}
 								else {
 									DV.cmp.share.window = Ext.create('Ext.window.Window', {
-										title: DV.i18n.share + ' ' + DV.i18n.interpretation,
+										title: DV.i18n.share + ' ' + DV.i18n.interpretation + ': <span style="font-weight:normal; font-size:10px">' + DV.c.currentFavorite.name + '</span>',
 										iconCls: 'dv-window-title-interpretation',
 										layout: 'fit',
-										bodyStyle: 'padding:8px 8px 4px 8px; background-color:#fff',
-										width: DV.conf.layout.grid_favorite_width,
-										height: 250,
-										emptyText: 'Write your interpretation..',										
+										bodyStyle: 'padding:8px 8px 3px; background-color:#fff',
+										width: DV.conf.layout.window_share_width,
+										height: 200,
 										closeAction: 'hide',
 										resizable: true,
 										modal: true,
 										items: [
 											{
 												xtype: 'textarea',
-												style: 'font-size:11px',
+												cls: 'dv-textarea',
+												width: 350,
+												emptyText: DV.i18n.write_your_interpretation + '...',
 												enableKeyEvents: true,
 												listeners: {
 													added: function() {
@@ -4220,9 +4234,9 @@ Ext.onReady( function() {
 													}
 												},
 												handler: function() {
-													if (DV.cmp.share.textarea.getValue() && DV.c.shareid) {
+													if (DV.cmp.share.textarea.getValue() && DV.c.currentFavorite) {
 														Ext.Ajax.request({
-															url: DV.conf.finals.ajax.path_api + 'interpretations/chart/' + DV.c.shareid,
+															url: DV.conf.finals.ajax.path_api + 'interpretations/chart/' + DV.c.currentFavorite.id,
 															method: 'POST',
 															params: DV.cmp.share.textarea.getValue(),
 															headers: {'Content-Type': 'text/html'},
@@ -4230,6 +4244,7 @@ Ext.onReady( function() {
 																DV.cmp.share.textarea.reset();
 																DV.cmp.share.button.disable();
 																DV.cmp.share.window.hide();
+																DV.util.notification.interpretation(DV.i18n.interpretation_was_shared + '.');
 															}
 														});
 													}
