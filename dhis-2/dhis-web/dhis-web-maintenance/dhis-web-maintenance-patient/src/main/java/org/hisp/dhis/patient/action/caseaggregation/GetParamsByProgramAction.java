@@ -28,14 +28,25 @@
 package org.hisp.dhis.patient.action.caseaggregation;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetProgramStagesAction implements Action
+/**
+ * @author Chau Thu Tran
+ * 
+ * @version $Id: GetParamsByProgramAction.java Jun 02, 2012 02:24:49 PM $
+ */
+public class GetParamsByProgramAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -48,23 +59,37 @@ public class GetProgramStagesAction implements Action
     {
         this.programService = programService;
     }
-    
+
+    private PatientAttributeService attributeService;
+
+    public void setAttributeService( PatientAttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
     private List<ProgramStage> programStages;
-    
+
     public List<ProgramStage> getProgramStages()
     {
         return programStages;
     }
-    
+
     private Integer programId;
-    
+
     public void setProgramId( Integer programId )
     {
         this.programId = programId;
+    }
+
+    private Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
+
+    public Collection<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
     }
 
     // -------------------------------------------------------------------------
@@ -72,7 +97,14 @@ public class GetProgramStagesAction implements Action
     // -------------------------------------------------------------------------
     public String execute()
     {
-        programStages = new ArrayList<ProgramStage>( programService.getProgram( programId ).getProgramStages() );
+        Program program = programService.getProgram( programId );
+        programStages = new ArrayList<ProgramStage>( program.getProgramStages() );
+
+        if ( program.isRegistration() )
+        {
+            patientAttributes.addAll( attributeService.getPatientAttributes( null, null ) );
+            patientAttributes.addAll( attributeService.getPatientAttributes( program ) );
+        }
         
         return SUCCESS;
     }

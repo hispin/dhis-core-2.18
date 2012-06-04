@@ -1,28 +1,4 @@
 
-function dobTypeOnChange( container ){
-
-	var type = jQuery('#' + container + ' [id=dobType]').val();
-	
-	if(type == 'V' || type == 'D'){
-		jQuery('#' + container + ' [id=age]').rules("remove","required");
-		jQuery('#' + container + ' [id=birthDate]').rules("add",{required:true});
-		
-		showById(container + ' [id=birthdaySpan]');
-		hideById(container + ' [id=ageSpan]');
-	}else if(type == 'A'){
-		jQuery('#' + container + ' [id=birthDate]').rules("remove","required");
-		jQuery('#' + container + ' [id=age]').rules("add",{required:true});
-		
-		hideById(container + ' [id=birthdaySpan]');
-		showById(container + ' [id=ageSpan]');
-	}else {
-		hideById(container + ' [id=birthdaySpan]');
-		hideById(container + ' [id=ageSpan]');
-		jQuery('#' + container + ' [id=age]').rules("remove","required");
-		jQuery('#' + container + ' [id=birthDate]').rules("remove","required");
-	}
-}
-
 // ----------------------------------------------------------------------------
 // Search patients by name
 // ----------------------------------------------------------------------------

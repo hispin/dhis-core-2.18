@@ -7,7 +7,7 @@ function getDataElementsByDataset()
 {
 	var dataSets = document.getElementById( 'dataSets' );
 	var dataSetId = dataSets.options[ dataSets.selectedIndex ].value;
-	clearList( byId('aggregationDataElementId'));
+	clearListById('aggregationDataElementId');
 	
 	if( dataSetId == "" ){
 		disable( 'dataElementsButton' );
@@ -21,7 +21,7 @@ function getDataElementsByDataset()
 		}, function( json )
         {
 			var de = byId( 'aggregationDataElementId' );
-			clearList( de );
+			clearListById( 'aggregationDataElementId' );
 		  
 			for ( i in json.dataElements ) 
 			{ 
@@ -88,8 +88,7 @@ function autoCompletedField()
 					}
 				}
 			}
-		})
-		.addClass( "ui-widget ui-widget-content ui-corner-left" );
+		});
 
 	input.data( "autocomplete" )._renderItem = function( ul, item ) {
 		return $( "<li></li>" )
@@ -98,17 +97,8 @@ function autoCompletedField()
 			.appendTo( ul );
 	};
 
-	showById('dataElementsButton');
-	var button = $( "#dataElementsButton" )
+	/* var button = $( "#dataElementsButton" )
 		.attr( "title", i18n_show_all_items )
-		.button({
-			icons: {
-				primary: "ui-icon-triangle-1-s"
-			},
-			text: false
-		})
-		.removeClass( "ui-corner-all" )
-		.addClass( "ui-corner-right ui-button-icon" )
 		.click(function() {
 			// close if already visible
 			if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
@@ -122,126 +112,116 @@ function autoCompletedField()
 			// pass empty string as value to search for, displaying all results
 			input.autocomplete( "search", "" );
 			input.focus();
-		});
+		}); */
 }
 
 //------------------------------------------------------------------------------
 // Get Program Stages
 //------------------------------------------------------------------------------
 
-function getProgramStages()
+function getParams()
 {
-	clearListById( 'programStage' );
-  	clearListById( 'programstageDE' );
+	clearListById( 'programStageId' );
+  	clearListById( 'dataElements' );
 	
-	var program = document.getElementById( 'program' );
-	var programId = program.options[ program.selectedIndex ].value;
-	if( programId == '0' ){
-		return;  
-	}
+	jQuery.getJSON( 'getParamsByProgram.action',{ programId:getFieldValue( 'programId' ) }
+		,function( json ) 
+		{
+			var programstage = jQuery('#programStageId');
+			
+			for ( i in json.programStages ) 
+			{ 
+				var id = json.programStages[i].id;
+				var formularId = "[PS:" + id + "]";
+				var name = json.programStages[i].name;
 
-	$.get( 'getProgramStages.action', { programId:programId }, getProgramStagesCompleted, 'xml');
-}
-
-function getProgramStagesCompleted( programstageElement )
-{
-	var programstage = document.getElementById( 'programStage' );
-	var programstageList = $(programstageElement).find( 'programstage' );
-
-	$( programstageList ).each( function( i, item )
-	{
-		var id = $( item ).find("id").text();
-		var name = $( item ).find("name").text();
-
-		var option = document.createElement("option");
-		option.value = id;
-		option.text = name;
-		option.title = name;
-
-		programstage.add(option, null);       	
-	});
-
-	if( programstage.options.length > 0 )
-	{
-		programstage.options[0].selected = true;
-		getPrgramStageDataElements();
-	}   
-}
-
-
-function getProgramStagesForFormula()
-{
-	clearListById( 'programStageFormula' );
-	
-	var program = document.getElementById( 'programFormula' );
-	var programId = program.options[ program.selectedIndex ].value;
-	if( programId == '0' ){
-		return;  
-	}
-
-	$.get( 'getProgramStages.action', { programId:programId }, getProgramStagesFomulaCompleted, 'xml' );
-}
-
-function getProgramStagesFomulaCompleted( programstageElement )
-{
-	var programstage = document.getElementById( 'programStageFormula' );
-	var programstageList = $(programstageElement).find( 'programstage' );
-
-	$( programstageList ).each( function( i, item )
-	{
-		var id = $( item ).find("id").text();
-		var name = $( item ).find("name").text();
-
-		var option = document.createElement("option");
-		option.value = "[PS:" + id + "]";
-		option.text = name;
-		option.title = name;
-
-		programstage.add(option, null);       	
-	});
-
-	if( programstage.options.length > 0 )
-	{
-		programstage.options[0].selected = true;
-	}   
+				programstage.append( "<option value='" + id + "' title='" + name + "'>" + name + "</option>" );
+			}
+			
+			if( json.programStages.length > 0 )
+			{
+				programstage.prepend( "<option value='' title='" + i18n_all + "'>" + i18n_all + "</option>" );
+				byId('programStageId').options[0].selected = true;
+				getPatientDataElements();
+			}  
+			
+			clearListById( 'caseProperty' );
+			var type = jQuery('#programId option:selected').attr('type');
+			if( type!='3')
+			{
+				var caseProperty = jQuery( '#caseProperty' );
+				for ( i in json.fixedAttributes )
+				{
+					var id = json.fixedAttributes[i].id;
+					var name = json.fixedAttributes[i].name;
+					
+					caseProperty.append( "<option value='" + id + "' title='" + name + "'>" + name + "</option>" );
+				}
+				
+				for ( i in json.patientAttributes )
+				{ 
+					var id = json.patientAttributes[i].id;
+					var name = json.patientAttributes[i].name;
+					var suggested = json.patientAttributes[i].suggested;
+					
+					caseProperty.append( "<option value='" + id + "' title='" + name + "' suggested='" + suggested + "'>" + name + "</option>" );	
+				}
+			}
+		});
 }
 
 //------------------------------------------------------------------------------
 // Get DataElements of Program-Stage
 //------------------------------------------------------------------------------
 
-function getPrgramStageDataElements()
+function getPatientDataElements()
 {
-	clearListById( 'programstageDE' );
-
+	clearListById( 'dataElements' );
 	var programStage = document.getElementById( 'programStage' );
-	var psId = programStage.options[ programStage.selectedIndex ].value;
-	
-	$.get( 'getPSDataElements.action', { psId:psId }, getPrgramStageDataElementsCompleted, 'xml' );
-}
-
-function getPrgramStageDataElementsCompleted( dataelementElement )
-{
-	var programstageDE = jQuery('#programstageDE');
-	var psDataElements = $(dataelementElement).find( 'dataelement' );
-
-	$( psDataElements ).each( function( i, item )
-	{
-		var id = $(item).find("id").text();
-		var name = $(item).find("name").text();
-		var optionset =$(item).find("optionset").text();
-		
-		programstageDE.append( "<option value='" + id + "' title='" + name + "' suggestedValues='" + optionset + "'>" + name + "</option>" );
-	} );	    
+	jQuery.getJSON( 'getPatientDataElements.action',
+		{ 
+			programId:getFieldValue( 'programId' ),
+			progamStageId: getFieldValue('progamStageId')  
+		}
+		,function( json )
+		{
+			var dataElements = jQuery('#dataElements');
+			for ( i in json.dataElements )
+			{ 
+				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
+			}
+		});
 }
 
 //-----------------------------------------------------------------
 // Insert items into Condition
 //-----------------------------------------------------------------
 
-function insertInfo( element )
+function insertDataElement( element )
 {
-	insertTextCommon('aggregationCondition', element.options[element.selectedIndex].value );
+	var progamId = getFieldValue('programId');
+	var progamStageId = getFieldValue('programStageId');
+	progamStageId = ( progamStageId == "" ) ? "*" : progamStageId;
+	var dataElementId = element.options[element.selectedIndex].value;
+	
+	insertTextCommon( 'aggregationCondition', "[DE:" + progamId + "." + progamStageId + "." + dataElementId + "]" );
+	getConditionDescription();
+}
+
+function insertInfo( element, isProgramStageProperty )
+{
+	var id = "";
+	if( isProgramStageProperty )
+	{
+		id = getFieldValue('programId');
+	}
+	else
+	{
+		id = getFieldValue('programStageId');
+	}
+	
+	value = element.options[element.selectedIndex].value.replace( '*', id );
+	insertTextCommon('aggregationCondition', value );
 	getConditionDescription();
 }
 
@@ -268,7 +248,7 @@ function showCaseAggregationDetails( caseAggregationId )
 {
     jQuery.getJSON( 'getCaseAggregation.action', { id:caseAggregationId }, function ( json )
 	{
-		setInnerHTML( 'descriptionField', json.caseAggregation.description );	
+		setInnerHTML( 'nameField', json.caseAggregation.name );	
 		setInnerHTML( 'operatorField', json.caseAggregation.operator );
 		setInnerHTML( 'aggregationDataElementField', json.caseAggregation.aggregationDataElement );
 		setInnerHTML( 'optionComboField', json.caseAggregation.optionCombo );	
@@ -321,21 +301,23 @@ function getSuggestedValues( sourceId, targetId )
 {
 	clearListById( targetId );
 	
-	var suggestedValues = jQuery('select[id=' + sourceId + '] option:selected').attr('suggestedValues');	
-	
-	var arrValues = new Array();
-	arrValues = suggestedValues.replace(/[//[]+/g,'').replace(/]/g, '').split(', ');
-
-	var suggestedValueSelector = byId( targetId );
-	for( var i=0; i< arrValues.length; i++ )
+	var suggestedValues = jQuery('select[id=' + sourceId + '] option:selected').attr('suggested');	
+	if( suggestedValues )
 	{
-		var option = document.createElement("option");
-		var value = jQuery.trim( arrValues[i] );
-		option.value = "'" + value + "'";
-		option.text = value;
-		option.title = value;
+		var arrValues = new Array();
+		arrValues = suggestedValues.replace(/[//[]+/g,'').replace(/]/g, '').split(', ');
 
-		suggestedValueSelector.add(option, null); 
+		var suggestedValueSelector = byId( targetId );
+		for( var i=0; i< arrValues.length; i++ )
+		{
+			var option = document.createElement("option");
+			var value = jQuery.trim( arrValues[i] );
+			option.value = "'" + value + "'";
+			option.text = value;
+			option.title = value;
+
+			suggestedValueSelector.add(option, null); 
+		}
 	}
 }
 

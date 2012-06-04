@@ -27,8 +27,13 @@
 
 package org.hisp.dhis.patient.startup;
 
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
+
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.amplecode.quick.StatementHolder;
@@ -88,7 +93,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE program DROP COLUMN singleevent" );
         executeSql( "ALTER TABLE program DROP COLUMN anonymous" );
         executeSql( "UPDATE program SET type=1 where type is null" );
-        
+
         executeSql( "UPDATE programstage set irregular=false where irregular is null" );
 
         executeSql( "DROP TABLE programattributevalue" );
@@ -98,9 +103,13 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE patientattribute DROP COLUMN noChars" );
         executeSql( "ALTER TABLE programstageinstance ALTER executiondate TYPE date" );
-        
+
         executeSql( "ALTER TABLE patientidentifier ALTER COLUMN patientid DROP NOT NULL" );
         executeSql( "ALTER TABLE patient DROP COLUMN bloodgroup" );
+        executeSql( "ALTER TABLE patientmobilesetting DROP COLUMN bloodGroup" );
+
+        executeSql( "ALTER TABLE caseaggregationcondition RENAME description TO name" );
+        updateCaseAggregationCondition();
     }
 
     // -------------------------------------------------------------------------
@@ -136,6 +145,70 @@ public class TableAlteror
         finally
         {
             holder.close();
+        }
+    }
+
+    private void updateCaseAggregationCondition()
+    {
+        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
+            + "[0-9]+" + "\\]";
+
+        try
+        {
+            StatementHolder holder = statementManager.getHolder();
+
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "SELECT caseaggregationconditionid, aggregationExpression FROM caseaggregationcondition" );
+
+            while ( resultSet.next() )
+            {
+                StringBuffer formular = new StringBuffer();
+
+                // ---------------------------------------------------------------------
+                // parse expressions
+                // ---------------------------------------------------------------------
+
+                Pattern pattern = Pattern.compile( regExp );
+
+                Matcher matcher = pattern.matcher( resultSet.getString( 2 ) );
+
+                while ( matcher.find() )
+                {
+                    String match = matcher.group();
+                    match = match.replaceAll( "[\\[\\]]", "" );
+
+                    String[] info = match.split( SEPARATOR_OBJECT );
+                    String[] ids = info[1].split( SEPARATOR_ID );
+                    int programStageId = Integer.parseInt( ids[0] );
+
+                    StatementHolder _holder = statementManager.getHolder();
+                    Statement _statement = _holder.getStatement();
+                    ResultSet rsProgramId = _statement
+                        .executeQuery( "SELECT programid FROM programstage where programstageid=" + programStageId );
+
+                    if ( rsProgramId.next() )
+                    {
+                        int programId = rsProgramId.getInt( 1 );
+
+                        String aggregationExpression = "[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT
+                            + programId + "." + programStageId + "." + ids[1] + "]";
+
+                        matcher.appendReplacement( formular, aggregationExpression );
+                    }
+                }
+
+                matcher.appendTail( formular );
+
+                executeSql( "UPDATE caseaggregationcondition SET aggregationExpression='" + formular.toString()
+                    + "'  WHERE caseaggregationconditionid=" + resultSet.getInt( 1 ) );
+
+            }
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
         }
     }
 

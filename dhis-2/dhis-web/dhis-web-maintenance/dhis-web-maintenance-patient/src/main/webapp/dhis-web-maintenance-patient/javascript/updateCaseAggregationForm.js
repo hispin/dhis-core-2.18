@@ -6,7 +6,7 @@ jQuery(document).ready(	function(){
 	
 	checkValueIsExist( "aggregationDataElementId", "validateCaseAggregation.action", {id:getFieldValue('id')});
 	
-	byId('description').focus();
+	byId('name').focus();
 	jQuery("#tabs").tabs();
 		
 });	

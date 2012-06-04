@@ -598,18 +598,18 @@
 				/dhis-web-maintenance-patient/responseAggerateDataElement.vm
 			</result>
 		</action>
-
-		<action name="getProgramStages"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseProgramStages.vm
+		
+		<action name="getParamsByProgram"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetParamsByProgramAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-patient/jsonParamsByProgram.vm
 			</result>
 		</action>
-
-		<action name="getPSDataElements"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetPSDataElementsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responsePSDataElement.vm
+		
+		<action name="getPatientDataElements"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetPatientDataElementsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-patient/jsonPatientDataElements.vm
 			</result>
 		</action>
 

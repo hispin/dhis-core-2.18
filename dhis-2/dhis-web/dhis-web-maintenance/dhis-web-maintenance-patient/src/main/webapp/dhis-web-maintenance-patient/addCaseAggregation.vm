@@ -14,14 +14,16 @@
     <tbody>
 	
     <tr>
-        <td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:2}}"></td>
+        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td>
+			<input type="text" id="name" name="name" class="{validate:{required:true,minlength:2}}">
+		</td>
     </tr>
     
     <tr>
 		<td><label for="dataSets">$i18n.getString( "dataset" )</label></td>
 		<td>
-			<select id="dataSets" name="dataSets" onchange="getDataElementsByDataset();">
+			<select id="dataSets" name="dataSets" onChange="getDataElementsByDataset();">
 				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $dataSet in $dataSets)
 					<option value="$dataSet.id" #if( $dataSetId=="$dataSet.id") selected #end>$dataSet.name</option>
@@ -32,21 +34,44 @@
     
     <tr>
 		<td><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td>
-			<select id="aggregationDataElementId" name="aggregationDataElementId" class="{validate:{required:true}} hidden" >
-			</select>
-			<input type="text" id="aggregationDataElementInput" name="aggregationDataElementInput" class='autocompleted-field' >
-			<button type='button' id='dataElementsButton' class='small-button' disabled >&nbsp;</button>
-		</td>				
+		<td>			
+			<select id="aggregationDataElementId" name="aggregationDataElementId" class="{validate:{required:true}} hidden" ></select>
+			<input id="aggregationDataElementInput" name="aggregationDataElementInput" style='width:303px'>
+			<button type='button' id='dataElementsButton' class='arrow-down' disabled>&nbsp;</button>
+		</td>
 	</tr>
 	
 	<tr>
 		<td><label for="operator">$i18n.getString( "operator" )</label></td>
 		<td>
 			<input type="radio" id="operator" name="operator" value="COUNT" checked >$i18n.getString('count')
-			<input type="radio" id="operator" name="operator" value="SUM"> $i18n.getString('sum')
+			<input type="radio" id="operator" name="operator" value="SUM"> $i18n.getString('times')
 		</td>
 	</tr>
+	
+	<tr>
+		<td>
+			<label for="programId">$i18n.getString( "program" )</label>
+		</td>
+		<td>
+			<select id="programId" name="programId" onChange="getParams();">
+				<option value="0">[$i18n.getString('please_select')]</option>
+				#foreach( $program in $programs )
+					<option value="$program.id" title='$program.name' type='$program.type'>$encoder.htmlEncode( $program.name )</option>
+				#end
+			</select>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label for="programStage">$i18n.getString( "program_stage" )</label>
+		</td>
+		<td>
+			<select id="programStageId" name="programStageId" onChange="getPatientDataElements();" ondblclick="insertProgramStage(this);"></select>
+		</td>
+	</tr>
+	
 	<tr>
         <td colspan="2"><p></p></td>
     </tr>
@@ -56,112 +81,50 @@
 
 <div id="tabs">
 	<ul>
-		<li><a href="#tab-1">$i18n.getString("dataelement")</a></li>
-		<li><a href="#tab-2">$i18n.getString("case_attributes")</a></li>
+		<li><a href="#tab-1">$i18n.getString("dataelements")</a></li>
+		<li><a href="#tab-2">$i18n.getString("patient_attributes")</a></li>
 		<li><a href="#tab-3">$i18n.getString("program")</a></li>
 	</ul>	
 	
 	<div id="tab-1">
-		<table>
-			<tr>
-				<td>
-				<fieldset style="border: 1px solid #3f5d8e; ">
-				<legend>$i18n.getString( "data_element" )</legend>
-				<table>
-					<tr>
-						<td>
-							<label for="program">$i18n.getString( "program" )</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<select id="program" name="program" onChange="getProgramStages();">
-								<option value="0">[$i18n.getString('please_select')]</option>
-								#foreach( $program in $programs )
-									<option value="$program.id" title='$program.name'>$encoder.htmlEncode( $program.name )</option>
-								#end
-							</select>
-						</td>
-					</tr>
-					
-					<tr>
-						<td>
-							<label for="programStage">$i18n.getString( "program_stage" )</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<select id="programStage" name="programStage" onchange="getPrgramStageDataElements();" ondblclick="insertProgramStage(this);">
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="dataelement">$i18n.getString( "dataelement" )</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type='text' onkeyup="filterDE(event, this.value, 'programstageDE');"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<select id="programstageDE" name="programstageDE" size="5" style="width:20em; height: 6em" ondblclick="insertInfo(this);" onclick="getSuggestedValues(this.id, 'suggestedDEValues' )">
-							</select>
-						</td>
-					</tr>
-				</table>
-				</fieldset>
-			</td>
+	  <table>
+        <tr>
+			<td><label for="dataelement">$i18n.getString( "dataelement" )</label></td>
 			<td>
-				<fieldset style="border: 1px solid #3f5d8e; ">
-				<legend>$i18n.getString( "suggested_values" )</legend>
-				<select multiple size="10" id='suggestedDEValues' style="width:20em; height: 17em" ondblclick="insertSingleValue('suggestedDEValues');" >
-				</select>
-			</td>
+				<label for="availableValues">$i18n.getString( "available_values" )</label>&nbsp;
+				<button title="$i18n.getString( 'insert_selected_values' )" class='arrow-down' onClick="insertMultiValues('suggestedDEValues');" />			</td>
+        </tr>
+        
+        <tr>
 			<td>
-				<img src="../images/move_down.png" alt="$i18n.getString( 'add_all_values' )" title="$i18n.getString( 'add_all_values' )" style='cursor:pointer;' onclick="insertMultiValues('suggestedDEValues');">
-			</td>
+				<input type='text' id='txtSearchValue' name='txtSearchValue' onKeyUp="filterDE(event, this.value, 'dataElements');" style='width:270px'/>
+				<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchValue', '');" style='width:50px'>			</td>
+            <td rowspan="4">
+				<select name="suggestedDEValues" size="10" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" >
+			    </select>			</td>
+        </tr>
+        <tr>
+			<td>
+				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this.id, 'suggestedDEValues' )"></select>			</td>
 		</tr>
-		</table>
+      </table>
 	</div>
 	
 	<div id="tab-2">
 		<table>
 			<tr>
+				<td><label>$i18n.getString( "patient_attributes" )</label></td>
 				<td>
-					<fieldset style="border: 1px solid #3f5d8e; ">
-					<legend>$i18n.getString( "attribute" )</legend>
-				
-					<table>
-						<tr>
-							<td>
-								<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
-									<option value="[PT:count]" suggestedValues=''>$i18n.getString( "patients_registered" )</option>
-									<option value="[CP:gender]" suggestedValues='F, M' title='$i18n.getString( "gender" )'>$i18n.getString( "gender" )</option>
-									<option value="[CP:dobType]" suggestedValues='V, D, A' title='$i18n.getString( "dob_type" )'>$i18n.getString( "dob_type" )</option>
-									<option value="[CP:age]" title='$i18n.getString( "age_month" )'>$i18n.getString( "age_month" )</option>
-									
-									#foreach( $patientAttribute in $patientAttributes )
-									<option value="[CA:$patientAttribute.id]" suggestedValues='$patientAttribute.attributeOptions' title='$patientAttribute.name'>$encoder.htmlEncode( $patientAttribute.name )</option>
-									#end
-								</select>
-							</td>
-						</tr>
-					</table>
-					</fieldset>
+					<label>$i18n.getString( "available_values" )</label>
+					<button title="$i18n.getString( 'insert_selected_values' )" class='arrow-down' onClick="insertMultiValues('caSuggestedValues');" />
 				</td>
+			</tr>
+			<tr>
+				<td>
+					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )"></select>
 				</td>
 				<td>
-					<fieldset style="border: 1px solid #3f5d8e; ">
-						<legend>$i18n.getString( "suggested_values" )</legend>
-						<select multiple size="10" id='caSuggestedValues' style="width:20em; height: 17em" ondblclick="insertSingleValue('caSuggestedValues');">
-						</select>
-					</fieldset>
-				</td>
-				<td>
-					<img src="../images/move_down.png" alt="$i18n.getString( 'add_all_values' )" title="$i18n.getString( 'add_all_values' )" style='cursor:pointer;' onclick="insertMultiValues('caSuggestedValues');">
+					<select multiple size="10" id='caSuggestedValues' ondblclick="insertSingleValue('caSuggestedValues');"></select>
 				</td>
 			</tr>
 		</table>
@@ -170,52 +133,22 @@
 	<div id="tab-3">
 		<table>
 			<tr>
+				<td><label>$i18n.getString('program_properties')</label></td>
+				<td><label>$i18n.getString('program_stage_properties')</label></td>
+			</tr>
+			<tr>
 				<td>
-					<fieldset style="border: 1px solid #3f5d8e; ">
-					<legend>$i18n.getString( "program_properties" )</legend>
-					<table>
-						<tr>
-							<td>
-								<select id="programProperty" name="programProperty" size="4" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" >
-									#foreach( $program in $programs )
-										<option value="[PG:$program.id]" title='$program.name'>$i18n.getString('program'): $encoder.htmlEncode( $program.name )</option>
-									#end
-									<option value="[PP:enrollmentdate - dateofincident]">$i18n.getString( "enrolldate_minus_incidentdate" )</option>
-									<option value="[PP:enrollmentdate]">$i18n.getString( "date_of_enrollment" )</option>
-									<option value="[PP:incidentdate]">$i18n.getString( "date_of_incident" )</option>
-								</select>
-							</td>
-						</tr>
-					</table>
-					</fieldset>
+					<select id="programProperty" name="programProperty" size="10" ondblclick="insertInfo(this, false);" >
+						<option value="[PG:*]">$i18n.getString( "program_enrollment" )</option>
+						<option value="[PG:*] AND [PP:DATE@enrollmentdate#-DATE@dateofincident#]">$i18n.getString( "date_of_enrollment" ) - $i18n.getString( "date_of_incident" )</option>
+					</select>
 				</td>
 				<td>
-					<fieldset style="border: 1px solid #3f5d8e; ">
-					<legend>$i18n.getString( "program" )</legend>
-					<table>
-						<tr>
-							<td>
-								<select id="programFormula" name="programFormula" style="width:20em" onChange="getProgramStagesForFormula();">
-									<option value="0">[$i18n.getString('please_select')]</option>
-									#foreach( $program in $programs )
-										<option value="$program.id" title='$program.name'>$encoder.htmlEncode( $program.name )</option>
-									#end
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label for="programStageFormula">$i18n.getString( "program_stage" )</label>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<select multiple id="programStageFormula" name="programStageFormula" style="width:20em; height:12.5em" ondblclick="insertInfo(this);">
-								</select>
-							</td>
-						</tr>
-					</table>
-					</fieldset>
+					<select multiple id="programStageProperty" size="10"  name="programStageProperty" ondblclick="insertInfo(this, true);">
+						<option value="[PS:*]">$i18n.getString( "visit_program_stage" )</option>
+						<option value="[PS:*] AND [PSP:DATE@executionDate#-DATE@dueDate#]">$i18n.getString( "report_date" ) - $i18n.getString( "due_date" )</option>
+					</select>
+					</select>
 				</td>
 			</tr>
 		</table>
@@ -247,21 +180,21 @@
 			<img src="../images/and.png" alt="$i18n.getString( 'and' )" onclick='insertOperator( "AND" );' style="cursor:pointer;"/>
 			<img src="../images/or.png" alt="$i18n.getString( 'or' )" onclick='insertOperator( "OR" );' style="cursor:pointer;"/>
 			
-			<img src="../images/clear.png" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" style="cursor:pointer;"/>
+			<img src="../images/clear.png" align="right" alt="$i18n.getString( 'clear' )" onClick="byId('aggregationCondition').value='';" style="cursor:pointer;"/>
 		</td>
 	</tr>
 		
 	<tr>
 		<td>
-			<fieldset style="border: 1px solid #3f5d8e;">
+			<fieldset>
 				<legend>$i18n.getString( "condition" )</legend>
-				<textarea id="aggregationCondition" name="aggregationCondition" style="width:80.5em; height:10em" class="{validate:{required:true}}" onkeyup='getConditionDescription();'></textarea>
+				<textarea id="aggregationCondition" name="aggregationCondition" class="{validate:{required:true}}" onkeyup='getConditionDescription();'></textarea>
 			</fieldset>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<fieldset style="border: 1px solid #3f5d8e; ">
+			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
 				<div id='aggregationDescription'></div>
 			</fieldset>
@@ -272,7 +205,7 @@
 		<td>
 			<input type="submit" value="$i18n.getString( 'add' )" />
 			<input type="button" value="$i18n.getString( 'test_condition' )" onclick='testCaseAggregationCondition();'/>
-			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action?dataSetId=$!dataSetId'" />
+			<input type="button" value="$i18n.getString( 'cancel' )" onClick="window.location.href='caseAggregation.action?dataSetId=$!dataSetId'" />
 		</td>
 	</tr>
 </table>
@@ -287,4 +220,5 @@
 	var i18n_run_success = '$encoder.jsEscape( $i18n.getString( "run_success" ) , "'" )';
 	var i18n_run_fail = '$encoder.jsEscape( $i18n.getString( "run_fail" ) , "'" )';
 	var i18n_show_all_items = '$encoder.jsEscape( $i18n.getString( "show_all_item" ) , "'" )';
+	var i18n_all = '[' + '$encoder.jsEscape( $i18n.getString( "all" ) , "'" )' + ']';
 </script>
