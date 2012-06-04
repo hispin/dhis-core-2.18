@@ -62,7 +62,7 @@ public class AddCaseAggregationConditionAction
 
     private String aggregationCondition;
 
-    private String description;
+    private String name;
 
     private String aggregationDataElementId;
 
@@ -100,9 +100,9 @@ public class AddCaseAggregationConditionAction
         this.aggregationCondition = aggregationCondition;
     }
 
-    public void setDescription( String description )
+    public void setName( String name )
     {
-        this.description = description;
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
@@ -120,7 +120,7 @@ public class AddCaseAggregationConditionAction
         DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
             .getDataElementCategoryOptionCombo( Integer.parseInt( ids[1] ) );
 
-        CaseAggregationCondition condition = new CaseAggregationCondition( description, operator, aggregationCondition,
+        CaseAggregationCondition condition = new CaseAggregationCondition( name, operator, aggregationCondition,
             aggregationDataElement, optionCombo );
 
         aggregationConditionService.addCaseAggregationCondition( condition );

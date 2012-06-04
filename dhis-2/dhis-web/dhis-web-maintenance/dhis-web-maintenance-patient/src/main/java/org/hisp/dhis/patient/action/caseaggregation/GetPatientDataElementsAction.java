@@ -28,21 +28,38 @@
 package org.hisp.dhis.patient.action.caseaggregation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetPSDataElementsAction
+/**
+ * @author Chau Thu Tran
+ * 
+ * @version $Id: GetPatientDataElementsAction.java Mar 09, 2011 01:24:49 PM $
+ */
+public class GetPatientDataElementsAction
     implements Action
 {
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
 
     private ProgramStageService programStageService;
 
@@ -62,60 +79,51 @@ public class GetPSDataElementsAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<String> optionComboNames;
+    private Integer programId;
 
-    public List<String> getOptionComboNames()
+    public void setProgramId( Integer programId )
     {
-        return optionComboNames;
+        this.programId = programId;
     }
 
-    private List<String> optionComboIds;
+    private Integer programStageId;
 
-    public List<String> getOptionComboIds()
+    public void setProgramStageId( Integer programStageId )
     {
-        return optionComboIds;
+        this.programStageId = programStageId;
     }
 
-    private List<String> optionComboType;
+    private List<DataElement> dataElements;
 
-    public List<String> getOptionComboType()
+    public List<DataElement> getDataElements()
     {
-        return optionComboType;
-    }
-
-    private Integer psId;
-
-    public void setPsId( Integer psId )
-    {
-        this.psId = psId;
-    }
-    
-    public Integer getPsId()
-    {
-        return psId;
-    }
-
-    private List<DataElement> dataElementList;
-
-    public List<DataElement> getDataElementList()
-    {
-        return dataElementList;
+        return dataElements;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-   
+
     public String execute()
     {
-        optionComboNames = new ArrayList<String>();
+        if ( programStageId == null )
+        {
+            Program program = programService.getProgram( programId );
 
-        optionComboIds = new ArrayList<String>();
+            Set<DataElement> dataElementsInProgram = new HashSet<DataElement>();
 
-        optionComboType = new ArrayList<String>();
-
-        dataElementList = new ArrayList<DataElement>( programStageDataElementService
-            .getListDataElement( programStageService.getProgramStage( psId ) ) );
+            for ( ProgramStage programStage : program.getProgramStages() )
+            {
+                dataElementsInProgram.addAll( programStageDataElementService.getListDataElement( programStage ) );
+            }
+            
+            dataElements = new ArrayList<DataElement>( dataElementsInProgram );
+        }
+        else
+        {
+            dataElements = new ArrayList<DataElement>( programStageDataElementService
+                .getListDataElement( programStageService.getProgramStage( programStageId ) ) );
+        }
 
         return SUCCESS;
     }

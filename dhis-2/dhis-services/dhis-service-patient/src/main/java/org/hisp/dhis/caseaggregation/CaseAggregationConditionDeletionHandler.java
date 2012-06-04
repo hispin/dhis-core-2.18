@@ -121,7 +121,7 @@ public class CaseAggregationConditionDeletionHandler
 
             if ( programs != null && programs.contains( program ) )
             {
-                return condition.getDescription();
+                return condition.getName();
             }
         }
 
@@ -142,7 +142,7 @@ public class CaseAggregationConditionDeletionHandler
 
             if ( patientAttributes != null && patientAttributes.contains( patientAttribute ) )
             {
-                return condition.getDescription();
+                return condition.getName();
             }
         }
 

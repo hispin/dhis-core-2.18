@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.caseaggregation;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
@@ -36,47 +37,45 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
  * @version CaseAggregationCondition.java Nov 17, 2010 10:47:12 AM
  */
 public class CaseAggregationCondition
+    extends BaseIdentifiableObject
 {
+    private static final long serialVersionUID = -5746649805915250424L;
+
     public static final String SEPARATOR_ID = "\\.";
 
     public static final String SEPARATOR_OBJECT = ":";
-    
 
     public static final String AGGRERATION_COUNT = "COUNT";
 
     public static final String AGGRERATION_SUM = "SUM";
-    
-    
+
     public static final String OPERATOR_AND = "AND";
 
     public static final String OPERATOR_OR = "OR";
-    
 
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
 
     public static String OBJECT_PATIENT_ATTRIBUTE = "CA";
 
     public static String OBJECT_PATIENT_PROPERTY = "CP";
-    
+
     public static String OBJECT_PROGRAM_PROPERTY = "PP";
-    
+
     public static String OBJECT_PROGRAM = "PG";
-    
+
     public static String OBJECT_PATIENT = "PT";
-    
+
     public static String OBJECT_PROGRAM_STAGE = "PS";
+    
+    public static String OBJECT_PROGRAM_STAGE_PROPERTY = "PSP";
 
     // -------------------------------------------------------------------------
     // Fields
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
     private String operator;
 
     private String aggregationExpression;
-
-    private String description;
 
     private DataElement aggregationDataElement;
 
@@ -91,10 +90,10 @@ public class CaseAggregationCondition
 
     }
 
-    public CaseAggregationCondition( String description, String operator, String aggregationExpression, 
+    public CaseAggregationCondition( String name, String operator, String aggregationExpression,
         DataElement aggregationDataElement, DataElementCategoryOptionCombo optionCombo )
     {
-        this.description = description;
+        this.name = name;
         this.operator = operator;
         this.aggregationExpression = aggregationExpression;
         this.aggregationDataElement = aggregationDataElement;
@@ -146,11 +145,6 @@ public class CaseAggregationCondition
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public Integer getId()
-    {
-        return id;
-    }
-
     public DataElement getAggregationDataElement()
     {
         return aggregationDataElement;
@@ -195,15 +189,4 @@ public class CaseAggregationCondition
     {
         this.aggregationExpression = aggregationExpression;
     }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
 }

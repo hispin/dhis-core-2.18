@@ -1,10 +1,9 @@
-.heading-column { width : 30.5em;}
-td.input-column { width : 30.5em;}
-td.input-column input, td.input-column select { width: 28.5em;}
-td.error {padding-left:1em}
+
+td{ padding-right : 10px;}
 
 textarea{
-	width:320px; 
+	width:660px; 
+	height: 100px;
 	text-align:left;
 }
 
@@ -76,15 +75,18 @@ tr.selected{
 	width:100%;
 }
 
-.small-button {
-	font-size: .8em !important;
+.arrow-down {
+	width: 15px;
+	height: 20px;
+	border-left: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+	background: url('../../images/asc.gif') no-repeat center;
+	cursor: pointer;
 }
 
-.ui-autocomplete { height: 100px; overflow-y: scroll; overflow-x: hidden; }
-
-
-input.autocompleted-field
+fieldset
 {
-	width:25em; 
-	text-align:left;
+	border: 1px solid #3f5d8e;
 }

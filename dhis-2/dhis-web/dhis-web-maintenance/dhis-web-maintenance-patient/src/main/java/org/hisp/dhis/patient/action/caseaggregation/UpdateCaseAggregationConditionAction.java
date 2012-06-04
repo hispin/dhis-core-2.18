@@ -64,7 +64,7 @@ public class UpdateCaseAggregationConditionAction
 
     private String aggregationCondition;
 
-    private String description;
+    private String name;
 
     private String aggregationDataElementId;
 
@@ -96,7 +96,7 @@ public class UpdateCaseAggregationConditionAction
     {
         this.aggregationDataElementId = aggregationDataElementId;
     }
-    
+
     public void setOperator( String operator )
     {
         this.operator = operator;
@@ -107,9 +107,9 @@ public class UpdateCaseAggregationConditionAction
         this.aggregationCondition = aggregationCondition;
     }
 
-    public void setDescription( String description )
+    public void setName( String name )
     {
-        this.description = description;
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
@@ -127,15 +127,15 @@ public class UpdateCaseAggregationConditionAction
             .getDataElementCategoryOptionCombo( Integer.parseInt( ids[1] ) );
 
         CaseAggregationCondition expression = aggregationConditionService.getCaseAggregationCondition( id );
-        
+
         expression.setOperator( operator );
         expression.setAggregationExpression( aggregationCondition );
-        expression.setDescription( description );
+        expression.setName( name );
         expression.setAggregationDataElement( aggregationDataElement );
         expression.setOptionCombo( optionCombo );
-        
+
         aggregationConditionService.updateCaseAggregationCondition( expression );
-        
+
         return SUCCESS;
     }
 }
