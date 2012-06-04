@@ -27,6 +27,8 @@ package org.hisp.dhis.sms.outbound;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.config.SmsConfigurable;
 
@@ -48,5 +50,7 @@ public interface OutboundSmsService
      */
     String sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException;
+    
+    List<OutboundSms> getAllOutboundSms();
 
 }

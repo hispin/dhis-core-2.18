@@ -1,6 +1,7 @@
 package org.hisp.dhis.sms.outbound;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -94,6 +95,13 @@ public class TestOutboundSmsService
     public String getMessageStatus()
     {
         log.debug( "getMessageStatus()" );
+        return null;
+    }
+
+    @Override
+    public List<OutboundSms> getAllOutboundSms()
+    {
+        // TODO Auto-generated method stub
         return null;
     }
 }

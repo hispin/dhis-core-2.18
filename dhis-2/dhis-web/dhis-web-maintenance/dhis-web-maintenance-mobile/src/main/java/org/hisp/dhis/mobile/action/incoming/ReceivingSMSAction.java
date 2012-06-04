@@ -74,18 +74,6 @@ public class ReceivingSMSAction
         return listIncomingSms;
     }
 
-    private int currentMessages;
-
-    public int getCurrentMessages()
-    {
-        return currentMessages;
-    }
-
-    public void setCurrentMessages( int currentMessages )
-    {
-        this.currentMessages = currentMessages;
-    }
-
     private String message;
 
     public String getMessage()
@@ -101,14 +89,21 @@ public class ReceivingSMSAction
     public String execute()
         throws Exception
     {
-        listIncomingSms = incomingSmsService.listAllMessage();
+        listIncomingSms = incomingSmsService.listAllMessageFromModem();
 
-        if ( listIncomingSms.size() > currentMessages )
+        if ( listIncomingSms.size() > 0 )
         {
+            for( IncomingSms each : listIncomingSms )
+            {
+                incomingSmsService.save( each );
+            }
+            
             message = i18n.getString( "new_message" );
-
-            currentMessages = listIncomingSms.size();
+            
+            incomingSmsService.deleteAllFromModem();
         }
+        
+        listIncomingSms = incomingSmsService.listAllMessage();
 
         return SUCCESS;
     }

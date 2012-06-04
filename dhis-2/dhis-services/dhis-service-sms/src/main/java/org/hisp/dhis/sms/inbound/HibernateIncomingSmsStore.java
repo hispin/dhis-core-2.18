@@ -103,6 +103,12 @@ public class HibernateIncomingSmsStore
         return count != null ? count.longValue() : (long) 0;
     }
 
+    @Override
+    public void delete( IncomingSms incomingSms )
+    {
+        sessionFactory.getCurrentSession().delete( incomingSms );
+    }
+
     // @Override
     // public Collection<IncomingSms> getSms( String originator, Date startDate,
     // Date endDate )

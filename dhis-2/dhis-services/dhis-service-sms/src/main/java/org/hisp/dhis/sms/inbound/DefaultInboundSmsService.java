@@ -43,14 +43,14 @@ public class DefaultInboundSmsService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private IncomingSmsStore incomingSmsStore;
-    
+
     public void setIncomingSmsStore( IncomingSmsStore incomingSmsStore )
     {
         this.incomingSmsStore = incomingSmsStore;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -67,7 +67,7 @@ public class DefaultInboundSmsService
     // -------------------------------------------------------------------------
 
     @Override
-    public List<IncomingSms> listAllMessage()
+    public List<IncomingSms> listAllMessageFromModem()
     {
         List<IncomingSms> result = new ArrayList<IncomingSms>();
 
@@ -84,23 +84,7 @@ public class DefaultInboundSmsService
         {
             for ( InboundMessage each : msgList )
             {
-                IncomingSms incomingSms = new IncomingSms();
-
-                incomingSms.setOriginator( each.getOriginator() );
-                
-                incomingSms.setEncoding( SmsMessageEncoding.ENC7BIT );
-                
-                incomingSms.setSentDate( each.getDate() );
-                
-                incomingSms.setReceivedDate( each.getDate() );
-                
-                incomingSms.setText( each.getText() );
-                
-                incomingSms.setGatewayId( each.getGatewayId() );
-                
-                incomingSms.setStatus( SmsMessageStatus.PROCESSED );
-                
-                incomingSms.setStatusMessage( "imported" );
+                IncomingSms incomingSms = tranferToIncomingSms( each );
 
                 result.add( incomingSms );
             }
@@ -109,6 +93,12 @@ public class DefaultInboundSmsService
         }
 
         return result;
+    }
+
+    @Override
+    public List<IncomingSms> listAllMessage()
+    {
+        return (List<IncomingSms>) incomingSmsStore.getAllSmses();
     }
 
     @Override
@@ -124,48 +114,39 @@ public class DefaultInboundSmsService
         }
         return msgList;
     }
-    
+
     @Override
-    public IncomingSms get( int index )
+    public void save( IncomingSms incomingSms )
+    {
+        incomingSmsStore.save( incomingSms );
+    }
+
+    @Override
+    public void deleteAllFromModem()
     {
         try
         {
             Service.getInstance().readMessages( msgList, InboundMessage.MessageClasses.ALL );
+
+            for ( InboundMessage each : msgList )
+            {
+                Service.getInstance().deleteMessage( each );
+            }
         }
         catch ( Exception e )
         {
             e.printStackTrace();
         }
-        
-        InboundMessage specifiedMsg = msgList.get( index - 1 );
-        
-        IncomingSms incomingSms = new IncomingSms();
-        
-        incomingSms.setOriginator( specifiedMsg.getOriginator() );
-        
-        incomingSms.setEncoding( SmsMessageEncoding.ENC7BIT );
-        
-        incomingSms.setSentDate( specifiedMsg.getDate() );
-        
-        incomingSms.setReceivedDate( specifiedMsg.getDate() );
-        
-        incomingSms.setText( specifiedMsg.getText() );
-        
-        incomingSms.setGatewayId( specifiedMsg.getGatewayId() );
-        
-        incomingSms.setStatus( SmsMessageStatus.PROCESSED );
-        
-        incomingSms.setStatusMessage( "imported" );
-        
         msgList.clear();
-        
-        return incomingSms;
+
     }
-    
+
     @Override
-    public void save( IncomingSms incomingSms )
+    public void deleteById( Integer id )
     {
-        incomingSmsStore.save( incomingSms );
+        IncomingSms incomingSms = incomingSmsStore.get( id );
+
+        incomingSmsStore.delete( incomingSms );
     }
 
     @Override
@@ -179,8 +160,32 @@ public class DefaultInboundSmsService
     public void update( IncomingSms sms )
     {
         // TODO Auto-generated method stub
-
     }
 
+    // -------------------------------------------------------------------------
+    // Support methods
+    // -------------------------------------------------------------------------
 
+    public IncomingSms tranferToIncomingSms( InboundMessage inboundMessage )
+    {
+        IncomingSms incomingSms = new IncomingSms();
+
+        incomingSms.setOriginator( inboundMessage.getOriginator() );
+
+        incomingSms.setEncoding( SmsMessageEncoding.ENC7BIT );
+
+        incomingSms.setSentDate( inboundMessage.getDate() );
+
+        incomingSms.setReceivedDate( inboundMessage.getDate() );
+
+        incomingSms.setText( inboundMessage.getText() );
+
+        incomingSms.setGatewayId( inboundMessage.getGatewayId() );
+
+        incomingSms.setStatus( SmsMessageStatus.PROCESSED );
+
+        incomingSms.setStatusMessage( "imported" );
+
+        return incomingSms;
+    }
 }

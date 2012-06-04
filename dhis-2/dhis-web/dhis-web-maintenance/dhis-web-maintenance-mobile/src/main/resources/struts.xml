@@ -33,6 +33,12 @@
 	  <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
     </action>
     
+    <action name="showSentPage" class="org.hisp.dhis.mobile.action.ShowSentSMSAction">
+    	<result name="success" type="velocity">/main.vm</result>
+    	<param name="page">/dhis-web-maintenance-mobile/showSentSMSPage.vm</param>
+    	<param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
+    </action>
+    
     <!-- Receiving SMS Action -->
     
     <action name="showReceivingPage" class="org.hisp.dhis.mobile.action.incoming.ReceivingSMSAction">

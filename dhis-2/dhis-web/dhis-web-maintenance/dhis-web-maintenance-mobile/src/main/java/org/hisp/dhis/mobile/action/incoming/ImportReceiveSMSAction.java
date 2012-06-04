@@ -51,16 +51,6 @@ public class ImportReceiveSMSAction
         this.incomingSmsService = incomingSmsService;
     }
     
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-    
-    private Integer[] ids;
-
-    public void setIds( Integer[] ids )
-    {
-        this.ids = ids;
-    }
     
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -70,20 +60,7 @@ public class ImportReceiveSMSAction
     public String execute()
         throws Exception
     {   
-        System.out.println("size: "+ ids.length);
-        
-        if ( ids != null && ids.length > 0 )
-        {
-            for( Integer index : ids )
-            {
-                System.out.println("index: "+ index);
-                
-                IncomingSms incomingSms = incomingSmsService.get( index );
-                
-                incomingSmsService.save( incomingSms );
-            }
-        }
-        
+        //////////////
         return SUCCESS;
     }
 }

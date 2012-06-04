@@ -47,6 +47,8 @@ public interface IncomingSmsStore
     long getSmsCount();
 
     Collection<IncomingSms> getAllSmses();
+    
+    void delete( IncomingSms incomingSms);
 
 //    public Collection<IncomingSms> getSms( String originator, Date startDate, Date endDate);
 //    
