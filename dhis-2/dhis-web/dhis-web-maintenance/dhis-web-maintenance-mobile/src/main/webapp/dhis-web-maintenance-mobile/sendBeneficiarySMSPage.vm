@@ -65,7 +65,7 @@
 		</tbody>
 	</table>
 
-	<table>
+	<table id='advancedSearchTB'>
 		<tbody>
 			<tr>
 				<th colspan="5">$i18n.getString( "search_details" )</th>
@@ -73,7 +73,8 @@
 			<tr>
 				<td><label>$i18n.getString( "registering_unit" )</label></td>
 				<td><input type="text" id='selectedOrgunitText' readonly style="min-width:16em"></td>
-				<td><input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick='loadAllPatients();'></td>
+				<td><input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick='loadAllPatients();'/></td>
+				<td><span id='warnmessage' style='color:red'></span></td>
 			</tr>	
 		
 			<tr id='advSearchBox0'>	       
@@ -82,6 +83,8 @@
 						<option value="">$i18n.getString( "search_by_name_identifier" )</option>
 						<option value="0">$i18n.getString( "search_by_program" )</option>
 						<option value="-1">$i18n.getString( "date_of_birth" )</option>
+						<option value="-2">$i18n.getString( "gender" )</option>
+						<option value="-4">$i18n.getString( "phone_number" )</option>
 						#foreach( $attribute in $patientAttributes )
 						<option value="$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.name )</option>
 						#end
@@ -91,8 +94,14 @@
 				<td>
 					<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );'/>
 				</td>
-				<td><input type="button" value='+' onclick='addAttributeOption();'/>
+				<td>
+					<input type="button" value='+' onclick='addAttributeOption();'/>
+					
+					$i18n.getString( 'search_by_selected_unit' )
+					<input type='checkbox' id='searchBySelectedOrgunit' name='searchBySelectedOrgunit' value='true' />
 					<input type="button" value='$i18n.getString( "search" )' onclick='searchAdvancedPatients();'/>
+				</td>
+				<td>
 				</td>
 			</tr>
 		</tbody>
@@ -108,7 +117,9 @@
 			<tr>
 				<td colspan="2">
 					<select id="recipients" name="recipients" multiple="true" style="width:50em;height:10em" class="{validate:{required:true}}" 
-					ondblclick="removePhoneFromList( 'recipients', this.value );"></select></td></tr>
+					ondblclick="removePhoneFromList( 'recipients', this.value );"></select>
+				</td>
+			</tr>
 
 			<tr><th colspan="2">$i18n.getString( "message" )</th></tr>
 			<tr><td colspan="2"><textarea id="smsMessage" name="smsMessage" cols="95" rows="5" class="{validate:{required:true}}"></textarea></td></tr>
@@ -179,20 +190,9 @@
 	var i18n_select_program = '[' + '$encoder.jsEscape( $i18n.getString( "select_program" ), "'")' + ']';
 	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'")';
 	var i18n_list_all_patient = '$encoder.jsEscape( $i18n.getString( "list_all_patient" ) , "'")';
-	var i18n_enrol_success = '$encoder.jsEscape( $i18n.getString( "enrol_success" ) , "'")';
-	var i18n_unenrol_success = '$encoder.jsEscape( $i18n.getString( "unenrol_success" ) , "'")';
 	var i18n_list_patients_by_program = '$encoder.jsEscape( $i18n.getString( "list_patients_by_program" ) , "'" )';
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patient" ) , "'" )';
-	var i18n_adding_patient_failed = '$encoder.jsEscape( $i18n.getString( "adding_patient_failed" ), "'")';
-	var i18n_updating_patient_failed = '$encoder.jsEscape( $i18n.getString( "updating_patient_failed" ), "'")';	
-	var i18n_program_enrollment_failed = '$encoder.jsEscape( $i18n.getString( "program_enrollment_failed" ) , "'")';
-    var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';
-    var i18n_saving_value_failed_error_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_error_code" ) , "'")';
     var i18n_searching_patient_failed = '$encoder.jsEscape( $i18n.getString( "searching_patient_failed" ) , "'")'; 
 	var i18n_date_invalid = '$encoder.jsEscape( $i18n.getString( "date_invalid" ) , "'")';
-	var i18n_date_less_incident = '$encoder.jsEscape( $i18n.getString( "date_less_incident" ) , "'")';
-	var i18n_enroll_to_program = '$encoder.jsEscape( $i18n.getString( "enroll_to_program" ) , "'")';
-	var i18n_update = '$encoder.jsEscape( $i18n.getString( "update" ) , "'")';
 	var i18n_oucode_must_have_9_digits = '$encoder.jsEscape( $i18n.getString( "oucode_must_be_valid" ) , "'")';
 	var i18n_patient_identifiers = '$encoder.jsEscape( $i18n.getString( "patient_identifiers" ) , "'")';
 	var i18n_patient_attributes = '$encoder.jsEscape( $i18n.getString( "patient_attributes" ) , "'")';
@@ -227,21 +227,14 @@
 	var i18n_value_must_number = '$encoder.jsEscape( $i18n.getString( "value_must_number" ) , "'")';
 	var i18n_value_must_positive_integer = '$encoder.jsEscape( $i18n.getString( "value_must_positive_integer" ) , "'")';
 	var i18n_value_must_negative_integer = '$encoder.jsEscape( $i18n.getString( "value_must_negative_integer" ) , "'")';
-    var i18n_invalid_date =   '$encoder.jsEscape( $i18n.getString( "invalid_date" ) , "'")' + ".\n " 
-							+ '$encoder.jsEscape( $i18n.getString( "format_date" ) , "'")' + " '" 
-							+ dateFormat.replace('yy', 'yyyy') + " '" ; 
-    var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';
-    var i18n_saving_value_failed_error_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_error_code" ) , "'")';
+
     var i18n_searching_patient_failed = '$encoder.jsEscape( $i18n.getString( "searching_patient_failed" ) , "'")';
     var i18n_complete_confirm_message = '$encoder.jsEscape( $i18n.getString( "complete_confirm_message" ) , "'")';
     var i18n_error_required_field = '$encoder.jsEscape( $i18n.getString( "error_required_field" ) , "'")';
-	var i18n_violate_validation = '$encoder.jsEscape( $i18n.getString( "violate_validation" ) , "'")';
-	var i18n_date_is_greater_then_or_equals_due_date = '$encoder.jsEscape( $i18n.getString( "date_is_greater_then_or_equals_due_date" ) , "'")';
-	
+
 	var i18n_violate_validation = '$encoder.jsEscape( $i18n.getString( "violate_validation" ) , "'")';
 	var i18n_show_all_items = '$encoder.jsEscape( $i18n.getString( "show_all_items" ) , "'")';
-	var i18n_please_fill_out_only_one_of_these_fields = '$encoder.jsEscape( $i18n.getString( "please_fill_out_only_one_of_these_fields" ) , "'")';
-	var checkedDuplicate = false;
+
 	// -1: no search anything
 	//  0: show list all patient
 	//  1: search with conditions
@@ -260,7 +253,13 @@
 		trueFalseBox += '<option value="false">' + i18n_no + '</option>';
 		trueFalseBox += '</select>';
 	
+	var genderSelector = '<select id="searchText" name="searchText" style="width:20.2em" >';
+		genderSelector += '<option value="M">$i18n.getString( "male" )</option>';
+		genderSelector += '<option value="F">$i18n.getString( "female" )</option>';
+		genderSelector += '</select>';
+
 	var programComboBox = '<select id="searchText" name="searchText" style="width:20.2em" >';
+		
 	#foreach ( $program in $programs ) 
 		programComboBox += '<option value="$program.id">$program.name</option>';
 	#end

@@ -1,16 +1,14 @@
+isAjax = true;
 
-function verifiedOnchange( container ){
+function organisationUnitSelected( orgUnits, orgUnitNames )
+{	
+	showById('selectDiv');
+	hideById('listPatientDiv');
 
-	var checked = byId( 'verified' ).checked;
-	if( checked )
-	{
-		disable( 'age' );
-	}
-	else
-	{
-		enable( 'age' );
-	}
+	setFieldValue( "selectedOrgunitText", orgUnitNames[0] );
 }
+
+selection.setListenerFunction( organisationUnitSelected );
 
 // ----------------------------------------------------------------------------
 // Search patients by name
@@ -75,11 +73,20 @@ function searchingAttributeOnChange( this_ )
 	if( attributeId == '-1' )
 	{
 		element.replaceWith( getDateField( container ) );
-		datePickerValid( 'searchDateField-' + container + ' [id=searchText]' );
+		datePickerValid( container + ' [id=searchText]' );
+		return;
 	}
-	else if( attributeId == '0' )
+	
+	$('#' + container+ ' [id=searchText]').datepicker("destroy");
+	$('#' + container+ ' [id=dateOperator]').replaceWith("");
+
+	if( attributeId == '0' )
 	{
 		element.replaceWith( programComboBox );
+	}
+	else if ( attributeId == '-2' )
+	{
+		element.replaceWith( genderSelector );
 	}
 	else if ( valueType=='YES/NO' )
 	{
@@ -93,7 +100,8 @@ function searchingAttributeOnChange( this_ )
 
 function getDateField( container )
 {
-	var dateField = '<div id="searchDateField-' + container + '" > <input type="text" id="searchText" name="searchText" maxlength="30" style="width:18em" onkeyup="searchPatientsOnKeyUp( event );"></div>';
+	var dateField = '<select id="dateOperator" name="dateOperator" ><option value="&gt;"> &gt; </option><option value="="> = </option><option value="&lt;"> &lt; </option></select>';
+	dateField += '<input type="text" id="searchText" name="searchText" maxlength="30" style="width:18em" onkeyup="searchPatientsOnKeyUp( event );">';
 	return dateField;
 }
 	
@@ -105,7 +113,7 @@ function searchPatientsOnKeyUp( event )
 {
 	var key = getKeyCode( event );
 	
-	if ( key==13 )// Enter
+	if ( key == 13 )// Enter
 	{
 		searchAdvancedPatients()();
 	}
@@ -121,8 +129,10 @@ function getKeyCode(e)
 function searchAdvancedPatients()
 {
 	hideById( 'listPatientDiv' );
-	var searchTextFields = jQuery('[name=searchText]');
+
+	var searchTextFields = jQuery( '[name=searchText]' );
 	var flag = true;
+
 	jQuery( searchTextFields ).each( function( i, item )
     {
 		if( jQuery( item ).val() == '' )
@@ -132,29 +142,12 @@ function searchAdvancedPatients()
 		}
 	});
 	
-	if(!flag) return;
+	if ( !flag ) return;
 	
 	contentDiv = 'listPatientDiv';
 	jQuery( "#loaderDiv" ).show();
 	searchPatient();
 	
-}
-
-// ----------------------------------------------------------------------------
-// Show patients
-// ----------------------------------------------------------------------------
-
-function isDeathOnChange()
-{
-	var isDeath = byId('isDead').checked;
-	if(isDeath)
-	{
-		showById('deathDateTR');
-	}
-	else
-	{
-		hideById('deathDateTR');
-	}
 }
 
 // ----------------------------------------------------------------
@@ -164,72 +157,112 @@ function isDeathOnChange()
 function getParamsForDiv( patientDiv)
 {
 	var params = '';
+	var dateOperator = '';
+
 	jQuery("#" + patientDiv + " :input").each(function()
+	{
+		var elementId = $(this).attr('id');
+		
+		if( $(this).attr('type') == 'checkbox' )
 		{
-			var elementId = $(this).attr('id');
-			
-			if( $(this).attr('type') == 'checkbox' )
+			var checked = jQuery(this).is( ':checked' );
+			params += elementId + "=" + checked + "&";
+		}
+		else if( elementId == 'dateOperator' )
+		{
+			dateOperator = jQuery(this).val();
+		}
+		else if( $(this).attr('type') != 'button' )
+		{
+			var value = "";
+			if( jQuery(this).val() != '' )
 			{
-				var checked = jQuery(this).attr('checked') ? true : false;
-				params += elementId + "=" + checked + "&";
+				value = htmlEncode(jQuery(this).val());
 			}
-			else if( $(this).attr('type') != 'button' )
+			if( dateOperator != '' )
 			{
-				var value = "";
-				if( jQuery(this).val() != '' )
-				{
-					value = htmlEncode(jQuery(this).val());
-				}
-				params += elementId + "="+ value + "&";
+				value = dateOperator + "'" + value + "'";
+				dateOperator = "";
 			}
-		});
+			params += elementId + "="+ value + "&";
+		}
+	} );
 		
 	return params;
 }
 
 // -----------------------------------------------------------------------------
-// View patient details
+// Load all patients
 // -----------------------------------------------------------------------------
 
-function showPatientDetails( patientId )
+function loadAllPatients()
 {
-    $('#detailsInfo').load("getPatientDetails.action", 
-		{
-			id:patientId
-		}
-		, function( ){
-		}).dialog({
-			title: i18n_patient_details,
-			maximize: true, 
-			closable: true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 450,
-			height: 300
+	hideById( 'listPatientDiv' );
+	
+	var sortPatientAttributeId = getFieldValue('sortPatientAttributeId');
+	
+	jQuery('#loaderDiv').show();
+	contentDiv = 'listPatientDiv';
+	jQuery('#listPatientDiv').load('searchRegistrationPatient.action',{
+			listAll:true,
+			sortPatientAttributeId: (sortPatientAttributeId ? sortPatientAttributeId : "")
+		},
+		function(){
+			statusSearching = 0;
+			showById('listPatientDiv');
+			jQuery('#loaderDiv').hide();
+		});
+	hideLoader();
+}
+
+function addPhoneToList( elementList, _id, _patientName, _phoneNo )
+{
+	var list = jQuery( "#" + elementList );
+	list.append( "<option value='" + _id + "'>\"" + _patientName + " <" + _phoneNo + ">" + "\"</option>" );
+	
+	jQuery( "tr#tr" + _id ).hide();
+}
+
+function removePhoneFromList( elementList, _id )
+{
+	var list = jQuery( "#" + elementList + " option[value='" + _id + "']" ).remove();
+	
+	jQuery( "tr#tr" + _id ).show();
+}
+
+function searchPatient()
+{
+	$.ajax({
+		url: 'searchRegistrationPatient.action',
+		type:"POST",
+		data: getParamsForDiv( 'advancedSearchTB' ),
+		success: function( html ){
+				statusSearching = 1;
+				setInnerHTML( 'listPatientDiv', html );
+				showById('listPatientDiv');
+				jQuery( "#loaderDiv" ).hide();
+			}
 		});
 }
 
-function showPatientHistory( patientId )
-{
-	$('#detailsInfo').load("getPatientHistory.action", 
-		{
-			patientId:patientId
-		}
-		, function( ){
-			
-		}).dialog({
-			title: i18n_patient_details_and_history,
-			maximize: true, 
-			closable: true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 800,
-			height: 520
-		});
-}
+//--------------------------------------------------------------------------------------------
+// Migration patient
+//--------------------------------------------------------------------------------------------
 
-function exportPatientHistory( patientId, type )
+function getPatientLocation( patientId )
 {
-	var url = "getPatientHistory.action?patientId=" + patientId + "&type=" + type;
-	window.location.href = url;
+	hideById('listPatientDiv');
+	hideById('selectDiv');
+	hideById('searchPatientDiv');
+				
+	jQuery('#loaderDiv').show();
+	
+	jQuery('#migrationPatientDiv').load("getPatientLocation.action", 
+		{
+			patientId: patientId
+		}
+		, function(){
+			showById( 'migrationPatientDiv' );
+			jQuery( "#loaderDiv" ).hide();
+		});
 }

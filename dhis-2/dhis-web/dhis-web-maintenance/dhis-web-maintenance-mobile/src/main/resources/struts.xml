@@ -66,6 +66,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-mobile/sendBeneficiarySMSPage.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menuWithTree.vm</param>
+	  <param name="stylesheets">css/patient.css</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
 	  <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
     </action>
