@@ -29,6 +29,7 @@ package org.hisp.dhis.sms.smslib;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -412,5 +413,12 @@ public class SmsLibService
         {
             log.debug( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg );
         }
+    }
+
+    @Override
+    public List<OutboundSms> getAllOutboundSms()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -46,13 +46,17 @@ public interface IncomingSmsService
      * @return the oldest sms in the INCOMING state.
      */
     IncomingSms getNextUnprocessed();
-
-    IncomingSms get(int id);
     
     void update( IncomingSms sms );
     
-    List<IncomingSms> listAllMessage ();
-
+    List<IncomingSms> listAllMessage();
+    
+    List<IncomingSms> listAllMessageFromModem();
+    
+    void deleteAllFromModem();
+    
+    void deleteById( Integer id );
+    
     List<InboundMessage> getMsgList();
     
     void save ( IncomingSms sms );

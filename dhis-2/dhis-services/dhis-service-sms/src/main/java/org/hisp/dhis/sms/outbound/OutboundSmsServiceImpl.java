@@ -27,6 +27,8 @@ package org.hisp.dhis.sms.outbound;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.sms.SmsServiceException;
@@ -109,6 +111,12 @@ public class OutboundSmsServiceImpl
 
         return "outboundsms_saved";
     }
+    
+    @Override
+    public List<OutboundSms> getAllOutboundSms()
+    {
+        return outboundSmsStore.getAll();
+    }
 
     // -------------------------------------------------------------------------
     // Support methods
@@ -129,4 +137,5 @@ public class OutboundSmsServiceImpl
             return "Exception sending message " + sms + e.getMessage();
         }
     }
+
 }

@@ -7,17 +7,13 @@
 	function checkNewMsg()
 	{	
 		$.get( 'checkNewMessage.action',
-		{
-			currentMessages: getFieldValue('currentMessageHidden')
-		},
+		{},
 		function ( json ){ 
 			
 			if ( json.message )
 			{
 				setHeaderDelayMessage( json.message );
-			}
-			setFieldValue( "currentMessageHidden", json.currentMessages );	
-			
+			}			
 		});
 	
 		setTimeout( "checkNewMsg()", 10000 );
@@ -57,15 +53,19 @@
 		
 		if( result != "")
 		{
-			jQuery.get( 'deleteReceiveSMS.action?' + result, {},
-				function ( json ) {
-					if ( json.response == "success" ) {
-						window.location = "showReceivingPage.action";
-					} else {
-						showMessage( json.message );
+			var confirmation = window.confirm( "i18n.getString( 'confirm_delete_items' )" );
+			if ( confirmation )
+			{
+				jQuery.get( 'deleteReceiveSMS.action?' + result, {},
+					function ( json ) {
+						if ( json.response == "success" ) {
+							window.location = "showReceivingPage.action";
+						} else {
+							showMessage( json.message );
+						}
 					}
-				}
-			);
+				);	
+			}
 		}
 		else
 		{
@@ -114,8 +114,6 @@
 <h3>$i18n.getString( "show_receive_sms_form" )</h3>
 
 <form id="receiveSmsPage" name="receiveSmsPage" action="showReceivingPage.action" method="post" >
-
-	<input type="hidden" id="currentMessageHidden" value="$currentMessages"/>
 	<br/>
 	<table id="detailsSmsList" class="listTable" style="width:800px">
 		<col width="40px"/>
@@ -128,22 +126,22 @@
 			<th>$i18n.getString( "phone_number" )</th>
 			<th>$i18n.getString( "status" )</th>
 			<th style="text-align:center">$i18n.getString( "delete" )</th>
-			<th style="text-align:center"><a href="#" onclick="checkAll()" title="Click Here To Check All"><img src="../images/check.png"/></a></th>
+			<th style="text-align:center"><a href="#" onclick="checkAll()" title="$i18n.getString( 'check_all' )"><img src="../images/check.png"/></a></th>
 		</thead>
 		#foreach( $incomingSms in $listIncomingSms )
-		<tr id="tr${velocityCount}">
+		<tr id="tr${incomingSms.id}">
 			<td style="text-align:center">$velocityCount</td>
 			<td>$incomingSms.getText()</td>
 			<td>$incomingSms.getOriginator()</td>
 			<td>update</td>
-			<td style="text-align:center"><a href="javascript:removeSingleItem( '$velocityCount', '$incomingSms.getText()' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></td>
-			<td style="text-align:center"><input type="checkbox" name="mycheck" value="$velocityCount"/></td>			
+			<td style="text-align:center"><a href="javascript:removeSingleItem( '$incomingSms.id', '$incomingSms.getText()' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></td>
+			<td style="text-align:center"><input type="checkbox" name="mycheck" value="$incomingSms.id"/></td>			
 		</tr>
 		#end
 	</table>
 	<br/>
-	<input type="button" name="btnShowConfig" value="Configurate My Modem" onclick="window.location='showSMSConfigureForm.action'"/>
-	<input type="button" name="btnDelete" value="Delete Checked Options" onclick="deleteChecked()"/>
-	<input type="button" name="btnImport" value="Import" onclick="importChecked()"/>		
+	<input type="button" name="btnShowConfig" value="$i18n.getString( 'config_my_gateway' )" onclick="window.location='showSMSConfigureForm.action'"/>
+	<input type="button" name="btnDelete" value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/>
+	<input type="button" name="btnImport" value="$i18n.getString( 'import' )" onclick="importChecked()"/>		
 	
 </form>
