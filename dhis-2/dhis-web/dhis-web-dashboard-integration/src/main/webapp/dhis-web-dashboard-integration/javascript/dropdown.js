@@ -38,10 +38,11 @@ function clearArea( area )
     } );
 }
 
-function viewChart( url )
+function viewChart( url, name )
 {
     var width = 820;
     var height = 520;
+    var title = i18n_viewing + " " + name;
 
     $( "#chartImage" ).attr( "src", url );
     $( "#chartView" ).dialog( {
@@ -50,7 +51,7 @@ function viewChart( url )
         height : height + 65,
         width : width + 25,
         resizable : false,
-        title : "Viewing Chart"
+        title : title
     } );
 }
 
@@ -59,15 +60,17 @@ function explore( uid )
 	window.location.href = "../dhis-web-visualizer/app/index.html?id=" + uid;
 }
 
-function viewShareForm( uid )
+function viewShareForm( uid, name )
 {	
 	$( "#interpretationChartId" ).val( uid );
 	
+	var title = i18n_share_your_interpretation_of + " " + name;
+	
 	$( "#shareForm" ).dialog( {
-		modal : true,
-		width : 500,
+		modal: true,
+		width: 550,
 		resizable: false,
-		title : i18n_share_your_interpretation
+		title: title
 	} );
 }
 

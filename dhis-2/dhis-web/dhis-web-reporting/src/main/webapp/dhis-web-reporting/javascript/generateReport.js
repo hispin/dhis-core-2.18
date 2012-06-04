@@ -78,7 +78,7 @@ function viewShareForm()
 {
 	$( "#shareForm" ).dialog( {
 		modal : true,
-		width : 500,
+		width : 550,
 		resizable: false,
 		title : i18n_share_your_interpretation
 	} );
