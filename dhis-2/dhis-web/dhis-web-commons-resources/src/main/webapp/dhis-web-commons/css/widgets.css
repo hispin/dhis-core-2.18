@@ -562,3 +562,26 @@ ul.pageSizeSelection input
 {
   background-color: #e0e0e0;
 }
+
+/*----------------------------------------------------------------------------*/
+/* jQuery overrides                                                           */
+/*----------------------------------------------------------------------------*/
+
+.ui-datepicker th 
+{
+  padding: 0.5em 0;
+  font-size: 9pt;
+}
+
+.ui-widget 
+{
+  font-family: LiberationSansRegular, arial, sans-serif;
+  font-size: 9pt;
+}
+
+.ui-widget-header
+{
+  font-family: LiberationSansBold, arial, sans-serif;
+  font-weight: normal;
+  font-size: 10pt;
+}
