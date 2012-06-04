@@ -65,7 +65,7 @@ public class XsltHtmlView
 
         Assert.notNull( object );
 
-        InputStream input = new ByteArrayInputStream( JacksonUtils.toXmlWithViewAsString( object, viewClass ).getBytes() );
+        InputStream input = new ByteArrayInputStream( JacksonUtils.toXmlWithViewAsString( object, viewClass ).getBytes("UTF-8") );
         Source xmlSource = new StreamSource( input );
 
         Transformer transformer = TransformCacheImpl.instance().getHtmlTransformer();
