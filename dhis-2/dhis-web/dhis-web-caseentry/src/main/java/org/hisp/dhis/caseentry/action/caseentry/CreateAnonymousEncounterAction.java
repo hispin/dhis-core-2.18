@@ -138,7 +138,6 @@ public class CreateAnonymousEncounterAction
             programStageInstance.setDueDate( date );
             programStageInstance.setExecutionDate( date );
             programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
-            programStageInstance.setProvidedByAnotherFacility( false );
 
             programStageInstanceService.addProgramStageInstance( programStageInstance );
             

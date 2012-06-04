@@ -14,6 +14,8 @@
     </composite-id>
 
     <property name="compulsory" column="compulsory" not-null="true" />
+    
+	<property name="allowProvidedElsewhere" column="allowprovidedelsewhere" />
 	  
 	<property name="sortOrder" column="sort_order" /> 
 

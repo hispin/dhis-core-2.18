@@ -821,7 +821,7 @@ function searchPatient()
 	$.ajax({
 		url: 'searchRegistrationPatient.action',
 		type:"POST",
-		data: getParamsForDiv( 'searchPatientDiv' ),
+		data: getParamsForDiv('searchPatientDiv'),
 		success: function( html ){
 				statusSearching = 1;
 				setInnerHTML( 'listPatientDiv', html );

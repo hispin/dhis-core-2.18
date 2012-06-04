@@ -47,6 +47,7 @@
 				<th>$i18n.getString( "selected_data_elements" )
 					<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="hidden" > </select>
 					<select id="compulsories" name='compulsories' multiple="multiple" class="hidden"></select>
+					<select id="allowProvidedElsewhere" name='allowProvidedElsewhere' multiple="multiple" class="hidden"></select>
 				</th>
 			</tr>
 		</thead>
@@ -68,6 +69,7 @@
 							<tr>
 								<th>$i18n.getString( "dataelement" )</th>
 								<th width="20px">$i18n.getString( "compulsory" )</th>
+								<th width="20px">$i18n.getString( "allow_provided_elsewhere" )</th>
 							</tr>
 						</thead>
 						<tbody id="selectedList">
@@ -75,6 +77,7 @@
 								<tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id">
 									<td onclick="select(this)">$encoder.htmlEncode( $programStageDataElement.dataElement.name )</td>
 									<td align="center"><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.compulsory == true ) checked #end /></td>
+									<td align="center"><input type="checkbox" name="allowProvided" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.allowProvidedElsewhere == true ) checked #end /></td>
 								</tr>
 							#end
 						</tbody>

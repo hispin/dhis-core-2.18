@@ -83,6 +83,13 @@ public class SaveValueAction
         this.selectedStateManager = selectedStateManager;
     }
 
+    private Boolean providedElsewhere;
+
+    public void setProvidedElsewhere( Boolean providedElsewhere )
+    {
+        this.providedElsewhere = providedElsewhere;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -158,11 +165,14 @@ public class SaveValueAction
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
         }
 
+        providedElsewhere = (providedElsewhere == null) ? false : true;
+
         if ( patientDataValue == null && value != null )
         {
             LOG.debug( "Adding PatientDataValue, value added" );
 
             patientDataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
+            patientDataValue.setProvidedElsewhere( providedElsewhere );
 
             patientDataValueService.savePatientDataValue( patientDataValue );
         }
@@ -172,6 +182,7 @@ public class SaveValueAction
 
             patientDataValue.setValue( value );
             patientDataValue.setTimestamp( new Date() );
+            patientDataValue.setProvidedElsewhere( providedElsewhere );
 
             patientDataValueService.updatePatientDataValue( patientDataValue );
         }

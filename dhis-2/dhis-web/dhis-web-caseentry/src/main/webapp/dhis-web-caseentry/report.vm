@@ -10,7 +10,7 @@
             #foreach( $programInstance in $programInstances )
                 <tr #alternate( $mark )>                
 					<td>
-						<a href="javascript:showPatientHistory( $programInstance.patient.id )" title='$i18n.getString( "patient_details_and_history" )'>$programInstance.patient.getFullName()</a>
+						<input type='button' class='buttonInfo' style='border-color:#bbbbbb;background-color:#cccccc' value='$programInstance.patient.getFullName()' onclick='javascript:showPatientHistory( $programInstance.patient.id )' title='$i18n.getString( "patient_details_and_history" )'>
 					</td>				
                     #foreach( $programStageInstance in $programInstance.programStageInstances )
 						<td>

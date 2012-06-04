@@ -53,7 +53,7 @@ public class PatientDataValue
 
     private String value;
 
-    //private boolean providedElsewhere;
+    private Boolean providedElsewhere;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -135,6 +135,16 @@ public class PatientDataValue
         this.programStageInstance = programStageInstance;
     }
 
+    public Boolean getProvidedElsewhere()
+    {
+        return providedElsewhere;
+    }
+
+    public void setProvidedElsewhere( Boolean providedElsewhere )
+    {
+        this.providedElsewhere = providedElsewhere;
+    }
+
     public ProgramStageInstance getProgramStageInstance()
     {
         return programStageInstance;
@@ -169,4 +179,5 @@ public class PatientDataValue
     {
         return value;
     }
+
 }

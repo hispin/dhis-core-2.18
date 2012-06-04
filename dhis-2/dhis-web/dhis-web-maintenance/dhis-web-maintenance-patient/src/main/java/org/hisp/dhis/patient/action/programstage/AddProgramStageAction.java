@@ -131,6 +131,13 @@ public class AddProgramStageAction
     {
         this.compulsories = compulsories;
     }
+    
+    private List<Boolean> allowProvidedElsewhere = new ArrayList<Boolean>();
+    
+    public void setAllowProvidedElsewhere( List<Boolean> allowProvidedElsewhere )
+    {
+        this.allowProvidedElsewhere = allowProvidedElsewhere;
+    }
 
     private Boolean irregular;
 
@@ -177,6 +184,7 @@ public class AddProgramStageAction
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
             ProgramStageDataElement programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
                 this.compulsories.get( i ), new Integer( i ) );
+            programStageDataElement.setAllowProvidedElsewhere( allowProvidedElsewhere.get( i ) );
             programStageDataElementService.addProgramStageDataElement( programStageDataElement );
         }
 

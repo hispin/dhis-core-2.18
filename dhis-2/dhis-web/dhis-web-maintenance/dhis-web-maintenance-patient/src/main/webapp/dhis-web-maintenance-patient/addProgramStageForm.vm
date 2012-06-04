@@ -48,6 +48,7 @@
         <th>$i18n.getString( "selected_data_elements" )							
 			<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="hidden" ></select>
 			<select id="compulsories" name='compulsories' multiple="multiple" class="hidden"></select>     
+			<select id="allowProvidedElsewhere" name='allowProvidedElsewhere' multiple="multiple" class="hidden"></select>     
 		</th>
       </tr>
     </thead>
@@ -68,6 +69,7 @@
 						<tr>
 							<th>$i18n.getString( "dataelement" )</th>
 							<th width="20px">$i18n.getString( "compulsory" )</th>
+							<th width="20px">$i18n.getString( "allow_provided_elsewhere" )</th>
 					</thead>
 					<tbody id="selectedList"></tbody>
 				</table>

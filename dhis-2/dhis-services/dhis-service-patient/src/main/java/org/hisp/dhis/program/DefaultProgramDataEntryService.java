@@ -366,6 +366,8 @@ public class DefaultProgramDataEntryService
             // -----------------------------------------------------------------
 
             String compulsory = "null";
+            boolean allowProvidedElsewhere = false;
+            
             String dataElementCode = dataElementMatcher.group( 1 );
             Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
@@ -375,7 +377,6 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
 
                 int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
-
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
                 DataElement dataElement = null;
@@ -400,6 +401,7 @@ public class DefaultProgramDataEntryService
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
 
                     compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
+                    allowProvidedElsewhere = psde.getAllowProvidedElsewhere();
                 }
 
                 if ( dataElement == null )
@@ -509,7 +511,15 @@ public class DefaultProgramDataEntryService
                 {
                     disabled = "disabled";
                 }
+                else if ( !programStageInstance.isCompleted() && allowProvidedElsewhere)
+                {
+                    // -----------------------------------------------------------
+                    // Add ProvidedByOtherFacility checkbox
+                    // -----------------------------------------------------------
 
+                    appendCode = addProvidedElsewherCheckbox( appendCode, patientDataValue, programStage );
+                }
+                
                 // -----------------------------------------------------------
                 // 
                 // -----------------------------------------------------------
@@ -570,6 +580,7 @@ public class DefaultProgramDataEntryService
             // -----------------------------------------------------------------
 
             String compulsory = "null";
+            boolean providedElsewhere = false;
             String dataElementCode = dataElementMatcher.group( 1 );
 
             Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
@@ -606,6 +617,7 @@ public class DefaultProgramDataEntryService
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
 
                     compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
+                    providedElsewhere = psde.getAllowProvidedElsewhere();
                 }
 
                 if ( dataElement == null )
@@ -708,11 +720,21 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
 
                 disabled = "";
+                
                 if ( programStageId != programStage.getId() )
                 {
                     disabled = "disabled=\"\"";
                 }
+                
+                else if ( !programStageInstance.isCompleted() && providedElsewhere )
+                {
+                    // -----------------------------------------------------------
+                    // Add ProvidedByOtherFacility checkbox
+                    // -----------------------------------------------------------
 
+                    appendCode = addProvidedElsewherCheckbox( appendCode, patientDataValue, programStage );
+                }
+                
                 // -----------------------------------------------------------
                 // 
                 // -----------------------------------------------------------
@@ -779,8 +801,9 @@ public class DefaultProgramDataEntryService
             // -----------------------------------------------------------------
 
             String compulsory = "null";
-            String dataElementCode = dataElementMatcher.group( 1 );
+            boolean allowProvidedElsewhere = false;
 
+            String dataElementCode = dataElementMatcher.group( 1 );
             Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
@@ -814,6 +837,7 @@ public class DefaultProgramDataEntryService
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
 
                     compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
+                    allowProvidedElsewhere = psde.getAllowProvidedElsewhere();
                 }
 
                 if ( dataElement == null )
@@ -914,6 +938,15 @@ public class DefaultProgramDataEntryService
 
                 appendCode += jQueryCalendar;
 
+                if ( programStageId == programStage.getId() && !programStageInstance.isCompleted() && allowProvidedElsewhere )
+                {
+                    // -----------------------------------------------------------
+                    // Add ProvidedByOtherFacility checkbox
+                    // -----------------------------------------------------------
+
+                    appendCode = addProvidedElsewherCheckbox( appendCode, patientDataValue, programStage );
+                }
+                
                 // -------------------------------------------------------------
                 // 
                 // -------------------------------------------------------------
@@ -937,7 +970,25 @@ public class DefaultProgramDataEntryService
 
         return sb.toString();
     }
+    
+    private String addProvidedElsewherCheckbox( String appendCode, PatientDataValue patientDataValue, ProgramStage programStage )
+    {
+        appendCode += "<label for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" ></label><input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" style=\"display:$DISPLAY;\" ";
+        
+        if ( patientDataValue != null && patientDataValue.getProvidedElsewhere() )
+        {
+            appendCode += " checked=\"checked\" ";
+        }
+        
+        appendCode += "onChange=\"updateProvidingFacility( $DATAELEMENTID, this )\"  >";
 
+        String display = ( !programStage.getProgram().isRegistration() ) ? "none" : "block";  
+        appendCode = appendCode.replace( "$DISPLAY", display );
+        
+        return appendCode;
+
+    }
+    
     /**
      * Returns the value of the PatientDataValue in the Collection of DataValues
      * with the given data element identifier.
