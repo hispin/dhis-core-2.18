@@ -686,7 +686,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         for ( Field field : fields )
         {
-
             if ( ReflectionUtils.isType( field, IdentifiableObject.class ) )
             {
                 Object ref = ReflectionUtils.invokeGetterMethod( field.getName(), object );

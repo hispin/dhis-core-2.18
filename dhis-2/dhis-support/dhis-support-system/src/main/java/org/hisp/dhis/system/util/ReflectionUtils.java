@@ -29,6 +29,8 @@ package org.hisp.dhis.system.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.system.util.functional.Function1;
+import org.hisp.dhis.system.util.functional.Predicate;
 import org.springframework.util.StringUtils;
 
 import java.lang.annotation.Annotation;
@@ -403,5 +405,57 @@ public class ReflectionUtils
     public static <T> T getFieldObject( Field field, T target )
     {
         return (T) invokeGetterMethod( field.getName(), target );
+    }
+
+    public static void executeOnFields( Class<?> clazz, Function1<Field> function )
+    {
+        executeOnFields( clazz, function, null );
+    }
+
+    public static void executeOnFields( Class<?> clazz, Function1<Field> function, Predicate<Field> predicate )
+    {
+        Class<?> currentType = clazz;
+
+        while ( !Object.class.equals( currentType ) && currentType != null )
+        {
+            Field[] fields = currentType.getDeclaredFields();
+
+            for ( Field field : fields )
+            {
+                if ( predicate != null && !predicate.evaluate( field ) )
+                {
+                    continue;
+                }
+
+                function.apply( field );
+            }
+
+            currentType = currentType.getSuperclass();
+        }
+    }
+
+    public static Collection<Field> collectFields( Class<?> clazz, Predicate<Field> predicate )
+    {
+        Class<?> type = clazz;
+        Collection<Field> fields = new ArrayList<Field>();
+
+        while ( !Object.class.equals( type ) && type != null )
+        {
+            Field[] declaredFields = type.getDeclaredFields();
+
+            for ( Field field : declaredFields )
+            {
+                if ( predicate != null && !predicate.evaluate( field ) )
+                {
+                    continue;
+                }
+
+                fields.add( field );
+            }
+
+            type = type.getSuperclass();
+        }
+
+        return fields;
     }
 }
