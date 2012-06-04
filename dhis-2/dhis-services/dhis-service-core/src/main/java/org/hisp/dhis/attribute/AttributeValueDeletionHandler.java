@@ -30,6 +30,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -108,6 +109,12 @@ public class AttributeValueDeletionHandler
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
         removeAttributeValues( organisationUnitGroup.getAttributeValues() );
+    }
+
+    @Override
+    public void deleteUser( User user )
+    {
+        removeAttributeValues( user.getAttributeValues() );
     }
 
     @Override
