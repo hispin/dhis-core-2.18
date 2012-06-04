@@ -737,3 +737,8 @@ body {
 .dv-accordion .dv-combo .x-form-item-label { /* accordion combo box label */
 	padding: 4px 0 0;
 }
+
+/* DV textarea */
+.dv-textarea .x-form-field {
+	font-size: 11px;
+}
