@@ -30,16 +30,23 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.api.webdomain.ChartPluginValue;
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -72,16 +79,25 @@ public class ChartPluginController
     private AggregatedDataValueService aggregatedDataValueService;
 
     @Autowired
+    private AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService;
+    
+    @Autowired
     private IndicatorService indicatorService;
 
     @Autowired
     private DataElementService dataElementService;
 
     @Autowired
+    private DataSetService dataSetService;
+    
+    @Autowired
     private PeriodService periodService;
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -95,8 +111,10 @@ public class ChartPluginController
     @RequestMapping( method = RequestMethod.GET )
     public String getChartValues( @RequestParam( required = false ) Set<String> indicatorIds,
         @RequestParam( required = false ) Set<String> dataElementIds,
+        @RequestParam( required = false ) Set<String> dataSetIds,
         @RequestParam Set<String> organisationUnitIds,
         @RequestParam( required = false ) boolean orgUnitIsParent,
+        @RequestParam( required = false ) Integer organisationUnitGroupSetId,
         @RequestParam( required = false ) boolean userOrganisationUnit,
         @RequestParam( required = false ) boolean userOrganisationUnitChildren,
         RelativePeriods relativePeriods, Model model, HttpServletResponse response ) throws Exception
@@ -170,6 +188,21 @@ public class ChartPluginController
         }
 
         // ---------------------------------------------------------------------
+        // Organisation unit groups
+        // ---------------------------------------------------------------------
+
+        boolean useGroupSets = organisationUnitGroupSetId != null;
+        OrganisationUnit firstOrgUnit = organisationUnits.get( 0 );
+        
+        List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();        
+        
+        if ( organisationUnitGroupSetId != null )
+        {
+            OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( organisationUnitGroupSetId );
+            organisationUnitGroups.addAll( groupSet.getOrganisationUnitGroups() );
+        }
+        
+        // ---------------------------------------------------------------------
         // Indicators
         // ---------------------------------------------------------------------
 
@@ -188,8 +221,10 @@ public class ChartPluginController
                 chartValue.getData().add( indicator.getDisplayShortName() );
             }
 
-            Collection<AggregatedIndicatorValue> indicatorValues = aggregatedDataValueService
-                .getAggregatedIndicatorValues( getIdentifiers( Indicator.class, indicators ),
+            Collection<AggregatedIndicatorValue> indicatorValues = useGroupSets ?
+                aggregatedOrgUnitDataValueService.getAggregatedIndicatorValues( getIdentifiers( Indicator.class, indicators ),
+                    getIdentifiers( Period.class, periods ), firstOrgUnit.getId(), getIdentifiers( OrganisationUnitGroup.class, organisationUnitGroups ) ) :
+                aggregatedDataValueService.getAggregatedIndicatorValues( getIdentifiers( Indicator.class, indicators ),
                     getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
             for ( AggregatedIndicatorValue value : indicatorValues )
@@ -199,7 +234,9 @@ public class ChartPluginController
                 record[0] = String.valueOf( value.getValue() );
                 record[1] = indicatorService.getIndicator( value.getIndicatorId() ).getDisplayShortName();
                 record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
-                record[3] = organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
+                record[3] = useGroupSets ?
+                    organisationUnitGroupService.getOrganisationUnitGroup( value.getOrganisationUnitGroupId() ).getName() :
+                    organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
 
                 chartValue.getValues().add( record );
             }
@@ -224,9 +261,11 @@ public class ChartPluginController
                 chartValue.getData().add( element.getDisplayShortName() );
             }
 
-            Collection<AggregatedDataValue> dataValues = aggregatedDataValueService.getAggregatedDataValueTotals(
-                getIdentifiers( DataElement.class, dataElements ), getIdentifiers( Period.class, periods ),
-                getIdentifiers( OrganisationUnit.class, organisationUnits ) );
+            Collection<AggregatedDataValue> dataValues = useGroupSets ?
+                aggregatedOrgUnitDataValueService.getAggregatedDataValueTotals( getIdentifiers( DataElement.class, dataElements ), 
+                    getIdentifiers( Period.class, periods ), firstOrgUnit.getId(), getIdentifiers( OrganisationUnitGroup.class, organisationUnitGroups ) ) :
+                aggregatedDataValueService.getAggregatedDataValueTotals( getIdentifiers( DataElement.class, dataElements ), 
+                    getIdentifiers( Period.class, periods ),  getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
             for ( AggregatedDataValue value : dataValues )
             {
@@ -235,12 +274,51 @@ public class ChartPluginController
                 record[0] = String.valueOf( value.getValue() );
                 record[1] = dataElementService.getDataElement( value.getDataElementId() ).getDisplayShortName();
                 record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
-                record[3] = organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
+                record[3] = useGroupSets ?
+                    organisationUnitGroupService.getOrganisationUnitGroup( value.getOrganisationUnitGroupId() ).getName() :
+                    organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
 
                 chartValue.getValues().add( record );
             }
         }
 
+        // ---------------------------------------------------------------------
+        // Data set completeness
+        // ---------------------------------------------------------------------
+
+        if ( dataSetIds != null )
+        {
+            List<DataSet> dataSets = dataSetService.getDataSetsByUid( dataSetIds );
+            
+            if ( dataSets.isEmpty() )
+            {
+                ContextUtils.conflictResponse( response, "No valid data sets specified" );
+                return null;
+            }
+            
+            for ( DataSet dataSet : dataSets )
+            {
+                chartValue.getData().add( dataSet.getDisplayShortName() );
+            }
+            
+            Collection<DataSetCompletenessResult> dataSetValues = useGroupSets ?
+                new ArrayList<DataSetCompletenessResult>() : // not yet implemented
+                aggregatedDataValueService.getAggregatedDataSetCompleteness( getIdentifiers( DataSet.class, dataSets ), 
+                    getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, organisationUnits ) ); 
+            
+            for ( DataSetCompletenessResult value : dataSetValues )
+            {
+                String[] record = new String[4];
+                
+                record[0] = String.valueOf( value.getValue() );
+                record[1] = dataSetService.getDataSet( value.getDataSetId() ).getDisplayShortName();
+                record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
+                record[3] = organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
+                
+                chartValue.getValues().add( record );                
+            }
+        }
+        
         contextUtils.configureResponse( response, CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING, null, false );
 
         model.addAttribute( "model", chartValue );
