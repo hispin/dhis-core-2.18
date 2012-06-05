@@ -27,7 +27,11 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import com.opensymphony.xwork2.Action;
@@ -38,9 +42,9 @@ public class GetFindBeneficiaryFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private CurrentUserService currentUserService;
-    
+
     public CurrentUserService getCurrentUserService()
     {
         return currentUserService;
@@ -55,14 +59,14 @@ public class GetFindBeneficiaryFormAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Collection<OrganisationUnit> organisationUnits;
-    
-    public Collection<OrganisationUnit> getOrganisationUnits()
+    private Set<OrganisationUnit> organisationUnits;
+
+    public Set<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
     }
 
-    public void setOrganisationUnits( Collection<OrganisationUnit> organisationUnits )
+    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
     {
         this.organisationUnits = organisationUnits;
     }
@@ -71,8 +75,29 @@ public class GetFindBeneficiaryFormAction
     public String execute()
         throws Exception
     {
-        organisationUnits = currentUserService.getCurrentUser().getOrganisationUnits();        
+        Collection<OrganisationUnit> basicOrganisationUnits = currentUserService.getCurrentUser()
+            .getOrganisationUnits();
+        organisationUnits = new HashSet<OrganisationUnit>();
+
+        for ( OrganisationUnit organisationUnit : basicOrganisationUnits )
+        {
+            organisationUnits.addAll( this.getAllParentOrganisationUnits( organisationUnit ) );
+        }
+
         return SUCCESS;
+    }
+
+    private Collection<? extends OrganisationUnit> getAllParentOrganisationUnits( OrganisationUnit organisationUnit )
+    {
+        List<OrganisationUnit> parents = new ArrayList<OrganisationUnit>();
+        parents.add( organisationUnit );
+        
+        while ( organisationUnit.getParent() != null )
+        {
+            parents.add( organisationUnit.getParent() );
+            organisationUnit = organisationUnit.getParent();
+        }
+        return parents;
     }
 
 }
