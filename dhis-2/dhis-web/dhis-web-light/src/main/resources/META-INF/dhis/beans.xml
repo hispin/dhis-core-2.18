@@ -231,6 +231,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientService"/>
 		<property name="programInstanceService"
 			ref="org.hisp.dhis.program.ProgramInstanceService"/>
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService"/>
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService"/>
+		<property name="util"
+			ref="org.hisp.dhis.light.utils.NamebasedUtils"/>
 	</bean>
 	
 	<bean
@@ -247,6 +253,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetRepeatableEventRegistrationFormAction">
 		<property name="programStageService"
 			ref="org.hisp.dhis.program.ProgramStageService"/>
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService"/>
 	</bean>
 	
 	<bean

@@ -26,6 +26,7 @@
  */
 package org.hisp.dhis.light.namebaseddataentry.action;
 
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 
@@ -37,7 +38,7 @@ public class GetRepeatableEventRegistrationFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private ProgramStageService programStageService;
 
     public ProgramStageService getProgramStageService()
@@ -49,7 +50,19 @@ public class GetRepeatableEventRegistrationFormAction
     {
         this.programStageService = programStageService;
     }
-    
+
+    private ProgramInstanceService programInstanceService;
+
+    public ProgramInstanceService getProgramInstanceService()
+    {
+        return programInstanceService;
+    }
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -77,9 +90,9 @@ public class GetRepeatableEventRegistrationFormAction
     {
         this.programStageId = programStageId;
     }
-    
+
     private ProgramStage programStage;
-    
+
     public ProgramStage getProgramStage()
     {
         return programStage;
@@ -89,9 +102,9 @@ public class GetRepeatableEventRegistrationFormAction
     {
         this.programStage = programStage;
     }
-    
+
     private Integer currentProgramStageInstanceId;
-    
+
     public Integer getCurrentProgramStageInstanceId()
     {
         return currentProgramStageInstanceId;
@@ -102,11 +115,24 @@ public class GetRepeatableEventRegistrationFormAction
         this.currentProgramStageInstanceId = currentProgramStageInstanceId;
     }
 
+    private Integer patientId;
+
+    public Integer getPatientId()
+    {
+        return patientId;
+    }
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
         programStage = programStageService.getProgramStage( programStageId );
+        patientId = programInstanceService.getProgramInstance( programInstanceId ).getPatient().getId();
         return SUCCESS;
     }
 

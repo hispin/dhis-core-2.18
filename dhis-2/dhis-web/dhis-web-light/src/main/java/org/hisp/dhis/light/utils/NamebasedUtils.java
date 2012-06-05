@@ -28,10 +28,13 @@
 package org.hisp.dhis.light.utils;
 
 import java.util.Collection;
+import java.util.Set;
+
 import org.hisp.dhis.api.mobile.IProgramService;
 import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.program.ProgramStageInstance;
 
 public class NamebasedUtils
 {
@@ -61,7 +64,7 @@ public class NamebasedUtils
         }
         return null;
     }
-    
+
     public String getTypeViolation( DataElement dataElement, String value )
     {
         String type = dataElement.getType();
@@ -110,6 +113,18 @@ public class NamebasedUtils
             if ( !FormUtils.isNegativeInteger( value ) )
             {
                 return "is_invalid_negative_integer";
+            }
+        }
+        return null;
+    }
+
+    public ProgramStageInstance getNextStage( Set<ProgramStageInstance> programStageInstances )
+    {
+        for ( ProgramStageInstance programStageInstance : programStageInstances )
+        {
+            if ( !programStageInstance.isCompleted() )
+            {
+                return programStageInstance;
             }
         }
         return null;

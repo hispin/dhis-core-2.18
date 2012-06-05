@@ -35,7 +35,6 @@ import java.util.Map;
 import org.hisp.dhis.api.mobile.model.Activity;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.DataElement;
-import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -43,6 +42,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
@@ -270,6 +270,7 @@ public class GetProgramStageFormAction
         programStage = util.getProgramStage( programId, programStageId );
         patient = patientService.getPatient( patientId );
         dataElements = programStage.getDataElements();
+        program = programStageInstanceService.getProgramStageInstance( programStageInstanceId ).getProgramInstance().getProgram();
         Collection<PatientDataValue> patientDataValues = patientDataValueService
             .getPatientDataValues( programStageInstanceService.getProgramStageInstance( programStageInstanceId ) );
         for ( PatientDataValue patientDataValue : patientDataValues )
