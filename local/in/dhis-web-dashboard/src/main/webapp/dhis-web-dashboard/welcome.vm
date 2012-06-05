@@ -1,13 +1,4 @@
 
-<!--
-<div style="top: 570;left: 260;position: absolute;z-index: 1;visibility: show;">
-	<FONT SIZE="2" FACE="arial" COLOR=blue><b><MARQUEE WIDTH=100% BEHAVIOR=SCROLL BGColor=yellow>$resultString</MARQUEE></b></FONT>
-</div>
--->
+<h3><a href="index.action">$i18n.getString( "dataanalyser" )</a></h3>
+<p>$i18n.getString( "dataanalyser_intro" )</p>
 
-#if( $programList.size() <= 0 )
-	<h3><a href="index.action">$i18n.getString( "dataanalyser" )</a></h3>
-	<p>$i18n.getString( "dataanalyser_intro" )</p>
-#else
-	#parse( "/dhis-web-dashboard/welcomeTracker.vm" )
-#end
