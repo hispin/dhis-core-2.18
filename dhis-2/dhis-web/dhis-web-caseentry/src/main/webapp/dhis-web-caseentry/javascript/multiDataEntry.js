@@ -29,29 +29,37 @@ function multiDataEntryOrgunitSelected( orgUnits, orgUnitNames )
 
 selection.setListenerFunction( multiDataEntryOrgunitSelected );
 
-function selectProgram()
+function selectProgram( programId, programName )
 {
 	setInnerHTML('listPatient', '');
-	if( getFieldValue('programId') == 0 )
-	{
-		hideById('listPatient');
-		return;
-	}
-	
 	contentDiv = 'listPatient';
 	showLoader();
 	jQuery('#listPatient').load("getDataRecords.action",
 		{
-			programId:getFieldValue('programId'),
-			sortPatientAttributeId: getFieldValue('patientAttributeId')
+			programId:programId,
+			sortPatientAttributeId:0
 		}, 
 		function()
 		{
+			hideById('programDiv');
+			
+			setFieldValue('programId', programId);
+			setInnerHTML('programName', programName);
+			showById('programName');
+			
+			showById('btnBack');
 			showById("listPatient");
 			hideLoader();
 		});
 }
 
+function backButtonOnClick()
+{
+	hideById("listPatient");
+	hideById('btnBack');
+	hideById('programName');
+	showById('programDiv');
+}
 function viewPrgramStageRecords( programStageInstanceId ) 
 {
 	$('#contentDataRecord').dialog('destroy').remove();

@@ -1,37 +1,21 @@
 <h3>$i18n.getString( "multiple_name_based" ) #openHelp('multi_name_based_data_entry')</h3>
 
-<form id="dataEntryForm" name="dataEntryForm" method="post" action="multipledataEntrySelect.action">
-	<table> 
-		<tr style="margin-bottom:8px">
-			<td><label>$i18n.getString( "orgunit" )</label></td>
-			<td>
-				<input type="text" readonly="readonly" id='orgunitName' name='orgunitName' #if( $organisationUnit ) value="$organisationUnit.name" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px">
-			</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
+<h4 id='programName' name='programName'></h4>	
 
-        <tr>
-            <td><label for="programId">$i18n.getString( "program" )</label></td>
-            <td>
-                <select id="programId" name="programId" style="min-width:350px" onchange="javascript:selectProgram()" #if( $programs.size() == 0 ) disabled="disabled" #end>
-                    <option value="0">[$i18n.getString( "select" )]</option>
-                    #foreach( $program in $programs )
-                        <option value="$program.id" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
-                    #end
-                </select>
-            </td>
-			<td align="right"><label>$i18n.getString( "sort_by" )</label></td>
-			<td>
-				<select id="patientAttributeId" name="patientAttributeId" style="min-width:350px" onchange="javascript:selectProgram();" #if( $programs.size() == 0 ) disabled="disabled" #end>
-                    <option value="0">[$i18n.getString( "select" )]</option>
-                    #foreach( $patientAttribute in $patientAttributes )
-                        <option value="$patientAttribute.id" #if( $sortPatientAttributeId && $patientAttribute.id == $sortPatientAttributeId ) selected="selected" #end>$encoder.htmlEncode( $patientAttribute.name )</option>
-                    #end
-                </select>
-			</td>
-        </tr>
-    </table>   
+<input type="button" id='btnBack' name='btnBack' style='width: 150px;display:none;' value="$i18n.getString( 'back' )" onclick="backButtonOnClick();"/>
+<p></p>
+<form id="dataEntryForm" name="dataEntryForm" method="post" action="multipledataEntrySelect.action">
+	<div id='programDiv'>
+		<input type='hidden' id='programId' name='programId' />
+		#foreach( $program in $programs )
+			<ul class="introList">
+				<li class="introItem" onclick="javascript:selectProgram('$program.id', '$program.name')">
+				  <span class="introItemHeader"><img src="../icons/program.png" style="float:left; margin-right:15px">$program.name</span><br>
+				  <span>$program.description</span>
+				</li>
+			</ul>	
+		#end
+	</div>
 </form>
 
 #parse( "dhis-web-commons/loader/loader.vm" )

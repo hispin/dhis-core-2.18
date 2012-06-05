@@ -3,50 +3,24 @@
     <tr>
         <td>    
         <table class="listTable" id="patientList">
-			<col>
-            #if( $sortPatientAttribute )
-				<col>
-			#end
-            #foreach( $programStage in $program.programStages )
-                <col>
-            #end 
-			<thead>
-				<tr>
-					<th>#</th>
-					#if( $sortPatientAttribute )
-						<th>$encoder.htmlEncode( $sortPatientAttribute.name )</th>
-					#end
-					<th>$i18n.getString( "full_name" )</th>
-					#foreach( $programStage in $program.programStages )
-						<th class="{sorter: false}">$encoder.htmlEncode( $programStage.name )</th>
-					#end                
-				</tr>
-			</thead>
             <tbody id="list">
                 #set( $mark = false )                 
                 #foreach( $patient in $patientListByOrgUnit )
 					#set( $programInstance = $programInstanceMap.get( $patient ) )
-					<tr #alternate( $mark )>
-						<td>
-							#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
-							$nr
-						</td>
-						#if( $sortPatientAttribute )
-							<td>$!patientAttributeValueMap.get( $patient.id ).value</td>
-						#end
-                        <td><a href="javascript:showPatientHistory( '$patient.id' )" title="$i18n.getString( 'patient_details_and_history' )">$patient.getFullName()</a></td>                    
-                        #foreach( $programStageInstance in $programStageInstanceMap.get( $programInstance ) )
-                            #if( $programStageInstance.executionDate )
-                                <td class="cent" bgcolor="$colorMap.get( $programStageInstance.id )">
-                                    <a href="javascript:viewPrgramStageRecords( $programStageInstance.id );">$format.formatDate( $programStageInstance.executionDate )</a>
-                                </td>
-                            #else
-                                <td class="cent" bgcolor="$colorMap.get( $programStageInstance.id )">
-									<a href="javascript:viewPrgramStageRecords( $programStageInstance.id );">$format.formatDate( $programStageInstance.dueDate )</a>
+						<tr #alternate( $mark )>
+							<td>
+								<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
+							</td>
+							#foreach( $programStageInstance in $programInstance.programStageInstances )
+								<td>
+									<img src='images/rightarrow.png'>
 								</td>
-                            #end
-                        #end
-                    </tr>
+								
+								<td width='100px;'>
+									<input type='button' class='stage-object' style='border-color:$colorMap.get( $programStageInstance.id );' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:viewPrgramStageRecords( $programStageInstance.id );'>
+								</td>
+							#end
+						</tr>
                     #if( $mark )
                         #set( $mark = false )
                     #else
