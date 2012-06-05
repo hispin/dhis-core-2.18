@@ -32,8 +32,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dxf2.importsummary.ImportConflict;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +101,14 @@ public class DefaultImportService
                 {
                     List<?> objects = new ArrayList<Object>( (Collection<?>) value );
                     log.info( "Importing " + objects.size() + " " + StringUtils.capitalize( entry.getValue() ) );
-                    doImport( objects, importOptions, importSummary );
+
+                    ImportTypeSummary importTypeSummary = doImport( objects, importOptions );
+
+                    if ( importTypeSummary != null )
+                    {
+                        importSummary.getImportTypeSummaries().add( importTypeSummary );
+                        importSummary.incrementImportCount( importTypeSummary.getImportCount() );
+                    }
                 }
                 else
                 {
@@ -157,7 +162,7 @@ public class DefaultImportService
         return null;
     }
 
-    private <T> void doImport( List<T> objects, ImportOptions importOptions, ImportSummary importSummary )
+    private <T> ImportTypeSummary doImport( List<T> objects, ImportOptions importOptions )
     {
         if ( !objects.isEmpty() )
         {
@@ -165,15 +170,14 @@ public class DefaultImportService
 
             if ( importer != null )
             {
-                List<ImportConflict> importConflicts = importer.importObjects( objects, importOptions );
-
-                importSummary.getConflicts().addAll( importConflicts );
-                // importSummary.getCounts().add( count ); //FIXME
+                return importer.importObjects( objects, importOptions );
             }
             else
             {
                 log.info( "Importer for object of type " + objects.get( 0 ).getClass().getSimpleName() + " not found." );
             }
         }
+
+        return null;
     }
 }

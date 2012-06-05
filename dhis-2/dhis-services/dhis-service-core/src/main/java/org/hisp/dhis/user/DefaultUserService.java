@@ -172,6 +172,18 @@ public class DefaultUserService
         return userStore.getAllUsers();
     }
 
+    @Override
+    public Collection<User> getAllUsersBetween( int first, int max )
+    {
+        return userStore.getAllUsersBetween( first, max );
+    }
+
+    @Override
+    public Collection<User> getUsersByLastUpdated( Date lastUpdated )
+    {
+        return userStore.getUsersByLastUpdated( lastUpdated );
+    }
+
     public User getUser( int userId )
     {
         return userStore.getUser( userId );
@@ -214,7 +226,7 @@ public class DefaultUserService
     }
 
     public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit unit, String userName,
-                                                                                int first, int max )
+        int first, int max )
     {
         return userStore.getUsersByOrganisationUnitBetweenByName( unit, userName, first, max );
     }

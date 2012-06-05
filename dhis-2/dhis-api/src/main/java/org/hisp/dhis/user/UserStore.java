@@ -82,6 +82,10 @@ public interface UserStore
      */
     Collection<User> getAllUsers();
 
+    Collection<User> getAllUsersBetween(int first, int max);
+
+    Collection<User> getUsersByLastUpdated(Date lastUpdated);
+
     /**
      * Returns a Collection of the Users which are not associated with any
      * OrganisationUnits.

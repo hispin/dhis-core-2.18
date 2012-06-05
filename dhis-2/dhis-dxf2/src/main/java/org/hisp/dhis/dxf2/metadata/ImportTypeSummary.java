@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.importsummary;
+package org.hisp.dhis.dxf2.metadata;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,99 +28,88 @@ package org.hisp.dhis.dxf2.importsummary;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportCount;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 
-@JacksonXmlRootElement( localName = "count", namespace = Dxf2Namespace.NAMESPACE )
-public class ImportCount
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+@JacksonXmlRootElement( localName = "typeSummary", namespace = Dxf2Namespace.NAMESPACE )
+public class ImportTypeSummary
+    extends ImportSummary
 {
-    private int imported;
+    private String type;
 
-    private int updated;
+    private ImportCount importCount = new ImportCount();
 
-    private int ignored;
+    private List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
-    public ImportCount()
+    public ImportTypeSummary( String type )
     {
-    }
-
-    public ImportCount( int imported, int updated, int ignored )
-    {
-        this.imported = imported;
-        this.updated = updated;
-        this.ignored = ignored;
+        this.type = type;
     }
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
-    public int getImported()
+    public String getType()
     {
-        return imported;
+        return type;
     }
 
-    public void setImported( int imported )
+    public void setType( String type )
     {
-        this.imported = imported;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
-    public int getUpdated()
-    {
-        return updated;
-    }
-
-    public void setUpdated( int updated )
-    {
-        this.updated = updated;
+        this.type = type;
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
-    public int getIgnored()
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public ImportCount getImportCount()
     {
-        return ignored;
+        return importCount;
     }
 
-    public void setIgnored( int ignored )
+    public void setImportCount( ImportCount importCount )
     {
-        this.ignored = ignored;
+        this.importCount = importCount;
     }
 
-    @Override
-    public String toString()
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "conflicts", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "conflict", namespace = Dxf2Namespace.NAMESPACE )
+    public List<ImportConflict> getImportConflicts()
     {
-        return "[imports=" + imported + ", updates=" + updated + ", ignores=" + ignored + "]";
+        return importConflicts;
     }
+
+    public void setImportConflicts( List<ImportConflict> importConflicts )
+    {
+        this.importConflicts = importConflicts;
+    }
+
+    //-------------------------------------------------------------------------
+    // Helpers
+    //-------------------------------------------------------------------------
 
     public void incrementImported()
     {
-        imported++;
+        importCount.incrementImported();
     }
 
     public void incrementUpdated()
     {
-        updated++;
+        importCount.incrementUpdated();
     }
 
     public void incrementIgnored()
     {
-        ignored++;
-    }
-
-    public void incrementImported( int n )
-    {
-        imported += n;
-    }
-
-    public void incrementUpdated( int n )
-    {
-        updated += n;
-    }
-
-    public void incrementIgnored( int n )
-    {
-        ignored += n;
+        importCount.incrementIgnored();
     }
 }

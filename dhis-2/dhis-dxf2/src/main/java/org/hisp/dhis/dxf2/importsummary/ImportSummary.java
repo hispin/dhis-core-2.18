@@ -39,9 +39,9 @@ import java.util.List;
 public class ImportSummary
 {
     private ImportStatus status;
-    
+
     private String description;
-    
+
     private ImportCount dataValueCount;
 
     private List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
@@ -51,13 +51,13 @@ public class ImportSummary
     public ImportSummary()
     {
     }
-    
+
     public ImportSummary( ImportStatus status, String description )
     {
         this.status = status;
         this.description = description;
     }
-    
+
     @JsonProperty
     @JacksonXmlProperty
     public ImportStatus getStatus()
@@ -95,8 +95,8 @@ public class ImportSummary
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper(localName = "conflicts")
-    @JacksonXmlProperty(localName = "conflict")
+    @JacksonXmlElementWrapper( localName = "conflicts" )
+    @JacksonXmlProperty( localName = "conflict" )
     public List<ImportConflict> getConflicts()
     {
         return conflicts;

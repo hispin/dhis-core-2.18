@@ -27,9 +27,6 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dxf2.importsummary.ImportConflict;
-import org.hisp.dhis.dxf2.importsummary.ImportCount;
-
 import java.util.List;
 
 /**
@@ -47,7 +44,7 @@ public interface Importer<T>
      * @param options Import options
      * @return ImportConflict instance if a conflict occurred, if not null
      */
-    List<ImportConflict> importObject( T object, ImportOptions options );
+    ImportTypeSummary importObject( T object, ImportOptions options );
 
     /**
      * Import a collection of objects.
@@ -56,14 +53,7 @@ public interface Importer<T>
      * @param options Import options
      * @return List of all the ImportConflicts encountered
      */
-    List<ImportConflict> importObjects( List<T> objects, ImportOptions options );
-
-    /**
-     * Get an ImportCount instance for the current import numbers.
-     *
-     * @return ImportCount instance filled with current values
-     */
-    ImportCount getCurrentImportCount();
+    ImportTypeSummary importObjects( List<T> objects, ImportOptions options );
 
     /**
      * Can this importer handle a certain Class type?
