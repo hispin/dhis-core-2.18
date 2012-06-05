@@ -717,16 +717,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( ref == null )
             {
-                String referenceName = idObject != null ? idObject.getClass().getSimpleName() : "null";
-                String objectName = object != null ? object.getClass().getSimpleName() : "null";
-
-                String logMsg = "Unknown reference to " + idObject + " (" + referenceName + ")" +
-                    " on object " + object + " (" + objectName + ").";
-
-                log.warn( logMsg );
-
-                ImportConflict importConflict = new ImportConflict( getDisplayName( object ), logMsg );
-                importConflicts.add( importConflict );
+                reportReferenceError(object, importConflicts, idObject);
             }
 
             if ( !options.isDryRun() )
@@ -781,16 +772,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    String referenceName = idObject != null ? idObject.getClass().getSimpleName() : "null";
-                    String objectName = object != null ? object.getClass().getSimpleName() : "null";
-
-                    String logMsg = "Unknown reference to " + idObject + " (" + referenceName + ")" +
-                        " on object " + object + " (" + objectName + ").";
-
-                    log.warn( logMsg );
-
-                    ImportConflict importConflict = new ImportConflict( getDisplayName( object ), logMsg );
-                    importConflicts.add( importConflict );
+                    reportReferenceError( object, importConflicts, idObject );
                 }
             }
 
@@ -801,5 +783,19 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         }
 
         return importConflicts;
+    }
+
+    private void reportReferenceError( Object object, List<ImportConflict> importConflicts, Object idObject )
+    {
+        String referenceName = idObject != null ? idObject.getClass().getSimpleName() : "null";
+        String objectName = object != null ? object.getClass().getSimpleName() : "null";
+
+        String logMsg = "Unknown reference to " + idObject + " (" + referenceName + ")" +
+            " on object " + object + " (" + objectName + ").";
+
+        log.warn( logMsg );
+
+        ImportConflict importConflict = new ImportConflict( getDisplayName( object ), logMsg );
+        importConflicts.add( importConflict );
     }
 }
