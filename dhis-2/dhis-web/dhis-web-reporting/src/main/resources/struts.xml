@@ -184,7 +184,7 @@
       <result name="jrxml" type="gridJrxmlResult" />
       <result name="html" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/reportTableGrid.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="hideMenu">true</param>
       <param name="javascripts">javascript/generateReport.js</param>
 	  <param name="stylesheets">style/dhis-web-reporting.css</param>
     </action>
