@@ -18,7 +18,7 @@
     #set( $count1 = 0 )
     #foreach( $orgUnit in $immChildrenList )
 		<tr style="#if( $mark == 1 )background-color:#e0e0e0;#end height:23px" >
-			<td><a href="index.action?drillDownOrgUnitId=$orgUnit.id">$orgUnit.shortName</a></td>
+			<td><a href="index1.action?drillDownOrgUnitId=$orgUnit.id">$orgUnit.shortName</a></td>
 			#foreach( $normName in $normNames )
 				<td align="center" style='background-color:$outBreakAlertColorMap.get("$normName:$orgUnit.id");'>$outBreakAlertMap.get( "$normName:$orgUnit.id" )</td>
 			#end

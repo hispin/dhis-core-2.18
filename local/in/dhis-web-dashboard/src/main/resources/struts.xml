@@ -7,7 +7,7 @@
 	
 	<package name="dhis-web-dashboard" extends="dhis-web-commons"
 		namespace="/dhis-web-dashboard">
-		
+<!--		
 		<action name="index"
 			class="org.hisp.dhis.dataanalyser.action.DashBoardHomePageAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -16,8 +16,16 @@
 			<param name="javascripts">javascript/ext-all.js,javascript/db.js</param>
 			<param name="stylesheets">css/ext-all.css,example.css</param>
 		</action>
+-->		
+
+		<action name="index"
+			class="org.hisp.dhis.dataanalyser.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-dashboard/welcome.vm</param>
+			<param name="menu">/dhis-web-dashboard/menu.vm</param>
+		</action>		
 		
-		
+<!--				
     <action name="getPatientDataRecords" class="org.hisp.dhis.dataanalyser.action.GetPatientDataRecordsAction">
       <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-dashboard/viewPatientDataRecords.vm</param>
@@ -28,7 +36,7 @@
       <result name="success" type="velocity-xml">/dhis-web-dashboard/responsePatient.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>    
-
+-->
 	<action name="index1"
 		class="org.hisp.dhis.dataanalyser.action.IDSPOutbreakAction">
 		<result name="standard" type="redirect">index1.action</result>
@@ -782,8 +790,7 @@
 			<param name="page">
 				/dhis-web-dashboard/tabularAnalysisFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForTA.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ta.js,javascript/hashtable.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/javascripts/lists.js,javascript/ta.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
