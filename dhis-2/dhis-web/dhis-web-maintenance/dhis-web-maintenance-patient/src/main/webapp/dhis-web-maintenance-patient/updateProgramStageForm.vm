@@ -59,9 +59,14 @@
 				<select size="15" id="availableList" multiple="multiple" ondblclick="selectDataElements( )">
 				</select>
 			</td>
-			<td valign="top" align="center">         
-				<input type="button" value="&gt;" onclick="selectDataElements()" class='filterButton' /><br/>    
-				<input type="button" value="&lt;" onclick="unSelectDataElements()" class='filterButton' /><br/><br/>                    
+			
+			<td style="text-align:center">
+				<input type="button" value="&gt;" class='filterButton' onclick="selectDataElements();"/><br/>
+				<input type="button" value="&lt;" class='filterButton' onclick="unSelectDataElements();"/><br/>
+				<input type="button" value="&gt;&gt;" class='filterButton' onclick="selectAllDataElements();"/><br/>
+				<input type="button" value="&lt;&lt;" class='filterButton' onclick="unSelectAllDataElements();"/>
+			</td>
+			
 			<td>
 				<div class="dataElementDiv">
 					<table>

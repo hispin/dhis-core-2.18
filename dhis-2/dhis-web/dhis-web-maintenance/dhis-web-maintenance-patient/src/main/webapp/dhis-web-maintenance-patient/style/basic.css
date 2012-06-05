@@ -27,7 +27,7 @@ input[type="button"], input[type="submit"]
 
 input.filterButton
 {
-	width: 30px;
+	width: 50px;
 	padding-left:5px;
 	padding-right:5px;
 	text-align:center;
