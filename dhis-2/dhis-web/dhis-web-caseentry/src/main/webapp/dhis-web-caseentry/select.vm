@@ -58,6 +58,11 @@
 <div id='dataRecordingSelectDiv'></div>
 <div id='dataEntryFormDiv'></div>
 
+<div id='inputCriteriaDiv' class="page inputCriteria" style="display:none;width:480px;height:29px;">	
+	<input type="button" class='button' id="completeInBelowBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled">
+	<input type="button" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" >
+</div>
+
 #parse( "dhis-web-commons/loader/loader.vm" )
 
 <script type="text/javascript">
