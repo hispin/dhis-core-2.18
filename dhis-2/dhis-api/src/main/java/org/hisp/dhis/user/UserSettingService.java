@@ -44,7 +44,6 @@ public interface UserSettingService
     String ID = UserSettingService.class.getName();
 
     final String AUTO_SAVE_DATA_ENTRY_FORM = "autoSaveDataEntryForm";
-    final String KEY_CHARTS_IN_DASHBOARD = "keyChartsInDashboard";
     final String KEY_CURRENT_DATADICTIONARY = "currentDataDictionary";
     final String KEY_STYLE = "stylesheet";
     final String KEY_STYLE_DIRECTORY = "stylesheetDirectory";
@@ -52,7 +51,6 @@ public interface UserSettingService
     final String KEY_MESSAGE_SMS_NOTIFICATION = "keyMessageSmsNotification";
     final String KEY_DB_LOCALE = "keyLocaleUserSetting";
 
-    final int DEFAULT_CHARTS_IN_DASHBOARD = 4;
     final List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );
 
     /**

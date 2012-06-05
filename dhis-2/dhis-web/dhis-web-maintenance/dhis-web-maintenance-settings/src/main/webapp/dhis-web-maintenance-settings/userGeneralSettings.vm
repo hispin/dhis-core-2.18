@@ -7,7 +7,6 @@
 				currentLocale: getFieldValue( 'currentLocale' ),
 				currentLocaleDb: getFieldValue( 'currentLocaleDb' ),
 				currentStyle: getFieldValue( 'currentStyle' ),
-				chartsInDashboard: getFieldValue( 'chartsInDashboard' ),
 				autoSave: jQuery( '#autoSave' ).is(':checked' )
 			}, function ( json ) {
 				if ( json.response == "success" )
@@ -41,14 +40,6 @@
 <select id="currentStyle" name="currentStyle" style="min-width:250px">
 #foreach( $style in $styles.entrySet() )
 	<option value="$style.value" #if( $style.value == $currentStyle )selected="selected"#end>$i18n.getString( $style.key )</option>
-#end
-</select>
-
-<h4>$i18n.getString( "dashboard_charts_to_display" )</h4>
-
-<select id="chartsInDashboard" name="chartsInDashboard" style="min-width:250px">
-#foreach( $charts in $chartsInDashboardOptions )
-	<option value="$charts" #if($charts == $chartsInDashboard) selected="selected"#end>$charts</option>
 #end
 </select>
 
