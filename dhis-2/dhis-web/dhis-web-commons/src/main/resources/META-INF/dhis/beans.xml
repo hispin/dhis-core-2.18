@@ -567,7 +567,6 @@
   <bean id="org.hisp.dhis.interceptor.CacheInterceptor" class="org.hisp.dhis.interceptor.CacheInterceptor"/>
   
   <bean id="org.hisp.dhis.interceptor.UserSettingInterceptor" class="org.hisp.dhis.interceptor.UserSettingInterceptor">
-    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
     <property name="styleManager" ref="org.hisp.dhis.setting.StyleManager" />
   </bean>
 

@@ -28,8 +28,6 @@
 package org.hisp.dhis.settings.action.user;
 
 import static org.hisp.dhis.user.UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM;
-import static org.hisp.dhis.user.UserSettingService.DEFAULT_CHARTS_IN_DASHBOARD;
-import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -139,13 +137,6 @@ public class GetGeneralSettingsAction
         return currentSortOrder;
     }
 
-    private Integer chartsInDashboard;
-
-    public Integer getChartsInDashboard()
-    {
-        return chartsInDashboard;
-    }
-
     private List<Integer> chartsInDashboardOptions;
 
     public List<Integer> getChartsInDashboardOptions()
@@ -226,15 +217,6 @@ public class GetGeneralSettingsAction
         } );
 
         currentLocaleDb = i18nService.getCurrentLocale();
-
-        // ---------------------------------------------------------------------
-        // Get Charts in Dashboard
-        // ---------------------------------------------------------------------
-
-        chartsInDashboard = (Integer) userSettingService.getUserSetting( KEY_CHARTS_IN_DASHBOARD,
-            DEFAULT_CHARTS_IN_DASHBOARD );
-
-        chartsInDashboardOptions = UserSettingService.DASHBOARD_CHARTS_TO_DISPLAY;
 
         // ---------------------------------------------------------------------
         // Get Auto-save data entry form

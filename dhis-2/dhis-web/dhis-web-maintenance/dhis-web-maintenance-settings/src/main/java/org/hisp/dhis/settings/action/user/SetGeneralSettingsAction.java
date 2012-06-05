@@ -28,7 +28,6 @@ package org.hisp.dhis.settings.action.user;
  */
 
 import static org.hisp.dhis.user.UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM;
-import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
 import static org.hisp.dhis.user.UserSettingService.KEY_DB_LOCALE;
 
 import java.util.Locale;
@@ -83,13 +82,6 @@ public class SetGeneralSettingsAction
         this.autoSave = autoSave;
     }
 
-    private Integer chartsInDashboard;
-
-    public void setChartsInDashboard( Integer chartsInDashboard )
-    {
-        this.chartsInDashboard = chartsInDashboard;
-    }
-
     private String currentLocale;
 
     public void setCurrentLocale( String locale )
@@ -123,8 +115,6 @@ public class SetGeneralSettingsAction
         userSettingService.saveUserSetting( KEY_DB_LOCALE, getRespectiveLocale( StringUtils.trimToNull( currentLocaleDb ) ) );
 
         styleManager.setUserStyle( currentStyle );
-
-        userSettingService.saveUserSetting( KEY_CHARTS_IN_DASHBOARD, chartsInDashboard );
 
         userSettingService.saveUserSetting( AUTO_SAVE_DATA_ENTRY_FORM, autoSave );
 

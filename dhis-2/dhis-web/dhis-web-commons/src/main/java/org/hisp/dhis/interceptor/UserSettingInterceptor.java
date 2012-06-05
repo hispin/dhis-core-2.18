@@ -27,14 +27,13 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.user.UserSettingService.DEFAULT_CHARTS_IN_DASHBOARD;
-import static org.hisp.dhis.user.UserSettingService.*;
+import static org.hisp.dhis.user.UserSettingService.KEY_STYLE;
+import static org.hisp.dhis.user.UserSettingService.KEY_STYLE_DIRECTORY;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.setting.StyleManager;
-import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
@@ -48,13 +47,6 @@ public class UserSettingInterceptor
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private UserSettingService userSettingService;
-
-    public void setUserSettingService( UserSettingService userSettingService )
-    {
-        this.userSettingService = userSettingService;
-    }
 
     private StyleManager styleManager;
 
@@ -80,7 +72,6 @@ public class UserSettingInterceptor
     {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        map.put( KEY_CHARTS_IN_DASHBOARD, userSettingService.getUserSetting( KEY_CHARTS_IN_DASHBOARD, DEFAULT_CHARTS_IN_DASHBOARD ) );
         map.put( KEY_STYLE, styleManager.getCurrentStyle() );
         map.put( KEY_STYLE_DIRECTORY, styleManager.getCurrentStyleDirectory() );
 
