@@ -29,12 +29,7 @@ function pageInit()
 		{
 			window.location.href = currentPath + 'help.action' + backURL;
 		});
-		
-	$( "#menuDropDownFeedBack" ).click(	function()
-		{
-			window.location.href = currentPath + 'displayFeedbackForm.action' + backURL;
-		} );
-		
+				
 	$( "#menuDropDownChangeLog" ).click( function()
 		{
 			window.location.href = currentPath + 'displayChangeLog.action' + backURL;

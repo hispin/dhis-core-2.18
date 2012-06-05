@@ -76,8 +76,9 @@
       <ul class="menuDropDownBox">
       #foreach( $module in $maintenanceModules )
       #if( $auth.hasAccess( $module.name, "index" ) )
-        <li class="menuDropDownItem" onclick="window.location.href='${module.defaultAction}'">
-          <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a></li>
+        <li>
+          <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
+        </li>
       #end
       #end
       </ul>      
@@ -87,8 +88,9 @@
       <ul class="menuDropDownBox">
       #foreach( $module in $serviceModules )
       #if( $auth.hasAccess( $module.name, "index" ) )
-        <li class="menuDropDownItem" onclick="window.location.href='${module.defaultAction}'">
-          <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a></li>
+        <li>
+          <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
+        </li>
       #end
       #end
       </ul>      
@@ -96,13 +98,13 @@
 	  
       <div id="menuDropDown3" class="menuDropDownArea">
       <ul class="menuDropDownBox">
-        <li class="menuDropDownItem" id="menuDropDownHelpCenter">$i18n.getString( "help_center" )&nbsp;</li>
-        <li class="menuDropDownItem" id="menuDropDownChangeLog">$i18n.getString( "change_log" )&nbsp;</li>
-        <li class="menuDropDownItem" id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</li>
-        <li class="menuDropDownItem" id="menuDropDownUserAccount">$i18n.getString( "user_account" )&nbsp;</li>
-        <li class="menuDropDownItem" id="menuDropDownModuleOverview">$i18n.getString( "system_overview" )&nbsp;</li>
-        <li class="menuDropDownItem" id="menuDropDownWebApi">$i18n.getString( "web_api" )&nbsp;</li>
-        <li class="menuDropDownItem" id="menuDropDownAboutDHIS2">$i18n.getString( "about_dhis2" )&nbsp;</li>
+        <li><a id="menuDropDownHelpCenter">$i18n.getString( "help_center" )&nbsp;</a></li>
+        <li><a id="menuDropDownChangeLog">$i18n.getString( "change_log" )&nbsp;</a></li>
+        <li><a id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</a></li>
+        <li><a id="menuDropDownUserAccount">$i18n.getString( "user_account" )&nbsp;</a></li>
+        <li><a id="menuDropDownModuleOverview">$i18n.getString( "system_overview" )&nbsp;</a></li>
+        <li><a id="menuDropDownWebApi">$i18n.getString( "web_api" )&nbsp;</a></li>
+        <li><a id="menuDropDownAboutDHIS2">$i18n.getString( "about_dhis2" )&nbsp;</a></li>
       </ul>
       </div>
 	  
