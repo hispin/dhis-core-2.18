@@ -183,10 +183,10 @@ div#pivotMenu
 
 <div id="pivotMenu" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
   <ul class="menuDropDownBox">
-    <li class="menuDropDownItem" onclick='viewChart( "single", "period" )'>$i18n.getString( "this_indicator_and_periods" )&nbsp;</li>
-    <li class="menuDropDownItem" onclick='viewChart( "single", "orgunit" )'>$i18n.getString( "this_indicator_and_orgunits" )&nbsp;</li>
-    <li class="menuDropDownItem" onclick='viewChart( "all", "period" )'>$i18n.getString( "all_indicator_and_periods" )&nbsp;</li>
-    <li class="menuDropDownItem" onclick='viewChart( "all", "orgunit" )'>$i18n.getString( "all_indicator_and_orgunits" )&nbsp;</li>
+    <li><a href="javascript:viewChart( 'single', 'period' )">$i18n.getString( "this_indicator_and_periods" )&nbsp;</a></li>
+    <li><a href="javascript:viewChart( 'single', 'orgunit' )">$i18n.getString( "this_indicator_and_orgunits" )&nbsp;</a></li>
+    <li><a href="javascript:viewChart( 'viewChart( 'all', 'period' )">$i18n.getString( "all_indicator_and_periods" )&nbsp;</a></li>
+    <li><a href="javascript:viewChart( 'viewChart( 'all', 'orgunit' )">$i18n.getString( "all_indicator_and_orgunits" )&nbsp;</a></li>
   </ul>
 </div>
 

@@ -175,22 +175,6 @@
   padding: 4px 0px 0px 6px;
 }
 
-.page a
-{
-  text-decoration:none;
-  color:#3567cd;
-}
-
-.page a:hover
-{
-  text-decoration:underline;
-}
-
-.page a:visited
-{
-  color:#3567cd;
-}
-
 div#selectionTree 
 {
   height:200px;

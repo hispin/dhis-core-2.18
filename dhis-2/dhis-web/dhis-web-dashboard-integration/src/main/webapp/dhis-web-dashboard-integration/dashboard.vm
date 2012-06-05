@@ -24,7 +24,7 @@
     <div id="$listId" class="menuDropDownArea">
         <ul class="menuDropDownBox">
         #foreach( $provider in $providerNames )
-            <li class="menuDropDownItem" onclick="setAreaItem( '$divId', '$provider' )">$i18n.getString( "$provider" )&nbsp;</li>
+            <li><a href="javascript:setAreaItem( '$divId', '$provider' )">$i18n.getString( "$provider" )&nbsp;</a></li>
         #end
         </ul>
     </div>
@@ -41,7 +41,7 @@
     <div id="$listId" class="menuDropDownArea">
         <ul class="menuDropDownBox">
         #foreach( $availableChart in $charts )
-            <li class="menuDropDownItem" onclick="setAreaItem( '${divId}', '${availableChart.id}' )">${availableChart.name}&nbsp;</li>
+            <li><a href="javascript:setAreaItem( '${divId}', '${availableChart.id}' )">${availableChart.name}&nbsp;</a></li>
         #end
         </ul>
     </div>
