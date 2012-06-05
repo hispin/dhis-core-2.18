@@ -28,9 +28,18 @@ package org.hisp.dhis.api.controller.user;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.WebMetaData;
+import org.hisp.dhis.api.controller.WebOptions;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -41,4 +50,41 @@ public class UserController
     extends AbstractCrudController<User>
 {
     public static final String RESOURCE_PATH = "/users";
+
+    @Autowired
+    private UserService userService;
+
+    @Override
+    protected List<User> getEntityList( WebMetaData metaData, WebOptions options )
+    {
+        List<User> entityList;
+
+        Date lastUpdated = options.getLastUpdated();
+
+        if ( lastUpdated != null )
+        {
+            entityList = new ArrayList<User>( userService.getUsersByLastUpdated( lastUpdated ) );
+        }
+        else if ( options.hasPaging() )
+        {
+            int count = userService.getUserCount();
+
+            Pager pager = new Pager( options.getPage(), count );
+            metaData.setPager( pager );
+
+            entityList = new ArrayList<User>( userService.getAllUsersBetween( pager.getOffset(), pager.getPageSize() ) );
+        }
+        else
+        {
+            entityList = new ArrayList<User>( userService.getAllUsers() );
+        }
+
+        return entityList;
+    }
+
+    @Override
+    protected User getEntity( String uid )
+    {
+        return userService.getUser( uid );
+    }
 }

@@ -68,9 +68,9 @@ import java.util.*;
  */
 final public class ExchangeClasses
 {
-    final private static Map<Class<? extends IdentifiableObject>, String> exportClasses;
+    private static Map<Class<? extends IdentifiableObject>, String> exportClasses;
 
-    final private static Map<Class<? extends IdentifiableObject>, String> importClasses;
+    private static Map<Class<? extends IdentifiableObject>, String> importClasses;
 
     static
     {
@@ -119,16 +119,21 @@ final public class ExchangeClasses
         exportClasses.put( MapLegendSet.class, "mapLegendSets" );
         exportClasses.put( MapLayer.class, "mapLayers" );
 
-        /*
         exportClasses.put( User.class, "users" );
         exportClasses.put( UserGroup.class, "userGroups" );
         exportClasses.put( UserAuthorityGroup.class, "userRoles" );
-        */
 
         exportClasses.put( MessageConversation.class, "messageConversations" );
         exportClasses.put( Interpretation.class, "interpretations" );
 
-        importClasses = exportClasses;
+        importClasses = new LinkedHashMap<Class<? extends IdentifiableObject>, String>( exportClasses );
+
+        importClasses.remove( User.class );
+        importClasses.remove( UserAuthorityGroup.class );
+        importClasses.remove( UserGroup.class );
+
+        importClasses.remove( MessageConversation.class );
+        importClasses.remove( Interpretation.class );
     }
 
     public static Map<Class<? extends IdentifiableObject>, String> getExportMap()

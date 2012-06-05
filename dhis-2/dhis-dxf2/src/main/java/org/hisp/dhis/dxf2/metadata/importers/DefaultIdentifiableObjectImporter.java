@@ -39,10 +39,7 @@ import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
-import org.hisp.dhis.dxf2.importsummary.ImportCount;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.dxf2.metadata.Importer;
-import org.hisp.dhis.dxf2.metadata.ObjectBridge;
+import org.hisp.dhis.dxf2.metadata.*;
 import org.hisp.dhis.dxf2.metadata.handlers.FieldHandler;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandler;
 import org.hisp.dhis.expression.Expression;
@@ -115,11 +112,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     // Internal state
     //-------------------------------------------------------------------------------------------------------
 
-    protected int totalImported;
-
-    protected int totalUpdated;
-
-    protected int totalIgnored;
+    protected ImportTypeSummary summaryType;
 
     protected ImportOptions options;
 
@@ -133,33 +126,31 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      * @param object Object to import
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected List<ImportConflict> newObject( T object )
+    protected boolean newObject( T object )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
 
         // FIXME add uidValidator.. part of bean validation impl?
         // object.setUid( CodeGenerator.generateCode() );
 
-        log.debug( "Trying to save new object => " + getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
+        log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
 
         Map<Field, Object> fields = detachFields( object );
-        importConflicts.addAll( reattachFields( object, fields ) );
+        reattachFields( object, fields );
 
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
         objectBridge.saveObject( object );
 
         updatePeriodTypes( object );
-        importConflicts.addAll( reattachCollectionFields( object, collectionFields ) );
+        reattachCollectionFields( object, collectionFields );
 
         objectBridge.updateObject( object );
 
         log.debug( "Save successful." );
 
-        return importConflicts;
+        return true;
     }
 
     /**
@@ -169,28 +160,26 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      * @param oldObject The current version of the object
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected List<ImportConflict> updatedObject( T object, T oldObject )
+    protected boolean updatedObject( T object, T oldObject )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-
-        log.debug( "Starting update of object " + getDisplayName( oldObject ) + " (" + oldObject.getClass()
+        log.debug( "Starting update of object " + ImportUtils.getDisplayName( oldObject ) + " (" + oldObject.getClass()
             .getSimpleName() + ")" );
 
         Map<Field, Object> fields = detachFields( object );
-        importConflicts.addAll( reattachFields( object, fields ) );
+        reattachFields( object, fields );
 
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
         oldObject.mergeWith( object );
         updatePeriodTypes( oldObject );
 
-        importConflicts.addAll( reattachCollectionFields( oldObject, collectionFields ) );
+        reattachCollectionFields( oldObject, collectionFields );
 
         objectBridge.updateObject( oldObject );
 
         log.debug( "Update successful." );
 
-        return importConflicts;
+        return true;
     }
 
     // FIXME to static ATM, should be refactor out.. "type handler", not idObject
@@ -213,16 +202,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public List<ImportConflict> importObjects( List<T> objects, ImportOptions options )
+    public ImportTypeSummary importObjects( List<T> objects, ImportOptions options )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
+        this.options = options;
+        this.summaryType = new ImportTypeSummary( importerClass.getSimpleName() );
 
         if ( objects.isEmpty() )
         {
-            return importConflicts;
+            return summaryType;
         }
-
-        init( options );
 
         preObjectsHandlers( objects );
 
@@ -237,8 +225,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             Expression leftSide = getAndClearExpression( object, "leftSide" );
             Expression rightSide = getAndClearExpression( object, "rightSide" );
 
-            List<ImportConflict> conflicts = importObjectLocal( object );
-            importConflicts.addAll( conflicts );
+            importObjectLocal( object );
 
             if ( !options.isDryRun() )
             {
@@ -258,7 +245,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         postObjectsHandlers( objects );
 
-        return importConflicts;
+        return summaryType;
     }
 
 
@@ -433,17 +420,14 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     }
 
     @Override
-    public List<ImportConflict> importObject( T object, ImportOptions options )
+    public ImportTypeSummary importObject( T object, ImportOptions options )
     {
-        init( options );
+        this.options = options;
+        this.summaryType = new ImportTypeSummary( importerClass.getSimpleName() );
 
-        return importObjectLocal( object );
-    }
+        importObjectLocal( object );
 
-    @Override
-    public ImportCount getCurrentImportCount()
-    {
-        return new ImportCount( totalImported, totalUpdated, totalIgnored );
+        return summaryType;
     }
 
     @Override
@@ -453,131 +437,68 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     }
 
     //-------------------------------------------------------------------------------------------------------
-    // Protected methods
-    //-------------------------------------------------------------------------------------------------------
-
-    /**
-     * @param object Object to get display name for
-     * @return A usable display name
-     */
-    protected String getDisplayName( Object object )
-    {
-        if ( object == null )
-        {
-            return "[ object is null ]";
-        }
-        else if ( IdentifiableObject.class.isInstance( object ) )
-        {
-            IdentifiableObject identifiableObject = (IdentifiableObject) object;
-
-            if ( identifiableObject.getName() != null && identifiableObject.getName().length() > 0 )
-            {
-                return identifiableObject.getName();
-            }
-            else if ( identifiableObject.getUid() != null && identifiableObject.getName().length() > 0 )
-            {
-                return identifiableObject.getUid();
-            }
-            else if ( identifiableObject.getCode() != null && identifiableObject.getName().length() > 0 )
-            {
-                return identifiableObject.getCode();
-            }
-
-        }
-
-        return object.getClass().getName();
-    }
-
-    //-------------------------------------------------------------------------------------------------------
     // Helpers
     //-------------------------------------------------------------------------------------------------------
 
-    private void init( ImportOptions options )
+    private void importObjectLocal( T object )
     {
-        this.options = options;
-        totalImported = 0;
-        totalUpdated = 0;
-        totalIgnored = 0;
-    }
-
-    private List<ImportConflict> importObjectLocal( T object )
-    {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-        ImportConflict importConflict = validateIdentifiableObject( object );
-
-        if ( importConflict == null )
+        if ( validateIdentifiableObject( object ) )
         {
-            importConflicts.addAll( startImport( object ) );
+            startImport( object );
         }
         else
         {
-            importConflicts.add( importConflict );
+            summaryType.incrementIgnored();
         }
-
-        if ( importConflicts.isEmpty() )
-        {
-            totalIgnored++;
-        }
-
-        return importConflicts;
     }
 
-    private List<ImportConflict> startImport( T object )
+    private void startImport( T object )
     {
         T oldObject = objectBridge.getObject( object );
         List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
         if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
-            importConflicts.addAll( newObject( object ) );
-
-            if ( importConflicts.isEmpty() )
+            if ( newObject( object ) )
             {
-                totalImported++;
+                summaryType.incrementImported();
             }
         }
         else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
         {
-            importConflicts.addAll( updatedObject( object, oldObject ) );
-
-            if ( importConflicts.isEmpty() )
+            if ( updatedObject( object, oldObject ) )
             {
-                totalUpdated++;
+                summaryType.incrementUpdated();
             }
         }
         else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
         {
             if ( oldObject != null )
             {
-                importConflicts.addAll( updatedObject( object, oldObject ) );
-
-                if ( importConflicts.isEmpty() )
+                if ( updatedObject( object, oldObject ) )
                 {
-                    totalUpdated++;
+                    summaryType.incrementUpdated();
                 }
             }
             else
             {
-                importConflicts.addAll( newObject( object ) );
-
-                if ( importConflicts.isEmpty() )
+                if ( newObject( object ) )
                 {
-                    totalImported++;
+                    summaryType.incrementImported();
                 }
             }
         }
-
-        return importConflicts;
     }
 
-    private ImportConflict validateIdentifiableObject( T object )
+    private boolean validateIdentifiableObject( T object )
     {
         ImportConflict conflict = null;
+        boolean success = true;
 
         // FIXME add bean validation for this
         if ( object.getName() == null || object.getName().length() == 0 )
         {
-            return new ImportConflict( getDisplayName( object ), "Empty name for object " + object );
+            conflict = new ImportConflict( ImportUtils.getDisplayName( object ), "Empty name for object " + object );
         }
 
         if ( NameableObject.class.isInstance( object ) )
@@ -586,36 +507,40 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( nameableObject.getShortName() == null || nameableObject.getShortName().length() == 0 )
             {
-                return new ImportConflict( getDisplayName( object ), "Empty shortName for object " + object );
+                conflict = new ImportConflict( ImportUtils.getDisplayName( object ), "Empty shortName for object " + object );
             }
         }
-        // end
+
+        if ( conflict != null )
+        {
+            summaryType.getImportConflicts().add( conflict );
+        }
 
         if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
-            conflict = validateForNewStrategy( object );
+            success = validateForNewStrategy( object );
         }
         else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
         {
-            conflict = validateForUpdatesStrategy( object );
+            success = validateForUpdatesStrategy( object );
         }
         else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
         {
             // if we have a match on at least one of the objects, then assume update
             if ( objectBridge.getObjects( object ).size() > 0 )
             {
-                conflict = validateForUpdatesStrategy( object );
+                success = validateForUpdatesStrategy( object );
             }
             else
             {
-                conflict = validateForNewStrategy( object );
+                success = validateForNewStrategy( object );
             }
         }
 
-        return conflict;
+        return success;
     }
 
-    private ImportConflict validateForUpdatesStrategy( T object )
+    private boolean validateForUpdatesStrategy( T object )
     {
         ImportConflict conflict = null;
         Collection<T> objects = objectBridge.getObjects( object );
@@ -629,10 +554,15 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             conflict = reportMoreThanOneConflict( object );
         }
 
-        return conflict;
+        if ( conflict != null )
+        {
+            summaryType.getImportConflicts().add( conflict );
+        }
+
+        return true;
     }
 
-    private ImportConflict validateForNewStrategy( T object )
+    private boolean validateForNewStrategy( T object )
     {
         ImportConflict conflict = null;
         Collection<T> objects = objectBridge.getObjects( object );
@@ -642,22 +572,27 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             conflict = reportConflict( object );
         }
 
-        return conflict;
+        if ( conflict != null )
+        {
+            summaryType.getImportConflicts().add( conflict );
+        }
+
+        return true;
     }
 
     private ImportConflict reportLookupConflict( IdentifiableObject object )
     {
-        return new ImportConflict( getDisplayName( object ), "Object does not exist." );
+        return new ImportConflict( ImportUtils.getDisplayName( object ), "Object does not exist." );
     }
 
     private ImportConflict reportMoreThanOneConflict( IdentifiableObject object )
     {
-        return new ImportConflict( getDisplayName( object ), "More than one object matches identifiers." );
+        return new ImportConflict( ImportUtils.getDisplayName( object ), "More than one object matches identifiers." );
     }
 
     private ImportConflict reportConflict( IdentifiableObject object )
     {
-        return new ImportConflict( getDisplayName( object ), "Object already exists." );
+        return new ImportConflict( ImportUtils.getDisplayName( object ), "Object already exists." );
     }
 
     private IdentifiableObject findObjectByReference( IdentifiableObject identifiableObject )
@@ -706,10 +641,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return fieldMap;
     }
 
-    private List<ImportConflict> reattachFields( Object object, Map<Field, Object> fields )
+    private void reattachFields( Object object, Map<Field, Object> fields )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-
         for ( Field field : fields.keySet() )
         {
             IdentifiableObject idObject = (IdentifiableObject) fields.get( field );
@@ -717,7 +650,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
             if ( ref == null )
             {
-                reportReferenceError(object, importConflicts, idObject);
+                if ( ExchangeClasses.getImportMap().get( idObject.getClass() ) != null )
+                {
+                    reportReferenceError( object, idObject );
+                }
             }
 
             if ( !options.isDryRun() )
@@ -725,8 +661,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 ReflectionUtils.invokeSetterMethod( field.getName(), object, ref );
             }
         }
-
-        return importConflicts;
     }
 
     private Map<Field, Collection<Object>> detachCollectionFields( final Object object )
@@ -753,10 +687,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return collectionFields;
     }
 
-    private List<ImportConflict> reattachCollectionFields( Object object, Map<Field, Collection<Object>> collectionFields )
+    private void reattachCollectionFields( Object object, Map<Field, Collection<Object>> collectionFields )
     {
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
-
         for ( Field field : collectionFields.keySet() )
         {
             Collection<Object> collection = collectionFields.get( field );
@@ -772,7 +704,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 }
                 else
                 {
-                    reportReferenceError( object, importConflicts, idObject );
+                    if ( ExchangeClasses.getImportMap().get( idObject.getClass() ) != null )
+                    {
+                        reportReferenceError( object, idObject );
+                    }
                 }
             }
 
@@ -781,11 +716,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 ReflectionUtils.invokeSetterMethod( field.getName(), object, objects );
             }
         }
-
-        return importConflicts;
     }
 
-    private void reportReferenceError( Object object, List<ImportConflict> importConflicts, Object idObject )
+    private void reportReferenceError( Object object, Object idObject )
     {
         String referenceName = idObject != null ? idObject.getClass().getSimpleName() : "null";
         String objectName = object != null ? object.getClass().getSimpleName() : "null";
@@ -795,7 +728,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
         log.warn( logMsg );
 
-        ImportConflict importConflict = new ImportConflict( getDisplayName( object ), logMsg );
-        importConflicts.add( importConflict );
+        ImportConflict importConflict = new ImportConflict( ImportUtils.getDisplayName( object ), logMsg );
+        summaryType.getImportConflicts().add( importConflict );
     }
 }

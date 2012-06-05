@@ -100,6 +100,27 @@ public class HibernateUserStore
         return session.createQuery( "from User" ).list();
     }
 
+    @Override
+    public Collection<User> getAllUsersBetween( int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery( "from User" );
+        query.setFirstResult( first );
+        query.setMaxResults( max );
+
+        return query.list();
+    }
+
+    @Override
+    public Collection<User> getUsersByLastUpdated( Date lastUpdated )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( User.class );
+        return criteria.add( Restrictions.ge( "lastUpdated", lastUpdated ) ).list();
+    }
+
     public Collection<User> getUsersWithoutOrganisationUnit()
     {
         Collection<User> users = getAllUsers();
@@ -258,7 +279,7 @@ public class HibernateUserStore
     }
 
     public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
-                                                                                int first, int max )
+        int first, int max )
     {
         return getBlockUser( findByName( toUserCredentials( orgUnit.getUsers() ), name ), first, max );
     }

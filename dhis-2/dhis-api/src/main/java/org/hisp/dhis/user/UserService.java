@@ -5,6 +5,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 /*
@@ -91,6 +92,10 @@ public interface UserService
      * @return a Collection of Users.
      */
     Collection<User> getAllUsers();
+
+    Collection<User> getAllUsersBetween(int first, int max);
+
+    Collection<User> getUsersByLastUpdated(Date lastUpdated);
 
     /**
      * Returns a Collection of the Users which are not associated with any

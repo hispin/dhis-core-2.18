@@ -27,25 +27,25 @@ package org.hisp.dhis.integration.components;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultProducer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+
+import java.io.InputStream;
 
 /**
  * @author bobj
  */
-public class Dxf2MetaDataProducer 
+public class Dxf2MetaDataProducer
     extends DefaultProducer
 {
     private static final Log log = LogFactory.getLog( Dxf2MetaDataProducer.class );
 
-    public Dxf2MetaDataProducer( Dxf2MetaDataEndpoint endpoint)
+    public Dxf2MetaDataProducer( Dxf2MetaDataEndpoint endpoint )
     {
         super( endpoint );
     }
@@ -54,11 +54,11 @@ public class Dxf2MetaDataProducer
     public void process( Exchange exchange ) throws Exception
     {
         log.info( this.getEndpoint().getEndpointUri() + " : " + exchange.getIn().getBody() );
-        
+
         Dxf2MetaDataEndpoint endpoint = (Dxf2MetaDataEndpoint) this.getEndpoint();
         MetaData metadata = JacksonUtils.fromXml( (InputStream) exchange.getIn().getBody(), MetaData.class );
-        
-        ImportSummary summary = endpoint.getImportService().importMetaData(metadata, endpoint.getImportOptions());
-        exchange.getOut().setBody(JacksonUtils.toXmlAsString( summary ) );
+
+        ImportSummary summary = endpoint.getImportService().importMetaData( metadata, endpoint.getImportOptions() );
+        exchange.getOut().setBody( JacksonUtils.toXmlAsString( summary ) );
     }
 }

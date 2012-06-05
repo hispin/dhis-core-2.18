@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.*;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
