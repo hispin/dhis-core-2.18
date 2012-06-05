@@ -131,6 +131,7 @@
 				/mobile/selectBeneficiary.action?organisationUnitId=${orgUnitId}&amp;current=${current}&amp;validated=true</result>
 			<result name="success_back_to_programstage" type="redirect">
 				/mobile/showPatientProgramStageList.action?patientId=${patientId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=true</result>
+			<result name="register_next_duedate" type="redirect">showRepeatableEventRegistrationForm.action?programInstanceId=${programInstanceId}&amp;programStageId=${programStageId}&amp;currentProgramStageInstanceId=${programStageInstanceId}</result>
 			<result name="error" type="velocity">/dhis-web-light/main.vm</result>
 			<param name="page">/dhis-web-light/namebased/programStageForm.vm</param>
 		</action>
@@ -160,6 +161,7 @@
 		
 		<action name="findBeneficiary"
 			class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction">
+			<result name="redirect" type="redirect">showPatientProgramList.action?patientId=${patientId}</result>
 			<result name="success" type="velocity">
 				/dhis-web-light/main.vm</result>
 			<param name="page">

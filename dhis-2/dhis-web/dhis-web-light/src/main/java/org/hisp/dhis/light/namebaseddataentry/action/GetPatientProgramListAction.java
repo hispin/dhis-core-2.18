@@ -27,13 +27,21 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -56,6 +64,18 @@ public class GetPatientProgramListAction
         this.programInstanceService = programInstanceService;
     }
 
+    private ProgramService programService;
+
+    public ProgramService getProgramService()
+    {
+        return programService;
+    }
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     private PatientService patientService;
 
     public PatientService getPatientService()
@@ -66,6 +86,30 @@ public class GetPatientProgramListAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    private NamebasedUtils util;
+
+    public NamebasedUtils getUtil()
+    {
+        return util;
+    }
+
+    public void setUtil( NamebasedUtils util )
+    {
+        this.util = util;
+    }
+
+    private RelationshipService relationshipService;
+
+    public RelationshipService getRelationshipService()
+    {
+        return relationshipService;
+    }
+
+    public void setRelationshipService( RelationshipService relationshipService )
+    {
+        this.relationshipService = relationshipService;
     }
 
     // -------------------------------------------------------------------------
@@ -108,11 +152,37 @@ public class GetPatientProgramListAction
         this.patient = patient;
     }
 
+    private List<Program> enrollmentProgramList;
+
+    public List<Program> getEnrollmentProgramList()
+    {
+        return enrollmentProgramList;
+    }
+
+    public void setEnrollmentProgramList( List<Program> enrollmentProgramList )
+    {
+        this.enrollmentProgramList = enrollmentProgramList;
+    }
+
+    private List<Patient> relatedPeople;
+
+    public List<Patient> getRelatedPeople()
+    {
+        return relatedPeople;
+    }
+
+    public void setRelatedPeople( List<Patient> relatedPeople )
+    {
+        this.relatedPeople = relatedPeople;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
         programInstances.clear();
+        relatedPeople = new ArrayList<Patient>();
+
         patient = patientService.getPatient( patientId );
         for ( ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ) )
         {
@@ -121,7 +191,40 @@ public class GetPatientProgramListAction
                 programInstances.add( programInstance );
             }
         }
-        
+
+        enrollmentProgramList = this.generateEnrollmentProgramList();
+        Collection<Relationship> relationships = relationshipService.getRelationshipsForPatient( patient );
+
+        for ( Relationship relationship : relationships )
+        {
+            if ( relationship.getPatientA().getId() != patient.getId() )
+            {
+                relatedPeople.add( relationship.getPatientA() );
+            }
+
+            if ( relationship.getPatientB().getId() != patient.getId() )
+            {
+                relatedPeople.add( relationship.getPatientB() );
+            }
+        }
+
         return SUCCESS;
+    }
+
+    private List<Program> generateEnrollmentProgramList()
+    {
+        List<Program> programs = new ArrayList<Program>();
+        for ( Program program : programService.getPrograms( patient.getOrganisationUnit() ) )
+
+        {
+            if ( !program.isSingleEvent() )
+            {
+                if ( programInstanceService.getProgramInstances( patient, program ).size() == 0 )
+                {
+                    programs.add( program );
+                }
+            }
+        }
+        return programs;
     }
 }

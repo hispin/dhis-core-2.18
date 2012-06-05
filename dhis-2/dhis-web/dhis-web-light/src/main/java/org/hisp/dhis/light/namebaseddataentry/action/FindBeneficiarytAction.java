@@ -34,6 +34,7 @@ import com.opensymphony.xwork2.Action;
 public class FindBeneficiarytAction
     implements Action
 {
+    private static final String REDIRECT = "redirect";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -89,6 +90,18 @@ public class FindBeneficiarytAction
     {
         this.organisationUnitId = organisationUnitId;
     }
+    
+    private Integer patientId;
+    
+    public Integer getPatientId()
+    {
+        return patientId;
+    }
+
+    public void setPatientId( Integer patientId )
+    {
+        this.patientId = patientId;
+    }
 
     @Override
     public String execute()
@@ -106,6 +119,11 @@ public class FindBeneficiarytAction
         }
 
         patients = patientService.getPatientsForMobile( keyword, organisationUnitId );
+        if (patients.size() == 1) {
+            Patient patient = patients.iterator().next();
+            patientId = patient.getId();
+            return REDIRECT;
+        }
         return SUCCESS;
     }
 

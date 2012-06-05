@@ -1,25 +1,59 @@
 <h2>$!encoder.htmlEncode( ${patient.getFullName()} )</h2>
 <p>
 	<ul>
-		<li>
-			<a href="showBeneficiaryDetail.action?patientId=$patient.getId()&current=true&organisationUnitId=0"> $i18n.getString( "details" ) </a>
-		</li> 
+		#foreach( $programInstance in $programInstances )
+			<li>
+				<a href="showPatientProgramStageList.action?patientId=$patientId&programInstanceId=$programInstance.getId()&programId=$programInstance.getProgram().getId()&validated=false">
+					 $programInstance.getProgram().getName()
+				</a> 
+			</li>
+			#set($nextStage = $util.getNextStage( $programInstance.getProgramStageInstances()))
+			#if($nextStage)
+				<li>
+					<a href="showProgramStageForm.action?programId=$programInstance.getProgram().getId()&programStageId=$nextStage.getProgramStage().getId()&programStageInstanceId=$nextStage.getId()&patientId=$patient.getId()&programInstanceId=$programInstance.getId()&orgUnitId=0"> - Next: $nextStage.getProgramStage().getName()</a>
+				</li>
+			#end
+		#end
 	</ul>
-<ul>
-#foreach( $programInstance in $programInstances )
-	<li>
-		<a href="showPatientProgramStageList.action?patientId=$patientId&programInstanceId=$programInstance.getId()&programId=$programInstance.getProgram().getId()&validated=false">
-			 $programInstance.getProgram().getName()
-		</a> 
-	</li>
-#end
-</ul>
 </p>
 
+<h2>$i18n.getString("details")</h2>
+<p>
+	<ul>
+		<li><strong>$i18n.getString("id"):</strong>  $patient.id</li>
+		<li><strong>$i18n.getString("gender"):</strong>  #if ($patient.gender == "F") Female #else Male #end</li>
+		#set($day = $patient.birthDate.date)
+		#set($month = $patient.birthDate.month+1)
+		#set($year = $patient.birthDate.year + 1900)
+		<li><strong>$i18n.getString("date_of_birth"):</strong>  $year - $month - $day </li>
+		#if($patient.getPhoneNumber())
+			<li><strong>$i18n.getString("phone_number"):</strong>  $patient.getPhoneNumber()</li>
+		#end			
+	</ul>
+</p>
+	
+<h2>$i18n.getString("enroll_in_program")</h2>
+<p>
+	<ul>
+		#foreach( $program in $enrollmentProgramList )
+			<li><a href="showProgramEnrollmentForm.action?patientId=$patient.Id&programId=$program.Id">$program.getName()</a></li>
+		#end
+	</ul>
+</p>
+
+<h2>$i18n.getString("relationships")</h2>
+<p>
+	<ul>
+		#foreach( $person in $relatedPeople )
+			<li><a href="">$!encoder.htmlEncode( ${person.getFullName()} )</a></li>
+		#end
+	</ul>
+</p>
+	
 <div id="footer">
-<h2>$i18n.getString( "navigate_to" )</h2>
-<ul>
-	<li> <a href="showFindBeneficiaryForm.action"> $i18n.getString("find_beneficiary")</a></li>
-	<li><a href="index.action">$i18n.getString("home")</a></li>
-</ul>
+	<h2>$i18n.getString( "navigate_to" )</h2>
+	<ul>
+		<li> <a href="showFindBeneficiaryForm.action"> $i18n.getString("find_beneficiary")</a></li>
+		<li><a href="index.action">$i18n.getString("home")</a></li>
+	</ul>
 </div>
