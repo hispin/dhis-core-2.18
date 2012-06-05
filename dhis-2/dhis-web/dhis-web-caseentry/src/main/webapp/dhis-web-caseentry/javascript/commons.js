@@ -201,7 +201,7 @@ function getParamsForDiv( patientDiv)
 			else if( $(this).attr('type') != 'button' )
 			{
 				var value = "";
-				if( jQuery(this).val() != '' )
+				if( jQuery(this).val()!= null && jQuery(this).val() != '' )
 				{
 					value = htmlEncode(jQuery(this).val());
 				}
