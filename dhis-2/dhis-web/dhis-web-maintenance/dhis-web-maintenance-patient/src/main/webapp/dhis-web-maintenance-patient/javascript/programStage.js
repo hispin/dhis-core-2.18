@@ -136,9 +136,14 @@ function moveUpDataElement()
 function moveDownDataElement()
 {
 	var selectedList = jQuery("#selectedList");
-
+	var items = new Array();
 	jQuery("#selectedList").find("tr").each( function( i, item ){
-		item = jQuery(item);
+		items.push(jQuery(item));
+	});
+	
+	for( var i=items.length-1;i>=0;i--)
+	{	
+		var item = items[i];
 		if( item.hasClass("selected") )
 		{
 			var next = item.next('#selectedList tr');
@@ -147,7 +152,7 @@ function moveDownDataElement()
 				next.after(item);
 			}
 		}
-	});
+	}
 }
 
 function unSelectDataElement( element )
