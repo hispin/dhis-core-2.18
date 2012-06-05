@@ -58,12 +58,23 @@ input[type="button"], input[type="submit"]
 	display: block;
 }
 
-.buttonInfo
+.stage-object
 {
 	width: 100px;
 	height: 40px;
     white-space: normal;
 	border:2px solid; 
 	background-color:#ffffff;
+	cursor:pointer;
+}
+
+.patient-object
+{
+	width: 100px;
+	height: 40px;
+    white-space: normal;
+	border:2px solid; 
+	border-color:#bbbbbb;
+	background-color:#cccccc
 	cursor:pointer;
 }

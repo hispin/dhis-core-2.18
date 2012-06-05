@@ -177,6 +177,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/multiDataEntrySelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
+			<param name="stylesheets">style/patient.css</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,
 				javascript/form.js,javascript/multiDataEntry.js</param>			
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>

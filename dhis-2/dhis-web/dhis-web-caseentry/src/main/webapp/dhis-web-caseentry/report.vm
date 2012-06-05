@@ -10,14 +10,14 @@
             #foreach( $programInstance in $programInstances )
                 <tr #alternate( $mark )>                
 					<td>
-						<input type='button' class='buttonInfo' style='border-color:#bbbbbb;background-color:#cccccc' value='$programInstance.patient.getFullName()' onclick='javascript:showPatientHistory( $programInstance.patient.id )' title='$i18n.getString( "patient_details_and_history" )'>
+						<input type='button' class='patient-object' value='$programInstance.patient.getFullName()' onclick='javascript:showPatientHistory( $programInstance.patient.id )' title='$i18n.getString( "patient_details_and_history" )'>
 					</td>				
                     #foreach( $programStageInstance in $programInstance.programStageInstances )
 						<td>
 							<img src='images/rightarrow.png'>
 						</td>
 						<td width='100px;'>
-							<input type='button' class='buttonInfo' style='border-color:$colorMap.get( $programStageInstance.id );' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:viewRecords( $programStageInstance.id )'>
+							<input type='button' class='stage-object' style='border-color:$colorMap.get( $programStageInstance.id );' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:viewRecords( $programStageInstance.id )'>
 						</td>
                     #end
                 </tr>

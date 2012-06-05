@@ -74,3 +74,26 @@ fieldset
 {
 	border: 1px solid #3f5d8e;
 }
+
+
+.stage-object
+{
+	width: 100px;
+	height: 40px;
+    white-space: normal;
+	border:2px solid; 
+	background-color:#ffffff;
+	cursor:pointer;
+}
+
+.patient-object
+{
+	width: 100px;
+	height: 40px;
+    white-space: normal;
+	border:2px solid; 
+	border-color:#bbbbbb;
+	background-color:#cccccc
+	cursor:pointer;
+}
+
