@@ -11,8 +11,10 @@ function loadProgramStages()
 	setFieldValue('executionDate','');
 	setFieldValue('dueDate','');
 	disable('completeBtn');
+	disable('completeInBelowBtn');
 	disable('validationBtn');
 	disable('newEncounterBtn');
+	hideById('inputCriteriaDiv');
 		
 	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
 	if ( programId == 0 )
@@ -41,7 +43,7 @@ function loadProgramStages()
 				jQuery('#programStageIdTR').attr('class','hidden');
 				jQuery('#dueDateTR').attr('class','hidden');
 				enable('completeBtn');
-				enable('validationBtn');
+				enable('completeInBelowBtn');
 				hideById('historyPlanLink');
 				loadDataEntry();
 			}
@@ -70,11 +72,10 @@ function loadProgramStages()
 				showById('historyPlanLink');
 				
 				disable('completeBtn');
-				disable('validationBtn');
+				disable('completeInBelowBtn');
 				
 				jQuery('#programStageIdTR').removeAttr('class');
 				jQuery('#dueDateTR').removeAttr('class');
-				
 			}
 			
 	});
@@ -105,6 +106,7 @@ function loadDataEntry()
 	setFieldValue( 'executionDate', '' );
 	disable('validationBtn');
 	disable('completeBtn');
+	disable('completeInBelowBtn');
 	disable('newEncounterBtn');
 		
 	if( getFieldValue('programStageId') == null
@@ -124,14 +126,18 @@ function loadDataEntry()
 			var executionDate = jQuery('#dataRecordingSelectDiv input[id=executionDate]').val();
 			var completed = jQuery('#entryFormContainer input[id=completed]').val();
 			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
+			showById('inputCriteriaDiv');
+			enable('validationBtn');
 			
 			if( executionDate != '' && completed == 'false' )
 			{
 				enable('completeBtn');
+				enable('completeInBelowBtn');
 			}
 			else if( completed == 'true' )
 			{
 				disable('completeBtn');
+				disable('completeInBelowBtn');
 			}
 			
 			if( completed == 'true' && irregular == 'true' )
@@ -567,6 +573,7 @@ function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
 				showWarningMessage( i18n_please_enter_report_date );
             }
 			hideById('dataEntryFormDiv');
+			hideById('inputCriteriaDiv');
         }
     }
 
@@ -625,6 +632,7 @@ function doComplete()
 				function (data)
 				{
 					disable('completeBtn');
+					disable('completeInBelowBtn');
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					if( irregular == 'true' )
 					{
