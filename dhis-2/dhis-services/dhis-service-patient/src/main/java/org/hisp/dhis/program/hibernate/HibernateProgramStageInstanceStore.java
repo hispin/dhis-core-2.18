@@ -57,6 +57,8 @@ import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import static org.hisp.dhis.system.util.TextUtils.*;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -320,19 +322,19 @@ public class HibernateProgramStageInstanceStore
         
         for ( Integer key : identifierKeys.keySet() )
         {
-            sql += operator + "identifier_" + key + identifierKeys.get( key ) + " ";
+            sql += operator + "lower(identifier_" + key + ") " + lower( identifierKeys.get( key ) ) + " ";
             operator = "and ";
         }
         
         for ( Integer key : attributeKeys.keySet() )
         {
-            sql += operator + "attribute_" + key + attributeKeys.get( key ) + " ";
+            sql += operator + "lower(attribute_" + key + ") " + lower( attributeKeys.get( key ) ) + " ";
             operator = "and ";
         }
         
         for ( Integer key : dataElementKeys.keySet() )
         {
-            sql += operator + "element_" + key + dataElementKeys.get( key ) + " ";
+            sql += operator + "lower(element_" + key + ") " + lower( dataElementKeys.get( key ) ) + " ";
             operator = "and ";
         }
 

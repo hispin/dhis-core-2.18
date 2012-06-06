@@ -192,4 +192,15 @@ public class TextUtils
     {
         return value != null ? Boolean.valueOf( value ) : null;
     }
+    
+    /**
+     * Null-safe method for converting the given string to lower-case.
+     * 
+     * @param string the string.
+     * @return the string in lower-case.
+     */
+    public static String lower( String string )
+    {
+        return string != null ? string.toLowerCase() : null;
+    }
 }
