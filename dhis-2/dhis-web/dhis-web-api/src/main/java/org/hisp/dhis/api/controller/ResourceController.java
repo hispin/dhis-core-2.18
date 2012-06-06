@@ -27,7 +27,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.api.webdomain.Resource;
 import org.hisp.dhis.api.webdomain.Resources;
@@ -35,8 +34,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -52,11 +52,12 @@ public class ResourceController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getResources( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getResources( @RequestParam Map<String, String> parameters, Model model )
     {
+        WebOptions options = new WebOptions( parameters );
         Resources resources = new Resources();
 
-        if ( params.hasLinks() )
+        if ( options.hasLinks() )
         {
             for ( Resource resource : resources.getResources() )
             {
