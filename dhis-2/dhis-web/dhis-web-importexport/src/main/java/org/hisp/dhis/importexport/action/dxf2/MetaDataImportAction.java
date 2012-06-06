@@ -28,6 +28,8 @@ package org.hisp.dhis.importexport.action.dxf2;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dxf2.metadata.ImportService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
