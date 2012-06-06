@@ -34,8 +34,11 @@ import static org.hisp.dhis.dataentryform.DataEntryFormService.INPUT_PATTERN;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,16 +64,19 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class AlertUtility
 {
     private static final String NULL_REPLACEMENT = "";
+
     private static final String SEPARATOR = ".";
-    
+
     public static final String GENERATEAGGDATA = "generateaggdata";
+
     public static final String USEEXISTINGAGGDATA = "useexistingaggdata";
+
     public static final String USECAPTUREDDATA = "usecaptureddata";
 
     // ---------------------------------------------------------------
     // Dependencies
-    // ---------------------------------------------------------------  
-    
+    // ---------------------------------------------------------------
+
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
@@ -84,6 +90,7 @@ public class AlertUtility
     {
         this.organisationUnitService = organisationUnitService;
     }
+
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
@@ -91,21 +98,23 @@ public class AlertUtility
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     // ---------------------------------------------------------------
     // Supporting Methods
     // ---------------------------------------------------------------
     public String getCustomDataSetReport( DataSet dataSet, OrganisationUnit unit, String periodIdsByComma,
         String aggOption, I18nFormat format )
     {
-        //Map<String, String> aggregatedDataValueMap = getAggregatedValueMap( dataSet, unit, period, selectedUnitOnly,
-        //    format );
+        // Map<String, String> aggregatedDataValueMap = getAggregatedValueMap(
+        // dataSet, unit, period, selectedUnitOnly,
+        // format );
 
         Map<String, String> aggregatedDataValueMap = getAggregatedValueMap( dataSet, unit, periodIdsByComma, aggOption );
-        
-        //Map<Integer, String> aggregatedIndicatorMap = getAggregatedIndicatorValueMap( dataSet, unit, period, format );
-        
-        Map<Integer, String> aggregatedIndicatorMap = getAggregatedIndicatorValueMap( dataSet, unit, periodIdsByComma, aggOption );
+
+        // Map<Integer, String> aggregatedIndicatorMap =
+        // getAggregatedIndicatorValueMap( dataSet, unit, period, format );
+
+        Map<Integer, String> aggregatedIndicatorMap = getAggregatedIndicatorValueMap( dataSet, unit, periodIdsByComma,
+            aggOption );
 
         return prepareReportContent( dataSet.getDataEntryForm(), aggregatedDataValueMap, aggregatedIndicatorMap );
     }
@@ -151,7 +160,7 @@ public class AlertUtility
             else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
             {
                 Integer dataElementId = Integer.parseInt( dataElementTotalMatcher.group( 1 ) );
-                
+
                 String dataValue = dataValues.get( String.valueOf( dataElementId ) );
 
                 dataValue = dataValue != null ? dataValue : NULL_REPLACEMENT;
@@ -175,120 +184,131 @@ public class AlertUtility
         return buffer.toString();
     }
 
-
-   
-    
-    private Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, String periodIdsByComma, String aggOption )
+    private Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit,
+        String periodIdsByComma, String aggOption )
     {
         Map<Integer, String> aggMap = new HashMap<Integer, String>();
-        
+
         List<Indicator> indicatorList = new ArrayList<Indicator>( dataSet.getIndicators() );
         String dataElmentIdsByComma = reportService.getDataelementIdsAsString( indicatorList );
-        
+
         Map<String, String> aggDeMap = new HashMap<String, String>();
-        if( aggOption.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+        if ( aggOption.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
         {
-            aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( unit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( unit.getId(), dataElmentIdsByComma,
+                periodIdsByComma ) );
         }
-        else if( aggOption.equalsIgnoreCase( GENERATEAGGDATA ) )
+        else if ( aggOption.equalsIgnoreCase( GENERATEAGGDATA ) )
         {
-            List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
-            List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+            List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService
+                .getOrganisationUnitWithChildren( unit.getId() ) );
+            List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class,
+                childOrgUnitTree ) );
             String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
 
-            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma,
+                periodIdsByComma ) );
         }
-        else if( aggOption.equalsIgnoreCase( USECAPTUREDDATA ) )
+        else if ( aggOption.equalsIgnoreCase( USECAPTUREDDATA ) )
         {
-            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+unit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( "" + unit.getId(), dataElmentIdsByComma,
+                periodIdsByComma ) );
         }
-        
+
         for ( Indicator indicator : indicatorList )
         {
             Double numValue = 0.0;
             Double denValue = 0.0;
             Double indValue = 0.0;
-            
+
             try
             {
                 numValue = Double.parseDouble( reportService.getAggVal( indicator.getNumerator(), aggDeMap ) );
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
                 numValue = 0.0;
             }
-            
+
             try
             {
-                denValue = Double.parseDouble( reportService.getAggVal( indicator.getDenominator(), aggDeMap ) );    
+                denValue = Double.parseDouble( reportService.getAggVal( indicator.getDenominator(), aggDeMap ) );
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
                 denValue = 0.0;
             }
 
             try
             {
-                if( denValue != 0.0 )
+                if ( denValue != 0.0 )
                 {
-                    indValue = ( numValue / denValue ) * indicator.getIndicatorType().getFactor();
+                    indValue = (numValue / denValue) * indicator.getIndicatorType().getFactor();
                 }
                 else
                 {
                     indValue = 0.0;
                 }
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
                 indValue = 0.0;
             }
-            
+
             indValue = Math.round( indValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
-            
+
             aggMap.put( indicator.getId(), indValue.toString() );
         }
-        
+
         return aggMap;
     }
-    
-    private  Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, String periodIdsByComma, String aggOption )
+
+    private Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, String periodIdsByComma,
+        String aggOption )
     {
         Map<String, String> aggDeMap = new HashMap<String, String>();
-        
+
         List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
-        Collection<Integer> dataElementIds = new ArrayList<Integer>( getIdentifiers(DataElement.class, dataElementList ) );
+        Collection<Integer> dataElementIds = new ArrayList<Integer>(
+            getIdentifiers( DataElement.class, dataElementList ) );
         String dataElmentIdsByComma = getCommaDelimitedString( dataElementIds );
-        
-        if( aggOption.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+
+        if ( aggOption.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
         {
-            aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( unit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( unit.getId(), dataElmentIdsByComma,
+                periodIdsByComma ) );
         }
-        else if( aggOption.equalsIgnoreCase( GENERATEAGGDATA ) )
+        else if ( aggOption.equalsIgnoreCase( GENERATEAGGDATA ) )
         {
-            List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
-            List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+            List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService
+                .getOrganisationUnitWithChildren( unit.getId() ) );
+            List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class,
+                childOrgUnitTree ) );
             String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
 
-            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma,
+                periodIdsByComma ) );
         }
-        else if( aggOption.equalsIgnoreCase( USECAPTUREDDATA ) )
+        else if ( aggOption.equalsIgnoreCase( USECAPTUREDDATA ) )
         {
-            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+unit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( "" + unit.getId(), dataElmentIdsByComma,
+                periodIdsByComma ) );
         }
-        
+
         return aggDeMap;
     }
+
     public Map<Integer, Integer> getTotalEnrolledNumber( String orgUnitIdsByComma )
     {
         Map<Integer, Integer> aggDeMap = new HashMap<Integer, Integer>();
         try
         {
-            String query = "SELECT programinstance.programid, COUNT(*) FROM programinstance INNER JOIN patient " +
-                                        " ON programinstance.patientid = patient.patientid " +
-                                        " WHERE patient.organisationunitid IN ("+ orgUnitIdsByComma +") GROUP BY programid";
+            String query = "SELECT programinstance.programid, COUNT(*) FROM programinstance INNER JOIN patient "
+                + " ON programinstance.patientid = patient.patientid " + " WHERE patient.organisationunitid IN ("
+                + orgUnitIdsByComma + ") GROUP BY programid";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
-            
+
             while ( rs.next() )
             {
                 Integer programId = rs.getInt( 1 );
@@ -297,10 +317,10 @@ public class AlertUtility
                     aggDeMap.put( programId, totalCount );
                 }
             }
-            
+
             return aggDeMap;
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
             throw new RuntimeException( e );
         }
@@ -311,13 +331,13 @@ public class AlertUtility
         Map<Integer, Integer> aggDeMap = new HashMap<Integer, Integer>();
         try
         {
-            String query = "SELECT programinstance.programid, COUNT(*) FROM programinstance INNER JOIN patient " +
-                                        " ON programinstance.patientid = patient.patientid " +
-                                        " WHERE patient.organisationunitid IN ("+ orgUnitIdsByComma +") AND " +
-                                        " patient.registrationdate LIKE '"+ toDaysDate+"%' GROUP BY programid";
+            String query = "SELECT programinstance.programid, COUNT(*) FROM programinstance INNER JOIN patient "
+                + " ON programinstance.patientid = patient.patientid " + " WHERE patient.organisationunitid IN ("
+                + orgUnitIdsByComma + ") AND " + " patient.registrationdate LIKE '" + toDaysDate
+                + "%' GROUP BY programid";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
-            
+
             while ( rs.next() )
             {
                 Integer programId = rs.getInt( 1 );
@@ -326,10 +346,10 @@ public class AlertUtility
                     aggDeMap.put( programId, totalCount );
                 }
             }
-            
+
             return aggDeMap;
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
             throw new RuntimeException( e );
         }
@@ -340,18 +360,18 @@ public class AlertUtility
         Integer totalRegCount = 0;
         try
         {
-            String query = "SELECT COUNT(*) FROM patient " +    " WHERE organisationunitid IN ("+ orgUnitIdsByComma+")";
+            String query = "SELECT COUNT(*) FROM patient " + " WHERE organisationunitid IN (" + orgUnitIdsByComma + ")";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
-            
+
             if ( rs != null && rs.next() )
             {
                 totalRegCount = rs.getInt( 1 );
             }
-            
+
             return totalRegCount;
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
             throw new RuntimeException( e );
         }
@@ -362,22 +382,183 @@ public class AlertUtility
         Integer totalRegCount = 0;
         try
         {
-            String query = "SELECT COUNT(*) FROM patient " +
-                               " WHERE organisationunitid IN ("+ orgUnitIdsByComma +") AND " +
-                                " registrationdate LIKE '"+ selDate+"%'";
+            String query = "SELECT COUNT(*) FROM patient " + " WHERE organisationunitid IN (" + orgUnitIdsByComma
+                + ") AND " + " registrationdate LIKE '" + selDate + "%'";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
-            
+
             if ( rs != null && rs.next() )
             {
                 totalRegCount = rs.getInt( 1 );
             }
-            
+
             return totalRegCount;
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
             throw new RuntimeException( e );
         }
+    }
+
+    // methods for IDSP OUTBREAK
+    public String getPeriodIdForIDSPOutBreak()
+    {
+        String periodIdResult = "-1";
+        String startDate = " ";
+        String endDate = " ";
+        try
+        {
+            Date toDay = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+            String toDaysDate = simpleDateFormat.format( toDay );
+
+            int periodId = -1;
+
+            String query = "SELECT periodid, startdate, enddate FROM period WHERE periodtypeid = 2 AND "
+                + " startdate <= '" + toDaysDate + "' AND enddate >= '" + toDaysDate + "'";
+
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+            if ( rs1 != null && rs1.next() )
+            {
+                periodId = rs1.getInt( 1 );
+                startDate = rs1.getString( 2 );
+                endDate = rs1.getString( 3 );
+
+                // System.out.println( periodId + " : " + startDate + " : " +
+                // endDate + " : " + toDaysDate );
+
+                if ( !endDate.equalsIgnoreCase( toDaysDate ) )
+                {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime( toDay );
+                    cal.add( Calendar.DATE, -7 );
+                    toDaysDate = simpleDateFormat.format( cal.getTime() );
+
+                    query = "SELECT periodid, startdate, enddate FROM period WHERE periodtypeid = 2 AND "
+                        + " startdate <= '" + toDaysDate + "' AND enddate >= '" + toDaysDate + "'";
+                    SqlRowSet rs2 = jdbcTemplate.queryForRowSet( query );
+                    if ( rs2 != null && rs2.next() )
+                    {
+                        periodId = rs2.getInt( 1 );
+                        startDate = rs2.getString( 2 );
+                        endDate = rs2.getString( 3 );
+                    }
+                    // System.out.println( periodId + " : " + toDaysDate );
+                }
+
+                periodIdResult = "" + periodId + "::" + startDate + " TO " + endDate;
+            }
+            else
+            {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime( toDay );
+                cal.add( Calendar.DATE, -7 );
+                toDaysDate = simpleDateFormat.format( cal.getTime() );
+
+                query = "SELECT periodid, startdate, enddate FROM period WHERE periodtypeid = 2 AND "
+                    + " startdate <= '" + toDaysDate + "' AND enddate >= '" + toDaysDate + "'";
+                SqlRowSet rs2 = jdbcTemplate.queryForRowSet( query );
+                if ( rs2 != null && rs2.next() )
+                {
+                    periodId = rs2.getInt( 1 );
+                    startDate = rs2.getString( 2 );
+                    endDate = rs2.getString( 3 );
+                }
+                periodIdResult = "" + periodId + "::" + startDate + " TO " + endDate;
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+
+        // System.out.println( "PeriodId : " +periodIdResult );
+        return periodIdResult;
+    }
+
+    public String getPeriodIdForIDSPPopulation()
+    {
+        String periodIdResult = "-1";
+
+        try
+        {
+            Date toDay = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+            String toDaysDate = simpleDateFormat.format( toDay );
+
+            String query = "SELECT periodid FROM period WHERE periodtypeid = 6 AND " + " startdate <= '" + toDaysDate
+                + "' AND enddate >= '" + toDaysDate + "'";
+
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+            if ( rs1 != null && rs1.next() )
+            {
+                periodIdResult = "" + rs1.getInt( 1 );
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+
+        // System.out.println( "PeriodId : " +periodIdResult );
+        return periodIdResult;
+
+    }
+
+    public Integer getAggregatedData( String orgUnitIdsByComma, String deIdsByComma, String periodId )
+    {
+        Integer aggData = 0;
+
+        try
+        {
+            String query = "SELECT SUM(value) FROM datavalue " + " WHERE sourceid IN (" + orgUnitIdsByComma + ") AND "
+                + " dataelementid IN (" + deIdsByComma + ") AND " + " periodid = " + periodId;
+
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+
+            if ( rs1 != null && rs1.next() )
+            {
+                double temp = rs1.getDouble( 1 );
+
+                aggData = (int) temp;
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+
+        return aggData;
+    }
+
+    public Integer getConfirmedCount( String orgUnitIdsByComma, String dataSetId, String periodId )
+    {
+        Integer confirmedCount = 0;
+
+        try
+        {
+            String query = "SELECT COUNT(*) FROM completedatasetregistration " + " WHERE sourceid IN ("
+                + orgUnitIdsByComma + ") AND " + " datasetid = " + dataSetId + " AND " + " periodid = " + periodId;
+
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+
+            if ( rs1 != null && rs1.next() )
+            {
+                double temp = rs1.getDouble( 1 );
+
+                confirmedCount = (int) temp;
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+
+        return confirmedCount;
+    }
+
+    public String getRAFolderName()
+    {
+        return reportService.getRAFolderName();
     }
 }

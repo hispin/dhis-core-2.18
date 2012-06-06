@@ -38,7 +38,9 @@ import com.opensymphony.xwork2.Action;
 public class HomePageAction
     implements Action
 {
+    private static final String DASHBOARD_PAGE = "dashboardpage";
     private static final String TRACKER_DASHBOARD_PAGE = "trackerdashboardpage";
+    private static final String IDSP_OUTBREAK ="idspoutbreak";
 
     String drillDownOrgUnitId;
 
@@ -53,8 +55,8 @@ public class HomePageAction
 
     public String execute()
         throws Exception
-    {
-        return TRACKER_DASHBOARD_PAGE;
+    {        
+        return IDSP_OUTBREAK;
 
     }
 }
