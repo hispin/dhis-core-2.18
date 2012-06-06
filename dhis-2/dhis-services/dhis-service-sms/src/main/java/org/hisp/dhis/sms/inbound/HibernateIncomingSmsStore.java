@@ -32,6 +32,7 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.sms.incoming.IncomingSms;
@@ -90,7 +91,7 @@ public class HibernateIncomingSmsStore
     @Override
     public Collection<IncomingSms> getAllSmses()
     {
-        return sessionFactory.getCurrentSession().createCriteria( IncomingSms.class ).list();
+        return sessionFactory.getCurrentSession().createCriteria( IncomingSms.class ).addOrder( Order.asc( "id" ) ).list();
     }
 
     @Override
@@ -107,6 +108,12 @@ public class HibernateIncomingSmsStore
     public void delete( IncomingSms incomingSms )
     {
         sessionFactory.getCurrentSession().delete( incomingSms );
+    }
+
+    @Override
+    public void update( IncomingSms incomingSms )
+    {
+        sessionFactory.getCurrentSession().update( incomingSms );
     }
 
     // @Override

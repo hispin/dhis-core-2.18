@@ -57,6 +57,11 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
+    <action name="updateReceiveSMS" class="org.hisp.dhis.mobile.action.incoming.UpdateReceiveSMSAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
     <action name="importReceiveSMS" class="org.hisp.dhis.mobile.action.incoming.ImportReceiveSMSAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>

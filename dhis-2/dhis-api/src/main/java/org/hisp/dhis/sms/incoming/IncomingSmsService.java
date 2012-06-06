@@ -49,6 +49,8 @@ public interface IncomingSmsService
     
     void update( IncomingSms sms );
     
+    IncomingSms findBy ( Integer id );
+    
     List<IncomingSms> listAllMessage();
     
     List<IncomingSms> listAllMessageFromModem();

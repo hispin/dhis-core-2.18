@@ -150,6 +150,12 @@ public class DefaultInboundSmsService
     }
 
     @Override
+    public IncomingSms findBy( Integer id )
+    {
+        return incomingSmsStore.get( id );
+    }
+    
+    @Override
     public IncomingSms getNextUnprocessed()
     {
         // TODO Auto-generated method stub
@@ -157,9 +163,9 @@ public class DefaultInboundSmsService
     }
 
     @Override
-    public void update( IncomingSms sms )
+    public void update( IncomingSms incomingSms )
     {
-        // TODO Auto-generated method stub
+        incomingSmsStore.update( incomingSms );
     }
 
     // -------------------------------------------------------------------------
