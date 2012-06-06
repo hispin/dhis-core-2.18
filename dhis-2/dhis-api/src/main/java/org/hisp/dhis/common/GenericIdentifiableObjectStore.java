@@ -116,6 +116,15 @@ public interface GenericIdentifiableObjectStore<T>
     List<T> getByLastUpdated( Date lastUpdated );
 
     /**
+     * Returns all objects that are equal to or newer than given date.
+     * (sorted by name)
+     *
+     * @param lastUpdated Date to compare to.
+     * @return All objects equal or newer than given date.
+     */
+    List<T> getByLastUpdatedSorted( Date lastUpdated );
+
+    /**
      * Returns the number of objects that are equal to or newer than given date.
      *
      * @param lastUpdated Date to compare to.
