@@ -7,13 +7,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Service  -->
 	
 	<bean id="org.hisp.dhis.alert.util.AlertUtility"
-        class="org.hisp.dhis.alert.util.AlertUtility"
-        scope="prototype">
-        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-        <property name="jdbcTemplate" ref="jdbcTemplate" />
-        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-        
-    </bean>
+		class="org.hisp.dhis.alert.util.AlertUtility" scope="prototype">
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService"/>
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		
+	</bean>
 	
 	<!-- Common Action  -->
 	
@@ -72,4 +72,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
   </bean>
+	
+	<!-- IDSP Outbreak Action  -->
+	
+	<bean id="org.hisp.dhis.alert.idsp.action.IDSPOutbreakAction"
+        class="org.hisp.dhis.alert.idsp.action.IDSPOutbreakAction"
+        scope="prototype">       
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="userService" ref="org.hisp.dhis.user.UserService" /> 
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="alertUtility" ref="org.hisp.dhis.alert.util.AlertUtility" />        
+        <!--<property name="statementManager" ref="statementManager"/>-->
+        <property name="orgUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>	
+	
+	
 </beans>
