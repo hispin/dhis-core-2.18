@@ -42,6 +42,8 @@ import org.hisp.dhis.common.view.ShortNameView;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,10 +73,14 @@ public class JacksonUtils
             objectMapper.disable( MapperFeature.AUTO_DETECT_GETTERS );
             objectMapper.disable( MapperFeature.AUTO_DETECT_SETTERS );
             objectMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
+
+            DateFormat format = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
+            objectMapper.setDateFormat( format );
         }
 
         jsonMapper.getJsonFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
         xmlMapper.configure( ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true );
+
 
         // register view classes
         viewClasses.put( "default", BasicView.class );
