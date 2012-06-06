@@ -42,6 +42,10 @@ import java.util.Collection;
  */
 public class PredicateUtils
 {
+    public static Predicate<Field> alwaysTrue = new StaticReply( true );
+
+    public static Predicate<Field> alwaysFalse = new StaticReply( false );
+
     public static Predicate<Field> idObjects = new ObjectWithTypePredicate( IdentifiableObject.class );
 
     public static Predicate<Field> collections = new CollectionPredicate();
@@ -51,6 +55,23 @@ public class PredicateUtils
     public static Predicate<Field> objectCollectionsWithScanned = new CollectionWithAnnotationPredicate( Scanned.class );
 
     public static Predicate<Field> idObjectCollectionsWithScanned = new CollectionWithTypeAndAnnotationPredicate( IdentifiableObject.class, Scanned.class );
+
+    public static class StaticReply
+        implements Predicate<Field>
+    {
+        private boolean value = false;
+
+        public StaticReply( boolean value )
+        {
+            this.value = value;
+        }
+
+        @Override
+        public boolean evaluate( Field object )
+        {
+            return value;
+        }
+    }
 
     public static class CollectionPredicate
         implements Predicate<Field>
