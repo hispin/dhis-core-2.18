@@ -169,7 +169,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- DXF2 MetaData import/export -->
 
-  <bean id="org.hisp.dhis.importexport.action.dxf2.MetaDataImportAction" class="org.hisp.dhis.importexport.action.dxf2.MetaDataImportAction" />
-  <bean id="org.hisp.dhis.importexport.action.dxf2.MetaDataExportAction" class="org.hisp.dhis.importexport.action.dxf2.MetaDataExportAction" />
+  <bean id="org.hisp.dhis.importexport.action.dxf2.MetaDataImportFormAction" class="org.hisp.dhis.importexport.action.dxf2.MetaDataImportFormAction" />
+  <bean id="org.hisp.dhis.importexport.action.dxf2.MetaDataExportFormAction" class="org.hisp.dhis.importexport.action.dxf2.MetaDataExportFormAction" />
 
 </beans>

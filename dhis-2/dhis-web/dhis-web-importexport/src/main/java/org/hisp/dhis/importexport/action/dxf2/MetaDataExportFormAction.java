@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class MetaDataExportAction
+public class MetaDataExportFormAction
     implements Action
 {
     // -------------------------------------------------------------------------

@@ -249,14 +249,14 @@
 
     <!-- DXF2 MetaData import/export -->
 
-    <action name="dxf2MetaDataImport" class="org.hisp.dhis.importexport.action.dxf2.MetaDataImportAction">
+    <action name="dxf2MetaDataImport" class="org.hisp.dhis.importexport.action.dxf2.MetaDataImportFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="page">/dhis-web-importexport/dxf2MetaDataImport.vm</param>
       <param name="javascripts" />
     </action>
 
-    <action name="dxf2MetaDataExport" class="org.hisp.dhis.importexport.action.dxf2.MetaDataExportAction">
+    <action name="dxf2MetaDataExport" class="org.hisp.dhis.importexport.action.dxf2.MetaDataExportFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="page">/dhis-web-importexport/dxf2MetaDataExport.vm</param>
