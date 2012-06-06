@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
@@ -74,18 +75,14 @@ public class GetInventoryTypeAttributeListAction extends ActionPagingSupport<Inv
             
             inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryTypeAttributeService.getInventoryTypeAttributesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ));
         }
-        /*
+        
         else if ( id != null )
         {
             InventoryType inventoryType = inventoryTypeService.getInventoryType( id );
             
             inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
-            
-            this.paging = createPaging( inventoryTypeAttributes.size() );
-            
-            inventoryTypeAttributes = getBlockElement( inventoryTypeAttributes, paging.getStartPos(), paging.getPageSize() );
         }
-        */
+       
         else
         {
             this.paging = createPaging( inventoryTypeAttributeService.getInventoryTypeAttributeCount() );
