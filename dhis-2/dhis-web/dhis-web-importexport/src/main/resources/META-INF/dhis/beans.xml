@@ -166,4 +166,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.importexport.action.integration.AddRouteAction" class="org.hisp.dhis.importexport.action.integration.AddRouteAction">
     <property name="builtinCamelContext" ref="camel-builtin"/>    
   </bean>
+
+  <!-- DXF2 MetaData import/export -->
+
+  <bean id="org.hisp.dhis.importexport.action.dxf2.MetaDataImportAction" class="org.hisp.dhis.importexport.action.dxf2.MetaDataImportAction">
+
+  </bean>
+
+  <bean id="org.hisp.dhis.importexport.action.dxf2.MetaDataExportAction" class="org.hisp.dhis.importexport.action.dxf2.MetaDataExportAction">
+
+  </bean>
+
 </beans>

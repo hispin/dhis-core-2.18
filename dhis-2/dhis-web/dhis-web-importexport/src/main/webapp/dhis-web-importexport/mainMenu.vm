@@ -29,3 +29,9 @@
   <li><a href="displayRoutes.action">$i18n.getString( "integration_configuration" )&nbsp;</a></li>
 </ul>
 
+<h2>$i18n.getString( "dxf2" )&nbsp;</h2>
+
+<ul>
+    <li><a href="dxf2MetaDataExport.action">$i18n.getString( "dxf2_metadata_export" )&nbsp;</a></li>
+    <li><a href="dxf2MetaDataImport.action">$i18n.getString( "dxf2_metadata_import" )&nbsp;</a></li>
+</ul>

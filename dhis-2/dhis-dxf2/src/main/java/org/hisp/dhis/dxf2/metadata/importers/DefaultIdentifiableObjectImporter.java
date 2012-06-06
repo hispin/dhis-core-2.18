@@ -580,21 +580,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return true;
     }
 
-    private ImportConflict reportLookupConflict( IdentifiableObject object )
-    {
-        return new ImportConflict( ImportUtils.getDisplayName( object ), "Object does not exist." );
-    }
-
-    private ImportConflict reportMoreThanOneConflict( IdentifiableObject object )
-    {
-        return new ImportConflict( ImportUtils.getDisplayName( object ), "More than one object matches identifiers." );
-    }
-
-    private ImportConflict reportConflict( IdentifiableObject object )
-    {
-        return new ImportConflict( ImportUtils.getDisplayName( object ), "Object already exists." );
-    }
-
     private IdentifiableObject findObjectByReference( IdentifiableObject identifiableObject )
     {
         if ( identifiableObject == null )
@@ -716,6 +701,21 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 ReflectionUtils.invokeSetterMethod( field.getName(), object, objects );
             }
         }
+    }
+
+    private ImportConflict reportLookupConflict( IdentifiableObject object )
+    {
+        return new ImportConflict( ImportUtils.getDisplayName( object ), "Object does not exist." );
+    }
+
+    private ImportConflict reportMoreThanOneConflict( IdentifiableObject object )
+    {
+        return new ImportConflict( ImportUtils.getDisplayName( object ), "More than one object matches identifiers." );
+    }
+
+    private ImportConflict reportConflict( IdentifiableObject object )
+    {
+        return new ImportConflict( ImportUtils.getDisplayName( object ), "Object already exists." );
     }
 
     private void reportReferenceError( Object object, Object idObject )
