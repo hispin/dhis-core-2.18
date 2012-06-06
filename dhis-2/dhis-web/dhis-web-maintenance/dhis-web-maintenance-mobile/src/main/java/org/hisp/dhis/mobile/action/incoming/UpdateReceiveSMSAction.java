@@ -1,7 +1,7 @@
-package org.hisp.dhis.sms.incoming;
+package org.hisp.dhis.mobile.action.incoming;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,34 +27,63 @@ package org.hisp.dhis.sms.incoming;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.sms.incoming.IncomingSms;
+import org.hisp.dhis.sms.incoming.IncomingSmsService;
 
-/** 
- * Store for incoming SMS messages.
- */
-public interface IncomingSmsStore
+import com.opensymphony.xwork2.Action;
+
+/**
+* @author Nguyen Kim Lai
+* @version $Id$
+*/
+
+public class UpdateReceiveSMSAction
+    implements Action
 {
-    static final String ID = IncomingSmsStore.class.getName();
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private IncomingSmsService incomingSmsService;
+
+    public void setIncomingSmsService( IncomingSmsService incomingSmsService )
+    {
+        this.incomingSmsService = incomingSmsService;
+    }
     
-    int save( IncomingSms incomingSms );
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
     
-    void update ( IncomingSms incomingSms );
-
-    IncomingSms get( int id );
-
-    Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status );
-
-    Collection<IncomingSms> getSmsByOriginator( String originator );
-
-    long getSmsCount();
-
-    Collection<IncomingSms> getAllSmses();
+    private String text;
     
-    void delete( IncomingSms incomingSms);
+    public void setText( String text )
+    {
+        this.text = text;
+    }
 
-//    public Collection<IncomingSms> getSms( String originator, Date startDate, Date endDate);
-//    
-//    public Collection<IncomingSms> getSmsByDate( Date startDate, Date endDate );
-//
+    @Override
+    public String execute()
+        throws Exception
+    {
+        System.out.println("welcome to update sMS function!!!!");
+        System.out.println("id: " + id);
+        System.out.println("text: " + text);
+        
+        IncomingSms incomingSms = incomingSmsService.findBy( id );
+        
+        incomingSms.setText( text );
+        
+        incomingSmsService.update( incomingSms );
+        
+        return SUCCESS;
+    }
 
 }

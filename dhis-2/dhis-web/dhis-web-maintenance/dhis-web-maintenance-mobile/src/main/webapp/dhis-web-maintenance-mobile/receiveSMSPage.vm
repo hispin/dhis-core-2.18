@@ -63,8 +63,7 @@
 						} else {
 							showMessage( json.message );
 						}
-					}
-				);	
+					});	
 			}
 		}
 		else
@@ -94,9 +93,9 @@
 					if ( json.response == "success") {
 						showSuccessMessage( "Import Successfully!" );
 					} else {
-						showErrorMessage( "eggor!" );
+						showErrorMessage( "error!" );
 					}
-				})
+				});
 		}
 		else
 		{
@@ -107,12 +106,44 @@
 	{
 		removeItem( key, name, i18n_confirm_delete, "deleteReceiveSMS.action" );
 	};
+	
+	function makeVisible( idInput, idText )
+	{
+		if ( document.getElementById( idInput ).type == 'hidden')
+		{
+			document.getElementById( idInput ).type = 'text';
+			
+			jQuery( '#' + idInput).focus();
+			tmpStr = jQuery( '#' + idInput).val();
+			jQuery( '#' + idInput).val('');
+			jQuery( '#' + idInput).val(tmpStr);
+			
+			document.getElementById( idText ).style.display = 'none';
+		}
+		else
+		{		
+			document.getElementById( idInput ).type = 'hidden';
+			document.getElementById( idText ).style.display = 'block';
+			
+			jQuery.get( 'updateReceiveSMS.action', {id: idInput, text: getFieldValue( ''+idInput )},
+				function ( json )
+				{
+					if ( json.response == "success" ) {
+						//jQuery( 'label[id=' + idText + '] > a' ).html( getFieldValue( idInput ) );
+						jQuery( 'a[id=' + idText + ']' ).html( getFieldValue( idInput ) );
+						showSuccessMessage( "$i18n.getString( 'update_success' )" );
+					} else {
+						showErrorMessage( "error!" );
+					}
+				}
+			);
+		}
+	};
 
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_sms" ) , "'")';
 </script>
 
 <h3>$i18n.getString( "show_receive_sms_form" )</h3>
-
 <form id="receiveSmsPage" name="receiveSmsPage" action="showReceivingPage.action" method="post" >
 	<br/>
 	<table id="detailsSmsList" class="listTable" style="width:800px">
@@ -128,11 +159,14 @@
 			<th style="text-align:center">$i18n.getString( "delete" )</th>
 			<th style="text-align:center"><a href="#" onclick="checkAll()" title="$i18n.getString( 'check_all' )"><img src="../images/check.png"/></a></th>
 		</thead>
+		
 		#foreach( $incomingSms in $listIncomingSms )
 		<tr id="tr${incomingSms.id}">
 			<td style="text-align:center">$velocityCount</td>
-			<td>$incomingSms.getText()</td>
-			<td>$incomingSms.getOriginator()</td>
+			<td>
+				<a id="$velocityCount" style="display: block" href="#" onclick="makeVisible( $incomingSms.id, $velocityCount )">$incomingSms.text</a>
+				<input type="hidden" id="$incomingSms.id" value="$incomingSms.text" onblur="makeVisible( $incomingSms.id, $velocityCount )"/></td>
+			<td>$incomingSms.originator</td>
 			<td>update</td>
 			<td style="text-align:center"><a href="javascript:removeSingleItem( '$incomingSms.id', '$incomingSms.getText()' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></td>
 			<td style="text-align:center"><input type="checkbox" name="mycheck" value="$incomingSms.id"/></td>			
