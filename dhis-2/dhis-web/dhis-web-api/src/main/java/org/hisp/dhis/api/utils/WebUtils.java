@@ -44,6 +44,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static org.hisp.dhis.system.util.PredicateUtils.alwaysTrue;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -55,7 +57,7 @@ public class WebUtils
     public static void generateLinks( WebMetaData metaData )
     {
         Class<?> baseType = null;
-        List<Field> fields = ReflectionUtils.getAllFields( metaData.getClass() );
+        Collection<Field> fields = ReflectionUtils.collectFields( metaData.getClass(), alwaysTrue );
 
         for ( Field field : fields )
         {
@@ -110,26 +112,32 @@ public class WebUtils
     {
         identifiableObject.setLink( getPathWithUid( identifiableObject ) );
 
-        List<Field> fields = ReflectionUtils.getAllFields( identifiableObject.getClass() );
+        Collection<Field> fields = ReflectionUtils.collectFields( identifiableObject.getClass(), alwaysTrue );
 
         for ( Field field : fields )
         {
             if ( IdentifiableObject.class.isAssignableFrom( field.getType() ) )
             {
-                IdentifiableObject object = ReflectionUtils.getFieldObject( field, identifiableObject );
+                Object object = ReflectionUtils.getFieldObject( field, identifiableObject );
 
                 if ( object != null )
                 {
-                    object.setLink( getPathWithUid( object ) );
+                    IdentifiableObject idObject = (IdentifiableObject) object;
+                    idObject.setLink( getPathWithUid( idObject ) );
                 }
             }
             else if ( ReflectionUtils.isCollection( field.getName(), identifiableObject, IdentifiableObject.class ) )
             {
-                Collection<IdentifiableObject> objects = (Collection<IdentifiableObject>) ReflectionUtils.getFieldObject( field, identifiableObject );
+                Object collection = ReflectionUtils.getFieldObject( field, identifiableObject );
 
-                for ( IdentifiableObject object : objects )
+                if ( collection != null )
                 {
-                    object.setLink( getPathWithUid( object ) );
+                    Collection<IdentifiableObject> objects = (Collection<IdentifiableObject>) collection;
+
+                    for ( IdentifiableObject object : objects )
+                    {
+                        object.setLink( getPathWithUid( object ) );
+                    }
                 }
             }
         }
