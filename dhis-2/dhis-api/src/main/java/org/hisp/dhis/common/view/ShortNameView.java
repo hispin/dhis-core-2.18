@@ -30,6 +30,6 @@ package org.hisp.dhis.common.view;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class IdentifiableObjectView
+public class ShortNameView extends BasicView
 {
 }

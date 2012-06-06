@@ -32,9 +32,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.Validate;
+import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.common.view.IdentifiableObjectView;
 
 import java.util.Collection;
 import java.util.Date;
@@ -121,9 +121,6 @@ public class BaseIdentifiableObject
     // Setters and getters
     // -------------------------------------------------------------------------
 
-    @JsonProperty( value = "internalId" )
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
-    @JacksonXmlProperty( isAttribute = true )
     public int getId()
     {
         return id;
@@ -147,7 +144,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JsonView( {DetailedView.class, BasicView.class, ExportView.class} )
     @JacksonXmlProperty( isAttribute = true )
     public String getCode()
     {
@@ -160,7 +157,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JsonView( {DetailedView.class, BasicView.class, ExportView.class} )
     @JacksonXmlProperty( isAttribute = true )
     public String getName()
     {
@@ -173,7 +170,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JsonView( {DetailedView.class, BasicView.class, ExportView.class} )
     @JacksonXmlProperty( isAttribute = true )
     public Date getLastUpdated()
     {

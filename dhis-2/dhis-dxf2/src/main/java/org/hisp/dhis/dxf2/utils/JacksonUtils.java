@@ -34,9 +34,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
+import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.common.view.IdentifiableObjectView;
+import org.hisp.dhis.common.view.ShortNameView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,8 +77,9 @@ public class JacksonUtils
         xmlMapper.configure( ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true );
 
         // register view classes
-        viewClasses.put( "default", IdentifiableObjectView.class );
-        viewClasses.put( "basic", IdentifiableObjectView.class );
+        viewClasses.put( "default", BasicView.class );
+        viewClasses.put( "basic", BasicView.class );
+        viewClasses.put( "shortName", ShortNameView.class );
         viewClasses.put( "detailed", DetailedView.class );
         viewClasses.put( "export", ExportView.class );
     }
