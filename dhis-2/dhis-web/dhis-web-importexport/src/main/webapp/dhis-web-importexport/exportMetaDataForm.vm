@@ -16,7 +16,7 @@
   	</colgroup>
 
 	<!-- Elements -->
-	
+
 	<tr>
 		<th colspan="2">$i18n.getString( "elements" )</th>
 	</tr>

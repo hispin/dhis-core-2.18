@@ -84,61 +84,63 @@ public class MetaDataController
         return "export";
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.GET, produces = { "application/xml", "text/*" } )
+    @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".zip", MetaDataController.RESOURCE_PATH + ".xml.zip" }, method = RequestMethod.GET, produces = { "application/xml", "text/*" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedXML( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
         MetaData metaData = exportService.getMetaData( options );
 
-        contextUtils.configureResponse( response, CONTENT_TYPE_ZIP, CacheStrategy.NO_CACHE, "export.xml.zip", true );
+        contextUtils.configureResponse( response, CONTENT_TYPE_ZIP, CacheStrategy.NO_CACHE, "metaData.xml.zip", true );
         response.addHeader( HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
 
         ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
-        zip.putNextEntry( new ZipEntry( "export.xml" ) );
+        zip.putNextEntry( new ZipEntry( "metaData.xml" ) );
 
         JacksonUtils.toXmlWithView( zip, metaData, ExportView.class );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.GET, produces = "application/json" )
+    @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".zip", MetaDataController.RESOURCE_PATH + ".json.zip" }, method = RequestMethod.GET, produces = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedJSON( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
         MetaData metaData = exportService.getMetaData( options );
 
-        contextUtils.configureResponse( response, CONTENT_TYPE_ZIP, CacheStrategy.NO_CACHE, "export.json.zip", true );
+        contextUtils.configureResponse( response, CONTENT_TYPE_ZIP, CacheStrategy.NO_CACHE, "metaData.json.zip", true );
         response.addHeader( HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
 
         ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
-        zip.putNextEntry( new ZipEntry( "export.json" ) );
+        zip.putNextEntry( new ZipEntry( "metaData.json" ) );
 
         JacksonUtils.toJsonWithView( zip, metaData, ExportView.class );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.GET, produces = { "application/xml", " text/*" } )
+    @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".gz", MetaDataController.RESOURCE_PATH + ".xml.gz" }, method = RequestMethod.GET, produces = { "application/xml", " text/*" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportGZippedXML( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
         MetaData metaData = exportService.getMetaData( options );
 
-        response.setContentType( CONTENT_TYPE_GZIP );
-        GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
+        contextUtils.configureResponse( response, CONTENT_TYPE_GZIP, CacheStrategy.NO_CACHE, "metaData.xml.gz", true );
+        response.addHeader( HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
 
+        GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
         JacksonUtils.toXmlWithView( gzip, metaData, ExportView.class );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.GET, produces = { "application/json" } )
+    @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".gz", MetaDataController.RESOURCE_PATH + ".json.gz"} , method = RequestMethod.GET, produces = { "application/json" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportGZippedJSON( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
     {
         WebOptions options = new WebOptions( parameters );
         MetaData metaData = exportService.getMetaData( options );
 
-        response.setContentType( CONTENT_TYPE_GZIP );
-        GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
+        contextUtils.configureResponse( response, CONTENT_TYPE_GZIP, CacheStrategy.NO_CACHE, "metaData.json.gz", true );
+        response.addHeader( HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
 
+        GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
         JacksonUtils.toJsonWithView( gzip, metaData, ExportView.class );
     }
 
@@ -170,7 +172,7 @@ public class MetaDataController
         JacksonUtils.toJson( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".zip", MetaDataController.RESOURCE_PATH + ".xml.zip" }, method = RequestMethod.POST, consumes = { "application/xml", "text/*" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
@@ -185,7 +187,7 @@ public class MetaDataController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".zip", MetaDataController.RESOURCE_PATH + ".json.zip" }, method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importZippedJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
@@ -201,7 +203,7 @@ public class MetaDataController
     }
 
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".gz", MetaDataController.RESOURCE_PATH + ".xml.gz" }, method = RequestMethod.POST, consumes = { "application/xml", "text/*" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importGZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
@@ -215,7 +217,7 @@ public class MetaDataController
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
-    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.POST, consumes = "application/json" )
+    @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".gz", MetaDataController.RESOURCE_PATH + ".json.gz"}, method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importGZippedJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {

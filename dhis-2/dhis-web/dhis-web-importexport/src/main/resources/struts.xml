@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC
-"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-"http://struts.apache.org/dtds/struts-2.0.dtd">
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
   <include file="dhis-web-commons.xml" />
@@ -15,32 +15,32 @@
     </action>
 
     <!-- Data value import -->
-	
-	<action name="displayImportDataValueForm" class="org.hisp.dhis.importexport.action.NoAction">		
+
+    <action name="displayImportDataValueForm" class="org.hisp.dhis.importexport.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/importDataValue.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-	  <param name="javascripts">javascript/importDataValue.js</param>
-	</action>
-		
-      <action name="importDataValue" class="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction">
-        <result name="success" type="redirect">displayImportDataValueForm.action?running=true&amp;importFormat=${importFormat}</result>
-        <interceptor-ref name="fileUploadStack" />
-      </action>
+      <param name="javascripts">javascript/importDataValue.js</param>
+    </action>
 
-    <action name="getDataValueImportSummary" class="org.hisp.dhis.importexport.action.GetImportSummaryAction">			
+    <action name="importDataValue" class="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction">
+      <result name="success" type="redirect">displayImportDataValueForm.action?running=true&amp;importFormat=${importFormat}</result>
+      <interceptor-ref name="fileUploadStack" />
+    </action>
+
+    <action name="getDataValueImportSummary" class="org.hisp.dhis.importexport.action.GetImportSummaryAction">
       <result name="success" type="velocity">/dhis-web-importexport/importSummary.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <!-- Data value export -->
-		
+
     <action name="displayDataValueExportForm" class="org.hisp.dhis.importexport.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/exportDataValueForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/export.js</param>
-    </action>	
+    </action>
 
     <action name="exportDataValue" class="org.hisp.dhis.importexport.action.datavalue.ExportDataValueAction">
       <result name="success" type="outputStreamResult" />
@@ -59,7 +59,7 @@
       <param name="page">/dhis-web-importexport/externalExportMenu.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
     </action>
-	
+
     <!-- Import -->
 
     <action name="setImportFormat" class="org.hisp.dhis.importexport.action.imp.SetImportTypeAction">
@@ -94,7 +94,7 @@
       <param name="page">/dhis-web-importexport/importAnalysisForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
     </action>
-	
+
     <!-- Object Ajax -->
 
     <action name="discardObjectAjax" class="org.hisp.dhis.importexport.action.object.DiscardObjectAction">
@@ -108,7 +108,7 @@
       <result name="error" type="velocity-xml">/dhis-web-importexport/responseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-		
+
     <!-- Preview -->
 
     <action name="displayPreviewForm" class="org.hisp.dhis.importexport.action.imp.GetPreviewOptionsAction">
@@ -153,7 +153,7 @@
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/import.js</param>
     </action>
-	
+
     <!-- Export -->
 
     <action name="displayMetaDataExportForm" class="org.hisp.dhis.importexport.action.NoAction">
@@ -163,7 +163,8 @@
       <param name="javascripts">javascript/export.js</param>
     </action>
 
-    <action name="displayDetailedMetaDataExportForm" class="org.hisp.dhis.importexport.action.exp.GetDetailedExportOptionsAction">
+    <action name="displayDetailedMetaDataExportForm"
+        class="org.hisp.dhis.importexport.action.exp.GetDetailedExportOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/exportDetailedMetaDataForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
@@ -198,7 +199,8 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="validateAggregatedExport" class="org.hisp.dhis.importexport.action.exp.ValidateAggregatedExportAction">
+    <action name="validateAggregatedExport"
+        class="org.hisp.dhis.importexport.action.exp.ValidateAggregatedExportAction">
       <result name="success" type="velocity-xml">/dhis-web-importexport/responseSuccess.vm</result>
       <result name="error" type="velocity-xml">/dhis-web-importexport/responseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
@@ -206,7 +208,8 @@
 
     <!-- Dhis 1.4 Configuration -->
 
-    <action name="displayConfigDhis14Form" class="org.hisp.dhis.importexport.action.dhis14.GetDhis14ConfigurationAction">
+    <action name="displayConfigDhis14Form"
+        class="org.hisp.dhis.importexport.action.dhis14.GetDhis14ConfigurationAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/configDhis14Form.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
@@ -217,7 +220,8 @@
       <result name="success" type="redirect">setImportFormat.action?importFormat=DHIS14FILE</result>
     </action>
 
-    <action name="validateConfigDhis14" class="org.hisp.dhis.importexport.action.dhis14.ValidateDhis14ConfigurationAction">
+    <action name="validateConfigDhis14"
+        class="org.hisp.dhis.importexport.action.dhis14.ValidateDhis14ConfigurationAction">
       <result name="success" type="velocity-xml">/dhis-web-importexport/responseSuccess.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-importexport/responseInput.vm</result>
     </action>
@@ -240,6 +244,22 @@
       <result name="success" type="redirect">displayRoutes.action</result>
       <result name="error" type="redirect">showAddRouteForm.action</result>
       <interceptor-ref name="fileUploadStack" />
+      <param name="javascripts" />
+    </action>
+
+    <!-- DXF2 MetaData import/export -->
+
+    <action name="dxf2MetaDataImport" class="org.hisp.dhis.importexport.action.dxf2.MetaDataImportAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="page">/dhis-web-importexport/dxf2MetaDataImport.vm</param>
+      <param name="javascripts" />
+    </action>
+
+    <action name="dxf2MetaDataExport" class="org.hisp.dhis.importexport.action.dxf2.MetaDataExportAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="page">/dhis-web-importexport/dxf2MetaDataExport.vm</param>
       <param name="javascripts" />
     </action>
 
