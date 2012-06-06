@@ -265,18 +265,18 @@ public class DefaultPatientService
 
         if ( orgUnitId != 0 )
         {
+            Set<Patient> toRemoveList = new HashSet<Patient>();
             for ( Patient patient : patientByName )
             {
                 if ( patient.getOrganisationUnit().getId() != orgUnitId )
                 {
-                    patientByName.remove( patient );
+                    toRemoveList.add( patient );
                 }
             }
+            patientByName.removeAll( toRemoveList );
         }
-        else
-        {
-            patients.addAll( patientByName );
-        }
+
+        patients.addAll( patientByName );
 
         return patients;
     }
