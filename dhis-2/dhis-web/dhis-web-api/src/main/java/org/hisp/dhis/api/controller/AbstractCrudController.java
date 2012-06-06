@@ -35,6 +35,7 @@ import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -108,12 +109,14 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, consumes = { "application/xml", "text/xml" } )
+    @PreAuthorize( "hasRole('ALL')" )
     public void postXmlObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @PreAuthorize( "hasRole('ALL')" )
     public void postJsonObject( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -125,6 +128,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = { "application/xml", "text/xml" } )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL')" )
     public void putXmlObject( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
@@ -132,6 +136,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL')" )
     public void putJsonObject( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
@@ -143,6 +148,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL')" )
     public void deleteObject( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
