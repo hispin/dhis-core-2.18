@@ -1243,7 +1243,7 @@ Ext.onReady( function() {
 							var compare = '=';
 							if( filter.data.comparison == 'lt')
 								compare = '<' ;
-							else ( filter.data.comparison == 'gt' )
+							else if( filter.data.comparison == 'gt' )
 								compare = '>' ;
 								
 							var value = compare + "'"+ filter.data.value + "'";
