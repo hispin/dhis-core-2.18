@@ -80,7 +80,6 @@ public class JacksonUtils
         jsonMapper.getJsonFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
         xmlMapper.configure( ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true );
 
-
         // register view classes
         viewClasses.put( "default", BasicView.class );
         viewClasses.put( "basic", BasicView.class );
