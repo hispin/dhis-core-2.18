@@ -35,8 +35,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.common.view.DetailedView;
-import org.hisp.dhis.common.view.IdentifiableObjectView;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.report.Report;
@@ -166,7 +166,7 @@ public class DashboardContent
     // -------------------------------------------------------------------------
 
     @JsonProperty( value = "internalId" )
-    @JsonView( {IdentifiableObjectView.class} )
+    @JsonView( {BasicView.class} )
     @JacksonXmlProperty( isAttribute = true )
     public int getId()
     {
