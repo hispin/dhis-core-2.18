@@ -14,7 +14,7 @@ public class EquipmentInstance implements Serializable
     
     private OrganisationUnit organisationUnit;
     
-    private boolean working = true;
+    private boolean working = false;
     
     private Set<EquipmentStatus> equipmentStatusUpdates;
     

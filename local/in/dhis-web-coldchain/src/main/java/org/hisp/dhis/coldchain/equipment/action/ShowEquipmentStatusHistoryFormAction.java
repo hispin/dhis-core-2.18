@@ -53,7 +53,7 @@ public class ShowEquipmentStatusHistoryFormAction implements Action
     // -------------------------------------------------------------------------
     public String execute() throws Exception
     {
-        System.out.println("inside ShowEquipmentStatusHistoryFormAction ");
+        //System.out.println("inside ShowEquipmentStatusHistoryFormAction ");
         EquipmentInstance equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceId );
         
         equipmentStatusHistory = new ArrayList<EquipmentStatus>( equipmentStatusService.getEquipmentStatusHistory( equipmentInstance ) );

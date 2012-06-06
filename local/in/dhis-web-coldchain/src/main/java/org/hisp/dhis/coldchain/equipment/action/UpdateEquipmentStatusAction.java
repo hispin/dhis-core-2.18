@@ -45,6 +45,17 @@ public class UpdateEquipmentStatusAction implements Action
     {
         EquipmentInstance equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceId );
         
+        if( status.equalsIgnoreCase( "WORKING" ))
+        {
+            equipmentInstance.setWorking( true );
+            equipmentInstanceService.updateEquipmentInstance( equipmentInstance );
+        }
+        else
+        {
+            equipmentInstance.setWorking( false );
+            equipmentInstanceService.updateEquipmentInstance( equipmentInstance );
+        }
+        
         String storedBy = currentUserService.getCurrentUsername();
         
         EquipmentStatus equipmentStatus = new EquipmentStatus();
@@ -57,6 +68,7 @@ public class UpdateEquipmentStatusAction implements Action
         equipmentStatus.setStoredBy( storedBy );
         
         equipmentStatusService.addEquipmentStatus( equipmentStatus );
+        
         
         return SUCCESS;
     }
