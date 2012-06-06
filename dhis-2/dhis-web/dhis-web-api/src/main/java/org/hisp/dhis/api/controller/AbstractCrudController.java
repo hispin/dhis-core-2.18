@@ -166,7 +166,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
         if ( lastUpdated != null )
         {
-            entityList = new ArrayList<T>( manager.getByLastUpdated( getEntityClass(), lastUpdated ) );
+            entityList = new ArrayList<T>( manager.getByLastUpdatedSorted( getEntityClass(), lastUpdated ) );
         }
         else if ( options.hasPaging() )
         {
@@ -179,7 +179,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
         else
         {
-            entityList = new ArrayList<T>( manager.getAll( getEntityClass() ) );
+            entityList = new ArrayList<T>( manager.getAllSorted( getEntityClass() ) );
         }
 
         return entityList;

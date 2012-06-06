@@ -96,6 +96,13 @@ public interface GenericStore<T>
     Collection<T> getAll();
 
     /**
+     * Retrieves a Collection of all objects (sorted on name).
+     *
+     * @return a Collection of all objects.
+     */
+    Collection<T> getAllSorted();
+
+    /**
      * Removes the given object instance.
      * 
      * @param object the object instance to delete.

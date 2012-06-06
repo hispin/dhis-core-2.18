@@ -270,6 +270,13 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    @SuppressWarnings( "unchecked" )
+    public final Collection<T> getAllSorted()
+    {
+        return getCriteria().addOrder( Order.asc( "name" ) ).list();
+    }
+
+    @Override
     public final void delete( T object )
     {
         sessionFactory.getCurrentSession().delete( object );
@@ -353,7 +360,14 @@ public class HibernateGenericStore<T>
     {
         return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).list();
     }
-    
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<T> getByLastUpdatedSorted( Date lastUpdated )
+    {
+        return getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).addOrder( Order.asc( "name" ) ).list();
+    }
+
     @Override
     public long getCountByLastUpdated( Date lastUpdated )
     {

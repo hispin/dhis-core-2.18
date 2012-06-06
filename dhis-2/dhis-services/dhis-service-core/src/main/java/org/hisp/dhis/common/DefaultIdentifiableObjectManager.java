@@ -203,6 +203,22 @@ public class DefaultIdentifiableObjectManager
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Collection<T> getAllSorted( Class<T> clazz )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getAllSorted)." );
+
+            return new ArrayList<T>();
+        }
+
+        return (Collection<T>) store.getAllSorted();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getBetween( Class<T> clazz, int first, int max )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
@@ -225,7 +241,7 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getBetween)." );
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getBetweenByName)." );
 
             return new ArrayList<T>();
         }
@@ -241,12 +257,28 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getBetween)." );
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getByLastUpdated)." );
 
             return new ArrayList<T>();
         }
 
         return (Collection<T>) store.getByLastUpdated( lastUpdated );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Collection<T> getByLastUpdatedSorted( Class<T> clazz, Date lastUpdated )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getByLastUpdatedSorted)." );
+
+            return new ArrayList<T>();
+        }
+
+        return (Collection<T>) store.getByLastUpdatedSorted( lastUpdated );
     }
 
     @Override
