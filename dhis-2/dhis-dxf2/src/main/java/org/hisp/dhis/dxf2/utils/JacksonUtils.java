@@ -58,14 +58,14 @@ public class JacksonUtils
 
     private static Map<String, Class<?>> viewClasses = new HashMap<String, Class<?>>();
 
-    public static DateFormat DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
-
     static
     {
         ObjectMapper[] objectMappers = new ObjectMapper[] { jsonMapper, xmlMapper };
+        DateFormat format = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
 
         for ( ObjectMapper objectMapper : objectMappers )
         {
+            objectMapper.setDateFormat( format );
             objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
             objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
             objectMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
@@ -75,7 +75,6 @@ public class JacksonUtils
             objectMapper.disable( MapperFeature.AUTO_DETECT_GETTERS );
             objectMapper.disable( MapperFeature.AUTO_DETECT_SETTERS );
             objectMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
-            objectMapper.setDateFormat( DATE_FORMAT );
         }
 
         jsonMapper.getJsonFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
