@@ -320,19 +320,19 @@ public class HibernateProgramStageInstanceStore
         
         for ( Integer key : identifierKeys.keySet() )
         {
-            sql += operator + "identifier_" + key + identifierKeys.get( key ) + ",";
+            sql += operator + "identifier_" + key + identifierKeys.get( key ) + " ";
             operator = "and ";
         }
         
         for ( Integer key : attributeKeys.keySet() )
         {
-            sql += operator + "attribute_" + key + attributeKeys.get( key ) + ",";
+            sql += operator + "attribute_" + key + attributeKeys.get( key ) + " ";
             operator = "and ";
         }
         
         for ( Integer key : dataElementKeys.keySet() )
         {
-            sql += operator + "element_" + key + dataElementKeys.get( key ) + ",";
+            sql += operator + "element_" + key + dataElementKeys.get( key ) + " ";
             operator = "and ";
         }
 
