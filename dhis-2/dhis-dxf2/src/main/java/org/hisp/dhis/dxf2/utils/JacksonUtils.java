@@ -58,6 +58,8 @@ public class JacksonUtils
 
     private static Map<String, Class<?>> viewClasses = new HashMap<String, Class<?>>();
 
+    public static DateFormat DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
+
     static
     {
         ObjectMapper[] objectMappers = new ObjectMapper[] { jsonMapper, xmlMapper };
@@ -73,9 +75,7 @@ public class JacksonUtils
             objectMapper.disable( MapperFeature.AUTO_DETECT_GETTERS );
             objectMapper.disable( MapperFeature.AUTO_DETECT_SETTERS );
             objectMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
-
-            DateFormat format = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
-            objectMapper.setDateFormat( format );
+            objectMapper.setDateFormat( DATE_FORMAT );
         }
 
         jsonMapper.getJsonFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
