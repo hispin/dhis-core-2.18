@@ -1549,10 +1549,10 @@ function pagingList( currentPage, pageSize )
 			setFieldValue( 'key', keyParam.split( '=' )[1] )
 		}
 		
-		url = link + "?currentPage=" + currentPage + "&pageSize=" + pageSize;
-		
 		if ( $( '#filterKeyForm' ).length )
 		{
+			url = link + "?currentPage=" + currentPage + "&pageSize=" + pageSize;
+		
 			$( '#filterKeyForm' ).attr( 'action', url );
 			$( '#filterKeyForm' ).submit();
 		}
