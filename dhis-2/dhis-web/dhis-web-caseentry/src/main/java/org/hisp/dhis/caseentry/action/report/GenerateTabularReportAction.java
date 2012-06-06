@@ -347,6 +347,8 @@ public class GenerateTabularReportAction
                 searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc,
                 null, null );
         }
+System.out.println();
+System.out.println(grid);
 
         return type == null ? SUCCESS : type;
     }
