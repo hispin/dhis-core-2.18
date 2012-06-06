@@ -28,16 +28,9 @@ package org.hisp.dhis.api.controller.organisationunit;
  */
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -48,21 +41,4 @@ public class OrganisationUnitController
     extends AbstractCrudController<OrganisationUnit>
 {
     public static final String RESOURCE_PATH = "/organisationUnits";
-
-    @RequestMapping( value = "/search/{query}", method = RequestMethod.GET )
-    public String searchOrganisationUnit( @PathVariable String query, IdentifiableObjectParams params, Model model,
-        HttpServletRequest request )
-    {
-        OrganisationUnit organisationUnit = manager.search( OrganisationUnit.class, query );
-
-        if ( params.hasLinks() )
-        {
-            new WebLinkPopulator( request ).addLinks( organisationUnit );
-        }
-
-        model.addAttribute( "model", organisationUnit );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "organisationUnit";
-    }
 }
