@@ -2024,9 +2024,9 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'image',
-																src: 'images/grid-split.gif',
-																width: 3,
-																height: 10
+																src: 'images/grid-split.png',
+																width: 1,
+																height: 14
 															},
 															{
 																xtype: 'button',
@@ -2088,9 +2088,9 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'image',
-																src: 'images/grid-split.gif',
-																width: 3,
-																height: 10
+																src: 'images/grid-split.png',
+																width: 1,
+																height: 14
 															},
 															{
 																xtype: 'button',
