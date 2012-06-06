@@ -184,7 +184,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td style="height: 45px">
+				<td>
 					<button type="button" id="dataElementsButton">$i18n.getString( "data_elements" )</button>
 					<button type="button" id="totalsButton">$i18n.getString( "totals" )</button>
 					<button type="button" id="indicatorsButton">$i18n.getString( "indicators" )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
