@@ -84,6 +84,30 @@ public class MetaDataController
         return "export";
     }
 
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".xml", method = RequestMethod.GET, produces = { "application/xml", "text/*" } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
+    public void exportXml( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
+    {
+        WebOptions options = new WebOptions( parameters );
+        MetaData metaData = exportService.getMetaData( options );
+
+        contextUtils.configureResponse( response, CONTENT_TYPE_XML, CacheStrategy.NO_CACHE, "metaData.xml", true );
+
+        JacksonUtils.toXmlWithView( response.getOutputStream(), metaData, ExportView.class );
+    }
+
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".json", method = RequestMethod.GET, produces = { "application/json" } )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
+    public void exportJson( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
+    {
+        WebOptions options = new WebOptions( parameters );
+        MetaData metaData = exportService.getMetaData( options );
+
+        contextUtils.configureResponse( response, CONTENT_TYPE_JSON, CacheStrategy.NO_CACHE, "metaData.json", true );
+
+        JacksonUtils.toXmlWithView( response.getOutputStream(), metaData, ExportView.class );
+    }
+
     @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".zip", MetaDataController.RESOURCE_PATH + ".xml.zip" }, method = RequestMethod.GET, produces = { "application/xml", "text/*" } )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedXML( @RequestParam Map<String, String> parameters, HttpServletResponse response ) throws IOException
