@@ -27,7 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.datadictionary.DataDictionary;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -35,9 +35,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = DataSetController.RESOURCE_PATH )
-public class DataSetController
-    extends AbstractCrudController<DataSet>
+@RequestMapping( value = DataDictionaryController.RESOURCE_PATH )
+public class DataDictionaryController
+    extends AbstractCrudController<DataDictionary>
 {
-    public static final String RESOURCE_PATH = "/dataSets";
+    public static final String RESOURCE_PATH = "/dataDictionaries";
 }
