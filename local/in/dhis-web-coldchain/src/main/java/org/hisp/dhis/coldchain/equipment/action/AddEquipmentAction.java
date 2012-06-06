@@ -51,6 +51,13 @@ public class AddEquipmentAction implements Action
     
     private String message;
     
+    private Boolean workingStatus = false;
+    
+    public void setWorkingStatus( Boolean workingStatus )
+    {
+        this.workingStatus = workingStatus;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -70,6 +77,7 @@ public class AddEquipmentAction implements Action
         
         equipmentInstance.setInventoryType( inventoryType );
         equipmentInstance.setOrganisationUnit( orgUnit );
+        equipmentInstance.setWorking( workingStatus );
         
         // -----------------------------------------------------------------------------
         // Preparing Equipment Details

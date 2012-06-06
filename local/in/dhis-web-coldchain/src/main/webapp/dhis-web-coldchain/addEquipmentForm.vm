@@ -45,6 +45,11 @@
 			<td>$i18n.getString( "inventorytype" ) : </th>
 			<td>$inventoryType.name</th>
 		</tr>
+		
+		<tr>
+			<td>$i18n.getString( "working_status" ) : </td>
+			<td><input type="checkbox"  id="workingStatus" name="workingStatus" checked="true" ></th>
+		</tr>	
 
 		<!-- InventoryType Attributes  -->
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
