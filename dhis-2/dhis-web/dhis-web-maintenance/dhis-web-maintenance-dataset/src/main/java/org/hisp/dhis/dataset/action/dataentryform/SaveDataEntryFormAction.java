@@ -104,7 +104,8 @@ public class SaveDataEntryFormAction
         
         DataEntryForm form = dataset.getDataEntryForm();
 
-        if ( ( form != null && form.getStyle() != null && !form.getStyle().equals( style ) ) ||
+        if ( form == null || form.getHtmlCode() == null ||
+            ( form != null && form.getStyle() != null && !form.getStyle().equals( style ) ) ||
             ( form != null && form.getHtmlCode() != null && !form.getHtmlCode().equals( designTextarea ) ) )
         {
             dataset.increaseVersion(); // Check if version must be updated
