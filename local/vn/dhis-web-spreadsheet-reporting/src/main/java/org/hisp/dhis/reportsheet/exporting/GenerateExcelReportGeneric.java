@@ -120,10 +120,10 @@ public class GenerateExcelReportGeneric
     CurrentUserService currentUserService;
 
     @Autowired
-    IndicatorService indicatorService;
+    InitializePOIStylesManager initPOIStylesManager;
 
     @Autowired
-    InitializePOIStylesManager initPOIStylesManager;
+    protected IndicatorService indicatorService;
 
     @Autowired
     protected AggregationService aggregationService;
@@ -452,7 +452,7 @@ public class GenerateExcelReportGeneric
     }
 
     // -------------------------------------------------------------------------
-    // DataElement Value
+    // DataElement Value as Text
     // -------------------------------------------------------------------------
 
     protected String getTextValue( ExportItem exportItem, OrganisationUnit organisationUnit )
@@ -484,12 +484,52 @@ public class GenerateExcelReportGeneric
         for ( Period p : periods )
         {
             result += generateExpression( exportItem, p, organisationUnit, dataElementService, categoryService,
-                dataValueService )
-                + "\n";
+                dataValueService );
+            result += "\n";
         }
 
         return result;
     }
+
+    protected String getTextValue( ExportItem exportItem, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    {
+        String result = "";
+        Collection<Period> periods = new ArrayList<Period>();
+
+        if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.DAILY ) )
+        {
+            periods = periodService.getPeriodsBetweenDates( periodService.getPeriodTypeByName( DailyPeriodType.NAME ),
+                startDate, startDate );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH ) )
+        {
+            periods = periodService.getPeriodsBetweenDates(
+                periodService.getPeriodTypeByName( MonthlyPeriodType.NAME ), startDate, endDate );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.QUARTERLY ) )
+        {
+            periods = periodService.getPeriodsBetweenDates( periodService
+                .getPeriodTypeByName( QuarterlyPeriodType.NAME ), startDate, endDate );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
+        {
+            periods = periodService.getPeriodsBetweenDates( periodService.getPeriodTypeByName( YearlyPeriodType.NAME ),
+                startDate, endDate );
+        }
+
+        for ( Period p : periods )
+        {
+            result += generateExpression( exportItem, p, organisationUnit, dataElementService, categoryService,
+                dataValueService );
+            result += "\n";
+        }
+
+        return result;
+    }
+
+    // -------------------------------------------------------------------------
+    // DataElement Value
+    // -------------------------------------------------------------------------
 
     protected double getDataValue( ExportItem exportItem, OrganisationUnit organisationUnit )
     {
