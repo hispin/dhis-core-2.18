@@ -76,6 +76,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.DebugUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -191,7 +192,7 @@ public class DefaultDataValueSetService
         }
         catch ( RuntimeException ex )
         {
-            log.error( ex );
+            log.error( DebugUtils.getStackTrace( ex ) );
             notifier.notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );
             return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
         }
@@ -206,7 +207,7 @@ public class DefaultDataValueSetService
         }
         catch ( RuntimeException ex )
         {
-            log.error( ex );
+            log.error( DebugUtils.getStackTrace( ex ) );
             notifier.clear( id, DATAVALUE_IMPORT ).notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );
             return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
         }
