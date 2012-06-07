@@ -61,6 +61,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -114,9 +115,10 @@ public class ChartPluginController
         @RequestParam( required = false ) Set<String> dataSetIds,
         @RequestParam Set<String> organisationUnitIds,
         @RequestParam( required = false ) boolean orgUnitIsParent,
-        @RequestParam( required = false ) Integer organisationUnitGroupSetId,
+        @RequestParam( required = false ) String organisationUnitGroupSetId,
         @RequestParam( required = false ) boolean userOrganisationUnit,
         @RequestParam( required = false ) boolean userOrganisationUnitChildren,
+        @RequestParam( required = false ) boolean periodIsFilter,
         RelativePeriods relativePeriods, Model model, HttpServletResponse response ) throws Exception
     {
         ChartPluginValue chartValue = new ChartPluginValue();
@@ -128,6 +130,11 @@ public class ChartPluginController
         // ---------------------------------------------------------------------
 
         List<Period> periods = periodService.reloadPeriods( setNames( relativePeriods.getRelativePeriods(), format ) );
+        
+        if ( periodIsFilter )
+        {
+            periods = Arrays.asList( periods.get( 0 ) );
+        }
 
         if ( periods.isEmpty() )
         {

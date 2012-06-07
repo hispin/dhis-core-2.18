@@ -146,23 +146,23 @@ public class AddOrUpdateChartAction
         this.filter = filter;
     }
 
-    private List<Integer> indicatorIds;
+    private List<String> indicatorIds;
 
-    public void setIndicatorIds( List<Integer> indicatorIds )
+    public void setIndicatorIds( List<String> indicatorIds )
     {
         this.indicatorIds = indicatorIds;
     }
 
-    private List<Integer> dataElementIds;
+    private List<String> dataElementIds;
 
-    public void setDataElementIds( List<Integer> dataElementIds )
+    public void setDataElementIds( List<String> dataElementIds )
     {
         this.dataElementIds = dataElementIds;
     }
 
-    private List<Integer> dataSetIds;
+    private List<String> dataSetIds;
 
-    public void setDataSetIds( List<Integer> dataSetIds )
+    public void setDataSetIds( List<String> dataSetIds )
     {
         this.dataSetIds = dataSetIds;
     }
@@ -230,9 +230,9 @@ public class AddOrUpdateChartAction
         this.last5Years = last5Years;
     }
 
-    private List<Integer> organisationUnitIds;
+    private List<String> organisationUnitIds;
 
-    public void setOrganisationUnitIds( List<Integer> organisationUnitIds )
+    public void setOrganisationUnitIds( List<String> organisationUnitIds )
     {
         this.organisationUnitIds = organisationUnitIds;
     }
@@ -375,7 +375,7 @@ public class AddOrUpdateChartAction
 
         if ( indicatorIds != null )
         {
-            for ( Integer id : indicatorIds )
+            for ( String id : indicatorIds )
             {
                 chart.getIndicators().add( indicatorService.getIndicator( id ) );
             }
@@ -385,7 +385,7 @@ public class AddOrUpdateChartAction
 
         if ( dataElementIds != null )
         {
-            for ( Integer id : dataElementIds )
+            for ( String id : dataElementIds )
             {
                 chart.getDataElements().add( dataElementService.getDataElement( id ) );
             }
@@ -395,7 +395,7 @@ public class AddOrUpdateChartAction
 
         if ( dataSetIds != null )
         {
-            for ( Integer id : dataSetIds )
+            for ( String id : dataSetIds )
             {
                 chart.getDataSets().add( dataSetService.getDataSet( id ) );
             }
@@ -422,7 +422,7 @@ public class AddOrUpdateChartAction
 
         if ( organisationUnitIds != null )
         {
-            for ( Integer id : organisationUnitIds )
+            for ( String id : organisationUnitIds )
             {
                 chart.getOrganisationUnits().add( organisationUnitService.getOrganisationUnit( id ) );
             }
