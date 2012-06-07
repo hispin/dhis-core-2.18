@@ -29,9 +29,9 @@
 					$i18n.getString( "from" )
 				</td>
 				<td>
-					<input type="button" value="<<" onclick="getPreviousPeriodForStart()" id="previousPeriodForStartBtn" disabled />
-					<select id="sDateLB" name="sDateLB" style="width: 23em"></select>
-					<input type="button" value=">>"  onclick="getNextPeriodForStart()" id="nextPeriodForStartBtn" disabled />
+					<input type="button" class='small-button' value="<<" onclick="getPreviousPeriodForStart()" id="previousPeriodForStartBtn" disabled />
+					<select id="sDateLB" name="sDateLB" style='width:295px;'></select>
+					<input type="button" class='small-button'value=">>"  onclick="getNextPeriodForStart()" id="nextPeriodForStartBtn" disabled />
 				</td>
 			</tr>
 			
@@ -40,9 +40,9 @@
 					$i18n.getString( "to" )
 				</td>
 				<td>
-					<input type="button" value="<<" onclick="getPreviousPeriodForEnd()" id="previousPeriodForEndBtn" disabled />
-					<select id="eDateLB" name="eDateLB" style="width: 23em"></select>
-					<input type="button" value=">>"  onclick="getNextPeriodForEnd()" id="nextPeriodForEndBtn" disabled />
+					<input type="button" class='small-button' value="<<" onclick="getPreviousPeriodForEnd()" id="previousPeriodForEndBtn" disabled />
+					<select id="eDateLB" name="eDateLB" style='width:295px;'></select>
+					<input type="button" class='small-button' value=">>"  onclick="getNextPeriodForEnd()" id="nextPeriodForEndBtn" disabled />
 					<i><span id='warningMessage' style="color:red"></span></i>
 				</td>
 			</tr>
