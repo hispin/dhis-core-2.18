@@ -1,4 +1,5 @@
 <script type="text/javascript">
+
 	jQuery(document).ready(function()
 	{
 		currentOrgunitName = "$!organisationUnit.name";
@@ -19,13 +20,13 @@
 <div id="exportReportDiv" class="inputCriteria" style="width:680px;height:350px;">
 <table>	
 	<tr>
-		<td><label class='bold'>$i18n.getString('organisation')<em title="$i18n.getString( 'required' )" class="required">*</em></label>
+		<td><label class='bold'>$i18n.getString( 'organisation' )<em title="$i18n.getString( 'required' )" class="required">*</em></label>
 		<span id="selectedOrganisationUnit"></span>
 		</td>
     </tr>
 	<tr>
-		<td><label class='bold'>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><label class='bold'>$i18n.getString('period_type')</label></td>
+		<td><label class='bold'>$i18n.getString( 'group' )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label class='bold'>$i18n.getString( 'period_type' )</label></td>
 	</tr>
 	<tr>
 		<td>
@@ -46,11 +47,11 @@
 		</td>
     </tr>
 	<tr>
-		<td><label class='bold'>$i18n.getString('export_multi')</label>&nbsp;&nbsp;<input type="checkbox" id="exportTypeCB" onchange="changeExportType( this );"/></td>
+		<td><label class='bold'>$i18n.getString( 'export_multi' )</label>&nbsp;&nbsp;<input type="checkbox" id="exportTypeCB" onchange="changeExportType( this );"/></td>
 	</tr>
 	<tr>
-		<td><label class='bold'>$i18n.getString('export_reports')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><label class='bold'>$i18n.getString('period')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label class='bold'>$i18n.getString( 'export_reports' )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label class='bold'>$i18n.getString( 'period' )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 	</tr>
 	<tr>
 		<td>
@@ -75,7 +76,7 @@
 <hr/>
 
 <p>
-	<input type="button" id="previewButton" value="$i18n.getString( 'preview_report' )" onclick="validatePreviewReport();" style="width:150px"/>
+	<input type="button" id="previewButton" value='$i18n.getString( "preview_report" )' onclick="validatePreviewReport();" style="width:150px"/>
 	<input type="button" id="generateExportReport" value='$i18n.getString( "generate_export_report" )' onclick="validateGenerateReport();" style="width:150px"/>
 	<input type="button" id="printExcelReportButton" value='$i18n.getString("print")' onclick='printExportReport()' style="width:150px"/>
 </p>

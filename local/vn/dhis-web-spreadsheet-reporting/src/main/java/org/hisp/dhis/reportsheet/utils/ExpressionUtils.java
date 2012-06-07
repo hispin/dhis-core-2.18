@@ -234,6 +234,6 @@ public class ExpressionUtils
         // aggregatedDataValueService.getAggregatedValue( dataElement,
         // optionCombo, startDate, endDate, );
 
-        return (aggregatedValue == null) ? 0.0 : aggregatedValue;
+        return (aggregatedValue == null) ? 0 : aggregatedValue;
     }
 }

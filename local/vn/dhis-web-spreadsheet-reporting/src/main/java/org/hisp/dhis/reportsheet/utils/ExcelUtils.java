@@ -370,7 +370,7 @@ public class ExcelUtils
             }
             else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
             {
-                if ( value == null )
+                if ( value == null || Double.valueOf( value ) == 0 )
                 {
                     cellPOI.setCellType( POI_CELLSTYLE_BLANK );
                 }
