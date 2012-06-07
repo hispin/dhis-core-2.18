@@ -55,13 +55,13 @@ function loadEventForm()
 	
 	showLoader();
 	
-	jQuery.getJSON( "loadProgramStages.action",
+	jQuery.getJSON( "loadProgramStageInstances.action",
 		{
 			programId: programId
 		}, 
 		function( json ) 
 		{    
-			setFieldValue( 'programStageId', json.programStages[0].id );
+			setFieldValue( 'programStageInstanceId', json.programStageInstances[0].id );
 			setFieldValue( 'selectedProgramId', programId );
 			$('#executionDate').bind('change');
 			
@@ -85,7 +85,7 @@ function loadEventRegistrationForm()
 {
 	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
 		{ 
-			programStageId:getFieldValue('programStageId')
+			programStageInstanceId:getFieldValue('programStageInstanceId')
 		},function( )
 		{
 			hideById('loaderDiv');

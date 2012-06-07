@@ -82,12 +82,12 @@
                 </tr>
 			</table>
 		</form>
-		
-		<p></p>
-	
-		<div id='programEnrollmentDiv' class='hidden'></div>
 	</fieldset>
 	
+	<p></p>
+		
+	<div id='programEnrollmentDiv' class='hidden'></div>
+
 </div>
 
 <script>

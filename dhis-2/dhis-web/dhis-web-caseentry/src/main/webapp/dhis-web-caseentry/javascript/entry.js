@@ -41,7 +41,8 @@ function loadProgramStages()
 		function( json ) 
 		{    
 			showById('programInstanceDiv');
-			
+			hideById('executionDateTB');
+				
 			var type = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('type');
 			if( type == 1 && json.programStageInstances.length > 1 )
 			{
@@ -97,6 +98,7 @@ function loadProgramStages()
 function loadDataEntry( programStageInstanceId )
 {
 	setInnerHTML('dataEntryFormDiv', '');
+	showById('executionDateTB');
 	showById('dataEntryFormDiv');
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
@@ -860,7 +862,7 @@ function autocompletedField( idField )
 			},
 			text: false
 		})
-		.addClass( "small-button" )
+		.addClass( "optionset-small-button" )
 		.click(function() {
 			// close if already visible
 			if ( input.autocomplete( "widget" ).is( ":visible" ) ) {

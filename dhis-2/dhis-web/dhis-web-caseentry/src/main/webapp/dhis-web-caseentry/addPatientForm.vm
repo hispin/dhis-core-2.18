@@ -43,12 +43,15 @@
 
 <table>
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
+	<tr><td><td><p></p></td></tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
+			<input type="button" class="button" value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();"/>
+		</td>
+	</tr>
 </table>
-
-<p>
-	<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
-	<input type="button" class="button" value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();"/>
-</p>
 
 </form>
 

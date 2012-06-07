@@ -30,7 +30,7 @@
 				,javascript/entry.js
 				,../dhis-web-commons/javascripts/date.js
 			</param>
-			<param name="stylesheets">style/dataEntry.css</param>
+			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 
@@ -62,7 +62,7 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/dataRecordingSelect.vm</param>
-			<param name="stylesheets">style/patient.css</param>
+			<param name="stylesheets">style/style.css</param>
 		</action>
 
 		<action name="loadProgramStageInstances"
@@ -76,7 +76,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
 			<param name="javascripts">javascript/customcheckbox/prettyCheckboxes.js</param>
-			<param name="stylesheets">style/dataEntry.css,javascript/customcheckbox/prettyCheckboxes.css</param>
+			<param name="stylesheets">style/style.css,javascript/customcheckbox/prettyCheckboxes.css</param>
 		</action>
 
 		<action name="completeDataEntry"
@@ -114,7 +114,7 @@
 				,javascript/anonymousRegistration.js
 				,javascript/entry.js
 				,../dhis-web-commons/javascripts/date.js</param>
-			<param name="stylesheets">style/dataEntry.css,style/patient.css</param>
+			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 		
@@ -177,7 +177,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/multiDataEntrySelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
-			<param name="stylesheets">style/patient.css</param>
+			<param name="stylesheets">style/style.css</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,
 				javascript/form.js,javascript/multiDataEntry.js</param>			
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
@@ -194,7 +194,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/dataentryRecords.vm</param>
 			<param name="javascripts">javascript/customcheckbox/prettyCheckboxes.js</param>
-			<param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css</param>
+			<param name="stylesheets">style/style.css,javascript/customcheckbox/prettyCheckboxes.css</param>
 		</action>
 
 		<action name="viewProgramStageRecords"
@@ -202,7 +202,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
 			<param name="javascripts">javascript/form.js,javascript/entry.js,../dhis-web-commons/javascripts/date.js</param>
-			<param name="stylesheets">style/dataEntry.css</param>
+			<param name="stylesheets">style/style.css</param>
 		</action>
 
 		<action name="loadProgramStageRecords"
@@ -248,7 +248,7 @@
 			<param name="page">/dhis-web-caseentry/reportSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
-			<param name="stylesheets">style/report.css</param>
+			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_GENERATE_PROGRAM_SUMMARY_REPORT</param>
 		</action>
 
@@ -280,7 +280,7 @@
 			<param name="page">/dhis-web-caseentry/caseAggregationForm.vm</param>
 			<param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>
 			<param name="javascripts">javascript/caseagg.js,javascript/caseAggregationForm.js</param>
-			<param name="stylesheets">style/dataEntry.css</param>
+			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_PATIENT_AGGREGATION</param>
 		</action>
 
@@ -348,7 +348,7 @@
 				,javascript/entry.js
 				,javascript/relationshipPatient.js
 			</param>
-			<param name="stylesheets">style/patient.css, style/dataEntry.css</param>
+			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_PATIENT_MANAGEMENT</param>
 		</action>
 
@@ -417,7 +417,7 @@
 			<param name="page">/dhis-web-caseentry/underAgeForm.vm</param>
 			<param name="javascripts">javascript/underage.js,
 				../dhis-web-commons/javascripts/date.js</param>
-			<param name="stylesheets">style/patient.css</param>
+			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
@@ -639,7 +639,7 @@
 			<param name="page">/dhis-web-caseentry/tabularReportSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js</param>
-			<param name="stylesheets">style/report.css</param>
+			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 		

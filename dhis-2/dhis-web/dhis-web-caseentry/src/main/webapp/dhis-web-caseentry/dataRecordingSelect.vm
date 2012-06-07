@@ -60,7 +60,7 @@
 	
 	<br>
 	
-	<table>
+	<table id='executionDateTB'>
 		<tr>
 			<th class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
 			<th><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >

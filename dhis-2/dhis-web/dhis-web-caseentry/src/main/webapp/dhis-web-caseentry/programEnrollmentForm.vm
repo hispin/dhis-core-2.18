@@ -16,9 +16,9 @@
 				<input type='hidden' id='programId' name='programId' value='$programInstance.program.id'>
 				<input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id'>
 				<!-- IDENTIFIERS -->
-				<table class='mainPageTable' id='enrollmentInforDiv' name='enrollmentInforDiv' >
-					<col id="stageCol">    
-					<col id="entryCol">    
+				<table id='enrollmentInforDiv' name='enrollmentInforDiv' style='width:100%' >
+					<col>    
+					<col>    
 					#if( $identifierTypes.size() > 0 )
 					<tr>
 						<th colspan='2'>$i18n.getString( "identifier" )</th> 

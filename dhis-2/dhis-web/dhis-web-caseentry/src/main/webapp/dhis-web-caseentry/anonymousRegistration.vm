@@ -7,13 +7,13 @@
 </div>	
 			
 <div id="dataRecordingSelectDiv" class="inputCriteria" style="width:480px;height:75px;">
-	<input type='hidden' id="programStageId">
+	<input type='hidden' id="programStageInstanceId">
 	<input type='hidden' id='selectedProgramId'>
 	<table>
 		<tr>
 			<td class='text-column'>$i18n.getString('program')</td>
 			<td>
-				<select id='programId' name='programId' class='criteria' onchange='loadEventForm();'>
+				<select id='programId' name='programId' onchange='loadEventForm();'>
 					<option value="">[ $i18n.getString('please_select') ]</option>
 					#foreach( $programInstance in $programInstances)
 						<option value="$programInstance.program.id" type='$programInstance.program.type' programInstanceId='$programInstance.id'>$programInstance.program.name</option>
@@ -23,7 +23,7 @@
 		</tr>
 		<tr>
 			<td class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-			<td><input type="text" id="executionDate" name="executionDate" class="criteria" style="width:320px" value="$!format.formatDate( $programStageInstance.executionDate )" >
+			<td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" >
 				<script type="text/javascript">
 				   datePickerValid( 'executionDate', false );
 				   disable( 'executionDate' );

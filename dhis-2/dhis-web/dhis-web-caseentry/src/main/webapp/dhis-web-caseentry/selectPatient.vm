@@ -7,9 +7,9 @@
 			<td><label>$i18n.getString( "registering_unit" )</label></td>
 			<td style="padding-right:5px"><input type="text" id='selectedOrgunitText' readonly style="min-width:16em"></td>
 			<td style="padding-right:5px">
-				<input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick='loadAllPatients();'>
+				<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick='loadAllPatients();'>
 			</td>
-			<td><input type="button" value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();"></td>
+			<td><input type="button" class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();"></td>
 		</tr>
 	</table>
 </div>
@@ -37,13 +37,13 @@
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</td>	
 				<td></td>
-				<td><input type="button" value='+' onclick='addAttributeOption();'> </td>
+				<td><input type="button" class='small-button' value='+' onclick='addAttributeOption();'> </td>
 				<td>
 					$i18n.getString('search_by_selected_unit')
 					<input type='checkbox' id='searchBySelectedOrgunit' name='searchBySelectedOrgunit' value='true' />
 				</td>
 				<td>
-					<input type="button" value='$i18n.getString( "search" )' onclick='searchAdvancedPatients();'>
+					<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='searchAdvancedPatients();'>
 				</td>
 				<td>&nbsp;</td>
 			</tr>

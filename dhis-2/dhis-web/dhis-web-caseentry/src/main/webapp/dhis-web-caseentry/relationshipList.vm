@@ -1,7 +1,7 @@
 <h3>$i18n.getString( "relationship_management" )</h3>
 
 <input type="hidden" id="id" name="id" value="$patient.id">
-<table class="list-table infor">                           
+<table class="mainPageTable information">                           
 	<tr>              
 		<td>
 			<table>
@@ -47,7 +47,7 @@
 	
 </table>
 
-<div class='buttons'>
+<div class='button-list'>
 	<input type="button" class='button' value="$i18n.getString( 'add_new' )" onclick="javascript:showAddRelationship('$patient.id')" >
 	<input type="button" class='button' value="$i18n.getString( 'add_new_patient' )" onclick="javascript:showAddRelationshipPatient( '$patient.id',false )" >
 	<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="onClickBackBtn();" >

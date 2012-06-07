@@ -53,7 +53,7 @@
 	        </td>        
 	           
 	        ##value        
-	        <td style="text-align:center">        
+	        <td>        
 	            #if( $patientDataValue.dataElement.type == "bool" )
 	                #if( $patientDataValue.value == "true" )
 	                    $i18n.getString( "yes" ) 
@@ -71,9 +71,9 @@
 	        </td> 
 	      
 	        ##providedByAnotherFacility                
-	        <td style="text-align:center">            
+	        <td>            
 	            #if( !$patientDataValue.providedByAnotherFacility )
-					$patientDataValue.organisationUnit.name
+					$!patientDataValue.programStageInstance.organisationUnit.name
 				#else
 					$i18n.getString("other_facility")
 	            #end                         
