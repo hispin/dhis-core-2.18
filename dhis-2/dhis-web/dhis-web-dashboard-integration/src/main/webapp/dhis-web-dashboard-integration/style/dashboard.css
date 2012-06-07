@@ -21,6 +21,11 @@
   top: 38px;
 }
 
+.removeIcon
+{
+   padding:3px 3px 2px 3px;
+}
+
 .linkArea
 {
   border:1px solid #d0d0d0;

@@ -8,9 +8,9 @@
         <td>
             <a href="../dhis-web-reporting/getReportParams.action?uid=${table.uid}&mode=table">$table.name</a>
         </td>       
-        <td style="width:16px">
+        <td style="width:10px">
             <a href="javascript:window.location.href='removeReportTable.action?id=$table.id'" title="$i18n.getString( 'remove' )">
-            <img src="../images/close.png" alt="$i18n.getString( 'remove' )"></a>
+            <img class="removeIcon" src="../images/hide.png" alt="$i18n.getString( 'remove' )"></a>
         </td>
     </tr>
     #end
