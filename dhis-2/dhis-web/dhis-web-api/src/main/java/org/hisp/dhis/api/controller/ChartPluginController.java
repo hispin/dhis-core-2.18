@@ -164,12 +164,6 @@ public class ChartPluginController
             organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsByUid( organisationUnitIds ) );
         }
 
-        if ( organisationUnits.isEmpty() )
-        {
-            ContextUtils.conflictResponse( response, "No valid organisation units specified" );
-            return null;
-        }
-
         if ( orgUnitIsParent )
         {
             List<OrganisationUnit> childOrganisationUnits = new ArrayList<OrganisationUnit>();
@@ -182,9 +176,10 @@ public class ChartPluginController
             organisationUnits = childOrganisationUnits;
         }
 
-        for ( OrganisationUnit unit : organisationUnits )
+        if ( organisationUnits.isEmpty() )
         {
-            chartValue.getOrgUnits().add( unit.getName() );
+            ContextUtils.conflictResponse( response, "No valid organisation units specified" );
+            return null;
         }
 
         // ---------------------------------------------------------------------
@@ -196,12 +191,27 @@ public class ChartPluginController
         
         List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();        
         
-        if ( organisationUnitGroupSetId != null )
+        if ( useGroupSets )
         {
             OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( organisationUnitGroupSetId );
             organisationUnitGroups.addAll( groupSet.getOrganisationUnitGroups() );
         }
-        
+
+        if ( useGroupSets )
+        {
+            for ( OrganisationUnitGroup groupSet : organisationUnitGroups )
+            {
+                chartValue.getOrgUnits().add( groupSet.getName() );
+            }
+        }
+        else
+        {
+            for ( OrganisationUnit unit : organisationUnits )
+            {
+                chartValue.getOrgUnits().add( unit.getName() );
+            }
+        }
+
         // ---------------------------------------------------------------------
         // Indicators
         // ---------------------------------------------------------------------
