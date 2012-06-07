@@ -80,8 +80,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
 
 	<bean
@@ -97,8 +95,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStagesAction"
-		class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStagesAction"
+		id="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstancesAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstancesAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
@@ -111,7 +109,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.LoadDataEntryAction"
 		scope="prototype">
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programDataEntryService"
 			ref="org.hisp.dhis.program.ProgramDataEntryService" />
 		<property name="patientDataValueService"

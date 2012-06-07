@@ -125,7 +125,6 @@ public class CreateAnonymousEncounterAction
 
         if ( date != null )
         {
-
             ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
             ProgramStageInstance programStageInstance = new ProgramStageInstance();
@@ -139,9 +138,9 @@ public class CreateAnonymousEncounterAction
             programStageInstance.setExecutionDate( date );
             programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
 
-            programStageInstanceService.addProgramStageInstance( programStageInstance );
+            int id = programStageInstanceService.addProgramStageInstance( programStageInstance );
             
-            message = programStageInstance.getId() + "";
+            message = id + "";
             
             return SUCCESS;
         }

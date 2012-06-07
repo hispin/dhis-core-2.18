@@ -28,11 +28,10 @@
 package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.patient.Patient;
@@ -40,17 +39,18 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.comparator.ProgramStageInstanceDueDateComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $ LoadProgramStagesAction.java May 7, 2011 2:31:47 PM $
+ * @version $ LoadProgramStageInstancesAction.java May 7, 2011 2:31:47 PM $
  * 
  */
-public class LoadProgramStagesAction
+public class LoadProgramStageInstancesAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -96,25 +96,18 @@ public class LoadProgramStagesAction
         this.programId = programId;
     }
 
-    private ProgramInstance programInstance;
+    private Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
 
-    public ProgramInstance getProgramInstance()
+    public Map<Integer, Integer> getStatusMap()
     {
-        return programInstance;
+        return statusMap;
     }
 
-    private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
+    private List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
-    public Set<ProgramStage> getProgramStages()
+    public List<ProgramStageInstance> getProgramStageInstances()
     {
-        return programStages;
-    }
-
-    private Map<Integer, String> colorMap = new HashMap<Integer, String>();
-
-    public Map<Integer, String> getColorMap()
-    {
-        return colorMap;
+        return programStageInstances;
     }
 
     private Program program;
@@ -131,19 +124,12 @@ public class LoadProgramStagesAction
     public String execute()
         throws Exception
     {
-        if ( programId == null )
-        {
-            return SUCCESS;
-        }
-
         selectedStateManager.clearSelectedProgramInstance();
         selectedStateManager.clearSelectedProgramStageInstance();
 
         Patient patient = selectedStateManager.getSelectedPatient();
 
-        program = programService.getProgram( programId );
-
-        programStages = program.getProgramStages();
+        Program program = programService.getProgram( programId );
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
@@ -160,13 +146,16 @@ public class LoadProgramStagesAction
 
         if ( programInstances != null && programInstances.size() > 0 )
         {
-            programInstance = programInstances.iterator().next();
+            ProgramInstance programInstance = programInstances.iterator().next();
 
             selectedStateManager.setSelectedProgramInstance( programInstance );
 
             if ( programInstance.getProgramStageInstances() != null )
             {
-                colorMap = programStageInstanceService.colorProgramStageInstances( programInstance
+                programStageInstances.addAll( programInstance.getProgramStageInstances() );
+                Collections.sort( programStageInstances, new ProgramStageInstanceDueDateComparator() );
+
+                statusMap = programStageInstanceService.statusProgramStageInstances( programInstance
                     .getProgramStageInstances() );
             }
         }

@@ -78,6 +78,13 @@ public class RegisterIrregularEncounterAction
         this.dueDate = dueDate;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -94,7 +101,9 @@ public class RegisterIrregularEncounterAction
         programStageInstance.setStageInProgram( currentStageInstance.getStageInProgram() );
         programStageInstance.setDueDate( format.parseDate( dueDate ) );
 
-        programStageInstanceService.addProgramStageInstance( programStageInstance );
+        int id = programStageInstanceService.addProgramStageInstance( programStageInstance );
+        message = id + "";
+
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
         return SUCCESS;

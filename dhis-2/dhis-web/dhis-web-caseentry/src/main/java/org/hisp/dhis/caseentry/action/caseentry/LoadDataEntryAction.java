@@ -42,12 +42,9 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -64,8 +61,6 @@ public class LoadDataEntryAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageService programStageService;
-
     private ProgramDataEntryService programDataEntryService;
 
     private PatientDataValueService patientDataValueService;
@@ -78,7 +73,7 @@ public class LoadDataEntryAction
     // Input && Output
     // -------------------------------------------------------------------------
 
-    private Integer programStageId;
+    private Integer programStageInstanceId;
 
     private ProgramStageInstance programStageInstance;
 
@@ -103,14 +98,14 @@ public class LoadDataEntryAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
+    }
+
     public Program getProgram()
     {
         return program;
-    }
-
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
     }
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -143,11 +138,6 @@ public class LoadDataEntryAction
         this.i18n = i18n;
     }
 
-    public void setProgramStageId( Integer programStageId )
-    {
-        this.programStageId = programStageId;
-    }
-
     public String getCustomDataEntryFormCode()
     {
         return customDataEntryFormCode;
@@ -176,58 +166,49 @@ public class LoadDataEntryAction
         // Get program-stage-instance
         // ---------------------------------------------------------------------
 
-        ProgramStage programStage = programStageService.getProgramStage( programStageId );
+        programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
+        program = programStageInstance.getProgramStage().getProgram();
 
-        program = programStage.getProgram();
-
-        ProgramInstance programInstance = selectedStateManager.getSelectedProgramInstance();
-
-        if ( programInstance != null )
+        if ( programStageInstance != null )
         {
-            programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
-
-            if ( programStageInstance != null )
+            if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION && programStageInstance.isCompleted() )
             {
-                if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION
-                    && programStageInstance.isCompleted() )
-                {
-                    return SUCCESS;
-                }
+                return SUCCESS;
+            }
 
-                selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
+            selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
-                // ---------------------------------------------------------------------
-                // Get data values
-                // ---------------------------------------------------------------------
+            // ---------------------------------------------------------------------
+            // Get data values
+            // ---------------------------------------------------------------------
 
-                programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage
-                    .getProgramStageDataElements() );
+            programStageDataElements = new ArrayList<ProgramStageDataElement>( programStageInstance.getProgramStage()
+                .getProgramStageDataElements() );
 
-                Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
+            Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
-                Collection<PatientDataValue> patientDataValues = patientDataValueService
-                    .getPatientDataValues( programStageInstance );
+            Collection<PatientDataValue> patientDataValues = patientDataValueService
+                .getPatientDataValues( programStageInstance );
 
-                patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
+            patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
 
-                for ( PatientDataValue patientDataValue : patientDataValues )
-                {
-                    int key = patientDataValue.getDataElement().getId();
-                    patientDataValueMap.put( key, patientDataValue );
-                }
+            for ( PatientDataValue patientDataValue : patientDataValues )
+            {
+                int key = patientDataValue.getDataElement().getId();
+                patientDataValueMap.put( key, patientDataValue );
+            }
 
-                // ---------------------------------------------------------------------
-                // Get data-entry-form
-                // ---------------------------------------------------------------------
+            // ---------------------------------------------------------------------
+            // Get data-entry-form
+            // ---------------------------------------------------------------------
 
-                DataEntryForm dataEntryForm = programStage.getDataEntryForm();
+            DataEntryForm dataEntryForm = programStageInstance.getProgramStage().getDataEntryForm();
 
-                if ( dataEntryForm != null )
-                {
-                    customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
-                        .getHtmlCode(), patientDataValues, program.getDisplayProvidedOtherFacility().toString(), i18n,
-                        programStage, programStageInstance, organisationUnit );
-                }
+            if ( dataEntryForm != null )
+            {
+                customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
+                    .getHtmlCode(), patientDataValues, program.getDisplayProvidedOtherFacility().toString(), i18n,
+                    programStageInstance.getProgramStage(), programStageInstance, organisationUnit );
             }
         }
 

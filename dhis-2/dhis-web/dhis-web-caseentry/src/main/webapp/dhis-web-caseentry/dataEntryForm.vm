@@ -6,28 +6,16 @@
 		#elseif( $programStageInstance )
 			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
-		#elseif( $program.type == "2" )
-		{
-			disable("dueDate");
-		}
 		#end
 		
 		$('#executionDate').change(function() {
 				saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
 			});
-			
-		if( getFieldValue('programStageId') == 0 )
-		{
-			disable('executionDate');
-		}
-		else
-		{
-			enable('executionDate');
-		}
 		
 		entryFormContainerOnReady();
 	});
 </script>
+
 
 <div id='entryFormContainer'>
 
@@ -113,6 +101,11 @@
 		#set( $tabIndex = $tabIndex + 1 )
 		</table>
 	#end
+</div>
+
+<div id='inputCriteriaDiv' class="page inputCriteria" style="display:none;width:480px;height:29px;">	
+	<input type="button" class='button' id="completeInBelowBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled">
+	<input type="button" class='button' id="validationInBelowBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" >
 </div>
 
 </div>

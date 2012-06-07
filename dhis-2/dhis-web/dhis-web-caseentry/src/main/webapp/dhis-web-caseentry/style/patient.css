@@ -75,15 +75,26 @@ fieldset
 	border: 1px solid #3f5d8e;
 }
 
-
 .stage-object
 {
 	width: 100px;
 	height: 40px;
     white-space: normal;
 	border:2px solid; 
-	background-color:#ffffff;
 	cursor:pointer;
+	opacity: 0.75;
+}
+
+.stage-object:hover
+{
+	opacity: 1.0;
+}
+
+.stage-object-selected 
+{
+	width: 120px;
+	height: 50px;
+    opacity: 1.0;
 }
 
 .patient-object
@@ -96,4 +107,3 @@ fieldset
 	background-color:#cccccc
 	cursor:pointer;
 }
-

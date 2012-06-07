@@ -122,18 +122,18 @@ public class GenerateReportAction
         return organisationUnit;
     }
 
-    Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
+    private Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
     public Collection<ProgramInstance> getProgramInstances()
     {
         return programInstances;
     }
 
-    private Map<Integer, String> colorMap = new HashMap<Integer, String>();
+    private Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
 
-    public Map<Integer, String> getColorMap()
+    public Map<Integer, Integer> getStatusMap()
     {
-        return colorMap;
+        return statusMap;
     }
 
     private Program program;
@@ -176,7 +176,7 @@ public class GenerateReportAction
             programStageInstances.addAll( programInstance.getProgramStageInstances() );
         }
 
-        colorMap = programStageInstanceService.colorProgramStageInstances( programStageInstances );
+        statusMap = programStageInstanceService.statusProgramStageInstances( programStageInstances );
 
         return SUCCESS;
     }
