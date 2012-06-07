@@ -105,6 +105,8 @@ public class UpdateDataElementCategoryComboAction
         dataElementCategoryCombo.setCategories( updatedCategories );
 
         dataElementCategoryService.updateDataElementCategoryCombo( dataElementCategoryCombo );       
+
+        dataElementCategoryService.generateOptionCombos( dataElementCategoryCombo );
         
         return SUCCESS;
     }
