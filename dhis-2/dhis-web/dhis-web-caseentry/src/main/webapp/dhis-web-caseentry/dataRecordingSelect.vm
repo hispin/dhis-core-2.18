@@ -34,54 +34,51 @@
 	<input type="button" class='button' value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" >
 </div>
 		
-<div class="inputCriteria" style="width:480px;height:130px;">
-
-	<table> 
-		<tr>
+<div id='inputCriteria' class="page inputCriteria" style="width:480px;height:29px;">	
+	<input type='hidden' id='programStageId' name='programStageId'>
+	<table>
+	   <tr id='programIdTR'>
+			<td class='text-column'><label for="programId">$i18n.getString( "program" )</label></td>
 			<td>
-				<table>
-				   <tr id='programIdTR'>
-						<td class='text-column'><label for="programId">$i18n.getString( "program" )</label></td>
-						<td>
-							<select id="programId" name="programId" class="criteria" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
-								<option value="0">[$i18n.getString( "select" )]</option>
-								#foreach( $program in $programs )
-									<option value="$program.id" type="$program.type" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
-								#end
-							</select>
-						</td>
-					</tr>
-					<tr id='programStageIdTR' >
-						<td class='text-column'><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
-						<td>
-							<select id="programStageId" name="programStageId" class="criteria" onchange="javascript:loadDataEntry();" >
-							</select>
-						</td>
-					</tr>
-					
-					<tr>
-						<td class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-						<td><input type="text" id="executionDate" name="executionDate" class="criteria" style="width:320px" value="$!format.formatDate( $programStageInstance.executionDate )" >
-							<script type="text/javascript">
-							   datePickerValid( 'executionDate', false );
-							   disable('executionDate');
-							</script>
-					</tr>
-					
-					<tr id='dueDateTR'>
-						<td class='text-column'><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
-						<td><input type="text" id="dueDate" name="dueDate" class="criteria" value="$!format.formatDate( $programStageInstance.dueDate )" readonly> </td>
-					</tr>
-				</table>
+				<select id="programId" name="programId" class="criteria" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
+					<option value="0">[$i18n.getString( "select" )]</option>
+					#foreach( $program in $programs )
+						<option value="$program.id" type="$program.type" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
+					#end
+				</select>
 			</td>
-			
-			
 		</tr>
 	</table>
 </div>
 
+<div id='programInstanceDiv' class='hidden '>
+	<div id='programInstanceFlowDiv' style="width:500px;height:81px;overflow-x:auto;">
+		<table>
+			<tr id='programStageIdTR'></tr>
+		</table>
+	</div>
+	
+	<br>
+	
+	<table>
+		<tr>
+			<th class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
+			<th><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >
+				<script type="text/javascript">
+				   datePickerValid( 'executionDate', false );
+				</script>
+			</th>
+			<th class='text-column'><label for="dueDate">$i18n.getString( "due_date" ) </label></th>
+			<th><input type="text" id="dueDate" name="dueDate" class='criteria' value="$!format.formatDate( $programStageInstance.dueDate )" readonly > </th>
+		</tr>
+	</table>
+	
+</div>
+
 </form>
 
+<p></p>
+	
 <div id='createNewEncounterDiv' class='hidden'>
 	<table>
 		<tr>

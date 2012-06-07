@@ -63,9 +63,14 @@ input[type="button"], input[type="submit"]
 	width: 100px;
 	height: 40px;
     white-space: normal;
-	border:2px solid; 
+	border:4px solid; 
 	background-color:#ffffff;
 	cursor:pointer;
+}
+
+.stage-object:hover
+{
+	background-color:#6699FF;
 }
 
 .patient-object
@@ -73,7 +78,7 @@ input[type="button"], input[type="submit"]
 	width: 100px;
 	height: 40px;
     white-space: normal;
-	border:2px solid; 
+	border:4px solid; 
 	border-color:#bbbbbb;
 	background-color:#cccccc
 	cursor:pointer;

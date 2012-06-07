@@ -156,11 +156,11 @@ public class GetDataRecordsAction
         return programStageInstanceMap;
     }
 
-    private Map<Integer, String> colorMap = new HashMap<Integer, String>();
+    private Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
 
-    public Map<Integer, String> getColorMap()
+    public Map<Integer, Integer> getStatusMap()
     {
-        return colorMap;
+        return statusMap;
     }
 
     private Map<Patient, ProgramInstance> programInstanceMap = new HashMap<Patient, ProgramInstance>();
@@ -257,7 +257,7 @@ public class GetDataRecordsAction
             }
         }
 
-        colorMap = programStageInstanceService.colorProgramStageInstances( programStageInstances );
+        statusMap = programStageInstanceService.statusProgramStageInstances( programStageInstances );
 
         return SUCCESS;
     }

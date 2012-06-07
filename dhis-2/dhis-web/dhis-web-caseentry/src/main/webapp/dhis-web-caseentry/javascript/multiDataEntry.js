@@ -62,6 +62,11 @@ function backButtonOnClick()
 }
 function viewPrgramStageRecords( programStageInstanceId ) 
 {
+	jQuery("#patientList input[name='programStageBtn']").each(function(i,item){
+		jQuery(item).removeClass('stage-object-selected');
+	});
+	jQuery( '#' + prefixStageId + programStageInstanceId ).addClass('stage-object-selected');
+	
 	$('#contentDataRecord').dialog('destroy').remove();
     $('<div id="contentDataRecord">' ).load("viewProgramStageRecords.action",
 		{

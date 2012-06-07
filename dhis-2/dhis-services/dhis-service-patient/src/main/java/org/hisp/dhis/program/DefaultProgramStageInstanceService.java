@@ -122,19 +122,19 @@ public class DefaultProgramStageInstanceService
         programStageInstanceStore.update( programStageInstance );
     }
 
-    public Map<Integer, String> colorProgramStageInstances( Collection<ProgramStageInstance> programStageInstances )
+    public Map<Integer, Integer> statusProgramStageInstances( Collection<ProgramStageInstance> programStageInstances )
     {
-        Map<Integer, String> colorMap = new HashMap<Integer, String>();
+        Map<Integer, Integer> colorMap = new HashMap<Integer, Integer>();
 
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
             if ( programStageInstance.isCompleted() )
             {
-                colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_GREEN );
+                colorMap.put( programStageInstance.getId(), ProgramStageInstance.COMPLETED_STATUS );
             }
             else if ( programStageInstance.getExecutionDate() != null )
             {
-                colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_LIGHTRED );
+                colorMap.put( programStageInstance.getId(), ProgramStageInstance.VISITED_STATUS );
             }
             else
             {
@@ -150,11 +150,11 @@ public class DefaultProgramStageInstanceService
 
                 if ( dueDateCalendar.getTime().before( new Date() ) )
                 {
-                    colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_RED );
+                    colorMap.put( programStageInstance.getId(), ProgramStageInstance.LATE_VISIT_STATUS );
                 }
                 else
                 {
-                    colorMap.put( programStageInstance.getId(), ProgramStageInstance.COLOR_YELLOW );
+                    colorMap.put( programStageInstance.getId(), ProgramStageInstance.FUTURE_VISIT_STATUS );
                 }
             }
         }

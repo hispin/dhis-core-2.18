@@ -43,13 +43,10 @@ public class ProgramStageInstance
      */
     private static final long serialVersionUID = 6239130884678145713L;
 
-    public static final String COLOR_RED = "#fb4754";
-
-    public static final String COLOR_YELLOW = "#f9f95a";
-
-    public static final String COLOR_GREEN = "#8ffe8f";
-
-    public static final String COLOR_LIGHTRED = "#fb6bfb";
+    public static final int COMPLETED_STATUS = 1;
+    public static final int VISITED_STATUS = 2;
+    public static final int FUTURE_VISIT_STATUS = 3;
+    public static final int LATE_VISIT_STATUS = 4;
 
     private int id;
 

@@ -72,7 +72,7 @@ public interface ProgramStageInstanceService
 
     Collection<ProgramStageInstance> getAllProgramStageInstances();
 
-    Map<Integer, String> colorProgramStageInstances( Collection<ProgramStageInstance> programStageInstances );
+    Map<Integer, Integer> statusProgramStageInstances( Collection<ProgramStageInstance> programStageInstances );
 
     /**
      * Get all {@link ProgramStageInstance program stage instances} for unit,

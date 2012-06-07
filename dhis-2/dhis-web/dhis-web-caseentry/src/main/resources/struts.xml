@@ -65,10 +65,10 @@
 			<param name="stylesheets">style/patient.css</param>
 		</action>
 
-		<action name="loadProgramStages"
-			class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStagesAction">
+		<action name="loadProgramStageInstances"
+			class="org.hisp.dhis.caseentry.action.caseentry.LoadProgramStageInstancesAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/responseProgramStages.vm</result>
+				/dhis-web-caseentry/jsonProgramStageInstances.vm</result>
 		</action>
 
 		<action name="dataentryform"

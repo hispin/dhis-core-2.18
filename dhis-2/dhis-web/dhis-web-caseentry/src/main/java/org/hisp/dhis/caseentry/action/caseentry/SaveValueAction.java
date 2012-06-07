@@ -31,7 +31,6 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -74,13 +73,6 @@ public class SaveValueAction
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
-    }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
     }
 
     private Boolean providedElsewhere;
@@ -136,14 +128,8 @@ public class SaveValueAction
     public String execute()
         throws Exception
     {
-        if ( programStageInstanceId == null )
-        {
-            programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
-        }
-        else
-        {
-            programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
-        }
+
+        programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
