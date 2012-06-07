@@ -725,6 +725,13 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <action name="getOrganisationUnitGroupSetsMinified" class="org.hisp.dhis.commons.action.GetOrganisationUnitGroupSetsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonminOrganisationUnitGroupSets.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <action name="getOrganisationUnitChildren" class="org.hisp.dhis.commons.action.GetOrganisationUnitChildrenAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonOrganisationUnits.vm

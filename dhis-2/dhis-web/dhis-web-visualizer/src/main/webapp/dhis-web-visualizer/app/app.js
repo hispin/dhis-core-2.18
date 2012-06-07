@@ -83,12 +83,6 @@ DV.conf = {
 						organisationunitchildren: []							
 					}
 				};
-				for (var relative in r.p) {
-					obj.system.periods[relative] = [];
-					for (var i = 0; i < r.p[relative].length; i++) {
-						obj.system.periods[relative].push({id: r.p[relative][i][0], name: DV.conf.util.jsonEncode(r.p[relative][i][1])});
-					}
-				}
 				for (var i = 0; i < r.user.ouc.length; i++) {
 					obj.user.organisationunitchildren.push({id: r.user.ouc[i][0], name: DV.conf.util.jsonEncode(r.user.ouc[i][1])});
 				}
@@ -106,14 +100,15 @@ DV.conf = {
             path_lib: '../../dhis-web-commons/javascripts/',
             initialize: 'initialize.action',
             redirect: 'redirect.action',
-            data_get: 'getAggregatedValues.action',
-            indicator_get: 'getIndicatorsMinified.action',
-            indicatorgroup_get: 'getIndicatorGroupsMinified.action',
-            dataelement_get: 'getDataElementsMinified.action',
-            dataelementgroup_get: 'getDataElementGroupsMinified.action',
-            dataelement_get: 'getDataElementsMinified.action',
-            dataset_get: 'getDataSetsMinified.action',
-            organisationunitgroupset_get: 'getOrganisationUnitGroupSets.action',
+            data_get: 'chartValues.json',
+            indicator_get: 'indicatorGroups/',
+            indicator_getall: 'indicators.json?paging=false&links=false',
+            indicatorgroup_get: 'indicatorGroups.json?paging=false&links=false',
+            dataelement_get: 'dataElementGroups/',
+            dataelement_getall: 'dataelements.json?paging=false&links=false',
+            dataelementgroup_get: 'dataElementGroups.json?paging=false&links=false',
+            dataset_get: 'dataSets.json?paging=false&links=false',
+            organisationunitgroupset_get: 'getOrganisationUnitGroupSetsMinified.action',
             organisationunitchildren_get: 'getOrganisationUnitChildren.action',
             favorite_addorupdate: 'addOrUpdateChart.action',
             favorite_addorupdatesystem: 'addOrUpdateSystemChart.action',
@@ -188,6 +183,17 @@ DV.conf = {
 			urlparam: 'id'
         }
     },
+    relativePeriodUnits: {
+		lastSixMonth: 1,
+		thisYear: 1,
+		lastYear: 1,
+		last5Years: 5,
+		last12Months: 12,
+		last4Quarters: 4,
+		last2SixMonths: 2,
+		lastMonth: 1,
+		lastQuarter: 1
+	},
     chart: {
         style: {
             inset: 30,
@@ -241,6 +247,30 @@ DV.conf = {
 		}
 	}
 };
+    
+DV.cmp = {
+	region: {},
+	charttype: [],
+	settings: {},
+	dimension: {
+		indicator: {},
+		dataelement: {},
+		dataset: {},
+		period: {
+			checkbox: []
+		},
+		organisationunit: {}
+	},
+	options: {},
+	toolbar: {
+		menuitem: {}
+	},
+	statusbar: {},
+	favorite: {
+		rename: {}
+	},
+	share: {}
+};
 
 Ext.Loader.setConfig({enabled: true});
 Ext.Loader.setPath('Ext.ux', DV.conf.finals.ajax.path_lib + 'ext-ux');
@@ -261,30 +291,6 @@ Ext.onReady( function() {
         
         DV.init.cmd = DV.util.getUrlParam(DV.conf.finals.cmd.urlparam) || DV.conf.finals.cmd.init;
         DV.exe.execute(DV.init.cmd);
-    };
-    
-    DV.cmp = {
-        region: {},
-        charttype: [],
-        settings: {},
-        dimension: {
-            indicator: {},
-            dataelement: {},
-            dataset: {},
-            period: {
-				checkbox: []
-			},
-            organisationunit: {}
-        },
-        options: {},
-        toolbar: {
-            menuitem: {}
-        },
-        statusbar: {},
-        favorite: {
-            rename: {}
-        },
-        share: {}
     };
     
     DV.util = {
@@ -364,6 +370,7 @@ Ext.onReady( function() {
             unselectAll: function(a, s) {
                 s.store.removeAll();
                 a.store.clearFilter();
+                this.filterAvailable(a, s);
             },
             filterAvailable: function(a, s) {
                 a.store.filterBy( function(r) {
@@ -502,17 +509,12 @@ Ext.onReady( function() {
 				}
             },
             data: {
-                getNames: function(exception, isFilter) {
-					var obj = DV.c.data.objects,
-						a = [];
-                    for (var i = 0; i < obj.length; i++) {
-						a.push(obj[i].name);
-					}
-                    if (exception && isFilter && a.length > 1) {
-						DV.chart.warnings.push(DV.i18n.wm_multiple_filter_ind_de_ds + ' ' + DV.i18n.wm_first_filter_used);
-					}
-					return (isFilter && a.length > 1) ? a.slice(0,1) : a;
-                },
+				getObjects: function() {
+					var objects = DV.c.indicator.objects;
+					objects = objects.concat(DV.c.dataelement.objects);
+					objects = objects.concat(DV.c.dataset.objects);
+					return objects;
+				},
                 getUrl: function(isFilter) {
 					var obj = DV.c.indicator.objects,
 						a = [];
@@ -544,40 +546,27 @@ Ext.onReady( function() {
                     return a;
                 },
                 getObjectsByRelativePeriods: function(rp) {
-                    var relatives = [],
-                        a = [];
+					var a = [],
+						count = 0;
                     for (var r in rp) {
                         if (rp[r]) {
-                            relatives.push(r);
+							count += DV.conf.relativePeriodUnits[r];
                         }
                     }
-                    for (var i = 0; i < relatives.length; i++) {
-                        var r = DV.init.system.periods[relatives[i]] || [];
-                        for (var j = 0; j < r.length; j++) {
-                            a.push({id: r[j].id, name: r[j].name});
-                        }
-                    }
-                    return a;
-                },
-                getNames: function(exception, isFilter) {
-					var obj = DV.c.period.objects,
-						a = [];
-                    for (var i = 0; i < obj.length; i++) {
-						a.push(obj[i].name);
+                    for (var i = 0; i < count; i++) {
+						a.push({});
 					}
-                    if (exception && isFilter && a.length > 1) {
-						DV.chart.warnings.push(DV.i18n.wm_multiple_filter_period + ' ' + DV.i18n.wm_first_filter_used);
-					}
-					return (isFilter && a.length > 1) ? a.slice(0,1) : a;
-                },
+					return a;
+				},
                 getUrl: function(isFilter) {
-					var obj = DV.c.period.objects,
-						a = [];
-                    for (var i = 0; i < obj.length; i++) {
-						a.push('periodIds=' + obj[i].id);
+					var a = [];
+					for (var r in DV.c.period.rp) {
+						if (DV.c.period.rp[r]) {
+							a.push(r + '=true');
+						}
 					}
-                    return (isFilter && a.length > 1) ? a.slice(0,1) : a;
-                },
+					return a;
+				},
                 getIds: function() {
 					var obj = DV.c.period.objects,
 						a = [];
@@ -624,64 +613,14 @@ Ext.onReady( function() {
 					});
 					return a;
                 },
-                getNames: function(exception, isFilter) {
-					var ou = DV.c.organisationunit,
-						a = [];
-					if (ou.groupsetid) {
-						var groups = DV.init.system.organisationunitgroupsets[ou.groupsetid];
-						for (var i = 0; i < groups.length; i++) {
-							a.push(groups[i].name);
-						}
-					}
-					else {
-						if (DV.c.userorganisationunit || DV.c.userorganisationunitchildren) {
-							if (DV.c.userorganisationunit) {
-								a.push(DV.init.user.organisationunit.name);
-								DV.cmp.dimension.organisationunit.treepanel.addToStorage([DV.init.user.organisationunit]);
-							}
-							if (DV.c.userorganisationunitchildren) {
-								var ouc = DV.init.user.organisationunitchildren;
-								for (var i = 0; i < ouc.length; i++) {
-									a.push(ouc[i].name);
-								}
-								DV.cmp.dimension.organisationunit.treepanel.addToStorage(DV.init.user.organisationunitchildren);
-							}
-						}
-						else {
-							for (var i = 0; i < ou.objects.length; i++) {
-								a.push(ou.objects[i].name);
-							}
-						}
-					}
-					if (exception && isFilter && a.length > 1) {
-						DV.chart.warnings.push(DV.i18n.wm_multiple_filter_orgunit + ' ' + DV.i18n.wm_first_filter_used);
-					}
-					return (isFilter && a.length > 1) ? a.slice(0,1) : a;
-                },
                 getUrl: function(isFilter) {
 					var ou = DV.c.organisationunit,
 						a = [];
-					if (DV.c.userorganisationunit || DV.c.userorganisationunitchildren) {
-						if (DV.c.userorganisationunit) {
-							a.push('organisationUnitIds=' + DV.init.user.organisationunit.id);
-						}
-						if (DV.c.userorganisationunitchildren) {
-							var c = DV.init.user.organisationunitchildren;
-							for (var i = 0; i < c.length; i++) {
-								a.push('organisationUnitIds=' + c[i].id);
-							}
-						}
+					for (var i = 0; i < ou.objects.length; i++) {
+						a.push('organisationUnitIds=' + ou.objects[i].id);
 					}
-					else {
-						for (var i = 0; i < ou.objects.length; i++) {
-							a.push('organisationUnitIds=' + ou.objects[i].id);
-						}
-						if ((isFilter || ou.groupsetid) && a.length > 1) {
-							a = a.slice(0,1);
-						}
-					}
-					if (ou.groupsetid) {
-						a.push('organisationUnitGroupSetId=' + ou.groupsetid);
+					if (isFilter && a.length > 1) {
+						a = a.slice(0,1);
 					}
 					return a;
                 },
@@ -1201,8 +1140,8 @@ Ext.onReady( function() {
         toolbar: {
 			separator: {
 				xtype: 'tbseparator',
-				height: 18,
-				style: 'border-left: 1px solid #bbb; border-right: 1px solid #ececec'
+				height: 26,
+				style: 'border-left: 1px solid #d1d1d1; border-right: 1px solid #f1f1f1'
 			}
 		},
         number: {
@@ -1232,26 +1171,21 @@ Ext.onReady( function() {
 			}
 		},
         value: {
-            jsonfy: function(r) {
-                r = Ext.JSON.decode(r.responseText),
-                values = [];
-                for (var i = 0; i < r.length; i++) {
-					var t = r[i][1];
+            jsonfy: function(values) {
+                var a = [];
+                for (var i = 0; i < values.length; i++) {
                     var v = {
-						value: r[i][0],
-						type: t === 'in' ? DV.conf.finals.dimension.indicator.value :
-							  t === 'de' ? DV.conf.finals.dimension.dataelement.value :
-							  t === 'ds' ? DV.conf.finals.dimension.dataset.value : t,
-						dataid: r[i][2],
-						periodid: r[i][3],
-						organisationunitid: r[i][4]
+						value: parseFloat(values[i][0]),
+						data: values[i][1],
+						period: values[i][2],
+						organisationunit: values[i][3]
 					};
-					if (DV.util.variable.isNotEmpty(r[i][5])) {
-						v.organisationunitgroupid = r[i][5];
-					}
-					values.push(v);					
+					//if (DV.util.variable.isNotEmpty(r[i][5])) {
+						//v.organisationunitgroupid = r[i][5];
+					//}
+					a.push(v);					
                 }
-                return values;
+                return a;
             }
         },
         crud: {
@@ -1352,7 +1286,7 @@ Ext.onReady( function() {
                 fields: ['id', 'name'],
                 proxy: {
                     type: 'ajax',
-                    url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.indicator_get,
+                    url: '',
                     reader: {
                         type: 'json',
                         root: 'indicators'
@@ -1364,7 +1298,7 @@ Ext.onReady( function() {
 						s.each( function(r) {
 							r.data.name = DV.conf.util.jsonEncode(r.data.name);
 						});
-                        DV.util.store.addToStorage(s);
+						DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
                     }
                 }
@@ -1379,7 +1313,7 @@ Ext.onReady( function() {
                 fields: ['id', 'name'],
                 proxy: {
                     type: 'ajax',
-                    url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.dataelement_get,
+                    url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.dataelement_get,
                     reader: {
                         type: 'json',
                         root: 'dataElements'
@@ -1391,7 +1325,7 @@ Ext.onReady( function() {
 						s.each( function(r) {
 							r.data.name = DV.conf.util.jsonEncode(r.data.name);
 						});
-                        DV.util.store.addToStorage(s);
+						DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
                     }
                 }
@@ -1406,7 +1340,7 @@ Ext.onReady( function() {
                 fields: ['id', 'name'],
                 proxy: {
                     type: 'ajax',
-                    url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.dataset_get,
+                    url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.dataset_get,
                     reader: {
                         type: 'json',
                         root: 'dataSets'
@@ -1420,8 +1354,9 @@ Ext.onReady( function() {
 						s.each( function(r) {
 							r.data.name = DV.conf.util.jsonEncode(r.data.name);
 						});
-                        DV.util.store.addToStorage(s);
+						DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
+						s.sort('name', 'ASC');
                     }
                 }
             }),
@@ -1539,7 +1474,7 @@ Ext.onReady( function() {
 			
 			if (id) {
                 Ext.Ajax.request({
-                    url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + id + '.json?links=false',
+                    url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + id + '.json?links=false&paging=false',
                     scope: this,
                     success: function(r) {
 						if (!this.validation.response(r)) {
@@ -1565,25 +1500,25 @@ Ext.onReady( function() {
                         
                         if (f.indicators) {
 							for (var i = 0; i < f.indicators.length; i++) {
-								DV.c.indicator.objects.push({id: f.indicators[i].internalId, name: DV.conf.util.jsonEncode(f.indicators[i].shortName)});
+								DV.c.indicator.objects.push({id: f.indicators[i].id, name: DV.conf.util.jsonEncode(f.indicators[i].shortName)});
 							}
 						}
 						
 						if (f.dataElements) {
 							for (var i = 0; i < f.dataElements.length; i++) {
-								DV.c.dataelement.objects.push({id: f.dataElements[i].internalId, name: DV.conf.util.jsonEncode(f.dataElements[i].shortName)});
+								DV.c.dataelement.objects.push({id: f.dataElements[i].id, name: DV.conf.util.jsonEncode(f.dataElements[i].shortName)});
 							}
 						}
 						if (f.dataSets) {
 							for (var i = 0; i < f.dataSets.length; i++) {
-								DV.c.dataset.objects.push({id: f.dataSets[i].internalId, name: DV.conf.util.jsonEncode(f.dataSets[i].shortName)});
+								DV.c.dataset.objects.push({id: f.dataSets[i].id, name: DV.conf.util.jsonEncode(f.dataSets[i].shortName)});
 							}
 						}						
 						DV.c.period.rp = f.relativePeriods;
 						for (var i = 0; i < f.organisationUnits.length; i++) {
-							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].internalId, name: DV.conf.util.jsonEncode(f.organisationUnits[i].shortName)});
+							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].id, name: DV.conf.util.jsonEncode(f.organisationUnits[i].shortName)});
 						}
-						DV.c.organisationunit.groupsetid = f.organisationUnitGroupSet ? f.organisationUnitGroupSet.internalId : null;
+						DV.c.organisationunit.groupsetid = f.organisationUnitGroupSet ? f.organisationUnitGroupSet.id : null;
 						
                         DV.c.hidesubtitle = f.hideSubtitle;
                         DV.c.hidelegend = f.hideLegend;
@@ -1630,16 +1565,16 @@ Ext.onReady( function() {
 			}
 			
 			DV.c.data = {};
-			DV.c.data.objects = [];
-			DV.c.data.objects = DV.c.data.objects.concat(DV.c.indicator.objects);
-			DV.c.data.objects = DV.c.data.objects.concat(DV.c.dataelement.objects);
-			DV.c.data.objects = DV.c.data.objects.concat(DV.c.dataset.objects);
-			
+			DV.c.data.objects = DV.util.dimension.data.getObjects();
 			DV.c.period.objects = DV.util.dimension.period.getObjectsByRelativePeriods(DV.c.period.rp);
 			
-			if (!this.validation.objects()) {
+			if (!this.validation.objects.selection()) {
 				return;
 			}
+			
+			this.validation.objects[DV.c.dimension.series]();
+			this.validation.objects[DV.c.dimension.category]();
+			this.validation.objects[DV.c.dimension.filter](true);
 			
 			DV.c.series = DV.c[DV.c.dimension.series];
 			DV.c.category = DV.c[DV.c.dimension.category];
@@ -1648,10 +1583,6 @@ Ext.onReady( function() {
 			DV.c.series.dimension = DV.conf.finals.chart.series;
 			DV.c.category.dimension = DV.conf.finals.chart.category;
 			DV.c.filter.dimension = DV.conf.finals.chart.filter;
-			
-			DV.c.series.names = DV.util.dimension[DV.c.dimension.series].getNames(true);
-			DV.c.category.names = DV.util.dimension[DV.c.dimension.category].getNames(true);
-			DV.c.filter.names = DV.util.dimension[DV.c.dimension.filter].getNames(true, true);
 			
 			DV.c.series.url = DV.util.dimension[DV.c.dimension.series].getUrl();
 			DV.c.category.url = DV.util.dimension[DV.c.dimension.category].getUrl();
@@ -1783,8 +1714,6 @@ Ext.onReady( function() {
 			
 			DV.util.checkbox.setRelativePeriods(DV.c.period.rp);
 			
-			DV.cmp.dimension.organisationunit.treepanel.addToStorage(DV.c.organisationunit.objects);
-			
 			if (DV.c.organisationunit.groupsetid) {
 				if (DV.store.groupset.isloaded) {
 					DV.cmp.dimension.organisationunit.panel.groupsets.setValue(DV.c.organisationunit.groupsetid);
@@ -1809,23 +1738,48 @@ Ext.onReady( function() {
 				}
 				return true;
 			},
-			objects: function() {
-				if (!DV.c.data.objects.length) {
-					DV.util.notification.error(DV.i18n.et_no_indicators_dataelements_datasets, DV.i18n.em_no_indicators_dataelements_datasets);
-					return false;
+			objects: {
+				selection: function() {
+					if (!DV.c.data.objects.length) {
+						DV.util.notification.error(DV.i18n.et_no_indicators_dataelements_datasets, DV.i18n.em_no_indicators_dataelements_datasets);
+						return false;
+					}
+					if (!DV.c.period.objects.length) {
+						DV.util.notification.error(DV.i18n.et_no_periods, DV.i18n.em_no_periods);
+						return false;
+					}
+					if (!DV.c.organisationunit.objects.length) {
+						DV.util.notification.error(DV.i18n.et_no_orgunits, DV.i18n.em_no_orgunits);
+						return false;
+					}
+					return true;
+				},
+				data: function(isFilter) {
+					if (isFilter && DV.c.data.objects.length > 1) {
+						DV.chart.warnings.push(DV.i18n.wm_multiple_filter_ind_de_ds + ' ' + DV.i18n.wm_first_filter_used);
+						DV.c.data.objects = DV.c.data.objects.slice(0,1);
+					}
+				},
+				period: function(isFilter) {
+					if (isFilter && DV.c.period.objects.length > 1) {
+						DV.chart.warnings.push(DV.i18n.wm_multiple_filter_period + ' ' + DV.i18n.wm_first_filter_used);
+						DV.c.period.objects = DV.c.period.objects.slice(0,1);
+					}
+				},
+				organisationunit: function(isFilter) {
+					if (isFilter) {
+						if (DV.c.organisationunit.objects.length > 1) {
+							DV.chart.warnings.push(DV.i18n.wm_multiple_filter_orgunit + ' ' + DV.i18n.wm_first_filter_used);
+						}
+						else if (DV.c.organisationunit.groupsetid) {
+							DV.chart.warnings.push(DV.i18n.wm_multiple_filter_groups + ' ' + DV.i18n.wm_first_filter_used);
+						}
+						DV.c.organisationunit.objects = DV.c.organisationunit.objects.slice(0,1);
+					}
 				}
-				if (!DV.c.period.objects.length) {
-					DV.util.notification.error(DV.i18n.et_no_periods, DV.i18n.em_no_periods);
-					return false;
-				}
-				if (!DV.c.organisationunit.objects.length) {
-					DV.util.notification.error(DV.i18n.et_no_orgunits, DV.i18n.em_no_orgunits);
-					return false;
-				}
-				return true;
 			},
 			categories: function() {
-				if (DV.c.category.names.length < 2 && (DV.c.type === DV.conf.finals.chart.line || DV.c.type === DV.conf.finals.chart.area)) {
+				if (DV.c.category.objects.length < 2 && (DV.c.type === DV.conf.finals.chart.line || DV.c.type === DV.conf.finals.chart.area)) {
 					DV.util.notification.error(DV.i18n.et_line_area_categories, DV.i18n.em_line_area_categories);
 					return false;
 				}
@@ -1843,7 +1797,7 @@ Ext.onReady( function() {
 						DV.c.trendline = false;
 					}
 					
-					if (DV.c.category.names.length < 2) {
+					if (DV.c.category.objects.length < 2) {
 						reasons.push(DV.i18n.wm_required_categories);
 						DV.c.trendline = false;
 					}
@@ -1871,7 +1825,7 @@ Ext.onReady( function() {
 						DV.c.targetlinevalue = null;
 					}
 					
-					if (DV.c.category.names.length < 2) {
+					if (DV.c.category.objects.length < 2) {
 						reasons.push(DV.i18n.wm_required_categories);
 						DV.c.targetlinevalue = null;
 					}
@@ -1899,7 +1853,7 @@ Ext.onReady( function() {
 						DV.c.baselinevalue = null;
 					}
 					
-					if (DV.c.category.names.length < 2) {
+					if (DV.c.category.objects.length < 2) {
 						reasons.push(DV.i18n.wm_required_categories);
 						DV.c.baselinevalue = null;
 					}
@@ -1958,32 +1912,35 @@ Ext.onReady( function() {
             params = params.concat(DV.c.period.url);
             params = params.concat(DV.c.organisationunit.url);
             
-            var baseurl = DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.data_get;
+            var baseurl = DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.data_get;
             Ext.Array.each(params, function(item) {
                 baseurl = Ext.String.urlAppend(baseurl, item);
             });
             
+            params = {
+				periodIsFilter: (DV.c.dimension.filter === DV.conf.finals.dimension.period.value),
+				userOrganisationUnit: DV.c.userorganisationunit,
+				userOrganisationUnitChildren: DV.c.userorganisationunitchildren
+			};
+			if (DV.c.organisationunit.groupsetid) {
+				params.organisationUnitGroupSetId = DV.c.organisationunit.groupsetid;
+			}
+			
             Ext.Ajax.request({
                 url: baseurl,
+                method: 'GET',
+                params: params,
                 disableCaching: false,
                 success: function(r) {
-                    DV.value.values = DV.util.value.jsonfy(r);
+					r = Ext.JSON.decode(r.responseText);
+                    DV.value.values = DV.util.value.jsonfy(r.v);
                     if (!DV.state.validation.value()) {
 						return;
 					}
 					
-                    Ext.Array.each(DV.value.values, function(item) {						
-                        item[DV.conf.finals.dimension.data.value] = DV.store[item.type].available.storage[item.dataid].name;
-                        item[DV.conf.finals.dimension.period.value] = DV.util.dimension.period.getNameById(item.periodid);
-                        item[DV.conf.finals.dimension.organisationunit.value] = DV.cmp.dimension.organisationunit.treepanel.findNameById(item.organisationunitid);
-                        
-                        if (item.organisationunitgroupid) {
-							item[DV.conf.finals.dimension.organisationunit.value] = DV.util.dimension.organisationunit.getGroupNameByGroupId(item.organisationunitgroupid);
-							item.organisationunitid = item.organisationunitgroupid;
-						}
-						
-                        item.value = parseFloat(item.value);
-                    });
+					DV.c.data.names = r.d;
+					DV.c.period.names = r.p;
+					DV.c.organisationunit.names = r.o;
                     
                     if (exe) {
                         DV.chart.getData(true);
@@ -2398,8 +2355,9 @@ Ext.onReady( function() {
                 items: [
                     {
                         xtype: 'toolbar',
+                        cls: 'dv-toolbar-2',
                         height: 45,
-                        style: 'padding-top:1px; border-style:none',
+                        style: 'padding-top:0px; border-style:none',
                         defaults: {
                             height: 40,
                             toggleGroup: 'chartsettings',
@@ -2601,7 +2559,7 @@ Ext.onReady( function() {
 													fields: ['id', 'name', 'index'],
 													proxy: {
 														type: 'ajax',
-														url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.indicatorgroup_get,
+														url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.indicatorgroup_get,
 														reader: {
 															type: 'json',
 															root: 'indicatorGroups'
@@ -2610,7 +2568,10 @@ Ext.onReady( function() {
 													listeners: {
 														load: function(s) {
 															s.add({id: 0, name: DV.i18n.all_indicator_groups, index: -1});
-															s.sort('index', 'ASC');
+															s.sort([																
+																{ property: 'index', direction: 'ASC' },
+																{ property: 'name', direction: 'ASC' }
+															]);
 														}
 													}
 												}),
@@ -2624,7 +2585,14 @@ Ext.onReady( function() {
 															DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
 														}
 														else {
-															store.load({params: {id: cb.getValue()}});
+															if (cb.getValue() === 0) {
+																store.proxy.url = DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.indicator_getall;
+																store.load();
+															}
+															else {
+																store.proxy.url = DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.indicator_get + cb.getValue() + '.json';
+																store.load();
+															}
 														}
 													}
 												}
@@ -2762,7 +2730,7 @@ Ext.onReady( function() {
 													fields: ['id', 'name', 'index'],
 													proxy: {
 														type: 'ajax',
-														url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.dataelementgroup_get,
+														url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.dataelementgroup_get,
 														reader: {
 															type: 'json',
 															root: 'dataElementGroups'
@@ -2771,7 +2739,10 @@ Ext.onReady( function() {
 													listeners: {
 														load: function(s) {
 															s.add({id: 0, name: '[ All data element groups ]', index: -1});
-															s.sort('index', 'ASC');
+															s.sort([																
+																{ property: 'index', direction: 'ASC' },
+																{ property: 'name', direction: 'ASC' }
+															]);
 														}
 													}
 												}),
@@ -2785,7 +2756,14 @@ Ext.onReady( function() {
 															DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
 														}
 														else {
-															store.load({params: {id: cb.getValue()}});
+															if (cb.getValue() === 0) {
+																store.proxy.url = DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.dataelement_getall;
+																store.load();
+															}
+															else {
+																store.proxy.url = DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.dataelement_get + cb.getValue() + '.json';
+																store.load();
+															}
 														}
 													}
 												}
@@ -3216,29 +3194,12 @@ Ext.onReady( function() {
 												autoScroll: true,
 												multiSelect: true,
 												rendered: false,
-												storage: {},
-												addToStorage: function(objects) {
-													for (var i = 0; i < objects.length; i++) {
-														this.storage[objects[i].id] = objects[i];
-													}
-												},
 												selectRoot: function() {
 													if (this.rendered) {
 														if (!this.getSelectionModel().getSelection().length) {
 															this.getSelectionModel().select(this.getRootNode());
 														}
 													}
-												},
-												findNameById: function(id) {					
-													var name = this.store.getNodeById(id) ? this.store.getNodeById(id).data.text : null;
-													if (!name) {
-														for (var k in this.storage) {
-															if (k == id) {
-																name = this.storage[k].name;
-															}
-														}
-													}
-													return name;
 												},
 												store: Ext.create('Ext.data.TreeStore', {
 													proxy: {
@@ -3580,10 +3541,10 @@ Ext.onReady( function() {
                 bodyStyle: 'padding-top:5px',
                 tbar: {
                     xtype: 'toolbar',
-                    cls: 'dv-toolbar',
+                    cls: 'dv-toolbar-1',
                     height: DV.conf.layout.center_tbar_height,
                     defaults: {
-                        height: 26
+                        height: 30
                     },
                     items: [
                         {
@@ -3615,7 +3576,6 @@ Ext.onReady( function() {
                                 DV.exe.execute();
                             }
                         },
-						' ', DV.util.toolbar.separator, ' ',
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
@@ -3623,7 +3583,6 @@ Ext.onReady( function() {
                             listeners: {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
-                                        margin: '2 0 0 0',
                                         shadow: false,
                                         showSeparator: false,
                                         items: [
@@ -3720,7 +3679,7 @@ Ext.onReady( function() {
                                                                     store: DV.store.favorite,
                                                                     tbar: {
                                                                         id: 'favorite_t',
-                                                                        cls: 'dv-toolbar',
+                                                                        cls: 'dv-toolbar-2',
                                                                         height: 30,
                                                                         defaults: {
                                                                             height: 24
@@ -3736,10 +3695,11 @@ Ext.onReady( function() {
                                                                                     afterrender: function(b) {
                                                                                         this.addCls('dv-menu-togglegroup');
                                                                                         this.menu = Ext.create('Ext.menu.Menu', {
-                                                                                            shadowOffset: 1,
+																							margin: '2 0 0 0',
+																							shadow: false,
                                                                                             showSeparator: false,
                                                                                             width: 109,
-                                                                                            height: 70,
+                                                                                            height: 67,
                                                                                             items: [
                                                                                                 {
                                                                                                     xtype: 'radiogroup',
@@ -3833,53 +3793,56 @@ Ext.onReady( function() {
                                                                                                 }
                                                                                             }
                                                                                         ],
-                                                                                        bbar: [
-																							{
-																								xtype: 'label',
-																								style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:50%',
-																								listeners: {
-																									added: function() {
-																										DV.cmp.favorite.rename.label = this;
+                                                                                        bbar: {
+																							cls: 'dv-toolbar-2',
+																							items: [
+																								{
+																									xtype: 'label',
+																									style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:50%',
+																									listeners: {
+																										added: function() {
+																											DV.cmp.favorite.rename.label = this;
+																										}
+																									}
+																								},
+																								'->',
+																								{
+																									text: DV.i18n.cancel,
+																									handler: function() {
+																										this.up('window').close();
+																									}
+																								},
+																								{
+																									text: DV.i18n.rename,
+																									disabled: true,
+																									xable: function() {
+																										var value = this.up('window').cmp.name.getValue();
+																										if (value) {
+																											if (DV.store.favorite.findExact('name', value) == -1) {
+																												this.enable();
+																												DV.cmp.favorite.rename.label.setText('');
+																												return;
+																											}
+																											else {
+																												DV.cmp.favorite.rename.label.setText(DV.i18n.name_already_in_use);
+																											}
+																										}
+																										this.disable();
+																									},
+																									handler: function() {
+																										DV.util.crud.favorite.updateName(this.up('window').cmp.name.getValue());
+																									},
+																									listeners: {
+																										afterrender: function() {
+																											this.up('window').cmp.rename = this;
+																										},
+																										change: function() {
+																											this.xable();
+																										}
 																									}
 																								}
-																							},
-																							'->',
-                                                                                            {
-                                                                                                text: DV.i18n.cancel,
-                                                                                                handler: function() {
-                                                                                                    this.up('window').close();
-                                                                                                }
-                                                                                            },
-                                                                                            {
-                                                                                                text: DV.i18n.rename,
-                                                                                                disabled: true,
-                                                                                                xable: function() {
-                                                                                                    var value = this.up('window').cmp.name.getValue();
-                                                                                                    if (value) {
-																										if (DV.store.favorite.findExact('name', value) == -1) {
-																											this.enable();
-																											DV.cmp.favorite.rename.label.setText('');
-																											return;
-																										}
-																										else {
-																											DV.cmp.favorite.rename.label.setText(DV.i18n.name_already_in_use);
-																										}
-																									}
-																									this.disable();
-                                                                                                },
-                                                                                                handler: function() {
-                                                                                                    DV.util.crud.favorite.updateName(this.up('window').cmp.name.getValue());
-                                                                                                },
-                                                                                                listeners: {
-                                                                                                    afterrender: function() {
-                                                                                                        this.up('window').cmp.rename = this;
-                                                                                                    },
-                                                                                                    change: function() {
-                                                                                                        this.xable();
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        ],
+																							]
+																						},
                                                                                         listeners: {
                                                                                             afterrender: function() {
                                                                                                 DV.cmp.favorite.rename.window = this;
@@ -3930,25 +3893,28 @@ Ext.onReady( function() {
                                                                                                     cls: 'dv-window-confirm-list'
                                                                                                 }                                                                                                    
                                                                                             ],
-                                                                                            bbar: [
-                                                                                                {
-                                                                                                    text: DV.i18n.cancel,
-                                                                                                    handler: function() {
-                                                                                                        this.up('window').close();
-                                                                                                    }
-                                                                                                },
-                                                                                                '->',
-                                                                                                {
-                                                                                                    text: DV.i18n.delete_object,
-                                                                                                    handler: function() {
-                                                                                                        this.up('window').close();
-                                                                                                        DV.util.crud.favorite.del(function() {
-                                                                                                            DV.cmp.favorite.name.setValue('');
-                                                                                                            DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
-                                                                                                        });                                                                                                        
-                                                                                                    }
-                                                                                                }
-                                                                                            ]
+                                                                                            bbar: {
+																								cls: 'dv-toolbar-2',
+																								items: [
+																									{
+																										text: DV.i18n.cancel,
+																										handler: function() {
+																											this.up('window').close();
+																										}
+																									},
+																									'->',
+																									{
+																										text: DV.i18n.delete_object,
+																										handler: function() {
+																											this.up('window').close();
+																											DV.util.crud.favorite.del(function() {
+																												DV.cmp.favorite.name.setValue('');
+																												DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
+																											});                                                                                                        
+																										}
+																									}
+																								]
+																							}
                                                                                         });
                                                                                         w.setPosition((screen.width/2)-(DV.conf.layout.window_confirm_width/2), DV.conf.layout.window_favorite_ypos + 100, true);
                                                                                         w.show();
@@ -3980,113 +3946,116 @@ Ext.onReady( function() {
                                                                     }
                                                                 }
                                                             ],
-                                                            bbar: [
-                                                                {
-                                                                    xtype: 'label',
-                                                                    style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:70%',
-                                                                    listeners: {
-                                                                        added: function() {
-                                                                            DV.cmp.favorite.label = this;
-                                                                        }
-                                                                    }
-                                                                },																
-                                                                '->',
-                                                                {
-                                                                    text: DV.i18n.save,
-                                                                    disabled: true,
-                                                                    xable: function() {
-                                                                        if (DV.c.rendered) {
-                                                                            if (DV.cmp.favorite.name.getValue()) {
-                                                                                var index = DV.store.favorite.findExact('name', DV.cmp.favorite.name.getValue());
-                                                                                if (index != -1) {
-                                                                                    if (DV.store.favorite.getAt(index).data.userId || DV.init.user.isadmin) {
-                                                                                        this.enable();
-                                                                                        DV.cmp.favorite.label.setText('');
-                                                                                        return true;
-                                                                                    }
-                                                                                    else {
-                                                                                        DV.cmp.favorite.label.setText(DV.i18n.system_favorite_overwrite_not_allowed);
-                                                                                    }
-                                                                                }
-                                                                                else {
-                                                                                    this.enable();
-                                                                                    DV.cmp.favorite.label.setText('');
-                                                                                    return true;
-                                                                                }
-                                                                            }
-                                                                            else {
-                                                                                DV.cmp.favorite.label.setText('');
-                                                                            }
-                                                                        }
-                                                                        else {
-                                                                            if (DV.cmp.favorite.name.getValue()) {
-                                                                                DV.cmp.favorite.label.setText(DV.i18n.example_chart_cannot_be_saved);
-                                                                            }
-                                                                            else {
-                                                                                DV.cmp.favorite.label.setText('');
-                                                                            }																				
-                                                                        }
-                                                                        this.disable();
-                                                                        return false;
-                                                                    },
-                                                                    handler: function() {
-                                                                        if (this.xable()) {
-                                                                            var value = DV.cmp.favorite.name.getValue();
-                                                                            if (DV.store.favorite.findExact('name', value) != -1) {
-                                                                                var item = value.length > 40 ? (value.substr(0,40) + '...') : value;
-                                                                                var w = Ext.create('Ext.window.Window', {
-                                                                                    title: DV.i18n.save_favorite,
-                                                                                    width: DV.conf.layout.window_confirm_width,
-                                                                                    bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
-                                                                                    modal: true,
-                                                                                    items: [
-                                                                                        {
-                                                                                            html: DV.i18n.are_you_sure,
-                                                                                            bodyStyle: 'border-style:none'
-                                                                                        },
-                                                                                        {
-                                                                                            html: '<br/>' + item,
-                                                                                            cls: 'dv-window-confirm-list'
-                                                                                        }
-                                                                                    ],
-                                                                                    bbar: [
-                                                                                        {
-                                                                                            text: DV.i18n.cancel,
-                                                                                            handler: function() {
-                                                                                                this.up('window').close();
-                                                                                            }
-                                                                                        },
-                                                                                        '->',
-                                                                                        {
-                                                                                            text: DV.i18n.overwrite,
-                                                                                            handler: function() {
-                                                                                                this.up('window').close();
-                                                                                                DV.util.crud.favorite.update(function() {
-                                                                                                    DV.cmp.favorite.window.resetForm();
-                                                                                                });
-                                                                                                
-                                                                                            }
-                                                                                        }
-                                                                                    ]
-                                                                                });
-                                                                                w.setPosition((screen.width/2)-(DV.conf.layout.window_confirm_width/2), DV.conf.layout.window_favorite_ypos + 100, true);
-                                                                                w.show();
-                                                                            }
-                                                                            else {
-                                                                                DV.util.crud.favorite.create(function() {
-                                                                                    DV.cmp.favorite.window.resetForm();
-                                                                                    DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
-                                                                                });
-                                                                            }                                                                                    
-                                                                        }
-                                                                    },
-                                                                    listeners: {
-                                                                        added: function() {
-                                                                            DV.cmp.favorite.save = this;
-                                                                        }
-                                                                    }
-                                                                }
-                                                            ],
+                                                            bbar: {
+																cls: 'dv-toolbar-2',
+																items: [
+																	{
+																		xtype: 'label',
+																		style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:70%',
+																		listeners: {
+																			added: function() {
+																				DV.cmp.favorite.label = this;
+																			}
+																		}
+																	},																
+																	'->',
+																	{
+																		text: DV.i18n.save,
+																		disabled: true,
+																		xable: function() {
+																			if (DV.c.rendered) {
+																				if (DV.cmp.favorite.name.getValue()) {
+																					var index = DV.store.favorite.findExact('name', DV.cmp.favorite.name.getValue());
+																					if (index != -1) {
+																						if (DV.store.favorite.getAt(index).data.userId || DV.init.user.isadmin) {
+																							this.enable();
+																							DV.cmp.favorite.label.setText('');
+																							return true;
+																						}
+																						else {
+																							DV.cmp.favorite.label.setText(DV.i18n.system_favorite_overwrite_not_allowed);
+																						}
+																					}
+																					else {
+																						this.enable();
+																						DV.cmp.favorite.label.setText('');
+																						return true;
+																					}
+																				}
+																				else {
+																					DV.cmp.favorite.label.setText('');
+																				}
+																			}
+																			else {
+																				if (DV.cmp.favorite.name.getValue()) {
+																					DV.cmp.favorite.label.setText(DV.i18n.example_chart_cannot_be_saved);
+																				}
+																				else {
+																					DV.cmp.favorite.label.setText('');
+																				}																				
+																			}
+																			this.disable();
+																			return false;
+																		},
+																		handler: function() {
+																			if (this.xable()) {
+																				var value = DV.cmp.favorite.name.getValue();
+																				if (DV.store.favorite.findExact('name', value) != -1) {
+																					var item = value.length > 40 ? (value.substr(0,40) + '...') : value;
+																					var w = Ext.create('Ext.window.Window', {
+																						title: DV.i18n.save_favorite,
+																						width: DV.conf.layout.window_confirm_width,
+																						bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
+																						modal: true,
+																						items: [
+																							{
+																								html: DV.i18n.are_you_sure,
+																								bodyStyle: 'border-style:none'
+																							},
+																							{
+																								html: '<br/>' + item,
+																								cls: 'dv-window-confirm-list'
+																							}
+																						],
+																						bbar: [
+																							{
+																								text: DV.i18n.cancel,
+																								handler: function() {
+																									this.up('window').close();
+																								}
+																							},
+																							'->',
+																							{
+																								text: DV.i18n.overwrite,
+																								handler: function() {
+																									this.up('window').close();
+																									DV.util.crud.favorite.update(function() {
+																										DV.cmp.favorite.window.resetForm();
+																									});
+																									
+																								}
+																							}
+																						]
+																					});
+																					w.setPosition((screen.width/2)-(DV.conf.layout.window_confirm_width/2), DV.conf.layout.window_favorite_ypos + 100, true);
+																					w.show();
+																				}
+																				else {
+																					DV.util.crud.favorite.create(function() {
+																						DV.cmp.favorite.window.resetForm();
+																						DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
+																					});
+																				}                                                                                    
+																			}
+																		},
+																		listeners: {
+																			added: function() {
+																				DV.cmp.favorite.save = this;
+																			}
+																		}
+																	}
+																]
+															},
                                                             listeners: {
                                                                 show: function() {                                               
                                                                     DV.cmp.favorite.save.xable();
@@ -4108,7 +4077,11 @@ Ext.onReady( function() {
                                                     }
                                                 }
                                             },
-                                            '-',
+                                            {
+												xtype: 'menuseparator',
+												height: 1,
+												style: 'margin:1px 0; border-color:#dadada'
+											},
                                             {
                                                 xtype: 'grid',
                                                 cls: 'dv-menugrid',
@@ -4132,7 +4105,7 @@ Ext.onReady( function() {
                                                     }
                                                 ],
                                                 setHeightInMenu: function(store) {
-                                                    var h = store.getCount() * 26,
+                                                    var h = store.getCount() * 24,
                                                         sh = DV.util.viewport.getSize().y * 0.6;
                                                     this.setHeight(h > sh ? sh : h);
                                                     this.doLayout();
@@ -4215,42 +4188,45 @@ Ext.onReady( function() {
 												}
 											}
 										],
-										bbar: [
-											'->',
-											{
-												text: DV.i18n.share,
-												disabled: true,
-												xable: function() {
-													if (DV.cmp.share.textarea.getValue()) {
-														this.enable();
-													}
-													else {
-														this.disable();
-													}
-												},
-												handler: function() {
-													if (DV.cmp.share.textarea.getValue() && DV.c.currentFavorite) {
-														Ext.Ajax.request({
-															url: DV.conf.finals.ajax.path_api + 'interpretations/chart/' + DV.c.currentFavorite.id,
-															method: 'POST',
-															params: DV.cmp.share.textarea.getValue(),
-															headers: {'Content-Type': 'text/html'},
-															success: function() {
-																DV.cmp.share.textarea.reset();
-																DV.cmp.share.button.disable();
-																DV.cmp.share.window.hide();
-																DV.util.notification.interpretation(DV.i18n.interpretation_was_shared + '.');
-															}
-														});
-													}
-												},
-												listeners: {
-													added: function() {
-														DV.cmp.share.button = this;
+										bbar: {
+											cls: 'dv-toolbar-2',
+											items: [
+												'->',
+												{
+													text: DV.i18n.share,
+													disabled: true,
+													xable: function() {
+														if (DV.cmp.share.textarea.getValue()) {
+															this.enable();
+														}
+														else {
+															this.disable();
+														}
+													},
+													handler: function() {
+														if (DV.cmp.share.textarea.getValue() && DV.c.currentFavorite) {
+															Ext.Ajax.request({
+																url: DV.conf.finals.ajax.path_api + 'interpretations/chart/' + DV.c.currentFavorite.id,
+																method: 'POST',
+																params: DV.cmp.share.textarea.getValue(),
+																headers: {'Content-Type': 'text/html'},
+																success: function() {
+																	DV.cmp.share.textarea.reset();
+																	DV.cmp.share.button.disable();
+																	DV.cmp.share.window.hide();
+																	DV.util.notification.interpretation(DV.i18n.interpretation_was_shared + '.');
+																}
+															});
+														}
+													},
+													listeners: {
+														added: function() {
+															DV.cmp.share.button = this;
+														}
 													}
 												}
-											}
-										]
+											]
+										}
 									}).show();
 								}
 							},
@@ -4289,7 +4265,7 @@ Ext.onReady( function() {
                             listeners: {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
-                                        margin: '2 0 0 0',
+										cls: 'dv-menu',
                                         shadow: false,
                                         showSeparator: false,
                                         items: [
