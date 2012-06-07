@@ -10,7 +10,7 @@
 				<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:350px">
 			</td>
 			<td>
-				<input type="button" id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" #if($organisationUnit) #else disabled #end>
+				<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" #if($organisationUnit) #else disabled #end>
 			</td>        
 		</tr> 
 	</table>
@@ -39,13 +39,13 @@
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					</td>	
 					<td></td>
-					<td><input type="button" value='+' onclick='addAttributeOption();'>
+					<td><input type="button" class='small-button' value='+' onclick='addAttributeOption();'>
 						<td>
 							$i18n.getString('search_by_selected_unit')
 							<input type='checkbox' id='searchBySelectedOrgunit' name='searchBySelectedOrgunit' value='true' />
 						</td>
 						<td>
-							<input type="button" value='$i18n.getString( "search" )' onclick='searchAdvancedPatients();'>
+							<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='searchAdvancedPatients();'>
 						</td>
 					</td>
 				</tr>

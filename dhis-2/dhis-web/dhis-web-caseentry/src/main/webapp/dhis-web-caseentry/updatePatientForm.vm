@@ -65,7 +65,7 @@
 <table>
 		
 	<tr>
-		<th colspan="3" class="heading-column">$i18n.getString( "system_identifier" )</th>
+		<th colspan="2" class="heading-column">$i18n.getString( "system_identifier" )</th>
 	</tr>	
 	<tr>
 		<td></td>
@@ -76,15 +76,15 @@
 	</tr>	
 
 	<tr>
-		<th colspan="3" class="heading-column">$i18n.getString( "demographics" )</th>
+		<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
 	</tr>
 	<tr>
 		<td class='text-column'><label for="fullName">$i18n.getString( "full_name" )</label></td>
-		<td class="input-column" colspan='2'><input type="text" id="fullName" name="fullName" value="$!patient.getFullName()" class="{validate:{required:true, unicodechars:true, rangelength:[7,50]}}"></td>
+		<td class="input-column"><input type="text" id="fullName" name="fullName" value="$!patient.getFullName()" class="{validate:{required:true, unicodechars:true, rangelength:[7,50]}}"></td>
 	</tr>
 	<tr>
 		<td class='text-column'><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td class="input-column" colspan='2' >
+		<td class="input-column">
 			<select id="gender" name="gender">
 				<option value="M" #if( $!patient.gender == 'M' ) selected="selected" #end>$i18n.getString( "male" )</option>
 				<option value="F" #if( $!patient.gender == 'F' ) selected="selected" #end>$i18n.getString( "female" )</option>
@@ -95,22 +95,20 @@
 	
 	<tr>
 		<td class='text-column' ><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td class="input-column" style='width:100px'>	
+		<td class="input-column">	
 			<select id='dobType' name="dobType" style='width:100px' onchange='dobTypeOnChange("patientForm")' >
 				<option value="A" #if($patient.dobType=='A') checked #end >$i18n.getString( "approximated" )</option>
 				<option value="D" #if($patient.dobType=='D') checked #end >$i18n.getString( "declared" )</option>
 				<option value="V" #if($patient.dobType=='V') checked #end >$i18n.getString( "verified" )</option>
 			</select>
-		</td>
-		<td style='width:240px'>
-			<input type="text" id="birthDate" name="birthDate" value='$format.formatDate($!patient.birthDate)' style='width:242px;' />
-			<input type="text" id="age" name="age" value='$!patient.getAge()' class="{validate:{required:true, number:true}}" style='width:250px' />
+			<input type="text" id="birthDate" name="birthDate" value='$format.formatDate($!patient.birthDate)' style='width:145px;' />
+			<input type="text" id="age" name="age" value='$!patient.getAge()' class="{validate:{required:true, number:true}}" style='width:145px' />
 		</td>
 	</tr>
 
 	<tr>
 		<td></td>
-		<td class="input-column" colspan='2'>
+		<td class="input-column">
 			<span id='validateBirthdate' class="hidden" style='color:red'><i>$i18n.getString('please_fill_out_only_one_of_these_fields')</i></span>
 			<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 		</td>
@@ -118,7 +116,7 @@
 	
 	<tr>
 		<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-		<td class="input-column" colspan='2'>
+		<td class="input-column">
 			<input type="text" id="phoneNumber" name="phoneNumber" value="$!patient.phoneNumber" />
 		</td>
 	</tr>
@@ -145,7 +143,7 @@
 
 	<tr id='deathDateTR' class="hidden" >
 		<td class='text-column'><label for="deathDate">$i18n.getString("death_date")</label></td>
-		<td class="input-column" colspan='2'>
+		<td class="input-column">
 			<input type="text" name="deathDate" id="deathDate" #if($!patient.deathDate) value="$format.formatDate( $!patient.deathDate )" #end>
 		</td>
 	</tr>
@@ -156,15 +154,15 @@
 		#set( $representative = $!patient.representative ) 
 		<tr>
 			<td class='text-column'>$i18n.getString("representative")</td>
-			<td colspan='2'> 
-				$!patient.representative.getFullName() <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' class='imgButton'>
+			<td> 
+				$!patient.representative.getFullName() <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' class='img-button'>
 			</td>
 		</tr>
 	#end
 
 	#if( $identifierTypes.size() > 0)
 		<!--IDENTIFIERS -->
-		<tr><th colspan="3" class="heading-column">$i18n.getString("patient_identifiers")</th></tr>
+		<tr><th colspan="2" class="heading-column">$i18n.getString("patient_identifiers")</th></tr>
 		#foreach ($identifierType in $identifierTypes)
 			#if( $identifierType.program )
 			#else
@@ -172,7 +170,7 @@
 				#set( $identifier = $identiferMap.get( $identifierType.id ) )
 				<tr>
 					<td class='text-column'><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-					<td class="input-column" colspan='2'><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$!identifier" data="{related:$identifierType.related}" #if($identifierType.related && $!patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>	
+					<td class="input-column"><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$!identifier" data="{related:$identifierType.related}" #if($identifierType.related && $!patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>	
 				</tr>
 			#end
 		#end
@@ -182,14 +180,14 @@
 
 	#foreach ($attributeGroup in $attributeGroups )
 		<tr><td>&nbsp;</td></tr>	
-		<tr><th colspan="3" class="heading-column">$attributeGroup.name</th></tr>
+		<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 		#foreach($attribute in $attributeGroup.attributes)
 			#if( $attribute.program )
 			#else
 				#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 				<tr>
 					<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-					<td class="input-column" colspan='2' >
+					<td class="input-column">
 						#if( $attribute.valueType == "YES/NO" )
 							<select id="attr$attribute.id"  name="attr$attribute.id" >              
 								<option value="">[$i18n.getString( "please_select" )]</option>
@@ -221,13 +219,13 @@
 	<!-- ATTRIBUTES NOT IN GROUPS -->
 
 	#if ( $noGroupAttributes && $noGroupAttributes.size() > 0) 	
-		<tr><th colspan="3" class="heading-column">$i18n.getString( "Other details" )</th></tr>
+		<tr><th colspan="2" class="heading-column">$i18n.getString( "Other details" )</th></tr>
 		#foreach($attribute in $noGroupAttributes )
 		#set( $attributeValue = "" )
 		#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 			<tr>
 				<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-				<td class="input-column" colspan='2' >
+				<td class="input-column">
 					#if( $attribute.valueType == "YES/NO" )
 						<select id="attr$attribute.id"  name="attr$attribute.id" >              
 							<option value="">[$i18n.getString( "please_select" )]</option>
@@ -253,12 +251,15 @@
 			</tr>
 		#end
 	#end
+	<tr><td><td><p></p></td></tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="submit" class='button' value="$i18n.getString( 'update' )" >
+			<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" />
+		</td>
+	</tr>
 </table>
-
-<p>
-	<input type="submit" class='button' value="$i18n.getString( 'update' )" >
-	<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" />
-</p>
 
 </form> 	
 

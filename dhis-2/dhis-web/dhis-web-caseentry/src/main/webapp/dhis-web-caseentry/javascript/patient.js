@@ -808,7 +808,7 @@ function showSelectedDataRecoding( patientId )
 			
 			var programId = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected').val();
 			$('#dataRecordingSelectDiv [id=programId]').val( programId );
-			$('#dataRecordingSelectDiv [id=programIdTR]').hide();
+			$('#dataRecordingSelectDiv [id=inputCriteria]').hide();
 			
 			loadProgramStages();
 			hideLoader();
