@@ -85,9 +85,7 @@
 	</fieldset>
 	
 	<p></p>
-		
 	<div id='programEnrollmentDiv' class='hidden'></div>
-
 </div>
 
 <script>
