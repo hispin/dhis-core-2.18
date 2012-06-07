@@ -38,6 +38,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="clazz" value="org.hisp.dhis.program.ProgramStageInstance" />
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
+		<property name="statementBuilder" ref="statementBuilder"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramInstanceStore"

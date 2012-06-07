@@ -663,7 +663,7 @@
 		
 		<action name="loadReportProgramStages"
 			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/responseProgramStages.vm</result>
+			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStages.vm</result>
 		</action>
 	
 		<action name="loadDataElements"
