@@ -7,6 +7,7 @@
 currentUrlLink = "";
 currentParentId = "";
 
+isAjax = true;
 var isOrgUnitSelected = false;
 
 function organisationUnitModeSelected( units )
