@@ -804,6 +804,27 @@ Ext.onReady( function() {
 				}
 			})
 		},
+		getFilterValues: function()
+		{
+			var grid = TR.datatable.datatable;
+			
+			var filters = grid.filters.getFilterData();
+			for( var i=0; i<filters.length; i++ )
+			{
+				var filter = filters[i];
+				
+				var compare = '=';
+				if( filter.data.comparison == 'lt')
+					compare = '<' ;
+				else if( filter.data.comparison == 'gt' )
+					compare = '>' ;
+					
+				var value = compare + "'"+ filter.data.value + "'";
+				
+				var record = grid.getView().getRecord( grid.getView().getNode(0) );
+				record.set(filter.field, value);
+			}
+		},
 		getParams: function() {
 			var p = {};
             p.startDate = TR.cmp.settings.startDate.rawValue;
@@ -1214,7 +1235,7 @@ Ext.onReady( function() {
 					encode: true,
 					local: false,
 					buildQuery : function (filters) {
-						for( var i=0;i<filters.length;i++)
+						/* for( var i=0;i<filters.length;i++)
 						{
 							var filter = filters[i];
 							var field = filter.field;
@@ -1229,7 +1250,7 @@ Ext.onReady( function() {
 							var grid = TR.datatable.datatable;
 							var record = grid.getView().getRecord( grid.getView().getNode(0) );
 							record.set(field, value);
-						}
+						} */
 						TR.exe.filter();
 					},
 					filters: []
@@ -1406,6 +1427,7 @@ Ext.onReady( function() {
 					dataIndex: 'col' + index,
 					name: id,
 					hidden: eval(TR.value.columns[index].hidden ),
+					menuFilterText: TR.value.filter,
 					sortable: false,
 					draggable: true,
 					isEditAllowed: true,
@@ -1438,6 +1460,7 @@ Ext.onReady( function() {
 				dataIndex: 'col' + index,
 				name: id,
 				hidden: eval(TR.value.columns[index].hidden ),
+				menuFilterText: TR.value.filter,
 				sortable: false,
 				draggable: true,
 				isEditAllowed: true,
