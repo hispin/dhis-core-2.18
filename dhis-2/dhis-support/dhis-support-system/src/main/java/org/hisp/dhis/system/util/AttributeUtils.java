@@ -45,10 +45,10 @@ public class AttributeUtils
     /**
      * Given a list of JSON formatted values (with keys: 'id' and 'value'), this
      * method will add/update {@link AttributeValue} into the given {@code Set}.
-     *
+     * 
      * @param jsonAttributeValues List of JSON formatted values, needs two keys:
-     *                            id => ID of attribute this value belongs to value => Actual value
-     * @param attributeValues     Set that will be updated
+     *        id => ID of attribute this value belongs to value => Actual value
+     * @param attributeValues Set that will be updated
      * @param attributeService
      */
     public static void updateAttributeValuesFromJson( Set<AttributeValue> attributeValues,
@@ -64,7 +64,7 @@ public class AttributeUtils
 
             Attribute attribute = attributeService.getAttribute( attributeValue.getId() );
 
-            if ( attribute == null || attributeValue.getValue() == null || attributeValue.getValue().length() == 0 )
+            if ( attribute == null )
             {
                 continue;
             }
@@ -73,15 +73,23 @@ public class AttributeUtils
 
             for ( AttributeValue attributeValueItem : attributeValues )
             {
-                if ( attributeValueItem.getAttribute().equals( attribute ) )
+                if ( attributeValueItem.getAttribute().getId() == attribute.getId() )
                 {
-                    attributeValueItem.setValue( attributeValue.getValue() );
-                    attributeService.updateAttributeValue( attributeValueItem );
-                    attributeValue = null;
+                    if ( attributeValue.getValue() == null || attributeValue.getValue().length() == 0 )
+                    {
+                    
+                        attributeService.deleteAttributeValue( attributeValueItem );
+                    }
+                    else
+                    {
+                        attributeValueItem.setValue( attributeValue.getValue() );
+                        attributeService.updateAttributeValue( attributeValueItem );
+                        attributeValue = null;
+                    }
                 }
             }
 
-            if ( attributeValue != null )
+            if ( attributeValue != null && attributeValue.getValue() != null && !attributeValue.getValue().isEmpty())
             {
                 attributeService.addAttributeValue( attributeValue );
                 attributeValues.add( attributeValue );
