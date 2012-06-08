@@ -734,37 +734,44 @@ Ext.onReady( function() {
 						TR.value.columns = json.columns;
 						TR.value.values=json.items;
 						
+						// Get fields
 						var fields = [];
 						fields[0] = 'id';
 						for( var index=1; index < TR.value.columns.length; index++ )
 						{
 							fields[index] = 'col' + index;
 						}
-		
 						TR.value.fields = fields;
 						
+						// Set data for grid
+						TR.store.getDataTableStore();
+						TR.datatable.getDataTable();
 						if ( json.items.length > 1 )
 						{
-							TR.store.getDataTableStore();
-							TR.datatable.getDataTable();
 							TR.datatable.setPagingToolbarStatus();
-							
 							Ext.getCmp('btnClean').enable();
 							Ext.getCmp('btnSortBy').enable();
-							
-							TR.util.mask.hideMask();
 						}
 						else
 						{
-							TR.util.mask.hideMask();
-							TR.util.notification.error(TR.i18n.et_no_data, TR.i18n.et_no_data);
+							Ext.getCmp('currentPage').setValue('');
+							Ext.getCmp('currentPage').disable();
+							Ext.getCmp('firstPageBtn').disable();
+							Ext.getCmp('previousPageBtn').disable();
+							Ext.getCmp('nextPageBtn').disable();
+							Ext.getCmp('lastPageBtn').disable();
+				
+							Ext.getCmp('btnClean').disable();
+							Ext.getCmp('btnSortBy').disable();
 						}
+						TR.util.mask.hideMask();
 					}
 				});
 			}
 			TR.util.notification.ok();
 		},
 		filterReport: function() {
+			TR.state.getFilterValues();
 			TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
 			var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generatetabularreport_get;
 			Ext.Ajax.request({
@@ -774,19 +781,26 @@ Ext.onReady( function() {
 				params: this.getParams(),
 				success: function(r) {
 					var json = Ext.JSON.decode(r.responseText);
+					TR.store.datatable.loadData(json.items,false);
 					if ( json.items.length > 1 )
 					{
-						TR.store.datatable.loadData(json.items,false);
 						Ext.getCmp('btnClean').enable();
 						Ext.getCmp('btnSortBy').enable();
-						TR.util.notification.ok();
-						TR.util.mask.hideMask();
 					}
 					else
 					{
-						TR.util.mask.hideMask();
-						TR.util.notification.error(TR.i18n.et_no_data, TR.i18n.et_no_data);
+						Ext.getCmp('currentPage').setValue('');
+						Ext.getCmp('currentPage').disable();
+						Ext.getCmp('firstPageBtn').disable();
+						Ext.getCmp('previousPageBtn').disable();
+						Ext.getCmp('nextPageBtn').disable();
+						Ext.getCmp('lastPageBtn').disable();
+			
+						Ext.getCmp('btnClean').disable();
+						Ext.getCmp('btnSortBy').disable();
 					}
+					TR.util.notification.ok();
+					TR.util.mask.hideMask();
 				}
 			})
 		},
@@ -1067,35 +1081,6 @@ Ext.onReady( function() {
 				success: function() {}
 			});
 		},
-		view: function( psiId )
-		{
-			TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
-			var params = 'programStageInstanceId=' + psiId;
-			Ext.Ajax.request({
-				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_view,
-				method: 'GET',
-				params: params,
-				success: function ( response, request ) { 
-					var htmlWindow = Ext.create('Ext.window.Window', {
-						title: TR.i18n.data_entry_form,
-						cls: 'tr-messagebox',
-						modal: true,
-						width: TR.conf.layout.window_record_width,
-						height: TR.conf.layout.window_record_height,
-						autoScroll: true,
-					}).show();
-					
-					htmlWindow.update("<style>input{width:220px;} select{width:225px;}</style>" + response.responseText);
-					document.getElementById('programDiv').style.display = 'none';
-					var form = document.getElementById('dataEntryFormDiv');
-					for (var i = 0; i < form.elements.length; i++)
-					{
-						form.elements[i].disabled = true;
-					}
-					TR.util.mask.hideMask();
-				}
-			});
-		},
 		remove: function( psiId, rowIdx )
 		{
 			Ext.Msg.confirm( TR.i18n.confirmation, TR.i18n.are_you_sure, function(btn){
@@ -1197,27 +1182,20 @@ Ext.onReady( function() {
 			
 			cols[++index]={
 				xtype:'actioncolumn',
-				width:50,
+				width:25,
 				sortable: false,
 				draggable: false,
 				hideable: false,
-				items: [{
-					icon: 'images/view.png',
-					tooltip: TR.i18n.view,
-					handler: function(grid, rowIndex, colIndex) {
-						var psiId = grid.getStore().getAt(rowIndex).data['id'];
-						TR.value.view( psiId );
+				items: [
+					{
+						icon: 'images/delete.png',
+						tooltip: 'Delete',
+						handler: function(grid, rowIndex, colIndex) {
+							var psiId = grid.getStore().getAt(rowIndex).data['id'];
+							TR.value.remove( psiId, rowIndex );
+						}
 					}
-				},
-				'->',
-				{
-					icon: 'images/delete.png',
-					tooltip: 'Delete',
-					handler: function(grid, rowIndex, colIndex) {
-						var psiId = grid.getStore().getAt(rowIndex).data['id'];
-						TR.value.remove( psiId, rowIndex );
-					}
-				}]
+				]
 			}
 			
 			TR.datatable.initCellEditing();
@@ -1482,6 +1460,7 @@ Ext.onReady( function() {
 			}
 		},
         setPagingToolbarStatus: function() {
+			Ext.getCmp('currentPage').enable();
 			if( TR.state.currentPage == TR.state.total 
 				&& TR.state.total== 1 )
 			{
@@ -2243,7 +2222,14 @@ Ext.onReady( function() {
 							cls: 'tr-toolbar-btn-1',
                             text: TR.i18n.update,
 							handler: function() {
-                                TR.exe.execute();
+                                if( !TR.state.paramChanged() )
+								{
+									TR.exe.filter();
+								}
+								else
+								{
+									TR.exe.execute();
+								}
                             }
                         },
 					{
