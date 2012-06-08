@@ -114,6 +114,12 @@
       <param name="javascripts">javascript/dataBrowser.js</param>
     </action>
 
+    <action name="searchResultByAjax" class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <result name="error" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/dataBrowserResult.vm</param>
+    </action>
+
     <action name="error" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/oust/selectedOrgunitError.vm</param>
