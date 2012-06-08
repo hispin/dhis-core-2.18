@@ -658,7 +658,7 @@ function doComplete()
 					if( irregular == 'true' )
 					{
 						jQuery('#createNewEncounterDiv').dialog({
-								title: i18n_create_new_encounter,
+								title: i18n_create_new_event,
 								maximize: true, 
 								closable: true,
 								modal:false,
