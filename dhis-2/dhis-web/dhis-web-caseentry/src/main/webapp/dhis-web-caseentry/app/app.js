@@ -1235,22 +1235,6 @@ Ext.onReady( function() {
 					encode: true,
 					local: false,
 					buildQuery : function (filters) {
-						/* for( var i=0;i<filters.length;i++)
-						{
-							var filter = filters[i];
-							var field = filter.field;
-							var compare = '=';
-							if( filter.data.comparison == 'lt')
-								compare = '<' ;
-							else if( filter.data.comparison == 'gt' )
-								compare = '>' ;
-								
-							var value = compare + "'"+ filter.data.value + "'";
-							
-							var grid = TR.datatable.datatable;
-							var record = grid.getView().getRecord( grid.getView().getNode(0) );
-							record.set(field, value);
-						} */
 						TR.exe.filter();
 					},
 					filters: []
