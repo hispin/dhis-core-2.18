@@ -1,6 +1,5 @@
 <script type="text/javascript" src="javascript/sendSMS.js"></script>
-<script type="text/javascript" src="javascript/caseentry-commons.js"></script>
-<script type="text/javascript" src="javascript/caseentry-patient.js"></script>
+<script type="text/javascript" src="javascript/patient.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready( function() {
 		validation( "sendSMSForm", function( form ) { sendSMSMessage( form ); } );
