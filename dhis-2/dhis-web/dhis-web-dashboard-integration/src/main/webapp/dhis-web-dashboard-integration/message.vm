@@ -29,8 +29,9 @@
 	</tr>
 	#end
 </table>
-<p></p>
+<div style="margin-top:15px; width:90%">
 #parse( "/dhis-web-commons/paging/paging.vm" )
+</div>
 
 <script type="text/javascript">
 	var i18n_confirm_delete_message = '$encoder.jsEscape( $i18n.getString( "confirm_delete_message" ) , "'" )';
