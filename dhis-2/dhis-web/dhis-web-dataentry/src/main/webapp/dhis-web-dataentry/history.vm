@@ -30,7 +30,7 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
             <h4>$encoder.htmlEncode( $i18n.getString( "min_max_limits" ) )</h4>
             <table>
                 <tr>
-                    <td style="background-color:#d54a4a; height:26px;">&nbsp;</td>
+                    <td style="background-color:#88be3b; height:26px;">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
                     <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}" class="{validate:{digits:true}}" 
                         #if( !$auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) ) disabled="disabled"#end />
