@@ -191,7 +191,7 @@
 			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px">
 			<input type="button" value="$i18n.getString( 'clear' )" onclick="clearSearchText();" style="width:60px"><br/>
 
-			<select id="dataElementId" name="dataElementId" size="9" style="min-width:450px" ondblclick="insertText( 'expression', this.value )">
+			<select id="dataElementId" name="dataElementId" size="8" style="min-width:450px" ondblclick="insertText( 'expression', this.value )">
 			</select>
 		</td>
 	</tr>
