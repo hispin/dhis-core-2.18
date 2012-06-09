@@ -10,9 +10,9 @@
 			modal: true,
 			autoOpen: false,
 			minWidth: 820,
-			minHeight: 540,
+			minHeight: 550,
 			width: 820,
-			height: 540
+			height: 550
 		});
 		
 		getConstantsPage();
