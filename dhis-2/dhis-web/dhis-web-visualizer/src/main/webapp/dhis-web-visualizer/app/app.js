@@ -191,8 +191,8 @@ DV.conf = {
 		last12Months: 12,
 		last4Quarters: 4,
 		last2SixMonths: 2,
-		lastMonth: 1,
-		lastQuarter: 1
+		reportingMonth: 1,
+		reportingQuarter: 1
 	},
     chart: {
         style: {
@@ -1891,8 +1891,8 @@ Ext.onReady( function() {
 				}
 				return true;
 			},
-			value: function() {
-				if (!DV.value.values.length) {
+			value: function(r) {
+				if (!r.v) {
 					DV.util.mask.hideMask();
 					DV.util.notification.error(DV.i18n.et_no_data, DV.i18n.em_no_data);
 					return false;
@@ -1933,10 +1933,12 @@ Ext.onReady( function() {
                 disableCaching: false,
                 success: function(r) {
 					r = Ext.JSON.decode(r.responseText);
-                    DV.value.values = DV.util.value.jsonfy(r.v);
-                    if (!DV.state.validation.value()) {
+                    
+                    if (!DV.state.validation.value(r)) {
 						return;
 					}
+					
+                    DV.value.values = DV.util.value.jsonfy(r.v);
 					
 					DV.c.data.names = r.d;
 					DV.c.period.names = r.p;
@@ -3032,7 +3034,7 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																paramName: 'lastMonth',
+																paramName: 'reportingMonth',
 																boxLabel: DV.i18n.last_month
 															},
 															{
@@ -3065,7 +3067,7 @@ Ext.onReady( function() {
 															},
 															{
 																xtype: 'checkbox',
-																paramName: 'lastQuarter',
+																paramName: 'reportingQuarter',
 																boxLabel: DV.i18n.last_quarter
 															},
 															{
