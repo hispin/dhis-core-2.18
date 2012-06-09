@@ -163,7 +163,7 @@ public class ChartPluginController
             if ( userOrganisationUnitChildren )
             {
                 organisationUnits.addAll( new ArrayList<OrganisationUnit>( currentUserService.getCurrentUser()
-                    .getOrganisationUnit().getChildren() ) );
+                    .getOrganisationUnit().getSortedChildren() ) );
             }
         }
         else
