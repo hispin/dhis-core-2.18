@@ -54,16 +54,23 @@ function updateIndicators()
         var indicatorId = $( this ).attr( 'indicatorid' );
 
         var formula = indicatorFormulas[indicatorId];
-
-        var expression = generateExpression( formula );
-
-        if ( expression )
-        {
-	        var value = eval( expression );
-	        
-	        value = isNaN( value ) ? '-' : roundTo( value, 1 );
+        
+        if ( isDefined( formula ) )
+        {        
+	        var expression = generateExpression( formula );
 	
-	        $( this ).attr( 'value', value );
+	        if ( expression )
+	        {
+		        var value = eval( expression );
+		        
+		        value = isNaN( value ) ? '-' : roundTo( value, 1 );
+		
+		        $( this ).attr( 'value', value );
+	        }
+        }
+        else
+        {
+        	log( 'Indicator does not exist in form: ' + indicatorId );
         }
     } );
 }

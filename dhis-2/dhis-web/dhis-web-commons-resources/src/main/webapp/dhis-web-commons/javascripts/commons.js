@@ -1526,6 +1526,11 @@ function roundTo( number, decimals )
 	return ( Math.round( number * factor ) / factor );
 }
 
+function isDefined( variable )
+{
+	return ( typeof( variable ) !== "undefined" );
+}
+
 // -----------------------------------------------------------------------------
 // Paging
 // -----------------------------------------------------------------------------
