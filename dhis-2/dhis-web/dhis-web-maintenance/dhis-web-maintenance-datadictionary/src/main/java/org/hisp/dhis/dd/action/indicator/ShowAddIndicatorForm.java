@@ -31,6 +31,9 @@ import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.IndicatorType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +49,13 @@ public class ShowAddIndicatorForm
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+
     private AttributeService attributeService;
 
     public void setAttributeService( AttributeService attributeService )
@@ -56,6 +66,13 @@ public class ShowAddIndicatorForm
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
+
+    private List<IndicatorType> indicatorTypes;
+
+    public List<IndicatorType> getIndicatorTypes()
+    {
+        return indicatorTypes;
+    }
 
     private List<Attribute> attributes;
 
@@ -70,6 +87,9 @@ public class ShowAddIndicatorForm
 
     public String execute()
     {
+        indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() );
+        Collections.sort( indicatorTypes, IdentifiableObjectNameComparator.INSTANCE );
+        
         attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
 

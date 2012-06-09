@@ -440,6 +440,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Indicator -->
 
   <bean id="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm" class="org.hisp.dhis.dd.action.indicator.ShowAddIndicatorForm">
+	<property name="indicatorService">
+      <ref bean="org.hisp.dhis.indicator.IndicatorService" />
+    </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
