@@ -31,9 +31,6 @@
 <select name="factors" id="factorsSubmit" multiple="multiple" style="display:none"></select>
 
 <table>
-	<col width="200px" />
-	<col width="240px" />
-
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
@@ -64,7 +61,7 @@
 	<tr>
 		<td><label for="domainType">$i18n.getString( "domain_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="domainType" name="domainType" style="min-width:244px">
+			<select id="domainType" name="domainType" style="min-width:246px; margin: 0;">
 				<option value="aggregate" selected="selected">$i18n.getString( "aggregate" )</option>
 				<option value="patient">$i18n.getString( "patient" )</option>				
 			</select>
@@ -73,7 +70,7 @@
 	<tr>
 		<td><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="valueType" style="min-width:244px"  onchange="changeValueType( this.value )">
+			<select id="valueType" style="min-width:246px; margin: 0;"  onchange="changeValueType( this.value )">
 				<option value="int" selected="selected" onclick="enable('numberType');">$i18n.getString( "number" )</option>
 				<option value="string"onclick="disable('numberType');">$i18n.getString( "text" )</option>
 				<option value="bool"onclick="disable('numberType');">$i18n.getString( "yes_no" )</option>
@@ -85,7 +82,7 @@
 	<tr>
 		<td><label for="numberValueType">$i18n.getString( "number_value_type" )</label></td>
 		<td>
-			<select id="numberType" name="numberType" style="min-width:244px">
+			<select id="numberType" name="numberType" style="min-width:246px; margin: 0;">
 				<option value="number">$i18n.getString( "number" )</option>
 				<option value="int" >$i18n.getString( "int" )</option>
 				<option value="positiveNumber">$i18n.getString( "positiveNumber" )</option>
@@ -96,7 +93,7 @@
 	<tr>
 		<td><label for="zeroIsSignificant ">$i18n.getString( "store_zero_data_values" )</label></td>
 		<td>
-			<select id="zeroIsSignificant" name="zeroIsSignificant" style="min-width:244px">
+			<select id="zeroIsSignificant" name="zeroIsSignificant" style="min-width:246px; margin: 0;">
 				<option value="false" selected="selected">$i18n.getString( "no" )</option>
 				<option value="true" >$i18n.getString( "yes" )</option>
 			</select>
@@ -105,7 +102,7 @@
 	<tr id="aggregationOperator">
 		<td><label for="aggregationOperator">$i18n.getString( "aggregation_operator" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select name="aggregationOperator" style="min-width:244px">
+			<select name="aggregationOperator" style="min-width:246px; margin: 0;">
 				<option value="sum" selected="selected">$i18n.getString( "sum" )</option>
 				<option value="average">$i18n.getString( "average" )</option>
 			</select>
@@ -118,7 +115,7 @@
 	<tr>	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="selectedCategoryComboId" style="min-width:244px">				
+			<select id="selectedCategoryComboId" style="min-width:246px; margin: 0;">				
 			#foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
 				<option value="$dataElementCategoryCombo.id" #if( $dataElementCategoryCombo.id == $defaultCategoryCombo.id ) selected="selected" #end>$encoder.htmlEncode( $dataElementCategoryCombo.name )</option>
 			#end
@@ -133,7 +130,7 @@
 	<tr>
 		<td>$i18n.getString( 'option_set' )</td>			
 		<td>
-			<select id="selectedOptionSetId" name="selectedOptionSetId" style="min-width: 244px;">
+			<select id="selectedOptionSetId" name="selectedOptionSetId" style="min-width:246px; margin: 0;;">
 				<option value="0">[$i18n.getString('please_select')]</option>
 				#foreach ( $optionSet in $optionSets )
 				<option value="$optionSet.id">$optionSet.name</option>
@@ -200,7 +197,7 @@
     <tr>
 		<td>$encoder.htmlEncode( $groupSet.name )</td>			
 		<td>
-			<select id="selectedGroups" name="selectedGroups" style="min-width: 244px;">
+			<select id="selectedGroups" name="selectedGroups" style="min-width:246px; margin: 0;;">
 				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>
 				#foreach ( $group in $groupSet.getSortedGroups() )
 				<option value="$group.id">$group.name</option>
@@ -213,8 +210,8 @@
 #end
 
 <p>
-	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataElement.action'" style="width:10em"/>
+	<input type="submit" value="$i18n.getString( 'add' )" style="width:10em" />
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataElement.action'" style="width:10em" />
 </p>
 
 </form>
