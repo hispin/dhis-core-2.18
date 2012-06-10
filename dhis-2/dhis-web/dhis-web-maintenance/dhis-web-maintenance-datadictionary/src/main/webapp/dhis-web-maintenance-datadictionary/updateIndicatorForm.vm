@@ -27,9 +27,6 @@
 <input type="hidden" id="denominatorDescription" name="denominatorDescription" value="$!indicator.denominatorDescription"/>
 
 <table>
-    <col width="200px" />
-   	<col width="275px" />
-
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
@@ -65,7 +62,7 @@
 	<tr>
 		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:246px" onchange='indicatorTypeChanged();'>
+			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:246px; margin: 0;" onchange='indicatorTypeChanged();'>
 			#foreach( $indicatorType in $indicatorTypes )
 				<option value="$indicatorType.id" number="$indicatorType.number" #if( $indicator.indicatorType.id == $indicatorType.id ) selected="selected"#end>$encoder.htmlEncode( $indicatorType.name )</option>
 			#end
@@ -100,9 +97,6 @@
 
 #if( $groupSets.size() > 0 )
 <table>
-	<col width="200px" />
-	<col width="260px" />
-
 	<tr>
 		<td style="height:15px" colspan="2">
 	</tr>
@@ -114,7 +108,7 @@
     <tr>
 		<td>$encoder.htmlEncode( $groupSet.name )</td>
 		<td>
-			<select id="indicatorGroups" name="indicatorGroups" style="min-width: 244px;">
+			<select id="indicatorGroups" name="indicatorGroups" style="min-width:246px; margin: 0;">
 				<option value="-1">[ $i18n.getString( "select_group" ) ]</option>
 				#foreach ( $group in $groupSet.getSortedGroups() )
 				<option value="$group.id" #if( $group.members.contains( $indicator ) ) selected="selected" #end>$group.name</option>
