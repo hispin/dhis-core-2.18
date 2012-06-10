@@ -213,8 +213,17 @@ body {
 }
 
 /* DV toolbar */
-.dv-toolbar-1 {
+.dv-toolbar-1, .dv-toolbar-2, .dv-toolbar-tbar, .dv-toolbar-bbar {
 	padding: 0;
+}
+.dv-toolbar-1 {
+	height: 31px;
+}
+.dv-toolbar-tbar {
+	height: 30px;
+}
+.dv-toolbar-bbar {
+	height: 29px;
 }
 
 /* DV toolbar checkbox */
