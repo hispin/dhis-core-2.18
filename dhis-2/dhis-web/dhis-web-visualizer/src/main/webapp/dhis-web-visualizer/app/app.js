@@ -225,7 +225,6 @@ DV.conf = {
         west_maxheight_accordion_period: 340,
         west_maxheight_accordion_organisationunit: 700,
         west_maxheight_accordion_options: 393,
-        center_tbar_height: 31,
         east_tbar_height: 31,
         east_gridcolumn_height: 30,
         form_label_width: 55,
@@ -2382,6 +2381,7 @@ Ext.onReady( function() {
 								xtype: 'button',
                                 icon: 'images/column.png',
                                 name: DV.conf.finals.chart.column,
+                                tooltip: DV.i18n.column_chart,
 								width: 40,
                                 pressed: true
                             },
@@ -2389,36 +2389,42 @@ Ext.onReady( function() {
 								xtype: 'button',
                                 icon: 'images/column-stacked.png',
                                 name: DV.conf.finals.chart.stackedcolumn,
+                                tooltip: DV.i18n.stacked_column_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar.png',
                                 name: DV.conf.finals.chart.bar,
+                                tooltip: DV.i18n.bar_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar-stacked.png',
                                 name: DV.conf.finals.chart.stackedbar,
+                                tooltip: DV.i18n.stacked_bar_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/line.png',
                                 name: DV.conf.finals.chart.line,
+                                tooltip: DV.i18n.line_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/area.png',
                                 name: DV.conf.finals.chart.area,
+                                tooltip: DV.i18n.area_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/pie.png',
                                 name: DV.conf.finals.chart.pie,
+                                tooltip: DV.i18n.pie_chart,
 								width: 40
                             }
                         ]
@@ -3544,7 +3550,6 @@ Ext.onReady( function() {
                 tbar: {
                     xtype: 'toolbar',
                     cls: 'dv-toolbar-1',
-                    height: DV.conf.layout.center_tbar_height,
                     defaults: {
                         height: 30
                     },
@@ -3681,10 +3686,9 @@ Ext.onReady( function() {
                                                                     store: DV.store.favorite,
                                                                     tbar: {
                                                                         id: 'favorite_t',
-                                                                        cls: 'dv-toolbar-2',
-                                                                        height: 30,
+                                                                        cls: 'dv-toolbar-tbar',
                                                                         defaults: {
-                                                                            height: 24
+                                                                            height: 28
                                                                         },
                                                                         items: [
                                                                             {
@@ -3697,7 +3701,7 @@ Ext.onReady( function() {
                                                                                     afterrender: function(b) {
                                                                                         this.addCls('dv-menu-togglegroup');
                                                                                         this.menu = Ext.create('Ext.menu.Menu', {
-																							margin: '2 0 0 0',
+																							margin: '-1 0 0 -1',
 																							shadow: false,
                                                                                             showSeparator: false,
                                                                                             width: 109,
@@ -3796,7 +3800,10 @@ Ext.onReady( function() {
                                                                                             }
                                                                                         ],
                                                                                         bbar: {
-																							cls: 'dv-toolbar-2',
+																							cls: 'dv-toolbar-bbar',
+																							defaults: {
+																								height: 28
+																							},
 																							items: [
 																								{
 																									xtype: 'label',
@@ -3896,7 +3903,10 @@ Ext.onReady( function() {
                                                                                                 }                                                                                                    
                                                                                             ],
                                                                                             bbar: {
-																								cls: 'dv-toolbar-2',
+																								cls: 'dv-toolbar-bbar',
+																								defaults: {
+																									height: 28
+																								},
 																								items: [
 																									{
 																										text: DV.i18n.cancel,
@@ -3949,11 +3959,14 @@ Ext.onReady( function() {
                                                                 }
                                                             ],
                                                             bbar: {
-																cls: 'dv-toolbar-2',
+																cls: 'dv-toolbar-bbar',
+																defaults: {
+																	height: 28
+																},
 																items: [
 																	{
 																		xtype: 'label',
-																		style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:70%',
+																		style: 'padding-left:6px; line-height:29px; font-size:10px; color:#666; width:70%',
 																		listeners: {
 																			added: function() {
 																				DV.cmp.favorite.label = this;
@@ -3990,7 +4003,7 @@ Ext.onReady( function() {
 																			}
 																			else {
 																				if (DV.cmp.favorite.name.getValue()) {
-																					DV.cmp.favorite.label.setText(DV.i18n.example_chart_cannot_be_saved);
+																					DV.cmp.favorite.label.setText('* ' + DV.i18n.create_chart_before_saving);
 																				}
 																				else {
 																					DV.cmp.favorite.label.setText('');
@@ -4019,25 +4032,31 @@ Ext.onReady( function() {
 																								cls: 'dv-window-confirm-list'
 																							}
 																						],
-																						bbar: [
-																							{
-																								text: DV.i18n.cancel,
-																								handler: function() {
-																									this.up('window').close();
-																								}
+																						bbar: {
+																							cls: 'dv-toolbar-bbar',
+																							defaults: {
+																								height: 28
 																							},
-																							'->',
-																							{
-																								text: DV.i18n.overwrite,
-																								handler: function() {
-																									this.up('window').close();
-																									DV.util.crud.favorite.update(function() {
-																										DV.cmp.favorite.window.resetForm();
-																									});
-																									
+																							items: [
+																								{
+																									text: DV.i18n.cancel,
+																									handler: function() {
+																										this.up('window').close();
+																									}
+																								},
+																								'->',
+																								{
+																									text: DV.i18n.overwrite,
+																									handler: function() {
+																										this.up('window').close();
+																										DV.util.crud.favorite.update(function() {
+																											DV.cmp.favorite.window.resetForm();
+																										});
+																										
+																									}
 																								}
-																							}
-																						]
+																							]
+																						}
 																					});
 																					w.setPosition((screen.width/2)-(DV.conf.layout.window_confirm_width/2), DV.conf.layout.window_favorite_ypos + 100, true);
 																					w.show();
@@ -4191,7 +4210,10 @@ Ext.onReady( function() {
 											}
 										],
 										bbar: {
-											cls: 'dv-toolbar-2',
+											cls: 'dv-toolbar-1',
+											defaults: {
+												height: 30
+											},
 											items: [
 												'->',
 												{
