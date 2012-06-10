@@ -52,7 +52,7 @@ function dhisAjaxSelect_moveAll(sourceId)
  */
 function dhisAjaxSelect_filter_on_kv($target, key, value)
 {
-    $ghost_target = dhis2.select.getGhost($target);
+    var $ghost_target = dhis2.select.getGhost($target);
 
     if (key.length === 0) {
         dhis2.select.moveSorted($target, $ghost_target.children());
@@ -97,15 +97,16 @@ function dhisAjaxSelect_filter_on_kv($target, key, value)
 function compare_data_with_kv($target, key, value)
 {
     var target_value = $target.data(key);
+    target_value = target_value ? target_value : [];
 
-    if(! $.isArray(target_value) ) {
+    if( !$.isArray(target_value) ) {
         var type = typeof(target_value);
 
         if(type === "number") {
             target_value = [ target_value.toString() ];
         } else {
             target_value = target_value.split(",");
-        };
+        }
     }
 
     if (target_value) {
@@ -325,13 +326,13 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
             $select.data("settings", settings);
             methods.load("" + id);
 
-            $filter_button.bind('click', function(e)
+            $filter_button.bind('click', function()
             {
-                key = $filter_input.val();
+                var key = $filter_input.val();
                 dhis2.select.filterWithKey($select, key);
             });
 
-            $clear_button.bind('click', function(e) {
+            $clear_button.bind('click', function() {
                 $filter_input.val('');
                 dhis2.select.filterWithKey($select, ''); 
             });
@@ -362,4 +363,4 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
             $.error('Method ' + method + ' does not exist on jQuery.dhisAjaxSelect');
         }
     };
-})(jQuery, undefined);
+})(jQuery);
