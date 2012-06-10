@@ -60,7 +60,7 @@ function removeTable( tableId, tableName )
 
 function validateCollections()
 {
-    if ( isChecked( "regression" ) && document.getElementById( "selectedOrganisationUnits" ).options.length > 1 )
+    if ( isChecked( "regression" ) && selectionTreeSelection.getSelected().length > 1 )
     {
         setMessage( i18n_cannot_include_more_organisation_unit_regression );
 
