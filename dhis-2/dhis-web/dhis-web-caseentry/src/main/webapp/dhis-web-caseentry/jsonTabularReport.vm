@@ -14,10 +14,17 @@
 	"programStageName": "${tabularReport.programStage.name}",
 	"startDate": "$!format.formatDate( $tabularReport.startDate )",
 	"endDate": "$!format.formatDate( ${tabularReport.endDate} )",
-	"organisationUnitId": "${tabularReport.organisationUnit.id}",
 	"level": "${tabularReport.level}",
 	"sortedOrgunitAsc": "${tabularReport.sortedOrgunitAsc}",
 	"facilityLB": "${tabularReport.facilityLB}",
+	"orgunitIds": [
+		#set( $size = $tabularReport.organisationUnits.size() )
+		#set( $organisationUnits = ${tabularReport.organisationUnits} )
+		#foreach( ${organisationUnit} in $!{organisationUnits} )
+			$organisationUnit.id
+			#if( $velocityCount < $size ),#end
+		#end
+	],
 	"patientProperties": [
 		#set( $fixedAttributes = ${tabularReport.fixedAttributes} )
 		#foreach( ${fixedAttribute} in $!{fixedAttributes} )
