@@ -981,13 +981,20 @@ Ext.onReady( function() {
 				});
 					
 				var cols = TR.datatable.datatable.columns;
+				var colDataLen = 0;
 				for( var i=0; i<cols.length; i++ )
 				{
 					var col = cols[i];
-					if( col.name && col.name.indexOf('meta_')==-1 && colNames.indexOf(col.name) == -1 )
+					if( col.name && col.name.indexOf('meta_')==-1 )
 					{
-						return true;
+						colDataLen ++;
+						if( colNames.indexOf(col.name) == -1 )
+							return true;
 					}
+				}
+				if( colDataLen < colNames.length )
+				{
+					return true;
 				}
 				return false;
 			}
