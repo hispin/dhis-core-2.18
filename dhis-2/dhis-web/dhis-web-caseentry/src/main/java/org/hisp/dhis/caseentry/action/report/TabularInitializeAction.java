@@ -29,9 +29,13 @@ package org.hisp.dhis.caseentry.action.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
@@ -56,6 +60,13 @@ public class TabularInitializeAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     private ProgramService programService;
@@ -90,6 +101,13 @@ public class TabularInitializeAction
         return levels;
     }
 
+    private List<OrganisationUnitGroup> orgunitGroups;
+
+    public List<OrganisationUnitGroup> getOrgunitGroups()
+    {
+        return orgunitGroups;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -100,12 +118,15 @@ public class TabularInitializeAction
         Collection<OrganisationUnit> rootUnits = new ArrayList<OrganisationUnit>( organisationUnitService
             .getOrganisationUnitsAtLevel( 1 ) );
 
-        programs = programService.getAllPrograms();
-
         rootNode = rootUnits.size() > 0 ? rootUnits.iterator().next() : new OrganisationUnit();
 
+        orgunitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
+        Collections.sort( orgunitGroups, IdentifiableObjectNameComparator.INSTANCE );
+
+        programs = programService.getAllPrograms();
+
         levels = organisationUnitService.getFilledOrganisationUnitLevels();
-        
+
         return SUCCESS;
     }
 

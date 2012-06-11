@@ -17,6 +17,13 @@ TR.conf = {
 					}
 				}
 				
+				for (var orgunitGroup in r.orgunitGroups) {
+					obj.system.orgunitGroup = [];
+					for (var i = 0; i < r.orgunitGroups.length; i++) {
+						obj.system.orgunitGroup.push({id: r.orgunitGroups[i].id, name: r.orgunitGroups[i].name });
+					}
+				}
+				
 				for (var level in r.levels) {
 					obj.system.level = [];
 					for (var i = 0; i < r.levels.length; i++) {
@@ -490,7 +497,7 @@ Ext.onReady( function() {
 							Ext.getCmp('endDate').setValue( f.endDate );
 							Ext.getCmp('facilityLBCombobox').setValue( f.facilityLB );
 							Ext.getCmp('levelCombobox').setValue( f.level );
-							TR.state.orgunitId = f.organisationUnitId;
+							TR.state.orgunitIds = f.orgunitIds;
 							
 							TR.cmp.params.patientProperty.objects = [];
 							TR.cmp.params.dataelement.objects = [];
@@ -557,10 +564,19 @@ Ext.onReady( function() {
 	};
     
     TR.store = {
-        program: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 'type'],
-				data:TR.init.system.program
-            }),
+		program: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name', 'type'],
+			data:TR.init.system.program
+		}),
+		orgunitGroup: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name', 'type'],
+			data:TR.init.system.orgunitGroup,
+			listeners: {
+				load: function() {
+					this.insert(0,{id:"", name: TR.i18n.none});
+				}
+			}
+		}),
 		patientProperty: {
             available: Ext.create('Ext.data.Store', {
                 fields: ['id', 'name'],
@@ -705,7 +721,7 @@ Ext.onReady( function() {
 		total: 1,
 		orderByOrgunitAsc: true,
 		orderByExecutionDateByAsc: true,
-		orgunitId: 0,
+		orgunitIds: [],
 		generateReport: function( type, isFilter ) {
 			// Validation
 			if( !this.validation.objects() )
@@ -832,13 +848,15 @@ Ext.onReady( function() {
 			p.facilityLB = TR.cmp.settings.facilityLB.getValue();
 			p.level = TR.cmp.settings.level.getValue();
 			
-			// organisation unit
-			p.orgunitId = TR.state.orgunitId;
+			// orders
 			p.orderByOrgunitAsc = this.orderByOrgunitAsc;
 			p.orderByExecutionDateByAsc= this.orderByExecutionDateByAsc;
 			
 			p.programStageId = TR.cmp.params.programStage.getValue();
 			p.currentPage = this.currentPage;
+			
+			// organisation unit
+			p.orgunitIds = TR.state.orgunitIds;
 			
 			// Get searching values
 			p.searchingValues = [];
@@ -1668,9 +1686,31 @@ Ext.onReady( function() {
 								items: [
 									// ORGANISATION UNIT
 									{
-										title: '<div style="height:17px">' + TR.i18n.organisation_units + '</div>',
+										title: '<div style="height:17px;background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.organisation_units + '</div>',
 										hideCollapseTool: true,
 										items: [
+											{
+												xtype: 'combobox',
+												cls: 'tr-combo',
+												name: TR.init.system.orgunitGroup,
+												id: 'orgGroupCombobox',
+												emptyText: TR.i18n.please_select,
+												hidden: true,
+												queryMode: 'local',
+												editable: false,
+												valueField: 'id',
+												displayField: 'name',
+												fieldLabel: TR.i18n.orgunit_groups,
+												labelWidth: 135,
+												emptyText: TR.i18n.please_select,
+												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
+												store: TR.store.orgunitGroup,
+												listeners: {
+													added: function() {
+														TR.cmp.settings.orgunitGroup = this;
+													}
+												}
+											},
 											{
 												xtype: 'treepanel',
 												cls: 'tr-tree',
@@ -1678,7 +1718,7 @@ Ext.onReady( function() {
 												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
 												height: 273,
 												autoScroll: true,
-												multiSelect: false,
+												multiSelect: true,
 												isrendered: false,
 												storage: {},
 												addToStorage: function(objects) {
@@ -1722,10 +1762,15 @@ Ext.onReady( function() {
 													afterrender: function( treePanel, eOpts )
 													{
 														treePanel.getSelectionModel().select( treePanel.getRootNode() );
-														TR.state.orgunitId = treePanel.getSelectionModel().getSelection()[0].data.id;
+														TR.state.orgunitIds = [];
+														TR.state.orgunitIds.push( treePanel.getSelectionModel().getSelection()[0].data.id );
 													},
 													itemclick : function(view,rec,item,index,eventObj){
-														TR.state.orgunitId = TR.cmp.params.organisationunit.treepanel.getSelectionModel().getSelection()[0].data.id;
+														TR.state.orgunitIds = [];
+														var selectedNodes = TR.cmp.params.organisationunit.treepanel.getSelectionModel().getSelection();
+														for( var i=0; i<selectedNodes.length; i++ ){
+															TR.state.orgunitIds.push( selectedNodes[i].data.id);
+														}
 													}
 												}
 											}
@@ -1742,7 +1787,7 @@ Ext.onReady( function() {
 									
 									// IDENTIFIER TYPE and PATIENT-ATTRIBUTE
 									{
-										title: '<div style="height:17px">' + TR.i18n.identifiers_and_attributes + '</div>',
+										title: '<div style="height:17px;background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.identifiers_and_attributes + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -1868,7 +1913,7 @@ Ext.onReady( function() {
 									
 									// DATA ELEMENTS
 									{
-										title: '<div style="height:17px">' + TR.i18n.data_elements + '</div>',
+										title: '<div style="height:17px;background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px;">' + TR.i18n.data_elements + '</div>',
 										hideCollapseTool: true,
 										items: [
 											{
@@ -2113,7 +2158,7 @@ Ext.onReady( function() {
 									
 									// OPTIONS
 									{
-										title: '<div style="height:17px">' + TR.i18n.options + '</div>',
+										title: '<div style="height:17px;background-image:url(images/options.png); background-repeat:no-repeat; padding-left:20px;">' + TR.i18n.options + '</div>',
 										hideCollapseTool: true,
 										cls: 'tr-accordion-options',
 										items: [

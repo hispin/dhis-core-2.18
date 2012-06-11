@@ -30,6 +30,7 @@ package org.hisp.dhis.patientreport;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -80,7 +81,7 @@ public class PatientTabularReport
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
-    private OrganisationUnit organisationUnit;
+    private Set<OrganisationUnit> organisationUnits;
 
     private int level;
 
@@ -137,14 +138,14 @@ public class PatientTabularReport
         this.programStage = programStage;
     }
 
-    public OrganisationUnit getOrganisationUnit()
+    public Set<OrganisationUnit> getOrganisationUnits()
     {
-        return organisationUnit;
+        return organisationUnits;
     }
 
-    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
     {
-        this.organisationUnit = organisationUnit;
+        this.organisationUnits = organisationUnits;
     }
 
     public List<PatientIdentifierType> getIdentifiers()

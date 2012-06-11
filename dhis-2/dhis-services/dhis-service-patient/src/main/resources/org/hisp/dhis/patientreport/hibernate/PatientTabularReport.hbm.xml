@@ -50,11 +50,14 @@
 			<many-to-many class="org.hisp.dhis.dataelement.DataElement"
 				foreign-key="patienttabularreport_dataelementid" />
 		</list>
-
-		<many-to-one name="organisationUnit"
-			class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
-			foreign-key="fk_patient_organisationunitid" />
-
+		
+	 	<set name="organisationUnits" table="patienttabularreport_organisationUnits">
+	      <cache usage="read-write" />
+	      <key column="patienttabularreportid" foreign-key="fk_patienttabularreport_organisationUnitid" />
+	      <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+	          foreign-key="fk_patienttabularreportid_organisationunit" />
+	    </set>
+    	
 		<property name="level" />
 
 		<property name="sortedOrgunitAsc" />

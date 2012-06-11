@@ -33,7 +33,10 @@ import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_IDENTIFIER
 import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -134,7 +137,7 @@ public class SaveTabularReportAction
 
     private List<String> searchingValues = new ArrayList<String>();
 
-    private Integer orgunitId;
+    private Collection<Integer> orgunitIds;
 
     private boolean orderByOrgunitAsc;
 
@@ -181,9 +184,9 @@ public class SaveTabularReportAction
         this.startDate = startDate;
     }
 
-    public void setOrgunitId( Integer orgunitId )
+    public void setOrgunitIds( Collection<Integer> orgunitIds )
     {
-        this.orgunitId = orgunitId;
+        this.orgunitIds = orgunitIds;
     }
 
     public void setProgramStageId( Integer programStageId )
@@ -199,7 +202,8 @@ public class SaveTabularReportAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitId );
+        Set<OrganisationUnit> orgunits = new HashSet<OrganisationUnit>( organisationUnitService
+            .getOrganisationUnits( orgunitIds ) );
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
         // ---------------------------------------------------------------------
@@ -210,7 +214,7 @@ public class SaveTabularReportAction
         tabularReport.setStartDate( format.parseDate( startDate ) );
         tabularReport.setEndDate( format.parseDate( endDate ) );
         tabularReport.setProgramStage( programStage );
-        tabularReport.setOrganisationUnit( orgunit );
+        tabularReport.setOrganisationUnits( orgunits );
         tabularReport.setLevel( level );
         tabularReport.setFacilityLB( facilityLB );
         tabularReport.setSortedOrgunitAsc( orderByOrgunitAsc );
@@ -226,7 +230,7 @@ public class SaveTabularReportAction
 
         List<DataElement> dataElements = new ArrayList<DataElement>();
         List<String> fixedAttributes = new ArrayList<String>();
-        
+
         for ( String searchingValue : searchingValues )
         {
             String[] infor = searchingValue.split( "_" );
@@ -252,7 +256,6 @@ public class SaveTabularReportAction
                 DataElement dataElement = dataElementService.getDataElement( objectId );
                 dataElements.add( dataElement );
             }
-
         }
 
         tabularReport.setFixedAttributes( fixedAttributes );

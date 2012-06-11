@@ -110,10 +110,12 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE caseaggregationcondition RENAME description TO name" );
         updateCaseAggregationCondition();
-        
+
         executeSql( "UPDATE programstage_dataelements SET allowProvidedElsewhere=false WHERE allowProvidedElsewhere is null" );
         executeSql( "UPDATE patientdatavalue SET providedElsewhere=false WHERE providedElsewhere is null" );
         executeSql( "ALTER TABLE programstageinstance DROP COLUMN providedbyanotherfacility" );
+
+        updateTabularReportTable();
     }
 
     // -------------------------------------------------------------------------
@@ -209,6 +211,30 @@ public class TableAlteror
                     + "'  WHERE caseaggregationconditionid=" + resultSet.getInt( 1 ) );
 
             }
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateTabularReportTable()
+    {
+        try
+        {
+            StatementHolder holder = statementManager.getHolder();
+
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "SELECT patienttabularreportid, organisationunitid FROM patienttabularreport" );
+
+            while ( resultSet.next() )
+            {
+                executeSql( " INSERT INTO patienttabularreport_organisationUnits ( patienttabularreportid, organisationunitid ) VALUES ( " + resultSet.getInt( 1 ) + ", " + resultSet.getInt( 2 ) + ")" );
+            }
+            
+            executeSql( "ALTER TABLE patienttabularreport DROP COLUMN organisationunitid" );
         }
         catch ( Exception e )
         {

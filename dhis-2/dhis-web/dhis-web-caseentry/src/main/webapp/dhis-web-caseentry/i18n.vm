@@ -79,5 +79,7 @@ is_not_valid:'$encoder.jsEscape($i18n.getString( 'is_not_valid' ) , "'")',
 the_date_is_not_valid:'$encoder.jsEscape($i18n.getString( 'the_date_is_not_valid' ) , "'")',
 before:'$encoder.jsEscape($i18n.getString( 'before' ) , "'")',
 after:'$encoder.jsEscape($i18n.getString( 'after' ) , "'")',
-on:'$encoder.jsEscape($i18n.getString( 'on' ) , "'")'
+on:'$encoder.jsEscape($i18n.getString( 'on' ) , "'")',
+orgunit_groups:'$encoder.jsEscape($i18n.getString( 'orgunit_groups' ) , "'")',
+none: '[' + '$encoder.jsEscape($i18n.getString( 'none' ) , "'")' + ']'
 };

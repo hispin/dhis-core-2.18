@@ -35,6 +35,7 @@ import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_FIXED_ATTR
 import static org.hisp.dhis.patientreport.PatientTabularReport.VALUE_TYPE_OPTION_SET;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -119,11 +120,11 @@ public class GenerateTabularReportAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer orgunitId;
+    private Collection<Integer> orgunitIds;
 
-    public void setOrgunitId( Integer orgunitId )
+    public void setOrgunitIds( Collection<Integer> orgunitIds )
     {
-        this.orgunitId = orgunitId;
+        this.orgunitIds = orgunitIds;
     }
 
     private Integer programStageId;
@@ -282,24 +283,32 @@ public class GenerateTabularReportAction
 
         if ( facilityLB.equals( "selected" ) )
         {
-            organisationUnits.add( orgunitId );
+            organisationUnits.addAll( orgunitIds );
         }
         else if ( facilityLB.equals( "childrenOnly" ) )
         {
-            OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
-            organisationUnits = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class, selectedOrgunit.getChildren() ) );
+            for ( Integer orgunitId : orgunitIds )
+            {
+                OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
+                organisationUnits = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class,
+                    selectedOrgunit.getChildren() ) );
+            }
         }
         else
         {
-            OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
-            
-            if ( selectedOrgunit.getParent() == null )
+            for ( Integer orgunitId : orgunitIds )
             {
-                organisationUnits = null; // Ignore org unit criteria when root
-            }
-            else
-            {
-                organisationUnits = organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunitId );
+                OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
+
+                if ( selectedOrgunit.getParent() == null )
+                {
+                    organisationUnits = null; // Ignore org unit criteria when
+                                              // root
+                }
+                else
+                {
+                    organisationUnits = organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunitId );
+                }
             }
         }
 
@@ -309,8 +318,8 @@ public class GenerateTabularReportAction
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
-        //TODO check sql traffic
-        
+        // TODO check sql traffic
+
         Date startValue = format.parseDate( startDate );
 
         Date endValue = format.parseDate( endDate );
@@ -327,28 +336,29 @@ public class GenerateTabularReportAction
 
         if ( type == null ) // Tabular report
         {
-            int totalRecords = programStageInstanceService.getTabularReportCount( programStage, identifierTypes, fixedAttributes, patientAttributes, dataElements, 
-                searchingIdenKeys, searchingAttrKeys, searchingDEKeys, organisationUnits, level, startValue, endValue );
+            int totalRecords = programStageInstanceService.getTabularReportCount( programStage, identifierTypes,
+                fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
+                searchingDEKeys, organisationUnits, level, startValue, endValue );
 
             total = getNumberOfPages( totalRecords );
-            
+
             this.paging = createPaging( totalRecords );
-            //total = paging.getTotal(); //TODO
-            
+            // total = paging.getTotal(); //TODO
+
             grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
                 fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc,
-                paging.getStartPos(), paging.getPageSize() );
+                searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc, paging
+                    .getStartPos(), paging.getPageSize() );
         }
-        else // Download as Excel
+        else
+        // Download as Excel
         {
             grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
                 fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc,
-                null, null );
+                searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc, null, null );
         }
-System.out.println();
-System.out.println(grid);
+        System.out.println();
+        System.out.println( grid );
 
         return type == null ? SUCCESS : type;
     }
@@ -368,13 +378,13 @@ System.out.println(grid);
         // ---------------------------------------------------------------------
         // Get Patient-Identifier searching-keys
         // ---------------------------------------------------------------------
-        
+
         int index = 0;
         for ( String searchingValue : searchingValues )
         {
             String[] infor = searchingValue.split( "_" );
             String objectType = infor[0];
-            
+
             if ( objectType.equals( PREFIX_META_DATA ) )
             {
                 hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
@@ -422,10 +432,12 @@ System.out.println(grid);
                 {
                     searchingAttrKeys.put( objectId, infor[3].trim() );
                     String value = infor[3].trim();
-                    if ( attribute.getValueType().equals( PatientAttribute.TYPE_BOOL ) )
-                    {
-                        value = (value.indexOf( i18n.getString( "yes" ) ) != -1) ? "true" : "false";
-                    }
+                    // if ( attribute.getValueType().equals(
+                    // PatientAttribute.TYPE_BOOL ) )
+                    // {
+                    // value = (value.indexOf( i18n.getString( "yes" ) ) != -1)
+                    // ? "true" : "false";
+                    // }
                     values.add( value );
                 }
                 else
@@ -449,14 +461,17 @@ System.out.println(grid);
                 if ( infor.length == 4 )
                 {
                     String value = infor[3].trim();
-                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
-                    {
-                        int startIndx = value.indexOf( '\'' ) + 1;
-                        int endIndx = value.lastIndexOf( '\'' );
-                        String key = value.substring( startIndx, endIndx );
-                                              
-                        value = (key.equals(i18n.getString( "yes" ))) ? value.replace( key, "true" ) : value.replace( key, "false" );
-                    }                   
+                    // if ( dataElement.getType().equals(
+                    // DataElement.VALUE_TYPE_BOOL ) )
+                    // {
+                    // int startIndx = value.indexOf( '\'' ) + 1;
+                    // int endIndx = value.lastIndexOf( '\'' );
+                    // String key = value.substring( startIndx, endIndx );
+                    //                           
+                    // value = (key.equals(i18n.getString( "yes" ))) ?
+                    // value.replace( key, "true" ) : value.replace( key,
+                    // "false" );
+                    // }
                     searchingDEKeys.put( objectId, value );
                     values.add( value );
                 }

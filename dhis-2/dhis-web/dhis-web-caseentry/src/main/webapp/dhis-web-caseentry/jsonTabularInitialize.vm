@@ -22,7 +22,16 @@
 		  }#if( $velocityCount < $programs.size() ),#end
 		#end
 	],
-		
+	
+	"orgunitGroups": [
+		#foreach( $orgunitGroup in $orgunitGroups )
+		  {
+			"id":  "${orgunitGroup.id}" ,
+			"name": "${orgunitGroup.name}"
+		  }#if($velocityCount < $orgunitGroups.size()),#end
+		#end
+	],
+	
 	"levels": [
 		#foreach( $level in $levels )
 		  {
