@@ -70,6 +70,32 @@ public class GetFindBeneficiaryFormAction
     {
         this.organisationUnits = organisationUnits;
     }
+    
+    //use in find relation person
+    
+    private Integer originalPatientId;
+    
+    public Integer getOriginalPatientId()
+    {
+        return originalPatientId;
+    }
+
+    public void setOriginalPatientId( Integer originalPatientId )
+    {
+        this.originalPatientId = originalPatientId;
+    }
+    
+    private Integer relationshipTypeId;
+    
+    public Integer getRelationshipTypeId()
+    {
+        return relationshipTypeId;
+    }
+
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
+    }
 
     @Override
     public String execute()

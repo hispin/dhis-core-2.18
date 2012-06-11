@@ -1,4 +1,11 @@
 <h2>$!encoder.htmlEncode( ${patient.getFullName()} )</h2>
+	#if( $validated)
+		<div class="header-box">
+			<h3 style="text-align: left;">$i18n.getString("successfully_saved")</h3>
+		</div>
+	#else	
+	
+	#end
 <p>
 	<ul>
 		#foreach( $programInstance in $programInstances )
@@ -45,7 +52,16 @@
 <p>
 	<ul>
 		#foreach( $person in $relatedPeople )
-			<li><a href="">$!encoder.htmlEncode( ${person.getFullName()} )</a></li>
+			<li><a href="showPatientProgramList.action?patientId=$person.id">$!encoder.htmlEncode( ${person.getFullName()} )</a></li>
+		#end
+	</ul>
+</p>
+
+<h2>$i18n.getString("add_relationships")</h2>
+<p>
+	<ul>
+		#foreach( $relationshipType in $relationshipTypes )
+			<li><a href="showFindRelatedPatientForm.action?originalPatientId=$patient.id&relationshipTypeId=$relationshipType.id">Add $relationshipType.getName()</a></li>
 		#end
 	</ul>
 </p>
