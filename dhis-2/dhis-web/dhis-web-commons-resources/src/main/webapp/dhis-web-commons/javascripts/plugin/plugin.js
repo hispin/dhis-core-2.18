@@ -625,6 +625,9 @@ Ext.onReady( function() {
 					object.organisationunitnames.push(DHIS.chart.util.string.getEncodedString(r.o[k]));
 				}
                 return object;
+            },
+            isDefined: function(variable) {
+            	return (typeof(variable) !== 'undefined'); 
             }
         }
     };
@@ -784,7 +787,7 @@ Ext.onReady( function() {
 				baseUrl = Ext.String.urlAppend(baseUrl, 'userOrganisationUnitChildren=true');
 			}
             
-            Ext.data.JsonP.request({
+            var options = {
                 url: baseUrl,
                 disableCaching: false,
                 success: function(r) {
@@ -818,7 +821,13 @@ Ext.onReady( function() {
                     DHIS.chart.state.state = project.state;
 					DHIS.chart.chart.getData(project);
                 }
-            });
+            };
+            
+            if (DHIS.chart.util.value.isDefined(project.state.conf.callbackName)) {
+            	options.callbackName = project.state.conf.callbackName;            	
+            }
+            
+            Ext.data.JsonP.request(options);
         }
     };
     
