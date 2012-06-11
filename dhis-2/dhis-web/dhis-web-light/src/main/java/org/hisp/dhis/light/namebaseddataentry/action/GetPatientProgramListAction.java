@@ -42,6 +42,8 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -111,6 +113,18 @@ public class GetPatientProgramListAction
     {
         this.relationshipService = relationshipService;
     }
+    
+    public RelationshipTypeService relationshipTypeService;
+    
+    public RelationshipTypeService getRelationshipTypeService()
+    {
+        return relationshipTypeService;
+    }
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -163,7 +177,9 @@ public class GetPatientProgramListAction
     {
         this.enrollmentProgramList = enrollmentProgramList;
     }
-
+    
+    //Use for add relationship
+    
     private List<Patient> relatedPeople;
 
     public List<Patient> getRelatedPeople()
@@ -174,6 +190,30 @@ public class GetPatientProgramListAction
     public void setRelatedPeople( List<Patient> relatedPeople )
     {
         this.relatedPeople = relatedPeople;
+    }
+    
+    private Collection<RelationshipType> relationshipTypes;
+    
+    public Collection<RelationshipType> getRelationshipTypes()
+    {
+        return relationshipTypes;
+    }
+
+    public void setRelationshipTypes( Collection<RelationshipType> relationshipTypes )
+    {
+        this.relationshipTypes = relationshipTypes;
+    }
+    
+    private Boolean validated;
+    
+    public Boolean getValidated()
+    {
+        return validated;
+    }
+
+    public void setValidated( Boolean validated )
+    {
+        this.validated = validated;
     }
 
     @Override
@@ -207,7 +247,8 @@ public class GetPatientProgramListAction
                 relatedPeople.add( relationship.getPatientB() );
             }
         }
-
+        
+        relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
         return SUCCESS;
     }
 

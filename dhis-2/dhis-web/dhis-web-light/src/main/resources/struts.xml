@@ -159,6 +159,14 @@
 				/dhis-web-light/namebased/findBeneficiaryForm.vm</param>
 		</action>
 		
+		<action name="showFindRelatedPatientForm"
+			class="org.hisp.dhis.light.namebaseddataentry.action.GetFindBeneficiaryFormAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/namebased/findRelatedPatientForm.vm</param>
+		</action>
+		
 		<action name="findBeneficiary"
 			class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction">
 			<result name="redirect" type="redirect">showPatientProgramList.action?patientId=${patientId}</result>
@@ -166,6 +174,28 @@
 				/dhis-web-light/main.vm</result>
 			<param name="page">
 				/dhis-web-light/namebased/beneficiaryList.vm</param>
+		</action>
+		
+		<action name="showAddNewRelationshipForm"
+			class="org.hisp.dhis.light.namebaseddataentry.action.GetAddNewRelationshipFormAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/namebased/addNewRelationshipForm.vm</param>
+		</action>
+		
+		<action name="findRelatedPatient"
+			class="org.hisp.dhis.light.namebaseddataentry.action.FindBeneficiarytAction">
+			<result name="redirect" type="redirect">showAddNewRelationshipForm.action?originalPatientId=${originalPatientId}&amp;relatedPatientId=${patientId}&amp;relationshipTypeId=${relationshipTypeId}</result>
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/namebased/relatedPatientList.vm</param>
+		</action>
+		
+		<action name="addNewRelationship"
+			class="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction">
+			<result name="redirect" type="redirect">showPatientProgramList.action?patientId=${originalPatientId}&amp;validated=true</result>
 		</action>
 		
 		<action name="showPatientProgramList"

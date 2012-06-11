@@ -35,6 +35,7 @@ public class FindBeneficiarytAction
     implements Action
 {
     private static final String REDIRECT = "redirect";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -90,9 +91,9 @@ public class FindBeneficiarytAction
     {
         this.organisationUnitId = organisationUnitId;
     }
-    
+
     private Integer patientId;
-    
+
     public Integer getPatientId()
     {
         return patientId;
@@ -101,6 +102,32 @@ public class FindBeneficiarytAction
     public void setPatientId( Integer patientId )
     {
         this.patientId = patientId;
+    }
+
+    // Use in search related patient
+
+    private Integer originalPatientId;
+
+    public void setOriginalPatientId( Integer originalPatientId )
+    {
+        this.originalPatientId = originalPatientId;
+    }
+
+    public Integer getOriginalPatientId()
+    {
+        return originalPatientId;
+    }
+
+    private Integer relationshipTypeId;
+
+    public Integer getRelationshipTypeId()
+    {
+        return relationshipTypeId;
+    }
+
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
     }
 
     @Override
@@ -119,7 +146,8 @@ public class FindBeneficiarytAction
         }
 
         patients = patientService.getPatientsForMobile( keyword, organisationUnitId );
-        if (patients.size() == 1) {
+        if ( patients.size() == 1 )
+        {
             Patient patient = patients.iterator().next();
             patientId = patient.getId();
             return REDIRECT;

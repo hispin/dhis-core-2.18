@@ -235,6 +235,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramService"/>
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService"/>
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService"/>
 		<property name="util"
 			ref="org.hisp.dhis.light.utils.NamebasedUtils"/>
 	</bean>
@@ -267,6 +269,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.GetAddNewRelationshipFormAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetAddNewRelationshipFormAction">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService"/>
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction">
+		<property name="relationshipTypeService"
+			ref="org.hisp.dhis.relationship.RelationshipTypeService"/>
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService"/>
+	</bean>
+	
 	
 	<!-- Beneficiary Registration -->
 	
