@@ -2873,7 +2873,7 @@ Ext.onReady( function() {
                 layout: 'anchor',
                 collapsible: true,
 				header: false,
-                margins: '0 5px 0 5px',
+                margins: '0 0 0 2px',
                 defaults: {
                     border: true,
                     frame: true,
@@ -2912,7 +2912,6 @@ Ext.onReady( function() {
                 xtype: 'gx_mappanel',
                 region: 'center',
                 id: 'center',
-                margins: '0 0 0 5px',
                 height: 1000,
                 width: 800,
                 map: G.vars.map,
