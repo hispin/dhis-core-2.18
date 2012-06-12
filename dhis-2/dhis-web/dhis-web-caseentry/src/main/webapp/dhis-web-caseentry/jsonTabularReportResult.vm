@@ -32,8 +32,7 @@
   #foreach( $row in $grid.getRows() )
   [
     #foreach( $col in $row )
-	#set($colName = "col"+ $velocityCount)
-    "$!col"#if( $velocityCount < $noHeader ),#end
+	"$!col"#if( $velocityCount < $noHeader ),#end
     #end
   ]#if( $velocityCount < $noRows ),#end
   #end
