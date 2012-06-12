@@ -33,11 +33,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.user.User;
 
 /**
@@ -71,15 +70,13 @@ public class PatientTabularReport
 
     private Date endDate;
 
-    private ProgramStage programStage;
-
     private List<PatientIdentifierType> identifiers = new ArrayList<PatientIdentifierType>();
 
     private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
     private List<String> fixedAttributes = new ArrayList<String>();
 
-    private List<DataElement> dataElements = new ArrayList<DataElement>();
+    private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
 
     private Set<OrganisationUnit> organisationUnits;
 
@@ -128,16 +125,6 @@ public class PatientTabularReport
         this.endDate = endDate;
     }
 
-    public ProgramStage getProgramStage()
-    {
-        return programStage;
-    }
-
-    public void setProgramStage( ProgramStage programStage )
-    {
-        this.programStage = programStage;
-    }
-
     public Set<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -178,14 +165,14 @@ public class PatientTabularReport
         this.fixedAttributes = fixedAttributes;
     }
 
-    public List<DataElement> getDataElements()
+    public List<ProgramStageDataElement> getProgramStageDataElements()
     {
-        return dataElements;
+        return programStageDataElements;
     }
 
-    public void setDataElements( List<DataElement> dataElements )
+    public void setProgramStageDataElements( List<ProgramStageDataElement> programStageDataElements )
     {
-        this.dataElements = dataElements;
+        this.programStageDataElements = programStageDataElements;
     }
 
     public int getLevel()

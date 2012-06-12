@@ -2,16 +2,16 @@
 	"id": "${tabularReport.id}",
 	"name": "$!encoder.jsonEncode( ${tabularReport.name} )",
 	"lastUpdated": "$!format.formatDate( ${tabularReport.lastUpdated} )",
-	"programId": "${tabularReport.programStage.program.id}",
+	"programId": "${programStage.program.id}",
 	"singleEvent": 
-		#if($tabularReport.programStage.program.programStages.size() == 1 )
+		#if($programStage.program.programStages.size() == 1 )
 			"true",
 		#else
 			"false",
 		#end
-	"type": "${tabularReport.programStage.program.type}",
-	"programStageId": "${tabularReport.programStage.id}",
-	"programStageName": "${tabularReport.programStage.name}",
+	"type": "${programStage.program.type}",
+	"programStageId": "${programStage.id}",
+	"programStageName": "${programStage.name}",
 	"startDate": "$!format.formatDate( $tabularReport.startDate )",
 	"endDate": "$!format.formatDate( ${tabularReport.endDate} )",
 	"level": "${tabularReport.level}",
@@ -60,16 +60,17 @@
 		#end
 	],
 	"dataElements": [
-		#set( $size = ${tabularReport.dataElements.size()} )
-		#set( $dataElements = ${tabularReport.dataElements} )
-		#foreach( ${dataElement} in $!{dataElements} )
+		#set( $size = ${tabularReport.programStageDataElements.size()} )
+		#set( $programStageDataElements = ${tabularReport.programStageDataElements} )
+		#foreach( ${programStageDataElement} in $!{programStageDataElements} )
 			{
-				"id": "de_${dataElement.id}",
-				"name": "${dataElement.name}",
-				"valueType": #if( $dataElement.optionSet )
+				"id": "de_${programStageDataElement.dataElement.id}",
+				"name": "${programStageDataElement.dataElement.name}",
+				"compulsory": "${programStageDataElement.compulsory}",
+				"valueType": #if( $programStageDataElement.dataElement.optionSet )
 								"list"
 							 #else
-								"${dataElement.type}"
+								"${programStageDataElement.dataElement.type}"
 							 #end
 			}
 			#if( $velocityCount < $size ),#end
