@@ -89,58 +89,23 @@ public class HibernatePatientStore
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-
+    
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> get( Boolean isDead )
-    {
-        return getCriteria( Restrictions.eq( "isDead", isDead ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
+    @Override
     public Collection<Patient> getByGender( String gender )
     {
         return getCriteria( Restrictions.eq( "gender", gender ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
+    @Override
     public Collection<Patient> getByBirthDate( Date birthDate )
     {
         return getCriteria( Restrictions.eq( "birthDate", birthDate ) ).list();
     }
 
-    public Collection<Patient> getByNames( String name )
-    {
-        String sql = statementBuilder.getPatientsByFullName( name );
-
-        StatementHolder holder = statementManager.getHolder();
-
-        Set<Patient> patients = new HashSet<Patient>();
-
-        try
-        {
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement.executeQuery( sql );
-
-            while ( resultSet.next() )
-            {
-                Patient p = get( resultSet.getInt( 1 ) );
-                patients.add( p );
-            }
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-        finally
-        {
-            holder.close();
-        }
-
-        return patients;
-    }
-
-    public Collection<Patient> getByNames( String name, int min, int max )
+    @Override
+    public Collection<Patient> getByNames( String name, Integer min, Integer max )
     {
         String sql = statementBuilder.getPatientsByFullName( name, min, max );
 
@@ -173,7 +138,8 @@ public class HibernatePatientStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate,
+    @Override
+    public Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate,
         String gender )
     {
         Criteria crit = getCriteria();
@@ -199,30 +165,38 @@ public class HibernatePatientStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit )
-    {
-        String hql = "select distinct p from Patient p where p.organisationUnit = :organisationUnit order by p.id DESC";
-
-        return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, int min, int max )
+    @Override
+    public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max )
     {
         String hql = "select p from Patient p where p.organisationUnit = :organisationUnit order by p.id DESC";
 
-        return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).setFirstResult( min ).setMaxResults(
-            max ).list();
+        Query query = getQuery( hql );
+        query.setEntity( "organisationUnit", organisationUnit );
+
+        if ( min != null && max != null )
+        {
+            query.setFirstResult( min ).setMaxResults( max );
+        }
+        return query.list();
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, int min, int max )
+    @Override
+    public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min, Integer max )
     {
-        return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias( "programs",
-            "program" ).add( Restrictions.eq( "program.id", program.getId() ) ).addOrder( Order.desc( "id" ) )
-            .setFirstResult( min ).setMaxResults( max ).list();
+        Criteria criteria = getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias( "programs",
+            "program" ).add( Restrictions.eq( "program.id", program.getId() ) );
+        
+         criteria.addOrder( Order.desc( "id" ) );
+        
+         if( min != null && max != null )
+         {
+             criteria.setFirstResult( min ).setMaxResults( max );
+         }
+         return criteria.list();
     }
 
+    @Override
     public int countGetPatientsByName( String name )
     {
         String sql = statementBuilder.countPatientsByFullName( name );
@@ -274,6 +248,7 @@ public class HibernatePatientStore
     }
 
     @SuppressWarnings( "unchecked" )
+    @Override
     public Collection<Patient> getRepresentatives( Patient patient )
     {
         String hql = "select distinct p from Patient p where p.representative = :representative order by p.id DESC";
@@ -281,10 +256,11 @@ public class HibernatePatientStore
         return getQuery( hql ).setEntity( "representative", patient ).list();
     }
 
+    @Override
     public void removeErollmentPrograms( Program program )
     {
         String sql = "delete from patient_programs where programid='" + program.getId() + "'";
-        
+
         jdbcTemplate.execute( sql );
     }
 }

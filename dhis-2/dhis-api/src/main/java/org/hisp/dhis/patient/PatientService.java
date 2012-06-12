@@ -55,14 +55,6 @@ public interface PatientService
     Collection<Patient> getAllPatients();
 
     /**
-     * Get Patients base on isDead property
-     * 
-     * @param isDead
-     * @return Patient List
-     */
-    Collection<Patient> getAllPatients( Boolean isDead );
-
-    /**
      * Search Patient base on firstname/middlename/lastname/birthDate/gender
      * 
      * @param firstName
@@ -72,7 +64,7 @@ public interface PatientService
      * @param gender
      * @return Patient List
      */
-    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );
+    Collection<Patient> getPatients( String firstName, String middleName, String lastName, Date birthdate, String gender );
     
     /**
      * Search Patient base on gender
@@ -96,17 +88,15 @@ public interface PatientService
      * @param name fullName
      * @return Patient List
      */
-    Collection<Patient> getPatientsByNames( String name );
+    Collection<Patient> getPatientsByNames( String name, Integer min, Integer max );
     
     /**
-     * Search Patient base on identifier value with result limited
+     * Search Patient base on full-name or identifier value
      * 
      * @param searchText value
-     * @param min
-     * @param max
      * @return Patient List
      */
-    Collection<Patient> getPatients( String searchText, int min, int max );
+    Collection<Patient> getPatients( String searchText, Integer min, Integer max );
     
     /**
      * Search Patient for mobile base on identifier value
@@ -123,28 +113,18 @@ public interface PatientService
      * @param organisationUnit organisationUnit
      * @return Patient List
      */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit );
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, Integer min, Integer max );
     
-    /**
-     * Search Patient base on organization unit with result limited
-     * 
-     * @param organisationUnit organisationUnit
-     * @param min
-     * @param max
-     * @return Patient List
-     */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max );
-
     /**
      * Search Patient base on organization unit and sort the result by PatientAttribute
      * 
      * @param organisationUnit organisationUnit
+     * @param patientAttribute 
      * @param min
      * @param max
-     * @param patientAttribute
      * @return Patient List
      */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max, PatientAttribute patientAttribute );
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, PatientAttribute patientAttribute, Integer min, Integer max );
     
     /**
      * Search Patient base on organisationUnit and identifier value
@@ -156,7 +136,7 @@ public interface PatientService
      * @param max 
      * @return
      */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, int min, int max );
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, Integer min, Integer max );
     
     /**
      * Search Patient base on PatientIdentifierType or Attribute or Patient's
@@ -179,7 +159,7 @@ public interface PatientService
      * @param max 
      * @return
      */
-    Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, int min, int max );
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, Integer min, Integer max );
 
     /**
      * Sort the result by PatientAttribute
@@ -190,16 +170,7 @@ public interface PatientService
      */
     Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute );
 
-    /**
-     * Search Patient base on firstname/middlename/lastname with result limited
-     * 
-     * @param name firstName/middleName/lastName
-     * @param min 
-     * @param max 
-     * @return Patient List
-     */
-    Collection<Patient> getPatientsByNames( String name, int min, int max );
-    
+   
     Collection<Patient> getRepresentatives( Patient patient );
     /**
      * Search Patient base on identifier value and get number of result

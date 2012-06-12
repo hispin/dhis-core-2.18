@@ -144,6 +144,7 @@ public class SearchPatientAction
     {
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
+        // List all patients
         if ( listAll )
         {
             searchText = "list_all_patients";
@@ -168,6 +169,7 @@ public class SearchPatientAction
             }
         }
 
+        // Search patients by attribute
         if ( searchingAttributeId != null && searchText != null )
         {
             PatientAttribute searchingPatientAttribute = patientAttributeService
@@ -180,6 +182,8 @@ public class SearchPatientAction
             patients = patientAttributeValueService.searchPatients( searchingPatientAttribute, searchText, paging
                 .getStartPos(), paging.getPageSize() );
         }
+        
+        // Search patients by full-name / identifier
         else
         {
             total = patientService.countGetPatients( searchText );
