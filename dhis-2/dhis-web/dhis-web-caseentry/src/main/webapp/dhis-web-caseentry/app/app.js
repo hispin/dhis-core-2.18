@@ -1400,7 +1400,11 @@ Ext.onReady( function() {
 						grid.getView().getNode(e.rowIdx).classList.remove('hidden');
 						
 						var oldValue = e.originalValue;
-						var newValue = editor.editors.items[0].field.rawValue;
+						var newValue = e.value;
+						if( newValue == oldValue)
+						{
+							return false;
+						}
 						var psiId = TR.store.datatable.getAt(e.rowIdx).data['id'];
 						var deId = e.column.name.split('_')[1];
 						TR.value.save( psiId, deId, newValue);
@@ -1413,19 +1417,12 @@ Ext.onReady( function() {
 					},
 					validateedit: function( editor, e, eOpts )
 					{
-						var newValue = editor.editors.items[0].field.rawValue;
+						var newValue = editor.editors.items[editor.editors.items.length-1].field.rawValue;
 						if( e.column.compulsory && newValue =='' )
 						{
 							TR.util.notification.error( TR.i18n.not_empty, TR.i18n.not_empty );
 							return false;
 						}
-						
-						var oldValue = e.originalValue;
-						if( newValue == oldValue)
-						{
-							return false;
-						}
-						
 						return true;
 					}
 				}
