@@ -77,7 +77,6 @@ public class AttributeUtils
                 {
                     if ( attributeValue.getValue() == null || attributeValue.getValue().length() == 0 )
                     {
-                    
                         attributeService.deleteAttributeValue( attributeValueItem );
                     }
                     else

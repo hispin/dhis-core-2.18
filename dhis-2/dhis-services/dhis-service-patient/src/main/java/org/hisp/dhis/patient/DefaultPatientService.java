@@ -187,16 +187,10 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getAllPatients( Boolean isDead )
-    {
-        return patientStore.get( isDead );
-    }
-
-    @Override
-    public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate,
+    public Collection<Patient> getPatients( String firstName, String middleName, String lastName, Date birthdate,
         String gender )
     {
-        return patientStore.getPatient( firstName, middleName, lastName, birthdate, gender );
+        return patientStore.get( firstName, middleName, lastName, birthdate, gender );
     }
 
     @Override
@@ -212,7 +206,7 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatients( String searchText, int min, int max )
+    public Collection<Patient> getPatients( String searchText, Integer min, Integer max )
     {
         int countPatientName = patientStore.countGetPatientsByName( searchText );
 
@@ -282,22 +276,16 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit )
-    {
-        return patientStore.getByOrgUnit( organisationUnit );
-    }
-
-    @Override
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max )
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Integer min, Integer max )
     {
         return patientStore.getByOrgUnit( organisationUnit, min, max );
     }
 
     @Override
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max,
-        PatientAttribute patientAttribute )
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, PatientAttribute patientAttribute,
+        Integer min, Integer max )
     {
-        List<Patient> patientList = new ArrayList<Patient>( patientStore.getByOrgUnit( organisationUnit ) );
+        List<Patient> patientList = new ArrayList<Patient>( patientStore.getByOrgUnit( organisationUnit, min, max ) );
 
         if ( patientAttribute != null )
         {
@@ -310,11 +298,12 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, int min, int max )
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, Integer min,
+        Integer max )
     {
         Collection<Patient> patients = new ArrayList<Patient>();
 
-        Collection<Patient> allPatients = getPatientsByNames( searchText );
+        Collection<Patient> allPatients = getPatientsByNames( searchText, min, max );
 
         if ( allPatients.retainAll( getPatients( organisationUnit, min, max ) ) )
         {
@@ -351,7 +340,7 @@ public class DefaultPatientService
         }
         else
         {
-            return patientStore.getByNames( value );
+            return patientStore.getByNames( value, null, null );
         }
         return null;
     }
@@ -395,13 +384,7 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatientsByNames( String name )
-    {
-        return patientStore.getByNames( name.toLowerCase() );
-    }
-
-    @Override
-    public Collection<Patient> getPatientsByNames( String name, int min, int max )
+    public Collection<Patient> getPatientsByNames( String name, Integer min, Integer max )
     {
         return patientStore.getByNames( name.toLowerCase(), min, max );
     }
@@ -484,11 +467,13 @@ public class DefaultPatientService
         return patient.getRepresentative() == null || !patient.getRepresentative().getId().equals( representativeId );
     }
 
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, int min, int max )
+    @Override
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, Integer min, Integer max )
     {
         return patientStore.getByOrgUnitProgram( organisationUnit, program, min, max );
     }
 
+    @Override
     public int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program )
     {
         return patientStore.countGetPatientsByOrgUnitProgram( organisationUnit, program );

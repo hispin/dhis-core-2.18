@@ -43,23 +43,17 @@ public interface PatientStore
 {
     String ID = PatientStore.class.getName();
 
-    Collection<Patient> get( Boolean isDead );
-
     Collection<Patient> getByGender( String gender );
 
     Collection<Patient> getByBirthDate( Date birthDate );
 
-    Collection<Patient> getByNames( String name );
+    Collection<Patient> getByNames( String name, Integer min, Integer max );
     
-    Collection<Patient> getByNames( String name, int min, int max );
+    Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate, String gender );    
     
-    Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );    
+    Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
     
-    Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit );
-    
-    Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, int min, int max );
-    
-    Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, int min, int max );
+    Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min, Integer max );
     
     Collection<Patient> getRepresentatives( Patient patient );
     

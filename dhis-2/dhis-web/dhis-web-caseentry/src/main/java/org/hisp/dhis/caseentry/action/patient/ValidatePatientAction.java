@@ -188,7 +188,7 @@ public class ValidatePatientAction
 
         if ( !checkedDuplicate )
         {
-            patients = patientService.getPatient( firstName, middleName, lastName, format.parseDate( birthDate ),
+            patients = patientService.getPatients( firstName, middleName, lastName, format.parseDate( birthDate ),
                 gender );
             
             if ( patients != null && patients.size() > 0 )

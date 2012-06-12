@@ -73,7 +73,7 @@ public class PatientDeletionHandler
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-        for ( Patient patient : patientService.getPatients( unit ) )
+        for ( Patient patient : patientService.getPatients( unit, null, null ) )
         {
             patientService.deletePatient( patient );
         }
