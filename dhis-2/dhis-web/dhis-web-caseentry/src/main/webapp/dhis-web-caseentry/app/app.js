@@ -528,7 +528,7 @@ Ext.onReady( function() {
 							TR.store.dataelement.selected.removeAll();
 							if (f.dataElements) {
 								for (var i = 0; i < f.dataElements.length; i++) {
-									TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: TR.util.string.getEncodedString(f.dataElements[i].name), valueType:f.dataElements[i].valueType });
+									TR.cmp.params.dataelement.objects.push({id: f.dataElements[i].id, name: TR.util.string.getEncodedString(f.dataElements[i].name), compulsory: f.dataElements[i].compulsory, valueType:f.dataElements[i].valueType });
 								}
 								TR.store.dataelement.selected.add(TR.cmp.params.dataelement.objects);
 								
@@ -652,7 +652,7 @@ Ext.onReady( function() {
 		}),
 		dataelement: {
             available: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 'valueType'],
+                fields: ['id', 'name', 'compulsory', 'valueType'],
                 proxy: {
                     type: 'ajax',
                     url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.dataelements_get,
@@ -672,7 +672,7 @@ Ext.onReady( function() {
 				}
             }),
             selected: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 'valueType'],
+                fields: ['id', 'name', 'compulsory', 'valueType'],
                 data: []
             })
         },
@@ -1169,6 +1169,8 @@ Ext.onReady( function() {
 				menuDisabled: true
 			};
 			
+			// report date
+			
 			cols[++index] = {
 				header: TR.value.columns[index].name, 
 				dataIndex: 'col' + index,
@@ -1223,7 +1225,7 @@ Ext.onReady( function() {
 			// Data element columns
 			
 			TR.cmp.params.dataelement.selected.store.each( function(r) {
-				cols[++index] = TR.datatable.createColumn( r.data.valueType, r.data.id, cols, index );
+				cols[++index] = TR.datatable.createColumn( r.data.valueType, r.data.id, r.data.compulsory, cols, index );
 			});
 			
 			cols[++index]={
@@ -1400,19 +1402,9 @@ Ext.onReady( function() {
 						
 						var oldValue = e.originalValue;
 						var newValue = editor.editors.items[0].field.rawValue;
-						if( newValue != oldValue)
-						{
-							// filter
-							if( e.rowIdx==0 ){
-								TR.exe.execute();
-							}
-							// save data-value of data element
-							else{
-								var psiId = TR.store.datatable.getAt(e.rowIdx).data['id'];
-								var deId = e.column.name.split('_')[1];
-								TR.value.save( psiId, deId, newValue);
-							}
-						}
+						var psiId = TR.store.datatable.getAt(e.rowIdx).data['id'];
+						var deId = e.column.name.split('_')[1];
+						TR.value.save( psiId, deId, newValue);
 					},
 					canceledit: function( grid, eOpts ){
 						if( e.rowIdx == 0 ){
@@ -1422,12 +1414,26 @@ Ext.onReady( function() {
 					},
 					validateedit: function( editor, e, eOpts )
 					{
+						var newValue = editor.editors.items[0].field.rawValue;
+						if( e.column.compulsory && newValue =='' )
+						{
+							TR.util.notification.error( TR.i18n.not_empty, TR.i18n.not_empty );
+							return false;
+						}
+						
+						var oldValue = e.originalValue;
+						if( newValue == oldValue)
+						{
+							return false;
+						}
+						
 						return true;
 					}
 				}
 			});
+			
 		},
-		createColumn: function( type, id, cols, index )
+		createColumn: function( type, id, compulsory, cols, index )
 		{
 			if( type.toLowerCase() == 'date' )
 			{
@@ -1440,6 +1446,7 @@ Ext.onReady( function() {
 					sortable: false,
 					draggable: true,
 					isEditAllowed: true,
+					compulsory: compulsory,
 					renderer: Ext.util.Format.dateRenderer( TR.i18n.format_date ),
 					filter: {
 						type:TR.value.covertValueType( type ),
@@ -1473,6 +1480,7 @@ Ext.onReady( function() {
 				sortable: false,
 				draggable: true,
 				isEditAllowed: true,
+				compulsory: compulsory,
 				filter: {
 					type:TR.value.covertValueType( type ),
 					options: TR.value.columns[index].suggested

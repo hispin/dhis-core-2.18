@@ -50,6 +50,8 @@ import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -114,6 +116,13 @@ public class SaveTabularReportAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private ProgramStageDataElementService programStageDataElementService;
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
     }
 
     private I18nFormat format;
@@ -213,7 +222,6 @@ public class SaveTabularReportAction
         PatientTabularReport tabularReport = new PatientTabularReport( name );
         tabularReport.setStartDate( format.parseDate( startDate ) );
         tabularReport.setEndDate( format.parseDate( endDate ) );
-        tabularReport.setProgramStage( programStage );
         tabularReport.setOrganisationUnits( orgunits );
         tabularReport.setLevel( level );
         tabularReport.setFacilityLB( facilityLB );
@@ -228,7 +236,7 @@ public class SaveTabularReportAction
 
         List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
-        List<DataElement> dataElements = new ArrayList<DataElement>();
+        List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
         List<String> fixedAttributes = new ArrayList<String>();
 
         for ( String searchingValue : searchingValues )
@@ -254,14 +262,14 @@ public class SaveTabularReportAction
             {
                 int objectId = Integer.parseInt( infor[1] );
                 DataElement dataElement = dataElementService.getDataElement( objectId );
-                dataElements.add( dataElement );
+                programStageDataElements.add( programStageDataElementService.get( programStage, dataElement ) );
             }
         }
 
         tabularReport.setFixedAttributes( fixedAttributes );
         tabularReport.setIdentifiers( identifiers );
         tabularReport.setAttributes( attributes );
-        tabularReport.setDataElements( dataElements );
+        tabularReport.setProgramStageDataElements( programStageDataElements );
 
         tabularReportService.saveOrUpdate( tabularReport );
 

@@ -18,10 +18,7 @@
 		<property name="startDate" />
 
 		<property name="endDate" />
-
-		<many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage"
-			column="programstageid" foreign-key="fk_patienttabularreport_programstageid" />
-
+		
 		<list name="identifiers"
 			table="patienttabularreport_identifiers">
 			<key column="patienttabularreportid" />
@@ -42,13 +39,16 @@
 			<list-index column="sort_order" />
 			<element type="text" column="fixedAttribute" />
 		</list>
-
-		<list name="dataElements"
-			table="patienttabularreport_dataelements">
+    
+		<list name="programStageDataElements"
+			table="patienttabularreport_programstagedataelements">
 			<key column="patienttabularreportid" />
 			<list-index column="sort_order" base="0" />
-			<many-to-many class="org.hisp.dhis.dataelement.DataElement"
-				foreign-key="patienttabularreport_dataelementid" />
+			<many-to-many class="org.hisp.dhis.program.ProgramStageDataElement"
+				foreign-key="patienttabularreport_programstagedataelementid" >
+				  <column name="programstageid" />
+       			  <column name="dataelementid" />
+			</many-to-many>
 		</list>
 		
 	 	<set name="organisationUnits" table="patienttabularreport_organisationUnits">

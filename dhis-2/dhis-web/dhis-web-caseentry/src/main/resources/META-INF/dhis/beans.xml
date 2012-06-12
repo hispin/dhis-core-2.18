@@ -892,6 +892,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
 	
 	<bean

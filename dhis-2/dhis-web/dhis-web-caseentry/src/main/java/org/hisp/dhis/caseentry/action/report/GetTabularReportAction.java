@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.report;
 
 import org.hisp.dhis.patientreport.PatientTabularReport;
 import org.hisp.dhis.patientreport.PatientTabularReportService;
+import org.hisp.dhis.program.ProgramStage;
 
 import com.opensymphony.xwork2.Action;
 
@@ -69,6 +70,13 @@ public class GetTabularReportAction
         return tabularReport;
     }
 
+    private ProgramStage programStage;
+
+    public ProgramStage getProgramStage()
+    {
+        return programStage;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -78,8 +86,13 @@ public class GetTabularReportAction
         throws Exception
     {
         tabularReport = tabularReportService.getPatientTabularReport( id );
-        
+
+        if ( tabularReport.getProgramStageDataElements() != null
+            && tabularReport.getProgramStageDataElements().size() > 0 )
+        {
+            programStage = tabularReport.getProgramStageDataElements().get( 0 ).getProgramStage();
+        }
+
         return SUCCESS;
     }
-
 }

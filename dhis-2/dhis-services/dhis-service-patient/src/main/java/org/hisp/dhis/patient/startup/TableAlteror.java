@@ -115,7 +115,8 @@ public class TableAlteror
         executeSql( "UPDATE patientdatavalue SET providedElsewhere=false WHERE providedElsewhere is null" );
         executeSql( "ALTER TABLE programstageinstance DROP COLUMN providedbyanotherfacility" );
 
-        updateTabularReportTable();
+        updateMultiOrgunitTabularReportTable();
+        updateProgramStageTabularReportTable();
     }
 
     // -------------------------------------------------------------------------
@@ -125,7 +126,7 @@ public class TableAlteror
     private void updateProgramStageInstanceOrgunit()
     {
         StatementHolder holder = statementManager.getHolder();
-
+        
         try
         {
             Statement statement = holder.getStatement();
@@ -218,7 +219,7 @@ public class TableAlteror
         }
     }
 
-    private void updateTabularReportTable()
+    private void updateMultiOrgunitTabularReportTable()
     {
         try
         {
@@ -233,15 +234,41 @@ public class TableAlteror
             {
                 executeSql( " INSERT INTO patienttabularreport_organisationUnits ( patienttabularreportid, organisationunitid ) VALUES ( " + resultSet.getInt( 1 ) + ", " + resultSet.getInt( 2 ) + ")" );
             }
-            
             executeSql( "ALTER TABLE patienttabularreport DROP COLUMN organisationunitid" );
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
+           
         }
     }
 
+    private void updateProgramStageTabularReportTable()
+    {
+        try
+        {
+            StatementHolder holder = statementManager.getHolder();
+
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "SELECT pd.patienttabularreportid, tr.programstageid, pd.elt, sort_order "
+                                + " FROM patienttabularreport_dataelements pd inner join patienttabularreport  tr"
+                                + " on pd.patienttabularreportid=tr.patienttabularreportid"
+                                + " order by pd.patienttabularreportid" );
+
+            while ( resultSet.next() )
+            {
+                executeSql( "INSERT INTO patienttabularreport_programstagedataelements ( patienttabularreportid, programstageid, dataelementid, sort_order ) VALUES ( " + resultSet.getInt( 1 ) + ", " + resultSet.getInt( 2 ) + ", " + resultSet.getInt( 3 ) + ", " + resultSet.getInt( 4 ) + ")" );
+            }
+            executeSql( "ALTER TABLE patienttabularreport DROP COLUMN programstageid" );
+            executeSql( "DROP TABLE patienttabularreport_dataelements" );
+        }
+        catch ( Exception e )
+        {
+           
+        }
+    }
+    
     private int executeSql( String sql )
     {
         try
