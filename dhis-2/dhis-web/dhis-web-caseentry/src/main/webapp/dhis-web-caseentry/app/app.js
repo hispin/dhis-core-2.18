@@ -1111,8 +1111,20 @@ Ext.onReady( function() {
 			}
 			return 'textfield';
 		},
-		save: function( psiId, deId, value)
+		save: function(e)
 		{
+			var grid = TR.datatable.datatable;
+			grid.getView().getNode(e.rowIdx).classList.remove('hidden');
+			
+			var oldValue = e.originalValue;
+			var value = e.value;
+			if( value == oldValue)
+			{
+				return false;
+			}
+			
+			var psiId = TR.store.datatable.getAt(e.rowIdx).data['id'];
+			var deId = e.column.name.split('_')[1];
 			var params = 'programStageInstanceId=' + psiId; 
 				params += '&dataElementId=' + deId;
 				params += '&value=' ;
@@ -1123,7 +1135,15 @@ Ext.onReady( function() {
 				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_save,
 				method: 'POST',
 				params: params,
-				success: function() {}
+				success: function() {
+					var rowIdx = e.rowIdx;
+					var colIdx = e.colIdx + 1;
+					if( e.colIdx == TR.datatable.datatable.columns.length - 1 ){
+						colIdx = 0;
+						rowIdx++;
+					}
+					TR.datatable.cellEditing.startEditByPosition({row: rowIdx, column: colIdx});
+				}
 			});
 		},
 		remove: function( psiId, rowIdx )
@@ -1396,18 +1416,7 @@ Ext.onReady( function() {
 						}
 					},
 					edit: function( editor, e ){
-						var grid = TR.datatable.datatable;
-						grid.getView().getNode(e.rowIdx).classList.remove('hidden');
-						
-						var oldValue = e.originalValue;
-						var newValue = e.value;
-						if( newValue == oldValue)
-						{
-							return false;
-						}
-						var psiId = TR.store.datatable.getAt(e.rowIdx).data['id'];
-						var deId = e.column.name.split('_')[1];
-						TR.value.save( psiId, deId, newValue);
+						TR.value.save(e);
 					},
 					canceledit: function( grid, eOpts ){
 						if( e.rowIdx == 0 ){
