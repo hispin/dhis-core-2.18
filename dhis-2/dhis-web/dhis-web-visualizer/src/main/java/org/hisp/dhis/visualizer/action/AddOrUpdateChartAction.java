@@ -237,9 +237,9 @@ public class AddOrUpdateChartAction
         this.organisationUnitIds = organisationUnitIds;
     }
 
-    private Integer organisationUnitGroupSetId;
+    private String organisationUnitGroupSetId;
 
-    public void setOrganisationUnitGroupSetId( Integer organisationUnitGroupSetId )
+    public void setOrganisationUnitGroupSetId( String organisationUnitGroupSetId )
     {
         this.organisationUnitGroupSetId = organisationUnitGroupSetId;
     }
