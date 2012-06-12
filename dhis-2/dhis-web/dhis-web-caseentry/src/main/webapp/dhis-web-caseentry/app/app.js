@@ -54,7 +54,6 @@ TR.conf = {
 			favorite_save: 'saveTabularReport.action',
             favorite_delete: 'deleteTabularReport.action',
 			datavalue_save: 'saveValue.action',
-			datavalue_view: 'viewRecord.action',
 			datavalue_delete: 'removeCurrentEncounter.action',
             redirect: 'index.action'
         },
@@ -1118,7 +1117,7 @@ Ext.onReady( function() {
 				params += '&dataElementId=' + deId;
 				params += '&value=' ;
 			if( value != '')
-				params += value;
+				params += encodeURIComponent(value);
 			
 			Ext.Ajax.request({
 				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_save,
