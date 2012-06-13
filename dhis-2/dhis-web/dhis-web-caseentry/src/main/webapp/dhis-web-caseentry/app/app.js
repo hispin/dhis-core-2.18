@@ -1138,7 +1138,7 @@ Ext.onReady( function() {
 				success: function() {
 					var rowIdx = e.rowIdx;
 					var colIdx = e.colIdx + 1;
-					if( e.colIdx == TR.datatable.datatable.columns.length - 1 ){
+					if( e.colIdx == TR.datatable.datatable.columns.length - 2 ){
 						colIdx = 0;
 						rowIdx++;
 					}

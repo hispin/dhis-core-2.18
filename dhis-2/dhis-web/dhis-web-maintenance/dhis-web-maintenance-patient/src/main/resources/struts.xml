@@ -267,7 +267,7 @@
 		<action name="programStage"
 			class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/programStageList.vm</param>
+			<param name="page">/dhis-web-maintenance-patient/programStage.vm</param>
 			<param name="javascripts">javascript/programStage.js</param>
 		</action>
 
@@ -333,17 +333,17 @@
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_DELETE</param>
 		</action>
 
-		<action name="showSortProgramStageForm"
-			class="org.hisp.dhis.patient.action.programstage.ShowSortProgramStageFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/sortProgramStageForm.vm</param>
-			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
-		</action>
-
 		<action name="saveProgramStageSortOder"
 			class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction">
-			<result name="success" type="redirect">programStage.action?id=${id}
-			</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+		
+		<action name="programStageList"
+			class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/programStageList.vm</param>
+			<param name="javascripts">javascript/programStage.js</param>
 		</action>
 
 		<!-- Data Entry Form -->
