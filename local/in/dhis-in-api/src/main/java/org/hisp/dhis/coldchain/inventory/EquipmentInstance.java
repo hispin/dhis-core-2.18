@@ -3,6 +3,7 @@ package org.hisp.dhis.coldchain.inventory;
 import java.io.Serializable;
 import java.util.Set;
 
+import org.hisp.dhis.coldchain.catalog.Catalog;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 public class EquipmentInstance implements Serializable
@@ -13,6 +14,8 @@ public class EquipmentInstance implements Serializable
     private InventoryType inventoryType;
     
     private OrganisationUnit organisationUnit;
+    
+    private Catalog catalog;
     
     private boolean working = false;
     
@@ -125,6 +128,16 @@ public class EquipmentInstance implements Serializable
     public void setEquipmentStatusUpdates( Set<EquipmentStatus> equipmentStatusUpdates )
     {
         this.equipmentStatusUpdates = equipmentStatusUpdates;
+    }
+
+    public Catalog getCatalog()
+    {
+        return catalog;
+    }
+
+    public void setCatalog( Catalog catalog )
+    {
+        this.catalog = catalog;
     }
     
 }

@@ -58,17 +58,29 @@ public class AddEquipmentAction implements Action
         this.workingStatus = workingStatus;
     }
 
+    private Integer catalog;
+    
+    public void setCatalog( Integer catalog )
+    {
+        this.catalog = catalog;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
     public String execute()
     {
 
-        System.out.println("inside AddEquipmentAction : "+ouId);
-        
         OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouId );
         
         InventoryType inventoryType = inventoryTypeService.getInventoryType( itypeId );
+        
+        Catalog selCatalog = null;
+        
+        if( catalog != null )
+        {    
+            selCatalog = catalogService.getCatalog( catalog );
+        }
         
         // -----------------------------------------------------------------------------
         // Preparing EquipmentInstance
@@ -78,6 +90,10 @@ public class AddEquipmentAction implements Action
         equipmentInstance.setInventoryType( inventoryType );
         equipmentInstance.setOrganisationUnit( orgUnit );
         equipmentInstance.setWorking( workingStatus );
+        if( selCatalog != null )
+        {
+            equipmentInstance.setCatalog( selCatalog );
+        }
         
         // -----------------------------------------------------------------------------
         // Preparing Equipment Details

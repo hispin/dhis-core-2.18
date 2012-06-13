@@ -662,6 +662,8 @@ public class ExcelImportResultAction
 
                 String value = "";
 
+                System.out.println( deCodeString );
+                
                 deAndComboMap = getDeAndCombo( deCodeString );
 
                 for ( DataElement de : deAndComboMap.keySet() )

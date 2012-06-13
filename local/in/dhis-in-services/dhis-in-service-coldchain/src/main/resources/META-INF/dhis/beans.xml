@@ -182,6 +182,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore"/>
     </bean>		
 
+<!-- CCEM Report Manager -->
+    <bean id="org.hisp.dhis.coldchain.reports.CCEMReportManager"
+        class="org.hisp.dhis.coldchain.reports.DefaultCCEMReportManager">
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>     
+
+
 	<!-- DeletionHandlers -->
 	
 </beans>

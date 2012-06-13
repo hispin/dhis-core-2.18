@@ -325,13 +325,11 @@ public class NBITSReportResultAction implements Action
                     
                 }
             }
+            
             rowCount++;
             
             for( OrganisationUnit orgUnit : orgUnitList )
             {
-                
-               
-                
                 if( sDate != null && eDate != null)
                 {
                     query = "SELECT patient.patientid, programinstance.programinstanceid,programinstance.dateofincident,programinstance.enrollmentdate FROM programinstance INNER JOIN patient " +
@@ -352,6 +350,7 @@ public class NBITSReportResultAction implements Action
                 }
 
                 SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
+                
                 if ( sqlResultSet != null )
                 {
                     int count = 1;
@@ -514,8 +513,8 @@ public class NBITSReportResultAction implements Action
                             for( DataElement dataElement : programStageDataElementMap.get( programStage ) )
                             {
                                 query = "SELECT value from patientdatavalue WHERE programstageinstanceid = " + programStageInstanceId + 
-                                                " AND dataelementid = " + dataElement.getId() + 
-                                                " AND organisationunitid = " + orgUnit.getId(); 
+                                                " AND dataelementid = " + dataElement.getId(); 
+                                                //" AND organisationunitid = " + orgUnit.getId(); 
 
                                 SqlRowSet sqlResultSet3 = jdbcTemplate.queryForRowSet( query );
                                 
