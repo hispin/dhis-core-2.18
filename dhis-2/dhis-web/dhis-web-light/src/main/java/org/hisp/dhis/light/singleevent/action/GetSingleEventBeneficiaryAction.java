@@ -153,7 +153,7 @@ public class GetSingleEventBeneficiaryAction
     {
         OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         Program program = programService.getProgram( programId );
-        Collection<Patient> allPatient = patientService.getPatients( orgUnit );
+        Collection<Patient> allPatient = patientService.getPatients( orgUnit, null, null  );
         for ( Patient patient : allPatient )
         {
             if ( programInstanceService.getProgramInstances( patient, program ).size() == 0 )
