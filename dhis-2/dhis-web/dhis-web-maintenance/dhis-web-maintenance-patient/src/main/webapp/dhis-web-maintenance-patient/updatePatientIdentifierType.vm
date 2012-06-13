@@ -54,7 +54,7 @@
 				<select id="type" name="type" class="{validate:{required:true}}">
 					<option value="text" #if( $patientIdentifierType.type=='text' ) selected="selected" #end>$i18n.getString( "text" )</option>
 					<option value="number" #if( $patientIdentifierType.type=='number' ) selected="selected" #end>$i18n.getString( "number" )</option>
-					<option value="letter" #if( $patientIdentifierType.type=='letter' ) selected="selected" #end>$i18n.getString( "letter" )</option>
+					<option value="letter" #if( $patientIdentifierType.type=='letter' ) selected="selected" #end>$i18n.getString( "letter_only" )</option>
 				</select>
 			</td>		
 			<td></td>				

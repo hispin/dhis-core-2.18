@@ -18,18 +18,31 @@ function addProgramStage()
 	}
 }
 
-function showSortProgramStage()
+function sortProgramStages()
 {
-	var programId = document.getElementById('id').value;
-	
+	var programId = getFieldValue('id');
 	if( programId == "null"  || programId == "" )
 	{
 		showWarningMessage( i18n_please_select_program );
 	}
 	else
 	{
-		window.location.href="showSortProgramStageForm.action?id=" + programId;
+		jQuery.getJSON( 'saveProgramStageSortOder.action', { id: programId }, 
+			function ( json ) {
+				showSuccessMessage( i18n_success );
+				loadProgramStageList( programId );
+			});
 	}
+}
+
+function loadProgramStageList( programId )
+{
+	jQuery('#programStageListDiv').load('programStageList.action',{
+			id: programId
+		},
+		function( html ){
+			setInnerHTML('programStageListDiv', html );
+		});
 }
 
 // -----------------------------------------------------------------------------
