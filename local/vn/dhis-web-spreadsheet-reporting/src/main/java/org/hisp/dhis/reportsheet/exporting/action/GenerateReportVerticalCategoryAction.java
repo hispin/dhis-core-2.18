@@ -87,6 +87,7 @@ public class GenerateReportVerticalCategoryAction
         for ( ExportItem reportItem : exportReportItems )
         {
             int run = 0;
+            int chapperNo = 0;
             int rowBegin = reportItem.getRow();
 
             for ( CategoryOptionGroupOrder group : exportReport.getCategoryOptionGroupOrders() )
@@ -97,6 +98,11 @@ public class GenerateReportVerticalCategoryAction
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), group.getName(), ExcelUtils.TEXT,
                         sheet, this.csText10Bold );
+                }
+                else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
+                {
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo++],
+                        ExcelUtils.TEXT, sheet, this.csText10Bold );
                 }
 
                 run++;
@@ -138,8 +144,6 @@ public class GenerateReportVerticalCategoryAction
 
                                 ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( value ),
                                     ExcelUtils.NUMBER, sheet, this.csNumber );
-
-                                break;
                             }
 
                             rowBegin++;
