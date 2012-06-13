@@ -78,7 +78,7 @@ function loadProgramStages()
 				showById('programInstanceFlowDiv');
 			}
 			// Load entry form for Single-event program or normal program with only one program-stage
-			else
+			else 
 			{
 				jQuery('#dueDateTR').attr('class','hidden');
 				enable('completeBtn');
@@ -86,7 +86,12 @@ function loadProgramStages()
 				hideById('historyPlanLink');
 				hideById('programStageIdTR');
 				hideById('programInstanceFlowDiv');
-				loadDataEntry( json.programStageInstances[0].id );
+				var programStageInstanceId = '';
+				if( json.programStageInstances.length == 1 )
+				{
+					programStageInstanceId = json.programStageInstances[0].id;
+				}
+				loadDataEntry( programStageInstanceId );
 			}
 	});
 }
@@ -245,13 +250,13 @@ function updateProvidingFacility( dataElementId, checkField )
     
 }
 
-function saveExecutionDate( programStageId, executionDateValue )
+function saveExecutionDate( programId, executionDateValue )
 {
     var field = document.getElementById( 'executionDate' );
 	
     field.style.backgroundColor = '#ffffcc';
 	
-    var executionDateSaver = new ExecutionDateSaver( programStageId, executionDateValue, '#ccffcc' );
+    var executionDateSaver = new ExecutionDateSaver( programId, executionDateValue, '#ccffcc' );
     executionDateSaver.save();
 	
     if( !jQuery("#entryForm").is(":visible") )
@@ -519,26 +524,28 @@ function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
     }
 }
 
-function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
+function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
 {
     var SUCCESS = '#ccffcc';
     var ERROR = '#ffcc00';
 	
-    var programStageId = programStageId_;
+    var programId = programId_;
     var executionDate = executionDate_;
     var resultColor = resultColor_;
 
     this.save = function()
     {
 		var params  = "executionDate=" + executionDate;
-			params += "&programStageId=" + programStageId;
+			params += "&programId=" + programId;
 			
 		$.ajax({
 			   type: "POST",
 			   url: "saveExecutionDate.action",
 			   data: params,
 			   dataType: "xml",
-			   success: function(result){
+			   success: function( result ){
+					handleResponse (result);
+					
 					var selectedProgramStageInstance = jQuery( '#' + prefixId + getFieldValue('programStageInstanceId') );
 					jQuery(".stage-object-selected").css('border-color', COLOR_LIGHTRED);
 					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
@@ -549,7 +556,6 @@ function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
 					disable('newEncounterBtn');
 					setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
 					
-					handleResponse (result);
 			   },
 			   error: function(request,status,errorThrown) {
 					handleHttpError (request);
@@ -568,7 +574,7 @@ function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
 			{
 				var programStageInstanceId = rootElement.firstChild.nodeValue;
 				setFieldValue('programStageInstanceId', programStageInstanceId);
-				loadDataEntry( getFieldValue('programStageId') );
+				loadDataEntry( programStageInstanceId );
 			}
 			else
 			{
@@ -657,6 +663,7 @@ function doComplete()
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					if( irregular == 'true' )
 					{
+						enable('createEventBtn');
 						jQuery('#createNewEncounterDiv').dialog({
 								title: i18n_create_new_event,
 								maximize: true, 
@@ -674,16 +681,17 @@ function doComplete()
 						var y = date.getFullYear();
 						var edate= new Date(y, m, d);
 												
-						jQuery('#dueDateNewEncounter').datepicker( "setDate" , edate )
+						jQuery('#dueDateNewEncounter').datepicker( "setDate" , edate );
 					}
 					
 					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');
 					if( selectedProgram.attr('type')=='2' && irregular == 'false' )
 					{
 						selectedProgram.remove();
+						hideById('programInstanceDiv');
+						hideById('entryFormContainer');
 					}
 					
-					enable('createEventBtn');
 					selection.enable();
 					hideLoader();
 					hideById('contentDiv');

@@ -38,10 +38,10 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -66,11 +66,11 @@ public class SaveExecutionDateAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    private ProgramStageService programStageService;
+    private ProgramService programService;
 
-    public void setProgramStageService( ProgramStageService programStageService )
+    public void setProgramService( ProgramService programService )
     {
-        this.programStageService = programStageService;
+        this.programService = programService;
     }
 
     private ProgramInstanceService programInstanceService;
@@ -119,11 +119,11 @@ public class SaveExecutionDateAction
         this.executionDate = executionDate;
     }
 
-    private Integer programStageId;
+    private Integer programId;
 
-    public void setProgramStageId( Integer programStageId )
+    public void setProgramId( Integer programId )
     {
-        this.programStageId = programStageId;
+        this.programId = programId;
     }
 
     private String message;
@@ -141,7 +141,6 @@ public class SaveExecutionDateAction
         throws Exception
     {
         Date dateValue = format.parseDate( executionDate );
-
         String storedBy = currentUserService.getCurrentUsername();
 
         if ( dateValue != null )
@@ -154,12 +153,18 @@ public class SaveExecutionDateAction
             // single-event program
             if ( programStageInstance == null )
             {
+                Program program = programService.getProgram( programId );
+                ProgramStage programStage = null;
+
+                if ( program.getProgramStages() != null )
+                {
+                    programStage = program.getProgramStages().iterator().next();
+                }
+
                 Patient patient = selectedStateManager.getSelectedPatient();
-                ProgramStage programStage = programStageService.getProgramStage( programStageId );
-                Program program = programStage.getProgram();
                 int type = program.getType();
                 ProgramInstance programInstance = null;
-                
+
                 if ( type == Program.SINGLE_EVENT_WITH_REGISTRATION )
                 {
                     // Add a new program-instance
@@ -177,8 +182,7 @@ public class SaveExecutionDateAction
                 }
                 else if ( type == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
                 {
-                    programInstance = programInstanceService.getProgramInstances( patient, program )
-                        .iterator().next();
+                    programInstance = programInstanceService.getProgramInstances( patient, program ).iterator().next();
                 }
 
                 // Add a new program-stage-instance
