@@ -6,4 +6,6 @@
 	<li><a href="showSMSConfigureForm.action">$i18n.getString( "sms_service_configuration" )</a></li>
     <li><a href="showSMSForm.action">$i18n.getString( "show_send_sms_form" )</a></li>
 	<li><a href="showReceivingPage.action">$i18n.getString( "show_receive_sms_form" )</a></li>
+	<li><a href="SMSCommands.action">$i18n.getString( "sms_command_from" )</a></li>
+	
 </ul>

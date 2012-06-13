@@ -32,7 +32,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="incomingSmsService"
 			ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.mobile.action.incoming.UpdateReceiveSMSAction"
 		class="org.hisp.dhis.mobile.action.incoming.UpdateReceiveSMSAction"
 		scope="prototype">
@@ -128,5 +128,31 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.mobile.action.ReloadStartStopServiceAction"
 		class="org.hisp.dhis.mobile.action.ReloadStartStopServiceAction"
 		scope="prototype" />
+
+	 <bean id="org.hisp.dhis.mobile.action.smscommand.SMSCommandAction" class="org.hisp.dhis.mobile.action.smscommand.SMSCommandAction"
+    scope="prototype">
+    <property name="smsCommandService" ref="smsCommandService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+
+  </bean>
+
+  <bean id="org.hisp.dhis.mobile.action.smscommand.EditSMSCommandForm" class="org.hisp.dhis.mobile.action.smscommand.EditSMSCommandForm"
+    scope="prototype">
+    <property name="smsCommandService" ref="smsCommandService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+
+  </bean>
+
+  <bean id="org.hisp.dhis.mobile.action.smscommand.CreateSMSCommandForm" class="org.hisp.dhis.mobile.action.smscommand.CreateSMSCommandForm"
+    scope="prototype">
+    <property name="smsCommandService" ref="smsCommandService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.mobile.action.smscommand.DeleteSMSCommandAction" class="org.hisp.dhis.mobile.action.smscommand.DeleteSMSCommandAction"
+    scope="prototype">
+    <property name="smsCommandService" ref="smsCommandService" />
+  </bean>
 
 </beans>

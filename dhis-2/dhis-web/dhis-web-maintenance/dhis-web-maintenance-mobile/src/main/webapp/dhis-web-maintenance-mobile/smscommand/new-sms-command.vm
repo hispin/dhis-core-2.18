@@ -1,0 +1,23 @@
+<form id="newSMSCommand" name="updateSMSCommand" action="createSMSCommandForm.action" method="post">
+    <div>
+     Name: <input type="text" value="" id="name" name="name" />
+    </div>
+    
+    <div>
+    Parser: 
+    <select name="parser">
+          <option value="syntax1">Syntax1</option>
+          <option value="syntax2">Syntax2</option>
+    </select> 
+    </div>
+    <div>
+  
+    Dataset:
+    <select name="selectedDataSetID" >
+        #foreach( $dataSet in $dataSets )
+          <option value="$dataSet.id" #if ($SMSCommand.dataset.id == $dataSet.id) selected #end >$dataSet.name</option>
+        #end
+    </select> 
+    </div>
+    <input id="save" type="submit" />
+</form>

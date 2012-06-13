@@ -7,6 +7,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
   <!-- Store definitions -->
+  
+  <bean id="smsCommandService" class="org.hisp.dhis.smscommand.DefaultSMSCommandService">
+    <property name="smsCommandStore" ref="smsCommandStore" />
+  </bean>
+  
+   <bean id="smsCommandStore" class="org.hisp.dhis.smscommand.HibernateSMSCommandStore">
+    <property name="sessionFactory" ref="sessionFactory" /> 
+  </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementOperandStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementOperand" />

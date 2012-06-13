@@ -1,0 +1,12 @@
+<a href="newSMSCommand.action">New command</a>
+
+<br>
+<br>
+<div>
+   #foreach( $command in $SMSCommands )
+    <div>    
+    $command.name <a href="editSMSCommand.action?selectedCommandID=$command.id">Edit</a>
+    <a href="deleteSMSCommand.action?deleteCommandId=$command.id">Delete</a>
+    </div>
+    #end
+</div>
