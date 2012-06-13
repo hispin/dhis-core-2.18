@@ -8,6 +8,7 @@
 			
 <div id="dataRecordingSelectDiv" class="inputCriteria" style="width:480px;height:75px;">
 	<input type='hidden' id="programStageInstanceId">
+	<input type='hidden' id="programStageId">
 	<input type='hidden' id='selectedProgramId'>
 	<table>
 		<tr>

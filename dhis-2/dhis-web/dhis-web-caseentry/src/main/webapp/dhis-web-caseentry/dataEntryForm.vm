@@ -1,6 +1,7 @@
 <script>
 	jQuery("#entryFormContainer").ready(function(){
-	
+		setFieldValue('programStageId', "$!programStageInstance.programStage.id");
+		setFieldValue('programId', "$!programStageInstance.programStage.program.id");
 		#if( $!programStageInstance.programStage.program.type=="3" && $!programStageInstance.completed=='true')
 			hideById('entryFormContainer');
 		#elseif( $programStageInstance )
@@ -9,13 +10,12 @@
 		#end
 		
 		$('#executionDate').change(function() {
-				saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
+				saveExecutionDate( getFieldValue('programId'), getFieldValue('executionDate') );
 			});
 		
 		entryFormContainerOnReady();
 	});
 </script>
-
 
 <div id='entryFormContainer'>
 
