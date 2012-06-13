@@ -53,7 +53,7 @@
 				<select id="type" name="type" class="{validate:{required:true}}">
 					<option value="text" selected="selected">$i18n.getString( "text" )</option>
 					<option value="number">$i18n.getString( "number" )</option>
-					<option value="letter">$i18n.getString( "letter" )</option>
+					<option value="letter">$i18n.getString( "letter_only" )</option>
 				</select>
 			</td>
 			<td></td>
