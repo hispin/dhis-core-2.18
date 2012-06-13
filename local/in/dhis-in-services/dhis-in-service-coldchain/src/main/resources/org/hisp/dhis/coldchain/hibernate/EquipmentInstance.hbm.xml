@@ -16,6 +16,9 @@
     <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit"
         column="organisationunitid" foreign-key="fk_equipmentinstance_organisationunitid" />
 
+    <many-to-one name="catalog" class="org.hisp.dhis.coldchain.catalog.Catalog" column="catalogid"
+      not-null="false" foreign-key="fk_equipmentinstance_catalogid" />
+
     <property name="working" not-null="true" />
     
 	<set name="equipmentStatusUpdates" cascade="all-delete-orphan" inverse="true" >

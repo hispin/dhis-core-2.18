@@ -530,7 +530,6 @@
 		<param name="requiredAuthorities">F_CATALOG_UPDATE</param>
 	</action>	
 	
-
 	<action name="uploadCatalogTypeImage" class="org.hisp.dhis.coldchain.catalog.action.UploadCatalogTypeImageAction">
 		<result name="success" type="velocity">/main.vm</result>
 		<param name="menu">/dhis-web-coldchain/menu.vm</param>
@@ -538,11 +537,32 @@
 		<interceptor-ref name="fileUploadStack" />
 	</action>	
 			
-
-	
 	<action name="showCatalogTypeImage" class="org.hisp.dhis.coldchain.catalog.action.ShowCatalogTypeImageAction">
 		<result name="success" type="velocity">/content.vm</result>
 	</action>	
-			
+
+	<!-- CCEM Reports -->
+	<action name="ccemReportsPage" class="org.hisp.dhis.coldchain.reports.action.CCEMReportPageAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-coldchain/ccemReportsPage.vm</param>
+		<param name="menu">/dhis-web-coldchain/menu.vm</param>
+		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/ccemReports.js</param>
+		<interceptor-ref name="organisationUnitTreeStack" />
+    </action>
+    <action name="generateCCEMReport" class="org.hisp.dhis.coldchain.reports.action.GenerateCCEMReportAction">
+        <result name="success" type="velocity">/content.vm</result>
+        <param name="page">/dhis-web-coldchain/ccemReportOutput.vm</param>
+        <param name="requiredAuthorities">F_CCEM_REPORT</param>
+    </action>
+	
+	<action name="exportToExcel" class="org.hisp.dhis.coldchain.action.ExportToExcelAction">
+		<result name="success" type="stream">
+			<param name="contentType">application/vnd.ms-excel</param>
+            <param name="inputName">inputStream</param>
+            <param name="contentDisposition">attachment;filename="${fileName}"</param>
+            <param name="bufferSize">1024</param>
+		</result>
+    </action>
+		
 </package>
 </struts>

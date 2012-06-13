@@ -50,6 +50,17 @@
 			<td>$i18n.getString( "working_status" ) : </td>
 			<td><input type="checkbox"  id="workingStatus" name="workingStatus" checked="true" ></th>
 		</tr>	
+        <tr>
+            <td>$i18n.getString( "catalog" ) : </td>
+			<td>
+				<select  id="catalog" name="catalog" onChange="catalogDetails( this.value );">
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					#foreach ($catalog in $catalogs )
+						<option value="$catalog.id" >$catalog.name</option>
+					#end
+				</select>
+			</td>			
+		</tr>
 
 		<!-- InventoryType Attributes  -->
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>

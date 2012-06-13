@@ -45,6 +45,13 @@ public class UpdateEquipmentAction implements Action
     
     private String message;
     
+    private Integer catalog;
+    
+    public void setCatalog( Integer catalog )
+    {
+        this.catalog = catalog;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -56,6 +63,19 @@ public class UpdateEquipmentAction implements Action
         EquipmentInstance equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceID );
         
         InventoryType inventoryType = equipmentInstance.getInventoryType();
+        
+        Catalog selCatalog = null;
+        
+        if( catalog != null )
+        {    
+            selCatalog = catalogService.getCatalog( catalog );
+        }
+        if( selCatalog != null )
+        {
+            equipmentInstance.setCatalog( selCatalog );
+            
+            equipmentInstanceService.updateEquipmentInstance( equipmentInstance );
+        }
         
         // -----------------------------------------------------------------------------
         // Preparing Equipment Details

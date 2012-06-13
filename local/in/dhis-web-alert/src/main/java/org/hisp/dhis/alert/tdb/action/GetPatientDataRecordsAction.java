@@ -309,8 +309,12 @@ public class GetPatientDataRecordsAction
          * patientService.sortPatientsByAttribute( patientListByOrgUnit,
          * sortPatientAttribute ); }
          */
-
-        colorMap = programStageInstanceService.colorProgramStageInstances( programStageInstances );
+        
+        /**
+         * TODO 
+         * probably colorProgramStageInstances are removed, need to fix here accordingly
+         */
+        //colorMap = programStageInstanceService.colorProgramStageInstances( programStageInstances );
 
         return SUCCESS;
     }

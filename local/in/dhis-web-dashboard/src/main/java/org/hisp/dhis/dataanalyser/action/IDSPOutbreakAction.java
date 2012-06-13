@@ -292,11 +292,20 @@ public class IDSPOutbreakAction implements Action
         
         navigationString = "IDSP Outbreak";
                 
-        String periodIdString = dashBoardService.getPeriodIdForIDSPOutBreak();
+        //String periodIdString = dashBoardService.getPeriodIdForIDSPOutBreak();
+        /**
+         * TODO commented periodIdString bec it gives error
+         */
+        String periodIdString = "";
         String periodId = periodIdString.split( "::" )[0];
         navigationString += " ( "+ periodIdString.split( "::" )[1] +" )";
         
-        String populationPeriodId = dashBoardService.getPeriodIdForIDSPPopulation();
+        
+        //String populationPeriodId = dashBoardService.getPeriodIdForIDSPPopulation();
+        /**
+         * TODO commented populationPeriodId bec it gives error
+         */
+        String populationPeriodId = "";
         
         normInfo = getNormInfoFromXML();
         

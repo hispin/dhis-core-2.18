@@ -44,7 +44,17 @@
 			<td>$i18n.getString( "inventorytype" ) : </th>
 			<td>$equipmentInstance.inventoryType.name</th>
 		</tr>
-
+		<tr>
+			<td>$i18n.getString( "catalog" ) : </td>
+			<td>
+				<select id="catalog" name="catalog" onChange="catalogDetails( this.value );" >
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					#foreach ($catalog in $catalogs )
+						<option value="$catalog.id" #if($equipmentInstance.catalog.id == $catalog.id) selected="selected" #end>$catalog.name</option>
+					#end
+				</select>
+			</td>
+		</tr>
 		<!-- InventoryType Attributes  -->
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 		<tr><th colspan="2" class="heading-column">$i18n.getString( "inventory_attribute_details" )</th></tr>

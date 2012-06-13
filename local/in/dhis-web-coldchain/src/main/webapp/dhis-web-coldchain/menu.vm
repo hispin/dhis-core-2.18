@@ -19,5 +19,5 @@
 
 <h2>$i18n.getString( "ccem_reports" )</h2>
 <ul>
-    
+	<li><a href="ccemReportsPage.action">$i18n.getString( "ccem_reports_page" )</a></li>    
 </ul>
