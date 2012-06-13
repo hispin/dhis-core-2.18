@@ -28,10 +28,14 @@
 package org.hisp.dhis.patient.action.programstage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.program.comparator.ProgramStageMinDaysComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,6 +51,13 @@ public class SaveProgramStageSortOrderAction
     // Dependency
     // -------------------------------------------------------------------------
 
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     private ProgramStageService programStageService;
 
     public void setProgramStageService( ProgramStageService programStageService )
@@ -58,19 +69,7 @@ public class SaveProgramStageSortOrderAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private List<Integer> programStageList;
-
-    public void setProgramStageList( List<Integer> programStageList )
-    {
-        this.programStageList = programStageList;
-    }
-
     private Integer id;
-
-    public Integer getId()
-    {
-        return id;
-    }
 
     public void setId( Integer id )
     {
@@ -80,24 +79,26 @@ public class SaveProgramStageSortOrderAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
         int stageInProgram = 1;
 
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>( programStageList.size() );
+        Program program = programService.getProgram( id );
 
-        for ( Integer programStageId : programStageList )
+        if ( program.getProgramStages() != null )
         {
-            ProgramStage programStage = programStageService.getProgramStage( programStageId );
+            List<ProgramStage> programStages = new ArrayList<ProgramStage>( program.getProgramStages() );
+            Collections.sort( programStages, new ProgramStageMinDaysComparator() );
 
-            programStages.add( programStage );
+            for ( ProgramStage programStage : programStages )
+            {
+                programStage.setStageInProgram( stageInProgram++ );
 
-            programStage.setStageInProgram( stageInProgram++ );
-
-            programStageService.updateProgramStage( programStage );
+                programStageService.updateProgramStage( programStage );
+            }
         }
-
+        
         return SUCCESS;
     }
 }

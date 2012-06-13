@@ -239,7 +239,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.programstage.GetProgramStageAction"
@@ -256,17 +255,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.patient.action.programstage.ShowSortProgramStageFormAction"
-		class="org.hisp.dhis.patient.action.programstage.ShowSortProgramStageFormAction"
-		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction"
 		class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean
