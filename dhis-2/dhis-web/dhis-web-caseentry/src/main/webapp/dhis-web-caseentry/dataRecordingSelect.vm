@@ -1,3 +1,29 @@
+<script type="text/javascript" src="javascript/jquery.mousewheel.js"></script>
+
+<script>
+ $(document).ready(function () {        
+        $('#programInstanceFlowDiv').mousedown(function (event) {
+            $(this)
+                .data('down', true)
+                .data('x', event.clientX)
+                .data('scrollLeft', this.scrollLeft);
+                
+            return false;
+        }).mouseup(function (event) {
+            $(this).data('down', false);
+        }).mousemove(function (event) {
+            if ($(this).data('down') == true) {
+                this.scrollLeft = $(this).data('scrollLeft') + $(this).data('x') - event.clientX;
+            }
+        }).mousewheel(function (event, delta) {
+            this.scrollLeft -= (delta * 30);
+        }).css({
+            'overflow' : 'hidden',
+            'cursor' : '-moz-grab'
+        });
+	});
+</script>
+
 <form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
    	
 <table class="mainPageTable" id='patientInfoDiv'> 
@@ -52,7 +78,7 @@
 </div>
 
 <div id='programInstanceDiv' class='hidden '>
-	<div id='programInstanceFlowDiv' style="width:500px;height:81px;overflow-x:auto;">
+	<div id='programInstanceFlowDiv' style="width:500px;height:70px;overflow-x:auto;">
 		<table>
 			<tr id='programStageIdTR'></tr>
 		</table>
