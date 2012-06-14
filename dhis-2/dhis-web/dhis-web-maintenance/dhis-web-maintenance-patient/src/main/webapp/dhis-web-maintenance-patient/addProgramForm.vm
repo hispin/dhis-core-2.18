@@ -14,20 +14,20 @@
 	<tbody>
 		<tr>
 			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input style="width: 330px;" type="text" id="name" name="name" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
 			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input style="width: 330px;" type="text" id="description" name="description" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
 			<td><label>$i18n.getString( "type" )</label></td>
 			<td>
-				<select id="type" name="type" onchange='programTypeOnChange();'>
+				<select style="width: 336px;" id="type" name="type" onchange='programTypeOnChange();'>
 					<option value=''>[$i18n.getString('please_select')]</option>
 					<option value='1'>$i18n.getString('multiple_events_with_registration')</option>
 					<option value='2'>$i18n.getString('single_event_with_registration')</option>
@@ -39,25 +39,25 @@
 		
 		<tr>
 			<td><label>$i18n.getString( "show_provided_provided_elsewhere" )</label></td>
-			<td><input type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='true'></td>
+			<td><input style="margin: 0;"type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='true'></td>
 			<td></td>
 		</tr>
 		
 		<tr>
 			<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input style="width: 330px;" type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
 			<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input style="width: 330px;" type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
 			<td><label>$i18n.getString( "duration_in_days" )</label></td>
-			<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" class="{validate:{number:true}}"></td>
+			<td><input style="width: 330px;" type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" class="{validate:{number:true}}"></td>
 			<td></td>
 		</tr>	
 		
