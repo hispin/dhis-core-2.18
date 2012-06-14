@@ -140,10 +140,6 @@ public class WebUtils
                         {
                             object.setLink( getPathWithUid( object ) );
                         }
-                        else
-                        {
-                            System.err.println( "Object is null.. fixme!" );
-                        }
                     }
                 }
             }
