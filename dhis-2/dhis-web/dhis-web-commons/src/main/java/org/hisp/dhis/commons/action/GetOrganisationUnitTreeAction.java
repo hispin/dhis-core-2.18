@@ -27,13 +27,7 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -42,7 +36,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.Version;
 import org.hisp.dhis.version.VersionService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.*;
 
 /**
  * @author mortenoh
@@ -118,8 +112,8 @@ public class GetOrganisationUnitTreeAction
 
     public String execute()
         throws Exception
-    {   
-        Collection<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>();
+    {
+        Collection<OrganisationUnit> userOrganisationUnits;
 
         User user = currentUserService.getCurrentUser();
 
@@ -151,9 +145,9 @@ public class GetOrganisationUnitTreeAction
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
             }
         }
-        
+
         Collections.sort( rootOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
-        
+
         version = getVersionString();
 
         return SUCCESS;
