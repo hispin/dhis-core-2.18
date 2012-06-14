@@ -146,6 +146,11 @@ input.optionset[type="text"]
 	font-size: .8em !important;
 }
 
+.ui-autocomplete {
+	max-height: 100px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
 
 .hidden {
     display: none;

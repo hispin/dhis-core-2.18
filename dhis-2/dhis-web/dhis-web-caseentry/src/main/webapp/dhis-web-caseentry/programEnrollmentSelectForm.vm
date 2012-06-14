@@ -37,7 +37,7 @@
 	<p></p>
 	
 	<fieldset>
-		<legend>$i18n.getString( "program_enrolled_for" )</legend>
+		<legend>$i18n.getString( "enroll_for" )</legend>
 		<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
 			<input type="hidden" id="patientId" name="patientId" value="$patient.id">    
 

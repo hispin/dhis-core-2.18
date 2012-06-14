@@ -48,15 +48,8 @@
 			<option value="D" >$i18n.getString( "declared" )</option>
 			<option value="V" >$i18n.getString( "verified" )</option>
 		</select>
-		<input type="text" id="age" name="age" class="{validate:{required:true, number:true}}" style="width:145px" />
+		<input type="text" id="age" name="age" class="{validate:{number:true}}" style="width:145px" />
 		<input type="text" id="birthDate" name="birthDate" style='width:145px;display:none;' />
-	</td>
-</tr>
-
-<tr>
-	<td></td>
-	<td class="input-column">
-		<span id='validateBirthdate' class="hidden" style='color:red'><i>$i18n.getString('please_fill_out_only_one_of_these_fields')</i></span>
 		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 	</td>
 </tr>
