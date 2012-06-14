@@ -32,13 +32,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 
 /**
  * @author Abyot Asalefew
@@ -67,7 +64,7 @@ public interface ProgramStageInstanceService
     Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed );
 
     Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate );
-    
+
     Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed );
 
     Collection<ProgramStageInstance> getAllProgramStageInstances();
@@ -88,18 +85,14 @@ public interface ProgramStageInstanceService
     List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
-    
-    Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, 
-        List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
-        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
-        Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
-        int level, Date startDate, Date endDate, boolean descOrder, Integer min, Integer max );
-    
-    int getTabularReportCount( ProgramStage programStage, List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
-        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
-        Map<Integer, String> dataElementKeys, Collection<Integer> organisationUnits,
-        int level, Date startDate, Date endDate );
-    
+
+    Grid getTabularReport( ProgramStage programStage, List<String> searchingKeys,
+        Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder, Integer min,
+        Integer max );
+
+    int getTabularReportCount( ProgramStage programStage, List<String> searchingKeys,
+        Collection<Integer> organisationUnits, int level, Date startDate, Date endDate );
+
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
-    
+
 }

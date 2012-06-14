@@ -48,6 +48,8 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,7 +77,9 @@ public class GetPatientAction
     private PatientAttributeGroupService patientAttributeGroupService;
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
-
+    
+    private RelationshipService relationshipService;
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -104,7 +108,7 @@ public class GetPatientAction
 
     private String systemIdentifier;
 
-    private Patient representative;
+    private Relationship relationship;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -128,8 +132,9 @@ public class GetPatientAction
         identiferMap = new HashMap<Integer, String>();
 
         PatientIdentifierType idType = null;
-        representative = patient.getRepresentative();
-
+        Patient representative = patient.getRepresentative();
+        relationship = relationshipService.getRelationship( representative, patient );
+        
         if ( patient.isUnderAge() && representative != null )
         {
             for ( PatientIdentifier representativeIdentifier : representative.getIdentifiers() )
@@ -198,6 +203,11 @@ public class GetPatientAction
         this.patientService = patientService;
     }
 
+    public Relationship getRelationship()
+    {
+        return relationship;
+    }
+
     public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
     {
         this.patientIdentifierService = patientIdentifierService;
@@ -228,9 +238,9 @@ public class GetPatientAction
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
-    public Patient getRepresentative()
+    public void setRelationshipService( RelationshipService relationshipService )
     {
-        return representative;
+        this.relationshipService = relationshipService;
     }
 
     public void setId( int id )

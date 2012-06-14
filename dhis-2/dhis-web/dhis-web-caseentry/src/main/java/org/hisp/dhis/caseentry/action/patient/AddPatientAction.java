@@ -302,7 +302,7 @@ public class AddPatientAction
         Integer id = patientService.createPatient( patient, representativeId, relationshipTypeId,
             patientAttributeValues );
 
-        message = id + "";
+        message = id + "_" + systemGenerateIdentifier.getIdentifier();
 
         return SUCCESS;
     }

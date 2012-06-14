@@ -70,4 +70,11 @@ public class HibernateRelationshipStore
             Restrictions.eq( "patientB", patientB ), Restrictions.eq( "relationshipType", relationshipType ) )
             .uniqueResult();
     }
+    
+    public Relationship get( Patient patientA, Patient patientB )
+    {
+        return (Relationship) getCriteria( Restrictions.eq( "patientA", patientA ),
+            Restrictions.eq( "patientB", patientB ) )
+            .uniqueResult();
+    }
 }

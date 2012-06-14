@@ -33,12 +33,9 @@ import java.util.Map;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientIdentifierType;
 
 /**
  * @author Abyot Asalefew
@@ -76,14 +73,10 @@ public interface ProgramStageInstanceStore
     
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
     
-    Grid getTabularReport( ProgramStage programStage, List<Boolean> hiddenCols, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
-        List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
-        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
-        Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
-        int level, int maxLevel, Date startDate, Date endDate, boolean descOrder, Integer min, Integer max );
+    Grid getTabularReport( ProgramStage programStage, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
+        Collection<Integer> orgUnits, List<String> searchingKeys, int level, int maxLevel, Date startDate,
+        Date endDate, boolean descOrder, Integer min, Integer max );
     
-    int getTabularReportCount( ProgramStage programStage, List<PatientIdentifierType> identifiers, List<String> fixedAttributes, List<PatientAttribute> attributes,
-        List<DataElement> dataElements, Map<Integer, String> identifierKeys, Map<Integer, String> attributeKeys,
-        Map<Integer, String> dataElementKeys, Collection<Integer> orgUnits,
-        int level, int maxLevel, Date startDate, Date endDate );
+    int getTabularReportCount( ProgramStage programStage, List<String> searchingKeys,
+        Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate );
 }

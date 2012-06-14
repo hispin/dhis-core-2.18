@@ -88,8 +88,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 	</bean>
@@ -424,9 +423,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="patientAttributeGroupService"
 			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
-		<property name="patientIdentifierTypeService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		</property>
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.AddPatientAction"
@@ -792,9 +792,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.caseentry.action.patient.ValidateSearchRelationshipAction"
 		scope="prototype">
 	</bean>
-	
+
 	<!-- Tabular report -->
-	
+
 	<bean id="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
 		class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
 		scope="prototype">
@@ -808,19 +808,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
 		class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction"
 		scope="prototype">
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
 		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
 		scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction"
+
+	<bean
+		id="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction"
 		class="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
@@ -829,13 +833,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="attributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
 		class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
 		class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
 		scope="prototype">
@@ -847,17 +851,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="identifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
 		class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction"
@@ -865,25 +867,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction"
+
+	<bean id="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction"
 		class="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction"
 		scope="prototype">
 		<property name="tabularReportService"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction"
+
+	<bean id="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction"
 		class="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction"
 		scope="prototype">
 		<property name="tabularReportService"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="organisationUnitService"
@@ -895,15 +893,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GetTabularReportAction"
+
+	<bean id="org.hisp.dhis.caseentry.action.report.GetTabularReportAction"
 		class="org.hisp.dhis.caseentry.action.report.GetTabularReportAction"
 		scope="prototype">
 		<property name="tabularReportService"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.caseentry.action.report.UpdateTabularReportNameAction"
 		class="org.hisp.dhis.caseentry.action.report.UpdateTabularReportNameAction"
@@ -911,9 +908,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="tabularReportService"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction"
+
+	<bean id="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction"
 		class="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction"
 		scope="prototype">
 		<property name="tabularReportService"
