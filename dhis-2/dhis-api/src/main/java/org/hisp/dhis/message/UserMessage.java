@@ -86,8 +86,8 @@ public class UserMessage
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getKey()
     {
         return key;
@@ -100,8 +100,8 @@ public class UserMessage
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public User getUser()
     {
         return user;
@@ -113,8 +113,8 @@ public class UserMessage
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isRead()
     {
         return read;
@@ -126,8 +126,8 @@ public class UserMessage
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isFollowUp()
     {
         return followUp;
