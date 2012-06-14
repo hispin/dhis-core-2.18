@@ -93,8 +93,7 @@ TR.conf = {
 			domain: 'domain_',
 		},
 		image: {
-            xls: 'xls',
-            pdf: 'pdf'
+            xls: 'xls'
         },
         cmd: {
             init: 'init_',
@@ -900,11 +899,15 @@ Ext.onReady( function() {
             p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
 			p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
 			p += "&level=" + TR.cmp.settings.level.getValue();
-			p += "&orgunitId=" + TR.state.orgunitId;
 			p += "&orderByOrgunitAsc=" + 'true';
 			p += "&orderByExecutionDateByAsc=" +'true';
 			p += "&programStageId=" + TR.cmp.params.programStage.getValue();
 			p += "&type=" + type;
+			
+			// organisation units
+			for( var i=0; i<TR.state.orgunitIds.length; i++ ){
+				p += '&orgunitIds=' + TR.state.orgunitIds[i];
+			}
 			
 			if( !TR.state.paramChanged() )
 			{
@@ -1211,7 +1214,8 @@ Ext.onReady( function() {
 					name: 'meta_' + index,
 					sortable: false,
 					draggable: false,
-					hidden: eval(TR.value.columns[index].hidden)
+					hideable: false,
+					menuDisabled: true
 				}
 			}
 			
@@ -2877,14 +2881,6 @@ Ext.onReady( function() {
 											minWidth: 105,
 											handler: function() {
 												b.execute(TR.conf.finals.image.xls);
-											}
-										},
-										{
-											text: TR.i18n.pdf,
-											iconCls: 'tr-menu-item-pdf',
-											minWidth: 105,
-											handler: function() {
-												b.execute(TR.conf.finals.image.pdf);
 											}
 										}
 									]                                            

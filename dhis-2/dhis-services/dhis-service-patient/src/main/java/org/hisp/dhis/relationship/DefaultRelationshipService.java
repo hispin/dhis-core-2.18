@@ -98,4 +98,9 @@ public class DefaultRelationshipService
     {
         return relationshipStore.get( patientA, patientB, relationshipType );
     }
+    
+    public Relationship getRelationship( Patient patientA, Patient patientB )
+    {
+        return relationshipStore.get( patientA, patientB );
+    }
 }

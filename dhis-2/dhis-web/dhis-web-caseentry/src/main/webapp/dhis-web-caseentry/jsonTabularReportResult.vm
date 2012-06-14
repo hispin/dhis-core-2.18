@@ -9,7 +9,7 @@
 	#foreach( $col in $grid.getHeaders() )
 	{
 	  #set( $mapIndx = $index - $metaData  )
-	  "xtype": 	#if( $index > $metaData && $mapSuggestedValues.get($mapIndx).size() > 0 )
+	  "xtype": 	#if( $mapSuggestedValues.get($mapIndx) && $index > $metaData && $mapSuggestedValues.get($mapIndx).size() > 0 )
 						"combobox"
 					#else
 						"textfield"

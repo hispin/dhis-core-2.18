@@ -38,10 +38,11 @@ import org.hisp.dhis.patient.Patient;
 public interface RelationshipStore
     extends GenericStore<Relationship>
 {
-
     String ID = RelationshipStore.class.getName();
 
     Relationship get( Patient patientA, Patient patientB, RelationshipType relationshipType );
+    
+    Relationship get( Patient patientA, Patient patientB );
 
     Collection<Relationship> get( Patient patientA, RelationshipType relationshipType );
 

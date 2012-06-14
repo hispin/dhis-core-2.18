@@ -28,10 +28,7 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_DATA_ELEMENT;
-import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_IDENTIFIER_TYPE;
-import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_META_DATA;
 import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_PATIENT_ATTRIBUTE;
-import static org.hisp.dhis.patientreport.PatientTabularReport.PREFIX_FIXED_ATTRIBUTE;
 import static org.hisp.dhis.patientreport.PatientTabularReport.VALUE_TYPE_OPTION_SET;
 
 import java.util.ArrayList;
@@ -55,7 +52,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -100,13 +96,6 @@ public class GenerateTabularReportAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
-    }
-
-    private PatientIdentifierTypeService identifierTypeService;
-
-    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
-    {
-        this.identifierTypeService = identifierTypeService;
     }
 
     private PatientAttributeService patientAttributeService;
@@ -246,27 +235,12 @@ public class GenerateTabularReportAction
         return valueTypes;
     }
 
-    private List<String> fixedAttributes = new ArrayList<String>();
-
-    public void setFixedAttributes( List<String> fixedAttributes )
-    {
-        this.fixedAttributes = fixedAttributes;
-    }
-
     private Map<Integer, List<String>> mapSuggestedValues = new HashMap<Integer, List<String>>();
 
     public Map<Integer, List<String>> getMapSuggestedValues()
     {
         return mapSuggestedValues;
     }
-
-    private Map<Integer, String> searchingIdenKeys = new HashMap<Integer, String>();
-
-    private Map<Integer, String> searchingAttrKeys = new HashMap<Integer, String>();
-
-    private Map<Integer, String> searchingDEKeys = new HashMap<Integer, String>();
-
-    private List<Boolean> hiddenCols = new ArrayList<Boolean>();
 
     // -------------------------------------------------------------------------
     // Implementation Action
@@ -303,7 +277,7 @@ public class GenerateTabularReportAction
                 if ( selectedOrgunit.getParent() == null )
                 {
                     organisationUnits = null; // Ignore org unit criteria when
-                                              // root
+                    // root
                 }
                 else
                 {
@@ -321,41 +295,31 @@ public class GenerateTabularReportAction
         // TODO check sql traffic
 
         Date startValue = format.parseDate( startDate );
-
         Date endValue = format.parseDate( endDate );
-
-        // ---------------------------------------------------------------------
-        // Get DE searching-keys
-        // ---------------------------------------------------------------------
-
         getParams();
-
+        
         // ---------------------------------------------------------------------
         // Generate tabular report
         // ---------------------------------------------------------------------
 
         if ( type == null ) // Tabular report
         {
-            int totalRecords = programStageInstanceService.getTabularReportCount( programStage, identifierTypes,
-                fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, organisationUnits, level, startValue, endValue );
+            int totalRecords = programStageInstanceService.getTabularReportCount( programStage, searchingValues,
+                organisationUnits, level, startValue, endValue );
 
             total = getNumberOfPages( totalRecords );
 
             this.paging = createPaging( totalRecords );
             // total = paging.getTotal(); //TODO
 
-            grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
-                fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc, paging
-                    .getStartPos(), paging.getPageSize() );
+            grid = programStageInstanceService.getTabularReport( programStage, searchingValues, organisationUnits,
+                level, startValue, endValue, !orderByOrgunitAsc, paging.getStartPos(), paging.getPageSize() );
         }
         else
         // Download as Excel
         {
-            grid = programStageInstanceService.getTabularReport( programStage, hiddenCols, identifierTypes,
-                fixedAttributes, patientAttributes, dataElements, searchingIdenKeys, searchingAttrKeys,
-                searchingDEKeys, organisationUnits, level, startValue, endValue, !orderByOrgunitAsc, null, null );
+            grid = programStageInstanceService.getTabularReport( programStage, searchingValues, organisationUnits,
+                level, startValue, endValue, !orderByOrgunitAsc, null, null );
         }
         System.out.println();
         System.out.println( grid );
@@ -375,76 +339,20 @@ public class GenerateTabularReportAction
 
     private void getParams()
     {
-        // ---------------------------------------------------------------------
-        // Get Patient-Identifier searching-keys
-        // ---------------------------------------------------------------------
-
         int index = 0;
         for ( String searchingValue : searchingValues )
         {
             String[] infor = searchingValue.split( "_" );
             String objectType = infor[0];
 
-            if ( objectType.equals( PREFIX_META_DATA ) )
-            {
-                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
-            }
-            else if ( objectType.equals( PREFIX_FIXED_ATTRIBUTE ) )
-            {
-                fixedAttributes.add( infor[1] );
-                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
-            }
-            else if ( objectType.equals( PREFIX_IDENTIFIER_TYPE ) )
-            {
-                int objectId = Integer.parseInt( infor[1] );
-                PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( objectId );
-                identifierTypes.add( identifierType );
-
-                // Get value-type && suggested-values
-                valueTypes.add( identifierType.getType() );
-                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
-
-                // Get searching-value
-                if ( infor.length == 4 )
-                {
-                    searchingIdenKeys.put( objectId, infor[3].trim() );
-                    values.add( infor[3].trim() );
-                }
-                else
-                {
-                    values.add( "" );
-                }
-                index++;
-            }
-            else if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
+            if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
             {
                 int objectId = Integer.parseInt( infor[1] );
                 PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
                 patientAttributes.add( attribute );
-
-                // Get value-type && suggested-values
+                
                 valueTypes.add( attribute.getValueType() );
                 mapSuggestedValues.put( index, getSuggestedAttributeValues( attribute ) );
-                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
-
-                // Get searching-value
-                if ( infor.length == 4 )
-                {
-                    searchingAttrKeys.put( objectId, infor[3].trim() );
-                    String value = infor[3].trim();
-                    // if ( attribute.getValueType().equals(
-                    // PatientAttribute.TYPE_BOOL ) )
-                    // {
-                    // value = (value.indexOf( i18n.getString( "yes" ) ) != -1)
-                    // ? "true" : "false";
-                    // }
-                    values.add( value );
-                }
-                else
-                {
-                    values.add( "" );
-                }
-                index++;
             }
             else if ( objectType.equals( PREFIX_DATA_ELEMENT ) )
             {
@@ -456,31 +364,8 @@ public class GenerateTabularReportAction
                 String valueType = (dataElement.getOptionSet() != null) ? VALUE_TYPE_OPTION_SET : dataElement.getType();
                 valueTypes.add( valueType );
                 mapSuggestedValues.put( index, getSuggestedDataElementValues( dataElement ) );
-                hiddenCols.add( Boolean.parseBoolean( infor[2] ) );
-
-                if ( infor.length == 4 )
-                {
-                    String value = infor[3].trim();
-                    // if ( dataElement.getType().equals(
-                    // DataElement.VALUE_TYPE_BOOL ) )
-                    // {
-                    // int startIndx = value.indexOf( '\'' ) + 1;
-                    // int endIndx = value.lastIndexOf( '\'' );
-                    // String key = value.substring( startIndx, endIndx );
-                    //                           
-                    // value = (key.equals(i18n.getString( "yes" ))) ?
-                    // value.replace( key, "true" ) : value.replace( key,
-                    // "false" );
-                    // }
-                    searchingDEKeys.put( objectId, value );
-                    values.add( value );
-                }
-                else
-                {
-                    values.add( "" );
-                }
-                index++;
             }
+            index++;
         }
     }
 

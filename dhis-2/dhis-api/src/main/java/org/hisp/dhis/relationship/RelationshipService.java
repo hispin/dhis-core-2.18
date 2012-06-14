@@ -47,6 +47,8 @@ public interface RelationshipService
     Relationship getRelationship( int id );
     
     Relationship getRelationship( Patient patientA, Patient patientB, RelationshipType relationshipType );
+    
+    Relationship getRelationship( Patient patientA, Patient patientB );
 
     Collection<Relationship> getAllRelationships();
 
