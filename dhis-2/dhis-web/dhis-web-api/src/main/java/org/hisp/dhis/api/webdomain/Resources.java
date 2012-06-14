@@ -40,9 +40,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * At some point this class will be extended to show all available options
@@ -94,6 +92,13 @@ public class Resources
             resources.add( new Resource( StringUtils.capitalize( entry.getValue() ), entry.getKey(), requestMethods, mediaTypes ) );
         }
 
-        resources.add( new Resource( "MessageConversations", MessageConversations.class, requestMethods, mediaTypes ) );
+        Collections.sort(resources, new Comparator<Resource>()
+        {
+            @Override
+            public int compare( Resource o1, Resource o2 )
+            {
+                return o1.getName().compareTo( o2.getName() );
+            }
+        });
     }
 }

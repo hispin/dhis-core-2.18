@@ -183,7 +183,6 @@ public class WebUtils
             builder.append( request.getScheme() );
         }
 
-
         builder.append( "://" ).append( request.getServerName() );
 
         int port;
