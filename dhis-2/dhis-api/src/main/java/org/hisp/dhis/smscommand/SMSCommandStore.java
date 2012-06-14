@@ -3,8 +3,6 @@ package org.hisp.dhis.smscommand;
 import java.util.Collection;
 import java.util.Set;
 
-import org.hisp.dhis.common.GenericNameableObjectStore;
-
 public interface SMSCommandStore  {
     Collection<SMSCommand> getSMSCommands();
     SMSCommand getSMSCommand(int id);
