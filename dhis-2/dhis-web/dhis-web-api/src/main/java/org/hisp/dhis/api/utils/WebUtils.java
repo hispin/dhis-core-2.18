@@ -136,7 +136,14 @@ public class WebUtils
 
                     for ( IdentifiableObject object : objects )
                     {
-                        object.setLink( getPathWithUid( object ) );
+                        if ( object != null )
+                        {
+                            object.setLink( getPathWithUid( object ) );
+                        }
+                        else
+                        {
+                            System.err.println( "Object is null.. fixme!" );
+                        }
                     }
                 }
             }
