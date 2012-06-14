@@ -65,9 +65,9 @@ function getUrlParams()
 // Report table
 // -----------------------------------------------------------------------------
 
-function exportReport( type )
+function exportReport( type, uid )
 {
-    var url = "exportTable.action?type=" + type + "&useLast=true";
+    var url = "exportTable.action?uid=" + uid + "&type=" + type + "&useLast=true";
 
     url += $( "#id" ).length ? ( "&id=" + $( "#id" ).val() ) : "";
 

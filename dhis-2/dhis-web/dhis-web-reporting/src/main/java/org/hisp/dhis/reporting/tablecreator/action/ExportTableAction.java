@@ -154,29 +154,26 @@ public class ExportTableAction
     // -------------------------------------------------------------------------
 
     @Override
-    @SuppressWarnings("unchecked")
     public String execute()
         throws Exception
     {
+        ReportTable reportTable = reportTableService.getReportTable( uid );
+        
+        params.putAll( constantService.getConstantParameterMap() );
+        params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
+        
         if ( useLast )
         {
             grid = (Grid) SessionUtils.getSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID );
-            params = (Map<String, Object>) SessionUtils.getSessionVar( SessionUtils.KEY_REPORT_TABLE_PARAMS );
         }
         else
         {
-            ReportTable reportTable = reportTableService.getReportTable( uid );
-
             Date date = pe != null ? DateUtils.getMediumDate( pe ) : new Date();
             
-            grid = reportTableService.getReportTableGrid( uid, format, date, ou );
-            
-            params.putAll( constantService.getConstantParameterMap() );
-            params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
+            grid = reportTableService.getReportTableGrid( uid, format, date, ou );            
         }
 
         SessionUtils.setSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID, grid );
-        SessionUtils.setSessionVar( SessionUtils.KEY_REPORT_TABLE_PARAMS, params );
         
         return type != null ? type : DEFAULT_TYPE;
     }
