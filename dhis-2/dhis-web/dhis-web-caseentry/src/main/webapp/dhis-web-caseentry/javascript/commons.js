@@ -3,23 +3,26 @@ function dobTypeOnChange( container ){
 
 	var type = jQuery('#' + container + ' [id=dobType]').val();
 	if(type == 'V' || type == 'D'){
-		jQuery('#' + container + ' [id=age]').rules("remove","required");
+		jQuery('#' + container + ' [id=age]').rules("remove");
+		jQuery('#' + container + ' [id=age]').css("display","none");
+		
 		jQuery('#' + container + ' [id=birthDate]').rules("add",{required:true});
 		datePickerValid( container + ' [id=birthDate]' );
 		jQuery('#' + container + ' [id=birthDate]').css("display","");
-		jQuery('#' + container + ' [id=age]').css("display","none");
 	}else if(type == 'A'){
+		jQuery('#' + container + ' [id=age]').rules("add",{required:true, number: true});
+		jQuery('#' + container + ' [id=age]').css("display","");
+		
 		jQuery('#' + container + ' [id=birthDate]').rules("remove","required");
-		jQuery('#' + container + ' [id=age]').rules("add",{required:true});
 		$('#' + container+ ' [id=birthDate]').datepicker("destroy");
 		jQuery('#' + container + ' [id=birthDate]').css("display","none");
-		jQuery('#' + container + ' [id=age]').css("display","");
 	}else {
-		jQuery('#' + container + ' [id=age]').rules("remove","required");
+		jQuery('#' + container + ' [id=age]').rules("remove");
+		jQuery('#' + container + ' [id=age]').css("display","");
+		
 		jQuery('#' + container + ' [id=birthDate]').rules("remove","required");
 		$('#' + container+ ' [id=birthDate]').datepicker("destroy");
 		jQuery('#' + container + ' [id=birthDate]').css("display","none");
-		jQuery('#' + container + ' [id=age]').css("display","");
 	}
 }
 

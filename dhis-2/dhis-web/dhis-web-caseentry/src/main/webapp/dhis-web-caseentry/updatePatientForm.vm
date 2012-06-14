@@ -25,7 +25,6 @@
 			,beforeValidateHandler: function(form)
 				{
 					var dobType = $('#patientForm [id=dobType]').val();
-					
 					if( dobType=='V' || dobType=='D' ) 
 					{
 						var birthDate = $('#patientForm [id=birthDate]').val();
@@ -57,13 +56,10 @@
 <p>
 <form id="patientForm" name="patientForm" action="updatePatient.action" method="post" >
 <input type="hidden" id="representativeId" name="representativeId" value='$!patient.representative.id' /> 
-<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
-<div>
-	<input type="hidden" id="id" name="id" value="$patient.id">
+<input type="hidden" id="relationshipTypeId" name='relationshipTypeId' value="$!relationship.relationshipType.id"/>
+<input type="hidden" id="id" name="id" value="$patient.id">
 
-</div>
-<table>
-		
+<table>		
 	<tr>
 		<th colspan="2" class="heading-column">$i18n.getString( "system_identifier" )</th>
 	</tr>	
@@ -78,10 +74,12 @@
 	<tr>
 		<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
 	</tr>
+	
 	<tr>
 		<td class='text-column'><label for="fullName">$i18n.getString( "full_name" )</label></td>
 		<td class="input-column"><input type="text" id="fullName" name="fullName" value="$!patient.getFullName()" class="{validate:{required:true, unicodechars:true, rangelength:[7,50]}}"></td>
 	</tr>
+	
 	<tr>
 		<td class='text-column'><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td class="input-column">
@@ -95,14 +93,14 @@
 	
 	<tr>
 		<td class='text-column' ><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td class="input-column">	
+		<td class="input-column">
 			<select id='dobType' name="dobType" style='width:100px' onchange='dobTypeOnChange("patientForm")' >
-				<option value="A" #if($patient.dobType=='A') checked #end >$i18n.getString( "approximated" )</option>
-				<option value="D" #if($patient.dobType=='D') checked #end >$i18n.getString( "declared" )</option>
-				<option value="V" #if($patient.dobType=='V') checked #end >$i18n.getString( "verified" )</option>
+				<option value="A" #if($patient.dobType=='A') selected #end >$i18n.getString( "approximated" )</option>
+				<option value="D" #if($patient.dobType=='D') selected #end >$i18n.getString( "declared" )</option>
+				<option value="V" #if($patient.dobType=='V') selected #end >$i18n.getString( "verified" )</option>
 			</select>
 			<input type="text" id="birthDate" name="birthDate" value='$format.formatDate($!patient.birthDate)' style='width:145px;' />
-			<input type="text" id="age" name="age" value='$!patient.getAge()' class="{validate:{number:true}}" style='width:145px;' />
+			<input type="text" id="age" name="age" value='$!patient.getIntegerValueOfAge()' class="{validate:{number:true}}" style='width:145px;' />
 		</td>
 	</tr>
 
@@ -267,6 +265,10 @@
 		<tr>
 			<td class="bold text-column">$i18n.getString("full_name"):</td>
 			<td>$!representative.getFullName()</td>
+		</tr>
+		<tr>
+			<td class="bold text-column">$i18n.getString("relationship"):</td>
+			<td>$!relationship.relationshipType.aIsToB</td>
 		</tr>
 		<tr>
 			<td class="bold text-column">$i18n.getString("gender"):</td>
