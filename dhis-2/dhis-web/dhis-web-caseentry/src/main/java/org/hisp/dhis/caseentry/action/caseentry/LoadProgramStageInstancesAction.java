@@ -39,6 +39,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.comparator.ProgramStageInstanceDueDateComparator;
@@ -133,15 +134,15 @@ public class LoadProgramStageInstancesAction
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
-        if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
-        {
-            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program,
-                false ) );
-        }
-        else
+        if ( program.isRegistration() )
         {
             programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( patient,
                 program, false ) );
+        }
+        else
+        {
+            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program,
+                false ) );
         }
 
         if ( programInstances != null && programInstances.size() > 0 )
@@ -152,11 +153,20 @@ public class LoadProgramStageInstancesAction
 
             if ( programInstance.getProgramStageInstances() != null )
             {
-                programStageInstances.addAll( programInstance.getProgramStageInstances() );
-                Collections.sort( programStageInstances, new ProgramStageInstanceDueDateComparator() );
-
-                statusMap = programStageInstanceService.statusProgramStageInstances( programInstance
-                    .getProgramStageInstances() );
+                if ( program.isRegistration() )
+                {
+                    programStageInstances.addAll( programInstance.getProgramStageInstances() );
+                    Collections.sort( programStageInstances, new ProgramStageInstanceDueDateComparator() );
+                                        statusMap = programStageInstanceService.statusProgramStageInstances( programInstance
+                        .getProgramStageInstances() );
+                }
+                else
+                {
+                    ProgramStage programStage = program.getProgramStages().iterator().next();
+                    ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
+                        programInstance, programStage );
+                    programStageInstances.add( programStageInstance );
+                }
             }
         }
 
