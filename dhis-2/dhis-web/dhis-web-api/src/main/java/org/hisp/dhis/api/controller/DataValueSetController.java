@@ -67,7 +67,7 @@ public class DataValueSetController
     @Autowired
     private IntegrationService integrationService;
     
-    @RequestMapping( method = RequestMethod.GET, headers = {"Accept=text/html"} )
+    @RequestMapping( method = RequestMethod.GET, produces = { "text/html", "text/plain" } )
     public String getDataValueSets( Model model ) throws Exception
     {
         DataValueSets dataValueSets = new DataValueSets();
@@ -78,6 +78,7 @@ public class DataValueSetController
         return "dataValueSets";
     }
 
+    @RequestMapping( method = RequestMethod.GET, produces = "application/xml" )
     public void getDataValueSet( @RequestParam String dataSet,
                                  @RequestParam String period,
                                  @RequestParam String orgUnit,

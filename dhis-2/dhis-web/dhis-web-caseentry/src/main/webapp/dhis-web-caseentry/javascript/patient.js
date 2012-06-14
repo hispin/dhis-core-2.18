@@ -68,7 +68,7 @@ function addValidationCompleted( data )
 	if ( type == 'success' )
 	{
 		removeDisabledIdentifier( );
-		addPatient( );
+		addPatient();
 	}
 	else
 	{
@@ -315,8 +315,12 @@ function addPatient()
       url: 'addPatient.action',
       data: getParamsForDiv('editPatientDiv'),
       success: function(json) {
-		var type = json.response;
-		showProgramEnrollmentSelectForm( json.message );
+		var patientId = json.message.split('_')[0];
+		var systemIdentifierId = json.message.split('_')[1];
+		jQuery('#advSearchBox0 [id="searchText"]').val( systemIdentifierId );
+		statusSearching = 1;
+		
+		showProgramEnrollmentSelectForm( patientId );
 		jQuery('#resultSearchDiv').dialog('close');
       }
      });
@@ -750,8 +754,8 @@ function showRepresentativeInfo( patientId)
 			title: i18n_representative_info,
 			maximize: true, 
 			closable: true,
-			modal:true,
-			overlay:{background:'#000000', opacity:0.1},
+			modal: false,
+			overlay: {background:'#000000', opacity:0.1},
 			width: 400,
 			height: 300
 		});

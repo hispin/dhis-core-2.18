@@ -27,6 +27,7 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -121,6 +122,7 @@ public class BaseIdentifiableObject
     // Setters and getters
     // -------------------------------------------------------------------------
 
+    @JsonIgnore
     public int getId()
     {
         return id;
