@@ -32,5 +32,6 @@
     <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm"
       foreign-key="fk_catalogtype_dataentryform" />
 
+	  
   </class>
 </hibernate-mapping>

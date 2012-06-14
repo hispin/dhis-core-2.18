@@ -182,14 +182,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore"/>
     </bean>		
 
+	<!-- Catalog Custom data entry form -->
+	
+	<bean id="org.hisp.dhis.coldchain.catalog.CatalogDataEntryService"
+        class="org.hisp.dhis.coldchain.catalog.DefaultCatalogDataEntryService">
+        <property name="catalogTypeAttributeService" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService"/>
+    </bean>	
+	
 <!-- CCEM Report Manager -->
     <bean id="org.hisp.dhis.coldchain.reports.CCEMReportManager"
         class="org.hisp.dhis.coldchain.reports.DefaultCCEMReportManager">
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>     
-
-
+    </bean>	
+	
 	<!-- DeletionHandlers -->
 	
 </beans>

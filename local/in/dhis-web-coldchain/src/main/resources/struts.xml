@@ -159,6 +159,35 @@
 
 <!-- catalog -->	
 	
+	<!-- Data Entry Form -->
+
+	<action name="viewCatalogDataEntryForm"
+		class="org.hisp.dhis.coldchain.catalog.dataentryform.action.ViewCatalogDataEntryFormAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-coldchain/viewCatalogDataEntryForm.vm</param>
+		<param name="javascripts">../dhis-web-commons/ckeditor/ckeditor.js,../dhis-web-commons/ckeditor/adapters/jquery.js,javascript/viewCatalogTypeDataEntryForm.js</param>
+	</action>	
+	
+	<!-- Validation -->
+	<action name="validateCatalogTypeDataEntryForm"
+		class="org.hisp.dhis.coldchain.catalog.dataentryform.action.ValidateCatalogDataEntryFormAction">
+		<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>	
+	
+	<!-- Save Form -->
+	<action name="saveCatalogDataEntryForm" class="org.hisp.dhis.coldchain.catalog.dataentryform.action.SaveCatalogDataEntryFormAction">
+		<result name="success" type="redirect">catalogType.action</result>
+	</action>		
+	
+	<!-- Delete Form -->
+	<action name="delCatalogDataEntryForm" class="org.hisp.dhis.coldchain.catalog.dataentryform.action.DeleteCatalogDataEntryFormAction">
+		<result name="success" type="redirect">catalogType.action</result>
+	</action>	
+	
+	
+	
 	<!-- Catalog List -->
 	<action name="catalog" class="org.hisp.dhis.coldchain.catalog.action.CatalogListAction">
 		<result name="success" type="velocity">/main.vm</result>
@@ -181,6 +210,8 @@
 	<action name="showAddCataLogForm" class="org.hisp.dhis.coldchain.catalog.action.ShowAddCatalogFormAction">
 		<result name="success" type="velocity">/content.vm</result>
 		<param name="page">/dhis-web-coldchain/showAddCatalogForm.vm</param>
+		<!--<param name="page">/dhis-web-coldchain/catalogDataEntryForm.vm</param>-->
+		<param name="stylesheets">css/style.css</param>
 		<param name="requiredAuthorities">F_CATALOG_ADD</param>
 	</action>
 

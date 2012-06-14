@@ -7,7 +7,8 @@ function showCalatogTypeDetails( catalogTypeId )
 	jQuery.getJSON( 'getCatalogTypeDetails.action', { id: catalogTypeId }, function ( json ) {
 		setInnerHTML( 'nameField', json.catalogType.name );	
 		setInnerHTML( 'descriptionField', json.catalogType.description );
-		setInnerHTML( 'catalogTypeattributesCountField', json.catalogType.catalogTypeAttributeCount );   
+		setInnerHTML( 'catalogTypeattributesCountField', json.catalogType.catalogTypeAttributeCount );
+		setInnerHTML( 'dataEntryFormNameField', json.catalogType.dataEntryForm );
 	   
 		showDetails();
 	});

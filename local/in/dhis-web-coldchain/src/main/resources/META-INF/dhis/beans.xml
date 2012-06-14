@@ -164,6 +164,58 @@
 
 <!-- catalog -->
 
+<!-- Data Entry Form -->
+	<bean
+		id="org.hisp.dhis.coldchain.catalog.dataentryform.action.ViewCatalogDataEntryFormAction"
+		class="org.hisp.dhis.coldchain.catalog.dataentryform.action.ViewCatalogDataEntryFormAction"
+		scope="prototype">
+		<!--<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>-->
+		<property name="catalogTypeService">
+			<ref bean="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+		</property>
+		<property name="catalogDataEntryService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogDataEntryService" />
+	</bean>	
+	
+	<!-- Validation -->
+	<bean
+		id="org.hisp.dhis.coldchain.catalog.dataentryform.action.ValidateCatalogDataEntryFormAction"
+		class="org.hisp.dhis.coldchain.catalog.dataentryform.action.ValidateCatalogDataEntryFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+	</bean>	
+
+	<!-- Save Form -->
+	<bean
+		id="org.hisp.dhis.coldchain.catalog.dataentryform.action.SaveCatalogDataEntryFormAction"
+		class="org.hisp.dhis.coldchain.catalog.dataentryform.action.SaveCatalogDataEntryFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+		<property name="catalogTypeService">
+			<ref bean="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+		</property>		
+	</bean>		
+	
+	<!-- Delete Form -->
+	<bean
+		id="org.hisp.dhis.coldchain.catalog.dataentryform.action.DeleteCatalogDataEntryFormAction"
+		class="org.hisp.dhis.coldchain.catalog.dataentryform.action.DeleteCatalogDataEntryFormAction"
+		scope="prototype">
+		<property name="dataEntryFormService">
+			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
+		</property>
+		<property name="catalogTypeService">
+			<ref bean="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+		</property>		
+	</bean>		
+	
+	
 	<!-- Catalog List -->
 	<bean id="org.hisp.dhis.coldchain.catalog.action.CatalogListAction"
 		class="org.hisp.dhis.coldchain.catalog.action.CatalogListAction"
@@ -189,7 +241,9 @@
 		class="org.hisp.dhis.coldchain.catalog.action.ShowAddCatalogFormAction"
 		scope="prototype">
 		<property name="catalogTypeService"
-			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />		
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+		<property name="catalogDataEntryService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogDataEntryService" />					
 	</bean>	
 
 
