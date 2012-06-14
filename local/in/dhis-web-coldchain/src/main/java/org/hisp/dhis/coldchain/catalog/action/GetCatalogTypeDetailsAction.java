@@ -61,7 +61,7 @@ implements Action
     {
         
         catalogType = catalogTypeService.getCatalogType( id );
-        
+        //catalogType.getDataEntryForm().getName();
         catalogTypeAttributes = catalogType.getCatalogTypeAttributes();
         
         return SUCCESS;

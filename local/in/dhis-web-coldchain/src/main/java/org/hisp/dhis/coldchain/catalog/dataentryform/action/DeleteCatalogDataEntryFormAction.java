@@ -7,18 +7,16 @@ import org.hisp.dhis.dataentryform.DataEntryFormService;
 
 import com.opensymphony.xwork2.Action;
 
-public class ViewCatalogTypeDataEntryFormAction implements Action
+/**
+ * @author Mithilesh Kumar Thakur
+ *
+ * @version DeleteCatalogDataEntryFormAction.java Jun 8, 2012 4:33:05 PM	
+ */
+public class DeleteCatalogDataEntryFormAction implements Action
 {
-
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
-    private CatalogTypeService catalogTypeService;
-    
-    public void setCatalogTypeService( CatalogTypeService catalogTypeService )
-    {
-        this.catalogTypeService = catalogTypeService;
-    }
 
     private DataEntryFormService dataEntryFormService;
 
@@ -27,9 +25,31 @@ public class ViewCatalogTypeDataEntryFormAction implements Action
         this.dataEntryFormService = dataEntryFormService;
     }
 
+   private CatalogTypeService catalogTypeService;
+    
+    public void setCatalogTypeService( CatalogTypeService catalogTypeService )
+    {
+        this.catalogTypeService = catalogTypeService;
+    }
+
     // -------------------------------------------------------------------------
-    // Getters & Setters
+    // Getters & setters
     // -------------------------------------------------------------------------
+
+    private Integer dataEntryFormId;
+    
+    public void setDataEntryFormId( Integer dataEntryFormId )
+    {
+        this.dataEntryFormId = dataEntryFormId;
+    }
+
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
 
     private Integer catalogTypeId;
 
@@ -37,13 +57,7 @@ public class ViewCatalogTypeDataEntryFormAction implements Action
     {
         this.catalogTypeId = catalogTypeId;
     }
-    
-    private DataEntryForm dataEntryForm;
 
-    public DataEntryForm getDataEntryForm()
-    {
-        return dataEntryForm;
-    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -52,12 +66,22 @@ public class ViewCatalogTypeDataEntryFormAction implements Action
     public String execute()
         throws Exception
     {
+        DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryForm( dataEntryFormId );
+
         CatalogType catalogType = catalogTypeService.getCatalogType( catalogTypeId );
         
-        // ---------------------------------------------------------------------
-        // Get dataEntryForm of selected catalogtype
-        // ---------------------------------------------------------------------
+        DataEntryForm catalogTypeDataEntryForm = catalogType.getDataEntryForm();
+        
+        if ( catalogTypeDataEntryForm != null && catalogTypeDataEntryForm.equals( dataEntryForm ) )
+        {
+            catalogType.setDataEntryForm( null );
+
+            catalogTypeService.updateCatalogType( catalogType );
+        }
+
+        dataEntryFormService.deleteDataEntryForm( dataEntryForm );
 
         return SUCCESS;
     }
 }
+

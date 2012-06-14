@@ -150,7 +150,7 @@ public class DashBoardService
             throw new RuntimeException( "Illegal DataElement id", e );
         }
     }
-/*
+
     public String getPeriodIdForIDSPPopulation( )
     {
         String periodIdResult = "-1";
@@ -179,7 +179,7 @@ public class DashBoardService
         return periodIdResult;
             
     }
-*/    
+   
     public Integer getConfirmedCount( String orgUnitIdsByComma, String dataSetId, String periodId )
     {
         Integer confirmedCount = 0;
@@ -207,7 +207,7 @@ public class DashBoardService
         
         return confirmedCount;
     }
-    /*
+   
     public String getPeriodIdForIDSPOutBreak( )
     {
         String periodIdResult = "-1";
@@ -281,7 +281,7 @@ public class DashBoardService
         System.out.println( "PeriodId : " +periodIdResult );
         return periodIdResult;
     }
-    */
+   
     public Integer getAggregatedData( String orgUnitIdsByComma, String deIdsByComma, String periodId )
     {
         Integer aggData = 0;

@@ -4,6 +4,7 @@
 	"name": "$!encoder.jsonEncode( ${catalogType.name} )",
 	"description": "$!encoder.jsonEncode( ${catalogType.description} )",
 	"catalogTypeAttributeCount": "${catalogTypeAttributes.size()}",
+	"dataEntryForm": "$!encoder.jsonEncode( ${catalogType.dataEntryForm.name} )",
 	
 	#set( $size = ${catalogTypeAttributes.size()} )
 	"catalogTypeAttribute": [
