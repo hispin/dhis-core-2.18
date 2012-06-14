@@ -45,11 +45,7 @@
     <table>
       <tr>
         <td style="width: 80px;">Text</td>
-        <td style="width: 800px;"> <xsl:value-of select="d:text" /> </td>
-      </tr>
-      <tr>
-        <td>Sender</td>
-        <td> <xsl:value-of select="d:sender/@name" /> </td>
+        <td style="width: 800px;"> <xsl:value-of select="@name" /> </td>
       </tr>
     </table>
     <br/>
