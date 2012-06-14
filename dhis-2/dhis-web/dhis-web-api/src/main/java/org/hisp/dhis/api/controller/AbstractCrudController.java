@@ -73,7 +73,6 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         WebOptions options = new WebOptions( parameters );
         WebMetaData metaData = new WebMetaData();
         List<T> entityList = getEntityList( metaData, options );
-        System.err.println("EntityList.size: " + entityList.size());
 
         ReflectionUtils.invokeSetterMethod( ExchangeClasses.getExportMap().get( getEntityClass() ), metaData, entityList );
 
