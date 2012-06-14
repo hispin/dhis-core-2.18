@@ -7,8 +7,6 @@
 		<li><a href="#tab-3">$i18n.getString("data_entry_screen")</a></li>
 	</ul>
 	
-	
-	
 	<!-- Enroll program TAB -->
 	<div id="tab-1">
 		<form id='programEnrollmentInforForm' name='programEnrollmentInforForm' action='#' method="POST" >
@@ -17,8 +15,6 @@
 				<input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id'>
 				<!-- IDENTIFIERS -->
 				<table id='enrollmentInforDiv' name='enrollmentInforDiv' style='width:100%' >
-					<col>    
-					<col>    
 					#if( $identifierTypes.size() > 0 )
 					<tr>
 						<th colspan='2'>$i18n.getString( "identifier" )</th> 
