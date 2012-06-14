@@ -171,7 +171,7 @@ public class LoadDataEntryAction
        
             program = programStageInstance.getProgramStage().getProgram();
 
-            if ( program.getType() == Program.SINGLE_EVENT_WITHOUT_REGISTRATION && programStageInstance.isCompleted() )
+            if ( !program.isRegistration() && programStageInstance.isCompleted() )
             {
                 return SUCCESS;
             }
