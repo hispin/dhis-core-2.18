@@ -105,7 +105,7 @@ public class GetSingleEventAction
 
         for ( Program program : allProgram )
         {
-            if ( program.isSingleEvent() )
+            if ( program.isSingleEvent() && program.isRegistration() )
             {
                 singleEventList.add( program );
             }
