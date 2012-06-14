@@ -104,9 +104,16 @@ public class MessageConversationController
         List<User> users = new ArrayList<User>( message.getUsers() );
         message.getUsers().clear();
 
-        for ( User user : users )
+        for ( User u : users )
         {
-            user = userService.getUser( user.getUid() );
+            User user  = userService.getUser( u.getUid() );
+            
+            if ( user == null )
+            {
+                ContextUtils.conflictResponse( response, "User does not exist: " + u.getUid() );
+                return;
+            }
+            
             message.getUsers().add( user );
         }
 
@@ -130,8 +137,16 @@ public class MessageConversationController
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
         MessageConversation messageConversation = messageService.getMessageConversation( uid );
+        
+        if ( messageConversation == null )
+        {
+            ContextUtils.conflictResponse( response, "Message conversation does not exist: " + uid );
+            return;
+        }
 
-        messageService.sendReply( messageConversation, body, metaData );
+        messageService.sendReply( messageConversation, body, metaData );        
+
+        response.setStatus( HttpServletResponse.SC_CREATED );
     }
 
     //--------------------------------------------------------------------------
@@ -145,5 +160,7 @@ public class MessageConversationController
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
         messageService.sendFeedback( subject, body, metaData );
+        
+        response.setStatus( HttpServletResponse.SC_CREATED );
     }
 }
