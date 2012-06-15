@@ -72,7 +72,7 @@
 					#if( $!programStageDataElement.dataElement.optionSet )
 						#set( $hasOptionSet = 'true')
 					#else
-						#set( $hasOptionSet = 'true')
+						#set( $hasOptionSet = 'false')
 					#end
 
 					#if( $programStageDataElement.dataElement.type == "bool" )
