@@ -124,8 +124,9 @@ public class InterpretationController
         Interpretation interpretation = new Interpretation( chart, text );
         
         interpretationService.saveInterpretation( interpretation );
-        
-        ContextUtils.okResponse( response, "Chart interpretation created" );
+
+        response.setStatus( HttpServletResponse.SC_CREATED );
+        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
     @RequestMapping( value = "/map/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -144,8 +145,9 @@ public class InterpretationController
         Interpretation interpretation = new Interpretation( mapView, text );
         
         interpretationService.saveInterpretation( interpretation );
-        
-        ContextUtils.okResponse( response, "Map view interpretation created" );
+
+        response.setStatus( HttpServletResponse.SC_CREATED );
+        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
     @RequestMapping( value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -178,8 +180,9 @@ public class InterpretationController
         Interpretation interpretation = new Interpretation( reportTable, orgUnit, text );
         
         interpretationService.saveInterpretation( interpretation );
-        
-        ContextUtils.okResponse( response, "Report table interpretation created" );
+
+        response.setStatus( HttpServletResponse.SC_CREATED );
+        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
     
     @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -189,6 +192,7 @@ public class InterpretationController
     {
         interpretationService.addInterpretationComment( uid, text );
 
-        ContextUtils.okResponse( response, "Comment created" );
+        response.setStatus( HttpServletResponse.SC_CREATED );
+        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + uid );
     }
 }
