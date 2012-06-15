@@ -1,9 +1,6 @@
 <script>
 	jQuery('#addRelationshipPatientForm').ready(	function(){
 
-		datePickerValid( 'addRelationshipPatientForm [id=birthDate]' );
-		hideById('addRelationshipPatientForm [id=underAgeDiv]');
-		addEventForPatientForm('addRelationshipPatientForm');
 		checkedDuplicate = false;
 		
 		jQuery("#addRelationshipPatientForm").validate({
@@ -24,6 +21,9 @@
 					}
 				}
 		});
+		
+		hideById('addRelationshipPatientForm [id=underAgeDiv]');
+		addEventForPatientForm('addRelationshipPatientForm');
 	});		
 </script>
 
