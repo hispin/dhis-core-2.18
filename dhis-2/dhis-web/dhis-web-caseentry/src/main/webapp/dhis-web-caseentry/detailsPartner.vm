@@ -73,12 +73,12 @@
 	<tr>
 		#if( $partnerIsRepresentative == 'true' )
 		<td>
-			<input type="button" value="$i18n.getString('yes')" onclick="javascript:removeRepresentative( getFieldValue('id'), $partner.id );">
+			<input type="button" value="$i18n.getString('is_not_representative')" onclick="javascript:removeRepresentative( getFieldValue('id'), $partner.id );" style='width:150px;' >
 		</td>
 		#else
 		<td>
-			<input type="button" value="$i18n.getString('yes')" onclick="javascript:saveRepresentative( getFieldValue('id'), $partner.id, false )">
-			<input type="button" value="$i18n.getString('yes_and_attribute')" onclick="javascript:saveRepresentative( getFieldValue('id'), $partner.id, true )">
+			<input type="button" value="$i18n.getString('save')" title="$i18n.getString('set_as_representative')" onclick="javascript:saveRepresentative( getFieldValue('id'), $partner.id, false )" style='width:150px;' >
+			<input type="button" value="$i18n.getString('save_all')" title="$i18n.getString('set_as_representative_and_copy_attributes_for_the_person')" onclick="javascript:saveRepresentative( getFieldValue('id'), $partner.id, true )" style='width:150px;' >
 		</td>    
 		#end
 	</tr>                      

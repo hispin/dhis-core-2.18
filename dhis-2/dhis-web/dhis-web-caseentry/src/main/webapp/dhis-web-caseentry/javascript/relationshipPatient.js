@@ -132,10 +132,10 @@ function manageRepresentative( patientId, partnerId )
 			patientId: patientId,
 			partnerId: partnerId
 		}).dialog({
-			title: i18n_relationship_management,
+			title: i18n_set_as_representative,
 			maximize: true, 
 			closable: true,
-			modal:true,
+			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
 			width: 400,
 			height: 300
