@@ -67,7 +67,7 @@ DV.conf = {
 					system: {
 						rootnode: {
 							id: r.rn[0],
-							name: DV.conf.util.jsonEncode(r.rn[1]),
+							name: DV.conf.util.jsonEncodeString(r.rn[1]),
 							level: 1
 						},
 						periods: {},
@@ -78,13 +78,13 @@ DV.conf = {
 						isadmin: r.user.isAdmin,
 						organisationunit: {
 							id: r.user.ou[0],
-							name: DV.conf.util.jsonEncode(r.user.ou[1])
+							name: DV.conf.util.jsonEncodeString(r.user.ou[1])
 						},
 						organisationunitchildren: []							
 					}
 				};
 				for (var i = 0; i < r.user.ouc.length; i++) {
-					obj.user.organisationunitchildren.push({id: r.user.ouc[i][0], name: DV.conf.util.jsonEncode(r.user.ouc[i][1])});
+					obj.user.organisationunitchildren.push({id: r.user.ouc[i][0], name: DV.conf.util.jsonEncodeString(r.user.ouc[i][1])});
 				}
 				return obj;
 			}
@@ -105,7 +105,7 @@ DV.conf = {
             indicator_getall: 'indicators.json?paging=false&links=false',
             indicatorgroup_get: 'indicatorGroups.json?paging=false&links=false',
             dataelement_get: 'dataElementGroups/',
-            dataelement_getall: 'dataelements.json?paging=false&links=false',
+            dataelement_getall: 'dataElements.json?paging=false&links=false',
             dataelementgroup_get: 'dataElementGroups.json?paging=false&links=false',
             dataset_get: 'dataSets.json?paging=false&links=false',
             organisationunitgroupset_get: 'getOrganisationUnitGroupSetsMinified.action',
@@ -241,8 +241,14 @@ DV.conf = {
         multiselect_fill_reportingrates: 315
     },
     util: {
-		jsonEncode: function(str) {
-			return str.replace(/[^a-zA-Z 0-9(){}<>_!+;:?*&%#-]+/g,'');
+		jsonEncodeString: function(str) {
+			return typeof str === 'string' ? str.replace(/[^a-zA-Z 0-9(){}<>_!+;:?*&%#-]+/g,'') : str;
+		},
+		jsonEncodeArray: function(a) {
+			for (var i = 0; i < a.length; i++) {
+				a[i] = DV.conf.util.jsonEncodeString(a[i]);
+			}
+			return a;
 		}
 	}
 };
@@ -1174,14 +1180,11 @@ Ext.onReady( function() {
                 var a = [];
                 for (var i = 0; i < values.length; i++) {
                     var v = {
-						value: parseFloat(values[i][0]),
-						data: values[i][1],
-						period: values[i][2],
-						organisationunit: values[i][3]
+						value: DV.conf.util.jsonEncodeString(parseFloat(values[i][0])),
+						data: DV.conf.util.jsonEncodeString(values[i][1]),
+						period: DV.conf.util.jsonEncodeString(values[i][2]),
+						organisationunit: DV.conf.util.jsonEncodeString(values[i][3])
 					};
-					//if (DV.util.variable.isNotEmpty(r[i][5])) {
-						//v.organisationunitgroupid = r[i][5];
-					//}
 					a.push(v);					
                 }
                 return a;
@@ -1295,7 +1298,7 @@ Ext.onReady( function() {
                 listeners: {
                     load: function(s) {
 						s.each( function(r) {
-							r.data.name = DV.conf.util.jsonEncode(r.data.name);
+							r.data.name = DV.conf.util.jsonEncodeString(r.data.name);
 						});
 						DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
@@ -1322,7 +1325,7 @@ Ext.onReady( function() {
                 listeners: {
                     load: function(s) {
 						s.each( function(r) {
-							r.data.name = DV.conf.util.jsonEncode(r.data.name);
+							r.data.name = DV.conf.util.jsonEncodeString(r.data.name);
 						});
 						DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
@@ -1351,7 +1354,7 @@ Ext.onReady( function() {
                     load: function(s) {
 						this.isloaded = true;
 						s.each( function(r) {
-							r.data.name = DV.conf.util.jsonEncode(r.data.name);
+							r.data.name = DV.conf.util.jsonEncodeString(r.data.name);
 						});
 						DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
@@ -1499,23 +1502,23 @@ Ext.onReady( function() {
                         
                         if (f.indicators) {
 							for (var i = 0; i < f.indicators.length; i++) {
-								DV.c.indicator.objects.push({id: f.indicators[i].id, name: DV.conf.util.jsonEncode(f.indicators[i].name)});
+								DV.c.indicator.objects.push({id: f.indicators[i].id, name: DV.conf.util.jsonEncodeString(f.indicators[i].name)});
 							}
 						}
 						
 						if (f.dataElements) {
 							for (var i = 0; i < f.dataElements.length; i++) {
-								DV.c.dataelement.objects.push({id: f.dataElements[i].id, name: DV.conf.util.jsonEncode(f.dataElements[i].name)});
+								DV.c.dataelement.objects.push({id: f.dataElements[i].id, name: DV.conf.util.jsonEncodeString(f.dataElements[i].name)});
 							}
 						}
 						if (f.dataSets) {
 							for (var i = 0; i < f.dataSets.length; i++) {
-								DV.c.dataset.objects.push({id: f.dataSets[i].id, name: DV.conf.util.jsonEncode(f.dataSets[i].name)});
+								DV.c.dataset.objects.push({id: f.dataSets[i].id, name: DV.conf.util.jsonEncodeString(f.dataSets[i].name)});
 							}
 						}						
 						DV.c.period.rp = f.relativePeriods;
 						for (var i = 0; i < f.organisationUnits.length; i++) {
-							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].id, name: DV.conf.util.jsonEncode(f.organisationUnits[i].name)});
+							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].id, name: DV.conf.util.jsonEncodeString(f.organisationUnits[i].name)});
 						}
 						DV.c.organisationunit.groupsetid = f.organisationUnitGroupSet ? f.organisationUnitGroupSet.id : null;
 						
@@ -1939,9 +1942,9 @@ Ext.onReady( function() {
 					
                     DV.value.values = DV.util.value.jsonfy(r.v);
 					
-					DV.c.data.names = r.d;
-					DV.c.period.names = r.p;
-					DV.c.organisationunit.names = r.o;
+					DV.c.data.names = DV.conf.util.jsonEncodeArray(r.d);
+					DV.c.period.names = DV.conf.util.jsonEncodeArray(r.p);
+					DV.c.organisationunit.names = DV.conf.util.jsonEncodeArray(r.o);
                     
                     if (exe) {
                         DV.chart.getData(true);
@@ -3222,7 +3225,7 @@ Ext.onReady( function() {
 													listeners: {
 														load: function(s, node, r) {
 															for (var i = 0; i < r.length; i++) {
-																r[i].data.text = DV.conf.util.jsonEncode(r[i].data.text);
+																r[i].data.text = DV.conf.util.jsonEncodeString(r[i].data.text);
 															}
 														}
 													}

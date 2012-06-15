@@ -532,7 +532,7 @@ Ext.onReady( function() {
                     },
                     
                     {html: '<div class="window-p"></div>'},
-                    {html: '<div class="window-info">' + G.i18n.delete_favorite + '/' + G.i18n.add_to_dashboard +'</div>'},
+                    {html: '<div class="window-info">' + G.i18n.delete_favorite + ' / ' + G.i18n.add_to_dashboard +'</div>'},
                     {
                         xtype: 'combo',
                         id: 'favorite_cb',
@@ -2873,7 +2873,7 @@ Ext.onReady( function() {
                 layout: 'anchor',
                 collapsible: true,
 				header: false,
-                margins: '0 0 0 2px',
+                margins: '0 0 0 1px',
                 defaults: {
                     border: true,
                     frame: true,
