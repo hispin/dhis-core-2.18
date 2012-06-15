@@ -165,7 +165,10 @@ public class LoadProgramStageInstancesAction
                     ProgramStage programStage = program.getProgramStages().iterator().next();
                     ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
                         programInstance, programStage );
-                    programStageInstances.add( programStageInstance );
+                    if( programStageInstance!= null )
+                    {
+                        programStageInstances.add( programStageInstance );
+                    }
                 }
             }
         }
