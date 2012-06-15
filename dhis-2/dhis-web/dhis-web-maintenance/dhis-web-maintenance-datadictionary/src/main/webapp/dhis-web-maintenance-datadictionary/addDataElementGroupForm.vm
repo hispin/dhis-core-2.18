@@ -32,15 +32,13 @@
 <form id="addDataElementGroupForm" action="addDataElementGroup.action" method="post" >
 
 <table>
-    <col width="200px" />
-   	<col width="240px" />
-
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
+
 	<tr>
-		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:240px" /></td>
+		<td style="width: 200px;"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td style="min-width: 240px;"><input type="text" id="name" name="name" style="width:240px" /></td>
     </tr>
 </table>
 
