@@ -846,25 +846,6 @@ function autocompletedField( idField )
 				input.val(ui.item.value);
 				saveVal( dataElementId );
 				input.autocomplete( "close" );
-			},
-			change: function( event, ui ) {
-				if ( !ui.item ) {
-					var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
-						valid = false;
-					select.children( "option" ).each(function() {
-						if ( $( this ).text().match( matcher ) ) {
-							this.selected = valid = true;
-							return false;
-						}
-					});
-					if ( !valid ) {
-						// remove invalid value, as it didn't match anything
-						$( this ).val( "" );
-						select.val( "" );
-						input.data( "autocomplete" ).term = "";
-						return false;
-					}
-				}
 			}
 		})
 		.addClass( "ui-widget" );

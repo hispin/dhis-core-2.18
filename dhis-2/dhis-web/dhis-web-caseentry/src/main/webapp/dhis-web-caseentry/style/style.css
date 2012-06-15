@@ -111,19 +111,19 @@ input.stage-object[type="button"]
     white-space: normal;
 	border:2px solid; 
 	cursor:pointer;
-	opacity: 0.75;
+	opacity: 1.0;
 }
 
 input.stage-object[type="button"]:hover
 {
-	opacity: 1.0;
+	opacity: 0.75;
 }
 
 input.stage-object-selected[type="button"]
 {
 	width: 120px;
 	height: 50px;
-    opacity: 1.0;
+    opacity: 0.75;
 }
 
 input.patient-object[type="button"]
