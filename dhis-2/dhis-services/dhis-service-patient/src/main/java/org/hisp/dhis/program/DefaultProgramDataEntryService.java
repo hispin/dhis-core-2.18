@@ -555,8 +555,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForInputs = " $DISABLED onchange=\"saveVal( $DATAELEMENTID )\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
-        final String jsCodeForOptions = " $DISABLED options='$OPTIONS' dataElementId=\"$DATAELEMENTID\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
+        final String jsCodeForInputs = " $DISABLED onchange=\"saveVal( $DATAELEMENTID )\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE'}\" onkeypress=\"return keyPress(event, this)\" options='$OPTIONS' style=\" text-align:center;\"  ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -700,16 +699,10 @@ public class DefaultProgramDataEntryService
                     appendCode += "value=\"" + dataElementValue + "\"";
                 }
 
-                if ( dataElement.getOptionSet() != null )
-                {
-                    appendCode += jsCodeForOptions;
-
-                    appendCode = appendCode.replace( "$OPTIONS", dataElement.getOptionSet().getOptions().toString() );
-                }
-                else
-                {
-                    appendCode += jsCodeForInputs;
-                }
+                appendCode += jsCodeForInputs;
+                
+                Boolean hasOptionSet = ( dataElement.getOptionSet() != null );
+                appendCode = appendCode.replace( "$OPTIONS", hasOptionSet.toString() );
 
                 appendCode += " />";
 

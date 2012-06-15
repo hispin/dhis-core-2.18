@@ -1,7 +1,5 @@
-package org.hisp.dhis.option;
-
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,62 +25,33 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+package org.hisp.dhis.option;
+
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.Query;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 
 /**
- * @author Lars Helge Overland
+ * @author Chau Thu Tran
+ * 
+ * @version $HibernateOptionStore.java Jun 15, 2012 9:45:48 AM$
  */
-@Transactional
-public class DefaultOptionService
-    implements OptionService
+public class HibernateOptionStore
+    extends HibernateIdentifiableObjectStore<OptionSet>
+    implements OptionStore
 {
-    private OptionStore optionStore;
 
-    public void setOptionStore( OptionStore optionStore )
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<String> getOptions( OptionSet optionSet, String key )
     {
-        this.optionStore = optionStore;
-    }
+        String hql = "select option from OptionSet as optionset inner join optionset.options as option where optionset.id = :optionSetId and lower(option) like lower('%" + key + "%') ";
 
-    public int saveOptionSet( OptionSet optionSet )
-    {
-        return optionStore.save( optionSet );
-    }
-
-    public void updateOptionSet( OptionSet optionSet )
-    {
-        optionStore.update( optionSet );
-    }
-    
-    public OptionSet getOptionSet( int id )
-    {
-        return optionStore.get( id );
+        Query query = getQuery( hql );
+        query.setInteger( "optionSetId", optionSet.getId() );
+        
+        return query.list();
     }
 
-    public OptionSet getOptionSet( String uid )
-    {
-        return optionStore.getByUid( uid );
-    }
-    
-    public OptionSet getOptionSetByName( String name )
-    {
-        return optionStore.getByName( name );
-    }
-
-    public void deleteOptionSet( OptionSet optionSet )
-    {
-        optionStore.delete( optionSet );
-    }
-
-    public Collection<OptionSet> getAllOptionSets()
-    {
-        return optionStore.getAll();
-    }
-    
-    public List<String> getOptions( OptionSet optionSet, String key  )
-    {
-        return optionStore.getOptions( optionSet, key );
-    }
 }

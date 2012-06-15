@@ -148,6 +148,10 @@
 			<param name="page">/dhis-web-caseentry/validationResult.vm</param>
 		</action>
 		
+		<action name="getOptions" class="org.hisp.dhis.caseentry.action.caseentry.GetOptionsByDataElementAction">
+	      <result name="success" type="velocity-json">/dhis-web-caseentry/jsonOptions.vm</result>
+	    </action>
+		
 		<!-- save value -->
 
 		<action name="saveValue"

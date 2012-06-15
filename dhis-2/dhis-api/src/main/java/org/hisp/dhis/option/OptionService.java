@@ -28,6 +28,7 @@ package org.hisp.dhis.option;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -49,4 +50,6 @@ public interface OptionService
     void deleteOptionSet( OptionSet optionSet );
 
     Collection<OptionSet> getAllOptionSets();
+    
+    List<String> getOptions( OptionSet optionSet, String key  );
 }
