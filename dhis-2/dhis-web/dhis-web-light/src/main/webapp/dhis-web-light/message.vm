@@ -14,7 +14,7 @@
 
 #foreach( $message in $messages )
 <div class="header-box" align="center">
-	<h3 style="text-align: left;">Reply from $message.sender</h3>
+	<h3 style="text-align: left;">Reply from $message.sender.getName()</h3>
     <p style="text-align: left;">$message.text</p>
 </div>
 #end
