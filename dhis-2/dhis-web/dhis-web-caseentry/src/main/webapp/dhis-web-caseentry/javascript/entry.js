@@ -130,7 +130,7 @@ function loadDataEntry( programStageInstanceId )
 			showById('inputCriteriaDiv');
 			enable('validationBtn');
 			enable('validationInBelowBtn');
-			if(  executionDate == '' )
+			if( executionDate == '' )
 			{
 				disable('validationBtn');
 				disable('validationInBelowBtn');
@@ -823,8 +823,7 @@ function registerIrregularEncounter( dueDate )
 function autocompletedField( idField )
 {
 	var input = jQuery( "#" +  idField )
-	var dataElementId = input.attr( 'dataElementId' );
-	
+	var dataElementId = input.attr('id').split('-')[1];
 	input.autocomplete({
 			delay: 0,
 			minLength: 0,

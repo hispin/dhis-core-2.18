@@ -61,12 +61,11 @@ function loadEventForm()
 		}, 
 		function( json ) 
 		{    
-			setFieldValue( 'programStageInstanceId', json.programStageInstances[0].id );
-			setFieldValue( 'selectedProgramId', programId );
-			$('#executionDate').bind('change');
-			
 			if( json.programStageInstances.length > 0 )
 			{
+				setFieldValue( 'programStageInstanceId', json.programStageInstances[0].id );
+				setFieldValue( 'selectedProgramId', programId );
+				$('#executionDate').bind('change');
 				loadEventRegistrationForm();
 			}
 			else
