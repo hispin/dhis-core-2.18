@@ -824,71 +824,30 @@ function autocompletedField( idField )
 {
 	var input = jQuery( "#" +  idField )
 	var dataElementId = input.attr( 'dataElementId' );
-	var options = new Array();
-	options = input.attr('options').replace('[', '').replace(']', '').split(', ');
-	options.push(" ");
-
+	
 	input.autocomplete({
 			delay: 0,
 			minLength: 0,
-			source: options,
+			source: function( request, response ){
+                $.ajax({
+                    url: "getOptions.action?id=" + dataElementId + "&key=" + input.val(),
+                    dataType: "json",
+                    success: function(data) {
+						response($.map(data.options, function(item) {
+							return {
+								label: item,
+								id: item
+							};
+                        }));
+                    }
+                });
+            },
+			minLength: 2,
 			select: function( event, ui ) {
 				input.val(ui.item.value);
 				saveVal( dataElementId );
 				input.autocomplete( "close" );
-			},
-			change: function( event, ui ) {
-				if ( !ui.item ) {
-					var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
-						valid = false;
-					for (var i = 0; i < options.length; i++)
-					{
-						if (options[i].match( matcher ) ) {
-							this.selected = valid = true;
-							break;
-						}
-					}
-					if ( !valid ) {
-						// remove invalid value, as it didn't match anything
-						$( this ).val( "" );
-						input.data( "autocomplete" ).term = "";
-						return false;
-					}
-				}
-				saveVal( dataElementId );
 			}
 		})
 		.addClass( "ui-widget" );
-
-	this.button = $( "<button type='button'>&nbsp;</button>" )
-		.attr( "tabIndex", -1 )
-		.attr( "title", i18n_show_all_items )
-		.insertAfter( input )
-		.button({
-			icons: {
-				primary: "ui-icon-triangle-1-s"
-			},
-			text: false
-		})
-		.addClass( "optionset-small-button" )
-		.click(function() {
-			// close if already visible
-			if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
-				input.autocomplete( "close" );
-				return;
-			}
-
-			// work around a bug (likely same cause as #5265)
-			$( this ).blur();
-
-			// pass empty string as value to search for, displaying all results
-			input.autocomplete( "search", "" );
-			input.focus();
-		});
 }
-
-/* function hexToR(h) {
-	return parseInt((cutHex(h)).substring(0,2),16) + 
-	parseInt((cutHex(h)).substring(2,4),16);
-	parseInt((cutHex(h)).substring(2,4),16);
-} */

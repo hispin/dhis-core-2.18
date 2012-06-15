@@ -1,0 +1,7 @@
+{ "options": [
+  #foreach( $option in $options )
+	"$option",
+  #end
+   ""
+  ]
+}

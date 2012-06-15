@@ -275,10 +275,9 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.option.OptionSetStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+  <bean id="org.hisp.dhis.option.OptionStore" class="org.hisp.dhis.option.HibernateOptionStore">
     <property name="clazz" value="org.hisp.dhis.option.OptionSet" />
     <property name="sessionFactory" ref="sessionFactory" />
-    <property name="cacheable" value="true" />
   </bean>
 
   <!-- Service definitions -->
@@ -506,7 +505,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </bean>
   
   <bean id="org.hisp.dhis.option.OptionService" class="org.hisp.dhis.option.DefaultOptionService">
-	<property name="optionSetStore" ref="org.hisp.dhis.option.OptionSetStore"/>
+	<property name="optionStore" ref="org.hisp.dhis.option.OptionStore"/>
   </bean>
 
   <bean id="org.hisp.dhis.setting.SystemSettingManager" class="org.hisp.dhis.setting.DefaultSystemSettingManager">

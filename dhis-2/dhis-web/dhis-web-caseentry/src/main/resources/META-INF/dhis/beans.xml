@@ -136,6 +136,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.GetOptionsByDataElementAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetOptionsByDataElementAction"
+		scope="prototype">
+		<property name="dataElementService"
+			ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="optionService"
+			ref="org.hisp.dhis.option.OptionService" />
+	</bean>
 
 	<!-- Multi DataEntry -->
 
