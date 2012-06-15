@@ -30,10 +30,10 @@
 				#set( $dataElementName = $dataElement.name )
 			#end
 				#if (! $dataElement.getOptionSet())			
-					#set( $categoryOptionCombo = $dataElement.getCategoryOptionCombos().getModels().get( 0 ) )
+					
 					#set( $key = "DE${dataElement.id}" )
 
-					<label>$encoder.htmlEncode( $dataElementName ) #if( $categoryOptionCombo.name!="(default)")$encoder.htmlEncode( $categoryOptionCombo.name )#end 
+					<label>$encoder.htmlEncode( $dataElementName )
 					#if($dataElement.type=="date") [yyyy-MM-dd] #end
 					</label>
 					

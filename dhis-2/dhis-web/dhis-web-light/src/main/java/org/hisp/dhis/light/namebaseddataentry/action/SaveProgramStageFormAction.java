@@ -44,7 +44,9 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.util.ContextUtils;
 import com.opensymphony.xwork2.Action;
@@ -249,6 +251,30 @@ public class SaveProgramStageFormAction
         return prevDataValues;
     }
 
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
+    public void setProgram( Program program )
+    {
+        this.program = program;
+    }
+
+    private Patient patient;
+
+    public Patient getPatient()
+    {
+        return patient;
+    }
+
+    public void setPatient( Patient patient )
+    {
+        this.patient = patient;
+    }
+
     @Override
     public String execute()
         throws Exception
@@ -263,8 +289,10 @@ public class SaveProgramStageFormAction
         }
 
         programStage = util.getProgramStage( programId, programStageId );
-
+        program = programStageService.getProgramStage( programStageId ).getProgram();
+        patient = patientService.getPatient( patientId );
         dataElements = programStage.getDataElements();
+        
         int defaultCategoryOptionId = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId();
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
             ServletActionContext.HTTP_REQUEST );

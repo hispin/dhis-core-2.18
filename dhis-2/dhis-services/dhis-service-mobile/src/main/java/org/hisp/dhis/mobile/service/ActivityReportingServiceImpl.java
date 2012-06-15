@@ -153,7 +153,11 @@ public class ActivityReportingServiceImpl
 
         for ( org.hisp.dhis.activityplan.Activity activity : activities )
         {
-            items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
+            if ( activity.getDueDate() != null )
+            {
+                items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
+            }
+
         }
 
         if ( items.isEmpty() )

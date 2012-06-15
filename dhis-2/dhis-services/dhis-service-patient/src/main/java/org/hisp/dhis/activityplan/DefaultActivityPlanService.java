@@ -156,7 +156,8 @@ public class DefaultActivityPlanService
     {
         Collection<Activity> activities = new ArrayList<Activity>();
 
-        Collection<Program> programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION, organisationUnit );
+        Collection<Program> programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION,
+            organisationUnit );
 
         if ( programs.size() > 0 )
         {
@@ -182,7 +183,8 @@ public class DefaultActivityPlanService
 
         Collection<Activity> activities = new ArrayList<Activity>();
 
-        if ( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION, organisationUnit ).containsAll( programs ) )
+        if ( programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION, organisationUnit ).containsAll(
+            programs ) )
         {
             Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs, false );
 
@@ -287,8 +289,8 @@ public class DefaultActivityPlanService
 
     public Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit, int min, int max )
     {
-        Collection<Integer> programStageInstanceIds = activityPlanStore.getActivitiesByProvider( organisationUnit
-            .getId(), min, max );
+        Collection<Integer> programStageInstanceIds = activityPlanStore.getActivitiesByProvider(
+            organisationUnit.getId(), min, max );
 
         Collection<Activity> activities = new ArrayList<Activity>();
 
@@ -386,7 +388,11 @@ public class DefaultActivityPlanService
                 Activity activity = new Activity();
                 activity.setBeneficiary( programInstance.getPatient() );
                 activity.setTask( nextStageInstance );
-                activity.setDueDate( nextStageInstance.getDueDate() );
+
+                if ( nextStageInstance != null )
+                {
+                    activity.setDueDate( nextStageInstance.getDueDate() );
+                }
 
                 activities.add( activity );
             }
