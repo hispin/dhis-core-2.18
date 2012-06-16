@@ -727,6 +727,7 @@ Ext.onReady( function() {
                 Ext.data.JsonP.request({
                     url: conf.url + DHIS.chart.conf.finals.ajax.favorite_get + conf.uid + '.jsonp',
                     scope: this,
+                    disableCaching: false,
                     success: function(r) {
                         if (!r) {
                             alert('Invalid uid');
