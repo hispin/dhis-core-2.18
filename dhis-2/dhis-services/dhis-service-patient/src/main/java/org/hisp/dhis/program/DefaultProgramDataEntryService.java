@@ -967,7 +967,7 @@ public class DefaultProgramDataEntryService
     private String addProvidedElsewherCheckbox( String appendCode, PatientDataValue patientDataValue,
         ProgramStage programStage )
     {
-        appendCode += "<label for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" ></label><input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" style=\"display:$DISPLAY;\" ";
+        appendCode += "<label for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" ></label><input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" ";
 
         if ( patientDataValue != null && patientDataValue.getProvidedElsewhere() )
         {
@@ -975,9 +975,6 @@ public class DefaultProgramDataEntryService
         }
 
         appendCode += "onChange=\"updateProvidingFacility( $DATAELEMENTID, this )\"  >";
-
-        String display = (!programStage.getProgram().isRegistration()) ? "none" : "block";
-        appendCode = appendCode.replace( "$DISPLAY", display );
 
         return appendCode;
 
