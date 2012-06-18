@@ -29,12 +29,6 @@
 	#if( $customDataEntryFormCode )
 		<div id="customEntryScreenContainer">
 		   $customDataEntryFormCode
-
-			<script type="text/javascript"> 
-				#if( $!programStageInstance.programStage.program.displayProvidedOtherFacility == 'true' )
-					initCustomCheckboxes();
-				#end
-			</script>
 		</div>
 	#else
 		<table id="defaultEntryScreenContainer" class='entryScreen formSection'>
@@ -43,7 +37,9 @@
 			<tr>
 				<th>$i18n.getString( "data_element" )</th>                   
 				<th>$i18n.getString( "entry" )</th>
+				#if( $!programStageInstance.programStage.program.isRegistration() == 'true')
 				<th>$i18n.getString( "provided_elsewhere" )</th>
+				#end
 			</tr>
 		#set( $dataElementRowCount = 0 )
 		#set( $mark = true )
@@ -87,18 +83,19 @@
 							datePicker($programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
 						</script> 
 					#else
-						<input name="entryfield" options='$hasOptionSet' #if($hasOptionSet == 'true') class='optionset' #end dataElementId='$programStageDataElement.dataElement.id' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex">
+						<input name="entryfield" options='$hasOptionSet' #if($hasOptionSet == 'true') #end dataElementId='$programStageDataElement.dataElement.id' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex">
 					#end
 				</td> 
-
-				<td style='width: 50px;' align='center'>
+				#if( $!programStageInstance.programStage.program.isRegistration() == 'true' )
+				<td style='width:20px;' align='center'>
 					#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
 					#if( $programStageDataElement.allowProvidedElsewhere == 'true')
-						<input style='width: 250px;' name="$id" id="$id" type="checkbox"
-							onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" 
-							#if($patientDataValue.providedElsewhere == 'true') checked #end />
+						<div id='span_$id' class='provided-elsewhere'>
+							<input class='provided-elsewhere' name="$id" id="$id" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" #if($patientDataValue.providedElsewhere == 'true') checked #end />
+						</div>
 					#end
 				</td>
+				#end
 			</tr>
 		#end				
 		#set( $tabIndex = $tabIndex + 1 )

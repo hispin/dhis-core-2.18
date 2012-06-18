@@ -48,7 +48,7 @@
 </table>
 
 <div class='button-list'>
-	<input type="button" style='width:170px;' value="$i18n.getString( 'seach_available_patients' )" onclick="javascript:showAddRelationship('$patient.id')" >
+	<input type="button" style='width:170px;' value="$i18n.getString( 'seach_available_patient' )" onclick="javascript:showAddRelationship('$patient.id')" >
 	<input type="button" style='width:170px;' value="$i18n.getString( 'add_new_patient' )" onclick="javascript:showAddRelationshipPatient( '$patient.id',false )" >
 	<input type="button" style='width:170px;' value="$i18n.getString( 'back_to_registration' )" onclick="onClickBackBtn();" >
 </div>

@@ -967,14 +967,15 @@ public class DefaultProgramDataEntryService
     private String addProvidedElsewherCheckbox( String appendCode, PatientDataValue patientDataValue,
         ProgramStage programStage )
     {
-        appendCode += "<label for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" ></label><input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" ";
+        String id = "$PROGRAMSTAGEID_$DATAELEMENTID_facility";
+        appendCode += "<div id=\"span_" + id + "\" class=\"provided-elsewhere\"><input name=\"providedByAnotherFacility\" title=\"is provided by another Facility ?\"  id=\"" + id + "\"  type=\"checkbox\" ";
 
         if ( patientDataValue != null && patientDataValue.getProvidedElsewhere() )
         {
             appendCode += " checked=\"checked\" ";
         }
 
-        appendCode += "onChange=\"updateProvidingFacility( $DATAELEMENTID, this )\"  >";
+        appendCode += "onChange=\"updateProvidingFacility( $DATAELEMENTID, this )\"  ></div>";
 
         return appendCode;
 

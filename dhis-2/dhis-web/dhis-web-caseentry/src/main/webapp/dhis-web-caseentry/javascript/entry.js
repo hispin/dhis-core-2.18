@@ -1,6 +1,8 @@
 var SUCCESS_COLOR = '#ccffcc';
 var ERROR_COLOR = '#ccccff';
 var SAVING_COLOR = '#ffffcc';
+var SUCCESS = 'success';
+var ERROR = 'error';
 	
 //--------------------------------------------------------------------------------------------
 // Load program-stages by the selected program
@@ -236,8 +238,9 @@ function updateProvidingFacility( dataElementId, checkField )
 {
 	var programStageId = byId( 'programStageId' ).value;
 	var checked= checkField.checked;
-    checkField.style.backgroundColor = SAVING_COLOR;
-	
+	var spanField = byId( 'span_' + checkField.id );
+	spanField.style.backgroundColor = SAVING_COLOR;
+    
     var facilitySaver = new FacilitySaver( dataElementId, checked, SUCCESS_COLOR );
     facilitySaver.save();
     
@@ -481,11 +484,11 @@ function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
         var code = parseInt( codeElement.firstChild.nodeValue );
         if ( code == 0 )
         {
-            markValue( SUCCESS_COLOR );
+            markValue( SUCCESS );
         }
         else
         {
-            markValue( ERROR_COLOR );
+            markValue( ERROR );
             window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
         }
     }
@@ -499,14 +502,14 @@ function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
     function markValue( result )
     {
 		var programStageId = byId( 'programStageId' ).value;
-        if( result == 'success' )
+		var element = byId('span_' + programStageId + '_' + dataElementId + '_facility');
+        if( result == SUCCESS )
         {
-            jQuery('label[for="' + programStageId + '_facility"]').toggleClass('checked');
+            element.style.backgroundColor = SUCCESS_COLOR;
         }
-        else if( result == 'error' )
+        else if( result == ERROR )
         {
-            jQuery('label[for="' + programStageId + '_facility"]').removeClass('checked');
-            jQuery('label[for="' + programStageId + '_facility"]').addClass('error');
+            element.style.backgroundColor = ERROR_COLOR;
         }
     }
 }
@@ -708,11 +711,6 @@ TOGGLE = {
         });
     }
 };
-
-function initCustomCheckboxes()
-{
-    jQuery('input[type=checkbox]').prettyCheckboxes();
-}
 
 function entryFormContainerOnReady()
 {
