@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class DataElement
     extends Model
 {
+    private String clientVersion;
 
     private String type;
 

@@ -36,8 +36,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class DataValue
     implements DataStreamSerializable
 {
-
+    
     private int id;
+    
+    private String clientVersion;
 
     private int categoryOptComboID;
 
@@ -91,6 +93,22 @@ public class DataValue
         setId( din.readInt() );
         setCategoryOptComboID( din.readInt() );
         setValue( din.readUTF() );
+    }
+
+    @Override
+    public void serializeVerssion2Point8()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void serializeVerssion2Point9()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
     }
 
 }

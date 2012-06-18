@@ -36,9 +36,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class Model
     implements DataStreamSerializable
 {
+    private String clientVersion;
 
     private int id;
-
+    
     private String name;
 
     @XmlAttribute
@@ -77,6 +78,22 @@ public class Model
     {
         this.id = dataInputStream.readInt();
         this.name = dataInputStream.readUTF();
+    }
+
+    @Override
+    public void serializeVerssion2Point8()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void serializeVerssion2Point9()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
     }
 
 }

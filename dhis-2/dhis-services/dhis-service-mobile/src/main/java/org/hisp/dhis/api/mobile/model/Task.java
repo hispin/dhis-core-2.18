@@ -34,6 +34,8 @@ import java.io.IOException;
 public class Task
     implements DataStreamSerializable
 {
+    private String clientVersion;
+    
     private int id;
 
     private int programStageId;
@@ -98,5 +100,21 @@ public class Task
     {
         // Fixme
 
+    }
+
+    @Override
+    public void serializeVerssion2Point8()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void serializeVerssion2Point9()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

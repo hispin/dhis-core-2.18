@@ -46,6 +46,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Beneficiary
     implements DataStreamSerializable
 {
+    private String clientVersion;
+    
     @XmlAttribute
     private int id;
 
@@ -323,5 +325,21 @@ public class Beneficiary
     {
         Beneficiary otherBeneficiary = (Beneficiary) otherObject;
         return this.getId() == otherBeneficiary.getId();
+    }
+
+    @Override
+    public void serializeVerssion2Point8()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void serializeVerssion2Point9()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

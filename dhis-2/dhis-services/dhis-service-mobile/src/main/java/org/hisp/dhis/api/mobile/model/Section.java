@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlElement;
 public class Section
     extends Model
 {
-
+    private String clientVersion;
+    
     private List<DataElement> dataElements;
 
     @XmlElement( name = "dataElement" )

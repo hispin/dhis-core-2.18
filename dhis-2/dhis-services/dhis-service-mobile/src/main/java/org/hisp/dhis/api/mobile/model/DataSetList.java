@@ -37,6 +37,8 @@ public class DataSetList
     extends Model
     implements DataStreamSerializable
 {
+    private String clientVersion;
+    
     private List<DataSet> addedDataSets = new ArrayList<DataSet>();
 
     private List<DataSet> deletedDataSets = new ArrayList<DataSet>();
