@@ -267,7 +267,7 @@ function exportPatientHistory( patientId, type )
 	window.location.href = url;
 }
 
-var prefixStageId = 'ps_';
+var prefixId = 'ps_';
 var COLOR_RED = "#fb4754";
 var COLOR_GREEN = "#8ffe8f";
 var COLOR_YELLOW = "#f9f95a";

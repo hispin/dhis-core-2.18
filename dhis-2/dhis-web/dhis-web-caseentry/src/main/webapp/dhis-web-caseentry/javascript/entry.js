@@ -1,14 +1,7 @@
-var prefixId = 'ps_';
-
-var COLOR_RED = "#fb4754";
-var COLOR_GREEN = "#8ffe8f";
-var COLOR_YELLOW = "#f9f95a";
-var COLOR_LIGHTRED = "#fb6bfb";
-var COLOR_LIGHT_RED = "#ff7676";
-var COLOR_LIGHT_YELLOW = "#ffff99";
-var COLOR_LIGHT_GREEN = "#ccffcc";
-var COLOR_LIGHT_LIGHTRED = "#ff99ff";
-
+var SUCCESS_COLOR = '#ccffcc';
+var ERROR_COLOR = '#ccccff';
+var SAVING_COLOR = '#ffffcc';
+	
 //--------------------------------------------------------------------------------------------
 // Load program-stages by the selected program
 //--------------------------------------------------------------------------------------------
@@ -181,7 +174,7 @@ function saveVal( dataElementId )
 	var dataElementName = data['deName']; 
     var type = data['deType'];
  
-	field.style.backgroundColor = '#ffffcc';
+	field.style.backgroundColor = SAVING_COLOR;
     
     if( fieldValue != '' )
     {
@@ -225,7 +218,7 @@ function saveVal( dataElementId )
     	
     }
     
-	var valueSaver = new ValueSaver( dataElementId, fieldValue, type, '#ccffcc'  );
+	var valueSaver = new ValueSaver( dataElementId, fieldValue, type, SUCCESS_COLOR );
     valueSaver.save();
 }
 
@@ -233,9 +226,9 @@ function saveOpt( dataElementId )
 {
 	var programStageId = byId('programStageId').value;
 	var field = byId( programStageId + '-' + dataElementId + '-val' );	
-	field.style.backgroundColor = '#ffffcc';
+	field.style.backgroundColor = SAVING_COLOR;
 	
-	var valueSaver = new ValueSaver( dataElementId, field.options[field.selectedIndex].value, 'bool', '#ccffcc' );
+	var valueSaver = new ValueSaver( dataElementId, field.options[field.selectedIndex].value, 'bool', SUCCESS_COLOR );
     valueSaver.save();
 }
 
@@ -243,9 +236,9 @@ function updateProvidingFacility( dataElementId, checkField )
 {
 	var programStageId = byId( 'programStageId' ).value;
 	var checked= checkField.checked;
-    checkField.style.backgroundColor = '#ffffcc';
+    checkField.style.backgroundColor = SAVING_COLOR;
 	
-    var facilitySaver = new FacilitySaver( dataElementId, checked, '#ccffcc' );
+    var facilitySaver = new FacilitySaver( dataElementId, checked, SUCCESS_COLOR );
     facilitySaver.save();
     
 }
@@ -254,9 +247,9 @@ function saveExecutionDate( programId, executionDateValue )
 {
     var field = document.getElementById( 'executionDate' );
 	
-    field.style.backgroundColor = '#ffffcc';
+    field.style.backgroundColor = SAVING_COLOR;
 	
-    var executionDateSaver = new ExecutionDateSaver( programId, executionDateValue, '#ccffcc' );
+    var executionDateSaver = new ExecutionDateSaver( programId, executionDateValue, SUCCESS_COLOR );
     executionDateSaver.save();
 	
     if( !jQuery("#entryForm").is(":visible") )
@@ -389,9 +382,6 @@ function getNextEntryField( field )
 
 function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
 {
-    var SUCCESS = '#ccffcc';
-    var ERROR = '#ccccff';
-	
     var dataElementId = dataElementId_;
 	var providedElsewhereId = getFieldValue('programStageId') + "_" + dataElementId_ + "_facility";
 	var value = value_;
@@ -463,9 +453,6 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
 
 function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
 {
-    var SUCCESS = 'success';
-    var ERROR = '#error';
-	
     var dataElementId = dataElementId_;
 	var providedElsewhere = providedElsewhere_;
     var resultColor = resultColor_;
@@ -494,11 +481,11 @@ function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
         var code = parseInt( codeElement.firstChild.nodeValue );
         if ( code == 0 )
         {
-            markValue( SUCCESS );
+            markValue( SUCCESS_COLOR );
         }
         else
         {
-            markValue( ERROR );
+            markValue( ERROR_COLOR );
             window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
         }
     }
@@ -512,11 +499,11 @@ function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
     function markValue( result )
     {
 		var programStageId = byId( 'programStageId' ).value;
-        if( result == SUCCESS )
+        if( result == 'success' )
         {
             jQuery('label[for="' + programStageId + '_facility"]').toggleClass('checked');
         }
-        else if( result == ERROR )
+        else if( result == 'error' )
         {
             jQuery('label[for="' + programStageId + '_facility"]').removeClass('checked');
             jQuery('label[for="' + programStageId + '_facility"]').addClass('error');
@@ -526,9 +513,6 @@ function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
 
 function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
 {
-    var SUCCESS = '#ccffcc';
-    var ERROR = '#ffcc00';
-	
     var programId = programId_;
     var executionDate = executionDate_;
     var resultColor = resultColor_;
