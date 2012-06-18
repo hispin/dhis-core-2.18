@@ -162,7 +162,11 @@ public class SaveValueAction
 
             patientDataValueService.savePatientDataValue( patientDataValue );
         }
-        else
+        if( patientDataValue != null && value == null )
+        {
+            patientDataValueService.deletePatientDataValue( patientDataValue );
+        }
+        else if( patientDataValue != null && value != null )
         {
             LOG.debug( "Updating PatientDataValue, value added/changed" );
 
