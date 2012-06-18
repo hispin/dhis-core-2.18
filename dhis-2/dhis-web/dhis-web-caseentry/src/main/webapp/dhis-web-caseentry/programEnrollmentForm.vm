@@ -14,7 +14,7 @@
 				<input type='hidden' id='programId' name='programId' value='$programInstance.program.id'>
 				<input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id'>
 				<!-- IDENTIFIERS -->
-				<table id='enrollmentInforDiv' name='enrollmentInforDiv' style='width:100%' >
+				<table id='enrollmentInforDiv' name='enrollmentInforDiv' class='mainPageTable' >
 					#if( $identifierTypes.size() > 0 )
 					<tr>
 						<th colspan='2'>$i18n.getString( "identifier" )</th> 
@@ -33,10 +33,10 @@
 						</tr>
 						#set( $mark = !$mark  )
 					#end
-
+					
 				<!-- ATTRIBUTES IN GROUPS -->
-				<tr><td>&nbsp;</td></tr>	
 				#foreach ($attributeGroup in $attributeGroups )
+					<tr><td>&nbsp;</td></tr>	
 					<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 					#set( $mark = false )
 					#foreach($attribute in $attributeGroup.attributes)
