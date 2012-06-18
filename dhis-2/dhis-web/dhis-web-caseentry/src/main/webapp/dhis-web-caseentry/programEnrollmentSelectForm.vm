@@ -1,29 +1,39 @@
 <h3>$i18n.getString( "patient_info" )</h3>
 
 <div>
-	<table>
+	<table class='mainPageTable'>
 		<tr>
-			<td class='bold text-column'>$i18n.getString( "full_name" ):</td>
-			<td>$encoder.htmlEncode( $patient.getFullName() )</td>
+			<td>
+				<table>
+					<tr>
+						<td class='bold text-column'>$i18n.getString( "full_name" ): </td>
+						<td>$encoder.htmlEncode( $patient.getFullName() )</td>
+					</tr>
+					<tr>
+						<td class='bold text-column'>$i18n.getString( "gender" ):</td>
+						<td>$i18n.getString( $patient.gender )</td>
+					</tr>
+					<tr>
+						<td class='bold text-column'>$i18n.getString( "date_of_birth" ):</td>
+						<td>$format.formatDate( $patient.birthDate ) $patient.getAge()</td>
+					</tr>
+				</table>
+			<td>
+			#if( $patient.programs.size() > 0 )
+			<td align="right">
+				<table>
+					<tr>
+						<td class='bold text-column' style="vertical-align:top">$i18n.getString( "enrolled_for" ):</td>
+						<td rowspan='$patient.programs.size()' style="vertical-align:right">
+							#foreach( $program in $patient.programs ) 
+								$program.name<br>
+							#end
+						</td>
+					</tr>
+				</table>
+			</td>
+			#end
 		</tr>
-		<tr>
-			<td class='bold text-column'>$i18n.getString( "gender" ):</td>
-			<td>$i18n.getString( $patient.gender )</td>
-		</tr>
-		<tr>
-			<td class='bold text-column'>$i18n.getString( "date_of_birth" ):</td>
-			<td>$format.formatDate( $patient.birthDate ) $patient.getAge()</td>
-		</tr>
-		#if( $patient.programs.size() > 0 )
-			<tr>
-				<td class='bold text-column'>$i18n.getString( "enrolled_for" ):</td>
-				#foreach( $program in $patient.programs ) 
-					<td>$program.name</td>
-				</tr>
-				<tr><td></td>
-				#end
-			</tr>
-		#end
 		<tr>
 			<td>&nbsp;</td>
 		</tr>
