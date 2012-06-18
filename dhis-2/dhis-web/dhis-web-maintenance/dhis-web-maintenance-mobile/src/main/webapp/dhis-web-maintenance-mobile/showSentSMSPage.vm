@@ -1,6 +1,5 @@
 <h3>$i18n.getString( 'list_sent_SMS' )</h3>
 <form id="sentSMSPage" name="sentSMSPage" action="showSentPage.action" method="post" >
-$ListOutboundSMS.size()
 <table id="detailsSentSMSList" class="listTable" style="width:800px">
 	<thead>
 		<th style="text-align:center">$i18n.getString( "no." )</th>

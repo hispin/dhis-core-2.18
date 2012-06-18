@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.light.singleevent.action;
+package org.hisp.dhis.light.anonymous.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,12 +34,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.light.utils.NamebasedUtils;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
@@ -50,20 +51,28 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.util.ContextUtils;
 
-public class SaveSingleEventAction
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
+
+/**
+ * @author Nguyen Kim Lai
+ * 
+ * @version $ SaveAnonymousProgramAction.java Jun 14, 2012 $
+ */
+public class SaveAnonymousProgramAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramInstanceService programInstanceService;
+    private ProgramService programService;
 
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    public void setProgramService( ProgramService programService )
     {
-        this.programInstanceService = programInstanceService;
+        this.programService = programService;
     }
 
     private ProgramStageInstanceService programStageInstanceService;
@@ -73,18 +82,11 @@ public class SaveSingleEventAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    private ProgramService programService;
+    private ProgramInstanceService programInstanceService;
 
-    public void setProgramService( ProgramService programService )
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
-        this.programService = programService;
-    }
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
+        this.programInstanceService = programInstanceService;
     }
 
     private PatientDataValueService patientDataValueService;
@@ -94,11 +96,11 @@ public class SaveSingleEventAction
         this.patientDataValueService = patientDataValueService;
     }
 
-    private OrganisationUnitService organisationUnitService;
+    private DataElementService dataElementService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setDataElementService( DataElementService dataElementService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.dataElementService = dataElementService;
     }
 
     private NamebasedUtils util;
@@ -124,6 +126,13 @@ public class SaveSingleEventAction
         return typeViolations;
     }
 
+    private Map<String, String> prevDataValues = new HashMap<String, String>();
+
+    public Map<String, String> getPrevDataValues()
+    {
+        return prevDataValues;
+    }
+
     private Integer programId;
 
     public Integer getProgramId()
@@ -136,90 +145,16 @@ public class SaveSingleEventAction
         this.programId = programId;
     }
 
-    private Integer patientId;
+    List<DataElement> dataElements = new ArrayList<DataElement>();
 
-    public Integer getPatientId()
+    public List<DataElement> getDataElements()
     {
-        return patientId;
+        return dataElements;
     }
 
-    public void setPatientId( Integer patientId )
+    public void setDataElements( List<DataElement> dataElements )
     {
-        this.patientId = patientId;
-    }
-
-    private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
-
-    private String eventName;
-
-    public String getEventName()
-    {
-        return this.eventName;
-    }
-
-    private Integer organisationUnitId;
-
-    public void setOrganisationUnitId( Integer organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
-
-    public Integer getOrganisationUnitId()
-    {
-        return this.organisationUnitId;
-    }
-
-    private boolean update;
-
-    public void setUpdate( boolean update )
-    {
-        this.update = update;
-    }
-
-    public boolean getUpdate()
-    {
-        return this.update;
-    }
-
-    private Integer instId;
-
-    public void setInstId( Integer instId )
-    {
-        this.instId = instId;
-    }
-
-    public Integer getInstId()
-    {
-        return this.instId;
-    }
-
-    private List<String> dynForm = new ArrayList<String>();
-
-    public void setDynForm( List<String> dynForm )
-    {
-        this.dynForm = dynForm;
-    }
-
-    public List<String> getDynForm()
-    {
-        return dynForm;
-    }
-
-    private String resultString;
-
-    public void setResultString( String resultString )
-    {
-        this.resultString = resultString;
-    }
-
-    public String getResultString()
-    {
-        return this.resultString;
+        this.dataElements = dataElements;
     }
 
     private ArrayList<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
@@ -237,77 +172,122 @@ public class SaveSingleEventAction
         }
     };
 
+    // -------------------------------------------------------------------------
+    // Implementation Action
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception
     {
-        Program program = programService.getProgram( programId );
-        eventName = program.getName();
 
-        Patient patient = patientService.getPatient( patientId );
+        Program program = programService.getProgram( programId );
+
+        // -------------------------------------------------------------------------
+        // Getting all data from UI
+        // -------------------------------------------------------------------------
+
         ProgramStage programStage = program.getProgramStages().iterator().next();
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
+
+        for ( ProgramStageDataElement each : programStageDataElements )
+        {
+            dataElements.add( each.getDataElement() );
+        }
+
         Collections.sort( programStageDataElements, OrderBySortOrder );
+
+        HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
+            ServletActionContext.HTTP_REQUEST );
+
+        Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
+
+        typeViolations.clear();
+
+        prevDataValues.clear();
 
         // -------------------------------------------------------------------------
         // Validation
         // -------------------------------------------------------------------------
 
-        int i = 0;
-        for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
+        for ( String key : parameterMap.keySet() )
         {
-            DataElement dataElement = programStageDataElement.getDataElement();
-            String value = dynForm.get( i ).trim();
-            Boolean valueIsEmpty = (value == null || value.length() == 0);
-
-            if ( !valueIsEmpty )
+            if ( key.startsWith( "DE" ) )
             {
-                String typeViolation = util.getTypeViolation( dataElement, value );
+                Integer dataElementId = Integer.parseInt( key.substring( 2, key.length() ) );
 
-                if ( typeViolation != null )
+                String value = parameterMap.get( key );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+                value = value.trim();
+
+                Boolean valueIsEmpty = (value == null || value.length() == 0);
+
+                if ( !valueIsEmpty )
                 {
-                    typeViolations.put( String.valueOf( dataElement.getId() ), typeViolation );
+                    String typeViolation = util.getTypeViolation( dataElement, value );
+
+                    if ( typeViolation != null )
+                    {
+                        typeViolations.put( key, typeViolation );
+                    }
+                    prevDataValues.put( key, value );
                 }
             }
-
-            i++;
         }
-        
+
         if ( !typeViolations.isEmpty() )
         {
             return ERROR;
         }
 
         ProgramInstance programInstance = new ProgramInstance();
+
         programInstance.setEnrollmentDate( new Date() );
+
         programInstance.setDateOfIncident( new Date() );
+
         programInstance.setProgram( program );
-        programInstance.setPatient( patient );
+        
         programInstance.setCompleted( false );
+        
         programInstanceService.addProgramInstance( programInstance );
 
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
-        programStageInstance.setOrganisationUnit( organisationUnit );
+        
         programStageInstance.setProgramInstance( programInstance );
+        
         programStageInstance.setProgramStage( programStage );
+        
         programStageInstance.setDueDate( new Date() );
+        
         programStageInstance.setExecutionDate( new Date() );
+        
         programStageInstance.setCompleted( false );
+        
         programStageInstanceService.addProgramStageInstance( programStageInstance );
 
-        i = 0;
         for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
         {
             DataElement dataElement = programStageDataElement.getDataElement();
 
             PatientDataValue patientDataValue = new PatientDataValue();
+            
             patientDataValue.setDataElement( dataElement );
-            patientDataValue.setValue( dynForm.get( i ).trim() );
+            
+            String id = "DE" + dataElement.getId();
+            
+            patientDataValue.setValue( parameterMap.get( id ) );
+            
             patientDataValue.setProgramStageInstance( programStageInstance );
+            
+            patientDataValue.setProvidedElsewhere( false );
+            
+            patientDataValue.setTimestamp( new Date() );
+            
             patientDataValueService.savePatientDataValue( patientDataValue );
-            i++;
         }
 
         return SUCCESS;
