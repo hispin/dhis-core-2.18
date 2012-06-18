@@ -300,17 +300,8 @@ public class ProgramEnrollmentAction
 
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
-            if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute()
-                .getValueType() ) )
-            {
-                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
-                    patientAttributeValue.getPatientAttributeOption().getName() );
-            }
-            else
-            {
-                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
-                    patientAttributeValue.getValue() );
-            }
+            patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
+                .getValue() );
         }
     }
 
