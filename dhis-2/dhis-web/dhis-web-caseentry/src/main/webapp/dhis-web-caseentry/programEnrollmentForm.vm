@@ -40,7 +40,7 @@
 					<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 					#set( $mark = false )
 					#foreach($attribute in $attributeGroup.attributes)
-						#if( $!attribute.program )
+						#if( $attribute.program && $attribute.program.id == $programInstance.program.id )
 							#set( $attributeValue = '')
 							#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 							<tr #alternate( $mark )>
@@ -81,7 +81,7 @@
 					<tr><th colspan="2" class="heading-column">$i18n.getString( "Other details" )</th></tr>
 					#set( $mark = false )
 					#foreach($attribute in $noGroupAttributes )
-						#if( $attribute.program )
+						#if( $attribute.program && $attribute.program.id == $programInstance.program.id)
 							#set( $attributeValue = '')
 							#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 							<tr #alternate( $mark )>

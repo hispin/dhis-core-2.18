@@ -221,7 +221,7 @@ public class SaveIdentifierAndAttributeAction
 
         if ( attributes != null && attributes.size() > 0 )
         {
-            patient.getAttributes().clear();
+            // patient.getAttributes().clear();
 
             for ( PatientAttribute attribute : attributes )
             {
