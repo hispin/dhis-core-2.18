@@ -82,6 +82,18 @@ public class GetEquipmentInstanceDataAction implements Action
     {
         return catalogs;
     }
+    
+    private int equipmentInstanceCatalogId;
+    
+    public int getEquipmentInstanceCatalogId()
+    {
+        return equipmentInstanceCatalogId;
+    }
+
+
+
+
+
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -89,6 +101,16 @@ public class GetEquipmentInstanceDataAction implements Action
     public String execute() throws Exception
     {
         equipmentInstance = equipmentInstanceService.getEquipmentInstance( equipmentInstanceId );
+        //System.out.println( equipmentInstance.getCatalog().getId() + "-----" + equipmentInstance.getCatalog().getName() );
+        
+        if ( equipmentInstance.getCatalog() != null )
+        {
+            equipmentInstanceCatalogId = equipmentInstance.getCatalog().getId();
+        }
+        else
+        {
+            equipmentInstanceCatalogId = 0;
+        }
         
         inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( equipmentInstance.getInventoryType().getInventoryTypeAttributes() );
         

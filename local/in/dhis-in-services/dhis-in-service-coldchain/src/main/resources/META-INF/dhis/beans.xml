@@ -188,6 +188,28 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.coldchain.catalog.DefaultCatalogDataEntryService">
         <property name="catalogTypeAttributeService" ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService"/>
     </bean>	
+
+	<!-- for Display -->
+	
+	<bean id="org.hisp.dhis.coldchain.inventory.InventoryType_AttributeService"
+		class="org.hisp.dhis.coldchain.inventory.DefaultInventoryType_AttributeService">
+			<property name="inventoryType_AttributeStore"
+	  		ref="org.hisp.dhis.coldchain.inventory.InventoryType_AttributeStore" />
+  	</bean>	
+	<!--
+	<bean id="org.hisp.dhis.coldchain.inventory.InventoryType_AttributeStore"
+		class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateInventoryType_AttributeStore">    
+			<property name="clazz" value="org.hisp.dhis.coldchain.inventory.InventoryType_Attribute"/>
+			<property name="sessionFactory" ref="sessionFactory"/>
+			<property name="cacheable" value="true" />
+	</bean>	
+	-->	
+
+    <bean id="org.hisp.dhis.coldchain.inventory.InventoryType_AttributeStore"
+        class="org.hisp.dhis.coldchain.inventory.hibernate.HibernateInventoryType_AttributeStore">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>	
+		
 	
 <!-- CCEM Report Manager -->
     <bean id="org.hisp.dhis.coldchain.reports.CCEMReportManager"

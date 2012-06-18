@@ -1,3 +1,7 @@
+
+<table>
+<tr>
+<td>
 <table>
 	<tr>
 		<td>
@@ -34,7 +38,8 @@
 			</td>
 			<td>
 				#if($catalogTypeAttribute.valueType=="YES/NO")
-					$i18n.getString( $!catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id ) )
+					##$i18n.getString( $!catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id ) )
+					$!catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id )
 				#else
 					$!catalogTypeAttributeValueMap.get( $catalogTypeAttribute.id )
 				#end
@@ -44,4 +49,11 @@
 	#end
 	
 	<tr><td>&nbsp;</td></tr>
+</table>
+</td>
+<td>&nbsp;</td>
+<td>
+	<img src="showImage.action?id=$catalog.id" style="width:200px;height:200px;">
+</td>
+</tr>
 </table>

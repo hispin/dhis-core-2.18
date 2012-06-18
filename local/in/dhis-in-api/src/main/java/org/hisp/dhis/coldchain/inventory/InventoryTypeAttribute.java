@@ -35,7 +35,10 @@ public class InventoryTypeAttribute extends BaseNameableObject
     
     private boolean mandatory;
     
-    private boolean display;
+    /*
+     * True if this InventoryTypeAttribute is for display in list
+     */
+    private boolean display = false;
     
     private Integer noChars;
 

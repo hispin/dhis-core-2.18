@@ -25,7 +25,13 @@
       <many-to-many class="org.hisp.dhis.dataset.DataSet" column="datasetid"
           foreign-key="inventorytype_datasets_datasetid" />
     </set>
+
 	  
+    <set name="inventoryType_Attributes" order-by="sort_order" >
+      <key column="inventorytypeid" foreign-key="fk_inventorytype_inventoryType_Attributes_inventorytypeid" />
+      <one-to-many class="org.hisp.dhis.coldchain.inventory.InventoryType_Attribute" />
+    </set>	  
+	  	  
 	  	
 <!--	
 	<set name="inventoryTypeAttributes" table="inventorytype_attributes">

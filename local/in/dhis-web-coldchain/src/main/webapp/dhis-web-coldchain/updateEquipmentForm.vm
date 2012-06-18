@@ -12,7 +12,8 @@
 <script>
     
     jQuery(document).ready( function(){
-
+		
+		
         currentDiv = 'equipmentForm';
         isSubmit = true;
         
@@ -47,7 +48,7 @@
 		<tr>
 			<td>$i18n.getString( "catalog" ) : </td>
 			<td>
-				<select id="catalog" name="catalog" onChange="catalogDetails( this.value );" >
+				<select id="catalog" name="catalog" onChange="catalogDetails( this.value );"  >
 					<option value="">[$i18n.getString( "please_select" )]</option>
 					#foreach ($catalog in $catalogs )
 						<option value="$catalog.id" #if($equipmentInstance.catalog.id == $catalog.id) selected="selected" #end>$catalog.name</option>
@@ -86,7 +87,7 @@
                         <select id="attr$attribute.id" name="attr$attribute.id" onChange="catalogDetails( this.value );" class='#validate( "default"  $attribute.mandatory )'>
                             <option value="">[$i18n.getString( "please_select" )]</option>
                             #foreach ($catalog in $catalogs )
-                                <option value="$catalog.id" #if($attributeValue == $catalog.name) selected="selected" #end>$catalog.name</option>
+                                <option value="$catalog.id" #if($attributeValue == $catalog.name) selected="selected"  #end>$catalog.name</option>
                             #end
                         </select>
 					#else
@@ -105,6 +106,15 @@
 </form>
 <div id="detailsCatalogInfo"></div>
 <script>
+    
+    
+    var catalogDetailId = $equipmentInstanceCatalogId;
+    if ( catalogDetailId != 0 )
+    {
+    	catalogDetails( catalogDetailId );
+    }
+    
+    
     var i18n_error_connect_to_server = '$encoder.jsEscape( $i18n.getString( "error_connect_to_server" ) , "'" )';
     var i18n_add_equipment_successfully = '$encoder.jsEscape( $i18n.getString( "updated_equipment_successfully" ) , "'" )';
 </script>

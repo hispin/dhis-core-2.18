@@ -9,6 +9,7 @@ import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
+import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,13 +62,20 @@ public class ShowUpdateInventoryTypeAction implements Action
         return availInventoryTypeAttributes;
     }
 
+    private List<InventoryType_Attribute> selInventoryTypeAttributes;
+    
+    public List<InventoryType_Attribute> getSelInventoryTypeAttributes()
+    {
+        return selInventoryTypeAttributes;
+    }
+    /*
     private List<InventoryTypeAttribute> selInventoryTypeAttributes;
 
     public List<InventoryTypeAttribute> getSelInventoryTypeAttributes()
     {
         return selInventoryTypeAttributes;
     }
-    
+    */
     private List<CatalogType> catalogTypes;
 
     public List<CatalogType> getCatalogTypes()
@@ -86,10 +94,23 @@ public class ShowUpdateInventoryTypeAction implements Action
         
         availInventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryTypeAttributeService.getAllInventoryTypeAttributes() );
         
+        selInventoryTypeAttributes = new ArrayList<InventoryType_Attribute>( inventoryType.getInventoryType_Attributes() );
+        /*
+        for( InventoryType_Attribute inventoryType_Attribute : selInventoryTypeAttributes )
+        {
+            System.out.println( "ID---" + inventoryType_Attribute.getInventoryTypeAttribute().getId() );
+            System.out.println( "Name---" + inventoryType_Attribute.getInventoryTypeAttribute().getName());
+            System.out.println( "ValueType---" + inventoryType_Attribute.getInventoryTypeAttribute().getValueType() );
+            System.out.println( "Sort Order---" + inventoryType_Attribute.getSortOrder() );
+            System.out.println( "Display---" + inventoryType_Attribute.isDisplay());
+        }
+        */
+        
+        /*
         selInventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
         
         availInventoryTypeAttributes.removeAll( selInventoryTypeAttributes );
-        
+        */
         return SUCCESS;        
     }
 }

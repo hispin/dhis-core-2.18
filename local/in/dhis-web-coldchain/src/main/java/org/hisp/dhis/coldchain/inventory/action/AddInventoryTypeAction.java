@@ -8,6 +8,8 @@ import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
+import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
+import org.hisp.dhis.coldchain.inventory.InventoryType_AttributeService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -36,6 +38,12 @@ public class AddInventoryTypeAction implements Action
         this.inventoryTypeAttributeService = inventoryTypeAttributeService;
     }
     
+    private InventoryType_AttributeService inventoryType_AttributeService;
+   
+    public void setInventoryType_AttributeService( InventoryType_AttributeService inventoryType_AttributeService )
+    {
+        this.inventoryType_AttributeService = inventoryType_AttributeService;
+    }
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -67,11 +75,27 @@ public class AddInventoryTypeAction implements Action
         this.tracking = tracking;
     }
     
+    /*
     private List<Integer> selectedInventoryTypeAttributeList = new ArrayList<Integer>();
     
     public void setSelectedInventoryTypeAttributeList( List<Integer> selectedInventoryTypeAttributeList )
     {
         this.selectedInventoryTypeAttributeList = selectedInventoryTypeAttributeList;
+    }
+    */
+    
+    private List<Integer> selectedInventoryTypeAttributeValidator = new ArrayList<Integer>();
+    
+    public void setSelectedInventoryTypeAttributeValidator( List<Integer> selectedInventoryTypeAttributeValidator )
+    {
+        this.selectedInventoryTypeAttributeValidator = selectedInventoryTypeAttributeValidator;
+    }
+
+    private List<Boolean> display = new ArrayList<Boolean>();
+    
+    public void setDisplay( List<Boolean> display )
+    {
+        this.display = display;
     }
 
 
@@ -95,20 +119,16 @@ public class AddInventoryTypeAction implements Action
         
         List<InventoryTypeAttribute> inventoryTypeSet = new ArrayList<InventoryTypeAttribute>();
         
-        if ( selectedInventoryTypeAttributeList != null && selectedInventoryTypeAttributeList.size() > 0 )
+        if ( selectedInventoryTypeAttributeValidator != null && selectedInventoryTypeAttributeValidator.size() > 0 )
         {
-            for ( int i = 0; i < this.selectedInventoryTypeAttributeList.size(); i++ )
+            for ( int i = 0; i < this.selectedInventoryTypeAttributeValidator.size(); i++ )
             {
                 
-                InventoryTypeAttribute inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeList.get( i ) );
-                /*
-                System.out.println( "ID---" + inventoryTypeAttribute.getId() );
-                System.out.println( "Name---" + inventoryTypeAttribute.getName());
-                System.out.println( "ValueType---" + inventoryTypeAttribute.getValueType() );
-                */
+                InventoryTypeAttribute inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeValidator.get( i ) );
+                
                 inventoryTypeSet.add( inventoryTypeAttribute );
                 
-                //inventoryTypeSet.add( inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeList.get( i ) ) );
+               //inventoryTypeSet.add( inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeList.get( i ) ) );
             }
             /*
             for( Integer inventoryTypeAttId : selectedInventoryTypeAttributeList )
@@ -121,6 +141,27 @@ public class AddInventoryTypeAction implements Action
         inventoryType.setInventoryTypeAttributes( inventoryTypeSet );
         
         inventoryTypeService.addInventoryType( inventoryType );
+        
+        
+        if ( selectedInventoryTypeAttributeValidator != null && selectedInventoryTypeAttributeValidator.size() > 0 )
+        {
+            for ( int i = 0; i < this.selectedInventoryTypeAttributeValidator.size(); i++ )
+            {
+                
+                InventoryTypeAttribute inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeValidator.get( i ) );
+                
+                InventoryType_Attribute inventoryType_Attribute = new InventoryType_Attribute( inventoryType,  inventoryTypeAttribute, this.display.get( i ), new Integer( i ) );
+                
+                /*
+                System.out.println( "ID---" + inventoryType_Attribute.getInventoryTypeAttribute().getId() );
+                System.out.println( "Name---" + inventoryType_Attribute.getInventoryTypeAttribute().getName());
+                System.out.println( "ValueType---" + inventoryType_Attribute.getInventoryTypeAttribute().getValueType() );
+                System.out.println( "Sort Order---" + inventoryType_Attribute.getSortOrder() );
+                System.out.println( "Display---" + inventoryType_Attribute.isDisplay());
+                */
+               inventoryType_AttributeService.addInventoryType_Attribute( inventoryType_Attribute );
+            }
+        }
         
         return SUCCESS;
     }
