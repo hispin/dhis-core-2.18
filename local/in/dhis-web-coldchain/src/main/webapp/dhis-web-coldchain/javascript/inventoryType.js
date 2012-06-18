@@ -74,3 +74,126 @@ function moveDownSelectedOption( listId ) {
       }
   }
 }
+
+
+//-----------------------------------------------------------------------------
+//select unselect InventoryTypeAttribute
+//-----------------------------------------------------------------------------
+
+function selectInventoryTypeAttributes()
+{
+	var selectedInventoryTypeAttributeList = jQuery("#selectedInventoryTypeAttributeList");
+	jQuery("#availableInventoryTypeAttributeList").children().each(function(i, item){
+		if( item.selected ){
+			html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectInventoryTypeAttribute( this )'><td onclick='select(this)'>" + item.text + "</td>";
+			html += "<td align='center'><input type='checkbox' name='forDisplay' value='" + item.value + "'></td>";
+			html += "</tr>";
+			selectedInventoryTypeAttributeList.append( html );
+			jQuery( item ).remove();
+		}
+	});
+}
+
+
+function unSelectInventoryTypeAttributes()
+{
+	var availableInventoryTypeAttributeList = jQuery("#availableInventoryTypeAttributeList");
+	jQuery("#selectedInventoryTypeAttributeList").find("tr").each( function( i, item ){
+		item = jQuery(item);
+		if( item.hasClass("selected") )
+		{		
+			availableInventoryTypeAttributeList.append( "<option value='" + item.attr( "id" ) + "' selected='true'>" + item.find("td:first").text() + "</option>" );
+			item.remove();
+		}
+	});
+}
+
+
+function selectAllInventoryTypeAttributes()
+{
+	var selectedInventoryTypeAttributeList = jQuery("#selectedInventoryTypeAttributeList");
+	jQuery("#availableInventoryTypeAttributeList").children().each(function(i, item){
+		html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectInventoryTypeAttribute( this )'><td onclick='select(this)'>" + item.text + "</td>";
+		html += "<td align='center'><input type='checkbox' name='forDisplay' value='" + item.value + "'></td>";
+		html += "</tr>";
+		selectedInventoryTypeAttributeList.append( html );
+		jQuery( item ).remove();
+	});
+}
+
+
+function unSelectAllInventoryTypeAttributes()
+{
+	var availableInventoryTypeAttributeList = jQuery("#availableInventoryTypeAttributeList");
+	jQuery("#selectedInventoryTypeAttributeList").find("tr").each( function( i, item ){
+		item = jQuery(item);
+		availableInventoryTypeAttributeList.append( "<option value='" + item.attr( "id" ) + "' selected='true'>" + item.find("td:first").text() + "</option>" );
+		item.remove();
+	});
+}
+
+
+
+function unSelectInventoryTypeAttribute( element )
+{
+	element = jQuery(element);	
+	jQuery("#availableInventoryTypeAttributeList").append( "<option value='" + element.attr( "id" ) + "' selected='true'>" + element.find("td:first").text() + "</option>" );
+	element.remove();
+}
+
+
+function select( element )
+{
+	element = jQuery( element ).parent();
+	if( element.hasClass( 'selected') ) element.removeClass( 'selected' );
+	else element.addClass( 'selected' );
+}
+//-----------------------------------------------------------------------------
+//Move Table Row Up and Down
+//-----------------------------------------------------------------------------
+
+
+function moveUpInventoryTypeAttribute()
+{
+	var selectedList = jQuery("#selectedInventoryTypeAttributeList");
+
+	jQuery("#selectedInventoryTypeAttributeList").find("tr").each( function( i, item ){
+		item = jQuery(item);
+		if( item.hasClass("selected") )
+		{
+			var prev = item.prev('#selectedInventoryTypeAttributeList tr');
+			if (prev.length == 1) 
+			{ 
+				prev.before(item);
+			}
+		}
+	});
+}
+
+function moveDownInventoryTypeAttribute()
+{
+	var selectedList = jQuery("#selectedInventoryTypeAttributeList");
+	var items = new Array();
+	jQuery("#selectedInventoryTypeAttributeList").find("tr").each( function( i, item ){
+		items.push(jQuery(item));
+	});
+	
+	for( var i=items.length-1;i>=0;i--)
+	{	
+		var item = items[i];
+		if( item.hasClass("selected") )
+		{
+			var next = item.next('#selectedInventoryTypeAttributeList tr');
+			if (next.length == 1) 
+			{ 
+				next.after(item);
+			}
+		}
+	}
+}
+
+
+
+
+
+

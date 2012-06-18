@@ -18,7 +18,7 @@
 	<input type="hidden" id="catalogTypeID" name="id" value="$catalog.catalogType.id">
 </div>
 <table>
-<td>
+<tr>
 <td>
 <table>
 <!--<tr>

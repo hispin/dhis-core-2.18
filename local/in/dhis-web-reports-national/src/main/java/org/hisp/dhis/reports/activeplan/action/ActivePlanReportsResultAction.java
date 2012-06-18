@@ -891,8 +891,8 @@ public class ActivePlanReportsResultAction
         // OrgUnit Related Info
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
 
-        Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>( patientService.getPatients( selectedOrgUnit ) );
-
+       // Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>( patientService.getPatients( selectedOrgUnit ) );
+        Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>( patientService.getPatients( selectedOrgUnit, null, null ) );
         // Getting Programs
         Program curProgram = programService.getProgram( Integer.parseInt( reportProgramTB ) );
 

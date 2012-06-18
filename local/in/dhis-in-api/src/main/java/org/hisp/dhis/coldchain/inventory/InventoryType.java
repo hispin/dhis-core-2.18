@@ -34,15 +34,27 @@ public class InventoryType extends BaseNameableObject
     
     private List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>();
     
+    private List<Boolean> display = new ArrayList<Boolean>();
+    
+    private Set<InventoryType_Attribute> inventoryType_Attributes;
+    
+    
     /**
      * All DataSets associated with this InventoryType.
      */
     private Set<DataSet> dataSets = new HashSet<DataSet>();
     
-
+    
+    
+    
     private DataEntryForm dataEntryForm;
     
-
+    /*
+     * True if this InventoryTypeAttribute is for display in list
+     */
+    //private boolean display = false;
+    
+    
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -178,5 +190,26 @@ public class InventoryType extends BaseNameableObject
     {
         this.dataSets = dataSets;
     }
+    /*
+    public boolean isDisplay()
+    {
+        return display;
+    }
+    public void setDisplay( boolean display )
+    {
+        this.display = display;
+    }
+    */
+    
+    public Set<InventoryType_Attribute> getInventoryType_Attributes()
+    {
+        return inventoryType_Attributes;
+    }
+    public void setInventoryType_Attributes( Set<InventoryType_Attribute> inventoryType_Attributes )
+    {
+        this.inventoryType_Attributes = inventoryType_Attributes;
+    }
+    
+    
     
 }

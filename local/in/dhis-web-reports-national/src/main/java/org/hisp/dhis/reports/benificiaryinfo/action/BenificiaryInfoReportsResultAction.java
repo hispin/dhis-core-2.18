@@ -422,8 +422,8 @@ public class BenificiaryInfoReportsResultAction
 
                 List<Patient> patientListByOuProgram = new ArrayList<Patient>();
                 List<Patient> patientListByOu = new ArrayList<Patient>();
-                patientListByOu.addAll( patientService.getPatients( ou ) );
-                
+                //patientListByOu.addAll( patientService.getPatients( ou ) );
+                patientListByOu.addAll( patientService.getPatients( ou, null, null ) );
                 Iterator<Patient> patientIterator = patientListByOu.iterator();
                 while ( patientIterator.hasNext() )
                 {

@@ -53,34 +53,68 @@
 	
 	<br/>
   <table id="inventoryTypeMembersArea">
-    <col style="width: 450px"/>
-    <col/>
-    <col style="width: 450px"/>
+   
     <thead>
       <tr>
         <th>$i18n.getString( "available_inventorytype_attributes" )</th>
         <th>$i18n.getString( "filter" )</th>
-        <th>$i18n.getString( "selected_inventorytype_attributes" )</th>
+        <th>$i18n.getString( "selected_inventorytype_attributes" )
+        	<select id="selectedInventoryTypeAttributeValidator" name='selectedInventoryTypeAttributeValidator' multiple="multiple" class="hidden" ></select>
+        	<select id="display" name='display' multiple="multiple" class="hidden"></select>
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>
-          <select id="availableInventoryTypeAttributeList" name="availableInventoryTypeAttributeList" multiple="multiple" style="height: 200px; width: 100%;" ondblclick="moveSelectedById( 'availableInventoryTypeAttributeList', 'selectedInventoryTypeAttributeList' )"></select>
+        	 <select size="15" id="availableInventoryTypeAttributeList" name='availableInventoryTypeAttributeList' multiple="multiple" ondblclick="selectInventoryTypeAttributes()"></select>
+          <!--<select id="availableInventoryTypeAttributeList" name="availableInventoryTypeAttributeList" multiple="multiple" style="height: 200px; width: 100%;" ondblclick="moveSelectedById( 'availableInventoryTypeAttributeList', 'selectedInventoryTypeAttributeList' )"></select>-->
         </td>
+        
+        
+		<td style="text-align:center">
+        	<input type="button" value="&gt;" class='filterButton' onclick="selectInventoryTypeAttributes();"/><br/>
+            <input type="button" value="&lt;" class='filterButton' onclick="unSelectInventoryTypeAttributes();"/><br/>
+			<input type="button" value="&gt;&gt;" class='filterButton' onclick="selectAllInventoryTypeAttributes();"/><br/>
+			<input type="button" value="&lt;&lt;" class='filterButton' onclick="unSelectAllInventoryTypeAttributes();"/>
+		</td>        
+        <!--
         <td>
           	<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableInventoryTypeAttributeList' );"/><br/>
             <input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedInventoryTypeAttributeList' );"/><br/>
 			<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableInventoryTypeAttributeList' );"/><br/>
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedInventoryTypeAttributeList' );"/>
-        </td>         
+        </td>
+        -->
+		<td>
+			<div class="inventoryTypeAttributeDiv">
+				<table>
+					<thead>
+						<tr>
+							<th>$i18n.getString( "dataelement" )</th>
+							<th width="20px">$i18n.getString( "display" )</th>
+					</thead>
+					<tbody id="selectedInventoryTypeAttributeList"></tbody>
+				</table>
+			</div>
+			</td>        
+        
+       	<!--      
         <td>
             <select id="selectedInventoryTypeAttributeList" name="selectedInventoryTypeAttributeList" multiple="multiple" style="height: 200px; width: 100%" ondblclick="moveSelectedById( 'selectedInventoryTypeAttributeList', 'availableInventoryTypeAttributeList' )"></select>
         </td>
+        -->
+       	<!--
 		<td>
             <a href="javascript:moveUpSelectedOption( 'selectedInventoryTypeAttributeList' )"><img src="../images/move_up.png"/></a><br/><br/>
             <a href="javascript:moveDownSelectedOption( 'selectedInventoryTypeAttributeList' )"><img src="../images/move_down.png"/></a><br/><br/>
-        </td>                  
+        </td>
+        -->                
+ 
+ 		<td>
+            <a href="javascript:moveUpInventoryTypeAttribute()"><img src="../images/move_up.png"/></a><br/><br/>
+            <a href="javascript:moveDownInventoryTypeAttribute()"><img src="../images/move_down.png"/></a><br/><br/>
+        </td>  
         
       </tr>
 	  

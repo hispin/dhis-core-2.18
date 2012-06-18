@@ -29,7 +29,8 @@
       	#set($equipmetnInstanceName = "" )
           #foreach( $inventoryTypeAttribute in $inventoryTypeAttributeList )
 			<col/>
-			#set( $equipmetnInstanceName = $equipmetnInstanceName + " - " + $inventoryTypeAttribute.name )
+			##set( $equipmetnInstanceName = $equipmetnInstanceName + " - " + $inventoryTypeAttribute.name )
+			#set( $equipmetnInstanceName = $equipmetnInstanceName + " - " + $inventoryTypeAttribute.inventoryTypeAttribute.name )
 		  #end
           <col width="200"/>    
           
@@ -37,7 +38,8 @@
             <tr>
                 <th>#</th>
 				  #foreach( $inventoryTypeAttribute in $inventoryTypeAttributeList )
-					<th>$inventoryTypeAttribute.name</th>
+					<!--<th>$inventoryTypeAttribute.name</th>-->
+					<th>$inventoryTypeAttribute.inventoryTypeAttribute.name</th>
 				  #end
 
                 <th style="text-align:center" class="{sorter: false}">$i18n.getString( "operations" )</th>
@@ -55,7 +57,8 @@
                 </td>
                 
 				 #foreach( $inventoryTypeAttribute in $inventoryTypeAttributeList )
-					#set( $mapId = $equipmentInstance.id + ':' + $inventoryTypeAttribute.id )
+					##set( $mapId = $equipmentInstance.id + ':' + $inventoryTypeAttribute.id )
+					#set( $mapId = $equipmentInstance.id + ':' + $inventoryTypeAttribute.inventoryTypeAttribute.id )
 					##set( $equipmetnInstanceName = '' + $inventoryTypeAttribute.name )
                     <td>$!equipmentDetailsMap.get( $mapId )</td>
                   #end

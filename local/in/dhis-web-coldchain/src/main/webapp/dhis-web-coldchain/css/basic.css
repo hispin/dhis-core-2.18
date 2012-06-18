@@ -28,7 +28,7 @@ input[type="button"], input[type="submit"]
 
 input.filterButton
 {
-	width: 30px;
+	width: 50px;
 	padding-left:5px;
 	padding-right:5px;
 	text-align:center;
@@ -63,6 +63,11 @@ tr.selected{
 	cursor:pointer;
 }
 
+#selectedInventoryTypeAttributeList tr{
+cursor:pointer;
+}
+
+
 .dataElementDiv
 {
 	overflow:auto; 
@@ -96,6 +101,18 @@ input.autocompleted-field
 	border:1px solid #9DA1AA;
 }
 .catalogTypeAttributeDiv table
+{
+	width:100%;
+}
+
+.inventoryTypeAttributeDiv
+{
+	overflow:auto; 
+	height:20em; 
+	width:30em;
+	border:1px solid #9DA1AA;
+}
+.inventoryTypeAttributeDiv table
 {
 	width:100%;
 }

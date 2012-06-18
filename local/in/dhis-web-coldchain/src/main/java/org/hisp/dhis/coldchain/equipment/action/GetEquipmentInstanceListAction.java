@@ -1,21 +1,21 @@
 package org.hisp.dhis.coldchain.equipment.action;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.coldchain.inventory.Equipment;
-import org.hisp.dhis.coldchain.inventory.EquipmentService;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
+import org.hisp.dhis.coldchain.inventory.EquipmentService;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
-import org.hisp.dhis.coldchain.inventory.comparator.InventoryTypeAttributeMandatoryComparator;
+import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
+import org.hisp.dhis.coldchain.inventory.InventoryType_AttributeService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.paging.ActionPagingSupport;
@@ -59,7 +59,14 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
     {
         this.equipmentService = equipmentService;
     }
-
+    
+    private InventoryType_AttributeService inventoryType_AttributeService;
+    
+    public void setInventoryType_AttributeService( InventoryType_AttributeService inventoryType_AttributeService )
+    {
+        this.inventoryType_AttributeService = inventoryType_AttributeService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -131,14 +138,23 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
     {
         return equipmentDetailsMap;
     }
-
+    
+    /*
     public List<InventoryTypeAttribute> inventoryTypeAttributeList;
     
     public List<InventoryTypeAttribute> getInventoryTypeAttributeList()
     {
         return inventoryTypeAttributeList;
     }
-
+    */
+    
+    public List<InventoryType_Attribute> inventoryTypeAttributeList;
+    
+    public List<InventoryType_Attribute> getInventoryTypeAttributeList()
+    {
+        return inventoryTypeAttributeList;
+    }
+    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -174,8 +190,10 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
     {
         //InventoryTypeAttribute tempInventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( Integer.parseInt( inventoryTypeAttributeId ) );
         
-        inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryTypeService.getAllInventoryTypeAttributesForDisplay( inventoryType ));
+        //inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryTypeService.getAllInventoryTypeAttributesForDisplay( inventoryType ));
         
+        inventoryTypeAttributeList = new ArrayList<InventoryType_Attribute>( inventoryType_AttributeService.getAllInventoryTypeAttributeForDisplay( inventoryType, true ) );
+       
         /*
         List<InventoryTypeAttribute> tempinventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() ) ;
         
@@ -197,12 +215,16 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
         
         if( inventoryTypeAttributeList == null || inventoryTypeAttributeList.size() == 0  )
         {
-            inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
-            Collections.sort( inventoryTypeAttributeList, new InventoryTypeAttributeMandatoryComparator() );
+            //inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+            
+            inventoryTypeAttributeList = new ArrayList<InventoryType_Attribute>( inventoryType_AttributeService.getAllInventoryTypeAttributesByInventoryType( inventoryType ) );
+            
+            //Collections.sort( inventoryTypeAttributeList, new InventoryTypeAttributeMandatoryComparator() );
             if( inventoryTypeAttributeList != null && inventoryTypeAttributeList.size() > 3 )
             {
                 int count = 1;
-                Iterator<InventoryTypeAttribute> iterator = inventoryTypeAttributeList.iterator();
+                //Iterator<InventoryTypeAttribute> iterator = inventoryTypeAttributeList.iterator();
+                Iterator<InventoryType_Attribute> iterator = inventoryTypeAttributeList.iterator();
                 while( iterator.hasNext() )
                 {
                     iterator.next();
@@ -218,17 +240,18 @@ public class GetEquipmentInstanceListAction  extends ActionPagingSupport<Equipme
 
         for( EquipmentInstance equipmentInstance : equipmentInstanceList )
         {
-            for( InventoryTypeAttribute inventoryTypeAttribute1 : inventoryTypeAttributeList )
+            for( InventoryType_Attribute inventoryTypeAttribute1 : inventoryTypeAttributeList )
             {
-                Equipment equipmentDetails = equipmentService.getEquipment( equipmentInstance, inventoryTypeAttribute1 );
+                Equipment equipmentDetails = equipmentService.getEquipment( equipmentInstance, inventoryTypeAttribute1.getInventoryTypeAttribute() );
                 if( equipmentDetails != null && equipmentDetails.getValue() != null )
                 {
-                    equipmentDetailsMap.put( equipmentInstance.getId()+":"+inventoryTypeAttribute1.getId(), equipmentDetails.getValue() );
+                    equipmentDetailsMap.put( equipmentInstance.getId()+":"+inventoryTypeAttribute1.getInventoryTypeAttribute().getId(), equipmentDetails.getValue() );
                 }
             }
         }
     }
     
+
     private void listAllEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType )
     {
         total = equipmentInstanceService.getCountEquipmentInstance( orgUnit, inventoryType );

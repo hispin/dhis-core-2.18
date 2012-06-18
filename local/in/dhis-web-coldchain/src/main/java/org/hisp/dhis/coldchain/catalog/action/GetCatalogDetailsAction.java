@@ -100,32 +100,34 @@ implements Action
         
         catalog = catalogService.getCatalog( id );
         
-        catalogType = catalog.getCatalogType();
-        
-        //catalogTypeAttributes = catalogType.getCatalogTypeAttributes();
-        
-        
-        catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes());
-        Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
-        
-        
-        List<CatalogDataValue> catalogDataValues = new ArrayList<CatalogDataValue>( catalogDataValueService.getAllCatalogDataValuesByCatalog( catalogService.getCatalog( id )) );
-        
-        
-        for( CatalogDataValue catalogDataValue : catalogDataValues )
+        if ( catalog != null )
         {
-            if ( CatalogTypeAttribute.TYPE_COMBO.equalsIgnoreCase( catalogDataValue.getCatalogTypeAttribute().getValueType() ) )
-            {
-                catalogTypeAttributeValueMap.put( catalogDataValue.getCatalogTypeAttribute().getId(), catalogDataValue.getCatalogTypeAttributeOption().getName() );
-            }
+            catalogType = catalog.getCatalogType();
             
-            else
+            //catalogTypeAttributes = catalogType.getCatalogTypeAttributes();
+            
+            
+            catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes());
+            Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
+            
+            
+            List<CatalogDataValue> catalogDataValues = new ArrayList<CatalogDataValue>( catalogDataValueService.getAllCatalogDataValuesByCatalog( catalogService.getCatalog( id )) );
+            
+            
+            for( CatalogDataValue catalogDataValue : catalogDataValues )
             {
-                catalogTypeAttributeValueMap.put( catalogDataValue.getCatalogTypeAttribute().getId(), catalogDataValue.getValue() );
+                if ( CatalogTypeAttribute.TYPE_COMBO.equalsIgnoreCase( catalogDataValue.getCatalogTypeAttribute().getValueType() ) )
+                {
+                    catalogTypeAttributeValueMap.put( catalogDataValue.getCatalogTypeAttribute().getId(), catalogDataValue.getCatalogTypeAttributeOption().getName() );
+                }
+                
+                else
+                {
+                    catalogTypeAttributeValueMap.put( catalogDataValue.getCatalogTypeAttribute().getId(), catalogDataValue.getValue() );
+                }
             }
         }
-        
-        
+
         return SUCCESS;
     }
 }

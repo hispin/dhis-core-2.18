@@ -608,8 +608,8 @@ public class PortalReportsResultAction implements Action
                     for ( OrganisationUnit ou : orgUnitList )
                     {
                         Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>();
-                        patientListByOrgUnit.addAll( patientService.getPatients( ou ) );
-                        
+                        //patientListByOrgUnit.addAll( patientService.getPatients( ou ) );
+                        patientListByOrgUnit.addAll( patientService.getPatients( ou, null, null ) );
                         Iterator<Patient> patientIterator = patientListByOrgUnit.iterator();
                         while ( patientIterator.hasNext() )
                         {
@@ -1327,7 +1327,8 @@ public class PortalReportsResultAction implements Action
                     for ( OrganisationUnit ou : orgUnitList )
                     {
                         Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>();
-                        patientListByOrgUnit.addAll( patientService.getPatients( ou ) );
+                        //patientListByOrgUnit.addAll( patientService.getPatients( ou ) );
+                        patientListByOrgUnit.addAll( patientService.getPatients( ou, null, null ) );
                         Iterator<Patient> patientIterator = patientListByOrgUnit.iterator();
 
                         // <editor-fold defaultstate="collapsed" desc="while patientIterator">
@@ -1345,7 +1346,7 @@ public class PortalReportsResultAction implements Action
                                 //System.out.println("_________________________________id = "+patient.getId() + " ou = "+ou.getName());
                                 Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
                                 Collection<ProgramStageInstance> allProgramStageInstances = new ArrayList<ProgramStageInstance>();
-                                Iterator itr1 = programStagesList.iterator();
+                                Iterator<ProgramStage> itr1 = programStagesList.iterator();
                                 while ( itr1.hasNext() )
                                 {
                                     ProgramStage PSName = ( ProgramStage ) itr1.next();
