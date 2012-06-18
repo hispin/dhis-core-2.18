@@ -1,0 +1,107 @@
+
+<h2>Anonymous Form</h2>
+
+#set( $typeViolationsSize = $typeViolations.size() )
+#if( $typeViolationsSize > 0 )
+<div class="header-box" align="center">
+	<h3 style="text-align: left; background-color: #990000; color: white;">$i18n.getString("warnings_and_errors")</h3>
+	<p style="text-align: left;">
+		$typeViolationsSize $i18n.getString("type_violation_errors"). <br />
+	</p>
+</div>	
+#end
+
+<form action="saveAnonymousForm.action" method="POST">
+<input type="hidden" value="$programId" name="programId" />
+<div class="header-box" align="center">
+	<p style="text-align: left;">
+	#foreach( $dataElement in $dataElements)
+		#if( $dataElement.shortName )
+			#set( $dataElementName = $dataElement.shortName )
+		#else
+			#set( $dataElementName = $dataElement.name )
+		#end		
+		#if (! $dataElement.getOptionSet())
+
+			#set( $key = "DE${dataElement.id}" )
+			
+			<label>$encoder.htmlEncode( $dataElementName ) #if($dataElement.type=="date") [yyyy-MM-dd] #end
+			</label><br/>
+			
+			#if( $typeViolations.get( $key ) )
+                #set( $typeViolation = $typeViolations.get( $key ) )
+            	<br /><span style="color: #990000;">$prevDataValues.get($key) $i18n.getString($typeViolation)</span>
+            #end
+			
+			#if($dataElement.type=="bool")
+				<select name="$key">
+					<option value="">$i18n.getString("please_select")</option>
+					<option #if( $prevDataValues.get( $key ) == "true" ) selected="selected" #end value="true">$i18n.getString("yes")</option>
+					<option #if( $prevDataValues.get( $key ) == "false" ) selected="selected" #end value="false">$i18n.getString("no")</option>
+				</select>
+			#else
+				<input type=
+				#if($dataElement.type=="string") 
+					"text"
+				#elseif ($dataElement.type=="int" ) 
+					"text" 
+				#else 
+					"$dataElement.type" 
+				#end 
+				name="$key" value="$!prevDataValues.get($key)" />
+			#end	
+			
+		#elseif ($dataElement.getOptionSet())
+		
+			#set( $options = $dataElement.getOptionSet().getOptions() )
+			#set( $key = "DE${dataElement.id}" )
+			
+			$dataElementName
+			
+			#if( $typeViolations.get( $key ) )
+				#set( $typeViolation = $typeViolations.get( $key ) )
+				<br /><span style="color: #990000;"> $prevDataValues.get($key) $i18n.getString($typeViolation)</span>
+            #end
+			
+			<select type=
+			#if($dataElement.type=="string") 
+				"text"
+			#elseif($dataElement.type=="int" ) 
+				"text"
+			#else 
+				"$dataElement.type"
+			#end 
+			name="$key" />
+
+			#set( $selected=false )	
+			
+			#foreach ($option in $options)
+				<option value="$option"> $option </option>
+			#end
+			
+			#if( !$selected ) 
+				<option selected > $i18n.getString("select_option") </option>
+			#end
+			</select>
+		#end
+	#end
+	</p>
+</div>
+
+<div class="header-box" align="center">
+	<p>
+		<input type="submit" style="width: 100%;" value="$i18n.getString('save')"/>
+	</p>
+</div>
+
+</form>
+
+<div id="footer">
+<h2>$i18n.getString( "navigate_to" )</h2>
+<ul>
+    <li><a href="feedback.action">$i18n.getString("feedback")</a></li>
+	<li><a href="../dhis-web-commons-security/logout.action">$i18n.getString("logout")</a></li>
+    <li style="padding-top: 5px;"><a href="../">$i18n.getString("desktop_version")</a></li>
+</ul>
+</div>
+

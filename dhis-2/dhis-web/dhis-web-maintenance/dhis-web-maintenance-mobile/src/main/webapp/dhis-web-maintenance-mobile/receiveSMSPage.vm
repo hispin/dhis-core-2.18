@@ -129,6 +129,7 @@
 				function ( json )
 				{
 					if ( json.response == "success" ) {
+						//window.confirm( jQuery( 'a[id=' + idText + ']' ).html() );
 						//jQuery( 'label[id=' + idText + '] > a' ).html( getFieldValue( idInput ) );
 						jQuery( 'a[id=' + idText + ']' ).html( getFieldValue( idInput ) );
 						showSuccessMessage( "$i18n.getString( 'update_success' )" );

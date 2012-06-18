@@ -91,11 +91,12 @@ public class HibernateIncomingSmsStore
     @Override
     public Collection<IncomingSms> getAllSmses()
     {
-        return sessionFactory.getCurrentSession().createCriteria( IncomingSms.class ).addOrder( Order.asc( "id" ) ).list();
+        return sessionFactory.getCurrentSession().createCriteria( IncomingSms.class ).addOrder( Order.desc( "id" ) ).list();
     }
 
     @Override
     public long getSmsCount()
+    
     {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria( IncomingSms.class );
