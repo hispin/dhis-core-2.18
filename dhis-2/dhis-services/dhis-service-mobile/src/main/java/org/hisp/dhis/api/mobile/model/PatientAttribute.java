@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class PatientAttribute
     implements DataStreamSerializable
 {
+    private String clientVersion;
+    
     private String name;
 
     private String value;
@@ -86,6 +88,22 @@ public class PatientAttribute
     {
         name = dataInputStream.readUTF();
         value = dataInputStream.readUTF();
+    }
+
+    @Override
+    public void serializeVerssion2Point8()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void serializeVerssion2Point9()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
     }
 
 }

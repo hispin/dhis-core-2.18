@@ -40,6 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class OrgUnits
     implements DataStreamSerializable
 {
+    private String clientVersion;
+    
     private List<MobileOrgUnitLinks> orgUnits = new ArrayList<MobileOrgUnitLinks>();
 
     public OrgUnits()
@@ -87,6 +89,22 @@ public class OrgUnits
             unit.deSerialize( dataInputStream );
             orgUnits.add( unit );
         }
+    }
+
+    @Override
+    public void serializeVerssion2Point8()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void serializeVerssion2Point9()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
     }
 
 }

@@ -10,6 +10,8 @@ public class OptionSet
     extends Model
     implements DataStreamSerializable
 {
+    private String clientVersion;
+    
     private List<String> options = new ArrayList<String>();
 
     public List<String> getOptions()

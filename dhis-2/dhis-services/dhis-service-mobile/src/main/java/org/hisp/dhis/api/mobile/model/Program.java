@@ -35,7 +35,8 @@ import java.util.List;
 public class Program
     extends Model
 {
-
+    private String clientVersion;
+    
     private int version;
 
     public int getVersion()

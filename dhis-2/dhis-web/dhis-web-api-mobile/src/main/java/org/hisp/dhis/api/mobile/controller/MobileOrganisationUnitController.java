@@ -13,6 +13,7 @@ import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
+import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.MobileModel;
 import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.i18n.I18nService;
@@ -32,10 +33,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MobileOrganisationUnitController
     extends AbstractMobileController
 {
-	private static final String ACTIVITY_REPORT_UPLOADED = "activity_report_uploaded";
-    
+    private static final String ACTIVITY_REPORT_UPLOADED = "activity_report_uploaded";
+
     private static final String DATASET_REPORT_UPLOADED = "dataset_report_uploaded";
-	
+
     @Autowired
     private ActivityReportingService activityReportingService;
 
@@ -53,10 +54,16 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "{id}/all" )
     @ResponseBody
-    public MobileModel getAllDataForOrgUnit( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
+    public MobileModel getAllDataForOrgUnit( @PathVariable int id, @RequestHeader( "accept-language" ) String locale,
+        @RequestHeader( "client-version" ) String clientVersion )
     {
-        MobileModel mobileModel = new MobileModel();
+        if ( clientVersion == null || clientVersion.equals( DataStreamSerializable.BLANK ) )
+        {
+            clientVersion = DataStreamSerializable.TWO_POINT_EIGHT;
+        }
 
+        MobileModel mobileModel = new MobileModel();
+       
         OrganisationUnit unit = getUnit( id );
         mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( unit, locale ) );
         mobileModel.setPrograms( programService.getPrograms( unit, locale ) );

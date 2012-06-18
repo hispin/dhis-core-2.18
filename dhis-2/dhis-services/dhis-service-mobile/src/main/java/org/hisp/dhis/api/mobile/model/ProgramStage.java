@@ -35,7 +35,8 @@ import java.util.List;
 public class ProgramStage
     extends Model
 {
-
+    private String clientVersion;
+    
     private List<DataElement> dataElements;
 
     public List<DataElement> getDataElements()

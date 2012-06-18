@@ -40,14 +40,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class MobileModel
     implements DataStreamSerializable
 {
+    private String clientVersion;
+    
     private ActivityPlan activityPlan;
 
     private List<Program> programs;
-    
+
     private Date serverCurrentDate;
 
     private List<DataSet> datasets;
-    
+
     private Collection<String> locales;
 
     public ActivityPlan getActivityPlan()
@@ -69,17 +71,18 @@ public class MobileModel
     {
         this.programs = programs;
     }
-    
 
-    public Date getServerCurrentDate() {
-		return serverCurrentDate;
-	}
+    public Date getServerCurrentDate()
+    {
+        return serverCurrentDate;
+    }
 
-	public void setServerCurrentDate(Date serverCurrentDate) {
-		this.serverCurrentDate = serverCurrentDate;
-	}
+    public void setServerCurrentDate( Date serverCurrentDate )
+    {
+        this.serverCurrentDate = serverCurrentDate;
+    }
 
-	public List<DataSet> getDatasets()
+    public List<DataSet> getDatasets()
     {
         return datasets;
     }
@@ -87,7 +90,7 @@ public class MobileModel
     public void setDatasets( List<DataSet> datasets )
     {
         this.datasets = datasets;
-    }    
+    }
 
     public Collection<String> getLocales()
     {
@@ -127,9 +130,9 @@ public class MobileModel
         {
             this.activityPlan.serialize( dout );
         }
-        
+
         // Write current server's date
-        dout.writeLong(serverCurrentDate.getTime());
+        dout.writeLong( serverCurrentDate.getTime() );
 
         // Write DataSets
         if ( datasets == null )
@@ -144,18 +147,21 @@ public class MobileModel
                 ds.serialize( dout );
             }
         }
-        
+
         // Write Locales
-        if ( locales == null ){
+        if ( locales == null )
+        {
             dout.writeInt( 0 );
-        }else{
-            dout.writeInt(locales.size());
-            for(String locale : locales){
-                dout.writeUTF( locale ); 
+        }
+        else
+        {
+            dout.writeInt( locales.size() );
+            for ( String locale : locales )
+            {
+                dout.writeUTF( locale );
             }
         }
-        
-        
+
     }
 
     @Override
@@ -164,6 +170,22 @@ public class MobileModel
     {
         // FIXME: Get implementation from client
 
+    }
+
+    @Override
+    public void serializeVerssion2Point8()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void serializeVerssion2Point9()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
     }
 
 }

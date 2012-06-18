@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlElement;
 public class ModelList
     implements DataStreamSerializable
 {
-
+    private String clientVersion;
+    
     private List<Model> models;
 
     @XmlElement( name = "model" )
@@ -84,6 +85,22 @@ public class ModelList
             models.add( m );
         }
 
+    }
+
+    @Override
+    public void serializeVerssion2Point8()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void serializeVerssion2Point9()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
     }
 
 }

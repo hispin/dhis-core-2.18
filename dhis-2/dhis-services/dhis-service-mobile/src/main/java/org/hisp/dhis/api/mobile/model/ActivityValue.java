@@ -36,7 +36,8 @@ import java.util.List;
 public class ActivityValue
     implements DataStreamSerializable
 {
-
+    private String clientVersion;
+    
     private int programInstanceId;
 
     private List<DataValue> dataValues = new ArrayList<DataValue>();
@@ -90,6 +91,22 @@ public class ActivityValue
             this.dataValues.add( dv );
         }
 
+    }
+
+    @Override
+    public void serializeVerssion2Point8()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void serializeVerssion2Point9()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        
     }
 
 }

@@ -41,7 +41,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DataSetValue
     extends Model
 {
-
+    private String clientVersion;
+    
     private String periodName;
 
     private boolean completed;

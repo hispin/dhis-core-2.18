@@ -39,6 +39,7 @@ public class DataSet
     extends Model
     implements DataStreamSerializable, Comparable<DataSet>
 {
+    private String clientVersion;
 
     private String periodType;
 
