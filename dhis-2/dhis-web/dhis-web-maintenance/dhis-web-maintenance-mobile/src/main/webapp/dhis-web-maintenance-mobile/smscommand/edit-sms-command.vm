@@ -25,28 +25,53 @@
     * Unik kommando navn
     * OID
  -->
-    <input type="hidden" value="$selectedCommandID" name="selectedCommandID" />
-    Name: <input type="text" name="name" value="$SMSCommand.name" />
-   
-    <div>
-    DataSet: 
-    <!-- onchange="window.location.href='editSMSCommand.action?selectedDataSetID=' + this.options[this.selectedIndex].value" -->
-    <select name="selectedDataSetID" >
-        #foreach( $dataSet in $dataSets )
-          <option value="$dataSet.id" #if ($SMSCommand.dataset.id == $dataSet.id) selected #end >$dataSet.name</option>
-        #end
-    </select> 
-    </div>
-    <div>
-    Separator: <input type="text" #if($SMSCommand.seperator) value="$SMSCommand.seperator" #end name="seperator" />
-    </div>
-    <div>
-    Code seperator: <input type="text" #if($SMSCommand.codeSeperator) value="$SMSCommand.codeSeperator" #end name="codeSeperator" />
-    </div>
+    
+	
+	
+	<table width="100%" border="0">
+		<tr>
+			<td>
+				<input type="hidden" value="$selectedCommandID" name="selectedCommandID" />
+			</td>
+		</tr>
+		<tr>
+			<td>Name:</td>
+			<td><input type="text" name="name" value="$SMSCommand.name" /></td>
+		</tr>
+		<tr>
+			<td>DataSet:</td>
+			<td>
+	
+				<!-- onchange="window.location.href='editSMSCommand.action?selectedDataSetID=' + this.options[this.selectedIndex].value" -->
+				<select name="selectedDataSetID" >
+				#foreach( $dataSet in $dataSets )
+				<option value="$dataSet.id" #if ($SMSCommand.dataset.id == $dataSet.id) selected #end >$dataSet.name</option>
+				#end
+				</select> 
+			</td>
+		</tr>
+		<tr>
+			<td>Separator:</td>
+			<td>
+				<input type="text"  #if($SMSCommand.seperator) value="$SMSCommand.seperator" #end name="seperator" />
+			</td>
+		</tr>
+		<tr>
+			<td>Code seperator:</td>
+			<td><input type="text" #if($SMSCommand.codeSeperator) value="$SMSCommand.codeSeperator" #end name="codeSeperator" /></td>
+		</tr>
+	
+	</table>
+	
+	</br>
+	</br>
+	
+	
     <table id="codes">
+		
         <tr>
-            <td>Data Element Category Combination</td>
-            <td>Code</td>
+            <td style="color:#009">Data Element Category Combination</td>
+            <td style="color:#009">Code</td>
         </tr>     
          #foreach( $dataElement in $dataSetElements)
             #if ($dataElement.categoryCombo && $dataElement.categoryCombo.categories) 
@@ -67,6 +92,9 @@
             #end  
          #end
     </table>
+	<br/>
+	
     <input type="hidden" name="codeDataelementOption" id="codeDataelementOption" />
-    <input type="button" onclick="prepSubmit()" value="save" />
+    <input  type="button" style="width: 100px" onclick="prepSubmit()" value="save" />
+	
 </form>
