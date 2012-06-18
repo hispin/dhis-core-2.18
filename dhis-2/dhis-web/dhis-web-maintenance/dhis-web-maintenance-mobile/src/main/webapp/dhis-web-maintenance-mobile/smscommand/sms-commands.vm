@@ -1,12 +1,21 @@
 <a href="newSMSCommand.action">New command</a>
 
 <br>
-<br>
-<div>
-   #foreach( $command in $SMSCommands )
-    <div>    
-    $command.name <a href="editSMSCommand.action?selectedCommandID=$command.id">Edit</a>
-    <a href="deleteSMSCommand.action?deleteCommandId=$command.id">Delete</a>
-    </div>
+
+
+<table width="75%" border="1" rules="all">
+  
+	 #foreach( $command in $SMSCommands )
+      <tr>
+		<td>$velocityCount</td>
+	  
+		<td>$command.name </td>
+		<td><a href="editSMSCommand.action?selectedCommandID=$command.id">Edit</a></td>
+		<td><a href="deleteSMSCommand.action?deleteCommandId=$command.id">Delete</a></td>
+	  </tr><br/>
     #end
-</div>
+	
+	
+    
+  </tr>
+</table>
