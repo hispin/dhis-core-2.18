@@ -807,28 +807,41 @@ function autocompletedField( idField )
 	var input = jQuery( "#" +  idField )
 	var dataElementId = input.attr('id').split('-')[1];
 	input.autocomplete({
-			delay: 0,
-			minLength: 0,
-			source: function( request, response ){
-                $.ajax({
-                    url: "getOptions.action?id=" + dataElementId + "&key=" + input.val(),
-                    dataType: "json",
-                    success: function(data) {
-						response($.map(data.options, function(item) {
-							return {
-								label: item,
-								id: item
-							};
-                        }));
-                    }
-                });
-            },
-			minLength: 2,
-			select: function( event, ui ) {
-				input.val(ui.item.value);
-				saveVal( dataElementId );
-				input.autocomplete( "close" );
+		delay: 0,
+		minLength: 0,
+		source: function( request, response ){
+			$.ajax({
+				url: "getOptions.action?id=" + dataElementId + "&key=" + input.val(),
+				dataType: "json",
+				success: function(data) {
+					response($.map(data.options, function(item) {
+						return {
+							label: item,
+							id: item
+						};
+					}));
+				}
+			});
+		},
+		minLength: 2,
+		select: function( event, ui ) {
+			input.val(ui.item.value);
+			saveVal( dataElementId );
+			input.autocomplete( "close" );
+		},
+		change: function( event, ui ) {
+			if ( !ui.item ) {
+				var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
+					valid = false;
+				if ( !valid ) {
+					// remove invalid value, as it didn't match anything
+					$( this ).val( "" );
+					saveVal( dataElementId );
+					input.data( "autocomplete" ).term = "";
+					return false;
+				}
 			}
-		})
-		.addClass( "ui-widget" );
+		}
+	})
+	.addClass( "ui-widget" );
 }
