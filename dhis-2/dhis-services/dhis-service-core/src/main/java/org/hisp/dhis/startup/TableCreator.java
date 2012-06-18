@@ -103,10 +103,10 @@ public class TableCreator
              " dataelementid integer NOT NULL, " +
              " organisationunitid integer NOT NULL, " +
              " value varchar(255) default NULL, " +
-             " providedbyanotherfacility boolean NOT NULL, " +
+             " providedelsewhere boolean, " +
              " timestamp TIMESTAMP, " +
              " PRIMARY KEY  (programstageinstanceid,dataelementid,organisationunitid), " +
-             " CONSTRAINT fk_patientdatavaluearchive_organisationunitid FOREIGN KEY (organisationunitid) REFERENCES organisationunit (organisationunitid), " +
+             " CONSTRAINT fk_patientdatavaluearchivepatientdatavaluearchive_organisationunitid FOREIGN KEY (organisationunitid) REFERENCES organisationunit (organisationunitid), " +
              " CONSTRAINT fk_patientdatavaluearchive_programstageinstanceid FOREIGN KEY (programstageinstanceid) REFERENCES programstageinstance (programstageinstanceid) );";
         
         createSilently( sqlPatientDataValueArchive, "patientdatavaluearchive" );
