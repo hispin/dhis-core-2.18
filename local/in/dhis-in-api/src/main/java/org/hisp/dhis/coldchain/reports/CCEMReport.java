@@ -10,6 +10,7 @@ public class CCEMReport
     public static final String CATALOGTYPE_ATTRIBUTE_VALUE_AGE_GROUP = "CATALOGTYPE_ATTRIBUTE_VALUE_AGE_GROUP";
     public static final String ORGUNITGROUP_DATAVALUE = "ORGUNITGROUP_DATAVALUE";
     public static final String ORGUNIT_EQUIPMENT_ROUTINE_DATAVALUE = "ORGUNIT_EQUIPMENT_ROUTINE_DATAVALUE";
+    public static final String VACCINE_STORAGE_CAPACITY = "VACCINE_STORAGE_CAPACITY";
     
     public static final String LAST_YEAR = "LAST_YEAR";
     public static final String CURRENT_YEAR = "CURRENT_YEAR";

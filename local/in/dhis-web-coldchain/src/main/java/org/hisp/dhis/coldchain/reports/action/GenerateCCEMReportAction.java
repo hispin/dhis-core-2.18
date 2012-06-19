@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jxl.write.Label;
-
 import org.hisp.dhis.coldchain.reports.CCEMReport;
 import org.hisp.dhis.coldchain.reports.CCEMReportDesign;
 import org.hisp.dhis.coldchain.reports.CCEMReportManager;
@@ -597,10 +595,392 @@ public class GenerateCCEMReportAction implements Action
             ccemReportOutput.setTableHeadings( tableHeadings );
             ccemReportOutput.setTableSubHeadings( tableSubHeadings );
         }
-        
+        else if( ccemReport.getReportType().equals( CCEMReport.VACCINE_STORAGE_CAPACITY ) )
+        {
+
+            ccemReportOutput = new CCEMReportOutput();
+            List<String> tableHeadings = new ArrayList<String>();
+            List<List<String>> tableSubHeadings = new ArrayList<List<String>>();
+            List<String> oneSubHeadingRow = new ArrayList<String>();
+            List<List<String>> tableData = new ArrayList<List<String>>();
+
+            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
+            List<OrganisationUnit> orgUnitGroupMembers = new ArrayList<OrganisationUnit>();
+            
+            String orgUnitGroupIdsByComma = "-1";
+            
+            Integer periodId = 0;
+            Date date = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime( date );
+            String periodStartDate = "";
+            
+            periodStartDate = calendar.get( Calendar.YEAR ) + "-01-01";
+           
+            periodId = ccemReportManager.getPeriodId( periodStartDate, "Yearly" );
+            
+            if( periodId == 0 )
+            {
+                ccemReportOutput.setReportHeading( "No Period Exists" );
+                return SUCCESS;
+            }
+            
+            tableHeadings.add( "OrgUnit Hierarchy" );
+            oneSubHeadingRow.add( " " );
+            tableHeadings.add( "OrgUnit" );
+            oneSubHeadingRow.add( " " );
+            tableHeadings.add( "OrgUnit Code" );
+            oneSubHeadingRow.add( " " );
+            tableHeadings.add( "OrgUnit Type" );
+            oneSubHeadingRow.add( " " );
+            tableHeadings.add( "Net Storage" );
+            oneSubHeadingRow.add( "Actual" );
+            tableHeadings.add( " " );
+            oneSubHeadingRow.add( "Required" );
+            tableHeadings.add( " " );
+            oneSubHeadingRow.add( "Difference" );
+            tableHeadings.add( "Surplus" );
+            oneSubHeadingRow.add( ">30%" );
+            tableHeadings.add( " " );
+            oneSubHeadingRow.add( "10-30%" );
+            tableHeadings.add( "Match" );
+            oneSubHeadingRow.add( "+/- 10%" );
+            tableHeadings.add( "Shortage" );
+            oneSubHeadingRow.add( "10-30%" );
+            tableHeadings.add( " " );
+            oneSubHeadingRow.add( ">30%" );
+            
+            tableSubHeadings.add( oneSubHeadingRow );
+            
+            CCEMReportDesign ccemReportDesign1 = reportDesignList.get( 0 );
+            String ccemCellContent1 = ccemSettingsMap.get( ccemReportDesign1.getContent() );
+            if( ccemCellContent1.equals( "ALL" ) )
+            {
+                for( Integer orgUnitGroupId : orgunitGroupList )
+                {
+                    OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
+                    orgUnitGroupMembers.addAll( orgUnitGroup.getMembers() );
+                    orgUnitGroupIdsByComma += "," + orgUnitGroupId;
+                }
+            }
+            else
+            {
+                String orgUnitGroupIds[] = ccemReportDesign1.getContent().split( "," );
+                
+                for( Integer orgUnitGroupId : orgunitGroupList )
+                {
+                    int flag = 0;
+                    for( String ouGroupId : orgUnitGroupIds )
+                    {
+                        if( Integer.parseInt( ouGroupId ) == orgUnitGroupId ) 
+                        {
+                            orgUnitGroupIdsByComma += "," + orgUnitGroupId;
+                            flag=1;
+                            break;
+                        }
+                    }
+                    
+                    if( flag == 0 ) continue;
+                    
+                    OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
+                    orgUnitGroupMembers.addAll( orgUnitGroup.getMembers() );
+                }
+            }
+            
+            for( Integer orgUnitId : selOrgUnitList )
+            {
+                orgUnitList.addAll( organisationUnitService.getOrganisationUnitWithChildren( orgUnitId ) );
+            }
+            
+            orgUnitList.retainAll( orgUnitGroupMembers );
+            Collection<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, orgUnitList ) );
+            orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
+
+            //Calculations for Actual Column
+            ccemReportDesign1 = reportDesignList.get( 1 );
+            ccemCellContent1 = ccemSettingsMap.get( ccemReportDesign1.getContent() );
+            
+            String[] partsOfCellContent = ccemCellContent1.split( "-" );
+            Integer vscrActualInventoryTypeId = Integer.parseInt( partsOfCellContent[0].split(":" )[0] );
+            Integer vscrActualInventoryTypeAttributeId = Integer.parseInt( partsOfCellContent[0].split(":" )[1] );
+            Double factor = Double.parseDouble( partsOfCellContent[0].split(":" )[2] );;
+
+            Map<Integer, Double> equipmentSumByInventoryTypeMap = new HashMap<Integer, Double>( ccemReportManager.getSumOfEquipmentDatabyInventoryType( orgUnitIdsByComma, vscrActualInventoryTypeId, vscrActualInventoryTypeAttributeId, factor ) );
+            
+            String[] partsOfVSRActualCellContent = partsOfCellContent[1].split( ":" );
+            Integer vsrActualInventoryTypeId = Integer.parseInt( partsOfVSRActualCellContent[0] );
+            Integer vsrActualCatalogTypeAttributeId = Integer.parseInt( partsOfVSRActualCellContent[1] );
+            Integer vsrActualInventoryTypeAttributeId = Integer.parseInt( partsOfVSRActualCellContent[2] );
+            String vsrActualEquipmentValue = partsOfVSRActualCellContent[3];
+            
+            Map<Integer, Double> catalogSumByEquipmentDataMap = new HashMap<Integer, Double>( ccemReportManager.getCatalogDataSumByEquipmentData( orgUnitIdsByComma, vsrActualInventoryTypeId, vsrActualCatalogTypeAttributeId, vsrActualInventoryTypeAttributeId, vsrActualEquipmentValue ) );
+            
+            //Calculations for Required Column
+            ccemReportDesign1 = reportDesignList.get( 2 );
+            ccemCellContent1 = ccemSettingsMap.get( ccemReportDesign1.getContent() );
+            partsOfCellContent = ccemCellContent1.split( "--" );
+            
+            String[] catalogDataParts = partsOfCellContent[0].split( ":" );
+            Integer vsReqCatalogTypeId = Integer.parseInt( catalogDataParts[0] );
+            Integer vsReqStorageTempId = Integer.parseInt( catalogDataParts[1] );
+            String vsReqStorageTemp = catalogDataParts[2];
+            Integer vsReqNationalSupplyId = Integer.parseInt( catalogDataParts[3] );
+            String vsReqNationalSupply = catalogDataParts[4];
+            String vsReqCatalogAttribIds = catalogDataParts[5];
+            
+            Integer vsReqPackedVol = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[0] );
+            Integer vsReqDoses = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[1] );
+            Integer vsReqTargetPopCat= Integer.parseInt( vsReqCatalogAttribIds.split( "," )[2] );
+            Integer vsReqUsage = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[3] );
+            Integer vsReqWastage = Integer.parseInt( vsReqCatalogAttribIds.split( "," )[4] );
+
+            List<Integer> catalogIdsForRequirement = new ArrayList<Integer>( ccemReportManager.getCatalogIdsForRequirement( vsReqCatalogTypeId, vsReqStorageTempId, vsReqStorageTemp, vsReqNationalSupplyId, vsReqNationalSupply ) );
+            
+            Map<String, String> catalogDataForRequirement = new HashMap<String, String>( ccemReportManager.getCatalogDataForRequirement( vsReqCatalogTypeId, vsReqStorageTempId, vsReqStorageTemp, vsReqNationalSupplyId, vsReqNationalSupply, vsReqCatalogAttribIds ) );
+            
+            String[] dataelementDataParts = partsOfCellContent[1].split( "," );
+            Map<String, Integer> catalogOption_DataelementMap = new HashMap<String, Integer>();
+            String catalogOption_DataelementIds = "-1";
+            
+            for( String de_catalogOption : dataelementDataParts )
+            {
+                catalogOption_DataelementMap.put( de_catalogOption.split( ":" )[1], Integer.parseInt( de_catalogOption.split( ":" )[0] ) );
+                catalogOption_DataelementIds += "," + Integer.parseInt( de_catalogOption.split( ":" )[0] );
+            }
+
+            Map<String, String> dataElementDataForRequirement = new HashMap<String, String>( ccemReportManager.getDataElementDataForCatalogOptionsForRequirement( orgUnitIdsByComma, catalogOption_DataelementIds, periodId ) );
+
+            String orgUnitGroupAttribIds = partsOfCellContent[2];
+            Integer vsReqSupplyInterval = Integer.parseInt( orgUnitGroupAttribIds.split( "," )[0] );
+            Integer vsReqReserveStock = Integer.parseInt( orgUnitGroupAttribIds.split( "," )[1] );
+            
+            
+            Map<String, String> orgUnitGroupAttribDataForRequirement = new HashMap<String, String>( ccemReportManager.getOrgUnitGroupAttribDataForRequirement( orgUnitGroupIdsByComma, orgUnitGroupAttribIds ) );
+            
+            Map<Integer, String> orgUnitGroupMap = new HashMap<Integer, String>( ccemReportManager.getOrgunitAndOrgUnitGroupMap( orgUnitGroupIdsByComma, orgUnitIdsByComma ) );
+            
+            for( OrganisationUnit orgUnit : orgUnitList )
+            {
+                List<String> oneTableDataRow = new ArrayList<String>();
+                String orgUnitBranch = "";
+                if( orgUnit.getParent() != null )
+                {
+                    orgUnitBranch = getOrgunitBranch( orgUnit.getParent() );
+                }
+                else
+                {
+                    orgUnitBranch = " ";
+                }
+                
+                oneTableDataRow.add( orgUnitBranch );
+                oneTableDataRow.add( orgUnit.getName() );
+                oneTableDataRow.add( orgUnit.getCode() );
+                String orgUnitGroupName = orgUnitGroupMap.get( orgUnit.getId() );
+                if( orgUnitGroupName == null )
+                {
+                    oneTableDataRow.add( " " );
+                }
+                else
+                {
+                    oneTableDataRow.add( orgUnitGroupName );
+                }
+                
+                Double vsrActualValue = catalogSumByEquipmentDataMap.get( orgUnit.getId() );
+                if( vsrActualValue == null ) vsrActualValue = 0.0;
+
+                Double vscrActualValue = equipmentSumByInventoryTypeMap.get( orgUnit.getId() );
+                if( vscrActualValue == null ) vscrActualValue = 0.0;
+
+                Double vaccineActualValue = vsrActualValue + vscrActualValue;
+                vaccineActualValue = Math.round( vaccineActualValue * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                oneTableDataRow.add( ""+vaccineActualValue );
+                
+                // Calculation for Requirement Column
+                String tempStr = null;
+                Double vaccineRequirement = 0.0;
+                for( Integer catalogId : catalogIdsForRequirement )
+                {
+                    Double vsReqUsageData = 0.0;
+                    tempStr = catalogDataForRequirement.get( catalogId+":"+vsReqUsage );
+                    if( tempStr != null )
+                    {
+                        try
+                        {
+                            vsReqUsageData = Double.parseDouble( tempStr );
+                        }
+                        catch( Exception e )
+                        {
+                            vsReqUsageData = 0.0;
+                        }
+                    }
+                    
+                    Double vsReqTargetPopData = 0.0;
+                    String vsReqTargetPopCatData = catalogDataForRequirement.get( catalogId+":"+vsReqTargetPopCat );
+                    if( vsReqTargetPopCatData != null )
+                    {
+                        Integer deId = catalogOption_DataelementMap.get( vsReqTargetPopCatData );
+                        tempStr = dataElementDataForRequirement.get( deId+":"+periodId+":"+orgUnit.getId() );
+                        if( tempStr != null )
+                        {
+                            try
+                            {
+                                vsReqTargetPopData = Double.parseDouble( tempStr );
+                            }
+                            catch( Exception e )
+                            {
+                                vsReqTargetPopData = 0.0;
+                            }
+                        }
+                    }
+                    
+                    Double vsReqDosesData = 0.0;
+                    tempStr = catalogDataForRequirement.get( catalogId+":"+vsReqDoses );
+                    if( tempStr != null )
+                    {
+                        try
+                        {
+                            vsReqDosesData = Double.parseDouble( tempStr );
+                        }
+                        catch( Exception e )
+                        {
+                            vsReqDosesData = 0.0;
+                        }
+                    }
+                    
+                    Double vsReqPackedVolData = 0.0;
+                    tempStr = catalogDataForRequirement.get( catalogId+":"+vsReqPackedVol );
+                    if( tempStr != null )
+                    {
+                        try
+                        {
+                            vsReqPackedVolData = Double.parseDouble( tempStr );
+                        }
+                        catch( Exception e )
+                        {
+                            vsReqPackedVolData = 0.0;
+                        }
+                    }
+                    
+                    Double vsReqWastageData = 0.0;
+                    tempStr = catalogDataForRequirement.get( catalogId+":"+vsReqWastage );
+                    if( tempStr != null )
+                    {
+                        try
+                        {
+                            vsReqWastageData = Double.parseDouble( tempStr );
+                        }
+                        catch( Exception e )
+                        {
+                            vsReqWastageData = 0.0;
+                        }
+                    }
+                    
+                    Double vsReqSupplyIntervalData = 0.0;
+                    tempStr = orgUnitGroupAttribDataForRequirement.get( orgUnit.getId()+":"+vsReqSupplyInterval );
+                    if( tempStr != null )
+                    {
+                        try
+                        {
+                            vsReqSupplyIntervalData = Double.parseDouble( tempStr );
+                        }
+                        catch( Exception e )
+                        {
+                            vsReqSupplyIntervalData = 0.0;
+                        }
+                    }
+                    
+                    Double vsReqReserveStockData = 0.0;
+                    tempStr = orgUnitGroupAttribDataForRequirement.get( orgUnit.getId()+":"+vsReqReserveStock );
+                    if( tempStr != null )
+                    {
+                        try
+                        {
+                            vsReqReserveStockData = Double.parseDouble( tempStr );
+                        }
+                        catch( Exception e )
+                        {
+                            vsReqReserveStockData = 0.0;
+                        }
+                    }
+                    
+                    //Formula for calculating Requirement for individual vaccine
+                    Double individualVaccineRequirement = 0.0;
+                    try
+                    {
+                        individualVaccineRequirement = ( ( vsReqUsageData * vsReqTargetPopData ) / 100 ) * vsReqDosesData * vsReqPackedVolData * ( 1 / ( 1 - ( vsReqWastageData /100 ) ) ) * ( ( (vsReqSupplyIntervalData + vsReqReserveStockData)/52 ) / 1000 );
+                    }
+                    catch( Exception e )
+                    {
+                        System.out.println( "Exception while calculating individualVaccineRequirement");
+                        individualVaccineRequirement = 0.0;
+                    }
+                    
+                    //System.out.println( vsReqUsageData +":"+vsReqTargetPopData +":"+vsReqDosesData +":"+vsReqPackedVolData +":"+ vsReqWastageData +":"+ vsReqSupplyIntervalData +":"+ vsReqReserveStockData );
+                   
+                    vaccineRequirement += individualVaccineRequirement;
+                    
+                }
+                
+                vaccineRequirement = Math.round( vaccineRequirement * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                oneTableDataRow.add( ""+vaccineRequirement );
+                
+                Double diffVaccineReq = vaccineActualValue - vaccineRequirement;
+                diffVaccineReq = Math.round( diffVaccineReq * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );                
+                oneTableDataRow.add( ""+diffVaccineReq );
+                
+                Double diffPercentage = ( diffVaccineReq / vaccineActualValue ) * 100;
+                if( diffPercentage < -30.0 )
+                {
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "1" );
+                }
+                else if( diffPercentage >= -30.0 && diffPercentage < -10.0 )
+                {
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "1" );
+                    oneTableDataRow.add( "0" );
+                }
+                else if( diffPercentage >= -10.0 && diffPercentage < 10.0 )
+                {
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "1" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                }
+                else if( diffPercentage >= 10.0 && diffPercentage < 30.0 )
+                {
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "1" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                }
+                else
+                {
+                    oneTableDataRow.add( "1" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                    oneTableDataRow.add( "0" );
+                }
+                    
+                tableData.add( oneTableDataRow );
+            }
+            
+            ccemReportOutput.setTableData( tableData );
+            ccemReportOutput.setTableHeadings( tableHeadings );
+            ccemReportOutput.setTableSubHeadings( tableSubHeadings );            
+        }
+
         return SUCCESS;
     }
-    
+
     private String getOrgunitBranch( OrganisationUnit orgunit )
     {
         String hierarchyOrgunit = orgunit.getName();
