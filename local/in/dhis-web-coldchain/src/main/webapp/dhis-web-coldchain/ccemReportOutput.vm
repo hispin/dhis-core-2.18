@@ -29,7 +29,6 @@
 				<th>$tableHeading</th>
 			#end
 		</tr>
-		
 		#foreach( $oneSubHeadingRow in $tableSubHeadings )
 		<tr>
 			#foreach( $oneSubHeadingCellData in $oneSubHeadingRow )
@@ -46,7 +45,7 @@
 			#end
 		</tr>
 		#set( $mark = !$mark)	
-		#end		
+		#end
 	</table>
 </div>
 

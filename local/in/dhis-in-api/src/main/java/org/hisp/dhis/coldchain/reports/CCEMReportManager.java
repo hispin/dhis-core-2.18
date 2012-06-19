@@ -26,4 +26,18 @@ public interface CCEMReportManager
     Integer getPeriodId( String startDate, String periodType );
     
     Map<String, Integer> getFacilityWiseEquipmentRoutineData( String orgUnitIdsByComma, String periodIdsByComma, String dataElementIdsByComma, String optComboIdsByComma );
+    
+    Map<Integer, Double> getCatalogDataSumByEquipmentData( String orgUnitIdsByComma, Integer inventoryTypeId, Integer catalogTypeAttributeId, Integer inventoryTypeAttributeId, String equipmentValue );
+    
+    Map<Integer, Double> getSumOfEquipmentDatabyInventoryType( String orgUnitIdsByComma, Integer inventoryTypeId, Integer inventoryTypeAttributeId, Double factor );
+    
+    Map<String, String> getOrgUnitGroupAttribDataForRequirement( String orgUnitGroupIdsByComma, String orgUnitGroupAttribIds );
+    
+    Map<String, String> getDataElementDataForCatalogOptionsForRequirement( String orgUnitIdsByComma, String catalogOption_DataelementIds, Integer periodId );
+    
+    Map<String, String> getCatalogDataForRequirement( Integer vsReqCatalogTypeId, Integer vsReqStorageTempId, String vsReqStorageTemp, Integer vsReqNationalSupplyId, String vsReqNationalSupply, String vsReqCatalogAttribIds );
+    
+    List<Integer> getCatalogIdsForRequirement( Integer vsReqCatalogTypeId, Integer vsReqStorageTempId, String vsReqStorageTemp, Integer vsReqNationalSupplyId, String vsReqNationalSupply );
+    
+    Map<Integer, String> getOrgunitAndOrgUnitGroupMap( String orgUnitGroupIdsByComma, String orgUnitIdsByComma );
 }

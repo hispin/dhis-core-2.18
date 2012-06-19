@@ -45,7 +45,235 @@ public class DefaultCCEMReportManager implements CCEMReportManager
     // -------------------------------------------------------------------------
     // Implementation Methods
     // -------------------------------------------------------------------------
+    
+    public Map<Integer, String> getOrgunitAndOrgUnitGroupMap( String orgUnitGroupIdsByComma, String orgUnitIdsByComma )
+    {
+        Map<Integer, String> orgUnitGroupMap = new HashMap<Integer, String>();
+        int prevOrgUnitId = 0;
+        try
+        {
+            String query = "SELECT organisationunitid, orgunitgroup.name FROM orgunitgroupmembers " +
+            		        " INNER JOIN orgunitgroup ON orgunitgroupmembers.orgunitgroupid = orgunitgroup.orgunitgroupid "+
+            		        " WHERE " +
+            		            " orgunitgroup.orgunitgroupid IN ("+ orgUnitGroupIdsByComma +") AND " +
+            		            " organisationunitid IN ("+ orgUnitIdsByComma +") ORDER BY organisationunitid"; 
+                                        
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );            
+            while ( rs.next() )
+            {
+                Integer orgUnitID = rs.getInt( 1 );
+                String ouGroupName = rs.getString( 2 );
 
+                if( prevOrgUnitId == orgUnitID )
+                {
+                    String temp = orgUnitGroupMap.get( orgUnitID );
+                    if( temp == null ) temp = "";
+                    temp += "," +ouGroupName;
+                    orgUnitGroupMap.put( orgUnitID, temp );
+                }
+                else
+                {
+                    orgUnitGroupMap.put( orgUnitID, ouGroupName );
+                }
+                
+                prevOrgUnitId = orgUnitID;
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Exception: ", e );
+        }
+        
+        return orgUnitGroupMap;
+    }
+
+    
+    public Map<String, String> getOrgUnitGroupAttribDataForRequirement( String orgUnitGroupIdsByComma, String orgUnitGroupAttribIds )
+    {
+        Map<String, String> orgUnitGroupAttribDataForRequirement = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT orgunitgroupmembers.organisationunitid, attributevalue.attributeid, value FROM attributevalue "+
+                                " INNER JOIN orgunitgroupattributevalues ON attributevalue.attributevalueid = orgunitgroupattributevalues.attributevalueid "+ 
+                                " INNER JOIN orgunitgroupmembers ON orgunitgroupmembers.orgunitgroupid = orgunitgroupattributevalues.orgunitgroupid "+
+                                " WHERE "+
+                                    " attributeid IN ("+orgUnitGroupAttribIds+") AND " +
+                                    " orgunitgroupattributevalues.orgunitgroupid IN ("+ orgUnitGroupIdsByComma +")";
+                        
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer orgUnitID = rs.getInt( 1 );
+                Integer attribId = rs.getInt( 2 );
+                String value = rs.getString( 3 );
+
+                orgUnitGroupAttribDataForRequirement.put( orgUnitID+":"+attribId, value );
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Exception: ", e );
+        }
+        
+        return orgUnitGroupAttribDataForRequirement;
+    }
+
+    
+    public Map<String, String> getDataElementDataForCatalogOptionsForRequirement( String orgUnitIdsByComma, String catalogOption_DataelementIds, Integer periodId )
+    {
+        Map<String, String> dataElementDataForRequirement = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT dataelementid, periodid, sourceid, value FROM datavalue " +
+                                " WHERE " +
+                                    " dataelementid IN ( "+ catalogOption_DataelementIds +") AND " +
+                                    " sourceid IN ( " + orgUnitIdsByComma + " ) AND " +
+                                    " periodid = "+periodId; 
+                        
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer deId = rs.getInt( 1 );
+                Integer pId = rs.getInt( 2 );
+                Integer sourceId = rs.getInt( 3 );
+                String value = rs.getString( 4 );
+                
+                dataElementDataForRequirement.put( deId+":"+pId+":"+sourceId, value );
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Exception: ", e );
+        }
+        
+        return dataElementDataForRequirement;
+    }
+
+    
+    public Map<String, String> getCatalogDataForRequirement( Integer vsReqCatalogTypeId, Integer vsReqStorageTempId, String vsReqStorageTemp, Integer vsReqNationalSupplyId, String vsReqNationalSupply, String vsReqCatalogAttribIds )
+    {
+        Map<String, String> catalogDataForRequirement = new HashMap<String, String>();
+        try
+        {
+            String query = "SELECT catalog.catalogid, catalogtypeattributeid, value FROM catalogdatavalue " +
+            		        " INNER JOIN catalog ON catalog.catalogid = catalogdatavalue.catalogid "+
+            		        " WHERE " +
+            		            " catalog.catalogid IN " +
+            		                "( SELECT cd1.catalogid FROM catalogdatavalue AS cd1 INNER JOIN catalogdatavalue AS cd2 ON cd1.catalogid = cd2.catalogid " +
+            		                    " WHERE cd1.catalogtypeattributeid = "+vsReqNationalSupplyId+" AND cd1.value = '"+vsReqNationalSupply+"' AND cd2.catalogtypeattributeid = "+vsReqStorageTempId+" AND cd2.value = '"+ vsReqStorageTemp +"') " + 
+            		            " AND catalogtypeattributeid IN ("+vsReqCatalogAttribIds+") AND " +
+            		            " catalog.catalogtypeid = "+vsReqCatalogTypeId;
+                        
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer catalogId = rs.getInt( 1 );
+                Integer catalogTypeAttribId = rs.getInt( 2 );
+                String value = rs.getString( 3 );
+                
+                catalogDataForRequirement.put( catalogId+":"+catalogTypeAttribId, value );
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Exception: ", e );
+        }
+        
+        return catalogDataForRequirement;
+    }
+
+    public List<Integer> getCatalogIdsForRequirement( Integer vsReqCatalogTypeId, Integer vsReqStorageTempId, String vsReqStorageTemp, Integer vsReqNationalSupplyId, String vsReqNationalSupply )
+    {
+        List<Integer> catalogIdsForRequirement = new ArrayList<Integer>();
+        try
+        {
+            String query = "SELECT DISTINCT(catalog.catalogid) FROM catalogdatavalue " +
+                                " INNER JOIN catalog ON catalog.catalogid = catalogdatavalue.catalogid "+
+                                " WHERE " +
+                                    " catalog.catalogid IN " +
+                                        "( SELECT cd1.catalogid FROM catalogdatavalue AS cd1 INNER JOIN catalogdatavalue AS cd2 ON cd1.catalogid = cd2.catalogid " +
+                                            " WHERE cd1.catalogtypeattributeid = "+vsReqNationalSupplyId+" AND cd1.value = '"+vsReqNationalSupply+"' AND cd2.catalogtypeattributeid = "+vsReqStorageTempId+" AND cd2.value = '"+ vsReqStorageTemp +"') " + 
+                                    " AND catalog.catalogtypeid = "+vsReqCatalogTypeId;
+                        
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer catalogId = rs.getInt( 1 );
+                
+                catalogIdsForRequirement.add( catalogId );
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Exception: ", e );
+        }
+        
+        return catalogIdsForRequirement;
+    }
+    
+    public Map<Integer, Double> getSumOfEquipmentDatabyInventoryType( String orgUnitIdsByComma, Integer inventoryTypeId, Integer inventoryTypeAttributeId, Double factor )
+    {
+        Map<Integer, Double> equipmentSumByInventoryTypeMap = new HashMap<Integer, Double>();
+        try
+        {
+            String query = "SELECT organisationunitid, SUM(value*"+factor+") FROM equipment " +
+                                " INNER JOIN equipmentinstance on equipment.equipmentinstanceid = equipmentinstance.equipmentinstanceid " +
+                                " WHERE " + 
+                                    " equipmentinstance.working = 1 AND "+
+                                    " equipmentinstance.inventorytypeid =  "+ inventoryTypeId +" AND "+       
+                                    " equipmentinstance.organisationunitid in (" + orgUnitIdsByComma +") AND "+
+                                    " equipment.inventorytypeattributeid = "+ inventoryTypeAttributeId +" "+
+                                    " GROUP BY organisationunitid";                  
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Double catalogDataValueSum = rs.getDouble( 2 );
+                equipmentSumByInventoryTypeMap.put( orgUnitId, catalogDataValueSum );
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Exception: ", e );
+        }
+        
+        return equipmentSumByInventoryTypeMap;
+    }
+
+    
+    public Map<Integer, Double> getCatalogDataSumByEquipmentData( String orgUnitIdsByComma, Integer inventoryTypeId, Integer catalogTypeAttributeId, Integer inventoryTypeAttributeId, String equipmentValue )
+    {
+        Map<Integer, Double> catalogSumByEquipmentDataMap = new HashMap<Integer, Double>();
+        try
+        {
+            String query =  "SELECT equipmentinstance.organisationunitid, sum(catalogdatavalue.value) FROM catalogdatavalue " +  
+                            " INNER JOIN equipmentinstance on catalogdatavalue.catalogid = equipmentinstance.catalogid " +  
+                            " WHERE " + 
+                                " equipmentinstance.working = 1 AND " +
+                                " equipmentinstance.inventorytypeid =  " + inventoryTypeId + " AND " + 
+                                " catalogdatavalue.catalogtypeattributeid =  " + catalogTypeAttributeId + " AND " +
+                                " equipmentinstance.organisationunitid in ("+ orgUnitIdsByComma +") AND " +
+                                " equipmentinstance.equipmentinstanceid in " +
+                                    "( SELECT equipmentinstanceid FROM equipment WHERE inventorytypeattributeid = "+ inventoryTypeAttributeId +" AND equipment.value IN ('"+ equipmentValue +"') ) "+
+                                " GROUP BY equipmentinstance.organisationunitid";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            while ( rs.next() )
+            {
+                Integer orgUnitId = rs.getInt( 1 );
+                Double catalogDataValueSum = rs.getDouble( 2 );
+                catalogSumByEquipmentDataMap.put( orgUnitId, catalogDataValueSum );
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Exception: ", e );
+        }
+        
+        return catalogSumByEquipmentDataMap;
+    }
+    
     public Map<String, Integer> getFacilityWiseEquipmentRoutineData( String orgUnitIdsByComma, String periodIdsByComma, String dataElementIdsByComma, String optComboIdsByComma )
     {
         Map<String, Integer> equipmentDataValueMap = new HashMap<String, Integer>();
