@@ -74,6 +74,22 @@ public class ShowAnonymousFormAction implements Action
         return programId;
     }
 
+    private ProgramStage programStage;
+
+    public ProgramStage getProgramStage()
+
+    {
+        return programStage;
+    }
+    
+    private Program program;
+
+    public Program getProgram()
+
+    {
+        return program;
+    }
+    
     List<DataElement> dataElements = new ArrayList<DataElement>();
     
     public List<DataElement> getDataElements()
@@ -90,16 +106,13 @@ public class ShowAnonymousFormAction implements Action
         throws Exception
     {
         
-        Program program = programService.getProgram( programId );
+        program = programService.getProgram( programId );
         
-        Collection<ProgramStage> programStages = program.getProgramStages();
+        programStage = program.getProgramStages().iterator().next();
         
         Set<ProgramStageDataElement> programStageDataElement = null;
-
-        for( ProgramStage each: programStages )
-        {
-            programStageDataElement = each.getProgramStageDataElements();
-        }
+    
+        programStageDataElement = programStage.getProgramStageDataElements();  
         
         if( programStageDataElement != null )
         {    

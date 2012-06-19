@@ -1,5 +1,5 @@
 
-<h2>Anonymous Menu</h2>
+<h2>$i18n.getString("anonymous_menu")</h2>
 <p>
 <ul>
 #foreach( $program in $programs)

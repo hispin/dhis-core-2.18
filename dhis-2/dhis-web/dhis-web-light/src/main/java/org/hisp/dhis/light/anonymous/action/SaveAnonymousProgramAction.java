@@ -145,6 +145,22 @@ public class SaveAnonymousProgramAction
         this.programId = programId;
     }
 
+    private ProgramStage programStage;
+
+    public ProgramStage getProgramStage()
+
+    {
+        return programStage;
+    }
+
+    private Program program;
+
+    public Program getProgram()
+
+    {
+        return program;
+    }
+
     List<DataElement> dataElements = new ArrayList<DataElement>();
 
     public List<DataElement> getDataElements()
@@ -181,13 +197,13 @@ public class SaveAnonymousProgramAction
         throws Exception
     {
 
-        Program program = programService.getProgram( programId );
+        program = programService.getProgram( programId );
 
         // -------------------------------------------------------------------------
         // Getting all data from UI
         // -------------------------------------------------------------------------
 
-        ProgramStage programStage = program.getProgramStages().iterator().next();
+        programStage = program.getProgramStages().iterator().next();
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
 
@@ -250,23 +266,23 @@ public class SaveAnonymousProgramAction
         programInstance.setDateOfIncident( new Date() );
 
         programInstance.setProgram( program );
-        
+
         programInstance.setCompleted( false );
-        
+
         programInstanceService.addProgramInstance( programInstance );
 
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
-        
+
         programStageInstance.setProgramInstance( programInstance );
-        
+
         programStageInstance.setProgramStage( programStage );
-        
+
         programStageInstance.setDueDate( new Date() );
-        
+
         programStageInstance.setExecutionDate( new Date() );
-        
+
         programStageInstance.setCompleted( false );
-        
+
         programStageInstanceService.addProgramStageInstance( programStageInstance );
 
         for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
@@ -274,19 +290,19 @@ public class SaveAnonymousProgramAction
             DataElement dataElement = programStageDataElement.getDataElement();
 
             PatientDataValue patientDataValue = new PatientDataValue();
-            
+
             patientDataValue.setDataElement( dataElement );
-            
+
             String id = "DE" + dataElement.getId();
-            
+
             patientDataValue.setValue( parameterMap.get( id ) );
-            
+
             patientDataValue.setProgramStageInstance( programStageInstance );
-            
+
             patientDataValue.setProvidedElsewhere( false );
-            
+
             patientDataValue.setTimestamp( new Date() );
-            
+
             patientDataValueService.savePatientDataValue( patientDataValue );
         }
 
