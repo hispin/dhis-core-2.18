@@ -23,7 +23,7 @@
 					<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onKeyPress="changePageSize(event);">
 				</td>
 				<td>
-					<input type="button" id="submitButton" value="$i18n.getString( 'go' )" onclick="changePageSize(event);">
+					<input type="button" id="submitButton" style='width:40px;' value="$i18n.getString( 'go' )" onclick="changePageSize(event);">
 				</td>				
 			</tr>		
 			<tr>

@@ -1536,6 +1536,7 @@ function isDefined( variable )
 // -----------------------------------------------------------------------------
 
 isAjax = false;
+var contentDiv = 'contentDiv';
 function pagingList( currentPage, pageSize )
 {
 	var baseLink = jQuery( "#baseLink" ).val();	
@@ -1568,17 +1569,9 @@ function pagingList( currentPage, pageSize )
 	}
 	else
 	{		
-		jQuery.postUTF8( link , data, function(html)
-		{
-			if ( contentDiv == undefined )
-			{
-				setInnerHTML( 'contentDiv', html );
-			}
-			else
-			{
-				setInnerHTML( contentDiv, html );
-			}
-		} );
+		jQuery.postUTF8( link , data, function(html){
+			setInnerHTML( contentDiv, html );
+		});
 	}
 }
 
