@@ -1,5 +1,5 @@
 
-<h2>Anonymous Form</h2>
+<h2>$encoder.htmlEncode( $program.name )</h2>
 
 #set( $typeViolationsSize = $typeViolations.size() )
 #if( $typeViolationsSize > 0 )
