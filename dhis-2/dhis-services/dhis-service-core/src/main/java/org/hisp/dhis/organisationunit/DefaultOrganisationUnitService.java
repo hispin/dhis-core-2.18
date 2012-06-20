@@ -112,6 +112,8 @@ public class DefaultOrganisationUnitService
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_EDIT,
             OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+
+        updateVersion();
     }
 
     public void updateOrganisationUnit( OrganisationUnit organisationUnit, boolean updateHierarchy )
