@@ -2536,19 +2536,19 @@ version on the server, data sets are automatically versioned when you edit the d
 <para>From Activity main menu, select “Current Activity Plan”. You will be navigated to “Grampanchayat Name” screen where you can select the village. Use the “Up” or “Down” button on your mobile phone to focus on a village. Use “Select” button to select a village.</para>
 </listitem>
 <listitem>
-<para>Choose Beneficiary</para>
+<para>Choose Person</para>
 <para><graphic fileref="resources/images/dhis_mobile/choose_beneficiary.png" align="center"/></para>
-<para>In a village, beneficiary name will be display in a list. User can use the &quot;Select&quot; button to view the activities of the selected name.</para>
+<para>In a village, person name will be display in a list. User can use the &quot;Select&quot; button to view the activities of the selected name.</para>
 </listitem>
 <listitem>
 <para>Choose Activity</para>
 <para><graphic fileref="resources/images/dhis_mobile/choose_activity.png" align="center"/></para>
-<para>Each Activity is represented by the name of the Beneficiary. Select the name of the beneficiary you want to view. Note that the name start with “*” means that this is a late Activity.</para>
+<para>Each Activity is represented by the name of the Person. Select the name of the person you want to view. Note that the name start with “*” means that this is a late Activity.</para>
 </listitem>
 <listitem>
-<para>Beneficiary Detail</para>
+<para>Person Detail</para>
 <para><graphic fileref="resources/images/dhis_mobile/beneficiary_detail_screen.png" align="center"/></para>
-<para>Select the &quot;Detail&quot; command on the left of the activity screen , a Beneficiary Detail screen will be displayed. The detail screen may contain personal information and some additional information of the Beneficiary (depends on the setting from server). Select “OK” to go back to activity screen.</para>
+<para>Select the &quot;Detail&quot; command on the left of the activity screen , a Person Detail screen will be displayed. The detail screen may contain personal information and some additional information of the Person (depends on the setting from server). Select “OK” to go back to activity screen.</para>
 </listitem>
 <listitem>
 <para>Fill in values (Entry screen)</para>
@@ -2579,7 +2579,7 @@ version on the server, data sets are automatically versioned when you edit the d
 <para>Select “Menu” or “Option” at the bottom of your screen (The name “Menu” or “Option” depend on your mobile phone) and then select “Save”. A success message (“Form Saved”) will be display. Select “Done” or “Dismiss” to go back to Entry Screen.</para>
 </listitem>
 <listitem>
-<para>Your data will not be sent to server. It is stored in the Record Store of your mobile phone. To see the data again. Go back to step [2] and select the name of the Beneficiary that you have just entered data. Repeat step [3] and [4]. If you feel that you are ready to send data to server. Select “Complete”.</para>
+<para>Your data will not be sent to server. It is stored in the Record Store of your mobile phone. To see the data again. Go back to step [2] and select the name of the Person that you have just entered data. Repeat step [3] and [4]. If you feel that you are ready to send data to server. Select “Complete”.</para>
 </listitem>
 </itemizedlist></para>
 <para><graphic fileref="resources/images/dhis_mobile/complete_command.png" align="center"/></para>
@@ -3929,11 +3929,11 @@ Some indicators have been allocated to several indicator groups that are members
 <para>In some cases you might end up with overlapping data. For instance one might archive data for a given timespan, then later enter data for a period in that timespan. In such cases the system will automatically overwrite the oldest of the overlapping values with the newest during the archive or unarchive operation.</para>
 </section>
 <section id="patientDataArchive">
-<title>Beneficiary Data Archive</title>
-<para>The purpose of the beneficiary data archive function is to move beneficiary data value which is currently not being used for analysis to a secondary storage location in order to improve performance of the application. Data can be both archived and unarchived. When archiving data one moves it from the primary storage to the secondary storage location, while unarchiving moves it from the secondary storage location to the primary. Analysis functionality in DHIS 2 heavily utilizes queries to the data value database table, and by reducing the size of this table these operations will be significantly faster. Typically one would want to archive beneficiary data that is older than two years.</para>
-<para>To archive beneficiary data, first enter a start date and an end date for the time span of the data which should be archived. Then press the archive button. The operation might take a few minutes.</para>
-<para>To unarchive beneficiary data, first enter a start date and an end date for the time span of the data which should be unarchived. Then press the unarchive button. The operation might take a few minutes.</para>
-<para>In some cases you might end up with overlapping data. For instance one might archive beneficiary data for a given timespan, then later enter data for a period in that timespan. In such cases the system will automatically overwrite the oldest of the overlapping values with the newest during the archive or unarchive operation.</para>
+<title>Person Data Archive</title>
+<para>The purpose of the person data archive function is to move person data value which is currently not being used for analysis to a secondary storage location in order to improve performance of the application. Data can be both archived and unarchived. When archiving data one moves it from the primary storage to the secondary storage location, while unarchiving moves it from the secondary storage location to the primary. Analysis functionality in DHIS 2 heavily utilizes queries to the data value database table, and by reducing the size of this table these operations will be significantly faster. Typically one would want to archive person data that is older than two years.</para>
+<para>To archive person data, first enter a start date and an end date for the time span of the data which should be archived. Then press the archive button. The operation might take a few minutes.</para>
+<para>To unarchive person data, first enter a start date and an end date for the time span of the data which should be unarchived. Then press the unarchive button. The operation might take a few minutes.</para>
+<para>In some cases you might end up with overlapping data. For instance one might archive person data for a given timespan, then later enter data for a period in that timespan. In such cases the system will automatically overwrite the oldest of the overlapping values with the newest during the archive or unarchive operation.</para>
 </section>
 <section id="maintenance">
 <title>Maintenance</title>
@@ -5491,16 +5491,16 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 <para>The following are the major things:</para>
 <orderedlist>
 <listitem>
-<para>Administrating a beneficiary - registering a new beneficiary, setting relationships, enrolling a beneficiary into a program.</para>
+<para>Administrating a person - registering a new person, setting relationships, enrolling a person into a program.</para>
 </listitem>
 <listitem>
-<para>Administrating meta data, includes beneficiary attributes, beneficiary attribute groups, identifier type; program, program attribute, program stage, validations.</para>
+<para>Administrating meta data, includes person attributes, person attribute groups, identifier type; program, program attribute, program stage, validations.</para>
 </listitem>
 <listitem>
 <para>Linking data between name-based information tracking system – NBITS and aggregate management system.</para>
 </listitem>
 <listitem>
-<para>Data Entry for inputting data for treatment stages of an beneficiary.</para>
+<para>Data Entry for inputting data for treatment stages of an person.</para>
 </listitem>
 <listitem>
 <para>Activity plans.</para>
@@ -5509,27 +5509,27 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </section>
 <section>
 <title>Context and Concept</title>
-<para>Conventionally, Public Health Systems have been recording and reporting aggregated data of the services provided across various health programmes. Though this is crucial in monitoring &quot;<emphasis role="italic">reach</emphasis>&quot; and &quot;<emphasis role="italic">availability</emphasis>&quot; of public health services, but it lacks tracing the beneficiaries being provided these services and quality of service. </para>
-<para>For example, the aggregate report will show that 300 pregnant women registered for ANC and 120 women given IFA tablets or 90 women given TT injection. In an aggregate system, it is not possible to ascertain that if a particular pregnant woman registered for ANC, has also been given IFA and TT, as data only shows aggregate numbers. To understand the quality of services given to each pregnant woman registered for ANC, immunization cycle of each child or treatment of each leprosy beneficiary, etc. it is important that treatment information of each beneficiary is maintained as an individual case.</para>
+<para>Conventionally, Public Health Systems have been recording and reporting aggregated data of the services provided across various health programmes. Though this is crucial in monitoring &quot;<emphasis role="italic">reach</emphasis>&quot; and &quot;<emphasis role="italic">availability</emphasis>&quot; of public health services, but it lacks tracing the persons being provided these services and quality of service. </para>
+<para>For example, the aggregate report will show that 300 pregnant women registered for ANC and 120 women given IFA tablets or 90 women given TT injection. In an aggregate system, it is not possible to ascertain that if a particular pregnant woman registered for ANC, has also been given IFA and TT, as data only shows aggregate numbers. To understand the quality of services given to each pregnant woman registered for ANC, immunization cycle of each child or treatment of each leprosy person, etc. it is important that treatment information of each person is maintained as an individual case.</para>
 </section>
 <section>
 <title>Objectives of Name Based Information Tracking</title>
 <para><emphasis role="bold">Objectives of Name Based Information Tracking:</emphasis></para>
 <orderedlist>
 <listitem>
-<para>Track (follow-up) a beneficiary through the entire treatment period.</para>
+<para>Track (follow-up) a person through the entire treatment period.</para>
 </listitem>
 <listitem>
-<para>Facilitate the service provider (health worker or doctor) in beneficiary&apos;s treatment follow-up; by recording all treatment related information in one place (makes it comprehensive for the service-provider).</para>
+<para>Facilitate the service provider (health worker or doctor) in person&apos;s treatment follow-up; by recording all treatment related information in one place (makes it comprehensive for the service-provider).</para>
 </listitem>
 <listitem>
-<para>Help the beneficiary in recording treatment history in one place, which could be used later in case of referral.</para>
+<para>Help the person in recording treatment history in one place, which could be used later in case of referral.</para>
 </listitem>
 </orderedlist>
 <para><emphasis role="bold">Advantages of Name Based Information Tracking :</emphasis></para>
 <orderedlist>
 <listitem>
-<para>Facilitate in recording entire treatment information of each beneficiary.</para>
+<para>Facilitate in recording entire treatment information of each person.</para>
 </listitem>
 <listitem>
 <para>Facilitate health-workers in organizing out-reach.</para>
@@ -5538,7 +5538,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 <para>Facilitate service-provider in treatment follow-up.</para>
 </listitem>
 <listitem>
-<para>Facilitate in effective monitoring of different health services and drill down to individual beneficiary information.</para>
+<para>Facilitate in effective monitoring of different health services and drill down to individual person information.</para>
 </listitem>
 <listitem>
 <para>Help strengthen the quality and fidelity of data.</para>
@@ -5548,10 +5548,10 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </section>
 <section>
 <title>Working of Name Based Information Tracking</title>
-<para>NBITS registers cases and tracks these cases over time through different forms that are filled for the treatment of a beneficiary.</para>
+<para>NBITS registers cases and tracks these cases over time through different forms that are filled for the treatment of a person.</para>
 <orderedlist>
 <listitem>
-<para>Registration and Identification for a beneficiary</para>
+<para>Registration and Identification for a person</para>
 </listitem>
 <listitem>
 <para>Programme enrolment</para>
@@ -5564,19 +5564,19 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </listitem>
 </orderedlist>
 <section>
-<title>Registration and Identification for a beneficiary</title>
-<para>The system has a function to manage facilities which allow to registry new beneficiaries or not. To start creating a patient, we need to select a facility which allows to registry a new beneficiary.</para>
-<para>The process of creating a new beneficiary in the system is through the registration process. The beneficiary is first registered in the system (or checked if beneficiary already exists in system). Searching a beneficiary can be done through identifiers, name, location or beneficiary&apos;s attributes (address, phone number, e.g.). If the beneficiary already exists in the system, the encounter details can be opened and filled and the programme process can continue. If the beneficiary does not exist in the system, then new registration takes place. </para>
-<para>When a beneficiary is registered in the system, multiple identifiers can be associated with the registration, such as Passport number, PAN, driving license, health identifier, UID. Internally, a location unique identifier is used to track the beneficiary.</para>
-<para>The process of identification is location independent, this implies that irrespective of location where beneficiary registered for service the service/medical record can be searched and pulled-up in any other facility provided the same is in the database. For facilities, which are not in the database, for e.g. a private facility, it will just be noted that &quot;<emphasis role="italic">Service is provided at other facility</emphasis>&quot;. In such case, the beneficiary should be encouraged, to provide these details of services taken from other facility to the ANM. The health worker is first identified through any of the identifiers or username in the system and the beneficiary is identified through identifiers for receiving a health service. After identification, the beneficiary&apos;s case history can be viewed or case can be updated with the new care that they have received.</para>
+<title>Registration and Identification for a person</title>
+<para>The system has a function to manage facilities which allow to registry new persons or not. To start creating a patient, we need to select a facility which allows to registry a new person.</para>
+<para>The process of creating a new person in the system is through the registration process. The person is first registered in the system (or checked if person already exists in system). Searching a person can be done through identifiers, name, location or person&apos;s attributes (address, phone number, e.g.). If the person already exists in the system, the encounter details can be opened and filled and the programme process can continue. If the person does not exist in the system, then new registration takes place. </para>
+<para>When a person is registered in the system, multiple identifiers can be associated with the registration, such as Passport number, PAN, driving license, health identifier, UID. Internally, a location unique identifier is used to track the person.</para>
+<para>The process of identification is location independent, this implies that irrespective of location where person registered for service the service/medical record can be searched and pulled-up in any other facility provided the same is in the database. For facilities, which are not in the database, for e.g. a private facility, it will just be noted that &quot;<emphasis role="italic">Service is provided at other facility</emphasis>&quot;. In such case, the person should be encouraged, to provide these details of services taken from other facility to the ANM. The health worker is first identified through any of the identifiers or username in the system and the person is identified through identifiers for receiving a health service. After identification, the person&apos;s case history can be viewed or case can be updated with the new care that they have received.</para>
 </section>
 <section>
 <title>Programme Enrollment and Treatment Plan</title>
-<para>When a beneficiary is enrolled into any health programme, a record of treatment is created for the beneficiary. Various services provided to the beneficiary through the treatment are recorded for the beneficiary. This recording results in creation of a treatment plan for the beneficiary.</para>
+<para>When a person is enrolled into any health programme, a record of treatment is created for the person. Various services provided to the person through the treatment are recorded for the person. This recording results in creation of a treatment plan for the person.</para>
 </section>
 <section>
 <title>Case Encounters</title>
-<para>Each interaction with the beneficiary related to the case is considered to be an encounter and these encounters are recorded into the beneficiary case. Beneficiary case is updated with the identification of both the health worker and the beneficiary who is receiving the service.</para>
+<para>Each interaction with the person related to the case is considered to be an encounter and these encounters are recorded into the person case. Person case is updated with the identification of both the health worker and the person who is receiving the service.</para>
 </section>
 </section>
 </section>
@@ -5619,7 +5619,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 <para>Help module</para>
 </listitem>
 </orderedlist>
-<para>There are some additions in the NBITS in both maintenance and services module. <emphasis role="italic">Maintenance</emphasis> module has one additional sub module for the beneficiary registration and <emphasis role="italic">Services</emphasis> module has one additional sub-module for name-based data entry and recording.</para>
+<para>There are some additions in the NBITS in both maintenance and services module. <emphasis role="italic">Maintenance</emphasis> module has one additional sub module for the person registration and <emphasis role="italic">Services</emphasis> module has one additional sub-module for name-based data entry and recording.</para>
 <para>The modules provide three main functionalities -</para>
 <orderedlist>
 <listitem>
@@ -5629,13 +5629,13 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 <para>Reports.</para>
 </listitem>
 <listitem>
-<para>Beneficiary Aggregation Query Builder.</para>
+<para>Person Aggregation Query Builder.</para>
 </listitem>
 </orderedlist>
 </section>
 <section>
 <title>Processes of case tracking in NBITS</title>
-<para>The NBITS application is developed with the objective of tracking cases of any disease or condition by using this application. The process of tracking starts with the registration of cases in the application. Application can provide information for only those cases which are available in the database, so the first process is the registration of beneficiary in the NBITS application. Once the beneficiary is registered, she/he can be enrolled in the program for which registered. The application will guide the health provider for the services required by the beneficiary through activity plan and the services received by the beneficiary from time to time can be updated into his/her profile. The working process of the application can be understood in steps depicted in picture below - </para>
+<para>The NBITS application is developed with the objective of tracking cases of any disease or condition by using this application. The process of tracking starts with the registration of cases in the application. Application can provide information for only those cases which are available in the database, so the first process is the registration of person in the NBITS application. Once the person is registered, she/he can be enrolled in the program for which registered. The application will guide the health provider for the services required by the person through activity plan and the services received by the person from time to time can be updated into his/her profile. The working process of the application can be understood in steps depicted in picture below - </para>
 <para><screenshot>
 <screeninfo>Figure 2.3.1</screeninfo>
 <mediaobject>
@@ -5645,10 +5645,10 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </mediaobject>
 </screenshot></para>
 <section>
-<title>STEP 1: Beneficiary registration</title>
-<para>The First step in the tracking is the registration of beneficiary/case in the NBITS application. In the registration process, the details - which are related to the personal information, identification, contact and location details &amp; health provider details, are entered in the application. In the registration itself, beneficiary is provided with the unique identification number. This number will be unique and will not match with the identification number of any person in the state jurisdiction. The issue of identification number will be the responsibility of facility where the beneficiary is registered first time.</para>
+<title>STEP 1: Person registration</title>
+<para>The First step in the tracking is the registration of person/case in the NBITS application. In the registration process, the details - which are related to the personal information, identification, contact and location details &amp; health provider details, are entered in the application. In the registration itself, person is provided with the unique identification number. This number will be unique and will not match with the identification number of any person in the state jurisdiction. The issue of identification number will be the responsibility of facility where the person is registered first time.</para>
 <warning>
-<para>Any case irrespective of the program will be registered first and then will be enrolled in any of the program. E.g. every pregnant women and the child need to be registered first as a beneficiary, than the beneficiaries will be enrolled in Mother Care program or Child Health program.</para>
+<para>Any case irrespective of the program will be registered first and then will be enrolled in any of the program. E.g. every pregnant women and the child need to be registered first as a person, than the persons will be enrolled in Mother Care program or Child Health program.</para>
 </warning>
 <para><emphasis role="bold">
 <emphasis role="underline">
@@ -5656,13 +5656,13 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </emphasis>
 </emphasis><emphasis role="italic">
 <emphasis role="bold">
-<emphasis role="underline"> of Beneficiary registration Process in application</emphasis>
+<emphasis role="underline"> of Person registration Process in application</emphasis>
 </emphasis>
 </emphasis> - </para>
 <para>For the registration process, the details - which are related to the personal information, identification, contact and location details, and health provider details, are entered.</para>
 <orderedlist>
 <listitem>
-<para>To register a beneficiary in the application, go to the <emphasis role="italic">Maintenance</emphasis> menu, select option <emphasis role="italic">Beneficiaries and Programs</emphasis>.</para>
+<para>To register a person in the application, go to the <emphasis role="italic">Maintenance</emphasis> menu, select option <emphasis role="italic">Persons and Programs</emphasis>.</para>
 <screenshot>
 <screeninfo>Figure 2.3.2</screeninfo>
 <mediaobject>
@@ -5681,7 +5681,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </screenshot>
 </listitem>
 <listitem>
-<para>Now click the <emphasis role="italic">Beneficiary</emphasis> option to go to <emphasis role="italic">Beneficiary Registration</emphasis> window.</para>
+<para>Now click the <emphasis role="italic">Person</emphasis> option to go to <emphasis role="italic">Person Registration</emphasis> window.</para>
 <screenshot>
 <screeninfo>Figure 2.3.4</screeninfo>
 <mediaobject>
@@ -5703,7 +5703,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </screenshot>
 </listitem>
 <listitem>
-<para>Start process of registration by providing name, location details, identification details, contact details and health provider details. The click the <emphasis role="italic">Add</emphasis> button (arrow in RED color, fig. 2.3.6, given at the end of beneficiary registration ) to complete to process of registration.</para>
+<para>Start process of registration by providing name, location details, identification details, contact details and health provider details. The click the <emphasis role="italic">Add</emphasis> button (arrow in RED color, fig. 2.3.6, given at the end of person registration ) to complete to process of registration.</para>
 <screenshot>
 <screeninfo>Figure 2.3.6</screeninfo>
 <mediaobject>
@@ -5712,16 +5712,16 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </imageobject>
 </mediaobject>
 </screenshot>
-<para>To check the duplicates or to avoid double registration, after providing name and demographic details, click the <emphasis role="italic">Check duplicate</emphasis> button ( arrow in BLUE color, fig. 2.3.6 ). Checking process bases on full name, gender and birthday of the registering beneficiary to look for the available beneficiaries with the similar information in the database. If the system finds out the same beneficiaries , the result list will be displayed. Now user can cancel the registration process and update the existing beneficiary or continue the process of registration.</para>
+<para>To check the duplicates or to avoid double registration, after providing name and demographic details, click the <emphasis role="italic">Check duplicate</emphasis> button ( arrow in BLUE color, fig. 2.3.6 ). Checking process bases on full name, gender and birthday of the registering person to look for the available persons with the similar information in the database. If the system finds out the same persons , the result list will be displayed. Now user can cancel the registration process and update the existing person or continue the process of registration.</para>
 </listitem>
 </orderedlist>
 </section>
 <section>
-<title>STEP 2 - Beneficiary Enrolment</title>
-<para>After the beneficiary registration, beneficiary needs to be enrolled in any available program in the application and for which she/he has been registered. To enrol -</para>
+<title>STEP 2 - Person Enrolment</title>
+<para>After the person registration, person needs to be enrolled in any available program in the application and for which she/he has been registered. To enrol -</para>
 <orderedlist>
 <listitem>
-<para>Click the <emphasis role="italic">Manage Program Enrollment </emphasis>icon, the first icon under Operations, corresponding to the beneficiary you would like to modify.</para>
+<para>Click the <emphasis role="italic">Manage Program Enrollment </emphasis>icon, the first icon under Operations, corresponding to the person you would like to modify.</para>
 <screenshot>
 <screeninfo>Figure 2.3.7</screeninfo>
 <mediaobject>
@@ -5748,8 +5748,8 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </listitem>
 <listitem>
 <para>After the selection of program, you need to provide two dates -</para>
-<para>1) Date of Enrolment: The date of registration of the beneficiary with a facility.</para>
-<para>2) Date of Incidence: The date when the beneficiary got the disease or he/she has just been committed to an equivalent program for being followed-up.</para>
+<para>1) Date of Enrolment: The date of registration of the person with a facility.</para>
+<para>2) Date of Incidence: The date when the person got the disease or he/she has just been committed to an equivalent program for being followed-up.</para>
 <screenshot>
 <screeninfo>Figure 2.3.9</screeninfo>
 <mediaobject>
@@ -5759,7 +5759,7 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </mediaobject>
 </screenshot>
 <warning>
-<para>The date of incidence and date of enrollment are very important to generate the activity plan for each beneficiary. Health provider needs to ensure recording and reporting date of incidence with each case.</para>
+<para>The date of incidence and date of enrollment are very important to generate the activity plan for each person. Health provider needs to ensure recording and reporting date of incidence with each case.</para>
 </warning>
 </listitem>
 <listitem>
@@ -5772,8 +5772,8 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </imageobject>
 </mediaobject>
 </screenshot>
-<para>The application will automatically calculate due-date for each the program stage and will show same below enrollment. In the health programs, an beneficiary registered and enrolled into the system, needs to be checked from time to time by service providers.
-The case update in the application is designed in the same manner so that services which are received by the beneficiaries can be updated from time to time when they visit the facility or whenever they are visits by the health providers. </para>
+<para>The application will automatically calculate due-date for each the program stage and will show same below enrollment. In the health programs, an person registered and enrolled into the system, needs to be checked from time to time by service providers.
+The case update in the application is designed in the same manner so that services which are received by the persons can be updated from time to time when they visit the facility or whenever they are visits by the health providers. </para>
 <screenshot>
 <screeninfo>Figure 2.3.11</screeninfo>
 <mediaobject>
@@ -5786,8 +5786,8 @@ The case update in the application is designed in the same manner so that servic
 </orderedlist>
 </section>
 <section>
-<title>STEP 3 – Inputting data in treatment stages for each beneficiary</title>
-<para>We have two functionalities which support to input data in treatment stages for each beneficiary.</para>
+<title>STEP 3 – Inputting data in treatment stages for each person</title>
+<para>We have two functionalities which support to input data in treatment stages for each person.</para>
 <orderedlist>
 <listitem>
 <para>Single data entry.</para>
@@ -5819,9 +5819,9 @@ The case update in the application is designed in the same manner so that servic
 </screenshot>
 </listitem>
 <listitem>
-<para>Selection of a beneficiary and individual case</para>
-<para>In order to enter data, you first have to select the facility for which beneficiaries belong to in order to enter data. Simply clicking the concerned facility from the facilities hierarchy displayed on the left side of the data entry screen.</para>
-<para>The next step is searching beneficiaries. Select a program in <emphasis role="italic">program</emphasis> list. The beneficiary list by the selected facility is shown. Each beneficiary in the list is shown with each corresponded stages.</para>
+<para>Selection of a person and individual case</para>
+<para>In order to enter data, you first have to select the facility for which persons belong to in order to enter data. Simply clicking the concerned facility from the facilities hierarchy displayed on the left side of the data entry screen.</para>
+<para>The next step is searching persons. Select a program in <emphasis role="italic">program</emphasis> list. The person list by the selected facility is shown. Each person in the list is shown with each corresponded stages.</para>
 <screenshot>
 <screeninfo>Figure 2.3.14</screeninfo>
 <mediaobject>
@@ -5833,7 +5833,7 @@ The case update in the application is designed in the same manner so that servic
 </listitem>
 <listitem>
 <para>Entering data for treatment case</para>
-<para>To open treatment form, click the <emphasis role="italic">Data Entry</emphasis> icon, the first icon under Operations, corresponding to the beneficiary you would like to enter data.</para>
+<para>To open treatment form, click the <emphasis role="italic">Data Entry</emphasis> icon, the first icon under Operations, corresponding to the person you would like to enter data.</para>
 <screenshot>
 <screeninfo>Figure 2.3.15`</screeninfo>
 <mediaobject>
@@ -5846,7 +5846,7 @@ The case update in the application is designed in the same manner so that servic
 <listitem>
 <para>Selection of the Program and Program Stage</para>
 <para><emphasis role="italic">What is program stage ?</emphasis> - This is to handle specific stages of a health program because of having multiple encounters for a given health program. E.g. once a pregnant woman enrolls to the &quot;ANC Program&quot;, she will get examination and treatments for the first trimester, the second trimester and/or the third trimester. These encounters in most cases are mandatory, and there will be dropouts in some cases, in which a pregnant woman should go through after she enrolled in the &quot;ANC Program&quot;. So the specific stages of the health program are defined when a health program is created/specified.</para>
-<para>Select the program and the program stage which you want to enter data for the selected beneficiary, then provide the <emphasis role="italic">Report Date</emphasis> to open the data entry form.</para>
+<para>Select the program and the program stage which you want to enter data for the selected person, then provide the <emphasis role="italic">Report Date</emphasis> to open the data entry form.</para>
 <screenshot>
 <screeninfo>Figure 2.3.16</screeninfo>
 <mediaobject>
@@ -5863,9 +5863,9 @@ The case update in the application is designed in the same manner so that servic
 </orderedlist>
 </section>
 <section>
-<title>Multiple Data Entry for beneficiaries</title>
-<para>This is an advanced function for data entry. On the same interface on above, many beneficiaries are listed for entering data by stages. </para>
-<para>To access the multiple beneficiary data entry module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Name Based Data Records</emphasis> option and click on it. Select <emphasis role="italic">Multiple Data Entry</emphasis> option on left menu to proceed.</para>
+<title>Multiple Data Entry for persons</title>
+<para>This is an advanced function for data entry. On the same interface on above, many persons are listed for entering data by stages. </para>
+<para>To access the multiple person data entry module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Name Based Data Records</emphasis> option and click on it. Select <emphasis role="italic">Multiple Data Entry</emphasis> option on left menu to proceed.</para>
 <screenshot>
 <screeninfo>Figure 2.5.3.1</screeninfo>
 <mediaobject>
@@ -5874,11 +5874,11 @@ The case update in the application is designed in the same manner so that servic
 </imageobject>
 </mediaobject>
 </screenshot>
-<para><emphasis role="bold">Step 1 - Show beneficiary list</emphasis>. You will first have to select the facility for which beneficiaries belong to in order to enter data. Simply clicking on the concerned facility from the facilities hierarchy displayed on the left side of the data entry screen. The next step is listing all beneficiaries by the certain program as follows -</para>
-<para>1) Select a program in <emphasis role="italic">program</emphasis> list. The beneficiary list by the selected facility and program is shown. Each beneficiary in the list is shown with each corresponded stages.</para>
-<para>2) Select an option from <emphasis role="italic">Sort by</emphasis> box to sort by beneficiary&apos;s attributes.</para>
+<para><emphasis role="bold">Step 1 - Show person list</emphasis>. You will first have to select the facility for which persons belong to in order to enter data. Simply clicking on the concerned facility from the facilities hierarchy displayed on the left side of the data entry screen. The next step is listing all persons by the certain program as follows -</para>
+<para>1) Select a program in <emphasis role="italic">program</emphasis> list. The person list by the selected facility and program is shown. Each person in the list is shown with each corresponded stages.</para>
+<para>2) Select an option from <emphasis role="italic">Sort by</emphasis> box to sort by person&apos;s attributes.</para>
 <para><emphasis role="bold">Step 2 - Open treatment form</emphasis>. </para>
-<para>See the below figure illustrates for beneficiary named <emphasis role="italic">Nguyen Van Nam</emphasis> and the second stage with name <emphasis role="italic">At 6 weeks after birth</emphasis>.</para>
+<para>See the below figure illustrates for person named <emphasis role="italic">Nguyen Van Nam</emphasis> and the second stage with name <emphasis role="italic">At 6 weeks after birth</emphasis>.</para>
 <screenshot>
 <screeninfo>Figure 2.5.3.3</screeninfo>
 <mediaobject>
@@ -5896,7 +5896,7 @@ The case update in the application is designed in the same manner so that servic
 </mediaobject>
 </screenshot></para>
 <para><emphasis role="bold">Step 3 - Enter data</emphasis> ( arrow <emphasis role="italic">labelled 1</emphasis> in Fig. 2.5.3.3 ). After finishing the entering, close the pop-up ( arrow <emphasis role="italic">labelled 2</emphasis> in Fig. 2.5.3.3 )</para>
-<para>The benefits of this advanced function is to optimize the time-transition consuming when entering data for a long list beneficiaries by not switching the main window/interface.</para>
+<para>The benefits of this advanced function is to optimize the time-transition consuming when entering data for a long list persons by not switching the main window/interface.</para>
 </section>
 </section>
 </section>
@@ -5915,7 +5915,7 @@ The case update in the application is designed in the same manner so that servic
 </imageobject>
 </mediaobject>
 </screenshot>
-<para>Each card ( see above Fig. 2.3.17 ) present a coming stage information for a beneficiary of a program.</para>
+<para>Each card ( see above Fig. 2.3.17 ) present a coming stage information for a person of a program.</para>
 </listitem>
 <listitem>
 <para>NBITS Summary report - View the summary report to get an overview of the services provided for a program.</para>
@@ -5947,20 +5947,20 @@ The case update in the application is designed in the same manner so that servic
 </orderedlist>
 </section>
 <section>
-<title>Beneficiary Aggregation Query Builder</title>
-<para>This is the core functionality for linking data between name-based information tracking system – NBITS ( beneficiaries, programs, etc ) and aggregate management system ( dataset, report, charts, etc.) by defining the linking/aggregating rules.</para>
+<title>Person Aggregation Query Builder</title>
+<para>This is the core functionality for linking data between name-based information tracking system – NBITS ( persons, programs, etc ) and aggregate management system ( dataset, report, charts, etc.) by defining the linking/aggregating rules.</para>
 <para>This provides two functions - </para>
 <itemizedlist>
 <listitem>
-<para><emphasis role="italic">Beneficiary Aggregation Query Builder</emphasis> is a tool for defining formula, expression, rules for aggregation data from name-based to aggregation system.</para>
+<para><emphasis role="italic">Person Aggregation Query Builder</emphasis> is a tool for defining formula, expression, rules for aggregation data from name-based to aggregation system.</para>
 </listitem>
 <listitem>
-<para><emphasis role="italic">Beneficiary Aggregation</emphasis> to used for generating routine data values from patient-data by month (or other interval if desired) and organization unit.</para>
+<para><emphasis role="italic">Person Aggregation</emphasis> to used for generating routine data values from patient-data by month (or other interval if desired) and organization unit.</para>
 </listitem>
 </itemizedlist>
 <section>
-<title>Beneficiary Aggregation Query Builder</title>
-<para>To access <emphasis role="italic">Beneficiaries Aggregation Query Builder</emphasis> module, from the <emphasis role="italic">Maintenance</emphasis> menu, go to the <emphasis role="italic">Beneficiaries and Programs</emphasis> option. Select <emphasis role="italic">Beneficiary Aggregation Query Builder</emphasis> option on left menu to proceed.</para>
+<title>Person Aggregation Query Builder</title>
+<para>To access <emphasis role="italic">Persons Aggregation Query Builder</emphasis> module, from the <emphasis role="italic">Maintenance</emphasis> menu, go to the <emphasis role="italic">Persons and Programs</emphasis> option. Select <emphasis role="italic">Person Aggregation Query Builder</emphasis> option on left menu to proceed.</para>
 <screenshot>
 <screeninfo>Figure 2.5.4.2</screeninfo>
 <mediaobject>
@@ -5987,7 +5987,7 @@ The case update in the application is designed in the same manner so that servic
 <emphasis role="underline">Area labelled 2:</emphasis>
 </emphasis>
 </emphasis> </para>
-<para>Select the equivalent data element for the beneficiaries to link to the data element selected above. The information include: program, program stage and data element by the selected program stage.</para>
+<para>Select the equivalent data element for the persons to link to the data element selected above. The information include: program, program stage and data element by the selected program stage.</para>
 <para>Double click on the data element the equivalent code of it will be showed in the condition box (labelled 4). An example of Fig. 2.5.4.3, if double click on the data element named <emphasis role="italic">BCG dose given date ((default))</emphasis> the code appear as <emphasis role="italic">[DE:8.75.1]</emphasis>.</para>
 <para>To make the condition valid, as default click on button “<emphasis role="italic">!=NULL</emphasis>”. Then there will be the text “<emphasis role="italic">[DE:8.75.1] is not null</emphasis>” in the Condition box.</para>
 <para><emphasis role="bold">
@@ -6004,8 +6004,8 @@ The case update in the application is designed in the same manner so that servic
 <para>After finishing the area above (1, 2, 3 and 4), click on the <emphasis role="italic">Add</emphasis> button.</para>
 </section>
 <section>
-<title>Beneficiary Aggregation</title>
-<para>To access <emphasis role="italic">Beneficiaries Aggregation</emphasis> module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Name-Based Data Records</emphasis> option. Select <emphasis role="italic">Beneficiary Aggregation</emphasis> option on left menu to proceed. Here are the main screen shots:</para>
+<title>Person Aggregation</title>
+<para>To access <emphasis role="italic">Persons Aggregation</emphasis> module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Name-Based Data Records</emphasis> option. Select <emphasis role="italic">Person Aggregation</emphasis> option on left menu to proceed. Here are the main screen shots:</para>
 <screenshot>
 <screeninfo>Figure 2.5.4.4</screeninfo>
 <mediaobject>
@@ -6043,7 +6043,7 @@ The case update in the application is designed in the same manner so that servic
 </screenshot>
 </section>
 <section>
-<title>A Sample for Beneficiary Aggregation</title>
+<title>A Sample for Person Aggregation</title>
 <para>E.g. Find the number of the children vaccinated BCG by defining a linking rule between the data elements of aggregate dataset named <emphasis role="italic">Number of children - BCG</emphasis> and the data element of a program stage named <emphasis role="italic">BCG dose given date</emphasis>.<orderedlist>
 <listitem>
 <para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Data Element and Indicators</emphasis> option and click on it. Select <emphasis role="italic">Data Element</emphasis> option to define two new data elements -</para>
@@ -6087,10 +6087,10 @@ The case update in the application is designed in the same manner so that servic
 <para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Benificaries and Programs</emphasis> option and click on it. Select <emphasis role="italic">Program</emphasis> option to create a program named <emphasis role="italic">Child Health Program</emphasis> with a stage named <emphasis role="italic">Birth Details</emphasis> and add the <emphasis role="italic">BCG dose give date</emphasis> data element into this stage.</para>
 </listitem>
 <listitem>
-<para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Beneficiaries and Program </emphasis>option and click on it. Select <emphasis role="italic">Beneficiary</emphasis> option to create three benificiaries named <emphasis role="italic">Micheal</emphasis>, <emphasis role="italic">Alice</emphasis> and <emphasis role="italic">Tom</emphasis> and enrol them into <emphasis role="italic">Child Health Program</emphasis>.</para>
+<para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Program </emphasis>option and click on it. Select <emphasis role="italic">Person</emphasis> option to create three benificiaries named <emphasis role="italic">Micheal</emphasis>, <emphasis role="italic">Alice</emphasis> and <emphasis role="italic">Tom</emphasis> and enrol them into <emphasis role="italic">Child Health Program</emphasis>.</para>
 </listitem>
 <listitem>
-<para>Create a new Beneficiary Aggregation QueryBuilder named <emphasis role="italic">Number of children - BCG Builder </emphasis>to linking between the data elements.</para>
+<para>Create a new Person Aggregation QueryBuilder named <emphasis role="italic">Number of children - BCG Builder </emphasis>to linking between the data elements.</para>
 <screenshot>
 <screeninfo>Figure 2.5.3.4</screeninfo>
 <mediaobject>
@@ -6143,10 +6143,10 @@ The case update in the application is designed in the same manner so that servic
 <title>Advanced functions</title>
 <para>The content in this part is for the expert users or administrative users who are capable and responsible for development and change</para>
 <section>
-<title>Define a beneficiary attribute</title>
+<title>Define a person attribute</title>
 <section>
-<title>Define a beneficiary attribute</title>
-<para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Beneficiaries and Programs</emphasis> option and click on it. Select <emphasis role="italic">Beneficiary Attribute</emphasis> option to create a new attribute for beneficiaries. </para>
+<title>Define a person attribute</title>
+<para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Attribute</emphasis> option to create a new attribute for persons. </para>
 <screenshot>
 <screeninfo>Fig. 2.7.1.1.1</screeninfo>
 <mediaobject>
@@ -6155,7 +6155,7 @@ The case update in the application is designed in the same manner so that servic
 </imageobject>
 </mediaobject>
 </screenshot>
-<para>After, click on <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Beneficiary Attribute Management</emphasis> window to go to <emphasis role="italic">Add New Beneficiary Attribute Management</emphasis> window.<screenshot>
+<para>After, click on <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Person Attribute Management</emphasis> window to go to <emphasis role="italic">Add New Person Attribute Management</emphasis> window.<screenshot>
 <screeninfo>Fig. 2.7.1.1.2</screeninfo>
 <mediaobject>
 <imageobject>
@@ -6173,10 +6173,10 @@ The case update in the application is designed in the same manner so that servic
 <para>Basic information</para>
 <itemizedlist>
 <listitem>
-<para><emphasis role="italic">Name</emphasis>: Name of beneficiary attribute.</para>
+<para><emphasis role="italic">Name</emphasis>: Name of person attribute.</para>
 </listitem>
 <listitem>
-<para><emphasis role="italic">Description</emphasis>: Description of beneficiary attribute.</para>
+<para><emphasis role="italic">Description</emphasis>: Description of person attribute.</para>
 </listitem>
 <listitem>
 <para><emphasis role="italic">Mandatory</emphasis>: Entering value for this attribute is required or not.</para>
@@ -6193,8 +6193,8 @@ The case update in the application is designed in the same manner so that servic
 </itemizedlist>
 </section>
 <section>
-<title>Define a beneficiary attribute group</title>
-<para>To access the beneficiary attribute group maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Beneficiaries and Programs</emphasis> option and click on it. Select <emphasis role="italic">Beneficiary Attribute Group</emphasis> option to create a new an attribute group.</para>
+<title>Define a person attribute group</title>
+<para>To access the person attribute group maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Attribute Group</emphasis> option to create a new an attribute group.</para>
 <screenshot>
 <screeninfo>Fig. 2.7.1.2.1</screeninfo>
 <mediaobject>
@@ -6203,7 +6203,7 @@ The case update in the application is designed in the same manner so that servic
 </imageobject>
 </mediaobject>
 </screenshot>
-<para>To create a new attribute group, click the <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Beneficiary Attribute Group</emphasis> window to go to <emphasis role="italic">Add New Beneficiary Attribute Group</emphasis> window , click the <emphasis role="italic">Add new</emphasis> button. Fill in the <emphasis role="italic">Name</emphasis> and <emphasis role="italic">Description</emphasis> fields and then select attributes that should belong to the group from the left panel. </para>
+<para>To create a new attribute group, click the <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Person Attribute Group</emphasis> window to go to <emphasis role="italic">Add New Person Attribute Group</emphasis> window , click the <emphasis role="italic">Add new</emphasis> button. Fill in the <emphasis role="italic">Name</emphasis> and <emphasis role="italic">Description</emphasis> fields and then select attributes that should belong to the group from the left panel. </para>
 <para>Click the <emphasis role="italic">Move selected items</emphasis> button to add the selected attributes to the attribute group. Click the <emphasis role="italic">Remove selected items</emphasis> button to remove attributes from the group that have been selected in the right panel. </para>
 <para>Finally, click the <emphasis role="italic">Add</emphasis> button to save changes, or the <emphasis role="italic">Cancel</emphasis> button to discard any changes..</para>
 <screenshot>
@@ -6217,8 +6217,8 @@ The case update in the application is designed in the same manner so that servic
 </section>
 </section>
 <section>
-<title>Define a beneficiary identifier type</title>
-<para>To access the beneficiary identifier type maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Beneficiaries and Programs</emphasis> option and click on it. Select <emphasis role="italic">Beneficiary Identifier Type</emphasis> option to create a new identifier type.</para>
+<title>Define a person identifier type</title>
+<para>To access the person identifier type maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Identifier Type</emphasis> option to create a new identifier type.</para>
 <screenshot>
 <screeninfo>Fig. 2.7.2a</screeninfo>
 <mediaobject>
@@ -6227,7 +6227,7 @@ The case update in the application is designed in the same manner so that servic
 </imageobject>
 </mediaobject>
 </screenshot>
-<para>To creating a new identifier type, click the <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Beneficiary Identifier Type Management </emphasis>window to go to <emphasis role="italic">Add New Beneficiary Identifier Type</emphasis> window.</para>
+<para>To creating a new identifier type, click the <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Person Identifier Type Management </emphasis>window to go to <emphasis role="italic">Add New Person Identifier Type</emphasis> window.</para>
 <screenshot>
 <screeninfo>Fig. 2.7.2b</screeninfo>
 <mediaobject>
@@ -6260,8 +6260,8 @@ The case update in the application is designed in the same manner so that servic
 </section>
 <section>
 <title>Define a relationship type</title>
-<para>Relationship type section provides a mechanism for defining any relationship types and link beneficiaries through these relationship types by creating specific relationships.</para>
-<para>To access the relationship type maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Beneficiaries and Programs</emphasis> option and click on it. Select <emphasis role="italic">Relationship Type</emphasis> option to create a new relationship type.</para>
+<para>Relationship type section provides a mechanism for defining any relationship types and link persons through these relationship types by creating specific relationships.</para>
+<para>To access the relationship type maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Relationship Type</emphasis> option to create a new relationship type.</para>
 <screenshot>
 <screeninfo>Fig. 2.7.3a</screeninfo>
 <mediaobject>
@@ -6281,9 +6281,9 @@ The case update in the application is designed in the same manner so that servic
 </screenshot>
 </section>
 <section>
-<title>Beneficiary Registration</title>
-<para>Beneficiary registration section provides a mechanism for managing facilities which allow to registry new beneficiaries or not.</para>
-<para>To access the beneficiary registration maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Beneficiaries and Programs</emphasis> option and click on it. Select <emphasis role="italic">Beneficiary Registration</emphasis> option to select facilities. </para>
+<title>Person Registration</title>
+<para>Person registration section provides a mechanism for managing facilities which allow to registry new persons or not.</para>
+<para>To access the person registration maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Registration</emphasis> option to select facilities. </para>
 <screenshot>
 <screeninfo>Fig. 2.7.4</screeninfo>
 <mediaobject>
@@ -6293,7 +6293,7 @@ The case update in the application is designed in the same manner so that servic
 </mediaobject>
 </screenshot>
 <warning>
-<para>There are two process for registering facilities. The first one is where the administrator will say which facility can register. The second is when end user logs in and then select a facility, system will display a waring message if the selected facility cannot register beneficiaries; else, the system will display the functions to register beneficiaries.</para>
+<para>There are two process for registering facilities. The first one is where the administrator will say which facility can register. The second is when end user logs in and then select a facility, system will display a waring message if the selected facility cannot register persons; else, the system will display the functions to register persons.</para>
 </warning>
 </section>
 <section>
@@ -6303,7 +6303,7 @@ The case update in the application is designed in the same manner so that servic
 <para>Program section provides a mechanism for defining a health program. All name based case entry is organised through the use of programs.
 
 </para>
-<para>To access the program maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Beneficiaries and Programs</emphasis> option and click on it. Select <emphasis role="italic">Program</emphasis> option to create a new program.</para>
+<para>To access the program maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Program</emphasis> option to create a new program.</para>
 <para>To create a new program, click the <emphasis role="italic">Add new</emphasis> button. Fill all fields with read asterisk, and then click the &quot;Add&quot; button.</para>
 <para><screenshot>
 <screeninfo>Figure 2.5.1.1</screeninfo>
@@ -6322,11 +6322,11 @@ The case update in the application is designed in the same manner so that servic
 <para><emphasis role="italic">Description</emphasis>: Descriptions, meanings, explanation, etc. of/about the program</para>
 </listitem>
 <listitem>
-<para><emphasis role="italic">Date of Enrolment Description</emphasis>: The date in which a beneficiary is registered to the system.
-For example: the date in which a beneficiary enrols to the system.</para>
+<para><emphasis role="italic">Date of Enrolment Description</emphasis>: The date in which a person is registered to the system.
+For example: the date in which a person enrols to the system.</para>
 </listitem>
 <listitem>
-<para><emphasis role="italic">Date of Incidence Description</emphasis>: The date when the beneficiary got the disease or he/she has just been committed to an equivalent program for being followed-up. E.g. In the Immunization program for child under 1yr old, the incident date is the birthday; in the maternal program, the incident date is the date of last menstrual period (LMP).</para>
+<para><emphasis role="italic">Date of Incidence Description</emphasis>: The date when the person got the disease or he/she has just been committed to an equivalent program for being followed-up. E.g. In the Immunization program for child under 1yr old, the incident date is the birthday; in the maternal program, the incident date is the date of last menstrual period (LMP).</para>
 </listitem>
 <listitem>
 <para><emphasis role="italic">Number of max days allowed to input data</emphasis>.</para>
@@ -6408,7 +6408,7 @@ More explanation for the figure:</para>
 </imageobject>
 </mediaobject>
 </screenshot>
-<para>Your program will then be ready to be used to enroll beneficiaries (which are modified/created under <emphasis role="italic">Maintenance-&gt;Beneficiaries and Programs-&gt;Beneficiaries</emphasis>) and enter data under the data-entry function <emphasis role="italic">Services-&gt;Name Based Data Records-&gt;Data Entry</emphasis> or <emphasis role="italic">Multiple Data. Entry</emphasis> for the facilities that you have assigned.</para>
+<para>Your program will then be ready to be used to enroll persons (which are modified/created under <emphasis role="italic">Maintenance-&gt;Persons and Programs-&gt;Persons</emphasis>) and enter data under the data-entry function <emphasis role="italic">Services-&gt;Name Based Data Records-&gt;Data Entry</emphasis> or <emphasis role="italic">Multiple Data. Entry</emphasis> for the facilities that you have assigned.</para>
 </section>
 <section>
 <title>Other functionalities</title>
@@ -6424,10 +6424,10 @@ For instance, TT1 is a patient data element. It exists into program stages as fo
 </section>
 <section>
 <title>Define validation criteria</title>
-<para>Validation criteria section provide a mechanism for defining criteria for beneficiaries when enrolling a program.
+<para>Validation criteria section provide a mechanism for defining criteria for persons when enrolling a program.
 
 </para>
-<para>To access the validation criteria maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Beneficiaries and Programs</emphasis> option and click on it. Select <emphasis role="italic">Validation Criteria</emphasis> option to create a new program</para>
+<para>To access the validation criteria maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Validation Criteria</emphasis> option to create a new program</para>
 <para>To create a new validation criterion, click the <emphasis role="italic">Add new</emphasis> button. Fill all fields with read asterisk, and click <emphasis role="italic">Add</emphasis> button.
 
 </para>
