@@ -82,19 +82,19 @@ function removeAttributeOption( rowId )
 function searchingAttributeOnChange( this_ )
 {	
 	var container = jQuery(this_).parent().parent().attr('id');
-	var attributeId = jQuery('#' + container+ ' [id=searchingAttributeId]').val(); 
+	var attributeId = jQuery('#' + container + ' [id=searchingAttributeId]').val(); 
 	var element = jQuery('#' + container + ' [id=searchText]');
 	var valueType = jQuery('#' + container+ ' [id=searchingAttributeId] option:selected').attr('valueType');
 	
 	if( attributeId == '-1' )
 	{
 		element.replaceWith( getDateField( container ) );
-		datePickerValid( container + ' [id=searchText]' );
+		datePickerValid( 'searchText_' + container );
 		return;
 	}
 	
-	$('#' + container+ ' [id=searchText]').datepicker("destroy");
-	$('#' + container+ ' [id=dateOperator]').replaceWith("");
+	$( '#searchText_' + container ).datepicker("destroy");
+	$('#' + container + ' [id=dateOperator]').replaceWith("");
 	if( attributeId == '0' )
 	{
 		element.replaceWith( programComboBox );
@@ -116,7 +116,7 @@ function searchingAttributeOnChange( this_ )
 function getDateField( container )
 {
 	var dateField = '<select id="dateOperator" style="width:30px;" name="dateOperator" ><option value=">"> > </option><option value="="> = </option><option value="<"> < </option></select>';
-	dateField += '<input type="text" id="searchText" name="searchText" maxlength="30" style="width:15.6em" onkeyup="searchPatientsOnKeyUp( event );">';
+	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" maxlength="30" style="width:15.6em" onkeyup="searchPatientsOnKeyUp( event );">';
 	return dateField;
 }
 	
@@ -141,17 +141,40 @@ function getKeyCode(e)
 	 return (e)? e.which : null;
 }
 
-function searchAdvancedPatients()
+function validateAdvancedPatients()
 {
 	hideById( 'listPatientDiv' );
-	var searchTextFields = jQuery('[name=searchText]');
 	var flag = true;
-	jQuery( searchTextFields ).each( function( i, item )
+	var params = '';
+	var dateOperator = '';
+	jQuery("#searchPatientDiv :input").each( function( i, item )
     {
 		if( jQuery( item ).val() == '' )
 		{
 			showWarningMessage( i18n_specify_search_criteria );
 			flag = false;
+		}
+		
+		var elementId = $(this).attr('id');
+		var elementName = $(this).attr('name');
+		if( elementId =='dateOperator' )
+		{
+			dateOperator = jQuery(this).val();
+		}
+		else if( jQuery(this).val()!= null && jQuery(this).val() != '' )
+		{
+			var value =jQuery(this).val();
+			if( dateOperator != '' )
+			{
+				value = dateOperator + "'" + value + "'";
+				dateOperator = "";
+			}
+			if( elementName=='searchText')
+				params += "searchText=";
+			else
+				params +=  elementId + "=";
+				
+			params += htmlEncode(value) + "&";
 		}
 	});
 	
@@ -159,7 +182,7 @@ function searchAdvancedPatients()
 	
 	contentDiv = 'listPatientDiv';
 	jQuery( "#loaderDiv" ).show();
-	searchPatient();
+	searchAdvancedPatient( params );
 	
 }
 
