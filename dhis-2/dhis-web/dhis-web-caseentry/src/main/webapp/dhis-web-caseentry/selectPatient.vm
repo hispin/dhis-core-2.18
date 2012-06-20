@@ -43,7 +43,7 @@
 					<input type='checkbox' id='searchBySelectedOrgunit' name='searchBySelectedOrgunit' value='true' />
 				</td>
 				<td>
-					<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='searchAdvancedPatients();'>
+					<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedPatients();'>
 				</td>
 				<td>&nbsp;</td>
 			</tr>

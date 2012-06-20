@@ -148,12 +148,12 @@ function showSelectedDataRecoding( patientId )
 		});
 }
 
-function searchPatient()
+function searchAdvancedPatient( params )
 {
 	$.ajax({
 		url: 'searchPatient.action',
 		type:"POST",
-		data: getParamsForDiv('searchPatientDiv'),
+		data: params,
 		success: function( html ){
 				statusSearching = 1;
 				setInnerHTML( 'contentDiv', html );
