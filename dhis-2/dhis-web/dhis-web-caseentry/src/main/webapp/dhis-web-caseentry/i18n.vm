@@ -82,5 +82,6 @@ after:'$encoder.jsEscape($i18n.getString( 'after' ) , "'")',
 on:'$encoder.jsEscape($i18n.getString( 'on' ) , "'")',
 orgunit_groups:'$encoder.jsEscape($i18n.getString( 'orgunit_groups' ) , "'")',
 none:'[' + '$encoder.jsEscape($i18n.getString( 'none' ) , "'")' + ']',
-not_empty:'$encoder.jsEscape($i18n.getString( 'not_empty' ) , "'")'
+not_empty:'$encoder.jsEscape($i18n.getString( 'not_empty' ) , "'")',
+operations:'$encoder.jsEscape($i18n.getString( 'operations' ) , "'")',
 };
