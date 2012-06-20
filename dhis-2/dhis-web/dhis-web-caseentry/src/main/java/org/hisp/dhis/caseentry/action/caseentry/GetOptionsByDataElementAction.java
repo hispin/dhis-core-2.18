@@ -72,11 +72,11 @@ public class GetOptionsByDataElementAction
         this.id = id;
     }
 
-    private String key;
+    private String query;
 
-    public void setKey( String key )
+    public void setQuery( String query )
     {
-        this.key = key;
+        this.query = query;
     }
 
     // -------------------------------------------------------------------------
@@ -98,7 +98,7 @@ public class GetOptionsByDataElementAction
     {
         DataElement dataElement = dataElementService.getDataElement( id );
 
-        options = optionService.getOptions( dataElement.getOptionSet(), key );
+        options = optionService.getOptions( dataElement.getOptionSet(), query );
 
         return SUCCESS;
     }

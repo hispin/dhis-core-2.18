@@ -400,10 +400,6 @@ public class GenerateTabularReportAction
             values.add( i18n.getString( "yes" ) );
             values.add( i18n.getString( "no" ) );
         }
-        else if ( dataElement.getOptionSet() != null )
-        {
-            values = dataElement.getOptionSet().getOptions();
-        }
 
         return values;
     }

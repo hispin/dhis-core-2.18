@@ -115,8 +115,8 @@ function searchingAttributeOnChange( this_ )
 
 function getDateField( container )
 {
-	var dateField = '<select id="dateOperator" name="dateOperator" ><option value=">"> > </option><option value="="> = </option><option value="<"> < </option></select>';
-	dateField += '<input type="text" id="searchText" name="searchText" maxlength="30" style="width:18em" onkeyup="searchPatientsOnKeyUp( event );">';
+	var dateField = '<select id="dateOperator" style="width:30px;" name="dateOperator" ><option value=">"> > </option><option value="="> = </option><option value="<"> < </option></select>';
+	dateField += '<input type="text" id="searchText" name="searchText" maxlength="30" style="width:15.6em" onkeyup="searchPatientsOnKeyUp( event );">';
 	return dateField;
 }
 	

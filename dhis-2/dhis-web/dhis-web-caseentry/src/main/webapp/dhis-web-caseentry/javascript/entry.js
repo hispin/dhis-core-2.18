@@ -811,13 +811,13 @@ function autocompletedField( idField )
 		minLength: 0,
 		source: function( request, response ){
 			$.ajax({
-				url: "getOptions.action?id=" + dataElementId + "&key=" + input.val(),
+				url: "getOptions.action?id=" + dataElementId + "&query=" + input.val(),
 				dataType: "json",
 				success: function(data) {
 					response($.map(data.options, function(item) {
 						return {
-							label: item,
-							id: item
+							label: item.o,
+							id: item.o
 						};
 					}));
 				}

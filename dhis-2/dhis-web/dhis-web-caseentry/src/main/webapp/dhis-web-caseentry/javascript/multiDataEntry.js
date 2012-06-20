@@ -65,7 +65,7 @@ function viewPrgramStageRecords( programStageInstanceId )
 	jQuery("#patientList input[name='programStageBtn']").each(function(i,item){
 		jQuery(item).removeClass('stage-object-selected');
 	});
-	jQuery( '#' + prefixStageId + programStageInstanceId ).addClass('stage-object-selected');
+	jQuery( '#' + prefixId + programStageInstanceId ).addClass('stage-object-selected');
 	
 	$('#contentDataRecord').dialog('destroy').remove();
     $('<div id="contentDataRecord">' ).load("viewProgramStageRecords.action",
@@ -73,13 +73,13 @@ function viewPrgramStageRecords( programStageInstanceId )
 			programStageInstanceId: programStageInstanceId
 		}).dialog(
 		{
-			title: 'ProgramStage',
-			maximize: true, 
-			closable: true,
+			title:i18n_program_stage,
+			maximize:true, 
+			closable:true,
 			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
-			width: 800,
-			height: 400
+			width:800,
+			height:400
 		});
 }
 
