@@ -837,7 +837,7 @@ Ext.onReady( function() {
 				var value = compare + "'"+ filter.data.value + "'";
 				
 				var record = grid.getView().getRecord( grid.getView().getNode(0) );
-				record.set(filter.field, value);
+				record.set(filter.field, value.toLowerCase());
 			}
 		},
 		getParams: function() {
@@ -956,7 +956,7 @@ Ext.onReady( function() {
 				var col = cols[i];
 				if( col.name && col.name == colname )
 				{
-					var value = editor.data[col.dataIndex];
+					var value = editor.data[col.dataIndex].toLowerCase();
 					var hidden = (col.hidden==undefined)? false : col.hidden;
 					if( value!=null && value!= '')
 					{
@@ -1231,16 +1231,8 @@ Ext.onReady( function() {
 					sortable: false,
 					draggable: false,
 					hidden: eval(TR.value.columns[index].hidden ),
-					editor: {
-						xtype: TR.value.columns[index].xtype,
-						queryMode: 'local',
-						editable: true,
-						valueField: 'name',
-						displayField: 'name',
-						store:  new Ext.data.ArrayStore({
-							fields: ['name'],
-							data: TR.value.columns[index].suggested
-						})
+					filter:{
+						type: "string"
 					}
 				}
 			});
@@ -1253,7 +1245,8 @@ Ext.onReady( function() {
 			
 			cols[++index]={
 				xtype:'actioncolumn',
-				width:25,
+				header: TR.i18n.operations,
+				width:80,
 				sortable: false,
 				draggable: false,
 				hideable: false,

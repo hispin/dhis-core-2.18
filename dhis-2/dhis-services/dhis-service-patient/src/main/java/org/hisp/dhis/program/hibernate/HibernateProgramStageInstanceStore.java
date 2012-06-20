@@ -320,6 +320,14 @@ public class HibernateProgramStageInstanceStore
             if ( objectType.equals( PREFIX_FIXED_ATTRIBUTE ) )
             {
                 sql += "p." + infor[1] + ",";
+
+                if ( infor.length == 4 )
+                {
+                    String value = lower( infor[3] );
+                    where += operator + "lower(" + infor[1] + ") " + value + " ";
+
+                    operator = "and ";
+                }
             }
             else
             {
