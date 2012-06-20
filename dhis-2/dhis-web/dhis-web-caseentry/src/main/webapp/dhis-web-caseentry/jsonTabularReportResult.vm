@@ -8,19 +8,19 @@
 	#set($index = 0)
 	#foreach( $col in $grid.getHeaders() )
 	{
-	  #set( $mapIndx = $index - $metaData  )
-	  "xtype": 	#if( $mapSuggestedValues.get($mapIndx) && $index > $metaData && $mapSuggestedValues.get($mapIndx).size() > 0 )
+		#set( $mapIndx = $index - $metaData  )
+		"xtype": 	#if( $mapSuggestedValues.get($mapIndx) && $index > $metaData && $mapSuggestedValues.get($mapIndx).size() > 0 )
 						"combobox"
 					#else
 						"textfield"
 					#end,
-      "suggested":  [#set( $suggestedValues = $mapSuggestedValues.get($mapIndx) )
+		"suggested":  [#set( $suggestedValues = $mapSuggestedValues.get($mapIndx) )
 					#foreach( $suggestedValue in $suggestedValues )
 						["$!encoder.jsonEncode( ${suggestedValue} )"]
 						#if( $velocityCount < $suggestedValues.size() ),#end
 					#end],
-      "name": "$col.name",
-      "hidden": "$col.hidden"
+		"name": "$col.name",
+		"hidden": "$col.hidden"
     }#if( $velocityCount < $noHeader ),#end
 	#set($index = $index + 1)
 	#end
