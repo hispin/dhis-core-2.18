@@ -86,14 +86,12 @@ public class JdbcActivityPlanStore
         {
             Statement statement = holder.getStatement();
 
-            // String sql = statementBuilder.getActivityPlan( orgunitId, min,
-            // max );
-            String sql = "SELECT psi.programstageinstanceid " + "FROM programstageinstance psi "
+            String sql = "SELECT distinct psi.programstageinstanceid " + "FROM programstageinstance psi "
                 + "INNER JOIN programinstance pi " + "ON pi.programinstanceid = psi.programinstanceid "
                 + "INNER JOIN programstage ps " + "ON ps.programstageid=psi.programstageid "
                 + "INNER JOIN program_organisationunits po " + "ON po.programid=pi.programid "
                 + "INNER JOIN program pg " + "ON po.programid=pg.programid " + "WHERE pi.completed = FALSE  "
-                + "AND pg.singleEvent=FALSE " + "AND po.organisationunitid = " + orgunitId
+                + "AND pg.type=1 " + "AND po.organisationunitid = " + orgunitId
                 + " AND psi.completed = FALSE " + "AND ps.stageinprogram in ( SELECT min(ps1.stageinprogram) "
                 + "FROM programstageinstance psi1 " + "INNER JOIN programinstance pi1 "
                 + "ON pi1.programinstanceid = psi1.programinstanceid " + "INNER JOIN programstage ps1 "
@@ -133,11 +131,12 @@ public class JdbcActivityPlanStore
         {
             Statement statement = holder.getStatement();
 
-            String sql = "SELECT count(psi.programstageinstanceid) " + "FROM programstageinstance psi "
+            String sql = "SELECT count(distinct psi.programstageinstanceid) " + "FROM programstageinstance psi "
                 + "INNER JOIN programinstance pi " + "ON pi.programinstanceid = psi.programinstanceid "
                 + "INNER JOIN programstage ps " + "ON ps.programstageid=psi.programstageid "
                 + "INNER JOIN program_organisationunits po " + "ON po.programid=pi.programid "
-                + "WHERE pi.completed = FALSE  " + "AND po.organisationunitid = " + orgunitId
+                + "INNER JOIN program pg " + "ON po.programid=pg.programid " + "WHERE pi.completed = FALSE  "
+                + "AND pg.type=1 " + "AND po.organisationunitid = " + orgunitId
                 + " AND psi.completed = FALSE " + "AND ps.stageinprogram in ( SELECT min(ps1.stageinprogram) "
                 + "FROM programstageinstance psi1 " + "INNER JOIN programinstance pi1 "
                 + "ON pi1.programinstanceid = psi1.programinstanceid " + "INNER JOIN programstage ps1 "

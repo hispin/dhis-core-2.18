@@ -128,19 +128,4 @@ public class DefaultProgramService
         return programStore.get( type, orgunit );
     }
 
-//    public Collection<Program> getPrograms( boolean singleEvent )
-//    {
-//        return programStore.get( singleEvent );
-//    }
-//
-//    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymous )
-//    {
-//        return programStore.get( singleEvent, anonymous );
-//    }
-//    
-//    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit )
-//    {
-//        return programStore.get( singleEvent, anonymous, orgunit );
-//    }
-
 }

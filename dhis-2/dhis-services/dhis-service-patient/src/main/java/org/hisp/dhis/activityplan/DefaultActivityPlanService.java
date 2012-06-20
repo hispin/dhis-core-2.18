@@ -289,19 +289,22 @@ public class DefaultActivityPlanService
 
     public Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit, int min, int max )
     {
-        Collection<Integer> programStageInstanceIds = activityPlanStore.getActivitiesByProvider(
-            organisationUnit.getId(), min, max );
+        Collection<Integer> programStageInstanceIds = activityPlanStore.getActivitiesByProvider( organisationUnit
+            .getId(), min, max );
 
         Collection<Activity> activities = new ArrayList<Activity>();
 
-        for ( Integer id : programStageInstanceIds )
+        if ( programStageInstanceIds != null )
         {
-            ProgramStageInstance instance = programStageInstanceService.getProgramStageInstance( id );
-            Activity activity = new Activity();
-            activity.setBeneficiary( instance.getProgramInstance().getPatient() );
-            activity.setTask( instance );
-            activity.setDueDate( instance.getDueDate() );
-            activities.add( activity );
+            for ( Integer id : programStageInstanceIds )
+            {
+                ProgramStageInstance instance = programStageInstanceService.getProgramStageInstance( id );
+                Activity activity = new Activity();
+                activity.setBeneficiary( instance.getProgramInstance().getPatient() );
+                activity.setTask( instance );
+                activity.setDueDate( instance.getDueDate() );
+                activities.add( activity );
+            }
         }
 
         return activities;
