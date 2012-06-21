@@ -12,6 +12,7 @@ import org.hisp.dhis.coldchain.inventory.EquipmentService;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
+import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
 import org.hisp.dhis.coldchain.inventory.comparator.InventoryTypeAttributeMandatoryComparator;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
@@ -168,7 +169,12 @@ public class ShowEquipmentDataEntryFormAction implements Action
         
         if( inventoryTypeAttributeList == null || inventoryTypeAttributeList.size() == 0  )
         {
-            inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+            inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( );
+            for( InventoryType_Attribute inventoryType_Attribute : inventoryType.getInventoryType_Attributes() )
+            {
+                inventoryTypeAttributeList.add( inventoryType_Attribute.getInventoryTypeAttribute() );
+            }
+            
             Collections.sort( inventoryTypeAttributeList, new InventoryTypeAttributeMandatoryComparator() );
             if( inventoryTypeAttributeList != null && inventoryTypeAttributeList.size() > 3 )
             {

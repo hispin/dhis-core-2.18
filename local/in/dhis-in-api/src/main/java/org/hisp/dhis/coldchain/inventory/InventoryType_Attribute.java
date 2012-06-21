@@ -97,49 +97,39 @@ public class InventoryType_Attribute implements Serializable
         return inventoryType;
     }
 
-
     public void setInventoryType( InventoryType inventoryType )
     {
         this.inventoryType = inventoryType;
     }
-
 
     public InventoryTypeAttribute getInventoryTypeAttribute()
     {
         return inventoryTypeAttribute;
     }
 
-
     public void setInventoryTypeAttribute( InventoryTypeAttribute inventoryTypeAttribute )
     {
         this.inventoryTypeAttribute = inventoryTypeAttribute;
     }
-
 
     public boolean isDisplay()
     {
         return display;
     }
 
-
     public void setDisplay( boolean display )
     {
         this.display = display;
     }
-
 
     public Integer getSortOrder()
     {
         return sortOrder;
     }
 
-
     public void setSortOrder( Integer sortOrder )
     {
         this.sortOrder = sortOrder;
     }
-
-    
-    
 
 }

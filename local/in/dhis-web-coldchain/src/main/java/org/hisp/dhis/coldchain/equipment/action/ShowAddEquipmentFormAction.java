@@ -9,6 +9,7 @@ import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
+import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -97,7 +98,11 @@ public class ShowAddEquipmentFormAction implements Action
         
         inventoryType = inventoryTypeService.getInventoryType( Integer.parseInt( inventoryTypeId ) );
         
-        inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+        inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( );
+        for( InventoryType_Attribute inventoryType_Attribute : inventoryType.getInventoryType_Attributes() )
+        {
+            inventoryTypeAttributes.add( inventoryType_Attribute.getInventoryTypeAttribute() );
+        }
               
         CatalogType catalogType = inventoryType.getCatalogType();
         

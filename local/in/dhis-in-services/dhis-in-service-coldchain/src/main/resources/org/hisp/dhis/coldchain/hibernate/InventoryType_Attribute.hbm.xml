@@ -4,7 +4,7 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.coldchain.inventory.InventoryType_Attribute" table="inventorytype_attribute_display">
+  <class name="org.hisp.dhis.coldchain.inventory.InventoryType_Attribute" table="inventorytype_attributes">
 
     <composite-id>
       <key-many-to-one name="inventoryType" class="org.hisp.dhis.coldchain.inventory.InventoryType" column="inventorytypeid"

@@ -99,7 +99,7 @@ public class AddInventoryTypeAttributeAction implements Action
         inventoryTypeAttribute.setMandatory( mandatory );
         inventoryTypeAttribute.setNoChars( noChars );
         inventoryTypeAttribute.setValueType( valueType );
-        inventoryTypeAttribute.setDisplay( display );
+        //inventoryTypeAttribute.setDisplay( display );
         
         inventoryTypeAttributeService.addInventoryTypeAttribute( inventoryTypeAttribute );
         

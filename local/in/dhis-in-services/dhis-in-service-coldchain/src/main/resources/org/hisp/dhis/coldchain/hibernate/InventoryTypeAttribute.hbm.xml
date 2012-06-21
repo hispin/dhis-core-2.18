@@ -17,7 +17,7 @@
 
     <property name="mandatory" column="mandatory" not-null="true" />
 	  
-	<property name="display" column="display" not-null="true" />  
+	<!--<property name="display" column="display" not-null="true" /> -->  
 
     <property name="noChars" />
 	
