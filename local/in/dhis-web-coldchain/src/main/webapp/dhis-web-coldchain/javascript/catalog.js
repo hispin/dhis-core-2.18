@@ -92,7 +92,7 @@ function showCatalogDetails( catalogId )
 					closable: true,
 					modal:true,
 					overlay:{background:'#000000', opacity:0.1},
-					width: 500,
+					width: 650,
 					height: 500
 				});;
 }

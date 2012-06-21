@@ -106,13 +106,10 @@ implements Action
             
             //catalogTypeAttributes = catalogType.getCatalogTypeAttributes();
             
-            
             catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes());
             Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
             
-            
             List<CatalogDataValue> catalogDataValues = new ArrayList<CatalogDataValue>( catalogDataValueService.getAllCatalogDataValuesByCatalog( catalogService.getCatalog( id )) );
-            
             
             for( CatalogDataValue catalogDataValue : catalogDataValues )
             {
