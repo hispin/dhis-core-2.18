@@ -1,5 +1,14 @@
 #!/bin/bash
 
+isNotSet() {
+    if [[ ! ${!1} && ${!1-_} ]]
+    then
+        return 1
+    fi
+}
+
+
+
 if [[ $# -lt 1 ]]; then
   echo "Usage: $0 original-properties-file translation-properties-file"
   exit 1
@@ -23,5 +32,10 @@ done < $2
 echo "" > $2
 
 for key in "${!array1[@]}"; do
-        echo "$key=${array2[$key]}" >> ${PROP_FILE}
+
+isNotSet array2[${key}]
+if [ $? -ne 1 ]
+then
+        echo "$key=${array2[$key]}" >> ${PROP_FILE};
+fi
 done
