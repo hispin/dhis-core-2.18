@@ -7,7 +7,7 @@ fi
 
 declare -A array1
 declare -A array2
-PROP_FILE="cleaned.properties"
+PROP_FILE=$2
 
 while IFS='=' read -r key val; do
         [[ $key = '#'* ]] && continue
@@ -19,6 +19,8 @@ while IFS='=' read -r key val; do
         [[ $key = '#'* ]] && continue
         array2["$key"]="$val"
 done < $2
+
+echo "" > $2
 
 for key in "${!array1[@]}"; do
         echo "$key=${array2[$key]}" >> ${PROP_FILE}
