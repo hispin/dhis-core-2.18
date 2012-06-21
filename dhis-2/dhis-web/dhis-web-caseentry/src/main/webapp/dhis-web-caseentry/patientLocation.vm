@@ -5,7 +5,7 @@
 	<table>
 		<tr>
 			<td>
-				#organisationUnitSelectionTree( true, false, false )
+				#organisationUnitSelectionTree( false, false, true )
 			</td>
 		</tr>
 		<tr>
