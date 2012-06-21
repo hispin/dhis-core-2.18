@@ -29,7 +29,6 @@ public class DefaultInventoryTypeService implements InventoryTypeService
     {
         i18nService = service;
     }
-
     
     // -------------------------------------------------------------------------
     // InventoryType
@@ -74,7 +73,6 @@ public class DefaultInventoryTypeService implements InventoryTypeService
     }
     */
     
-   
  
     @Override
     public int addInventoryType( InventoryType inventoryType )
@@ -93,22 +91,24 @@ public class DefaultInventoryTypeService implements InventoryTypeService
     {
         inventoryTypeStore.update( inventoryType );
     }
+    
     @Override
     public Collection<InventoryType> getAllInventoryTypes()
     {
         return inventoryTypeStore.getAllInventoryTypes();
     }
+    
     @Override
     public InventoryType getInventoryTypeByName( String name )
     {
         return inventoryTypeStore.getInventoryTypeByName( name );
     }
+    
     @Override
     public InventoryType getInventoryType( int id )
     {
         return inventoryTypeStore.getInventoryType( id );
     }
-    
     
     //Methods
     public int getInventoryTypeCount()
@@ -139,13 +139,14 @@ public class DefaultInventoryTypeService implements InventoryTypeService
     public Collection<InventoryTypeAttribute> getAllInventoryTypeAttributesForDisplay( InventoryType inventoryType )
     {
         List<InventoryTypeAttribute> inventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>();
-        List<InventoryTypeAttribute> tempInventoryTypeAttributeList = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
-        
-        for ( InventoryTypeAttribute inventoryTypeAttribute : tempInventoryTypeAttributeList )
+       
+        List<InventoryType_Attribute> inventoryType_AttributeList = new ArrayList<InventoryType_Attribute>( inventoryType.getInventoryType_Attributes() );
+        for ( InventoryType_Attribute inventoryType_Attribute : inventoryType_AttributeList )
         {
-            if ( inventoryTypeAttribute.isDisplay())
+            
+            if ( inventoryType_Attribute.isDisplay() )
             {
-                inventoryTypeAttributeList.add( inventoryTypeAttribute );
+                inventoryTypeAttributeList.add( inventoryType_Attribute.getInventoryTypeAttribute() );
             }
         }
 

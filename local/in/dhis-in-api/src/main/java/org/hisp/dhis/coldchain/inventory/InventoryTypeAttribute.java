@@ -38,7 +38,7 @@ public class InventoryTypeAttribute extends BaseNameableObject
     /*
      * True if this InventoryTypeAttribute is for display in list
      */
-    private boolean display = false;
+    //private boolean display = false;
     
     private Integer noChars;
 
@@ -172,6 +172,7 @@ public class InventoryTypeAttribute extends BaseNameableObject
         attributeOptions.add( option );
     }
     
+    /*
     public boolean isDisplay()
     {
         return display;
@@ -181,4 +182,5 @@ public class InventoryTypeAttribute extends BaseNameableObject
     {
         this.display = display;
     }
+    */
 }

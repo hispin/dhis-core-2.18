@@ -10,6 +10,7 @@ import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
+import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
@@ -80,7 +81,12 @@ public class GetInventoryTypeAttributeListAction extends ActionPagingSupport<Inv
         {
             InventoryType inventoryType = inventoryTypeService.getInventoryType( id );
             
-            inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+            inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>();
+            
+            for( InventoryType_Attribute inventoryType_Attribute : inventoryType.getInventoryType_Attributes() )
+            {
+                inventoryTypeAttributes.add( inventoryType_Attribute.getInventoryTypeAttribute() );
+            }
         }
        
         else

@@ -109,7 +109,7 @@ public class UpdateInventoryTypeAttributeAction implements Action
         inventoryTypeAttribute.setMandatory( mandatory );
         inventoryTypeAttribute.setNoChars( noChars );
         inventoryTypeAttribute.setValueType( valueType );
-        inventoryTypeAttribute.setDisplay( display );
+        //inventoryTypeAttribute.setDisplay( display );
 
         HttpServletRequest request = ServletActionContext.getRequest();
         Collection<InventoryTypeAttributeOption> attributeOptions = inventoryTypeAttributeOptionService.get( inventoryTypeAttribute );

@@ -18,6 +18,7 @@ import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOption;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeService;
+import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -101,7 +102,12 @@ public class AddEquipmentAction implements Action
         HttpServletRequest request = ServletActionContext.getRequest();
         String value = null;
         
-        List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+        List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( );
+        for( InventoryType_Attribute inventoryType_Attribute : inventoryType.getInventoryType_Attributes() )
+        {
+            inventoryTypeAttributes.add( inventoryType_Attribute.getInventoryTypeAttribute() );
+        }
+        
         List<Equipment> equipmentDeatilsList = new ArrayList<Equipment>();
         
         Equipment equipmentDetails = null;

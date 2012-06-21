@@ -17,6 +17,7 @@ import org.hisp.dhis.coldchain.inventory.InventoryType;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOption;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttributeOptionService;
+import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
 
 import com.opensymphony.xwork2.Action;
 
@@ -83,7 +84,12 @@ public class UpdateEquipmentAction implements Action
         HttpServletRequest request = ServletActionContext.getRequest();
         String value = null;
         
-        List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( inventoryType.getInventoryTypeAttributes() );
+        List<InventoryTypeAttribute> inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( );
+        
+        for( InventoryType_Attribute inventoryType_Attribute : inventoryType.getInventoryType_Attributes() )
+        {
+            inventoryTypeAttributes.add( inventoryType_Attribute.getInventoryTypeAttribute() );
+        }
         
         Equipment equipmentDetails = null;
         for ( InventoryTypeAttribute attribute : inventoryTypeAttributes )

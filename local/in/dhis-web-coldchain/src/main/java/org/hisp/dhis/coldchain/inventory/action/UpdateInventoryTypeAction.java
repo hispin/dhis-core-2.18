@@ -125,10 +125,12 @@ public class UpdateInventoryTypeAction implements Action
             inventoryType.setCatalogType( catalogTypeService.getCatalogType( catalogType ) );
         }
         
+        /*
         if( inventoryType != null )
         {
             inventoryType.getInventoryTypeAttributes().clear();
         }
+        */
         
         //Set<InventoryTypeAttribute> inventoryTypeSet = new HashSet<InventoryTypeAttribute>();
         
@@ -140,24 +142,11 @@ public class UpdateInventoryTypeAction implements Action
             for ( int i = 0; i < this.selectedInventoryTypeAttributeValidator.size(); i++ )
             {
                 InventoryTypeAttribute inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeValidator.get( i ) );
-                /*
-                System.out.println( "ID---" + inventoryTypeAttribute.getId() );
-                System.out.println( "Name---" + inventoryTypeAttribute.getName());
-                System.out.println( "ValueType---" + inventoryTypeAttribute.getValueType() );
-                */
                 inventoryTypeList.add( inventoryTypeAttribute );
-                
-                //inventoryTypeSet.add( inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeList.get( i ) ) );
             }
-            /*
-            for( Integer inventoryTypeAttId : selectedInventoryTypeAttributeList )
-            {
-                inventoryType.getInventoryTypeAttributes().add( inventoryTypeAttributeService.getInventoryTypeAttribute( inventoryTypeAttId ) );
-            }
-            */
         }
         
-        inventoryType.setInventoryTypeAttributes( inventoryTypeList );
+        //inventoryType.setInventoryTypeAttributes( inventoryTypeList );
         inventoryTypeService.updateInventoryType( inventoryType );
         
         // for InventoryType_Attribute
@@ -167,15 +156,11 @@ public class UpdateInventoryTypeAction implements Action
         for ( int i = 0; i < this.selectedInventoryTypeAttributeValidator.size(); i++ )
         {
             InventoryTypeAttribute inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeValidator.get( i ) );
-
-
             
             InventoryType_Attribute inventoryType_Attribute = inventoryType_AttributeService.getInventoryTypeAttribute( inventoryType, inventoryTypeAttribute );
             
-            
             if ( inventoryType_Attribute == null )
             {
-                
                 inventoryType_Attribute = new InventoryType_Attribute( inventoryType,  inventoryTypeAttribute, this.display.get( i ), new Integer( i ) );
                 inventoryType_AttributeService.addInventoryType_Attribute( inventoryType_Attribute );
             }
@@ -184,7 +169,6 @@ public class UpdateInventoryTypeAction implements Action
                 inventoryType_Attribute.setDisplay( this.display.get( i ) );
 
                 inventoryType_Attribute.setSortOrder( new Integer( i ) );
-
                 
                 inventoryType_AttributeService.updateInventoryType_Attribute( inventoryType_Attribute );
 

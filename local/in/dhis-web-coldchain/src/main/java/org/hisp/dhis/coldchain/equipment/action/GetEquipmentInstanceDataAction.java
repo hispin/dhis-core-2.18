@@ -13,6 +13,7 @@ import org.hisp.dhis.coldchain.inventory.EquipmentService;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstance;
 import org.hisp.dhis.coldchain.inventory.EquipmentInstanceService;
 import org.hisp.dhis.coldchain.inventory.InventoryTypeAttribute;
+import org.hisp.dhis.coldchain.inventory.InventoryType_Attribute;
 
 import com.opensymphony.xwork2.Action;
 
@@ -112,7 +113,11 @@ public class GetEquipmentInstanceDataAction implements Action
             equipmentInstanceCatalogId = 0;
         }
         
-        inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( equipmentInstance.getInventoryType().getInventoryTypeAttributes() );
+        inventoryTypeAttributes = new ArrayList<InventoryTypeAttribute>( );
+        for( InventoryType_Attribute inventoryType_Attribute : equipmentInstance.getInventoryType().getInventoryType_Attributes() )
+        {
+            inventoryTypeAttributes.add( inventoryType_Attribute.getInventoryTypeAttribute() );
+        }
         
         equipmentValueMap = new HashMap<Integer, String>();
         

@@ -25,12 +25,14 @@ public class AddInventoryTypeAction implements Action
     {
         this.inventoryTypeService = inventoryTypeService;
     }
+    
     private CatalogTypeService catalogTypeService;
 
     public void setCatalogTypeService( CatalogTypeService catalogTypeService )
     {
         this.catalogTypeService = catalogTypeService;
     }
+    
     private InventoryTypeAttributeService inventoryTypeAttributeService;
     
     public void setInventoryTypeAttributeService( InventoryTypeAttributeService inventoryTypeAttributeService )
@@ -98,7 +100,6 @@ public class AddInventoryTypeAction implements Action
         this.display = display;
     }
 
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -138,28 +139,19 @@ public class AddInventoryTypeAction implements Action
             */
         }
         
-        inventoryType.setInventoryTypeAttributes( inventoryTypeSet );
+        //inventoryType.setInventoryTypeAttributes( inventoryTypeSet );
         
         inventoryTypeService.addInventoryType( inventoryType );
-        
         
         if ( selectedInventoryTypeAttributeValidator != null && selectedInventoryTypeAttributeValidator.size() > 0 )
         {
             for ( int i = 0; i < this.selectedInventoryTypeAttributeValidator.size(); i++ )
             {
-                
                 InventoryTypeAttribute inventoryTypeAttribute = inventoryTypeAttributeService.getInventoryTypeAttribute( selectedInventoryTypeAttributeValidator.get( i ) );
                 
                 InventoryType_Attribute inventoryType_Attribute = new InventoryType_Attribute( inventoryType,  inventoryTypeAttribute, this.display.get( i ), new Integer( i ) );
                 
-                /*
-                System.out.println( "ID---" + inventoryType_Attribute.getInventoryTypeAttribute().getId() );
-                System.out.println( "Name---" + inventoryType_Attribute.getInventoryTypeAttribute().getName());
-                System.out.println( "ValueType---" + inventoryType_Attribute.getInventoryTypeAttribute().getValueType() );
-                System.out.println( "Sort Order---" + inventoryType_Attribute.getSortOrder() );
-                System.out.println( "Display---" + inventoryType_Attribute.isDisplay());
-                */
-               inventoryType_AttributeService.addInventoryType_Attribute( inventoryType_Attribute );
+                inventoryType_AttributeService.addInventoryType_Attribute( inventoryType_Attribute );
             }
         }
         
