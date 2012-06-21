@@ -17,7 +17,6 @@ public class ShowUploadCatalogImageFormAction implements Action
     {
         this.catalogService = catalogService;
     }
-    
 
     // -------------------------------------------------------------------------
     // Input/Output and Getter / Setter
@@ -37,19 +36,15 @@ public class ShowUploadCatalogImageFormAction implements Action
         return catalog;
     }
     
-    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute() throws Exception
     {
-        
         catalog = catalogService.getCatalog( id );
-        
 
         return SUCCESS;
-
     }
 
 }
