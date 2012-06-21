@@ -288,7 +288,7 @@ function Selection()
             {
                 var roots = JSON.parse( localStorage[getTagId( "Roots" )] );
 
-                if ( roots != selected )
+                if ( $.inArray(selected, roots) == -1 )
                 {
                     return;
                 }
