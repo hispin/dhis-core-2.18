@@ -36,18 +36,16 @@ import org.hisp.dhis.integration.routes.SDMXDataIn;
 import org.hisp.dhis.integration.routes.XMLDataIn;
 
 /**
- *
  * @author bobj
  */
-public class DefaultIntegrationService implements IntegrationService
-{
-    
+public class DefaultIntegrationService 
+    implements IntegrationService
+{    
     @EndpointInject(uri = XMLDataIn.XMLDATA_IN)
     private ProducerTemplate xmlIn;
 
     @EndpointInject(uri = SDMXDataIn.SDMXDATA_IN)
     private ProducerTemplate sdmxIn;
-
 
     @Override
     public ImportSummary importXMLDataValueSet( InputStream in, ImportOptions importOptions )
@@ -59,6 +57,5 @@ public class DefaultIntegrationService implements IntegrationService
     public ImportSummary importSDMXDataValueSet( InputStream in, ImportOptions importOptions )
     {
        return (ImportSummary) sdmxIn.requestBodyAndHeader( in, IMPORT_OPTIONS_HDR, importOptions);
-    }
-    
+    }   
 }
