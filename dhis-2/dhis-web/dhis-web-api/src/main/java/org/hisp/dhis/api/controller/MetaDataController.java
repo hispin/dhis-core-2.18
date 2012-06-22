@@ -115,8 +115,10 @@ public class MetaDataController
         {
             exportZippedJSON( parameters, response );
         }
-
-        exportZippedXML( parameters, response );
+        else
+        {
+            exportZippedXML( parameters, response );
+        }
     }
 
     @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".xml.zip" }, produces = "*/*" )
@@ -159,8 +161,10 @@ public class MetaDataController
         {
             exportGZippedJSON( parameters, response );
         }
-
-        exportGZippedXML( parameters, response );
+        else
+        {
+            exportGZippedXML( parameters, response );
+        }
     }
 
     @RequestMapping( value = { MetaDataController.RESOURCE_PATH + ".xml.gz" }, produces = "*/*" )
