@@ -218,3 +218,37 @@ function generatePatientReport( event, patientId )
 	//alert( event.target.href );
 	
 }
+
+
+function generatePatientFollowUpReport( event, patientId )
+{
+	
+	var tempPatientId = "";
+	var tempProgramId = "";
+	
+	var programDropDown = document.getElementById("programId_"+patientId);
+	var selProgramId = programDropDown.options[ programDropDown.selectedIndex ].value;
+	
+	var excelTemplateName = "SNCUFollowUpSheet.xls";
+	var xmlTemplateName = "SNCUFollowUpSheet.xml";
+	
+	tempPatientId = patientId;
+	tempProgramId = selProgramId;
+
+
+
+    //event.target.href = "generatePatientReport.action?patientId=" + patientId + "&selProgramId=" + selProgramId + "&excelTemplateName=" + excelTemplateName + "&xmlTemplateName=" + xmlTemplateName;
+	
+    //alert( tempPatientId + "----" + tempProgramId + "----" + excelTemplateName + "----" + xmlTemplateName  );
+	
+    document.getElementById("patientId").value = tempPatientId;
+    document.getElementById("selProgramId").value = tempProgramId;
+    document.getElementById("excelTemplateName").value = excelTemplateName;
+    document.getElementById("xmlTemplateName").value = xmlTemplateName;
+    
+    document.patientForm.action = "generatePatientReport.action";
+    document.patientForm.submit();
+	    
+   
+	
+}

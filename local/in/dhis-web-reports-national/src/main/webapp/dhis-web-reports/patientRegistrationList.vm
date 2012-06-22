@@ -90,8 +90,9 @@
 				##if($mapPatientPrograms.size()!=0)
 				<th class="{sorter: false}">$i18n.getString( "enrolled_in_program" )</th>
 				##end
-				<th class="{sorter: false}">&nbsp;</th>
-				<th class="{sorter: false}">$i18n.getString( "operations" )</th>
+				<th colspan="3" align="center" class="{sorter: false}">$i18n.getString( "operations" )</th>
+				<!--<th class="{sorter: false}">&nbsp;</th>
+				<th class="{sorter: false}">$i18n.getString( "operations" )</th>-->
 			  </tr>
           </thead>
 		  
@@ -148,13 +149,15 @@
 				
 				#if( $patient.getPrograms().size() !=0 )
 				  <td>
-					<input type="button" id='generateButton' value="$i18n.getString( 'discharge' )" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "discharge" )'>
+					<input type="button" id='generateButton' value="$i18n.getString( 'discharge' )" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "discharge" )'></td>
+					<td><input type="button" id='generateButton' value="$i18n.getString( 'followup' )" onclick="javascript:generatePatientFollowUpReport( event, '$patient.id' )" title='$i18n.getString( "followup" )'>
 				   <!-- <a  href="#" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "generate" )' target="_blank">$i18n.getString( "generate" )</a>-->
 				  <!--<a id="exportToExcel" name="exportToExcel" href="#" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "generate" )' target="_blank"><img src="images/GenerateButton.gif" alt='$i18n.getString( "generate" )'></a>-->
 				  </td>
 				#else
 				  <td>	
-				  <input type="button" id='generateButton' value="$i18n.getString( 'discharge' )" onclick="javascript:generatePatientReport( event, '$patient.id' )" disabled="disabled" title='$i18n.getString( "discharge" )'>
+				  <input type="button" id='generateButton' value="$i18n.getString( 'discharge' )" onclick="javascript:generatePatientReport( event, '$patient.id' )" disabled="disabled" title='$i18n.getString( "discharge" )'></td>
+				  <td><input type="button" id='generateButton' value="$i18n.getString( 'followup' )" onclick="javascript:generatePatientFollowUpReport( event, '$patient.id' )" disabled="disabled" title='$i18n.getString( "followup" )'>
 				  <!--<a  href="#" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "generate" )' disabled="disabled" target="_blank">$i18n.getString( "generate" )</a>-->
 				  <!--<a id="exportToExcel" name="exportToExcel" href="#" onclick="javascript:generatePatientReport( event, '$patient.id' )" title='$i18n.getString( "generate" )' target="_blank" style='display:none'><img src="images/GenerateButton.gif" alt='$i18n.getString( "generate" )'></a>-->	  
 				  </td>
