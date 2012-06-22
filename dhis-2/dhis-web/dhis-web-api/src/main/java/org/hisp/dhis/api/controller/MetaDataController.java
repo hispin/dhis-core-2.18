@@ -111,7 +111,9 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZipped( @RequestParam Map<String, String> parameters, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
-        if ( request.getHeader( "Accept" ).equalsIgnoreCase( "application/json" ) )
+        String accept = request.getHeader( "Accept" );
+
+        if ( accept != null && accept.equalsIgnoreCase( "application/json" ) )
         {
             exportZippedJSON( parameters, response );
         }
@@ -157,7 +159,9 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportGZipped( @RequestParam Map<String, String> parameters, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
-        if ( request.getHeader( "Accept" ).equalsIgnoreCase( "application/json" ) )
+        String accept = request.getHeader( "Accept" );
+
+        if ( accept != null && accept.equalsIgnoreCase( "application/json" ) )
         {
             exportGZippedJSON( parameters, response );
         }
