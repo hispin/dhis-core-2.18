@@ -36,9 +36,9 @@ import org.apache.camel.model.DescriptionDefinition;
  * 
  * @author bobj
  */
-public class SDMXDataIn extends RouteBuilder
-{
- 
+public class SDMXDataIn 
+    extends RouteBuilder
+{ 
     // DataInput endpoint
 
     public static final String SDMXDATA_IN = "direct:sdmxDataIn";

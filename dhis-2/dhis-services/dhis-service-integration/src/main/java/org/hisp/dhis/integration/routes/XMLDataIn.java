@@ -37,9 +37,9 @@ import org.apache.camel.model.DescriptionDefinition;
  * 
  * @author bobj
  */
-public class XMLDataIn extends RouteBuilder
+public class XMLDataIn 
+    extends RouteBuilder
 {
-
     // DataInput endpoint
     
     public static final String XMLDATA_IN = "direct:xmlDataIn"; 
