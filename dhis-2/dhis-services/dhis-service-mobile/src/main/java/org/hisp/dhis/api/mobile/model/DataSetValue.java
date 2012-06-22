@@ -81,6 +81,16 @@ public class DataSetValue
     {
         return dataValues;
     }
+    
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
 
     @Override
     public void serialize( DataOutputStream dataOutputStream )

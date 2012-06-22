@@ -23,6 +23,16 @@ public class OptionSet
     {
         this.options = options;
     }
+    
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
 
     @Override
     public void serialize( DataOutputStream dout )
@@ -39,6 +49,21 @@ public class OptionSet
             dout.writeUTF( option );
         }
 
+    }
+    
+    @Override
+    public void serializeVerssion2_8( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getName() );
+
+        dout.writeInt( this.options.size() );
+
+        for ( String option : this.options )
+        {
+            dout.writeUTF( option );
+        }
     }
 
     @Override

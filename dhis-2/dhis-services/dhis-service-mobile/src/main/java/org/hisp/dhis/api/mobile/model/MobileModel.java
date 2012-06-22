@@ -41,7 +41,7 @@ public class MobileModel
     implements DataStreamSerializable
 {
     private String clientVersion;
-    
+
     private ActivityPlan activityPlan;
 
     private List<Program> programs;
@@ -102,11 +102,95 @@ public class MobileModel
         this.locales = locales;
     }
 
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
+        // if ( programs == null )
+        // {
+        // dout.writeInt( 0 );
+        // }
+        // else
+        // {
+        // dout.writeInt( programs.size() );
+        //
+        // for ( Program prog : programs )
+        // {
+        // prog.serialize( dout );
+        // }
+        // }
+        //
+        // // Write ActivityPlans
+        // if ( this.activityPlan == null )
+        // {
+        // dout.writeInt( 0 );
+        // }
+        // else
+        // {
+        // this.activityPlan.serialize( dout );
+        // }
+        //
+        // // Write current server's date
+        // dout.writeLong( serverCurrentDate.getTime() );
+        //
+        // // Write DataSets
+        // if ( datasets == null )
+        // {
+        // dout.writeInt( 0 );
+        // }
+        // else
+        // {
+        // dout.writeInt( datasets.size() );
+        // for ( DataSet ds : datasets )
+        // {
+        // ds.serialize( dout );
+        // }
+        // }
+        //
+        // // Write Locales
+        // if ( locales == null )
+        // {
+        // dout.writeInt( 0 );
+        // }
+        // else
+        // {
+        // dout.writeInt( locales.size() );
+        // for ( String locale : locales )
+        // {
+        // dout.writeUTF( locale );
+        // }
+        // }
+//        if ( this.getClientVersion().equals( DataStreamSerializable.TWO_POINT_EIGHT ) )
+//        {
+            this.serializeVerssion2_8( dout );
+//        }
+//        else
+//        {
+//            this.serializeVerssion2_9( dout );
+//        }
+    }
 
+    @Override
+    public void deSerialize( DataInputStream dataInputStream )
+        throws IOException
+    {
+
+    }
+
+    @Override
+    public void serializeVerssion2_8( DataOutputStream dout )
+        throws IOException
+    {
         if ( programs == null )
         {
             dout.writeInt( 0 );
@@ -117,7 +201,7 @@ public class MobileModel
 
             for ( Program prog : programs )
             {
-                prog.serialize( dout );
+                prog.serializeVerssion2_8( dout );
             }
         }
 
@@ -128,7 +212,7 @@ public class MobileModel
         }
         else
         {
-            this.activityPlan.serialize( dout );
+            this.activityPlan.serializeVerssion2_8( dout );
         }
 
         // Write current server's date
@@ -144,7 +228,7 @@ public class MobileModel
             dout.writeInt( datasets.size() );
             for ( DataSet ds : datasets )
             {
-                ds.serialize( dout );
+                ds.serializeVerssion2_8( dout );
             }
         }
 
@@ -165,27 +249,11 @@ public class MobileModel
     }
 
     @Override
-    public void deSerialize( DataInputStream dataInputStream )
-        throws IOException
-    {
-        // FIXME: Get implementation from client
-
-    }
-
-    @Override
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
         // TODO Auto-generated method stub
-        
-    }
 
-    @Override
-    public void serializeVerssion2Point9()
-        throws IOException
-    {
-        // TODO Auto-generated method stub
-        
     }
 
 }

@@ -49,10 +49,10 @@ public interface DataStreamSerializable
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException;
 
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_8( DataOutputStream dataOutputStream )
         throws IOException;
 
-    public void serializeVerssion2Point9()
+    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException;
 
 }

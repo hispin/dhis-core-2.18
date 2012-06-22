@@ -37,7 +37,7 @@ public class PatientIdentifier
     implements DataStreamSerializable
 {
     private String clientVersion;
-    
+
     private String identifierType;
 
     private String identifier;
@@ -74,6 +74,16 @@ public class PatientIdentifier
         this.identifier = identifier;
     }
 
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
+
     @Override
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
@@ -91,19 +101,19 @@ public class PatientIdentifier
     }
 
     @Override
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_8( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
-        
+        dataOutputStream.writeUTF( identifierType );
+        dataOutputStream.writeUTF( identifier );
     }
 
     @Override
-    public void serializeVerssion2Point9()
+    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

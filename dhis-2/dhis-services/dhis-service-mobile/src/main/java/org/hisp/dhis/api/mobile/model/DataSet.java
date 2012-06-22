@@ -92,6 +92,16 @@ public class DataSet
         this.sections = sections;
     }
 
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
@@ -111,6 +121,29 @@ public class DataSet
             for ( Section section : this.sections )
             {
                 section.serialize( dout );
+            }
+        }
+    }
+
+    @Override
+    public void serializeVerssion2_8( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getName() );
+        dout.writeInt( this.getVersion() );
+        dout.writeUTF( this.getPeriodType() );
+
+        if ( this.sections == null )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( this.sections.size() );
+            for ( Section section : this.sections )
+            {
+                section.serializeVerssion2_8( dout );
             }
         }
     }

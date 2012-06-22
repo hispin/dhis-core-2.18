@@ -35,7 +35,7 @@ public class Task
     implements DataStreamSerializable
 {
     private String clientVersion;
-    
+
     private int id;
 
     private int programStageId;
@@ -84,6 +84,16 @@ public class Task
         this.completed = completed;
     }
 
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
@@ -103,18 +113,20 @@ public class Task
     }
 
     @Override
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_8( DataOutputStream dout )
         throws IOException
     {
-        // TODO Auto-generated method stub
-        
+        dout.writeInt( this.getId() );
+        dout.writeInt( this.getProgramStageId() );
+        dout.writeInt( this.getProgramId() );
+        dout.writeBoolean( this.isCompleted() );
     }
 
     @Override
-    public void serializeVerssion2Point9()
+    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

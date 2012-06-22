@@ -137,15 +137,18 @@ public class Activity
     }
 
     @Override
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_8(DataOutputStream dout)
         throws IOException
     {
-        // TODO Auto-generated method stub
-        
+        this.getTask().serializeVerssion2_8( dout );
+        this.getBeneficiary().serializeVerssion2_8( dout );
+        dout.writeBoolean( late );
+        dout.writeLong( this.getDueDate().getTime() );
+        dout.writeLong( this.getExpireDate().getTime() );
     }
 
     @Override
-    public void serializeVerssion2Point9()
+    public void serializeVerssion2_9(DataOutputStream dataOutputStream)
         throws IOException
     {
         // TODO Auto-generated method stub

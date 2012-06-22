@@ -48,12 +48,21 @@ public class ProgramStage
     {
         this.dataElements = dataElements;
     }
+    
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
 
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
-        // FIXME: Children should serialize themselves
         dout.writeInt( this.getId() );
         dout.writeUTF( this.getName() );
 
@@ -63,8 +72,22 @@ public class ProgramStage
         {
             DataElement de = (DataElement) dataElements.get( i );
             de.serialize( dout );
-
         }
+    }
+    
+    @Override
+    public void serializeVerssion2_8( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getName() );
+
+        dout.writeInt( dataElements.size() );
+
+        for ( int i = 0; i < dataElements.size(); i++ )
+        {
+            DataElement de = (DataElement) dataElements.get( i );
+            de.serializeVerssion2_8( dout );        }
     }
 
     @Override
