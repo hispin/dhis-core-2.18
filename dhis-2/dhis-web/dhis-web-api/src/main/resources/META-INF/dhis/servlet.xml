@@ -25,9 +25,9 @@
     <property name="order" value="1" />
     <property name="mediaTypes">
       <map>
+        <entry key="xml" value="application/xml" />
         <entry key="json" value="application/json" />
         <entry key="jsonp" value="application/javascript" />
-        <entry key="xml" value="application/xml" />
         <entry key="html" value="text/html" />
         <entry key="png" value="image/png" />
       </map>
