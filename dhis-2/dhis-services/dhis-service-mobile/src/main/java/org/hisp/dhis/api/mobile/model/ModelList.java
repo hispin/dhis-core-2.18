@@ -39,7 +39,7 @@ public class ModelList
     implements DataStreamSerializable
 {
     private String clientVersion;
-    
+
     private List<Model> models;
 
     @XmlElement( name = "model" )
@@ -51,6 +51,16 @@ public class ModelList
     public void setModels( List<Model> models )
     {
         this.models = models;
+    }
+
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
     }
 
     @Override
@@ -68,7 +78,6 @@ public class ModelList
         {
             models.get( i ).serialize( dataOutputStream );
         }
-
     }
 
     @Override
@@ -88,19 +97,29 @@ public class ModelList
     }
 
     @Override
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_8( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
-        
+        if ( models == null )
+        {
+            dataOutputStream.writeInt( 0 );
+        }
+
+        dataOutputStream.writeInt( models.size() );
+
+        for ( int i = 0; i < models.size(); i++ )
+        {
+            models.get( i ).serialize( dataOutputStream );
+        }
+
     }
 
     @Override
-    public void serializeVerssion2Point9()
+    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
-
 import org.hisp.dhis.api.mobile.ActivityReportingService;
 import org.hisp.dhis.api.mobile.FacilityReportingService;
 import org.hisp.dhis.api.mobile.IProgramService;
@@ -13,7 +12,6 @@ import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
-import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.MobileModel;
 import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.i18n.I18nService;
@@ -54,16 +52,9 @@ public class MobileOrganisationUnitController
 
     @RequestMapping( method = RequestMethod.GET, value = "{id}/all" )
     @ResponseBody
-    public MobileModel getAllDataForOrgUnit( @PathVariable int id, @RequestHeader( "accept-language" ) String locale,
-        @RequestHeader( "client-version" ) String clientVersion )
+    public MobileModel getAllDataForOrgUnit( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
     {
-        if ( clientVersion == null || clientVersion.equals( DataStreamSerializable.BLANK ) )
-        {
-            clientVersion = DataStreamSerializable.TWO_POINT_EIGHT;
-        }
-
         MobileModel mobileModel = new MobileModel();
-       
         OrganisationUnit unit = getUnit( id );
         mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( unit, locale ) );
         mobileModel.setPrograms( programService.getPrograms( unit, locale ) );

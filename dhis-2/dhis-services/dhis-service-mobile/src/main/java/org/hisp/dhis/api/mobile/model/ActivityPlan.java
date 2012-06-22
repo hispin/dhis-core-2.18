@@ -54,16 +54,15 @@ public class ActivityPlan
         this.activitiesList = activitiesList;
     }
 
-    public ActivityPlan( )
+    public ActivityPlan()
     {
     }
 
-    
     public ActivityPlan( List<Activity> activitiesList )
     {
         this.activitiesList = activitiesList;
     }
-    
+
     public String getClientVersion()
     {
         return clientVersion;
@@ -93,8 +92,6 @@ public class ActivityPlan
         }
 
     }
-    
-    
 
     @Override
     public void deSerialize( DataInputStream dataInputStream )
@@ -105,20 +102,30 @@ public class ActivityPlan
     }
 
     @Override
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_8( DataOutputStream dout )
         throws IOException
     {
-        // TODO Auto-generated method stub
-        
+
+        if ( activitiesList == null )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( activitiesList.size() );
+            for ( int i = 0; i < activitiesList.size(); i++ )
+            {
+                activitiesList.get( i ).serializeVerssion2_8( dout );
+            }
+        }
     }
 
     @Override
-    public void serializeVerssion2Point9()
+    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
         // TODO Auto-generated method stub
-        
-    }
 
+    }
 
 }

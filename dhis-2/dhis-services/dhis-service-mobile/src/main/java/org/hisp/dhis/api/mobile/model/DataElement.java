@@ -87,6 +87,16 @@ public class DataElement
     {
         this.compulsory = compulsory;
     }
+    
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
 
     @Override
     public void serialize( DataOutputStream dout )
@@ -109,6 +119,30 @@ public class DataElement
             {
                 dout.writeInt( each.getId() );
                 dout.writeUTF( each.getName() );
+            }
+        }
+    }
+    
+    @Override
+    public void serializeVerssion2_8( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getName() );
+        dout.writeUTF( this.getType() );
+        dout.writeBoolean( this.isCompulsory() );
+
+        List<Model> cateOptCombos = this.getCategoryOptionCombos().getModels();
+        if ( cateOptCombos == null || cateOptCombos.size() <= 0 )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( cateOptCombos.size() );
+            for ( Model each : cateOptCombos )
+            {
+               each.serializeVerssion2_8( dout );
             }
         }
     }

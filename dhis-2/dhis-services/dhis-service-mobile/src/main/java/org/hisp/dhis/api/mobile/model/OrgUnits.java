@@ -41,7 +41,7 @@ public class OrgUnits
     implements DataStreamSerializable
 {
     private String clientVersion;
-    
+
     private List<MobileOrgUnitLinks> orgUnits = new ArrayList<MobileOrgUnitLinks>();
 
     public OrgUnits()
@@ -62,6 +62,16 @@ public class OrgUnits
     public void setOrgUnits( List<MobileOrgUnitLinks> orgUnits )
     {
         this.orgUnits = orgUnits;
+    }
+
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
     }
 
     @Override
@@ -92,19 +102,22 @@ public class OrgUnits
     }
 
     @Override
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_8( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
-        
+        dataOutputStream.writeInt( orgUnits.size() );
+        for ( MobileOrgUnitLinks unit : orgUnits )
+        {
+            unit.serialize( dataOutputStream );
+        }
     }
 
     @Override
-    public void serializeVerssion2Point9()
+    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

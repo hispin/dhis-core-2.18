@@ -47,7 +47,7 @@ public class Beneficiary
     implements DataStreamSerializable
 {
     private String clientVersion;
-    
+
     @XmlAttribute
     private int id;
 
@@ -227,6 +227,16 @@ public class Beneficiary
         this.lastName = lastName;
     }
 
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
+
     @Override
     public void serialize( DataOutputStream out )
         throws IOException
@@ -316,10 +326,9 @@ public class Beneficiary
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        // FIXME: Get implementation from client
 
     }
-    
+
     @Override
     public boolean equals( Object otherObject )
     {
@@ -328,18 +337,97 @@ public class Beneficiary
     }
 
     @Override
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_8( DataOutputStream out )
         throws IOException
     {
-        // TODO Auto-generated method stub
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( bout );
+
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getFirstName() );
+        dout.writeUTF( this.getMiddleName() );
+        dout.writeUTF( this.getLastName() );
+        dout.writeInt( this.getAge() );
+
+        if ( gender != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( gender );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( dobType != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeChar( dobType );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( birthDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( birthDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
         
+            dout.writeBoolean( false );
+
+        if ( registrationDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( registrationDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        /*
+         * Write attribute which is used as group factor of beneficiary - false:
+         * no group factor, true: with group factor
+         */
+        if ( this.getGroupAttribute() != null )
+        {
+            dout.writeBoolean( true );
+            this.getGroupAttribute().serialize( dout );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        List<PatientAttribute> atts = this.getPatientAttValues();
+        dout.writeInt( atts.size() );
+        for ( PatientAttribute att : atts )
+        {
+            dout.writeUTF( att.getName() + ":" + att.getValue() );
+        }
+
+        // Write PatientIdentifier
+        dout.writeInt( identifiers.size() );
+        for ( PatientIdentifier each : identifiers )
+        {
+            each.serializeVerssion2_8( dout );
+        }
+
+        bout.flush();
+        bout.writeTo( out );
     }
 
     @Override
-    public void serializeVerssion2Point9()
+    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

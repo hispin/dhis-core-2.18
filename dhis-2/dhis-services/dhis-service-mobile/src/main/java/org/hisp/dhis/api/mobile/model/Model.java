@@ -39,7 +39,7 @@ public class Model
     private String clientVersion;
 
     private int id;
-    
+
     private String name;
 
     @XmlAttribute
@@ -64,6 +64,16 @@ public class Model
         this.name = name;
     }
 
+    public String getClientVersion()
+    {
+        return clientVersion;
+    }
+
+    public void setClientVersion( String clientVersion )
+    {
+        this.clientVersion = clientVersion;
+    }
+
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
@@ -81,19 +91,19 @@ public class Model
     }
 
     @Override
-    public void serializeVerssion2Point8()
+    public void serializeVerssion2_8( DataOutputStream dout )
         throws IOException
     {
-        // TODO Auto-generated method stub
-        
+        dout.writeInt( this.id );
+        dout.writeUTF( this.name );
     }
 
     @Override
-    public void serializeVerssion2Point9()
+    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
         // TODO Auto-generated method stub
-        
+
     }
 
 }
