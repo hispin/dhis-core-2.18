@@ -37,6 +37,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -197,6 +198,10 @@ public class GetPatientReportResultAction implements Action
     
     
     private Date executionDate;
+    
+    private String systemIdentifier;
+    
+    private Map<Integer, String> identiferMap;
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -229,6 +234,27 @@ public class GetPatientReportResultAction implements Action
             newdir.mkdirs();
         }
         outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+       
+        PatientIdentifierType idType = null;
+        
+       
+        
+        for ( PatientIdentifier identifier : patient.getIdentifiers() )
+        {
+            idType = identifier.getIdentifierType();
+
+            if ( idType != null )
+            {
+                //identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+            }
+            else
+            {
+                systemIdentifier = identifier.getIdentifier();
+            }
+        }
+        
+        
+        
         /*
         select identifier from patientidentifier where patientid = 122748 and patientidentifiertypeid = 1;
 
@@ -430,6 +456,7 @@ public class GetPatientReportResultAction implements Action
                         else
                         {
                             tempStr = patient.getAge();
+                          
                             
                         }
                     }
@@ -451,13 +478,33 @@ public class GetPatientReportResultAction implements Action
                     else if( deCodeString.equalsIgnoreCase("FACILITY") )
                     {
                         tempStr = patient.getOrganisationUnit().getName();
+                        //System.out.println( "FACILITY ----" + tempStr);
                     }
+                    
+                    else if( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
+                    {
+                        tempStr = patient.getOrganisationUnit().getParent().getName();
+                        //System.out.println( "FACILITY - P---" + tempStr);
+                    } 
+                    else if( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
+                    {
+                        tempStr = patient.getOrganisationUnit().getParent().getParent().getName();
+                        //System.out.println( "FACILITY - PP---" + tempStr);
+                    } 
                     
                     else if( deCodeString.equalsIgnoreCase("PATIENTNAME") )
                     {
                         tempStr = patient.getFullName();
                     }
-                    
+
+                    else if( deCodeString.equalsIgnoreCase("SYSTEMIDENTIFIER") )
+                    {
+                        tempStr = systemIdentifier;
+                    }
+                    else if( deCodeString.equalsIgnoreCase("NA") )
+                    {
+                        tempStr = "";
+                    }
                     
                     
                     else if( sType.equalsIgnoreCase("identifier") )
@@ -562,6 +609,47 @@ public class GetPatientReportResultAction implements Action
                         }
                         
                     }
+                    else if( sType.equalsIgnoreCase("after1stday") )
+                    {
+                        tempStr = programStageDataElementValueMap.get( deCodeString );
+                        
+                        if (  tempStr != null )
+                        {
+                            Date tempDate = format.parseDate( tempStr );
+                            Calendar tempSDate = Calendar.getInstance();
+                            tempSDate.setTime( tempDate );
+                            tempSDate.add(Calendar.DATE, 1);
+                            //tempStr = "" + tempSDate.get(Calendar.YEAR) + "-" + ( tempSDate.get(Calendar.MONTH) + 1) + "-" +tempSDate.get(Calendar.DATE);
+                            tempStr =  simpleDateFormat.format( tempSDate.getTime() );
+                            
+                        }
+                        else
+                        {
+                            tempStr = " ";
+                        }
+                        
+                    }
+                    else if( sType.equalsIgnoreCase("after3rdday") )
+                    {
+                        tempStr = programStageDataElementValueMap.get( deCodeString );
+                        
+                        if (  tempStr != null )
+                        {
+                            Date tempDate = format.parseDate( tempStr );
+                            Calendar tempSDate = Calendar.getInstance();
+                            tempSDate.setTime( tempDate );
+                            tempSDate.add(Calendar.DATE, 3);
+                            //tempStr = "" + tempSDate.get(Calendar.YEAR) + "-" + ( tempSDate.get(Calendar.MONTH) + 1) + "-" +tempSDate.get(Calendar.DATE);
+                            tempStr =  simpleDateFormat.format( tempSDate.getTime() );
+                            
+                        }
+                        else
+                        {
+                            tempStr = " ";
+                        }
+                        
+                    }
+ 
                     else if( sType.equalsIgnoreCase("after7thday") )
                     {
                         tempStr = programStageDataElementValueMap.get( deCodeString );
@@ -582,7 +670,26 @@ public class GetPatientReportResultAction implements Action
                         }
                         
                     }
-                    
+                    else if( sType.equalsIgnoreCase("after14thday") )
+                    {
+                        tempStr = programStageDataElementValueMap.get( deCodeString );
+                        
+                        if (  tempStr != null )
+                        {
+                            Date tempDate = format.parseDate( tempStr );
+                            Calendar tempSDate = Calendar.getInstance();
+                            tempSDate.setTime( tempDate );
+                            tempSDate.add(Calendar.DATE, 14);
+                            //tempStr = "" + tempSDate.get(Calendar.YEAR) + "-" + ( tempSDate.get(Calendar.MONTH) + 1) + "-" +tempSDate.get(Calendar.DATE);
+                            tempStr =  simpleDateFormat.format( tempSDate.getTime() );
+                            
+                        }
+                        else
+                        {
+                            tempStr = " ";
+                        }
+                        
+                    }
                     else if( sType.equalsIgnoreCase("after15thday") )
                     {
                         tempStr = programStageDataElementValueMap.get( deCodeString );
@@ -747,7 +854,7 @@ public class GetPatientReportResultAction implements Action
                     else
                     {
                     
-                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) || deCodeString.equalsIgnoreCase( "FACILITYPP" ) || deCodeString.equalsIgnoreCase( "FACILITYPPP" ) || deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                        if ( deCodeString.equalsIgnoreCase( "PERIOD-FROM" ) || deCodeString.equalsIgnoreCase( "PERIOD-TO" ) || deCodeString.equalsIgnoreCase( "FACILITYPPP" ) || deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
                         {
                             
                         } 
