@@ -36,43 +36,47 @@
 							#end
 						#end
 					</select>
+				</td>
+				<td>
 					<input type="button" id='listBtn' value="$i18n.getString( 'list_all_events' )" onclick='validateSearchEvents( true );'>
+				</td>
+				<td>
 					<input type="button" id='addBtn' value='$i18n.getString( "add_new" )' onclick="showAddEventForm();">
 				</td>
+				<td>
+					<input type="button" id='advancedSearch' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').slideToggle();">
+				</td>
 			</tr>
-			<tr><td>&nbsp;</td></tr>
+		</table>
+		
+		<table id='advanced-search' class='hidden'>
 			<tr>
 				<td>$i18n.getString('use_data_from_level')</td>
-				<td colspan='2'>
-					<input type="radio" id='facilityLB1' name="facilityLB" value="selected" checked> $i18n.getString('selected')
-					<input type="radio" id='facilityLB2' name="facilityLB" value="childrenOnly"> $i18n.getString('children_only')
-					<input type="radio" id='facilityLB3' name="facilityLB" value="all"> $i18n.getString('all')
-				</td>
+				<td><input type="radio" id='facilityLB1' name="facilityLB" value="selected" checked> $i18n.getString('selected')</td>
+				<td><input type="radio" id='facilityLB2' name="facilityLB" value="childrenOnly"> $i18n.getString('children_only')</td>
+				<td><input type="radio" id='facilityLB3' name="facilityLB" value="all"> $i18n.getString('all')</td>
 			</tr>
 			<tr>
 				<td>$i18n.getString('show_hierachy_from_level')</td>
-				<td colspan='2'>
 				#foreach( $level in $levels )
-					<input type="radio" id='level${level.level}' name="level" value="${level.level}" checked> $level.name
+					<td><input type="radio" id='level${level.level}' name="level" value="${level.level}" checked> $level.name</td>
 				#end
-				<td>
 			</tr>
 			<tr>
 				<td>$i18n.getString('report_date')</td>
-				<td><input type="text" id='startDate' name='startDate' style='width:238px;'>
-					$i18n.getString('to') &nbsp;
-					<input type="text" id='endDate' name='endDate' style='width:238px;'>
-				</td>
+				<td colspan='3'>&nbsp;<input type="text" id='startDate' name='startDate' style='width:240px'></td>
+				<td>$i18n.getString('to') <input type="text" id='endDate' name='endDate' style='width:240px'></td>
 				<td><input type="button" id='searchBtn' class='large-button' value='$i18n.getString( "search" )' onclick='validateSearchEvents( false )'></td>
 			</tr>
 			<tr>
 				<td valign="top">$i18n.getString('data_elements')</td>
-				<td colspan='2'>
+				#set($cols = $levels.size() + 3)
+				<td colspan='$cols'>
 					<table id='advancedSearchTB'>	
 						<tbody>
 							<tr id='advSearchBox0'>	
 								<td id='searchingAttributeIdTD' >
-									<select id="dataElementId" name="dataElementId" style='margin-right:15px;'></select>
+									<select id="dataElementId" name="dataElementId" style='margin-right:18px;'></select>
 								</td>		
 								<td>
 									<input type="text" id="searchText" name="searchText" value="$!searchText" style='margin-right:30px;'>
@@ -128,6 +132,8 @@
 	var i18n_comfirm_delete_event = '$encoder.jsEscape( $i18n.getString( "comfirm_delete_event" ) , "'")';
 	var i18n_delete_event_success = '$encoder.jsEscape( $i18n.getString( "delete_event_success" ) , "'")';
 	var i18n_report_date = '$encoder.jsEscape( $i18n.getString( "report_date" ) , "'")';
+	var i18n_search_events_by_dataelements = '$encoder.jsEscape( $i18n.getString( "search_events_by_dataelements" ) , "'")';
+	var i18n_list_all_events = '$encoder.jsEscape( $i18n.getString( "list_all_events" ) , "'")';
 	
 	isAjax = true;
 	contentDiv = '';

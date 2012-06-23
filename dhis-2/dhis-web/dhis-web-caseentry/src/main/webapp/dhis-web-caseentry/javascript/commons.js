@@ -101,11 +101,11 @@ function searchingAttributeOnChange( this_ )
 	}
 	else if ( attributeId=='-2' )
 	{
-		element.replaceWith( genderSelector );
+		element.replaceWith( getGenderSelector() );
 	}
 	else if ( valueType=='YES/NO' )
 	{
-		element.replaceWith( trueFalseBox );
+		element.replaceWith( getTrueFalseBox() );
 	}
 	else
 	{
@@ -116,10 +116,28 @@ function searchingAttributeOnChange( this_ )
 function getDateField( container )
 {
 	var dateField = '<select id="dateOperator" style="width:30px;" name="dateOperator" ><option value=">"> > </option><option value="="> = </option><option value="<"> < </option></select>';
-	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" maxlength="30" style="width:15.6em" onkeyup="searchPatientsOnKeyUp( event );">';
+	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" maxlength="30" style="width:210px;" onkeyup="searchPatientsOnKeyUp( event );">';
 	return dateField;
 }
+
+function getTrueFalseBox()
+{
+	var trueFalseBox  = '<select id="searchText" name="searchText">';
+	trueFalseBox += '<option value="true">' + i18n_yes + '</option>';
+	trueFalseBox += '<option value="false">' + i18n_no + '</option>';
+	trueFalseBox += '</select>';
+	return trueFalseBox;
+}
 	
+function getGenderSelector()
+{
+	var genderSelector = '<select id="searchText" name="searchText">';
+		genderSelector += '<option value="M">' + i18n_male + '</option>';
+		genderSelector += '<option value="F">' + i18n_female + '</option>';
+		genderSelector += '</select>';
+	return genderSelector;
+}
+
 //-----------------------------------------------------------------------------
 // Search Patient
 //-----------------------------------------------------------------------------
