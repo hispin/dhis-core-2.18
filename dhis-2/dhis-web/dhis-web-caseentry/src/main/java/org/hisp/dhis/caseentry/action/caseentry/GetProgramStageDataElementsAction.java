@@ -25,68 +25,64 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.patient;
+package org.hisp.dhis.caseentry.action.caseentry;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $RegisterPatientLocationAction.java Mar 27, 2012 04:52:51 PM$
+ * @version $GetProgramStageDataElementsAction.java Jun 21, 2012 9:43:56 PM$
  */
-public class RegisterPatientLocationAction
+public class GetProgramStageDataElementsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    private SelectionTreeManager selectionTreeManager;
 
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    private ProgramStageService programStageService;
+
+    public void setProgramStageService( ProgramStageService programStageService )
     {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
+        this.programStageService = programStageService;
     }
 
     // -------------------------------------------------------------------------
-    // Setter
+    // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
+    private Integer programStageId;
 
-    public void setPatientId( Integer patientId )
+    public void setProgramStageId( Integer programStageId )
     {
-        this.patientId = patientId;
+        this.programStageId = programStageId;
+    }
+
+    private List<ProgramStageDataElement> programStageDataElements;
+
+    public List<ProgramStageDataElement> getProgramStageDataElements()
+    {
+        return programStageDataElements;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Implementation Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
-
-        Patient patient = patientService.getPatient( patientId );
-
-        patient.setOrganisationUnit( orgunit );
-        
-        patientService.savePatient( patient );
+        programStageDataElements = new ArrayList<ProgramStageDataElement>( programStageService.getProgramStage(
+            programStageId ).getProgramStageDataElements() );
 
         return SUCCESS;
     }
-
 }

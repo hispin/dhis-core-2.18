@@ -48,8 +48,8 @@
 			<option value="D" >$i18n.getString( "declared" )</option>
 			<option value="V" >$i18n.getString( "verified" )</option>
 		</select>
-		<input type="text" id="age" name="age" class="{validate:{number:true}}" style="width:145px" />
-		<input type="text" id="birthDate" name="birthDate" style='width:145px;display:none;' />
+		<input type="text" id="age" name="age" class="{validate:{number:true}}" style="width:150px" />
+		<input type="text" id="birthDate" name="birthDate" style='width:150px;display:none;' />
 		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 	</td>
 </tr>

@@ -82,7 +82,7 @@
 						<script type="text/javascript">
 							datePicker($programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
 						</script> 
-					#elseif($hasOptionSet)
+					#elseif($hasOptionSet=='true')
 						<input name="entryfield" options='$hasOptionSet' #if($hasOptionSet == 'true') #end dataElementId='$programStageDataElement.dataElement.id' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" >
 					#else
 						<input name="entryfield" dataElementId='$programStageDataElement.dataElement.id' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex">

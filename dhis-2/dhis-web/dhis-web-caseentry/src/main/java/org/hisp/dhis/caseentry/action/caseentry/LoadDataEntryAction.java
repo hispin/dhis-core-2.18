@@ -170,12 +170,7 @@ public class LoadDataEntryAction
             programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
        
             program = programStageInstance.getProgramStage().getProgram();
-
-            if ( !program.isRegistration() && programStageInstance.isCompleted() )
-            {
-                return SUCCESS;
-            }
-
+            
             selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
             // ---------------------------------------------------------------------

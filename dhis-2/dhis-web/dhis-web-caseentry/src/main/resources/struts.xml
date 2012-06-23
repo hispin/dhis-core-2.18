@@ -151,6 +151,18 @@
 	      <result name="success" type="velocity-json">/dhis-web-caseentry/jsonOptions.vm</result>
 	    </action>
 		
+		<action name="getProgramStageDataElementList"
+			class="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageDataElementsAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStageDataElements.vm</result>
+		</action>
+		
+		<action name="searchProgramStageInstances"
+			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/programStageInstancesList.vm</param>
+			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
+		</action>
+		
 		<!-- save value -->
 
 		<action name="saveValue"

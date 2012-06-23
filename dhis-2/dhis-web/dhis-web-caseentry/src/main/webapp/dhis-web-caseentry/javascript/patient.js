@@ -38,8 +38,7 @@ function sortPatients()
 	jQuery('#listPatientDiv').load("searchRegistrationPatient.action", 
 		{
 			sortPatientAttributeId: getFieldValue('sortPatientAttributeId')
-		}
-		, function(){
+		}, function(){
 			showById('listPatientDiv');
 			jQuery( "#loaderDiv" ).hide();
 		});
@@ -57,7 +56,7 @@ function validateAddPatient()
 		url: 'validatePatient.action',
 		data: getParamsForDiv('editPatientDiv'),
 		success:addValidationCompleted
-     });	
+    });	
 }
 
 function addValidationCompleted( data )
@@ -632,7 +631,7 @@ function loadPatientList()
 	}
 	else if( statusSearching == 1 )
 	{
-		searchAdvancedPatients();
+		searchAdvancedPatient();
 	}
 }
 
