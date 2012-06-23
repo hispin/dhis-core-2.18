@@ -100,14 +100,18 @@ public class DefaultImportService
                 if ( Collection.class.isAssignableFrom( value.getClass() ) )
                 {
                     List<?> objects = new ArrayList<Object>( (Collection<?>) value );
-                    log.info( "Importing " + objects.size() + " " + StringUtils.capitalize( entry.getValue() ) );
 
-                    ImportTypeSummary importTypeSummary = doImport( objects, importOptions );
-
-                    if ( importTypeSummary != null )
+                    if ( !objects.isEmpty() )
                     {
-                        importSummary.getImportTypeSummaries().add( importTypeSummary );
-                        importSummary.incrementImportCount( importTypeSummary.getImportCount() );
+                        log.info( "Importing " + objects.size() + " " + StringUtils.capitalize( entry.getValue() ) );
+
+                        ImportTypeSummary importTypeSummary = doImport( objects, importOptions );
+
+                        if ( importTypeSummary != null )
+                        {
+                            importSummary.getImportTypeSummaries().add( importTypeSummary );
+                            importSummary.incrementImportCount( importTypeSummary.getImportCount() );
+                        }
                     }
                 }
                 else

@@ -160,7 +160,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
      * @param oldObject The current version of the object
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected boolean updatedObject( T object, T oldObject )
+    protected boolean updateObject( T object, T oldObject )
     {
         log.debug( "Starting update of object " + ImportUtils.getDisplayName( oldObject ) + " (" + oldObject.getClass()
             .getSimpleName() + ")" );
@@ -466,7 +466,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         }
         else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
         {
-            if ( updatedObject( object, oldObject ) )
+            if ( updateObject( object, oldObject ) )
             {
                 summaryType.incrementUpdated();
             }
@@ -475,7 +475,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             if ( oldObject != null )
             {
-                if ( updatedObject( object, oldObject ) )
+                if ( updateObject( object, oldObject ) )
                 {
                     summaryType.incrementUpdated();
                 }
@@ -557,6 +557,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( conflict != null )
         {
             summaryType.getImportConflicts().add( conflict );
+
+            return false;
         }
 
         return true;
@@ -570,11 +572,9 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         if ( objects.size() > 0 )
         {
             conflict = reportConflict( object );
-        }
-
-        if ( conflict != null )
-        {
             summaryType.getImportConflicts().add( conflict );
+
+            return false;
         }
 
         return true;
