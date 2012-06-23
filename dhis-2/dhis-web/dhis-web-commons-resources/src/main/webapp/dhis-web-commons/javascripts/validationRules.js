@@ -65,7 +65,7 @@ var validationRules = {
         },
         "shortName" : {
             "required" : true,
-            "rangelength" : [ 2, 25 ]
+            "rangelength" : [ 2, 49 ]
         },
         "code" : {
             "rangelength" : [ 0, 25 ],
