@@ -32,8 +32,10 @@ import java.util.Date;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -51,14 +53,21 @@ public class CreateAnonymousEncounterAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     private ProgramInstanceService programInstanceService;
 
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
@@ -86,17 +95,16 @@ public class CreateAnonymousEncounterAction
     {
         this.i18n = i18n;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
+    private Integer programId;
 
-    private Integer programInstanceId;
-
-    public void setProgramInstanceId( Integer programInstanceId )
+    public void setProgramId( Integer programId )
     {
-        this.programInstanceId = programInstanceId;
+        this.programId = programId;
     }
 
     public String executionDate;
@@ -123,9 +131,15 @@ public class CreateAnonymousEncounterAction
     {
         Date date = format.parseDate( executionDate );
 
-        if ( date != null )
+        if ( date == null )
         {
-            ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
+            message = i18n.getString( "please_enter_report_date" );
+        }
+        else
+        {
+            Program program = programService.getProgram( programId );
+
+            ProgramInstance programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
 
             ProgramStageInstance programStageInstance = new ProgramStageInstance();
             programStageInstance.setProgramInstance( programInstance );
@@ -139,14 +153,10 @@ public class CreateAnonymousEncounterAction
             programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
 
             int id = programStageInstanceService.addProgramStageInstance( programStageInstance );
-            
+
             message = id + "";
-            
-            return SUCCESS;
         }
 
-        message = i18n.getString("please_enter_report_date");
-
-        return INPUT;
+        return (date != null) ? SUCCESS : INPUT;
     }
 }

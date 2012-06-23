@@ -619,16 +619,24 @@ function doComplete()
     var flag = false;
     jQuery("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect']").each(function(){
         jQuery(this).parent().removeClass("errorCell");
-        if( jQuery(this).metadata({
-            "type":"attr",
-            "name":"data"
-        }).compulsory ){
-            if( !jQuery(this).val() || jQuery(this).val() == "undifined" ){
+        
+		var arrData = jQuery( this ).attr('data').replace('{','').replace('}','').replace(/'/g,"").split(',');
+		var data = new Array();
+		for( var i in arrData )
+		{	
+			var values = arrData[i].split(':');
+			var key = jQuery.trim( values[0] );
+			var value = jQuery.trim( values[1] )
+			data[key] = value;
+		}
+		var compulsory = data['compulsory']; 
+		if( compulsory == 'true' && 
+			( !jQuery(this).val() || jQuery(this).val() == "undifined" ) ){
                 flag = true;
                 jQuery(this).parent().addClass("errorCell");
             }
-        }
     });
+	
     if( flag ){
         alert(i18n_error_required_field);
         return;

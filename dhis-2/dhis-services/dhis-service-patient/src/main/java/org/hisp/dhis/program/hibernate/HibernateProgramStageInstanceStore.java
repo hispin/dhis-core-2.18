@@ -292,13 +292,14 @@ public class HibernateProgramStageInstanceStore
         return jdbcTemplate.queryForInt( sql );
     }
 
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     private String getTabularReportSql( boolean count, ProgramStage programStage, List<String> searchingKeys,
         Collection<Integer> orgUnits, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
         Integer min, Integer max )
     {
-        String sDate = DateUtils.getMediumDateString( startDate );
-        String eDate = DateUtils.getMediumDateString( endDate );
-
         String selector = count ? "count(*) " : "* ";
 
         String sql = "select " + selector + "from ( select psi.programstageinstanceid, psi.executiondate,";
@@ -382,9 +383,16 @@ public class HibernateProgramStageInstanceStore
         sql += "join _orgunitstructure ous on (psi.organisationunitid=ous.organisationunitid) ";
 
         sql += "where psi.programstageid=" + programStage.getId() + " ";
-        sql += "and psi.executiondate >= '" + sDate + "' ";
-        sql += "and psi.executiondate < '" + eDate + "' ";
 
+        if ( startDate != null && endDate != null )
+        {
+            String sDate = DateUtils.getMediumDateString( startDate );
+            String eDate = DateUtils.getMediumDateString( endDate );
+
+            sql += "and psi.executiondate >= '" + sDate + "' ";
+            sql += "and psi.executiondate < '" + eDate + "' ";
+        }
+        
         if ( orgUnits != null )
         {
             sql += "and ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnits ) + ") ";

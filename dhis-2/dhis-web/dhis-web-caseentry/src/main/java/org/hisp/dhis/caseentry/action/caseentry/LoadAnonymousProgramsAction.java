@@ -27,14 +27,14 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
@@ -58,6 +58,13 @@ public class LoadAnonymousProgramsAction
         this.selectionManager = selectionManager;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
@@ -65,22 +72,29 @@ public class LoadAnonymousProgramsAction
         this.programService = programService;
     }
 
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
+    private OrganisationUnit orgunit;
 
-    public Collection<ProgramInstance> getProgramInstances()
+    public OrganisationUnit getOrgunit()
     {
-        return programInstances;
+        return orgunit;
+    }
+
+    private Collection<Program> programs;
+
+    public Collection<Program> getPrograms()
+    {
+        return programs;
+    }
+
+    private List<OrganisationUnitLevel> levels;
+
+    public List<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
     }
 
     // -------------------------------------------------------------------------
@@ -90,17 +104,11 @@ public class LoadAnonymousProgramsAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
+        orgunit = selectionManager.getSelectedOrganisationUnit();
 
-        if ( orgunit != null )
-        {
-            Collection<Program> programs = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, orgunit );
+        programs = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, orgunit );
 
-            if ( programs != null && programs.size() > 0 )
-            {
-                programInstances = programInstanceService.getProgramInstances( programs );
-            }
-        }
+        levels = organisationUnitService.getFilledOrganisationUnitLevels();
 
         return SUCCESS;
     }

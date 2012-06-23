@@ -57,11 +57,11 @@ public class RemoveCurrentEncounterAction
     // Input
     // -------------------------------------------------------------------------
 
-    private int programStageInstanceId;
+    private int id;
 
-    public void setProgramStageInstanceId( int programStageInstanceId )
+    public void setId( int id )
     {
-        this.programStageInstanceId = programStageInstanceId;
+        this.id = id;
     }
 
     private I18n i18n;
@@ -91,7 +91,7 @@ public class RemoveCurrentEncounterAction
     {
         try
         {
-            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
+            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( id );
 
             programStageInstanceService.deleteProgramStageInstance( programStageInstance );
         }
