@@ -26,16 +26,24 @@
           <td> <xsl:value-of select="d:shortName" /> </td>
         </tr>
         <tr>
-          <td>Period Type</td>
-          <td> <xsl:value-of select="d:periodType" /> </td>
-        </tr>
-        <tr>
           <td>Opening Date</td>
           <td> <xsl:value-of select="d:openingDate" /> </td>
         </tr>
         <tr>
+          <td>Closed Date</td>
+          <td> <xsl:value-of select="d:closedDate" /> </td>
+        </tr>
+        <tr>
           <td>Active</td>
           <td> <xsl:value-of select="d:active" /> </td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td> <xsl:value-of select="d:address" /> </td>
+        </tr>
+        <tr>
+          <td>PhoneNumber</td>
+          <td> <xsl:value-of select="d:phoneNumber" /> </td>
         </tr>
 
       </table>
