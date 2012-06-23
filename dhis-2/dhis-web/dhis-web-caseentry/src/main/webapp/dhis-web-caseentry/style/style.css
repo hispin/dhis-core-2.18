@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 input[type="button"], input[type="submit"] {
-    width: 128px;
+    width: 130px;
 }
 
 input.small-button[type="button"] {
@@ -15,7 +15,7 @@ input.large-button[type="button"] {
 }
 
 input[type="text"] {
-    width: 255px;
+    width: 260px;
 }
 
 select {
@@ -67,6 +67,18 @@ table.information, td.information
 }
 
 .errorCell{background-color: #FFCFCF}
+
+#advanced-search
+{
+  position: relative;
+  border: 1px solid #a4d2a3;
+  background-color: #d5efd5;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  margin-bottom: 15px;
+  border-radius: 3px;
+}
 
 /*----------------------------------------------------------------------------*/
 /* button list

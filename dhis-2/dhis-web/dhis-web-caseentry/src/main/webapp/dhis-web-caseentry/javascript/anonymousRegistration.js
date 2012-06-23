@@ -119,8 +119,6 @@ function searchEvents( listAll )
 		})
 	}
 	
-	
-	
 	params += '&facilityLB=' + $('input[name=facilityLB]:checked').val();
 	params += '&level=' + $('input[name=level]:checked').val();
 	params += '&orgunitIds=' + getFieldValue('orgunitId');
@@ -138,6 +136,10 @@ function searchEvents( listAll )
 			hideById('loaderDiv');
 			hideById('dataEntryInfor');
 			setInnerHTML( 'listDiv', html );
+			
+			var searchInfor = (listAll) ? i18n_list_all_events : i18n_search_events_by_dataelements;
+			setInnerHTML( 'searchInforTD', searchInfor);
+				
 			showById('listDiv');
 		}
     });
