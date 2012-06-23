@@ -42,7 +42,9 @@ public class ImportOptions
     private boolean dryRun = false;
 
     private ImportStrategy importStrategy;
-    
+
+    private String strategy;
+
     private boolean skipExistingCheck;
 
     private static final ImportOptions DEFAULT_OPTIONS = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES, false );
@@ -116,6 +118,11 @@ public class ImportOptions
     public void setDryRun( boolean dryRun )
     {
         this.dryRun = dryRun;
+    }
+
+    public void setStrategy( String strategy )
+    {
+        this.importStrategy = strategy != null ? ImportStrategy.valueOf( strategy.toUpperCase() ) : null;
     }
 
     public void setImportStrategy( String strategy )
