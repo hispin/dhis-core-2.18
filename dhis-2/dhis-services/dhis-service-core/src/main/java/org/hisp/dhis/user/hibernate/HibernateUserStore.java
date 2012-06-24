@@ -41,7 +41,6 @@ import java.util.*;
 
 /**
  * @author Nguyen Hong Duc
- * @version $Id: HibernateUserStore.java 6530 2008-11-28 15:02:47Z eivindwa $
  */
 public class HibernateUserStore
     implements UserStore
@@ -101,6 +100,7 @@ public class HibernateUserStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<User> getAllUsersBetween( int first, int max )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -113,6 +113,7 @@ public class HibernateUserStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<User> getUsersByLastUpdated( Date lastUpdated )
     {
         Session session = sessionFactory.getCurrentSession();
