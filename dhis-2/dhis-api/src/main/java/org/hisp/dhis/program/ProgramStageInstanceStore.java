@@ -74,9 +74,9 @@ public interface ProgramStageInstanceStore
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
     
     Grid getTabularReport( ProgramStage programStage, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
-        Collection<Integer> orgUnits, List<String> searchingKeys, int level, int maxLevel, Date startDate,
+        Collection<Integer> orgUnits, List<String> searchKeys, int level, int maxLevel, Date startDate,
         Date endDate, boolean descOrder, Integer min, Integer max );
     
-    int getTabularReportCount( ProgramStage programStage, List<String> searchingKeys,
+    int getTabularReportCount( ProgramStage programStage, List<String> searchKeys,
         Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate );
 }

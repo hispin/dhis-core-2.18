@@ -276,8 +276,7 @@ public class GenerateTabularReportAction
 
                 if ( selectedOrgunit.getParent() == null )
                 {
-                    organisationUnits = null; // Ignore org unit criteria when
-                    // root
+                    organisationUnits = null; // Ignore unit criteria when root
                 }
                 else
                 {
@@ -315,12 +314,12 @@ public class GenerateTabularReportAction
             grid = programStageInstanceService.getTabularReport( programStage, searchingValues, organisationUnits,
                 level, startValue, endValue, !orderByOrgunitAsc, paging.getStartPos(), paging.getPageSize() );
         }
-        else
-        // Download as Excel
+        else // Download as Excel        
         {
             grid = programStageInstanceService.getTabularReport( programStage, searchingValues, organisationUnits,
                 level, startValue, endValue, !orderByOrgunitAsc, null, null );
         }
+        
         System.out.println();
         System.out.println( grid );
 
@@ -340,31 +339,32 @@ public class GenerateTabularReportAction
     private void getParams()
     {
         int index = 0;
-        for ( String searchingValue : searchingValues )
+        
+        for ( String searchValue : searchingValues )
         {
-            String[] infor = searchingValue.split( "_" );
-            String objectType = infor[0];
+            String[] values = searchValue.split( "_" );
+            String prefix = values[0];
 
-            if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
+            if ( prefix.equals( PREFIX_PATIENT_ATTRIBUTE ) )
             {
-                int objectId = Integer.parseInt( infor[1] );
+                int objectId = Integer.parseInt( values[1] );
                 PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
                 patientAttributes.add( attribute );
                 
                 valueTypes.add( attribute.getValueType() );
                 mapSuggestedValues.put( index, getSuggestedAttributeValues( attribute ) );
             }
-            else if ( objectType.equals( PREFIX_DATA_ELEMENT ) )
+            else if ( prefix.equals( PREFIX_DATA_ELEMENT ) )
             {
-                int objectId = Integer.parseInt( infor[1] );
+                int objectId = Integer.parseInt( values[1] );
                 DataElement dataElement = dataElementService.getDataElement( objectId );
                 dataElements.add( dataElement );
 
-                // Get value-type && suggested-values
-                String valueType = (dataElement.getOptionSet() != null) ? VALUE_TYPE_OPTION_SET : dataElement.getType();
+                String valueType = dataElement.getOptionSet() != null ? VALUE_TYPE_OPTION_SET : dataElement.getType();
                 valueTypes.add( valueType );
                 mapSuggestedValues.put( index, getSuggestedDataElementValues( dataElement ) );
             }
+            
             index++;
         }
     }
