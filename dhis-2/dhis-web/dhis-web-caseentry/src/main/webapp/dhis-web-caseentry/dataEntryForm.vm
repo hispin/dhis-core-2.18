@@ -1,7 +1,6 @@
 <script>
 	jQuery("#entryFormContainer").ready(function(){
 		setFieldValue('programStageId', "$!programStageInstance.programStage.id");
-		setFieldValue('programId', "$!programStageInstance.programStage.program.id");
 		#if( $!programStageInstance.programStage.program.type=="3" && $!programStageInstance.completed=='true')
 			hideById('entryFormContainer');
 		#elseif( $programStageInstance )
