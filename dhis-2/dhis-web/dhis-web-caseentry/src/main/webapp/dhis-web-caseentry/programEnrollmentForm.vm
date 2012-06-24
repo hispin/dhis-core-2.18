@@ -189,9 +189,12 @@
 		#if( $hasDataEntry == 'true' )
 			showSelectedDataRecoding( getFieldValue('patientId') );
 		#else
-			var disabled = $( ".selector" ).tabs( "option", "disabled" );
 			$( "#tabs" ).tabs( "option", "disabled", [2] );
 			$("#tabs").tabs("remove", 2);
+		#end
+		
+		#if( $programInstance.program.type!='1' )
+			$("#tabs").tabs("remove", 1);
 		#end
 		
 		#if( $identifierTypes.size() > 0 || $noGroupAttributes.size() > 0 || $attributeGroups.size() > 0 )

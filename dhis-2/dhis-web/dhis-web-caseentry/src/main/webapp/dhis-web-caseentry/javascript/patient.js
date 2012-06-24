@@ -418,7 +418,6 @@ function showProgramEnrollmentForm( patientId, programId )
 			}
 			else
 			{
-				showEnrolmentField();
 				var type = jQuery('#programEnrollmentSelectDiv [name=programId] option:selected').attr('type');
 					
 				if( type=='2')
