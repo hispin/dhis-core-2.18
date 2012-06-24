@@ -65,7 +65,12 @@ public class Dxf2MetaDataEndpoint
     {
         options.setDryRun( dryRun );
     }
-    
+
+    public void setStrategy( String strategy )
+    {
+        options.setStrategy( strategy );
+    }
+
     public Dxf2MetaDataEndpoint( String uri, Dxf2Component component, ImportService importService )
     {
         super( uri, component );
