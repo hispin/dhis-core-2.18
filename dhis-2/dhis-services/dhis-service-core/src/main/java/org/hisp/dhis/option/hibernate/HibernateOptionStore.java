@@ -25,12 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.option;
+package org.hisp.dhis.option.hibernate;
 
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.option.OptionSet;
+import org.hisp.dhis.option.OptionStore;
 
 /**
  * @author Chau Thu Tran
@@ -41,10 +43,9 @@ public class HibernateOptionStore
     extends HibernateIdentifiableObjectStore<OptionSet>
     implements OptionStore
 {
-
     @SuppressWarnings("unchecked")
     @Override
-    public List<String> getOptions( OptionSet optionSet, String key )
+    public List<String> getOptions( OptionSet optionSet, String key, int max )
     {
         String hql = "select option from OptionSet as optionset inner join optionset.options as option where optionset.id = :optionSetId and lower(option) like lower('%" + key + "%') ";
 
@@ -53,5 +54,4 @@ public class HibernateOptionStore
         
         return query.list();
     }
-
 }

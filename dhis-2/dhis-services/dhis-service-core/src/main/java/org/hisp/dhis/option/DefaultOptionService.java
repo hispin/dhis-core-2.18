@@ -83,6 +83,6 @@ public class DefaultOptionService
     
     public List<String> getOptions( OptionSet optionSet, String key  )
     {
-        return optionStore.getOptions( optionSet, key );
+        return optionStore.getOptions( optionSet, key, 100 );
     }
 }
