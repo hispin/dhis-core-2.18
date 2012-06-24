@@ -36,6 +36,9 @@ function getDataElements()
 		}, 
 		function( json ) 
 		{   
+			clearListById('dataElementId');
+			clearListById('compulsoryDE');
+			
 			jQuery( '#dataElementId').append( '<option value="">[' + i18n_please_select + ']</option>' );
 			for ( i in json.programStageDataElements ) {
 				jQuery( '#dataElementId').append( '<option value="' + json.programStageDataElements[i].id + '">' + json.programStageDataElements[i].name + '</option>' );
@@ -245,17 +248,6 @@ function showAddEventForm()
 		});
 }
 
-
-
-
-
-
-
-
-
-
-
-
 function loadEventRegistrationForm()
 {
 	hideById('selectDiv');
@@ -301,13 +293,6 @@ function loadEventRegistrationForm()
 		} );
 }
 
-
-
-
-
-
-
-
 function loadEventForm()
 {	
 	hideById('dataEntryFormDiv');
@@ -345,8 +330,7 @@ function loadEventForm()
 				disable('deleteCurrentEventBtn');
 				disable('completeBtn');
 				hideById('loaderDiv');
-			}
-			
+			}	
 	});
 }
 
@@ -375,7 +359,5 @@ function createNewEvent()
 			{
 				showWarningMessage( json.message );
 			}
-			
 		});
 }
-
