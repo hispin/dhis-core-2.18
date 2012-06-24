@@ -27,19 +27,6 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.CsvUtils.NEWLINE;
-import static org.hisp.dhis.system.util.CsvUtils.SEPARATOR_B;
-import static org.hisp.dhis.system.util.CsvUtils.csvEncode;
-import static org.hisp.dhis.system.util.CsvUtils.getCsvEndValue;
-import static org.hisp.dhis.system.util.CsvUtils.getCsvValue;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
@@ -48,11 +35,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.importexport.CSVConverter;
-import org.hisp.dhis.importexport.ExportParams;
-import org.hisp.dhis.importexport.ImportDataValue;
-import org.hisp.dhis.importexport.ImportObjectService;
-import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.*;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -61,6 +44,15 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MimicingHashMap;
 import org.hisp.dhis.system.util.StreamUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import static org.hisp.dhis.system.util.CsvUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -245,7 +237,9 @@ public class DataValueConverter
         if ( value != null )
         {
             value = value.replaceAll( "\"", "" );
-            value = value.replace( ".", "" );
+            //FIXME We need to have more robust handling of values
+            //Import them as is for now.
+            //value = value.replace( ".", "" );
         }
         
         return value;

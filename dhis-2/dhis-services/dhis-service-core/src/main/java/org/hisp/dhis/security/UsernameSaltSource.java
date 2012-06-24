@@ -44,7 +44,7 @@ public interface UsernameSaltSource
 {
     /**
      * Creates and returns a salt based on the given username.
-     * 
+     *
      * @param username
      *            the username to base the salt on.
      * @return a salt based on the given username.
