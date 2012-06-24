@@ -36,6 +36,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patientreport.TabularReportColumn;
 
 /**
  * @author Abyot Asalefew
@@ -86,10 +87,10 @@ public interface ProgramStageInstanceService
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
 
-    Grid getTabularReport( ProgramStage programStage, List<String> searchKeys, Collection<Integer> organisationUnits, 
+    Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns, Collection<Integer> organisationUnits, 
         int level, Date startDate, Date endDate, boolean descOrder, Integer min, Integer max );
 
-    int getTabularReportCount( ProgramStage programStage, List<String> searchKeys,
+    int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Date startDate, Date endDate );
 
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );

@@ -36,6 +36,7 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patientreport.TabularReportColumn;
 
 /**
  * @author Abyot Asalefew
@@ -74,9 +75,9 @@ public interface ProgramStageInstanceStore
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
     
     Grid getTabularReport( ProgramStage programStage, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
-        Collection<Integer> orgUnits, List<String> searchKeys, int level, int maxLevel, Date startDate,
+        Collection<Integer> orgUnits, List<TabularReportColumn> columns, int level, int maxLevel, Date startDate,
         Date endDate, boolean descOrder, Integer min, Integer max );
     
-    int getTabularReportCount( ProgramStage programStage, List<String> searchKeys,
+    int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate );
 }

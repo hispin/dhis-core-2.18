@@ -45,6 +45,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.patientreport.TabularReportColumn;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -195,7 +196,7 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( patient, completed );
     }
 
-    public Grid getTabularReport( ProgramStage programStage, List<String> searchingKeys,
+    public Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Date startDate, Date endDate, boolean descOrder, Integer min,
         Integer max )
     {
@@ -204,15 +205,15 @@ public class DefaultProgramStageInstanceService
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
 
         return programStageInstanceStore.getTabularReport( programStage, orgUnitLevelMap, organisationUnits,
-            searchingKeys, level, maxLevel, startDate, endDate, descOrder, min, max );
+            columns, level, maxLevel, startDate, endDate, descOrder, min, max );
     }
 
-    public int getTabularReportCount( ProgramStage programStage, List<String> searchingKeys,
+    public int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, Date startDate, Date endDate )
     {
         int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
 
-        return programStageInstanceStore.getTabularReportCount( programStage, searchingKeys, organisationUnits, level,
+        return programStageInstanceStore.getTabularReportCount( programStage, columns, organisationUnits, level,
             maxLevel, startDate, endDate );
     }
 
