@@ -198,6 +198,13 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.user.UserStore" class="org.hisp.dhis.user.hibernate.HibernateUserStore">
     <property name="sessionFactory" ref="sessionFactory" />
+    <property name="clazz" value="org.hisp.dhis.user.User" />
+	<property name="cacheable" value="true" />
+  </bean>
+
+  <bean id="org.hisp.dhis.user.UserCredentialsStore" class="org.hisp.dhis.user.hibernate.HibernateUserCredentialsStore">
+    <property name="sessionFactory" ref="sessionFactory" />
+	<property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <bean id="org.hisp.dhis.user.UserGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
@@ -223,7 +230,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="statementManager" ref="statementManager" />
   </bean>
 
-  <bean id="org.hisp.dhis.user.UserAuthorityGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+  <bean id="org.hisp.dhis.user.UserAuthorityGroupStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.user.UserAuthorityGroup" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
@@ -448,7 +455,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.user.UserService" class="org.hisp.dhis.user.DefaultUserService">
     <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
-    <property name="userRoleStore" ref="org.hisp.dhis.user.UserAuthorityGroupStore" />
+	<property name="userCredentialsStore" ref="org.hisp.dhis.user.UserCredentialsStore" />
+    <property name="userAuthorityGroupStore" ref="org.hisp.dhis.user.UserAuthorityGroupStore" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
