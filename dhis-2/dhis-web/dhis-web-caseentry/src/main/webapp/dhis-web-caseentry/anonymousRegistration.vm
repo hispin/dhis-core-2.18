@@ -1,12 +1,7 @@
 <script type="text/javascript">
    jQuery(document).ready(	function(){
 		datePickerInRange( 'startDate' , 'endDate' );
-		
-		jQuery('#criteriaDiv :input').each( function( idx, item ){
-			disable(this.id);
-		});
-		enable('orgunitName');
-		enable('programId');
+		disableCriteriaDiv();
 	});		
 </script>
 				

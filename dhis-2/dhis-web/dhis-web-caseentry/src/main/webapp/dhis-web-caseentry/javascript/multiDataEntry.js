@@ -5,8 +5,9 @@ function multiDataEntryOrgunitSelected( orgUnits, orgUnitNames )
 	jQuery('#programDiv').load("getPrograms.action",{}, 
 		function()
 		{
-			showById('programDiv');
 			hideById('btnBack');
+			hideById('programName');
+			showById('programDiv');
 			setFieldValue( 'orgunitName', orgUnitNames[0] );
 			hideLoader();
 		});
@@ -33,6 +34,7 @@ function selectProgram( programId, programName )
 			showById('programName');
 			
 			showById('btnBack');
+			showById('programName');
 			showById("listPatient");
 			hideLoader();
 		});

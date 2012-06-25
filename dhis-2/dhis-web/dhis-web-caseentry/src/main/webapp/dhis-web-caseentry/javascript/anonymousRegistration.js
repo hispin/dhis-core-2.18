@@ -1,6 +1,24 @@
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
+	hideById('dataEntryInfor');
+	hideById('listDiv');
+	
+	jQuery.getJSON( "anonymousPrograms.action",{}, 
+		function( json ) 
+		{   
+			clearListById('searchObjectId');
+			clearListById('compulsoryDE');
+			clearListById('programId');
+			
+			jQuery( '#programId').append( '<option value="">[' + i18n_please_select + ']</option>' );
+			for ( i in json.programs ) {
+				jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '">' + json.programs[i].name + '</option>' );
+			}
+			
+			disableCriteriaDiv();
+		});
+		
 	setFieldValue( 'orgunitId', orgUnits[0] );
 	setFieldValue( 'orgunitName', orgUnitNames[0] );
 	hideById('listDiv');
@@ -8,6 +26,22 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 }
 
 selection.setListenerFunction( organisationUnitSelected );
+
+function disableCriteriaDiv()
+{
+	jQuery('#criteriaDiv :input').each( function( idx, item ){
+		disable(this.id);
+	});
+	enable('orgunitName');
+	enable('programId');
+}
+
+function enableCriteriaDiv()
+{
+	jQuery('#criteriaDiv :input').each( function( idx, item ){
+		enable(this.id);
+	});
+}
 
 function getDataElements()
 {
@@ -20,9 +54,7 @@ function getDataElements()
 	if( programStageId == '')
 	{
 		removeAllAttributeOption();
-		jQuery('#criteriaDiv :input').each( function( idx, item ){
-			disable(this.id);
-		});
+		disableCriteriaDiv();
 		enable('orgunitName');
 		enable('programId');
 		hideById('listDiv');
@@ -36,6 +68,7 @@ function getDataElements()
 		}, 
 		function( json ) 
 		{   
+			clearListById('searchObjectId');
 			clearListById('compulsoryDE');
 			
 			jQuery( '#searchObjectId').append( '<option value="">[' + i18n_please_select + ']</option>' );
@@ -47,9 +80,7 @@ function getDataElements()
 				}
 			}
 			
-			jQuery('#criteriaDiv :input').each( function( idx, item ){
-				enable(this.id);
-			});
+			enableCriteriaDiv();
 		});
 }
 
@@ -82,7 +113,7 @@ function dataElementOnChange( this_ )
 	}
 }
 
-function autocompletedFilterField( idField, dataElementId )
+function autocompletedFilterField( idField, searchObjectId )
 {
 	var input = jQuery( "#" +  idField );
 	input.autocomplete({
@@ -90,7 +121,7 @@ function autocompletedFilterField( idField, dataElementId )
 		minLength: 0,
 		source: function( request, response ){
 			$.ajax({
-				url: "getOptions.action?id=" + dataElementId + "&query=" + input.val(),
+				url: "getOptions.action?id=" + searchObjectId + "&query=" + input.val(),
 				dataType: "json",
 				success: function(data) {
 					response($.map(data.options, function(item) {

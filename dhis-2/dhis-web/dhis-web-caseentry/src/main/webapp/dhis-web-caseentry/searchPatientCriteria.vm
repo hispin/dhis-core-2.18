@@ -8,7 +8,8 @@
 		</td>
 		<td>
 			<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" #if($organisationUnit) #else disabled #end>
-		</td>        
+		</td>
+		<td><input type="button" id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();"></td>        
 	</tr> 
 </table>
 
