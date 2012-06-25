@@ -45,12 +45,17 @@ public class HibernateOptionStore
 {
     @SuppressWarnings("unchecked")
     @Override
-    public List<String> getOptions( OptionSet optionSet, String key, int max )
+    public List<String> getOptions( OptionSet optionSet, String key, Integer max )
     {
-        String hql = "select option from OptionSet as optionset inner join optionset.options as option where optionset.id = :optionSetId and lower(option) like lower('%" + key + "%') ";
-
+        String hql = "select option from OptionSet as optionset inner join optionset.options as option where optionset.id = :optionSetId ";
+        if( key != null )
+        {
+            hql += " and lower(option) like lower('%" + key + "%') ";
+        }
+        
         Query query = getQuery( hql );
         query.setInteger( "optionSetId", optionSet.getId() );
+        query.setMaxResults( max );
         
         return query.list();
     }

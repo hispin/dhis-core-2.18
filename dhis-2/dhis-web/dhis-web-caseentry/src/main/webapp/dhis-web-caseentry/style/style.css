@@ -167,8 +167,9 @@ div.provided-elsewhere{
 	height:20px; 
 }
 
-.optionset-small-button{
-	font-size: .8em !important;
+.ui-button{
+	max-height: 100px;
+	max-height: 100px;
 }
 
 .ui-autocomplete {

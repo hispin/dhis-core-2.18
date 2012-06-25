@@ -38,5 +38,6 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
  */
 public interface OptionStore extends GenericIdentifiableObjectStore<OptionSet>
 {
-    List<String> getOptions( OptionSet optionSet, String key, int max  );
+    List<String> getOptions( OptionSet optionSet, String key, Integer max  );
 }
+
