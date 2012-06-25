@@ -60,6 +60,8 @@
         foreign-key="fk_dataset_dataentryform" cascade="all" />
 
     <property name="mobile" not-null="true" />
+	
+	<property name="allowFuturePeriods" />
 
     <property name="version" />
 

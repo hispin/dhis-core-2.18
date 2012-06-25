@@ -547,8 +547,13 @@ function displayPeriodsInternal()
 {
     var dataSetId = $( '#selectedDataSetId' ).val();
     var periodType = dataSets[dataSetId].periodType;
+    var allowFuturePeriods = dataSets[dataSetId].allowFuturePeriods;
     var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
-    periods = periodTypeFactory.filterFuturePeriods( periods );
+    
+    if ( allowFuturePeriods == "false" )
+    {
+    	periods = periodTypeFactory.filterFuturePeriods( periods );
+    }
 
     clearListById( 'selectedPeriodId' );
 
@@ -573,8 +578,13 @@ function dataSetSelected()
     var dataSetId = $( '#selectedDataSetId' ).val();
     var periodId = $( '#selectedPeriodId' ).val();
     var periodType = dataSets[dataSetId].periodType;
+    var allowFuturePeriods = dataSets[dataSetId].allowFuturePeriods;
     var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
-    periods = periodTypeFactory.filterFuturePeriods( periods );
+    
+    if ( allowFuturePeriods == "false" )
+    {
+    	periods = periodTypeFactory.filterFuturePeriods( periods );
+    }
 
     if ( dataSetId && dataSetId != -1 )
     {

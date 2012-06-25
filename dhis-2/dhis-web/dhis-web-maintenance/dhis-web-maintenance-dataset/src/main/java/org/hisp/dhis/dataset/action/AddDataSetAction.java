@@ -114,6 +114,13 @@ public class AddDataSetAction
         this.description = description;
     }
 
+    private boolean allowFuturePeriods;
+
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
+    {
+        this.allowFuturePeriods = allowFuturePeriods;
+    }
+
     private int expiryDays;
 
     public void setExpiryDays( int expiryDays )
@@ -182,10 +189,11 @@ public class AddDataSetAction
             indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
         }
 
+        dataSet.setDescription( description );
+        dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setVersion( 1 );
         dataSet.setMobile( mobile );
         dataSet.setIndicators( indicators );
-        dataSet.setDescription( description );
 
         dataSetService.addDataSet( dataSet );
 

@@ -125,6 +125,13 @@ public class UpdateDataSetAction
         this.description = description;
     }
 
+    private boolean allowFuturePeriods;
+
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
+    {
+        this.allowFuturePeriods = allowFuturePeriods;
+    }
+    
     private int expiryDays;
 
     public void setExpiryDays( int expiryDays )
@@ -204,6 +211,7 @@ public class UpdateDataSetAction
         dataSet.setName( name );
         dataSet.setShortName( shortName );
         dataSet.setDescription( description );
+        dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setCode( code );
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
         dataSet.updateDataElements( dataElements );
