@@ -85,7 +85,7 @@ function reportSelected( _periodType )
 
 		if ( value && value != null )
 		{
-			currentPeriodTypeName = value.split( '_' )[1];
+			currentPeriodTypeName = value.split( '_' )[1] == "" ? "Monthly" : value.split( '_' )[1];
 			currentReportTypeName = value.split( '_' )[2];
 
 			if ( currentReportTypeName == "P" ) {
@@ -129,7 +129,7 @@ function getRelativePeriods( value )
 		var periodType = value.split( "_" )[0];
 		var date = value.split( "_" )[1];
 		var submitDateId = "";
-		
+
 		if ( periodType == "Weekly" )
 		{
 		}
