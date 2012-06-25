@@ -33,6 +33,7 @@ import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.importexport.*;
@@ -67,6 +68,8 @@ public class DataValueConverter
     private DataElementCategoryService categoryService;
     private PeriodService periodService;
     private StatementManager statementManager;
+    private DataElementService dataElementService;
+
     
     // -------------------------------------------------------------------------
     // Properties
@@ -81,11 +84,12 @@ public class DataValueConverter
     // -------------------------------------------------------------------------
 
     public DataValueConverter( PeriodService periodService, AggregatedDataValueService aggregatedDataValueService,
-        StatementManager statementManager )
+        StatementManager statementManager, DataElementService dataElementService )
     {
         this.periodService = periodService;
         this.aggregatedDataValueService = aggregatedDataValueService;
         this.statementManager = statementManager;
+        this.dataElementService = dataElementService;
     }
     
     /**
@@ -158,12 +162,7 @@ public class DataValueConverter
                                 out.write( getCsvValue( value.getSourceId() ) );
                                 out.write( getCsvValue( value.getDataElementId() ) );
                                 out.write( getCsvValue( value.getPeriodId() ) );
-                                out.write( SEPARATOR_B );
-                                out.write( SEPARATOR_B );
-                                out.write( getCsvValue( csvEncode( value.getValue() ) ) );
-                                out.write( SEPARATOR_B );
-                                out.write( SEPARATOR_B );
-                                out.write( SEPARATOR_B );
+                                out = getCSVDataExportField(out, value );
                                 out.write( getCsvValue( 0 ) );
                                 out.write( getCsvValue( 0 ) );
                                 out.write( getCsvValue( 0 ) );
@@ -191,7 +190,8 @@ public class DataValueConverter
     public void read( BufferedReader reader, ImportParams params )
     {
         String line = "";
-        
+        Boolean validValue = true;
+       
         DataValue value = new DataValue();
         DataElement dataElement = new DataElement();
         Period period = new Period();
@@ -199,7 +199,8 @@ public class DataValueConverter
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         DataElementCategoryOptionCombo proxyCategoryOptionCombo = new DataElementCategoryOptionCombo();
         proxyCategoryOptionCombo.setId( categoryOptionCombo.getId() );
-        
+        final String owner =  params.getOwner();
+
         try
         {
             reader.readLine(); // Skip CSV header
@@ -207,7 +208,7 @@ public class DataValueConverter
             while( ( line = reader.readLine() ) != null )
             {
                 String[] values = line.split( SEPARATOR );
-                
+
                 dataElement.setId( dataElementMapping.get( Integer.parseInt( values[2] ) ) );
                 period.setId( periodMapping.get( Integer.parseInt( values[3] ) ) );
                 organisationUnit.setId( sourceMapping.get( Integer.parseInt( values[1] ) ) );
@@ -215,33 +216,57 @@ public class DataValueConverter
                 value.setDataElement( dataElement );
                 value.setPeriod( period );
                 value.setSource( organisationUnit );
-                //Text
-                if ( values[4] != null || !values[4].isEmpty() )
+
+                if ( values[4] != null || !values[4].isEmpty() ) //Text
                 {
                     value.setValue( values[4].trim() );
                 }
-                //Yes=1,No=0
-                if ( values[5] != null || !values[5].isEmpty() )
+                else if ( values[5] != null || !values[5].isEmpty() ) //Boolean
                 {
                     value.setValue("false");
 
-                    if  ( values[5].trim() == "1" )
+                    if  ( values[5].trim().equals("1")  )
                     {
                         value.setValue("true");
                     }
 
                 }
-                //Numbers
-                if ( values[6] != null  || !values[6].isEmpty() )
+                else if ( values[6] != null  || !values[6].isEmpty() ) //Numeric
                 {
-                value.setValue( handleNumericValue( values[6] ) );
+                    value.setValue( handleNumericValue( values[6] ) );
+                    validValue = isValidNumeric( value.getValue() );
+                }
+                else if ( values[7] != null  || !values[7].isEmpty() ) //Date
+                {
+                    try
+                    {
+                            value.setValue( handleNumericValue( DateUtils.convertDate(values[7]) ) );
+                    }
+                    catch (Exception e)
+                    {
+                        validValue = false;
+                    }
 
+                }
+                else if ( values[8] != null  || !values[8].isEmpty() ) //Memo not supported
+                {
+                    validValue = false;
+                }
+
+                else if ( values[9] != null  || !values[9].isEmpty() ) //OLE not supported
+                {
+                    validValue = false;
                 }
 
                 value.setComment( values[13] );
+                value.setTimestamp( DateUtils.getDefaultDate( values[15] ) );
                 value.setOptionCombo( proxyCategoryOptionCombo );
+                value.setStoredBy( owner );
                 
-                importObject( value, params );
+                if ( validValue )
+                {
+                    importObject( value, params );
+                }
             }
         }
         catch ( IOException ex )
@@ -263,50 +288,70 @@ public class DataValueConverter
             //Remove all quotes
             value = value.replaceAll( "\"", "" );
             //Strip trailing zeros
-            value = value.replaceAll( "\\.0+$", "" );
+            value = value.replaceAll("\\.0+$", "");
         }
 
-        
         return value;
     }
 
-    private static boolean isValidNumeric (String value)
+    private boolean isValidNumeric (String value)
     {
-        if ( value == null )
-        {
-            return false;
-        }
-        else
-        {
-            return value.matches("-?\\d+(\\.\\d+)?");
-        }
+        return value != null && value.matches("-?\\d+(\\.\\d+)?");
     }
 
-    private static Integer exportCSVField (DataElement dataElement)
+    private  ZipOutputStream getCSVDataExportField (ZipOutputStream out, DeflatedDataValue value)
     {
-        String dataElementType = dataElement.getType();
-        Integer csvField = null;
+         
+        String dataElementType = dataElementService.getDataElement(value.getDataElementId()).getType();
 
-        if ( dataElementType == DataElement.VALUE_TYPE_STRING)
+        try
         {
-            csvField =   4;
+            if ( dataElementType.equals( DataElement.VALUE_TYPE_STRING ) )
+            {
+                out.write( getCsvValue( csvEncode( value.getValue() ) ) );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+            }
+
+            else if ( dataElementType.equals( DataElement.VALUE_TYPE_BOOL ) )
+            {
+                out.write( SEPARATOR_B );
+                out.write( getCsvValue( csvEncode( value.getValue() ) ) );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+            }
+
+            else if ( dataElementType.equals( DataElement.VALUE_TYPE_NUMBER ) )
+            {
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+                out.write( getCsvValue( csvEncode( value.getValue() ) ) );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+             }
+
+            else if ( dataElementType.equals(DataElement.VALUE_TYPE_DATE ) )
+            {
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+                out.write( getCsvValue( DateUtils.getMediumDate( value.getValue() ).toString() ) ) ;
+                out.write( SEPARATOR_B );
+                out.write( SEPARATOR_B );
+            }
         }
 
-        if ( dataElementType == DataElement.VALUE_TYPE_BOOL )
+        catch ( IOException ex )
         {
-            csvField = 5;
+            throw new RuntimeException( "Failed handle CSV data field export", ex );
         }
 
-        if ( dataElementType == DataElement.VALUE_TYPE_NUMBER )
-        {
-            csvField =  6;
-        }
-
-        if ( dataElementType == DataElement.VALUE_TYPE_DATE )
-        {
-            csvField =  7;
-        }
-
-        return csvField;
+        return out;
     }
 }

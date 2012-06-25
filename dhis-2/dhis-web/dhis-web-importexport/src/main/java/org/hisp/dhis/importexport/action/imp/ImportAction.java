@@ -235,6 +235,8 @@ public class ImportAction
         // Import parameters
         // ---------------------------------------------------------------------
 
+        String owner = currentUserService.getCurrentUsername();
+
         ImportParams params = new ImportParams();
 
         ImportStrategy strategy = ImportStrategy.valueOf( incomingRecords );
@@ -245,14 +247,13 @@ public class ImportAction
         params.setSkipCheckMatching( skipCheckMatching );
         params.setLastUpdated( (lastUpdated != null && lastUpdated.trim().length() > 0) ? DateUtils
             .getMediumDate( lastUpdated ) : null );
+        params.setOwner(owner);
 
         // ---------------------------------------------------------------------
         // Process
         // ---------------------------------------------------------------------
 
         String importType = importFormat + IMPORT_INTERNAL_PROCESS_ID_POSTFIX;
-
-        String owner = currentUserService.getCurrentUsername();
 
         ProcessExecutor executor = processCoordinator.newProcess( importType, owner );
 
