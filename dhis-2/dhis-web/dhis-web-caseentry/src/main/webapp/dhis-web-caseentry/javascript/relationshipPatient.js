@@ -25,7 +25,7 @@ function showAddRelationship( patientId )
 function showAddRelationshipPatient( patientId, isShowPatientList )
 {
 	hideById( 'selectDiv' );
-	hideById( 'searchPatientDiv' );
+	hideById( 'searchDiv' );
 	hideById( 'listPatientDiv' );
 	hideById( 'listRelationshipDiv' );
 	setInnerHTML('editPatientDiv', '');
@@ -93,7 +93,7 @@ function addRelationshipPatient()
 		success: function( json ) {
 			hideById('addRelationshipDiv');
 			showById('selectDiv');
-			showById('searchPatientDiv');
+			showById('searchDiv');
 			showById('listPatientDiv');
 			jQuery('#loaderDiv').hide();
 

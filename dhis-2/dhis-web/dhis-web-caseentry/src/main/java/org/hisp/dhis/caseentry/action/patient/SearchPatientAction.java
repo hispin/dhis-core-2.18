@@ -70,7 +70,7 @@ public class SearchPatientAction
 
     private Boolean listAll;
 
-    private List<Integer> searchingAttributeId = new ArrayList<Integer>();
+    private List<Integer> searchObjectId = new ArrayList<Integer>();
 
     private Boolean searchBySelectedOrgunit;
 
@@ -142,9 +142,9 @@ public class SearchPatientAction
         return listAll;
     }
 
-    public void setSearchingAttributeId( List<Integer> searchingAttributeId )
+    public void setSearchObjectId( List<Integer> searchObjectId )
     {
-        this.searchingAttributeId = searchingAttributeId;
+        this.searchObjectId = searchObjectId;
     }
 
     public Collection<Patient> getPatients()
@@ -186,7 +186,7 @@ public class SearchPatientAction
         // Search patients by attributes
         // ---------------------------------------------------------------------
 
-        for ( Integer attributeId : searchingAttributeId )
+        for ( Integer attributeId : searchObjectId )
         {
             if ( attributeId != null && attributeId > 0 )
             {
@@ -194,7 +194,7 @@ public class SearchPatientAction
             }
         }
         searchBySelectedOrgunit = (searchBySelectedOrgunit == null) ? false : searchBySelectedOrgunit;
-        searchPatientByAttributes( searchingAttributeId, searchText, selectOrgunit, searchBySelectedOrgunit );
+        searchPatientByAttributes( searchObjectId, searchText, selectOrgunit, searchBySelectedOrgunit );
 
         return SUCCESS;
     }

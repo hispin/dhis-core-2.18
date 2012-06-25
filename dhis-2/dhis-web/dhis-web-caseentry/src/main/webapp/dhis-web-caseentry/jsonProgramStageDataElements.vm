@@ -4,6 +4,12 @@
   {
 	"id": "${programStageDataElement.dataElement.id}",
 	"name": "$!encoder.jsonEncode( ${programStageDataElement.dataElement.name} )",
+	"type": 
+		#if( $!programStageDataElement.dataElement.optionSet )
+			"optionset",
+		#else
+			"${programStageDataElement.dataElement.type}",
+		#end
 	"compulsory": "${programStageDataElement.compulsory}"
   }#if( $velocityCount < $size ),#end
   #end

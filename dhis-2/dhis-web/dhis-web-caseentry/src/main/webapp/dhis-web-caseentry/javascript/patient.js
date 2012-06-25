@@ -8,7 +8,7 @@ var COLOR_GREY = '#cccccc';
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {	
 	showById('selectDiv');
-	showById('searchPatientDiv');
+	showById('searchDiv');
 	hideById('listPatientDiv');
 	hideById('editPatientDiv');
 	hideById('enrollmentDiv');
@@ -294,7 +294,7 @@ function showAddPatientForm()
 {
 	hideById('listPatientDiv');
 	hideById('selectDiv');
-	hideById('searchPatientDiv');
+	hideById('searchDiv');
 	hideById('migrationPatientDiv');
 	
 	jQuery('#loaderDiv').show();
@@ -335,7 +335,7 @@ function showUpdatePatientForm( patientId )
 	hideById('listPatientDiv');
 	setInnerHTML('editPatientDiv', '');
 	hideById('selectDiv');
-	hideById('searchPatientDiv');
+	hideById('searchDiv');
 	hideById('migrationPatientDiv');
 				
 	jQuery('#loaderDiv').show();
@@ -373,7 +373,7 @@ function showProgramEnrollmentSelectForm( patientId )
 	hideById('listPatientDiv');
 	hideById('editPatientDiv');
 	hideById('selectDiv');
-	hideById('searchPatientDiv');
+	hideById('searchDiv');
 	hideById('migrationPatientDiv');
 				
 	jQuery('#loaderDiv').show();
@@ -418,6 +418,7 @@ function showProgramEnrollmentForm( patientId, programId )
 			}
 			else
 			{
+				showEnrolmentField();
 				var type = jQuery('#programEnrollmentSelectDiv [name=programId] option:selected').attr('type');
 					
 				if( type=='2')
@@ -484,7 +485,7 @@ function showUnenrollmentSelectForm( patientId )
 	hideById('listPatientDiv');
 	hideById('editPatientDiv');
 	hideById('selectDiv');
-	hideById('searchPatientDiv');
+	hideById('searchDiv');
 	hideById('migrationPatientDiv');
 				
 	jQuery('#loaderDiv').show();
@@ -575,7 +576,7 @@ function showRelationshipList( patientId )
 	if ( getFieldValue('isShowPatientList') == 'false' )
 	{
 		hideById('selectDiv');
-		hideById('searchPatientDiv');
+		hideById('searchDiv');
 		hideById('listPatientDiv');
 
 		jQuery('#loaderDiv').show();
@@ -601,7 +602,7 @@ function showRelationshipList( patientId )
 function onClickBackBtn()
 {
 	showById('selectDiv');
-	showById('searchPatientDiv');
+	showById('searchDiv');
 	showById('listPatientDiv');
 	
 	hideById('editPatientDiv');
@@ -622,11 +623,11 @@ function loadPatientList()
 	hideById('migrationPatientDiv');
 	
 	showById('selectDiv');
-	showById('searchPatientDiv');
+	showById('searchDiv');
 	
 	if( statusSearching == 0)
 	{
-		loadAllPatients();
+		loadAllPatient();
 	}
 	else if( statusSearching == 1 )
 	{
@@ -638,7 +639,7 @@ function loadPatientList()
 // Load all patients
 // -----------------------------------------------------------------------------
 
-function loadAllPatients()
+function loadAllPatient()
 {
 	hideById('listPatientDiv');
 	hideById('editPatientDiv');
@@ -795,7 +796,7 @@ function saveIdentifierAndAttribute()
 function showSelectedDataRecoding( patientId )
 {
 	showLoader();
-	hideById('searchPatientDiv');
+	hideById('searchDiv');
 	hideById('dataEntryFormDiv');
 	hideById('migrationPatientDiv');
 	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
@@ -841,7 +842,7 @@ function getPatientLocation( patientId )
 {
 	hideById('listPatientDiv');
 	hideById('selectDiv');
-	hideById('searchPatientDiv');
+	hideById('searchDiv');
 				
 	jQuery('#loaderDiv').show();
 	
