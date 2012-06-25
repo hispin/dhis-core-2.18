@@ -366,52 +366,56 @@ public class GenerateTabularReportAction
         for ( String searchValue : searchingValues )
         {
             String[] values = searchValue.split( "_" );
-            String prefix = values[0];
-
-            TabularReportColumn column = new TabularReportColumn();
-            column.setPrefix( prefix );
-            column.setIdentifier( values[1] );
-            column.setHidden( Boolean.parseBoolean( values[2] ) );
-            column.setQuery( values.length == 4 ? TextUtils.lower( values[3] ) : null );
-
-            if ( PREFIX_FIXED_ATTRIBUTE.equals( prefix ) )
+            
+            if ( values != null && values.length >= 3 )
             {
-                column.setName( values[1] );
+                String prefix = values[0];
+    
+                TabularReportColumn column = new TabularReportColumn();
+                column.setPrefix( prefix );
+                column.setIdentifier( values[1] );
+                column.setHidden( Boolean.parseBoolean( values[2] ) );
+                column.setQuery( values.length == 4 ? TextUtils.lower( values[3] ) : null );
+    
+                if ( PREFIX_FIXED_ATTRIBUTE.equals( prefix ) )
+                {
+                    column.setName( values[1] );
+                }
+                else if ( PREFIX_IDENTIFIER_TYPE.equals( prefix ) )
+                {
+                    PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( column
+                        .getIdentifierAsInt() );
+    
+                    column.setName( identifierType.getName() );
+                }
+                else if ( PREFIX_PATIENT_ATTRIBUTE.equals( prefix ) )
+                {
+                    int objectId = Integer.parseInt( values[1] );
+                    PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
+                    patientAttributes.add( attribute );
+    
+                    valueTypes.add( attribute.getValueType() );
+                    mapSuggestedValues.put( index, getSuggestedAttributeValues( attribute ) );
+    
+                    column.setName( attribute.getName() );
+                }
+                else if ( PREFIX_DATA_ELEMENT.equals( prefix ) )
+                {
+                    int objectId = Integer.parseInt( values[1] );
+                    DataElement dataElement = dataElementService.getDataElement( objectId );
+                    dataElements.add( dataElement );
+    
+                    String valueType = dataElement.getOptionSet() != null ? VALUE_TYPE_OPTION_SET : dataElement.getType();
+                    valueTypes.add( valueType );
+                    mapSuggestedValues.put( index, getSuggestedDataElementValues( dataElement ) );
+    
+                    column.setName( dataElement.getName() );
+                }
+    
+                columns.add( column );
+    
+                index++;
             }
-            else if ( PREFIX_IDENTIFIER_TYPE.equals( prefix ) )
-            {
-                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( column
-                    .getIdentifierAsInt() );
-
-                column.setName( identifierType.getName() );
-            }
-            else if ( PREFIX_PATIENT_ATTRIBUTE.equals( prefix ) )
-            {
-                int objectId = Integer.parseInt( values[1] );
-                PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
-                patientAttributes.add( attribute );
-
-                valueTypes.add( attribute.getValueType() );
-                mapSuggestedValues.put( index, getSuggestedAttributeValues( attribute ) );
-
-                column.setName( attribute.getName() );
-            }
-            else if ( PREFIX_DATA_ELEMENT.equals( prefix ) )
-            {
-                int objectId = Integer.parseInt( values[1] );
-                DataElement dataElement = dataElementService.getDataElement( objectId );
-                dataElements.add( dataElement );
-
-                String valueType = dataElement.getOptionSet() != null ? VALUE_TYPE_OPTION_SET : dataElement.getType();
-                valueTypes.add( valueType );
-                mapSuggestedValues.put( index, getSuggestedDataElementValues( dataElement ) );
-
-                column.setName( dataElement.getName() );
-            }
-
-            columns.add( column );
-
-            index++;
         }
 
         return columns;
