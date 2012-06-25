@@ -614,7 +614,7 @@ function toggleContentForReportDate(show)
     }
 }
 
-function doComplete()
+function doComplete( isCreateEvent )
 {
     var flag = false;
     jQuery("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect']").each(function(){
@@ -690,6 +690,11 @@ function doComplete()
 					selection.enable();
 					hideLoader();
 					hideById('contentDiv');
+					
+					if( isCreateEvent )
+					{
+						showAddEventForm();
+					}
 				});
 		}
     }

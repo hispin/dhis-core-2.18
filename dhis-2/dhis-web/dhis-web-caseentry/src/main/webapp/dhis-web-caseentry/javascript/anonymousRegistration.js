@@ -180,7 +180,8 @@ function searchEvents( listAll )
 {
 	hideById('dataEntryInfor');
 	hideById('listDiv');
-		
+	setFieldValue('isShowEventList', listAll );
+	
 	var params = '';
 	if(listAll){	
 		params += '&startDate=';
@@ -289,6 +290,7 @@ function showUpdateEvent( psId )
 	hideById('searchDiv');
 	hideById('listDiv');
 	setFieldValue('programStageInstanceId', psId);
+	setInnerHTML('dataEntryFormDiv','');
 	showLoader();
 	
 	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
@@ -320,6 +322,7 @@ function backEventList()
 	showById('selectDiv');
 	showById('searchDiv');
 	showById('listDiv');
+	searchEvents( getFieldValue('isShowEventList') );
 }
 
 function showAddEventForm()
@@ -341,4 +344,9 @@ function showAddEventForm()
 				showWarningMessage( json.message );
 			}
 		});
+}
+
+function completedAndAddNewEvent()
+{
+	doComplete( true );
 }
