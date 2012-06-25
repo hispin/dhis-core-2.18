@@ -11,7 +11,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 			clearListById('compulsoryDE');
 			clearListById('programId');
 			
-			jQuery( '#programId').append( '<option value="">[' + i18n_please_select + ']</option>' );
+			jQuery( '#programId').append( '<option value="" programStageId="">[' + i18n_please_select + ']</option>' );
 			for ( i in json.programs ) {
 				jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '">' + json.programs[i].name + '</option>' );
 			}
@@ -71,7 +71,7 @@ function getDataElements()
 			clearListById('searchObjectId');
 			clearListById('compulsoryDE');
 			
-			jQuery( '#searchObjectId').append( '<option value="">[' + i18n_please_select + ']</option>' );
+			jQuery( '#searchObjectId').append( '<option value="" >[' + i18n_please_select + ']</option>' );
 			for ( i in json.programStageDataElements ) {
 				jQuery( '#searchObjectId').append( '<option value="' + json.programStageDataElements[i].id + '" type="' + json.programStageDataElements[i].type +'">' + json.programStageDataElements[i].name + '</option>' );
 				
