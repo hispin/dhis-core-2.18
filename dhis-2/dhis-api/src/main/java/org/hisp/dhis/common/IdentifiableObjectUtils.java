@@ -100,7 +100,7 @@ public class IdentifiableObjectUtils
     }
 
     /**
-     * Generates a tag reflecting when the date of when the most recently updated
+     * Generates a tag reflecting the date of when the most recently updated
      * IdentifiableObject in the given collection was modified.
      *
      * @param objects the collection of IdentifiableObjects.
@@ -122,5 +122,16 @@ public class IdentifiableObjectUtils
         }
 
         return latest != null && objects != null ? objects.size() + SEPARATOR + LONG_DATE_FORMAT.format( latest ) : null;
+    }
+    
+    /**
+     * Generates a tag reflecting the date of when the object was last updated.
+     * 
+     * @param object the identifiable object.
+     * @return a string tag.
+     */
+    public static String getLastUpdatedTag( IdentifiableObject object )
+    {
+        return object != null ? LONG_DATE_FORMAT.format( object.getLastUpdated() ) : null;
     }
 }

@@ -29,9 +29,13 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
+import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -98,10 +102,24 @@ public class GetOptionsByDataElementAction
 
     public String execute()
     {
+        query = StringUtils.trimToNull( query );
+        
         DataElement dataElement = dataElementService.getDataElement( id );
 
-        options = optionService.getOptions( dataElement.getOptionSet(), query, MAX_OPTIONS_DISPLAYED );
-       
+        OptionSet optionSet = dataElement.getOptionSet();
+
+        // ---------------------------------------------------------------------
+        // If the query is null and the option set has not changed since last
+        // request we can tell the client to use its cached response (304)
+        // ---------------------------------------------------------------------
+
+        boolean isNotModified = ( query == null && ContextUtils.isNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), optionSet ) );
+        
+        if ( !isNotModified )
+        {
+            options = optionService.getOptions( optionSet, query, MAX_OPTIONS_DISPLAYED );
+        }
+        
         return SUCCESS;
     }
 }
