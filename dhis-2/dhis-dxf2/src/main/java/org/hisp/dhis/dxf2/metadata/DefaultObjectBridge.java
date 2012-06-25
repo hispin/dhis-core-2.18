@@ -27,22 +27,17 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -66,6 +61,10 @@ public class DefaultObjectBridge
     // Internal and Semi-Public maps
     //-------------------------------------------------------------------------------------------------------
 
+    private static final List<Class<?>> registeredTypes = new ArrayList<Class<?>>();
+
+    private static final List<Class<?>> shortNameNotUnique = new ArrayList<Class<?>>();
+
     private Map<Class<?>, Collection<?>> masterMap;
 
     private Map<String, PeriodType> periodTypeMap;
@@ -77,8 +76,6 @@ public class DefaultObjectBridge
     private Map<Class<? extends IdentifiableObject>, Map<String, IdentifiableObject>> nameMap;
 
     private Map<Class<? extends NameableObject>, Map<String, NameableObject>> shortNameMap;
-
-    private static final List<Class<?>> registeredTypes = new ArrayList<Class<?>>();
 
     private boolean writeEnabled = true;
 
@@ -94,6 +91,8 @@ public class DefaultObjectBridge
         {
             registeredTypes.add( clazz );
         }
+
+        shortNameNotUnique.add( OrganisationUnit.class );
     }
 
     @Override
@@ -369,7 +368,7 @@ public class DefaultObjectBridge
         {
             NameableObject nameableObject = (NameableObject) object;
 
-            if ( nameableObject.getShortName() != null )
+            if ( _shortNameUnique( object ) && nameableObject.getShortName() != null )
             {
                 IdentifiableObject match = getShortNameMatch( nameableObject );
 
@@ -409,7 +408,7 @@ public class DefaultObjectBridge
                 if ( map == null )
                 {
                     // might be dynamically sub-classed by javassist or cglib, fetch superclass and try again
-                    map = uidMap.get( identifiableObject.getClass().getSuperclass() );
+                    map = codeMap.get( identifiableObject.getClass().getSuperclass() );
                 }
 
                 map.put( identifiableObject.getCode(), identifiableObject );
@@ -417,12 +416,12 @@ public class DefaultObjectBridge
 
             if ( identifiableObject.getName() != null )
             {
-                Map<String, IdentifiableObject> map = uidMap.get( identifiableObject.getClass() );
+                Map<String, IdentifiableObject> map = nameMap.get( identifiableObject.getClass() );
 
                 if ( map == null )
                 {
                     // might be dynamically sub-classed by javassist or cglib, fetch superclass and try again
-                    map = uidMap.get( identifiableObject.getClass().getSuperclass() );
+                    map = nameMap.get( identifiableObject.getClass().getSuperclass() );
                 }
 
                 map.put( identifiableObject.getName(), identifiableObject );
@@ -433,7 +432,7 @@ public class DefaultObjectBridge
         {
             NameableObject nameableObject = (NameableObject) object;
 
-            if ( nameableObject.getShortName() != null )
+            if ( _shortNameUnique( object ) && nameableObject.getShortName() != null )
             {
                 Map<String, NameableObject> map = shortNameMap.get( nameableObject.getClass() );
 
@@ -507,5 +506,18 @@ public class DefaultObjectBridge
         }
 
         return false;
+    }
+
+    private <T> boolean _shortNameUnique( T object )
+    {
+        for ( Class clazz : shortNameNotUnique )
+        {
+            if ( clazz.isAssignableFrom( object.getClass() ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

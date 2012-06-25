@@ -136,64 +136,46 @@ public class Expression
     // -------------------------------------------------------------------------
 
     @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        Expression that = (Expression) o;
+
+        if ( id != that.id ) return false;
+        if ( dataElementsInExpression != null ? !dataElementsInExpression.equals( that.dataElementsInExpression ) : that.dataElementsInExpression != null )
+            return false;
+        if ( description != null ? !description.equals( that.description ) : that.description != null ) return false;
+        if ( expression != null ? !expression.equals( that.expression ) : that.expression != null ) return false;
+        if ( optionCombosInExpression != null ? !optionCombosInExpression.equals( that.optionCombosInExpression ) : that.optionCombosInExpression != null )
+            return false;
+
+        return true;
+    }
+
+    @Override
     public int hashCode()
     {
-        final int PRIME = 31;
-
-        int result = 1;
-
-        result = PRIME * result + ((description == null) ? 0 : description.hashCode());
-
-        result = PRIME * result + ((expression == null) ? 0 : expression.hashCode());
+        int result = id;
+        result = 31 * result + (expression != null ? expression.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (dataElementsInExpression != null ? dataElementsInExpression.hashCode() : 0);
+        result = 31 * result + (optionCombosInExpression != null ? optionCombosInExpression.hashCode() : 0);
 
         return result;
     }
 
     @Override
-    public boolean equals( Object obj )
+    public String toString()
     {
-        if ( this == obj )
-        {
-            return true;
-        }
-
-        if ( obj == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != obj.getClass() )
-        {
-            return false;
-        }
-
-        final Expression other = (Expression) obj;
-
-        if ( description == null )
-        {
-            if ( other.description != null )
-            {
-                return false;
-            }
-        }
-        else if ( !description.equals( other.description ) )
-        {
-            return false;
-        }
-
-        if ( expression == null )
-        {
-            if ( other.expression != null )
-            {
-                return false;
-            }
-        }
-        else if ( !expression.equals( other.expression ) )
-        {
-            return false;
-        }
-
-        return true;
+        return "Expression{" +
+            "id=" + id +
+            ", expression='" + expression + '\'' +
+            ", description='" + description + '\'' +
+            ", dataElementsInExpression=" + dataElementsInExpression.size() +
+            ", optionCombosInExpression=" + optionCombosInExpression.size() +
+            '}';
     }
 
     // -------------------------------------------------------------------------

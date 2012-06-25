@@ -461,80 +461,67 @@ public class DataElementOperand
     // -------------------------------------------------------------------------
 
     @Override
-    public int hashCode()
+    public boolean equals( Object o )
     {
-        final int prime = 31;
-        int result = 1;
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
 
-        result = prime * result + ((categoryOptionCombo == null) ? 0 : categoryOptionCombo.hashCode());
-        result = prime * result + ((dataElement == null) ? 0 : dataElement.hashCode());
-        result = prime * result + dataElementId;
-        result = prime * result + optionComboId;
+        DataElementOperand that = (DataElementOperand) o;
 
-        return result;
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
+        if ( dataElementId != that.dataElementId ) return false;
+        if ( frequencyOrder != that.frequencyOrder ) return false;
+        if ( id != that.id ) return false;
+        if ( optionComboId != that.optionComboId ) return false;
+        if ( aggregationLevels != null ? !aggregationLevels.equals( that.aggregationLevels ) : that.aggregationLevels != null )
             return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
+        if ( aggregationOperator != null ? !aggregationOperator.equals( that.aggregationOperator ) : that.aggregationOperator != null )
             return false;
-        }
-
-        final DataElementOperand other = (DataElementOperand) object;
-
-        if ( categoryOptionCombo == null )
-        {
-            if ( other.categoryOptionCombo != null )
-            {
-                return false;
-            }
-        }
-        else if ( !categoryOptionCombo.equals( other.categoryOptionCombo ) )
-        {
+        if ( categoryOptionCombo != null ? !categoryOptionCombo.equals( that.categoryOptionCombo ) : that.categoryOptionCombo != null )
             return false;
-        }
-
-        if ( dataElement == null )
-        {
-            if ( other.dataElement != null )
-            {
-                return false;
-            }
-        }
-        else if ( !dataElement.equals( other.dataElement ) )
-        {
-            return false;
-        }
-
-        if ( dataElementId != other.dataElementId )
-        {
-            return false;
-        }
-
-        if ( optionComboId != other.optionComboId )
-        {
-            return false;
-        }
+        if ( dataElement != null ? !dataElement.equals( that.dataElement ) : that.dataElement != null ) return false;
+        if ( operandId != null ? !operandId.equals( that.operandId ) : that.operandId != null ) return false;
+        if ( operandName != null ? !operandName.equals( that.operandName ) : that.operandName != null ) return false;
+        if ( operandType != null ? !operandType.equals( that.operandType ) : that.operandType != null ) return false;
+        if ( valueType != null ? !valueType.equals( that.valueType ) : that.valueType != null ) return false;
 
         return true;
     }
 
     @Override
+    public int hashCode()
+    {
+        int result = id;
+        result = 31 * result + (dataElement != null ? dataElement.hashCode() : 0);
+        result = 31 * result + (categoryOptionCombo != null ? categoryOptionCombo.hashCode() : 0);
+        result = 31 * result + dataElementId;
+        result = 31 * result + optionComboId;
+        result = 31 * result + (operandId != null ? operandId.hashCode() : 0);
+        result = 31 * result + (operandName != null ? operandName.hashCode() : 0);
+        result = 31 * result + (valueType != null ? valueType.hashCode() : 0);
+        result = 31 * result + (aggregationOperator != null ? aggregationOperator.hashCode() : 0);
+        result = 31 * result + (aggregationLevels != null ? aggregationLevels.hashCode() : 0);
+        result = 31 * result + frequencyOrder;
+        result = 31 * result + (operandType != null ? operandType.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString()
     {
-        return "[DataElementId: " + dataElementId + ", CategoryOptionComboId: " + optionComboId + "]";
+        return "DataElementOperand{" +
+            "id=" + id +
+            ", dataElement=" + dataElement +
+            ", categoryOptionCombo=" + categoryOptionCombo +
+            ", dataElementId=" + dataElementId +
+            ", optionComboId=" + optionComboId +
+            ", operandId='" + operandId + '\'' +
+            ", operandName='" + operandName + '\'' +
+            ", valueType='" + valueType + '\'' +
+            ", aggregationOperator='" + aggregationOperator + '\'' +
+            ", aggregationLevels=" + aggregationLevels +
+            ", frequencyOrder=" + frequencyOrder +
+            ", operandType='" + operandType + '\'' +
+            '}';
     }
 
     public int compareTo( DataElementOperand other )
