@@ -10,7 +10,7 @@
 		<td class='text-column'>$i18n.getString( "total_result" )</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
-		<td>$!total</td>
+		<td>$!totalRecords</td>
 	</tr>
 </table>
 

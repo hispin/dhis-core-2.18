@@ -105,7 +105,7 @@ public class GenerateTabularReportAction
     {
         this.patientAttributeService = patientAttributeService;
     }
-    
+
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
@@ -178,6 +178,18 @@ public class GenerateTabularReportAction
     public Grid getGrid()
     {
         return grid;
+    }
+
+    private int totalRecords;
+
+    public int getTotalRecords()
+    {
+        return totalRecords;
+    }
+
+    public void setTotal( Integer total )
+    {
+        this.total = total;
     }
 
     private Integer total;
@@ -304,30 +316,31 @@ public class GenerateTabularReportAction
         Date startValue = format.parseDate( startDate );
         Date endValue = format.parseDate( endDate );
         List<TabularReportColumn> columns = getTableColumns();
-        
+
         // ---------------------------------------------------------------------
         // Generate tabular report
         // ---------------------------------------------------------------------
 
         if ( type == null ) // Tabular report
         {
-            int totalRecords = programStageInstanceService.getTabularReportCount( programStage, columns,
-                organisationUnits, level, startValue, endValue );
+            totalRecords = programStageInstanceService.getTabularReportCount( programStage, columns, organisationUnits,
+                level, startValue, endValue );
 
             total = getNumberOfPages( totalRecords );
 
             this.paging = createPaging( totalRecords );
             // total = paging.getTotal(); //TODO
 
-            grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits,
-                level, startValue, endValue, !orderByOrgunitAsc, paging.getStartPos(), paging.getPageSize() );
+            grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
+                startValue, endValue, !orderByOrgunitAsc, paging.getStartPos(), paging.getPageSize() );
         }
-        else // Download as Excel        
+        else
+        // Download as Excel
         {
-            grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits,
-                level, startValue, endValue, !orderByOrgunitAsc, null, null );
+            grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
+                startValue, endValue, !orderByOrgunitAsc, null, null );
         }
-        
+
         System.out.println();
         System.out.println( grid );
 
@@ -347,18 +360,18 @@ public class GenerateTabularReportAction
     private List<TabularReportColumn> getTableColumns()
     {
         List<TabularReportColumn> columns = new ArrayList<TabularReportColumn>();
-        
+
         int index = 0;
-        
+
         for ( String searchValue : searchingValues )
         {
             String[] values = searchValue.split( "_" );
             String prefix = values[0];
-            
+
             TabularReportColumn column = new TabularReportColumn();
             column.setPrefix( prefix );
             column.setIdentifier( values[1] );
-            column.setHidden( Boolean.parseBoolean( values[2] ) );            
+            column.setHidden( Boolean.parseBoolean( values[2] ) );
             column.setQuery( values.length == 4 ? TextUtils.lower( values[3] ) : null );
 
             if ( PREFIX_FIXED_ATTRIBUTE.equals( prefix ) )
@@ -367,8 +380,9 @@ public class GenerateTabularReportAction
             }
             else if ( PREFIX_IDENTIFIER_TYPE.equals( prefix ) )
             {
-                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( column.getIdentifierAsInt() );
-                
+                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( column
+                    .getIdentifierAsInt() );
+
                 column.setName( identifierType.getName() );
             }
             else if ( PREFIX_PATIENT_ATTRIBUTE.equals( prefix ) )
@@ -376,10 +390,10 @@ public class GenerateTabularReportAction
                 int objectId = Integer.parseInt( values[1] );
                 PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
                 patientAttributes.add( attribute );
-                
+
                 valueTypes.add( attribute.getValueType() );
                 mapSuggestedValues.put( index, getSuggestedAttributeValues( attribute ) );
-                
+
                 column.setName( attribute.getName() );
             }
             else if ( PREFIX_DATA_ELEMENT.equals( prefix ) )
@@ -391,15 +405,15 @@ public class GenerateTabularReportAction
                 String valueType = dataElement.getOptionSet() != null ? VALUE_TYPE_OPTION_SET : dataElement.getType();
                 valueTypes.add( valueType );
                 mapSuggestedValues.put( index, getSuggestedDataElementValues( dataElement ) );
-                
+
                 column.setName( dataElement.getName() );
             }
-            
+
             columns.add( column );
-            
+
             index++;
         }
-        
+
         return columns;
     }
 
