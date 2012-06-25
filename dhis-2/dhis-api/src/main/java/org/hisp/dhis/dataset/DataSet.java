@@ -121,6 +121,11 @@ public class DataSet
     private boolean mobile;
 
     /**
+     * Property indicating whether it should allow to enter data for future periods.
+     */
+    private boolean allowFuturePeriods;
+    
+    /**
      * Indicating custom data entry form.
      */
     private DataEntryForm dataEntryForm;
@@ -482,6 +487,19 @@ public class DataSet
     public void setMobile( boolean mobile )
     {
         this.mobile = mobile;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isAllowFuturePeriods()
+    {
+        return allowFuturePeriods;
+    }
+
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
+    {
+        this.allowFuturePeriods = allowFuturePeriods;
     }
 
     @JsonProperty
