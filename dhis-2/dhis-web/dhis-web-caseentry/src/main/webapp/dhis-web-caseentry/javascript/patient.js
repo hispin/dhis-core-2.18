@@ -627,7 +627,7 @@ function loadPatientList()
 	
 	if( statusSearching == 0)
 	{
-		loadAllPatient();
+		listAllPatient();
 	}
 	else if( statusSearching == 1 )
 	{
@@ -639,7 +639,7 @@ function loadPatientList()
 // Load all patients
 // -----------------------------------------------------------------------------
 
-function loadAllPatient()
+function listAllPatient()
 {
 	hideById('listPatientDiv');
 	hideById('editPatientDiv');
