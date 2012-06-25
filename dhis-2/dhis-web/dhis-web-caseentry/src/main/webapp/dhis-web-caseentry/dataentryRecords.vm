@@ -50,7 +50,7 @@
 	<div id="detailsInfo">
 	</div>
 #else
-	<h5>$i18n.getString('No person enrolled the program')</h5>
+	<h5>$i18n.getString('no_patient_enrolled_the_program')</h5>
 #end
 
 <script>
