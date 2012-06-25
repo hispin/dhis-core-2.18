@@ -506,29 +506,37 @@ public class DefaultExportReportService
                     idMap.put( exportReport.getId(), DailyPeriodType.NAME );
                     break;
                 }
-                else if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH )
-                    || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.LAST_3_MONTH )
-                    || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.LAST_6_MONTH )
-                    || periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_YEAR ) )
-                {
-                    idMap.put( exportReport.getId(), MonthlyPeriodType.NAME );
-                    break;
-                }
-                else if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.QUARTERLY ) )
-                {
-                    idMap.put( exportReport.getId(), QuarterlyPeriodType.NAME );
-                    break;
-                }
-                else if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.SIX_MONTH ) )
-                {
-                    idMap.put( exportReport.getId(), SixMonthlyPeriodType.NAME );
-                    break;
-                }
-                else if ( periodTypeName.equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
-                {
-                    idMap.put( exportReport.getId(), YearlyPeriodType.NAME );
-                    break;
-                }
+                // else if ( periodTypeName.equalsIgnoreCase(
+                // ExportItem.PERIODTYPE.SELECTED_MONTH )
+                // || periodTypeName.equalsIgnoreCase(
+                // ExportItem.PERIODTYPE.LAST_3_MONTH )
+                // || periodTypeName.equalsIgnoreCase(
+                // ExportItem.PERIODTYPE.LAST_6_MONTH )
+                // || periodTypeName.equalsIgnoreCase(
+                // ExportItem.PERIODTYPE.SO_FAR_THIS_YEAR ) )
+                // {
+                // idMap.put( exportReport.getId(), MonthlyPeriodType.NAME );
+                // break;
+                // }
+                // else if ( periodTypeName.equalsIgnoreCase(
+                // ExportItem.PERIODTYPE.QUARTERLY ) )
+                // {
+                // idMap.put( exportReport.getId(), QuarterlyPeriodType.NAME );
+                // break;
+                // }
+                // else if ( periodTypeName.equalsIgnoreCase(
+                // ExportItem.PERIODTYPE.SIX_MONTH ) )
+                // {
+                // idMap.put( exportReport.getId(), SixMonthlyPeriodType.NAME );
+                // break;
+                // }
+                // else if ( periodTypeName.equalsIgnoreCase(
+                // ExportItem.PERIODTYPE.YEARLY ) )
+                // {
+                // idMap.put( exportReport.getId(), YearlyPeriodType.NAME );
+                // break;
+                // }
+
             }
         }
 

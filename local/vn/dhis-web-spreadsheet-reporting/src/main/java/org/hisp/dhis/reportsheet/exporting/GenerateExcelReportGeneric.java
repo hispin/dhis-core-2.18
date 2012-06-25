@@ -26,16 +26,17 @@
  */
 package org.hisp.dhis.reportsheet.exporting;
 
-import static org.hisp.dhis.reportsheet.utils.ExpressionUtils.generateExpression;
-import static org.hisp.dhis.reportsheet.utils.ExpressionUtils.generateIndicatorExpression;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getTimeRoll;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfMonth;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfYear;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getLastDayOfYear;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getStartQuaterly;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndQuaterly;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getStartSixMonthly;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndSixMonthly;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfYear;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getLastDayOfYear;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getTimeRoll;
+
+import static org.hisp.dhis.reportsheet.utils.ExpressionUtils.generateExpression;
+import static org.hisp.dhis.reportsheet.utils.ExpressionUtils.generateIndicatorExpression;
 import static org.hisp.dhis.reportsheet.utils.FileUtils.checkingExtensionExcelFile;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 
@@ -491,7 +492,8 @@ public class GenerateExcelReportGeneric
         return result;
     }
 
-    protected String getTextValue( ExportItem exportItem, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    protected String getTextValue( ExportItem exportItem, OrganisationUnit organisationUnit, Date startDate,
+        Date endDate )
     {
         String result = "";
         Collection<Period> periods = new ArrayList<Period>();
