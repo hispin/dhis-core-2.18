@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.metadata.handlers;
+package org.hisp.dhis.system.util;
 
 /*
- * Copyright (c) 2012, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,12 +27,25 @@ package org.hisp.dhis.dxf2.metadata.handlers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.lang.reflect.Field;
+import org.hisp.dhis.system.util.functional.Function1;
+
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface FieldHandler
+public class FunctionUtils
 {
-    boolean canHandle( Field field );
+    public static <T> void forEach( Collection<T> collection, Function1<T> function )
+    {
+        for ( T object : collection )
+        {
+            if(object == null)
+            {
+                continue;
+            }
+
+            function.apply( object );
+        }
+    }
 }

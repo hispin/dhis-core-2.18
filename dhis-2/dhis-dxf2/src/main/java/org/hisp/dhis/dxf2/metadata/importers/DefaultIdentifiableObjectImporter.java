@@ -40,7 +40,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.metadata.*;
-import org.hisp.dhis.dxf2.metadata.handlers.FieldHandler;
+import org.hisp.dhis.dxf2.metadata.handlers.HandlerUtils;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandler;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
@@ -48,7 +48,7 @@ import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.FunctionalUtils;
+import org.hisp.dhis.system.util.FunctionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,9 +94,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     @Autowired( required = false )
     private List<ObjectHandler> objectHandlers;
 
-    @Autowired( required = false )
-    private List<FieldHandler> fieldHandlers;
-
     //-------------------------------------------------------------------------------------------------------
     // Constructor
     //-------------------------------------------------------------------------------------------------------
@@ -116,6 +113,202 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     protected ImportOptions options;
 
+    // keeping this internal for now, might be split into several classes
+    private class NonIdentifiableObjects
+    {
+        private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+        // private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
+        private Set<DataElementOperand> greyedFields = new HashSet<DataElementOperand>();
+        private Expression leftSide;
+        private Expression rightSide;
+
+        public void extract( T object )
+        {
+            attributeValues = extractAttributeValues( object );
+            // compulsoryDataElementOperands = extractDataElementOperands( object, "compulsoryDataElementOperands" );
+            greyedFields = extractDataElementOperands( object, "greyedFields" );
+            leftSide = extractExpression( object, "leftSide" );
+            rightSide = extractExpression( object, "rightSide" );
+        }
+
+        public void delete( T object )
+        {
+            if ( !options.isDryRun() )
+            {
+                deleteAttributeValues( object );
+                // deleteDataElementOperands( compulsoryDataElementOperands );
+                // deleteDataElementOperands( object, "greyedFields" );
+                // deleteExpression( object, "leftSide" );
+                // deleteExpression( object, "rightSide" );
+            }
+        }
+
+        public void save( T object )
+        {
+            saveAttributeValues( object, attributeValues );
+            saveExpression( object, "leftSide", leftSide );
+            saveExpression( object, "rightSide", rightSide );
+            // newDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
+            saveDataElementOperands( object, "greyedFields", greyedFields );
+        }
+
+        private Expression extractExpression( T object, String fieldName )
+        {
+            Expression expression = null;
+
+            if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
+            {
+                expression = ReflectionUtils.invokeGetterMethod( fieldName, object );
+
+                if ( expression != null )
+                {
+                    ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[] { null } );
+                }
+            }
+
+            return expression;
+        }
+
+        private Set<DataElementOperand> extractDataElementOperands( T object, String fieldName )
+        {
+            Set<DataElementOperand> dataElementOperands = new HashSet<DataElementOperand>();
+
+            if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
+            {
+                Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
+                dataElementOperands = new HashSet<DataElementOperand>( detachedDataElementOperands );
+
+                if ( detachedDataElementOperands.size() > 0 )
+                {
+                    detachedDataElementOperands.clear();
+                    ReflectionUtils.invokeSetterMethod( fieldName, object, new HashSet<DataElementOperand>() );
+                }
+            }
+
+            return dataElementOperands;
+        }
+
+        private Set<AttributeValue> extractAttributeValues( T object )
+        {
+            Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+
+            if ( ReflectionUtils.findGetterMethod( "attributeValues", object ) != null )
+            {
+                attributeValues = ReflectionUtils.invokeGetterMethod( "attributeValues", object );
+
+                if ( attributeValues.size() > 0 )
+                {
+                    ReflectionUtils.invokeSetterMethod( "attributeValues", object, new HashSet<AttributeValue>() );
+                }
+            }
+
+            return attributeValues;
+        }
+
+        private void saveExpression( T object, String fieldName, Expression expression )
+        {
+            if ( expression != null )
+            {
+                Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( expression );
+                reattachCollectionFields( expression, identifiableObjectCollections );
+
+                expression.setId( 0 );
+                expressionService.addExpression( expression );
+
+                ReflectionUtils.invokeSetterMethod( fieldName, object, expression );
+            }
+        }
+
+        private void saveDataElementOperands( T object, String field, Set<DataElementOperand> dataElementOperands )
+        {
+            if ( dataElementOperands.size() > 0 )
+            {
+                for ( DataElementOperand dataElementOperand : dataElementOperands )
+                {
+                    Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
+                    reattachFields( dataElementOperand, identifiableObjects );
+
+                    dataElementOperand.setId( 0 );
+                    dataElementOperandService.addDataElementOperand( dataElementOperand );
+                }
+
+                ReflectionUtils.invokeSetterMethod( field, object, dataElementOperands );
+            }
+        }
+
+        private void saveAttributeValues( T object, Set<AttributeValue> attributeValues )
+        {
+            if ( attributeValues.size() > 0 )
+            {
+                FunctionUtils.forEach( attributeValues, new Function1<AttributeValue>()
+                {
+                    @Override
+                    public void apply( AttributeValue attributeValue )
+                    {
+                        Attribute attribute = objectBridge.getObject( attributeValue.getAttribute() );
+
+                        if ( attribute == null )
+                        {
+                            log.warn( "Unknown reference to " + attributeValue.getAttribute() + " on object " + attributeValue );
+                            return;
+                        }
+
+                        attributeValue.setId( 0 );
+                        attributeValue.setAttribute( attribute );
+                    }
+                } );
+
+                for ( AttributeValue attributeValue : attributeValues )
+                {
+                    attributeService.addAttributeValue( attributeValue );
+                }
+
+                ReflectionUtils.invokeSetterMethod( "attributeValues", object, attributeValues );
+            }
+        }
+
+        private void deleteExpression( T object, String fieldName )
+        {
+            Expression expression = extractExpression( object, fieldName );
+
+            if ( expression != null )
+            {
+                expressionService.deleteExpression( expression );
+            }
+        }
+
+        private void deleteDataElementOperands( T object, String fieldName )
+        {
+            Set<DataElementOperand> dataElementOperands = extractDataElementOperands( object, fieldName );
+
+            FunctionUtils.forEach( dataElementOperands, new Function1<DataElementOperand>()
+            {
+                @Override
+                public void apply( DataElementOperand dataElementOperand )
+                {
+                    dataElementOperandService.deleteDataElementOperand( dataElementOperand );
+                }
+            } );
+        }
+
+        private void deleteAttributeValues( T object )
+        {
+            if ( !Attribute.class.isAssignableFrom( object.getClass() ) )
+            {
+                Set<AttributeValue> attributeValues = extractAttributeValues( object );
+
+                FunctionUtils.forEach( attributeValues, new Function1<AttributeValue>()
+                {
+                    @Override
+                    public void apply( AttributeValue attributeValue )
+                    {
+                        attributeService.deleteAttributeValue( attributeValue );
+                    }
+                } );
+            }
+        }
+    }
+
     //-------------------------------------------------------------------------------------------------------
     // Generic implementations of newObject and updatedObject
     //-------------------------------------------------------------------------------------------------------
@@ -131,22 +324,28 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         // make sure that the internalId is 0, so that the system will generate a ID
         object.setId( 0 );
 
-        // FIXME add uidValidator.. part of bean validation impl?
-        // object.setUid( CodeGenerator.generateCode() );
-
-        log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
+        NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects();
+        nonIdentifiableObjects.extract( object );
 
         Map<Field, Object> fields = detachFields( object );
-        reattachFields( object, fields );
-
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
+        reattachFields( object, fields );
+
+        log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
         objectBridge.saveObject( object );
 
         updatePeriodTypes( object );
         reattachCollectionFields( object, collectionFields );
 
         objectBridge.updateObject( object );
+
+        if ( !options.isDryRun() )
+        {
+            sessionFactory.getCurrentSession().flush();
+            nonIdentifiableObjects.save( object );
+            sessionFactory.getCurrentSession().flush();
+        }
 
         log.debug( "Save successful." );
 
@@ -156,33 +355,42 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     /**
      * Update object from old => new.
      *
-     * @param object    Object to import
-     * @param oldObject The current version of the object
+     * @param object          Object to import
+     * @param persistedObject The current version of the object
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected boolean updateObject( T object, T oldObject )
+    protected boolean updateObject( T object, T persistedObject )
     {
-        log.debug( "Starting update of object " + ImportUtils.getDisplayName( oldObject ) + " (" + oldObject.getClass()
-            .getSimpleName() + ")" );
+        NonIdentifiableObjects nonIdentifiableObjects = new NonIdentifiableObjects();
+        nonIdentifiableObjects.extract( object );
+        nonIdentifiableObjects.delete( persistedObject );
 
         Map<Field, Object> fields = detachFields( object );
-        reattachFields( object, fields );
-
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
-        oldObject.mergeWith( object );
-        updatePeriodTypes( oldObject );
+        persistedObject.mergeWith( object );
+        updatePeriodTypes( persistedObject );
 
-        reattachCollectionFields( oldObject, collectionFields );
+        reattachFields( persistedObject, fields );
+        reattachCollectionFields( persistedObject, collectionFields );
 
-        objectBridge.updateObject( oldObject );
+        log.debug( "Starting update of object " + ImportUtils.getDisplayName( persistedObject ) + " (" + persistedObject.getClass()
+            .getSimpleName() + ")" );
+
+        objectBridge.updateObject( persistedObject );
+
+        if ( !options.isDryRun() )
+        {
+            sessionFactory.getCurrentSession().flush();
+            nonIdentifiableObjects.save( persistedObject );
+            sessionFactory.getCurrentSession().flush();
+        }
 
         log.debug( "Update successful." );
 
         return true;
     }
 
-    // FIXME to static ATM, should be refactor out.. "type handler", not idObject
     private void updatePeriodTypes( T object )
     {
         for ( Field field : object.getClass().getDeclaredFields() )
@@ -212,211 +420,20 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return summaryType;
         }
 
-        preObjectsHandlers( objects );
+        HandlerUtils.preObjectsHandlers( objects, objectHandlers );
 
         for ( T object : objects )
         {
-            preObjectHandlers( object );
-
-            // FIXME add to scanner, and use field handlers for this
-            Set<AttributeValue> attributeValues = getAndClearAttributeValues( object );
-            Set<DataElementOperand> compulsoryDataElementOperands = getAndClearDataElementOperands( object, "compulsoryDataElementOperands" );
-            Set<DataElementOperand> greyedFields = getAndClearDataElementOperands( object, "greyedFields" );
-            Expression leftSide = getAndClearExpression( object, "leftSide" );
-            Expression rightSide = getAndClearExpression( object, "rightSide" );
+            HandlerUtils.preObjectHandlers( object, objectHandlers );
 
             importObjectLocal( object );
 
-            if ( !options.isDryRun() )
-            {
-                sessionFactory.getCurrentSession().flush();
-
-                newAttributeValues( object, attributeValues );
-                newExpression( object, "leftSide", leftSide );
-                newExpression( object, "rightSide", rightSide );
-                // newDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
-                newDataElementOperands( object, "greyedFields", greyedFields );
-
-                sessionFactory.getCurrentSession().flush();
-            }
-
-            postObjectHandlers( object );
+            HandlerUtils.postObjectHandlers( object, objectHandlers );
         }
 
-        postObjectsHandlers( objects );
+        HandlerUtils.postObjectsHandlers( objects, objectHandlers );
 
         return summaryType;
-    }
-
-
-    @SuppressWarnings( "unchecked" )
-    private void preObjectHandlers( T object )
-    {
-        for ( ObjectHandler objectHandler : objectHandlers )
-        {
-            if ( objectHandler.canHandle( object.getClass() ) )
-            {
-                objectHandler.preImportObject( object );
-            }
-        }
-    }
-
-    @SuppressWarnings( "unchecked" )
-    private void postObjectHandlers( T object )
-    {
-        for ( ObjectHandler objectHandler : objectHandlers )
-        {
-            if ( objectHandler.canHandle( object.getClass() ) )
-            {
-                objectHandler.postImportObject( object );
-            }
-        }
-    }
-
-    @SuppressWarnings( "unchecked" )
-    private void preObjectsHandlers( List<T> objects )
-    {
-        if ( objects.size() > 0 )
-        {
-            for ( ObjectHandler objectHandler : objectHandlers )
-            {
-                if ( objectHandler.canHandle( objects.get( 0 ).getClass() ) )
-                {
-                    objectHandler.preImportObjects( objects );
-                }
-            }
-        }
-    }
-
-    @SuppressWarnings( "unchecked" )
-    private void postObjectsHandlers( List<T> objects )
-    {
-        if ( objects.size() > 0 )
-        {
-            for ( ObjectHandler objectHandler : objectHandlers )
-            {
-                if ( objectHandler.canHandle( objects.get( 0 ).getClass() ) )
-                {
-                    objectHandler.postImportObjects( objects );
-                }
-            }
-        }
-    }
-
-    // FIXME add type check
-    private Expression getAndClearExpression( T object, String fieldName )
-    {
-        Expression expression = null;
-
-        if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
-        {
-            expression = ReflectionUtils.invokeGetterMethod( fieldName, object );
-
-            if ( expression != null )
-            {
-                ReflectionUtils.invokeSetterMethod( fieldName, object, new Object[] { null } );
-            }
-        }
-
-        return expression;
-    }
-
-    // FIXME add type check
-    private Set<DataElementOperand> getAndClearDataElementOperands( T object, String fieldName )
-    {
-        Set<DataElementOperand> dataElementOperands = new HashSet<DataElementOperand>();
-
-        if ( ReflectionUtils.findGetterMethod( fieldName, object ) != null )
-        {
-            Set<DataElementOperand> detachedDataElementOperands = ReflectionUtils.invokeGetterMethod( fieldName, object );
-            dataElementOperands = new HashSet<DataElementOperand>( detachedDataElementOperands );
-
-            if ( detachedDataElementOperands.size() > 0 )
-            {
-                detachedDataElementOperands.clear();
-                ReflectionUtils.invokeSetterMethod( fieldName, object, new HashSet<DataElementOperand>() );
-            }
-        }
-
-        return dataElementOperands;
-    }
-
-    // FIXME add type check
-    private Set<AttributeValue> getAndClearAttributeValues( T object )
-    {
-        Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
-
-        if ( ReflectionUtils.findGetterMethod( "attributeValues", object ) != null )
-        {
-            attributeValues = ReflectionUtils.invokeGetterMethod( "attributeValues", object );
-
-            if ( attributeValues.size() > 0 )
-            {
-                ReflectionUtils.invokeSetterMethod( "attributeValues", object, new HashSet<AttributeValue>() );
-            }
-        }
-
-        return attributeValues;
-    }
-
-    private void newExpression( T object, String field, Expression expression )
-    {
-        if ( expression != null )
-        {
-            Map<Field, Collection<Object>> identifiableObjectCollections = detachCollectionFields( expression );
-            reattachCollectionFields( expression, identifiableObjectCollections );
-
-            expression.setId( 0 );
-            expressionService.addExpression( expression );
-
-            sessionFactory.getCurrentSession().flush();
-
-            ReflectionUtils.invokeSetterMethod( field, object, expression );
-        }
-    }
-
-    private void newDataElementOperands( T object, String field, Set<DataElementOperand> dataElementOperands )
-    {
-        if ( dataElementOperands.size() > 0 )
-        {
-            for ( DataElementOperand dataElementOperand : dataElementOperands )
-            {
-                Map<Field, Object> identifiableObjects = detachFields( dataElementOperand );
-                reattachFields( dataElementOperand, identifiableObjects );
-
-                dataElementOperand.setId( 0 );
-                dataElementOperandService.addDataElementOperand( dataElementOperand );
-            }
-
-            ReflectionUtils.invokeSetterMethod( field, object, dataElementOperands );
-        }
-    }
-
-    private void newAttributeValues( T object, Set<AttributeValue> attributeValues )
-    {
-        if ( attributeValues.size() > 0 )
-        {
-            for ( AttributeValue attributeValue : attributeValues )
-            {
-                Attribute attribute = objectBridge.getObject( attributeValue.getAttribute() );
-
-                if ( attribute == null )
-                {
-                    log.warn( "Unknown reference to " + attributeValue.getAttribute() + " on object " + attributeValue );
-                    continue;
-                }
-
-                attributeValue.setId( 0 );
-                attributeValue.setAttribute( attribute );
-            }
-
-            for ( AttributeValue attributeValue : attributeValues )
-            {
-                attributeService.addAttributeValue( attributeValue );
-            }
-
-            ReflectionUtils.invokeSetterMethod( "attributeValues", object, attributeValues );
-        }
     }
 
     @Override
@@ -455,7 +472,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private void startImport( T object )
     {
         T oldObject = objectBridge.getObject( object );
-        List<ImportConflict> importConflicts = new ArrayList<ImportConflict>();
 
         if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
@@ -495,7 +511,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         ImportConflict conflict = null;
         boolean success = true;
 
-        // FIXME add bean validation for this
         if ( object.getName() == null || object.getName().length() == 0 )
         {
             conflict = new ImportConflict( ImportUtils.getDisplayName( object ), "Empty name for object " + object );
@@ -566,7 +581,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
 
     private boolean validateForNewStrategy( T object )
     {
-        ImportConflict conflict = null;
+        ImportConflict conflict;
         Collection<T> objects = objectBridge.getObjects( object );
 
         if ( objects.size() > 0 )
@@ -586,7 +601,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             return null;
         }
-        // FIXME this is a bit too static ATM, should be refactored out into its own "type handler"
         else if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
         {
             Period period = (Period) identifiableObject;
@@ -608,7 +622,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         final Map<Field, Object> fieldMap = new HashMap<Field, Object>();
         final Collection<Field> fieldCollection = ReflectionUtils.collectFields( object.getClass(), idObjects );
 
-        FunctionalUtils.forEach( fieldCollection, new Function1<Field>()
+        FunctionUtils.forEach( fieldCollection, new Function1<Field>()
         {
             @Override
             public void apply( Field field )
@@ -653,7 +667,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         final Map<Field, Collection<Object>> collectionFields = new HashMap<Field, Collection<Object>>();
         final Collection<Field> fieldCollection = ReflectionUtils.collectFields( object.getClass(), idObjectCollectionsWithScanned );
 
-        FunctionalUtils.forEach( fieldCollection, new Function1<Field>()
+        FunctionUtils.forEach( fieldCollection, new Function1<Field>()
         {
             @Override
             public void apply( Field field )
@@ -672,29 +686,33 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         return collectionFields;
     }
 
-    private void reattachCollectionFields( Object object, Map<Field, Collection<Object>> collectionFields )
+    private void reattachCollectionFields( final Object object, Map<Field, Collection<Object>> collectionFields )
     {
         for ( Field field : collectionFields.keySet() )
         {
             Collection<Object> collection = collectionFields.get( field );
-            Collection<Object> objects = ReflectionUtils.newCollectionInstance( field.getType() );
+            final Collection<Object> objects = ReflectionUtils.newCollectionInstance( field.getType() );
 
-            for ( Object idObject : collection )
+            FunctionUtils.forEach( collection, new Function1<Object>()
             {
-                IdentifiableObject ref = findObjectByReference( (IdentifiableObject) idObject );
+                @Override
+                public void apply( Object object )
+                {
+                    IdentifiableObject ref = findObjectByReference( (IdentifiableObject) object );
 
-                if ( ref != null )
-                {
-                    objects.add( ref );
-                }
-                else
-                {
-                    if ( ExchangeClasses.getImportMap().get( idObject.getClass() ) != null )
+                    if ( ref != null )
                     {
-                        reportReferenceError( object, idObject );
+                        objects.add( ref );
+                    }
+                    else
+                    {
+                        if ( ExchangeClasses.getImportMap().get( object.getClass() ) != null )
+                        {
+                            reportReferenceError( object, object );
+                        }
                     }
                 }
-            }
+            } );
 
             if ( !options.isDryRun() )
             {

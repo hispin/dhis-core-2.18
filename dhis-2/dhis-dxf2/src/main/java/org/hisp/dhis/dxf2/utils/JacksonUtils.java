@@ -61,11 +61,11 @@ public class JacksonUtils
     static
     {
         ObjectMapper[] objectMappers = new ObjectMapper[] { jsonMapper, xmlMapper };
-        DateFormat format = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
+        // DateFormat format = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
 
         for ( ObjectMapper objectMapper : objectMappers )
         {
-            objectMapper.setDateFormat( format );
+            // objectMapper.setDateFormat( format );
             objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
             objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
             objectMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );

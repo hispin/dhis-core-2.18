@@ -68,6 +68,40 @@ public class AttributeValue
         this.value = value;
     }
 
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        AttributeValue that = (AttributeValue) o;
+
+        if ( id != that.id ) return false;
+        if ( attribute != null ? !attribute.equals( that.attribute ) : that.attribute != null ) return false;
+        if ( value != null ? !value.equals( that.value ) : that.value != null ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = id;
+        result = 31 * result + (attribute != null ? attribute.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "AttributeValue{" +
+            "id=" + id +
+            ", attribute=" + attribute +
+            ", value='" + value + '\'' +
+            '}';
+    }
+
     @JsonIgnore
     public int getId()
     {

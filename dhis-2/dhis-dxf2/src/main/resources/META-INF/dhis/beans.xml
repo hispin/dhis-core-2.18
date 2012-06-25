@@ -16,8 +16,12 @@
 
   <!-- register object handlers -->
 
-  <bean id="org.hisp.dhis.dxf2.metadata.handlers.OrganisationUnitObjectHandler"
-      class="org.hisp.dhis.dxf2.metadata.handlers.OrganisationUnitObjectHandler" />
+  <bean id="organisationUnitObjectHandler"
+      class="org.hisp.dhis.dxf2.metadata.handlers.OrganisationUnitObjectHandler" scope="prototype"/>
+
+  <!-- register field handlers -->
+
+
 
   <!-- register importers -->
 
