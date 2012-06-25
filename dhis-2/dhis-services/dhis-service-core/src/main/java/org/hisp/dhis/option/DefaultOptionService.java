@@ -81,8 +81,8 @@ public class DefaultOptionService
         return optionStore.getAll();
     }
     
-    public List<String> getOptions( OptionSet optionSet, String key  )
+    public List<String> getOptions( OptionSet optionSet, String key, Integer max  )
     {
-        return optionStore.getOptions( optionSet, key, 100 );
+        return optionStore.getOptions( optionSet, key, max );
     }
 }

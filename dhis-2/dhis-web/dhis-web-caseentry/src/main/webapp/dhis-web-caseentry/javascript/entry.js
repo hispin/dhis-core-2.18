@@ -814,6 +814,7 @@ function autocompletedField( idField )
 {
 	var input = jQuery( "#" +  idField )
 	var dataElementId = input.attr('id').split('-')[1];
+	
 	input.autocomplete({
 		delay: 0,
 		minLength: 0,
@@ -831,7 +832,7 @@ function autocompletedField( idField )
 				}
 			});
 		},
-		minLength: 2,
+		minLength: 0,
 		select: function( event, ui ) {
 			input.val(ui.item.value);
 			saveVal( dataElementId );
@@ -852,4 +853,25 @@ function autocompletedField( idField )
 		}
 	})
 	.addClass( "ui-widget" );
+	
+	var button = $( "<button>&nbsp;</button>" )
+		.attr( "tabIndex", -1 )
+		.attr( "title", i18n_show_all_items )
+		.insertAfter( input )
+		.button({
+			icons: {
+				primary: "ui-icon-triangle-1-s"
+			},
+			text: false
+		})
+		.addClass( "small-button" )
+		.click(function() {
+			if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
+				input.autocomplete( "close" );
+				return;
+			}
+			$( this ).blur();
+			input.autocomplete( "search", "" );
+			input.focus();
+		});
 }

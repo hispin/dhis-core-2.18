@@ -43,6 +43,8 @@ import com.opensymphony.xwork2.Action;
 public class GetOptionsByDataElementAction
     implements Action
 {
+    private static Integer MAX_OPTIONS_DISPLAYED = 10;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -98,8 +100,8 @@ public class GetOptionsByDataElementAction
     {
         DataElement dataElement = dataElementService.getDataElement( id );
 
-        options = optionService.getOptions( dataElement.getOptionSet(), query );
-
+        options = optionService.getOptions( dataElement.getOptionSet(), query, MAX_OPTIONS_DISPLAYED );
+       
         return SUCCESS;
     }
 }
