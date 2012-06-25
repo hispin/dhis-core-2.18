@@ -63,7 +63,7 @@ public class WebUtils
         {
             if ( ReflectionUtils.isCollection( field.getName(), metaData, IdentifiableObject.class ) )
             {
-                List<IdentifiableObject> objects = new ArrayList( (Collection<IdentifiableObject>) ReflectionUtils.getFieldObject( field, metaData ) );
+                List<IdentifiableObject> objects = new ArrayList<IdentifiableObject>( (Collection<IdentifiableObject>) ReflectionUtils.getFieldObject( field, metaData ) );
 
                 if ( !objects.isEmpty() )
                 {

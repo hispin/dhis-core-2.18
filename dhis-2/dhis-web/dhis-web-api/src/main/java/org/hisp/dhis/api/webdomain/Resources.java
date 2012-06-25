@@ -35,7 +35,6 @@ import org.hisp.dhis.common.BaseCollection;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
-import org.hisp.dhis.message.MessageConversations;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
