@@ -46,12 +46,11 @@
 	
 	<p></p>
 	
-	<fieldset>
-		<legend>$i18n.getString( "enroll_for" )</legend>
+	<div class='enrollment-form'>
 		<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
 			<input type="hidden" id="patientId" name="patientId" value="$patient.id">    
 
-			<table>  
+			<table>
 				<tr>
 					<td class='text-column'><label for="programId">$i18n.getString( "program" )</label></td>
 					<td class='input-column'>
@@ -67,7 +66,7 @@
 				</tr>   
 				<tr id='enrollmentDateTR' class='hidden'>
 					<td class='text-column'><label for="enrollmentDate"><span id='enrollmentDateDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
-                    <td colspan='2' class='input-column'><input type="text" id="enrollmentDate" name="enrollmentDate" ></td>
+					<td colspan='2' class='input-column'><input type="text" id="enrollmentDate" name="enrollmentDate" ></td>
 				</tr>
 				
 				<tr id='dateOfIncidentTR' class='hidden'>
@@ -88,11 +87,11 @@
 					</td>
 				</tr>
 				<tr>
-                	<td colspan='3'><span id='message'></span></td>
-                </tr>
+					<td colspan='3'><span id='message'></span></td>
+				</tr>
 			</table>
 		</form>
-	</fieldset>
+	</div>
 	
 	<p></p>
 	<div id='programEnrollmentDiv' class='hidden'></div>

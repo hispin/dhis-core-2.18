@@ -44,7 +44,7 @@ table {
 }
 
 td.input-column {
-    width: 280px;
+    width: 300px;
 	padding-left: 5px; 
 	padding-right: 1px; 
 }
@@ -96,6 +96,14 @@ div.actions
   float: right;
   width: 170px;
   text-align: right;
+}
+
+div.enrollment-form
+{
+  border:1px solid #c0c0c0; 
+  padding:10px;
+  margin-right:10px;
+  border-radius:3px;
 }
 
 /*----------------------------------------------------------------------------*/
