@@ -1,54 +1,57 @@
-
-<table class="mainPageTable">
-    <tr>
-        <td>    
-        <table class="listTable" id="patientList">
-            <tbody id="list">
-                #set( $mark = false )                 
-                #foreach( $patient in $patientListByOrgUnit )
-					#set( $programInstance = $programInstanceMap.get( $patient ) )
-						<tr #alternate( $mark )>
-							<td>
-								<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
-							</td>
-							#foreach( $programStageInstance in $programInstance.programStageInstances )
+#if( $patientListByOrgUnit && $patientListByOrgUnit.size()>0 )
+	<table class="mainPageTable">
+		<tr>
+			<td>    
+			<table class="listTable" id="patientList">
+				<tbody id="list">
+					#set( $mark = false )                 
+					#foreach( $patient in $patientListByOrgUnit )
+						#set( $programInstance = $programInstanceMap.get( $patient ) )
+							<tr #alternate( $mark )>
 								<td>
-									<img src='images/rightarrow.png'>
+									<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
 								</td>
-								
-								<td width='100px;'>
-									<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:viewPrgramStageRecords( $programStageInstance.id );'>
-									<script>	
-										var status = $statusMap.get( $programStageInstance.id );
-										setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
-									</script>
-								</td>
-							#end
-						</tr>
-                    #if( $mark )
-                        #set( $mark = false )
-                    #else
-                        #set( $mark = true )
-                    #end 
-                #end    
-            </tbody>
-			<tr>
-				#set( $size=$program.programStages.size() + 2 )
-				<td colspan="$size">
-					<p></p>
-					<div class="paging-container">
-						#parse( "/dhis-web-commons/paging/paging.vm" )
-					</div>
-				</td>
-				<td></td>
-			</tr>
-        </table>
-        </td>
-    </tr>
-</table>
+								#foreach( $programStageInstance in $programInstance.programStageInstances )
+									<td>
+										<img src='images/rightarrow.png'>
+									</td>
+									
+									<td width='100px;'>
+										<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:viewPrgramStageRecords( $programStageInstance.id );'>
+										<script>	
+											var status = $statusMap.get( $programStageInstance.id );
+											setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
+										</script>
+									</td>
+								#end
+							</tr>
+						#if( $mark )
+							#set( $mark = false )
+						#else
+							#set( $mark = true )
+						#end 
+					#end    
+				</tbody>
+				<tr>
+					#set( $size=$program.programStages.size() + 2 )
+					<td colspan="$size">
+						<p></p>
+						<div class="paging-container">
+							#parse( "/dhis-web-commons/paging/paging.vm" )
+						</div>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+			</td>
+		</tr>
+	</table>
 
-<div id="detailsInfo">
-</div>
+	<div id="detailsInfo">
+	</div>
+#else
+	<h5>$i18n.getString('No person enrolled the program')</h5>
+#end
 
 <script>
 	jQuery(document).ready(function(){	

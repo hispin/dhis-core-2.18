@@ -200,8 +200,8 @@
 
 		<action name="getPrograms"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/responsePrograms.vm</result>
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/multiDataEntryIndex.vm</param>
 		</action>
 
 		<action name="getDataRecords"
