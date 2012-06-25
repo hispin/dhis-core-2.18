@@ -43,7 +43,7 @@ import com.opensymphony.xwork2.Action;
 public class GetOptionsByDataElementAction
     implements Action
 {
-    private static Integer MAX_OPTIONS_DISPLAYED = 10;
+    private static Integer MAX_OPTIONS_DISPLAYED = 30;
     
     // -------------------------------------------------------------------------
     // Dependencies

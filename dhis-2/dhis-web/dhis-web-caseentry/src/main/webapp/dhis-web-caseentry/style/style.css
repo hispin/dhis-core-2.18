@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 input[type="button"], input[type="submit"] {
-    width: 130px;
+    width: 150px;
 }
 
 input.small-button[type="button"] {
