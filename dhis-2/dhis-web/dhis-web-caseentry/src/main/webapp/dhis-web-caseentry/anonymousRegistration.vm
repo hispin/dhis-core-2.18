@@ -9,6 +9,8 @@
 <input type='hidden' id='orgunitId' name='orgunitId' value='$orgunit.id'>
 <input type='hidden' id='programStageInstanceId' name='programStageInstanceIdrgunitId'>
 <input type='hidden' id='programStageId' name='programStageId'>
+<input type='hidden' id='isShowEventList' name='isShowEventList'>
+
 <select multiple id='compulsoryDE' name='compulsoryDE' class='hidden'></select>
 
 <div id='criteriaDiv'>
@@ -93,8 +95,9 @@
 <div id='dataEntryInfor' class='hidden'>
 	<h4 id='programName' name='programName'></h4>
 	<p>
-		<input type="button" class='large-button' id='backBtn' value="$i18n.getString( 'back' )" onclick="javascript:backEventList();" >
-		<input type="button" onclick="doComplete()" value="Complete data entry" id="completeBtn">
+		<input type="button" id='backBtn' value="$i18n.getString( 'back' )" onclick="javascript:backEventList();" >
+		<input type="button" onclick="doComplete()" value="$i18n.getString('complete')" id="completeBtn">
+		<input type="button" onclick="completedAndAddNewEvent()" value="$i18n.getString('complete_and_add_new_event')" id="completeBtn">
 	</p>
 	<div id='dataEntryFormDiv'></div>
 </div>

@@ -383,7 +383,6 @@ function showProgramEnrollmentSelectForm( patientId )
 		}, function()
 		{	
 			showById('enrollmentDiv');
-			
 			jQuery('#loaderDiv').hide();
 		});
 }
