@@ -63,7 +63,7 @@ public class DataValueConverter
 {
     private static final String SEPARATOR = ",";
     private static final String FILENAME = "RoutineData.txt";
-    
+
     private DataElementCategoryService categoryService;
     private PeriodService periodService;
     private StatementManager statementManager;
@@ -153,7 +153,7 @@ public class DataValueConverter
                             values = aggregatedDataValueService.getDeflatedDataValues( element, period.getId(), params.getOrganisationUnits() );
                             
                             for ( final DeflatedDataValue value : values )
-                            {   
+                            {
                                 out.write( getCsvValue( 0 ) );
                                 out.write( getCsvValue( value.getSourceId() ) );
                                 out.write( getCsvValue( value.getDataElementId() ) );
@@ -215,7 +215,29 @@ public class DataValueConverter
                 value.setDataElement( dataElement );
                 value.setPeriod( period );
                 value.setSource( organisationUnit );
-                value.setValue( handleValue( values[6] ) );
+                //Text
+                if ( values[4] != null || !values[4].isEmpty() )
+                {
+                    value.setValue( values[4].trim() );
+                }
+                //Yes=1,No=0
+                if ( values[5] != null || !values[5].isEmpty() )
+                {
+                    value.setValue("false");
+
+                    if  ( values[5].trim() == "1" )
+                    {
+                        value.setValue("true");
+                    }
+
+                }
+                //Numbers
+                if ( values[6] != null  || !values[6].isEmpty() )
+                {
+                value.setValue( handleNumericValue( values[6] ) );
+
+                }
+
                 value.setComment( values[13] );
                 value.setOptionCombo( proxyCategoryOptionCombo );
                 
@@ -232,16 +254,59 @@ public class DataValueConverter
     // CSVConverter implementation
     // -------------------------------------------------------------------------
     
-    private String handleValue( String value )
+    private String handleNumericValue( String value )
     {
-        if ( value != null )
+        if ( value != null  )
         {
+            //Remove all spaces
+            value = value.replaceAll(" ", "");
+            //Remove all quotes
             value = value.replaceAll( "\"", "" );
-            //FIXME We need to have more robust handling of values
-            //Import them as is for now.
-            //value = value.replace( ".", "" );
+            //Strip trailing zeros
+            value = value.replaceAll( "\\.0+$", "" );
         }
+
         
         return value;
+    }
+
+    private static boolean isValidNumeric (String value)
+    {
+        if ( value == null )
+        {
+            return false;
+        }
+        else
+        {
+            return value.matches("-?\\d+(\\.\\d+)?");
+        }
+    }
+
+    private static Integer exportCSVField (DataElement dataElement)
+    {
+        String dataElementType = dataElement.getType();
+        Integer csvField = null;
+
+        if ( dataElementType == DataElement.VALUE_TYPE_STRING)
+        {
+            csvField =   4;
+        }
+
+        if ( dataElementType == DataElement.VALUE_TYPE_BOOL )
+        {
+            csvField = 5;
+        }
+
+        if ( dataElementType == DataElement.VALUE_TYPE_NUMBER )
+        {
+            csvField =  6;
+        }
+
+        if ( dataElementType == DataElement.VALUE_TYPE_DATE )
+        {
+            csvField =  7;
+        }
+
+        return csvField;
     }
 }
