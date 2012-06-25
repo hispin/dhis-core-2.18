@@ -76,10 +76,10 @@
 						<tbody>
 							<tr id='advSearchBox0'>	
 								<td id='searchingAttributeIdTD' >
-									<select id="dataElementId" name="dataElementId" style='margin-right:18px;'></select>
+									<select id="searchObjectId" name="searchObjectId" style='margin-right:18px;' onchange='dataElementOnChange(this);'></select>
 								</td>		
-								<td>
-									<input type="text" id="searchText" name="searchText" value="$!searchText" style='margin-right:30px;'>
+								<td style='padding-right:30px;'>
+									<input type="text" id="searchText" name="searchText" value="$!searchText">
 								</td>
 								<td><input type="button" id='addSearchOptionBtn' name='addSearchOptionBtn' class='small-button' value='+' onclick='addAttributeOption();'> </td>
 							</tr>
@@ -97,8 +97,10 @@
 
 <div id='dataEntryInfor' class='hidden'>
 	<h4 id='programName' name='programName'></h4>
-	<input type="button" class='large-button' id='backBtn' value="$i18n.getString( 'back' )" onclick="javascript:backEventList();" >
-	<input type="button" onclick="doComplete()" value="Complete data entry" id="completeBtn">
+	<p>
+		<input type="button" class='large-button' id='backBtn' value="$i18n.getString( 'back' )" onclick="javascript:backEventList();" >
+		<input type="button" onclick="doComplete()" value="Complete data entry" id="completeBtn">
+	</p>
 	<div id='dataEntryFormDiv'></div>
 </div>
 
@@ -134,6 +136,8 @@
 	var i18n_report_date = '$encoder.jsEscape( $i18n.getString( "report_date" ) , "'")';
 	var i18n_search_events_by_dataelements = '$encoder.jsEscape( $i18n.getString( "search_events_by_dataelements" ) , "'")';
 	var i18n_list_all_events = '$encoder.jsEscape( $i18n.getString( "list_all_events" ) , "'")';
+	var i18n_yes = '$encoder.jsEscape( $i18n.getString( "yes" ) , "'")';
+	var i18n_no = '$encoder.jsEscape( $i18n.getString( "no" ) , "'")';
 	
 	isAjax = true;
 	contentDiv = '';

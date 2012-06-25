@@ -61,7 +61,7 @@ function getPatientsByName( divname )
 
 function addAttributeOption()
 {
-	var rowId = 'advSearchBox' + jQuery('#advancedSearchTB select[name=searchingAttributeId]').length + 1;
+	var rowId = 'advSearchBox' + jQuery('#advancedSearchTB select[name=searchObjectId]').length + 1;
 	var contend  = '<td>' + getInnerHTML('searchingAttributeIdTD') + '</td>';
 		contend += '<td>' + searchTextBox ;
 		contend += '<input type="button" class="small-button" value="-" onclick="removeAttributeOption(' + "'" + rowId + "'" + ');"></td>';
@@ -79,12 +79,12 @@ function removeAttributeOption( rowId )
 // Search patients by selected attribute
 //------------------------------------------------------------------------------
 
-function searchingAttributeOnChange( this_ )
+function searchObjectOnChange( this_ )
 {	
 	var container = jQuery(this_).parent().parent().attr('id');
-	var attributeId = jQuery('#' + container + ' [id=searchingAttributeId]').val(); 
+	var attributeId = jQuery('#' + container + ' [id=searchObjectId]').val(); 
 	var element = jQuery('#' + container + ' [id=searchText]');
-	var valueType = jQuery('#' + container+ ' [id=searchingAttributeId] option:selected').attr('valueType');
+	var valueType = jQuery('#' + container+ ' [id=searchObjectId] option:selected').attr('valueType');
 	
 	if( attributeId == '-1' )
 	{
@@ -116,7 +116,7 @@ function searchingAttributeOnChange( this_ )
 function getDateField( container )
 {
 	var dateField = '<select id="dateOperator" style="width:30px;" name="dateOperator" ><option value=">"> > </option><option value="="> = </option><option value="<"> < </option></select>';
-	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" maxlength="30" style="width:210px;" onkeyup="searchPatientsOnKeyUp( event );">';
+	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:210px;">';
 	return dateField;
 }
 
@@ -165,43 +165,45 @@ function validateAdvancedPatients()
 	var flag = true;
 	var params = '';
 	var dateOperator = '';
-	jQuery("#searchPatientDiv :input").each( function( i, item )
+	jQuery("#searchDiv :input").each( function( i, item )
     {
-		if( jQuery( item ).val() == '' )
+		var elementName = $(this).attr('name');
+		if( elementName=='searchText' && jQuery( item ).val() == '' )
 		{
 			showWarningMessage( i18n_specify_search_criteria );
 			flag = false;
 		}
-		
-		var elementId = $(this).attr('id');
-		var elementName = $(this).attr('name');
-		if( elementId =='dateOperator' )
-		{
-			dateOperator = jQuery(this).val();
-		}
-		else if( jQuery(this).val()!= null && jQuery(this).val() != '' )
-		{
-			var value =jQuery(this).val();
-			if( dateOperator != '' )
-			{
-				value = dateOperator + "'" + value + "'";
-				dateOperator = "";
-			}
-			if( elementName=='searchText')
-				params += "searchText=";
-			else
-				params +=  elementId + "=";
-				
-			params += htmlEncode(value) + "&";
-		}
 	});
 	
-	if(!flag) return;
-	
-	contentDiv = 'listPatientDiv';
-	jQuery( "#loaderDiv" ).show();
-	searchAdvancedPatient( params );
-	
+	if(flag){
+		jQuery("#searchDiv :input").each( function( i, item )
+		{
+			var elementId = $(this).attr('id');
+			var elementName = $(this).attr('name');
+			if( elementId =='dateOperator' )
+			{
+				dateOperator = jQuery(this).val();
+			}
+			else
+			{
+				var value =jQuery(this).val();
+				if( dateOperator != '' )
+				{
+					value = dateOperator + "'" + value + "'";
+					dateOperator = "";
+				}
+				if( elementName=='searchText')
+					params += "searchText=";
+				else
+					params +=  elementId + "=";
+					
+				params += htmlEncode(value) + "&";
+			}
+		});
+		contentDiv = 'listPatientDiv';
+		jQuery( "#loaderDiv" ).show();
+		searchAdvancedPatient( params );
+	}
 }
 
 // ----------------------------------------------------------------------------

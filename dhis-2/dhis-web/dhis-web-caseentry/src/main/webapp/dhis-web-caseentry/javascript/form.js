@@ -7,9 +7,9 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	
 	hideById('dataEntryFormDiv');
 	hideById('dataRecordingSelectDiv');
-	showById('searchPatientDiv');
+	showById('searchDiv');
 	
-	enable('searchingAttributeId');
+	enable('searchObjectId');
 	jQuery('#searchText').removeAttr('readonly');
 	enable('searchBtn');	
 	enable('listPatientBtn');
@@ -23,7 +23,7 @@ function showSearchForm()
 {
 	hideById('dataRecordingSelectDiv');
 	hideById('dataEntryFormDiv');
-	showById('searchPatientDiv');
+	showById('searchDiv');
 	showById('contentDiv');
 	jQuery('#createNewEncounterDiv').dialog('close');
 }
@@ -41,7 +41,7 @@ function listAllPatient()
 		{
 			hideById('dataRecordingSelectDiv');
 			hideById('dataEntryFormDiv');
-			showById('searchPatientDiv');
+			showById('searchDiv');
 			hideLoader();
 		});
 }
@@ -53,7 +53,7 @@ function listAllPatient()
 function showSelectedDataRecoding( patientId )
 {
 	showLoader();
-	hideById('searchPatientDiv');
+	hideById('searchDiv');
 	hideById('dataEntryFormDiv');
 	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
 		{
@@ -107,13 +107,13 @@ function searchValidationCompleted( messageElement )
 		hideById('dataRecordingSelectDiv');
 		$('#contentDiv').load( 'searchPatient.action', 
 			{
-				searchingAttributeId: getFieldValue('searchingAttributeId'), 
+				searchObjectId: getFieldValue('searchObjectId'), 
 				searchText: getFieldValue('searchText'),
 				searchBySelectedOrgunit: byId('searchBySelectedOrgunit').checked
 			},
 			function()
 			{
-				showById('searchPatientDiv');
+				showById('searchDiv');
 				hideLoader();
 			});
     }
@@ -134,7 +134,7 @@ function searchValidationCompleted( messageElement )
 function showSelectedDataRecoding( patientId )
 {
 	showLoader();
-	hideById('searchPatientDiv');
+	hideById('searchDiv');
 	hideById('dataEntryFormDiv');
 	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
 		{

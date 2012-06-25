@@ -13,7 +13,7 @@ function getDataElements()
 {
 	hideById('dataEntryInfor');
 	hideById('listDiv');
-	clearListById('dataElementId');
+	clearListById('searchObjectId');
 	programStageId = jQuery('#programId option:selected').attr('programStageId');
 	setFieldValue('programStageId', programStageId );
 	
@@ -39,9 +39,9 @@ function getDataElements()
 			clearListById('dataElementId');
 			clearListById('compulsoryDE');
 			
-			jQuery( '#dataElementId').append( '<option value="">[' + i18n_please_select + ']</option>' );
+			jQuery( '#searchObjectId').append( '<option value="">[' + i18n_please_select + ']</option>' );
 			for ( i in json.programStageDataElements ) {
-				jQuery( '#dataElementId').append( '<option value="' + json.programStageDataElements[i].id + '">' + json.programStageDataElements[i].name + '</option>' );
+				jQuery( '#searchObjectId').append( '<option value="' + json.programStageDataElements[i].id + '" type="' + json.programStageDataElements[i].type +'">' + json.programStageDataElements[i].name + '</option>' );
 				
 				if( json.programStageDataElements[i].compulsory=='true' ){
 					jQuery( '#compulsoryDE').append( '<option value="' + json.programStageDataElements[i].id + '"></option>');
@@ -52,6 +52,64 @@ function getDataElements()
 				enable(this.id);
 			});
 		});
+}
+
+function dataElementOnChange( this_ )
+{
+	var container = jQuery(this_).parent().parent().attr('id');
+	var element = jQuery('#' + container + ' [id=searchText]');
+	var valueType = jQuery('#' + container+ ' [id=searchObjectId] option:selected').attr('type');
+	
+	if( valueType == 'date' ){
+		element.replaceWith( getDateField( container ) );
+		datePickerValid( 'searchText_' + container );
+		return;
+	}
+	else
+	{
+		$( '#searchText_' + container ).datepicker("destroy");
+		$('#' + container + ' [id=dateOperator]').replaceWith("");
+		
+		if( valueType == 'bool' ){
+			element.replaceWith( getTrueFalseBox() );
+		}
+		else if ( valueType=='optionset' ){
+			element.replaceWith( searchTextBox );
+			autocompletedFilterField( container + " [id=searchText]" , jQuery(this_).val() );
+		}
+		else{
+			element.replaceWith( searchTextBox );
+		}
+	}
+}
+
+function autocompletedFilterField( idField, dataElementId )
+{
+	var input = jQuery( "#" +  idField );
+	input.autocomplete({
+		delay: 0,
+		minLength: 0,
+		source: function( request, response ){
+			$.ajax({
+				url: "getOptions.action?id=" + dataElementId + "&query=" + input.val(),
+				dataType: "json",
+				success: function(data) {
+					response($.map(data.options, function(item) {
+						return {
+							label: item.o,
+							id: item.o
+						};
+					}));
+				}
+			});
+		},
+		minLength: 2,
+		select: function( event, ui ) {
+			input.val(ui.item.value);
+			input.autocomplete( "close" );
+		}
+	})
+	.addClass( "ui-widget" );
 }
 
 function removeAllAttributeOption()
@@ -105,8 +163,9 @@ function searchEvents( listAll )
 	else{
 		params += '&startDate=' + getFieldValue('startDate');
 		params += '&endDate=' + getFieldValue('endDate');
+		var value = '';
+		var searchingValue = '';
 		jQuery( '#advancedSearchTB tbody tr' ).each( function(){
-			var searchingValue = '';
 			jQuery( this ).find(':input').each( function( idx, item ){
 				var input = jQuery( item );
 				if( input.attr('type') != 'button' ){
@@ -114,11 +173,17 @@ function searchEvents( listAll )
 						searchingValue = 'de_' + input.val() + '_false_';
 					}
 					else if( input.val()!='' ){
-						searchingValue += getValueFormula(input.val().toLowerCase());
+						value += input.val().toLowerCase();
 					}
 				}
 			});
+			
+			if( value !=''){
+				searchingValue += getValueFormula(value);
+			}
 			params += '&searchingValues=' + searchingValue;
+			searchingValue = '';
+			value = '';
 		})
 	}
 	
@@ -240,120 +305,6 @@ function showAddEventForm()
 			{
 				setFieldValue('programStageInstanceId', json.message );
 				showUpdateEvent( json.message )
-			}
-			else
-			{
-				showWarningMessage( json.message );
-			}
-		});
-}
-
-function loadEventRegistrationForm()
-{
-	hideById('selectDiv');
-	hideById('searchDiv');
-	hideById('listDiv');
-	showLoader();
-	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
-		{ 
-			programStageInstanceId:getFieldValue('programStageInstanceId')
-		},function( )
-		{
-			hideById('loaderDiv');
-			showById('dataEntryFormDiv');
-			
-			var programStageInstanceId = getFieldValue('programStageInstanceId');
-			if( programStageInstanceId == '' )
-			{
-				enable('createEventBtn');
-				disable('deleteCurrentEventBtn');
-				disable('completeBtn');
-				enable( 'executionDate' );
-				$('#executionDate').bind('change');
-			}
-			else
-			{
-				enable( 'executionDate' );
-				if( getFieldValue('completed') == 'true')
-				{
-					enable('createEventBtn');
-					disable('deleteCurrentEventBtn');
-					disable('completeBtn');
-					jQuery('#executionDate').unbind('change');
-				} 
-				else
-				{
-					disable('createEventBtn');
-					enable('deleteCurrentEventBtn');
-					enable('completeBtn');
-					jQuery('#executionDate').bind('change');
-				}
-			}
-			
-		} );
-}
-
-function loadEventForm()
-{	
-	hideById('dataEntryFormDiv');
-	setFieldValue('executionDate', '');
-	disable( 'executionDate' );
-	disable('createEventBtn');
-	disable('deleteCurrentEventBtn');
-		
-	var programId = getFieldValue('programId');
-	if( programId == '' )
-	{
-		$('#executionDate').unbind('change');
-		return;
-	}
-	
-	showLoader();
-	
-	jQuery.getJSON( "loadProgramStageInstances.action",
-		{
-			programId: programId
-		}, 
-		function( json ) 
-		{    
-			if( json.programStageInstances.length > 0 )
-			{
-				setFieldValue( 'programStageInstanceId', json.programStageInstances[0].id );
-				setFieldValue( 'selectedProgramId', programId );
-				$('#executionDate').bind('change');
-				loadEventRegistrationForm();
-			}
-			else
-			{
-				enable( 'executionDate' );
-				enable('createEventBtn');
-				disable('deleteCurrentEventBtn');
-				disable('completeBtn');
-				hideById('loaderDiv');
-			}	
-	});
-}
-
-function createNewEvent()
-{
-	jQuery.postJSON( "createAnonymousEncounter.action",
-		{
-			programInstanceId: jQuery('select[id=programId] option:selected').attr('programInstanceId'),
-			executionDate: getFieldValue('executionDate')
-		}, 
-		function( json ) 
-		{    
-			selection.enable();
-			
-			if(json.response=='success')
-			{
-				disable('createEventBtn');
-				enable('deleteCurrentEventBtn');
-				setFieldValue('programStageInstanceId', json.message );
-				
-				selection.disable();
-				
-				loadEventRegistrationForm();
 			}
 			else
 			{
