@@ -1,24 +1,14 @@
 <h3>$i18n.getString( "multiple_name_based" ) #openHelp('multi_name_based_data_entry')</h3>
 
-<h4 id='programName' name='programName'></h4>	
-
+<h4 id='programName' name='programName'></h4>
 <input type="button" id='btnBack' name='btnBack' style='width: 150px;display:none;' value="$i18n.getString( 'back' )" onclick="backButtonOnClick();"/>
-<p></p>
-<form id="dataEntryForm" name="dataEntryForm" method="post" action="multipledataEntrySelect.action">
-	<div id='programDiv'>
-		<input type='hidden' id='programId' name='programId' />
-		#foreach( $program in $programs )
-			<ul class="introList">
-				<li class="introItem" onclick="javascript:selectProgram('$program.id', '$program.name')">
-				  <span class="introItemHeader"><img src="../icons/program.png" style="float:left; margin-right:15px">$program.name</span><br>
-				  <span>$program.description</span>
-				</li>
-			</ul>	
-		#end
-	</div>
-</form>
+
+<div id='programDiv'>
+	#parse( "dhis-web-caseentry/multiDataEntryIndex.vm" )
+</div>
 
 #parse( "dhis-web-commons/loader/loader.vm" )
+
 <input type='hidden' id='orgunitId' value='$organisationUnit.id'>
 <div id='listPatient'></div>
 

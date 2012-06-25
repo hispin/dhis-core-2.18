@@ -2,28 +2,13 @@
 function multiDataEntryOrgunitSelected( orgUnits, orgUnitNames )
 {
 	hideById("listPatient");
-	jQuery.getJSON( "getPrograms.action",{}, 
-		function( json ) 
-		{    
-			enable('programId');
-			enable('patientAttributeId');
-			
-			clearListById('programId');
-			if(json.programs.length == 0)
-			{
-				disable('programId');
-				disable('patientAttributeId');
-			}
-			else
-			{
-				addOptionById( 'programId', "0", i18n_select );
-				
-				for ( var i in json.programs ) 
-				{
-					addOptionById( 'programId', json.programs[i].id, json.programs[i].name );
-				} 
-			}	
+	jQuery('#programDiv').load("getPrograms.action",{}, 
+		function()
+		{
+			showById('programDiv');
+			hideById('btnBack');
 			setFieldValue( 'orgunitName', orgUnitNames[0] );
+			hideLoader();
 		});
 }
 
