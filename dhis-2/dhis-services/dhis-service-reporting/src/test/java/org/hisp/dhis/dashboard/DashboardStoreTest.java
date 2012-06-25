@@ -37,17 +37,16 @@ import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class DashboardStoreTest
     extends DhisSpringTest
 {
-    private UserStore userStore;
+    private UserService userService;
     
     private ReportService reportService;
     
@@ -64,14 +63,14 @@ public class DashboardStoreTest
     @SuppressWarnings("unchecked")
     public void setUpTest()
     {
-        userStore = (UserStore) getBean( UserStore.ID );
+        userService = (UserService) getBean( UserService.ID );
         
         reportService = (ReportService) getBean( ReportService.ID );
 
         dashboardContentStore = (GenericStore<DashboardContent>) getBean( "org.hisp.dhis.dashboard.DashboardContentStore" );
         
         userA = createUser( 'A' );
-        userStore.addUser( userA );
+        userService.addUser( userA );
         
         reportA = new Report( "ReportA", "DesignA", null );
         reportService.saveReport( reportA );
