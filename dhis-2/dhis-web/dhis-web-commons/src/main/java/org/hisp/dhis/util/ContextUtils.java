@@ -209,6 +209,36 @@ public class ContextUtils
     }
 
     /**
+     * Returns true if the given object is not modified according to the HTTP
+     * cache validation. This method looks up the ETag sent in the request from 
+     * the "If-None-Match" header value, generates an ETag based on the given 
+     * collection of IdentifiableObjects and compares them for equality. If this
+     * evaluates to true, it will set status code 304 Not Modified on the response.
+     * It will also set the ETag header on the response in any case.
+     * 
+     * @param request the HttpServletRequest.
+     * @param response the HttpServletResponse.
+     * @return true if the eTag values are equals, false otherwise.
+     */
+    public static boolean isNotModified( HttpServletRequest request, HttpServletResponse response, IdentifiableObject object )
+    {
+        String tag = IdentifiableObjectUtils.getLastUpdatedTag( object );
+        
+        response.setHeader( HEADER_ETAG, tag );
+        
+        String inputTag = request.getHeader( HEADER_IF_NONE_MATCH );
+
+        if ( object != null && inputTag != null && tag != null && inputTag.equals( tag ) )
+        {
+            response.setStatus( HttpServletResponse.SC_NOT_MODIFIED );
+            
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
      * Creates a ZipOutputStream based on the HttpServletResponse and puts a
      * new ZipEntry with the given filename to it.
      * 
