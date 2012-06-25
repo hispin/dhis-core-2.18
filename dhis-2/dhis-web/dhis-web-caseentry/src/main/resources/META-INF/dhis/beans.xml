@@ -18,16 +18,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Data Entry -->
 
-	<bean id="org.hisp.dhis.caseentry.action.caseentry.DataEntrySelectAction"
-		class="org.hisp.dhis.caseentry.action.caseentry.DataEntrySelectAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction"
 		scope="prototype">

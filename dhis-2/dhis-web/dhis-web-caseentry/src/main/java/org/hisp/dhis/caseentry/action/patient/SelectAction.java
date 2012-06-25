@@ -111,7 +111,8 @@ public class SelectAction
     {
         patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        programs = programService.getAllPrograms();
+        programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
+        programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION ));
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 

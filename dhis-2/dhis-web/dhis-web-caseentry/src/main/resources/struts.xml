@@ -19,7 +19,7 @@
 		<!-- Data Entry -->
 
 		<action name="dataEntrySelect"
-			class="org.hisp.dhis.caseentry.action.caseentry.DataEntrySelectAction">
+			class="org.hisp.dhis.caseentry.action.patient.SelectAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/select.vm</param>
