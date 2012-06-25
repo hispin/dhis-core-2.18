@@ -27,12 +27,6 @@ package org.hisp.dhis.importexport.dhis14.xml.importer;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.staxwax.factory.XMLFactory;
@@ -45,25 +39,10 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.ExpressionService;
-import org.hisp.dhis.importexport.CSVConverter;
-import org.hisp.dhis.importexport.ImportDataValue;
-import org.hisp.dhis.importexport.ImportObjectService;
-import org.hisp.dhis.importexport.ImportParams;
-import org.hisp.dhis.importexport.ImportService;
-import org.hisp.dhis.importexport.XMLConverter;
+import org.hisp.dhis.importexport.*;
 import org.hisp.dhis.importexport.analysis.DefaultImportAnalyser;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
-import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryComboConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryOptionComboConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementCategoryOptionConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.DataValueConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.IndicatorConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.IndicatorTypeConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.OrganisationUnitConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.OrganisationUnitHierarchyConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.PeriodConverter;
+import org.hisp.dhis.importexport.dhis14.xml.converter.*;
 import org.hisp.dhis.importexport.invoker.ConverterInvoker;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
@@ -73,6 +52,13 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.process.OutputHolderState;
 import org.hisp.dhis.system.util.StreamUtils;
+
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author Lars Helge Overland
@@ -117,14 +103,14 @@ public class DefaultDhis14XMLImportService
     {
         this.periodService = periodService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private ImportObjectService importObjectService;
 
     public void setImportObjectService( ImportObjectService importObjectService )

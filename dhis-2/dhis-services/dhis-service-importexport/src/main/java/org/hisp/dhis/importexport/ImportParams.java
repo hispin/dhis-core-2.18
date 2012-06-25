@@ -53,6 +53,8 @@ public class ImportParams
     
     private String minorVersion;
     
+    private String owner;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -61,11 +63,21 @@ public class ImportParams
     {
     }
 
-    public ImportParams( ImportType type, ImportStrategy importStrategy, boolean dataValues )
+    public ImportParams(ImportType type, ImportStrategy importStrategy, boolean dataValues)
     {
         this.type = type;
         this.importStrategy = importStrategy;
         this.dataValues = dataValues;
+
+    }
+
+    //Constructor used for DHIS 1.4 imports
+    public ImportParams( ImportType type, ImportStrategy importStrategy, boolean dataValues, String owner )
+    {
+        this.type = type;
+        this.importStrategy = importStrategy;
+        this.dataValues = dataValues;
+        this.owner = owner;
     }
     
     // -------------------------------------------------------------------------
@@ -187,5 +199,15 @@ public class ImportParams
     public void setMinorVersion( String minorVersion )
     {
         this.minorVersion = minorVersion;
+    }
+    
+    public  void setOwner(String owner)
+    {
+        this.owner = owner;
+    }
+    
+    public String getOwner()
+    {
+        return owner;
     }
 }
