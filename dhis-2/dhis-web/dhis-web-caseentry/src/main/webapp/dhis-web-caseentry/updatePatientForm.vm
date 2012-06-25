@@ -181,6 +181,7 @@
 		#foreach($attribute in $attributeGroup.attributes)
 			#if( $attribute.program )
 			#else
+				#set( $attributeValue = "" )
 				#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 				<tr>
 					<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
