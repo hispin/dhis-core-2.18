@@ -36,7 +36,6 @@ function getDataElements()
 		}, 
 		function( json ) 
 		{   
-			clearListById('dataElementId');
 			clearListById('compulsoryDE');
 			
 			jQuery( '#searchObjectId').append( '<option value="">[' + i18n_please_select + ']</option>' );
