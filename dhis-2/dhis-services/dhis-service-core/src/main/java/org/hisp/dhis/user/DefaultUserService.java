@@ -1,20 +1,5 @@
 package org.hisp.dhis.user;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
-import org.hisp.dhis.system.util.AuditLogUtil;
-import org.hisp.dhis.system.util.Filter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.Serializable;
-import java.util.*;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -42,9 +27,27 @@ import java.util.*;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
+import org.hisp.dhis.system.util.AuditLogUtil;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Chau Thu Tran
- * @version $Id$
  */
 @Transactional
 public class DefaultUserService
@@ -63,11 +66,18 @@ public class DefaultUserService
         this.userStore = userStore;
     }
 
-    private GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore;
-
-    public void setUserRoleStore( GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore )
+    private UserCredentialsStore userCredentialsStore;
+    
+    public void setUserCredentialsStore( UserCredentialsStore userCredentialsStore )
     {
-        this.userRoleStore = userRoleStore;
+        this.userCredentialsStore = userCredentialsStore;
+    }
+
+    private GenericIdentifiableObjectStore<UserAuthorityGroup> userAuthorityGroupStore;
+    
+    public void setUserAuthorityGroupStore( GenericIdentifiableObjectStore<UserAuthorityGroup> userAuthorityGroupStore )
+    {
+        this.userAuthorityGroupStore = userAuthorityGroupStore;
     }
 
     private CurrentUserService currentUserService;
@@ -101,7 +111,7 @@ public class DefaultUserService
 
     public boolean isLastSuperUser( UserCredentials userCredentials )
     {
-        Collection<UserCredentials> users = userStore.getAllUserCredentials();
+        Collection<UserCredentials> users = userCredentialsStore.getAllUserCredentials();
 
         for ( UserCredentials user : users )
         {
@@ -126,7 +136,7 @@ public class DefaultUserService
 
     public boolean isLastSuperRole( UserAuthorityGroup userAuthorityGroup )
     {
-        Collection<UserAuthorityGroup> groups = userStore.getAllUserAuthorityGroups();
+        Collection<UserAuthorityGroup> groups = userAuthorityGroupStore.getAll();
 
         for ( UserAuthorityGroup group : groups )
         {
@@ -148,12 +158,12 @@ public class DefaultUserService
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_ADD, User.class
             .getSimpleName(), user.getName() ) );
 
-        return userStore.addUser( user );
+        return userStore.save( user );
     }
 
     public void deleteUser( User user )
     {
-        userStore.deleteUser( user );
+        userStore.delete( user );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_DELETE,
             User.class.getSimpleName(), user.getName() ) );
@@ -161,7 +171,7 @@ public class DefaultUserService
 
     public void updateUser( User user )
     {
-        userStore.updateUser( user );
+        userStore.update( user );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_EDIT,
             User.class.getSimpleName(), user.getName() ) );
@@ -169,39 +179,39 @@ public class DefaultUserService
 
     public Collection<User> getAllUsers()
     {
-        return userStore.getAllUsers();
+        return userStore.getAll();
     }
 
     @Override
     public Collection<User> getAllUsersBetween( int first, int max )
     {
-        return userStore.getAllUsersBetween( first, max );
+        return userStore.getBetween( first, max );
     }
 
     @Override
     public Collection<User> getUsersByLastUpdated( Date lastUpdated )
     {
-        return userStore.getUsersByLastUpdated( lastUpdated );
+        return userStore.getByLastUpdated( lastUpdated );
     }
 
     public User getUser( int userId )
     {
-        return userStore.getUser( userId );
+        return userStore.get( userId );
     }
 
     public User getUser( String uid )
     {
-        return userStore.getUser( uid );
+        return userStore.getByUid( uid );
     }
 
     public int getUserCount()
     {
-        return userStore.getUserCount();
+        return userStore.getCount();
     }
 
     public int getUserCountByName( String userName )
     {
-        return userStore.getUserCountByName( userName );
+        return userStore.getCountByName( userName );
     }
 
     public Collection<UserCredentials> getUsers( final Collection<Integer> identifiers, User user )
@@ -222,23 +232,23 @@ public class DefaultUserService
 
     public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit unit, int first, int max )
     {
-        return userStore.getUsersByOrganisationUnitBetween( unit, first, max );
+        return userCredentialsStore.getUsersByOrganisationUnitBetween( unit, first, max );
     }
 
     public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit unit, String userName,
         int first, int max )
     {
-        return userStore.getUsersByOrganisationUnitBetweenByName( unit, userName, first, max );
+        return userCredentialsStore.getUsersByOrganisationUnitBetweenByName( unit, userName, first, max );
     }
 
     public int getUsersByOrganisationUnitCount( OrganisationUnit unit )
     {
-        return userStore.getUsersByOrganisationUnitCount( unit );
+        return userCredentialsStore.getUsersByOrganisationUnitCount( unit );
     }
 
     public int getUsersByOrganisationUnitCountByName( OrganisationUnit unit, String userName )
     {
-        return userStore.getUsersByOrganisationUnitCountByName( unit, userName );
+        return userCredentialsStore.getUsersByOrganisationUnitCountByName( unit, userName );
     }
 
     public Collection<User> getUsersByPhoneNumber( String phoneNumber )
@@ -253,12 +263,12 @@ public class DefaultUserService
 
     public int getUsersWithoutOrganisationUnitCount()
     {
-        return userStore.getUsersWithoutOrganisationUnitCount();
+        return userCredentialsStore.getUsersWithoutOrganisationUnitCount();
     }
 
     public int getUsersWithoutOrganisationUnitCountByName( String userName )
     {
-        return userStore.getUsersWithoutOrganisationUnitCountByName( userName );
+        return userCredentialsStore.getUsersWithoutOrganisationUnitCountByName( userName );
     }
 
     // -------------------------------------------------------------------------
@@ -267,57 +277,57 @@ public class DefaultUserService
 
     public int addUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
     {
-        return userStore.addUserAuthorityGroup( userAuthorityGroup );
+        return userAuthorityGroupStore.save( userAuthorityGroup );
     }
 
     public void updateUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
     {
-        userStore.updateUserAuthorityGroup( userAuthorityGroup );
+        userAuthorityGroupStore.update( userAuthorityGroup );
     }
 
     public void deleteUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
     {
-        userStore.deleteUserAuthorityGroup( userAuthorityGroup );
+        userAuthorityGroupStore.delete( userAuthorityGroup );
     }
 
     public Collection<UserAuthorityGroup> getAllUserAuthorityGroups()
     {
-        return userStore.getAllUserAuthorityGroups();
+        return userAuthorityGroupStore.getAll();
     }
 
-    public UserAuthorityGroup getUserAuthorityGroup( int userAuthorityGroupId )
+    public UserAuthorityGroup getUserAuthorityGroup( int id )
     {
-        return userStore.getUserAuthorityGroup( userAuthorityGroupId );
+        return userAuthorityGroupStore.get( id );
     }
 
     public UserAuthorityGroup getUserAuthorityGroup( String uid )
     {
-        return userStore.getUserAuthorityGroup( uid );
+        return userAuthorityGroupStore.getByUid( uid );
     }
 
-    public UserAuthorityGroup getUserAuthorityGroupByName( String userAuthorityGroupName )
+    public UserAuthorityGroup getUserAuthorityGroupByName( String name )
     {
-        return userStore.getUserAuthorityGroupByName( userAuthorityGroupName );
+        return userAuthorityGroupStore.getByName( name );
     }
 
     public Collection<UserAuthorityGroup> getUserRolesBetween( int first, int max )
     {
-        return userRoleStore.getBetween( first, max );
+        return userAuthorityGroupStore.getBetween( first, max );
     }
 
     public Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max )
     {
-        return userRoleStore.getBetweenByName( name, first, max );
+        return userAuthorityGroupStore.getBetweenByName( name, first, max );
     }
 
     public int getUserRoleCount()
     {
-        return userRoleStore.getCount();
+        return userAuthorityGroupStore.getCount();
     }
 
     public int getUserRoleCountByName( String name )
     {
-        return userRoleStore.getCountByName( name );
+        return userAuthorityGroupStore.getCountByName( name );
     }
 
     public void assignDataSetToUserRole( DataSet dataSet )
@@ -343,57 +353,57 @@ public class DefaultUserService
 
     public User addUserCredentials( UserCredentials userCredentials )
     {
-        return userStore.addUserCredentials( userCredentials );
+        return userCredentialsStore.addUserCredentials( userCredentials );
     }
 
     public void updateUserCredentials( UserCredentials userCredentials )
     {
-        userStore.updateUserCredentials( userCredentials );
+        userCredentialsStore.updateUserCredentials( userCredentials );
     }
 
     public void deleteUserCredentials( UserCredentials userCredentials )
     {
-        userStore.deleteUserCredentials( userCredentials );
+        userCredentialsStore.deleteUserCredentials( userCredentials );
     }
 
     public Collection<UserCredentials> getAllUserCredentials()
     {
-        return userStore.getAllUserCredentials();
+        return userCredentialsStore.getAllUserCredentials();
     }
 
     public UserCredentials getUserCredentials( User user )
     {
-        return userStore.getUserCredentials( user );
+        return userCredentialsStore.getUserCredentials( user );
     }
 
     public UserCredentials getUserCredentialsByUsername( String username )
     {
-        return userStore.getUserCredentialsByUsername( username );
+        return userCredentialsStore.getUserCredentialsByUsername( username );
     }
 
     public Collection<UserCredentials> getUsersBetween( int first, int max )
     {
-        return userStore.getUsersBetween( first, max );
+        return userCredentialsStore.getUsersBetween( first, max );
     }
 
     public Collection<UserCredentials> getUsersBetweenByName( String username, int first, int max )
     {
-        return userStore.getUsersBetweenByName( username, first, max );
+        return userCredentialsStore.getUsersBetweenByName( username, first, max );
     }
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
     {
-        return userStore.getUsersWithoutOrganisationUnitBetween( first, max );
+        return userCredentialsStore.getUsersWithoutOrganisationUnitBetween( first, max );
     }
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String username, int first, int max )
     {
-        return userStore.getUsersWithoutOrganisationUnitBetweenByName( username, first, max );
+        return userCredentialsStore.getUsersWithoutOrganisationUnitBetweenByName( username, first, max );
     }
 
     public Collection<UserCredentials> searchUsersByName( String username )
     {
-        return userStore.searchUsersByName( username );
+        return userCredentialsStore.searchUsersByName( username );
     }
 
     public void setLastLogin( String username )
@@ -408,7 +418,7 @@ public class DefaultUserService
         Calendar cal = PeriodType.createCalendarInstance();
         cal.add( Calendar.MONTH, (months * -1) );
 
-        return userStore.getInactiveUsers( cal.getTime() );
+        return userCredentialsStore.getInactiveUsers( cal.getTime() );
     }
 
     public Collection<UserCredentials> getInactiveUsers( int months, int first, int max )
@@ -416,7 +426,7 @@ public class DefaultUserService
         Calendar cal = PeriodType.createCalendarInstance();
         cal.add( Calendar.MONTH, (months * -1) );
 
-        return userStore.getInactiveUsers( cal.getTime(), first, max );
+        return userCredentialsStore.getInactiveUsers( cal.getTime(), first, max );
     }
 
     public int getInactiveUsersCount( int months )
@@ -424,7 +434,7 @@ public class DefaultUserService
         Calendar cal = PeriodType.createCalendarInstance();
         cal.add( Calendar.MONTH, (months * -1) );
 
-        return userStore.getInactiveUsersCount( cal.getTime() );
+        return userCredentialsStore.getInactiveUsersCount( cal.getTime() );
     }
 
     public int getActiveUsersCount( int days )
@@ -432,7 +442,7 @@ public class DefaultUserService
         Calendar cal = PeriodType.createCalendarInstance();
         cal.add( Calendar.DAY_OF_YEAR, (days * -1) );
 
-        return userStore.getActiveUsersCount( cal.getTime() );
+        return userCredentialsStore.getActiveUsersCount( cal.getTime() );
     }
 
     // -------------------------------------------------------------------------
@@ -441,34 +451,34 @@ public class DefaultUserService
 
     public void addUserSetting( UserSetting userSetting )
     {
-        userStore.addUserSetting( userSetting );
+        userCredentialsStore.addUserSetting( userSetting );
     }
 
     public void updateUserSetting( UserSetting userSetting )
     {
-        userStore.updateUserSetting( userSetting );
+        userCredentialsStore.updateUserSetting( userSetting );
     }
 
     public void deleteUserSetting( UserSetting userSetting )
     {
-        userStore.deleteUserSetting( userSetting );
+        userCredentialsStore.deleteUserSetting( userSetting );
     }
 
     public Collection<UserSetting> getAllUserSettings( User user )
     {
-        return userStore.getAllUserSettings( user );
+        return userCredentialsStore.getAllUserSettings( user );
     }
 
     public UserSetting getUserSetting( User user, String name )
     {
-        return userStore.getUserSetting( user, name );
+        return userCredentialsStore.getUserSetting( user, name );
     }
 
     public Map<User, Serializable> getUserSettings( String name, Serializable defaultValue )
     {
         Map<User, Serializable> map = new HashMap<User, Serializable>();
 
-        for ( UserSetting setting : userStore.getUserSettings( name ) )
+        for ( UserSetting setting : userCredentialsStore.getUserSettings( name ) )
         {
             map.put( setting.getUser(), setting.getValue() != null ? setting.getValue() : defaultValue );
         }

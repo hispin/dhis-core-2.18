@@ -48,6 +48,8 @@ public class UserStoreTest
     extends DhisSpringTest
 {
     private UserStore userStore;
+    
+    private UserCredentialsStore userCredentialsStore;
 
     private OrganisationUnitService organisationUnitService;
 
@@ -56,6 +58,8 @@ public class UserStoreTest
         throws Exception
     {
         userStore = (UserStore) getBean( UserStore.ID );
+        
+        userCredentialsStore = (UserCredentialsStore) getBean( UserCredentialsStore.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
     }
@@ -83,25 +87,25 @@ public class UserStoreTest
         user.setFirstName( userName );
 
         // Test addUser
-        int id = userStore.addUser( user );
-        assertEquals( userStore.getUser( id ).getSurname(), userName );
-        assertEquals( userStore.getUser( id ).getFirstName(), userName );
-        assertEquals( 1, userStore.getAllUsers().size(), 1 );
+        int id = userStore.save( user );
+        assertEquals( userStore.get( id ).getSurname(), userName );
+        assertEquals( userStore.get( id ).getFirstName(), userName );
+        assertEquals( 1, userStore.getAll().size(), 1 );
         assertEquals( 1, userStore.getUsersWithoutOrganisationUnit().size() );
 
         // Test updateUser
         user.setSurname( "User1" );
         user.setOrganisationUnits( units1 );
-        userStore.updateUser( user );
+        userStore.update( user );
         
-        assertEquals( userStore.getUser( id ).getSurname(), "User1" );
+        assertEquals( userStore.get( id ).getSurname(), "User1" );
         assertEquals( 0, userStore.getUsersWithoutOrganisationUnit().size() );
 
         // Test getUser
-        assertEquals( userStore.getUser( user.getId() ).getSurname(), "User1" );
-        assertEquals( userStore.getUser( user.getId() ).getFirstName(), userName );
-        assertEquals( 2, userStore.getUser( user.getId() ).getOrganisationUnits().size() );
-        assertEquals( userStore.getUser( user.getId() ).getId(), id );
+        assertEquals( userStore.get( user.getId() ).getSurname(), "User1" );
+        assertEquals( userStore.get( user.getId() ).getFirstName(), userName );
+        assertEquals( 2, userStore.get( user.getId() ).getOrganisationUnits().size() );
+        assertEquals( userStore.get( user.getId() ).getId(), id );
 
         // Test getAllUsers
         User user2 = new User();
@@ -111,9 +115,9 @@ public class UserStoreTest
         user2.setSurname( "User2" );
         user2.setFirstName( "User2" );
         user2.setOrganisationUnits( units2 );
-        userStore.addUser( user2 );
+        userStore.save( user2 );
 
-        assertEquals( userStore.getAllUsers().size(), 2 );
+        assertEquals( userStore.getAll().size(), 2 );
         
         assertEquals( 0, userStore.getUsersWithoutOrganisationUnit().size() );
 
@@ -128,13 +132,13 @@ public class UserStoreTest
         units3.add(unit3);
         
         user.setOrganisationUnits( units3 );
-        userStore.addUser( user3 );
+        userStore.save( user3 );
 
-        assertEquals( userStore.getAllUsers().size(), 3 );
+        assertEquals( userStore.getAll().size(), 3 );
         // delete User3
-        assertEquals( userStore.getUser( user3.getId() ).getSurname(), "User3" );
-        userStore.deleteUser( user3 );
-        assertEquals( userStore.getAllUsers().size(), 2 );
+        assertEquals( userStore.get( user3.getId() ).getSurname(), "User3" );
+        userStore.delete( user3 );
+        assertEquals( userStore.getAll().size(), 2 );
     }
 
     @Test
@@ -150,86 +154,44 @@ public class UserStoreTest
         User user = new User();
         user.setSurname( username );
         user.setFirstName( username );
-        userStore.addUser( user );
+        userStore.save( user );
 
         UserCredentials userCredentials = new UserCredentials();
         userCredentials.setUser( user );
         userCredentials.setUsername( username );
         userCredentials.setPassword( password );
 
-        userStore.addUserCredentials( userCredentials );
+        userCredentialsStore.addUserCredentials( userCredentials );
 
-        assertEquals( userStore.getUserCredentials( user ).getUser().getId(), user.getId() );
-        assertEquals( userStore.getUserCredentials( user ).getUsername(), username );
-        assertEquals( userStore.getUserCredentials( user ).getPassword(), password );
+        assertEquals( userCredentialsStore.getUserCredentials( user ).getUser().getId(), user.getId() );
+        assertEquals( userCredentialsStore.getUserCredentials( user ).getUsername(), username );
+        assertEquals( userCredentialsStore.getUserCredentials( user ).getPassword(), password );
 
         // Test updateUserCredentials
         userCredentials.setUser( user );
         userCredentials.setUsername( someone );
         userCredentials.setPassword( iloveyou );
 
-        userStore.updateUserCredentials( userCredentials );
-        assertEquals( userStore.getUserCredentials( user ).getUsername(), someone );
-        assertEquals( userStore.getUserCredentials( user ).getPassword(), iloveyou );
+        userCredentialsStore.updateUserCredentials( userCredentials );
+        assertEquals( userCredentialsStore.getUserCredentials( user ).getUsername(), someone );
+        assertEquals( userCredentialsStore.getUserCredentials( user ).getPassword(), iloveyou );
 
         // Test getUserCredentials
-        assertEquals( userStore.getUserCredentials( user ).getUsername(), someone );
-        assertEquals( userStore.getUserCredentials( user ).getPassword(), iloveyou );
+        assertEquals( userCredentialsStore.getUserCredentials( user ).getUsername(), someone );
+        assertEquals( userCredentialsStore.getUserCredentials( user ).getPassword(), iloveyou );
 
         // Test getUserCredentialsByUsername
         // System.out.println( userStore.getUserCredentialsByUsername( someone
         // ).getPassword() );
-        assertEquals( userStore.getUserCredentialsByUsername( someone ).getPassword(), userCredentials.getPassword() );
-        assertEquals( userStore.getUserCredentialsByUsername( someone ).getClass(), userCredentials.getClass() );
+        assertEquals( userCredentialsStore.getUserCredentialsByUsername( someone ).getPassword(), userCredentials.getPassword() );
+        assertEquals( userCredentialsStore.getUserCredentialsByUsername( someone ).getClass(), userCredentials.getClass() );
 
         // Test deleteUserCredentials
         // Before delete
-        assertNotNull( userStore.getUserCredentials( user ) );
-        userStore.deleteUserCredentials( userStore.getUserCredentials( user ) );
+        assertNotNull( userCredentialsStore.getUserCredentials( user ) );
+        userCredentialsStore.deleteUserCredentials( userCredentialsStore.getUserCredentials( user ) );
         // After delete
-        assertNull( userStore.getUserCredentials( user ) );
-    }
-
-    @Test
-    public void testBasicUserAuthorityGroup()
-        throws Exception
-    {
-        String name = "UserAuthorityGroup";
-        String name1 = "UserAuthorityGroup1";
-        String name2 = "UserAuthorityGroup2";
-
-        // Test addUserAuthorityGroup
-        UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
-        userAuthorityGroup.setName( name );
-        userStore.addUserAuthorityGroup( userAuthorityGroup );
-        assertEquals( userStore.getUserAuthorityGroup( userAuthorityGroup.getId() ).getName(), name );
-
-        // Test updateUserAuthorityGroup
-        userAuthorityGroup.setName( name1 );
-        userStore.updateUserAuthorityGroup( userAuthorityGroup );
-        assertEquals( userAuthorityGroup.getName(), name1 );
-
-        // Test getUserAuthorityGroup
-        assertEquals( userStore.getUserAuthorityGroup( userAuthorityGroup.getId() ).getName(), name1 );
-        assertEquals( userStore.getUserAuthorityGroup( userAuthorityGroup.getId() ).getClass(), userAuthorityGroup
-            .getClass() );
-
-        // Test getAllUserAuthorityGroups
-        UserAuthorityGroup userAuthorityGroup2 = new UserAuthorityGroup();
-        userAuthorityGroup2.setName( name2 );
-        userStore.addUserAuthorityGroup( userAuthorityGroup2 );
-
-        assertEquals( userStore.getAllUserAuthorityGroups().size(), 2 );
-        for ( int i = 1; i <= userStore.getAllUserAuthorityGroups().size(); i++ )
-        {
-            // System.out.println( "UserAuthorityGroup" + i );
-            assertEquals( userStore.getUserAuthorityGroup( i ).getName(), "UserAuthorityGroup" + i );
-        }
-
-        // Test deleteUserAuthorityGroup
-        assertEquals( userStore.getAllUserAuthorityGroups().size(), 2 );
-        userStore.deleteUserAuthorityGroup( userAuthorityGroup2 );
-        assertEquals( userStore.getAllUserAuthorityGroups().size(), 1 );
+        assertNull( userCredentialsStore.getUserCredentials( user ) );
     }
 
     @Test
@@ -245,39 +207,39 @@ public class UserStoreTest
         User user = new User();
         user.setSurname( userName );
         user.setFirstName( userName );
-        userStore.addUser( user );
+        userStore.save( user );
 
         UserSetting userSetting = new UserSetting();
         userSetting.setUser( user );
         userSetting.setName( name );
         userSetting.setValue( value );
 
-        userStore.addUserSetting( userSetting );
-        assertEquals( userStore.getUserSetting( user, name ).getName(), userSetting.getName() );
+        userCredentialsStore.addUserSetting( userSetting );
+        assertEquals( userCredentialsStore.getUserSetting( user, name ).getName(), userSetting.getName() );
 
         // Test updateUserSetting
         userSetting.setValue( value1 );
         // System.out.println( userSetting.getName() );
-        userStore.updateUserSetting( userSetting );
+        userCredentialsStore.updateUserSetting( userSetting );
         // System.out.println( userSetting.getName() );
-        assertEquals( value1, userStore.getUserSetting( user, name ).getValue() );
+        assertEquals( value1, userCredentialsStore.getUserSetting( user, name ).getValue() );
 
         // Test getUserSetting
-        assertEquals( userStore.getUserSetting( userSetting.getUser(), name ).getName(), name );
-        assertEquals( userStore.getUserSetting( userSetting.getUser(), name ).getUser().getId(), user.getId() );
-        assertEquals( userStore.getUserSetting( userSetting.getUser(), name ).getValue(), value1 );
+        assertEquals( userCredentialsStore.getUserSetting( userSetting.getUser(), name ).getName(), name );
+        assertEquals( userCredentialsStore.getUserSetting( userSetting.getUser(), name ).getUser().getId(), user.getId() );
+        assertEquals( userCredentialsStore.getUserSetting( userSetting.getUser(), name ).getValue(), value1 );
 
         // Test getAllUserSettings
-        assertEquals( userStore.getAllUserSettings( user ).size(), 1 );
-        for ( int i = 1; i <= userStore.getAllUserSettings( user ).size(); i++ )
+        assertEquals( userCredentialsStore.getAllUserSettings( user ).size(), 1 );
+        for ( int i = 1; i <= userCredentialsStore.getAllUserSettings( user ).size(); i++ )
         {
             // System.out.println( "UserSettings" + i );
-            assertEquals( userStore.getUserSetting( user, name ).getValue(), "value" + i );
+            assertEquals( userCredentialsStore.getUserSetting( user, name ).getValue(), "value" + i );
         }
 
         // Test deleteUserSetting
-        assertEquals( userStore.getAllUserSettings( user ).size(), 1 );
-        userStore.deleteUserSetting( userStore.getUserSetting( user, name ) );
-        assertEquals( userStore.getAllUserSettings( user ).size(), 0 );
+        assertEquals( userCredentialsStore.getAllUserSettings( user ).size(), 1 );
+        userCredentialsStore.deleteUserSetting( userCredentialsStore.getUserSetting( user, name ) );
+        assertEquals( userCredentialsStore.getAllUserSettings( user ).size(), 0 );
     }
 }
