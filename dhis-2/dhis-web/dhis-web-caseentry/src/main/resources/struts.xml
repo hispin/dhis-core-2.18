@@ -117,6 +117,12 @@
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 		
+		<action name="anonymousPrograms"
+			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPrograms.vm</result>
+			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
+		</action>
+		
 		<action name="createAnonymousEncounter"
 			class="org.hisp.dhis.caseentry.action.caseentry.CreateAnonymousEncounterAction">
 			<result name="success" type="velocity-json">

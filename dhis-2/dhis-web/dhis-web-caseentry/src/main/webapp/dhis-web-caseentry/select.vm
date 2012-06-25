@@ -1,3 +1,9 @@
+<script type="text/javascript">
+   jQuery(document).ready(	function(){
+		hideById('addPatientBtn');
+});		
+</script>
+
 <h3>$i18n.getString( "name_based_data_entry" ) #openHelp('name_based_data_entry')</h3>
 
 <div id='searchDiv'>
