@@ -119,7 +119,7 @@
 		
 		<action name="anonymousPrograms"
 			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPrograms.vm</result>
+			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonAnonymousPrograms.vm</result>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 		
