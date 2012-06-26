@@ -40,8 +40,8 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementOperandService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.metadata.*;
-import org.hisp.dhis.dxf2.metadata.handlers.HandlerUtils;
 import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandler;
+import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandlerUtils;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ImportStrategy;
@@ -117,18 +117,20 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private class NonIdentifiableObjects
     {
         private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
-        // private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
-        private Set<DataElementOperand> greyedFields = new HashSet<DataElementOperand>();
+
         private Expression leftSide;
         private Expression rightSide;
+
+        private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
+        private Set<DataElementOperand> greyedFields = new HashSet<DataElementOperand>();
 
         public void extract( T object )
         {
             attributeValues = extractAttributeValues( object );
-            // compulsoryDataElementOperands = extractDataElementOperands( object, "compulsoryDataElementOperands" );
-            greyedFields = extractDataElementOperands( object, "greyedFields" );
             leftSide = extractExpression( object, "leftSide" );
             rightSide = extractExpression( object, "rightSide" );
+            compulsoryDataElementOperands = extractDataElementOperands( object, "compulsoryDataElementOperands" );
+            greyedFields = extractDataElementOperands( object, "greyedFields" );
         }
 
         public void delete( T object )
@@ -136,10 +138,10 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             if ( !options.isDryRun() )
             {
                 deleteAttributeValues( object );
-                // deleteDataElementOperands( compulsoryDataElementOperands );
-                deleteDataElementOperands( object, "greyedFields" );
                 deleteExpression( object, "leftSide" );
                 deleteExpression( object, "rightSide" );
+                // deleteDataElementOperands( object, "compulsoryDataElementOperands" );
+                // deleteDataElementOperands( object, "greyedFields" );
             }
         }
 
@@ -148,8 +150,8 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveAttributeValues( object, attributeValues );
             saveExpression( object, "leftSide", leftSide );
             saveExpression( object, "rightSide", rightSide );
-            // newDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
-            saveDataElementOperands( object, "greyedFields", greyedFields );
+            // saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
+            // saveDataElementOperands( object, "greyedFields", greyedFields );
         }
 
         private Expression extractExpression( T object, String fieldName )
@@ -219,7 +221,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             }
         }
 
-        private void saveDataElementOperands( T object, String field, Set<DataElementOperand> dataElementOperands )
+        private void saveDataElementOperands( T object, String fieldName, Set<DataElementOperand> dataElementOperands )
         {
             if ( dataElementOperands.size() > 0 )
             {
@@ -232,7 +234,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                     dataElementOperandService.addDataElementOperand( dataElementOperand );
                 }
 
-                ReflectionUtils.invokeSetterMethod( field, object, dataElementOperands );
+                ReflectionUtils.invokeSetterMethod( fieldName, object, dataElementOperands );
             }
         }
 
@@ -420,18 +422,16 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             return summaryType;
         }
 
-        HandlerUtils.preObjectsHandlers( objects, objectHandlers );
+        ObjectHandlerUtils.preObjectsHandlers( objects, objectHandlers );
 
         for ( T object : objects )
         {
-            HandlerUtils.preObjectHandlers( object, objectHandlers );
-
+            ObjectHandlerUtils.preObjectHandlers( object, objectHandlers );
             importObjectLocal( object );
-
-            HandlerUtils.postObjectHandlers( object, objectHandlers );
+            ObjectHandlerUtils.postObjectHandlers( object, objectHandlers );
         }
 
-        HandlerUtils.postObjectsHandlers( objects, objectHandlers );
+        ObjectHandlerUtils.postObjectsHandlers( objects, objectHandlers );
 
         return summaryType;
     }

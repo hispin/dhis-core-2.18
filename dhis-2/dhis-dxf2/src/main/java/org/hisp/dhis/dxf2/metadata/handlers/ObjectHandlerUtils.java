@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class HandlerUtils
+public class ObjectHandlerUtils
 {
     @SuppressWarnings( "unchecked" )
     public static <T> void preObjectHandlers( T object, List<ObjectHandler> objectHandlers )

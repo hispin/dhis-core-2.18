@@ -34,15 +34,13 @@ import java.util.List;
  */
 public interface ObjectHandler<T>
 {
-    void preImportObject(T object);
+    void preImportObject( T object );
 
-    void postImportObject(T object);
+    void postImportObject( T object );
 
-    void preImportObjects(List<T> objects);
+    void preImportObjects( List<T> objects );
 
-    void postImportObjects(List<T> objects);
+    void postImportObjects( List<T> objects );
 
     boolean canHandle( Class<?> clazz );
 }
-
-
