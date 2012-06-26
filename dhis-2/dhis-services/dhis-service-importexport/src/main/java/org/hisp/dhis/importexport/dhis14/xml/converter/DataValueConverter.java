@@ -223,11 +223,11 @@ public class DataValueConverter
                 }
                 else if ( values[5] != null || !values[5].isEmpty() ) //Boolean
                 {
-                    value.setValue("false");
+                    value.setValue( "false" );
 
-                    if  ( values[5].trim().equals("1")  )
+                    if  ( values[5].trim().equals( "1" )  )
                     {
-                        value.setValue("true");
+                        value.setValue( "true" );
                     }
 
                 }
