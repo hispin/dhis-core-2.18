@@ -141,7 +141,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
                 deleteExpression( object, "leftSide" );
                 deleteExpression( object, "rightSide" );
                 // deleteDataElementOperands( object, "compulsoryDataElementOperands" );
-                // deleteDataElementOperands( object, "greyedFields" );
+                deleteDataElementOperands( object, "greyedFields" );
             }
         }
 
@@ -151,7 +151,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             saveExpression( object, "leftSide", leftSide );
             saveExpression( object, "rightSide", rightSide );
             // saveDataElementOperands( object, "compulsoryDataElementOperands", compulsoryDataElementOperands );
-            // saveDataElementOperands( object, "greyedFields", greyedFields );
+            saveDataElementOperands( object, "greyedFields", greyedFields );
         }
 
         private Expression extractExpression( T object, String fieldName )
