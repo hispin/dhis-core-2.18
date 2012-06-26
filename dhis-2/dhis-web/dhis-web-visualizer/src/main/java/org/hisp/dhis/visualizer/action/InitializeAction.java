@@ -59,14 +59,14 @@ public class InitializeAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -85,50 +85,50 @@ public class InitializeAction
     // Output
     // -------------------------------------------------------------------------
 
-    private OrganisationUnit rootNode;
+    private Collection<OrganisationUnit> rootNodes;
 
-    public OrganisationUnit getRootNode()
+    public Collection<OrganisationUnit> getRootNodes()
     {
-        return rootNode;
+        return rootNodes;
     }
-    
+
     private Collection<OrganisationUnitGroupSet> organisationUnitGroupSets;
-    
+
     public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets()
     {
         return organisationUnitGroupSets;
     }
 
     private List<Period> lastMonth;
-    
+
     public List<Period> getLastMonth()
     {
         return lastMonth;
     }
 
     private List<Period> last12Months;
-    
+
     public List<Period> getLast12Months()
     {
         return last12Months;
     }
-    
+
     private List<Period> lastQuarter;
 
     public List<Period> getLastQuarter()
     {
         return lastQuarter;
     }
-    
+
     private List<Period> last4Quarters;
-    
+
     public List<Period> getLast4Quarters()
     {
         return last4Quarters;
     }
-    
+
     private List<Period> lastSixMonth;
-    
+
     public List<Period> getLastSixMonth()
     {
         return lastSixMonth;
@@ -140,21 +140,21 @@ public class InitializeAction
     {
         return last2SixMonths;
     }
-    
+
     private List<Period> lastYear;
 
     public List<Period> getLastYear()
     {
         return lastYear;
     }
-    
+
     private List<Period> thisYear;
 
     public List<Period> getThisYear()
     {
         return thisYear;
     }
-    
+
     private List<Period> last5Years;
 
     public List<Period> getLast5Years()
@@ -169,52 +169,54 @@ public class InitializeAction
     public String execute()
         throws Exception
     {
-        Collection<OrganisationUnit> rootUnits = new ArrayList<OrganisationUnit>( organisationUnitService
-            .getOrganisationUnitsAtLevel( 1 ) );
+        rootNodes = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
 
-        rootNode = rootUnits.size() > 0 ? rootUnits.iterator().next() : new OrganisationUnit();
-        
+        if ( rootNodes.size() < 1 )
+        {
+            rootNodes.add( new OrganisationUnit() );
+        }
+
         organisationUnitGroupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
-        
+
         RelativePeriods rp = new RelativePeriods();
-        
+
         rp.clear().setReportingMonth( true );
         lastMonth = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
+
         rp.clear().setLast12Months( true );
         last12Months = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
+
         rp.clear().setReportingQuarter( true );
         lastQuarter = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
+
         rp.clear().setLast4Quarters( true );
         last4Quarters = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
+
         rp.clear().setLastSixMonth( true );
         lastSixMonth = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
+
         rp.clear().setLast2SixMonths( true );
         last2SixMonths = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
+
         rp.clear().setLastYear( true );
         lastYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
+
         rp.clear().setThisYear( true );
         thisYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
+
         rp.clear().setLast5Years( true );
         last5Years = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
 
         return SUCCESS;
     }
-    
+
     private List<Period> setNames( List<Period> periods )
     {
         for ( Period period : periods )
         {
             period.setName( format.formatPeriod( period ) );
         }
-        
+
         return periods;
     }
 }
