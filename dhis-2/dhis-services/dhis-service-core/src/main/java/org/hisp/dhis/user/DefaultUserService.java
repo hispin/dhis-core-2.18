@@ -204,16 +204,6 @@ public class DefaultUserService
         return userStore.getByUid( uid );
     }
 
-    public int getUserCount()
-    {
-        return userStore.getCount();
-    }
-
-    public int getUserCountByName( String userName )
-    {
-        return userStore.getCountByName( userName );
-    }
-
     public Collection<UserCredentials> getUsers( final Collection<Integer> identifiers, User user )
     {
         Collection<UserCredentials> userCredentialsS = getAllUserCredentials();
@@ -389,6 +379,16 @@ public class DefaultUserService
     public Collection<UserCredentials> getUsersBetweenByName( String username, int first, int max )
     {
         return userCredentialsStore.getUsersBetweenByName( username, first, max );
+    }
+
+    public int getUserCount()
+    {
+        return userCredentialsStore.getUserCount();
+    }
+
+    public int getUserCountByName( String userName )
+    {
+        return userCredentialsStore.getUserCountByName( userName );
     }
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
