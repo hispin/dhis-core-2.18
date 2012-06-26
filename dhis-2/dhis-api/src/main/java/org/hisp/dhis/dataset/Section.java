@@ -58,7 +58,6 @@ public class Section
     @Scanned
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
-    @Scanned
     private Set<DataElementOperand> greyedFields = new HashSet<DataElementOperand>();
 
     private int sortOrder;

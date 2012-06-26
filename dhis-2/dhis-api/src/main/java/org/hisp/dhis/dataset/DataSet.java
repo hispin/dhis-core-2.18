@@ -96,7 +96,6 @@ public class DataSet
      * The DataElementOperands for which data must be entered in order for the
      * DataSet to be considered as complete.
      */
-    @Scanned
     private Set<DataElementOperand> compulsoryDataElementOperands = new HashSet<DataElementOperand>();
 
     /**
