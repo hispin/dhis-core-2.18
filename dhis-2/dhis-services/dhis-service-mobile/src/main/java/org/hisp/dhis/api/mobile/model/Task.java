@@ -123,10 +123,13 @@ public class Task
     }
 
     @Override
-    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
+    public void serializeVerssion2_9( DataOutputStream dout )
         throws IOException
     {
-        // TODO Auto-generated method stub
+        dout.writeInt( this.getId() );
+        dout.writeInt( this.getProgramStageId() );
+        dout.writeInt( this.getProgramId() );
+        dout.writeBoolean( this.isCompleted() );
 
     }
 }

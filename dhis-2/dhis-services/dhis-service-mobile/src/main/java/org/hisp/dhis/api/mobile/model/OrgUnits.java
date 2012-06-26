@@ -116,7 +116,11 @@ public class OrgUnits
     public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
+        dataOutputStream.writeInt( orgUnits.size() );
+        for ( MobileOrgUnitLinks unit : orgUnits )
+        {
+            unit.serializeVerssion2_9( dataOutputStream );
+        }
 
     }
 

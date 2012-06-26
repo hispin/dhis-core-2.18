@@ -112,8 +112,8 @@ public class PatientIdentifier
     public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
-
+        dataOutputStream.writeUTF( identifierType );
+        dataOutputStream.writeUTF( identifier );
     }
 
 }

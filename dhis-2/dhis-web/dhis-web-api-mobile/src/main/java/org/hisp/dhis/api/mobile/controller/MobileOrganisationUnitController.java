@@ -12,6 +12,7 @@ import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.DataSetList;
 import org.hisp.dhis.api.mobile.model.DataSetValue;
+import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.api.mobile.model.MobileModel;
 import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.i18n.I18nService;
@@ -55,10 +56,26 @@ public class MobileOrganisationUnitController
     public MobileModel getAllDataForOrgUnit( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
     {
         MobileModel mobileModel = new MobileModel();
+        mobileModel.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
         OrganisationUnit unit = getUnit( id );
         mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( unit, locale ) );
         mobileModel.setPrograms( programService.getPrograms( unit, locale ) );
-
+        mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale ) );
+        mobileModel.setServerCurrentDate( new Date() );
+        mobileModel.setLocales( getLocalStrings( i18nService.getAvailableLocales() ) );
+        return mobileModel;
+    }
+    
+    @RequestMapping( method = RequestMethod.GET, value = "{id}/all/2.9" )
+    @ResponseBody
+    public MobileModel getAllDataForOrgUnit2_9( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
+    {
+        System.out.println("download all 2.9");
+        MobileModel mobileModel = new MobileModel();
+        mobileModel.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
+        OrganisationUnit unit = getUnit( id );
+        mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( unit, locale ) );
+        mobileModel.setPrograms( programService.getPrograms( unit, locale ) );
         mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale ) );
         mobileModel.setServerCurrentDate( new Date() );
         mobileModel.setLocales( getLocalStrings( i18nService.getAvailableLocales() ) );

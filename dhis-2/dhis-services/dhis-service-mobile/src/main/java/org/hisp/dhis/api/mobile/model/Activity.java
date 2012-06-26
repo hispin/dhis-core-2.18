@@ -99,7 +99,7 @@ public class Activity
     {
         this.expireDate = expireDate;
     }
-    
+
     public String getClientVersion()
     {
         return clientVersion;
@@ -137,7 +137,7 @@ public class Activity
     }
 
     @Override
-    public void serializeVerssion2_8(DataOutputStream dout)
+    public void serializeVerssion2_8( DataOutputStream dout )
         throws IOException
     {
         this.getTask().serializeVerssion2_8( dout );
@@ -148,11 +148,15 @@ public class Activity
     }
 
     @Override
-    public void serializeVerssion2_9(DataOutputStream dataOutputStream)
+    public void serializeVerssion2_9( DataOutputStream dout )
         throws IOException
     {
-        // TODO Auto-generated method stub
-        
+        this.getTask().serializeVerssion2_9( dout );
+        this.getBeneficiary().serializeVerssion2_9( dout );
+        dout.writeBoolean( late );
+        dout.writeLong( this.getDueDate().getTime() );
+        dout.writeLong( this.getExpireDate().getTime() );
+
     }
 
 }

@@ -38,7 +38,7 @@ public class DataSetList
     implements DataStreamSerializable
 {
     private String clientVersion;
-    
+
     private List<DataSet> addedDataSets = new ArrayList<DataSet>();
 
     private List<DataSet> deletedDataSets = new ArrayList<DataSet>();
@@ -90,7 +90,7 @@ public class DataSetList
     {
         this.currentDataSets = currentDataSets;
     }
-    
+
     public String getClientVersion()
     {
         return clientVersion;
@@ -154,9 +154,63 @@ public class DataSetList
             dout.writeInt( 0 );
         }
     }
-    
+
     @Override
     public void serializeVerssion2_8( DataOutputStream dout )
+        throws IOException
+    {
+        if ( addedDataSets != null )
+        {
+            dout.writeInt( addedDataSets.size() );
+            for ( DataSet dataSet : addedDataSets )
+            {
+                dataSet.serialize( dout );
+            }
+        }
+        else
+        {
+            dout.writeInt( 0 );
+        }
+        if ( deletedDataSets != null )
+        {
+            dout.writeInt( deletedDataSets.size() );
+            for ( DataSet dataSet : deletedDataSets )
+            {
+                dataSet.serialize( dout );
+            }
+        }
+        else
+        {
+            dout.writeInt( 0 );
+        }
+        if ( modifiedDataSets != null )
+        {
+            dout.writeInt( modifiedDataSets.size() );
+            for ( DataSet dataSet : modifiedDataSets )
+            {
+                dataSet.serialize( dout );
+            }
+        }
+        else
+        {
+            dout.writeInt( 0 );
+        }
+        if ( currentDataSets != null )
+        {
+            dout.writeInt( currentDataSets.size() );
+            for ( DataSet dataSet : currentDataSets )
+            {
+                dataSet.serialize( dout );
+            }
+        }
+        else
+        {
+            dout.writeInt( 0 );
+        }
+    }
+
+    @Override
+    public void serializeVerssion2_9( DataOutputStream dout )
         throws IOException
     {
         if ( addedDataSets != null )

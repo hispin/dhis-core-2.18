@@ -207,8 +207,15 @@ public class MobileOrgUnitLinks
     public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
-
+        dataOutputStream.writeInt( this.id );
+        dataOutputStream.writeUTF( this.name );
+        dataOutputStream.writeUTF( this.downloadAllUrl );
+        dataOutputStream.writeUTF( this.updateActivityPlanUrl );
+        dataOutputStream.writeUTF( this.uploadFacilityReportUrl );
+        dataOutputStream.writeUTF( this.uploadActivityReportUrl );
+        dataOutputStream.writeUTF( this.updateDataSetUrl );
+        dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
+        dataOutputStream.writeUTF( this.searchUrl );
     }
 
 }
