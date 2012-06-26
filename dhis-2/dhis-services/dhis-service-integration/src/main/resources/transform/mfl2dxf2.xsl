@@ -23,6 +23,15 @@
         <xsl:value-of select="mfl:Code" />
       </xsl:attribute>
 
+      <xsl:element name="dxf2:parent">
+        <xsl:attribute name="name">
+          <xsl:value-of select="mfl:District" />
+        </xsl:attribute>
+        <xsl:attribute name="code">
+          <xsl:value-of select="mfl:DistrictId" />
+        </xsl:attribute>
+      </xsl:element>
+
       <xsl:element name="dxf2:active">
         <xsl:value-of select="mfl:Active" />
       </xsl:element>
