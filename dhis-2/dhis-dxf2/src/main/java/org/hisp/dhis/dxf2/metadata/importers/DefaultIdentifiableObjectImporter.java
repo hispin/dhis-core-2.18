@@ -137,7 +137,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             {
                 deleteAttributeValues( object );
                 // deleteDataElementOperands( compulsoryDataElementOperands );
-                // deleteDataElementOperands( object, "greyedFields" );
+                deleteDataElementOperands( object, "greyedFields" );
                 // deleteExpression( object, "leftSide" );
                 // deleteExpression( object, "rightSide" );
             }

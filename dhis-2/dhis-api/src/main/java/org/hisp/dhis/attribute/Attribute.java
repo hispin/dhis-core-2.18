@@ -101,8 +101,6 @@ public class Attribute
         if ( mandatory != attribute.mandatory ) return false;
         if ( organisationUnitAttribute != attribute.organisationUnitAttribute ) return false;
         if ( userAttribute != attribute.userAttribute ) return false;
-        if ( attributeValues != null ? !attributeValues.equals( attribute.attributeValues ) : attribute.attributeValues != null )
-            return false;
         if ( dataElementGroupAttribute != null ? !dataElementGroupAttribute.equals( attribute.dataElementGroupAttribute ) : attribute.dataElementGroupAttribute != null )
             return false;
         if ( indicatorGroupAttribute != null ? !indicatorGroupAttribute.equals( attribute.indicatorGroupAttribute ) : attribute.indicatorGroupAttribute != null )
@@ -132,7 +130,7 @@ public class Attribute
         result = 31 * result + (userGroupAttribute != null ? userGroupAttribute.hashCode() : 0);
         result = 31 * result + (mandatory ? 1 : 0);
         result = 31 * result + (sortOrder != null ? sortOrder.hashCode() : 0);
-        result = 31 * result + (attributeValues != null ? attributeValues.hashCode() : 0);
+
         return result;
     }
 
