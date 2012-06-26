@@ -99,11 +99,11 @@ public class Model
     }
 
     @Override
-    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
+    public void serializeVerssion2_9( DataOutputStream dout )
         throws IOException
     {
-        // TODO Auto-generated method stub
-
+        dout.writeInt( this.id );
+        dout.writeUTF( this.name );
     }
 
 }

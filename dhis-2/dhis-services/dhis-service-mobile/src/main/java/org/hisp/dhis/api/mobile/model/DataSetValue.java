@@ -103,7 +103,6 @@ public class DataSetValue
     public void deSerialize( DataInputStream din )
         throws IOException
     {
-
         this.setId( din.readInt() );
         this.setName( din.readUTF() );
         this.setPeriodName( din.readUTF() );

@@ -41,7 +41,6 @@ public class OptionSet
 
         dout.writeInt( this.getId() );
         dout.writeUTF( this.getName() );
-
         dout.writeInt( this.options.size() );
 
         for ( String option : this.options )
@@ -53,6 +52,20 @@ public class OptionSet
     
     @Override
     public void serializeVerssion2_8( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getName() );
+        dout.writeInt( this.options.size() );
+
+        for ( String option : this.options )
+        {
+            dout.writeUTF( option );
+        }
+    }
+    
+    @Override
+    public void serializeVerssion2_9( DataOutputStream dout )
         throws IOException
     {
         dout.writeInt( this.getId() );
@@ -70,17 +83,14 @@ public class OptionSet
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-
         this.setId( dataInputStream.readInt() );
         this.setName( dataInputStream.readUTF() );
-
         int optionSize = dataInputStream.readInt();
 
         for ( int i = 0; i < optionSize; i++ )
         {
             String option = dataInputStream.readUTF();
             options.add( option );
-
         }
 
     }

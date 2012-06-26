@@ -424,10 +424,83 @@ public class Beneficiary
     }
 
     @Override
-    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
+    public void serializeVerssion2_9( DataOutputStream dout )
         throws IOException
     {
-        // TODO Auto-generated method stub
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getFirstName() );
+        dout.writeUTF( this.getMiddleName() );
+        dout.writeUTF( this.getLastName() );
+        dout.writeInt( this.getAge() );
 
+        if ( gender != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeUTF( gender );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( dobType != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeChar( dobType );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        if ( birthDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( birthDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+        
+            dout.writeBoolean( false );
+
+        if ( registrationDate != null )
+        {
+            dout.writeBoolean( true );
+            dout.writeLong( registrationDate.getTime() );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        /*
+         * Write attribute which is used as group factor of beneficiary - false:
+         * no group factor, true: with group factor
+         */
+        if ( this.getGroupAttribute() != null )
+        {
+            dout.writeBoolean( true );
+            this.getGroupAttribute().serialize( dout );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        List<PatientAttribute> atts = this.getPatientAttValues();
+        dout.writeInt( atts.size() );
+        for ( PatientAttribute att : atts )
+        {
+            dout.writeUTF( att.getName() + ":" + att.getValue() );
+        }
+
+        // Write PatientIdentifier
+        dout.writeInt( identifiers.size() );
+        for ( PatientIdentifier each : identifiers )
+        {
+            each.serializeVerssion2_9( dout );
+        }
     }
 }

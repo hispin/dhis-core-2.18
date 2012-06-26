@@ -118,8 +118,17 @@ public class ModelList
     public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // TODO Auto-generated method stub
+        if ( models == null )
+        {
+            dataOutputStream.writeInt( 0 );
+        }
 
+        dataOutputStream.writeInt( models.size() );
+
+        for ( int i = 0; i < models.size(); i++ )
+        {
+            models.get( i ).serializeVerssion2_9( dataOutputStream );
+        }
     }
 
 }

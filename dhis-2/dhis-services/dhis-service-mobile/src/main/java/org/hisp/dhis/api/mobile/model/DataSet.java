@@ -147,6 +147,29 @@ public class DataSet
             }
         }
     }
+    
+    @Override
+    public void serializeVerssion2_9( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getName() );
+        dout.writeInt( this.getVersion() );
+        dout.writeUTF( this.getPeriodType() );
+
+        if ( this.sections == null )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( this.sections.size() );
+            for ( Section section : this.sections )
+            {
+                section.serializeVerssion2_9( dout );
+            }
+        }
+    }
 
     @Override
     public void deSerialize( DataInputStream dataInputStream )

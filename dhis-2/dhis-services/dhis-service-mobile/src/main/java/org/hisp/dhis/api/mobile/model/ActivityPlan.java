@@ -105,7 +105,6 @@ public class ActivityPlan
     public void serializeVerssion2_8( DataOutputStream dout )
         throws IOException
     {
-
         if ( activitiesList == null )
         {
             dout.writeInt( 0 );
@@ -121,11 +120,21 @@ public class ActivityPlan
     }
 
     @Override
-    public void serializeVerssion2_9( DataOutputStream dataOutputStream )
+    public void serializeVerssion2_9( DataOutputStream dout )
         throws IOException
     {
-        // TODO Auto-generated method stub
-
+        if ( activitiesList == null )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( activitiesList.size() );
+            for ( int i = 0; i < activitiesList.size(); i++ )
+            {
+                activitiesList.get( i ).serializeVerssion2_9( dout );
+            }
+        }
     }
 
 }

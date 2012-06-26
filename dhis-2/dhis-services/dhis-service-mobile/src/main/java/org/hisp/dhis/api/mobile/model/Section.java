@@ -104,5 +104,27 @@ public class Section
             }
         }
     }
+    
+    @Override
+    public void serializeVerssion2_9( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeInt( this.getId() );
+        dout.writeUTF( getName() );
+
+        if ( dataElements == null )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( dataElements.size() );
+            for ( int i = 0; i < dataElements.size(); i++ )
+            {
+                DataElement de = (DataElement) dataElements.get( i );
+                de.serializeVerssion2_9( dout );
+            }
+        }
+    }
 
 }
