@@ -47,7 +47,7 @@ public class ValidationRuleDeletionHandler
     {
         this.validationRuleService = validationRuleService;
     }
-    
+
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -57,13 +57,16 @@ public class ValidationRuleDeletionHandler
     {
         return ValidationRule.class.getSimpleName();
     }
-    
+
     @Override
     public void deleteExpression( Expression expression )
     {
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
-            if ( rule.getLeftSide().equals( expression ) || rule.getRightSide().equals( expression ) )
+            Expression leftSide = rule.getLeftSide();
+            Expression rightSide = rule.getRightSide();
+
+            if ( (leftSide != null && leftSide.equals( expression )) || (rightSide != null && rightSide.equals( expression )) )
             {
                 validationRuleService.deleteValidationRule( rule );
             }

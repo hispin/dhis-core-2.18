@@ -27,15 +27,16 @@ package org.hisp.dhis.system.deletion;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javassist.util.proxy.ProxyObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.DeleteNotAllowedException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.DeleteNotAllowedException;
 
 /**
  * @author Lars Helge Overland
@@ -45,10 +46,10 @@ public class DefaultDeletionManager
     implements DeletionManager
 {
     private static final Log log = LogFactory.getLog( DefaultDeletionManager.class );
-    
+
     private static final String DELETE_METHOD_PREFIX = "delete";
     private static final String ALLOW_METHOD_PREFIX = "allowDelete";
-    
+
     private List<DeletionHandler> handlers = new ArrayList<DeletionHandler>();
 
     // -------------------------------------------------------------------------
@@ -59,15 +60,15 @@ public class DefaultDeletionManager
     {
         this.handlers.add( handler );
     }
-    
+
     public void addDeletionHandlers( Collection<DeletionHandler> deletionHandlers )
     {
         this.handlers.addAll( deletionHandlers );
     }
-    
+
     public void execute( Object object )
     {
-        Class<?> clazz = object.getClass();
+        Class<?> clazz = getClazz( object );
 
         String className = clazz.getSimpleName();
 
@@ -81,41 +82,41 @@ public class DefaultDeletionManager
 
         try
         {
-            Method allowMethod = DeletionHandler.class.getMethod( allowMethodName, new Class[] { clazz }  );
+            Method allowMethod = DeletionHandler.class.getMethod( allowMethodName, new Class[] { clazz } );
 
             for ( DeletionHandler handler : handlers )
-            {   
+            {
                 currentHandler = handler.getClass().getSimpleName();
 
                 Object allow = allowMethod.invoke( handler, object );
-                
+
                 if ( allow != null )
                 {
                     String hint = String.valueOf( allow );
-                    
-                    String message = handler.getClassName() + ( hint.isEmpty() ? "" : ( " (" + hint + ")" ) );
-                    
+
+                    String message = handler.getClassName() + (hint.isEmpty() ? "" : (" (" + hint + ")"));
+
                     throw new DeleteNotAllowedException( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS, message );
                 }
             }
-        }
-        catch ( NoSuchMethodException ex )
+        } catch ( NoSuchMethodException e )
         {
-            log.error( "Method '" + allowMethodName + "' does not exist on class '" + clazz + "'", ex );
-        }
-        catch ( IllegalAccessException ex )
+            log.error( "Method '" + allowMethodName + "' does not exist on class '" + clazz + "'", e );
+            return;
+        } catch ( IllegalAccessException ex )
         {
             log.error( "Method '" + allowMethodName + "' could not be invoked on DeletionHandler '" + currentHandler + "'", ex );
-        }
-        catch ( InvocationTargetException ex )
+            return;
+        } catch ( InvocationTargetException ex )
         {
             log.error( "Method '" + allowMethodName + "' threw exception on DeletionHandler '" + currentHandler + "'", ex );
+            return;
         }
 
         // ---------------------------------------------------------------------
         // Delete associated objects
         // ---------------------------------------------------------------------
-        
+
         String deleteMethodName = DELETE_METHOD_PREFIX + className;
 
         try
@@ -125,15 +126,25 @@ public class DefaultDeletionManager
             for ( DeletionHandler handler : handlers )
             {
                 currentHandler = handler.getClass().getSimpleName();
-                
+
                 deleteMethod.invoke( handler, object );
             }
-        }
-        catch ( Exception ex )
+        } catch ( Exception ex )
         {
             log.error( "Failed to invoke method " + deleteMethodName + " on DeletionHandler '" + currentHandler + "'", ex );
+            return;
         }
-        
-        log.info( "Deleted objects associatied with object of type " + className );
+
+        log.info( "Deleted objects associated with object of type " + className );
+    }
+
+    private Class<?> getClazz( Object object )
+    {
+        if ( ProxyObject.class.isAssignableFrom( object.getClass() ) )
+        {
+            return object.getClass().getSuperclass();
+        }
+
+        return object.getClass();
     }
 }
