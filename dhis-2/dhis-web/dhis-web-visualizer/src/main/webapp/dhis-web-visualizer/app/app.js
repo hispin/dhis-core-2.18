@@ -65,11 +65,7 @@ DV.conf = {
 				r = Ext.JSON.decode(r.responseText);
 				var obj = {
 					system: {
-						rootnode: {
-							id: r.rn[0],
-							name: DV.conf.util.jsonEncodeString(r.rn[1]),
-							level: 1
-						},
+						rootnodes: [],
 						periods: {},
 						organisationunitgroupsets: r.ougs
 					},
@@ -83,6 +79,9 @@ DV.conf = {
 						organisationunitchildren: []							
 					}
 				};
+				for (var i = 0; i < r.rn.length; i++) {
+					obj.system.rootnodes.push({id: r.rn[i][0], text: r.rn[i][1], level: 1});
+				}
 				for (var i = 0; i < r.user.ouc.length; i++) {
 					obj.user.organisationunitchildren.push({id: r.user.ouc[i][0], name: DV.conf.util.jsonEncodeString(r.user.ouc[i][1])});
 				}
@@ -3202,6 +3201,7 @@ Ext.onReady( function() {
 												xtype: 'treepanel',
 												cls: 'dv-tree',
 												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor,
+												rootVisible: false,
 												autoScroll: true,
 												multiSelect: true,
 												rendered: false,
@@ -3218,9 +3218,8 @@ Ext.onReady( function() {
 														url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.organisationunitchildren_get
 													},
 													root: {
-														id: DV.init.system.rootnode.id,
-														text: DV.init.system.rootnode.name,
-														expanded: false
+														expanded: true,
+														children: DV.init.system.rootnodes
 													},
 													listeners: {
 														load: function(s, node, r) {
