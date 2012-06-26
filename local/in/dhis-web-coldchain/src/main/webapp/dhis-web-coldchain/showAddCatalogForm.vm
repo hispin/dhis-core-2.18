@@ -1,3 +1,4 @@
+<script type="text/javascript" src="javascript/catalog.js"></script>
 ## Macro for generating the jQuery validation rules 
 #macro( validate $type $require )
   #if( $type == "NUMBER" )
@@ -6,18 +7,52 @@
   	{validate:{required:true}}
   #end
 #end
+
+<script>
+    
+    jQuery(document).ready( function(){
+
+        currentDiv = 'catalogForm';
+        isSubmit = true;
+        
+        jQuery("#catalogForm").validate({
+                 meta:"validate"
+                ,errorElement:"span"
+                ,submitHandler: function(form)
+                    {
+                        if( isSubmit ) 
+                        {
+                            addCatalog();
+                        }
+                    }
+            });
+    }); 
+    
+</script>
+
 <script type="text/javascript">
 	checkValueIsExist( "name", "validateCatalog.action");
 </script>
+<h3>$i18n.getString( "add_new_catalog" )</h3>	
+
+<form id="catalogForm" name="catalogForm" method="post" >
+<input type="hidden" id="catalogType" name="catalogType" value="$catalogType.id" />	
+
+	<table>
+		<tr>
+			<td>$i18n.getString( "catalogType" ) : </th>
+			<td>$catalogType.name</th>
+		</tr>
+	</table>	
 <!-- ATTRIBUTES -->
 <table>
+	<tr><th colspan="2" class="heading-column">$i18n.getString( "catalogType_details" )</th></tr>
+<tr>
 <td>
-<td>
-
 <table>
 <tr><td>&nbsp;</td></tr>
 #if ( $catalogTypeAttributes.size() > 0) 	
-	<tr><th colspan="2" class="heading-column">$i18n.getString( "catalogType_details" )</th></tr>
+	
 	<tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="name" name="name" class="{validate:{required:true, rangelength:[4,160]}}"/></td>
@@ -27,7 +62,7 @@
 		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="description" name="description" class="{validate:{required:true, minlength:4}}"/></td>
 	</tr>
-##if ( $catalogTypeAttributes.size() > 0) 	
+	
 	<!--<tr><th colspan="2" class="heading-column">$i18n.getString( "catalogType_attribute" )</th></tr>-->
 	#foreach($attribute in $catalogTypeAttributes )
 		<tr>
@@ -67,3 +102,13 @@
 </td>
 </tr>
 </table>
+	<p>
+		<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
+		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="loadAllCatalogs();"/>
+	</p>
+</form>
+<script>
+    var i18n_error_connect_to_server = '$encoder.jsEscape( $i18n.getString( "error_connect_to_server" ) , "'" )';
+    var i18n_add_equipment_successfully = '$encoder.jsEscape( $i18n.getString( "add_equipment_successfully" ) , "'" )';
+
+</script>

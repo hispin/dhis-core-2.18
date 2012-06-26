@@ -128,7 +128,7 @@ public class HibernateEquipmentInstanceStore
     public int getCountEquipmentInstance( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText )
     {
         String hql = "SELECT COUNT( DISTINCT ei ) FROM EquipmentInstance AS ei  " +
-                        " WHERE ei IN ( SELECT ed.equipmentInstance FROM EquipmentDetails AS ed WHERE ed.inventoryTypeAttribute.id = "+ inventoryTypeAttribute.getId()+" AND ed.value LIKE '%" + searchText + "%' ) " +
+                        " WHERE ei IN ( SELECT ed.equipmentInstance FROM Equipment AS ed WHERE ed.inventoryTypeAttribute.id = "+ inventoryTypeAttribute.getId()+" AND ed.value LIKE '%" + searchText + "%' ) " +
                         " AND ei.organisationUnit.id = " + orgUnit.getId()  +
                         " AND ei.inventoryType.id = " + inventoryType.getId();
 
@@ -144,7 +144,7 @@ public class HibernateEquipmentInstanceStore
     public Collection<EquipmentInstance> getEquipmentInstances( OrganisationUnit orgUnit, InventoryType inventoryType, InventoryTypeAttribute inventoryTypeAttribute, String searchText, int min, int max )
     {
         String hql = "SELECT DISTINCT ei FROM EquipmentInstance AS ei  " +
-                        " WHERE ei IN ( SELECT ed.equipmentInstance FROM EquipmentDetails AS ed WHERE ed.inventoryTypeAttribute.id = "+ inventoryTypeAttribute.getId()+" AND ed.value like '%" + searchText + "%' ) " +
+                        " WHERE ei IN ( SELECT ed.equipmentInstance FROM Equipment AS ed WHERE ed.inventoryTypeAttribute.id = "+ inventoryTypeAttribute.getId()+" AND ed.value like '%" + searchText + "%' ) " +
                         " AND ei.organisationUnit.id = " + orgUnit.getId()  +
                         " AND ei.inventoryType.id = " + inventoryType.getId();
 

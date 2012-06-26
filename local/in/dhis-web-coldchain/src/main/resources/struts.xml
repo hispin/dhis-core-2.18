@@ -189,13 +189,35 @@
 	
 	
 	<!-- Catalog List -->
+
+	<action name="catalog" class="org.hisp.dhis.coldchain.catalog.action.CatalogSelectAction">
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-coldchain/selectCatalog.vm</param>
+		<param name="menu">/dhis-web-coldchain/menu.vm</param>
+		<param name="javascripts">javascript/catalog.js</param>
+	</action>	
+		
+	<action name="getCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeAttributeListAction">
+		<result name="success" type="velocity-xml">/dhis-web-coldchain/responseCatalogTypeAttributes.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>	
+	
+	<action name="getCatalogList" class="org.hisp.dhis.coldchain.catalog.action.GetCatalogListAction">
+		<result name="success" type="velocity">/content.vm</result>
+		<param name="page">/dhis-web-coldchain/catalog_List.vm</param>
+		<param name="requiredAuthorities">F_CATALOG_MANAGEMENT</param>
+	</action>
+	
+	
+		
+	<!--
 	<action name="catalog" class="org.hisp.dhis.coldchain.catalog.action.CatalogListAction">
 		<result name="success" type="velocity">/main.vm</result>
 		<param name="page">/dhis-web-coldchain/catalogList.vm</param>
 		<param name="menu">/dhis-web-coldchain/menu.vm</param>
 		<param name="javascripts">javascript/catalog.js</param>
 	</action>
-
+	-->
 	<!-- Add Catalog  Form -->
 	<action name="addCatalogForm" class="org.hisp.dhis.coldchain.catalog.action.AddCatalogFormAction">
 		<result name="success" type="velocity">/main.vm</result>
@@ -217,13 +239,14 @@
 
 	<!-- Add -->
 	<action name="addCatalog" class="org.hisp.dhis.coldchain.catalog.action.AddCatalogAction">
-		<result name="success" type="redirect">catalog.action</result>
+		<!--<result name="success" type="redirect">catalog.action</result>-->
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		<param name="requiredAuthorities">F_CATALOG_ADD</param>
 	</action>
 
 	<!-- Update Form -->
 	<action name="showUpdateCatalogForm" class="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogFormAction">
-		<result name="success" type="velocity">/main.vm</result>
+		<result name="success" type="velocity">/content.vm</result>
 		<param name="page">/dhis-web-coldchain/updateCatalogForm.vm</param>
 		<param name="stylesheets">css/style.css</param>
 		<param name="requiredAuthorities">F_CATALOG_UPDATE</param>
@@ -231,7 +254,8 @@
 	
 	<!-- Update -->
 	<action name="updateCatalog" class="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogAction">
-		<result name="success" type="redirect">catalog.action</result>
+		<!--<result name="success" type="redirect">catalog.action</result>-->
+		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		<param name="requiredAuthorities">F_CATALOG_UPDATE</param>
 	</action>
 		
@@ -534,7 +558,8 @@
 
 	<!-- Upload Image Form -->
 	<action name="showUploadImageForm" class="org.hisp.dhis.coldchain.catalog.action.ShowUploadCatalogImageFormAction">
-		<result name="success" type="velocity">/main.vm</result>
+		<!--<result name="success" type="velocity">/main.vm</result>-->
+		<result name="success" type="velocity">/content.vm</result>
 		<param name="page">/dhis-web-coldchain/uploadCatalogImageForm.vm</param>
 		<param name="stylesheets">css/style.css</param>
 		<param name="requiredAuthorities">F_CATALOG_UPDATE</param>

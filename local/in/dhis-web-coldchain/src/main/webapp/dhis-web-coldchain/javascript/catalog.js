@@ -1,4 +1,5 @@
 
+/*
 jQuery(document).ready(	function(){
 		validation( 'catalogForm', function(form){
 			form.submit();
@@ -10,7 +11,7 @@ jQuery(document).ready(	function(){
 		checkValueIsExist( "name", "validateCatalog.action");
 	});
 
-
+*/
 //-----------------------------------------------------------------------------
 //View catalog type change
 //-----------------------------------------------------------------------------
@@ -265,3 +266,300 @@ unction showUpdateCatalogForm( catalogId )
             });
             
 */            
+
+
+
+
+// for search ----
+
+
+
+
+// ----------------------------------------------------------------
+// On CatalogTypeChange  - Loading CatalogType Attributes
+// ----------------------------------------------------------------
+function getCatalogTypeChange( catalogTypeId )
+{
+	if( catalogTypeId == "0" )
+		return;
+	
+	showById('selectDiv');
+    disable('listAllCatalogBtn');
+    
+    hideById('searchCatalogDiv');
+    hideById('listCatalogDiv');
+    hideById('addEditCatalogFormDiv');
+	hideById('resultSearchDiv');
+	hideById('editEquipmentStatusDiv');
+	
+	jQuery('#loaderDiv').show();
+	
+	$.post("getCatalogTypeAttribute.action",
+			{
+				id:catalogTypeId
+			},
+			function(data)
+			{
+				showById('searchCatalogDiv');
+				enable('listAllCatalogBtn');
+				jQuery('#loaderDiv').hide();
+				populateCatalogTypeAttributes( data );
+			},'xml');	
+}
+
+function populateCatalogTypeAttributes( data )
+{
+	var searchingAttributeId = document.getElementById("searchingAttributeId");
+	clearList( searchingAttributeId );
+	
+	var catalogTypeAttribs = data.getElementsByTagName("catalog-type-attribute");
+    for ( var i = 0; i < catalogTypeAttribs.length; i++ )
+    {
+        var id = catalogTypeAttribs[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
+        var name = catalogTypeAttribs[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
+		
+        var option = document.createElement("option");
+        option.value = id;
+        option.text = name;
+        option.title = name;
+        searchingAttributeId.add(option, null);
+    }    	
+}
+
+
+//----------------------------------------------------------------
+//On LoadAllCatalogs
+//----------------------------------------------------------------
+
+function loadAllCatalogs()
+{
+	var catalogType = document.getElementById('catalogType');
+	var catalogTypeId = catalogType.options[ catalogType.selectedIndex ].value;
+	
+	if( catalogTypeId == 0 )
+	{	
+		showWarningMessage( i18n_select_please_select_catalog_type );
+		return;
+	}
+	
+	hideById('addEditCatalogFormDiv');
+	hideById('resultSearchDiv');
+	hideById('uploadCatalogImageDiv');
+	
+	showById('selectDiv');
+	showById('searchCatalogDiv');
+
+	jQuery('#loaderDiv').show();
+	contentDiv = 'listCatalogDiv';
+
+	jQuery('#listCatalogDiv').load('getCatalogList.action',{
+		listAll:true,
+		catalogTypeId:catalogTypeId	
+	},
+	function(){
+		statusSearching = 0;
+		showById('listCatalogDiv');
+		jQuery('#loaderDiv').hide();
+	});
+	hideLoader();
+}
+
+
+//----------------------------------------------------------------
+//Load Equipments On Filter by catalogType Attribute
+//----------------------------------------------------------------
+function loadCatalogsByFilter( )
+{
+	var catalogType = document.getElementById('catalogType');
+	var catalogTypeId = catalogType.options[ catalogType.selectedIndex ].value;
+	var searchText = document.getElementById('searchText').value;
+	
+	if( catalogTypeId == 0 )
+	{	
+		showWarningMessage( i18n_select_please_select_catalog_type );
+		return;
+	}
+	
+	var catalogTypeAttribute = document.getElementById('searchingAttributeId');
+	var catalogTypeAttributeId = catalogTypeAttribute.options[ catalogTypeAttribute.selectedIndex ].value;
+	
+	hideById('addEditCatalogFormDiv');
+	hideById('resultSearchDiv');
+	hideById('uploadCatalogImageDiv');
+	showById('selectDiv');
+	showById('searchCatalogDiv');
+
+	jQuery('#loaderDiv').show();
+	contentDiv = 'listCatalogDiv';
+
+	jQuery('#listCatalogDiv').load('getCatalogList.action',{		
+		catalogTypeId:catalogTypeId,
+		catalogTypeAttributeId:catalogTypeAttributeId,
+		searchText:searchText
+	},
+	function(){
+		statusSearching = 0;
+		showById('listCatalogDiv');
+		jQuery('#loaderDiv').hide();
+	});
+	hideLoader();
+}
+
+
+
+//----------------------------------------------------------------
+//Add Catalog
+//----------------------------------------------------------------
+
+function showAddCatalogForm()
+{
+	var catalogType = document.getElementById('catalogType');
+	var catalogTypeId = catalogType.options[ catalogType.selectedIndex ].value;
+	
+	if( catalogTypeId == 0 )
+	{	
+		showWarningMessage( i18n_select_please_select_catalog_type );
+		return;
+	}
+
+	hideById('listCatalogDiv');
+	hideById('selectDiv');
+	hideById('searchCatalogDiv');
+	hideById('uploadCatalogImageDiv');
+	
+	jQuery('#loaderDiv').show();
+	jQuery('#addEditCatalogFormDiv').load('showAddCataLogForm.action',{
+		catalogTypeId:catalogTypeId
+		}, 
+		function()
+		{
+			showById('addEditCatalogFormDiv');
+			jQuery('#loaderDiv').hide();
+		});	
+}
+
+function addCatalog()
+{
+	$.ajax({
+    type: "POST",
+    url: 'addCatalog.action',
+    data: getParamsForDiv('addCatalogFormDiv'),
+    success: function(json) {
+		var type = json.response;
+		jQuery('#resultSearchDiv').dialog('close');
+		loadAllCatalogs();
+    }
+   });
+  return false;
+}
+
+//----------------------------------------------------------------
+//Update Catalog
+//----------------------------------------------------------------
+
+function showUpdateCatalogForm( catalogId )
+{
+	hideById('listCatalogDiv');
+	hideById('selectDiv');
+	hideById('searchCatalogDiv');
+	hideById('uploadCatalogImageDiv');
+	
+	setInnerHTML('addEditCatalogFormDiv', '');
+	
+	jQuery('#loaderDiv').show();
+	jQuery('#addEditCatalogFormDiv').load('showUpdateCatalogForm.action',
+		{
+			id:catalogId
+		}, function()
+		{
+			showById('addEditCatalogFormDiv');
+			jQuery('#searchCatalogDiv').dialog('close');
+			jQuery('#loaderDiv').hide();
+		});
+		
+	jQuery('#resultSearchDiv').dialog('close');
+}
+
+function updateCatalog()
+{
+	$.ajax({
+      type: "POST",
+      url: 'updateCatalog.action',
+      data: getParamsForDiv('addEditCatalogFormDiv'),
+      success: function( json ) {
+		loadAllCatalogs();
+      }
+     });
+}
+
+
+function showUploadCatalogImageForm( catalogId )
+{
+	hideById('listCatalogDiv');
+	hideById('selectDiv');
+	hideById('searchCatalogDiv');
+	hideById('addEditCatalogFormDiv');
+	
+	setInnerHTML('uploadCatalogImageDiv', '');
+	
+	jQuery('#loaderDiv').show();
+	jQuery('#uploadCatalogImageDiv').load('showUploadImageForm.action',
+		{
+			id:catalogId
+		}, function()
+		{
+			showById('uploadCatalogImageDiv');
+			jQuery('#searchCatalogDiv').dialog('close');
+			jQuery('#loaderDiv').hide();
+		});
+		
+	jQuery('#resultSearchDiv').dialog('close');
+}
+
+function uploadCatalogImage()
+{
+	$.ajax({
+      type: "POST",
+      url: 'uploadCatalogImage.action',
+      data: getParamsForDiv('uploadCatalogImageDiv'),
+      success: function( json ) {
+		loadAllCatalogs();
+      }
+     });
+}
+
+
+
+//----------------------------------------------------------------
+//Get Params form Div
+//----------------------------------------------------------------
+
+function getParamsForDiv( catalogDiv )
+{
+	var params = '';
+	
+	jQuery("#" + catalogDiv + " :input").each(function()
+		{
+			var elementId = $(this).attr('id');
+			
+			if( $(this).attr('type') == 'checkbox' )
+			{
+				var checked = jQuery(this).attr('checked') ? true : false;
+				params += elementId + "=" + checked + "&";
+			}
+			else if( $(this).attr('type') != 'button' )
+			{
+				var value = "";
+				if( jQuery(this).val() != '' )
+				{
+					value = htmlEncode(jQuery(this).val());
+				}
+				params += elementId + "="+ value + "&";
+			}
+			
+		});
+	
+	//alert( params );
+	
+	return params;
+}

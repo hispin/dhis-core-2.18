@@ -217,6 +217,34 @@
 	
 	
 	<!-- Catalog List -->
+	
+	<bean id="org.hisp.dhis.coldchain.catalog.action.CatalogSelectAction"
+		class="org.hisp.dhis.coldchain.catalog.action.CatalogSelectAction"
+		scope="prototype">
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+	</bean>		
+
+	<bean id="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeAttributeListAction"
+		class="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeAttributeListAction"
+		scope="prototype">
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+	</bean>		
+	
+	
+	<bean id="org.hisp.dhis.coldchain.catalog.action.GetCatalogListAction"
+		class="org.hisp.dhis.coldchain.catalog.action.GetCatalogListAction"
+		scope="prototype">
+		<property name="catalogService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogService" />
+		<property name="catalogTypeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />
+		<property name="catalogTypeAttributeService"
+			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeService" />				
+	</bean>	
+	
+<!--	
 	<bean id="org.hisp.dhis.coldchain.catalog.action.CatalogListAction"
 		class="org.hisp.dhis.coldchain.catalog.action.CatalogListAction"
 		scope="prototype">
@@ -226,8 +254,11 @@
 			ref="org.hisp.dhis.coldchain.catalog.CatalogTypeService" />	
 		<property name="userSettingService"
 			ref="org.hisp.dhis.user.UserSettingService" />					
-	</bean>		
-
+	</bean>	
+	
+-->	
+	
+	
 	<!-- Add Catalog  Form -->
 	<bean id="org.hisp.dhis.coldchain.catalog.action.AddCatalogFormAction"
 		class="org.hisp.dhis.coldchain.catalog.action.AddCatalogFormAction"

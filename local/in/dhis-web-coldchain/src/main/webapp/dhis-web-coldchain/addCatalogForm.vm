@@ -35,7 +35,8 @@
 #parse( "/dhis-web-commons/loader/loader.vm" )
 <p>
 	<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='catalog.action'" />
+	<!--<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='catalog.action'" />-->
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="loadCatalogsByFilter();" />
 </p>
 
 </form>
