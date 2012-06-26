@@ -156,6 +156,7 @@ function validateSearchEvents( listAll )
 {	
 	var flag = true;
 	if( listAll && jQuery( '#compulsoryDE option' ).length == 0 ){
+		showWarningMessage( i18n_no_compulsary_data_elements );
 		flag = false;
 	}
 	else if( !listAll )
@@ -305,9 +306,11 @@ function showUpdateEvent( psId )
 			
 			if( getFieldValue('completed')=='true' ){
 				disable('completeBtn');
+				disable('completeAndAddNewBtn');
 			}
 			else{
 				enable('completeBtn');
+				enable('completeAndAddNewBtn');
 			}
 				
 			hideById('loaderDiv');
