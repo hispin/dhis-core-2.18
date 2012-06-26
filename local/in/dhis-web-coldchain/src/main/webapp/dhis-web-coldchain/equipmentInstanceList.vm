@@ -23,7 +23,7 @@
 #if( $equipmentInstanceList.size() > 0 )
 <table class="mainPageTable">
     <tr>
-    <td>    
+    <td> 
       <table class="listTable" id="equipmentList" width='100%'>
       	<col width="30"/>
       	#set($equipmetnInstanceName = "" )

@@ -22,4 +22,16 @@ public interface CatalogStore extends GenericNameableObjectStore<Catalog>
     Collection<Catalog> getAllCatalogs();
     
     Collection<Catalog> getCatalogs( CatalogType catalogType );
+    
+    
+    
+    int getCountCatalog( CatalogType catalogType );
+    
+    Collection<Catalog> getCatalogs( CatalogType catalogType, int min, int max );
+    
+    int getCountCatalog( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText );
+    
+    Collection<Catalog> getCatalogs( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchText, int min, int max );
+    
+    
 }
