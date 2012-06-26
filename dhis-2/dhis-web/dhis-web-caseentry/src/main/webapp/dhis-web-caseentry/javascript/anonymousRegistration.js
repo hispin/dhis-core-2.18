@@ -155,11 +155,7 @@ function removeAllAttributeOption()
 function validateSearchEvents( listAll )
 {	
 	var flag = true;
-	if( listAll && jQuery( '#compulsoryDE option' ).length == 0 ){
-		showWarningMessage( i18n_no_compulsary_data_elements );
-		flag = false;
-	}
-	else if( !listAll )
+	if( !listAll )
 	{
 		jQuery( '#advancedSearchTB tbody tr' ).each( function( i, row ){
 			jQuery( this ).find(':input').each( function( idx, item ){
