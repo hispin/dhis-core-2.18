@@ -140,11 +140,13 @@ public class DefaultDeletionManager
 
     private Class<?> getClazz( Object object )
     {
-        if ( ProxyObject.class.isAssignableFrom( object.getClass() ) )
+        Class<?> clazz = object.getClass();
+
+        while ( ProxyObject.class.isAssignableFrom( clazz ) )
         {
-            return object.getClass().getSuperclass();
+            clazz = clazz.getSuperclass();
         }
 
-        return object.getClass();
+        return clazz;
     }
 }
