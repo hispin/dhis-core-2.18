@@ -351,7 +351,8 @@ function loadAllCatalogs()
 
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listCatalogDiv';
-
+	isAjax = true;
+	
 	jQuery('#listCatalogDiv').load('getCatalogList.action',{
 		listAll:true,
 		catalogTypeId:catalogTypeId	
@@ -391,7 +392,8 @@ function loadCatalogsByFilter( )
 
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listCatalogDiv';
-
+	isAjax = true;
+	
 	jQuery('#listCatalogDiv').load('getCatalogList.action',{		
 		catalogTypeId:catalogTypeId,
 		catalogTypeAttributeId:catalogTypeAttributeId,

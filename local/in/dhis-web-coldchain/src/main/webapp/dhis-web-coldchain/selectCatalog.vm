@@ -41,17 +41,12 @@
     </table>
 </div>
 
-
-
 <div id='listCatalogDiv'></div> <!-- List All/Filtered Catalogs -->
 <div id='addEditCatalogFormDiv'></div> <!-- Add Catalog Form -->
 <div id='uploadCatalogImageDiv'></div> <!-- Upload catalog Image -->
 <div id='resultSearchDiv'></div> <!-- List searching Equipment -->
 
-
 #parse( "/dhis-web-commons/loader/loader.vm" )
-
-
 
 <script>
 	var i18n_equipment_status_history = '$encoder.jsEscape( $i18n.getString( "equipment_status_history" ) , "'")';

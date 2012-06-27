@@ -82,7 +82,6 @@ public class GetCatalogListAction extends ActionPagingSupport<Catalog>
         return total;
     }
     
-    
     private List<Catalog> catalogList;
     
     public List<Catalog> getCatalogList()
@@ -137,15 +136,14 @@ public class GetCatalogListAction extends ActionPagingSupport<Catalog>
         //CatalogTypeAttribute catalogTypeAttribute = catalogTypeAttributeService.getCatalogTypeAttribute(  catalogTypeAttributeId  );
         //System.out.println("catalogTypeAttribute " + catalogTypeAttribute.getName() + "--- catalogType Name " + catalogType.getName() +"--- searchText is  " + searchText  );
         
-        
         listCatalogByFilter( catalogType, catalogTypeAttribute, searchText);
         
         return SUCCESS;
     }
     
-    
-    // supported Methods
-    
+    // -------------------------------------------------------------------------
+    // Support Methods
+    // -------------------------------------------------------------------------
     private void listAllCatalog( CatalogType catalogType )
     {
         total = catalogService.getCountCatalog( catalogType );
@@ -153,9 +151,7 @@ public class GetCatalogListAction extends ActionPagingSupport<Catalog>
         this.paging = createPaging( total );
         
         catalogList = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType, paging.getStartPos(), paging.getPageSize() ));
-        
     }
-    
     
     private void listCatalogByFilter( CatalogType catalogType, CatalogTypeAttribute catalogTypeAttribute, String searchKey )
     {
@@ -164,7 +160,6 @@ public class GetCatalogListAction extends ActionPagingSupport<Catalog>
         this.paging = createPaging( total );
         
         catalogList = new ArrayList<Catalog>( catalogService.getCatalogs( catalogType, catalogTypeAttribute, searchText, paging.getStartPos(), paging.getPageSize() ));
-        
     }   
     
 }

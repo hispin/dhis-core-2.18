@@ -112,6 +112,7 @@ function loadAllEquipments()
 
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listEquipmentDiv';
+	isAjax = true;
 
 	jQuery('#listEquipmentDiv').load('getEquipmentInstances.action',{
 		listAll:true,
@@ -154,7 +155,8 @@ function loadEquipmentsByFilter( )
 
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listEquipmentDiv';
-
+	isAjax = true;
+	
 	jQuery('#listEquipmentDiv').load('getEquipmentInstances.action',{		
 		orgUnitId:orgUnitId, 
 		inventoryTypeId:inventoryTypeId,

@@ -13,7 +13,6 @@
 		<param name="page">/dhis-web-coldchain/welcome.vm</param>
 		<param name="menu">/dhis-web-coldchain/menu.vm</param>
 	</action>
-		
 
 <!-- catalog Type Attribute -->
 		
@@ -70,19 +69,19 @@
 		<param name="stylesheets">css/style.css</param>
 		<param name="requiredAuthorities">F_CATALOGTYPEATTRIBUTE_UPDATE</param>
 	</action>
-	
+
 	<!-- Update -->
 	<action name="updateCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.UpdateCatalogTypeAttributeAction">
 		<result name="success" type="redirect">coldChainCatalogTypeAttribute.action</result>
 		<param name="requiredAuthorities">F_CATALOGTYPEATTRIBUTE_UPDATE</param>
 	</action>
-	
+
 	<!-- Validation -->
 	<action name="validateCatalogTypeAttribute" class="org.hisp.dhis.coldchain.catalog.action.ValidateCatalogTypeAttributeAction">
 		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 	</action>
-	
+
 <!-- catalog Type -->	
 
 	<!-- Catalog Type List -->
@@ -109,8 +108,7 @@
 	<action name="getCatalogTypeAttributes" class="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeAttributesAction">
 		<result name="success" type="velocity-json">/dhis-web-coldchain/jsonCatalogTypeAttributes.vm</result>
 		<param name="onExceptionReturn">plainTextError</param>
-	</action>
-	
+	</action>	
 	
 	<!-- Add -->
 	<action name="addCataligType" class="org.hisp.dhis.coldchain.catalog.action.AddCatalogTypeAction">
@@ -140,8 +138,7 @@
 		<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		<param name="onExceptionReturn">plainTextError</param>
 		<param name="requiredAuthorities">F_CATALOGTYPE_DELETE</param>
-	</action>	
-
+	</action>
 	
 	<!-- Validation -->
 	<action name="validateCatalogType" class="org.hisp.dhis.coldchain.catalog.action.ValidateCatalogTypeAction">
@@ -149,7 +146,6 @@
 		<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
 		<param name="onExceptionReturn">plainTextError</param>
 	</action>
-
 	
 	<!-- show details -->
 	<action name="getCatalogTypeDetails" class="org.hisp.dhis.coldchain.catalog.action.GetCatalogTypeDetailsAction">
@@ -185,8 +181,6 @@
 	<action name="delCatalogDataEntryForm" class="org.hisp.dhis.coldchain.catalog.dataentryform.action.DeleteCatalogDataEntryFormAction">
 		<result name="success" type="redirect">catalogType.action</result>
 	</action>	
-	
-	
 	
 	<!-- Catalog List -->
 
@@ -395,9 +389,7 @@
             class="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeAction">
             <result name="success" type="redirect">inventoryTypeList.action</result>
             <param name="requiredAuthorities">F_INVENTORYTYPE_UPDATE</param>
-        </action>
-	
-	
+        </action>	
         <action name="showInventoryTypeDataSetForm"
             class="org.hisp.dhis.coldchain.inventory.action.ShowInventoryTypeDataSetFormAction">
             <result name="success" type="velocity">/main.vm</result>
@@ -405,25 +397,17 @@
             <param name="javascripts">javascript/inventoryType.js,../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js</param>
             <param name="stylesheets">css/basic.css</param>
             <param name="requiredAuthorities">F_INVENTORYTYPE_DATASET</param>
-        </action>	
-	
-	
-	
+        </action>		
 		<action name="dataSetList" 
 			class="org.hisp.dhis.coldchain.inventory.action.GetDataSetListAction">
 			<result name="success" type="velocity-json">/dhis-web-coldchain/jsonDataSetList.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>	
-	
-
         <action name="updateInventoryTypeDataSetForm"
             class="org.hisp.dhis.coldchain.inventory.action.UpdateInventoryTypeDataSetAction">
             <result name="success" type="redirect">inventoryTypeList.action</result>
             <param name="requiredAuthorities">F_INVENTORYTYPE_DATASET</param>
         </action>
-	
-	
-	
         <action name="removeInventoryType"
             class="org.hisp.dhis.coldchain.inventory.action.RemoveInventoryTypeAction">
             <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
@@ -483,22 +467,19 @@
             class="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentAction">
             <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
             <param name="requiredAuthorities">F_EQUIPMENT_UPDATE</param>
-        </action>
-        
+        </action>        
 		<action name="showEquipmentStatusForm"
             class="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentStatusFormAction">
             <result name="success" type="velocity">/content.vm</result>
             <param name="page">/dhis-web-coldchain/equipmentStatusForm.vm</param>
 			<param name="stylesheets">css/basic.css</param>
             <param name="requiredAuthorities">F_EQUIPMENTSTATUS_UPDATE</param>
-        </action>
-		
+        </action>		
         <action name="updateEquipmentStatus"
             class="org.hisp.dhis.coldchain.equipment.action.UpdateEquipmentStatusAction">
             <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
             <param name="requiredAuthorities">F_EQUIPMENTSTATUS_UPDATE</param>
         </action>
-
         <action name="showEquipmentStatusHistoryForm"
             class="org.hisp.dhis.coldchain.equipment.action.ShowEquipmentStatusHistoryFormAction">
             <result name="success" type="velocity">/content.vm</result>
@@ -510,8 +491,7 @@
             class="org.hisp.dhis.coldchain.equipment.action.GetEquipmentInstanceDataAction">
             <result name="success" type="velocity">/content.vm</result>
             <param name="page">/dhis-web-coldchain/showEquipmentData.vm</param>
-        </action>
-		
+        </action>		
         <action name="removeEquipmentInstance"
             class="org.hisp.dhis.coldchain.equipment.action.RemoveEquipmentInstanceAction">
             <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
@@ -531,8 +511,7 @@
 			<param name="requiredAuthorities">F_EQUIPMENT_DATAENTRY</param>
             <!--<interceptor-ref name="organisationUnitTreeStack" />-->
         </action>	
-	<!--
-	-->
+	
         <action name="loadPeriods" class="org.hisp.dhis.coldchain.equipment.action.LoadPeriodsAction">
             <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonPeriods.vm</result>
         </action>	
@@ -547,14 +526,12 @@
 		<param name="page">/dhis-web-coldchain/loadDataEntryForm.vm</param>
 		<param name="requiredAuthorities">F_EQUIPMENT_DATAENTRY</param>
 	</action>
-
 	
 	<!-- Save DataEntry Form -->
 	<action name="saveDataEntryForm" class="org.hisp.dhis.coldchain.equipment.action.SaveEquipmentDataValueAction">
 		<result name="success" type="redirect">enquipmentSelect.action</result>
 		<param name="requiredAuthorities">F_EQUIPMENT_DATAENTRY</param>
 	</action>	
-
 
 	<!-- Upload Image Form -->
 	<action name="showUploadImageForm" class="org.hisp.dhis.coldchain.catalog.action.ShowUploadCatalogImageFormAction">
@@ -571,8 +548,6 @@
 		<param name="page">/dhis-web-coldchain/responseUplodImageStatus.vm</param>
 		<interceptor-ref name="fileUploadStack" />
 	</action>				
-
-	
 	
 	<action name="showImage" class="org.hisp.dhis.coldchain.catalog.action.ShowImageAction">
 		<result name="success" type="velocity">/content.vm</result>
