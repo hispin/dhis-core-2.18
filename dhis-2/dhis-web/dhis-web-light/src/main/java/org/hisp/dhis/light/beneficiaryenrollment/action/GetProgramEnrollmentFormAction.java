@@ -27,6 +27,9 @@
 
 package org.hisp.dhis.light.beneficiaryenrollment.action;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -106,6 +109,20 @@ public class GetProgramEnrollmentFormAction
     }
 
     private Program program;
+    
+    private String now;
+    
+    
+
+    public String getNow()
+    {
+        return now;
+    }
+
+    public void setNow( String now )
+    {
+        this.now = now;
+    }
 
     @Override
     public String execute()
@@ -113,6 +130,8 @@ public class GetProgramEnrollmentFormAction
     {
         patient = patientService.getPatient( patientId );
         program = programService.getProgram( programId );
+        now = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
         return SUCCESS;
     }
 

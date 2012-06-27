@@ -8,8 +8,7 @@
 		#if( $validationMap.get( "enrollmentDate" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "enrollmentDate" ))</span>
      	#end
-		<input type="text" name="enrollmentDate" value="$!previousValues.get("enrollmentDate")" />
-
+		<input type="text" name="enrollmentDate" value="#if($previousValues.get("enrollmentDate"))$previousValues.get("enrollmentDate")#else$now#end" />
 		<label>$i18n.getString( "incident_date" ) [yyyy-MM-dd] </label>
 		#if( $validationMap.get( "incidentDate" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "incidentDate" ))</span>
