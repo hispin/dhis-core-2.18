@@ -68,6 +68,8 @@ public class DHIS2LifecycleStrategy
         try
         {
             log.info( "Camel context started" );
+            if (locationManager== null) throw new LocationManagerException("No locationManager configured");
+            
             File rootsDir = new File(locationManager.getExternalDirectory().getAbsolutePath() + "/routes/");
             
             if (!rootsDir.exists()) {
