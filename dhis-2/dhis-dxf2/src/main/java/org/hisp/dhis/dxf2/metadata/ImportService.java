@@ -27,6 +27,7 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.scheduling.TaskId;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,5 +38,9 @@ public interface ImportService
 {
     ImportSummary importMetaData( MetaData metaData );
 
+    ImportSummary importMetaData( MetaData metaData, TaskId taskId );
+
     ImportSummary importMetaData( MetaData metaData, ImportOptions importOptions );
+
+    ImportSummary importMetaData( MetaData metaData, ImportOptions importOptions, TaskId taskId );
 }
