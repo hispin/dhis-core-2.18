@@ -80,20 +80,25 @@ public class OrganisationUnitUtils
             {
                 if ( parent.getUid() != null )
                 {
-                    organisationUnit.setParent( organisationUnitMap.get( parent.getUid() ) );
+                    parent = organisationUnitMap.get( parent.getUid() );
                 }
                 else if ( parent.getCode() != null )
                 {
-                    organisationUnit.setParent( organisationUnitMap.get( parent.getCode() ) );
+                    parent = organisationUnitMap.get( parent.getCode() );
                 }
                 else if ( parent.getName() != null )
                 {
-                    organisationUnit.setParent( organisationUnitMap.get( parent.getName() ) );
+                    parent = organisationUnitMap.get( parent.getName() );
                 }
                 else if ( parent.getShortName() != null )
                 {
-                    organisationUnit.setParent( organisationUnitMap.get( parent.getShortName() ) );
+                    parent = organisationUnitMap.get( parent.getShortName() );
                 }
+            }
+
+            if ( parent != null )
+            {
+                organisationUnit.setParent( parent );
             }
         }
     }
