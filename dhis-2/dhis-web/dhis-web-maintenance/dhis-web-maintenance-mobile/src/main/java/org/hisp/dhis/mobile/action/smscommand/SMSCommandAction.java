@@ -14,9 +14,12 @@ import org.hisp.dhis.smscommand.SMSCommand;
 
 import com.opensymphony.xwork2.Action;
 
-public class SMSCommandAction implements Action {
+public class SMSCommandAction
+    implements Action
+{
 
     private SMSCommandService smsCommandService;
+
     private DataSetService dataSetService;
 
     private int selectedCommandID = -1;
@@ -27,71 +30,92 @@ public class SMSCommandAction implements Action {
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute() throws Exception {
-        if (getSMSCommand() != null && getSMSCommand().getCodes() != null) {
-            for (SMSCode x : getSMSCommand().getCodes()) {
-                codes.put("" + x.getDataElement().getId() + x.getOptionId(), x.getCode());
+    public String execute()
+        throws Exception
+    {
+        if ( getSMSCommand() != null && getSMSCommand().getCodes() != null )
+        {
+            for ( SMSCode x : getSMSCommand().getCodes() )
+            {
+                codes.put( "" + x.getDataElement().getId() + x.getOptionId(), x.getCode() );
             }
         }
         return SUCCESS;
     }
 
-    public Set<DataElement> getDataSetElements() {
-        if (getSMSCommand() != null) {
+    public Set<DataElement> getDataSetElements()
+    {
+        if ( getSMSCommand() != null )
+        {
             DataSet d = getSMSCommand().getDataset();
-            if (d != null) {
+            if ( d != null )
+            {
                 return d.getDataElements();
             }
         }
         return null;
     }
 
-    public Collection<DataSet> getDataSets() {
+    public Collection<DataSet> getDataSets()
+    {
         return getDataSetService().getAllDataSets();
     }
 
-    public Collection<SMSCommand> getSMSCommands() {
-        System.out.println("get:" + smsCommandService.getSMSCommands());
+    public Collection<SMSCommand> getSMSCommands()
+    {
+        System.out.println( "get:" + smsCommandService.getSMSCommands() );
         return smsCommandService.getSMSCommands();
     }
 
-    public SMSCommand getSMSCommand() {
-        if (selectedCommandID > -1) {
-            return smsCommandService.getSMSCommand(selectedCommandID);
-        } else {
+    public SMSCommand getSMSCommand()
+    {
+        if ( selectedCommandID > -1 )
+        {
+            return smsCommandService.getSMSCommand( selectedCommandID );
+        }
+        else
+        {
             return null;
         }
     }
 
-    public SMSCommandService getSmsCommandService() {
+    public SMSCommandService getSmsCommandService()
+    {
         return smsCommandService;
     }
 
-    public void setSmsCommandService(SMSCommandService smsCommandService) {
+    public void setSmsCommandService( SMSCommandService smsCommandService )
+    {
         this.smsCommandService = smsCommandService;
     }
 
-    public int getSelectedCommandID() {
+    public int getSelectedCommandID()
+    {
         return selectedCommandID;
     }
 
-    public void setSelectedCommandID(int selectedCommandID) {
+    public void setSelectedCommandID( int selectedCommandID )
+    {
         this.selectedCommandID = selectedCommandID;
     }
 
-    public DataSetService getDataSetService() {
+    public DataSetService getDataSetService()
+    {
         return dataSetService;
     }
 
-    public void setDataSetService(DataSetService dataSetService) {
+    public void setDataSetService( DataSetService dataSetService )
+    {
         this.dataSetService = dataSetService;
     }
 
-    public Map<String, String> getCodes() {
+    public Map<String, String> getCodes()
+    {
         return codes;
     }
 
-    public void setCodes(Map<String, String> codes) {
+    public void setCodes( Map<String, String> codes )
+    {
         this.codes = codes;
     }
 
