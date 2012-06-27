@@ -24,11 +24,8 @@
       </xsl:attribute>
 
       <xsl:element name="dxf2:parent">
-        <xsl:attribute name="name">
-          <xsl:value-of select="mfl:District" />
-        </xsl:attribute>
         <xsl:attribute name="code">
-          <xsl:value-of select="mfl:DistrictId" />
+          <xsl:value-of select="mfl:District" />
         </xsl:attribute>
       </xsl:element>
 
