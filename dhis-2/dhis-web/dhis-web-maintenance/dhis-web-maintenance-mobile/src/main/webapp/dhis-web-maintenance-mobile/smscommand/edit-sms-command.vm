@@ -18,7 +18,7 @@
 
 <div>
     </div>
-
+<h3>Edit command</h3>
 <form id="updateSMSCommand" name="updateSMSCommand" action="saveEditSMSCommandForm.action" method="post">
 
  <!-- 
@@ -28,7 +28,12 @@
     
 	
 	
-	<table width="100%" border="0">
+	<table>
+	<thead>
+      <tr>
+        <th colspan="2">$i18n.getString( "command_details" )</th>
+      </tr>
+    </thead>
 		<tr>
 			<td>
 				<input type="hidden" value="$selectedCommandID" name="selectedCommandID" />
@@ -36,29 +41,29 @@
 		</tr>
 		<tr>
 			<td>Name:</td>
-			<td><input type="text" name="name" value="$SMSCommand.name" /></td>
+			<td><input type="text" name="name" value="$SMSCommand.name" style="width:20em" /></td>
 		</tr>
 		<tr>
 			<td>DataSet:</td>
 			<td>
 	
 				<!-- onchange="window.location.href='editSMSCommand.action?selectedDataSetID=' + this.options[this.selectedIndex].value" -->
-				<select name="selectedDataSetID" >
+				<select name="selectedDataSetID" style="min-width:20em; margin:0;" >
 				#foreach( $dataSet in $dataSets )
 				<option value="$dataSet.id" #if ($SMSCommand.dataset.id == $dataSet.id) selected #end >$dataSet.name</option>
 				#end
 				</select> 
 			</td>
-		</tr>
+		</tr> 
 		<tr>
 			<td>Separator:</td>
 			<td>
-				<input type="text"  #if($SMSCommand.seperator) value="$SMSCommand.seperator" #end name="seperator" />
+				<input type="text"  #if($SMSCommand.seperator) value="$SMSCommand.seperator" #end name="seperator" style="width:20em" />
 			</td>
 		</tr>
 		<tr>
 			<td>Code seperator:</td>
-			<td><input type="text" #if($SMSCommand.codeSeperator) value="$SMSCommand.codeSeperator" #end name="codeSeperator" /></td>
+			<td><input type="text" #if($SMSCommand.codeSeperator) value="$SMSCommand.codeSeperator" #end name="codeSeperator" style="width:20em" /></td>
 		</tr>
 	
 	</table>
@@ -67,12 +72,17 @@
 	</br>
 	
 	
-    <table id="codes">
+    <table id="codes">   
+		<col style="width: 450px"/>
+    <col/>
+    <col style="width: 450px"/>
+    <thead>
+      <tr>
+        <th>Data Element Category Combination</th>
+		<th>Code</th>
+      </tr>
+    </thead>
 		
-        <tr>
-            <td style="color:#009">Data Element Category Combination</td>
-            <td style="color:#009">Code</td>
-        </tr>     
          #foreach( $dataElement in $dataSetElements)
             #if ($dataElement.categoryCombo && $dataElement.categoryCombo.categories) 
                 #foreach($category in $dataElement.categoryCombo.categories)
