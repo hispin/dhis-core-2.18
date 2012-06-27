@@ -27,11 +27,6 @@ package org.hisp.dhis.importexport.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
@@ -148,6 +143,11 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -1049,6 +1049,7 @@ public class DefaultImportObjectManager
     {
         Integer importedObjects = 0;
         Integer failedObjects = 0;
+        Integer ignoredObjects = 0;
 
         BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class )
             .init();
@@ -1065,14 +1066,26 @@ public class DefaultImportObjectManager
         for ( ImportDataValue importValue : importValues )
         {
             DataValue value = importValue.getDataValue();
+
             try
             {
-                value.getDataElement().setId( dataElementMapping.get( value.getDataElement().getId() ) );
-                value.getPeriod().setId( periodMapping.get( value.getPeriod().getId() ) );
-                value.getSource().setId( sourceMapping.get( value.getSource().getId() ) );
-                value.getOptionCombo().setId( categoryOptionComboMapping.get( value.getOptionCombo().getId() ) );
-                importer.importObject( value, params );
-                importedObjects++;
+                if  ( dataElementMapping.containsKey( value.getDataElement().getId() )
+                        && periodMapping.containsKey( value.getPeriod().getId())
+                        && sourceMapping.containsKey( value.getSource().getId())
+                        && categoryOptionComboMapping.containsKey(value.getOptionCombo().getId()))
+                {
+
+                    value.getDataElement().setId( dataElementMapping.get( value.getDataElement().getId() ) );
+                    value.getPeriod().setId( periodMapping.get( value.getPeriod().getId() ) );
+                    value.getSource().setId( sourceMapping.get( value.getSource().getId() ) );
+                    value.getOptionCombo().setId( categoryOptionComboMapping.get( value.getOptionCombo().getId() ) );
+                    importer.importObject( value, params );
+                    importedObjects++;
+                }
+                else
+                {
+                    ignoredObjects++;
+                }
 
             }
             catch ( Exception e )
@@ -1087,7 +1100,7 @@ public class DefaultImportObjectManager
 
         importDataValueService.deleteImportDataValues();
 
-        log.info( importReport( importedObjects, failedObjects ) );
+        log.info( importReport( importedObjects, failedObjects, ignoredObjects ) );
     }
 
     // -------------------------------------------------------------------------
@@ -1121,15 +1134,16 @@ public class DefaultImportObjectManager
         importObjectStore.deleteImportObjects( type );
     }
 
-    private String importReport( Integer importedObjects, Integer failedObjects )
+    private String importReport( Integer importedObjects, Integer failedObjects, Integer ignoredObjects )
     {
-        Integer totalObjects = importedObjects + failedObjects;
+        Integer totalObjects = importedObjects + failedObjects + ignoredObjects;
         String importReportString = "";
-        if ( failedObjects > 0 )
+        if ( failedObjects > 0 || ignoredObjects > 0 )
         {
-            importReportString = totalObjects.toString() + " values handled.\n" + importedObjects.toString()
-                + " new values successfully imported.\n" + failedObjects.toString()
-                + " were not imported due to errors.";
+            importReportString = totalObjects.toString() + " values handled.\n"
+                + importedObjects.toString() + " new values successfully imported.\n"
+                + ignoredObjects.toString() + " were ignored due to validitiy errors.\n"
+                +  failedObjects.toString()+ " were not imported due to other errors.";
             return importReportString;
         }
         else

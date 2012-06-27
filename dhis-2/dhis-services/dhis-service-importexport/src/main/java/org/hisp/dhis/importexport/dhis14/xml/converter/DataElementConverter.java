@@ -56,10 +56,10 @@ import static org.hisp.dhis.system.util.ConversionUtils.parseInt;
  * @version $Id: DataElementConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class DataElementConverter
-    extends DataElementImporter implements XMLConverter
+    extends DataElementImporter
+    implements XMLConverter
 {
     public static final String ELEMENT_NAME = "DataElement";
-    
     private static final String FIELD_ID = "DataElementID";
     private static final String FIELD_SORT_ORDER = "SortOrder";
     private static final String FIELD_CODE = "DataElementCode";
@@ -81,7 +81,6 @@ public class DataElementConverter
     private static final String FIELD_SELECTED = "Selected";
     private static final String FIELD_LAST_USER = "LastUserID";
     private static final String FIELD_LAST_UPDATED = "LastUpdated";
-
     private static final int VALID_FROM = 34335;
     private static final int VALID_TO = 2958465;
     private static final int AGG_START_LEVEL = 5;
@@ -91,7 +90,7 @@ public class DataElementConverter
     // -------------------------------------------------------------------------
 
     private DataElementCategoryService categoryService;
-    
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -110,34 +109,33 @@ public class DataElementConverter
      * @param importObjectService the importObjectService to use.
      * @param dataElementService the dataElementService to use.
      */
-    public DataElementConverter( ImportObjectService importObjectService,
-        DataElementService dataElementService,
-        DataElementCategoryService categoryService,
-        ImportAnalyser importAnalyser )
+    public DataElementConverter( ImportObjectService importObjectService, DataElementService dataElementService,
+        DataElementCategoryService categoryService, ImportAnalyser importAnalyser )
     {
         this.importObjectService = importObjectService;
         this.dataElementService = dataElementService;
         this.categoryService = categoryService;
         this.importAnalyser = importAnalyser;
     }
-    
+
     // -------------------------------------------------------------------------
     // XMLConverter implementation
     // -------------------------------------------------------------------------
-    
+
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() ); // Calculated elements handled together
-        
+        Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() ); 
+
         if ( elements != null && elements.size() > 0 )
         {
             int i = 0;
             for ( DataElement object : elements )
             {
                 writer.openElement( ELEMENT_NAME );
-                
+
                 writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
-                writer.writeElement( FIELD_SORT_ORDER, object.getSortOrder() != null ? String.valueOf( object.getSortOrder() ) : String.valueOf( i++ ) );
+                writer.writeElement( FIELD_SORT_ORDER,
+                    object.getSortOrder() != null ? String.valueOf( object.getSortOrder() ) : String.valueOf( i++ ) );
                 writer.writeElement( FIELD_CODE, object.getCode() );
                 writer.writeElement( FIELD_NAME, object.getName() );
                 writer.writeElement( FIELD_SHORT_NAME, object.getShortName() );
@@ -153,40 +151,45 @@ public class DataElementConverter
                 writer.writeElement( FIELD_CALCULATED, convertBooleanToDhis14( false ) );
                 writer.writeElement( FIELD_SAVE_CALCULATED, convertBooleanToDhis14( false ) );
                 writer.writeElement( FIELD_AGGREGATION_START_LEVEL, String.valueOf( AGG_START_LEVEL ) );
-                writer.writeElement( FIELD_AGGREGATION_OPERATOR, convertAggregationOperatorToDhis14( object.getAggregationOperator() ) );
+                writer.writeElement( FIELD_AGGREGATION_OPERATOR,
+                    convertAggregationOperatorToDhis14( object.getAggregationOperator() ) );
                 writer.writeElement( FIELD_SELECTED, String.valueOf( 0 ) );
                 writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
                 writer.writeElement( FIELD_LAST_UPDATED, Dhis14DateUtil.getDateString( object.getLastUpdated() ) );
-                
+
                 writer.closeElement();
-                
-                NameMappingUtil.addDataElementAggregationOperatorMapping( object.getId(), object.getAggregationOperator() );
+
+                NameMappingUtil.addDataElementAggregationOperatorMapping( object.getId(),
+                    object.getAggregationOperator() );
             }
         }
     }
-    
+
     public void read( XMLReader reader, ImportParams params )
     {
         Map<String, String> values = reader.readElements( ELEMENT_NAME );
-        
-        DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
+
+        DataElementCategoryCombo categoryCombo = categoryService
+            .getDataElementCategoryComboByName( DEFAULT_CATEGORY_COMBO_NAME );
         DataElementCategoryCombo proxyCategoryCombo = new DataElementCategoryCombo();
         proxyCategoryCombo.setId( categoryCombo.getId() );
-        
+
         DataElement element = new DataElement();
-        
+
         element.setCategoryCombo( proxyCategoryCombo );
         element.setId( Integer.valueOf( values.get( FIELD_ID ) ) );
         element.setName( values.get( FIELD_NAME ) );
         element.setShortName( values.get( FIELD_SHORT_NAME ) );
         element.setDescription( Dhis14ParsingUtils.removeNewLine( values.get( FIELD_DESCRIPTION ) ) );
-        element.setAlternativeName(values.get(FIELD_PROMPT));
-        element.setActive( true );        
-        element.setType( Dhis14ObjectMappingUtil.getDataElementTypeMap().get( Integer.parseInt( values.get( FIELD_DATA_TYPE ) ) ) );            
+        element.setAlternativeName( values.get( FIELD_PROMPT ) );
+        element.setActive( true );
+        element.setType( Dhis14ObjectMappingUtil.getDataElementTypeMap().get(Integer.parseInt( values.get( FIELD_DATA_TYPE ) ) ) );
         element.setAggregationOperator( convertAggregationOperatorFromDhis14( values.get( FIELD_AGGREGATION_OPERATOR ) ) );
         element.setSortOrder( parseInt( values.get( FIELD_SORT_ORDER ) ) );
         element.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
-        
-        importObject( element, params );   
-    }    
+        if ( values.get( FIELD_CALCULATED ).equals( "0" ) ) //Ignore calculated data elements
+        {
+            importObject( element, params );
+        }
+    }
 }
