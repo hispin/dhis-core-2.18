@@ -854,9 +854,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
-        <property name="userStore">
+<!--        <property name="userStore">
             <ref bean="org.hisp.dhis.user.UserStore"/>
-        </property>
+        </property>-->
+        <property name="userService">
+            <ref bean="org.hisp.dhis.user.UserService"/>
+        </property>		
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 	
@@ -944,8 +947,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
-		<property name="userStore">
+		<!--<property name="userStore">
 			<ref bean="org.hisp.dhis.user.UserStore"/>
+		</property>-->
+		<property name="userService">
+			<ref bean="org.hisp.dhis.user.UserService"/>
 		</property>
 	    <property name="jdbcTemplate" ref="jdbcTemplate"/>
 		<!--<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>-->

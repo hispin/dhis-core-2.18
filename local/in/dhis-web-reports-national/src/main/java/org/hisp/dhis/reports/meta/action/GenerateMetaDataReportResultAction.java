@@ -41,7 +41,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
@@ -141,13 +141,21 @@ public class GenerateMetaDataReportResultAction
     {
         this.validationRuleService = validationRuleService;
     }
-
+    /*
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
     }
+    */
+    private UserService userService;
+    
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+    
 
     private ReportService reportService;
 
@@ -311,8 +319,9 @@ public class GenerateMetaDataReportResultAction
 
         List<DataSet> datasetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         int countdataset = datasetList.size();
-
-        Collection<User> UserList = new ArrayList<User>( userStore.getAllUsers() );
+        
+        //Collection<User> UserList = new ArrayList<User>( userStore.getAllUsers() );
+        Collection<User> UserList = new ArrayList<User>( userService.getAllUsers() );
         int user = UserList.size();
 
         // ----------------------------------------------------------------------
@@ -1922,8 +1931,8 @@ public class GenerateMetaDataReportResultAction
     public void generateUserList()
         throws Exception
     {
-        List<User> userList = new ArrayList<User>( userStore.getAllUsers() );
-
+        //List<User> userList = new ArrayList<User>( userStore.getAllUsers() );
+        List<User> userList = new ArrayList<User>( userService.getAllUsers() );
         // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
         // File.separator + raFolderName + File.separator
         // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
