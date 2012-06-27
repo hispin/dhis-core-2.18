@@ -73,7 +73,6 @@ public class DataValueConverter
     extends DataValueImporter
     implements CSVConverter
 {
-   
     private static final String SEPARATOR = ",";
 
     private static final String FILENAME = "RoutineData.txt";
@@ -234,13 +233,18 @@ public class DataValueConverter
                 value.setPeriod( period );
                 value.setSource( organisationUnit );
 
-                if ( values[4] != null  ) // Text
+                if ( !values[6].isEmpty() ) // Numeric
+                {
+                    value.setValue( handleNumericValue( values[6] ) );
+                    validValue = isValidNumeric( value.getValue() );
+
+                }
+                else if ( !values[4].isEmpty() ) // Text
                 {
                     value.setValue( values[4].trim() );
                 }
-                else if ( values[5] != null ) // Boolean
+                else if ( !values[5].isEmpty() ) // Boolean
                 {
-
                     value.setValue( "false" );
 
                     if ( values[5].trim().equals( "1" ) )
@@ -249,40 +253,27 @@ public class DataValueConverter
                     }
 
                 }
-                else if ( values[6] != null  ) // Numeric
+                else if ( !values[7].isEmpty() ) // Date
                 {
-                    value.setValue( handleNumericValue( values[6] ) );
-                    validValue = isValidNumeric( value.getValue() );
+                    value.setValue( values[7] );
+
                 }
-                else if ( values[7] != null ) // Date
-                {
-                    try
-                    {
-                        value.setValue(   DateUtils.getDefaultDate( Dhis14DateUtil.getDate( values[7] ).toString() ).toString() ); 
-                    }
-                    catch ( Exception e )
-                    {
-                        validValue = false;
-                    }
-                }
-                else if ( values[8] != null ) // Memo not supported
- 
+                else if ( !values[8].isEmpty() ) // Memo not supported
                 {
                     validValue = false;
                 }
 
-                else if ( values[9] != null  ) // OLE not supported
-                                                                      
+                else if ( !values[9].isEmpty() ) // OLE not supported
                 {
                     validValue = false;
                 }
 
                 value.setComment( values[13] );
-                value.setTimestamp( DateUtils.getDefaultDate( Dhis14DateUtil.getDate( values[15] ).toString() ) );
+                value.setTimestamp( DateUtils.getDefaultDate( values[15] ) );
                 value.setOptionCombo( proxyCategoryOptionCombo );
                 value.setStoredBy( owner );
 
-                if ( validValue && value.getValue() != null )
+                if ( validValue )
                 {
                     importObject( value, params );
                 }
@@ -307,7 +298,7 @@ public class DataValueConverter
             // Remove all quotes
             value = value.replaceAll( "\"", "" );
             // Strip trailing zeros
-            value = value.replaceFirst( "\\.0+$", "" );
+            value = value.replaceAll( "\\.0+$", "" );
         }
 
         return value;
@@ -338,22 +329,24 @@ public class DataValueConverter
             else if ( dataElementType.equals( DataElement.VALUE_TYPE_BOOL ) )
             {
                 String outputValue;
-                if ( value.getValue().equals( "true" ) )  {
+                if ( value.getValue().equals( "true" ) )
+                {
                     outputValue = "1";
                 }
-                else outputValue = "0";
+                else
+                    outputValue = "0";
                 out.write( SEPARATOR_B );
-                out.write( getCsvValue( csvEncode( outputValue) ) );
+                out.write( getCsvValue( csvEncode( outputValue ) ) );
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );
             }
 
-            else if ( dataElementType.equals( DataElement.VALUE_TYPE_NUMBER) ||
-                      dataElementType.equals( DataElement.VALUE_TYPE_INT ) ||
-                      dataElementType.equals( DataElement.VALUE_TYPE_NEGATIVE_INT ) ||
-                      dataElementType.equals( DataElement.VALUE_TYPE_POSITIVE_INT ) )
+            else if ( dataElementType.equals( DataElement.VALUE_TYPE_NUMBER )
+                || dataElementType.equals( DataElement.VALUE_TYPE_INT )
+                || dataElementType.equals( DataElement.VALUE_TYPE_NEGATIVE_INT )
+                || dataElementType.equals( DataElement.VALUE_TYPE_POSITIVE_INT ) )
             {
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );
@@ -368,7 +361,7 @@ public class DataValueConverter
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );
-                out.write( getCsvValue( csvEncode( DateUtils.getAccessDateString( DateUtils.getDefaultDate( value.getValue() ) ) ) ) );
+                out.write( getCsvValue( csvEncode( DateUtils.getDefaultDate( value.getValue() ) ) ) );
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );
             }
