@@ -1,9 +1,7 @@
 <script>
 	jQuery("#entryFormContainer").ready(function(){
 		setFieldValue('programStageId', "$!programStageInstance.programStage.id");
-		#if( $!programStageInstance.programStage.program.type=="3" && $!programStageInstance.completed=='true')
-			hideById('entryFormContainer');
-		#elseif( $programStageInstance )
+		#if( $programStageInstance )
 			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
 		#end
@@ -104,7 +102,7 @@
 	#end
 </div>
 
-<div id='inputCriteriaDiv' class="page inputCriteria" style="display:none;width:480px;height:29px;">	
+<div id='inputCriteriaDiv' class="page inputCriteria" style="display:none;width:490px;height:29px;">	
 	<input type="button" class='button' id="completeInBelowBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled">
 	<input type="button" class='button' id="validationInBelowBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" >
 </div>

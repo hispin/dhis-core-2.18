@@ -134,15 +134,19 @@ public class LoadProgramStageInstancesAction
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
-        if ( program.isRegistration() )
+        if ( program.getType() == Program.MULTIPLE_EVENTS_WITH_REGISTRATION)
         {
             programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( patient,
                 program, false ) );
         }
+        else if ( program.getType() == Program.SINGLE_EVENT_WITH_REGISTRATION )
+        {
+            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( patient,
+                program ) );
+        }
         else
         {
-            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program,
-                false ) );
+            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program ) );
         }
 
         if ( programInstances != null && programInstances.size() > 0 )
@@ -172,7 +176,7 @@ public class LoadProgramStageInstancesAction
                 }
             }
         }
-
+        
         return SUCCESS;
     }
 }

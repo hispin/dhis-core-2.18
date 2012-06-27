@@ -151,7 +151,7 @@ public class SaveValueAction
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
         }
 
-        providedElsewhere = (providedElsewhere == null) ? false : true;
+        providedElsewhere = (providedElsewhere == null) ? false : providedElsewhere;
 
         if ( patientDataValue == null && value != null )
         {

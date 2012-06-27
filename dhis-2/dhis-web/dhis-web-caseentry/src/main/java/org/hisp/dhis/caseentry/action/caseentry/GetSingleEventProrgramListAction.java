@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.Collection;
-import java.util.HashSet;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version $LoadSingleEventProrgramAction.java Jun 26, 2012 10:36:31 AM$
  */
-public class DataRecordingSelectAction
+public class GetSingleEventProrgramListAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    private OrganisationUnitSelectionManager selectionManager;
 
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.patientService = patientService;
+        this.selectionManager = selectionManager;
     }
 
     private ProgramService programService;
@@ -63,32 +61,11 @@ public class DataRecordingSelectAction
         this.programService = programService;
     }
 
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     // -------------------------------------------------------------------------
-    // Input/Output
+    // Output
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
-
-    public void setPatientId( Integer patientId )
-    {
-        this.patientId = patientId;
-    }
-
-    private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
-
-    private Collection<Program> programs = new HashSet<Program>();
+    private Collection<Program> programs;
 
     public Collection<Program> getPrograms()
     {
@@ -102,22 +79,11 @@ public class DataRecordingSelectAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
 
-        patient = patientService.getPatient( patientId );
-
-        // ---------------------------------------------------------------------
-        // Get programs which patient enrolls
-        // ---------------------------------------------------------------------
-
-        programs = programService.getPrograms( orgunit );
-
-        programs.retainAll( patient.getPrograms() );
-
-        programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, orgunit ) );
-
-        selectedStateManager.setSelectedPatient( patient );
+        programs = programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, orgunit );
 
         return SUCCESS;
     }
+
 }

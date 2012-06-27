@@ -165,6 +165,7 @@ public class LoadDataEntryAction
         // ---------------------------------------------------------------------
         // Get program-stage-instance
         // ---------------------------------------------------------------------
+        
         if ( programStageInstanceId != null )
         { 
             programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );

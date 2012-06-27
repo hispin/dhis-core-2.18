@@ -45,7 +45,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
 	<bean
@@ -189,6 +188,56 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+	
+	<!-- Single-event DataEntry -->
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.GetSingleEventProrgramListAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetSingleEventProrgramListAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.ShowEventWithRegistrationFormAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.ShowEventWithRegistrationFormAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programDataEntryService"
+			ref="org.hisp.dhis.program.ProgramDataEntryService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.SaveValuesAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.SaveValuesAction"
+		scope="prototype">
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientDataValueService"
+			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<!-- Visit Plan -->

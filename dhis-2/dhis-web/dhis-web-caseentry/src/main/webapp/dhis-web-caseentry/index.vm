@@ -6,6 +6,7 @@
     #introListImgItem( "dataEntrySelect.action" "name_based_data_entry" "dataentry" )
 	#introListImgItem( "multipledataEntrySelect.action" "multiple_name_based_data_entry" "dataentry" )
 	#introListImgItem( "anonymousRegistration.action" "anonymous_events" "dataentry" )
+	#introListImgItem( "singleEventSelect.action" "single_event_with_registration" "dataentry" )
     #introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
 	#introListImgItem( "app/index.html" "tabular_report" "summaryreport" )
 	#introListImgItem( "visitplan.action" "visit_plan" "visitplan" )

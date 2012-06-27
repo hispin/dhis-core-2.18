@@ -1,9 +1,3 @@
-var COLOR_GREEN = '#b9ffb9';
-var COLOR_YELLOW = '#fffe8c';
-var COLOR_WHITE = '#ffffff';
-var COLOR_ORANGE = '#ff6600';
-var COLOR_RED = '#ff8a8a';
-var COLOR_GREY = '#cccccc';
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {	
