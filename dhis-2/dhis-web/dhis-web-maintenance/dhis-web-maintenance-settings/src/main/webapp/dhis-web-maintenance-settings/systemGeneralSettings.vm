@@ -6,7 +6,8 @@
 				infrastructuralDataElements: getFieldValue( 'infrastructuralDataElements' ),
 				infrastructuralPeriodType: getFieldValue( 'infrastructuralPeriodType' ),
 				feedbackRecipients: getFieldValue( 'feedbackRecipients' ),
-				completenessRecipients: getFieldValue( 'completenessRecipients' ),
+                completenessRecipients: getFieldValue( 'completenessRecipients' ),
+                offlineOrganisationUnitLevel: getFieldValue( 'offlineOrganisationUnitLevel' ),
 				omitIndicatorsZeroNumeratorDataMart: jQuery( '#omitIndicatorsZeroNumeratorDataMart' ).is( ':checked' ),
 				disableDataEntryWhenCompleted: jQuery( '#disableDataEntryWhenCompleted' ).is( ':checked' ),
 				factorDeviation: getFieldValue( 'factorDeviation' ),
@@ -74,6 +75,17 @@
 	<option value="-1">$i18n.getString( "no_completeness_recipients" )</option>
 	#foreach ( $group in $userGroups )
 	<option value="$group.id" #if( $group.id == $!completenessRecipients.id )selected="selected"#end>$encoder.htmlEncode( $group.name )</option>
+	#end
+</select>
+</p>
+
+<!-- offline_orgunit_level -->
+<h4>$i18n.getString( "offline_orgunit_level" )</h4>
+
+<p>
+<select id="offlineOrganisationUnitLevel" name="offlineOrganisationUnitLevel" style="width:30em">
+	#foreach ( $organisationUnitLevel in $organisationUnitLevels )
+    <option value="$organisationUnitLevel.id" #if( $organisationUnitLevel.id == $!offlineOrganisationUnitLevel.id)selected="selected"#end>$encoder.htmlEncode( $organisationUnitLevel.name )</option>
 	#end
 </select>
 </p>

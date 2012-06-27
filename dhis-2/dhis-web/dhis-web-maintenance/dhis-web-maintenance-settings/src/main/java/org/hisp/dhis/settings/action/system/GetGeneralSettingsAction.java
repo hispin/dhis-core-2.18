@@ -27,23 +27,25 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.comparator.UserGroupComparator;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -84,6 +86,13 @@ public class GetGeneralSettingsAction
         this.userGroupService = userGroupService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -96,10 +105,22 @@ public class GetGeneralSettingsAction
     }
 
     private UserGroup completenessRecipients;
-    
+
     public UserGroup getCompletenessRecipients()
     {
         return completenessRecipients;
+    }
+
+    private OrganisationUnitLevel offlineOrganisationUnitLevel;
+
+    public OrganisationUnitLevel getOfflineOrganisationUnitLevel()
+    {
+        return offlineOrganisationUnitLevel;
+    }
+
+    public void setOfflineOrganisationUnitLevel( OrganisationUnitLevel offlineOrganisationUnitLevel )
+    {
+        this.offlineOrganisationUnitLevel = offlineOrganisationUnitLevel;
     }
 
     private Collection<String> aggregationStrategies;
@@ -130,6 +151,13 @@ public class GetGeneralSettingsAction
         return userGroups;
     }
 
+    private List<OrganisationUnitLevel> organisationUnitLevels;
+
+    public List<OrganisationUnitLevel> getOrganisationUnitLevels()
+    {
+        return organisationUnitLevels;
+    }
+
     private Configuration configuration;
 
     public Configuration getConfiguration()
@@ -148,7 +176,17 @@ public class GetGeneralSettingsAction
         feedbackRecipients = configurationService.getConfiguration().getFeedbackRecipients();
 
         completenessRecipients = configurationService.getConfiguration().getCompletenessRecipients();
-        
+
+        offlineOrganisationUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
+
+        if ( offlineOrganisationUnitLevel == null )
+        {
+            // default to highest level
+            // TODO what do we do if the orgunit level hierarchy hasn't been created yet?
+            int size = organisationUnitService.getOrganisationUnitLevels().size();
+            offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size );
+        }
+
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
         Collections.sort( dataElementGroups, IdentifiableObjectNameComparator.INSTANCE );
@@ -158,6 +196,10 @@ public class GetGeneralSettingsAction
         userGroups = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
 
         Collections.sort( userGroups, new UserGroupComparator() );
+
+        organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
+
+        Collections.sort( organisationUnitLevels, new OrganisationUnitLevelComparator() );
 
         return SUCCESS;
     }

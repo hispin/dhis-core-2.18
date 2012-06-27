@@ -27,22 +27,18 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserGroupService;
 
-import com.opensymphony.xwork2.Action;
+import static org.hisp.dhis.setting.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -90,12 +86,19 @@ public class SetGeneralSettingsAction
         this.periodService = periodService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
     private String cacheStrategy;
-    
+
     public void setCacheStrategy( String cacheStrategy )
     {
         this.cacheStrategy = cacheStrategy;
@@ -142,12 +145,19 @@ public class SetGeneralSettingsAction
     {
         this.feedbackRecipients = feedbackRecipients;
     }
-    
+
     private Integer completenessRecipients;
 
     public void setCompletenessRecipients( Integer completenessRecipients )
     {
         this.completenessRecipients = completenessRecipients;
+    }
+
+    private Integer offlineOrganisationUnitLevel;
+
+    public void setOfflineOrganisationUnitLevel( Integer offlineOrganisationUnitLevel )
+    {
+        this.offlineOrganisationUnitLevel = offlineOrganisationUnitLevel;
     }
 
     private Integer completenessOffset;
@@ -194,7 +204,15 @@ public class SetGeneralSettingsAction
         {
             configuration.setCompletenessRecipients( userGroupService.getUserGroup( completenessRecipients ) );
         }
-        
+
+        System.err.println( "Setting offline1: " + offlineOrganisationUnitLevel );
+
+        if ( offlineOrganisationUnitLevel != null )
+        {
+            System.err.println( "Setting offline2: " + offlineOrganisationUnitLevel );
+            configuration.setOfflineOrganisationUnitLevel( organisationUnitService.getOrganisationUnitLevel( offlineOrganisationUnitLevel ) );
+        }
+
         if ( infrastructuralDataElements != null )
         {
             configuration.setInfrastructuralDataElements( dataElementService
@@ -210,7 +228,7 @@ public class SetGeneralSettingsAction
         configurationService.setConfiguration( configuration );
 
         message = i18n.getString( "settings_updated" );
-        
+
         return SUCCESS;
     }
 }
