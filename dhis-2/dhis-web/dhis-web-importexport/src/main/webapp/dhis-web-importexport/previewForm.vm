@@ -45,7 +45,6 @@
 	</tr>
 	#displayObjects( "constant" "Constant" $newConstants $updateConstants )
 	#displayObjects( "data_element" "DataElement" $newDataElements $updateDataElements )
-	#displayObjects( "calculated_data_element" "CalculatedDataElement" $newCalculatedDataElements $updateCalculatedDataElements )
 	#displayObjects( "data_element_group" "DataElementGroup" $newDataElementGroups $updateDataElementGroups )
 	#displayObjects( "data_element_group_set" "DataElementGroupSet" $newDataElementGroupSets $updateDataElementGroupSets )
 	#displayObjects( "indicator_type" "IndicatorType" $newIndicatorTypes $updateIndicatorTypes )
