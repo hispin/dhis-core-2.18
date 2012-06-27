@@ -30,6 +30,7 @@ package org.hisp.dhis.configuration;
 import java.io.Serializable;
 
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.user.UserGroup;
@@ -52,6 +53,8 @@ public class Configuration
     private UserGroup feedbackRecipients;
     
     private UserGroup completenessRecipients;
+
+    private OrganisationUnitLevel offlineOrganisationUnitLevel;
 
     private DataElementGroup infrastructuralDataElements;
     
@@ -102,6 +105,16 @@ public class Configuration
     public void setCompletenessRecipients( UserGroup completenessRecipients )
     {
         this.completenessRecipients = completenessRecipients;
+    }
+
+    public void setOfflineOrganisationUnitLevel( OrganisationUnitLevel offlineOrganisationUnitLevel )
+    {
+        this.offlineOrganisationUnitLevel = offlineOrganisationUnitLevel;
+    }
+
+    public OrganisationUnitLevel getOfflineOrganisationUnitLevel()
+    {
+        return offlineOrganisationUnitLevel;
     }
 
     public DataElementGroup getInfrastructuralDataElements()
