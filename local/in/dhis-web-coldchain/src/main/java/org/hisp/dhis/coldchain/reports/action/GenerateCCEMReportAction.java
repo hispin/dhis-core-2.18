@@ -139,16 +139,26 @@ public class GenerateCCEMReportAction implements Action
             ccemReportOutput = new CCEMReportOutput();
             List<String> tableHeadings = new ArrayList<String>();
             List<List<String>> tableData = new ArrayList<List<String>>();
-            List<String> oneTableRowData = new ArrayList<String>();
+            
+            
+            tableHeadings.add( "Catalog" );
+            tableHeadings.add( "Data" );
+            
             for( String catalogTypeAttributeValueKey : catalogTypeAttributeValueMap.keySet() )
             {
-                tableHeadings.add( catalogTypeAttributeValueKey );
-                oneTableRowData.add( ""+catalogTypeAttributeValueMap.get( catalogTypeAttributeValueKey ) );                
+                List<String> oneTableRowData = new ArrayList<String>();
+                oneTableRowData.add( catalogTypeAttributeValueKey );
+                oneTableRowData.add( ""+catalogTypeAttributeValueMap.get( catalogTypeAttributeValueKey ) );
+                tableData.add( oneTableRowData );
+                //tableHeadings.add( catalogTypeAttributeValueKey );
+                //oneTableRowData.add( ""+catalogTypeAttributeValueMap.get( catalogTypeAttributeValueKey ) );                
             }
             
-            tableData.add( oneTableRowData );
+            //tableData.add( oneTableRowData );
+            ccemReportOutput.setOutputType( ccemReport.getOutputType() );
             ccemReportOutput.setTableData( tableData );
-            ccemReportOutput.setTableHeadings( tableHeadings );            
+            ccemReportOutput.setTableHeadings( tableHeadings );
+            ccemReportOutput.setReportHeading( ccemReport.getReportName() );
         }
         else if( ccemReport.getReportType().equals( CCEMReport.CATALOGTYPE_ATTRIBUTE_VALUE_AGE_GROUP ) )
         {
@@ -333,8 +343,10 @@ public class GenerateCCEMReportAction implements Action
             }
             
             tableData.add( oneTableRowData );
+            ccemReportOutput.setOutputType( ccemReport.getOutputType() );
             ccemReportOutput.setTableData( tableData );
-            ccemReportOutput.setTableHeadings( tableHeadings );  
+            ccemReportOutput.setTableHeadings( tableHeadings );
+            ccemReportOutput.setReportHeading( ccemReport.getReportName() );
         }
         else if( ccemReport.getReportType().equals( CCEMReport.ORGUNITGROUP_DATAVALUE ) )
         {
@@ -437,9 +449,11 @@ public class GenerateCCEMReportAction implements Action
                 }
             }
             
+            ccemReportOutput.setOutputType( ccemReport.getOutputType() );
             ccemReportOutput.setTableData( tableData );
             ccemReportOutput.setTableHeadings( tableHeadings );
             ccemReportOutput.setTableSubHeadings( tableSubHeadings );
+            ccemReportOutput.setReportHeading( ccemReport.getReportName() );
         }
         else if( ccemReport.getReportType().equals( CCEMReport.ORGUNIT_EQUIPMENT_ROUTINE_DATAVALUE ) )
         {
@@ -591,9 +605,11 @@ public class GenerateCCEMReportAction implements Action
             }
             
             tableSubHeadings.add( oneSubHeadingRow );
+            ccemReportOutput.setOutputType( ccemReport.getOutputType() );
             ccemReportOutput.setTableData( tableData );
             ccemReportOutput.setTableHeadings( tableHeadings );
             ccemReportOutput.setTableSubHeadings( tableSubHeadings );
+            ccemReportOutput.setReportHeading( ccemReport.getReportName() );
         }
         else if( ccemReport.getReportType().equals( CCEMReport.VACCINE_STORAGE_CAPACITY ) )
         {
@@ -973,9 +989,11 @@ public class GenerateCCEMReportAction implements Action
                 tableData.add( oneTableDataRow );
             }
             
+            ccemReportOutput.setOutputType( ccemReport.getOutputType() );
             ccemReportOutput.setTableData( tableData );
             ccemReportOutput.setTableHeadings( tableHeadings );
-            ccemReportOutput.setTableSubHeadings( tableSubHeadings );            
+            ccemReportOutput.setTableSubHeadings( tableSubHeadings );
+            ccemReportOutput.setReportHeading( ccemReport.getReportName() );
         }
 
         return SUCCESS;

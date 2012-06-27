@@ -7,6 +7,8 @@ public class CCEMReportOutput
 
     private String reportHeading;
     
+    private String outputType;
+    
     private List<String> tableHeadings;
     
     private List<List<String>> tableSubHeadings;
@@ -51,6 +53,16 @@ public class CCEMReportOutput
     public void setReportHeading( String reportHeading )
     {
         this.reportHeading = reportHeading;
+    }
+
+    public String getOutputType()
+    {
+        return outputType;
+    }
+
+    public void setOutputType( String outputType )
+    {
+        this.outputType = outputType;
     }
     
 }

@@ -48,7 +48,6 @@ public class UpdateInventoryTypeAction implements Action
         this.inventoryType_AttributeService = inventoryType_AttributeService;
     }
     
-    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------

@@ -1,3 +1,6 @@
+<script src="javascript/highcharts.js"></script>
+<script src="javascript/exporting.js"></script>
+
 <script>
     leftBar.hideAnimated();
 </script>
@@ -34,10 +37,10 @@
                     <tr style="background-color: #C0C0C0;"><td><strong>$i18n.getString( "ccem_reports_period_list" ):</strong></td></tr>
 					<tr>			
                         <td>
-							<input type="radio" id="periodRadio" name="periodRadio" value="LAST_3_MONTHS" disable />$i18n.getString( "last_3months" )
-							<input type="radio" id="periodRadio" name="periodRadio" value="CURRENT_YEAR" disable />$i18n.getString( "current_year" )<br/>
-							<input type="radio" id="periodRadio" name="periodRadio" value="LAST_6_MONTHS" disable />$i18n.getString( "last_6months" )							
-                            <input type="radio" id="periodRadio" name="periodRadio" value="LAST_YEAR" disable />$i18n.getString( "last_year" )
+							<input type="radio" id="periodRadio" name="periodRadio" value="LAST_3_MONTHS" disabled />$i18n.getString( "last_3months" )
+							<input type="radio" id="periodRadio" name="periodRadio" value="CURRENT_YEAR" disabled />$i18n.getString( "current_year" )<br/>
+							<input type="radio" id="periodRadio" name="periodRadio" value="LAST_6_MONTHS" disabled />$i18n.getString( "last_6months" )							
+                            <input type="radio" id="periodRadio" name="periodRadio" value="LAST_YEAR" disabled />$i18n.getString( "last_year" )
                         </td>
                     </tr>
                     <tr>
