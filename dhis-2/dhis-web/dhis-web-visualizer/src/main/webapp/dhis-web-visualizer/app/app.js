@@ -38,6 +38,7 @@ DV.conf = {
 				obj5.value = this.values[4];
 				obj6[s] = this.series[1];
 				obj6[c] = this.category[1];
+				obj6[c] = this.category[1];
 				obj6.value = this.values[5];
 				obj7[s] = this.series[2];
 				obj7[c] = this.category[1];
@@ -609,8 +610,8 @@ Ext.onReady( function() {
 					tp = DV.cmp.dimension.organisationunit.treepanel,
 	                selection = tp.getSelectionModel().getSelection();
 					if (!selection.length) {
-						selection = [tp.getRootNode()];
-						tp.selectRoot();
+						var firstRoot = tp.getRootNode().getChildAt(0);
+						selection = [firstRoot];
 					}
 					Ext.Array.each(selection, function(r) {
 						a.push({id: r.data.id, name: r.data.text});
@@ -3196,7 +3197,7 @@ Ext.onReady( function() {
 														this.up('panel').groupsets = this;
 													}
 												}
-											},
+											},											
 											{
 												xtype: 'treepanel',
 												cls: 'dv-tree',
@@ -3205,12 +3206,24 @@ Ext.onReady( function() {
 												autoScroll: true,
 												multiSelect: true,
 												rendered: false,
-												selectRoot: function() {
-													if (this.rendered) {
-														if (!this.getSelectionModel().getSelection().length) {
-															this.getSelectionModel().select(this.getRootNode());
-														}
+												selectRootIf: function() {
+													if (this.getSelectionModel().getSelection().length < 1) {
+														var node = this.getRootNode().findChild('id', DV.init.system.rootnodes[0].id, true);
+														this.getSelectionModel().select(node);
 													}
+												},
+												recordsToSelect: [],
+												multipleSelectIf: function() {
+													if (this.recordsToSelect.length > 1) {
+														this.getSelectionModel().select(this.recordsToSelect);
+													}
+												},
+												multipleExpand: function(path, id) {													
+													this.expandPath(path, 'id', '/', function() {
+														var record = this.getRootNode().findChild('id', id, true);
+														this.recordsToSelect.push(record);
+														this.multipleSelectIf();
+													}, this);
 												},
 												store: Ext.create('Ext.data.TreeStore', {
 													proxy: {
@@ -3218,6 +3231,7 @@ Ext.onReady( function() {
 														url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.organisationunitchildren_get
 													},
 													root: {
+														id: 'root',
 														expanded: true,
 														children: DV.init.system.rootnodes
 													},
@@ -3270,6 +3284,7 @@ Ext.onReady( function() {
 											expand: function() {
 												DV.util.dimension.panel.setHeight(DV.conf.layout.west_maxheight_accordion_organisationunit);
 												DV.cmp.dimension.organisationunit.treepanel.setHeight(DV.cmp.dimension.organisationunit.panel.getHeight() - DV.conf.layout.west_fill_accordion_organisationunit);
+												DV.cmp.dimension.organisationunit.treepanel.selectRootIf();
 											}
 										}
 									},
