@@ -59,6 +59,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.importexport.dhis14.util.Dhis14DateUtil;
 
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MimicingHashMap;
@@ -257,7 +258,7 @@ public class DataValueConverter
                 {
                     try
                     {
-                        value.setValue(  DateUtils.getDefaultDate( values[7] ).toString()  ); //TODO Check conversion
+                        value.setValue(   DateUtils.getDefaultDate( Dhis14DateUtil.getDate( values[7] ).toString() ).toString() ); 
                     }
                     catch ( Exception e )
                     {
@@ -277,7 +278,7 @@ public class DataValueConverter
                 }
 
                 value.setComment( values[13] );
-                value.setTimestamp( DateUtils.getDefaultDate( values[15] ) );
+                value.setTimestamp( DateUtils.getDefaultDate( Dhis14DateUtil.getDate( values[15] ).toString() ) );
                 value.setOptionCombo( proxyCategoryOptionCombo );
                 value.setStoredBy( owner );
 
