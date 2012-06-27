@@ -39,14 +39,15 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $LoadSingleEventProrgramAction.java Jun 26, 2012 10:36:31 AM$
+ * @version $GetSingleEventProgramListAction.java Jun 26, 2012 10:36:31 AM$
  */
-public class GetSingleEventProrgramListAction
+public class GetSingleEventProgramListAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
@@ -81,8 +82,11 @@ public class GetSingleEventProrgramListAction
     {
         OrganisationUnit orgunit = selectionManager.getSelectedOrganisationUnit();
 
-        programs = programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, orgunit );
-
+        if ( orgunit != null )
+        {
+            programs = programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, orgunit );
+        }
+        
         return SUCCESS;
     }
 

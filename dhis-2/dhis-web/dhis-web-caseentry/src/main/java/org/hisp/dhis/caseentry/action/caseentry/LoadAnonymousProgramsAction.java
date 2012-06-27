@@ -106,8 +106,11 @@ public class LoadAnonymousProgramsAction
     {
         orgunit = selectionManager.getSelectedOrganisationUnit();
 
-        programs = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, orgunit );
-
+        if ( orgunit != null )
+        {
+            programs = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, orgunit );
+        }
+        
         levels = organisationUnitService.getFilledOrganisationUnitLevels();
 
         return SUCCESS;

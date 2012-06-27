@@ -193,8 +193,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Single-event DataEntry -->
 	
 	<bean
-		id="org.hisp.dhis.caseentry.action.caseentry.GetSingleEventProrgramListAction"
-		class="org.hisp.dhis.caseentry.action.caseentry.GetSingleEventProrgramListAction"
+		id="org.hisp.dhis.caseentry.action.caseentry.GetSingleEventProgramListAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.GetSingleEventProgramListAction"
 		scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
