@@ -35,6 +35,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.integration.IntegrationService;
+import org.hisp.dhis.scheduling.TaskId;
 
 /**
  * @author bobj
@@ -58,8 +59,11 @@ public class Dxf2DataProducer
         ImportOptions options = (ImportOptions) exchange.getIn().
             getHeader( IntegrationService.IMPORT_OPTIONS_HDR, endpoint.getImportOptions() );
         
+        TaskId taskId = (TaskId) exchange.getIn().
+            getHeader( IntegrationService.TASK_ID_HDR, null );
+        
         ImportSummary summary = endpoint.getDataValueSetService().saveDataValueSet( (InputStream)exchange.getIn().getBody(), 
-             options );
+             options, taskId );
         
         exchange.getOut().setBody( summary );
         log.debug( this.getEndpoint().getEndpointUri() + " : " + JacksonUtils.toXmlAsString(exchange.getOut().getBody()) );
