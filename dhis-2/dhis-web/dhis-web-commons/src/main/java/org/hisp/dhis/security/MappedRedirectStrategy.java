@@ -90,12 +90,7 @@ public class MappedRedirectStrategy
 
         if ( device.isMobile() )
         {
-            // Older nokia phones do not set the referer header correct, leaving old code here for now
-            // until new code has been tested.
-            //
-            //  url = request.getHeader( "referer" ).replaceFirst( "/dhis-web-commons/security/login.action",
-            //  "/mobile/index.action" );
-            url = getRootPath( request ) + "/mobile/index.action";
+            url = getRootPath( request ) + "/light/index.action";
         }
 
         log.debug( "Redirecting to " + url );
