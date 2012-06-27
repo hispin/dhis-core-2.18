@@ -463,6 +463,22 @@ public class OrganisationUnit
 
         return builder.toString();
     }
+    
+    public List<OrganisationUnit> getAncestors()
+    {
+        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+        
+        OrganisationUnit unit = parent;
+
+        while ( unit != null )
+        {
+            units.add( unit );
+            unit = unit.getParent();
+        }
+        
+        Collections.reverse( units );
+        return units;
+    }
 
     public Set<DataElement> getDataElementsInDataSets()
     {
