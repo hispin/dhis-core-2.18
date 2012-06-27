@@ -247,7 +247,7 @@ public class DefaultExpressionService
                 }
                 else if ( !operand.isTotal() && mappedCategoryOptionComboId == null )
                 {
-                    log.warn( "Category option combo identifer refers to non-existing object: "
+                    log.warn( "Category option combo identifier refers to non-existing object: "
                         + operand.getOptionComboId() );
 
                     match = NULL_REPLACEMENT;
