@@ -119,21 +119,6 @@ public class DataValueSetController
         response.setContentType( CONTENT_TYPE_XML );        
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
-
-    @RequestMapping( method = RequestMethod.POST, consumes = "application/dhis+xml" )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
-    public void postDataValueSet( ImportOptions importOptions,
-                                  HttpServletResponse response, 
-                                  InputStream in,
-                                  Model model ) throws IOException
-    {
-        ImportSummary summary = integrationService.importXMLDataValueSet( in, importOptions );
-
-        log.info( "Data values set saved " + importOptions );    
-
-        response.setContentType( CONTENT_TYPE_XML );        
-        JacksonUtils.toXml( response.getOutputStream(), summary );
-    }
     
     @ExceptionHandler(IllegalArgumentException.class)
     public void handleError( IllegalArgumentException ex, HttpServletResponse response )
