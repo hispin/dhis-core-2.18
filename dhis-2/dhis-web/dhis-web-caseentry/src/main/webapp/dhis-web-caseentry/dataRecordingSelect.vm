@@ -60,7 +60,7 @@
 	<input type="button" class='button' value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" >
 </div>
 		
-<div id='inputCriteria' class="page inputCriteria" style="width:480px;height:29px;">	
+<div id='inputCriteria' class="page inputCriteria" style="width:490px;height:29px;">	
 	<input type='hidden' id='programStageId' name='programStageId'>
 	<table>
 	   <tr id='programIdTR'>

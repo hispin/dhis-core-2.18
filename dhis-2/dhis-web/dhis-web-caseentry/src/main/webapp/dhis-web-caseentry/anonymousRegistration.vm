@@ -49,7 +49,7 @@
 					<input type="button" id='addBtn' value='$i18n.getString( "add_new" )' onclick="showAddEventForm();">
 				</td>
 				<td>
-					<input type="button" value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').slideToggle();">
+					<input type="button" value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();">
 				</td>
 			</tr>
 		</table>
