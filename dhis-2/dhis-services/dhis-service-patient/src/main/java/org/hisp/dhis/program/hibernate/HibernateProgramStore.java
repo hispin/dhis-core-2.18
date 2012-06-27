@@ -53,9 +53,10 @@ public class HibernateProgramStore
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Program> get( int type, OrganisationUnit orgunit )
+    public Collection<Program> get( int type, OrganisationUnit organisationUnit )
     {
-        return getCriteria( Restrictions.eq( "type", type ) ).createAlias( "organisationUnits", "orgunit" ).add(
-            Restrictions.eq( "orgunit.id", orgunit.getId() ) ).list();
+        final String hql = "from Program p where p.type = :type and :organisationUnit in elements(p.organisationUnits)";
+        
+        return getQuery( hql ).setInteger( "type", type ).setEntity( "organisationUnit", organisationUnit ).list();
     }
 }
