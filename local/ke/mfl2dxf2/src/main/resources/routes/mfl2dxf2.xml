@@ -8,7 +8,7 @@
 
   <!-- <from uri="file:/Users/mortenoh/GDrive/HISP/ke/mfl/data/inbox?consumer.initialDelay=10000&amp;consumer.delay=5000" /> -->
   <from uri="quartz://every1minute?cron=0+0/1+*+*+*+%3F" />
-  <to uri="http://api.ehealth.or.ke/api/facilities?lastApproved=1/1/2011&amp;paging=off&amp;scheme=on" />
+  <to uri="http://api.ehealth.or.ke/api/facilities?lastDays=720&amp;paging=off&amp;scheme=code" />
   <to uri="xslt:transform/mfl2dxf2.xsl" />
   <convertBodyTo type="java.io.InputStream"/>
   <inOut uri="dhis2:metadata" />
