@@ -108,6 +108,8 @@ function addData( programId, patientId )
 		data: params,
 		success: function(json) {
 			showSuccessMessage( i18n_save_success );
+			jQuery("#resultSearchDiv").dialog("close");
+			setFieldvalue('listAll', true);
 		  }
      });
     return false;
@@ -192,4 +194,11 @@ function removeDisabledIdentifier()
 		if( jQuery(this).is(":disabled"))
 			jQuery(this).val("");
 	});
+}
+
+function backAddNewBtn()
+{
+	showSearchForm();
+	if( getFieldvalue('listAll')=='true')
+		listPatientBtn();
 }

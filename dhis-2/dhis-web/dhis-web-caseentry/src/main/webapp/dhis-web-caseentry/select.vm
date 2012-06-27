@@ -6,6 +6,7 @@
 
 <h3>$i18n.getString( "name_based_data_entry" ) #openHelp('name_based_data_entry')</h3>
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
+<input type='hidden' id='listAll' name= 'listAll' >
 
 <div id='searchDiv'>
 	#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	

@@ -80,9 +80,35 @@
 							datePicker($programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
 						</script> 
 					#elseif($hasOptionSet=='true')
-						<input name="entryfield" options='$hasOptionSet' #if($hasOptionSet == 'true') #end dataElementId='$programStageDataElement.dataElement.id' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" >
+						<input name="entryfield" options='$hasOptionSet' #if($hasOptionSet == 'true') #end dataElementId='$programStageDataElement.dataElement.id' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )"
+							#set( $type=$programStageDataElement.dataElement.getDetailedNumberType())
+							#if( $type=='number' ) 
+								class="{validate:{number:true}}" 
+							#elseif( $type=='positiveNumber' )
+								class="{validate:{positive_integer:true}}" 
+							#elseif( $type=='negativeNumber' )
+								class="{validate:{negative_integer:true}}" 
+							#elseif( $type=='int' )
+								class="{validate:{integer:true}}" 
+							#end />
 					#else
-						<input name="entryfield" dataElementId='$programStageDataElement.dataElement.id' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex">
+						<input name="entryfield" dataElementId='$programStageDataElement.dataElement.id' 
+							data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
+							id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" 
+							onchange="saveVal( $programStageDataElement.dataElement.id )" 
+							onkeypress="return keyPress(event, this)" tabindex="$tabIndex"
+							
+							#set( $type=$programStageDataElement.dataElement.getDetailedNumberType())
+							#if( $type=='number' ) 
+								class="{validate:{number:true}}" 
+							#elseif( $type=='positiveNumber' )
+								class="{validate:{positive_integer:true}}" 
+							#elseif( $type=='negativeNumber' )
+								class="{validate:{negative_integer:true}}" 
+							#elseif( $type=='int' )
+								class="{validate:{integer:true}}" 
+							#end
+						/>
 					#end
 				</td> 
 				#if( $!programStageInstance.programStage.program.isRegistration() == 'true' )
