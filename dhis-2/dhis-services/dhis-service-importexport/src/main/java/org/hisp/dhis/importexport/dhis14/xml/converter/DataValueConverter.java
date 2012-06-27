@@ -59,7 +59,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.importexport.dhis14.util.Dhis14DateUtil;
+import org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler;
 
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.MimicingHashMap;
@@ -245,12 +245,7 @@ public class DataValueConverter
                 }
                 else if ( !values[5].isEmpty() ) // Boolean
                 {
-                    value.setValue( "false" );
-
-                    if ( values[5].trim().equals( "1" ) )
-                    {
-                        value.setValue( "true" );
-                    }
+                    value.setValue(Dhis14TypeHandler.convertYesNoFromDhis14( Integer.parseInt(values[5]) ) );
 
                 }
                 else if ( !values[7].isEmpty() ) // Date
@@ -328,15 +323,8 @@ public class DataValueConverter
 
             else if ( dataElementType.equals( DataElement.VALUE_TYPE_BOOL ) )
             {
-                String outputValue;
-                if ( value.getValue().equals( "true" ) )
-                {
-                    outputValue = "1";
-                }
-                else
-                    outputValue = "0";
                 out.write( SEPARATOR_B );
-                out.write( getCsvValue( csvEncode( outputValue ) ) );
+                out.write( getCsvValue( csvEncode( Dhis14TypeHandler.convertBooleanToDhis14( value.getValue()) ) ) );
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );
                 out.write( SEPARATOR_B );
