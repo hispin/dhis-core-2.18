@@ -27,6 +27,7 @@ function showSearchForm()
 	showById('contentDiv');
 	hideById('addNewDiv');
 	jQuery('#createNewEncounterDiv').dialog('close');
+	jQuery('#resultSearchDiv').dialog('close');
 }
 
 //--------------------------------------------------------------------------------------------
@@ -44,6 +45,7 @@ function listAllPatient()
 			hideById('dataEntryFormDiv');
 			showById('searchDiv');
 			setInnerHTML('searchInforTD', i18n_list_all_patients );
+			setFieldValue('listAll', true);
 			hideLoader();
 		});
 }
@@ -95,6 +97,7 @@ function searchValidationCompleted( messageElement )
 			function()
 			{
 				showById('searchDiv');
+				setFieldValue('listAll', false);
 				hideLoader();
 			});
     }

@@ -48,7 +48,7 @@
 	<div id='dataForm'>#parse( "/dhis-web-caseentry/dataEntryForm.vm" )</div>
 	<p>
 		<input type="submit" class="button" value="$i18n.getString( 'add' )" />
-		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="javascript:showSearchForm();"/>
+		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="javascript:backAddNewBtn();"/>
 	</p>
 </form>
 
