@@ -91,7 +91,7 @@ public class SearchBeneficiaryAction
         {
             keyword = tokens[0] + "  " + tokens[1];
         }
-        patientList = new ArrayList<Patient>( patientService.getPatientsByNames( keyword, null, null ) );
+        patientList = new ArrayList<Patient>(patientService.getPatientsForMobile( keyword, 0 ) );
         return SUCCESS;
     }
 
