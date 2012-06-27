@@ -28,12 +28,15 @@ package org.hisp.dhis.integration;
  */
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.ProducerTemplate;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.integration.routes.SDMXDataIn;
 import org.hisp.dhis.integration.routes.XMLDataIn;
+import org.hisp.dhis.scheduling.TaskId;
 
 /**
  * @author bobj
@@ -57,5 +60,25 @@ public class DefaultIntegrationService
     public ImportSummary importSDMXDataValueSet( InputStream in, ImportOptions importOptions )
     {
        return (ImportSummary) sdmxIn.requestBodyAndHeader( in, IMPORT_OPTIONS_HDR, importOptions);
-    }   
+    }
+
+    @Override
+    public ImportSummary importXMLDataValueSet( InputStream in, ImportOptions options, TaskId taskId )
+    {
+        Map<String,Object> headers = new HashMap<String,Object>();
+        headers.put( TASK_ID_HDR, taskId );
+        headers.put( IMPORT_OPTIONS_HDR, options);
+        
+       return (ImportSummary) xmlIn.requestBodyAndHeaders( in, headers);
+    }
+
+    @Override
+    public ImportSummary importSDMXDataValueSet( InputStream in, ImportOptions options, TaskId taskId )
+    {
+        Map<String,Object> headers = new HashMap<String,Object>();
+        headers.put( TASK_ID_HDR, taskId );
+        headers.put( IMPORT_OPTIONS_HDR, options);
+        
+       return (ImportSummary) sdmxIn.requestBodyAndHeaders( in, headers);
+    }
 }

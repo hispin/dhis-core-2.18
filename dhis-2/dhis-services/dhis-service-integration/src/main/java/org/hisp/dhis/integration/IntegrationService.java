@@ -30,6 +30,7 @@ package org.hisp.dhis.integration;
 import java.io.InputStream;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.scheduling.TaskId;
 
 /**
  *
@@ -38,8 +39,16 @@ import org.hisp.dhis.dxf2.metadata.ImportOptions;
 public interface IntegrationService
 {
     public static final String IMPORT_OPTIONS_HDR = "ImportOptions";
+    
+    public static final String TASK_ID_HDR = "TASK_ID";
+
 
     ImportSummary importXMLDataValueSet(InputStream in, ImportOptions options);
 
     ImportSummary importSDMXDataValueSet(InputStream in, ImportOptions options);
+
+    ImportSummary importXMLDataValueSet(InputStream in, ImportOptions options, TaskId taskId);
+
+    ImportSummary importSDMXDataValueSet(InputStream in, ImportOptions options, TaskId taskId);
+
 }
