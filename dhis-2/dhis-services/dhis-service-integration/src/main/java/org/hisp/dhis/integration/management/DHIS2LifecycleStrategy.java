@@ -27,6 +27,9 @@ package org.hisp.dhis.integration.management;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.concurrent.ThreadPoolExecutor;
 import org.apache.camel.CamelContext;
@@ -37,10 +40,15 @@ import org.apache.camel.Processor;
 import org.apache.camel.Route;
 import org.apache.camel.Service;
 import org.apache.camel.VetoCamelContextStartException;
+import org.apache.camel.model.RoutesDefinition;
 import org.apache.camel.spi.LifecycleStrategy;
 import org.apache.camel.spi.RouteContext;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.external.location.LocationManager;
+import org.hisp.dhis.external.location.LocationManagerException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author bobj
@@ -50,12 +58,49 @@ public class DHIS2LifecycleStrategy
 {
     private final Log log = LogFactory.getLog( DHIS2LifecycleStrategy.class );
     
+    @Autowired
+    private LocationManager locationManager;
+    
     @Override
     public void onContextStart( CamelContext context ) 
         throws VetoCamelContextStartException
     {
-        log.info( "Camel context started" );
-        // todo: pickup routes from dhis2_home
+        try
+        {
+            log.info( "Camel context started" );
+            File rootsDir = new File(locationManager.getExternalDirectory().getAbsolutePath() + "/routes/");
+            
+            if (!rootsDir.exists()) {
+                rootsDir.mkdir();
+            }
+            
+            File[] routeFiles = rootsDir.listFiles();
+            for (File routeFile : routeFiles) 
+            {
+                // load xml route
+                if (routeFile.getName().endsWith( ".xml") ) 
+                {
+                    InputStream is = null;
+                    try
+                    {
+                        is = new FileInputStream(routeFile);
+                        RoutesDefinition routes = context.loadRoutesDefinition( is );
+                        context.addRouteDefinitions( routes.getRoutes() );
+                    } catch ( Exception ex )
+                    {
+                        log.info( "Unable to load routes from " + routeFile.getName() + " : " + ex.getMessage() );
+                    } finally
+                    {
+                        IOUtils.closeQuietly( is);
+                    }
+                }
+            }
+        } catch ( LocationManagerException ex )
+        {
+            // no dhis2_home directory configured .. no routes to load ... that's ok
+            log.info("Not loading external routes from DHIS2_HOME");
+        }
+        
     }
 
     @Override
@@ -67,25 +112,25 @@ public class DHIS2LifecycleStrategy
     @Override
     public void onComponentAdd( String name, Component cmpnt )
     {
-        log.info( "Camel component added: " + name );
+        log.debug( "Camel component added: " + name );
     }
 
     @Override
     public void onComponentRemove( String name, Component cmpnt )
     {
-        log.info( "Camel component removed: " + name );
+        log.debug( "Camel component removed: " + name );
     }
 
     @Override
     public void onEndpointAdd( Endpoint endpnt )
     {
-        log.info( "Camel endpoint added: " + endpnt.getEndpointUri() );
+        log.debug( "Camel endpoint added: " + endpnt.getEndpointUri() );
     }
 
     @Override
     public void onEndpointRemove( Endpoint endpnt )
     {
-        log.info( "Camel endpoint removed: " + endpnt.getEndpointUri() );
+        log.debug( "Camel endpoint removed: " + endpnt.getEndpointUri() );
     }
 
     @Override
@@ -119,7 +164,7 @@ public class DHIS2LifecycleStrategy
     @Override
     public void onErrorHandlerAdd( RouteContext rc, Processor prcsr, ErrorHandlerFactory ehf )
     {
-        log.info( "Camel error handler added: " + ehf.toString() );
+        log.debug( "Camel error handler added: " + ehf.toString() );
     }
 
     @Override
