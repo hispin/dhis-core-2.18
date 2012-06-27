@@ -345,3 +345,43 @@ function setEventColorStatus( elementId, status )
 		  return;
 	}
 }
+
+
+// -----------------------------------------------------------------------------
+// check duplicate patient
+// -----------------------------------------------------------------------------
+
+function checkDuplicate( divname )
+{
+	$.postUTF8( 'validatePatient.action', 
+		{
+			fullName: jQuery( '#' + divname + ' [id=fullName]' ).val(),
+			dobType: jQuery( '#' + divname + ' [id=dobType]' ).val(),
+			gender: jQuery( '#' + divname + ' [id=gender]' ).val(),
+			birthDate: jQuery( '#' + divname + ' [id=birthDate]' ).val(),        
+			age: jQuery( '#' + divname + ' [id=age]' ).val()
+		}, function( xmlObject, divname )
+		{
+			checkDuplicateCompleted( xmlObject, divname );
+		});
+}
+
+function checkDuplicateCompleted( messageElement, divname )
+{
+	checkedDuplicate = true;    
+	var type = jQuery(messageElement).find('message').attr('type');
+	var message = jQuery(messageElement).find('message').text();
+    
+    if( type == 'success')
+    {
+    	showSuccessMessage(i18n_no_duplicate_found);
+    }
+    if ( type == 'input' )
+    {
+        showWarningMessage(message);
+    }
+    else if( type == 'duplicate' )
+    {
+    	showListPatientDuplicate( messageElement, true );
+    }
+}

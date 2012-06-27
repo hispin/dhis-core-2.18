@@ -40,7 +40,7 @@
 	<h3>$i18n.getString( "add_new_patient" )</h3>	
 	<input type="hidden" id="representativeId" name="representativeId"/> 
 	<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
-	<table id='editPatientDiv'>
+	<table id='patientForm'>
 		#parse( "/dhis-web-caseentry/patientForm.vm" )
 	</table>
 
