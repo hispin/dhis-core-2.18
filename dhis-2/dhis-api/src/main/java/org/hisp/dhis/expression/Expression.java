@@ -136,20 +136,48 @@ public class Expression
     // -------------------------------------------------------------------------
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object obj )
     {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
+        if ( this == obj )
+        {
+            return true;
+        }
 
-        Expression that = (Expression) o;
+        if ( obj == null )
+        {
+            return false;
+        }
 
-        if ( id != that.id ) return false;
-        if ( dataElementsInExpression != null ? !dataElementsInExpression.equals( that.dataElementsInExpression ) : that.dataElementsInExpression != null )
+        if ( getClass() != obj.getClass() )
+        {
             return false;
-        if ( description != null ? !description.equals( that.description ) : that.description != null ) return false;
-        if ( expression != null ? !expression.equals( that.expression ) : that.expression != null ) return false;
-        if ( optionCombosInExpression != null ? !optionCombosInExpression.equals( that.optionCombosInExpression ) : that.optionCombosInExpression != null )
+        }
+
+        final Expression other = (Expression) obj;
+
+        if ( description == null )
+        {
+            if ( other.description != null )
+            {
+                return false;
+            }
+        }
+        else if ( !description.equals( other.description ) )
+        {
             return false;
+        }
+
+        if ( expression == null )
+        {
+            if ( other.expression != null )
+            {
+                return false;
+            }
+        }
+        else if ( !expression.equals( other.expression ) )
+        {
+            return false;
+        }
 
         return true;
     }
@@ -157,11 +185,10 @@ public class Expression
     @Override
     public int hashCode()
     {
-        int result = id;
-        result = 31 * result + (expression != null ? expression.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (dataElementsInExpression != null ? dataElementsInExpression.hashCode() : 0);
-        result = 31 * result + (optionCombosInExpression != null ? optionCombosInExpression.hashCode() : 0);
+        final int PRIME = 31;
+        int result = 1;
+        result = PRIME * result + ((description == null) ? 0 : description.hashCode());
+        result = PRIME * result + ((expression == null) ? 0 : expression.hashCode());
 
         return result;
     }
