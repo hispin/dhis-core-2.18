@@ -157,10 +157,14 @@ function loadDataEntry( programStageInstanceId )
 
 function saveVal( dataElementId )
 {
+	if( byId('programStageId') == null) return;
 	var programStageId = byId('programStageId').value;
+	
 	var fieldId = programStageId + '-' + dataElementId + '-val';
 	
 	var field = byId( fieldId ); 
+	if( field == null) return;
+	
 	var fieldValue = jQuery.trim( field.value );
 
 	var arrData = jQuery( "#" + fieldId ).attr('data').replace('{','').replace('}','').replace(/'/g,"").split(',');
@@ -855,6 +859,9 @@ function autocompletedField( idField )
 					return false;
 				}
 			}
+		},
+		blur: function( event, ui ){
+			input.autocomplete( "close" );
 		}
 	})
 	.addClass( "ui-widget" );

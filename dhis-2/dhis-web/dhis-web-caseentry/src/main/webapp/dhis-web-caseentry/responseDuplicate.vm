@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <message type="duplicate">$encoder.xmlEncode( $message )
-#foreach( $patient  in $patients )
+#foreach( $patient in $patients )
 <patient>
   <id>$patient.id</id>  
   <fullName>$encoder.xmlEncode( $patient.getFullName() )</fullName>

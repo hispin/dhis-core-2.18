@@ -126,7 +126,8 @@ function showSelectedDataRecoding( patientId )
 			showById('dataRecordingSelectDiv');
 			hideLoader();
 			hideById('contentDiv');
-			if( getFieldValue('isRegistration') )
+			jQuery("#dataRecordingSelectDiv [id=inputCriteria]").show();
+			if( getFieldValue('isRegistration') == 'true' )
 			{
 				jQuery("#dataRecordingSelectDiv [id=inputCriteria]").hide();
 				var singleProgramId = getFieldValue('programIdAddPatient');
