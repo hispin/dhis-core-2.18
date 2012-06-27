@@ -44,10 +44,16 @@ public class Dhis14TypeHandler
         return value ? DHIS14_TRUE : DHIS14_FALSE;
     }
     
+    public static String convertBooleanToDhis14( String value )
+    {
+        return (String) (value.equals("true") ? "1" : "0");
+    }
+    
     public static boolean convertBooleanFromDhis14( String value )
     {
         return value.equals( DHIS14_TRUE );
     }
+    
 
     // -------------------------------------------------------------------------
     // Aggregation operator
