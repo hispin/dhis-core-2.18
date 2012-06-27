@@ -518,7 +518,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
         <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
         <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
-        <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+        <!--<property name="userStore" ref="org.hisp.dhis.user.UserStore" />-->
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
         <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
         <property name="reportService" ref="org.hisp.dhis.reports.ReportService"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
@@ -1059,9 +1060,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.reports.action.AddUserAction"
         class="org.hisp.dhis.reports.action.AddUserAction" scope="prototype">
         
-        <property name="userStore">
-            <ref bean="org.hisp.dhis.user.UserStore"/>
+        <property name="userService">
+            <ref bean="org.hisp.dhis.user.UserService"/>
         </property>
+<!--	<property name="userStore">
+            <ref bean="org.hisp.dhis.user.UserStore"/>
+        </property>-->	
         <property name="passwordManager">
             <ref bean="org.hisp.dhis.security.PasswordManager"/>
         </property>
@@ -1078,9 +1082,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.reports.action.AddMultipleUserAction"
         class="org.hisp.dhis.reports.action.AddMultipleUserAction" scope="prototype">
         
-        <property name="userStore">
+<!--    <property name="userStore">
             <ref bean="org.hisp.dhis.user.UserStore"/>
-        </property>
+        </property>-->
+        <property name="userService">
+            <ref bean="org.hisp.dhis.user.UserService"/>
+        </property>		
         <property name="passwordManager">
             <ref bean="org.hisp.dhis.security.PasswordManager"/>
         </property>

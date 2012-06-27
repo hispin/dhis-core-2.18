@@ -13,7 +13,7 @@ import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -24,13 +24,14 @@ public class AddUserAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    /*
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
     }
-
+    */
     private PasswordManager passwordManager;
 
     public void setPasswordManager( PasswordManager passwordManager )
@@ -50,6 +51,13 @@ public class AddUserAction
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
+    private UserService userService;
+    
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
     
     // -------------------------------------------------------------------------
@@ -92,7 +100,8 @@ public class AddUserAction
                 {
                     for ( User u : tempUserList )
                     {
-                        UserCredentials uc = userStore.getUserCredentials( u );
+                        //UserCredentials uc = userStore.getUserCredentials( u );
+                        UserCredentials uc = userService.getUserCredentials( u );
                         if ( uc != null && uc.getUsername().equalsIgnoreCase( username ) )
                             flag = 1;
                     }
@@ -119,11 +128,15 @@ public class AddUserAction
                 userCredentials.setPassword( passwordManager.encodePassword( username, rawPassword ) );
 
                 //Hard Coded with the Subcenter UserRole Id
-                UserAuthorityGroup group = userStore.getUserAuthorityGroup( 8 );
+                UserAuthorityGroup group = userService.getUserAuthorityGroup( 8 );
+                //UserAuthorityGroup group = userStore.getUserAuthorityGroup( 8 );
                 userCredentials.getUserAuthorityGroups().add( group );
 
-                userStore.addUser( user );
-                userStore.addUserCredentials( userCredentials );
+                //userStore.addUser( user );
+                //userStore.addUserCredentials( userCredentials );
+                
+                userService.addUser( user );
+                userService.addUserCredentials( userCredentials );
                 System.out.println( username + " Created" );
             }// OrgUnit For Loop End
 

@@ -52,7 +52,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -137,13 +137,21 @@ implements Action
         this.displayPropertyHandler = displayPropertyHandler;
     }
     */
+    private UserService userService;
+    
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
+    /*
     private UserStore userStore;
     
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
     }
-      
+    */  
     @SuppressWarnings("unused")
     private Comparator<OrganisationUnit> orgUnitComparator;
 
@@ -565,12 +573,13 @@ implements Action
                         String tempUserName = sqlResultSet.getString( 1 );
                         
                         if( tempUserName != null)
-                        {                      
-                            UserCredentials userCredentials = userStore.getUserCredentialsByUsername( tempUserName );
-                            
+                        {   UserCredentials userCredentials  =  userService.getUserCredentialsByUsername( tempUserName );
+                            //UserCredentials userCredentials = userStore.getUserCredentialsByUsername( tempUserName );
+                            //User user = userStore.getByName( tempUserName );
                             if( userCredentials != null )
                             {
-                                User user = userStore.getUser( userCredentials.getId() );
+                                User user = userService.getUser( userCredentials.getId() );
+                                //User user = userStore.getUser( userCredentials.getId() );
                                 
                                 if( user != null )
                                 {

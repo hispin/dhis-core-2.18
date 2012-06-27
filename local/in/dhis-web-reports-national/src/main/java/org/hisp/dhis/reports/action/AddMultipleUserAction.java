@@ -17,7 +17,7 @@ import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -34,14 +34,14 @@ public class AddMultipleUserAction
     {
         this.reportService = reportService;
     }
-    
+    /*
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
     }
-    
+    */
     private PasswordManager passwordManager;
 
     public void setPasswordManager( PasswordManager passwordManager )
@@ -54,6 +54,13 @@ public class AddMultipleUserAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private UserService userService;
+    
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
     
     // -------------------------------------------------------------------------
@@ -92,13 +99,13 @@ public class AddMultipleUserAction
             orgUnits.add( orgUId );
             
             Collection<User> tempUserList = orgUId.getUsers();
-            
             int flag = 0;
             if ( tempUserList != null )
             {
                 for ( User u : tempUserList )
                 {
-                    UserCredentials uc = userStore.getUserCredentials( u );
+                    //UserCredentials uc = userStore.getUserCredentials( u );
+                    UserCredentials uc = userService.getUserCredentials( u );
                     if ( uc != null && uc.getUsername().equalsIgnoreCase( userId ) )
                         flag = 1;
                 }
@@ -118,12 +125,17 @@ public class AddMultipleUserAction
             userCredentials.setUser( user );
             userCredentials.setUsername( userId );
             userCredentials.setPassword( passwordManager.encodePassword( userId, passWord ) );
-
-            UserAuthorityGroup group = userStore.getUserAuthorityGroup( userRoleId );
+            
+            UserAuthorityGroup group = userService.getUserAuthorityGroup( userRoleId );
+            
+            //UserAuthorityGroup group = userStore.getUserAuthorityGroup( userRoleId );
             userCredentials.getUserAuthorityGroups().add( group );
 
-            userStore.addUser( user );
-            userStore.addUserCredentials( userCredentials );
+            //userStore.addUser( user );
+            //userStore.addUserCredentials( userCredentials );
+            
+            userService.addUser( user );
+            userService.addUserCredentials( userCredentials );
             System.out.println( orgUnitname + " Created" );
             orgunitcount++;
         }
