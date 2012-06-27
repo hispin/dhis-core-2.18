@@ -48,6 +48,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -132,6 +133,7 @@ public class RoutesTest
         periodService.addPeriod( peB );
     }
     
+    @Ignore
     @Test
     public void testImportDataValueSetSDMX()
         throws Exception
@@ -144,6 +146,7 @@ public class RoutesTest
         
     }
 
+    @Ignore
     @Test
     public void testImportDataValueSetXML()
         throws Exception
