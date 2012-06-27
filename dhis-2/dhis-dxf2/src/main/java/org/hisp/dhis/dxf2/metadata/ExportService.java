@@ -27,6 +27,8 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.scheduling.TaskId;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -34,5 +36,9 @@ public interface ExportService
 {
     MetaData getMetaData();
 
+    MetaData getMetaData(TaskId taskId);
+
     MetaData getMetaData( Options options );
+
+    MetaData getMetaData( Options options, TaskId taskId );
 }

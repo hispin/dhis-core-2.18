@@ -34,5 +34,6 @@ public enum TaskCategory
 {
     DATAMART,
     DATAVALUE_IMPORT,
-    METADATA_IMPORT
+    METADATA_IMPORT,
+    METADATA_EXPORT
 }

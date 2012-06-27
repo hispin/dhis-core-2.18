@@ -31,6 +31,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.notification.NotificationLevel;
+import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +65,9 @@ public class DefaultExportService
     @Autowired
     private CurrentUserService currentUserService;
 
+    @Autowired
+    private Notifier notifier;
+
     //-------------------------------------------------------------------------------------------------------
     // ExportService Implementation
     //-------------------------------------------------------------------------------------------------------
@@ -68,17 +75,34 @@ public class DefaultExportService
     @Override
     public MetaData getMetaData()
     {
-        return getMetaData( Options.getDefaultOptions() );
+        return getMetaData( Options.getDefaultOptions(), null );
+    }
+
+    @Override
+    public MetaData getMetaData( TaskId taskId )
+    {
+        return getMetaData( Options.getDefaultOptions(), taskId );
     }
 
     @Override
     public MetaData getMetaData( Options options )
+    {
+        return getMetaData( Options.getDefaultOptions(), null );
+    }
+
+    @Override
+    public MetaData getMetaData( Options options, TaskId taskId )
     {
         MetaData metaData = new MetaData();
 
         log.info( "User '" + currentUserService.getCurrentUsername() + "' started export at " + new Date() );
 
         Date lastUpdated = options.getLastUpdated();
+
+        if ( taskId != null )
+        {
+            notifier.notify( taskId, TaskCategory.METADATA_EXPORT, "Exporting meta-data" );
+        }
 
         for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getExportMap().entrySet() )
         {
@@ -105,12 +129,24 @@ public class DefaultExportService
                 continue;
             }
 
-            log.info( "Exporting " + idObjects.size() + " " + StringUtils.capitalize( entry.getValue() ) );
+            String message = "Exporting " + idObjects.size() + " " + StringUtils.capitalize( entry.getValue() );
+
+            log.info( message );
+
+            if ( taskId != null )
+            {
+                notifier.notify( taskId, TaskCategory.METADATA_EXPORT, message );
+            }
 
             ReflectionUtils.invokeSetterMethod( entry.getValue(), metaData, new ArrayList<IdentifiableObject>( idObjects ) );
         }
 
-        log.info( "Finished export at " + new Date() );
+        log.info( "Export done at " + new Date() );
+
+        if ( taskId != null )
+        {
+            notifier.notify( taskId, TaskCategory.METADATA_IMPORT, NotificationLevel.INFO, "Export done", true );
+        }
 
         return metaData;
     }
