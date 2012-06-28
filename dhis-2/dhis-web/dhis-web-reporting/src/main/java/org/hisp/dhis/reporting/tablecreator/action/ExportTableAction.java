@@ -48,7 +48,8 @@ import com.opensymphony.xwork2.Action;
 public class ExportTableAction
     implements Action
 {
-    private static final String DEFAULT_TYPE = "html";
+    private static final String TYPE_DEFAULT = "html";
+    private static final String TYPE_JRXML = "jrxml";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -159,8 +160,11 @@ public class ExportTableAction
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
         
-        params.putAll( constantService.getConstantParameterMap() );
-        params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
+        if ( TYPE_JRXML.equals( format ) )
+        {
+            params.putAll( constantService.getConstantParameterMap() );
+            params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
+        }
         
         if ( useLast )
         {
@@ -175,6 +179,6 @@ public class ExportTableAction
 
         SessionUtils.setSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID, grid );
         
-        return type != null ? type : DEFAULT_TYPE;
+        return type != null ? type : TYPE_DEFAULT;
     }
 }
