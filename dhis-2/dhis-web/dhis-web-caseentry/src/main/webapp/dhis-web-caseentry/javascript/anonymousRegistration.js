@@ -219,7 +219,7 @@ function searchEvents( listAll )
 	params += '&level=' + $('input[name=level]:checked').val();
 	params += '&orgunitIds=' + getFieldValue('orgunitId');
 	params += '&programStageId=' + getFieldValue('programStageId');
-	params += '&orderByOrgunitAsc=' + true;
+	params += '&orderByOrgunitAsc=false';
 	
 	contentDiv = 'listDiv';
 	showLoader();
