@@ -43,16 +43,9 @@
 	<h3 style="text-align: left;">$sectionName</h3>
 	<p style="text-align: left;">
 		#foreach( $dataElement in $dataElements)
-			#if( $dataElement.shortName )
-				#set( $dataElementName = $dataElement.shortName )
-			#else
-				#set( $dataElementName = $dataElement.name )
-			#end
-
+			#set( $dataElementName = $dataElement.getFormNameFallback() )
             #set( $optionCombos = $dataElement.categoryCombo.getSortedOptionCombos() )
-
 			#foreach( $optionCombo in $optionCombos )
-
                 #if( !$greyedFields.get( "$dataElement.id:$optionCombo.id" ) )
 				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
 
