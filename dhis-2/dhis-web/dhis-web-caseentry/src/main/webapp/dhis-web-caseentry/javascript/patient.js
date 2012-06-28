@@ -586,7 +586,7 @@ function loadPatientList()
 	}
 	else if( statusSearching == 1 )
 	{
-		searchAdvancedPatient();
+		validateAdvancedSearch();
 	}
 }
 
@@ -774,7 +774,7 @@ function showSelectedDataRecoding( patientId )
 		});
 }
 
-function searchAdvancedPatient( params )
+function advancedSearch( params )
 {
 	$.ajax({
 		url: 'searchRegistrationPatient.action',
