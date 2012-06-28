@@ -821,7 +821,7 @@ function registerIrregularEncounter( dueDate )
 
 function autocompletedField( idField )
 {
-	var input = jQuery( "#" +  idField )
+	var input = jQuery( "#" +  idField );
 	var dataElementId = input.attr('id').split('-')[1];
 	
 	input.autocomplete({
@@ -859,13 +859,14 @@ function autocompletedField( idField )
 					return false;
 				}
 			}
-		},
-		blur: function( event, ui ){
-			input.autocomplete( "close" );
 		}
 	})
 	.addClass( "ui-widget" );
 	
+	input.blur(function(){
+		input.autocomplete( "close" );
+	});
+
 	var button = $( "<button>&nbsp;</button>" )
 		.attr( "tabIndex", -1 )
 		.attr( "title", i18n_show_all_items )
