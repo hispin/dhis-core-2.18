@@ -27,6 +27,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
+
+	<bean id="org.hisp.dhis.visualizer.action.GetOrganisationUnitsAction"
+		class="org.hisp.dhis.visualizer.action.GetOrganisationUnitsAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.visualizer.action.GetOrganisationUnitsByGroupAction"
+		class="org.hisp.dhis.visualizer.action.GetOrganisationUnitsByGroupAction"
+		scope="prototype">
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+
+	<bean id="org.hisp.dhis.visualizer.action.GetOrganisationUnitsByLevelAction"
+		class="org.hisp.dhis.visualizer.action.GetOrganisationUnitsByLevelAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
     
     <!-- Aggregated values -->
 

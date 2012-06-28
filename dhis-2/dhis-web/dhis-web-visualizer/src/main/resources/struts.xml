@@ -31,6 +31,24 @@
 				/dhis-web-visualizer/jsonminOrganisationUnitChildren.vm</result>
 		</action>
 
+		<action name="getOrganisationUnitPaths"
+			class="org.hisp.dhis.visualizer.action.GetOrganisationUnitsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-visualizer/jsonminOrganisationUnitPaths.vm</result>
+		</action>
+
+		<action name="getOrganisationUnitPathsByGroup"
+			class="org.hisp.dhis.visualizer.action.GetOrganisationUnitsByGroupAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-visualizer/jsonminOrganisationUnitPaths.vm</result>
+		</action>
+
+		<action name="getOrganisationUnitPathsByLevel"
+			class="org.hisp.dhis.visualizer.action.GetOrganisationUnitsByLevelAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-visualizer/jsonminOrganisationUnitPaths.vm</result>
+		</action>
+
         <!-- Aggregated values -->
 
         <action name="getAggregatedValues"
