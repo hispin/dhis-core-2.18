@@ -148,7 +148,7 @@ function searchPatientsOnKeyUp( event )
 	
 	if ( key==13 )// Enter
 	{
-		searchAdvancedPatients();
+		validateAdvancedSearch();
 	}
 }
 
@@ -159,7 +159,7 @@ function getKeyCode(e)
 	 return (e)? e.which : null;
 }
 
-function validateAdvancedPatients()
+function validateAdvancedSearch()
 {
 	hideById( 'listPatientDiv' );
 	var flag = true;
@@ -202,7 +202,7 @@ function validateAdvancedPatients()
 		});
 		contentDiv = 'listPatientDiv';
 		jQuery( "#loaderDiv" ).show();
-		searchAdvancedPatient( params );
+		advancedSearch( params );
 	}
 }
 

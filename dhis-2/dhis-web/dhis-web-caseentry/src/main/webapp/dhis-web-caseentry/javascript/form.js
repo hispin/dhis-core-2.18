@@ -147,7 +147,7 @@ function showSelectedDataRecoding( patientId )
 		});
 }
 
-function searchAdvancedPatient( params )
+function advancedSearch( params )
 {
 	$.ajax({
 		url: 'searchPatient.action',
