@@ -95,9 +95,11 @@
 				#end
 				
 				<td>
-				  <a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
+				  <a href="javascript:showProgramEnrollmentSelectForm( '$patient.id' )" title='$i18n.getString( "program_enrollment_management" )'><img src="../images/enroll.png" alt='$i18n.getString( "program_enrollment" )'></a> 
 				  <a href="javascript:showUpdatePatientForm( '$patient.id' )" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
-				  <a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+				  <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList('$patient.id')" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
+                  <a href="javascript:getPatientLocation( '$patient.id' ); " title='$i18n.getString( "migration_patient" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "migration_patient" )' style='width:25px; height:25px'></a><a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+				  <a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title='$i18n.getString( "remove" )'></a>
 				  <a href="javascript:showPatientHistory( '$patient.id' )" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
 				</td>
 				
