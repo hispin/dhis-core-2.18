@@ -199,16 +199,15 @@ public class HibernateProgramStageInstanceStore
         // ---------------------------------------------------------------------
         // Headers TODO hidden cols
         // ---------------------------------------------------------------------
-        
+ 
         Grid grid = new ListGrid();
 
         grid.addHeader( new GridHeader( "id", true, true ) );
         grid.addHeader( new GridHeader( "Report date", false, true ) );
 
-        for ( int i = 0; i < maxLevel; i++ )
+        for ( int i=level; i<=maxLevel; i++ )
         {
-            int l = i + 1;
-            String name = orgUnitLevelMap.containsKey( l ) ? orgUnitLevelMap.get( l ).getName() : "Level " + l;
+            String name = orgUnitLevelMap.containsKey( i ) ? orgUnitLevelMap.get( i ).getName() : "Level " + i;
             
             grid.addHeader( new GridHeader( name, false, true ) );
         }
@@ -255,10 +254,9 @@ public class HibernateProgramStageInstanceStore
         String where = "";
         String operator = "where ";
 
-        for ( int i = 0; i < maxLevel; i++ )
+        for ( int i=level; i<=maxLevel; i++ )
         {
-            int l = i + 1;
-            sql += "(select name from organisationunit where organisationunitid=ous.idlevel" + l + ") as level_" + i + ",";
+            sql += "(select name from organisationunit where organisationunitid=ous.idlevel" + i + ") as level_" + i + ",";
         }
 
         for ( TabularReportColumn column : columns )
@@ -334,7 +332,7 @@ public class HibernateProgramStageInstanceStore
 
         sql += "order by ";
 
-        for ( int i = 0; i < maxLevel; i++ )
+        for ( int i=level; i<=maxLevel; i++ )
         {
             sql += "level_" + i + ",";
         }
