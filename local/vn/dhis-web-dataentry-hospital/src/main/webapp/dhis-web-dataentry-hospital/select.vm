@@ -97,9 +97,13 @@ var i18n_please_select_unit = "[ " + '$encoder.jsEscape( $i18n.getString( "pleas
 	<tr id='attributeDiv' style='display:none;'>
 		<td>
 			<label class='bold' for="attributeId">$i18n.getString( "attribute" )</label>
-			<select id='value' name='value' style='display:none;' /></select>
+			<select id='value' name='value' style='display:none;' ></select>
 			<input type="text" id="valueInput" style="width:330px" name="valueInput" />
 			<button type='button' id='valueButton' class='small-button' >&nbsp;</button>
+		</td>
+		<td><br/>
+			<input type="button" id="showReportButton" value="$i18n.getString( 'show_icd_report' )"
+				style="display:none" onclick="showICDReport();"/>
 		</td>
 	</tr>
 
@@ -159,3 +163,5 @@ var i18n_please_select_unit = "[ " + '$encoder.jsEscape( $i18n.getString( "pleas
 	</tr>
 </table>
 </div>
+
+<div id="showReportDiv"></div>

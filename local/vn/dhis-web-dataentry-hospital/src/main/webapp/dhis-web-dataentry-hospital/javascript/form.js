@@ -230,6 +230,7 @@ function loadForm( dataSetId, value )
 	{
 		if ( textStatus == "error" ) {
 			hideLoader();
+			hideById( 'showReportButton' );
 			clearEntryForm();
 			setHeaderDelayMessage( i18n_disconnect_server );
 			return;
@@ -516,6 +517,7 @@ function loadDataValues( dataSetId )
     $( '#completeButton' ).removeAttr( 'disabled' );
     $( '#undoButton' ).attr( 'disabled', 'disabled' );
     $( '#infoDiv' ).css( 'display', 'none' );
+	showById( 'showReportButton' );
 
     insertDataValues( dataSetId );
     displayEntryFormCompleted();
@@ -1645,4 +1647,25 @@ function autoCompletedField()
 			input.autocomplete( "search", "" );
 			input.focus();
 		});
+}
+
+function showICDReport()
+{
+	$('#showReportDiv').load( "showICDReport.action",
+	{
+		dataSetId: getFieldValue( 'selectedDataSetId' ),
+		periodId: getFieldValue( 'selectedPeriodId' ),
+		sourceId: currentOrganisationUnitId
+	}
+	, function(){
+
+	}).dialog({
+		title: 'ICD REPORTING FORM',
+		maximize: true, 
+		closable: true,
+		modal:false,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 1160,
+		height: 520
+	});
 }
