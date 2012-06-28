@@ -308,7 +308,16 @@ body {
     background-image: -ms-linear-gradient(top, #c7c7c7,#e0e0e0);
     background-image: linear-gradient(top, #c7c7c7,#e0e0e0);
 }
-	
+
+
+.dv-toolbar-tbar .dv-toolbar-btn-2, .dv-toolbar-tbar .dv-toolbar-btn-2.x-menu-active {
+	background: transparent;
+	border-color: transparent;
+}
+.dv-toolbar-tbar .dv-toolbar-btn-2.over, .dv-toolbar-tbar .dv-toolbar-btn-2.x-menu-active.over {
+	background: #e1e1e1;
+	border-color: transparent;
+}
 
 /* Toolbar separator */
 .x-toolbar .x-toolbar-separator-horizontal {
@@ -385,10 +394,15 @@ body {
 }
 
 /* Toolbar favorites */
-#favorite_t {
+#favorite_t, #organisationunit_t {
     border-bottom-width: 1px !important;
     border-radius: 2px;
-}    
+}
+
+.x-btn-default-toolbar-small-menu-active, .x-btn-default-toolbar-small-pressed {
+	border-color: #e1e1e1;
+	background: #e1e1e1;
+}
 
 /* Multiselect dock border radius */
 .dv-toolbar-multiselect-left .x-docked-top {

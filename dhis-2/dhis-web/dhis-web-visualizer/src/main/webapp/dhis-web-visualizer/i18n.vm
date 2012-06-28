@@ -127,6 +127,8 @@ interpretation:'$encoder.jsEscape($i18n.getString( 'interpretation' ) , "'")',
 write_your_interpretation:'$encoder.jsEscape($i18n.getString( 'write_your_interpretation' ) , "'")',
 interpretation_was_shared:'$encoder.jsEscape($i18n.getString( 'interpretation_was_shared' ) , "'")',
 save_load_favorite_before_sharing:'$encoder.jsEscape($i18n.getString( 'save_load_favorite_before_sharing' ) , "'")',
-create_chart_before_datatable:'$encoder.jsEscape($i18n.getString( 'create_chart_before_datatable' ) , "'")'
+create_chart_before_datatable:'$encoder.jsEscape($i18n.getString( 'create_chart_before_datatable' ) , "'")',
+organisation_unit_groups:'$encoder.jsEscape($i18n.getString( 'organisation_unit_groups' ) , "'")',
+nb_groups_replace_orgunits:'$encoder.jsEscape($i18n.getString( 'nb_groups_replace_orgunits' ) , "'")'
 
 };
