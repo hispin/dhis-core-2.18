@@ -205,12 +205,12 @@ public class SetGeneralSettingsAction
             configuration.setCompletenessRecipients( userGroupService.getUserGroup( completenessRecipients ) );
         }
 
-        System.err.println( "Setting offline1: " + offlineOrganisationUnitLevel );
-
         if ( offlineOrganisationUnitLevel != null )
         {
-            System.err.println( "Setting offline2: " + offlineOrganisationUnitLevel );
             configuration.setOfflineOrganisationUnitLevel( organisationUnitService.getOrganisationUnitLevel( offlineOrganisationUnitLevel ) );
+
+            // if the level is changed, we need to make sure that the version is also changed.
+            organisationUnitService.updateVersion();
         }
 
         if ( infrastructuralDataElements != null )

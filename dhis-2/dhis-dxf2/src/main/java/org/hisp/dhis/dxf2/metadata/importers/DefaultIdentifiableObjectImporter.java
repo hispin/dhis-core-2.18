@@ -45,11 +45,10 @@ import org.hisp.dhis.dxf2.metadata.handlers.ObjectHandlerUtils;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.FunctionUtils;
+import org.hisp.dhis.system.util.CollectionUtils;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.hisp.dhis.system.util.functional.Function1;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -243,7 +242,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             if ( attributeValues.size() > 0 )
             {
-                FunctionUtils.forEach( attributeValues, new Function1<AttributeValue>()
+                CollectionUtils.forEach( attributeValues, new Function1<AttributeValue>()
                 {
                     @Override
                     public void apply( AttributeValue attributeValue )
@@ -284,7 +283,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         {
             Set<DataElementOperand> dataElementOperands = extractDataElementOperands( object, fieldName );
 
-            FunctionUtils.forEach( dataElementOperands, new Function1<DataElementOperand>()
+            CollectionUtils.forEach( dataElementOperands, new Function1<DataElementOperand>()
             {
                 @Override
                 public void apply( DataElementOperand dataElementOperand )
@@ -300,7 +299,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             {
                 Set<AttributeValue> attributeValues = extractAttributeValues( object );
 
-                FunctionUtils.forEach( attributeValues, new Function1<AttributeValue>()
+                CollectionUtils.forEach( attributeValues, new Function1<AttributeValue>()
                 {
                     @Override
                     public void apply( AttributeValue attributeValue )
@@ -624,7 +623,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         final Map<Field, Object> fieldMap = new HashMap<Field, Object>();
         final Collection<Field> fieldCollection = ReflectionUtils.collectFields( object.getClass(), idObjects );
 
-        FunctionUtils.forEach( fieldCollection, new Function1<Field>()
+        CollectionUtils.forEach( fieldCollection, new Function1<Field>()
         {
             @Override
             public void apply( Field field )
@@ -669,7 +668,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         final Map<Field, Collection<Object>> collectionFields = new HashMap<Field, Collection<Object>>();
         final Collection<Field> fieldCollection = ReflectionUtils.collectFields( object.getClass(), idObjectCollectionsWithScanned );
 
-        FunctionUtils.forEach( fieldCollection, new Function1<Field>()
+        CollectionUtils.forEach( fieldCollection, new Function1<Field>()
         {
             @Override
             public void apply( Field field )
@@ -695,7 +694,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
             Collection<Object> collection = collectionFields.get( field );
             final Collection<Object> objects = ReflectionUtils.newCollectionInstance( field.getType() );
 
-            FunctionUtils.forEach( collection, new Function1<Object>()
+            CollectionUtils.forEach( collection, new Function1<Object>()
             {
                 @Override
                 public void apply( Object object )
