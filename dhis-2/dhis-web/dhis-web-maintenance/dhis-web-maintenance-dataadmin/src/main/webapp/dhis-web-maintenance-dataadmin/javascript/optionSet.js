@@ -45,3 +45,13 @@ function addOption()
 	setFieldValue('option', '');
 	$("#option").focus();
 }
+
+function updateOption()
+{
+	var value = getFieldValue( 'option' );
+	jQuery('#options option:selected').val(value);
+	jQuery('#options option:selected').text(value);
+	
+	setFieldValue('option', '');
+	$("#option").focus();
+}
