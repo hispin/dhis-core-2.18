@@ -138,13 +138,13 @@ public class CreateAnonymousEncounterAction
         else
         {
             Program program = programService.getProgram( programId );
-
+            ProgramStage programStage = program.getProgramStages().iterator().next();
+            
             ProgramInstance programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
 
             ProgramStageInstance programStageInstance = new ProgramStageInstance();
             programStageInstance.setProgramInstance( programInstance );
 
-            ProgramStage programStage = programInstance.getProgram().getProgramStages().iterator().next();
             programStageInstance.setProgramStage( programStage );
 
             programStageInstance.setStageInProgram( programInstance.getProgramStageInstances().size() + 1 );
