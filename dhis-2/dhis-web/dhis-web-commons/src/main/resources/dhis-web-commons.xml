@@ -754,9 +754,7 @@
     </action>
 
     <action name="getOrganisationUnitTree" class="org.hisp.dhis.commons.action.GetOrganisationUnitTreeAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonOrganisationUnitTree.vm
-      </result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonOrganisationUnitTree.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 

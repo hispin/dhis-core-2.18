@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.util;
+package org.hisp.dhis.organisationunit.comparator;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,25 +27,19 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.system.util.functional.Function1;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
-import java.util.Collection;
+import java.util.Comparator;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class FunctionUtils
+public class OrganisationUnitByLevelComparator
+    implements Comparator<OrganisationUnit>
 {
-    public static <T> void forEach( Collection<T> collection, Function1<T> function )
+    @Override
+    public int compare( OrganisationUnit o1, OrganisationUnit o2 )
     {
-        for ( T object : collection )
-        {
-            if(object == null)
-            {
-                continue;
-            }
-
-            function.apply( object );
-        }
+        return o1.getLevel() - o2.getLevel();
     }
 }

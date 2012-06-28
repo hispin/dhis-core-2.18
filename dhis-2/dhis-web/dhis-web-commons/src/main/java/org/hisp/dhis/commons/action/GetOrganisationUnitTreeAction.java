@@ -29,8 +29,12 @@ package org.hisp.dhis.commons.action;
 
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.util.CollectionUtils;
+import org.hisp.dhis.system.util.functional.Predicate;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.Version;
@@ -67,6 +71,13 @@ public class GetOrganisationUnitTreeAction
     public void setVersionService( VersionService versionService )
     {
         this.versionService = versionService;
+    }
+
+    private ConfigurationService configurationService;
+
+    public void setConfigurationService( ConfigurationService configurationService )
+    {
+        this.configurationService = configurationService;
     }
 
     // -------------------------------------------------------------------------
@@ -126,10 +137,8 @@ public class GetOrganisationUnitTreeAction
         {
             if ( user.getOrganisationUnits() != null && currentUserService.currentUserIsSuper() )
             {
-                userOrganisationUnits = new ArrayList<OrganisationUnit>(
-                    organisationUnitService.getRootOrganisationUnits() );
-                rootOrganisationUnits = new ArrayList<OrganisationUnit>(
-                    organisationUnitService.getRootOrganisationUnits() );
+                userOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getRootOrganisationUnits() );
+                rootOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getRootOrganisationUnits() );
             }
             else
             {
@@ -144,6 +153,33 @@ public class GetOrganisationUnitTreeAction
             {
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
             }
+
+            OrganisationUnitLevel offlineOrganisationUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
+
+            if ( offlineOrganisationUnitLevel == null )
+            {
+                int size = organisationUnitService.getOrganisationUnitLevels().size();
+                offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevel( size );
+            }
+
+            int minLevel = rootOrganisationUnits.get( 0 ).getLevel();
+            int total = minLevel + offlineOrganisationUnitLevel.getLevel() - 1;
+
+            if ( total > offlineOrganisationUnitLevel.getLevel() )
+            {
+                total = offlineOrganisationUnitLevel.getLevel();
+            }
+
+            final int finalTotal = total;
+
+            CollectionUtils.filter( organisationUnits, new Predicate<OrganisationUnit>()
+            {
+                @Override
+                public boolean evaluate( OrganisationUnit organisationUnit )
+                {
+                    return organisationUnit.getLevel() <= finalTotal;
+                }
+            } );
         }
 
         Collections.sort( rootOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
