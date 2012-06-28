@@ -1520,5 +1520,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="jchartDataService" ref="org.hisp.dhis.jchart.data.JChartDataService" />
 	</bean>
-	
+
 </beans>

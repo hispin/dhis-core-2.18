@@ -109,5 +109,15 @@
 	   <result name="success" type="velocity-json">/dhis-web-dataentry-hospital/jsonDepartments.vm</result>
 	</action>
 
+    <action name="showICDReport" class="org.hisp.dhis.de.action.ShowICDReportAction">
+      <result name="success" type="velocity">/dhis-web-dataentry-hospital/htmlGrid.vm</result>
+    </action>
+
+    <action name="exportResult" class="org.hisp.dhis.de.action.ExportResultAction">
+      <result name="csv" type="gridCsvResult" />
+      <result name="xls" type="gridXlsResult" />
+      <result name="pdf" type="gridPdfResult" />
+    </action>
+
   </package>
 </struts>
