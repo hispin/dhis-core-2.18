@@ -117,6 +117,13 @@ public class GetOrganisationUnitTreeAction
         return versionOnly;
     }
 
+    private Integer parentId;
+
+    public void setParentId( Integer parentId )
+    {
+        this.parentId = parentId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -124,6 +131,18 @@ public class GetOrganisationUnitTreeAction
     public String execute()
         throws Exception
     {
+        if ( parentId != null )
+        {
+            OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
+
+            if ( parent != null )
+            {
+                organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( parent.getId() ) );
+            }
+
+            return "partial";
+        }
+
         Collection<OrganisationUnit> userOrganisationUnits;
 
         User user = currentUserService.getCurrentUser();
@@ -160,11 +179,11 @@ public class GetOrganisationUnitTreeAction
 
             if ( offlineOrganisationUnitLevel == null )
             {
-                offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevel( size );
+                offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size );
             }
 
             int minLevel = rootOrganisationUnits.get( 0 ).getLevel();
-            int maxLevel = organisationUnitService.getOrganisationUnitLevel( size ).getLevel();
+            int maxLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size ).getLevel();
             int total = minLevel + offlineOrganisationUnitLevel.getLevel() - 1;
 
             if ( total > offlineOrganisationUnitLevel.getLevel() )
