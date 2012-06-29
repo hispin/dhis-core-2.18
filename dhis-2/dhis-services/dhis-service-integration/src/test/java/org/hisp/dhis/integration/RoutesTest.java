@@ -133,7 +133,6 @@ public class RoutesTest
         periodService.addPeriod( peB );
     }
     
-    @Ignore
     @Test
     public void testImportDataValueSetSDMX()
         throws Exception
@@ -146,7 +145,6 @@ public class RoutesTest
         
     }
 
-    @Ignore
     @Test
     public void testImportDataValueSetXML()
         throws Exception

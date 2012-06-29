@@ -57,7 +57,7 @@ public class SDMXDataIn
         from(SDMXDATA_IN).
             convertBodyTo( java.lang.String.class, "UTF-8" ).to( "log:org.hisp.dhis.integration?level=INFO").
             to("xslt:transform/cross2dxf2.xsl").convertBodyTo( java.io.InputStream.class).
-            to("dhis2:data?orgUnitIdScheme=CODE&dataElementIdScheme=CODE&importStrategy=NEW_AND_UPDATES").
+            inOut("dhis2:data?orgUnitIdScheme=CODE&dataElementIdScheme=CODE&importStrategy=NEW_AND_UPDATES").
             setDescription( desc );
     }    
 }

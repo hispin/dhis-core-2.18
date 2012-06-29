@@ -59,8 +59,7 @@ public class Dxf2DataProducer
         ImportOptions options = (ImportOptions) exchange.getIn().
             getHeader( IntegrationService.IMPORT_OPTIONS_HDR, endpoint.getImportOptions() );
         
-        TaskId taskId = (TaskId) exchange.getIn().
-            getHeader( IntegrationService.TASK_ID_HDR, null );
+        TaskId taskId = (TaskId) exchange.getIn().getHeader( IntegrationService.TASK_ID_HDR );
         
         ImportSummary summary = endpoint.getDataValueSetService().saveDataValueSet( (InputStream)exchange.getIn().getBody(), 
              options, taskId );
