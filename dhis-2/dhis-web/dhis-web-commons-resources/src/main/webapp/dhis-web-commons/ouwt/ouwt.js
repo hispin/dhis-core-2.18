@@ -284,10 +284,11 @@ function Selection()
     this.select = function ( unitId )
     {
         var $linkTag = $( "#" + getTagId( unitId ) ).find( "a" ).eq( 0 );
-        var selected = JSON.parse( sessionStorage[getTagId( "Selected" )] );
 
         if ( $linkTag.hasClass( "selected" ) && ( unselectAllowed || rootUnselectAllowed ) )
         {
+            var selected = JSON.parse( sessionStorage[getTagId( "Selected" )] );
+
             if ( rootUnselectAllowed && !unselectAllowed && !multipleSelectionAllowed )
             {
                 var roots = JSON.parse( localStorage[getTagId( "Roots" )] );
@@ -332,6 +333,8 @@ function Selection()
         {
             if ( multipleSelectionAllowed )
             {
+                var selected = JSON.parse( sessionStorage[getTagId( "Selected" )] );
+
                 if ( selected )
                 {
                     selected = JSON.parse( selected );
