@@ -97,6 +97,11 @@ function Selection()
 
             organisationUnits = JSON.parse( localStorage["organisationUnits"] );
 
+            if(sessionStorage["organisationUnits"] !== undefined)
+            {
+                $.extend(organisationUnits, JSON.parse( sessionStorage["organisationUnits"] ))
+            }
+
             selection.sync();
             subtree.reloadTree();
 
@@ -648,6 +653,15 @@ function Subtree()
                 function ( data, textStatus, jqXHR )
                     {
                         // load additional organisationUnits into sessionStorage
+                        if(sessionStorage["organisationUnits"] === undefined)
+                        {
+                            sessionStorage["organisationUnits"] = JSON.stringify( data.organisationUnits );
+                        } else {
+                            units = JSON.parse( sessionStorage["organisationUnits"] );
+                            $.extend(units, data.organisationUnits);
+                            sessionStorage["organisationUnits"] = JSON.stringify( units );
+                        }
+
                         $.extend(organisationUnits, data.organisationUnits);
                         createChildren( parentTag, parent );
                     }
