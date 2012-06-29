@@ -72,7 +72,8 @@ public class ShowICDReportAction
      * This would be the title showed in ICD REPORTING FORM
      */
     private static final String[] titles = { "icd_element_1", "icd_element_2", "icd_element_3", "icd_element_4",
-        "icd_element_5", "icd_element_6" };
+        "icd_element_5", "icd_element_6", "icd_element_7", "icd_element_8", "icd_element_9", "icd_element_10",
+        "icd_element_11", "icd_element_12" };
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -170,7 +171,7 @@ public class ShowICDReportAction
         StringBuffer sqlsb = new StringBuffer();
 
         sqlsb
-            .append( "SELECT av.attributevalueid, av.value AS Disease, sorted_de.dataelementid, dv.value, 1 as col_index " );
+            .append( "SELECT av.attributevalueid, av.value AS Disease, sorted_de.dataelementid, dv.value, sorted_de.column_index " );
         sqlsb.append( "FROM datavalue AS dv " );
         sqlsb.append( "JOIN (" + getOrderedDataElement() );
         sqlsb.append( ") AS sorted_de ON (dv.dataelementid = sorted_de.dataelementid) " );
@@ -195,7 +196,8 @@ public class ShowICDReportAction
 
         for ( String title : titles )
         {
-            grid.addHeader( new GridHeader( i18n.getString( title ), String.valueOf( column ), String.class.getName(), false, false ) );
+            grid.addHeader( new GridHeader( i18n.getString( title ), String.valueOf( column ), String.class.getName(),
+                false, false ) );
             column++;
         }
     }
