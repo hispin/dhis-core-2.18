@@ -156,18 +156,20 @@ public class GetOrganisationUnitTreeAction
 
             OrganisationUnitLevel offlineOrganisationUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
 
+            int size = organisationUnitService.getOrganisationUnitLevels().size();
+
             if ( offlineOrganisationUnitLevel == null )
             {
-                int size = organisationUnitService.getOrganisationUnitLevels().size();
                 offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevel( size );
             }
 
             int minLevel = rootOrganisationUnits.get( 0 ).getLevel();
+            int maxLevel = organisationUnitService.getOrganisationUnitLevel( size ).getLevel();
             int total = minLevel + offlineOrganisationUnitLevel.getLevel() - 1;
 
             if ( total > offlineOrganisationUnitLevel.getLevel() )
             {
-                total = offlineOrganisationUnitLevel.getLevel();
+                total = maxLevel;
             }
 
             final int finalTotal = total;
