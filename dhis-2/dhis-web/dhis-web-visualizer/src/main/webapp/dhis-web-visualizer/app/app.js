@@ -72,19 +72,11 @@ DV.conf = {
 					},
 					user: {
 						id: r.user.id,
-						isadmin: r.user.isAdmin,
-						organisationunit: {
-							id: r.user.ou[0],
-							name: DV.conf.util.jsonEncodeString(r.user.ou[1])
-						},
-						organisationunitchildren: []							
+						isadmin: r.user.isAdmin							
 					}
 				};
 				for (var i = 0; i < r.rn.length; i++) {
 					obj.system.rootnodes.push({id: r.rn[i][0], text: r.rn[i][1], level: 1});
-				}
-				for (var i = 0; i < r.user.ouc.length; i++) {
-					obj.user.organisationunitchildren.push({id: r.user.ouc[i][0], name: DV.conf.util.jsonEncodeString(r.user.ouc[i][1])});
 				}
 				return obj;
 			}
@@ -303,10 +295,13 @@ Ext.onReady( function() {
             
     DV.init = DV.conf.init.ajax.jsonfy(r);
     DV.init.initialize = function() {
+		DV.cmp.dimension.indicator.panel.expand();
+		
 		DV.c = DV.chart.model;
         DV.util.combobox.filter.category();
         
         DV.init.cmd = DV.util.getUrlParam(DV.conf.finals.cmd.urlparam) || DV.conf.finals.cmd.init;
+		
         DV.exe.execute(DV.init.cmd);
     };
     
@@ -3226,12 +3221,14 @@ Ext.onReady( function() {
 									{
 										title: '<div style="height:17px; background-image:url(images/organisationunit.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.organisation_units + '</div>',
 										hideCollapseTool: true,
+										collapsed: false,
 										items: [
 											{
 												id: 'organisationunit_t',
 												xtype: 'toolbar',
 												cls: 'dv-toolbar-tbar',
 												style: 'margin-bottom: 5px',
+												width: DV.conf.layout.west_fieldset_width - 18,
 												defaults: {
 													height: 28
 												},
@@ -3291,62 +3288,6 @@ Ext.onReady( function() {
 																			}
 																			else {
 																				this.down('grid').setHeightInMenu(DV.store.group);
-																			}
-																		}
-																	}
-																});
-															}
-														}
-													},
-													{
-														text: 'Level..',
-														cls: 'dv-toolbar-btn-2',
-														handler: function() {},
-														listeners: {
-															added: function() {
-																this.menu = Ext.create('Ext.menu.Menu', {
-																	shadow: false,
-																	showSeparator: false,
-																	width: DV.conf.layout.treepanel_toolbar_menu_width_level,
-																	items: [
-																		{
-																			xtype: 'grid',
-																			cls: 'dv-menugrid',
-																			width: DV.conf.layout.treepanel_toolbar_menu_width_level,
-																			scroll: 'vertical',
-																			columns: [
-																				{
-																					dataIndex: 'name',
-																					width: DV.conf.layout.treepanel_toolbar_menu_width_level,
-																					style: 'display:none'
-																				}
-																			],
-																			setHeightInMenu: function(store) {
-																				var h = store.getCount() * 24,
-																					sh = DV.util.viewport.getSize().y * 0.6;
-																				this.setHeight(h > sh ? sh : h);
-																				this.doLayout();
-																				this.up('menu').doLayout();
-																			},
-																			store: DV.store.level,
-																			listeners: {
-																				itemclick: function(g, r) {
-																					g.getSelectionModel().select([], false);
-																					this.up('menu').hide();
-																					DV.cmp.dimension.organisationunit.treepanel.selectByLevel(r.data.level);
-																				}
-																			}
-																		}
-																	],
-																	listeners: {
-																		show: function() {
-																			if (!DV.store.level.isloaded) {
-																				DV.store.level.load({scope: this, callback: function() {
-																					this.down('grid').setHeightInMenu(DV.store.level);
-																				}});
-																			}
-																			else {
-																				this.down('grid').setHeightInMenu(DV.store.level);
 																			}
 																		}
 																	}
@@ -3509,7 +3450,7 @@ Ext.onReady( function() {
 												xtype: 'label',
 												style: 'font-style:italic; font-size:11px; color:#666',
 												margin: '0 0 0 7',
-												text: DV.i18n.nb_groups_replace_orgunits
+												text: DV.i18n.groups_replace_orgunits
 											},
 											{
 												xtype: 'combobox',
