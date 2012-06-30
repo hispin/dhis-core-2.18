@@ -86,6 +86,8 @@ public class DefaultDeletionManager
 
             for ( DeletionHandler handler : handlers )
             {
+                log.debug( "Check if allowed using " + currentHandler + " for class " + className );
+                
                 currentHandler = handler.getClass().getSimpleName();
 
                 Object allow = allowMethod.invoke( handler, object );
@@ -99,15 +101,18 @@ public class DefaultDeletionManager
                     throw new DeleteNotAllowedException( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS, message );
                 }
             }
-        } catch ( NoSuchMethodException e )
+        }
+        catch ( NoSuchMethodException e )
         {
             log.error( "Method '" + allowMethodName + "' does not exist on class '" + clazz + "'", e );
             return;
-        } catch ( IllegalAccessException ex )
+        }
+        catch ( IllegalAccessException ex )
         {
-            log.error( "Method '" + allowMethodName + "' could not be invoked on DeletionHandler '" + currentHandler + "'", ex );
+            log.error( "Method '" + allowMethodName + "' can not be invoked on DeletionHandler '" + currentHandler + "'", ex );
             return;
-        } catch ( InvocationTargetException ex )
+        }
+        catch ( InvocationTargetException ex )
         {
             log.error( "Method '" + allowMethodName + "' threw exception on DeletionHandler '" + currentHandler + "'", ex );
             return;
@@ -127,9 +132,12 @@ public class DefaultDeletionManager
             {
                 currentHandler = handler.getClass().getSimpleName();
 
+                log.debug( "Deleting object using " + currentHandler + " for class " + className );
+                
                 deleteMethod.invoke( handler, object );
             }
-        } catch ( Exception ex )
+        } 
+        catch ( Exception ex )
         {
             log.error( "Failed to invoke method " + deleteMethodName + " on DeletionHandler '" + currentHandler + "'", ex );
             return;
