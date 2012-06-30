@@ -41,7 +41,7 @@ function PeriodType()
 
         for ( var j = 0; j < periods.length; j++ )
         {
-            if ( $.date( periods[j]['startDate'], dateFormat ).date().getTime() < now )
+            if ( $.date( periods[j]['endDate'], dateFormat ).date().getTime() <= now )
             {
                 array[i++] = periods[j];
             }
@@ -64,6 +64,7 @@ function DailyPeriodType( dateFormat )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
+            period['endDate'] = startDate.format( dateFormat );
             period['name'] = startDate.format( dateFormat );
             period['id'] = 'Daily_' + period['startDate'];
             periods[i] = period;
@@ -99,16 +100,20 @@ function WeeklyPeriodType( dateFormat )
         {
             startDate.adjust( 'D', ( 8 - day ) );
         }
+        
+        var endDate = startDate.clone().adjust( 'D', +6 );
 
         while ( startDate.date().getFullYear() <= year )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
-            period['name'] = 'W' + ( i + 1 ) + ' - ' + startDate.format( dateFormat );
+            period['endDate'] = endDate.format( dateFormat );
+            period['name'] = 'W' + ( i + 1 ) + ' - ' + startDate.format( dateFormat ) + " - " + endDate.format( dateFormat );
             period['id'] = 'Weekly_' + period['startDate'];
             periods[i] = period;
 
             startDate.adjust( 'D', +7 );
+            endDate = startDate.clone().adjust( 'D', +6 );
             i++;
         }
 
@@ -123,17 +128,20 @@ function MonthlyPeriodType( dateFormat )
         var periods = [];
         var year = new Date().getFullYear() + offset;
         var startDate = $.date( year + '-01-01', dateFormat );
+        var endDate = startDate.clone().adjust( 'M', +1 ).adjust( 'D', -1 );
         var i = 0;
 
         while ( startDate.date().getFullYear() == year )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
+            period['endDate'] = endDate.format( dateFormat );
             period['name'] = monthNames[i] + ' ' + year;
             period['id'] = 'Monthly_' + period['startDate'];
             periods[i] = period;
 
             startDate.adjust( 'M', +1 );
+            endDate = startDate.clone().adjust( 'M', +1 ).adjust( 'D', -1 );
             i++;
         }
 
@@ -148,6 +156,7 @@ function BiMonthlyPeriodType( dateFormat )
         var periods = [];
         var year = new Date().getFullYear() + offset;
         var startDate = $.date( year + '-01-01', dateFormat );
+        var endDate = startDate.clone().adjust( 'M', +2 ).adjust( 'D', -1 );
         var i = 0;
         var j = 0;
 
@@ -155,11 +164,13 @@ function BiMonthlyPeriodType( dateFormat )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
+            period['endDate'] = endDate.format( dateFormat );
             period['name'] = monthNames[i] + ' - ' + monthNames[i + 1] + ' ' + year;
             period['id'] = 'BiMonthly_' + period['startDate'];
             periods[j] = period;
 
             startDate.adjust( 'M', +2 );
+            endDate = startDate.clone().adjust( 'M', +2 ).adjust( 'D', -1 );
             i += 2;
             j++;
         }
@@ -175,6 +186,7 @@ function QuarterlyPeriodType( dateFormat )
         var periods = [];
         var year = new Date().getFullYear() + offset;
         var startDate = $.date( year + '-01-01', dateFormat );
+        var endDate = startDate.clone().adjust( 'M', +3 ).adjust( 'D', -1 );
         var i = 0;
         var j = 0;
 
@@ -182,11 +194,13 @@ function QuarterlyPeriodType( dateFormat )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
+            period['endDate'] = endDate.format( dateFormat );
             period['name'] = monthNames[i] + ' - ' + monthNames[i + 2] + ' ' + year;
             period['id'] = 'Quarterly_' + period['startDate'];
             periods[j] = period;
 
             startDate.adjust( 'M', +3 );
+            endDate = startDate.clone().adjust( 'M', +3 ).adjust( 'D', -1 );
             i += 3;
             j++;
         }
@@ -204,12 +218,14 @@ function SixMonthlyPeriodType( dateFormat )
 
         var period = [];
         period['startDate'] = year + '-01-01';
+        period['endDate'] = year + '-06-30';
         period['name'] = monthNames[0] + ' - ' + monthNames[5] + ' ' + year;
         period['id'] = 'SixMonthly_' + period['startDate'];
         periods[0] = period;
 
         period = [];
-        period['startDate'] = year + '-06-01';
+        period['startDate'] = year + '-07-01';
+        period['endDate'] = year + '-12-31';
         period['name'] = monthNames[6] + ' - ' + monthNames[11] + ' ' + year;
         period['id'] = 'SixMonthly_' + period['startDate'];
         periods[1] = period;
@@ -225,16 +241,19 @@ function YearlyPeriodType( dateFormat )
         var periods = [];
         var year = new Date().getFullYear() + offset;
         var startDate = $.date( year + '-01-01', dateFormat ).adjust( 'Y', -5 );
+        var endDate = startDate.clone().adjust( 'Y', +1 ).adjust( 'D', -1 );
 
         for ( var i = 0; i < 11; i++ )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
+            period['endDate'] = endDate.format( dateFormat );
             period['name'] = startDate.date().getFullYear();
             period['id'] = 'Yearly_' + period['startDate'];
             periods[i] = period;
 
             startDate.adjust( 'Y', +1 );
+            endDate = startDate.clone().adjust( 'Y', +1 ).adjust( 'D', -1 );
         }
 
         return periods;
@@ -248,16 +267,19 @@ function FinancialOctoberPeriodType( dateFormat )
         var periods = [];
         var year = new Date().getFullYear() + offset;
         var startDate = $.date( year + '-10-01', dateFormat ).adjust( 'Y', -5 );
+        var endDate = startDate.clone().adjust( 'Y', +1 ).adjust( 'D', -1 );
 
         for ( var i = 0; i < 11; i++ )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
+            period['endDate'] = endDate.format( dateFormat );
             period['name'] =  monthNames[9] + ' ' +  startDate.date().getFullYear() + '-' + monthNames[8] + ' ' + (startDate.date().getFullYear() +1 );
             period['id'] = 'FinancialOct_' + period['startDate'];
             periods[i] = period;
 
             startDate.adjust( 'Y', +1 );
+            endDate = startDate.clone().adjust( 'Y', +1 ).adjust( 'D', -1 );
         }
 
         return periods;
@@ -271,16 +293,19 @@ function FinancialJulyPeriodType( dateFormat )
         var periods = [];
         var year = new Date().getFullYear() + offset;
         var startDate = $.date( year + '-07-01', dateFormat ).adjust( 'Y', -5 );
+        var endDate = startDate.clone().adjust( 'Y', +1 ).adjust( 'D', -1 );
 
         for ( var i = 0; i < 11; i++ )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
+            period['endDate'] = endDate.format( dateFormat );
             period['name'] =  monthNames[6] + ' ' +  startDate.date().getFullYear() + '-' + monthNames[5] + ' ' + (startDate.date().getFullYear() +1 );
             period['id'] = 'FinancialJuly_' + period['startDate'];
             periods[i] = period;
 
             startDate.adjust( 'Y', +1 );
+            endDate = startDate.clone().adjust( 'Y', +1 ).adjust( 'D', -1 );
         }
 
         return periods;
@@ -294,16 +319,19 @@ function FinancialAprilPeriodType( dateFormat )
         var periods = [];
         var year = new Date().getFullYear() + offset;
         var startDate = $.date( year + '-04-01', dateFormat ).adjust( 'Y', -5 );
+        var endDate = startDate.clone().adjust( 'Y', +1 ).adjust( 'D', -1 );
 
         for ( var i = 0; i < 11; i++ )
         {
             var period = [];
             period['startDate'] = startDate.format( dateFormat );
+            period['endDate'] = endDate.format( dateFormat );
             period['name'] =  monthNames[3] + ' ' +  startDate.date().getFullYear() + '-' + monthNames[2] + ' ' + (startDate.date().getFullYear() +1 );
             period['id'] = 'FinancialApril_' + period['startDate'];
             periods[i] = period;
 
             startDate.adjust( 'Y', +1 );
+            endDate = startDate.clone().adjust( 'Y', +1 ).adjust( 'D', -1 );
         }
 
         return periods;
