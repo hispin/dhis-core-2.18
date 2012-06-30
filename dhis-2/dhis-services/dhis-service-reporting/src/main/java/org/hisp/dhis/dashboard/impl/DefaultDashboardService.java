@@ -29,8 +29,8 @@ package org.hisp.dhis.dashboard.impl;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dashboard.DashboardContent;
-import org.hisp.dhis.dashboard.DashboardContentStore;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,9 +47,9 @@ public class DefaultDashboardService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DashboardContentStore dashboardContentStore;
+    private GenericStore<DashboardContent> dashboardContentStore;
 
-    public void setDashboardContentStore( DashboardContentStore dashboardContentStore )
+    public void setDashboardContentStore( GenericStore<DashboardContent> dashboardContentStore )
     {
         this.dashboardContentStore = dashboardContentStore;
     }
@@ -74,11 +74,6 @@ public class DefaultDashboardService
         DashboardContent content = dashboardContentStore.get( user.getId() );
 
         return content != null ? content : new DashboardContent( user );
-    }
-    
-    public void deleteDashboardContent( User user )
-    {
-        dashboardContentStore.delete( user );
     }
 
     public Collection<DashboardContent> getAllDashboardContent()
