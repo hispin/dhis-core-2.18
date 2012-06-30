@@ -80,4 +80,9 @@ public class DefaultDashboardService
     {
         return dashboardContentStore.getAll();
     }
+    
+    public void deleteDashboardContent( DashboardContent content )
+    {
+        dashboardContentStore.delete( content );
+    }
 }
