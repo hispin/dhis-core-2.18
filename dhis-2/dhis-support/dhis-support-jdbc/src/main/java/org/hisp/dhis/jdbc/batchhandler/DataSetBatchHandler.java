@@ -97,6 +97,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "periodtypeid" );
         statementBuilder.setColumn( "sortorder" );
         statementBuilder.setColumn( "mobile" );
+        statementBuilder.setColumn( "allowfutureperiods" );
         statementBuilder.setColumn( "dataentryform" );
         statementBuilder.setColumn( "expirydays" );
     }
@@ -110,6 +111,7 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.getPeriodType().getId() );
         statementBuilder.setValue( dataSet.getSortOrder() );
         statementBuilder.setValue( dataSet.isMobile() );
+        statementBuilder.setValue( dataSet.isAllowFuturePeriods() );
         statementBuilder.setValue( dataSet.getDataEntryForm() != null ? dataSet.getDataEntryForm().getId() : null );
         statementBuilder.setValue( dataSet.getExpiryDays() );       
     }
