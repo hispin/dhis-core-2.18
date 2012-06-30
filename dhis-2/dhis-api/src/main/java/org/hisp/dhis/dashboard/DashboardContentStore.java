@@ -27,25 +27,14 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.user.User;
-
-import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public interface DashboardService
+public interface DashboardContentStore
+    extends GenericStore<DashboardContent>
 {
-    final String ID = DashboardService.class.getName();
-
-    void saveDashboardContent( DashboardContent dashboardContent );
-
-    DashboardContent getDashboardContent( int id );
-
-    DashboardContent getDashboardContent( User user );
-    
-    void deleteDashboardContent( User user );
-
-    Collection<DashboardContent> getAllDashboardContent();
+    void delete( User user );
 }
