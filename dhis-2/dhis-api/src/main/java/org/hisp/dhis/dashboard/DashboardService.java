@@ -46,4 +46,6 @@ public interface DashboardService
     DashboardContent getDashboardContent( User user );
 
     Collection<DashboardContent> getAllDashboardContent();
+    
+    void deleteDashboardContent( DashboardContent content );
 }
