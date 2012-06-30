@@ -149,7 +149,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <!-- Dashboard -->
 
-  <bean id="org.hisp.dhis.dashboard.DashboardContentStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+  <bean id="org.hisp.dhis.dashboard.DashboardContentStore" class="org.hisp.dhis.dashboard.hibernate.HibernateDashboardContentStore">
     <property name="clazz" value="org.hisp.dhis.dashboard.DashboardContent" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />

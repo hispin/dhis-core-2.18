@@ -32,6 +32,7 @@ import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -54,6 +55,12 @@ public class DashboardContentDeletionHandler
     public String getClassName()
     {
         return DashboardContent.class.getSimpleName();
+    }
+    
+    @Override
+    public void deleteUser( User user )
+    {
+        dashboardService.deleteDashboardContent( user );
     }
     
     @Override
