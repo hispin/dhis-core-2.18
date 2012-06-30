@@ -150,6 +150,11 @@ public class HibernateMessageConversationStore
     
     public int deleteMessages( User sender )
     {
+        String sql = "delete from messageconversation_messages where messageid in (" +
+            "select messageid from message where userid = " + sender.getId() + ")";
+        
+        getSqlQuery( sql ).executeUpdate();
+        
         String hql = "delete Message m where m.sender = :sender";
 
         Query query = getQuery( hql );
@@ -159,6 +164,11 @@ public class HibernateMessageConversationStore
     
     public int deleteUserMessages( User user )
     {
+        String sql = "delete from messageconversation_usermessages where usermessageid in (" +
+            "select usermessageid from usermessage where userid = " + user.getId() + ")";
+
+        getSqlQuery( sql ).executeUpdate();
+        
         String hql = "delete UserMessage u where u.user = :user";
 
         Query query = getQuery( hql );

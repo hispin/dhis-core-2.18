@@ -126,6 +126,34 @@ public class MessageServiceTest
     }
 
     @Test
+    public void testDeleteMessage()
+    {
+        MessageConversation conversation = new MessageConversation( "Subject", sender );
+        
+        UserMessage userMessageA = new UserMessage( userA );
+        UserMessage userMessageB = new UserMessage( userB );
+        
+        conversation.addUserMessage( userMessageA );
+        conversation.addUserMessage( userMessageB );
+        
+        Message contentA = new Message( "TextA", "MetaA", sender );
+        Message contentB = new Message( "TextB", "MetaB", sender );
+        
+        conversation.addMessage( contentA );
+        conversation.addMessage( contentB );
+        
+        int id = messageService.saveMessageConversation( conversation );
+        
+        conversation = messageService.getMessageConversation( id );
+        
+        assertNotNull( conversation );
+        
+        messageService.deleteMessages( userA );
+        messageService.deleteMessages( userB );
+        messageService.deleteMessages( sender );
+    }
+
+    @Test
     public void testSendMessage()
     {
         int id = messageService.sendMessage( "Subject", "Text", "Meta", users );
