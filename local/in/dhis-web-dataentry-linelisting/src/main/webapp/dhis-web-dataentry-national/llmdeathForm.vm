@@ -52,7 +52,7 @@
     	oCell.innerHTML = "<select name='entryfield' id='value[1035].value:value["+nextRecordNo+"].value' onchange='validateLLMDDuringField(1035,"+nextRecordNo+")' onkeypress='return keyPress(event, his)' style='width:100% text-align:center'><option value='NONE' selected>---</option><option value='FTP'>FIRST TRIMESTER PREGNANCY</option><option value='STP'>SECOND TRIMESTER PREGNANCY</option>	<option value='TTP'>THIRD TRIMESTER PREGNANCY</option><option value='DELIVERY'>DELIVERY</option><option value='ADW42D'>AFTER DELIVERY WITHIN 42 DAYS</option></select>";    	
 
     	oCell = newRow.insertCell(5);
-    	oCell.innerHTML = "<select name='entryfield' id='value[1036].value:value["+nextRecordNo+"].value' onchange='validateLLMDDeliveryAtField(1036,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' style='width:100% text-align:center'><option value='NONE'>---</option><option value='HOME'>HOME</option><option value='SC'>SUBCENTER</option><option value='PHC'>PHC</option><option value='CHC'>CHC</option><option value='MC'>MEDICAL COLLEGE</option></select>";
+    	oCell.innerHTML = "<select name='entryfield' id='value[1036].value:value["+nextRecordNo+"].value' onchange='validateLLMDDeliveryAtField(1036,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' style='width:100% text-align:center'><option value='NONE'>---</option><option value='HOME'>HOME</option><option value='SC'>SUBCENTER</option><option value='PHC'>PHC</option><option value='CHC'>CHC</option><option value='MC'>DH/SDH/MEDICAL COLLEGE</option><option value='PVTINST'>PVT INST</option></select>";
     		    	        	
     	oCell = newRow.insertCell(6);
     	oCell.innerHTML = "<select name='entryfield' id='value[1037].value:value["+nextRecordNo+"].value' onchange='validateLLMDDeliveryByField(1037,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' style='width:100% text-align:center'><option value='NONE' SELECTED>---</option><option value='UNTRAINED'>UNTRAINED</option><option value='TRAINED'>TRAINED</option><option value='ANM'>ANM</option><option value='NURSE'>NURSE</option><option value='DOCTOR'>DOCTOR</option><option value='OTHERS'>OTHERS</option></select>";    	    	
@@ -127,7 +127,8 @@
 					<option value="SC" #if($llDataValue.getValue() && $llDataValue.getValue()=="SC") selected #end>SUBCENTER</option>
 					<option value="PHC" #if($llDataValue.getValue() && $llDataValue.getValue()=="PHC") selected #end>PHC</option>
 					<option value="CHC" #if($llDataValue.getValue() && $llDataValue.getValue()=="CHC") selected #end>CHC</option>
-					<option value="MC" #if($llDataValue.getValue() && $llDataValue.getValue()=="MC") selected #end>MEDICAL COLLEGE</option>
+					<option value="MC" #if($llDataValue.getValue() && $llDataValue.getValue()=="MC") selected #end>DH/SDH/MEDICAL COLLEGE</option>
+					<option value="PVTINST" #if($llDataValue.getValue() && $llDataValue.getValue()=="PVTINST") selected #end>PVT INST</option>
 				</select>
 			</td>
 		#elseif($count1 == 6)
@@ -195,7 +196,8 @@
 			<option value="SC">SUBCENTER</option>
 			<option value="PHC">PHC</option>
 			<option value="CHC">CHC</option>
-			<option value="MC">MEDICAL COLLEGE</option>
+			<option value="MC">DH/SDH/MEDICAL COLLEGE</option>
+			<option value="PVTINST">PVT INST</option>
 		</select>	
 	</td>	
 	<td>

@@ -361,6 +361,7 @@ public class LLDataSets
     public static final int LLMD_AT_PHC = 535;
     public static final int LLMD_AT_CHC = 536;
     public static final int LLMD_AT_MC = 537;
+    public static final int LLMD_AT_PVTINST = 5726; // This data element should be created for state specific for line listing maternal death delivery at PVT INST
     
     public static final int LLMD_BY_UNTRAINED = 538;
     public static final int LLMD_BY_TRAINED = 539;
