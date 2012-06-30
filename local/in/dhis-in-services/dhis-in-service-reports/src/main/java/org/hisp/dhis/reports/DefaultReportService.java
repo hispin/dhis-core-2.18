@@ -1,24 +1,5 @@
 package org.hisp.dhis.reports;
 
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.config.ConfigurationService;
@@ -56,15 +37,29 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
 public class DefaultReportService
     implements ReportService
 {
     private static final String NULL_REPLACEMENT = "0";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private ReportStore reportStore;
+
 
     public void setReportStore( ReportStore reportStore )
     {
@@ -312,6 +307,112 @@ public class DefaultReportService
         return recordNosList;
     }
 
+    //----------------------------------------------------------------------------------------------------
+    //                                  START
+    //                     Fetch Global Decode Configuration
+    //----------------------------------------------------------------------------------------------------
+
+
+    /**
+     * Generates a map of
+     * global-to-local ids
+     * using the global settings
+     * XML file.
+     * @return
+     */
+
+
+    public Map<String,String> mapGlobalValues ()
+    {
+        final String configFileName = "globalsettings.xml";
+
+        Map<String,String> globalValuesMap = new HashMap<String, String>();
+
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER )
+                .getValue();
+
+        String path = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+                + configFileName ;
+
+        try
+        {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse( new File( path ) );
+
+            if ( doc == null )
+            {
+                System.out.println( "Global config XML file not found" );
+                return null;
+            }
+
+            NodeList listOfConfigCodes = doc.getElementsByTagName( "gconfig" );
+
+            int totalConfigCodes = listOfConfigCodes.getLength();
+
+            for ( int s = 0; s < totalConfigCodes; s++ )
+            {
+                Element  configElement = (Element) listOfConfigCodes.item( s );
+
+                String value = configElement.getAttribute("dhisid").trim();
+
+                String id = configElement.getAttribute( "commonid" ).trim();
+
+                //System.out.println("\n*INFO : DhisID: "+value+" || "+"CommonID: "+id+"\n");
+
+                globalValuesMap.put(id,value);
+
+            }
+
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return globalValuesMap;
+    }
+
+    /**
+     * Replaces global ids
+     * with local values
+     * @param expression
+     * @return
+     */
+
+    public String getGlobalExpression(String expression,Map<String, String> globalValuesMap)
+    {
+        String result = null;
+
+        Pattern p = Pattern.compile("\\[(.*?)\\]");
+        Matcher matcher = p.matcher(expression);
+
+        System.out.println("*INFO :Expression: "+expression);
+
+        String localValue;
+
+        while(matcher.find())
+        {
+          result = matcher.group(1);
+          localValue = globalValuesMap.get(result);
+          expression = expression.replace("["+result+"]","["+localValue+"]");
+        }
+
+        result = expression;
+
+        System.out.println("*INFO :Result:" + result);
+
+        return result;
+    }
+
+    //----------------------------------------------------------------------------------------------------------
+    //                                  END
+    //                     Fetch Global Decode Configuration
+    //----------------------------------------------------------------------------------------------------------
+
+
     public List<Report_inDesign> getReportDesign( Report_in report )
     {
         List<Report_inDesign> deCodes = new ArrayList<Report_inDesign>();
@@ -321,6 +422,8 @@ public class DefaultReportService
 
         String path = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
             + report.getXmlTemplateName();
+
+        String configFile= "";
 
         try
         {
@@ -335,6 +438,7 @@ public class DefaultReportService
 
             NodeList listOfDECodes = doc.getElementsByTagName( "de-code" );
             int totalDEcodes = listOfDECodes.getLength();
+            Map<String,String> globalValuesMap = mapGlobalValues();
 
             for ( int s = 0; s < totalDEcodes; s++ )
             {
@@ -342,6 +446,17 @@ public class DefaultReportService
                 NodeList textDECodeList = deCodeElement.getChildNodes();
 
                 String expression = ((Node) textDECodeList.item( 0 )).getNodeValue().trim();
+               
+                // ------------------------replace global values------------------------------------------------                
+
+                System.out.println("\n*INFO :<< CHECKING CONFIG FILE SETUP(1) >>");
+                System.out.println("*INFO :Global Value: "+expression);
+                expression = getGlobalExpression(expression,globalValuesMap);
+                System.out.println("*INFO :Local Value: "+expression);
+                System.out.println("*INFO :<<CHECK FINISHED>>\n");
+
+                // ---------------------------------------------------------------------------------------------
+                
                 String stype = deCodeElement.getAttribute( "stype" );
                 String ptype = deCodeElement.getAttribute( "type" );
                 int sheetno = new Integer( deCodeElement.getAttribute( "sheetno" ) );
@@ -355,8 +470,13 @@ public class DefaultReportService
 
                 deCodes.add( reportDesign );
 
-            }// end of for loop with s var
-        }// try block end
+            }
+
+            // end of for loop with s var
+        }
+
+        // try block end
+
         catch ( SAXParseException err )
         {
             System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
@@ -428,7 +548,7 @@ public class DefaultReportService
             cal.set( year, Calendar.DECEMBER, 31 );
         }
         Date lastDay = new Date( cal.getTimeInMillis() );
-        //System.out.println( lastDay.toString() );
+
         Period newPeriod = new Period();
         newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
         return newPeriod;
@@ -497,7 +617,7 @@ public class DefaultReportService
             tempEndDate.setTime( endDate );
         }
 
-        // System.out.print(deType+" -- ");
+
         calendarList.add( tempStartDate );
         calendarList.add( tempEndDate );
 
@@ -584,12 +704,15 @@ public class DefaultReportService
 
         return null;
 
-    } // getDataElementPeriodType end
+    }
+
+    // getDataElementPeriodType end
 
     
     // -------------------------------------------------------------------------
-    // Get Aggregated Result for dataelement expression 
+    // Get Aggregated Result for dataelement expression
     // -------------------------------------------------------------------------
+
     public String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
     {
         int deFlag1 = 0;
@@ -1485,6 +1608,7 @@ public List<Report_inDesign> getReportDesignWithMergeCells( String fileName )
 
         NodeList listOfDECodes = doc.getElementsByTagName( "de-code" );
         int totalDEcodes = listOfDECodes.getLength();
+        Map<String,String> globalValuesMap = mapGlobalValues();
 
         for ( int s = 0; s < totalDEcodes; s++ )
         {
@@ -1492,6 +1616,17 @@ public List<Report_inDesign> getReportDesignWithMergeCells( String fileName )
             NodeList textDECodeList = deCodeElement.getChildNodes();
             
             String expression = ((Node) textDECodeList.item( 0 )).getNodeValue().trim();
+
+            // ------------------------replace global values------------------------------------------------
+
+            System.out.println("\n*INFO :<< CHECKING CONFIG FILE SETUP(3) >>");
+            System.out.println("*INFO :Global Value: "+expression);
+            expression = getGlobalExpression(expression, globalValuesMap);
+            System.out.println("*INFO :Local Value: "+expression);
+            System.out.println("*INFO :<<CHECK FINISHED>>\n");
+
+            // ---------------------------------------------------------------------------------------------
+
             String stype = deCodeElement.getAttribute( "stype" );
             String ptype = deCodeElement.getAttribute( "type" );
             int sheetno = new Integer( deCodeElement.getAttribute( "sheetno" ) );
@@ -1559,6 +1694,7 @@ public List<Report_inDesign> getReportDesignWithMergeCells( String fileName )
 
             NodeList listOfDECodes = doc.getElementsByTagName( "de-code" );
             int totalDEcodes = listOfDECodes.getLength();
+            Map<String,String> globalValuesMap = mapGlobalValues();
 
             for ( int s = 0; s < totalDEcodes; s++ )
             {
@@ -1566,6 +1702,17 @@ public List<Report_inDesign> getReportDesignWithMergeCells( String fileName )
                 NodeList textDECodeList = deCodeElement.getChildNodes();
                 
                 String expression = ((Node) textDECodeList.item( 0 )).getNodeValue().trim();
+
+                // ------------------------replace global values------------------------------------------------
+
+                System.out.println("\n*INFO :<< CHECKING CONFIG FILE SETUP(2) >>");
+                System.out.println("*INFO :Global Value: "+expression);
+                expression = getGlobalExpression(expression, globalValuesMap);
+                System.out.println("*INFO :Local Value: "+expression);
+                System.out.println("*INFO :<<CHECK FINISHED>>\n");
+
+                // ---------------------------------------------------------------------------------------------
+
                 String stype = deCodeElement.getAttribute( "stype" );
                 String ptype = deCodeElement.getAttribute( "type" );
                 int sheetno = new Integer( deCodeElement.getAttribute( "sheetno" ) );

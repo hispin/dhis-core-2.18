@@ -15,8 +15,35 @@
             <param name="page">/dhis-web-reports/welcome.vm</param>
             <param name="menu">/dhis-web-reports/menu.vm</param>
         </action>
-        
+
+        <action name="globalconfig"
+                class="org.hisp.dhis.reports.reportmanagement.action.GenerateGlobalConfigAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/showGlobalConfigForm.vm</param>
+            <param name="menu">/dhis-web-reports/menu.vm</param>
+        </action>
+
+        <action name="showglobalconfig"
+                class="org.hisp.dhis.reports.reportmanagement.action.ShowGlobalConfigForm">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/showGlobalConfigForm.vm</param>
+            <param name="menu">/dhis-web-reports/menu.vm</param>
+        </action>
+
+        <action name="downloadnewra"
+                class="org.hisp.dhis.reports.reportmanagement.action.DownloadRAFolderAction">
+            <result name="success" type="redirect">index.action</result>
+            <result name="download" type="stream">
+                <param name="contentType">application/zip</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <param name="menu">/dhis-web-reports/menu.vm</param>
+        </action>
+
         <!-- Reports Management -->
+
         <action name="reportManagement"
             class="org.hisp.dhis.reports.reportmanagement.action.ReportsListAction">
             <result name="success" type="velocity">/main.vm</result>

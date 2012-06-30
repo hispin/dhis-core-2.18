@@ -32,7 +32,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="databaseInfoProvider" ref="databaseInfoProvider" />
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
-	
+
+
+    <bean id="org.hisp.dhis.reports.GlobalConfigService"
+          class="org.hisp.dhis.reports.DefaultGlobalConfigService">
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService"/>
+    </bean>
+
+
+
 	<!-- DeletionHandlers -->
 	<bean id="org.hisp.dhis.reports.Report_inDeletionHandler"
 		class="org.hisp.dhis.reports.Report_inDeletionHandler">

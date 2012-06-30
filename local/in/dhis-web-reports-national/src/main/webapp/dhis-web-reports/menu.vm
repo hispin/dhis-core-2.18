@@ -5,6 +5,7 @@
         <li>Report Management</li>
         <ul>
             <li><a href = "reportManagement.action">Report Management</a></li>
+            <li><a href="showglobalconfig.action">Generate Global Config</a></li>
         </ul>
     </ul>
 #end

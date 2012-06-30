@@ -39,10 +39,7 @@ import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -74,6 +71,7 @@ public class LeprosyReportResultAction implements Action
     // -------------------------------------------------------------------------
 
     private StatementManager statementManager;
+    private DefaultDataElementCategoryService dataElementCategoryOptionComboService;
 
     public void setStatementManager( StatementManager statementManager )
     {
@@ -1208,5 +1206,9 @@ public class LeprosyReportResultAction implements Action
         {
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
+    }
+
+    public void setDataElementCategoryOptionComboService(DefaultDataElementCategoryService dataElementCategoryOptionComboService) {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
 }

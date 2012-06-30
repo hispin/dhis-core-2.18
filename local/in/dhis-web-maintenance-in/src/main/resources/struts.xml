@@ -3,6 +3,7 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
+
   <!-- use the DHIS web portal default -->
   <include file="dhis-web-commons.xml"/>
 
