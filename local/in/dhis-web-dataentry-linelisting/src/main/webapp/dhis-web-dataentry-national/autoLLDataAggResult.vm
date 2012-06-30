@@ -1,3 +1,7 @@
 
 
-<div align="center">$resultStatus</div>
+<!--<div align="left">$resultStatus</div>-->
+
+
+<br/><br/>
+<span id="message" style="display:block">$resultStatus</span>

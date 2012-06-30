@@ -123,13 +123,14 @@
 	  <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dataentry-national/autoLLDataAggForm.vm</param>
       <param name="menu">/dhis-web-dataentry-national/menuAutoLLData.vm</param>
-	  <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/autolldataagg.js</param>             
+	  <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/autolldataagg.js</param>
+		<param name="requiredAuthorities">LINELISTING_AGGREGATION</param>            
     </action>
 
     <action name="autoLLAgg" class="org.hisp.dhis.den.autoagg.action.AutoLLDataAggregationAction">
-      <result name="success" type="velocity">/main.vm</result>
+      <result name="success" type="velocity">/content.vm</result>
       <param name="page">/dhis-web-dataentry-national/autoLLDataAggResult.vm</param>
-      <param name="menu">/dhis-web-dataentry-national/menuAutoLLData.vm</param>
+      <param name="requiredAuthorities">LINELISTING_AGGREGATION</param>
     </action>
 
 

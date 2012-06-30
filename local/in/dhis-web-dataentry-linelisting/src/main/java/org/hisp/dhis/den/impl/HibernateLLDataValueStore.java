@@ -2213,7 +2213,7 @@ public class HibernateLLDataValueStore
             LLDataSets.LLMD_DURING_SECOND_TRIM, LLDataSets.LLMD_DURING_THIRD_TRIM, LLDataSets.LLMD_DURING_DELIVERY,
             LLDataSets.LLMD_AFTER_DEL_WITHIN_42DAYS, LLDataSets.LLMD_AGE_BELOW16, LLDataSets.LLMD_AGE_16TO19,
             LLDataSets.LLMD_AGE_19TO35, LLDataSets.LLMD_AGE_ABOVE35, LLDataSets.LLMD_AT_HOME, LLDataSets.LLMD_AT_SC,
-            LLDataSets.LLMD_AT_PHC, LLDataSets.LLMD_AT_CHC, LLDataSets.LLMD_AT_MC, LLDataSets.LLMD_BY_UNTRAINED,
+            LLDataSets.LLMD_AT_PHC, LLDataSets.LLMD_AT_CHC, LLDataSets.LLMD_AT_MC, LLDataSets.LLMD_AT_PVTINST, LLDataSets.LLMD_BY_UNTRAINED,
             LLDataSets.LLMD_BY_TRAINED, LLDataSets.LLMD_BY_ANM, LLDataSets.LLMD_BY_NURSE, LLDataSets.LLMD_BY_DOCTOR,
             LLDataSets.LLMD_CAUSE_ABORTION, LLDataSets.LLMD_CAUSE_OPL, LLDataSets.LLMD_CAUSE_FITS,
             LLDataSets.LLMD_CAUSE_SH, LLDataSets.LLMD_CAUSE_BBCD, LLDataSets.LLMD_CAUSE_BACD,
@@ -2269,52 +2269,56 @@ public class HibernateLLDataValueStore
         // Metarnal Death At Medical College
         queries[14] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DELIVERY_AT + "  AND value = 'MC'";
-
-        // Metarnal Death Assisted by Untrained
+        
+        // Metarnal Death At PVT INST
         queries[15] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+            + " AND dataelementid = " + LLDataSets.LLMD_DELIVERY_AT + "  AND value = 'PVTINST'";
+        
+        // Metarnal Death Assisted by Untrained
+        queries[16] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_NATURE_OF_ASSISTANCE + "  AND value = 'UNTRAINED'";
         // Metarnal Death Assisted by Trained
-        queries[16] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[17] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_NATURE_OF_ASSISTANCE + "  AND value = 'TRAINED'";
         // Metarnal Death Assisted by ANM
-        queries[17] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[18] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_NATURE_OF_ASSISTANCE + "  AND value = 'ANM'";
         // Metarnal Death Assisted by Nurse
-        queries[18] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[19] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_NATURE_OF_ASSISTANCE + "  AND value = 'NURSE'";
         // Metarnal Death Assisted by Doctor
-        queries[19] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[20] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_NATURE_OF_ASSISTANCE + "  AND value = 'DOCTOR'";
 
         // Metarnal Death Cause Abortion
-        queries[20] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[21] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'ABORTION'";
         // Metarnal Death Cause Obsturcted
-        queries[21] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[22] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'OPL'";
         // Metarnal Death Cause Fits
-        queries[22] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[23] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'FITS'";
         // Metarnal Death Cause Severe Hypertension
-        queries[23] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[24] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'SH'";
         // Metarnal Death Cause Bleeding before Child Delivery
-        queries[24] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[25] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'BBCD'";
         // Metarnal Death Cause Bleeding after Child Delivery
-        queries[25] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[26] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'BACD'";
         // Metarnal Death Cause High fever before Delivery
-        queries[26] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[27] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'HFBD'";
         // Metarnal Death Cause High fever after Delivery
-        queries[27] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[28] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'HFAD'";
         // Metarnal Death Cause not known
-        queries[28] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[29] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'NK'";
         // Metarnal Death Other Causes (including cause not known)
-        queries[29] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
+        queries[30] = "SELECT COUNT(*) FROM lldatavalue WHERE sourceid = " + ouId + " AND periodid = " + pId
             + " AND dataelementid = " + LLDataSets.LLMD_DEATH_CAUSE + "  AND value = 'MDNK'";
         
         try

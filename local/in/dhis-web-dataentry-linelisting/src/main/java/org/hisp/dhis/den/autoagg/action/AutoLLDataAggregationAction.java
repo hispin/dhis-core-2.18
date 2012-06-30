@@ -171,6 +171,8 @@ public class AutoLLDataAggregationAction implements Action
         llDataSets.add( dataSetService.getDataSetByName( LLDataSets.LL_DEATHS ) );
         llDataSets.add( dataSetService.getDataSetByName( LLDataSets.LL_MATERNAL_DEATHS ) );
         
+        System.out.println( "Aggregation Start Time is : \t" + new Date() );
+        
         // Calculation
         List<String> aggDeList;
         for( OrganisationUnit orgUnit : orgUnitList )
@@ -183,6 +185,7 @@ public class AutoLLDataAggregationAction implements Action
                 // LLB
                 if( orgUnitDataSets.contains( llDataSets.get( 0 ) ) )
                 {
+                    System.out.println( "inside ----- " + LLDataSets.LL_BIRTHS );
                     
                     lldeValueMap = new HashMap<String, String>( lldataValueService.processLineListBirths( orgUnit, period ) );
                     aggDeList = new ArrayList<String>( lldeValueMap.keySet() );
@@ -201,6 +204,8 @@ public class AutoLLDataAggregationAction implements Action
                 if( orgUnitDataSets.contains( llDataSets.get( 1 ) ) )
                 {
                     
+                    System.out.println( "inside ----- " + LLDataSets.LL_DEATHS );
+                    
                     lldeValueMap = new HashMap<String, String>( lldataValueService.processLineListDeaths( orgUnit, period ) );
                     aggDeList = new ArrayList<String>( lldeValueMap.keySet() );
                     for ( String aggde : aggDeList )
@@ -215,8 +220,9 @@ public class AutoLLDataAggregationAction implements Action
                 }
                 
                 //LLMD
-                if( orgUnitDataSets.contains( llDataSets.get( 0 ) ) )
+                if( orgUnitDataSets.contains( llDataSets.get( 2 ) ) )
                 {    
+                    System.out.println( "inside ----- " + LLDataSets.LL_MATERNAL_DEATHS );
                     
                     lldeValueMap = new HashMap<String, String>( lldataValueService.processLineListMaternalDeaths( orgUnit, period ) );
                     aggDeList = new ArrayList<String>( lldeValueMap.keySet() );
@@ -233,11 +239,15 @@ public class AutoLLDataAggregationAction implements Action
                 
                 if(flag != 1)
                 {
-                    resultStatus += orgUnit.getName() + " : " + period.getStartDate() + " Imported.<br>";
+                    //resultStatus += orgUnit.getName() + " : " + period.getStartDate() + " Imported.<br>";
+                    
+                    resultStatus += "<font color=red><strong>"+ orgUnit.getName()+ " :  From : " + period.getStartDate() + " To : "  + period.getEndDate() + " Imported.<br></font></strong>";
                 }
             }
             
         }
+        
+        System.out.println( "Aggregation End  Time is : \t" + new Date() );
         
         return SUCCESS;
     }
