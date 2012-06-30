@@ -3,6 +3,24 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+
+    <!--Global Config Settings -->
+
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.GenerateGlobalConfigAction"
+          class="org.hisp.dhis.reports.reportmanagement.action.GenerateGlobalConfigAction"
+          scope="prototype">
+        <property name="globalConfigService" ref="org.hisp.dhis.reports.GlobalConfigService">
+        </property>
+    </bean>
+
+
+    <bean id="org.hisp.dhis.reports.reportmanagement.action.DownloadRAFolderAction"
+          class="org.hisp.dhis.reports.reportmanagement.action.DownloadRAFolderAction"
+          scope="prototype">
+        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
+        </property>
+    </bean>
     
     <!-- Reports -->
     <bean id="org.hisp.dhis.reports.action.ReportsHomePageAction"
