@@ -119,10 +119,10 @@ public class DefaultDataSetService
 
     public void deleteDataSet( DataSet dataSet )
     {
-        dataSetStore.delete( dataSet );
-
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_DELETE, DataSet.class.getSimpleName(), dataSet.getName() ) );
+        
+        dataSetStore.delete( dataSet );
     }
 
     public DataSet getDataSet( int id )

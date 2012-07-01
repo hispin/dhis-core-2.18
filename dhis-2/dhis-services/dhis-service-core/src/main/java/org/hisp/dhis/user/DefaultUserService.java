@@ -166,20 +166,20 @@ public class DefaultUserService
         return userStore.save( user );
     }
 
-    public void deleteUser( User user )
-    {
-        userStore.delete( user );
-
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_DELETE,
-            User.class.getSimpleName(), user.getName() ) );
-    }
-
     public void updateUser( User user )
     {
         userStore.update( user );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_EDIT,
             User.class.getSimpleName(), user.getName() ) );
+    }
+
+    public void deleteUser( User user )
+    {
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_DELETE,
+            User.class.getSimpleName(), user.getName() ) );
+        
+        userStore.delete( user );
     }
 
     public Collection<User> getAllUsers()

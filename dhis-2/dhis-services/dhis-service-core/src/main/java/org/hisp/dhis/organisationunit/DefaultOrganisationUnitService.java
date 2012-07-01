@@ -147,10 +147,10 @@ public class DefaultOrganisationUnitService
             organisationUnitStore.update( parent );
         }
 
-        organisationUnitStore.delete( organisationUnit );
-
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_DELETE,
             OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+
+        organisationUnitStore.delete( organisationUnit );
 
         updateVersion();
     }
