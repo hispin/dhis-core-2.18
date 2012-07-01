@@ -86,10 +86,10 @@ public class DefaultDeletionManager
 
             for ( DeletionHandler handler : handlers )
             {
-                log.debug( "Check if allowed using " + currentHandler + " for class " + className );
-                
                 currentHandler = handler.getClass().getSimpleName();
 
+                log.debug( "Check if allowed using " + currentHandler + " for class " + className );
+                
                 Object allow = allowMethod.invoke( handler, object );
 
                 if ( allow != null )
