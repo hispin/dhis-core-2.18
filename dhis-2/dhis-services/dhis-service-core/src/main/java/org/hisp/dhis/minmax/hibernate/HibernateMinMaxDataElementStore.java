@@ -80,4 +80,25 @@ public class HibernateMinMaxDataElementStore
             Restrictions.eq( "source", source ), 
             Restrictions.in( "dataElement", dataElements ) ).list();
     }
+    
+    public void delete( OrganisationUnit organisationUnit )
+    {
+        String hql = "delete from MinMaxDataElement m where m.source = :source";
+        
+        getQuery( hql ).setEntity( "source", organisationUnit ).executeUpdate();
+    }
+    
+    public void delete( DataElement dataElement )
+    {
+        String hql = "delete from MinMaxDataElement m where m.dataElement = :dataElement";
+        
+        getQuery( hql ).setEntity( "dataElement", dataElement ).executeUpdate();
+    }
+    
+    public void delete( DataElementCategoryOptionCombo optionCombo )
+    {
+        String hql = "delete from MinMaxDataElement m where m.optionCombo = :optionCombo";
+        
+        getQuery( hql ).setEntity( "optionCombo", optionCombo ).executeUpdate();
+    }
 }

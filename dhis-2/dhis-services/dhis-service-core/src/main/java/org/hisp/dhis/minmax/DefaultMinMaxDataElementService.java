@@ -96,4 +96,19 @@ public class DefaultMinMaxDataElementService
     {
         return minMaxDataElementStore.getAll();
     }
+
+    public void removeMinMaxDataElements( OrganisationUnit organisationUnit )
+    {
+        minMaxDataElementStore.delete( organisationUnit );
+    }
+    
+    public void removeMinMaxDataElements( DataElement dataElement )
+    {
+        minMaxDataElementStore.delete( dataElement );
+    }
+    
+    public void removeMinMaxDataElements( DataElementCategoryOptionCombo optionCombo )
+    {
+        minMaxDataElementStore.delete( optionCombo );
+    }
 }

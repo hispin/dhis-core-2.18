@@ -224,7 +224,7 @@ public class HibernateGenericStore<T>
     {
         return (T) sessionFactory.getCurrentSession().load( getClazz(), id );
     }
-
+    
     @Override
     public final T getByUid( String uid )
     {

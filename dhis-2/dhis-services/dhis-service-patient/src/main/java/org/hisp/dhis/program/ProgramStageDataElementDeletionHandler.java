@@ -112,14 +112,12 @@ public class ProgramStageDataElementDeletionHandler
             // TODO use a query which will be more efficient
 
             Collection<ProgramStageDataElement> psDataElements = programStageDEService.getAllProgramStageDataElements();
+            
             for ( ProgramStageDataElement psDataElement : psDataElements )
             {
-                Collection<DataElement> dataElements = programStageDEService.getListDataElement( psDataElement
-                    .getProgramStage() );
-
-                if ( dataElements.contains( dataElement ) )
+                if ( psDataElement.getDataElement() != null && psDataElement.getDataElement().equals( dataElement ) )
                 {
-                    return ERROR;
+                    return dataElement.getName();
                 }
             }
         }

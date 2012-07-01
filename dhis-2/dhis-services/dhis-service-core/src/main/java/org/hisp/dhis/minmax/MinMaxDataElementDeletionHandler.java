@@ -63,36 +63,18 @@ public class MinMaxDataElementDeletionHandler
     @Override
     public void deleteDataElement( DataElement dataElement )
     {
-        for ( MinMaxDataElement element : minMaxDataElementService.getAllMinMaxDataElements() )
-        {
-            if ( element.getDataElement().equals( dataElement ) )
-            {
-                minMaxDataElementService.deleteMinMaxDataElement( element );
-            }
-        }
+        minMaxDataElementService.removeMinMaxDataElements( dataElement );
     }
     
     @Override
     public void deleteOrganisationUnit( OrganisationUnit source )
     {
-        for ( MinMaxDataElement element : minMaxDataElementService.getAllMinMaxDataElements() )
-        {
-            if ( element.getSource().equals( source ) )
-            {
-                minMaxDataElementService.deleteMinMaxDataElement( element );
-            }
-        }
+        minMaxDataElementService.removeMinMaxDataElements( source );
     }
     
     @Override
-    public void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
+    public void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo optionCombo )
     {
-        for ( MinMaxDataElement element : minMaxDataElementService.getAllMinMaxDataElements() )
-        {
-            if ( element.getOptionCombo().equals( categoryOptionCombo ) )
-            {
-                minMaxDataElementService.deleteMinMaxDataElement( element );
-            }
-        }
+        minMaxDataElementService.removeMinMaxDataElements( optionCombo );
     }
 }

@@ -79,7 +79,7 @@ public interface GenericStore<T>
      *         proxy.
      */
     T load( int id );
-
+    
     /**
      * Retrieves a Collection of objects where the name is like the given name.
      * 

@@ -27,6 +27,8 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
@@ -61,36 +63,45 @@ public class OrganisationUnitDeletionHandler
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
-        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
+        Iterator<OrganisationUnit> iterator = dataSet.getSources().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( unit.getDataSets().remove( dataSet ) )
-            {
-                organisationUnitService.updateOrganisationUnit( unit );
-            }
-        }
+            OrganisationUnit unit = iterator.next();
+            
+            unit.getDataSets().remove( unit );
+            
+            organisationUnitService.updateOrganisationUnit( unit );
+        }        
     }
 
     @Override
     public void deleteUser( User user )
     {
-        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
+        Iterator<OrganisationUnit> iterator = user.getOrganisationUnits().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( unit.getUsers().remove( user ) )
-            {
-                organisationUnitService.updateOrganisationUnit( unit );
-            }
+            OrganisationUnit unit = iterator.next();
+            
+            unit.getUsers().remove( user );
+            
+            organisationUnitService.updateOrganisationUnit( unit );
         }
     }
 
     @Override
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {
-        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
+        Iterator<OrganisationUnit> iterator = group.getMembers().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( unit.getGroups().remove( group ) )
-            {
-                organisationUnitService.updateOrganisationUnit( unit );
-            }
-        }
+            OrganisationUnit unit = iterator.next();
+            
+            unit.getGroups().remove( unit );
+            
+            organisationUnitService.updateOrganisationUnit( unit );
+        }            
     }
 }

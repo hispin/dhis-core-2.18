@@ -48,4 +48,10 @@ public interface MinMaxDataElementStore
     Collection<MinMaxDataElement> get( OrganisationUnit source, DataElement dataElement );  
 
     Collection<MinMaxDataElement> get( OrganisationUnit source, Collection<DataElement> dataElements );
+    
+    void delete( OrganisationUnit organisationUnit );
+    
+    void delete( DataElement dataElement );
+    
+    void delete( DataElementCategoryOptionCombo optionCombo );
 }

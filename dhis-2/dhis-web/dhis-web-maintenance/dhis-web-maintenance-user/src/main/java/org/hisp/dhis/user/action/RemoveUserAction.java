@@ -27,20 +27,16 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: RemoveUserAction.java 5724 2008-09-18 14:37:01Z larshelg $
  */
 public class RemoveUserAction
     implements Action
@@ -101,14 +97,7 @@ public class RemoveUserAction
 
         boolean isCurrentUser = currentUser != null && currentUser.equals( user );
 
-        Collection<UserSetting> userSettings = userService.getAllUserSettings( user );
-
-        for ( UserSetting userSetting : userSettings )
-        {
-            userService.deleteUserSetting( userSetting );
-        }
-
-        UserCredentials userCredentials = userService.getUserCredentials( user );
+        UserCredentials userCredentials = user.getUserCredentials();
         
         if ( userService.isLastSuperUser( userCredentials ) )
         {
@@ -118,7 +107,7 @@ public class RemoveUserAction
         }
         else
         {
-            userService.deleteUserCredentials( userService.getUserCredentials( user ) );
+            userService.deleteUserCredentials( user.getUserCredentials() );
             userService.deleteUser( user );
         }
 

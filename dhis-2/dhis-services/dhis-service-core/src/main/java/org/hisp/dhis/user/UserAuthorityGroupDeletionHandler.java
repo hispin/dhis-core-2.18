@@ -27,6 +27,8 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -73,12 +75,13 @@ public class UserAuthorityGroupDeletionHandler
     @Override
     public void deleteUserCredentials( UserCredentials credentials )
     {
-        for ( UserAuthorityGroup group : userService.getAllUserAuthorityGroups() )
+        Iterator<UserAuthorityGroup> iterator = credentials.getUserAuthorityGroups().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( group.getMembers().remove( credentials ) )
-            {
-                userService.updateUserAuthorityGroup( group );
-            }
+            UserAuthorityGroup group = iterator.next();
+            group.getMembers().remove( credentials );
+            userService.updateUserAuthorityGroup( group );
         }
     }
 }

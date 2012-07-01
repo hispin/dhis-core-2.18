@@ -361,4 +361,11 @@ public interface UserService
      * @return a Map.
      */
     Map<User, Serializable> getUserSettings( String name, Serializable defaultValue );
+
+    /**
+     * Removes all user settings associated with the given user.
+     * 
+     * @param user the user.
+     */
+    void removeUserSettings( User user );
 }

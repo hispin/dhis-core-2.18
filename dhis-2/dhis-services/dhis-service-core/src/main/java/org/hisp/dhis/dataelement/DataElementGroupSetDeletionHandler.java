@@ -60,12 +60,12 @@ public class DataElementGroupSetDeletionHandler
     @Override
     public void deleteDataElementGroup( DataElementGroup dataElementGroup )
     {
-        for ( DataElementGroupSet groupSet : dataElementService.getAllDataElementGroupSets() )
+        DataElementGroupSet groupSet = dataElementGroup.getGroupSet();
+        
+        if ( groupSet != null )
         {
-            if ( groupSet.getMembers().remove( dataElementGroup ) )
-            {
-                dataElementService.updateDataElementGroupSet( groupSet );
-            }
+            groupSet.getMembers().remove( dataElementGroup );
+            dataElementService.updateDataElementGroupSet( groupSet );
         }
     }
 }

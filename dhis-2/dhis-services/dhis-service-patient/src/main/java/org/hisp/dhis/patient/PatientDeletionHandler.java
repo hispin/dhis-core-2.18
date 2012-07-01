@@ -71,12 +71,9 @@ public class PatientDeletionHandler
     }
     
     @Override
-    public void deleteOrganisationUnit( OrganisationUnit unit )
+    public String allowDeleteOrganisationUnit( OrganisationUnit unit )
     {
-        for ( Patient patient : patientService.getPatients( unit, null, null ) )
-        {
-            patientService.deletePatient( patient );
-        }
+        return patientService.getPatients( unit, null, null ).size() == 0 ? null : ERROR;
     }
     
     @Override

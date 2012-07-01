@@ -117,4 +117,9 @@ public class DefaultCompleteDataSetRegistrationService
     {
         completeDataSetRegistrationStore.deleteCompleteDataSetRegistrations( dataSet );
     }
+    
+    public void deleteCompleteDataSetRegistrations( OrganisationUnit unit )
+    {
+        completeDataSetRegistrationStore.deleteCompleteDataSetRegistrations( unit );
+    }
 }

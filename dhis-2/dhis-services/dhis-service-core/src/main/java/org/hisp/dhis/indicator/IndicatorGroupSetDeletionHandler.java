@@ -58,12 +58,12 @@ public class IndicatorGroupSetDeletionHandler
     @Override
     public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        for ( IndicatorGroupSet groupSet : indicatorService.getAllIndicatorGroupSets() )
+        IndicatorGroupSet groupSet = indicatorGroup.getGroupSet();
+        
+        if ( groupSet != null )
         {
-            if ( groupSet.getMembers().remove( indicatorGroup ) )
-            {
-                indicatorService.updateIndicatorGroupSet( groupSet );
-            }
+            groupSet.getMembers().remove( indicatorGroup );
+            indicatorService.updateIndicatorGroupSet( groupSet );
         }
     }
 }

@@ -806,6 +806,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.user.UserSettingDeletionHandler" class="org.hisp.dhis.user.UserSettingDeletionHandler">
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+	<property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">

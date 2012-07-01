@@ -83,14 +83,8 @@ public class CompleteDataSetRegistrationDeletionHandler
     }
 
     @Override
-    public void deleteOrganisationUnit( OrganisationUnit unit ) // TODO inefficient, use query
+    public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-        for ( CompleteDataSetRegistration registration : completeDataSetRegistrationService.getAllCompleteDataSetRegistrations() )
-        {
-            if ( registration.getSource().equals( unit ) )
-            {
-                completeDataSetRegistrationService.deleteCompleteDataSetRegistration( registration );
-            }
-        }
+        completeDataSetRegistrationService.deleteCompleteDataSetRegistrations( unit );
     }
 }

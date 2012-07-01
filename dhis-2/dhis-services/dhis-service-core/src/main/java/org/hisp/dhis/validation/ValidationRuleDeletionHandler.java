@@ -27,6 +27,8 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -61,13 +63,18 @@ public class ValidationRuleDeletionHandler
     @Override
     public void deleteExpression( Expression expression )
     {
-        for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
+        Iterator<ValidationRule> iterator = validationRuleService.getAllValidationRules().iterator();
+        
+        while ( iterator.hasNext() )
         {
+            ValidationRule rule = iterator.next();
+            
             Expression leftSide = rule.getLeftSide();
             Expression rightSide = rule.getRightSide();
 
             if ( (leftSide != null && leftSide.equals( expression )) || (rightSide != null && rightSide.equals( expression )) )
             {
+                iterator.remove();
                 validationRuleService.deleteValidationRule( rule );
             }
         }

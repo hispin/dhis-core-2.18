@@ -27,6 +27,8 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -60,12 +62,13 @@ public class OrganisationUnitGroupDeletionHandler
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-        for ( OrganisationUnitGroup group : organisationUnitGroupService.getAllOrganisationUnitGroups() )
+        Iterator<OrganisationUnitGroup> iterator = unit.getGroups().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( group.getMembers().remove( unit ) )
-            {
-                organisationUnitGroupService.updateOrganisationUnitGroup( group );
-            }
+            OrganisationUnitGroup group = iterator.next();
+            group.getMembers().remove( unit );
+            organisationUnitGroupService.updateOrganisationUnitGroup( group );
         }
     }
 }

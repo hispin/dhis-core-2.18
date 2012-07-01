@@ -64,4 +64,11 @@ public interface UserStore
      * @return a Collection of Users.
      */
     Collection<User> getUsersByPhoneNumber( String phoneNumber );
+    
+    /**
+     * Removes all user settings associated with the given user.
+     * 
+     * @param user the user.
+     */
+    void removeUserSettings( User user );
 }

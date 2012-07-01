@@ -27,6 +27,8 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
@@ -73,12 +75,13 @@ public class SectionDeletionHandler
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
-        for ( Section section : sectionService.getAllSections() )
+        Iterator<Section> iterator = dataSet.getSections().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( section.getDataSet().equals( dataSet ) )
-            {
-                sectionService.deleteSection( section );
-            }
+            Section section = iterator.next();
+            iterator.remove();
+            sectionService.deleteSection( section );
         }
     }
 }

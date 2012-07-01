@@ -76,6 +76,8 @@ public class ProgramDeletionHandler
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
+        //TODO improve performance
+        
         Collection<Program> programs = programService.getAllPrograms();
         
         for ( Program program : programs )

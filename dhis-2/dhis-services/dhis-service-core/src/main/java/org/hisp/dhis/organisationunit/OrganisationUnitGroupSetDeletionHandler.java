@@ -60,12 +60,12 @@ public class OrganisationUnitGroupSetDeletionHandler
     @Override
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {
-        for ( OrganisationUnitGroupSet groupSet : organisationUnitGroupService.getAllOrganisationUnitGroupSets() )
+        OrganisationUnitGroupSet groupSet = group.getGroupSet();
+        
+        if ( groupSet != null )
         {
-            if ( groupSet.getOrganisationUnitGroups().remove( group ) )
-            {
-                organisationUnitGroupService.updateOrganisationUnitGroupSet( groupSet );
-            }
+            groupSet.getOrganisationUnitGroups().remove( group );
+            organisationUnitGroupService.updateOrganisationUnitGroupSet( groupSet );
         }
     }
 }
