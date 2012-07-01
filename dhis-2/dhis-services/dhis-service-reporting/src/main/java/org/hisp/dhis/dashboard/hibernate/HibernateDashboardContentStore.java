@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard;
+package org.hisp.dhis.dashboard.hibernate;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,37 +27,41 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardContentStore;
 import org.hisp.dhis.document.Document;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.user.User;
-
-import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public interface DashboardService
+public class HibernateDashboardContentStore
+    extends HibernateGenericStore<DashboardContent> implements DashboardContentStore
 {
-    final String ID = DashboardService.class.getName();
-
-    void saveDashboardContent( DashboardContent dashboardContent );
-
-    DashboardContent getDashboardContent( int id );
-
-    DashboardContent getDashboardContent( User user );
-
-    Collection<DashboardContent> getAllDashboardContent();
+    public void removeDocumentAssociations( Document document )
+    {
+        final String sql = "delete from dashboardcontent_documents where documentid = " + document.getId();
+        jdbcTemplate.execute( sql );
+    }
     
-    void deleteDashboardContent( DashboardContent content );
+    public void removeMapViewAssocations( MapView mapView )
+    {
+        final String sql = "delete from dashboardcontent_mapviews where mapviewid = " + mapView.getId();
+        jdbcTemplate.execute( sql );
+    }
     
-    void removeDocumentAssociations( Document document );
+    public void removeReportAssociations( Report report )
+    {
+        final String sql = "delete from dashboardcontent_reports where reportid = " + report.getId();
+        jdbcTemplate.execute( sql );
+    }
     
-    void removeMapViewAssocations( MapView mapView );
-    
-    void removeReportAssociations( Report report );
-    
-    void removeReportTableAssociations( ReportTable reportTable );
+    public void removeReportTableAssociations( ReportTable reportTable )
+    {
+        final String sql = "delete from dashboardcontent_reporttables where reporttableid = " + reportTable.getId();
+        jdbcTemplate.execute( sql );
+    }
 }

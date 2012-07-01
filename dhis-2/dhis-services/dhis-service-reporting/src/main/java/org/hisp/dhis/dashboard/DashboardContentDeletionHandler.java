@@ -57,54 +57,28 @@ public class DashboardContentDeletionHandler
         return DashboardContent.class.getSimpleName();
     }
     
-    //TODO Improve performance with queries
-    
     @Override
     public void deleteReport( Report report )
     {
-        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
-        {
-            if ( content.getReports().remove( report ) )
-            {
-                dashboardService.saveDashboardContent( content );
-            }
-        }
+        dashboardService.removeReportAssociations( report );
     }
             
     @Override
     public void deleteDocument( Document document )
     {
-        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
-        {
-            if ( content.getDocuments().remove( document ) )
-            {
-                dashboardService.saveDashboardContent( content );
-            }
-        }
+        dashboardService.removeDocumentAssociations( document );
     }
     
     @Override
     public void deleteReportTable( ReportTable reportTable )
     {
-        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
-        {
-            if ( content.getReportTables().remove( reportTable ) )
-            {
-                dashboardService.saveDashboardContent( content );
-            }
-        }
+        dashboardService.removeReportTableAssociations( reportTable );
     }
     
     @Override
     public void deleteMapView( MapView mapView )
     {
-        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
-        {
-            if ( content.getMapViews().remove( mapView ) )
-            {
-                dashboardService.saveDashboardContent( content );
-            }
-        }
+        dashboardService.removeMapViewAssocations( mapView );
     }
     
     @Override
