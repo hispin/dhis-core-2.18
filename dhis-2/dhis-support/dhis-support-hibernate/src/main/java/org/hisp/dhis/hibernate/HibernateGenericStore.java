@@ -36,6 +36,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -374,5 +375,12 @@ public class HibernateGenericStore<T>
         Object count  = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).setProjection( Projections.rowCount() ).list().get( 0 );
         
         return count != null ? (Long) count : -1;
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<T> getByUser( User user )
+    {
+        return getCriteria( Restrictions.eq( "user", user ) ).list();
     }
 }

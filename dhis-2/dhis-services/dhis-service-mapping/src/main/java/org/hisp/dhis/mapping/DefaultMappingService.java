@@ -598,6 +598,11 @@ public class DefaultMappingService
 
         return mapViews;
     }
+    
+    public Collection<MapView> getMapViewsByUser( User user )
+    {
+        return mapViewStore.getByUser( user );
+    }
 
     // -------------------------------------------------------------------------
     // MapLayer

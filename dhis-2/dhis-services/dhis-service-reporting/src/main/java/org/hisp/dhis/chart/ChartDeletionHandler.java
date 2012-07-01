@@ -27,9 +27,12 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -80,6 +83,19 @@ public class ChartDeletionHandler
             {
                 chartService.saveChart( chart );
             }
+        }
+    }
+    
+    @Override
+    public void deleteUser( User user )
+    {
+        Iterator<Chart> iterator = chartService.getChartsByUser( user ).iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            Chart chart = iterator.next();
+            iterator.remove();
+            chartService.deleteChart( chart );
         }
     }
 }

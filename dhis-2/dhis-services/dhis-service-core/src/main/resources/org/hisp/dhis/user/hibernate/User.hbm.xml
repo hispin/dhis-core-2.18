@@ -30,6 +30,12 @@
 
     <one-to-one name="userCredentials" class="org.hisp.dhis.user.UserCredentials" foreign-key="fk_userinfo_userid" />
 
+    <set name="groups" table="usergroupmembers" inverse="true">
+      <cache usage="read-write" />
+      <key column="userid" />
+      <many-to-many class="org.hisp.dhis.user.UserGroup" column="usergroupid" />
+    </set>
+
     <set name="organisationUnits" table="usermembership">
       <cache usage="read-write" />
       <key column="userinfoid" foreign-key="fk_usermembership_userinfoid" />

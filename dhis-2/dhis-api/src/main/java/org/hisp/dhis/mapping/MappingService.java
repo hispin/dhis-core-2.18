@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.user.User;
 
 import java.util.Collection;
 import java.util.Set;
@@ -156,6 +157,8 @@ public interface MappingService
     Collection<MapView> getSystemAndUserMapViews();
 
     Collection<MapView> getMapViewsByFeatureType( String featureType );
+    
+    Collection<MapView> getMapViewsByUser( User user );
 
     // -------------------------------------------------------------------------
     // MapLayer

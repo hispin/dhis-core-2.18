@@ -796,6 +796,10 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
+  <bean id="org.hisp.dhis.user.UserGroupDeletionHandler" class="org.hisp.dhis.user.UserGroupDeletionHandler">
+	<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+  </bean>
+
   <bean id="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" class="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
@@ -865,6 +869,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" />
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" />
           <ref local="org.hisp.dhis.user.UserDeletionHandler" />
+		  <ref local="org.hisp.dhis.user.UserGroupDeletionHandler" />
           <ref local="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" />
           <ref local="org.hisp.dhis.user.UserCredentialsDeletionHandler" />
           <ref local="org.hisp.dhis.user.UserSettingDeletionHandler" />
