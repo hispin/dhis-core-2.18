@@ -27,6 +27,8 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
@@ -34,6 +36,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -149,4 +152,16 @@ public class MapViewDeletionHandler
         }
     }
     
+    @Override
+    public void deleteUser( User user )
+    {
+        Iterator<MapView> iterator = mappingService.getMapViewsByUser( user ).iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            MapView mapView = iterator.next();
+            iterator.remove();
+            mappingService.deleteMapView( mapView );
+        }
+    }
 }

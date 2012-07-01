@@ -89,4 +89,17 @@ public class UserDeletionHandler
 
         return null;
     }
+    
+    @Override
+    public void deleteUserGroup( UserGroup group )
+    {
+        Iterator<User> iterator = group.getMembers().iterator();
+        
+        while ( iterator.hasNext() )
+        {
+            User user = iterator.next();
+            user.getGroups().remove( user );
+            userService.updateUser( user );
+        }
+    }
 }

@@ -769,4 +769,9 @@ public class DefaultChartService
     {
         return chartStore.getBetweenByName( name, first, max );
     }
+    
+    public Collection<Chart> getChartsByUser( User user )
+    {
+        return chartStore.getByUser( user );
+    }
 }

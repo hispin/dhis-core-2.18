@@ -79,6 +79,8 @@ public class User
     
     private UserCredentials userCredentials;
 
+    private Set<UserGroup> groups = new HashSet<UserGroup>();
+    
     /**
      * All OrgUnits where the user could belong
      * <p/>
@@ -339,6 +341,16 @@ public class User
     public void setUserCredentials( UserCredentials userCredentials )
     {
         this.userCredentials = userCredentials;
+    }
+
+    public Set<UserGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( Set<UserGroup> groups )
+    {
+        this.groups = groups;
     }
 
     @JsonProperty

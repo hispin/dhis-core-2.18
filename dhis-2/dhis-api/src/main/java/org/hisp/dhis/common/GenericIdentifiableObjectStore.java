@@ -31,6 +31,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.user.User;
+
 /**
  * @author Lars Helge Overland
  */
@@ -131,4 +133,11 @@ public interface GenericIdentifiableObjectStore<T>
      * @return the number of objects equal or newer than given date.
      */
     long getCountByLastUpdated( Date lastUpdated );
+    
+    /**
+     * Retrieves objects associated with the given user.
+     * 
+     * @param user the user.
+     */
+    Collection<T> getByUser( User user );
 }

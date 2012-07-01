@@ -113,7 +113,7 @@ public class UpdateUserGroupAction
         UserGroup userGroup = userGroupService.getUserGroup( userGroupId );
 
         userGroup.setName( name );
-        userGroup.setMembers( userList );
+        userGroup.updateUsers( userList );
 
         if ( jsonAttributeValues != null )
         {

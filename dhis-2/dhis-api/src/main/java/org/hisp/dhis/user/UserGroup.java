@@ -122,6 +122,34 @@ public class UserGroup
         members.clear();
     }
 
+    public void addUser( User user )
+    {
+        members.add( user );
+        user.getGroups().add( this );
+    }
+    
+    public void removeUser( User user )
+    {
+        members.remove( user );
+        user.getGroups().remove( this );
+    }
+    
+    public void updateUsers( Set<User> updates )
+    {
+        for ( User user : new HashSet<User>( members ) )
+        {
+            if ( !updates.contains( user ) )
+            {
+                removeUser( user );
+            }
+        }
+        
+        for ( User user : updates )
+        {
+            addUser( user );
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

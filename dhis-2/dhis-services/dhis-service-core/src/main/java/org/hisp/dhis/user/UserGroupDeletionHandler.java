@@ -1,4 +1,4 @@
-package org.hisp.dhis.user.action;
+package org.hisp.dhis.user;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,93 +27,46 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.util.Iterator;
 
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.system.util.AttributeUtils;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.system.deletion.DeletionHandler;
 
-import com.opensymphony.xwork2.Action;
-
-public class AddUserGroupAction
-    implements Action
+/**
+ * @author Lars Helge Overland
+ */
+public class UserGroupDeletionHandler
+    extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
     private UserGroupService userGroupService;
-
+    
     public void setUserGroupService( UserGroupService userGroupService )
     {
         this.userGroupService = userGroupService;
     }
 
-    private AttributeService attributeService;
-
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
-    }
-
     // -------------------------------------------------------------------------
-    // Parameters
+    // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
-    private List<Integer> groupMembersList;
-
-    public void setGroupMembersList( List<Integer> groupMembersList )
+    @Override
+    protected String getClassName()
     {
-        this.groupMembersList = groupMembersList;
+        return UserGroup.class.getSimpleName();
     }
 
-    private String name;
-
-    public void setName( String name )
+    public void deleteUser( User user )
     {
-        this.name = name;
-    }
-
-    private List<String> jsonAttributeValues;
-
-    public void setJsonAttributeValues( List<String> jsonAttributeValues )
-    {
-        this.jsonAttributeValues = jsonAttributeValues;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action Implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
-        throws Exception
-    {
-        UserGroup userGroup = new UserGroup( name );
+        Iterator<UserGroup> iterator = user.getGroups().iterator();
         
-        for ( Integer groupMember : groupMembersList )
+        while ( iterator.hasNext() )
         {
-            User user = userService.getUser( groupMember );
-            userGroup.addUser( user );
+            UserGroup group = iterator.next();
+            group.removeUser( user );
+            userGroupService.updateUserGroup( group );
         }
-
-        if ( jsonAttributeValues != null )
-        {
-            AttributeUtils.updateAttributeValuesFromJson( userGroup.getAttributeValues(), jsonAttributeValues,
-                attributeService );
-        }
-
-        userGroupService.addUserGroup( userGroup );
-
-        return SUCCESS;
     }
 }
