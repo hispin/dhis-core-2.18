@@ -103,17 +103,17 @@ public class TranslationDeletionHandler
     {
         i18nService.removeObject( indicatorGroup );
     }
-    
-    @Override
-    public void deleteIndicatorType( IndicatorType indicatorType )
-    {
-        i18nService.removeObject( indicatorType );
-    }
 
     @Override
     public void deleteIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet )
     {
         i18nService.removeObject( indicatorGroupSet );
+    }
+
+    @Override
+    public void deleteIndicatorType( IndicatorType indicatorType )
+    {
+        i18nService.removeObject( indicatorType );
     }
 
     @Override

@@ -184,4 +184,15 @@ public class HibernateCompleteDataSetRegistrationStore
         
         query.executeUpdate();
     }
+    
+    public void deleteCompleteDataSetRegistrations( OrganisationUnit unit )
+    {
+        String hql = "delete from CompleteDataSetRegistration c where c.source = :source";
+
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+        
+        query.setEntity( "source", unit );
+        
+        query.executeUpdate();
+    }
 }

@@ -56,4 +56,10 @@ public interface MinMaxDataElementService
     Collection<MinMaxDataElement> getMinMaxDataElements( OrganisationUnit source, Collection<DataElement> dataElements );
     
     Collection<MinMaxDataElement> getAllMinMaxDataElements();
+
+    void removeMinMaxDataElements( OrganisationUnit organisationUnit );
+    
+    void removeMinMaxDataElements( DataElement dataElement );
+    
+    void removeMinMaxDataElements( DataElementCategoryOptionCombo optionCombo );
 }

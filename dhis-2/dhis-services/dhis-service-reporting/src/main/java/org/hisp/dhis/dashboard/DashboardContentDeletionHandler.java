@@ -57,6 +57,8 @@ public class DashboardContentDeletionHandler
         return DashboardContent.class.getSimpleName();
     }
     
+    //TODO Improve performance with queries
+    
     @Override
     public void deleteReport( Report report )
     {

@@ -81,4 +81,11 @@ public class HibernateUserStore
 
         return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", orgunits ).list();
     }
+    
+    public void removeUserSettings( User user )
+    {
+        String hql = "delete from UserSetting us where us.user = :user";
+        
+        getQuery( hql ).setEntity( "user", user ).executeUpdate();
+    }
 }

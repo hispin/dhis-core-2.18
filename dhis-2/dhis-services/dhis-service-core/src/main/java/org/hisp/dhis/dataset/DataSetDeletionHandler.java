@@ -96,36 +96,38 @@ public class DataSetDeletionHandler
     @Override
     public void deleteIndicator( Indicator indicator )
     {
-        for ( DataSet dataSet : dataSetService.getAllDataSets() )
+        Iterator<DataSet> iterator = indicator.getDataSets().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( dataSet.getIndicators().remove( indicator ) )
-            {
-                dataSetService.updateDataSet( dataSet );
-            }
+            DataSet dataSet = iterator.next();
+            dataSet.getIndicators().remove( indicator );
+            dataSetService.updateDataSet( dataSet );
         }
     }
     
     @Override
     public void deleteSection( Section section )
     {
-        for ( DataSet dataSet : dataSetService.getAllDataSets() )
+        DataSet dataSet = section.getDataSet();
+        
+        if ( dataSet != null )
         {
-            if ( dataSet.getSections().remove( section ) )
-            {
-                dataSetService.updateDataSet( dataSet );
-            }
+            dataSet.getSections().remove( section );
+            dataSetService.updateDataSet( dataSet );
         }
     }
 
     @Override
     public void deleteOrganisationUnit( OrganisationUnit unit )
     {
-        for ( DataSet dataSet : dataSetService.getAllDataSets() )
+        Iterator<DataSet> iterator = unit.getDataSets().iterator();
+        
+        while ( iterator.hasNext() )
         {
-            if ( dataSet.getSources().remove( unit ) )
-            {
-                dataSetService.updateDataSet( dataSet );
-            }
+            DataSet dataSet = iterator.next();
+            dataSet.getSources().remove( unit );
+            dataSetService.updateDataSet( dataSet );
         }
     }
 }

@@ -123,4 +123,11 @@ public interface CompleteDataSetRegistrationService
      * @param dataSet the DataSet.
      */
     void deleteCompleteDataSetRegistrations( DataSet dataSet );
+
+    /**
+     * Deletes the CompleteDataSetRegistrations associated with the given OrganisationUnit.
+     * 
+     * @param unit the OrganisationUnit.
+     */
+    void deleteCompleteDataSetRegistrations( OrganisationUnit unit );
 }

@@ -111,11 +111,16 @@ public class DefaultUserService
 
     public boolean isLastSuperUser( UserCredentials userCredentials )
     {
+        if ( !isSuperUser( userCredentials ) )
+        {
+            return false; // Cannot be last if not super user
+        }
+        
         Collection<UserCredentials> users = userCredentialsStore.getAllUserCredentials();
 
         for ( UserCredentials user : users )
         {
-            if ( isSuperUser( user ) && user.getId() != userCredentials.getId() )
+            if ( isSuperUser( user ) && !user.equals( userCredentials ) )
             {
                 return false;
             }
@@ -489,5 +494,10 @@ public class DefaultUserService
     public Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> units )
     {
         return userStore.getUsersByOrganisationUnits( units );
+    }
+    
+    public void removeUserSettings( User user )
+    {
+        userStore.removeUserSettings( user );
     }
 }
