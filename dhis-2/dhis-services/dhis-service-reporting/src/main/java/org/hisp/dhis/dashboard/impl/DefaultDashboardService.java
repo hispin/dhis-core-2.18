@@ -29,15 +29,20 @@ package org.hisp.dhis.dashboard.impl;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dashboard.DashboardContent;
+import org.hisp.dhis.dashboard.DashboardContentStore;
 import org.hisp.dhis.dashboard.DashboardService;
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Note: The remove associations methods must be altered if caching is introduced.
+ * 
  * @author Lars Helge Overland
- * @version $Id$
  */
 @Transactional
 public class DefaultDashboardService
@@ -47,9 +52,9 @@ public class DefaultDashboardService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericStore<DashboardContent> dashboardContentStore;
+    private DashboardContentStore dashboardContentStore;
 
-    public void setDashboardContentStore( GenericStore<DashboardContent> dashboardContentStore )
+    public void setDashboardContentStore( DashboardContentStore dashboardContentStore )
     {
         this.dashboardContentStore = dashboardContentStore;
     }
@@ -84,5 +89,25 @@ public class DefaultDashboardService
     public void deleteDashboardContent( DashboardContent content )
     {
         dashboardContentStore.delete( content );
+    }
+    
+    public void removeDocumentAssociations( Document document )
+    {
+        dashboardContentStore.removeDocumentAssociations( document );
+    }
+    
+    public void removeMapViewAssocations( MapView mapView )
+    {
+        dashboardContentStore.removeMapViewAssocations( mapView );
+    }
+    
+    public void removeReportAssociations( Report report )
+    {
+        dashboardContentStore.removeReportAssociations( report );
+    }
+    
+    public void removeReportTableAssociations( ReportTable reportTable )
+    {
+        dashboardContentStore.removeReportTableAssociations( reportTable );
     }
 }
