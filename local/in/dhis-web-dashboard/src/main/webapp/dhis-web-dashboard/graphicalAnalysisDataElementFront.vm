@@ -1,4 +1,8 @@
 <script>
+	
+	jQuery(document).ready(function() {
+    	checkedDataElementGroup();    
+    });
 
 	// Global Variables
 	var selriRadioButton = "indicatorsRadio";
@@ -84,17 +88,10 @@
 <form id="ChartGenerationForm" name="ChartGenerationForm">
 	<table style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" border=0>
 		<tr>
-		<td class="NormalB">$i18n.getString( "ga_filter_by_degroup" )<br>
-			<select id="dataElementGroupId" name="dataElementGroupId" style="width:325px" onChange="getDataElements()" >
-			<!--<option value="$ALL">[ Select DataElementGroup / All ]</option>-->
-				 <option value="0">[ Select DataElementGroup / All ]</option>
-				##foreach ( $group in $dataElementGroups )
-					<!--<option value="$group.id" title="$group.name">$group.name</option>-->
-				##end
-				#foreach ( $section in $sections )
-					<option value="$section.id" title="$section.name">$section.name</option>
-				#end				
-			</select>
+		<td class="NormalB">$i18n.getString( "ga_filter_by_degroup_section" )<br>
+            #parse( "dhis-web-commons/loader/loader.vm" )
+            <div id="dataElementGrpDiv" name="dataElementGrpDiv"></div>		
+			
 		</td>
 	    <td class="NormalB">&nbsp;</td>
 		<td class="NormalB">$i18n.getString( "compare_view" )<br>
@@ -113,7 +110,7 @@
     <tr>
       <td class="NormalB">$i18n.getString( "filter" ):&nbsp;<input type="text" id="availableDataElementsFilter" onkeyup="filterAvailableDataElements()" style="min-width:24em"></td>
       <td class="NormalB">&nbsp;</td>
-      <td class="NormalB">&nbsp;</td>
+      <td class="NormalB">$i18n.getString( "ga_filter_by_degroup" ) &nbsp;<input type="checkbox" checked="true" id="chkDataGrp" onchange="checkedDataElementGroup()"/></td>
     </tr>
     <tr>
 		<td class="NormalB">&nbsp;</td>
