@@ -322,7 +322,7 @@ public class HibernateProgramStageInstanceStore
             String eDate = DateUtils.getMediumDateString( endDate );
 
             sql += "and psi.executiondate >= '" + sDate + "' ";
-            sql += "and psi.executiondate < '" + eDate + "' ";
+            sql += "and psi.executiondate <= '" + eDate + "' ";
         }
         
         if ( orgUnits != null )
