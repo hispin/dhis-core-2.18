@@ -1,5 +1,3 @@
-package org.hisp.dhis.mobile.api.model;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -27,45 +25,66 @@ package org.hisp.dhis.mobile.api.model;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.*;
+package org.hisp.dhis.api.mobile.action;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import com.opensymphony.xwork2.Action;
 
-import org.hisp.dhis.api.mobile.model.MobileOrgUnitLinks;
-import org.junit.Test;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-public class OrgUnitTest
+/**
+ * @author Nguyen Kim Lai
+ * 
+ * @version $ UpdateClientAction.java Jun 25, 2012 $
+ */
+public class UpdateClientAction
+    implements Action
 {
+    // -------------------------------------------------------------------------
+    // Output & Input
+    // -------------------------------------------------------------------------
 
-    @Test
-    public void testSerialization()
-        throws IOException
+    private String fileName = "DHISMobile-Aggregate.jar";
+
+    private InputStream inputStream;
+
+    public String getFileName()
     {
-        MobileOrgUnitLinks unit = new MobileOrgUnitLinks();
-        unit.setUpdateNewVersionUrl( "" );
-        unit.setId( 1 );
-        unit.setName( "name" );
-        unit.setUpdateActivityPlanUrl("updateActivityPlanUrl");
-        unit.setDownloadAllUrl( "downloadAllUrl" );
-        unit.setUploadActivityReportUrl( "uploadActivityReportUrl" );
-        unit.setUploadFacilityReportUrl( "uploadFacilityReportUrl" );
-        unit.setUpdateDataSetUrl( "updateDataSetUrl" );
-        unit.setChangeUpdateDataSetLangUrl( "changeUpdateDataSetLangUrl" );
-        unit.setSearchUrl( "search" );
+        return fileName;
+    }
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream( baos );
-        unit.serialize( dos );
-        dos.flush();
-        MobileOrgUnitLinks unit2 = new MobileOrgUnitLinks();
-        unit2.deSerialize( new DataInputStream( new ByteArrayInputStream( baos.toByteArray() ) ) );
+    public void setFileName( String fileName )
+    {
+        this.fileName = fileName;
+    }
 
-        assertEquals( unit.getName(), unit2.getName() );
-        assertEquals( unit.getId(), unit2.getId() );
+    public InputStream getInputStream()
+    {
+        return inputStream;
+    }
 
+    public void setInputStream( InputStream inputStream )
+    {
+        this.inputStream = inputStream;
+    }
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+
+        File fileToDownload = new File( System.getenv("dhis2_home"), fileName );
+        
+        if ( fileToDownload != null )
+
+            inputStream = new BufferedInputStream( new FileInputStream( fileToDownload ) );
+         
+         
+        
+        return SUCCESS;
     }
 }
