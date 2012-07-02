@@ -1707,11 +1707,11 @@ Ext.onReady( function() {
 			if (DV.c.baselinelabel) {
 				p.baseLineLabel = DV.c.baselinelabel;
 			}
-            p[DV.conf.finals.dimension.indicator.paramname] = DV.c.indicator.ids;
-            p[DV.conf.finals.dimension.dataelement.paramname] = DV.c.dataelement.ids;
-            p[DV.conf.finals.dimension.dataset.paramname] = DV.c.dataset.ids;
+            p.indicatorIds = DV.c.indicator.ids;
+            p.dataElementIds = DV.c.dataelement.ids;
+            p.dataSetIds = DV.c.dataset.ids;
             p = Ext.Object.merge(p, DV.c.period.rp);
-            p[DV.conf.finals.dimension.organisationunit.paramname] = DV.c.organisationunit.ids;
+            p.organisationUnitIds = DV.c.organisationunit.ids;
             if (DV.c.organisationunit.groupsetid) {
 				p.organisationUnitGroupSetId = DV.c.organisationunit.groupsetid;
 			}
@@ -1724,6 +1724,8 @@ Ext.onReady( function() {
 			DV.cmp.favorite.trendline.setValue(DV.c.trendline);
 			DV.cmp.favorite.userorganisationunit.setValue(DV.c.userorganisationunit);
 			DV.cmp.favorite.userorganisationunitchildren.setValue(DV.c.userorganisationunitchildren);
+			DV.cmp.favorite.userorganisationunit.fireEvent('change');
+			DV.cmp.favorite.userorganisationunitchildren.fireEvent('change');
 			DV.cmp.favorite.showdata.setValue(DV.c.showdata);
 			DV.cmp.favorite.domainaxislabel.setValue(DV.c.domainaxislabel);
 			DV.cmp.favorite.rangeaxislabel.setValue(DV.c.rangeaxislabel);
@@ -2500,7 +2502,6 @@ Ext.onReady( function() {
                                         xtype: 'combobox',
                                         cls: 'dv-combo',
                                         baseBodyCls: 'small',
-                                        style: 'color:red',
                                         name: DV.conf.finals.chart.series,
                                         emptyText: DV.i18n.series,
                                         queryMode: 'local',
@@ -3233,11 +3234,55 @@ Ext.onReady( function() {
 										collapsed: false,
 										items: [
 											{
+												layout: 'column',
+												bodyStyle: 'border:0 none; padding-bottom:4px',
+												items: [
+													{
+														xtype: 'checkbox',
+														columnWidth: 0.5,
+														boxLabel: DV.i18n.user_orgunit,
+														labelWidth: DV.conf.layout.form_label_width,
+														handler: function(chb, checked) {
+															DV.cmp.dimension.organisationunit.toolbar.xable(checked, DV.cmp.favorite.userorganisationunitchildren.getValue());
+															DV.cmp.dimension.organisationunit.treepanel.xable(checked, DV.cmp.favorite.userorganisationunitchildren.getValue());
+														},
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.userorganisationunit = this;
+															}
+														}
+													},
+													{
+														xtype: 'checkbox',
+														columnWidth: 0.5,
+														boxLabel: DV.i18n.user_orgunit_children,
+														labelWidth: DV.conf.layout.form_label_width,
+														handler: function(chb, checked) {
+															DV.cmp.dimension.organisationunit.toolbar.xable(checked, DV.cmp.favorite.userorganisationunit.getValue());
+															DV.cmp.dimension.organisationunit.treepanel.xable(checked, DV.cmp.favorite.userorganisationunit.getValue());
+														},
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.userorganisationunitchildren = this;
+															}
+														}
+													}
+												]
+											},
+											{
 												id: 'organisationunit_t',
 												xtype: 'toolbar',
 												cls: 'dv-toolbar-tbar',
 												style: 'margin-bottom: 5px',
 												width: DV.conf.layout.west_fieldset_width - 18,
+												xable: function(checked, value) {
+													if (checked || value) {
+														this.disable();
+													}
+													else {
+														this.enable();
+													}
+												},
 												defaults: {
 													height: 28
 												},
@@ -3304,7 +3349,12 @@ Ext.onReady( function() {
 															}
 														}
 													}
-												]
+												],
+												listeners: {
+													added: function() {
+														DV.cmp.dimension.organisationunit.toolbar = this;
+													}
+												}
 											},
 											{
 												xtype: 'treepanel',
@@ -3401,6 +3451,14 @@ Ext.onReady( function() {
 														}
 													}
 												}),
+												xable: function(checked, value) {
+													if (checked || value) {
+														this.disable();
+													}
+													else {
+														this.enable();
+													}
+												},
 												listeners: {
 													added: function() {
 														DV.cmp.dimension.organisationunit.treepanel = this;
@@ -3498,233 +3556,205 @@ Ext.onReady( function() {
 										items: [
 											{
 												xtype: 'panel',
-												bodyStyle: 'border-style:none; background-color:transparent; padding:0 2px',
+												layout: 'column',
+												bodyStyle: 'padding-bottom:3px',
 												items: [
 													{
-														xtype: 'panel',
-														layout: 'column',
-														bodyStyle: 'border-style:none; background-color:transparent; padding-bottom:3px',
-														items: [
-															{
-																xtype: 'checkbox',
-																width: 126,
-																boxLabel: DV.i18n.show_data,
-																labelWidth: DV.conf.layout.form_label_width,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.showdata = this;
-																	}
-																}
-															},
-															{
-																xtype: 'checkbox',
-																width: 124,
-																boxLabel: DV.i18n.hide_subtitle,
-																labelWidth: DV.conf.layout.form_label_width,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.hidesubtitle = this;
-																	}
-																}
-															},
-															{
-																xtype: 'checkbox',
-																width: 128,
-																boxLabel: DV.i18n.user_orgunit,
-																labelWidth: DV.conf.layout.form_label_width,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.userorganisationunit = this;
-																	}
-																}
+														xtype: 'checkbox',
+														columnWidth: 0.5,
+														boxLabel: DV.i18n.show_data,
+														labelWidth: DV.conf.layout.form_label_width,
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.showdata = this;
 															}
-														]
+														}
 													},
 													{
-														xtype: 'panel',
-														layout: 'column',
-														bodyStyle: 'border-style:none; background-color:transparent; padding-bottom:15px',
-														items: [
-															{
-																xtype: 'checkbox',
-																width: 126,
-																boxLabel: DV.i18n.trend_line,
-																labelWidth: DV.conf.layout.form_label_width,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.trendline = this;
-																	}
-																}
-															},
-															{
-																xtype: 'checkbox',
-																width: 124,
-																boxLabel: DV.i18n.hide_legend,
-																labelWidth: DV.conf.layout.form_label_width,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.hidelegend = this;
-																	}
-																}
-															},
-															{
-																xtype: 'checkbox',
-																width: 128,
-																boxLabel: DV.i18n.user_orgunit_children,
-																labelWidth: DV.conf.layout.form_label_width,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.userorganisationunitchildren = this;
-																	}
-																}
+														xtype: 'checkbox',
+														columnWidth: 0.5,
+														boxLabel: DV.i18n.hide_subtitle,
+														labelWidth: DV.conf.layout.form_label_width,
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.hidesubtitle = this;
 															}
-														]
+														}
+													}
+												]
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'padding-bottom:15px',
+												items: [
+													{
+														xtype: 'checkbox',
+														columnWidth: 0.5,
+														boxLabel: DV.i18n.trend_line,
+														labelWidth: DV.conf.layout.form_label_width,
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.trendline = this;
+															}
+														}
 													},
 													{
-														xtype: 'panel',
-														layout: 'column',
-														bodyStyle: 'border:0 none; background-color:transparent; padding-bottom:8px',
-														items: [
-															{
-																xtype: 'textfield',
-																cls: 'dv-textfield-alt1',
-																style: 'margin-right:6px',
-																fieldLabel: DV.i18n.domain_axis_label,
-																labelAlign: 'top',
-																labelSeparator: '',
-																maxLength: 100,
-																enforceMaxLength: true,
-																labelWidth: DV.conf.layout.form_label_width,
-																width: 187,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.domainaxislabel = this;
-																	}
-																}
-															},
-															{
-																xtype: 'textfield',
-																cls: 'dv-textfield-alt1',
-																fieldLabel: DV.i18n.range_axis_label,
-																labelAlign: 'top',
-																labelSeparator: '',
-																maxLength: 100,
-																enforceMaxLength: true,
-																labelWidth: DV.conf.layout.form_label_width,
-																width: 187,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.rangeaxislabel = this;
-																	}
-																}
+														xtype: 'checkbox',
+														columnWidth: 0.5,
+														boxLabel: DV.i18n.hide_legend,
+														labelWidth: DV.conf.layout.form_label_width,
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.hidelegend = this;
 															}
-														]
+														}
+													}
+												]
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'padding-bottom:8px',
+												items: [
+													{
+														xtype: 'textfield',
+														cls: 'dv-textfield-alt1',
+														style: 'margin-right:6px',
+														fieldLabel: DV.i18n.domain_axis_label,
+														labelAlign: 'top',
+														labelSeparator: '',
+														maxLength: 100,
+														enforceMaxLength: true,
+														labelWidth: DV.conf.layout.form_label_width,
+														width: 187,
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.domainaxislabel = this;
+															}
+														}
 													},
 													{
-														xtype: 'panel',
-														layout: 'column',
-														bodyStyle: 'border:0 none; background-color:transparent; padding-bottom:8px',
-														items: [
-															{
-																xtype: 'numberfield',
-																cls: 'dv-textfield-alt1',
-																style: 'margin-right:6px',
-																hideTrigger: true,
-																fieldLabel: DV.i18n.target_line_value,
-																labelAlign: 'top',
-																labelSeparator: '',
-																maxLength: 100,
-																enforceMaxLength: true,
-																width: 187,
-																spinUpEnabled: true,
-																spinDownEnabled: true,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.targetlinevalue = this;
-																	},
-																	change: function() {
-																		DV.cmp.favorite.targetlinelabel.xable();
-																	}
-																}
-															},
-															{
-																xtype: 'textfield',
-																cls: 'dv-textfield-alt1',
-																fieldLabel: DV.i18n.target_line_label,
-																labelAlign: 'top',
-																labelSeparator: '',
-																maxLength: 100,
-																enforceMaxLength: true,
-																width: 187,
-																disabled: true,
-																xable: function() {
-																	if (DV.cmp.favorite.targetlinevalue.getValue()) {
-																		this.enable();
-																	}
-																	else {
-																		this.disable();
-																	}
-																},
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.targetlinelabel = this;
-																	}
-																}
+														xtype: 'textfield',
+														cls: 'dv-textfield-alt1',
+														fieldLabel: DV.i18n.range_axis_label,
+														labelAlign: 'top',
+														labelSeparator: '',
+														maxLength: 100,
+														enforceMaxLength: true,
+														labelWidth: DV.conf.layout.form_label_width,
+														width: 187,
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.rangeaxislabel = this;
 															}
-														]
+														}
+													}
+												]
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'padding-bottom:8px',
+												items: [
+													{
+														xtype: 'numberfield',
+														cls: 'dv-textfield-alt1',
+														style: 'margin-right:6px',
+														hideTrigger: true,
+														fieldLabel: DV.i18n.target_line_value,
+														labelAlign: 'top',
+														labelSeparator: '',
+														maxLength: 100,
+														enforceMaxLength: true,
+														width: 187,
+														spinUpEnabled: true,
+														spinDownEnabled: true,
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.targetlinevalue = this;
+															},
+															change: function() {
+																DV.cmp.favorite.targetlinelabel.xable();
+															}
+														}
 													},
 													{
-														xtype: 'panel',
-														layout: 'column',
-														bodyStyle: 'border:0 none; background-color:transparent; padding-bottom:5px',
-														items: [
-															{
-																xtype: 'numberfield',
-																cls: 'dv-textfield-alt1',
-																style: 'margin-right:6px',
-																hideTrigger: true,
-																fieldLabel: DV.i18n.base_line_value,
-																labelAlign: 'top',
-																labelSeparator: '',
-																maxLength: 100,
-																enforceMaxLength: true,
-																width: 187,
-																spinUpEnabled: true,
-																spinDownEnabled: true,
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.baselinevalue = this;
-																	},
-																	change: function() {
-																		DV.cmp.favorite.baselinelabel.xable();
-																	}
-																}
-															},
-															{
-																xtype: 'textfield',
-																cls: 'dv-textfield-alt1',
-																fieldLabel: DV.i18n.base_line_label,
-																labelAlign: 'top',
-																labelSeparator: '',
-																maxLength: 100,
-																enforceMaxLength: true,
-																width: 187,
-																disabled: true,
-																xable: function() {
-																	if (DV.cmp.favorite.baselinevalue.getValue()) {
-																		this.enable();
-																	}
-																	else {
-																		this.disable();
-																	}
-																},
-																listeners: {
-																	added: function() {
-																		DV.cmp.favorite.baselinelabel = this;
-																	}
-																}
+														xtype: 'textfield',
+														cls: 'dv-textfield-alt1',
+														fieldLabel: DV.i18n.target_line_label,
+														labelAlign: 'top',
+														labelSeparator: '',
+														maxLength: 100,
+														enforceMaxLength: true,
+														width: 187,
+														disabled: true,
+														xable: function() {
+															if (DV.cmp.favorite.targetlinevalue.getValue()) {
+																this.enable();
 															}
-														]
+															else {
+																this.disable();
+															}
+														},
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.targetlinelabel = this;
+															}
+														}
+													}
+												]
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'padding-bottom:5px',
+												items: [
+													{
+														xtype: 'numberfield',
+														cls: 'dv-textfield-alt1',
+														style: 'margin-right:6px',
+														hideTrigger: true,
+														fieldLabel: DV.i18n.base_line_value,
+														labelAlign: 'top',
+														labelSeparator: '',
+														maxLength: 100,
+														enforceMaxLength: true,
+														width: 187,
+														spinUpEnabled: true,
+														spinDownEnabled: true,
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.baselinevalue = this;
+															},
+															change: function() {
+																DV.cmp.favorite.baselinelabel.xable();
+															}
+														}
+													},
+													{
+														xtype: 'textfield',
+														cls: 'dv-textfield-alt1',
+														fieldLabel: DV.i18n.base_line_label,
+														labelAlign: 'top',
+														labelSeparator: '',
+														maxLength: 100,
+														enforceMaxLength: true,
+														width: 187,
+														disabled: true,
+														xable: function() {
+															if (DV.cmp.favorite.baselinevalue.getValue()) {
+																this.enable();
+															}
+															else {
+																this.disable();
+															}
+														},
+														listeners: {
+															added: function() {
+																DV.cmp.favorite.baselinelabel = this;
+															}
+														}
 													}
 												]
 											}
