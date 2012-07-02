@@ -326,9 +326,6 @@ public class GenerateUpwardReportAnalyserResultAction
 
                     WritableCell cell = sheet0.getWritableCell(tempColNo, tempRowNo);
 
-                    System.out.println("\n* TESTING: ["+cell.getCellFeatures()+"]");
-                    System.out.println("* TESTING : Cell Content ["+tempStr+"]\n");
-
                     CellFormat cellFormat = cell.getCellFormat();
                     WritableCellFormat wCellformat = new WritableCellFormat();
                     wCellformat.setBorder(Border.ALL, BorderLineStyle.THIN);
@@ -347,8 +344,6 @@ public class GenerateUpwardReportAnalyserResultAction
                         }
                     }
                 }
-
-                outputReportWorkbook.write();
 
                 count1++;
             }// inner while loop end
