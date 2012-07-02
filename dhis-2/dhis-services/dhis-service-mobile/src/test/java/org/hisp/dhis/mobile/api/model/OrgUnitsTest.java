@@ -71,6 +71,7 @@ public class OrgUnitsTest
     private MobileOrgUnitLinks createOrgUnit()
     {
         MobileOrgUnitLinks unit = new MobileOrgUnitLinks();
+        unit.setUpdateNewVersionUrl( "test" );
         unit.setId( 1 );
         unit.setName( "name" );
         unit.setUpdateActivityPlanUrl("updateActivityPlanUrl");
