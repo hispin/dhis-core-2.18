@@ -34,17 +34,18 @@ import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
 
 /**
- *
+ * 
  * @author bobj
  */
-public class StringFormatTest {
+public class StringFormatTest
+{
 
     private static Date getDate( int year, int month, int day )
     {
         final Calendar calendar = Calendar.getInstance();
 
         // override locale settings for weeks
-        calendar.setFirstDayOfWeek( Calendar.MONDAY);
+        calendar.setFirstDayOfWeek( Calendar.MONDAY );
         calendar.setMinimalDaysInFirstWeek( 4 );
 
         calendar.clear();
@@ -56,22 +57,25 @@ public class StringFormatTest {
     @Test
     public void testStringFormat()
     {
-        Period day1 = new Period(new DailyPeriodType(),getDate(2010,1,1), getDate(2010,1,1));
-        //Period week52 = new Period(new WeeklyPeriodType(),getDate(2009,12,21), getDate(2009,12,27));
-        //Period week53 = new Period(new WeeklyPeriodType(),getDate(2009,12,28), getDate(2010,1,3));
-        //Period week1 = new Period(new WeeklyPeriodType(),getDate(2010,1,4), getDate(2010,1,11));
-        Period month1 = new Period(new MonthlyPeriodType(),getDate(2010,1,1), getDate(2010,1,1));
-        Period year1 = new Period(new YearlyPeriodType(),getDate(2010,1,1), getDate(2010,1,1));
-        Period quarter1 = new Period(new QuarterlyPeriodType(),getDate(2010,1,1), getDate(2010,1,1));
-        Period semester1 = new Period(new SixMonthlyPeriodType(),getDate(2010,1,1), getDate(2010,1,1));
+        Period day1 = new Period( new DailyPeriodType(), getDate( 2010, 1, 1 ), getDate( 2010, 1, 1 ) );
+        Period month1 = new Period( new MonthlyPeriodType(), getDate( 2010, 1, 1 ), getDate( 2010, 1, 31 ) );
+        Period year1 = new Period( new YearlyPeriodType(), getDate( 2010, 1, 1 ), getDate( 2010, 12, 31 ) );
+        Period quarter1 = new Period( new QuarterlyPeriodType(), getDate( 2010, 1, 1 ), getDate( 2010, 3, 31 ) );
+        Period semester1 = new Period( new SixMonthlyPeriodType(), getDate( 2010, 1, 1 ), getDate( 2010, 6, 30 ) );
+        Period biMonth1 = new Period( new BiMonthlyPeriodType(), getDate( 2010, 3, 1 ), getDate( 2010, 4, 30 ) );
 
-        assertEquals("Day format", "20100101", day1.getIsoDate());
-        //assertEquals("Week format", "2009W52", week52.getIsoDate());
-        //assertEquals("Week format", "2009W53", week53.getIsoDate());
-        //assertEquals("Week format", "2010W1", week1.getIsoDate());
-        assertEquals("Month format", "201001", month1.getIsoDate());
-        assertEquals("Year format", "2010", year1.getIsoDate());
-        assertEquals("Quarter format", "2010Q1", quarter1.getIsoDate());
-        assertEquals("Semester format", "2010S1", semester1.getIsoDate());
+        assertEquals( "Day format", "20100101", day1.getIsoDate() );
+        assertEquals( "Month format", "201001", month1.getIsoDate() );
+        assertEquals( "Year format", "2010", year1.getIsoDate() );
+        assertEquals( "Quarter format", "2010Q1", quarter1.getIsoDate() );
+        assertEquals( "Semester format", "2010S1", semester1.getIsoDate() );
+        assertEquals( "Bimonth format", "201003B", biMonth1.getIsoDate() );
+        
+        assertEquals( day1, PeriodType.getPeriodFromIsoString( "20100101" ) );
+        assertEquals( month1, PeriodType.getPeriodFromIsoString( "201001" ) );
+        assertEquals( year1, PeriodType.getPeriodFromIsoString( "2010" ) );
+        assertEquals( quarter1, PeriodType.getPeriodFromIsoString( "2010Q1" ) );
+        assertEquals( semester1, PeriodType.getPeriodFromIsoString( "2010S1" ) );
+        assertEquals( biMonth1, PeriodType.getPeriodFromIsoString( "201003B" ) );
     }
 }

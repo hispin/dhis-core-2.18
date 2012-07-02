@@ -67,6 +67,7 @@ function DailyPeriodType( dateFormat )
             period['endDate'] = startDate.format( dateFormat );
             period['name'] = startDate.format( dateFormat );
             period['id'] = 'Daily_' + period['startDate'];
+            period['iso'] = startDate.format( 'yyyyMMdd' );
             periods[i] = period;
 
             startDate.adjust( 'D', +1 );
@@ -110,6 +111,7 @@ function WeeklyPeriodType( dateFormat )
             period['endDate'] = endDate.format( dateFormat );
             period['name'] = 'W' + ( i + 1 ) + ' - ' + startDate.format( dateFormat ) + " - " + endDate.format( dateFormat );
             period['id'] = 'Weekly_' + period['startDate'];
+            period['iso'] = year + 'W' + ( i + 1 );
             periods[i] = period;
 
             startDate.adjust( 'D', +7 );
@@ -138,6 +140,7 @@ function MonthlyPeriodType( dateFormat )
             period['endDate'] = endDate.format( dateFormat );
             period['name'] = monthNames[i] + ' ' + year;
             period['id'] = 'Monthly_' + period['startDate'];
+            period['iso'] = startDate.format( 'yyyyMM' );
             periods[i] = period;
 
             startDate.adjust( 'M', +1 );
@@ -167,6 +170,7 @@ function BiMonthlyPeriodType( dateFormat )
             period['endDate'] = endDate.format( dateFormat );
             period['name'] = monthNames[i] + ' - ' + monthNames[i + 1] + ' ' + year;
             period['id'] = 'BiMonthly_' + period['startDate'];
+            period['iso'] = startDate.format( 'yyyyMM' ) + 'B';
             periods[j] = period;
 
             startDate.adjust( 'M', +2 );
@@ -197,6 +201,7 @@ function QuarterlyPeriodType( dateFormat )
             period['endDate'] = endDate.format( dateFormat );
             period['name'] = monthNames[i] + ' - ' + monthNames[i + 2] + ' ' + year;
             period['id'] = 'Quarterly_' + period['startDate'];
+            period['iso'] = year + 'Q' + ( j + 1 );
             periods[j] = period;
 
             startDate.adjust( 'M', +3 );
@@ -221,6 +226,7 @@ function SixMonthlyPeriodType( dateFormat )
         period['endDate'] = year + '-06-30';
         period['name'] = monthNames[0] + ' - ' + monthNames[5] + ' ' + year;
         period['id'] = 'SixMonthly_' + period['startDate'];
+        period['iso'] = year + 'S1';
         periods[0] = period;
 
         period = [];
@@ -228,6 +234,7 @@ function SixMonthlyPeriodType( dateFormat )
         period['endDate'] = year + '-12-31';
         period['name'] = monthNames[6] + ' - ' + monthNames[11] + ' ' + year;
         period['id'] = 'SixMonthly_' + period['startDate'];
+        period['iso'] = year + 'S2';
         periods[1] = period;
 
         return periods;
@@ -250,6 +257,7 @@ function YearlyPeriodType( dateFormat )
             period['endDate'] = endDate.format( dateFormat );
             period['name'] = startDate.date().getFullYear();
             period['id'] = 'Yearly_' + period['startDate'];
+            period['iso'] = year;
             periods[i] = period;
 
             startDate.adjust( 'Y', +1 );

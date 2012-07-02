@@ -27,6 +27,8 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +40,8 @@ import java.util.List;
 public class BiMonthlyPeriodType
     extends CalendarPeriodType
 {
+    private static final String ISO_FORMAT = "yyyyMMB";
+
     /**
      * The name of the BiMonthlyPeriodType, which is "BiMonthly".
      */
@@ -154,18 +158,26 @@ public class BiMonthlyPeriodType
     @Override
     public String getIsoDate( Period period )
     {        
-        return null; // TODO
+        return new SimpleDateFormat( "yyyyMM" ).format( period.getStartDate() ) + "B";
     }
 
     @Override
     public Period createPeriod( String isoDate )
     {
-        return null; // TODO
+        try
+        {
+            Date date = new SimpleDateFormat( "yyyyMM" ).parse( isoDate.substring( 0, 6 ) );
+            return createPeriod( date );
+        }
+        catch ( ParseException ex )
+        {
+            throw new RuntimeException( ex );
+        }
     }
 
     @Override
     public String getIsoFormat()
     {
-        return null; // TODO
+        return ISO_FORMAT;
     }
 }

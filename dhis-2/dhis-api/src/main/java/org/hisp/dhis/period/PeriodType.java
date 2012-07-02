@@ -291,6 +291,10 @@ public abstract class PeriodType
         {
             return new SixMonthlyPeriodType();
         }
+        if ( isoPeriod.matches( "\\b\\d{6}B\\b" ) )
+        {
+            return new BiMonthlyPeriodType();
+        }
 
         return null;
     }

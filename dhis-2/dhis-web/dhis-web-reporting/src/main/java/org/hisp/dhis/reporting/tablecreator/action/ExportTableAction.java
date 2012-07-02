@@ -166,6 +166,8 @@ public class ExportTableAction
             params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
         }
         
+        //TODO stop putting in memory, too expensive
+        
         if ( useLast )
         {
             grid = (Grid) SessionUtils.getSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID );
