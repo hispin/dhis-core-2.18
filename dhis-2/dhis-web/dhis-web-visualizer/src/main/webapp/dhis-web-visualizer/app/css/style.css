@@ -10,6 +10,10 @@ body {
     font-size: 11px;
 }
 
+.dv-accordion-options .x-panel-body-default {
+	border: 0 none;
+}
+
 /* Disable class invisible */
 .dv-invisible .x-form-item-body {
     display: none;
