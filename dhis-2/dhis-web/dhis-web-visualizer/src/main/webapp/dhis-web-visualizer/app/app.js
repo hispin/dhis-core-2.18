@@ -124,15 +124,18 @@ DV.conf = {
             },
             indicator: {
                 value: 'indicator',
-                rawvalue: DV.i18n.indicator
+                rawvalue: DV.i18n.indicator,
+                paramname: 'in'
             },
             dataelement: {
                 value: 'dataelement',
-                rawvalue: DV.i18n.data_element
+                rawvalue: DV.i18n.data_element,
+                paramname: 'de'
             },
             dataset: {
 				value: 'dataset',
-                rawvalue: DV.i18n.dataset
+                rawvalue: DV.i18n.dataset,
+                paramname: 'ds'
 			},
             period: {
                 value: 'period',
@@ -144,6 +147,7 @@ DV.conf = {
             organisationunit: {
                 value: 'organisationunit',
                 rawvalue: DV.i18n.organisation_unit,
+                paramname: 'ou',
                 warning: {
 					filter: DV.i18n.wm_multiple_filter_orgunit
 				}
@@ -531,15 +535,15 @@ Ext.onReady( function() {
 					var obj = DV.c.indicator.objects,
 						a = [];
                     for (var i = 0; i < obj.length; i++) {
-						a.push('indicatorIds=' + obj[i].id);
+						a.push(DV.conf.finals.dimension.indicator.paramname + '=' + obj[i].id);
 					}
 					obj = DV.c.dataelement.objects;
                     for (var i = 0; i < obj.length; i++) {
-						a.push('dataElementIds=' + obj[i].id);
+						a.push(DV.conf.finals.dimension.dataelement.paramname + '=' + obj[i].id);
 					}
 					obj = DV.c.dataset.objects;
                     for (var i = 0; i < obj.length; i++) {
-						a.push('dataSetIds=' + obj[i].id);
+						a.push(DV.conf.finals.dimension.dataset.paramname + '=' + obj[i].id);
 					}
 					return (isFilter && a.length > 1) ? a.slice(0,1) : a;
 				}
@@ -629,7 +633,7 @@ Ext.onReady( function() {
 					var ou = DV.c.organisationunit,
 						a = [];
 					for (var i = 0; i < ou.objects.length; i++) {
-						a.push('organisationUnitIds=' + ou.objects[i].id);
+						a.push(DV.conf.finals.dimension.organisationunit.paramname + '=' + ou.objects[i].id);
 					}
 					if (isFilter && a.length > 1) {
 						a = a.slice(0,1);
@@ -1380,6 +1384,7 @@ Ext.onReady( function() {
             Ext.Array.each(DV.chart.data, function(item) {
 				keys = Ext.Array.merge(keys, Ext.Object.getKeys(item));
             });
+            
             this.chart = Ext.create('Ext.data.Store', {
                 fields: keys,
                 data: DV.chart.data
@@ -1702,11 +1707,11 @@ Ext.onReady( function() {
 			if (DV.c.baselinelabel) {
 				p.baseLineLabel = DV.c.baselinelabel;
 			}
-            p.indicatorIds = DV.c.indicator.ids;
-            p.dataElementIds = DV.c.dataelement.ids;
-            p.dataSetIds = DV.c.dataset.ids;
+            p[DV.conf.finals.dimension.indicator.paramname] = DV.c.indicator.ids;
+            p[DV.conf.finals.dimension.dataelement.paramname] = DV.c.dataelement.ids;
+            p[DV.conf.finals.dimension.dataset.paramname] = DV.c.dataset.ids;
             p = Ext.Object.merge(p, DV.c.period.rp);
-            p.organisationUnitIds = DV.c.organisationunit.ids;
+            p[DV.conf.finals.dimension.organisationunit.paramname] = DV.c.organisationunit.ids;
             if (DV.c.organisationunit.groupsetid) {
 				p.organisationUnitGroupSetId = DV.c.organisationunit.groupsetid;
 			}

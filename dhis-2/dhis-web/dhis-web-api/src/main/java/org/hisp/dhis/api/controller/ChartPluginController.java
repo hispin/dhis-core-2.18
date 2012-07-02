@@ -110,10 +110,10 @@ public class ChartPluginController
     private ContextUtils contextUtils;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getChartValues( @RequestParam( required = false ) Set<String> indicatorIds,
-        @RequestParam( required = false ) Set<String> dataElementIds,
-        @RequestParam( required = false ) Set<String> dataSetIds,
-        @RequestParam Set<String> organisationUnitIds,
+    public String getChartValues( @RequestParam( required = false ) Set<String> in,
+        @RequestParam( required = false ) Set<String> de,
+        @RequestParam( required = false ) Set<String> ds,
+        @RequestParam Set<String> ou,
         @RequestParam( required = false ) boolean orgUnitIsParent,
         @RequestParam( required = false ) String organisationUnitGroupSetId,
         @RequestParam( required = false ) boolean userOrganisationUnit,
@@ -168,7 +168,7 @@ public class ChartPluginController
         }
         else
         {
-            organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsByUid( organisationUnitIds ) );
+            organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsByUid( ou ) );
         }
 
         if ( orgUnitIsParent )
@@ -223,9 +223,9 @@ public class ChartPluginController
         // Indicators
         // ---------------------------------------------------------------------
 
-        if ( indicatorIds != null )
+        if ( in != null )
         {
-            List<Indicator> indicators = indicatorService.getIndicatorsByUid( indicatorIds );
+            List<Indicator> indicators = indicatorService.getIndicatorsByUid( in );
 
             if ( indicators.isEmpty() )
             {
@@ -263,9 +263,9 @@ public class ChartPluginController
         // Data elements
         // ---------------------------------------------------------------------
 
-        if ( dataElementIds != null )
+        if ( de != null )
         {
-            List<DataElement> dataElements = dataElementService.getDataElementsByUid( dataElementIds );
+            List<DataElement> dataElements = dataElementService.getDataElementsByUid( de );
 
             if ( dataElements.isEmpty() )
             {
@@ -303,9 +303,9 @@ public class ChartPluginController
         // Data set completeness
         // ---------------------------------------------------------------------
 
-        if ( dataSetIds != null )
+        if ( ds != null )
         {
-            List<DataSet> dataSets = dataSetService.getDataSetsByUid( dataSetIds );
+            List<DataSet> dataSets = dataSetService.getDataSetsByUid( ds );
             
             if ( dataSets.isEmpty() )
             {
