@@ -28,6 +28,7 @@ package org.hisp.dhis.api.mobile.model;
  */
 
 import java.io.DataInputStream;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -57,6 +58,10 @@ public class MobileOrgUnitLinks
     private String changeUpdateDataSetLangUrl;
 
     private String searchUrl;
+
+    public static double currentVersion = 2.9;
+    
+    private String updateNewVersionUrl;
 
     @XmlAttribute
     public int getId()
@@ -160,9 +165,21 @@ public class MobileOrgUnitLinks
         this.updateActivityPlanUrl = updateActivityPlanUrl;
     }
 
+    public String getUpdateNewVersionUrl()
+    {
+        return updateNewVersionUrl;
+    }
+
+    public void setUpdateNewVersionUrl( String updateNewVersionUrl )
+    {
+        this.updateNewVersionUrl = updateNewVersionUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
+
         throws IOException
     {
+        dataOutputStream.writeUTF( this.updateNewVersionUrl );
         dataOutputStream.writeInt( this.id );
         dataOutputStream.writeUTF( this.name );
         dataOutputStream.writeUTF( this.downloadAllUrl );
@@ -177,6 +194,7 @@ public class MobileOrgUnitLinks
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
+        this.updateNewVersionUrl = dataInputStream.readUTF();
         this.id = dataInputStream.readInt();
         this.name = dataInputStream.readUTF();
         this.downloadAllUrl = dataInputStream.readUTF();
@@ -186,6 +204,13 @@ public class MobileOrgUnitLinks
         this.updateDataSetUrl = dataInputStream.readUTF();
         this.changeUpdateDataSetLangUrl = dataInputStream.readUTF();
         this.searchUrl = dataInputStream.readUTF();
+    }
+
+    public void sendVersion( DataOutputStream dataOutputStream )
+        throws IOException
+    {
+        dataOutputStream.writeDouble( this.currentVersion );
+        System.out.println("welcome send Version method");
     }
 
     @Override

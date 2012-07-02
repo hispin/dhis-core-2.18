@@ -36,6 +36,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 @XmlRootElement
 public class OrgUnits
     implements DataStreamSerializable
@@ -78,6 +79,9 @@ public class OrgUnits
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
+        //send the current version to client for updating or not
+        dataOutputStream.writeDouble( MobileOrgUnitLinks.currentVersion );
+        
         dataOutputStream.writeInt( orgUnits.size() );
         for ( MobileOrgUnitLinks unit : orgUnits )
         {
