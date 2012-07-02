@@ -21,8 +21,7 @@ public class DownloadRAFolderAction implements Action {
 
     private ConfigurationService configurationService;
 
-    public void setConfigurationService( ConfigurationService configurationService )
-    {
+    public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 
@@ -32,29 +31,25 @@ public class DownloadRAFolderAction implements Action {
 
     private InputStream inputStream;
 
-    public InputStream getInputStream()
-    {
+    public InputStream getInputStream() {
         return inputStream;
     }
 
     private String fileName;
 
-    public String getFileName()
-    {
+    public String getFileName() {
         return fileName;
     }
 
     private String selectedButton;
 
-    public void setSelectedButton( String selectedButton )
-    {
+    public void setSelectedButton(String selectedButton) {
         this.selectedButton = selectedButton;
     }
 
     private String statusMessage;
 
-    public String getStatusMessage()
-    {
+    public String getStatusMessage() {
         return statusMessage;
     }
 
@@ -63,22 +58,19 @@ public class DownloadRAFolderAction implements Action {
     public String execute() throws Exception {
 
 
-            String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER).getValue();
+        String raFolderName = configurationService.getConfigurationByKey(Configuration_IN.KEY_REPORTFOLDER).getValue();
 
-            String raPath = configurationService.backupFolder( System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName+"_new" );
+        String raPath = configurationService.backupFolder(System.getenv("DHIS2_HOME") + File.separator + raFolderName + "_new");
 
-            if( raPath.equalsIgnoreCase( "INPUT" ) )
-            {
-                statusMessage = "Problem while taking backup for reports folder, please see the log";
-            }
-            else
-            {
-                fileName = raFolderName+".zip";
+        if (raPath.equalsIgnoreCase("INPUT")) {
+            statusMessage = "Problem while taking backup for reports folder, please see the log";
+        } else {
+            fileName = raFolderName + ".zip";
 
-                inputStream = new BufferedInputStream( new FileInputStream( raPath ), 1024 );
+            inputStream = new BufferedInputStream(new FileInputStream(raPath), 1024);
 
-                return "download";
-            }
+            return "download";
+        }
         return SUCCESS;
     }
 }
