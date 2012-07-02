@@ -2499,6 +2499,8 @@ Ext.onReady( function() {
                                     {
                                         xtype: 'combobox',
                                         cls: 'dv-combo',
+                                        baseBodyCls: 'small',
+                                        style: 'color:red',
                                         name: DV.conf.finals.chart.series,
                                         emptyText: DV.i18n.series,
                                         queryMode: 'local',
@@ -2532,6 +2534,7 @@ Ext.onReady( function() {
                                     {
                                         xtype: 'combobox',
                                         cls: 'dv-combo',
+                                        baseBodyCls: 'small',
                                         name: DV.conf.finals.chart.category,
                                         emptyText: DV.i18n.category,
                                         queryMode: 'local',
@@ -2566,6 +2569,7 @@ Ext.onReady( function() {
                                     {
                                         xtype: 'combobox',
                                         cls: 'dv-combo',
+                                        baseBodyCls: 'small',
                                         name: DV.conf.finals.chart.filter,
                                         emptyText: DV.i18n.filter,
                                         queryMode: 'local',
