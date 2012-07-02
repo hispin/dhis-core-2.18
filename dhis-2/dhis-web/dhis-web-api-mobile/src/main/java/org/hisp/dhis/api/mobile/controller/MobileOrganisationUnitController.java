@@ -70,7 +70,6 @@ public class MobileOrganisationUnitController
     @ResponseBody
     public MobileModel getAllDataForOrgUnit2_9( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
     {
-        System.out.println("download all 2.9");
         MobileModel mobileModel = new MobileModel();
         mobileModel.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
         OrganisationUnit unit = getUnit( id );
@@ -79,6 +78,7 @@ public class MobileOrganisationUnitController
         mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale ) );
         mobileModel.setServerCurrentDate( new Date() );
         mobileModel.setLocales( getLocalStrings( i18nService.getAvailableLocales() ) );
+
         return mobileModel;
     }
 
@@ -167,5 +167,35 @@ public class MobileOrganisationUnitController
     {
         return organisationUnitService.getOrganisationUnit( id );
     }
+    
+/*    @RequestMapping( method = RequestMethod.GET, value = "updateClient" )
+    @ResponseBody
+    public InputStream updateClient()
+    {
+        
+        File fileToDownload = new File( "DHISMobile-Aggregate.jar" );
+        
+        InputStream inputStream = null;
+        
+        if(fileToDownload == null)
+            
+            System.out.println("sorry! can't find your shit");
+        else
+            System.out.println("shit shit shit! name is "+fileToDownload.getName());
+        
+        try
+        {
+            inputStream = new BufferedInputStream( new FileInputStream( fileToDownload ));
+            System.out.println(inputStream.read());
+        }
+            
+        catch (Exception e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return inputStream;
+        
+    }*/
 
 }

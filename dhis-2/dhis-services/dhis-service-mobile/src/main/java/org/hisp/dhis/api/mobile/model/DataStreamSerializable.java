@@ -48,7 +48,7 @@ public interface DataStreamSerializable
 
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException;
-
+    
     public void serializeVerssion2_8( DataOutputStream dataOutputStream )
         throws IOException;
 
