@@ -52,11 +52,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.DailyPeriodType;
-import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.QuarterlyPeriodType;
-import org.hisp.dhis.period.SixMonthlyPeriodType;
-import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
 import org.hisp.dhis.reportsheet.CategoryOptionGroupOrder;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
@@ -71,7 +67,7 @@ import org.hisp.dhis.reportsheet.PeriodColumn;
 import org.hisp.dhis.reportsheet.status.DataEntryStatus;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -122,11 +118,11 @@ public class DefaultExportReportService
         this.expressionService = expressionService;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private IndicatorService indicatorService;
@@ -195,7 +191,7 @@ public class DefaultExportReportService
 
         else
         {
-            Set<UserAuthorityGroup> userRoles = userStore.getUserCredentials( user ).getUserAuthorityGroups();
+            Set<UserAuthorityGroup> userRoles = userService.getUserCredentials( user ).getUserAuthorityGroups();
 
             Collection<ExportReport> reports = new ArrayList<ExportReport>();
 
