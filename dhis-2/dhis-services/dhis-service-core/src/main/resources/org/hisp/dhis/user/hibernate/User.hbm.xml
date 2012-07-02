@@ -25,6 +25,8 @@
     <property name="email" length="160" />
 
     <property name="phoneNumber" length="80" />
+	
+	<property name="jobTitle" length="160" />
 
 	<property name="lastCheckedInterpretations" type="timestamp" />
 
