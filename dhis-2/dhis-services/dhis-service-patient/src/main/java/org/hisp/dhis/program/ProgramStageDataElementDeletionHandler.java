@@ -28,6 +28,7 @@
 package org.hisp.dhis.program;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -111,13 +112,15 @@ public class ProgramStageDataElementDeletionHandler
         {
             // TODO use a query which will be more efficient
 
-            Collection<ProgramStageDataElement> psDataElements = programStageDEService.getAllProgramStageDataElements();
+            Iterator<ProgramStageDataElement> iterator = programStageDEService.getAllProgramStageDataElements().iterator();
             
-            for ( ProgramStageDataElement psDataElement : psDataElements )
+            while ( iterator.hasNext() )
             {
-                if ( psDataElement.getDataElement() != null && psDataElement.getDataElement().equals( dataElement ) )
+                ProgramStageDataElement element = iterator.next();
+                
+                if ( element.getDataElement() != null && element.getDataElement().equals( dataElement ) )
                 {
-                    return dataElement.getName();
+                    programStageDEService.deleteProgramStageDataElement( element );
                 }
             }
         }

@@ -74,6 +74,8 @@ public class User
     private String email;
 
     private String phoneNumber;
+    
+    private String jobTitle;
 
     private Date lastCheckedInterpretations;
     
@@ -305,6 +307,19 @@ public class User
     public void setEmail( String email )
     {
         this.email = email;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public String getJobTitle()
+    {
+        return jobTitle;
+    }
+
+    public void setJobTitle( String jobTitle )
+    {
+        this.jobTitle = jobTitle;
     }
 
     @JsonProperty
