@@ -10,6 +10,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
@@ -110,6 +111,13 @@ public class GetDataElementsForTabularAnalysisAction implements Action
         return optionComboIds;
     }
 
+    private String chkValue;
+
+    public void setChkValue( String chkValue )
+    {
+        this.chkValue = chkValue;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -127,31 +135,39 @@ public class GetDataElementsForTabularAnalysisAction implements Action
         } 
         else
         {
-            //DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( id );
-            
-            Section section = sectionService.getSection( id );
-            /*
-            if ( dataElementGroup != null )
+            if ( chkValue.equals( "true" ) )
             {
-                dataElements = new ArrayList<DataElement>( dataElementGroup.getMembers() );
-            } 
-            */
-            if ( section != null )
+                DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( id );
+                if ( dataElementGroup != null )
+                {
+                    dataElements = new ArrayList<DataElement>( dataElementGroup.getMembers() );
+                    //System.out.println( "dataElementGroup id = " + id + " dataElements size = " + dataElements.size() );
+                }
+                else
+                {
+                    dataElements = new ArrayList<DataElement>();
+                }
+            }
+            if ( chkValue.equals( "false" ) )
             {
-                dataElements = new ArrayList<DataElement>( section.getDataElements() );
-                System.out.println("section id = "+ id + " dataElements size = "+ dataElements.size());
-            }            
-            else
-            {
-                dataElements = new ArrayList<DataElement>();
+                Section section = sectionService.getSection( id );
+                if ( section != null )
+                {
+                    dataElements = new ArrayList<DataElement>( section.getDataElements() );
+                    //System.out.println( "section id = " + id + " dataElements size = " + dataElements.size() );
+                }
+                else
+                {
+                    dataElements = new ArrayList<DataElement>();
+                }
             }
         }
-
+        //System.out.println( " dataElements size = " + dataElements.size() );
         Iterator<DataElement> alldeIterator = dataElements.iterator();
         while ( alldeIterator.hasNext() )
         {
             DataElement de1 = alldeIterator.next();
-            if ( !de1.getDomainType().equals( DataElement.DOMAIN_TYPE_AGGREGATE ) )
+            if ( !de1.getType().equals( DataElement.VALUE_TYPE_INT ) ||!de1.getDomainType().equals( DataElement.DOMAIN_TYPE_AGGREGATE ) )
            // if ( de1.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
             {
                 alldeIterator.remove();

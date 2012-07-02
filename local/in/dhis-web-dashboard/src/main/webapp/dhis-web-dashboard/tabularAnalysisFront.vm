@@ -17,7 +17,11 @@
 <div id="overlay">
     <div id="overlayImg"><img  width="50" height="50" src="images/ajax-loader.gif" /></div>
 </div>
-
+<script>
+    jQuery(document).ready(function() {
+    checkedDataElementGroup();    
+    });
+</script>
 <script>
     
     // Global Variables
@@ -118,16 +122,9 @@
         </colgroup>
 
         <tr>
-            <td class="NormalB">$i18n.getString( "ga_filter_by_degroup" )<br>
-                <select id="dataElementGroupId" name="dataElementGroupId" style="width:350px" onchange="getDataElements()">
-                    <option value="0">[ Select DataElementGroup / All ]</option>                                    
-                        ##foreach ( $degroup in $dataElementGroups )
-                        	<!--<option value="$degroup.id" title="$degroup.name">$degroup.name</option>-->                 
-                    	##end
-                        #foreach ( $section in $sections )
-                        	<option value="$section.id" title="$section.name">$section.name</option>            
-                    	#end                    
-                </select>
+            <td class="NormalB">$i18n.getString( "ga_filter_by_degroup_section" )<br>
+                #parse( "dhis-web-commons/loader/loader.vm" )
+                <div id="dataElementGrpDiv2" name="dataElementGrpDiv2"></div>
             </td>   
             <td class="NormalB">&nbsp;</td>
             <td class="NormalB">$i18n.getString( "compare_view" )<br>
@@ -146,7 +143,7 @@
         <tr>
      	    <td class="NormalB">$i18n.getString( "filter" ):&nbsp;<input type="text" id="availableDataElementsFilter" onkeyup="filterAvailableDataElements()" style="min-width:26em"></td>
             <td class="NormalB">&nbsp;</td>
-            <td class="NormalB">&nbsp;</td>
+            <td class="NormalB">$i18n.getString( "ga_filter_by_degroup" ) &nbsp;<input type="checkbox" checked="true" id="chkDataGrp" onchange="checkedDataElementGroup()"/></td>
         </tr>                           
         <tr>
             <td class="NormalB">$i18n.getString( "ga_available_delist" )<br>

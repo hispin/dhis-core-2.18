@@ -126,6 +126,16 @@
 			<!--<interceptor-ref name="organisationUnitTreeStack"/>-->
 		</action>
 		
+		<action name="getDataElemetGrp"
+            class="org.hisp.dhis.dataanalyser.ga.action.GetDataElementGroupAction">
+            <result name="success" type="velocity-xml">/dhis-web-dashboard/getDataElementGrp.vm</result>
+            <!--<interceptor-ref name="transactionStack"/>-->
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>		
+		
+		
+		
+		
 		<!-- GraphicalAnalyser  DataElements end   -->
 		
 		<!-- GraphicalAnalyser  Indicators -->
