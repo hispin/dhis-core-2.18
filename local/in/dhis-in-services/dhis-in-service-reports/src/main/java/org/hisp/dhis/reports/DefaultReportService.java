@@ -449,11 +449,7 @@ public class DefaultReportService
                
                 // ------------------------replace global values------------------------------------------------                
 
-                System.out.println("\n*INFO :<< CHECKING CONFIG FILE SETUP(1) >>");
-                System.out.println("*INFO :Global Value: "+expression);
                 expression = getGlobalExpression(expression,globalValuesMap);
-                System.out.println("*INFO :Local Value: "+expression);
-                System.out.println("*INFO :<<CHECK FINISHED>>\n");
 
                 // ---------------------------------------------------------------------------------------------
                 
@@ -753,7 +749,7 @@ public class DefaultReportService
                 {
                     Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    //System.out.println( dataElement.getId() + " : " + optionCombo.getId() + " : " + startDate + " : " + endDate + " : " + organisationUnit + " : " + aggregatedValue);
+
                     if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
@@ -769,7 +765,7 @@ public class DefaultReportService
                 {
                     deFlag1 = 1;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+
                     List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
                     if ( periodList == null || periodList.isEmpty() )
@@ -914,7 +910,6 @@ public class DefaultReportService
                 {
 
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
                     List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
 
                     if ( periodList == null || periodList.isEmpty() )
@@ -945,7 +940,7 @@ public class DefaultReportService
                 {
                     deFlag1 = 1;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+
                     List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
                     if ( periodList == null || periodList.isEmpty() )
@@ -1049,7 +1044,7 @@ public class DefaultReportService
         }
     }
     
-     // functoin getBooleanDataValue stsrt
+     // Function getBooleanDataValue Start
     
     public String getBooleanDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
     {
@@ -1089,7 +1084,7 @@ public class DefaultReportService
                     deFlag1 = 1;
                     deFlag2 = 0;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+
                     List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
                     if ( periodList == null || periodList.isEmpty() )
@@ -1187,10 +1182,10 @@ public class DefaultReportService
         }
     }
     
- // functoin getBooleanDataValue end
+ // Function getBooleanDataValue End
     
     
-//function getStartingEndingPeriods starts
+ // Function getStartingEndingPeriods Starts
     
 public List<Calendar> getStartingEndingPeriods( String deType , Period selectedPeriod )
 {
@@ -1345,7 +1340,7 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
     return calendarList;
 }
     
-//function getPreviousPeriod starts
+//Function getPreviousPeriod Starts
 public Period getPreviousPeriod( Period selectedPeriod )
 {
     Period period = new Period();
@@ -1619,11 +1614,7 @@ public List<Report_inDesign> getReportDesignWithMergeCells( String fileName )
 
             // ------------------------replace global values------------------------------------------------
 
-            System.out.println("\n*INFO :<< CHECKING CONFIG FILE SETUP(3) >>");
-            System.out.println("*INFO :Global Value: "+expression);
             expression = getGlobalExpression(expression, globalValuesMap);
-            System.out.println("*INFO :Local Value: "+expression);
-            System.out.println("*INFO :<<CHECK FINISHED>>\n");
 
             // ---------------------------------------------------------------------------------------------
 
@@ -1637,8 +1628,10 @@ public List<Report_inDesign> getReportDesignWithMergeCells( String fileName )
 
             Report_inDesign report_inDesign = new Report_inDesign( stype, ptype, sheetno, rowno, colno, rowMerge, colMerge, expression );
             reportDesignList.add( report_inDesign );
-        }// end of for loop with s var
-    }// try block end
+        }
+        // end of for loop with s var
+    }
+    // try block end
     catch ( SAXParseException err )
     {
         System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );

@@ -164,10 +164,11 @@ public class GenerateUpwardReportAnalyserResultAction
 
 
         String inputTemplatePath = System.getenv("DHIS2_HOME") + File.separator + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
 
         String outputReportPath = System.getenv("DHIS2_HOME") + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
-        File newdir = new File(outputReportPath);
+
+        File newdir=new File(outputReportPath);
+
         if (!newdir.exists()) {
             newdir.mkdirs();
         }
@@ -307,7 +308,8 @@ public class GenerateUpwardReportAnalyserResultAction
                     wCellformat.setAlignment(Alignment.CENTRE);
 
                     sheet0.addCell(new Blank(tempColNo, tempRowNo, wCellformat));
-                } else {
+                }
+                else {
                     if (reportModelTB.equalsIgnoreCase("DYNAMIC-ORGUNIT")) {
                         if (deCodeString.equalsIgnoreCase("FACILITYP") || deCodeString.equalsIgnoreCase("FACILITYPP") || deCodeString.equalsIgnoreCase("FACILITYPPP") || deCodeString.equalsIgnoreCase("FACILITYPPPP")) {
                         } else if (deCodeString.equalsIgnoreCase("PERIOD") || deCodeString.equalsIgnoreCase("PERIOD-NOREPEAT") || deCodeString.equalsIgnoreCase("PERIOD-WEEK") || deCodeString.equalsIgnoreCase("PERIOD-MONTH") || deCodeString.equalsIgnoreCase("PERIOD-QUARTER") || deCodeString.equalsIgnoreCase("PERIOD-YEAR") || deCodeString.equalsIgnoreCase("MONTH-START") || deCodeString.equalsIgnoreCase("MONTH-END") || deCodeString.equalsIgnoreCase("MONTH-START-SHORT") || deCodeString.equalsIgnoreCase("MONTH-END-SHORT") || deCodeString.equalsIgnoreCase("SIMPLE-QUARTER") || deCodeString.equalsIgnoreCase("QUARTER-MONTHS-SHORT") || deCodeString.equalsIgnoreCase("QUARTER-MONTHS") || deCodeString.equalsIgnoreCase("QUARTER-START-SHORT") || deCodeString.equalsIgnoreCase("QUARTER-END-SHORT") || deCodeString.equalsIgnoreCase("QUARTER-START") || deCodeString.equalsIgnoreCase("QUARTER-END") || deCodeString.equalsIgnoreCase("SIMPLE-YEAR") || deCodeString.equalsIgnoreCase("YEAR-END") || deCodeString.equalsIgnoreCase("YEAR-FROMTO")) {
@@ -323,6 +325,9 @@ public class GenerateUpwardReportAnalyserResultAction
                     }
 
                     WritableCell cell = sheet0.getWritableCell(tempColNo, tempRowNo);
+
+                    System.out.println("\n* TESTING: ["+cell.getCellFeatures()+"]");
+                    System.out.println("* TESTING : Cell Content ["+tempStr+"]\n");
 
                     CellFormat cellFormat = cell.getCellFormat();
                     WritableCellFormat wCellformat = new WritableCellFormat();
@@ -342,6 +347,8 @@ public class GenerateUpwardReportAnalyserResultAction
                         }
                     }
                 }
+
+                outputReportWorkbook.write();
 
                 count1++;
             }// inner while loop end
