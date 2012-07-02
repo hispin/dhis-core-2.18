@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 
 /**
- * <Gaurav & Mohit>,Date: 6/25/12, Time: 12:42 PM
+ * <gaurav>,Date: 6/25/12, Time: 12:42 PM
  */
 
 public class DefaultGlobalConfigService implements GlobalConfigService {
@@ -36,8 +36,6 @@ public class DefaultGlobalConfigService implements GlobalConfigService {
     //----------------------------------------------------------------------------------------------
     //                         INPUT-OUTPUT FOLDER PATHS
     //----------------------------------------------------------------------------------------------
-
-    private static final String OUTPUT_FOLDER = "/home/gaurav/dhis2/dhis/home/ra_punjab_new";
 
     private static final String SETTINGS_XML = "globalsettings.xml";
 
@@ -87,6 +85,9 @@ public class DefaultGlobalConfigService implements GlobalConfigService {
     //----------------------------------------------------------------------------------------------
 
     public void updateDecodeFiles() {
+
+        String OUTPUT_FOLDER = System.getenv("DHIS2_HOME") + File.separator + configurationService.getConfigurationByKey(Configuration_IN.KEY_REPORTFOLDER)
+                .getValue() + "_new";
 
         Integer globalID = 1;
 
@@ -146,6 +147,13 @@ public class DefaultGlobalConfigService implements GlobalConfigService {
                                 e.printStackTrace();
                             }
                             DOMSource source = new DOMSource(doc);
+
+                            File newRAFolder = new File(OUTPUT_FOLDER);
+
+                            if (newRAFolder.exists() == false) {
+                                newRAFolder.mkdir();
+                            }
+
                             File newOutFile = new File(OUTPUT_FOLDER + "/" + file.getName());
 
                             if (!newOutFile.exists()) {
@@ -186,6 +194,10 @@ public class DefaultGlobalConfigService implements GlobalConfigService {
 
 
     public void writeGlobalSettings(Map<String, String> globalValueMap) {
+
+        String OUTPUT_FOLDER = System.getenv("DHIS2_HOME") + File.separator + configurationService.getConfigurationByKey(Configuration_IN.KEY_REPORTFOLDER)
+                .getValue() + "_new";
+
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
