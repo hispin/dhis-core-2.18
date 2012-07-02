@@ -28,7 +28,7 @@
         #end
 	    </div>
         <div id="loginField">
-            <div id="bannerArea"><img alt="" src="logo_banner.png"></div>
+            <div id="bannerArea"><a href="http://dhis2.org"><img alt="" src="logo_banner.png"></a></div>
             
             <form id="loginForm" action="../../dhis-web-commons-security/login.action" method="post">
                 <table>
@@ -50,11 +50,8 @@
                 </table>
             </form>
             #if( $failed == true )
-            <span id="loginMessage">Wrong username or password. Please try again.</span>
+            <span id="loginMessage">Wrong username or password</span>
 			#end            
-        </div>
-        <div id="footerArea">
-			<a href="http://dhis2.org">Powered by DHIS 2</a>
         </div>
     </body>
 </html>
