@@ -18,11 +18,13 @@ DHIS.chart.conf = {
             },
             indicator: {
                 value: 'indicator',
-                rawvalue: 'Indicator'
+                rawvalue: 'Indicator',
+                paramname: 'in'
             },
             dataelement: {
                 value: 'dataelement',
-                rawvalue: 'Data element'
+                rawvalue: 'Data element',
+                paramname: 'de'
             },
             period: {
                 value: 'period',
@@ -30,7 +32,8 @@ DHIS.chart.conf = {
             },
             organisationunit: {
                 value: 'organisationunit',
-                rawvalue: 'Organisation unit'
+                rawvalue: 'Organisation unit',
+                paramname: 'ou'
             }
         },
         chart: {
@@ -152,10 +155,10 @@ Ext.onReady( function() {
                 getUrl: function(isFilter) {
                     var a = [];
                     Ext.Array.each(DHIS.chart.state.state.conf.indicators, function(r) {
-                        a.push('indicatorIds=' + r);
+                        a.push(DHIS.chart.conf.finals.dimension.indicator.paramname + '=' + r);
                     });
                     Ext.Array.each(DHIS.chart.state.state.conf.dataelements, function(r) {
-                        a.push('dataElementIds=' + r);
+                        a.push(DHIS.chart.conf.finals.dimension.dataelement.paramname + '=' + r);
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 }
@@ -182,7 +185,7 @@ Ext.onReady( function() {
                 getUrl: function(isFilter) {
                     var a = [];
                     Ext.Array.each(DHIS.chart.state.state.conf.organisationunits, function(r) {
-						a.push('organisationUnitIds=' + r)
+						a.push(DHIS.chart.conf.finals.dimension.organisationunit.paramname + '=' + r)
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
