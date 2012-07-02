@@ -125,9 +125,8 @@ public class TabularInitializeAction
 
         programs = programService.getAllPrograms();
 
-        levels = organisationUnitService.getFilledOrganisationUnitLevels();
+        levels = organisationUnitService.getOrganisationUnitLevels();
 
         return SUCCESS;
     }
-
 }

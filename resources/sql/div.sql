@@ -69,3 +69,6 @@ join _organisationunitgroupsetstructure as gsstr on ou.organisationunitid=gsstr.
 where oustr.level >= 5
 order by province, county, district, type, ownership, ou.name;
 
+-- Compare user roles --
+
+select authority from userroleauthorities where userroleid=49836 and authority not in (select authority from userroleauthorities where userroleid=83722);
