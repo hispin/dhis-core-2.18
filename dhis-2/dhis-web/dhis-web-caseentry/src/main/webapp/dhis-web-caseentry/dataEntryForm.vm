@@ -69,18 +69,18 @@
 					#end
 
 					#if( $programStageDataElement.dataElement.type == "bool" )
-						<select style='width: 256px;' name="entryselect" data="{compulsory: $programStageDataElement.compulsory }" id="$id" onchange="saveOpt( $programStageDataElement.dataElement.id )" tabindex="$tabIndex">
+						<select style='width: 256px;' name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" id="$id" onchange="saveOpt( $programStageDataElement.dataElement.id )" tabindex="$tabIndex">
 							<option value="">[$i18n.getString( "select_value" )]</option>
 							<option value="true" #if( $patientDataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
 							<option value="false" #if( $patientDataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
 						</select> 
 					#elseif( $programStageDataElement.dataElement.type == "date" )
-						<input style='width: 250px;' type="text" data="{compulsory: $programStageDataElement.compulsory }" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
+						<input name="entryfield" style='width: 250px;' type="text" data="{compulsory: $programStageDataElement.compulsory }" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
 						<script type="text/javascript">
 							datePicker($programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
 						</script> 
 					#elseif($hasOptionSet=='true')
-						<input name="entryfield" options='$hasOptionSet' #if($hasOptionSet == 'true') #end dataElementId='$programStageDataElement.dataElement.id' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )"
+						<input name="entryfield" options='$hasOptionSet' #if($hasOptionSet == 'true') #end dataElementId='$programStageDataElement.dataElement.id' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex"
 							#set( $type=$programStageDataElement.dataElement.getDetailedNumberType())
 							#if( $type=='number' ) 
 								class="{validate:{number:true}}" 
@@ -93,7 +93,7 @@
 							#end />
 					#else
 						<input name="entryfield" dataElementId='$programStageDataElement.dataElement.id' 
-							data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" 
+							data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" onkeypress="return keyPress(event, this)" tabindex="$tabIndex"
 							id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" 
 							onchange="saveVal( $programStageDataElement.dataElement.id )" 
 							onkeypress="return keyPress(event, this)" tabindex="$tabIndex"
@@ -122,8 +122,8 @@
 				</td>
 				#end
 			</tr>
-		#end				
-		#set( $tabIndex = $tabIndex + 1 )
+			#set( $tabIndex = $tabIndex + 1 )
+		#end	
 		</table>
 	#end
 </div>

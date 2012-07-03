@@ -343,7 +343,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForBoolean = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME' }\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\"  text-align:center;\" ";
+        final String jsCodeForBoolean = " name=\"entryfield\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME' }\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\"  text-align:center;\" ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -457,7 +457,7 @@ public class DefaultProgramDataEntryService
                 }
 
                 String appendCode = dataElementCode.replaceFirst( "input", "select" );
-                appendCode = appendCode.replace( "name=\"entryselect\"", jsCodeForBoolean );
+                appendCode = appendCode.replace( "name=\"entryfield\"", jsCodeForBoolean );
 
                 // -------------------------------------------------------------
                 // Add title
