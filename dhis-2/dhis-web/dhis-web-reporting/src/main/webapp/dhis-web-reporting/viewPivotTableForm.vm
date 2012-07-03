@@ -20,15 +20,6 @@
 </script>
 
 <style type="text/css">
-.pivot td
-{
-  border: 1px solid #d0d0d0;
-  padding-top: 2px;
-  padding-bottom: 3px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
 div#control
 {
   margin-bottom: 15px;
@@ -47,10 +38,28 @@ div#pivot
   border-radius: 3px;
 }
 
+div#pivotMenu
+{
+  position: absolute;
+  display: none;
+}
+
 div.inputSection
 {
   padding-top: 7px;
   padding-bottom: 5px;
+}
+
+.pivot
+{ 
+  border-collapse: collapse;
+}
+
+.pivot td
+{
+  border: 1px solid #c0c0c0;
+  padding: 3px 10px 10px 3px;
+  padding-bottom: 3px;
 }
 
 td.column
@@ -70,12 +79,6 @@ td.cell
 {
   text-align: center;
   cursor: pointer;
-}
-
-div#pivotMenu
-{
-  position: absolute;
-  display: none;
 }
 
 </style>
