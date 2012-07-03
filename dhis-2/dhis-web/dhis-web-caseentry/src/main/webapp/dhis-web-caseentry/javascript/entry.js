@@ -331,56 +331,23 @@ function keyPress( event, field )
         }
     }
    
-    if ( key == 13 ) /* CR */
+    if ( key == 13 )
     { 
         nextField = getNextEntryField( field );
         if ( nextField )
         {
-            nextField.focus(); /* Does not seem to actually work in Safari, unless you also have an Alert in between */
+            nextField.focus();
         }
         return true;
     }
     
-    /* Illegal characters can be removed with a new if-block and return false */
     return true;
 }
 
 function getNextEntryField( field )
 {
-    var inputs = document.getElementsByName( "entryfield" );
-    
-    // Simple bubble sort
-    for ( var i = 0; i < inputs.length - 1; ++i )
-    {
-        for ( var j = i + 1; j < inputs.length; ++j )
-        {
-            if ( inputs[i].tabIndex > inputs[j].tabIndex )
-            {
-                tmp = inputs[i];
-                inputs[i] = inputs[j];
-                inputs[j] = tmp;
-            }
-        }
-    }
-    
-    i = 0;
-    for ( ; i < inputs.length; ++i )
-    {
-        if ( inputs[i] == field )
-        {
-            break;
-        }
-    }
-    
-    if ( i == inputs.length - 1 )
-    {
-        // No more fields after this:
-        return false;
-    }
-    else
-    {
-        return inputs[i + 1];
-    }
+    var index = field.getAttribute( 'tabindex' );
+	return $( '[name="entryfield"][tabindex="' + (++index) + '"]' );
 }
 
 //-----------------------------------------------------------------
