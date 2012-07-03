@@ -27,6 +27,8 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.MapView;
@@ -39,11 +41,11 @@ import org.hisp.dhis.reporttable.ReportTable;
 public interface DashboardContentStore
     extends GenericStore<DashboardContent>
 {
-    void removeDocumentAssociations( Document document );
+    Collection<DashboardContent> getByDocument( Document document );
     
-    void removeMapViewAssocations( MapView mapView );
+    Collection<DashboardContent> getByMapView( MapView mapView );
     
-    void removeReportAssociations( Report report );
+    Collection<DashboardContent> getByReport( Report report );
     
-    void removeReportTableAssociations( ReportTable reportTable );
+    Collection<DashboardContent> getByReportTable( ReportTable reportTable );
 }

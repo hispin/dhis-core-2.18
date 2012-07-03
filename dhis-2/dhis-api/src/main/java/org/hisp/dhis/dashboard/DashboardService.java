@@ -37,7 +37,6 @@ import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public interface DashboardService
 {
@@ -45,6 +44,8 @@ public interface DashboardService
 
     void saveDashboardContent( DashboardContent dashboardContent );
 
+    void updateDashboardContent( DashboardContent dashboardContent );
+    
     DashboardContent getDashboardContent( int id );
 
     DashboardContent getDashboardContent( User user );
@@ -52,12 +53,12 @@ public interface DashboardService
     Collection<DashboardContent> getAllDashboardContent();
     
     void deleteDashboardContent( DashboardContent content );
+
+    Collection<DashboardContent> getByDocument( Document document );
     
-    void removeDocumentAssociations( Document document );
+    Collection<DashboardContent> getByMapView( MapView mapView );
     
-    void removeMapViewAssocations( MapView mapView );
+    Collection<DashboardContent> getByReport( Report report );
     
-    void removeReportAssociations( Report report );
-    
-    void removeReportTableAssociations( ReportTable reportTable );
+    Collection<DashboardContent> getByReportTable( ReportTable reportTable );
 }

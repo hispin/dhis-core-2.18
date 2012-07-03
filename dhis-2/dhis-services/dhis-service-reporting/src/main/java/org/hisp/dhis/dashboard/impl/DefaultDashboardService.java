@@ -68,7 +68,11 @@ public class DefaultDashboardService
         dashboardContentStore.save( dashboardContent );
     }
 
-    @Override
+    public void updateDashboardContent( DashboardContent dashboardContent )
+    {
+        dashboardContentStore.update( dashboardContent );
+    }
+    
     public DashboardContent getDashboardContent( int id )
     {
         return dashboardContentStore.get( id );
@@ -91,23 +95,23 @@ public class DefaultDashboardService
         dashboardContentStore.delete( content );
     }
     
-    public void removeDocumentAssociations( Document document )
+    public Collection<DashboardContent> getByDocument( Document document )
     {
-        dashboardContentStore.removeDocumentAssociations( document );
+        return dashboardContentStore.getByDocument( document );
     }
     
-    public void removeMapViewAssocations( MapView mapView )
+    public Collection<DashboardContent> getByMapView( MapView mapView )
     {
-        dashboardContentStore.removeMapViewAssocations( mapView );
+        return dashboardContentStore.getByMapView( mapView );
     }
     
-    public void removeReportAssociations( Report report )
+    public Collection<DashboardContent> getByReport( Report report )
     {
-        dashboardContentStore.removeReportAssociations( report );
+        return dashboardContentStore.getByReport( report );
     }
     
-    public void removeReportTableAssociations( ReportTable reportTable )
+    public Collection<DashboardContent> getByReportTable( ReportTable reportTable )
     {
-        dashboardContentStore.removeReportTableAssociations( reportTable );
+        return dashboardContentStore.getByReportTable( reportTable );
     }
 }

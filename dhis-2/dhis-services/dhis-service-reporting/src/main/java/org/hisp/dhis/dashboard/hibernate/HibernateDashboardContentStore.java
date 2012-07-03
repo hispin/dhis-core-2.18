@@ -27,6 +27,8 @@ package org.hisp.dhis.dashboard.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardContentStore;
 import org.hisp.dhis.document.Document;
@@ -41,27 +43,31 @@ import org.hisp.dhis.reporttable.ReportTable;
 public class HibernateDashboardContentStore
     extends HibernateGenericStore<DashboardContent> implements DashboardContentStore
 {
-    public void removeDocumentAssociations( Document document )
+    @SuppressWarnings("unchecked")
+    public Collection<DashboardContent> getByDocument( Document document )
     {
-        final String sql = "delete from dashboardcontent_documents where documentid = " + document.getId();
-        jdbcTemplate.execute( sql );
+        String hql = "from DashboardContent dc where :document in elements(dc.documents)";
+        return getQuery( hql ).setEntity( "document", document ).list();        
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<DashboardContent> getByMapView( MapView mapView )
+    {
+        String hql = "from DashboardContent dc where :mapView in elements(dc.mapViews)";
+        return getQuery( hql ).setEntity( "mapView", mapView ).list();
+    }    
+
+    @SuppressWarnings("unchecked")
+    public Collection<DashboardContent> getByReport( Report report )
+    {
+        String hql = "from DashboardContent dc where :report in elements(dc.reports)";
+        return getQuery( hql ).setEntity( "report", report ).list();
     }
     
-    public void removeMapViewAssocations( MapView mapView )
+    @SuppressWarnings("unchecked")
+    public Collection<DashboardContent> getByReportTable( ReportTable reportTable )
     {
-        final String sql = "delete from dashboardcontent_mapviews where mapviewid = " + mapView.getId();
-        jdbcTemplate.execute( sql );
-    }
-    
-    public void removeReportAssociations( Report report )
-    {
-        final String sql = "delete from dashboardcontent_reports where reportid = " + report.getId();
-        jdbcTemplate.execute( sql );
-    }
-    
-    public void removeReportTableAssociations( ReportTable reportTable )
-    {
-        final String sql = "delete from dashboardcontent_reporttables where reporttableid = " + reportTable.getId();
-        jdbcTemplate.execute( sql );
+        String hql = "from DashboardContent dc where :reportTable in elements(dc.reportTables)";
+        return getQuery( hql ).setEntity( "reportTable", reportTable ).list();
     }
 }
