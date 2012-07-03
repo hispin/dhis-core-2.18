@@ -87,7 +87,8 @@ div#pivotMenu
 <div id="control">
 <input type="button" value="$i18n.getString( 'data' )" style="width:110px" onclick="showCriteria()" />
 <input type="button" value="$i18n.getString( 'pivot' )" style="width:110px" onclick="showPivot()" />
-<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportXls()" style="width:130px">&nbsp;
+<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportXls()" style="width:130px">
+<input type="button" value="$i18n.getString( 'back' )" style="width:110px" onclick="window.location='index.action'" />&nbsp;&nbsp;
 <label id="dataLabel" style="color:#606060"></label>
 </div>
 
