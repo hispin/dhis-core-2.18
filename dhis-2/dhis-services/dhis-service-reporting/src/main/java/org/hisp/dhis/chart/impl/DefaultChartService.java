@@ -260,7 +260,7 @@ public class DefaultChartService
     {
         Chart chart = new Chart();
 
-        chart.setType( TYPE_BAR );
+        chart.setType( TYPE_COLUMN );
         chart.setDimensions( series, category, filter );
         chart.setHideLegend( false );
         chart.setRegression( regression );
