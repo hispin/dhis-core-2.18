@@ -2429,7 +2429,7 @@ Ext.onReady( function() {
                             {
                                 xtype: 'label',
                                 text: DV.i18n.chart_type,
-                                style: 'font-size:11px; font-weight:bold; padding:13px 8px 0 10px'
+                                style: 'font-size:11px; font-weight:bold; padding:13px 8px 0 13px'
                             },
                             {
 								xtype: 'button',
