@@ -27,6 +27,8 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.report.Report;
@@ -60,25 +62,50 @@ public class DashboardContentDeletionHandler
     @Override
     public void deleteReport( Report report )
     {
-        dashboardService.removeReportAssociations( report );
+        Collection<DashboardContent> contents = dashboardService.getByReport( report );
+        
+        for ( DashboardContent content : contents )
+        {
+            content.getReports().remove( report );
+            dashboardService.updateDashboardContent( content );
+        }
     }
             
     @Override
     public void deleteDocument( Document document )
     {
-        dashboardService.removeDocumentAssociations( document );
+        Collection<DashboardContent> contents = dashboardService.getByDocument( document );
+        
+        for ( DashboardContent content : contents )
+        {
+            content.getDocuments().remove( document );
+            dashboardService.updateDashboardContent( content );
+            
+        }
     }
     
     @Override
     public void deleteReportTable( ReportTable reportTable )
     {
-        dashboardService.removeReportTableAssociations( reportTable );
+        Collection<DashboardContent> contents = dashboardService.getByReportTable( reportTable );
+        
+        for ( DashboardContent content : contents )
+        {
+            content.getReportTables().remove( reportTable );
+            dashboardService.updateDashboardContent( content );
+        }        
     }
     
     @Override
     public void deleteMapView( MapView mapView )
     {
-        dashboardService.removeMapViewAssocations( mapView );
+        Collection<DashboardContent> contents = dashboardService.getByMapView( mapView );
+        
+        for ( DashboardContent content : contents )
+        {
+            content.getMapViews().remove( mapView );
+            dashboardService.updateDashboardContent( content );
+        }
     }
     
     @Override
