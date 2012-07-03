@@ -349,3 +349,19 @@ function completedAndAddNewEvent()
 {
 	doComplete( true );
 }
+
+function removeEmptyEvents()
+{	
+	jQuery.getJSON( "removeEmptyEvents.action",
+		{
+			programStageId: jQuery('#selectDiv [id=programId] option:selected').attr('programStageId')
+		}, 
+		function( json ) 
+		{   
+			if(json.response=='success')
+			{
+				showSuccessMessage( i18n_remove_success );
+				validateSearchEvents( true )
+			}
+		});
+}

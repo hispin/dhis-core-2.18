@@ -436,6 +436,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseentry.RemoveEmptyEventsAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.RemoveEmptyEventsAction"
+		scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
 
 	<!-- Patient -->
 

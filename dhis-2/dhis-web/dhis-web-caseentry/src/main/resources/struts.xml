@@ -169,6 +169,13 @@
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 		
+		<action name="removeEmptyEvents"
+			class="org.hisp.dhis.caseentry.action.caseentry.RemoveEmptyEventsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_PATIENT_REMOVE_EMPTY_EVENTS</param>
+		</action>
+		
 		<!-- save value -->
 
 		<action name="saveValue"

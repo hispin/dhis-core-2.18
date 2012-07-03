@@ -285,4 +285,9 @@ public class DefaultProgramStageInstanceService
 
         return grids;
     }
+
+    public void removeEmptyEvents( ProgramStage programStage )
+    {
+    	programStageInstanceStore.removeEmptyEvents(programStage);
+    }
 }
