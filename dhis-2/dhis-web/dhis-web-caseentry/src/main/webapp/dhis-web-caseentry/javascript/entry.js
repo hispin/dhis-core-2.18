@@ -819,7 +819,6 @@ function autocompletedField( idField )
 				var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
 					valid = false;
 				if ( !valid ) {
-					// remove invalid value, as it didn't match anything
 					$( this ).val( "" );
 					saveVal( dataElementId );
 					input.data( "autocomplete" ).term = "";
@@ -829,7 +828,7 @@ function autocompletedField( idField )
 		}
 	})
 	.addClass( "ui-widget" );
-	
+			
 	input.blur(function(){
 		input.autocomplete( "close" );
 	});
