@@ -43,16 +43,16 @@
 					</select>
 				</td>
 				<td>
-					<input type="button" id='listBtn' value="$i18n.getString( 'list_all_events' )" onclick='validateSearchEvents( true );'>
+					<input type="button" class='large-button' id='listBtn' value="$i18n.getString( 'list_all_events' )" onclick='validateSearchEvents( true );'>
 				</td>
 				<td>
-					<input type="button" id='addBtn' value='$i18n.getString( "add_new" )' onclick="showAddEventForm();">
+					<input type="button" class='large-button' id='addBtn' value='$i18n.getString( "add_new" )' onclick="showAddEventForm();">
 				</td>
 				<td>
-					<input type="button" id='removeBtn' value='$i18n.getString( "remove_empty_events" )' onclick="removeEmptyEvents();">
+					<input type="button" class='large-button' id='removeBtn' value='$i18n.getString( "remove_empty_events" )' onclick="removeEmptyEvents();">
 				</td>
 				<td>
-					<input type="button" value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();">
+					<input type="button" class='large-button' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();">
 				</td>
 			</tr>
 		</table>
