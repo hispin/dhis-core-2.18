@@ -828,11 +828,7 @@ function autocompletedField( idField )
 		}
 	})
 	.addClass( "ui-widget" );
-			
-	input.blur(function(){
-		input.autocomplete( "close" );
-	});
-
+	
 	var button = $( "<button>&nbsp;</button>" )
 		.attr( "tabIndex", -1 )
 		.attr( "title", i18n_show_all_items )
