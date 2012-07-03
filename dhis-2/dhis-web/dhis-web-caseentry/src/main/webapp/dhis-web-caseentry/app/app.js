@@ -975,6 +975,15 @@ Ext.onReady( function() {
 		paramChanged: function() {
 			if( TR.store.datatable && TR.store.datatable.data.length)
 			{
+				var orgUnitCols = TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue();
+				var orgUnitColsInTable =  ( TR.datatable.datatable.columns 
+									- TR.cmp.params.patientProperty.selected.store.length
+									+ TR.cmp.params.dataelement.selected.store.length );
+				if( orgUnitCols!=orgUnitColsInTable )
+				{
+					return true;
+				}
+				
 				var colNames = new Array();
 				TR.cmp.params.patientProperty.selected.store.each( function(r) {
 					colNames.push( r.data.id );
