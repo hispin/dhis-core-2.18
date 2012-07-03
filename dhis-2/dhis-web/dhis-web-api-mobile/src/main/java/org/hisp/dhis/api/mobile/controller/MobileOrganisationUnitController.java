@@ -167,35 +167,5 @@ public class MobileOrganisationUnitController
     {
         return organisationUnitService.getOrganisationUnit( id );
     }
-    
-/*    @RequestMapping( method = RequestMethod.GET, value = "updateClient" )
-    @ResponseBody
-    public InputStream updateClient()
-    {
-        
-        File fileToDownload = new File( "DHISMobile-Aggregate.jar" );
-        
-        InputStream inputStream = null;
-        
-        if(fileToDownload == null)
-            
-            System.out.println("sorry! can't find your shit");
-        else
-            System.out.println("shit shit shit! name is "+fileToDownload.getName());
-        
-        try
-        {
-            inputStream = new BufferedInputStream( new FileInputStream( fileToDownload ));
-            System.out.println(inputStream.read());
-        }
-            
-        catch (Exception e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return inputStream;
-        
-    }*/
 
 }
