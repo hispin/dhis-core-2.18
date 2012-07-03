@@ -83,7 +83,7 @@ public class HibernateProgramStageInstanceStore
     {
         this.statementBuilder = statementBuilder;
     }
-
+    
     // -------------------------------------------------------------------------
     // Implemented methods
     // -------------------------------------------------------------------------
@@ -238,6 +238,14 @@ public class HibernateProgramStageInstanceStore
             startDate, endDate, false, null, null );
 
         return jdbcTemplate.queryForInt( sql );
+    }
+    
+    public void removeEmptyEvents( ProgramStage programStage )
+    {
+    	String sql = "delete from programstageinstance where programstageid=" +  programStage.getId() + " and programstageinstanceid not in " +
+    			"(select pdv.programstageinstanceid from patientdatavalue pdv )";
+    	
+    	jdbcTemplate.execute( sql );
     }
 
     // -------------------------------------------------------------------------

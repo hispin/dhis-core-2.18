@@ -80,4 +80,6 @@ public interface ProgramStageInstanceStore
     
     int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate );
+    
+    void removeEmptyEvents( ProgramStage programStage );
 }
