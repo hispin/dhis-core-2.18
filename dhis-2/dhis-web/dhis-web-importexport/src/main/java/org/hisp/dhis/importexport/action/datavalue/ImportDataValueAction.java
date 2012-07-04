@@ -140,7 +140,7 @@ public class ImportDataValueAction
         
         InputStream in = new FileInputStream( upload );
         
-        in = StreamUtils.wrapAndCheckZip( in );
+        in = StreamUtils.wrapAndCheckCompressionFormat( in );
         
         Reader reader = FORMAT_CSV.equals( importFormat ) ? new BufferedReader( new InputStreamReader( in ) ) : null;
 

@@ -97,7 +97,7 @@ public class StreamUtilsTest
     public void testWrapAndCheckZip()
         throws Exception
     {
-        Reader reader = new InputStreamReader( StreamUtils.wrapAndCheckZip( zipStream ) );
+        Reader reader = new InputStreamReader( StreamUtils.wrapAndCheckCompressionFormat( zipStream ) );
         
         assertEquals( '<', reader.read() );
         assertEquals( '?', reader.read() );

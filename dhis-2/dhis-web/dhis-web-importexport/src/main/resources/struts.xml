@@ -253,7 +253,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="page">/dhis-web-importexport/dxf2MetaDataImport.vm</param>
-      <param name="javascripts" />
+      <param name="javascripts">javascript/importMetaData.js</param>
     </action>
 
     <action name="dxf2MetaDataExport" class="org.hisp.dhis.importexport.action.dxf2.MetaDataExportFormAction">
@@ -261,6 +261,16 @@
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="page">/dhis-web-importexport/dxf2MetaDataExport.vm</param>
       <param name="javascripts" />
+    </action>
+
+    <action name="importMetaData" class="org.hisp.dhis.importexport.action.dxf2.MetaDataImportAction">
+      <result name="success" type="redirect">dxf2MetaDataImport.action?running=true</result>
+      <interceptor-ref name="fileUploadStack" />
+    </action>
+
+    <action name="getMetaDataImportSummary" class="org.hisp.dhis.importexport.action.GetMetaDataImportSummaryAction">
+      <result name="success" type="velocity">/dhis-web-importexport/importSummary.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
 
   </package>

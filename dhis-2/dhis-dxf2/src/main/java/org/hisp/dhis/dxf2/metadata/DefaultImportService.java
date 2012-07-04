@@ -82,7 +82,7 @@ public class DefaultImportService
     @Override
     public ImportSummary importMetaData( MetaData metaData, TaskId taskId )
     {
-        return importMetaData( metaData, ImportOptions.getDefaultImportOptions(), null );
+        return importMetaData( metaData, ImportOptions.getDefaultImportOptions(), taskId );
     }
 
     @Override
@@ -129,8 +129,6 @@ public class DefaultImportService
                     {
                         String message = "Importing " + objects.size() + " " + StringUtils.capitalize( entry.getValue() );
 
-                        log.info( message );
-
                         if(taskId != null)
                         {
                             notifier.notify( taskId, TaskCategory.METADATA_IMPORT, message );
@@ -163,8 +161,6 @@ public class DefaultImportService
 
         cacheManager.clearCache();
         objectBridge.destroy();
-
-        log.info( "Import done at " + new Date() );
 
         if(taskId != null)
         {

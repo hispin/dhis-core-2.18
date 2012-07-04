@@ -1,4 +1,4 @@
-package org.hisp.dhis.importexport.action.dxf2;
+package org.hisp.dhis.importexport.action.util;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,28 +27,56 @@ package org.hisp.dhis.importexport.action.dxf2;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.dxf2.metadata.ImportService;
+import org.hisp.dhis.dxf2.metadata.MetaData;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.scheduling.TaskId;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class MetaDataImportFormAction
-    implements Action
+public class ImportMetaDataTask
+    implements Runnable
 {
-    private boolean running;
+    private static final Log log = LogFactory.getLog( ImportMetaDataTask.class );
 
-    public boolean isRunning()
+    private ImportService importService;
+
+    private ImportOptions importOptions;
+
+    private InputStream inputStream;
+
+    private TaskId taskId;
+
+    public ImportMetaDataTask( ImportService importService, ImportOptions importOptions, InputStream inputStream, TaskId taskId )
     {
-        return running;
-    }
-    public void setRunning( boolean running )
-    {
-        this.running = running;
+        this.importService = importService;
+        this.importOptions = importOptions;
+        this.inputStream = inputStream;
+        this.taskId = taskId;
     }
 
     @Override
-    public String execute() throws Exception
+    public void run()
     {
-        return SUCCESS;
+        MetaData metaData = null;
+
+        try
+        {
+            // TODO check for XML/JSON
+            metaData = JacksonUtils.fromXml( inputStream, MetaData.class );
+        } catch ( IOException e )
+        {
+            log.error( "(IOException) Unable to parse meta-data while reading input stream" );
+            return;
+        }
+
+        importService.importMetaData( metaData, importOptions, taskId );
     }
 }
