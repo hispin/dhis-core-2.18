@@ -66,6 +66,7 @@ function showDataElementDetails( dataElementId )
 		var typeMap = {
 			'int' : i18n_number,
 			'bool' : i18n_yes_no,
+			'trueOnly' : i18n_yes_only,
 			'string' : i18n_text,
 			'date' : i18n_date
 		};

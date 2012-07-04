@@ -156,6 +156,12 @@ function insertDataElement( source, programStageId )
 		var displayName = dataElementName;
 		htmlCode = "<input title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
 	} 
+	else if ( dataElementType == "trueOnly" )
+	{
+		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
+		var displayName = dataElementName;
+		htmlCode = "<input type=\"checkbox\" title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" title=\"" + displayName + "\">";
+	} 
 	else if ( dataElementType == "date" )
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";

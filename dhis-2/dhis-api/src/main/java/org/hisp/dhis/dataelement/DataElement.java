@@ -86,6 +86,8 @@ public class DataElement
 
     public static final String VALUE_TYPE_NEGATIVE_INT = "negativeNumber";
 
+    public static final String VALUE_TYPE_TRUE_ONLY = "trueOnly";
+    
     public static final String VALUE_TYPE_BOOL = "bool";
 
     public static final String VALUE_TYPE_DATE = "date";

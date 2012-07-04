@@ -224,6 +224,13 @@ function saveVal( dataElementId )
     	
     }
     
+	var value = fieldValue;
+	if ( type == 'trueOnly' ){
+		if( field.checked ) 
+			fieldValue = "true";
+		else 
+			fieldValue="";
+	}
 	var valueSaver = new ValueSaver( dataElementId, fieldValue, type, SUCCESS_COLOR );
     valueSaver.save();
 }

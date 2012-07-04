@@ -72,9 +72,10 @@
 		<td>
 			<select id="valueType" style="min-width:246px; margin: 0;"  onchange="changeValueType( this.value )">
 				<option value="int" selected="selected" onclick="enable('numberType');">$i18n.getString( "number" )</option>
-				<option value="string"onclick="disable('numberType');">$i18n.getString( "text" )</option>
-				<option value="bool"onclick="disable('numberType');">$i18n.getString( "yes_no" )</option>
-				<option value="date"onclick="disable('numberType');">$i18n.getString( "date" )</option>
+				<option value="string" onclick="disable('numberType');">$i18n.getString( "text" )</option>
+				<option value="bool" onclick="disable('numberType');">$i18n.getString( "yes_no" )</option>
+				<option value="trueOnly" onclick="disable('numberType');">$i18n.getString( "yes_only" )</option>
+				<option value="date" onclick="disable('numberType');">$i18n.getString( "date" )</option>
 			</select>
 			<input type="hidden" id="submitValueType" name="valueType"/>
 		</td>
