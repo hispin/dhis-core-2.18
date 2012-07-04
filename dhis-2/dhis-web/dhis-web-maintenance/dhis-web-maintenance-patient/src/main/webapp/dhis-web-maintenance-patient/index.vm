@@ -13,6 +13,6 @@ jQuery(function() {
     #introListImgItem( "patientIdentifierType.action" "patient_identifier_type" "patient" )
     #introListImgItem( "relationshipType.action" "relationship_type" "patient" )
     #introListImgItem( "program.action" "program" "program" )
-    #introListImgItem( "caseAggregation.action" "beneficiary_aggregation_query_builder" "caseaggregationmapping" )
+    #introListImgItem( "caseAggregation.action" "patient_aggregation_query_builder" "caseaggregationmapping" )
 	#introListImgItem( "validationCriteria.action" "validation_criteria" "validationcriteria" )
 </ul>

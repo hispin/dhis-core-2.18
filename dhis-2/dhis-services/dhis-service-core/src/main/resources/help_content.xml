@@ -5715,9 +5715,8 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 <para>To check the duplicates or to avoid double registration, after providing name and demographic details, click the <emphasis role="italic">Check duplicate</emphasis> button ( arrow in BLUE color, fig. 2.3.6 ). Checking process bases on full name, gender and birthday of the registering person to look for the available persons with the similar information in the database. If the system finds out the same persons , the result list will be displayed. Now user can cancel the registration process and update the existing person or continue the process of registration.</para>
 </listitem>
 </orderedlist>
-</section>
-<section id="">
-<title>Person Enrolment</title>
+<para></para>
+<para><emphasis role="bold">Person Enrolment</emphasis></para>
 <para>After the person registration, person needs to be enrolled in any available program in the application and for which she/he has been registered. To enrol -</para>
 <orderedlist>
 <listitem>
@@ -5790,17 +5789,17 @@ The case update in the application is designed in the same manner so that servic
 <para>We have two functionalities which support to input data in treatment stages for each person.</para>
 <orderedlist>
 <listitem>
-<para>Single data entry.</para>
+<para>Name-based data entry.</para>
 </listitem>
 <listitem>
 <para>Multiple data entry.</para>
 </listitem>
 </orderedlist>
-<section>
-<title>Single data entry</title>
+<section id='name_based_data_entry'>
+<title>Name-based Data Entry</title>
 <orderedlist>
 <listitem>
-<para>From the <emphasis role="italic">Services</emphasis> option, go to the <emphasis role="italic">Name Based Data Records</emphasis> option and click it. Select <emphasis role="italic">Data Entry</emphasis> option on left menu to proceed.</para>
+<para>From the <emphasis role="italic">Services</emphasis> option, go to the <emphasis role="italic">Name Based Data Records</emphasis> option and click it. Select <emphasis role="italic">Name-based</emphasis> option on left menu to proceed.</para>
 <screenshot>
 <screeninfo>Figure 2.3.12</screeninfo>
 <mediaobject>
@@ -5862,10 +5861,10 @@ The case update in the application is designed in the same manner so that servic
 </listitem>
 </orderedlist>
 </section>
-<section>
-<title>Multiple Data Entry for persons</title>
-<para>This is an advanced function for data entry. On the same interface on above, many persons are listed for entering data by stages. </para>
-<para>To access the multiple person data entry module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Name Based Data Records</emphasis> option and click on it. Select <emphasis role="italic">Multiple Data Entry</emphasis> option on left menu to proceed.</para>
+<section id='multi_name_based_data_entry'>
+<title>Multiple Name-based Data Entry</title>
+<para>This is an advanced functionality for data entry. On the same interface on above, many persons are listed for entering data by stages. </para>
+<para>To access the multiple person data entry module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Name Based Data Records</emphasis> option and click on it. Select <emphasis role="italic">Multiple Name-based</emphasis> option on left menu to proceed.</para>
 <screenshot>
 <screeninfo>Figure 2.5.3.1</screeninfo>
 <mediaobject>
@@ -5898,10 +5897,43 @@ The case update in the application is designed in the same manner so that servic
 <para><emphasis role="bold">Step 3 - Enter data</emphasis> ( arrow <emphasis role="italic">labelled 1</emphasis> in Fig. 2.5.3.3 ). After finishing the entering, close the pop-up ( arrow <emphasis role="italic">labelled 2</emphasis> in Fig. 2.5.3.3 )</para>
 <para>The benefits of this advanced function is to optimize the time-transition consuming when entering data for a long list persons by not switching the main window/interface.</para>
 </section>
+<section id='single_event_without_registration'>
+<title>Single event without registration</title>
+<para>The data to register is defined by a single event without registration program.</para>
+<para>In order to register an event, from the <emphasis role="italic">Services</emphasis> option, go to the <emphasis role="italic">Name Based Data Records</emphasis> option and click it. Select <emphasis role="italic">Single event without registration</emphasis> option on left menu to proceed.</para>
+<para>In order to list all events in the selected facility, click <emphasis role="italic">List All Events</emphasis> button.</para>
+<para>In order to remove empty events of the selected program, click <emphasis role="italic">Remove empty events</emphasis> button.</para>
+<para>In order to add new event, click <emphasis role="italic">Add new</emphasis> button.</para>
+<para>To update an event:</para>
+<orderedlist>
+<listitem>
+<para>Click <emphasis role="italic">Advanced search</emphasis> button. Then enter criterion for searching events. The list events are displayed below.</para>
+</listitem>
+<listitem>
+<para>Click on the first icon to update value for the event.</para>
+</listitem>
+</orderedlist>
+</section>
+<section id='single_event_with_registration'>
+<title>Single event with registration</title>
+<para>The data to register is defined by a single event with registration program. The functionality supports health providers to register person information and input data values for a program into one form.</para>
+<para>In order to register an event, from the <emphasis role="italic">Services</emphasis> option, go to the <emphasis role="italic">Name Based Data Records</emphasis> option and click it. Select <emphasis role="italic">Single event with registration</emphasis> option on left menu to proceed.</para>
+<para>In order to list all persons in the selected facility, click <emphasis role="italic">List All Persons</emphasis> button.</para>
+<para>In order to add new event, select a program in the combo box. And then click <emphasis role="italic">Add new</emphasis> button.</para>
+<para>To update event of a registered person:</para>
+<orderedlist>
+<listitem>
+<para>Click <emphasis role="italic">Advanced search</emphasis> button. Then enter criterion for searching available persons. The seach result is displayed below.</para>
+</listitem>
+<listitem>
+<para>Click on the first icon to update value for the event.</para>
+</listitem>
+</orderedlist>
 </section>
 </section>
-<section>
-<title>Report Generation</title>
+</section>
+<section id='program_summary_report'>
+<title>Program Summary Report</title>
 <para>This module provides two main functions, include NBITS Activity Plan report and NBITS Summary report.</para>
 <orderedlist>
 <listitem>
@@ -5958,7 +5990,7 @@ The case update in the application is designed in the same manner so that servic
 <para><emphasis role="italic">Person Aggregation</emphasis> to used for generating routine data values from patient-data by month (or other interval if desired) and organization unit.</para>
 </listitem>
 </itemizedlist>
-<section>
+<section id='patient_aggregation_query_builder'>
 <title>Person Aggregation Query Builder</title>
 <para>To access <emphasis role="italic">Persons Aggregation Query Builder</emphasis> module, from the <emphasis role="italic">Maintenance</emphasis> menu, go to the <emphasis role="italic">Persons and Programs</emphasis> option. Select <emphasis role="italic">Person Aggregation Query Builder</emphasis> option on left menu to proceed.</para>
 <screenshot>
@@ -6003,7 +6035,7 @@ The case update in the application is designed in the same manner so that servic
 <para>Includes the buttons of operands and a text box showing the conditions for the query.</para>
 <para>After finishing the area above (1, 2, 3 and 4), click on the <emphasis role="italic">Add</emphasis> button.</para>
 </section>
-<section>
+<section id='run_case_aggregation'>
 <title>Person Aggregation</title>
 <para>To access <emphasis role="italic">Persons Aggregation</emphasis> module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Name-Based Data Records</emphasis> option. Select <emphasis role="italic">Person Aggregation</emphasis> option on left menu to proceed. Here are the main screen shots:</para>
 <screenshot>
@@ -6041,9 +6073,8 @@ The case update in the application is designed in the same manner so that servic
 </imageobject>
 </mediaobject>
 </screenshot>
-</section>
-<section>
-<title>A Sample for Person Aggregation</title>
+<para></para>
+<para><emphasis role="bold">A Sample for Person Aggregation</emphasis></para>
 <para>E.g. Find the number of the children vaccinated BCG by defining a linking rule between the data elements of aggregate dataset named <emphasis role="italic">Number of children - BCG</emphasis> and the data element of a program stage named <emphasis role="italic">BCG dose given date</emphasis>.<orderedlist>
 <listitem>
 <para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Data Element and Indicators</emphasis> option and click on it. Select <emphasis role="italic">Data Element</emphasis> option to define two new data elements -</para>
@@ -6143,9 +6174,10 @@ The case update in the application is designed in the same manner so that servic
 <title>Advanced functions</title>
 <para>The content in this part is for the expert users or administrative users who are capable and responsible for development and change</para>
 <section>
-<title>Define a person attribute</title>
-<section>
-<title>Define a person attribute</title>
+<title>Person attribute and Person attribute group</title>
+<section id='patient_attribute'>
+<title>Person attribute</title>
+<para>Create, modify and view Person attributes. An attribute can be used to register extra information for a Person.</para>
 <para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Attribute</emphasis> option to create a new attribute for persons. </para>
 <screenshot>
 <screeninfo>Fig. 2.7.1.1.1</screeninfo>
@@ -6192,8 +6224,8 @@ The case update in the application is designed in the same manner so that servic
 </listitem>
 </itemizedlist>
 </section>
-<section>
-<title>Define a person attribute group</title>
+<section id='patient_attribute_group'>
+<title>Person attribute group</title>
 <para>To access the person attribute group maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Attribute Group</emphasis> option to create a new an attribute group.</para>
 <screenshot>
 <screeninfo>Fig. 2.7.1.2.1</screeninfo>
@@ -6216,8 +6248,8 @@ The case update in the application is designed in the same manner so that servic
 </screenshot>
 </section>
 </section>
-<section>
-<title>Define a person identifier type</title>
+<section id='patient_identifier_type'>
+<title>Person identifier type</title>
 <para>To access the person identifier type maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Identifier Type</emphasis> option to create a new identifier type.</para>
 <screenshot>
 <screeninfo>Fig. 2.7.2a</screeninfo>
@@ -6258,8 +6290,8 @@ The case update in the application is designed in the same manner so that servic
 </listitem>
 </itemizedlist>
 </section>
-<section>
-<title>Define a relationship type</title>
+<section id='relationship_type'>
+<title>Relationship type</title>
 <para>Relationship type section provides a mechanism for defining any relationship types and link persons through these relationship types by creating specific relationships.</para>
 <para>To access the relationship type maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Relationship Type</emphasis> option to create a new relationship type.</para>
 <screenshot>
@@ -6280,29 +6312,10 @@ The case update in the application is designed in the same manner so that servic
 </mediaobject>
 </screenshot>
 </section>
+<section id='program'>
 <section>
-<title>Person Registration</title>
-<para>Person registration section provides a mechanism for managing facilities which allow to registry new persons or not.</para>
-<para>To access the person registration maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Registration</emphasis> option to select facilities. </para>
-<screenshot>
-<screeninfo>Fig. 2.7.4</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="80%" fileref="resources/images/patients_programs/Fig. 2.7.4.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<warning>
-<para>There are two process for registering facilities. The first one is where the administrator will say which facility can register. The second is when end user logs in and then select a facility, system will display a waring message if the selected facility cannot register persons; else, the system will display the functions to register persons.</para>
-</warning>
-</section>
-<section>
-<title>Define a new program</title>
-<section>
-<title>Define a new program</title>
-<para>Program section provides a mechanism for defining a health program. All name based case entry is organised through the use of programs.
-
-</para>
+<title>Program and Program stage</title>
+<para>Program section provides a mechanism for defining a health program. All name based case entry is organised through the use of programs.</para>
 <para>To access the program maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Program</emphasis> option to create a new program.</para>
 <para>To create a new program, click the <emphasis role="italic">Add new</emphasis> button. Fill all fields with read asterisk, and then click the &quot;Add&quot; button.</para>
 <para><screenshot>
@@ -6334,7 +6347,7 @@ For example: the date in which a person enrols to the system.</para>
 </itemizedlist></para>
 </section>
 <section>
-<title>Define stages for a health program</title>
+<title>Program stage</title>
 <para>To define a program stage, click the <emphasis role="italic">Program Stage Management</emphasis> icon (Fig. 2.5.1.2a) and then <emphasis role="italic">Add new</emphasis> button (Fig. 2.5.1.2b). Fill in the <emphasis role="italic">Name</emphasis> and <emphasis role="italic">Description</emphasis> fields and then select the data elements that should belong to the group from the left panel. Click the <emphasis role="italic">Move selected</emphasis> button to add the selected data elements to the right panel. Click the <emphasis role="italic">Remove selected</emphasis> button to remove data elements that have been selected in the right panel. Finally, click the <emphasis role="italic">Add</emphasis> button to save changes, or the <emphasis role="italic">Cancel</emphasis> button to discard any changes.</para>
 <screenshot>
 <screeninfo>Figure 2.5.1.2a</screeninfo>
@@ -6422,15 +6435,11 @@ For instance, Parity, Previous live birth male, Previous live birth female, Prev
 For instance, TT1 is a patient data element. It exists into program stages as follows Checkup 1, Checkup 2, Checkup 3. If the data value of this data element into Checkup 1 is null, the data values into Checkup 2, Checkup 3 should be null.</para>
 </section>
 </section>
-<section>
-<title>Define validation criteria</title>
-<para>Validation criteria section provide a mechanism for defining criteria for persons when enrolling a program.
-
-</para>
+<section id='validation_criteria'>
+<title>Validation criteria</title>
+<para>Validation criteria section provide a mechanism for defining criteria for persons when enrolling a program.</para>
 <para>To access the validation criteria maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Validation Criteria</emphasis> option to create a new program</para>
-<para>To create a new validation criterion, click the <emphasis role="italic">Add new</emphasis> button. Fill all fields with read asterisk, and click <emphasis role="italic">Add</emphasis> button.
-
-</para>
+<para>To create a new validation criterion, click the <emphasis role="italic">Add new</emphasis> button. Fill all fields with read asterisk, and click <emphasis role="italic">Add</emphasis> button.</para>
 <screenshot>
 <screeninfo/>
 <mediaobject>

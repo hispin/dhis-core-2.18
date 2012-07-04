@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "relationship_management" )</h3>
+<h5>$i18n.getString( "relationship_management" )</h5>
 
 <input type="hidden" id="id" name="id" value="$patient.id">
 <table class="mainPageTable information">                           

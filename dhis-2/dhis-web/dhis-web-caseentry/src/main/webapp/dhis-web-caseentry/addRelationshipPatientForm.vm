@@ -27,7 +27,7 @@
 	});		
 </script>
 
-<h3>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h3>
+<h4>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h4>
 																		
 <form id="addRelationshipPatientForm" action="addRelationshipPatient.action" method="get" >
 <input type="hidden" id="relationshipId"  name="relationshipId" value="$patient.id"/> 
