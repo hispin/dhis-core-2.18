@@ -73,7 +73,9 @@
 							<option value="">[$i18n.getString( "select_value" )]</option>
 							<option value="true" #if( $patientDataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
 							<option value="false" #if( $patientDataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
-						</select> 
+						</select>
+					#elseif( $programStageDataElement.dataElement.type == "trueOnly" )
+						<input name="entryfield" type="checkbox" data="{compulsory: $programStageDataElement.compulsory, deType:'$programStageDataElement.dataElement.getType()'}" id="$id" name="entryfield" #if($patientDataValue.value=="true") checked #end onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
 					#elseif( $programStageDataElement.dataElement.type == "date" )
 						<input name="entryfield" style='width: 250px;' type="text" data="{compulsory: $programStageDataElement.compulsory }" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
 						<script type="text/javascript">

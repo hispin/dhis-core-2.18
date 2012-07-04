@@ -84,6 +84,7 @@
 			<select id="valueType" name="valueType" style="min-width:246px; margin: 0;">
 				<option value="int" #if( $dataElement.type == 'int' ) selected="selected" #end  onclick="enable('numberType');">$i18n.getString( "number" )</option>
 				<option value="string" #if( $dataElement.type == 'string' ) selected="selected" #end  onclick="disable('numberType');">$i18n.getString( "text" )</option>
+				<option value="trueOnly" #if( $dataElement.type == 'trueOnly' ) selected="selected" #end  onclick="disable('numberType');">$i18n.getString( "yes_only" )</option>
 				<option value="bool" #if( $dataElement.type == 'bool' ) selected="selected" #end  onclick="disable('numberType');">$i18n.getString( "yes_no" )</option>
 				<option value="date" #if( $dataElement.type == 'date' ) selected="selected" #end  onclick="disable('numberType');">$i18n.getString( "date" )</option>
 			</select>
