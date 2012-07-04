@@ -33,9 +33,6 @@ import java.util.List;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
-import org.hisp.dhis.reportsheet.ExportReport;
-import org.hisp.dhis.reportsheet.ExportReportAttribute;
-import org.hisp.dhis.reportsheet.ExportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -58,24 +55,13 @@ public class SaveAttributeValueGroupOrderAction
         this.attributeService = attributeService;
     }
 
-    private ExportReportService exportReportService;
-
-    public void setExportReportService( ExportReportService exportReportService )
-    {
-        this.exportReportService = exportReportService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
     private Integer attributeId;
 
     private String name;
-
-    private String clazzName;
 
     private List<String> attributeValues = new ArrayList<String>();
 
@@ -88,24 +74,9 @@ public class SaveAttributeValueGroupOrderAction
         this.name = name;
     }
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
     public void setAttributeId( Integer attributeId )
     {
         this.attributeId = attributeId;
-    }
-
-    public void setClazzName( String clazzName )
-    {
-        this.clazzName = clazzName;
     }
 
     public void setAttributeValues( List<String> attributeValues )
@@ -132,20 +103,6 @@ public class SaveAttributeValueGroupOrderAction
         removeDuplicatedItems( attributeValues, finalList );
         
         attributeValueGroupOrder.setAttributeValues( finalList );
-
-        if ( clazzName.equals( ExportReport.class.getSimpleName() ) )
-        {
-            ExportReportAttribute exportReportAttribute = (ExportReportAttribute) exportReportService
-                .getExportReport( id );
-
-            List<AttributeValueGroupOrder> attributeValueGroupOrders = exportReportAttribute.getAttributeValueOrders();
-
-            attributeValueGroupOrders.add( attributeValueGroupOrder );
-
-            exportReportAttribute.setAttributeValueOrders( attributeValueGroupOrders );
-
-            exportReportService.updateExportReport( exportReportAttribute );
-        }
 
         attributeValues = null;
         

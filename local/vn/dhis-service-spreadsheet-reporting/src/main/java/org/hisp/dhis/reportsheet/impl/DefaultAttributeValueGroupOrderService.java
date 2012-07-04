@@ -27,6 +27,8 @@ package org.hisp.dhis.reportsheet.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrderStore;
@@ -70,8 +72,19 @@ public class DefaultAttributeValueGroupOrderService
         attributeValueGroupOrderStore.deleteAttributeValueGroupOrder( id );
     }
 
+    public AttributeValueGroupOrder getAttributeValueGroupOrderByName( String name )
+    {
+        return attributeValueGroupOrderStore.getAttributeValueGroupOrderByName( name );
+    }
+
     public AttributeValueGroupOrder getAttributeValueGroupOrder( String name, String clazzName, Integer reportId )
     {
         return attributeValueGroupOrderStore.getAttributeValueGroupOrder( name, clazzName, reportId );
     }
+
+    public Collection<AttributeValueGroupOrder> getAllAttributeValueGroupOrder()
+    {
+        return attributeValueGroupOrderStore.getAllAttributeValueGroupOrder();
+    }
+
 }

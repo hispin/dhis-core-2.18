@@ -27,7 +27,9 @@ package org.hisp.dhis.reportsheet;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Dang Duy Hieu
@@ -45,6 +47,38 @@ public class ExportReportAttribute
     public ExportReportAttribute()
     {
         super();
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addAttributeValueGroupOrder( AttributeValueGroupOrder group )
+    {
+        attributeValueOrders.add( group );
+        group.getReports().add( this );
+    }
+
+    public void removeAttributeValueGroupOrder( AttributeValueGroupOrder group )
+    {
+        attributeValueOrders.remove( group );
+        group.getReports().remove( this );
+    }
+
+    public void updateAttributeValueGroupOrders( Set<AttributeValueGroupOrder> updates )
+    {
+        for ( AttributeValueGroupOrder group : new HashSet<AttributeValueGroupOrder>( attributeValueOrders ) )
+        {
+            if ( !updates.contains( group ) )
+            {
+                removeAttributeValueGroupOrder( group );
+            }
+        }
+
+        for ( AttributeValueGroupOrder group : updates )
+        {
+            addAttributeValueGroupOrder( group );
+        }
     }
 
     // -------------------------------------------------------------------------

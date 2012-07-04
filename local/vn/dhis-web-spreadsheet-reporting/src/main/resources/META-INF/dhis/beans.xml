@@ -337,7 +337,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.avgroup.action.SaveAttributeValueGroupOrderAction"
 		scope="prototype">
 		<property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
-		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
 	</bean>
 
 	<bean
@@ -367,7 +366,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.avgroup.action.UpdateSortedAttributeValueGroupOrderAction"
 		scope="prototype">
 		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
-		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
 	</bean>
 	
 	<bean
@@ -383,6 +381,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
 		<property name="localAttributeValueService" ref="org.hisp.dhis.attribute.LocalAttributeValueService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.ListAttributeValueGroupOrdersAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.ListAttributeValueGroupOrdersAction"
+		scope="prototype">
+		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.UpdateAttributeValueGroupOrderForReportAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.UpdateAttributeValueGroupOrderForReportAction"
+		scope="prototype">
+		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
+		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
 	</bean>
 
 	<!-- REPORT ORGANISATION UNIT GROUP LISTING BEAN -->

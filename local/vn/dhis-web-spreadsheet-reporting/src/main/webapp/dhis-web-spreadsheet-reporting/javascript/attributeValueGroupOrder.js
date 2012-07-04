@@ -32,9 +32,9 @@ function openAddAttributeValueGroupOrder()
 
 	attributeLib.loadAttributes( "attributeId" );
 
-	dialog.dialog("open");
+	jQuery( "#attributeValueGroupsForm" ).attr( "action", "addAttributeValueGroupOrder.action" );
 	
-	jQuery( "#attributeValueGroupsForm" ).attr( "action", "addAttributeValueGroupOrderFor" + clazzName + ".action?clazzName=" + clazzName );
+	dialog.dialog("open");
 }
 
 /*
@@ -44,7 +44,7 @@ function openAddAttributeValueGroupOrder()
 function openUpdateAttributeValueGroupOrder( id )
 {
 	validator.resetForm();
-	setFieldValue("attributeValueGroupOrderId", id );
+	setFieldValue( "attributeValueGroupOrderId", id );
 	
 	jQuery.post( 'getAttributeValueGroupOrder.action', { id: id }, function( json )
 	{
@@ -68,8 +68,9 @@ function openUpdateAttributeValueGroupOrder( id )
 		selectedAttributeValueMap[ id + "-" + attributeId ] = items;
 
 		attributeLib.removeDuplicatedItem( "availableAttributeValues", "attributeValues" );
+		
+		jQuery( "#attributeValueGroupsForm" ).attr( "action", "updateAttributeValueGroupOrder.action" );
 
-		jQuery( "#attributeValueGroupsForm" ).attr( "action", "updateAttributeValueGroupOrderFor" + clazzName + ".action" );
 		dialog.dialog( "open" );
 	} );
 }
@@ -82,9 +83,7 @@ function validateAttributeValueGroupOrder( _form )
 	{
 		jQuery.postUTF8( "validateAttributeValueGroupOrder.action", {
 			name: getFieldValue( 'name' ),
-			id: getFieldValue( 'attributeValueGroupOrderId' ),
-			reportId: reportId,
-			clazzName: clazzName
+			id: getFieldValue( 'attributeValueGroupOrderId' )
 		}, function( json )
 		{
 			if ( json.response == "success" )
@@ -114,23 +113,24 @@ function deleteAttributeValueGroupOrder( id, name )
 */
 function updateSortAttributeValueGroupOrder()
 {
-	var attributeValueGroups = document.getElementsByName( 'attributeValueGroupOrder' );
-	var url = "updateSortAttributeValueGroupOrder.action?reportId=" + reportId;
-	url += "&clazzName=" + clazzName;
+	var groups = document.getElementsByName( 'attributeValueGroupOrder' );
+	var url = "updateSortAttributeValueGroupOrder.action?";
 	
-	for ( var i = 0 ; i < attributeValueGroups.length ; i++ )
+	for ( var i = 0 ; i < groups.length ; i++ )
 	{
-		url += "&attributeValueGroupOrderId=" + attributeValueGroups.item(i).value;
+		url += "groupIds=" + groups.item(i).value + "&";
 	}
+	
+	url = url.substring( 0, url.length - 1 );
 	
 	jQuery.postJSON( url, {}, function( json ) {
 		showSuccessMessage( json.message );
 	});
 }
 
-function openSortAttributeValueForGroupOrder( id )
+function openSortAttributeValue( id )
 {
-	window.location = "openSortAttributeValue.action?id="+id+"&reportId="+reportId+"&clazzName="+clazzName;
+	window.location = "openSortAttributeValue.action?id="+id;
 }
 
 /*

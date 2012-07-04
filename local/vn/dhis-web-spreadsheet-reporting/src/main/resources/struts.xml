@@ -430,23 +430,29 @@
 		<!-- ATTRIBUTEVALUE GROUP ORDER FOR ATTRIBUTE VALUE 			   -->
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-		<action name="listAttributeValueGroupOrderForExportReport"
-			class="org.hisp.dhis.reportsheet.exportreport.action.GetExportReportAction">
+		<action name="attributeValueGroupOrders"
+			class="org.hisp.dhis.reportsheet.avgroup.action.ListAttributeValueGroupOrdersAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/listAttributeValueGroupOrder.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="javascripts">javascript/attribute.ajax.js,javascript/attributeValueGroupOrder.js</param>
 			<param name="stylesheets">style/basic.css,style/style.css</param>
 		</action>
-		
-		<action name="listAttributeValueGroupOrderForImportReport"
-			class="org.hisp.dhis.reportsheet.importreport.action.GetImportReportAction">
+
+		<action name="getAttributeValueGroupOrders"
+			class="org.hisp.dhis.reportsheet.avgroup.action.ListAttributeValueGroupOrdersAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonAttributeValueGroupOrders.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="listAttributeValueGroupOrderForExportReport"
+			class="org.hisp.dhis.reportsheet.exportreport.action.GetExportReportAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/listAttributeValueGroupOrder.vm</param>
+			<param name="page">/dhis-web-spreadsheet-reporting/updateAttributeValueGroupOrderForReportForm.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="javascripts">javascript/attribute.ajax.js,javascript/attributeValueGroupOrder.js</param>
-			<param name="stylesheets">style/basic.css, style/style.css</param>
-		</action>	
+			<param name="stylesheets">style/basic.css,style/style.css</param>
+		</action>
 		
 		<action name="validateAttributeValueGroupOrder"
 			class="org.hisp.dhis.reportsheet.avgroup.action.ValidateAttributeValueGroupOrderAction">
@@ -454,50 +460,38 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
-		<action name="addAttributeValueGroupOrderForExportReport"
+		<action name="addAttributeValueGroupOrder"
 			class="org.hisp.dhis.reportsheet.avgroup.action.SaveAttributeValueGroupOrderAction">
-			<result name="success" type="redirect">
-				listAttributeValueGroupOrderForExportReport.action?id=${id}</result>
-		</action>
-		
-		<action name="addAttributeValueGroupOrderForImportReport"
-			class="org.hisp.dhis.reportsheet.avgroup.action.SaveAttributeValueGroupOrderAction">
-			<result name="success" type="redirect">
-				listAttributeValueGroupOrderForImportReport.action?id=${id}
-			</result>
+			<result name="success" type="redirect">attributeValueGroupOrders.action</result>
 		</action>
 
-		<action name="updateAttributeValueGroupOrderForExportReport"
+		<action name="updateAttributeValueGroupOrder"
 			class="org.hisp.dhis.reportsheet.avgroup.action.UpdateAttributeValueGroupOrderAction">
-			<result name="success" type="redirect">
-				listAttributeValueGroupOrderForExportReport.action?id=${id}</result>
-		</action>
-		
-		<action name="updateAttributeValueGroupOrderForImportReport"
-			class="org.hisp.dhis.reportsheet.avgroup.action.UpdateAttributeValueGroupOrderAction">
-			<result name="success" type="redirect">
-				listAttributeValueGroupOrderForImportReport.action?id=${id}
-			</result>
+			<result name="success" type="redirect">attributeValueGroupOrders.action</result>
 		</action>
 		
 		<action name="deleteAttributeValueGroupOrder"
 			class="org.hisp.dhis.reportsheet.avgroup.action.DeleteAttributeValueGroupOrderAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="updateSortAttributeValueGroupOrder"
 			class="org.hisp.dhis.reportsheet.avgroup.action.UpdateSortedAttributeValueGroupOrderAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="getAttributeValueGroupOrder"
 			class="org.hisp.dhis.reportsheet.avgroup.action.GetAttributeValueGroupOrderAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-spreadsheet-reporting/jsonAttributeValueGroupOrder.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="openSortAttributeValue"
@@ -509,16 +503,9 @@
 			<param name="stylesheets">style/basic.css</param>
 		</action>
 
-		<action name="updateSortedAttributeValuesForExportReport"
+		<action name="updateSortedAttributeValues"
 			class="org.hisp.dhis.reportsheet.avgroup.action.UpdateSortedAttributeValueAction">
-			<result name="success" type="redirect">
-				listAttributeValueGroupOrderForExportReport.action?id=${reportId}</result>
-		</action>
-		
-		<action name="updateSortedAttributeValuesForImportReport"
-			class="org.hisp.dhis.reportsheet.avgroup.action.UpdateSortedAttributeValueAction">
-			<result name="success" type="redirect">
-				listAttributeValueGroupOrderForImportReport.action?id=${reportId}</result>
+			<result name="success" type="redirect">attributeValueGroupOrders.action</result>
 		</action>
 
 		<action name="getAttributeValuesByAttribute"
@@ -526,6 +513,11 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-spreadsheet-reporting/jsonAttributeValues.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="updateAttributeValueGroupOrderForReport"
+			class="org.hisp.dhis.reportsheet.avgroup.action.UpdateAttributeValueGroupOrderForReportAction">
+			<result name="success" type="redirect">listAllExportReport.action</result>
 		</action>
 
 		<!-- REPORT ORGANISATION UNIT GROUP LISTING ACTION -->

@@ -32,18 +32,28 @@ import java.util.List;
 
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
-import org.hisp.dhis.reportsheet.action.ActionSupport;
+import org.hisp.dhis.reportsheet.ExportReportAttribute;
+import org.hisp.dhis.reportsheet.ExportReportService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class UpdateSortedAttributeValueGroupOrderAction
-    extends ActionSupport
+public class UpdateAttributeValueGroupOrderForReportAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
+
+    private ExportReportService exportReportService;
+
+    public void setExportReportService( ExportReportService exportReportService )
+    {
+        this.exportReportService = exportReportService;
+    }
 
     private AttributeValueGroupOrderService attributeValueGroupOrderService;
 
@@ -53,14 +63,25 @@ public class UpdateSortedAttributeValueGroupOrderAction
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------------------------------------
 
-    private List<Integer> groupIds = new ArrayList<Integer>();
+    private Integer reportId;
 
-    public void setGroupIds( List<Integer> groupIds )
+    private List<Integer> groupMembers = new ArrayList<Integer>();
+
+    // -------------------------------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------------------------------
+
+    public void setReportId( Integer reportId )
     {
-        this.groupIds = groupIds;
+        this.reportId = reportId;
+    }
+
+    public void setGroupMembers( List<Integer> groupMembers )
+    {
+        this.groupMembers = groupMembers;
     }
 
     // -------------------------------------------------------------------------
@@ -70,17 +91,25 @@ public class UpdateSortedAttributeValueGroupOrderAction
     public String execute()
         throws Exception
     {
-        for ( int i = 0; i < groupIds.size(); i++ )
+        ExportReportAttribute exportReport = (ExportReportAttribute) exportReportService.getExportReport( reportId );
+        List<AttributeValueGroupOrder> newList = new ArrayList<AttributeValueGroupOrder>();
+
+        if ( exportReport != null )
         {
-            AttributeValueGroupOrder group = attributeValueGroupOrderService.getAttributeValueGroupOrder( groupIds
-                .get( i ) );
+            for ( Integer id : groupMembers )
+            {
+                AttributeValueGroupOrder group = attributeValueGroupOrderService.getAttributeValueGroupOrder( id );
 
-            group.setSortOrder( i );
+                if ( group != null )
+                {
+                    newList.add( group );
+                }
+            }
 
-            attributeValueGroupOrderService.updateAttributeValueGroupOrder( group );
+            exportReport.setAttributeValueOrders( newList );
+
+            exportReportService.updateExportReport( exportReport );
         }
-
-        message = i18n.getString( "update_successful" );
 
         return SUCCESS;
     }
