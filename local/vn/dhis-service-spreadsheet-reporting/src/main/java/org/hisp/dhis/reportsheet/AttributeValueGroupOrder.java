@@ -27,7 +27,9 @@ package org.hisp.dhis.reportsheet;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.attribute.Attribute;
 
@@ -45,6 +47,10 @@ public class AttributeValueGroupOrder
 
     private List<String> attributeValues;
 
+    private Set<ExportReportAttribute> reports;
+
+    private Integer sortOrder;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -56,6 +62,38 @@ public class AttributeValueGroupOrder
     public AttributeValueGroupOrder( String name )
     {
         this.name = name;
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addReport( ExportReportAttribute report )
+    {
+        reports.add( report );
+        report.getAttributeValueOrders().add( this );
+    }
+
+    public void removeReport( ExportReportAttribute report )
+    {
+        reports.remove( report );
+        report.getAttributeValueOrders().remove( this );
+    }
+
+    public void updateAttributeValueGroupOrders( Set<ExportReportAttribute> updates )
+    {
+        for ( ExportReportAttribute report : new HashSet<ExportReportAttribute>( reports ) )
+        {
+            if ( !updates.contains( report ) )
+            {
+                removeReport( report );
+            }
+        }
+
+        for ( ExportReportAttribute report : updates )
+        {
+            addReport( report );
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -100,6 +138,26 @@ public class AttributeValueGroupOrder
     public void setAttributeValues( List<String> attributeValues )
     {
         this.attributeValues = attributeValues;
+    }
+
+    public Set<ExportReportAttribute> getReports()
+    {
+        return reports;
+    }
+
+    public void setReports( Set<ExportReportAttribute> reports )
+    {
+        this.reports = reports;
+    }
+
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
     }
 
     // -------------------------------------------------------------------------

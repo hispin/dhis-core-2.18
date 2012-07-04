@@ -28,18 +28,21 @@ package org.hisp.dhis.reportsheet.avgroup.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
-import org.hisp.dhis.reportsheet.action.ActionSupport;
+import org.hisp.dhis.reportsheet.comparator.AttributeValueGroupOrderSortOrderComparator;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class UpdateSortedAttributeValueGroupOrderAction
-    extends ActionSupport
+public class ListAttributeValueGroupOrdersAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
@@ -56,11 +59,11 @@ public class UpdateSortedAttributeValueGroupOrderAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<Integer> groupIds = new ArrayList<Integer>();
+    List<AttributeValueGroupOrder> attributeValueGroupOrders;
 
-    public void setGroupIds( List<Integer> groupIds )
+    public List<AttributeValueGroupOrder> getAttributeValueGroupOrders()
     {
-        this.groupIds = groupIds;
+        return attributeValueGroupOrders;
     }
 
     // -------------------------------------------------------------------------
@@ -70,18 +73,12 @@ public class UpdateSortedAttributeValueGroupOrderAction
     public String execute()
         throws Exception
     {
-        for ( int i = 0; i < groupIds.size(); i++ )
-        {
-            AttributeValueGroupOrder group = attributeValueGroupOrderService.getAttributeValueGroupOrder( groupIds
-                .get( i ) );
-
-            group.setSortOrder( i );
-
-            attributeValueGroupOrderService.updateAttributeValueGroupOrder( group );
-        }
-
-        message = i18n.getString( "update_successful" );
+        attributeValueGroupOrders = new ArrayList<AttributeValueGroupOrder>( attributeValueGroupOrderService
+            .getAllAttributeValueGroupOrder() );
+        
+        Collections.sort( attributeValueGroupOrders, new AttributeValueGroupOrderSortOrderComparator() );
 
         return SUCCESS;
     }
+
 }

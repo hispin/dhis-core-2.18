@@ -61,30 +61,6 @@ public class GetAttributeValueGroupOrderAction
         this.id = id;
     }
 
-    private Integer reportId;
-
-    public Integer getReportId()
-    {
-        return reportId;
-    }
-
-    public void setReportId( Integer reportId )
-    {
-        this.reportId = reportId;
-    }
-
-    private String clazzName;
-
-    public void setClazzName( String clazzName )
-    {
-        this.clazzName = clazzName;
-    }
-
-    public String getClazzName()
-    {
-        return clazzName;
-    }
-
     private AttributeValueGroupOrder attributeValueGroupOrder;
 
     public AttributeValueGroupOrder getAttributeValueGroupOrder()
@@ -103,5 +79,4 @@ public class GetAttributeValueGroupOrderAction
 
         return SUCCESS;
     }
-
 }

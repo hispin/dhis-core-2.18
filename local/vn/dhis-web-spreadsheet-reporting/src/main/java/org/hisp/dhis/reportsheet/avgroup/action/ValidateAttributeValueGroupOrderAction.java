@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.avgroup.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,20 +60,6 @@ public class ValidateAttributeValueGroupOrderAction
         this.id = id;
     }
 
-    private Integer reportId;
-
-    public void setReportId( Integer reportId )
-    {
-        this.reportId = reportId;
-    }
-
-    private String clazzName;
-
-    public void setClazzName( String clazzName )
-    {
-        this.clazzName = clazzName;
-    }
-
     private String name;
 
     public void setName( String name )
@@ -88,8 +74,7 @@ public class ValidateAttributeValueGroupOrderAction
     public String execute()
         throws Exception
     {
-        AttributeValueGroupOrder match = attributeValueGroupOrderService.getAttributeValueGroupOrder( name, clazzName,
-            reportId );
+        AttributeValueGroupOrder match = attributeValueGroupOrderService.getAttributeValueGroupOrderByName( name );
 
         if ( match != null && (id == null || match.getId() != id) )
         {

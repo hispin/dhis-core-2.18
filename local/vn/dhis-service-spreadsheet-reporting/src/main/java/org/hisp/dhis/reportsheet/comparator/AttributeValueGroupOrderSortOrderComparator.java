@@ -1,6 +1,4 @@
-package org.hisp.dhis.reportsheet;
-
-import java.util.Collection;
+package org.hisp.dhis.reportsheet.comparator;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -29,28 +27,28 @@ import java.util.Collection;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Comparator;
+
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
+
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public interface AttributeValueGroupOrderStore
+public class AttributeValueGroupOrderSortOrderComparator
+    implements Comparator<AttributeValueGroupOrder>
 {
-    String ID = AttributeValueGroupOrderStore.class.getName();
-
-    // -------------------------------------------------------------------------
-    // Attribute Value Group Order
-    // -------------------------------------------------------------------------
-
-    public AttributeValueGroupOrder getAttributeValueGroupOrder( Integer id );
-
-    public AttributeValueGroupOrder getAttributeValueGroupOrderByName( String name );
-
-    public AttributeValueGroupOrder getAttributeValueGroupOrder( String name, String clazzName, Integer reportId );
-
-    public void updateAttributeValueGroupOrder( AttributeValueGroupOrder attributeValueGroupOrder );
-
-    public void deleteAttributeValueGroupOrder( Integer id );
-
-    public Collection<AttributeValueGroupOrder> getAllAttributeValueGroupOrder();
-
+    public int compare( AttributeValueGroupOrder group0, AttributeValueGroupOrder group1 )
+    {
+        if ( group0.getSortOrder() == null || group0.getSortOrder() == 0 )
+        {
+            return group0.getName().compareTo( group1.getName() );
+        }
+        if ( group1.getSortOrder() == null || group1.getSortOrder() == 0 )
+        {
+            return group0.getName().compareTo( group1.getName() );
+        }
+        
+        return group0.getSortOrder() - group1.getSortOrder();
+    }
 }

@@ -62,7 +62,7 @@
 			<key column="reportexcelid"/>
 			<list name="categoryOptionGroupOrders" table="reportexcel_categoryoptiongrouporders" cascade="all" lazy="false">
 				<key column="reportexcelid"/>
-				<list-index base="0" column="categoryoptiongrouporder"/>
+				<list-index column="categoryoptiongrouporder" base="0"/>
 				<one-to-many class="org.hisp.dhis.reportsheet.CategoryOptionGroupOrder"/>
 		    </list>
 		</joined-subclass>
@@ -70,10 +70,11 @@
 		<!-- ATTRIBUTE -->
 		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportAttribute" table="reportexcels_attribute">
 			<key column="reportexcelid"/>
-			<list name="attributeValueOrders" table="reportexcel_attributevaluegrouporders" cascade="all" lazy="false">
-				<key column="reportexcelid"/>
-				<list-index base="0" column="attributevaluegrouporder"/>
-				<one-to-many class="org.hisp.dhis.reportsheet.AttributeValueGroupOrder"/>
+			<list name="attributeValueOrders" table="attributevaluegrouporder_reportexcels">
+				<key column="reportexcelid" foreign-key="fk_attributevaluegroupordermembers_reportexcelid"/>
+				<list-index column="attributevaluegrouporderindex" base="0"/>
+				<many-to-many class="org.hisp.dhis.reportsheet.AttributeValueGroupOrder" column="attributevaluegrouporderid"
+				foreign-key="fk_reportexcel_attributevaluegrouporderid"/>
 		    </list>
 		</joined-subclass>
 		

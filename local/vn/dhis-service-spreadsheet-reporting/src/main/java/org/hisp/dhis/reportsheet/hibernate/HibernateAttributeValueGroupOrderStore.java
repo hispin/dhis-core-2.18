@@ -27,9 +27,13 @@ package org.hisp.dhis.reportsheet.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
+import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrderStore;
 import org.hisp.dhis.reportsheet.ExportReport;
@@ -65,11 +69,20 @@ public class HibernateAttributeValueGroupOrderStore
         return (AttributeValueGroupOrder) session.get( AttributeValueGroupOrder.class, id );
     }
 
+    public AttributeValueGroupOrder getAttributeValueGroupOrderByName( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria( AttributeValueGroupOrder.class );
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (AttributeValueGroupOrder) criteria.uniqueResult();
+    }
+
     public AttributeValueGroupOrder getAttributeValueGroupOrder( String name, String clazzName, Integer reportId )
     {
         Session session = sessionFactory.getCurrentSession();
 
-        String sql = "SELECT * FROM reportexcel_attributevaluegrouporders WHERE lower(name) = :name";
+        String sql = "SELECT * FROM attributevaluegrouporder_reportexcels WHERE lower(name) = :name";
 
         if ( clazzName.equals( ExportReport.class.getSimpleName() ) )
         {
@@ -98,5 +111,13 @@ public class HibernateAttributeValueGroupOrderStore
     {
         Session session = sessionFactory.getCurrentSession();
         session.delete( this.getAttributeValueGroupOrder( id ) );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<AttributeValueGroupOrder> getAllAttributeValueGroupOrder()
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createCriteria( AttributeValueGroupOrder.class ).list();
     }
 }
