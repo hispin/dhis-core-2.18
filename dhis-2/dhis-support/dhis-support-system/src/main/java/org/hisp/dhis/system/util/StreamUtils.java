@@ -49,6 +49,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -398,13 +399,13 @@ public class StreamUtils
     }
 
     /**
-     * Test for ZIP stream signature. Wraps the input stream in a
-     * BufferedInputStream. If ZIP test is true wraps again in ZipInputStream.
+     * Test for ZIP/GZIP stream signature. Wraps the input stream in a
+     * BufferedInputStream. If ZIP/GZIP test is true wraps again in ZipInputStream/GZIPInputStream.
      * 
      * @param in the InputStream.
      * @return the wrapped InputStream.
      */
-    public static InputStream wrapAndCheckZip( InputStream in )
+    public static InputStream wrapAndCheckCompressionFormat( InputStream in )
         throws IOException
     {
         BufferedInputStream bufferedIn = new BufferedInputStream( in );
@@ -414,6 +415,11 @@ public class StreamUtils
             ZipInputStream zipIn = new ZipInputStream( bufferedIn );
             zipIn.getNextEntry();
             return zipIn;
+        }
+        else if( isGZip( bufferedIn ) )
+        {
+            GZIPInputStream gzipIn = new GZIPInputStream( bufferedIn );
+            return gzipIn;
         }
         
         return bufferedIn;
@@ -548,7 +554,7 @@ public class StreamUtils
     /**
      * Attempts to delete the File with the given path.
      * 
-     * @param file the File path.
+     * @param path the File path.
      * @return true if the operation succeeded, false otherwise.
      */
     public static boolean delete( String path )
