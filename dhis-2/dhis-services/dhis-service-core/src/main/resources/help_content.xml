@@ -5644,8 +5644,8 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </imageobject>
 </mediaobject>
 </screenshot></para>
-<section>
-<title>STEP 1: Person registration</title>
+<section id="patient">
+<title>Person registration</title>
 <para>The First step in the tracking is the registration of person/case in the NBITS application. In the registration process, the details - which are related to the personal information, identification, contact and location details &amp; health provider details, are entered in the application. In the registration itself, person is provided with the unique identification number. This number will be unique and will not match with the identification number of any person in the state jurisdiction. The issue of identification number will be the responsibility of facility where the person is registered first time.</para>
 <warning>
 <para>Any case irrespective of the program will be registered first and then will be enrolled in any of the program. E.g. every pregnant women and the child need to be registered first as a person, than the persons will be enrolled in Mother Care program or Child Health program.</para>
