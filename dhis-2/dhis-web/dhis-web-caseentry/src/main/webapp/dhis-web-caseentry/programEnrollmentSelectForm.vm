@@ -1,5 +1,3 @@
-<h3>$i18n.getString( "patient_info" )</h3>
-
 <div>
 	<table class='mainPageTable'>
 		<tr>

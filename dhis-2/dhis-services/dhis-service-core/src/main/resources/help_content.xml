@@ -5716,8 +5716,8 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 </listitem>
 </orderedlist>
 </section>
-<section>
-<title>STEP 2 - Person Enrolment</title>
+<section id="">
+<title>Person Enrolment</title>
 <para>After the person registration, person needs to be enrolled in any available program in the application and for which she/he has been registered. To enrol -</para>
 <orderedlist>
 <listitem>
