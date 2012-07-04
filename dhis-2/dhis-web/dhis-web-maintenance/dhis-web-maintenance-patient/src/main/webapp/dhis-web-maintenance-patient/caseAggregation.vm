@@ -1,4 +1,4 @@
-<h3>$i18n.getString( 'beneficiary_aggregation_query_builder_management' ) #openHelp( "beneficiary_aggregation_query_builder" )</h3>
+<h3>$i18n.getString( 'patient_aggregation_query_builder_management' ) #openHelp( "patient_aggregation_query_builder" )</h3>
 
 <table class="mainPageTable">
   <tr>

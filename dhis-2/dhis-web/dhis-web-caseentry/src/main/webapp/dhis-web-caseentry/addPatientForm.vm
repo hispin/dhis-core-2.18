@@ -35,7 +35,7 @@
 	
 </script>
 
-<h3>$i18n.getString( "add_new_patient" )</h3>	
+<h4>$i18n.getString( "add_new_patient" )</h4>	
 
 <form id="patientForm" name="patientForm" method="post" >
 <input type="hidden" id="representativeId" name="representativeId"/> 
@@ -43,7 +43,6 @@
 
 <table>
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
-	<tr><td><td><p></p></td></tr>
 	<tr>
 		<td></td>
 		<td>

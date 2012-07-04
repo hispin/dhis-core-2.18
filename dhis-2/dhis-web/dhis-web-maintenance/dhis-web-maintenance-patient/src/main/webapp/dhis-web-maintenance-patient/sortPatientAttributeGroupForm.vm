@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "beneficiary_attribute_group_sort_order" )</h3>
+<h3>$i18n.getString( "patient_attribute_group_sort_order" )</h3>
 																		
 <form id="savePatientAttributeGroupSortOrder" name="savePatientAttributeGroupSortOrder" action="savePatientAttributeGroupSortOrder.action" method="post" onsubmit="selectAllById('patientAttributeGroupIds');">
 

@@ -10,7 +10,7 @@
 	});		
 </script>
 
-<h3>$i18n.getString( "adding_new_relationship_for" )</h3>
+<h4>$i18n.getString( "adding_new_relationship_for" ):  $encoder.htmlEncode( $patient.getFullName() )  </h4>
 
 <form id="relationshipSelectForm" name="relationshipSelectForm" method="post" action="showAddRelationshipForm.action">
 <input type="hidden" id="patientId" name="patientId" value="$patient.id"/>

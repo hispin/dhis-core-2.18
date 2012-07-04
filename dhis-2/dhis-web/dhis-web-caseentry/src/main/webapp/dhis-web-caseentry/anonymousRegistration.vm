@@ -13,7 +13,7 @@
 	});		
 </script>
 				
-<h3>$i18n.getString( "anonymous_events" ) #openHelp( "patient" )</h3>
+<h3>$i18n.getString( "anonymous_events" ) #openHelp('single_event_without_registration')</h3>
 <input type='hidden' id='orgunitId' name='orgunitId' value='$orgunit.id'>
 <input type='hidden' id='programStageInstanceId' name='programStageInstanceIdrgunitId'>
 <input type='hidden' id='programStageId' name='programStageId'>

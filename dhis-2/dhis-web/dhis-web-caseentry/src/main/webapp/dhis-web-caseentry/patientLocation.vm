@@ -1,5 +1,4 @@
-
-<h3>$i18n.getString( "migration_patient" )</h3>
+<h4>$i18n.getString( "migration_patient" )</h4>
 
 <form method='post'>
 	<table>

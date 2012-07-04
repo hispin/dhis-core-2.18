@@ -52,7 +52,7 @@
 	
 </script>
 
-<h3>$i18n.getString( "update_patient" )</h3>
+<h4>$i18n.getString( "update_patient" )</h4>
 <p>
 <form id="patientForm" name="patientForm" action="updatePatient.action" method="post" >
 <input type="hidden" id="representativeId" name="representativeId" value='$!patient.representative.id' /> 
@@ -249,7 +249,6 @@
 			</tr>
 		#end
 	#end
-	<tr><td><td><p></p></td></tr>
 	<tr>
 		<td></td>
 		<td>
