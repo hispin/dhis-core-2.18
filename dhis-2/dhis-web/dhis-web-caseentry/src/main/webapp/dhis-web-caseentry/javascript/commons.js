@@ -186,7 +186,13 @@ function validateAdvancedSearch()
 			}
 			else
 			{
-				var value =jQuery(this).val();
+				var value = '';
+				if( jQuery(this).attr('type')=='checkbox' ){
+					value = byId(this.id).checked;
+				}
+				else if( jQuery(this).val()!='' ){
+					value = htmlEncode(jQuery(this).val());
+				}
 				if( dateOperator != '' )
 				{
 					value = dateOperator + "'" + value + "'";
@@ -197,7 +203,7 @@ function validateAdvancedSearch()
 				else
 					params +=  elementId + "=";
 					
-				params += htmlEncode(value) + "&";
+				params += value + "&";
 			}
 		});
 		contentDiv = 'listPatientDiv';
