@@ -81,7 +81,8 @@
 				<tr>
 					<td></td>
 					<td colspan='2'>
-						<input type="submit" id='enrollBtn' name='enrollBtn' class='button hidden' value="$i18n.getString( 'enroll_to_program' )" />
+						<input type="submit" id='enrollBtn' name='enrollBtn' class='button hidden' value="$i18n.getString( 'enroll' )" />
+						<input type="submit" id='unenrollBtn' name='unenrollBtn' class='button hidden' value="$i18n.getString( 'unenroll' )" />
 					</td>
 				</tr>
 				<tr>
@@ -96,7 +97,7 @@
 </div>
 
 <script>
-	var i18n_enroll_to_program = '$encoder.jsEscape( $i18n.getString( "enroll_to_program" ) , "'")';
+	var i18n_enroll = '$encoder.jsEscape( $i18n.getString( "enroll" ) , "'")';
 	var i18n_program_stage = '$encoder.jsEscape( $i18n.getString( "program_stage" ) , "'")';
 
 	jQuery('#programEnrollmentSelectDiv').ready(function()
