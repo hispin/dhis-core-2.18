@@ -99,7 +99,7 @@
 	<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 	#foreach($attribute in $attributeGroup.attributes )
 		#if( $!attribute && $attribute.program )
-		#else
+		#elseif( $!attribute)
 		<tr>
 			<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 			<td class="input-column">
@@ -137,7 +137,7 @@
 	<tr><th colspan="2" class="heading-column">$i18n.getString( "other_details" )</th></tr>
 	#foreach($attribute in $noGroupAttributes )
 		#if( $!attribute && $attribute.program )
-		#else
+		#elseif( $!attribute)
 		<tr>
 			<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 			<td class="input-column" >
