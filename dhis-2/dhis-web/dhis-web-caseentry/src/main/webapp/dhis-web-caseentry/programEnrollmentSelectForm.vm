@@ -82,7 +82,7 @@
 					<td></td>
 					<td colspan='2'>
 						<input type="submit" id='enrollBtn' name='enrollBtn' class='button hidden' value="$i18n.getString( 'enroll' )" />
-						<input type="submit" id='unenrollBtn' name='unenrollBtn' class='button hidden' value="$i18n.getString( 'unenroll' )" />
+						<input type="button" id='unenrollBtn' name='unenrollBtn' class='button hidden' value="$i18n.getString( 'unenroll' )" onclick='unenrollmentForm()'/>
 					</td>
 				</tr>
 				<tr>
@@ -108,7 +108,4 @@
 			
 			datePickerInRange( 'dateOfIncident' , 'enrollmentDate' );
 		}); 
-		
-	datePickerValid( 'enrollmentDate' );
-	datePickerValid( 'dateOfIncident' );
 </script>

@@ -705,6 +705,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentAction"
+		class="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
 
 	<!--  Relationship -->
 

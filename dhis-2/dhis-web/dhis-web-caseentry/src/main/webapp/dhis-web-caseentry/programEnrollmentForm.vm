@@ -181,6 +181,10 @@
 		validation( 'programEnrollmentInforForm', function(form){
 			saveIdentifierAndAttribute();
 		});	
+		
+		#if( $!programInstance )
+			showById('unenrollBtn');
+		#end
 	});
 
 	#if( $programInstance || $hasDataEntry == 'true')
@@ -212,7 +216,7 @@
 	setFieldValue('dateOfIncident', "$!format.formatDate( $programInstance.dateOfIncident )");
 	
 	if ( getFieldValue('enrollmentDate' ) == ''){	
-		jQuery('#enrollBtn').attr( 'value',i18n_enroll_to_program );
+		jQuery('#enrollBtn').attr( 'value',i18n_enroll );
 	}else{
 		jQuery('#enrollBtn').attr( 'value',i18n_update );
 	}	
