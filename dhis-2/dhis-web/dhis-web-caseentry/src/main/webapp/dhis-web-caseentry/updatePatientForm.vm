@@ -179,8 +179,8 @@
 		<tr><td>&nbsp;</td></tr>	
 		<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 		#foreach($attribute in $attributeGroup.attributes)
-			#if( $attribute.program )
-			#else
+			#if( $!attribute && $attribute.program )
+			#elseif( $!attribute )
 				#set( $attributeValue = "" )
 				#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 				<tr>
@@ -219,8 +219,10 @@
 	#if ( $noGroupAttributes && $noGroupAttributes.size() > 0) 	
 		<tr><th colspan="2" class="heading-column">$i18n.getString( "Other details" )</th></tr>
 		#foreach($attribute in $noGroupAttributes )
-		#set( $attributeValue = "" )
-		#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
+		#if( $!attribute && $attribute.program )
+		#elseif( $!attribute )
+			#set( $attributeValue = "" )
+			#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 			<tr>
 				<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 				<td class="input-column">
@@ -247,6 +249,7 @@
 					#end
 				</td>		
 			</tr>
+			#end
 		#end
 	#end
 	<tr>
