@@ -69,7 +69,7 @@
 					#end
 
 					#if( $programStageDataElement.dataElement.type == "bool" )
-						<select style='width: 256px;' name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" id="$id" onchange="saveOpt( $programStageDataElement.dataElement.id )" tabindex="$tabIndex">
+						<select name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" id="$id" onchange="saveOpt( $programStageDataElement.dataElement.id )" tabindex="$tabIndex">
 							<option value="">[$i18n.getString( "select_value" )]</option>
 							<option value="true" #if( $patientDataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
 							<option value="false" #if( $patientDataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
@@ -77,7 +77,7 @@
 					#elseif( $programStageDataElement.dataElement.type == "trueOnly" )
 						<input name="entryfield" type="checkbox" data="{compulsory: $programStageDataElement.compulsory, deType:'$programStageDataElement.dataElement.getType()'}" id="$id" name="entryfield" #if($patientDataValue.value=="true") checked #end onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
 					#elseif( $programStageDataElement.dataElement.type == "date" )
-						<input name="entryfield" style='width: 250px;' type="text" data="{compulsory: $programStageDataElement.compulsory }" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
+						<input name="entryfield" type="text" data="{compulsory: $programStageDataElement.compulsory }" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
 						<script type="text/javascript">
 							datePicker($programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
 						</script> 
