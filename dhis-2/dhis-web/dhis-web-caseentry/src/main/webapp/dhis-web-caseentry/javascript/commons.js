@@ -1,22 +1,35 @@
 
+// Disable caching for ajax requests in general 
+
+$( document ).ready( function() {
+	$.ajaxSetup ({
+    	cache: false
+	});
+} );
+
 function dobTypeOnChange( container ){
 
 	var type = jQuery('#' + container + ' [id=dobType]').val();
-	if(type == 'V' || type == 'D'){
+	if(type == 'V' || type == 'D')
+	{
 		jQuery('#' + container + ' [id=age]').rules("remove");
 		jQuery('#' + container + ' [id=age]').css("display","none");
 		
 		jQuery('#' + container + ' [id=birthDate]').rules("add",{required:true});
 		datePickerValid( container + ' [id=birthDate]' );
 		jQuery('#' + container + ' [id=birthDate]').css("display","");
-	}else if(type == 'A'){
+	}
+	else if(type == 'A')
+	{
 		jQuery('#' + container + ' [id=age]').rules("add",{required:true, number: true});
 		jQuery('#' + container + ' [id=age]').css("display","");
 		
 		jQuery('#' + container + ' [id=birthDate]').rules("remove","required");
 		$('#' + container+ ' [id=birthDate]').datepicker("destroy");
 		jQuery('#' + container + ' [id=birthDate]').css("display","none");
-	}else {
+	}
+	else 
+	{
 		jQuery('#' + container + ' [id=age]').rules("remove");
 		jQuery('#' + container + ' [id=age]').css("display","");
 		
