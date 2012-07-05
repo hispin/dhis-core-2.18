@@ -53,5 +53,7 @@
     <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
       foreign-key="fk_patient_organisationunitid" />
 
+ 	<property name="fullName" formula="concat(firstName, ' ', middleName, ' ', lastName)"/>
+ 	
   </class>
 </hibernate-mapping>

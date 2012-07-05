@@ -277,12 +277,11 @@ public class HibernatePatientAttributeValueStore
                     lastName = searchText.substring( endIndex + 1, searchText.length() );
                 }
             }
-
+            
             hql += " ( SELECT p" + index + " FROM Patient as p" + index + " JOIN p" + index
                 + ".identifiers as identifier" + index + " " + "WHERE lower(identifier" + index
-                + ".identifier)=lower('" + searchText + "') " + "OR (lower(p" + index + ".firstName) LIKE lower('%"
-                + firstName + "%') " + "AND lower(p" + index + ".middleName) = lower('" + middleName + "') "
-                + "AND lower(p" + index + ".lastName) LIKE lower('%" + lastName + "%')) ";
+                + ".identifier)=lower('" + searchText + "') " + "OR (lower(p" + index + ".fullName) LIKE lower('%"
+                + searchText + "%') " +  " ) ";
 
             isSearchByAttribute = false;
         }
