@@ -585,6 +585,12 @@
 			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
 		</action>
 		
+		<action name="removeEnrollment"
+			class="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentAction">
+			<result name="success" type="velocity-xml">status.vm</result>
+			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
+		</action>
+		
 		<!-- Relationship -->
 
 		<action name="getPartner"

@@ -465,18 +465,12 @@ function showUnenrollmentForm( programInstanceId )
 		});
 }
 
-function unenrollmentForm( programInstanceId )
-{				
-	if( programInstanceId == 0 )
-	{
-		disable('enrollBtn');
-		return;
-	}
-		
+function unenrollmentForm()
+{	
 	$.ajax({
 		type: "POST",
 		url: 'removeEnrollment.action',
-		data: getParamsForDiv('enrollmentDiv'),
+		data: "programInstanceId=" + getFieldValue('programInstanceId'),
 		success: function( json ) 
 		{
 			showSuccessMessage( i18n_unenrol_success );
@@ -713,6 +707,7 @@ function hideEnrolmentField()
 	hideById('enrollmentDateTR');
 	hideById('dateOfIncidentTR');
 	hideById('enrollBtn');
+	hideById('unenrollBtn');
 }
   
 function showEnrolmentField()
