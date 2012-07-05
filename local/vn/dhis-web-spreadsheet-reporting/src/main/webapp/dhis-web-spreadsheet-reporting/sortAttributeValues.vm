@@ -1,7 +1,6 @@
 <h3>$i18n.getString( "sort_attributevalue" )</h3>
-<form action="updateSortedAttributeValuesFor${clazzName}.action" method="POST">
+<form action="updateSortedAttributeValues.action" method="POST">
 <input type="hidden" value="$!attributeValueGroupOrder.id" name="id"/>
-<input type="hidden" value="$!reportId" name="reportId"/>
 <table>
 	<tr>
   		<th>$i18n.getString( "available_attributevalues" )</th>
