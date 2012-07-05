@@ -9,7 +9,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
 	hideById('migrationPatientDiv');
-	setFieldValue("selectedOrgunitText", orgUnitNames[0]);
+	setFieldValue("orgunitName", orgUnitNames[0]);
 }
 
 selection.setListenerFunction( organisationUnitSelected );
