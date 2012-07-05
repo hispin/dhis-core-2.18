@@ -33,7 +33,7 @@
 
 	function loadPureChildrens( id, elementId )
 	{
-		jQuery.get( "../dhis-web-spreadsheet-reporting/getPureChildren.action", { id: id },
+		jQuery.get( "../dhis-web-phieusanh/getPureChildren.action", { id: id },
 		function ( json ) { buildUpList( json.organisationUnits, elementId ); } );
 	}
 	
@@ -61,7 +61,7 @@
 			{
 				if ( json.response == "success" )
 				{
-					jQuery.get( '../dhis-web-spreadsheet-reporting/registerPatientLocation.action',
+					jQuery.get( '../dhis-web-phieusanh/registerPatientLocation.action',
 					{
 						patientId: json.message.split( "_" ),
 						newUnitId: newUnitId
