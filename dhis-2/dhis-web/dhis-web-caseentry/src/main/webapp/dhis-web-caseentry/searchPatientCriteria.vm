@@ -8,9 +8,7 @@
 		</td>
 		<td rowspan='2' valign='bottom'>
 			<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" #if($organisationUnit) #else disabled #end>
-		
 			<input type="button" id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();">
-		
 			<input type="button" value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();">
 		</td>
 	</tr> 
