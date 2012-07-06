@@ -231,6 +231,7 @@ function loadForm( dataSetId, value )
 		if ( textStatus == "error" ) {
 			hideLoader();
 			hideById( 'showReportButton' );
+			hideById( 'ICDButtonDiv' );
 			clearEntryForm();
 			setHeaderDelayMessage( i18n_disconnect_server );
 			return;
@@ -325,8 +326,6 @@ function displayPeriodsInternal()
 
     clearListById( 'selectedPeriodId' );
 
-    //addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
-
     for ( i in periods )
     {
         addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
@@ -344,8 +343,6 @@ function dataSetSelected()
 	clearListById( 'selectedPeriodId' );
 	hideById('attributeDiv');
 	
-	$( '#valueInput' ).unbind( 'change' );
-	$( '#value' ).unbind( 'select' );
 	$( '#selectedPeriodId' ).unbind( 'change' );
 	$( '#selectedPeriodId' ).removeAttr( 'disabled' );
     $( '#prevButton' ).removeAttr( 'disabled' );
@@ -359,8 +356,6 @@ function dataSetSelected()
 
     if ( dataSetId != -1 )
     {
-        //addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
-
         for ( i in periods )
         {
             addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
@@ -379,50 +374,53 @@ function dataSetSelected()
 
         currentDataSetId = dataSetId;
 		
-		loadSubDataSets(dataSetId);
+		loadSubDataSets( dataSetId );
     }
 }
 
 function loadSubDataSets( dataSetId )
 {
 	$.getJSON( 'loadDepartments.action',
+	{
+		dataSetId: dataSetId
+	},
+	function( json ) 
+	{
+		var departmentList = jQuery( '#subDataSetId' );
+		departmentList.empty();
+	
+		if ( json.department.length > 0 )
 		{
-			dataSetId: dataSetId
-		},
-		function( json ) 
-		{
-			clearListById( 'subDataSetId' );
-		
-			if ( json.department.length > 0 )
-			{
-				$('#subDataSetId').append('<option value=-1>' + i18n_please_select_department + '</option>');
-				for ( i in json.department ) 
-				{ 
-					$('#subDataSetId').append('<option value=' + json.department[i].id + '>' + json.department[i].name + '</option>');
-				}
-				
-				byId( 'inputCriteria' ).style.width = '840px';
-				showById( 'departmentTitleDiv' );
-				showById( 'departmentDiv' );
-				
-				jQuery( '#valueInput' ).unbind( 'change' );
-				jQuery( '#value' ).unbind( 'select' );
-			}
-			else 
-			{
-				loadAttributeValues( dataSetId );
-				
-				byId( 'inputCriteria' ).style.width = '620px';
-				hideById('departmentTitleDiv');
-				hideById('departmentDiv');
-			}
+			departmentList.append('<option value=-1>' + i18n_select_department + '</option>');
 
-			jQuery( '#selectedPeriodId' ).bind( 'change', periodSelected );
-		} );
+			for ( i in json.department ) 
+			{ 
+				departmentList.append('<option value=' + json.department[i].id + '>' + json.department[i].name + '</option>');
+			}
+			
+			byId( 'inputCriteria' ).style.width = '900px';
+			byId( 'inputCriteria' ).style.height = '250px';
+			showById( 'departmentTitleDiv' );
+			showById( 'departmentDiv' );
+			
+			jQuery( '#valueInput' ).unbind( 'change' );
+			jQuery( '#value' ).unbind( 'select' );
+		}
+		else 
+		{
+			loadAttributeValues( dataSetId );
+		}
+
+		jQuery( '#selectedPeriodId' ).bind( 'change', periodSelected );
+	} );
 }
+
+var arrAttributeValues = new Array();
 
 function loadAttributeValues( dataSetId )
 {
+	jQuery( '#chapterId > option' ).first().attr( 'selected', true );
+
 	$.getJSON( 'loadAttribueValues.action',
 	{
 		dataSetId: dataSetId
@@ -431,28 +429,77 @@ function loadAttributeValues( dataSetId )
 	{
 		clearListById( 'value' );
 	
-		if( json.attributeValues.length > 0 )
+		if ( json.attributeValues.length > 0 )
 		{
-			for ( i in json.attributeValues ) 
-			{ 
-				jQuery( '#value' ).append( '<option value="' + json.attributeValues[i] + '">' + json.attributeValues[i] + '</option>' );
-			}
+			arrAttributeValues = [];
+		
+			jQuery.each( json.attributeValues, function( i, item )
+			{
+				arrAttributeValues.push( item );
+				jQuery( '#value' ).append( '<option value="' + item + '">' + item + '</option>' );
+			} );
 
 			autoCompletedField();
 
-			jQuery( '#valueInput' ).bind( 'change', periodSelected() );
-			jQuery( '#value' ).bind( 'select', periodSelected() );
-			
+			byId( 'inputCriteria' ).style.width = '670px';
+			byId( 'inputCriteria' ).style.height = '320px';
+
+			hideById( 'departmentTitleDiv' );
+			hideById( 'departmentDiv' );
 			showById( 'attributeDiv' );
 		}
 		else
 		{
-			jQuery( '#valueInput' ).unbind( 'change' );
-			jQuery( '#value' ).unbind( 'select' );
-
+			byId( 'inputCriteria' ).style.width = '640px';
+			byId( 'inputCriteria' ).style.height = '250px';
+			
 			hideById( 'attributeDiv' );
 		}
 	} );
+}
+
+function loadAttributeValuesByChapter( chapterId )
+{
+	clearListById( 'value' );
+
+	if ( chapterId && chapterId != -1 )
+	{
+		$.getJSON( '../dhis-web-spreadsheet-reporting/loadAttributeValuesByChapter.action',
+		{
+			chapterId: chapterId
+		}
+		, function( json )
+		{			
+			var tempArray = [];
+		
+			if ( json.values.length > 0 )
+			{
+				jQuery.each( json.values, function( i, item )
+				{
+					if ( jQuery.inArray( item.value, arrAttributeValues ) != -1 )
+					{						
+						tempArray.push( item.value );
+					}
+				} );
+
+				jQuery.each( tempArray, function( i, item )
+				{
+					jQuery( '#value' ).append( '<option value="' + item + '">' + item + '</option>' );
+				} );
+				
+				setFieldValue( 'valueInput', jQuery( '#value > option:first' ).val() );
+			}
+		} );
+	}
+	else
+	{
+		jQuery.each( arrAttributeValues, function( i, item )
+		{
+			jQuery( '#value' ).append( '<option value="' + item + '">' + item + '</option>' );
+		} );
+
+		setFieldValue( 'valueInput', jQuery( '#value > option:first' ).val() );
+	}
 }
 
 // -----------------------------------------------------------------------------
@@ -1542,7 +1589,7 @@ function getAttributes()
 	$.getJSON( '../dhis-web-commons-ajax-json/getAttributes.action',{}
 	, function( json ) 
 	{
-		addOptionById( 'attributeId', '', i18n_please_select_attribute );
+		addOptionById( 'attributeId', '', i18n_select_attribute );
 		
 		for ( i in json.attributes ) 
 		{ 
@@ -1560,7 +1607,7 @@ function getSuggestedAttrValue()
 		}
 		, function( json ) 
 		{
-			addOptionById( 'value', '', i18n_please_select_attribute );
+			addOptionById( 'value', '', i18n_select_attribute );
 			
 			for ( i in json.attributeValues ) 
 			{ 
@@ -1655,11 +1702,12 @@ function showICDReport()
 	{
 		dataSetId: getFieldValue( 'selectedDataSetId' ),
 		periodId: getFieldValue( 'selectedPeriodId' ),
-		sourceId: currentOrganisationUnitId
+		sourceId: currentOrganisationUnitId,
+		chapterId: getFieldValue( 'chapterId' )
 	}
 	, function(){
-
-	}).dialog({
+		showById( 'ICDButtonDiv' );
+	})/*.dialog({
 		title: 'ICD REPORTING FORM',
 		maximize: true, 
 		closable: true,
@@ -1667,5 +1715,18 @@ function showICDReport()
 		overlay:{background:'#000000', opacity:0.1},
 		width: 1160,
 		height: 520
-	});
+	})*/;
+}
+
+function toggleICDReportDiv()
+{
+	openICD = !openICD;
+
+	if ( openICD ) {
+		showById( 'showReportDiv' );
+		setFieldValue( 'ICDResultButton', i18n_collpase_icd_report_result );
+	} else {
+		hideById( 'showReportDiv' );
+		setFieldValue( 'ICDResultButton', i18n_explore_icd_report_result );
+	}
 }

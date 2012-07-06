@@ -79,8 +79,7 @@ public class HibernateLocalAttributeValueStore
         String sql = "select count(*) from datasetmembers dsm "
             + "inner join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid "
             + "inner join attributevalue av on av.attributevalueid = deav.attributevalueid "
-            + "inner join attribute att on att.attributeid = av.attributeid " + "where dsm.datasetid = "
-            + dataSet.getId();
+            + "where dsm.datasetid = " + dataSet.getId();
 
         return (statementManager.getHolder().queryForInteger( sql ) > 0) ? true : false;
     }
@@ -93,8 +92,7 @@ public class HibernateLocalAttributeValueStore
             String sql = "select distinct(av.value) from datasetmembers dsm "
                 + "inner join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid "
                 + "inner join attributevalue av on av.attributevalueid = deav.attributevalueid "
-                + "inner join attribute att on att.attributeid = av.attributeid " + "where dsm.datasetid = "
-                + dataSet.getId();
+                + "where dsm.datasetid = " + dataSet.getId();
 
             ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
 
@@ -114,6 +112,5 @@ public class HibernateLocalAttributeValueStore
         {
             statementManager.getHolder().close();
         }
-
     }
 }

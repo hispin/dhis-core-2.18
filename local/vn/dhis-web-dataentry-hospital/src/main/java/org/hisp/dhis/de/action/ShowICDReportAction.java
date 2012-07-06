@@ -27,8 +27,6 @@
 
 package org.hisp.dhis.de.action;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,12 +39,11 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.system.grid.ListGrid;
-import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
-
+import org.hisp.dhis.system.grid.ListGrid;
+import org.hisp.dhis.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -181,8 +178,8 @@ public class ShowICDReportAction
         sqlsb.append( "WHERE datasetid = " + this.dataSetId + " " );
         sqlsb.append( "AND periodid = " + this.periodId + " " );
         sqlsb.append( "AND sourceid = " + this.sourceId + " " );
-        sqlsb.append( "AND av.value IN (SELECT attributevalue FROM reportexcel_attributevalueorders " );
-        sqlsb.append( this.chapterId != null ? "WHERE id = " + this.chapterId + ") " : ") " );
+        sqlsb.append( "AND av.value IN (SELECT attributevalue FROM attributevaluegrouporder_attributevalues " );
+        sqlsb.append( (this.chapterId != null && this.chapterId != -1 ) ? "WHERE attributevaluegrouporderid = " + this.chapterId + ") " : ") " );
         sqlsb.append( "ORDER BY (av.value, sorted_de.column_index)" );
 
         fillUpData( grid, sqlsb, statementManager );
@@ -215,8 +212,6 @@ public class ShowICDReportAction
         try
         {
             ResultSet rs = getScrollableResult( sqlsb.toString(), holder );
-
-            writeFile( sqlsb );
 
             while ( rs.next() )
             {
@@ -268,22 +263,5 @@ public class ShowICDReportAction
         stm.execute( sql );
 
         return stm.getResultSet();
-    }
-
-    private void writeFile( StringBuffer sb )
-    {
-        try
-        {
-            // Create file
-            FileWriter fstream = new FileWriter( "C:\\Users\\hieu\\Desktop\\out.sql" );
-            BufferedWriter out = new BufferedWriter( fstream );
-            out.write( sb.toString() );
-            // Close the output stream
-            out.close();
-        }
-        catch ( Exception e )
-        {// Catch exception if any
-            System.err.println( "Error: " + e.getMessage() );
-        }
     }
 }
