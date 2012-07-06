@@ -384,6 +384,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.GetAttributeValuesByChapterAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.GetAttributeValuesByChapterAction"
+		scope="prototype">
+		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
+	</bean>
+	
+	<bean
 		id="org.hisp.dhis.reportsheet.avgroup.action.ListAttributeValueGroupOrdersAction"
 		class="org.hisp.dhis.reportsheet.avgroup.action.ListAttributeValueGroupOrdersAction"
 		scope="prototype">
