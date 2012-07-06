@@ -34,11 +34,9 @@
     <tr>
 		<td><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="aggregationDataElementId" name="aggregationDataElementId" class="{validate:{required:true}} hidden" >
-				<option value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id">$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name</option>
-			</select>
+			<input id="aggregationDataElementId" name="aggregationDataElementId" value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id" class="{validate:{required:true}} hidden" >
 			<input id="aggregationDataElementInput" name="aggregationDataElementInput" value='$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name' style='width:303px'>
-			<button type='button' id='dataElementsButton' class='arrow-down' disabled>&nbsp;</button>
+			<button type='button' id='dataElementsButton' disabled>&nbsp;</button>
 		</td>				
 	</tr>
 	<tr>

@@ -565,7 +565,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
 
-
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.GetAggPSDataElementsAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.GetAggPSDataElementsAction"
@@ -665,6 +664,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="aggregationConditionService">
 			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.GetDataElementsByDataSetAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.GetDataElementsByDataSetAction"
+		scope="prototype">
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 	<!-- Validation - PatientValidationCriteria -->

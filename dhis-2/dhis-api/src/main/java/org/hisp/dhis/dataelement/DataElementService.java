@@ -427,7 +427,9 @@ public interface DataElementService
     int getDataElementGroupCount();
 
     int getDataElementGroupCountByName( String name );
-
+    
+    Collection<DataElement> getDataElements( DataSet dataSet, String key, Integer max );
+    
     // -------------------------------------------------------------------------
     // DataElementGroupSet
     // -------------------------------------------------------------------------
@@ -485,5 +487,5 @@ public interface DataElementService
      * @return a collection of all Operands.
      */
     Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements );
-
+    
 }

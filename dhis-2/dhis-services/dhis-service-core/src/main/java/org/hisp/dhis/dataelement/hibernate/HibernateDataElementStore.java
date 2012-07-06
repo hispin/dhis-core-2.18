@@ -271,7 +271,23 @@ public class HibernateDataElementStore
         
         return sets;
     }
-
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataElement> get( DataSet dataSet, String key, Integer max )
+    {
+        String hql = "select dataElement from DataSet dataSet inner join dataSet.dataElements as dataElement where dataSet.id = :dataSetId ";
+        if( key != null )
+        {
+            hql += " and lower(dataElement.name) like lower('%" + key + "%') ";
+        }
+        
+        Query query = getQuery( hql );
+        query.setInteger( "dataSetId", dataSet.getId() );
+        query.setMaxResults( max );
+        
+        return query.list();
+    }
+    
     // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------
