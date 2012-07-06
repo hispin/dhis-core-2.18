@@ -201,8 +201,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.importexport.action.dxf2.MetaDataExportFormAction"
       class="org.hisp.dhis.importexport.action.dxf2.MetaDataExportFormAction" scope="prototype" />
 
-  <bean id="org.hisp.dhis.importexport.action.GetMetaDataImportSummaryAction"
-      class="org.hisp.dhis.importexport.action.GetImportSummaryAction" scope="prototype">
+  <bean id="org.hisp.dhis.importexport.action.dxf2.GetImportSummaryAction"
+      class="org.hisp.dhis.importexport.action.dxf2.GetImportSummaryAction" scope="prototype">
     <property name="category" value="METADATA_IMPORT" />
   </bean>
 
