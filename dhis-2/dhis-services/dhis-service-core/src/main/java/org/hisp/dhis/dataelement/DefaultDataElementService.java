@@ -344,6 +344,11 @@ public class DefaultDataElementService
         return dataElementStore.getDataElementCategoryOptionCombos();
     }
     
+    public Collection<DataElement> getDataElements( DataSet dataSet, String key, Integer max )
+    {
+        return dataElementStore.get( dataSet, key, max );
+    }
+    
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------

@@ -1,7 +1,7 @@
-#set( $size = $dataSet.dataElements.size() )
+#set( $size = $dataElements.size() )
 { 
 	"dataElements": [
-		#foreach( $dataElement in $dataSet.dataElements )
+		#foreach( $dataElement in $dataElements )
 			#set( $subSize = $dataElement.categoryCombo.optionCombos.size() )
 			#foreach ( $optionCombo in $dataElement.categoryCombo.optionCombos )
 			{

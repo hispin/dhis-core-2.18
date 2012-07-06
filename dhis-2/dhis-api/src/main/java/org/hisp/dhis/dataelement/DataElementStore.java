@@ -172,6 +172,8 @@ public interface DataElementStore
 
     Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos();
     
+    Collection<DataElement> get( DataSet dataSet, String key, Integer max );
+    
     // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------

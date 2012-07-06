@@ -7,67 +7,43 @@ function getDataElementsByDataset()
 {
 	var dataSets = document.getElementById( 'dataSets' );
 	var dataSetId = dataSets.options[ dataSets.selectedIndex ].value;
-	clearListById('aggregationDataElementId');
+	setFieldValue('aggregationDataElementId','');
 	
 	if( dataSetId == "" ){
 		disable( 'dataElementsButton' );
 		setFieldValue( 'aggregationDataElementInput','');
 		return;
 	}
-
-	jQuery.getJSON( 'getDataElementsByDataset.action', 
-		{ 
-			id:dataSetId 
-		}, function( json )
-        {
-			var de = byId( 'aggregationDataElementId' );
-			clearListById( 'aggregationDataElementId' );
-		  
-			for ( i in json.dataElements ) 
-			{ 
-				var id = json.dataElements[i].id;
-				var name = json.dataElements[i].name;
-
-				var option = document.createElement("option");
-				option.value = id;
-				option.text = name;
-				option.title = name;
-				
-				de.add(option, null);  			
-			}
-			
-			autoCompletedField();
-		});
+	autoCompletedField();
 }
 
 function autoCompletedField()
 {
-	var select = jQuery( "#aggregationDataElementId" );
 	$( "#dataElementsButton" ).unbind('click');
 	enable( 'dataElementsButton' );
-	var selected = select.children( ":selected" );
-	var value = selected.val() ? selected.text() : "";
 	
 	var input = jQuery( "#aggregationDataElementInput" )
-		.insertAfter( select )
-		.val( value )
 		.autocomplete({
 			delay: 0,
 			minLength: 0,
-			source: function( request, response ) {
-				var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
-				response( select.children( "option" ).map(function() {
-					var text = $( this ).text();
-					if ( this.value && ( !request.term || matcher.test(text) ) )
-						return {
-							label: text,
-							value: text,
-							option: this
-						};
-				}) );
+			source: function( request, response ){
+				$.ajax({
+					url: "getDataElementsByDataset.action?id=" + getFieldValue('dataSets') + "&query=" + input.val(),
+					dataType: "json",
+					success: function(data) {
+						response($.map(data.dataElements, function(item) {
+							return {
+								label: item.name,
+								id: item.id
+							};
+						}));
+					}
+				});
 			},
 			select: function( event, ui ) {
-				ui.item.option.selected = true;
+				input.val(ui.item.value);
+				setFieldValue('aggregationDataElementId',ui.item.id);
+				input.autocomplete( "close" );
 			},
 			change: function( event, ui ) {
 				if ( !ui.item ) {
@@ -88,17 +64,16 @@ function autoCompletedField()
 					}
 				}
 			}
-		});
+		}).addClass( "ui-widget" );
 
-	input.data( "autocomplete" )._renderItem = function( ul, item ) {
-		return $( "<li></li>" )
-			.data( "item.autocomplete", item )
-			.append( "<a>" + item.label + "</a>" )
-			.appendTo( ul );
-	};
-
-	/* var button = $( "#dataElementsButton" )
+	var button = $( "#dataElementsButton" )
 		.attr( "title", i18n_show_all_items )
+		.button({
+			icons: {
+				primary: "ui-icon-triangle-1-s"
+			},
+			text: false
+		})
 		.click(function() {
 			// close if already visible
 			if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
@@ -112,7 +87,7 @@ function autoCompletedField()
 			// pass empty string as value to search for, displaying all results
 			input.autocomplete( "search", "" );
 			input.focus();
-		}); */
+		});
 }
 
 //------------------------------------------------------------------------------
