@@ -34,10 +34,6 @@ import org.hisp.dhis.scheduling.TaskId;
  */
 public interface ExportService
 {
-    MetaData getMetaData();
-
-    MetaData getMetaData(TaskId taskId);
-
     MetaData getMetaData( Options options );
 
     MetaData getMetaData( Options options, TaskId taskId );

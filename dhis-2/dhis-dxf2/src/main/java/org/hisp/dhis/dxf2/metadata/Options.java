@@ -42,13 +42,6 @@ public class Options
     // Static helpers
     //--------------------------------------------------------------------------
 
-    static private final Options DEFAULT_OPTIONS = new Options( true );
-
-    static public Options getDefaultOptions()
-    {
-        return DEFAULT_OPTIONS;
-    }
-
     protected static String stringAsString( String str, String defaultValue )
     {
         if ( str == null )
@@ -66,17 +59,17 @@ public class Options
             return null;
         }
 
-        String patterns[] = new String[]{
+        String patterns[] = new String[] {
             "dd/MM/yyyy",
             "MM/yyyy",
             "yyyy"
         };
 
-        for(String pattern : patterns)
+        for ( String pattern : patterns )
         {
-            Date date = getDateByPattern(str, pattern);
+            Date date = getDateByPattern( str, pattern );
 
-            if(date != null)
+            if ( date != null )
             {
                 return date;
             }
@@ -160,25 +153,10 @@ public class Options
     // Constructors
     //--------------------------------------------------------------------------
 
-    public Options()
-    {
-    }
-
-    public Options( boolean assumeTrue )
-    {
-        this.assumeTrue = assumeTrue;
-    }
-
     public Options( Map<String, String> options )
     {
         this.options = options;
         this.assumeTrue = options.get( "assumeTrue" ) == null || options.get( "assumeTrue" ).equalsIgnoreCase( "true" );
-    }
-
-    public Options( Map<String, String> options, boolean assumeTrue )
-    {
-        this.options = options;
-        this.assumeTrue = assumeTrue;
     }
 
     //--------------------------------------------------------------------------
