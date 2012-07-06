@@ -37,11 +37,7 @@ import org.hisp.dhis.mobile.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -61,68 +57,45 @@ public class SearchPatientAction
     @Autowired
     private PatientService patientService;
 
-    @Autowired
-    private PatientAttributeValueService patientAttributeValueService;
-
-    @Autowired
-    private PatientAttributeService patientAttributeService;
-
     // -------------------------------------------------------------------------
-    // Input
+    // Input/output
     // -------------------------------------------------------------------------
 
-    private List<String> searchText = new ArrayList<String>();
+    private List<String> searchTexts = new ArrayList<String>();
 
-    private Boolean listAll;
+    private Boolean searchBySelectedOrgunit;
 
-    private List<Integer> searchingAttributeId = new ArrayList<Integer>();
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private Integer total;
+    private boolean listAll;
 
     private Collection<Patient> patients = new ArrayList<Patient>();
 
-    private Map<String, String> mapPatientPatientAttr = new HashMap<String, String>();
-
-    private Map<Integer, String> mapPatientOrgunit = new HashMap<Integer, String>();
-
-    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
-
     // -------------------------------------------------------------------------
-    // Getters/Setters
+    // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public List<PatientAttribute> getPatientAttributes()
+    public void setSearchBySelectedOrgunit( Boolean searchBySelectedOrgunit )
     {
-        return patientAttributes;
+        this.searchBySelectedOrgunit = searchBySelectedOrgunit;
     }
 
-    public Map<Integer, String> getMapPatientOrgunit()
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
-        return mapPatientOrgunit;
+        this.selectedStateManager = selectedStateManager;
     }
 
-    public void setSearchText( List<String> searchText )
+    public void setPatientService( PatientService patientService )
     {
-        this.searchText = searchText;
+        this.patientService = patientService;
     }
 
-    public void setListAll( Boolean listAll )
+    public void setSearchTexts( List<String> searchTexts )
+    {
+        this.searchTexts = searchTexts;
+    }
+
+    public void setListAll( boolean listAll )
     {
         this.listAll = listAll;
-    }
-
-    public Boolean getListAll()
-    {
-        return listAll;
-    }
-
-    public void setSearchingAttributeId( List<Integer> searchingAttributeId )
-    {
-        this.searchingAttributeId = searchingAttributeId;
     }
 
     public Collection<Patient> getPatients()
@@ -130,14 +103,18 @@ public class SearchPatientAction
         return patients;
     }
 
+    private Integer total;
+
     public Integer getTotal()
     {
         return total;
     }
 
-    public Map<String, String> getMapPatientPatientAttr()
+    private Map<Integer, String> mapPatientOrgunit = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getMapPatientOrgunit()
     {
-        return mapPatientPatientAttr;
+        return mapPatientOrgunit;
     }
 
     // -------------------------------------------------------------------------
@@ -149,70 +126,33 @@ public class SearchPatientAction
     {
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
-        // ---------------------------------------------------------------------
-        // Get all of patients into the selected organisation unit
-        // ---------------------------------------------------------------------
-
-        if ( listAll != null && listAll )
+        // List all patients
+        if ( listAll )
         {
-            listAllPatient( organisationUnit );
+            total = patientService.countGetPatientsByOrgUnit( organisationUnit );
+            this.paging = createPaging( total );
 
-            return SUCCESS;
+            patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(),
+                paging.getPageSize() ) );
+
         }
-
-        // ---------------------------------------------------------------------
-        // Search patients by attributes
-        // ---------------------------------------------------------------------
-
-        for ( Integer attributeId : searchingAttributeId )
+        // search patients
+        else if ( searchTexts.size() > 0 )
         {
-            if ( attributeId != null && attributeId > 0 )
+            organisationUnit = (searchBySelectedOrgunit) ? organisationUnit : null;
+
+            total = patientService.countSearchPatients( searchTexts, organisationUnit );
+            this.paging = createPaging( total );
+            patients = patientService.searchPatients( searchTexts, organisationUnit, paging.getStartPos(),
+                paging.getPageSize() );
+
+            for ( Patient patient : patients )
             {
-                patientAttributes.add( patientAttributeService.getPatientAttribute( attributeId ) );
+                mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
             }
         }
-
-        searchPatientByAttributes( searchingAttributeId, searchText );
 
         return SUCCESS;
-
-    }
-
-    // -------------------------------------------------------------------------
-    // Supporting methods
-    // -------------------------------------------------------------------------
-
-    private void listAllPatient( OrganisationUnit organisationUnit )
-    {
-        total = patientService.countGetPatientsByOrgUnit( organisationUnit );
-        this.paging = createPaging( total );
-
-        patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(), paging
-            .getPageSize() ) );
-    }
-
-    private void searchPatientByAttributes( List<Integer> searchingAttributeId, List<String> searchText )
-    {
-        total = patientAttributeValueService.countSearchPatients( searchingAttributeId, searchText );
-
-        this.paging = createPaging( total );
-
-        patients = patientAttributeValueService.searchPatients( searchingAttributeId, searchText, paging.getStartPos(),
-            paging.getPageSize() );
-
-        Collection<PatientAttributeValue> attributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patients );
-
-        for ( Patient patient : patients )
-        {
-            mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
-
-            for ( PatientAttributeValue attributeValue : attributeValues )
-            {
-                mapPatientPatientAttr.put( patient.getId() + "-" + attributeValue.getPatientAttribute().getId(),
-                    attributeValue.getValue() );
-            }
-        }
     }
 
     private String getHierarchyOrgunit( OrganisationUnit orgunit )
