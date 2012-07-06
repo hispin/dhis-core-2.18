@@ -189,36 +189,19 @@ function validateAdvancedSearch()
 	});
 	
 	if(flag){
-		jQuery("#searchDiv :input").each( function( i, item )
-		{
-			var elementId = $(this).attr('id');
-			var elementName = $(this).attr('name');
-			if( elementId =='dateOperator' )
-			{
-				dateOperator = jQuery(this).val();
-			}
-			else
-			{
-				var value = '';
-				if( jQuery(this).attr('type')=='checkbox' ){
-					value = byId(this.id).checked;
+		jQuery( '#advancedSearchTB tbody tr' ).each( function( i, row ){
+			jQuery( this ).find(':input').each( function( idx, item ){
+				if( idx == 0){
+					params += "searchTexts=" + item.value;
 				}
-				else if( jQuery(this).val()!='' ){
-					value = htmlEncode(jQuery(this).val());
+				else if( idx == 1){
+					params += "_" + htmlEncode( item.value.toLowerCase() );
 				}
-				if( dateOperator != '' )
-				{
-					value = dateOperator + "'" + value + "'";
-					dateOperator = "";
-				}
-				if( elementName=='searchText')
-					params += "searchText=";
-				else
-					params +=  elementId + "=";
-					
-				params += value + "&";
-			}
+			})
 		});
+		params += '&listAll=false';
+		params += '&searchBySelectedOrgunit=' + byId('searchBySelectedOrgunit').checked;
+		
 		contentDiv = 'listPatientDiv';
 		jQuery( "#loaderDiv" ).show();
 		advancedSearch( params );

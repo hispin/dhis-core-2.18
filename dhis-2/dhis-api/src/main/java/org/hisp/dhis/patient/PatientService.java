@@ -203,4 +203,7 @@ public interface PatientService
     
     void removeErollmentPrograms( Program program );
     
+    Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
+    
+    int countSearchPatients( List<String> searchKeys, OrganisationUnit orgunit );
 }

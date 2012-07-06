@@ -32,6 +32,7 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.amplecode.quick.StatementHolder;
@@ -89,7 +90,7 @@ public class HibernatePatientStore
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-    
+
     @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Patient> getByGender( String gender )
@@ -139,8 +140,7 @@ public class HibernatePatientStore
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate,
-        String gender )
+    public Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate, String gender )
     {
         Criteria crit = getCriteria();
         Conjunction con = Restrictions.conjunction();
@@ -182,18 +182,19 @@ public class HibernatePatientStore
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min, Integer max )
+    public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
+        Integer max )
     {
-        Criteria criteria = getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias( "programs",
-            "program" ).add( Restrictions.eq( "program.id", program.getId() ) );
-        
-         criteria.addOrder( Order.desc( "id" ) );
-        
-         if( min != null && max != null )
-         {
-             criteria.setFirstResult( min ).setMaxResults( max );
-         }
-         return criteria.list();
+        Criteria criteria = getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias(
+            "programs", "program" ).add( Restrictions.eq( "program.id", program.getId() ) );
+
+        criteria.addOrder( Order.desc( "id" ) );
+
+        if ( min != null && max != null )
+        {
+            criteria.setFirstResult( min ).setMaxResults( max );
+        }
+        return criteria.list();
     }
 
     @Override
@@ -240,9 +241,9 @@ public class HibernatePatientStore
     @Override
     public int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program )
     {
-        Number rs = (Number) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias(
-            "programs", "program" ).add( Restrictions.eq( "program.id", program.getId() ) ).setProjection(
-            Projections.rowCount() ).uniqueResult();
+        Number rs = (Number) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
+            .createAlias( "programs", "program" ).add( Restrictions.eq( "program.id", program.getId() ) )
+            .setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
     }
@@ -263,4 +264,136 @@ public class HibernatePatientStore
 
         jdbcTemplate.execute( sql );
     }
+
+    @Override
+    public Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    {
+        String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
+        Collection<Patient> patients = new HashSet<Patient>();
+        StatementHolder holder = statementManager.getHolder();
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement.executeQuery( sql );
+
+            if ( resultSet.next() )
+            {
+                int patientId = resultSet.getInt( 1 );
+                patients.add( get( patientId ) );
+            }
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return patients;
+    }
+
+    public int countSearch( List<String> searchKeys, OrganisationUnit orgunit )
+    {
+        String sql = searchPatientSql( true, searchKeys, orgunit, null, null );
+
+        return jdbcTemplate.queryForInt( sql );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+    
+    private String searchPatientSql( boolean count, List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    {
+        String selector = count ? "count(*) " : "* ";
+
+        String sql = "select " + selector + " from ( select distinct p.patientid, p.firstname, p.middlename, p.lastname, p.gender, p.phonenumber, p.birthdate, p.deathdate,";
+        String patientWhere = "";
+        String patientOperator = " where ";
+        String otherWhere = "";
+        String operator = " where ";
+        boolean hasIdentifier = false;
+
+        for ( String searchKey : searchKeys )
+        {
+            String[] keys = searchKey.split( "_" );
+            String id = keys[1];
+            String value = "";
+            if ( keys.length == 3 )
+            {
+                value = keys[2];
+            }
+
+            if ( keys[0].equals( Patient.PREFIX_FIXED_ATTRIBUTE ) )
+            {
+                patientWhere += patientOperator + " lower(p." + id + ")='" + value + "'";
+                patientOperator = " and ";
+            }
+            else if ( keys[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
+            {
+                int startIndex = id.indexOf( ' ' );
+                int endIndex = id.lastIndexOf( ' ' );
+                String firstName = id.substring( 0, startIndex );
+                String middleName = "";
+                String lastName = "";
+                
+                if ( startIndex == endIndex )
+                {
+                    middleName = "";
+                    lastName = id.substring( startIndex + 1, id.length() );
+                }
+                else
+                {
+                    middleName = id.substring( startIndex + 1, endIndex );
+                    lastName = id.substring( endIndex + 1, id.length() );
+                }
+                
+                patientWhere = operator + "( ( lower(p.firstname)='" + firstName + "' and lower(p.middlename)='" + middleName + "' and lower(p.lastname)='" + lastName + "' ) or lower(pi.identifier)='" + id + "') ";
+                patientOperator = " and ";
+                hasIdentifier = true;
+            }
+            else if ( keys[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
+            {
+                sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid="
+                    + id + " ) as " + Patient.PREFIX_PATIENT_ATTRIBUTE + "_" + id + ",";
+                otherWhere = operator + "lower(" + Patient.PREFIX_PATIENT_ATTRIBUTE + "_" + id + ")='" + value + "'";
+                operator = " and ";
+            }
+            else if ( keys[0].equals( Patient.PREFIX_PROGRAM ) )
+            {
+                sql += "(select programid from patient_programs where patientid=p.patientid and programid=" + keys[1]
+                    + " ) as " + Patient.PREFIX_PROGRAM + "_" + id + ",";
+                otherWhere = operator + Patient.PREFIX_PROGRAM + "_" + id + "=" + id;
+                operator = " and ";
+            }
+        }
+
+        sql = sql.substring( 0, sql.length() - 1 ) + " "; // Removing last comma
+
+        sql += " from patient p ";
+        if ( hasIdentifier )
+        {
+            sql += " left join patientidentifier pi on p.patientid=pi.patientid ";
+        }
+        
+        if( orgunit != null )
+        {
+            patientWhere += " and p.organisationunitid = " +  orgunit.getId();
+        }
+        
+        sql += patientWhere + " order by p.patientid desc ";
+        sql += " ) as searchresult";
+        sql += otherWhere;
+
+        if ( min != null && max != null )
+        {
+            sql += statementBuilder.limitRecord( min, max );
+        }
+        
+        return sql;
+    }
+
 }

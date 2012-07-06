@@ -29,6 +29,7 @@ package org.hisp.dhis.patient;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -64,4 +65,8 @@ public interface PatientStore
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
 
     void removeErollmentPrograms( Program program );
+    
+    Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
+    
+    int countSearch( List<String> searchKeys, OrganisationUnit orgunit );
 }
