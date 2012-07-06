@@ -37,23 +37,9 @@ import java.util.Map;
 public class WebOptions
     extends Options
 {
-    public WebOptions()
-    {
-    }
-
-    public WebOptions( boolean assumeTrue )
-    {
-        super( assumeTrue );
-    }
-
     public WebOptions( Map<String, String> options )
     {
         super( options );
-    }
-
-    public WebOptions( Map<String, String> options, boolean assumeTrue )
-    {
-        super( options, assumeTrue );
     }
 
     //--------------------------------------------------------------------------

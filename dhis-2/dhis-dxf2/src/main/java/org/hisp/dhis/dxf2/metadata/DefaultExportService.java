@@ -73,21 +73,9 @@ public class DefaultExportService
     //-------------------------------------------------------------------------------------------------------
 
     @Override
-    public MetaData getMetaData()
-    {
-        return getMetaData( Options.getDefaultOptions(), null );
-    }
-
-    @Override
-    public MetaData getMetaData( TaskId taskId )
-    {
-        return getMetaData( Options.getDefaultOptions(), taskId );
-    }
-
-    @Override
     public MetaData getMetaData( Options options )
     {
-        return getMetaData( Options.getDefaultOptions(), null );
+        return getMetaData( options, null );
     }
 
     @Override
