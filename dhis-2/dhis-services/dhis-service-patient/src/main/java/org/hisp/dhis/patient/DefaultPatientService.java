@@ -522,4 +522,14 @@ public class DefaultPatientService
     {
         patientStore.removeErollmentPrograms( program );
     }
+
+    public Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    {
+        return patientStore.search( searchKeys, orgunit, min, max );
+    }
+    
+    public int countSearchPatients( List<String> searchKeys, OrganisationUnit orgunit )
+    {
+        return patientStore.countSearch( searchKeys, orgunit );
+    }
 }

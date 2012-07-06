@@ -25,18 +25,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 	</bean>
 
-	<bean id="org.hisp.dhis.caseentry.action.caseentry.SearchPatientAction"
-		class="org.hisp.dhis.caseentry.action.caseentry.SearchPatientAction"
+	<bean id="org.hisp.dhis.caseentry.action.patient.SearchPatientAction"
+		class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction"
 		scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
-
+	
 	<bean
 		id="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction"
@@ -461,18 +457,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.patient.SearchPatientAction"
-		class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction"
-		scope="prototype">
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.GetPatientAction"

@@ -30,18 +30,15 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -54,72 +51,29 @@ public class SearchPatientAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
     private PatientService patientService;
 
-    private PatientAttributeValueService patientAttributeValueService;
-
-    private PatientAttributeService patientAttributeService;
-
     // -------------------------------------------------------------------------
-    // Input
+    // Input/output
     // -------------------------------------------------------------------------
 
-    private List<String> searchText = new ArrayList<String>();
-
-    private Boolean listAll;
-
-    private List<Integer> searchObjectId = new ArrayList<Integer>();
+    private List<String> searchTexts = new ArrayList<String>();
 
     private Boolean searchBySelectedOrgunit;
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private Integer total;
+    private boolean listAll;
 
     private Collection<Patient> patients = new ArrayList<Patient>();
 
-    private Map<String, String> mapPatientPatientAttr = new HashMap<String, String>();
-
-    private Map<Integer, String> mapPatientOrgunit = new HashMap<Integer, String>();
-
-    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
-
     // -------------------------------------------------------------------------
-    // Getters/Setters
+    // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
-    }
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
-    }
-
-    public List<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
-
-    public Map<Integer, String> getMapPatientOrgunit()
-    {
-        return mapPatientOrgunit;
-    }
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
+        this.selectionManager = selectionManager;
     }
 
     public void setSearchBySelectedOrgunit( Boolean searchBySelectedOrgunit )
@@ -127,24 +81,19 @@ public class SearchPatientAction
         this.searchBySelectedOrgunit = searchBySelectedOrgunit;
     }
 
-    public void setSearchText( List<String> searchText )
+    public void setPatientService( PatientService patientService )
     {
-        this.searchText = searchText;
+        this.patientService = patientService;
     }
 
-    public void setListAll( Boolean listAll )
+    public void setSearchTexts( List<String> searchTexts )
+    {
+        this.searchTexts = searchTexts;
+    }
+
+    public void setListAll( boolean listAll )
     {
         this.listAll = listAll;
-    }
-
-    public Boolean getListAll()
-    {
-        return listAll;
-    }
-
-    public void setSearchObjectId( List<Integer> searchObjectId )
-    {
-        this.searchObjectId = searchObjectId;
     }
 
     public Collection<Patient> getPatients()
@@ -152,14 +101,18 @@ public class SearchPatientAction
         return patients;
     }
 
+    private Integer total;
+
     public Integer getTotal()
     {
         return total;
     }
 
-    public Map<String, String> getMapPatientPatientAttr()
+    private Map<Integer, String> mapPatientOrgunit = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getMapPatientOrgunit()
     {
-        return mapPatientPatientAttr;
+        return mapPatientOrgunit;
     }
 
     // -------------------------------------------------------------------------
@@ -169,84 +122,40 @@ public class SearchPatientAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit selectOrgunit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        // ---------------------------------------------------------------------
-        // Get all of patients into the selected organisation unit
-        // ---------------------------------------------------------------------
-
-        if ( listAll != null && listAll )
+        // List all patients
+        if ( listAll )
         {
-            listAllPatient( selectOrgunit );
+            total = patientService.countGetPatientsByOrgUnit( organisationUnit );
+            this.paging = createPaging( total );
 
-            return SUCCESS;
+            patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(),
+                paging.getPageSize() ) );
+
         }
-
-        // ---------------------------------------------------------------------
-        // Search patients by attributes
-        // ---------------------------------------------------------------------
-
-        for ( Integer attributeId : searchObjectId )
+        // search patients
+        else if ( searchTexts.size() > 0 )
         {
-            if ( attributeId != null && attributeId > 0 )
+            organisationUnit = (searchBySelectedOrgunit) ? organisationUnit : null;
+
+            total = patientService.countSearchPatients( searchTexts, organisationUnit );
+            this.paging = createPaging( total );
+            patients = patientService.searchPatients( searchTexts, organisationUnit, paging.getStartPos(),
+                paging.getPageSize() );
+
+            for ( Patient patient : patients )
             {
-                patientAttributes.add( patientAttributeService.getPatientAttribute( attributeId ) );
+                mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
             }
         }
-        searchBySelectedOrgunit = (searchBySelectedOrgunit == null) ? false : searchBySelectedOrgunit;
-        searchPatientByAttributes( searchObjectId, searchText, selectOrgunit, searchBySelectedOrgunit );
 
         return SUCCESS;
     }
 
     // -------------------------------------------------------------------------
-    // Supporting methods
+    // Supportive method
     // -------------------------------------------------------------------------
-
-    private void listAllPatient( OrganisationUnit organisationUnit )
-    {
-        total = patientService.countGetPatientsByOrgUnit( organisationUnit );
-        this.paging = createPaging( total );
-
-        patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(), paging
-            .getPageSize() ) );
-    }
-
-    private void searchPatientByAttributes( List<Integer> searchingAttributeId, List<String> searchText,
-        OrganisationUnit orgunit, Boolean searchBySelectedOrgunit )
-    {
-        if ( searchBySelectedOrgunit )
-        {
-            total = patientAttributeValueService.countSearchPatients( searchingAttributeId, searchText, orgunit );
-            this.paging = createPaging( total );
-            patients = patientAttributeValueService.searchPatients( searchingAttributeId, searchText, orgunit, paging
-                .getStartPos(), paging.getPageSize() );
-        }
-        else
-        {
-            total = patientAttributeValueService.countSearchPatients( searchingAttributeId, searchText );
-            this.paging = createPaging( total );
-            patients = patientAttributeValueService.searchPatients( searchingAttributeId, searchText, paging
-                .getStartPos(), paging.getPageSize() );
-        }
-
-        Collection<PatientAttributeValue> attributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patients );
-
-        for ( Patient patient : patients )
-        {
-            if ( !searchBySelectedOrgunit )
-            {
-                mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
-            }
-
-            for ( PatientAttributeValue attributeValue : attributeValues )
-            {
-                mapPatientPatientAttr.put( patient.getId() + "-" + attributeValue.getPatientAttribute().getId(),
-                    attributeValue.getValue() );
-            }
-        }
-    }
 
     private String getHierarchyOrgunit( OrganisationUnit orgunit )
     {

@@ -27,10 +27,8 @@
 package org.hisp.dhis.patientattributevalue;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hisp.dhis.common.GenericStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -64,20 +62,6 @@ public interface PatientAttributeValueStore
     int countByPatientAttributeoption( PatientAttributeOption attributeOption );
     
     Collection<Patient> getPatient( PatientAttribute attribute, String value );
-    
-    Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText, int min, int max);
-    
-    Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText );
-
-    Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts, int min, int max);
-
-    Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts, OrganisationUnit orgunit, int min, int max);
-
-    int countSearchPatientAttributeValue(  PatientAttribute patientAttribute, String searchText );
-    
-    int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts );
-
-    int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts, OrganisationUnit orgunit );
     
     void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption);
 

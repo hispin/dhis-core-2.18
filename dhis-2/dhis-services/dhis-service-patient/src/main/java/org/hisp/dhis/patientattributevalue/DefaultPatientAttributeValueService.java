@@ -29,14 +29,12 @@ package org.hisp.dhis.patientattributevalue;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
@@ -216,33 +214,7 @@ public class DefaultPatientAttributeValueService
     {
         return patientAttributeValueStore.getPatient( attribute, value );
     }
-
-    public int countSearchPatientAttributeValue( PatientAttribute patientAttribute, String searchText )
-    {
-        return patientAttributeValueStore.countSearchPatientAttributeValue( patientAttribute, searchText );
-    }
-
-    public Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText, int min, int max )
-    {
-        return patientAttributeValueStore.searchPatients( patientAttribute, searchText, min, max );
-    }
-
-    public Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText )
-    {
-        return patientAttributeValueStore.searchPatients( patientAttribute, searchText );
-    }
-
-    public Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts, int min,
-        int max )
-    {
-        return patientAttributeValueStore.searchPatients( patientAttributeIds, searchTexts, min, max );
-    }
-
-    public int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts )
-    {
-        return patientAttributeValueStore.countSearchPatients( patientAttributeIds, searchTexts );
-    }
-
+    
     public void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption )
     {
         patientAttributeValueStore.updatePatientAttributeValues( patientAttributeOption );
@@ -256,19 +228,5 @@ public class DefaultPatientAttributeValueService
     public Collection<PatientAttributeValue> getPatientAttributeValuesWithoutProgram( Patient patient )
     {
         return patientAttributeValueStore.getWithoutProgram( patient );
-    }
-
-    @Override
-    public int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts,
-        OrganisationUnit orgunit )
-    {
-        return patientAttributeValueStore.countSearchPatients( patientAttributeIds, searchTexts, orgunit );
-    }
-
-    @Override
-    public Collection<Patient> searchPatients( List<Integer> patientAttributeIds, List<String> searchTexts,
-        OrganisationUnit orgunit, int min, int max )
-    {
-        return patientAttributeValueStore.searchPatients( patientAttributeIds, searchTexts, orgunit, min, max );
     }
 }
