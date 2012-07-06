@@ -71,9 +71,7 @@ public class Patient
     private String middleName;
 
     private String lastName;
-    
-    private String fullName;
-    
+
     private String gender;
 
     private Date birthDate;
@@ -497,18 +495,7 @@ public class Patient
     // Getter && Setter
     // -------------------------------------------------------------------------
 
-
     public String getFullName()
-    {
-        return fullName;
-    }
-
-    public void setFullName( String fullName )
-    {
-        this.fullName = fullName;
-    }
-    
-    /* public String getFullName()
     {
         boolean space = false;
         String name = "";
@@ -541,8 +528,8 @@ public class Patient
         }
 
         return name;
-    } */
-    
+    }
+
     public String getPhoneNumber()
     {
         return phoneNumber;
