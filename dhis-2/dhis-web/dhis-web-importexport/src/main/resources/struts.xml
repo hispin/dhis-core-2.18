@@ -268,8 +268,8 @@
       <interceptor-ref name="fileUploadStack" />
     </action>
 
-    <action name="getMetaDataImportSummary" class="org.hisp.dhis.importexport.action.GetMetaDataImportSummaryAction">
-      <result name="success" type="velocity">/dhis-web-importexport/importSummary.vm</result>
+    <action name="getMetaDataImportSummary" class="org.hisp.dhis.importexport.action.dxf2.GetImportSummaryAction">
+      <result name="success" type="velocity">/dhis-web-importexport/importMetaDataSummary.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
