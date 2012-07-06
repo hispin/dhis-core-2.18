@@ -232,10 +232,24 @@ function removePhoneFromList( elementList, _id )
 
 function searchPatient()
 {
+	var params = '';
+	jQuery( '#advancedSearchTB tbody tr' ).each( function( i, row ){
+		jQuery( this ).find(':input').each( function( idx, item ){
+			if( idx == 0){
+				params += "searchTexts=" + item.value;
+			}
+			else if( idx == 1){
+				params += "_" + htmlEncode( item.value.toLowerCase() );
+			}
+		})
+	});
+	params += '&listAll=false';
+	params += '&searchBySelectedOrgunit=' + byId('searchBySelectedOrgunit').checked;
+		
 	$.ajax({
 		url: 'searchRegistrationPatient.action',
 		type:"POST",
-		data: getParamsForDiv( 'advancedSearchTB' ),
+		data: params,
 		success: function( html ){
 				statusSearching = 1;
 				setInnerHTML( 'listPatientDiv', html );
