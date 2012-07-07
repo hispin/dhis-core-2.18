@@ -62,8 +62,6 @@ div#header
   background: linear-gradient(to bottom,  #ff8b4f 0%,#fe8b4c 7%,#ff8445 18%,#fe691a 96%,#f96215 98%,#ea5911 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff8b4f', endColorstr='#ea5911',GradientType=0 ); /* IE6-9 */
 
-  /* background-image: url('logo_background.png'); */
-  background-repeat: repeat-x;
   height: 46px;
   position: absolute;
   top: 0px;
