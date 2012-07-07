@@ -54,6 +54,7 @@ a:hover
 #bannerArea
 {
   margin-bottom: 9%;
+  border: none;
 }
 
 #loginField td
