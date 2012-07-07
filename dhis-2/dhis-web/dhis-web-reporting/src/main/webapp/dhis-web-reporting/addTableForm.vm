@@ -95,10 +95,10 @@
     <!-- Dimensional Data Elements-->
     
     <tr>
-        <th>$i18n.getString( "available_dataelements" )</th>      
+        <th colspan="2">$i18n.getString( "available_dataelements" )</th>      
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <select id="categoryComboId" name="categoryComboId" style="min-width:640px" onchange="getCategoryComboDataElements()">
                 <option value="-1">[ $i18n.getString( "select_category_combo" ) ]</option>
                 #foreach ( $categoryCombo in $categoryCombos )
@@ -108,7 +108,7 @@
         </td>
     </tr>    
     <tr>
-        <td>
+        <td colspan="2">
             <select multiple size="6" id="availableDataElements" name="availableDataElements" style="min-width:640px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">
                 #foreach ( $element in $dataElements )
                     <option value="$element.id">$encoder.htmlEncode( $element.displayName )</option>
@@ -117,7 +117,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )" />
             <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableDataElements', 'selectedDataElements' )" />
             <input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )" />
@@ -125,7 +125,7 @@
         </td>
     </tr>
     <tr>
-        <th>$i18n.getString( "selected_dataelements" )</th>
+        <th colspan="2">$i18n.getString( "selected_dataelements" )</th>
     </tr>
     <tr>
         <td>
@@ -135,9 +135,13 @@
                 #end
             </select>
         </td>
+        <td>
+            <a href="javascript:moveUpSelectedOption( 'selectedDataElements' )"><img src="../images/move_up.png"/></a><br>
+      	    <a href="javascript:moveDownSelectedOption( 'selectedDataElements' )"><img src="../images/move_down.png"/></a>
+        </td>
     </tr>
     <tr>
-        <td style="height:15px"></td>
+        <td style="height:15px" colspan="2"></td>
     </tr>
     
     #else
@@ -145,10 +149,10 @@
     <!-- Indicators -->
     
     <tr>
-        <th>$i18n.getString( "available_indicators" )</th>      
+        <th colspan="2">$i18n.getString( "available_indicators" )</th>      
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <select id="indicatorGroupId" name="indicatorGroupId" style="min-width:640px" onchange="getIndicators()">
                 <option value="$ALL">[ $i18n.getString( "select_indicatorgroup_all" ) ]</option>
                 #foreach ( $group in $indicatorGroups )
@@ -158,7 +162,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <select multiple size="6" id="availableIndicators" name="availableIndicators" style="min-width:640px" ondblclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )">             
                 #foreach ( $indicator in $indicators )
                     <option value="$indicator.id">$encoder.htmlEncode( $indicator.displayName )</option>
@@ -167,7 +171,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )"><input 
                 type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableIndicators', 'selectedIndicators' )"><input 
                 type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )"><input 
@@ -175,7 +179,7 @@
         </td>
     </tr>
     <tr>
-        <th>$i18n.getString( "selected_indicators" )</th>
+        <th colspan="2">$i18n.getString( "selected_indicators" )</th>
     </tr>
     <tr>
         <td>
@@ -185,18 +189,22 @@
                 #end
             </select>
         </td>
+        <td>
+            <a href="javascript:moveUpSelectedOption( 'selectedIndicators' )"><img src="../images/move_up.png"/></a><br>
+      	    <a href="javascript:moveDownSelectedOption( 'selectedIndicators' )"><img src="../images/move_down.png"/></a>
+        </td>
     </tr>
     <tr>
-        <td style="height:15px"></td>
+        <td style="height:15px" colspan="2"></td>
     </tr>
     
     <!-- DataElements -->
     
     <tr>
-        <th>$i18n.getString( "available_dataelements" )</th>      
+        <th colspan="2">$i18n.getString( "available_dataelements" )</th>      
     </tr>        
     <tr>
-        <td>
+        <td colspan="2">
             <select id="dataElementGroupId" name="dataElementGroupId" style="min-width:640px" onchange="getDataElements()">
                 <option value="$ALL">[ $i18n.getString( "select_dataelementgroup_all" ) ]</option>
                 #foreach ( $group in $dataElementGroups )
@@ -206,7 +214,7 @@
         </td>
     </tr>        
     <tr>
-        <td>
+        <td colspan="2">
             <select multiple size="6" id="availableDataElements" name="availableDataElements" style="min-width:640px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">             
                 #foreach ( $element in $dataElements )
                     <option value="$element.id">$encoder.htmlEncode( $element.displayName )</option>
@@ -215,7 +223,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )"><input 
                 type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableDataElements', 'selectedDataElements' )"><input 
                 type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )"><input 
@@ -223,7 +231,7 @@
         </td>
     </tr>
     <tr>
-        <th>$i18n.getString( "selected_dataelements" )</th>
+        <th colspan="2">$i18n.getString( "selected_dataelements" )</th>
     </tr>
     <tr>
         <td>
@@ -233,18 +241,22 @@
                 #end
             </select>
         </td>
+        <td>
+            <a href="javascript:moveUpSelectedOption( 'selectedDataElements' )"><img src="../images/move_up.png"/></a><br>
+      	    <a href="javascript:moveDownSelectedOption( 'selectedDataElements' )"><img src="../images/move_down.png"/></a>
+        </td>
     </tr>
     <tr>
-        <td style="height:15px"></td>
+        <td style="height:15px" colspan="2"></td>
     </tr>
     
     <!-- DataSets -->
     
     <tr>
-        <th>$i18n.getString( "available_reporting_rates" )</th>
+        <th colspan="2">$i18n.getString( "available_reporting_rates" )</th>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <select multiple size="6" id="availableDataSets" name="availableDataSets" style="min-width:640px" ondblclick="moveSelectedById( 'availableDataSets', 'selectedDataSets' )">
                 #foreach ( $dataSet in $dataSets )
                     <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.displayName )</option>
@@ -253,7 +265,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableDataSets', 'selectedDataSets' )"><input 
                 type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableDataSets', 'selectedDataSets' )"><input 
                 type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedDataSets', 'availableDataSets' )"><input 
@@ -261,7 +273,7 @@
         </td>
     </tr>
     <tr>
-        <th>$i18n.getString( "selected_reporting_rates" )</th>
+        <th colspan="2">$i18n.getString( "selected_reporting_rates" )</th>
     </tr>
     <tr>
         <td>
@@ -271,9 +283,13 @@
                 #end
             </select>
         </td>
+        <td>
+            <a href="javascript:moveUpSelectedOption( 'selectedDataSets' )"><img src="../images/move_up.png"/></a><br>
+      	    <a href="javascript:moveDownSelectedOption( 'selectedDataSets' )"><img src="../images/move_down.png"/></a>
+        </td>
     </tr>
     <tr>
-        <td style="height:15px"></td>
+        <td style="height:15px" colspan="2"></td>
     </tr>
     
     #end
@@ -289,10 +305,10 @@
 	<!-- Organisation Unit Groups -->
 
 	<tr>
-		<th>$i18n.getString( "available_organisation_unit_groups" )</th>
+		<th colspan="2">$i18n.getString( "available_organisation_unit_groups" )</th>
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			<select multiple size="6" id="availableOrganisationUnitGroups" name="availableOrganisationUnitGroups" style="min-width:640px" ondblclick="moveSelectedById( 'availableOrganisationUnitGroups', 'selectedOrganisationUnitGroups' )">
 				#foreach ( $group in $organisationUnitGroups )
 					<option value="$group.id">$encoder.htmlEncode( $group.displayName )</option>
@@ -301,7 +317,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			<input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableOrganisationUnitGroups', 'selectedOrganisationUnitGroups' )"><input 
 				type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableOrganisationUnitGroups', 'selectedOrganisationUnitGroups' )"><input 
 				type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedOrganisationUnitGroups', 'availableOrganisationUnitGroups' )"><input 
@@ -309,7 +325,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>$i18n.getString( "selected_organisation_unit_groups" )</th>
+		<th colspan="2">$i18n.getString( "selected_organisation_unit_groups" )</th>
 	</tr>
 	<tr>
 		<td>
@@ -319,9 +335,13 @@
 				#end
 			</select>
 		</td>
+        <td>
+            <a href="javascript:moveUpSelectedOption( 'selectedOrganisationUnitGroups' )"><img src="../images/move_up.png"/></a><br>
+      	    <a href="javascript:moveDownSelectedOption( 'selectedOrganisationUnitGroups' )"><img src="../images/move_down.png"/></a>
+        </td>
 	</tr>
 	<tr>
-		<td style="height:15px"></td>
+		<td style="height:15px" colspan="2"></td>
 	</tr>
 	
 </table>
@@ -347,10 +367,10 @@
 	<!-- Periods -->
 	
 	<tr>
-		<th>$i18n.getString( "available_periods" )</th>
+		<th colspan="2">$i18n.getString( "available_periods" )</th>
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '-1' )" />
 			<input type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '1' )" />
 			<select id="periodType" name="periodType" style="min-width:518px" onchange="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '0' )">
@@ -362,7 +382,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			<select multiple size="6" id="availablePeriods" name="availablePeriods" style="min-width:640px" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )">
 				#foreach ( $period in $periods )
 					<option value="$period.externalId">$format.formatPeriod( $period )</option>
@@ -371,7 +391,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			<input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )" />
 			<input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )" />
 			<input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )" />
@@ -379,7 +399,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>$i18n.getString( "selected_periods" )</th>
+		<th colspan="2">$i18n.getString( "selected_periods" )</th>
 	</tr>
 	<tr>
 		<td>
@@ -389,9 +409,13 @@
 				#end
 			</select>
 		</td>
+        <td>
+            <a href="javascript:moveUpSelectedOption( 'selectedPeriods' )"><img src="../images/move_up.png"/></a><br>
+      	    <a href="javascript:moveDownSelectedOption( 'selectedPeriods' )"><img src="../images/move_down.png"/></a>
+        </td>
 	</tr>
 	<tr>
-		<td style="height:15px"></td>
+		<td style="height:15px" colspan="2"></td>
 	</tr>
 	
 </table>
