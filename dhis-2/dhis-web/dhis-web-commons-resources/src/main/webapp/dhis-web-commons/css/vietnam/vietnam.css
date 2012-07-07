@@ -53,7 +53,16 @@ a:visited
 
 div#header
 {
-  background-image: url('logo_background.png');
+  background: #c63635; /* Old browsers */
+  background: -moz-linear-gradient(top,  #c63635 0%, #b40303 96%, #c83b3b 98%, #b30100 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c63635), color-stop(96%,#b40303), color-stop(98%,#c83b3b), color-stop(100%,#b30100)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #c63635 0%,#b40303 96%,#c83b3b 98%,#b30100 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #c63635 0%,#b40303 96%,#c83b3b 98%,#b30100 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #c63635 0%,#b40303 96%,#c83b3b 98%,#b30100 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #c63635 0%,#b40303 96%,#c83b3b 98%,#b30100 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c63635', endColorstr='#b30100',GradientType=0 ); /* IE6-9 */
+
+  /* background-image: url('logo_background.png'); */
   background-repeat: repeat-x;
   height: 46px;
   position: absolute;
