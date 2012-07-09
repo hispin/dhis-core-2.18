@@ -1109,7 +1109,6 @@ Ext.onReady( function() {
 		},
 		covertXType: function( type )
 		{
-			type = type.toLowerCase();
 			if( type == 'date' )
 			{
 				return 'datefield';
@@ -1118,7 +1117,7 @@ Ext.onReady( function() {
 			{
 				return 'numberfield';
 			}
-			if( type == 'combo' || type == 'list' )
+			if( type == 'combo' || type == 'list' || type == 'trueOnly' )
 			{
 				return 'combobox';
 			}
@@ -1467,7 +1466,8 @@ Ext.onReady( function() {
 			params.filter = {};
 			params.filter.type = TR.value.covertValueType( type );
 				
-			if( type.toLowerCase() == 'date' )
+			type = type.toLowerCase();
+			if( type == 'date' )
 			{
 				params.renderer = Ext.util.Format.dateRenderer( TR.i18n.format_date );
 				params.filter.dateFormat = TR.i18n.format_date;
@@ -1477,7 +1477,27 @@ Ext.onReady( function() {
 				
 				params.editor.format = TR.i18n.format_date;
 			}
-			else if( type.toLowerCase() == 'list' )
+			else if( type == 'bool' || type == 'trueonly' )
+			{
+				params.editor.xtype = 'combobox';
+				params.editor.queryMode = 'local';
+				params.editor.editable = false;
+				params.editor.valueField = 'value';
+				params.editor.displayField = 'name';
+				if( type.toLowerCase() == 'bool' ){
+					params.editor.store = new Ext.data.ArrayStore({
+						fields: ['value', 'name'],
+						data: [['true', TR.i18n.true_value], ['false', TR.i18n.false_value]]
+					});
+				}
+				else{
+					params.editor.store = new Ext.data.ArrayStore({
+						fields: ['value', 'name'],
+						data: [['', TR.i18n.none], ['true', TR.i18n.true_value]]
+					});
+				}
+			}
+			else if( type == 'list' )
 			{
 				params.editor.xtype = 'combobox';
 				params.editor.typeAhead = true;
@@ -1568,6 +1588,33 @@ Ext.onReady( function() {
 		}
     };
 	
+	Ext.apply(Ext.form.VTypes, {
+		daterange : function(val, field) {
+			var date = field.parseDate(val);
+	 
+			if(!date){
+				return;
+			}
+			if (field.startDateField && (!this.dateRangeMax || (date.getTime() != this.dateRangeMax.getTime()))) {
+				var start = Ext.getCmp(field.startDateField);
+				start.setMaxValue(date);
+				start.validate();
+				this.dateRangeMax = date;
+			}
+			else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
+				var end = Ext.getCmp(field.endDateField);
+				end.setMinValue(date);
+				end.validate();
+				this.dateRangeMin = date;
+			}
+			/*
+			 * Always return true since we're only using this vtype to set the
+			 * min/max allowed values (these are tested for after the vtype test)
+			 */
+			return true;
+		}
+	});
+
     TR.viewport = Ext.create('Ext.container.Viewport', {
         layout: 'border',
         renderTo: Ext.getBody(),

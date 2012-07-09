@@ -452,6 +452,11 @@ public class GenerateTabularReportAction
             values.add( i18n.getString( "yes" ) );
             values.add( i18n.getString( "no" ) );
         }
+        if ( valueType.equals( DataElement.VALUE_TYPE_TRUE_ONLY ) )
+        {
+            values.add( i18n.getString( "" ) );
+            values.add( i18n.getString( "yes" ) );
+        }
 
         return values;
     }
