@@ -331,6 +331,11 @@
 			<param name="page">/dhis-web-caseentry/records.vm</param>
 		</action>
         
+        <action name="getReportPrograms"
+			class="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/responsePrograms.vm</result>
+		</action>
 		<!-- i18n -->
 
         <action name="i18n" class="org.hisp.dhis.caseentry.action.NoAction">

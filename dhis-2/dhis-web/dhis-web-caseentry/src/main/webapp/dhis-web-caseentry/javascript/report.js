@@ -1,10 +1,9 @@
 isAjax = true;
-
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
     showLoader();
 	setInnerHTML( 'contentDiv','' );
-	jQuery.getJSON( "getPrograms.action",{}, 
+	jQuery.getJSON( "getReportPrograms.action",{}, 
 		function( json ) 
 		{    
 			setFieldValue( 'orgunitname', orgUnitNames[0] );

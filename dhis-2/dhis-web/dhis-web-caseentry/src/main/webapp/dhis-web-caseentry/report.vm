@@ -1,13 +1,11 @@
-#if( $programInstance.size() == 0 )
-	<i>$i18n.getString('no_result')</i>
-#else
+#if( $programInstance && $programInstance.size() > 0 )
 <table class="mainPageTable">
 <tr>
     <td style="vertical-align:top">    
     <table class="listTable">
         <tbody id="list" style="width:300px; overflow:auto;">
-            #set( $mark = false )                 
-            #foreach( $programInstance in $programInstances )
+            #set( $mark = false )  
+			#foreach( $programInstance in $programInstances )
                 <tr #alternate( $mark )>                
 					<td>
 						<input type='button' class='patient-object' value='$programInstance.patient.getFullName()' onclick='javascript:showPatientHistory( $programInstance.patient.id )' title='$i18n.getString( "patient_details_and_history" )'>
@@ -47,6 +45,8 @@
 </table>
 
 <div id="viewRecordsDiv"></div>
+#else
+	<h4>$i18n.getString('no_result_found')</h4>
 #end
 <script>
 	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';
