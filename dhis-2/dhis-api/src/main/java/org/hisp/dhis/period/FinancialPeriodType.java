@@ -72,7 +72,7 @@ public abstract class FinancialPeriodType
     {
         boolean past = cal.get( Calendar.MONTH ) >= getBaseMonth();
         
-        cal.set( Calendar.YEAR, past ? ( cal.get( Calendar.YEAR ) + 1 ) : cal.get( Calendar.YEAR ) );
+        cal.set( Calendar.YEAR, past ? cal.get( Calendar.YEAR ) : cal.get( Calendar.YEAR ) - 1 );
         cal.set( Calendar.MONTH, getBaseMonth() );
         cal.set( Calendar.DATE, 1 );
 
@@ -174,7 +174,8 @@ public abstract class FinancialPeriodType
         int year = Integer.parseInt( isoDate.substring( 0, 4 ) );
         Calendar cal = createCalendarInstance();
         cal.set( Calendar.YEAR, year );
-        cal.set( Calendar.DAY_OF_YEAR, 1 );        
+        cal.set( Calendar.MONTH, 11 );
+        cal.set( Calendar.DAY_OF_MONTH, 31 );
         return createPeriod( cal );
     }
 }
