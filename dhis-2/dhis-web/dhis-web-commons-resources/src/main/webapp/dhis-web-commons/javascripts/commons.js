@@ -976,6 +976,49 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
     $("#ui-datepicker-div").hide();
 }
 
+function datePickerInRangeValid( startdate, enddate, setCurrentStartDate, setCurrentEndDate )
+{
+	if( setCurrentStartDate == undefined ) setCurrentStartDate = true;
+	if( setCurrentEndDate == undefined ) setCurrentEndDate = true;
+	
+	s = jQuery("#" + startdate );
+	e = jQuery("#" + enddate );
+	if( setCurrentStartDate && s.val()=='') s.val( getCurrentDate() );
+	if( setCurrentEndDate && e.val()=='' ) e.val( getCurrentDate() );
+
+	var dates = $('#'+startdate+', #' + enddate).datepicker(
+	{
+		dateFormat: dateFormat,
+		defaultDate: "+1w",
+		changeMonth: true,
+		changeYear: true,
+		numberOfMonths: 1,
+		
+		maxDate: '+0d +0w',
+		monthNamesShort: monthNames,
+		dayNamesMin: dayNamesMin,
+		showAnim: '',
+		showOn: 'both',
+		buttonImage: '../images/calendar.png',
+		buttonImageOnly: true,
+		constrainInput: true,
+        yearRange: '-100:+100',
+		onSelect: function(selectedDate)
+		{
+			var option = this.id == startdate ? "minDate" : "maxDate";
+			var instance = $(this).data("datepicker");
+			var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+			dates.not(this).datepicker("option", option, date);
+		}
+	});
+
+	jQuery( "#" + startdate ).attr("readonly", true );
+	jQuery( "#" + enddate ).attr("readonly", true );
+
+    $("#ui-datepicker-div").hide();
+}
+
+
 function getCurrentDate()
 {	
 	return jQuery.datepicker.formatDate( dateFormat , new Date() ) ;
