@@ -242,7 +242,7 @@ public class DefaultChartService
             chart.setName( indicator.getName() );
         }
 
-        chart.setType( TYPE_BAR );
+        chart.setType( TYPE_COLUMN );
         chart.setDimensions( Chart.DIMENSION_DATA, Chart.DIMENSION_ORGANISATIONUNIT, Chart.DIMENSION_PERIOD );
         chart.setHideLegend( true );
         chart.getIndicators().add( indicator );

@@ -382,13 +382,6 @@ public class GenerateExcelReportGeneric
         last3MonthStartDate = getTimeRoll( last3MonthStartDate, Calendar.DATE, -1 );
         last3MonthEndDate = period.getEndDate();
 
-        // So far this year period
-        calendar.setTime( endDate );
-
-        firstDayOfYear = getFirstDayOfYear( calendar.get( Calendar.YEAR ) );
-        firstDayOfYear = getTimeRoll( firstDayOfYear, Calendar.DATE, -1 );
-        endDateOfYear = getLastDayOfYear( calendar.get( Calendar.YEAR ) );
-
         // Last 6 month period
         // Last 5 months + this month = last 6 month
         last6MonthStartDate = getTimeRoll( startDate, Calendar.MONTH, -5 );
@@ -404,6 +397,13 @@ public class GenerateExcelReportGeneric
         startSixMonthly = getStartSixMonthly( startDate );
         startSixMonthly = getTimeRoll( startSixMonthly, Calendar.DATE, -1 );
         endSixMonthly = getEndSixMonthly( startDate );
+
+        // So far this year period
+        calendar.setTime( endDate );
+
+        firstDayOfYear = getFirstDayOfYear( calendar.get( Calendar.YEAR ) );
+        firstDayOfYear = getTimeRoll( firstDayOfYear, Calendar.DATE, -1 );
+        endDateOfYear = getLastDayOfYear( calendar.get( Calendar.YEAR ) );
     }
 
     protected void installReadTemplateFile( ExportReport exportReport, Period period, Object object )
@@ -582,6 +582,11 @@ public class GenerateExcelReportGeneric
             value = calculateExpression( generateExpression( exportItem, startSixMonthly, endSixMonthly,
                 organisationUnit, dataElementService, categoryService, aggregationService ) );
         }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.THREE_SIX_NINE_TWELVE_MONTH ) )
+        {
+            value = calculateExpression( generateExpression( exportItem, firstDayOfYear, endQuaterly, organisationUnit,
+                dataElementService, categoryService, aggregationService ) );
+        }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
         {
             value = calculateExpression( generateExpression( exportItem, firstDayOfYear, endDateOfYear,
@@ -609,25 +614,25 @@ public class GenerateExcelReportGeneric
             value = calculateExpression( generateIndicatorExpression( exportItem, startDate, endDate, organisationUnit,
                 indicatorService, aggregationService ) );
         }
-        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.LAST_3_MONTH ) )
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_QUARTER ) )
         {
-            value = calculateExpression( generateIndicatorExpression( exportItem, last3MonthStartDate,
-                last3MonthEndDate, organisationUnit, indicatorService, aggregationService ) );
+            value = calculateExpression( generateIndicatorExpression( exportItem, startQuaterly, endDate,
+                organisationUnit, indicatorService, aggregationService ) );
         }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_YEAR ) )
         {
             value = calculateExpression( generateIndicatorExpression( exportItem, firstDayOfYear, endDate,
                 organisationUnit, indicatorService, aggregationService ) );
         }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.LAST_3_MONTH ) )
+        {
+            value = calculateExpression( generateIndicatorExpression( exportItem, last3MonthStartDate,
+                last3MonthEndDate, organisationUnit, indicatorService, aggregationService ) );
+        }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.LAST_6_MONTH ) )
         {
             value = calculateExpression( generateIndicatorExpression( exportItem, last6MonthStartDate,
                 last6MonthEndDate, organisationUnit, indicatorService, aggregationService ) );
-        }
-        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
-        {
-            value = calculateExpression( generateIndicatorExpression( exportItem, firstDayOfYear, endDateOfYear,
-                organisationUnit, indicatorService, aggregationService ) );
         }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.QUARTERLY ) )
         {
@@ -637,6 +642,16 @@ public class GenerateExcelReportGeneric
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SIX_MONTH ) )
         {
             value = calculateExpression( generateIndicatorExpression( exportItem, startSixMonthly, endSixMonthly,
+                organisationUnit, indicatorService, aggregationService ) );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.THREE_SIX_NINE_TWELVE_MONTH ) )
+        {
+            value = calculateExpression( generateIndicatorExpression( exportItem, firstDayOfYear, endQuaterly,
+                organisationUnit, indicatorService, aggregationService ) );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
+        {
+            value = calculateExpression( generateIndicatorExpression( exportItem, firstDayOfYear, endDateOfYear,
                 organisationUnit, indicatorService, aggregationService ) );
         }
 
