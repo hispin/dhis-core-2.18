@@ -295,6 +295,18 @@ public abstract class PeriodType
         {
             return new BiMonthlyPeriodType();
         }
+        if ( isoPeriod.matches( "\\b\\d{4}April\\b" ) )
+        {
+            return new FinancialAprilPeriodType();
+        }
+        if ( isoPeriod.matches( "\\b\\d{4}July\\b" ) )
+        {
+            return new FinancialJulyPeriodType();
+        }
+        if ( isoPeriod.matches( "\\b\\d{4}Oct\\b" ) )
+        {
+            return new FinancialOctoberPeriodType();
+        }
 
         return null;
     }
