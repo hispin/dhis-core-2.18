@@ -40,6 +40,8 @@ public class FinancialOctoberPeriodType
      */
     private static final long serialVersionUID = -1623576547899897811L;
 
+    private static final String ISO_FORMAT = "yyyyOct";
+
     public static final String NAME = "FinancialOct";
 
     @Override
@@ -52,5 +54,19 @@ public class FinancialOctoberPeriodType
     public String getName()
     {
         return NAME;
+    }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        Calendar cal = createCalendarInstance( period.getStartDate() );
+        int year = cal.get( Calendar.YEAR );
+        return String.valueOf( year ) + "Oct";
+    }
+
+    @Override
+    public String getIsoFormat()
+    {
+        return ISO_FORMAT;
     }
 }

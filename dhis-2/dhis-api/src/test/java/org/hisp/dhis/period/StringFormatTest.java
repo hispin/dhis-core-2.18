@@ -63,6 +63,9 @@ public class StringFormatTest
         Period quarter1 = new Period( new QuarterlyPeriodType(), getDate( 2010, 1, 1 ), getDate( 2010, 3, 31 ) );
         Period semester1 = new Period( new SixMonthlyPeriodType(), getDate( 2010, 1, 1 ), getDate( 2010, 6, 30 ) );
         Period biMonth1 = new Period( new BiMonthlyPeriodType(), getDate( 2010, 3, 1 ), getDate( 2010, 4, 30 ) );
+        Period financialApril = new Period( new FinancialAprilPeriodType(), getDate( 2010, 4, 1 ), getDate( 2011, 3, 31 ) );
+        Period financialJuly = new Period( new FinancialJulyPeriodType(), getDate( 2010, 7, 1 ), getDate( 2011, 6, 30 ) );
+        Period financialOct = new Period( new FinancialOctoberPeriodType(), getDate( 2010, 10, 1 ), getDate( 2011, 9, 30 ) );
 
         assertEquals( "Day format", "20100101", day1.getIsoDate() );
         assertEquals( "Month format", "201001", month1.getIsoDate() );
@@ -70,6 +73,9 @@ public class StringFormatTest
         assertEquals( "Quarter format", "2010Q1", quarter1.getIsoDate() );
         assertEquals( "Semester format", "2010S1", semester1.getIsoDate() );
         assertEquals( "Bimonth format", "201003B", biMonth1.getIsoDate() );
+        assertEquals( "Financial April", "2010April", financialApril.getIsoDate() );
+        assertEquals( "Financial July", "2010July", financialJuly.getIsoDate() );
+        assertEquals( "Financial Oct", "2010Oct", financialOct.getIsoDate() );
         
         assertEquals( day1, PeriodType.getPeriodFromIsoString( "20100101" ) );
         assertEquals( month1, PeriodType.getPeriodFromIsoString( "201001" ) );
@@ -77,5 +83,8 @@ public class StringFormatTest
         assertEquals( quarter1, PeriodType.getPeriodFromIsoString( "2010Q1" ) );
         assertEquals( semester1, PeriodType.getPeriodFromIsoString( "2010S1" ) );
         assertEquals( biMonth1, PeriodType.getPeriodFromIsoString( "201003B" ) );
+        assertEquals( financialApril, PeriodType.getPeriodFromIsoString( "2010April" ) );
+        assertEquals( financialJuly, PeriodType.getPeriodFromIsoString( "2010July" ) );
+        assertEquals( financialOct, PeriodType.getPeriodFromIsoString( "2010Oct" ) );
     }
 }

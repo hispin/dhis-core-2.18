@@ -72,7 +72,7 @@ public abstract class FinancialPeriodType
     {
         boolean past = cal.get( Calendar.MONTH ) >= getBaseMonth();
         
-        cal.set( Calendar.YEAR, past ? cal.get( Calendar.YEAR ) : cal.get( Calendar.YEAR ) - 1 );
+        cal.set( Calendar.YEAR, past ? ( cal.get( Calendar.YEAR ) + 1 ) : cal.get( Calendar.YEAR ) );
         cal.set( Calendar.MONTH, getBaseMonth() );
         cal.set( Calendar.DATE, 1 );
 
@@ -169,20 +169,12 @@ public abstract class FinancialPeriodType
     }
 
     @Override
-    public String getIsoDate( Period period )
-    {
-        return null; // TODO
-    }
-
-    @Override
     public Period createPeriod( String isoDate )
     {
-        return null; // TODO
-    }
-
-    @Override
-    public String getIsoFormat()
-    {
-        return null; // TODO
+        int year = Integer.parseInt( isoDate.substring( 0, 4 ) );
+        Calendar cal = createCalendarInstance();
+        cal.set( Calendar.YEAR, year );
+        cal.set( Calendar.DAY_OF_YEAR, 1 );        
+        return createPeriod( cal );
     }
 }
