@@ -106,6 +106,6 @@
                 validateProgramEnrollment();
             });
 			
-			datePickerInRange( 'dateOfIncident' , 'enrollmentDate' );
+			datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate' );
 		}); 
 </script>
