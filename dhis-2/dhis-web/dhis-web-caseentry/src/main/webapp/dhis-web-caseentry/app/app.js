@@ -973,12 +973,12 @@ Ext.onReady( function() {
 			return colname + "_false_";
 		},
 		paramChanged: function() {
-			if( TR.store.datatable && TR.store.datatable.data.length)
+			if( TR.store.datatable && TR.store.datatable.data.length > 0 )
 			{
 				var orgUnitCols = TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue();
-				var orgUnitColsInTable =  ( TR.datatable.datatable.columns 
-									- TR.cmp.params.patientProperty.selected.store.length
-									+ TR.cmp.params.dataelement.selected.store.length );
+				var orgUnitColsInTable =  ( TR.datatable.datatable.columns.length 
+									- TR.cmp.params.patientProperty.selected.store.data.length
+									- TR.cmp.params.dataelement.selected.store.data.length - 3 );
 				if( orgUnitCols!=orgUnitColsInTable )
 				{
 					return true;
@@ -1215,7 +1215,7 @@ Ext.onReady( function() {
 						
 			// Org unit level columns
 			
-			for( var i = 0; i < orgUnitCols; i++ )
+			for( var i = 0; i <orgUnitCols; i++ )
 			{
 				cols[++index] = {
 					header: TR.value.columns[index].name, 
