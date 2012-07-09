@@ -47,6 +47,8 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 
+import sun.security.util.DisabledAlgorithmConstraints;
+
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -202,8 +204,9 @@ public class LoadDataEntryAction
 
             if ( dataEntryForm != null )
             {
+                Boolean disabled = ( program.getDisplayProvidedOtherFacility()==null)? true : !program.getDisplayProvidedOtherFacility();
                 customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
-                    .getHtmlCode(), patientDataValues, program.getDisplayProvidedOtherFacility().toString(), i18n,
+                    .getHtmlCode(), patientDataValues, disabled.toString(), i18n,
                     programStageInstance.getProgramStage(), programStageInstance, organisationUnit );
             }
         }
