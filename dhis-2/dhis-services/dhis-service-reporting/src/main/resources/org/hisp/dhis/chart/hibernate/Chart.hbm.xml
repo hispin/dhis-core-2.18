@@ -81,6 +81,14 @@
     <many-to-one name="organisationUnitGroupSet" class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet"
         column="organisationunitgroupsetid" foreign-key="fk_chart_organisationunitgroupsetid" />
 
+    <list name="periods" table="chart_periods">
+      <cache usage="read-write" />
+      <key column="chartid" foreign-key="fk_chart_periods_chartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="periodid" class="org.hisp.dhis.period.Period"
+          foreign-key="fk_chart_periods_periodid" />
+    </list>
+
     <component name="relatives">
       <property name="reportingMonth" />
       <property name="reportingQuarter" />

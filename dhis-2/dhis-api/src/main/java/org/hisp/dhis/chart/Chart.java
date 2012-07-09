@@ -30,6 +30,7 @@ package org.hisp.dhis.chart;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -39,6 +40,8 @@ import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.adapter.JacksonPeriodDeserializer;
+import org.hisp.dhis.common.adapter.JacksonPeriodSerializer;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -126,6 +129,9 @@ public class Chart
     @Scanned
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
+    @Scanned
+    private List<Period> periods = new ArrayList<Period>();
+    
     private RelativePeriods relatives;
 
     private boolean userOrganisationUnit;
@@ -564,6 +570,22 @@ public class Chart
     public void setOrganisationUnits( List<OrganisationUnit> organisationUnits )
     {
         this.organisationUnits = organisationUnits;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentUsing = JacksonPeriodSerializer.class )
+    @JsonDeserialize( contentUsing = JacksonPeriodDeserializer.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "periods", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "period", namespace = Dxf2Namespace.NAMESPACE ) 
+    public List<Period> getPeriods()
+    {
+        return periods;
+    }
+
+    public void setPeriods( List<Period> periods )
+    {
+        this.periods = periods;
     }
 
     @JsonProperty( value = "relativePeriods" )
