@@ -1,4 +1,4 @@
-#if( $programInstance && $programInstance.size() > 0 )
+#if( $programInstances && $programInstances.size() > 0 )
 <table class="mainPageTable">
 <tr>
     <td style="vertical-align:top">    
