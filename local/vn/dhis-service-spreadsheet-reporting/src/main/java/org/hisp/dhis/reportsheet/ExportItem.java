@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -184,7 +184,7 @@ public class ExportItem
 
         public static final String SO_FAR_THIS_QUARTER = "so_far_this_quarter";
 
-        // Used for other report
+        // Used for other reports
         public static final String SELECTED_MONTH = "selected_month";
 
         public static final String LAST_3_MONTH = "last_3_month";
@@ -196,6 +196,8 @@ public class ExportItem
         public static final String SIX_MONTH = "6_month";
 
         public static final String SO_FAR_THIS_YEAR = "so_far_this_year";
+        
+        public static final String THREE_SIX_NINE_TWELVE_MONTH = "3_6_9_12_month";
 
         public static final String YEARLY = "yealy";
 
@@ -205,12 +207,13 @@ public class ExportItem
             list.add( DAILY );
             list.add( SO_FAR_THIS_MONTH );
             list.add( SO_FAR_THIS_QUARTER );
+            list.add( SO_FAR_THIS_YEAR );
             list.add( SELECTED_MONTH );
             list.add( LAST_3_MONTH );
-            list.add( SO_FAR_THIS_YEAR );
             list.add( LAST_6_MONTH );
             list.add( QUARTERLY );
             list.add( SIX_MONTH );
+            list.add( THREE_SIX_NINE_TWELVE_MONTH );
             list.add( YEARLY );
 
             return list;

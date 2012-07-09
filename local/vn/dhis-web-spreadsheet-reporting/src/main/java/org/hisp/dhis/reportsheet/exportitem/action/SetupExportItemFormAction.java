@@ -110,11 +110,9 @@ public class SetupExportItemFormAction
         return exportReport;
     }
 
-    private List<String> periodTypes;
-
     public List<String> getPeriodTypes()
     {
-        return periodTypes;
+        return ExportItem.PERIODTYPE.getPeriodTypes();
     }
 
     private List<DataElementGroup> dataElementGroups;
@@ -148,8 +146,6 @@ public class SetupExportItemFormAction
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
 
         Collections.sort( indicatorGroups, new IdentifiableObjectNameComparator() );
-
-        periodTypes = ExportItem.PERIODTYPE.getPeriodTypes();
 
         if ( exportItemId != null )
         {

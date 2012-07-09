@@ -597,6 +597,21 @@ public class OrganisationUnit
         this.parent = parent;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "children", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "child", namespace = Dxf2Namespace.NAMESPACE )
+    public Set<OrganisationUnit> getChildren()
+    {
+        return children;
+    }
+
+    public void setChildren( Set<OrganisationUnit> children )
+    {
+        this.children = children;
+    }
+
     public String getAlternativeName()
     {
         return getShortName();
@@ -838,16 +853,6 @@ public class OrganisationUnit
     // -------------------------------------------------------------------------
     // Getters and setters for transient fields
     // -------------------------------------------------------------------------
-
-    public Set<OrganisationUnit> getChildren()
-    {
-        return children;
-    }
-
-    public void setChildren( Set<OrganisationUnit> children )
-    {
-        this.children = children;
-    }
 
     public int getLevel()
     {

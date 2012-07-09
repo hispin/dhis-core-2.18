@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,24 +34,24 @@ import java.util.Date;
  * @version $Id$
  */
 public class DateUtils
-{    
-    @SuppressWarnings("deprecation")
+{
+    @SuppressWarnings( "deprecation" )
     public static Date getFirstDayOfMonth( Date date )
     {
         Calendar result = Calendar.getInstance();
-        
+
         Calendar calendar = Calendar.getInstance();
         calendar.set( Calendar.YEAR, date.getYear() + 1900 );
         calendar.set( Calendar.MONTH, date.getMonth() );
         calendar.set( Calendar.DATE, date.getDate() );
-        
+
         result.set( Calendar.DATE, calendar.getActualMinimum( Calendar.DATE ) );
         result.set( Calendar.MONTH, calendar.get( Calendar.MONTH ) );
         result.set( Calendar.YEAR, calendar.get( Calendar.YEAR ) );
-        
+
         return result.getTime();
     }
-    
+
     public static Date getFirstDayOfYear( int year )
     {
         Calendar calendar = Calendar.getInstance();
@@ -178,13 +178,13 @@ public class DateUtils
                 calendar.roll( field, numberOfRoll );
             }
         }
-
-        if ( field == Calendar.MONTH )
+        else if ( field == Calendar.MONTH )
         {
             if ( (numberOfRoll + calendar.get( Calendar.MONTH ) + 1) <= 0 )
             {
                 calendar.roll( Calendar.YEAR, -1 );
             }
+
             if ( calendar.get( Calendar.MONTH ) == Calendar.JANUARY )
             {
                 if ( numberOfRoll < 0 )
