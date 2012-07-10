@@ -183,6 +183,7 @@ public class ChartServiceTest
         
         assertTrue( equals( chartService.getChart( idA ).getIndicators(), indicatorA, indicatorB, indicatorC ) );
         assertTrue( equals( chartService.getChart( idA ).getOrganisationUnits(), unitA, unitB, unitC ) );
+        assertTrue( equals( chartService.getChart( idA ).getPeriods(), periodA, periodB, periodC ) );
     }
 
     @Test
