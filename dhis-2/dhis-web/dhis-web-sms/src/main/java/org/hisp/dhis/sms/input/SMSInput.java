@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.exolab.castor.types.Date;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -16,8 +15,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.sms.incoming.HibernateIncomingSmsStore;
+
+import org.hisp.dhis.sms.inbound.HibernateIncomingSmsStore;
 import org.hisp.dhis.sms.incoming.IncomingSms;
+import org.hisp.dhis.sms.incoming.IncomingSmsStore;
 import org.hisp.dhis.sms.incoming.SmsMessageEncoding;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.hisp.dhis.smscommand.SMSCode;
@@ -38,7 +39,8 @@ public class SMSInput implements Action {
     private String source_id; // Probably like message id and should be an int
     private int msg_id; // unique for each sms
     private IncomingSms sms;
-    private org.hisp.dhis.sms.incoming.HibernateIncomingSmsStore smsStore;
+    private IncomingSmsStore smsStore;
+    
     // Services
     private CurrentUserService currentUserService;
     private DataValueService dataValueService;
@@ -47,6 +49,8 @@ public class SMSInput implements Action {
     private SMSCommandService smsCommandService;
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
+    
+    private String test;
 
     public SMSInput() {
     }
@@ -188,8 +192,8 @@ public class SMSInput implements Action {
         this.dataValueService = dataValueService;
     }
 
-    public void setSmsStore(HibernateIncomingSmsStore smsStore) {
-        //System.out.println("Setting SMSStore: " + smsStore);
+    public void setSmsStore(IncomingSmsStore smsStore) {
+        System.out.println("Setting SMSStore: " + smsStore);
         this.smsStore = smsStore;
     }
 
@@ -304,4 +308,15 @@ public class SMSInput implements Action {
     public void setSource_id(String source_id) {
         this.source_id = source_id;
     }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        System.out.println("\n\n\n test: " + test + " \n\n\n");
+        this.test = test;
+    }
+
+
 }

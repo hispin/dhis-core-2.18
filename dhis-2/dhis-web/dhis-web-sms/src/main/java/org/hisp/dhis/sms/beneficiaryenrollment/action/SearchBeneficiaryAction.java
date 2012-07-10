@@ -86,7 +86,7 @@ public class SearchBeneficiaryAction
     public String execute()
         throws Exception
     {
-        patientList = new ArrayList<Patient>( patientService.getPatientsByNames( keyword ) );
+        patientList = new ArrayList<Patient>( patientService.getPatientsByNames( keyword, 0, Integer.MAX_VALUE) );
         return SUCCESS;
     }
 

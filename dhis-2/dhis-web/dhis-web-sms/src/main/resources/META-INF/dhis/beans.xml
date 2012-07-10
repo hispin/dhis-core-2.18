@@ -20,7 +20,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
         <!-- added by Chris -->
         <bean id="org.hisp.dhis.sms.input.SMSInput" class="org.hisp.dhis.sms.input.SMSInput">
-            <property name="smsStore" ref="org.hisp.dhis.sms.incoming.HibernateIncomingSmsStore"/>
+            <property name="smsStore" ref="org.hisp.dhis.sms.incoming.IncomingSmsStore"/>
             <property name="userService" ref="org.hisp.dhis.user.UserService"/>
             <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
             <property name="smsCommandService" ref="smsCommandService" />
