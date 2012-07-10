@@ -128,8 +128,8 @@ function searchObjectOnChange( this_ )
 
 function getDateField( container )
 {
-	var dateField = '<select id="dateOperator" style="width:30px;" name="dateOperator" ><option value=">"> > </option><option value="="> = </option><option value="<"> < </option></select>';
-	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:210px;">';
+	var dateField = '<select id="dateOperator" style="width:40px;" name="dateOperator" ><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option><option value=">"> > </option><option value=">="> >= </option></select>';
+	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:200px;">';
 	return dateField;
 }
 
@@ -191,12 +191,22 @@ function validateAdvancedSearch()
 	
 	if(flag){
 		jQuery( '#advancedSearchTB tbody tr' ).each( function( i, row ){
+			var dateOperator = "";
 			jQuery( this ).find(':input').each( function( idx, item ){
 				if( idx == 0){
 					params += "searchTexts=" + item.value;
 				}
-				else if( idx == 1){
-					params += "_" + htmlEncode( item.value.toLowerCase() );
+				else if( item.name == 'dateOperator'){
+					dateOperator = item.value;
+				}
+				else if( item.name == 'searchText'){
+					params += "_";
+					if ( dateOperator.length >0 ) {
+						params += dateOperator + "'" +  item.value.toLowerCase() + "'";
+					}
+					else{
+						params += htmlEncode( item.value.toLowerCase() );
+					}
 				}
 			})
 		});
