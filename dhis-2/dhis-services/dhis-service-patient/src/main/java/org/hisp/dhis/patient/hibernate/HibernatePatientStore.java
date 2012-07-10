@@ -210,7 +210,7 @@ public class HibernatePatientStore
         fullName = fullName.toLowerCase();
         String sql = "SELECT count(*) FROM patient where lower( " + statementBuilder.getPatientFullName() + ") "
             + "like '%" + fullName + "%' ";
-        
+
         return jdbcTemplate.queryForInt( sql );
     }
 
@@ -320,7 +320,15 @@ public class HibernatePatientStore
 
             if ( keys[0].equals( Patient.PREFIX_FIXED_ATTRIBUTE ) )
             {
-                patientWhere += patientOperator + " lower(p." + id + ")='" + value + "'";
+                patientWhere += patientOperator;
+                if ( id.equals( Patient.FIXED_ATTR_BIRTH_DATE ) )
+                {
+                    patientWhere += " p." + id + value;
+                }
+                else
+                {
+                    patientWhere += " lower(p." + id + ")='" + value + "'";
+                }
                 patientOperator = " and ";
             }
             else if ( keys[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
