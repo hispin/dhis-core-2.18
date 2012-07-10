@@ -56,7 +56,6 @@ import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -152,7 +151,7 @@ public class Chart
 
     private transient List<Period> relativePeriods = new ArrayList<Period>();
 
-    private transient OrganisationUnit organisationUnit;
+    private transient List<OrganisationUnit> relativeOrganisationUnits = new ArrayList<OrganisationUnit>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -200,9 +199,9 @@ public class Chart
 
     public List<OrganisationUnit> getAllOrganisationUnits()
     {
-        if ( organisationUnit != null )
+        if ( relativeOrganisationUnits != null && !relativeOrganisationUnits.isEmpty() )
         {
-            return Arrays.asList( organisationUnit );
+            return relativeOrganisationUnits;
         }
         else
         {
@@ -695,15 +694,15 @@ public class Chart
     }
 
     @JsonIgnore
-    public OrganisationUnit getOrganisationUnit()
+    public List<OrganisationUnit> getRelativeOrganisationUnits()
     {
-        return organisationUnit;
+        return relativeOrganisationUnits;
     }
 
     @JsonIgnore
-    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    public void setRelativeOrganisationUnits( List<OrganisationUnit> relativeOrganisationUnits )
     {
-        this.organisationUnit = organisationUnit;
+        this.relativeOrganisationUnits = relativeOrganisationUnits;
     }
 
     @Override
