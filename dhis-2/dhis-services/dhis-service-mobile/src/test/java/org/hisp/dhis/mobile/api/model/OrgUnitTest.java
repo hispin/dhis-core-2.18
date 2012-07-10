@@ -46,7 +46,7 @@ public class OrgUnitTest
         throws IOException
     {
         MobileOrgUnitLinks unit = new MobileOrgUnitLinks();
-        unit.setUpdateNewVersionUrl( "" );
+        
         unit.setId( 1 );
         unit.setName( "name" );
         unit.setUpdateActivityPlanUrl("updateActivityPlanUrl");
@@ -56,6 +56,7 @@ public class OrgUnitTest
         unit.setUpdateDataSetUrl( "updateDataSetUrl" );
         unit.setChangeUpdateDataSetLangUrl( "changeUpdateDataSetLangUrl" );
         unit.setSearchUrl( "search" );
+        unit.setUpdateNewVersionUrl( "" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );
