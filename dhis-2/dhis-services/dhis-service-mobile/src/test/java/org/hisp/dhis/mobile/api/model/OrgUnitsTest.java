@@ -71,7 +71,7 @@ public class OrgUnitsTest
     private MobileOrgUnitLinks createOrgUnit()
     {
         MobileOrgUnitLinks unit = new MobileOrgUnitLinks();
-        unit.setUpdateNewVersionUrl( "test" );
+        
         unit.setId( 1 );
         unit.setName( "name" );
         unit.setUpdateActivityPlanUrl("updateActivityPlanUrl");
@@ -81,6 +81,7 @@ public class OrgUnitsTest
         unit.setUpdateDataSetUrl( "updateDataSetUrl" );
         unit.setChangeUpdateDataSetLangUrl( "changeUpdateDataSetLangUrl" );
         unit.setSearchUrl( "search" );
+        unit.setUpdateNewVersionUrl( "test" );
         return unit;
     }
 }
