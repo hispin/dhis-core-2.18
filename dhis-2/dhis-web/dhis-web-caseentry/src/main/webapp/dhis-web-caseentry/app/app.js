@@ -1710,9 +1710,14 @@ Ext.onReady( function() {
 										width: TR.conf.layout.west_fieldset_width / 2 - 4,
 										format: TR.i18n.format_date,
 										value: new Date((new Date()).setMonth((new Date()).getMonth()-3)),
+										maxValue: new Date(),
 										listeners: {
 											added: function() {
 												TR.cmp.settings.startDate = this;
+											},
+											change:function(){
+												var startDate =  TR.cmp.settings.startDate.getValue();
+												Ext.getCmp('endDate').setMinValue(startDate);
 											}
 										}
 									},
@@ -1731,9 +1736,14 @@ Ext.onReady( function() {
 										width: TR.conf.layout.west_fieldset_width / 2 - 4,
 										format: TR.i18n.format_date,
 										value: new Date(),
+										minValue: new Date((new Date()).setMonth((new Date()).getMonth()-3)),
 										listeners: {
 											added: function() {
 												TR.cmp.settings.endDate = this;
+											},
+											change:function(){
+												var endDate =  TR.cmp.settings.endDate.getValue();
+												Ext.getCmp('startDate').setMaxValue( endDate );
 											}
 										}
 									}
