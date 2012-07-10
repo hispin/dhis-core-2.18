@@ -10,10 +10,17 @@ function changeValueType( value )
 {
     if ( value == 'int' )
     {
+		showById( 'numberTypeTR' );
+        hideById( 'textTypeTR' );
         enable( 'zeroIsSignificant' );
     } else
     {
         disable( 'zeroIsSignificant' );
+		hideById( 'numberTypeTR' );
+		hideById( 'textTypeTR' );
+		if( value=='string'){
+			showById( 'textTypeTR' );
+		}
     }
 
     updateAggreationOperation( value );
@@ -21,7 +28,7 @@ function changeValueType( value )
 
 function updateAggreationOperation( value )
 {
-    if ( value == 'string' || value == 'date' )
+    if ( value == 'string' || value == 'date' || value == 'trueOnly' )
     {
         hideById( "aggregationOperator" );
     } else
@@ -114,3 +121,4 @@ function removeDataElement( dataElementId, dataElementName )
 {
     removeItem( dataElementId, dataElementName, i18n_confirm_delete, 'removeDataElement.action' );
 }
+

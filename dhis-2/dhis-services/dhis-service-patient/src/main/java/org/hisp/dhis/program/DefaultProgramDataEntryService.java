@@ -119,7 +119,6 @@ public class DefaultProgramDataEntryService
         // Pattern to match data elements in the HTML code
         // ---------------------------------------------------------------------
 
-        Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
         Matcher dataElementMatcher = INPUT_PATTERN.matcher( htmlCode );
         int tabindex = 0;
 
@@ -533,6 +532,9 @@ public class DefaultProgramDataEntryService
             inputHTML += jsCodeForOnchange;
         }
 
+        if( DataElement.VALUE_TYPE_LONG_TEXT.equals( dataElement.getDetailedTextType() ))
+            inputHTML += " >";
+        
         return inputHTML;
     }
 

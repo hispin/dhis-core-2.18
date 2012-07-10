@@ -75,7 +75,7 @@ public class AddDataElementAction
     {
         this.attributeService = attributeService;
     }
-    
+
     private OptionService optionService;
 
     public void setOptionService( OptionService optionService )
@@ -143,6 +143,13 @@ public class AddDataElementAction
         this.numberType = numberType;
     }
 
+    private String textType;
+
+    public void setTextType( String textType )
+    {
+        this.textType = textType;
+    }
+
     private String valueType;
 
     public void setValueType( String valueType )
@@ -200,12 +207,12 @@ public class AddDataElementAction
     }
 
     private Integer selectedOptionSetId;
-    
+
     public void setSelectedOptionSetId( Integer selectedOptionSetId )
     {
         this.selectedOptionSetId = selectedOptionSetId;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -239,7 +246,7 @@ public class AddDataElementAction
 
         DataElementCategoryCombo categoryCombo = dataElementCategoryService
             .getDataElementCategoryCombo( selectedCategoryComboId );
-        
+
         OptionSet optionSet = optionService.getOptionSet( selectedOptionSetId );
 
         dataElement.setName( name );
@@ -252,6 +259,7 @@ public class AddDataElementAction
         dataElement.setDomainType( domainType );
         dataElement.setType( valueType );
         dataElement.setNumberType( numberType );
+        dataElement.setTextType ( textType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setZeroIsSignificant( zeroIsSignificant );
@@ -265,9 +273,9 @@ public class AddDataElementAction
             AttributeUtils.updateAttributeValuesFromJson( dataElement.getAttributeValues(), jsonAttributeValues,
                 attributeService );
         }
-        
+
         dataElementService.addDataElement( dataElement );
-        
+
         for ( String id : selectedGroups )
         {
             DataElementGroup group = dataElementService.getDataElementGroup( Integer.parseInt( id ) );
@@ -280,7 +288,7 @@ public class AddDataElementAction
         }
 
         dataElementService.updateDataElement( dataElement );
-        
+
         return SUCCESS;
     }
 }

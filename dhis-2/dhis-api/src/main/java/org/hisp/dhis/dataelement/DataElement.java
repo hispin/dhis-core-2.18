@@ -64,7 +64,7 @@ import static org.hisp.dhis.dataset.DataSet.NO_EXPIRY;
  * <p/>
  * DataElement acts as a DimensionSet in the dynamic dimensional model, and as a
  * DimensionOption in the static DataElement dimension.
- *
+ * 
  * @author Kristian Nordal
  */
 @JacksonXmlRootElement( localName = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
@@ -87,7 +87,11 @@ public class DataElement
     public static final String VALUE_TYPE_NEGATIVE_INT = "negativeNumber";
 
     public static final String VALUE_TYPE_TRUE_ONLY = "trueOnly";
-    
+
+    public static final String VALUE_TYPE_TEXT = "text";
+
+    public static final String VALUE_TYPE_LONG_TEXT = "longText";
+
     public static final String VALUE_TYPE_BOOL = "bool";
 
     public static final String VALUE_TYPE_DATE = "date";
@@ -128,6 +132,11 @@ public class DataElement
      * The number type. Is relevant when type is INT.
      */
     private String numberType;
+
+    /**
+     * The number type. Is relevant when type is TEXT.
+     */
+    private String textType;
 
     /**
      * The aggregation operator of this DataElement; e.g. DataElement.SUM og
@@ -288,6 +297,16 @@ public class DataElement
     }
 
     /**
+     * Returns the value type. If value type is string and the text type exists,
+     * the text type is returned, if the type is string and the text type does
+     * not exist string is returned.
+     */
+    public String getDetailedTextType()
+    {
+        return (type != null && type.equals( VALUE_TYPE_STRING ) && textType != null) ? textType : type;
+    }
+
+    /**
      * Returns the PeriodType of the DataElement, based on the PeriodType of the
      * DataSet which the DataElement is registered for.
      */
@@ -439,6 +458,16 @@ public class DataElement
     public void setDomainType( String domainType )
     {
         this.domainType = domainType;
+    }
+
+    public String getTextType()
+    {
+        return textType;
+    }
+
+    public void setTextType( String textType )
+    {
+        this.textType = textType;
     }
 
     @JsonProperty
@@ -616,7 +645,8 @@ public class DataElement
             domainType = dataElement.getDomainType() == null ? domainType : dataElement.getDomainType();
             type = dataElement.getType() == null ? type : dataElement.getType();
             numberType = dataElement.getNumberType() == null ? numberType : dataElement.getNumberType();
-            aggregationOperator = dataElement.getAggregationOperator() == null ? aggregationOperator : dataElement.getAggregationOperator();
+            aggregationOperator = dataElement.getAggregationOperator() == null ? aggregationOperator : dataElement
+                .getAggregationOperator();
             categoryCombo = dataElement.getCategoryCombo() == null ? categoryCombo : dataElement.getCategoryCombo();
             sortOrder = dataElement.getSortOrder() == null ? sortOrder : dataElement.getSortOrder();
             url = dataElement.getUrl() == null ? url : dataElement.getUrl();

@@ -28,6 +28,8 @@
     <property name="type" column="valuetype" length="16" not-null="true" />
 
     <property name="numberType" column="numbertype" length="16" />
+    
+   	<property name="textType" column="textType" length="16" />
 
     <property name="domainType" column="domaintype" length="16" />
 

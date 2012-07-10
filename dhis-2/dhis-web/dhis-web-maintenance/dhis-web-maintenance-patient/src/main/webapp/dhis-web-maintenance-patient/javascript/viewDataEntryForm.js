@@ -162,13 +162,13 @@ function insertDataElement( source, programStageId )
 		var displayName = dataElementName;
 		htmlCode = "<input type=\"checkbox\" title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" title=\"" + displayName + "\">";
 	} 
-	else if ( dataElementType == "date" )
+	else if ( dataElementType == "longText" )
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
 		var displayName = dataElementName;
-		htmlCode = "<input title=\"" + titleValue + " \"name=\"entryfield\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
-	} 
-	else if ( dataElementType == "int" || dataElementType == "string" ) 
+		htmlCode = "<textarea title=\"" + titleValue + " \"name=\"entryfield\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\" ></textarea>";
+	}
+	else if ( dataElementType == "int" || dataElementType == "text" ) 
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName +" (" + dataElementType + ") --";
 		var displayName = dataElementName;
