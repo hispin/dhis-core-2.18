@@ -22,6 +22,10 @@ select {
     width: 265px;
 }
 
+textarea {
+    width: 265px;
+}
+
 .button-list
 {
 	text-align:right;

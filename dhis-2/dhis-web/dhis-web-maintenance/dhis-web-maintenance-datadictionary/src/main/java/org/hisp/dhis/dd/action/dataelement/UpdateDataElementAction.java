@@ -86,7 +86,7 @@ public class UpdateDataElementAction
     {
         this.optionService = optionService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -168,6 +168,13 @@ public class UpdateDataElementAction
         this.valueType = valueType;
     }
 
+    private String textType;
+
+    public void setTextType( String textType )
+    {
+        this.textType = textType;
+    }
+
     private String aggregationOperator;
 
     public void setAggregationOperator( String aggregationOperator )
@@ -225,12 +232,12 @@ public class UpdateDataElementAction
     }
 
     private Integer selectedOptionSetId;
-    
+
     public void setSelectedOptionSetId( Integer selectedOptionSetId )
     {
         this.selectedOptionSetId = selectedOptionSetId;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -269,7 +276,7 @@ public class UpdateDataElementAction
 
         DataElementCategoryCombo categoryCombo = dataElementCategoryService
             .getDataElementCategoryCombo( selectedCategoryComboId );
-        
+
         OptionSet optionSet = optionService.getOptionSet( selectedOptionSetId );
 
         dataElement.setName( name );
@@ -282,6 +289,7 @@ public class UpdateDataElementAction
         dataElement.setDomainType( domainType );
         dataElement.setType( valueType );
         dataElement.setNumberType( numberType );
+        dataElement.setTextType( textType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setZeroIsSignificant( zeroIsSignificant );
