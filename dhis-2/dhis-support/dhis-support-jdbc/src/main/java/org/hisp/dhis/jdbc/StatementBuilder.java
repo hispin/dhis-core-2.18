@@ -154,12 +154,6 @@ public interface StatementBuilder
     
     String deleteOldestOverlappingPatientArchiveData();
     
-    String getPatientsByFullName( String fullName );
-    
-    String getPatientsByFullName( String fullName, int min, int max );
-    
-    String countPatientsByFullName( String fullName );
-
     String queryDataElementStructureForOrgUnit();
 
     String queryRawDataElementsForOrgUnitBetweenPeriods( Integer orgUnitId, List<Integer> betweenPeriodIds);
