@@ -16,7 +16,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 
-import org.hisp.dhis.sms.inbound.HibernateIncomingSmsStore;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsStore;
 import org.hisp.dhis.sms.incoming.SmsMessageEncoding;
@@ -50,8 +49,6 @@ public class SMSInput implements Action {
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
     
-    private String test;
-
     public SMSInput() {
     }
 
@@ -308,15 +305,5 @@ public class SMSInput implements Action {
     public void setSource_id(String source_id) {
         this.source_id = source_id;
     }
-
-    public String getTest() {
-        return test;
-    }
-
-    public void setTest(String test) {
-        System.out.println("\n\n\n test: " + test + " \n\n\n");
-        this.test = test;
-    }
-
 
 }

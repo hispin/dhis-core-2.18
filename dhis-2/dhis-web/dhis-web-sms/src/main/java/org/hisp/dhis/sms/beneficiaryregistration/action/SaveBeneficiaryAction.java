@@ -200,8 +200,9 @@ public class SaveBeneficiaryAction
         }
 
         patient.setGender( gender );
-       // TODO: is this replaced by somting else???? 
+       // TODO: is this replaced by something else???? 
        // patient.setBloodGroup( bloodGroup );
+       
 
         try
         {
