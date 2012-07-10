@@ -27,7 +27,7 @@
 	<tr>
 	    <th>$i18n.getString( "nr" )</th>
 	    <th>$i18n.getString( "data_element" )</th>                   
-	    <th>$i18n.getString( "entry" )</th>
+	    <th>$i18n.getString( "value" )</th>
 	    <th>$i18n.getString( "provided_elsewhere" )</th>             
 	</tr>
 	
