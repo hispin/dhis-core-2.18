@@ -281,7 +281,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN quartersLastYear" );
         executeSql( "ALTER TABLE chart DROP COLUMN last6BiMonths" );
         
-        executeSql( "DROP TABLE chart_periods" );
         executeSql( "ALTER TABLE chart DROP CONSTRAINT chart_title_key" );
         executeSql( "ALTER TABLE chart DROP CONSTRAINT chart_name_key" );
         
