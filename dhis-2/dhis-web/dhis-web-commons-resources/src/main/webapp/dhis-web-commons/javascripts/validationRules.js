@@ -219,11 +219,6 @@ var validationRules = {
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : false
         },
-        "description" : {
-            "rangelength" : [ 3, 250 ],
-            "alphanumericwithbasicpuncspaces" : true,
-            "notOnlyDigits" : true
-        },
         "formName" : {
             "rangelength" : [ 2, 150 ],
             "alphanumericwithbasicpuncspaces" : false,
@@ -311,10 +306,6 @@ var validationRules = {
             "rangelength" : [ 0, 25 ],
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : false
-        },
-        "description" : {
-            "rangelength" : [ 3, 250 ],
-            "alphanumericwithbasicpuncspaces" : true
         },
         "url" : {
             "url" : true,

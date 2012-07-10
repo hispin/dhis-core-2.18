@@ -196,11 +196,20 @@ public class DefaultChartService
 
         User user = currentUserService.getCurrentUser();
 
-        if ( chart.isUserOrganisationUnit() && user != null && user.getOrganisationUnit() != null )
+        if ( user != null && user.getOrganisationUnit() != null )
         {
-            chart.setOrganisationUnit( user.getOrganisationUnit() );
+            OrganisationUnit unit = user.getOrganisationUnit();
+            
+            if ( chart.isUserOrganisationUnit() )
+            {
+                chart.getRelativeOrganisationUnits().add( unit );
+            }
+            else if ( chart.isUserOrganisationUnitChildren() )
+            {
+                chart.getRelativeOrganisationUnits().addAll( unit.hasChild() ? unit.getSortedChildren() : Arrays.asList( unit ) );
+            }
         }
-
+        
         chart.setFormat( format );
 
         return getJFreeChart( chart, !chart.isHideSubtitle() );
@@ -223,7 +232,7 @@ public class DefaultChartService
         chart.setHideLegend( true );
         chart.getIndicators().add( indicator );
         chart.setRelativePeriods( periods );
-        chart.setOrganisationUnit( unit );
+        chart.getOrganisationUnits().add( unit );
         chart.setFormat( format );
 
         return getJFreeChart( chart, title );

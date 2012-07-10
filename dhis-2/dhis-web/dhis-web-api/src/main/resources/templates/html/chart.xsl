@@ -107,6 +107,10 @@
           <td>User organisation unit</td>
           <td> <xsl:value-of select="d:userOrganisationUnit"/> </td>
         </tr>
+        <tr>
+          <td>User organisation unit children</td>
+          <td> <xsl:value-of select="d:userOrganisationUnitChildren"/> </td>
+        </tr>
       </table>
 
       <xsl:apply-templates select="d:organisationUnits|d:dataElements|d:indicators" mode="short"/>
