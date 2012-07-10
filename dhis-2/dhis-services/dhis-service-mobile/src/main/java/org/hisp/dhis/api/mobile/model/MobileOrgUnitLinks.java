@@ -60,7 +60,7 @@ public class MobileOrgUnitLinks
     private String searchUrl;
 
     public static double currentVersion = 2.9;
-    
+
     private String updateNewVersionUrl;
 
     @XmlAttribute
@@ -179,7 +179,6 @@ public class MobileOrgUnitLinks
 
         throws IOException
     {
-        dataOutputStream.writeUTF( this.updateNewVersionUrl );
         dataOutputStream.writeInt( this.id );
         dataOutputStream.writeUTF( this.name );
         dataOutputStream.writeUTF( this.downloadAllUrl );
@@ -189,12 +188,13 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.updateDataSetUrl );
         dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
         dataOutputStream.writeUTF( this.searchUrl );
+        dataOutputStream.writeUTF( this.updateNewVersionUrl );
+
     }
 
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        this.updateNewVersionUrl = dataInputStream.readUTF();
         this.id = dataInputStream.readInt();
         this.name = dataInputStream.readUTF();
         this.downloadAllUrl = dataInputStream.readUTF();
@@ -204,13 +204,7 @@ public class MobileOrgUnitLinks
         this.updateDataSetUrl = dataInputStream.readUTF();
         this.changeUpdateDataSetLangUrl = dataInputStream.readUTF();
         this.searchUrl = dataInputStream.readUTF();
-    }
-
-    public void sendVersion( DataOutputStream dataOutputStream )
-        throws IOException
-    {
-        dataOutputStream.writeDouble( this.currentVersion );
-        System.out.println("welcome send Version method");
+        this.updateNewVersionUrl = dataInputStream.readUTF();
     }
 
     @Override

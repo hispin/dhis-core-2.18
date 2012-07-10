@@ -87,7 +87,6 @@ public class OrgUnits
         {
             unit.serialize( dataOutputStream );
         }
-
     }
 
     @Override
@@ -95,7 +94,7 @@ public class OrgUnits
         throws IOException
     {
         orgUnits = new ArrayList<MobileOrgUnitLinks>();
-        double version = dataInputStream.readDouble();
+        //double version = dataInputStream.readDouble();
         int size = dataInputStream.readInt();
 
         for ( int i = 0; i < size; i++ )
