@@ -59,6 +59,8 @@ public class GenerateReportOrgGroupListingAction
 {
     private static final String PREFIX_FORMULA_SUM = "SUM(";
 
+    private static Map<Integer, List<OrganisationUnit>> childrenGroupMap = new HashMap<Integer, List<OrganisationUnit>>();
+
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -78,31 +80,88 @@ public class GenerateReportOrgGroupListingAction
 
         ExportReportOrganizationGroupListing exportReportInstance = (ExportReportOrganizationGroupListing) exportReport;
 
-        Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels = new HashMap<OrganisationUnitGroup, OrganisationUnitLevel>(
-            exportReportInstance.getOrganisationUnitLevels() );
+        Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUnitGroupAtLevels = exportReportInstance
+            .getOrganisationUnitLevels();
+
+        prepareChildrenGroupMap( exportReportInstance, organisationUnit, orgUnitGroupAtLevels );
 
         this.installReadTemplateFile( exportReportInstance, period, organisationUnit );
+
+        Collection<ExportItem> exportReportItems = null;
 
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ExportItem> exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
+            exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
 
-            generateOutPutFile( exportReportInstance, orgUniGroupAtLevels, exportReportItems, organisationUnit, sheet );
+            generateOutPutFile( exportReportInstance, exportReportItems, sheet );
         }
+
+        /**
+         * Garbage
+         */
+        exportReportItems = null;
+        orgUnitGroupAtLevels = null;
+        childrenGroupMap = null;
     }
 
     // -------------------------------------------------------------------------
     // Supportive method
     // -------------------------------------------------------------------------
 
-    private void generateOutPutFile( ExportReportOrganizationGroupListing exportReport,
-        Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels,
-        Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
+    private void prepareChildrenGroupMap( ExportReportOrganizationGroupListing exportReport,
+        OrganisationUnit organisationUnit, Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUnitGroupAtLevels )
     {
-        List<OrganisationUnit> childrens = new ArrayList<OrganisationUnit>( organisationUnit.getChildren() );
+        OrganisationUnitLevel organisationUnitLevel = null;
+        Collection<OrganisationUnit> membersOfGroup = null;
+        Collection<OrganisationUnit> organisationUnitsAtLevel = null;
+        Collection<OrganisationUnit> childrens = organisationUnit.getChildren();
 
+        for ( OrganisationUnitGroup organisationUnitGroup : exportReport.getOrganisationUnitGroups() )
+        {
+            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+
+            membersOfGroup = organisationUnitGroup.getMembers();
+
+            if ( membersOfGroup != null && !membersOfGroup.isEmpty() )
+            {
+                organisationUnits.addAll( membersOfGroup );
+            }
+
+            organisationUnitLevel = orgUnitGroupAtLevels.get( organisationUnitGroup );
+
+            if ( organisationUnitLevel != null )
+            {
+                organisationUnitsAtLevel = organisationUnitService.getOrganisationUnitsAtLevel( organisationUnitLevel
+                    .getLevel(), organisationUnit );
+
+                organisationUnits.retainAll( organisationUnitsAtLevel );
+            }
+            else
+            {
+                organisationUnits.retainAll( childrens );
+            }
+
+            Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
+
+            childrenGroupMap.put( organisationUnitGroup.getId(), organisationUnits );
+        }
+
+        /**
+         * Garbage
+         */
+        childrens = null;
+        membersOfGroup = null;
+        organisationUnitLevel = null;
+        organisationUnitsAtLevel = null;
+    }
+
+    private void generateOutPutFile( ExportReportOrganizationGroupListing exportReport,
+        Collection<ExportItem> exportReportItems, Sheet sheet )
+    {
+        List<OrganisationUnit> organisationUnits = null;
+        
         for ( ExportItem reportItem : exportReportItems )
         {
             int run = 0;
@@ -115,27 +174,9 @@ public class GenerateReportOrgGroupListingAction
 
             for ( OrganisationUnitGroup organisationUnitGroup : exportReport.getOrganisationUnitGroups() )
             {
-                List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitGroup
-                    .getMembers() );
-
-                OrganisationUnitLevel organisationUnitLevel = orgUniGroupAtLevels.get( organisationUnitGroup );
-
-                if ( organisationUnitLevel != null )
-                {
-                    List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>(
-                        organisationUnitService.getOrganisationUnitsAtLevel( organisationUnitLevel.getLevel(),
-                            organisationUnit ) );
-
-                    organisationUnits.retainAll( organisationUnitsAtLevel );
-                }
-                else
-                {
-                    organisationUnits.retainAll( childrens );
-                }
-
-                Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
-
                 int beginChapter = rowBegin;
+
+                organisationUnits = childrenGroupMap.get( organisationUnitGroup.getId() );
 
                 if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION )
                     && (!organisationUnits.isEmpty()) )
@@ -232,5 +273,7 @@ public class GenerateReportOrgGroupListingAction
                 ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );
             }
         }
+        
+        organisationUnits = null;
     }
 }
