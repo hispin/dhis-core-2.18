@@ -87,30 +87,7 @@ public class GetPatientsByNameAction
     public String execute()
     {
         fullName = fullName.trim();
-
-        int startIndex = fullName.indexOf( ' ' );
-        int endIndex = fullName.lastIndexOf( ' ' );
-
-        String firstName = fullName.toString();
-        String middleName = "";
-        String lastName = "";
-
-        if ( fullName.indexOf( ' ' ) != -1 )
-        {
-            firstName = fullName.substring( 0, startIndex );
-            if ( startIndex == endIndex )
-            {
-                middleName = "";
-                lastName = fullName.substring( startIndex + 1, fullName.length() );
-            }
-            else
-            {
-                middleName = fullName.substring( startIndex + 1, endIndex );
-                lastName = fullName.substring( endIndex + 1, fullName.length() );
-            }
-        }
-
-        String fullName = (firstName + " " + middleName + " " + lastName).trim();
+        
         total = patientService.countGetPatientsByName( fullName );
         this.paging = createPaging( total );
 

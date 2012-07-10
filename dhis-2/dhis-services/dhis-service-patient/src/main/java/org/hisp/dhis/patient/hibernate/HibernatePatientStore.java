@@ -106,9 +106,16 @@ public class HibernatePatientStore
     }
 
     @Override
-    public Collection<Patient> getByNames( String name, Integer min, Integer max )
+    public Collection<Patient> getByNames( String fullName, Integer min, Integer max )
     {
-        String sql = statementBuilder.getPatientsByFullName( name, min, max );
+        fullName = fullName.toLowerCase();
+        String sql = "SELECT patientid FROM patient " + "where lower( " + statementBuilder.getPatientFullName() + ") "
+            + "like '%" + fullName + "%' ";
+
+        if ( min != null && max != null )
+        {
+            sql += statementBuilder.limitRecord( min, max );
+        }
 
         StatementHolder holder = statementManager.getHolder();
 
@@ -198,32 +205,13 @@ public class HibernatePatientStore
     }
 
     @Override
-    public int countGetPatientsByName( String name )
+    public int countGetPatientsByName( String fullName )
     {
-        String sql = statementBuilder.countPatientsByFullName( name );
-        StatementHolder holder = statementManager.getHolder();
-
-        try
-        {
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement.executeQuery( sql );
-
-            if ( resultSet.next() )
-            {
-                return resultSet.getInt( 1 );
-            }
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-        finally
-        {
-            holder.close();
-        }
-
-        return 0;
+        fullName = fullName.toLowerCase();
+        String sql = "SELECT count(*) FROM patient where lower( " + statementBuilder.getPatientFullName() + ") "
+            + "like '%" + fullName + "%' ";
+        
+        return jdbcTemplate.queryForInt( sql );
     }
 
     @Override
@@ -305,12 +293,15 @@ public class HibernatePatientStore
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
-    private String searchPatientSql( boolean count, List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+
+    private String searchPatientSql( boolean count, List<String> searchKeys, OrganisationUnit orgunit, Integer min,
+        Integer max )
     {
         String selector = count ? "count(*) " : "* ";
 
-        String sql = "select " + selector + " from ( select distinct p.patientid, p.firstname, p.middlename, p.lastname, p.gender, p.phonenumber, p.birthdate, p.deathdate,";
+        String sql = "select "
+            + selector
+            + " from ( select distinct p.patientid, p.firstname, p.middlename, p.lastname, p.gender, p.phonenumber, p.birthdate, p.deathdate,";
         String patientWhere = "";
         String patientOperator = " where ";
         String otherWhere = "";
@@ -334,7 +325,8 @@ public class HibernatePatientStore
             }
             else if ( keys[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
-                patientWhere = operator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%" + id + "%' ) or lower(pi.identifier)='" + id + "') ";
+                patientWhere = operator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%" + id
+                    + "%' ) or lower(pi.identifier)='" + id + "') ";
                 patientOperator = " and ";
                 hasIdentifier = true;
             }
@@ -361,12 +353,12 @@ public class HibernatePatientStore
         {
             sql += " left join patientidentifier pi on p.patientid=pi.patientid ";
         }
-        
-        if( orgunit != null )
+
+        if ( orgunit != null )
         {
-            patientWhere += " and p.organisationunitid = " +  orgunit.getId();
+            patientWhere += " and p.organisationunitid = " + orgunit.getId();
         }
-        
+
         sql += patientWhere + " order by p.patientid desc ";
         sql += " ) as searchresult";
         sql += otherWhere;
