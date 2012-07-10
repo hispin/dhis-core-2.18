@@ -37,6 +37,7 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,11 +76,11 @@ public class SaveValueAction
         this.patientDataValueService = patientDataValueService;
     }
 
-    private Boolean providedElsewhere;
+    private CurrentUserService currentUserService;
 
-    public void setProvidedElsewhere( Boolean providedElsewhere )
+    public void setCurrentUserService( CurrentUserService currentUserService )
     {
-        this.providedElsewhere = providedElsewhere;
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -119,7 +120,12 @@ public class SaveValueAction
         return statusCode;
     }
 
-    private ProgramStageInstance programStageInstance;
+    private Boolean providedElsewhere;
+
+    public void setProvidedElsewhere( Boolean providedElsewhere )
+    {
+        this.providedElsewhere = providedElsewhere;
+    }
 
     // -------------------------------------------------------------------------
     // Implementation Action
@@ -128,8 +134,7 @@ public class SaveValueAction
     public String execute()
         throws Exception
     {
-
-        programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
@@ -144,7 +149,7 @@ public class SaveValueAction
         // ---------------------------------------------------------------------
         // Save value
         // ---------------------------------------------------------------------
-
+        
         if ( programStageInstance.getExecutionDate() == null )
         {
             programStageInstance.setExecutionDate( new Date() );
@@ -152,12 +157,13 @@ public class SaveValueAction
         }
 
         providedElsewhere = (providedElsewhere == null) ? false : providedElsewhere;
-
+        String storedBy = currentUserService.getCurrentUsername();
         if ( patientDataValue == null && value != null )
         {
             LOG.debug( "Adding PatientDataValue, value added" );
 
             patientDataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
+            patientDataValue.setStoredBy( storedBy );
             patientDataValue.setProvidedElsewhere( providedElsewhere );
 
             patientDataValueService.savePatientDataValue( patientDataValue );
@@ -173,7 +179,8 @@ public class SaveValueAction
             patientDataValue.setValue( value );
             patientDataValue.setTimestamp( new Date() );
             patientDataValue.setProvidedElsewhere( providedElsewhere );
-
+            patientDataValue.setStoredBy( storedBy );
+            
             patientDataValueService.updatePatientDataValue( patientDataValue );
         }
 

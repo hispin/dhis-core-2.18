@@ -64,8 +64,6 @@ public class ProgramStageInstance
 
     private boolean completed = false;
 
-    private String storedBy;
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -247,15 +245,5 @@ public class ProgramStageInstance
     public void setOrganisationUnit( OrganisationUnit organisationUnit )
     {
         this.organisationUnit = organisationUnit;
-    }
-
-    public String getStoredBy()
-    {
-        return storedBy;
-    }
-
-    public void setStoredBy( String storedBy )
-    {
-        this.storedBy = storedBy;
     }
 }

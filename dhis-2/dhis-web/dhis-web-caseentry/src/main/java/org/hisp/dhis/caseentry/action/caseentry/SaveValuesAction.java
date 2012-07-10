@@ -173,14 +173,12 @@ public class SaveValuesAction
         // Add a new program-stage-instance
         // ---------------------------------------------------------------------
 
-        String storedBy = currentUserService.getCurrentUsername();
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
         programStageInstance.setProgramInstance( programInstance );
         programStageInstance.setProgramStage( programStage );
         programStageInstance.setStageInProgram( programStage.getStageInProgram() );
         programStageInstance.setDueDate( currentDate );
         programStageInstance.setExecutionDate( currentDate );
-        programStageInstance.setStoredBy( storedBy );
         programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
         programStageInstance.setCompleted( true );
 
@@ -192,6 +190,7 @@ public class SaveValuesAction
 
         HttpServletRequest request = ServletActionContext.getRequest();
 
+        String storedBy = currentUserService.getCurrentUsername();
         Collection<ProgramStageDataElement> psDataElements = programStage.getProgramStageDataElements();
         for ( ProgramStageDataElement psDataElement : psDataElements )
         {
@@ -204,6 +203,7 @@ public class SaveValuesAction
                 boolean providedElsewhere = (request.getParameter( providedElsewhereId ) == null) ? false : true;
 
                 PatientDataValue patientDataValue = new PatientDataValue( programStageInstance, psDataElement.getDataElement(), new Date(), value );
+                patientDataValue.setStoredBy( storedBy );
                 patientDataValue.setProvidedElsewhere( providedElsewhere );
                 patientDataValueService.savePatientDataValue( patientDataValue );
 
