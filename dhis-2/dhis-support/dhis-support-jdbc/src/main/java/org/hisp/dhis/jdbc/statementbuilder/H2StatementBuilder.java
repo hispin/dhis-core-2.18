@@ -344,4 +344,9 @@ public class H2StatementBuilder
     {
         return "DATEADD('DAY'," + days + "," + dateField + ")";
     }
+    
+    public String getPatientFullName()
+    {
+        return  "concat( firstname, \" \",middleName , \" \" , lastname)";
+    }
 }

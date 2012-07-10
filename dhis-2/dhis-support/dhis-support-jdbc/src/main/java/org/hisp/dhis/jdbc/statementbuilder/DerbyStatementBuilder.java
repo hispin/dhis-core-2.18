@@ -323,4 +323,9 @@ public class DerbyStatementBuilder
     {
         return "DATEADD('DAY'," + days + "," + dateField + ")";
     }
+    
+    public String getPatientFullName()
+    {
+        return  "concat( firstname, \" \",middleName , \" \" , lastname)";
+    }
 }

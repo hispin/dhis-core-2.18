@@ -60,7 +60,7 @@ function searchPatientsOnKeyUp( event )
 	
 	if ( key==13 )// Enter
 	{
-		validateSearch();
+		validateAdvancedSearch();
 	}
 }
 
@@ -69,12 +69,6 @@ function getKeyCode(e)
 	 if (window.event)
 		return window.event.keyCode;
 	 return (e)? e.which : null;
-}
- 
-function validateSearch()
-{
-	$.postUTF8( 'validateSearch.action',{ searchText:getFieldValue( 'searchText' )}
-		, searchValidationCompleted	);
 }
 
 function searchValidationCompleted( messageElement )

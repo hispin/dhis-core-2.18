@@ -277,7 +277,7 @@ public class HibernatePatientStore
 
             ResultSet resultSet = statement.executeQuery( sql );
 
-            if ( resultSet.next() )
+            while ( resultSet.next() )
             {
                 int patientId = resultSet.getInt( 1 );
                 patients.add( get( patientId ) );
@@ -334,24 +334,7 @@ public class HibernatePatientStore
             }
             else if ( keys[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
-                int startIndex = id.indexOf( ' ' );
-                int endIndex = id.lastIndexOf( ' ' );
-                String firstName = id.substring( 0, startIndex );
-                String middleName = "";
-                String lastName = "";
-                
-                if ( startIndex == endIndex )
-                {
-                    middleName = "";
-                    lastName = id.substring( startIndex + 1, id.length() );
-                }
-                else
-                {
-                    middleName = id.substring( startIndex + 1, endIndex );
-                    lastName = id.substring( endIndex + 1, id.length() );
-                }
-                
-                patientWhere = operator + "( ( lower(p.firstname)='" + firstName + "' and lower(p.middlename)='" + middleName + "' and lower(p.lastname)='" + lastName + "' ) or lower(pi.identifier)='" + id + "') ";
+                patientWhere = operator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%" + id + "%' ) or lower(pi.identifier)='" + id + "') ";
                 patientOperator = " and ";
                 hasIdentifier = true;
             }
@@ -392,7 +375,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-        
+
         return sql;
     }
 

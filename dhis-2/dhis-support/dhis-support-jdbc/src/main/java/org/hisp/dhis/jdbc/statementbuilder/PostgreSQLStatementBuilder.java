@@ -276,7 +276,7 @@ public class PostgreSQLStatementBuilder
     public String getPatientsByFullName( String fullName )
     {
         return "SELECT patientid FROM patient " +
-                "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
+                "where lower( firstname || ' ' || middleName || ' ' || lastname ) " +
                 "like lower('%" + fullName + "%') ";
     }
     
@@ -338,5 +338,10 @@ public class PostgreSQLStatementBuilder
     public String getAddDate( String dateField, int days )
     {
         return "(" + dateField + "+" + days + ")";
+    }
+    
+    public String getPatientFullName()
+    {
+        return  "firstname || ' ' || middleName || ' ' || lastname";
     }
 }
