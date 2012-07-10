@@ -250,7 +250,6 @@ public class DefaultProgramDataEntryService
                 else if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
                 {
                     inputHTML = populateCustomDataEntryForDate( inputHTML, dataElementValue );
-                    inputHTML += jQueryCalendar;
                 }
                 else if ( DataElement.VALUE_TYPE_TRUE_ONLY.equals( dataElement.getType() ) )
                 {
@@ -266,17 +265,24 @@ public class DefaultProgramDataEntryService
                 // disable
                 // If programStagsInstance is completed then disabled it
                 // -----------------------------------------------------------
-                
+
                 disabled = "";
                 if ( programStageId != programStage.getId() )
                 {
                     disabled = "disabled=\"\"";
                 }
-
-                else if ( !programStageInstance.isCompleted() && allowProvidedElsewhere )
+                else
                 {
-                    // Add ProvidedByOtherFacility checkbox
-                    inputHTML = addProvidedElsewherCheckbox( inputHTML, patientDataValue, programStage );
+                    if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
+                    {
+                        inputHTML += jQueryCalendar;
+                    }
+                    
+                    if ( !programStageInstance.isCompleted() && allowProvidedElsewhere )
+                    {
+                        // Add ProvidedByOtherFacility checkbox
+                        inputHTML = addProvidedElsewherCheckbox( inputHTML, patientDataValue, programStage );
+                    }
                 }
 
                 // -----------------------------------------------------------
@@ -549,7 +555,7 @@ public class DefaultProgramDataEntryService
 
         inputHTML = inputHTML.replace( "name=\"entryfield\"", jsCodeForDate );
         inputHTML += " />";
-        
+
         return inputHTML;
     }
 
