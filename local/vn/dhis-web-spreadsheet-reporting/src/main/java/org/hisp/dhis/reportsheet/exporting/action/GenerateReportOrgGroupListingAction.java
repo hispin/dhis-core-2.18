@@ -103,7 +103,7 @@ public class GenerateReportOrgGroupListingAction
          */
         exportReportItems = null;
         orgUnitGroupAtLevels = null;
-        childrenGroupMap = null;
+        childrenGroupMap.clear();
     }
 
     // -------------------------------------------------------------------------
@@ -161,7 +161,7 @@ public class GenerateReportOrgGroupListingAction
         Collection<ExportItem> exportReportItems, Sheet sheet )
     {
         List<OrganisationUnit> organisationUnits = null;
-        
+
         for ( ExportItem reportItem : exportReportItems )
         {
             int run = 0;
@@ -273,7 +273,7 @@ public class GenerateReportOrgGroupListingAction
                 ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );
             }
         }
-        
+
         organisationUnits = null;
     }
 }
