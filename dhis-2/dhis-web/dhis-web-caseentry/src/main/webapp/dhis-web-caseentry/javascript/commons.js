@@ -99,7 +99,7 @@ function searchObjectOnChange( this_ )
 	var element = jQuery('#' + container + ' [id=searchText]');
 	var valueType = jQuery('#' + container+ ' [id=searchObjectId] option:selected').attr('valueType');
 	
-	if( attributeId == '-1' )
+	if( attributeId == 'fixedAttr_birthDate' )
 	{
 		element.replaceWith( getDateField( container ) );
 		datePickerValid( 'searchText_' + container );
