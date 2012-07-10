@@ -66,13 +66,13 @@ DV.conf = {
 				r = Ext.JSON.decode(r.responseText);
 				var obj = {
 					system: {
-						rootnodes: [],
-						periods: {},
-						organisationunitgroupsets: r.ougs
+						rootnodes: []
 					},
 					user: {
 						id: r.user.id,
-						isadmin: r.user.isAdmin							
+						isadmin: r.user.isAdmin,
+						ou: r.user.ou,
+						ouc: r.user.ouc
 					}
 				};
 				for (var i = 0; i < r.rn.length; i++) {
@@ -85,11 +85,11 @@ DV.conf = {
     finals: {
         ajax: {
             path_visualizer: '../',
-            path_commons: '../../dhis-web-commons-ajax-json/',
             path_api: '../../api/',
+            path_commons: '../../dhis-web-commons-ajax-json/',
             path_portal: '../../dhis-web-portal/',
-            path_images: 'images/',
             path_lib: '../../dhis-web-commons/javascripts/',
+            path_images: 'images/',
             initialize: 'initialize.action',
             redirect: 'redirect.action',
             data_get: 'chartValues.json',
@@ -651,17 +651,6 @@ Ext.onReady( function() {
                 getGroupSetId: function() {
 					var value = DV.cmp.dimension.organisationunitgroup.panel.groupsets.getValue();
 					return !value || value === DV.i18n.none || value === DV.conf.finals.cmd.none ? null : value;
-				},
-				getGroupNameByGroupId: function(id) {
-					var gs = DV.init.system.organisationunitgroupsets;
-					for (var k in gs) {
-						for (var i = 0; i < gs[k].length; i++) {
-							if (gs[k][i].id == id) {
-								return gs[k][i].name;
-							}
-						}
-					}
-					return null;
 				}
             },
             panel: {
@@ -1562,8 +1551,10 @@ Ext.onReady( function() {
 							for (var i = 0; i < f.dataSets.length; i++) {
 								DV.c.dataset.objects.push({id: f.dataSets[i].id, name: DV.conf.util.jsonEncodeString(f.dataSets[i].name)});
 							}
-						}						
+						}
+						
 						DV.c.period.rp = f.relativePeriods;
+						
 						for (var i = 0; i < f.organisationUnits.length; i++) {
 							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].id, name: DV.conf.util.jsonEncodeString(f.organisationUnits[i].name)});
 						}
@@ -1621,10 +1612,6 @@ Ext.onReady( function() {
 				return;
 			}
 			
-			this.validation.objects[DV.c.dimension.series]();
-			this.validation.objects[DV.c.dimension.category]();
-			this.validation.objects[DV.c.dimension.filter](true);
-			
 			DV.c.series = DV.c[DV.c.dimension.series];
 			DV.c.category = DV.c[DV.c.dimension.category];
 			DV.c.filter = DV.c[DV.c.dimension.filter];
@@ -1642,18 +1629,6 @@ Ext.onReady( function() {
 			DV.c.dataset.ids = DV.util.dimension.dataset.getIds();
 			DV.c.period.ids = DV.util.dimension.period.getIds();
 			DV.c.organisationunit.ids = DV.util.dimension.organisationunit.getIds();
-						
-			if (!this.validation.categories()) {
-				return;
-			}
-            
-            this.validation.trendline();
-            
-            this.validation.targetline();
-            
-            this.validation.baseline();
-            
-            this.validation.render();
             
             if (id) {
 				this.setUI();
@@ -1820,46 +1795,43 @@ Ext.onReady( function() {
 					}
 				},
 				organisationunit: function(isFilter) {
-					if (isFilter) {
-						if (DV.c.organisationunit.objects.length > 1) {
-							DV.chart.warnings.push(DV.i18n.wm_multiple_filter_orgunit + ' ' + DV.i18n.wm_first_filter_used);
-						}
-						else if (DV.c.organisationunit.groupsetid) {
-							DV.chart.warnings.push(DV.i18n.wm_multiple_filter_groups + ' ' + DV.i18n.wm_first_filter_used);
-						}
-						DV.c.organisationunit.objects = DV.c.organisationunit.objects.slice(0,1);
+					if (isFilter && DV.c.organisationunit.names.length > 1) {
+						var msg = DV.c.organisationunit.groupsetid ? DV.i18n.wm_multiple_filter_groups : DV.i18n.wm_multiple_filter_orgunit;
+						DV.chart.warnings.push(msg + ' ' + DV.i18n.wm_first_filter_used);
+						DV.c.organisationunit.names = DV.c.organisationunit.names.slice(0,1);
 					}
 				}
 			},
 			categories: function() {
-				if (DV.c.category.objects.length < 2 && (DV.c.type === DV.conf.finals.chart.line || DV.c.type === DV.conf.finals.chart.area)) {
+				if (DV.c.category.names.length < 2 && (DV.c.type === DV.conf.finals.chart.line || DV.c.type === DV.conf.finals.chart.area)) {
 					DV.util.notification.error(DV.i18n.et_line_area_categories, DV.i18n.em_line_area_categories);
+					DV.util.mask.hideMask();
 					return false;
 				}
 				return true;
 			},
 			trendline: function() {
 				if (DV.c.trendline) {
-					var reasons = [];
+					var warnings = [];
 					if (DV.c.type === DV.conf.finals.chart.stackedcolumn || DV.c.type === DV.conf.finals.chart.stackedbar || DV.c.type === DV.conf.finals.chart.area) {
-						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_stacked_chart);
+						warnings.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_stacked_chart);
 						DV.c.trendline = false;
 					}
 					else if (DV.c.type === DV.conf.finals.chart.pie) {
-						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
+						warnings.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
 						DV.c.trendline = false;
 					}
 					
-					if (DV.c.category.objects.length < 2) {
-						reasons.push(DV.i18n.wm_required_categories);
+					if (DV.c.category.names.length < 2) {					
+						warnings.push(DV.i18n.wm_required_categories);
 						DV.c.trendline = false;
 					}
 					
-					if (reasons.length) {
+					if (warnings.length) {
 						var text = DV.i18n.wm_trendline_deactivated + ' (';
-						for (var i = 0; i < reasons.length; i++) {
+						for (var i = 0; i < warnings.length; i++) {
 							text += i > 0 ? ' + ' : '';
-							text += reasons[i];
+							text += warnings[i];
 						}
 						text += ').';
 						DV.chart.warnings.push(text);
@@ -1868,26 +1840,26 @@ Ext.onReady( function() {
 			},
 			targetline: function() {
 				if (DV.c.targetlinevalue) {
-					var reasons = [];
+					var warnings = [];
 					if (DV.c.type === DV.conf.finals.chart.stackedcolumn || DV.c.type === DV.conf.finals.chart.stackedbar || DV.c.type === DV.conf.finals.chart.area) {
-						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_stacked_chart);
+						warnings.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_stacked_chart);
 						DV.c.targetlinevalue = null;
 					}
 					else if (DV.c.type === DV.conf.finals.chart.pie) {
-						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
+						warnings.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
 						DV.c.targetlinevalue = null;
 					}
 					
-					if (DV.c.category.objects.length < 2) {
-						reasons.push(DV.i18n.wm_required_categories);
+					if (DV.c.category.names.length < 2) {
+						warnings.push(DV.i18n.wm_required_categories);
 						DV.c.targetlinevalue = null;
 					}
 					
-					if (reasons.length) {
+					if (warnings.length) {
 						var text = DV.i18n.wm_targetline_deactivated + ' (';
-						for (var i = 0; i < reasons.length; i++) {
+						for (var i = 0; i < warnings.length; i++) {
 							text += i > 0 ? ' + ' : '';
-							text += reasons[i];
+							text += warnings[i];
 						}
 						text += ').';
 						DV.chart.warnings.push(text);
@@ -1896,26 +1868,26 @@ Ext.onReady( function() {
 			},
 			baseline: function() {
 				if (DV.c.baselinevalue) {
-					var reasons = [];
+					var warnings = [];
 					if (DV.c.type === DV.conf.finals.chart.stackedcolumn || DV.c.type === DV.conf.finals.chart.stackedbar || DV.c.type === DV.conf.finals.chart.area) {
-						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_stacked_chart);
+						warnings.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_stacked_chart);
 						DV.c.baselinevalue = null;
 					}
 					else if (DV.c.type === DV.conf.finals.chart.pie) {
-						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
+						warnings.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
 						DV.c.baselinevalue = null;
 					}
 					
-					if (DV.c.category.objects.length < 2) {
-						reasons.push(DV.i18n.wm_required_categories);
+					if (DV.c.category.names.length < 2) {
+						warnings.push(DV.i18n.wm_required_categories);
 						DV.c.baselinevalue = null;
 					}
 					
-					if (reasons.length) {
+					if (warnings.length) {
 						var text = DV.i18n.wm_baseline_deactivated + ' (';
-						for (var i = 0; i < reasons.length; i++) {
+						for (var i = 0; i < warnings.length; i++) {
 							text += i > 0 ? ' + ' : '';
-							text += reasons[i];
+							text += warnings[i];
 						}
 						text += ').';
 						DV.chart.warnings.push(text);
@@ -1992,11 +1964,25 @@ Ext.onReady( function() {
 					}
 					
                     DV.value.values = DV.util.value.jsonfy(r.v);
-					
+                    
 					DV.c.data.names = DV.conf.util.jsonEncodeArray(r.d);
 					DV.c.period.names = DV.conf.util.jsonEncodeArray(r.p);
 					DV.c.organisationunit.names = DV.conf.util.jsonEncodeArray(r.o);
-                    
+			
+					DV.state.validation.objects[DV.c.dimension.series]();
+					DV.state.validation.objects[DV.c.dimension.category]();
+					DV.state.validation.objects[DV.c.dimension.filter](true);
+								
+					if (!DV.state.validation.categories()) {
+						return;
+					}
+            
+					DV.state.validation.trendline();					
+					DV.state.validation.targetline();					
+					DV.state.validation.baseline();
+            
+					DV.state.validation.render();
+							
                     if (exe) {
                         DV.chart.getData(true);
                     }
@@ -2146,8 +2132,7 @@ Ext.onReady( function() {
 				yField: DV.c.series.names,
 				stacked: stacked,
 				style: {
-					opacity: 0.8,
-					stroke: '#333'
+					opacity: 0.8
 				},
 				tips: DV.util.chart.def.series.getTips()
 			};
@@ -2188,8 +2173,7 @@ Ext.onReady( function() {
 				yField: DV.c.series.names,
 				stacked: stacked,
 				style: {
-					opacity: 0.8,
-					stroke: '#333'
+					opacity: 0.8
 				},
 				tips: DV.util.chart.def.series.getTips()
 			};
@@ -2247,8 +2231,7 @@ Ext.onReady( function() {
 				xField: DV.conf.finals.data.domain,
 				yField: DV.c.series.names,
 				style: {
-					opacity: 0.65,
-					stroke: '#555'
+					opacity: 0.65
 				}
 			});
 			
@@ -2278,7 +2261,7 @@ Ext.onReady( function() {
                     },
                     highlight: {
                         segment: {
-                            margin: 10
+                            margin: 8
                         }
                     },
                     style: {
