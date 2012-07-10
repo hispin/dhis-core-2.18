@@ -16,7 +16,7 @@
 
 <hr style="clear:both">
 
-<form id="searchForm" name="searchForm" action="searchPatient.action" method="post" onsubmit="return validateSearch()">
+<form id="searchForm" name="searchForm" action="searchPatient.action" method="post" onsubmit="return validateAdvancedSearch();">
 <table> 
     <tr>           
         <td>

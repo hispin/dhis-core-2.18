@@ -167,4 +167,6 @@ public interface StatementBuilder
     String limitRecord( int min, int max );
     
     String getAddDate( String dateField, int days );
+    
+    String getPatientFullName();
 }

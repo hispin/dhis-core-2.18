@@ -341,4 +341,9 @@ public class MySQLStatementBuilder
     {
         return "ADDDATE(" + dateField + "," + days + ")";
     }
+    
+    public String getPatientFullName()
+    {
+        return  "concat( firstname, \" \",middleName , \" \" , lastname)";
+    }
 }
