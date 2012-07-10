@@ -117,6 +117,7 @@ public class TableAlteror
 
         updateMultiOrgunitTabularReportTable();
         updateProgramStageTabularReportTable();
+        moveStoredByFormStageInstanceToDataValue();
     }
 
     // -------------------------------------------------------------------------
@@ -126,7 +127,7 @@ public class TableAlteror
     private void updateProgramStageInstanceOrgunit()
     {
         StatementHolder holder = statementManager.getHolder();
-        
+
         try
         {
             Statement statement = holder.getStatement();
@@ -232,13 +233,14 @@ public class TableAlteror
 
             while ( resultSet.next() )
             {
-                executeSql( " INSERT INTO patienttabularreport_organisationUnits ( patienttabularreportid, organisationunitid ) VALUES ( " + resultSet.getInt( 1 ) + ", " + resultSet.getInt( 2 ) + ")" );
+                executeSql( " INSERT INTO patienttabularreport_organisationUnits ( patienttabularreportid, organisationunitid ) VALUES ( "
+                    + resultSet.getInt( 1 ) + ", " + resultSet.getInt( 2 ) + ")" );
             }
             executeSql( "ALTER TABLE patienttabularreport DROP COLUMN organisationunitid" );
         }
         catch ( Exception e )
         {
-           
+
         }
     }
 
@@ -252,23 +254,52 @@ public class TableAlteror
 
             ResultSet resultSet = statement
                 .executeQuery( "SELECT pd.patienttabularreportid, tr.programstageid, pd.elt, sort_order "
-                                + " FROM patienttabularreport_dataelements pd inner join patienttabularreport  tr"
-                                + " on pd.patienttabularreportid=tr.patienttabularreportid"
-                                + " order by pd.patienttabularreportid" );
+                    + " FROM patienttabularreport_dataelements pd inner join patienttabularreport  tr"
+                    + " on pd.patienttabularreportid=tr.patienttabularreportid" + " order by pd.patienttabularreportid" );
 
             while ( resultSet.next() )
             {
-                executeSql( "INSERT INTO patienttabularreport_programstagedataelements ( patienttabularreportid, programstageid, dataelementid, sort_order ) VALUES ( " + resultSet.getInt( 1 ) + ", " + resultSet.getInt( 2 ) + ", " + resultSet.getInt( 3 ) + ", " + resultSet.getInt( 4 ) + ")" );
+                executeSql( "INSERT INTO patienttabularreport_programstagedataelements ( patienttabularreportid, programstageid, dataelementid, sort_order ) VALUES ( "
+                    + resultSet.getInt( 1 )
+                    + ", "
+                    + resultSet.getInt( 2 )
+                    + ", "
+                    + resultSet.getInt( 3 )
+                    + ", "
+                    + resultSet.getInt( 4 ) + ")" );
             }
             executeSql( "ALTER TABLE patienttabularreport DROP COLUMN programstageid" );
             executeSql( "DROP TABLE patienttabularreport_dataelements" );
         }
         catch ( Exception e )
         {
-           
+
         }
     }
-    
+
+    private void moveStoredByFormStageInstanceToDataValue()
+    {
+        try
+        {
+            StatementHolder holder = statementManager.getHolder();
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement.executeQuery( "SELECT programstageinstanceid, storedBy"
+                + " FROM programstageinstance where storedBy is not null" );
+
+            while ( resultSet.next() )
+            {
+                executeSql( "UPDATE patientdatavalue SET storedBy='" + resultSet.getString( 2 )
+                    + "' where programstageinstanceid=" + resultSet.getInt( 1 ) );
+            }
+
+            executeSql( "ALTER TABLE programstageinstance DROP COLUMN storedBy" );
+        }
+        catch ( Exception ex )
+        {
+        }
+    }
+
     private int executeSql( String sql )
     {
         try

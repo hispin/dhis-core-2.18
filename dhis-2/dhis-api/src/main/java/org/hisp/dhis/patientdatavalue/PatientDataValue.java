@@ -54,7 +54,9 @@ public class PatientDataValue
     private String value;
 
     private Boolean providedElsewhere;
-    
+
+    private String storedBy;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -180,4 +182,13 @@ public class PatientDataValue
         return value;
     }
 
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
+
+    public void setStoredBy( String storedBy )
+    {
+        this.storedBy = storedBy;
+    }
 }
