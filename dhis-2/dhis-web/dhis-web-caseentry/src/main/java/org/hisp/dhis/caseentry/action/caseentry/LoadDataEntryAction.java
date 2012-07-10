@@ -47,8 +47,6 @@ import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 
-import sun.security.util.DisabledAlgorithmConstraints;
-
 import com.opensymphony.xwork2.Action;
 
 /**
