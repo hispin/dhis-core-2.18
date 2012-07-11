@@ -26,6 +26,9 @@
  */
 package org.hisp.dhis.light.namebaseddataentry.action;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -127,12 +130,32 @@ public class GetRepeatableEventRegistrationFormAction
         this.patientId = patientId;
     }
 
+    private String defaultDueDate;
+    
+    public String getDefaultDueDate()
+    {
+        return defaultDueDate;
+    }
+
+    public void setDefaultDueDate( String defaultDueDate )
+    {
+        this.defaultDueDate = defaultDueDate;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
         programStage = programStageService.getProgramStage( programStageId );
         patientId = programInstanceService.getProgramInstance( programInstanceId ).getPatient().getId();
+
+        Calendar cal = Calendar.getInstance();
+        int standardIntervalDay = 0;
+        if (programStage.getStandardInterval() != null) {
+            standardIntervalDay = programStage.getStandardInterval();
+        }
+        cal.add( Calendar.DATE,  standardIntervalDay);
+        defaultDueDate = new SimpleDateFormat( "yyyy-MM-dd" ).format( cal.getTime() );
         return SUCCESS;
     }
 

@@ -39,11 +39,44 @@
 			>$i18n.getString( "transgender" )</option>
 		</select>
 		
-		<label>$i18n.getString( "date_of_birth" ) [yyyy-MM-dd] </label>
+		<label>$i18n.getString( "date_of_birth_type" )</label>
+		<select name="dobType">
+			<option value="A"
+			#if($previousValues.get("dobType") == "A")
+				selected
+			#end
+			>$i18n.getString( "approximated" )</option>
+			
+			<option value="F"
+			#if($previousValues.get("dobType") == "D")
+				selected
+			#end
+			>$i18n.getString( "declared" )</option>
+			
+			<option value="T"
+			#if($previousValues.get("dobType") == "V")
+				selected
+			#end
+			>$i18n.getString( "verified" )</option>
+		</select>
+		
+		<label>$i18n.getString( "date_of_birth" )</label>
 		#if( $validationMap.get( "dob" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
      	#end
 		<input type="text" name="dateOfBirth" value="$!previousValues.get("dob")" />
+		
+		#foreach($patientIdentifierType in $patientIdentifierTypes)
+			<label>$patientIdentifierType.getName()</label>
+			<input type="text" name="$patientIdentifierType.getId()" value="$!previousValues.get($patientIdentifierType.getId())" />
+		#end
+		
+		#foreach($patientAttribute in $patientAttributes)
+			<label>$patientAttribute.getName()</label>
+			<input type="text" name="$patientAttribute.getId()" value="$!previousValues.get($patientAttribute.getId())" />
+		#end
+
+		
 	</p>
 </div>
 

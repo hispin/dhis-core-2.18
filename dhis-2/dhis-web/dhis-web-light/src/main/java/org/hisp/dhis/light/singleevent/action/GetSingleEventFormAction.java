@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -122,11 +124,11 @@ public class GetSingleEventFormAction
         return this.update;
     }
 
-    private List<String> dynForm = new ArrayList<String>( 100 );
+    List<DataElement> dataElements = new ArrayList<DataElement>();
 
-    public List<String> getDynForm()
+    public List<DataElement> getDataElements()
     {
-        return dynForm;
+        return dataElements;
     }
 
     private ArrayList<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
@@ -153,7 +155,14 @@ public class GetSingleEventFormAction
         ProgramStage programStage = program.getProgramStages().iterator().next();
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
         Collections.sort( programStageDataElements, OrderBySortOrder );
-        dynForm.clear();
+
+        if ( programStageDataElements != null )
+        {
+            for ( ProgramStageDataElement each : programStageDataElements )
+            {
+                dataElements.add( each.getDataElement() );
+            }
+        }
         return SUCCESS;
     }
 

@@ -9,7 +9,7 @@
 		#if( $validationMap.get( "enrollmentDate" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "dueDate" ))</span>
      	#end
-		<input type="text" name="nextDueDate" value="$!previousValues.get("dueDate")" />
+		<input type="text" name="nextDueDate" value="#if($previousValues.get("dueDate"))$previousValues.get("dueDate")#else$defaultDueDate#end" />
 	</p>
 </div>
 
