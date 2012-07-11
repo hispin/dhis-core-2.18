@@ -64,14 +64,21 @@ public class GenerateReportVerticalCategoryAction
 
         this.installReadTemplateFile( exportReportInstance, period, unit );
 
+        Collection<ExportItem> exportReportItems = null;
+        
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ExportItem> exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
+            exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
 
             this.generateVerticalOutPutFile( exportReportInstance, exportReportItems, unit, sheet );
         }
+        
+        /**
+         * Garbage
+         */
+        exportReportItems = null;
     }
 
     // -------------------------------------------------------------------------
