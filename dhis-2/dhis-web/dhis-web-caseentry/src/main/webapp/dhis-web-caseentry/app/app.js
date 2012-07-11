@@ -219,7 +219,8 @@ Ext.onReady( function() {
                 if (selected.length) {
                     var array = [];
                     Ext.Array.each(selected, function(item) {
-                        array.push({id: item, name: a.store.getAt(a.store.findExact('id', item)).data.name});
+						var data = a.store.findExact('id', item);
+                        array.push({id: item, name: a.store.getAt(data).data.name, compulsory: a.store.getAt(data).data.compulsory, valueType: a.store.getAt(data).data.valueType});
                     });
                     s.store.add(array);
                 }
@@ -232,7 +233,7 @@ Ext.onReady( function() {
 				{
 					if( elements[i].style.display != 'none' )
 					{
-						array.push({id: a.store.getAt(i).data.id, name: a.store.getAt(i).data.name});
+						array.push({id: a.store.getAt(i).data.id, name: a.store.getAt(i).data.name, compulsory: a.store.getAt(i).data.compulsory, valueType: a.store.getAt(i).data.valueType});
 					}
 				}
 				s.store.add(array);
@@ -254,7 +255,7 @@ Ext.onReady( function() {
 				Ext.Array.each(s.store.data.items, function(item) {
 					if( elements[index].style.display != 'none' )
 					{
-					  arr.push( item.data.id );
+					  array.push({id: a.store.getAt(i).data.id, name: a.store.getAt(i).data.name, compulsory: a.store.getAt(i).data.compulsory, valueType: a.store.getAt(i).data.valueType});
 					}
 					index++;
 				}); 
@@ -1129,7 +1130,7 @@ Ext.onReady( function() {
 			grid.getView().getNode(e.rowIdx).classList.remove('hidden');
 			
 			var oldValue = e.originalValue;
-			var value = e.value;
+			var value = e.column.field.rawValue;
 			if( value == oldValue)
 			{
 				return false;
@@ -1431,8 +1432,7 @@ Ext.onReady( function() {
 					},
 					validateedit: function( editor, e, eOpts )
 					{
-						var newValue = editor.editors.items[editor.editors.items.length-1].field.rawValue;
-						if( e.column.compulsory && newValue =='' )
+						if( e.column.compulsory && e.value =='' )
 						{
 							TR.util.notification.error( TR.i18n.not_empty, TR.i18n.not_empty );
 							return false;
