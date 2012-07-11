@@ -30,13 +30,10 @@
 				#set( $dataElementName = $dataElement.name )
 			#end
 				#if (! $dataElement.getOptionSet())			
-					
 					#set( $key = "DE${dataElement.id}" )
-
 					<label>$encoder.htmlEncode( $dataElementName )
 					#if($dataElement.type=="date") [yyyy-MM-dd] #end
 					</label>
-					
 					#if( $typeViolations.get( $key ) )
                 		#set( $typeViolation = $typeViolations.get( $key ) )
             			<br /><span style="color: #990000;">$prevDataValues.get($key) $i18n.getString($typeViolation)</span>
@@ -49,41 +46,23 @@
 							<option #if( $prevDataValues.get( $key ) == "false" ) selected="selected" #end value="false">$i18n.getString("no")</option>
 						</select>
 					#else
-						<input type=
-						#if($dataElement.type=="string") 
-							"text"
-						#elseif ($dataElement.type=="int" ) 
-							"text" 
-						#else 
-							"$dataElement.type" 
-						#end 
-						name="$key" value="$!prevDataValues.get($key)" />
+						<input type="text" name="$key" value="$!prevDataValues.get($key)" />
 					#end
 
 				#elseif ($dataElement.getOptionSet())
 					
 					#set( $options = $dataElement.getOptionSet().getOptions() )
 					#set( $key = "DE${dataElement.id}" )
-
-					$dataElementName
-
+					<label>$encoder.htmlEncode( $dataElementName )
+					#if($dataElement.type=="date") [yyyy-MM-dd] #end
+					</label>
 					#if( $typeViolations.get( $key ) )
                     	#set( $typeViolation = $typeViolations.get( $key ) )
                 		<br /><span style="color: #990000;"> $prevDataValues.get($key) $i18n.getString($typeViolation)</span>
                 	#end
                 
-					<select type=
-					#if($dataElement.type=="string") 
-						"text"
-					#elseif($dataElement.type=="int" ) 
-						"text"
-					#else 
-						"$dataElement.type"
-					#end 
-					name="$key" />
-				
+					<select type="text" name="$key" />
 					#set( $selected=false )
-
 					#foreach ($option in $options)
 						<option value="$option"
 						#if( $prevDataValues.get( $key ) == $option ) 

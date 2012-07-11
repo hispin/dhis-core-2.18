@@ -98,7 +98,7 @@ public class SaveBeneficiaryAction
     {
         this.patientFullName = patientFullName;
     }
-    
+
     private String gender;
 
     public String getGender()
@@ -159,6 +159,18 @@ public class SaveBeneficiaryAction
         this.previousValues = previousValues;
     }
 
+    private String dobType;
+
+    public String getDobType()
+    {
+        return dobType;
+    }
+
+    public void setDobType( String dobType )
+    {
+        this.dobType = dobType;
+    }
+
     @Override
     public String execute()
         throws Exception
@@ -167,9 +179,9 @@ public class SaveBeneficiaryAction
 
         patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
-        if ( this.patientFullName.trim().equals( "" ) )
+        if ( this.patientFullName.trim().length() < 2 )
         {
-            validationMap.put( "fullName", "is_empty" );
+            validationMap.put( "fullName", "is_invalid_name" );
         }
         else
         {
@@ -204,15 +216,31 @@ public class SaveBeneficiaryAction
 
         patient.setGender( gender );
         patient.setRegistrationDate( new Date() );
-        try
+        patient.setDobType( dobType.charAt( 0 ) );
+        
+        if ( dobType.equals( "A" ) )
         {
-            DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
-            DateTime date = sdf.parseDateTime( dateOfBirth );
-            patient.setBirthDate( date.toDate() );
+            try
+            {
+                patient.setBirthDateFromAge( Integer.parseInt( dateOfBirth ), Patient.AGE_TYPE_YEAR );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                validationMap.put( "dob", "is_invalid_number" );
+            }
         }
-        catch ( Exception e )
+        else
         {
-            validationMap.put( "dob", "is_invalid_date" );
+            try
+            {
+                DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
+                DateTime date = sdf.parseDateTime( dateOfBirth );
+                patient.setBirthDate( date.toDate() );
+            }
+            catch ( Exception e )
+            {
+                validationMap.put( "dob", "is_invalid_date" );
+            }
         }
 
         if ( this.validationMap.size() > 0 )
@@ -221,7 +249,8 @@ public class SaveBeneficiaryAction
             this.previousValues.put( "fullName", this.patientFullName );
             this.previousValues.put( "gender", this.gender );
             this.previousValues.put( "dob", this.dateOfBirth );
-            return SUCCESS;
+            this.previousValues.put( "dobType", this.dobType );
+            return ERROR;
         }
 
         patientService.savePatient( patient );

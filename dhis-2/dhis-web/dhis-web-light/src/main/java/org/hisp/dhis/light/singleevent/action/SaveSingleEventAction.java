@@ -34,7 +34,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -50,7 +55,10 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.util.ContextUtils;
+
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 public class SaveSingleEventAction
     implements Action
@@ -112,6 +120,13 @@ public class SaveSingleEventAction
     {
         this.util = util;
     }
+    
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
 
     // -------------------------------------------------------------------------
     // Input Output
@@ -122,6 +137,25 @@ public class SaveSingleEventAction
     public Map<String, String> getTypeViolations()
     {
         return typeViolations;
+    }
+    
+    private Map<String, String> prevDataValues = new HashMap<String, String>();
+
+    public Map<String, String> getPrevDataValues()
+    {
+        return prevDataValues;
+    }
+    
+    List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
+    public void setDataElements( List<DataElement> dataElements )
+    {
+        this.dataElements = dataElements;
     }
 
     private Integer programId;
@@ -197,7 +231,7 @@ public class SaveSingleEventAction
     {
         return this.instId;
     }
-
+    
     private List<String> dynForm = new ArrayList<String>();
 
     public void setDynForm( List<String> dynForm )
@@ -250,29 +284,50 @@ public class SaveSingleEventAction
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
         Collections.sort( programStageDataElements, OrderBySortOrder );
+        
+        for ( ProgramStageDataElement each : programStageDataElements )
+        {
+            dataElements.add( each.getDataElement() );
+        }
+        
+        HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
+            ServletActionContext.HTTP_REQUEST );
+        Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
+        
+        typeViolations.clear();
+
+        prevDataValues.clear();
 
         // -------------------------------------------------------------------------
         // Validation
         // -------------------------------------------------------------------------
-
-        int i = 0;
-        for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
+        
+        
+        for ( String key : parameterMap.keySet() )
         {
-            DataElement dataElement = programStageDataElement.getDataElement();
-            String value = dynForm.get( i ).trim();
-            Boolean valueIsEmpty = (value == null || value.length() == 0);
-
-            if ( !valueIsEmpty )
+            if ( key.startsWith( "DE" ) )
             {
-                String typeViolation = util.getTypeViolation( dataElement, value );
+                Integer dataElementId = Integer.parseInt( key.substring( 2, key.length() ) );
 
-                if ( typeViolation != null )
+                String value = parameterMap.get( key );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+                value = value.trim();
+
+                Boolean valueIsEmpty = (value == null || value.length() == 0);
+
+                if ( !valueIsEmpty )
                 {
-                    typeViolations.put( String.valueOf( dataElement.getId() ), typeViolation );
+                    String typeViolation = util.getTypeViolation( dataElement, value );
+
+                    if ( typeViolation != null )
+                    {
+                        typeViolations.put( key, typeViolation );
+                    }
+                    prevDataValues.put( key, value );
                 }
             }
-
-            i++;
         }
         
         if ( !typeViolations.isEmpty() )
@@ -297,17 +352,26 @@ public class SaveSingleEventAction
         programStageInstance.setCompleted( false );
         programStageInstanceService.addProgramStageInstance( programStageInstance );
 
-        i = 0;
+
         for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
         {
             DataElement dataElement = programStageDataElement.getDataElement();
 
             PatientDataValue patientDataValue = new PatientDataValue();
+
             patientDataValue.setDataElement( dataElement );
-            patientDataValue.setValue( dynForm.get( i ).trim() );
+
+            String id = "DE" + dataElement.getId();
+
+            patientDataValue.setValue( parameterMap.get( id ) );
+
             patientDataValue.setProgramStageInstance( programStageInstance );
+
+            patientDataValue.setProvidedElsewhere( false );
+
+            patientDataValue.setTimestamp( new Date() );
+
             patientDataValueService.savePatientDataValue( patientDataValue );
-            i++;
         }
 
         return SUCCESS;

@@ -27,28 +27,91 @@
 
 package org.hisp.dhis.light.beneficiaryregistration.action;
 
+import java.util.Collection;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
+
 import com.opensymphony.xwork2.Action;
 
-public class RegisterBeneficiaryAction implements Action
+public class RegisterBeneficiaryAction
+    implements Action
 {
-    
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+
+    public PatientIdentifierTypeService getPatientIdentifierTypeService()
+    {
+        return patientIdentifierTypeService;
+    }
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    private PatientAttributeService patientAttributeService;
+
+    public PatientAttributeService getPatientAttributeService()
+    {
+        return patientAttributeService;
+    }
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
     private Integer orgUnitId;
-    
+
     public Integer getOrgUnitId()
     {
         return orgUnitId;
     }
-
 
     public void setOrgUnitId( Integer orgUnitId )
     {
         this.orgUnitId = orgUnitId;
     }
 
+    private Collection<PatientIdentifierType> patientIdentifierTypes;
+
+    public Collection<PatientIdentifierType> getPatientIdentifierTypes()
+    {
+        return patientIdentifierTypes;
+    }
+
+    public void setPatientIdentifierTypes( Collection<PatientIdentifierType> patientIdentifierTypes )
+    {
+        this.patientIdentifierTypes = patientIdentifierTypes;
+    }
+
+    private Collection<PatientAttribute> patientAttributes;
+
+    public Collection<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
+
+    public void setPatientAttributes( Collection<PatientAttribute> patientAttributes )
+    {
+        this.patientAttributes = patientAttributes;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
+        patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        patientAttributes = patientAttributeService.getAllPatientAttributes();
         return SUCCESS;
     }
 

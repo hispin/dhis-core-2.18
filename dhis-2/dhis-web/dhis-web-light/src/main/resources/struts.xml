@@ -221,7 +221,8 @@
 
     <action name="saveBeneficiary"
         class="org.hisp.dhis.light.beneficiaryregistration.action.SaveBeneficiaryAction">
-      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+		<result name="success" type="redirect">/light/showBeneficiarySearchingForm.action</result>
+      <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/registration/beneficiaryRegistrationForm.vm</param>
     </action>
 

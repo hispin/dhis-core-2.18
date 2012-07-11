@@ -32,9 +32,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -64,6 +65,18 @@ public class GetPatientProgramListAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
+    }
+    
+    private PatientIdentifierService patientIdentifierService;
+    
+    public PatientIdentifierService getPatientIdentifierService()
+    {
+        return patientIdentifierService;
+    }
+
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+    {
+        this.patientIdentifierService = patientIdentifierService;
     }
 
     private ProgramService programService;
@@ -215,6 +228,18 @@ public class GetPatientProgramListAction
     {
         this.validated = validated;
     }
+    
+    private Collection<PatientIdentifier> patientIdentifiers;
+    
+    public Collection<PatientIdentifier> getPatientIdentifiers()
+    {
+        return patientIdentifiers;
+    }
+
+    public void setPatientIdentifiers( Collection<PatientIdentifier> patientIdentifiers )
+    {
+        this.patientIdentifiers = patientIdentifiers;
+    }
 
     @Override
     public String execute()
@@ -249,6 +274,7 @@ public class GetPatientProgramListAction
         }
         
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
+        patientIdentifiers = patientIdentifierService.getPatientIdentifiers( patient );
         return SUCCESS;
     }
 

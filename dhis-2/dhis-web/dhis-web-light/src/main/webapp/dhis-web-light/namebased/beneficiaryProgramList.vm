@@ -27,7 +27,6 @@
 <h2>$i18n.getString("details")</h2>
 <p>
 	<ul>
-		<li><strong>$i18n.getString("id"):</strong>  $patient.id</li>
 		<li><strong>$i18n.getString("gender"):</strong>  #if ($patient.gender == "F") Female #else Male #end</li>
 		#set($day = $patient.birthDate.date)
 		#set($month = $patient.birthDate.month+1)
@@ -35,7 +34,13 @@
 		<li><strong>$i18n.getString("date_of_birth"):</strong>  $year - $month - $day </li>
 		#if($patient.getPhoneNumber())
 			<li><strong>$i18n.getString("phone_number"):</strong>  $patient.getPhoneNumber()</li>
-		#end			
+		#end
+		#foreach($patientIdentifier in $patientIdentifiers)
+			#if($patientIdentifier.getIdentifierType())
+				<li><strong>$patientIdentifier.getIdentifierType().getName():</strong>  $patientIdentifier.getIdentifier()</li>
+			#end
+		#end
+					
 	</ul>
 </p>
 	
