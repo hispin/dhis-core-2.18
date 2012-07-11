@@ -59,11 +59,13 @@ public class GenerateReportCategoryAction
 
         this.installReadTemplateFile( exportReportInstance, period, organisationUnit );
 
+        Collection<ExportItem> exportReportItems = null;
+        
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ExportItem> exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
+            exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
 
             if ( isVerticalCategory( exportReportItems ) )
             {
@@ -74,6 +76,11 @@ public class GenerateReportCategoryAction
                 this.generateHorizontalOutPutFile( exportReportInstance, exportReportItems, organisationUnit, sheet );
             }
         }
+        
+        /**
+         * Garbage
+         */
+        exportReportItems = null;
     }
 
     // -------------------------------------------------------------------------

@@ -61,15 +61,22 @@ public class GenerateReportPeriodColumnListingAction
 
         this.installReadTemplateFile( exportReportInstance, period, organisationUnit );
 
+        Collection<ExportItem> exportReportItems = null;
+        
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ExportItem> exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
+            exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
 
             this.generateOutPutFile( exportReportInstance.getPeriodColumns(), exportReportItems, organisationUnit,
                 sheet );
         }
+        
+        /**
+         * Garbage
+         */
+        exportReportItems = null;
     }
 
     // -------------------------------------------------------------------------
