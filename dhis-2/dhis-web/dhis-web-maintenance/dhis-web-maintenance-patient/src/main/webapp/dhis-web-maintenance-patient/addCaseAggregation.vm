@@ -55,7 +55,7 @@
 		</td>
 		<td>
 			<select id="programId" name="programId" onChange="getParams();">
-				<option value="0">[$i18n.getString('please_select')]</option>
+				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $program in $programs )
 					<option value="$program.id" title='$program.name' type='$program.type'>$encoder.htmlEncode( $program.name )</option>
 				#end
@@ -121,7 +121,7 @@
 			</tr>
 			<tr>
 				<td>
-					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )"></select>
+					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )" ></select>
 				</td>
 				<td>
 					<select multiple size="10" id='caSuggestedValues' ondblclick="insertSingleValue('caSuggestedValues');"></select>
@@ -138,15 +138,16 @@
 			</tr>
 			<tr>
 				<td>
-					<select id="programProperty" name="programProperty" size="10" ondblclick="insertInfo(this, false);" >
+					<select id="programProperty" name="programProperty" size="10" ondblclick="insertInfo(this, false);" disabled >
 						<option value="[PG:*]">$i18n.getString( "program_enrollment" )</option>
 						<option value="[PG:*] AND [PP:DATE@enrollmentdate#-DATE@dateofincident#]">$i18n.getString( "date_of_enrollment" ) - $i18n.getString( "date_of_incident" )</option>
 					</select>
 				</td>
 				<td>
-					<select multiple id="programStageProperty" size="10"  name="programStageProperty" ondblclick="insertInfo(this, true);">
+					<select multiple id="programStageProperty" size="10"  name="programStageProperty" ondblclick="insertInfo(this, true);" disabled>
 						<option value="[PS:*]">$i18n.getString( "visit_program_stage" )</option>
 						<option value="[PS:*] AND [PSP:DATE@executionDate#-DATE@dueDate#]">$i18n.getString( "report_date" ) - $i18n.getString( "due_date" )</option>
+						<option value="[PS:*] AND [PC:DATE@executionDate#-DATE@birthDate#]">$i18n.getString( "report_date" ) - $i18n.getString( "birthDate" )</option>
 					</select>
 					</select>
 				</td>

@@ -98,10 +98,17 @@ function getParams()
 {
 	clearListById( 'programStageId' );
   	clearListById( 'dataElements' );
+	clearListById('caseProperty');
+	var programId = getFieldValue( 'programId' );
+	if( programId == ''){
+		disable('programProperty');
+		disable('programStageProperty');
+	}
 	
-	jQuery.getJSON( 'getParamsByProgram.action',{ programId:getFieldValue( 'programId' ) }
+	jQuery.getJSON( 'getParamsByProgram.action',{ programId:programId }
 		,function( json ) 
 		{
+			enable('programProperty');
 			var programstage = jQuery('#programStageId');
 			
 			for ( i in json.programStages ) 
@@ -113,12 +120,12 @@ function getParams()
 				programstage.append( "<option value='" + id + "' title='" + name + "'>" + name + "</option>" );
 			}
 			
-			if( json.programStages.length > 0 )
+			if( json.programStages.length > 1 )
 			{
 				programstage.prepend( "<option value='' title='" + i18n_all + "'>" + i18n_all + "</option>" );
-				byId('programStageId').options[0].selected = true;
-				getPatientDataElements();
-			}  
+			}
+			byId('programStageId').options[0].selected = true;
+			getPatientDataElements();
 			
 			clearListById( 'caseProperty' );
 			var type = jQuery('#programId option:selected').attr('type');
@@ -152,14 +159,21 @@ function getParams()
 function getPatientDataElements()
 {
 	clearListById( 'dataElements' );
-	var programStage = document.getElementById( 'programStage' );
+	var programStageId = getFieldValue('programStageId');
+	
 	jQuery.getJSON( 'getPatientDataElements.action',
 		{ 
 			programId:getFieldValue( 'programId' ),
-			progamStageId: getFieldValue('progamStageId')  
+			programStageId:programStageId
 		}
 		,function( json )
 		{
+			if( programStageId!='' ){
+				enable('programStageProperty');
+			}
+			else{
+				disable('programStageProperty');
+			}
 			var dataElements = jQuery('#dataElements');
 			for ( i in json.dataElements )
 			{ 
@@ -175,11 +189,11 @@ function getPatientDataElements()
 function insertDataElement( element )
 {
 	var progamId = getFieldValue('programId');
-	var progamStageId = getFieldValue('programStageId');
-	progamStageId = ( progamStageId == "" ) ? "*" : progamStageId;
+	var programStageId = getFieldValue('programStageId');
+	programStageId = ( programStageId == "" ) ? "*" : programStageId;
 	var dataElementId = element.options[element.selectedIndex].value;
 	
-	insertTextCommon( 'aggregationCondition', "[DE:" + progamId + "." + progamStageId + "." + dataElementId + "]" );
+	insertTextCommon( 'aggregationCondition', "[DE:" + progamId + "." + programStageId + "." + dataElementId + "]" );
 	getConditionDescription();
 }
 
@@ -188,11 +202,11 @@ function insertInfo( element, isProgramStageProperty )
 	var id = "";
 	if( isProgramStageProperty )
 	{
-		id = getFieldValue('programId');
+		id = getFieldValue('programStageId');
 	}
 	else
 	{
-		id = getFieldValue('programStageId');
+		id = getFieldValue('programId');
 	}
 	
 	value = element.options[element.selectedIndex].value.replace( '*', id );
