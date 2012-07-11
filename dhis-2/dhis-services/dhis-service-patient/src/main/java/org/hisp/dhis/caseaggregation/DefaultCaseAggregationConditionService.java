@@ -36,6 +36,7 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROG
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_PROPERTY;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OPERATOR_AND;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
@@ -79,9 +80,10 @@ public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService
 {
     private final String regExp = "\\[(" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE + "|"
-        + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|"
-        + OBJECT_PATIENT_PROPERTY + "|" + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+["
-        + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
+        + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY + "|"
+        + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|"
+        + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+[" + SEPARATOR_ID + "[0-9]*]*)"
+        + "\\]";
 
     private final String IS_NULL = "is null";
 
@@ -665,6 +667,10 @@ public class DefaultCaseAggregationConditionService
                 {
                     condition = getConditionForProgramStageProperty( info[1], operator, orgunitId, startDate, endDate );
                 }
+                else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY ) )
+                {
+                    condition = getConditionForPatientProgramStageProperty( info[1], operator, startDate, endDate );
+                }
 
                 // -------------------------------------------------------------
                 // Replacing the operand with 1 in order to later be able to
@@ -838,6 +844,23 @@ public class DefaultCaseAggregationConditionService
         return sql;
     }
 
+    private String getConditionForPatientProgramStageProperty( String propertyName, String operator, String startDate,
+        String endDate )
+    {
+        String sql = "SELECT distinct(pi.patientid) ";
+
+        if ( operator.equals( AGGRERATION_SUM ) )
+        {
+            sql = "SELECT pi.patientid ";
+        }
+
+        sql += "FROM patient as pi INNER JOIN programinstance pgi ON pi.patientid = pgi.patientid "
+            + "INNER JOIN programstageinstance psi ON psi.programinstanceid = pgi.programinstanceid WHERE "
+            + propertyName;
+
+        return sql;
+    }
+
     private String getConditionForProgramProperty( String operator, String startDate, String endDate, String property )
     {
         String sql = "SELECT distinct(pi.patientid) ";
@@ -897,7 +920,8 @@ public class DefaultCaseAggregationConditionService
 
         return select + "FROM programinstance as pi INNER JOIN programstageinstance psi "
             + "ON pi.programinstanceid = psi.programinstanceid WHERE " + " psi.executiondate >= '" + startDate
-            + "' AND psi.executiondate <= '" + endDate + "' AND psi.organisationunitid = " + orgunitId + " AND " + property;
+            + "' AND psi.executiondate <= '" + endDate + "' AND psi.organisationunitid = " + orgunitId + " AND "
+            + property;
     }
 
     private String getSQL( String aggregateOperator, List<String> conditions, List<String> operators )
