@@ -503,12 +503,6 @@
 			</result>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
-
-		<action name="getPatientsByName"
-			class="org.hisp.dhis.caseentry.action.patient.GetPatientsByNameAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/resultSearchPatients.vm</param>
-		</action>
  
    		<action name="getPatientHistory"
 			class="org.hisp.dhis.caseentry.action.patient.GetPatientHistoryAction">
