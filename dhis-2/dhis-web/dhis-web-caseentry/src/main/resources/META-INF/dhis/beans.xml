@@ -577,12 +577,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.caseentry.action.patient.GetPatientsByNameAction"
-		class="org.hisp.dhis.caseentry.action.patient.GetPatientsByNameAction"
-		scope="prototype">
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.caseentry.action.patient.GetPatientHistoryAction"
 		class="org.hisp.dhis.caseentry.action.patient.GetPatientHistoryAction"
 		scope="prototype">

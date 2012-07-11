@@ -675,10 +675,6 @@ function removeDisabledIdentifier()
 
 function addEventForPatientForm( divname )
 {
-	jQuery("#" + divname + " [id=searchPatientByNameBtn]").click(function() {
-		getPatientsByName( divname );
-	});
-	
 	jQuery("#" + divname + " [id=checkDuplicateBtn]").click(function() {
 		checkDuplicate( divname );
 	});

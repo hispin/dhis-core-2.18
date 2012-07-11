@@ -24,7 +24,6 @@
 	<td class='text-column'><label for="fullName">$i18n.getString( "full_name" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 	<td class="input-column">
 		<input type="text" id="fullName" name="fullName" class="{validate:{required:true, unicodechars:true, rangelength:[7,50]}}"/>
-		<img src='../images/search.png' id="searchPatientByNameBtn" name="searchPatientByNameBtn"/>
 	</td>
 </tr>
 	
@@ -48,8 +47,8 @@
 			<option value="D" >$i18n.getString( "declared" )</option>
 			<option value="V" >$i18n.getString( "verified" )</option>
 		</select>
-		<input type="text" id="age" name="age" class="{validate:{number:true}}" style="width:150px" />
-		<input type="text" id="birthDate" name="birthDate" style='width:150px;display:none;' />
+		<input type="text" id="age" name="age" class="{validate:{number:true}}" style="width:156px" />
+		<input type="text" id="birthDate" name="birthDate" style='width:156px;display:none;' />
 		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 	</td>
 </tr>

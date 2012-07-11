@@ -3,7 +3,6 @@
 		
 		jQuery("#tabs").tabs();
 		hideById('addRepresentativeForm [id=underAgeDiv]');
-		hideById('addRepresentativeForm [id=searchPatientByNameBtn]');
 		addEventForPatientForm('addRepresentativeForm');
 		
 		jQuery("#searchForm").validate({
