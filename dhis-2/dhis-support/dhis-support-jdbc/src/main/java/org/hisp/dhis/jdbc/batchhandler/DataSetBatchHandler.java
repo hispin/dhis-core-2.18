@@ -100,6 +100,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "allowfutureperiods" );
         statementBuilder.setColumn( "dataentryform" );
         statementBuilder.setColumn( "expirydays" );
+        statementBuilder.setColumn( "skipaggregation" );
     }
 
     protected void setValues( DataSet dataSet )
@@ -114,5 +115,6 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.isAllowFuturePeriods() );
         statementBuilder.setValue( dataSet.getDataEntryForm() != null ? dataSet.getDataEntryForm().getId() : null );
         statementBuilder.setValue( dataSet.getExpiryDays() );       
+        statementBuilder.setValue( dataSet.isSkipAggregation() );
     }
 }
