@@ -1435,7 +1435,7 @@ Ext.onReady( function() {
 					},
 					validateedit: function( editor, e, eOpts )
 					{
-						if( e.column.compulsory && e.value =='' )
+						if( e.column.compulsory && e.column.field.rawValue =='' )
 						{
 							TR.util.notification.error( TR.i18n.not_empty, TR.i18n.not_empty );
 							return false;
@@ -1490,13 +1490,13 @@ Ext.onReady( function() {
 				if( type.toLowerCase() == 'bool' ){
 					params.editor.store = new Ext.data.ArrayStore({
 						fields: ['value', 'name'],
-						data: [['true', TR.i18n.true_value], ['false', TR.i18n.false_value]]
+						data: [['', ''],['true', TR.i18n.true_value], ['false', TR.i18n.false_value]]
 					});
 				}
 				else{
 					params.editor.store = new Ext.data.ArrayStore({
 						fields: ['value', 'name'],
-						data: [['', TR.i18n.none], ['true', TR.i18n.true_value]]
+						data: [['', ''], ['true', TR.i18n.true_value]]
 					});
 				}
 			}
