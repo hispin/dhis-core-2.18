@@ -83,6 +83,7 @@
 	<input type="button" class='button' id="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript: registerIrregularEncounter( getFieldValue('executionDate') );" disabled="disabled" >
 	<input type="button" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" disabled="disabled" >
 	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled" >
+	<input type="button" onclick="doUnComplete()" value="$i18n.getString('uncomplete')" id="uncompleteBtn">
 	<input type="button" class='button' value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" >
 </div>
 		

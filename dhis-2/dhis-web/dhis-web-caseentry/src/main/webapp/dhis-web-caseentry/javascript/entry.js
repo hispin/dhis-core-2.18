@@ -14,8 +14,9 @@ function loadProgramStages()
 	hideById('dataEntryFormDiv');
 	setFieldValue('executionDate','');
 	setFieldValue('dueDate','');
-	disable('completeBtn');
-	disable('completeInBelowBtn');
+	disableCompletedButton(true);
+	disable('uncompleteBtn');
+	disable('uncompleteInBelowBtn');
 	disable('validationBtn');
 	disable('validationInBelowBtn');
 	disable('newEncounterBtn');
@@ -67,8 +68,7 @@ function loadProgramStages()
 					setEventColorStatus( elementId, status );
 				}
 				
-				disable('completeBtn');
-				disable('completeInBelowBtn');
+				disableCompletedButton(true);
 				disable('validationBtn');
 				disable('validationInBelowBtn');
 				showById('programStageIdTR');
@@ -78,8 +78,7 @@ function loadProgramStages()
 			else 
 			{
 				jQuery('#dueDateTR').attr('class','hidden');
-				enable('completeBtn');
-				enable('completeInBelowBtn');
+				disableCompletedButton(false);
 				hideById('programStageIdTR');
 				hideById('programInstanceFlowDiv');
 				var programStageInstanceId = '';
@@ -105,8 +104,9 @@ function loadDataEntry( programStageInstanceId )
 	setFieldValue( 'executionDate', '' );
 	disable('validationBtn');
 	disable('validationInBelowBtn');
-	disable('completeBtn');
-	disable('completeInBelowBtn');
+	disableCompletedButton(true);
+	disable('uncompleteBtn');
+	disable('uncompleteInBelowBtn');
 	disable('newEncounterBtn');
 	
 	jQuery(".stage-object-selected").removeClass('stage-object-selected');
@@ -133,13 +133,11 @@ function loadDataEntry( programStageInstanceId )
 			}
 			else if( executionDate != '' && completed == 'false' )
 			{
-				enable('completeBtn');
-				enable('completeInBelowBtn');
+				disableCompletedButton(false);
 			}
 			else if( completed == 'true' )
 			{
-				disable('completeBtn');
-				disable('completeInBelowBtn');
+				disableCompletedButton(true);
 			}
 			
 			if( completed == 'true' && irregular == 'true' )
@@ -515,8 +513,7 @@ function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
 					var selectedProgramStageInstance = jQuery( '#' + prefixId + getFieldValue('programStageInstanceId') );
 					jQuery(".stage-object-selected").css('border-color', COLOR_LIGHTRED);
 					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
-					enable('completeBtn');
-					enable('completeInBelowBtn');
+					disableCompletedButton(false);
 					enable('validationBtn');
 					enable('validationInBelowBtn');
 					disable('newEncounterBtn');
@@ -631,8 +628,7 @@ function doComplete( isCreateEvent )
 					jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
 					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
 
-					disable('completeBtn');
-					disable('completeInBelowBtn');
+					disableCompletedButton(true);
 					enable('newEncounterBtn');
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					if( irregular == 'true' )
@@ -678,6 +674,25 @@ function doComplete( isCreateEvent )
 		}
     }
 }
+
+function doUnComplete( isCreateEvent )
+{	
+	if( confirm(i18n_uncomplete_confirm_message) )
+	{
+		$.postJSON( "uncompleteDataEntry.action",
+			{
+				programStageInstanceId: getFieldValue('programStageInstanceId')
+			},
+			function (data)
+			{
+				jQuery(".stage-object-selected").css('border-color', COLOR_LIGHTRED);
+				jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
+				disableCompletedButton(false);
+			});
+	}
+    
+}
+
 
 function closeDueDateDiv()
 {
@@ -763,8 +778,7 @@ function registerIrregularEncounter( dueDate )
 		{   
 			var programStageInstanceId = json.message;
 			jQuery('#createNewEncounterDiv').dialog('close');
-			enable('completeBtn');
-			enable('completeInBelowBtn');
+			disableCompletedButton(false);
 			disable('newEncounterBtn');
 			
 			var programStageName = jQuery(".stage-object-selected").attr('psname');
@@ -869,4 +883,20 @@ function showColorHelp()
 		width: 500,
 		height: 180
 	}).show('fast');
+}
+
+function disableCompletedButton( disabled )
+{
+	if(disabled){
+		disable('completeBtn');
+		disable('completeAndAddNewBtn');
+		enable('uncompleteBtn');
+		enable('uncompleteAndAddNewBtn');
+	}
+	else{
+		enable('completeBtn');
+		enable('completeAndAddNewBtn');
+		disable('uncompleteBtn');
+		disable('uncompleteAndAddNewBtn');
+	}
 }

@@ -301,12 +301,10 @@ function showUpdateEvent( psId )
 			setInnerHTML('programName', programName );
 			
 			if( getFieldValue('completed')=='true' ){
-				disable('completeBtn');
-				disable('completeAndAddNewBtn');
+				disableCompletedButton( true );
 			}
 			else{
-				enable('completeBtn');
-				enable('completeAndAddNewBtn');
+				disableCompletedButton( false );
 			}
 				
 			hideById('loaderDiv');
