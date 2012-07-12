@@ -445,6 +445,7 @@ public class TableAlteror
         executeSql( "delete from systemsetting where name='currentStyle' and value like '%blue/blue.css'" );
         
         executeSql( "update dataentryform set style='regular' where style is null" );
+        executeSql( "update dataset set skipaggregation = false where skipaggregation is null" );
         
         log.info( "Tables updated" );
     }

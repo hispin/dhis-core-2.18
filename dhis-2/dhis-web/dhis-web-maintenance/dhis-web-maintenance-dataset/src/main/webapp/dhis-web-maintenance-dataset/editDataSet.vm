@@ -91,13 +91,22 @@
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-          <select id="frequencySelect" name="frequencySelect" style="min-width:20em">
+          <select id="frequencySelect" name="frequencySelect" style="min-width:20em; margin:0;">
             #foreach ( $periodType in $periodTypes )
               <option value="$periodType.name" #if( $dataSet.periodType.name.equals( $periodType.name ) ) selected="selected" #end>$i18n.getString( $periodType.name )</option>
             #end
           </select>
         </td>
       </tr>	   
+      <tr>
+      	<td><label>$i18n.getString( "skip_aggregation" )</label></td>
+      	<td>
+      	  <select id="skipAggregation" name="skipAggregation" style="min-width:20em; margin:0;">
+      	  	<option value="false">$i18n.getString( "no" )</option>
+      	  	<option value="true"#if( $dataSet.skipAggregation == true ) selected="selected"#end>$i18n.getString( "yes" )</option>
+  	      </select>
+	    </td>
+      </tr>
       <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
     </tbody>
   </table>

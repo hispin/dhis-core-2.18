@@ -138,7 +138,12 @@ public class DataSet
      * How many days after period is over will this dataSet auto-lock
      */
     private int expiryDays;
-
+    
+    /**
+     * Property indicating whether aggregation should be skipped.
+     */
+    private boolean skipAggregation;
+    
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -525,6 +530,19 @@ public class DataSet
     public void setExpiryDays( int expiryDays )
     {
         this.expiryDays = expiryDays;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isSkipAggregation()
+    {
+        return skipAggregation;
+    }
+
+    public void setSkipAggregation( boolean skipAggregation )
+    {
+        this.skipAggregation = skipAggregation;
     }
 
     @Override

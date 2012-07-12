@@ -139,6 +139,13 @@ public class UpdateDataSetAction
         this.expiryDays = expiryDays;
     }
 
+    private boolean skipAggregation;
+
+    public void setSkipAggregation( boolean skipAggregation )
+    {
+        this.skipAggregation = skipAggregation;
+    }
+
     private String frequencySelect;
 
     public void setFrequencySelect( String frequencySelect )
@@ -201,6 +208,7 @@ public class UpdateDataSetAction
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         dataSet.setExpiryDays( expiryDays );
+        dataSet.setSkipAggregation( skipAggregation );
 
         if ( !(equalsNullSafe( name, dataSet.getName() ) && periodType.equals( dataSet.getPeriodType() )
             && dataElements.equals( dataSet.getDataElements() ) && indicators.equals( dataSet.getIndicators() )) )
