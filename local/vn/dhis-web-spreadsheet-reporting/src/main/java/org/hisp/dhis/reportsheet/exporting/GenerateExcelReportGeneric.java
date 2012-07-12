@@ -26,15 +26,14 @@
  */
 package org.hisp.dhis.reportsheet.exporting;
 
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndQuaterly;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndSixMonthly;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfMonth;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfYear;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getLastDayOfYear;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getStartQuaterly;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndQuaterly;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getStartSixMonthly;
-import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndSixMonthly;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getTimeRoll;
-
 import static org.hisp.dhis.reportsheet.utils.ExpressionUtils.generateExpression;
 import static org.hisp.dhis.reportsheet.utils.ExpressionUtils.generateIndicatorExpression;
 import static org.hisp.dhis.reportsheet.utils.FileUtils.checkingExtensionExcelFile;
@@ -56,7 +55,6 @@ import org.amplecode.quick.StatementManager;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -213,8 +211,6 @@ public class GenerateExcelReportGeneric
     // Excel format
     // -------------------------------------------------------------------------
 
-    protected DataFormat dFormat;
-
     protected Font csFont;
 
     protected Font csFont11Bold;
@@ -232,6 +228,8 @@ public class GenerateExcelReportGeneric
     protected CellStyle csFormula;
 
     protected CellStyle csText;
+
+    protected CellStyle csTextWithoutBorder;
 
     protected CellStyle csText10Bold;
 
@@ -275,13 +273,13 @@ public class GenerateExcelReportGeneric
     // Supporting methods
     // -------------------------------------------------------------------------
 
-    public void createWorkbookInstance( ExportReport exportReport )
+    private void createWorkbookInstance( String excelTemplateFileName )
         throws FileNotFoundException, IOException
     {
         this.inputStreamExcelTemplate = new FileInputStream( reportLocationManager.getExportReportTemplateDirectory()
-            + File.separator + exportReport.getExcelTemplateFile() );
+            + File.separator + excelTemplateFileName );
 
-        if ( checkingExtensionExcelFile( exportReport.getExcelTemplateFile() ) )
+        if ( checkingExtensionExcelFile( excelTemplateFileName ) )
         {
             this.templateWorkbook = new HSSFWorkbook( this.inputStreamExcelTemplate );
         }
@@ -291,7 +289,7 @@ public class GenerateExcelReportGeneric
         }
     }
 
-    public void initExcelFormat()
+    private void initExcelFormat()
         throws Exception
     {
         sheetPOI = templateWorkbook.getSheetAt( 0 );
@@ -301,10 +299,10 @@ public class GenerateExcelReportGeneric
         csFont10Bold = templateWorkbook.createFont();
         csFont11Bold = templateWorkbook.createFont();
         csFont12BoldCenter = templateWorkbook.createFont();
-        dFormat = templateWorkbook.createDataFormat();
         csNumber = templateWorkbook.createCellStyle();
         csFormula = templateWorkbook.createCellStyle();
         csText = templateWorkbook.createCellStyle();
+        csTextWithoutBorder = templateWorkbook.createCellStyle();
         csText8Bold = templateWorkbook.createCellStyle();
         csText9Bold = templateWorkbook.createCellStyle();
         csText10Bold = templateWorkbook.createCellStyle();
@@ -314,11 +312,13 @@ public class GenerateExcelReportGeneric
     }
 
     @SuppressWarnings( "static-access" )
-    public void installDefaultExcelFormat()
+    private void installDefaultExcelFormat()
         throws Exception
     {
         initPOIStylesManager.initDefaultFont( csFont );
         initPOIStylesManager.initDefaultCellStyle( csText, csFont );
+
+        csTextWithoutBorder.setFont( csFont );
 
         initPOIStylesManager.initFont( csFont8Bold, "Tahoma", (short) 8, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
             .getIndex() );
@@ -409,16 +409,17 @@ public class GenerateExcelReportGeneric
     protected void installReadTemplateFile( ExportReport exportReport, Period period, Object object )
         throws Exception
     {
-        Calendar calendar = Calendar.getInstance();
-
-        File reportTempDir = reportLocationManager.getExportReportTemporaryDirectory();
-
-        this.outputReportFile = new File( reportTempDir, currentUserService.getCurrentUsername()
-            + this.dateformatter.format( calendar.getTime() ) + exportReport.getExcelTemplateFile() );
+        this.outputReportFile = new File
+        (
+            reportLocationManager.getExportReportTemporaryDirectory(),
+            currentUserService.getCurrentUsername()
+            + this.dateformatter.format( Calendar.getInstance().getTime() )
+            + exportReport.getExcelTemplateFile()
+        );
 
         this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
 
-        this.createWorkbookInstance( exportReport );
+        this.createWorkbookInstance( exportReport.getExcelTemplateFile() );
 
         this.initExcelFormat();
 
@@ -430,25 +431,21 @@ public class GenerateExcelReportGeneric
 
             if ( object instanceof OrganisationUnit )
             {
-                OrganisationUnit orgunit = (OrganisationUnit) object;
-
-                value = orgunit.getName();
+                value = ((OrganisationUnit) object).getName();
             }
             else
             {
-                OrganisationUnitGroup orgunitGroup = (OrganisationUnitGroup) object;
-
-                value = orgunitGroup.getName();
+                value = ((OrganisationUnitGroup) object).getName();
             }
 
             ExcelUtils.writeValueByPOI( exportReport.getOrganisationRow(), exportReport.getOrganisationColumn(), value,
-                ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+                ExcelUtils.TEXT, sheetPOI, csTextWithoutBorder );
         }
 
         if ( exportReport.getPeriodRow() != null && exportReport.getPeriodColumn() != null )
         {
             ExcelUtils.writeValueByPOI( exportReport.getPeriodRow(), exportReport.getPeriodColumn(), format
-                .formatPeriod( period ), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+                .formatPeriod( period ), ExcelUtils.TEXT, sheetPOI, csTextWithoutBorder );
         }
     }
 
@@ -662,7 +659,7 @@ public class GenerateExcelReportGeneric
     // Formulae methods
     // -------------------------------------------------------------------------
 
-    public void initFormulaEvaluating()
+    protected void initFormulaEvaluating()
     {
         this.evaluatorFormula = this.templateWorkbook.getCreationHelper().createFormulaEvaluator();
     }

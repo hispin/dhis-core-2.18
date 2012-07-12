@@ -59,7 +59,7 @@ public class GenerateReportOrgGroupListingAction
 {
     private static final String PREFIX_FORMULA_SUM = "SUM(";
 
-    private static Map<Integer, List<OrganisationUnit>> childrenGroupMap = new HashMap<Integer, List<OrganisationUnit>>();
+    private Map<Integer, List<OrganisationUnit>> childrenGroupMap = new HashMap<Integer, List<OrganisationUnit>>();
 
     // -------------------------------------------------------------------------
     // Dependency
@@ -103,7 +103,7 @@ public class GenerateReportOrgGroupListingAction
          */
         exportReportItems = null;
         orgUnitGroupAtLevels = null;
-        childrenGroupMap.clear();
+        childrenGroupMap = null;
     }
 
     // -------------------------------------------------------------------------

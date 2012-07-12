@@ -31,6 +31,7 @@ import org.hisp.dhis.reportsheet.importitem.ImportReport;
 import org.hisp.dhis.reportsheet.importitem.ImportReportService;
 import org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,26 +46,14 @@ public class ImportDataFlowAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private ImportReportService importReportService;
 
-    public void setImportReportService( ImportReportService importReportService )
-    {
-        this.importReportService = importReportService;
-    }
-
+    @Autowired
     private PeriodGenericManager periodGenericManager;
 
-    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
-    {
-        this.periodGenericManager = periodGenericManager;
-    }
-
+    @Autowired
     private SelectionManager selectionManager;
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
 
     // -------------------------------------------------------------------------
     // Input & Output

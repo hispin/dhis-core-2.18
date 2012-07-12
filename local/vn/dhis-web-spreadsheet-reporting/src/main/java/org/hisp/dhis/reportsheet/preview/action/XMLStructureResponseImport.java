@@ -34,7 +34,6 @@ import static org.hisp.dhis.reportsheet.utils.NumberUtils.PATTERN_DECIMAL_FORMAT
 import static org.hisp.dhis.reportsheet.utils.NumberUtils.applyPatternDecimalFormat;
 import static org.hisp.dhis.reportsheet.utils.NumberUtils.resetDecimalFormatByLocale;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
@@ -93,7 +92,6 @@ public class XMLStructureResponseImport
      * Constructor
      * 
      * @param importItems
-     * @param type The TYPE for importing
      * 
      * @param w The workbook to interrogate
      * @param enc The encoding used by the output stream. Null or unrecognized
@@ -109,7 +107,7 @@ public class XMLStructureResponseImport
     {
         this.cleanUpForResponse();
 
-        FileInputStream inputStream = new FileInputStream( new File( pathFileName ) );
+        FileInputStream inputStream = new FileInputStream( pathFileName );
 
         if ( getExtension( pathFileName ).equals( "xls" ) )
         {

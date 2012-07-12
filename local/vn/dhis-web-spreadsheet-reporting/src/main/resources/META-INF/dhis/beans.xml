@@ -1162,130 +1162,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!--  function - Prewiew Data - NORMAL  -->
-	<bean 
-		id="org.hisp.dhis.reportsheet.importing.action.ViewDataNormalAction"
-		class="org.hisp.dhis.reportsheet.importing.action.ViewDataNormalAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-	</bean>
+	<bean id="org.hisp.dhis.reportsheet.importing.action.ViewDataNormalAction"
+		class="org.hisp.dhis.reportsheet.importing.action.ViewDataNormalAction" scope="prototype"/>
 
 	<!--  function - Prewiew Data - CATEGORY  -->
-	<bean 
-		id="org.hisp.dhis.reportsheet.importing.action.ViewDataCategoryAction"
-		class="org.hisp.dhis.reportsheet.importing.action.ViewDataCategoryAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-	</bean>
+	<bean id="org.hisp.dhis.reportsheet.importing.action.ViewDataCategoryAction"
+		class="org.hisp.dhis.reportsheet.importing.action.ViewDataCategoryAction" scope="prototype"/>
 
 	<!--  function - Prewiew Data - ORGANISATION GROUP  -->
-	<bean
-		id="org.hisp.dhis.reportsheet.importing.action.ViewDataOrganizationGroupAction"
-		class="org.hisp.dhis.reportsheet.importing.action.ViewDataOrganizationGroupAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-	</bean>
+	<bean id="org.hisp.dhis.reportsheet.importing.action.ViewDataOrganizationGroupAction"
+		class="org.hisp.dhis.reportsheet.importing.action.ViewDataOrganizationGroupAction" scope="prototype"/>
 
 	<!--  function - Import data flow -->
-	
 	<bean id="org.hisp.dhis.reportsheet.importing.action.ImportDataFlowAction"
-		class="org.hisp.dhis.reportsheet.importing.action.ImportDataFlowAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-	</bean>
+		class="org.hisp.dhis.reportsheet.importing.action.ImportDataFlowAction" scope="prototype"/>
 
 	<!--  function - Import data - NORMAL  -->
 	<bean id="org.hisp.dhis.reportsheet.importing.action.ImportDataNormalAction"
-		class="org.hisp.dhis.reportsheet.importing.action.ImportDataNormalAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="dataValueService"
-			ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="expressionService"
-			ref="org.hisp.dhis.expression.ExpressionService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-	</bean>
+		class="org.hisp.dhis.reportsheet.importing.action.ImportDataNormalAction" scope="prototype"/>
 	
 	<!--  function - Import data - CATEGORY  -->
 	<bean id="org.hisp.dhis.reportsheet.importing.action.ImportDataCategoryAction"
-		class="org.hisp.dhis.reportsheet.importing.action.ImportDataCategoryAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="dataValueService"
-			ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="expressionService"
-			ref="org.hisp.dhis.expression.ExpressionService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-	</bean>
+		class="org.hisp.dhis.reportsheet.importing.action.ImportDataCategoryAction" scope="prototype"/>
 
 	<!--  function - Import data - ORGANISATION UNIT  -->
 	<bean id="org.hisp.dhis.reportsheet.importing.action.ImportDataOrganizationGroupAction"
-		class="org.hisp.dhis.reportsheet.importing.action.ImportDataOrganizationGroupAction"
-		scope="prototype">
-		<property name="importReportService"
-			ref="org.hisp.dhis.reportsheet.importitem.ImportReportService" />
-		<property name="dataValueService"
-			ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="expressionService"
-			ref="org.hisp.dhis.expression.ExpressionService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="organisationUnitSelectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
-	</bean>
+		class="org.hisp.dhis.reportsheet.importing.action.ImportDataOrganizationGroupAction" scope="prototype"/>
 
 	<!-- Period Column -->
 
