@@ -224,8 +224,7 @@ function uploadLocalData()
             error: function( jqXHR, textStatus, errorThrown )
             {
                 var message = i18n_sync_failed
-                    + ' <button id="sync_button" type="button">' + i18n_sync_now
-                    + '</button>';
+                    + ' <button id="sync_button" type="button">' + i18n_sync_now + '</button>';
 
                 setHeaderMessage( message );
 
@@ -248,7 +247,12 @@ function uploadLocalData()
         var key = array[0];
         var value = dataValues[key];
 
-        log( 'Uploaded data value: ' + key + ', with value: ' + value );
+        if( value.value.length > 255 )
+        {
+            value.value = value.value.slice(0, 254);
+        }
+
+        log( 'Uploading data value: ' + key + ', with value: ' + value );
 
         $.ajax( {
             url: 'saveValue.action',
