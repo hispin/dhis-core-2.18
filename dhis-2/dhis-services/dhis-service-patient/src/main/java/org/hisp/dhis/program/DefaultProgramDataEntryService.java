@@ -289,6 +289,7 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
 
                 inputHTML = inputHTML.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
+                inputHTML = inputHTML.replace( "$VALUE",dataElementValue );
                 inputHTML = inputHTML.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
                 inputHTML = inputHTML.replace( "$PROGRAMSTAGENAME", programStageName );
                 inputHTML = inputHTML.replace( "$DATAELEMENTNAME", dataElement.getName() );
@@ -533,7 +534,7 @@ public class DefaultProgramDataEntryService
         }
 
         if( DataElement.VALUE_TYPE_LONG_TEXT.equals( dataElement.getDetailedTextType() ))
-            inputHTML += " >";
+            inputHTML += " >$VALUE";
         
         return inputHTML;
     }
