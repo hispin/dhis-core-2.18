@@ -22,9 +22,6 @@
   #end
 ],
 "items":[
-  [
-  #foreach( $col in $grid.getHeaders() )"",#end
-  ],
   #foreach( $row in $grid.getRows() )
   [
   #foreach( $col in $row )
