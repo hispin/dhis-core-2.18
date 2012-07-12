@@ -582,7 +582,7 @@ public class DefaultChartService
         }
         else
         {
-            stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getName(), chart.getDomainAxisLabel(),
+            stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxisLabel(),
                 chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
         }
 
