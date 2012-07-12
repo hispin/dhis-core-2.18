@@ -67,13 +67,37 @@
 		<input type="text" name="dateOfBirth" value="$!previousValues.get("dob")" />
 		
 		#foreach($patientIdentifierType in $patientIdentifierTypes)
-			<label>$patientIdentifierType.getName()</label>
-			<input type="text" name="$patientIdentifierType.getId()" value="$!previousValues.get($patientIdentifierType.getId())" />
+			#if(! $patientIdentifierType.program)
+				#set($key = "IDT${patientIdentifierType.id}")
+				<label>$patientIdentifierType.getName()#if( $patientIdentifierType.isMandatory() )*#end </label>
+				#if( $validationMap.get( $key ) )
+		           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( $key ))</span>
+		     	#end
+				<input type="text" name="$key" value="$!previousValues.get($key)" />
+			#end
 		#end
 		
 		#foreach($patientAttribute in $patientAttributes)
-			<label>$patientAttribute.getName()</label>
-			<input type="text" name="$patientAttribute.getId()" value="$!previousValues.get($patientAttribute.getId())" />
+			#if(! $patientAttribute.program)
+				#set($key = "AT${patientAttribute.id}")
+				<label>$patientAttribute.getName()#if( $patientAttribute.isMandatory() )*#end  </label>
+				#if( $validationMap.get( $key ) )
+		           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( $key ))</span>
+		     	#end
+				#if($patientAttribute.getValueType() == "COMBO")
+					<select type="text" name="$key" />
+					#foreach($option in $patientAttribute.getAttributeOptions())
+						<option value="$option.id"
+							#if( $prevDataValues.get( $option.id ) == $option.getName() ) 
+								selected
+							#end
+							> $option.getName() </option>
+					#end
+					</select>
+				#else
+					<input type="text" name="$key" value="$!previousValues.get($key)" />
+				#end
+			#end
 		#end
 
 		
