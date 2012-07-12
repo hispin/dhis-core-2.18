@@ -305,7 +305,16 @@ public class DataElement
     {
         return (type != null && type.equals( VALUE_TYPE_STRING ) && textType != null) ? textType : type;
     }
-
+    
+    /** Returns whether aggregation should be skipped for this data element, based
+     * on the setting of the data set which this data element is a members of,
+     * if any.
+     */
+    public boolean isSkipAggregation()
+    {
+        return dataSets != null && dataSets.size() > 0 && dataSets.iterator().next().isSkipAggregation();
+    }
+   
     /**
      * Returns the PeriodType of the DataElement, based on the PeriodType of the
      * DataSet which the DataElement is registered for.

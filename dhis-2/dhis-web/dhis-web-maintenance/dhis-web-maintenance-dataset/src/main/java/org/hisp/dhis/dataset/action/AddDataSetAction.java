@@ -127,6 +127,13 @@ public class AddDataSetAction
     {
         this.expiryDays = expiryDays;
     }
+    
+    private boolean skipAggregation;
+
+    public void setSkipAggregation( boolean skipAggregation )
+    {
+        this.skipAggregation = skipAggregation;
+    }
 
     private String frequencySelect;
 
@@ -176,6 +183,7 @@ public class AddDataSetAction
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
 
         dataSet.setExpiryDays( expiryDays );
+        dataSet.setSkipAggregation( skipAggregation );
 
         for ( String id : dataElementsSelectedList )
         {

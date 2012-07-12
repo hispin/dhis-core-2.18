@@ -66,6 +66,8 @@
     <property name="version" />
 
     <property name="expiryDays" />
+	
+	<property name="skipAggregation" />
 
   </class>
 </hibernate-mapping>

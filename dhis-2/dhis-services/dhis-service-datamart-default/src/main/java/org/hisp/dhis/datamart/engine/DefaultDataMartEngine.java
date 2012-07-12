@@ -68,6 +68,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.filter.DataElementWithAggregationFilter;
 import org.hisp.dhis.system.filter.OrganisationUnitAboveOrEqualToLevelFilter;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.notification.Notifier;
@@ -239,6 +240,7 @@ public class DefaultDataMartEngine
         organisationUnitService.filterOrganisationUnitsWithoutData( organisationUnits );
         Collections.shuffle( organisationUnits );
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
+        FilterUtils.filter( dataElements, new DataElementWithAggregationFilter() );
         expressionService.filterInvalidIndicators( indicators );
 
         clock.logTime( "Filtered objects" );
