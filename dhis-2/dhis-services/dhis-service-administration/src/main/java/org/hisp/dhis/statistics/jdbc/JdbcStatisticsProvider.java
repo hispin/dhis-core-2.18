@@ -32,7 +32,6 @@ import java.util.Map;
 
 import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.statistics.StatisticsProvider;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -73,19 +72,6 @@ public class JdbcStatisticsProvider
         objectCounts.put( Objects.PERIOD, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM period" ) );
         objectCounts.put( Objects.USER, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM users" ) );
         objectCounts.put( Objects.DATAVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM datavalue" ) );
-        
-        try
-        {
-            objectCounts.put( Objects.AGGREGATEDDATAVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregateddatavalue" ) );
-            objectCounts.put( Objects.AGGREGATEDINDICATORVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregatedindicatorvalue" ) );
-            objectCounts.put( Objects.AGGREGATEDORGUNITDATAVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregatedorgunitdatavalue" ) );
-            objectCounts.put( Objects.AGGREGATEDORGUNITINDICATORVALUE, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregatedorgunitindicatorvalue" ) );
-            objectCounts.put( Objects.AGGREGATEDDATASETCOMPLETENESS, jdbcTemplate.queryForInt( "SELECT COUNT(*) FROM aggregateddatasetcompleteness" ) );
-        }
-        catch ( BadSqlGrammarException ex )
-        {
-            // Ignore since tables might be dropped and do not exist
-        }
         
         return objectCounts;
     }
