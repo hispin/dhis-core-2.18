@@ -166,7 +166,7 @@ function insertDataElement( source, programStageId )
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
 		var displayName = dataElementName;
-		htmlCode = "<textarea title=\"" + titleValue + " \"name=\"entryfield\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\" ></textarea>";
+		htmlCode = "<textarea title=\"" + titleValue + " \"name=\"entryfield\" id=\"" + id + "\" title=\"" + displayName + "\" ></textarea>";
 	}
 	else if ( dataElementType == "int" || dataElementType == "text" ) 
 	{
