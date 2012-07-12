@@ -7,6 +7,14 @@ function saveComment()
     var commentValue = $( '#commentTextArea' ).val();
     var periodId = $( '#selectedPeriodId' ).val();
 
+    if( commentValue.length > 359 )
+    {
+        markComment( COLOR_YELLOW );
+        window.alert(i18n_value_too_long + " for comment field");
+
+        return;
+    }
+
     var commentSaver = new CommentSaver( currentDataElementId, currentOptionComboId, currentOrganisationUnitId,
             periodId, commentValue );
 
@@ -61,11 +69,11 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, peri
         markComment( COLOR_RED );
         window.alert( i18n_saving_comment_failed_error_code + '\n\n' + textStatus );
     }
+}
 
-    function markComment( color )
-    {
-        $( '#commentTextArea' ).css( 'background-color', color );
-    }
+function markComment( color )
+{
+    $( '#commentTextArea' ).css( 'background-color', color );
 }
 
 function removeMinMaxLimit()
