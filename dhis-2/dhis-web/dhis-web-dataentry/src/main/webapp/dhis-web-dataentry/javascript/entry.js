@@ -137,7 +137,7 @@ function saveVal( dataElementId, optionComboId )
 
     if ( value != '' )
     {
-        if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
+        if ( type == 'string' || type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
         {
             if ( value.length > 255 )
             {
