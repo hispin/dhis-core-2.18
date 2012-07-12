@@ -1435,12 +1435,32 @@ Ext.onReady( function() {
 					},
 					validateedit: function( editor, e, eOpts )
 					{
-						if( e.column.compulsory && e.column.field.rawValue =='' )
+						var newValue = e.column.field.rawValue;
+						if( e.column.compulsory && newValue =='' )
 						{
 							TR.util.notification.error( TR.i18n.not_empty, TR.i18n.not_empty );
 							return false;
 						}
-						return true;
+						
+						var valid = e.column.initialConfig.editor.xtype=="combobox" ? false : true;
+						if(!valid)
+						{
+							e.column.initialConfig.editor.store.each( function(r) {
+								if( newValue==r.data.name){
+									valid = true;
+								}
+							});
+						}
+						if( !valid ){
+							TR.cmp.statusbar.panel.setWidth(TR.cmp.region.center.getWidth());
+							TR.cmp.statusbar.panel.update('<img src="' + TR.conf.finals.ajax.path_images + TR.conf.statusbar.icon.error + '" style="padding:0 5px 0 0"/>' + TR.i18n.value_is_invalid );
+						}
+						else
+						{
+							TR.cmp.statusbar.panel.setWidth(TR.cmp.region.center.getWidth());
+							TR.cmp.statusbar.panel.update('<img src="' + TR.conf.finals.ajax.path_images + TR.conf.statusbar.icon.error + '" style="padding:0 5px 0 0"/>' + TR.i18n.value_is_valid );
+						}
+						return valid;
 					}
 				}
 			});
@@ -1484,9 +1504,10 @@ Ext.onReady( function() {
 			{
 				params.editor.xtype = 'combobox';
 				params.editor.queryMode = 'local';
-				params.editor.editable = false;
+				params.editor.editable = true;
 				params.editor.valueField = 'value';
 				params.editor.displayField = 'name';
+				params.editor.selectOnFocus = true;
 				if( type.toLowerCase() == 'bool' ){
 					params.editor.store = new Ext.data.ArrayStore({
 						fields: ['value', 'name'],
@@ -1504,11 +1525,11 @@ Ext.onReady( function() {
 			{
 				params.editor.xtype = 'combobox';
 				params.editor.typeAhead = true;
+				params.editor.selectOnFocus = true;
 				params.editor.triggerAction = 'all';
 				params.editor.transform = 'light';
 				params.editor.lazyRender = true;
 				params.editor.forceSelection = true;
-				params.editor.minChars = 2;
 				params.editor.hideTrigger = true;
 				params.editor.validateOnBlur = true;
 				params.editor.queryMode = 'remote';
