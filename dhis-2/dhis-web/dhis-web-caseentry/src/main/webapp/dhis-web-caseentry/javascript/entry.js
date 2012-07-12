@@ -22,6 +22,7 @@ function loadProgramStages()
 	hideById('inputCriteriaDiv');
 	$('#programStageIdTR').html('');
 	hideById('programInstanceDiv');
+	hideById('colorHelpLink');
 	
 	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
 	if ( programId == 0 )
@@ -41,6 +42,7 @@ function loadProgramStages()
 			var type = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('type');
 			if( type == 1 && json.programStageInstances.length > 1 )
 			{
+				showById('colorHelpLink');
 				for ( i in json.programStageInstances ) 
 				{
 					if( i!= 0 )
@@ -78,7 +80,6 @@ function loadProgramStages()
 				jQuery('#dueDateTR').attr('class','hidden');
 				enable('completeBtn');
 				enable('completeInBelowBtn');
-				hideById('historyPlanLink');
 				hideById('programStageIdTR');
 				hideById('programInstanceFlowDiv');
 				var programStageInstanceId = '';
@@ -856,4 +857,16 @@ function autocompletedField( idField )
 			input.autocomplete( "search", "" );
 			input.focus();
 		});
+}
+
+function showColorHelp()
+{
+	jQuery('#colorHelpDiv').dialog({
+		title: i18n_color_quick_help,
+		maximize: true, 
+		closable: true,
+		modal:false,
+		width: 500,
+		height: 180
+	}).show('fast');
 }

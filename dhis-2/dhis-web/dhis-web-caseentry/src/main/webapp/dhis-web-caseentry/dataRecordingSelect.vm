@@ -25,7 +25,7 @@
 </script>
 
 <form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
-   	
+
 <table class="mainPageTable" id='patientInfoDiv'> 
 	<tr>
 		<td valign="top">
@@ -46,8 +46,34 @@
 	</tr>
 	<tr>
 		<td>
-			<a href="javascript:showHistoryPlan()" id='historyPlanLink' title="$i18n.getString( 'see_history_plan' )" class="hidden">$i18n.getString('see_history_plan')</a>
-			<div id="currentSelection" class="hidden history"></div>
+			<a href="javascript:showColorHelp()" id='colorHelpLink' title="$i18n.getString( 'what_do_colors_mean' )" class="hidden">$i18n.getString('what_do_colors_mean')</a>
+			<div id="colorHelpDiv" class="hidden history">
+				<table>
+					<col width='80px;'/>
+					<thead>
+						<tr>
+							<th>$i18n.getString('color')</th>
+							<th>$i18n.getString('description')</th>
+						</tr>
+					</thead>
+					<tr>
+						<td id='colorGreenTD' class='input-column'><script>byId('colorGreenTD').style.backgroundColor = COLOR_LIGHT_GREEN;</script></td>
+						<td>$i18n.getString('event_is_completed')</td>
+					</tr>
+					<tr>
+						<td id='colorLightredTD'><script>byId('colorLightredTD').style.backgroundColor = COLOR_LIGHT_LIGHTRED;</script></td>
+						<td>$i18n.getString('the_stage_is_started_but_not_completed_yet')</td>
+					</tr>
+					<tr>
+						<td id='colorYellowTD'><script>byId('colorYellowTD').style.backgroundColor = COLOR_LIGHT_YELLOW;</script></td>
+						<td>$i18n.getString('the_stage_is_started_and_due_date_is_after_the_current_date')</td>
+					</tr>
+					<tr>
+						<td id='colorRedTD'><script>byId('colorRedTD').style.backgroundColor = COLOR_LIGHT_RED;</script></td>
+						<td>$i18n.getString('the_stage_is_not_started_and_due_date_is_before_the_current_date')</td>
+					</tr>
+				</table>
+			</div>
 		</td>
 	</tr>
 </table>
