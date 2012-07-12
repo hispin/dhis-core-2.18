@@ -44,8 +44,8 @@
 	<tr>
 		<td><label for="operator">$i18n.getString( "operator" )</label></td>
 		<td>
-			<input type="radio" id="operator" name="operator" value="COUNT" checked >$i18n.getString('count')
-			<input type="radio" id="operator" name="operator" value="SUM"> $i18n.getString('times')
+			<input type="radio" id="operator" name="operator" value="COUNT" checked >$i18n.getString('number_of_patients')
+			<input type="radio" id="operator" name="operator" value="SUM"> $i18n.getString('number_of_visits')
 		</td>
 	</tr>
 	
