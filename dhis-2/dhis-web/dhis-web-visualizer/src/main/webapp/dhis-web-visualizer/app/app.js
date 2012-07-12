@@ -4,7 +4,7 @@ DV.conf = {
 			series: ['Series 1', 'Series 2', 'Series 3', 'Series 4'],
 			category: ['Category 1', 'Category 2', 'Category 3'],
 			filter: [DV.i18n.example_chart],
-			values: [84, 77, 87, 82, 91, 69, 82, 78, 83, 76, 73, 85],
+			values: [84, 73, 87, 82, 91, 69, 82, 75, 83, 76, 73, 85],
 			setState: function() {
 				DV.c.type = DV.conf.finals.chart.column;
 				DV.c.dimension.series = DV.conf.finals.dimension.data.value;
@@ -13,7 +13,7 @@ DV.conf = {
 				DV.c.series = DV.c.data = {names: this.series};
 				DV.c.category = DV.c.period = {names: this.category};
 				DV.c.filter = DV.c.organisationunit = {names: this.filter};
-				DV.c.targetlinevalue = 80;
+				DV.c.targetlinevalue = 78;
 				DV.c.targetlinelabel = 'Target label';
 				DV.c.rangeaxislabel = 'Range axis label';
 				DV.c.domainaxislabel = 'Domain axis label';
@@ -66,7 +66,8 @@ DV.conf = {
 				r = Ext.JSON.decode(r.responseText);
 				var obj = {
 					system: {
-						rootnodes: []
+						rootnodes: [],
+						ougs: r.system.ougs
 					},
 					user: {
 						id: r.user.id,
@@ -75,8 +76,8 @@ DV.conf = {
 						ouc: r.user.ouc
 					}
 				};
-				for (var i = 0; i < r.rn.length; i++) {
-					obj.system.rootnodes.push({id: r.rn[i][0], text: r.rn[i][1], level: 1});
+				for (var i = 0; i < r.system.rn.length; i++) {
+					obj.system.rootnodes.push({id: r.system.rn[i][0], text: r.system.rn[i][1], level: 1});
 				}
 				return obj;
 			}
@@ -187,16 +188,30 @@ DV.conf = {
 			id: 'root'
 		}
     },
-    relativePeriodUnits: {
-		lastSixMonth: 1,
-		thisYear: 1,
-		lastYear: 1,
-		last5Years: 5,
-		last12Months: 12,
-		last4Quarters: 4,
-		last2SixMonths: 2,
-		reportingMonth: 1,
-		reportingQuarter: 1
+    period: {
+		relativeperiodunits: {
+			lastSixMonth: 1,
+			thisYear: 1,
+			lastYear: 1,
+			last5Years: 5,
+			last12Months: 12,
+			last4Quarters: 4,
+			last2SixMonths: 2,
+			reportingMonth: 1,
+			reportingQuarter: 1
+		},
+		periodtypes: [
+			{id: 'Daily', name: 'Daily'},
+			{id: 'Weekly', name: 'Weekly'},
+			{id: 'Monthly', name: 'Monthly'},
+			{id: 'BiMonthly', name: 'BiMonthly'},
+			{id: 'Quarterly', name: 'Quarterly'},
+			{id: 'SixMonthly', name: 'SixMonthly'},
+			{id: 'Yearly', name: 'Yearly'},
+			{id: 'FinancialOct', name: 'FinancialOct'},
+			{id: 'FinancialJuly', name: 'FinancialJuly'},
+			{id: 'FinancialApril', name: 'FinancialApril'}
+		]
 	},
     chart: {
         style: {
@@ -222,14 +237,16 @@ DV.conf = {
         west_fill_accordion_indicator: 77,
         west_fill_accordion_dataelement: 77,
         west_fill_accordion_dataset: 45,
-        west_fill_accordion_organisationunit: 75,
+        west_fill_accordion_fixedperiod: 77,
+        west_fill_accordion_organisationunit: 103,
         west_maxheight_accordion_indicator: 478,
         west_maxheight_accordion_dataelement: 478,
         west_maxheight_accordion_dataset: 478,
-        west_maxheight_accordion_period: 368,
-        west_maxheight_accordion_organisationunit: 728,
-        west_maxheight_accordion_organisationunitgroup: 270,
-        west_maxheight_accordion_options: 421,
+        west_maxheight_accordion_relativeperiod: 396,
+        west_maxheight_accordion_fixedperiod: 478,
+        west_maxheight_accordion_organisationunit: 756,
+        west_maxheight_accordion_organisationunitgroup: 298,
+        west_maxheight_accordion_options: 449,
         east_tbar_height: 31,
         east_gridcolumn_height: 30,
         form_label_width: 55,
@@ -259,7 +276,7 @@ DV.conf = {
 		}
 	}
 };
-    
+
 DV.cmp = {
 	region: {},
 	charttype: [],
@@ -268,9 +285,10 @@ DV.cmp = {
 		indicator: {},
 		dataelement: {},
 		dataset: {},
-		period: {
+		relativeperiod: {
 			checkbox: []
 		},
+		fixedperiod: {},
 		organisationunit: {},
 		organisationunitgroup: {}
 	},
@@ -346,7 +364,8 @@ Ext.onReady( function() {
             },
             resizeDimensions: function() {
 				var a = [DV.cmp.dimension.indicator.panel, DV.cmp.dimension.dataelement.panel, DV.cmp.dimension.dataset.panel,
-						DV.cmp.dimension.period.panel, DV.cmp.dimension.organisationunit.panel, DV.cmp.options.panel];
+						DV.cmp.dimension.relativeperiod.panel, DV.cmp.dimension.fixedperiod.panel, DV.cmp.dimension.organisationunit.panel,
+						DV.cmp.dimension.organisationunitgroup.panel, DV.cmp.options.panel];
 				for (var i = 0; i < a.length; i++) {
 					if (!a[i].collapsed) {
 						a[i].fireEvent('expand');
@@ -398,7 +417,7 @@ Ext.onReady( function() {
                     });
                     return filter;
                 });
-                a.store.sort('name', 'ASC');
+                a.store.sortStore();
             },
             setHeight: function(ms, panel, fill) {
 				for (var i = 0; i < ms.length; i++) {
@@ -474,7 +493,7 @@ Ext.onReady( function() {
         },
         dimension: {
             indicator: {
-                getObjects: function() {
+                getRecords: function() {
                     var a = [];
                     DV.cmp.dimension.indicator.selected.store.each( function(r) {
                         a.push({id: r.data.id, name: r.data.name});
@@ -482,7 +501,7 @@ Ext.onReady( function() {
                     return a;
                 },
                 getIds: function() {
-					var obj = DV.c.indicator.objects,
+					var obj = DV.c.indicator.records,
 						a = [];
 					for (var i = 0; i < obj.length; i++) {
 						a.push(obj[i].id);
@@ -491,7 +510,7 @@ Ext.onReady( function() {
 				}
             },
             dataelement: {
-                getObjects: function() {
+                getRecords: function() {
 					var a = [];
 					DV.cmp.dimension.dataelement.selected.store.each( function(r) {
 						a.push({id: r.data.id, name: r.data.name});
@@ -499,7 +518,7 @@ Ext.onReady( function() {
 					return a;
                 },
                 getIds: function() {
-					var obj = DV.c.dataelement.objects,
+					var obj = DV.c.dataelement.records,
 						a = [];
 					for (var i = 0; i < obj.length; i++) {
 						a.push(obj[i].id);
@@ -508,7 +527,7 @@ Ext.onReady( function() {
 				}
             },
             dataset: {
-                getObjects: function() {
+                getRecords: function() {
 					var a = [];
 					DV.cmp.dimension.dataset.selected.store.each( function(r) {
 						a.push({id: r.data.id, name: r.data.name});
@@ -516,7 +535,7 @@ Ext.onReady( function() {
 					return a;
                 },
                 getIds: function() {
-					var obj = DV.c.dataset.objects,
+					var obj = DV.c.dataset.records,
 						a = [];
 					for (var i = 0; i < obj.length; i++) {
 						a.push(obj[i].id);
@@ -525,48 +544,36 @@ Ext.onReady( function() {
 				}
             },
             data: {
-				getObjects: function() {
-					var objects = DV.c.indicator.objects;
-					objects = objects.concat(DV.c.dataelement.objects);
-					objects = objects.concat(DV.c.dataset.objects);
-					return objects;
+				getRecords: function() {
+					var records = DV.c.indicator.records;
+					records = records.concat(DV.c.dataelement.records);
+					records = records.concat(DV.c.dataset.records);
+					return records;
 				},
                 getUrl: function(isFilter) {
-					var obj = DV.c.indicator.objects,
+					var obj = DV.c.indicator.records,
 						a = [];
                     for (var i = 0; i < obj.length; i++) {
 						a.push(DV.conf.finals.dimension.indicator.paramname + '=' + obj[i].id);
 					}
-					obj = DV.c.dataelement.objects;
+					obj = DV.c.dataelement.records;
                     for (var i = 0; i < obj.length; i++) {
 						a.push(DV.conf.finals.dimension.dataelement.paramname + '=' + obj[i].id);
 					}
-					obj = DV.c.dataset.objects;
+					obj = DV.c.dataset.records;
                     for (var i = 0; i < obj.length; i++) {
 						a.push(DV.conf.finals.dimension.dataset.paramname + '=' + obj[i].id);
 					}
 					return (isFilter && a.length > 1) ? a.slice(0,1) : a;
 				}
             },
-            period: {
-                getObjects: function() {
-                    var a = [],
-                        cmp = DV.cmp.dimension.period;
-                    Ext.Array.each(cmp, function(item) {
-                        if (item.getValue()) {
-                            Ext.Array.each(DV.init.system.periods[item.paramName], function(item) {
-                                a.push({id: item.id, name: item.name});
-                            });
-                        }
-                    });
-                    return a;
-                },
-                getObjectsByRelativePeriods: function(rp) {
+            relativeperiod: {
+                getRecordsByRelativePeriods: function(obj) {
 					var a = [],
 						count = 0;
-                    for (var r in rp) {
-                        if (rp[r]) {
-							count += DV.conf.relativePeriodUnits[r];
+                    for (var rp in obj) {
+                        if (obj[rp]) {
+							count += DV.conf.period.relativeperiodunits[rp];
                         }
                     }
                     for (var i = 0; i < count; i++) {
@@ -574,49 +581,72 @@ Ext.onReady( function() {
 					}
 					return a;
 				},
-                getUrl: function(isFilter) {
-					var a = [];
-					for (var r in DV.c.period.rp) {
-						if (DV.c.period.rp[r]) {
-							a.push(r + '=true');
-						}
-					}
-					return a;
-				},
                 getIds: function() {
-					var obj = DV.c.period.objects,
+					var obj = DV.c.relativeperiod.records,
 						a = [];
 					for (var i = 0; i < obj.length; i++) {
 						a.push(obj[i].id);
 					}
 					return a;
 				},
-                getNameById: function(id) {
-                    for (var obj in DV.init.system.periods) {
-                        var a = DV.init.system.periods[obj];
-                        for (var i = 0; i < a.length; i++) {
-                            if (a[i].id == id) {
-                                return a[i].name;
-                            }
-                        };
-                    }
-                },
-                getRelativePeriodObject: function(exception) {
+                getRelativePeriodObject: function() {
                     var a = {},
-                        cmp = DV.cmp.dimension.period.checkbox,
-                        valid = false;
+                        cmp = DV.cmp.dimension.relativeperiod.checkbox;
                     Ext.Array.each(cmp, function(item) {
                         a[item.paramName] = item.getValue();
-                        valid = item.getValue() ? true : valid;
                     });
-                    if (exception && !valid) {
-						DV.util.notification.error(DV.i18n.et_no_periods, DV.i18n.em_no_periods);
-                    }
                     return a;
-                }   
+                },
+                relativePeriodObjectIsValid: function(obj) {
+					for (var rp in obj) {
+						if (obj[rp]) {
+							return true;
+						}
+					}
+					return false;
+				}
             },
+            fixedperiod: {
+                getRecords: function() {
+                    var a = [];
+                    DV.cmp.dimension.fixedperiod.selected.store.each( function(r) {
+                        a.push({id: r.data.id, name: r.data.name});
+                    });
+                    return a;
+                },
+                getIds: function() {
+					var obj = DV.c.fixedperiod.records,
+						a = [];
+					for (var i = 0; i < obj.length; i++) {
+						a.push(obj[i].id);
+					}
+					return a;
+				}
+			},
+			period: {
+				getRecords: function() {
+					var a = DV.util.dimension.relativeperiod.getRecordsByRelativePeriods(DV.c.relativeperiod.rp);
+					return a.concat(DV.c.fixedperiod.records);
+				},
+                getUrl: function() {
+					var a = [],
+						obj = DV.c.relativeperiod.rp;
+					for (var rp in obj) {
+						if (obj[rp]) {
+							a.push(rp + '=true');
+						}
+					}
+					
+					var array = DV.c.fixedperiod.records;
+					for (var i = 0; i < array.length; i++) {
+						a.push('p=' + array[i].id);
+					}
+										
+					return a;
+				}
+			},
             organisationunit: {
-                getObjects: function() {
+                getRecords: function() {
                     var a = [],
 					tp = DV.cmp.dimension.organisationunit.treepanel,
 	                selection = tp.getSelectionModel().getSelection();
@@ -632,8 +662,8 @@ Ext.onReady( function() {
                 getUrl: function(isFilter) {
 					var ou = DV.c.organisationunit,
 						a = [];
-					for (var i = 0; i < ou.objects.length; i++) {
-						a.push(DV.conf.finals.dimension.organisationunit.paramname + '=' + ou.objects[i].id);
+					for (var i = 0; i < ou.records.length; i++) {
+						a.push(DV.conf.finals.dimension.organisationunit.paramname + '=' + ou.records[i].id);
 					}
 					if (isFilter && a.length > 1) {
 						a = a.slice(0,1);
@@ -641,7 +671,7 @@ Ext.onReady( function() {
 					return a;
                 },
                 getIds: function() {
-					var obj = DV.c.organisationunit.objects,
+					var obj = DV.c.organisationunit.records,
 						a = [];
 					for (var i = 0; i < obj.length; i++) {
 						a.push(obj[i].id);
@@ -737,7 +767,7 @@ Ext.onReady( function() {
 				getTitle: function() {
 					return {
 						type: 'text',
-						text: DV.c.filter.names[0],
+						text: DV.c.currentFavorite ? DV.c.currentFavorite.name + ' (' + DV.c.filter.names[0] + ')' : DV.c.filter.names[0],
 						font: 'bold 15px ' + DV.conf.chart.style.font,
 						fill: '#222',
 						width: 300,
@@ -1295,6 +1325,9 @@ Ext.onReady( function() {
                     }
                 },
                 storage: {},
+                sortStore: function() {
+					this.sort('name', 'ASC');
+				},
                 listeners: {
                     load: function(s) {
 						s.each( function(r) {
@@ -1322,6 +1355,9 @@ Ext.onReady( function() {
                     }
                 },
                 storage: {},
+                sortStore: function() {
+					this.sort('name', 'ASC');
+				},
                 listeners: {
                     load: function(s) {
 						s.each( function(r) {
@@ -1349,6 +1385,9 @@ Ext.onReady( function() {
                     }
                 },
                 storage: {},
+                sortStore: function() {
+					this.sort('name', 'ASC');
+				},
                 isloaded: false,
                 listeners: {
                     load: function(s) {
@@ -1367,6 +1406,64 @@ Ext.onReady( function() {
                 data: []
             })
         },
+        periodtype: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name'],
+			data: DV.conf.period.periodtypes
+		}),
+        fixedperiod: {
+            available: Ext.create('Ext.data.Store', {
+                fields: ['id', 'name', 'index'],
+                data: [],
+                setIndex: function(periods) {
+					for (var i = 0; i < periods.length; i++) {
+						periods[i].index = i;
+					}
+				},
+                sortStore: function() {
+					this.sort('index', 'ASC');
+				}
+            }),
+            selected: Ext.create('Ext.data.Store', {
+                fields: ['id', 'name'],
+                data: []
+            })
+        },
+        groupset: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name', 'index'],
+			proxy: {
+				type: 'ajax',
+				url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.organisationunitgroupset_get,
+				reader: {
+					type: 'json',
+					root: 'organisationUnitGroupSets'
+				}
+			},
+			isloaded: false,
+			listeners: {
+				load: function() {
+					this.isloaded = true;
+					this.add({id: DV.conf.finals.cmd.none, name: DV.i18n.none, index: -1});
+					this.sort('index', 'ASC');
+				}
+			}
+		}),
+        group: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name'],
+			proxy: {
+				type: 'ajax',
+				url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.organisationunitgroup_getall,
+				reader: {
+					type: 'json',
+					root: 'organisationUnitGroups'
+				}
+			},
+			isloaded: false,
+			listeners: {
+				load: function() {
+					this.isloaded = true;
+				}
+			}
+		}),
         chart: null,
         getChartStore: function(exe) {
             var keys = [];
@@ -1449,61 +1546,7 @@ Ext.onReady( function() {
                     });
                 }
             }
-        }),
-        groupset: Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'index'],
-			proxy: {
-				type: 'ajax',
-				url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.organisationunitgroupset_get,
-				reader: {
-					type: 'json',
-					root: 'organisationUnitGroupSets'
-				}
-			},
-			isloaded: false,
-			listeners: {
-				load: function() {
-					this.isloaded = true;
-					this.add({id: DV.conf.finals.cmd.none, name: DV.i18n.none, index: -1});
-					this.sort('index', 'ASC');
-				}
-			}
-		}),
-        group: Ext.create('Ext.data.Store', {
-			fields: ['id', 'name'],
-			proxy: {
-				type: 'ajax',
-				url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.organisationunitgroup_getall,
-				reader: {
-					type: 'json',
-					root: 'organisationUnitGroups'
-				}
-			},
-			isloaded: false,
-			listeners: {
-				load: function() {
-					this.isloaded = true;
-				}
-			}
-		}),
-        level: Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'level'],
-			proxy: {
-				type: 'ajax',
-				url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.organisationunitlevel_getall,
-				reader: {
-					type: 'json',
-					root: 'organisationUnitLevels'
-				}
-			},
-			isloaded: false,
-			listeners: {
-				load: function() {
-					this.isloaded = true;
-					this.sort('level', 'ASC');
-				}
-			}
-		})
+        })
     };
     
     DV.state = {
@@ -1530,33 +1573,42 @@ Ext.onReady( function() {
                         DV.c.dimension.category = f.category.toLowerCase();
                         DV.c.dimension.filter = f.filter.toLowerCase();
                         
-                        DV.c.indicator.objects = [];
-                        DV.c.dataelement.objects = [];
-                        DV.c.dataset.objects = [];
-                        DV.c.period.objects = [];
-                        DV.c.organisationunit.objects = [];
+                        DV.c.indicator.records = [];
+                        DV.c.dataelement.records = [];
+                        DV.c.dataset.records = [];
+                        DV.c.relativeperiod.rp = {};
+                        DV.c.fixedperiod.records = [];
+                        DV.c.organisationunit.records = [];
                         
                         if (f.indicators) {
 							for (var i = 0; i < f.indicators.length; i++) {
-								DV.c.indicator.objects.push({id: f.indicators[i].id, name: DV.conf.util.jsonEncodeString(f.indicators[i].name)});
+								DV.c.indicator.records.push({id: f.indicators[i].id, name: DV.conf.util.jsonEncodeString(f.indicators[i].name)});
 							}
 						}
 						
 						if (f.dataElements) {
 							for (var i = 0; i < f.dataElements.length; i++) {
-								DV.c.dataelement.objects.push({id: f.dataElements[i].id, name: DV.conf.util.jsonEncodeString(f.dataElements[i].name)});
+								DV.c.dataelement.records.push({id: f.dataElements[i].id, name: DV.conf.util.jsonEncodeString(f.dataElements[i].name)});
 							}
 						}
+						
 						if (f.dataSets) {
 							for (var i = 0; i < f.dataSets.length; i++) {
-								DV.c.dataset.objects.push({id: f.dataSets[i].id, name: DV.conf.util.jsonEncodeString(f.dataSets[i].name)});
+								DV.c.dataset.records.push({id: f.dataSets[i].id, name: DV.conf.util.jsonEncodeString(f.dataSets[i].name)});
 							}
 						}
 						
-						DV.c.period.rp = f.relativePeriods;
+						DV.c.relativeperiod.rp = f.relativePeriods;
+						
+						if (f.periods) {
+							for (var i = 0; i < f.periods.length; i++) {
+								//DV.c.fixedperiod.records.push({id: f.periods[i].id, name: DV.conf.util.jsonEncodeString(f.periods[i].name)});
+								DV.c.fixedperiod.records.push({id: f.periods[i], name: f.periods[i]});
+							}
+						}							
 						
 						for (var i = 0; i < f.organisationUnits.length; i++) {
-							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].id, name: DV.conf.util.jsonEncodeString(f.organisationUnits[i].name)});
+							DV.c.organisationunit.records.push({id: f.organisationUnits[i].id, name: DV.conf.util.jsonEncodeString(f.organisationUnits[i].name)});
 						}
 						DV.c.organisationunit.groupsetid = f.organisationUnitGroupSet ? f.organisationUnitGroupSet.id : null;
 						
@@ -1584,11 +1636,12 @@ Ext.onReady( function() {
 				DV.c.dimension.series = DV.cmp.settings.series.getValue();
 				DV.c.dimension.category = DV.cmp.settings.category.getValue();
 				DV.c.dimension.filter = DV.cmp.settings.filter.getValue();
-				DV.c.indicator.objects = DV.util.dimension.indicator.getObjects();
-				DV.c.dataelement.objects = DV.util.dimension.dataelement.getObjects();
-				DV.c.dataset.objects = DV.util.dimension.dataset.getObjects();
-				DV.c.period.rp = DV.util.dimension.period.getRelativePeriodObject();
-				DV.c.organisationunit.objects = DV.util.dimension.organisationunit.getObjects();
+				DV.c.indicator.records = DV.util.dimension.indicator.getRecords();
+				DV.c.dataelement.records = DV.util.dimension.dataelement.getRecords();
+				DV.c.dataset.records = DV.util.dimension.dataset.getRecords();
+				DV.c.relativeperiod.rp = DV.util.dimension.relativeperiod.getRelativePeriodObject();
+				DV.c.fixedperiod.records = DV.util.dimension.fixedperiod.getRecords();
+				DV.c.organisationunit.records = DV.util.dimension.organisationunit.getRecords();
 				DV.c.organisationunit.groupsetid = DV.util.dimension.organisationunit.getGroupSetId();
 				this.setOptions();
                         
@@ -1605,12 +1658,16 @@ Ext.onReady( function() {
 			}
 			
 			DV.c.data = {};
-			DV.c.data.objects = DV.util.dimension.data.getObjects();
-			DV.c.period.objects = DV.util.dimension.period.getObjectsByRelativePeriods(DV.c.period.rp);
+			DV.c.data.records = DV.util.dimension.data.getRecords();
+			DV.c.period.records = DV.util.dimension.period.getRecords();
 			
-			if (!this.validation.objects.selection()) {
+			if (!this.validation.records.selection()) {
 				return;
 			}
+			
+			this.validation.records[DV.c.dimension.series]();
+			this.validation.records[DV.c.dimension.category]();
+			this.validation.records[DV.c.dimension.filter](true);
 			
 			DV.c.series = DV.c[DV.c.dimension.series];
 			DV.c.category = DV.c[DV.c.dimension.category];
@@ -1627,13 +1684,13 @@ Ext.onReady( function() {
 			DV.c.indicator.ids = DV.util.dimension.indicator.getIds();
 			DV.c.dataelement.ids = DV.util.dimension.dataelement.getIds();
 			DV.c.dataset.ids = DV.util.dimension.dataset.getIds();
-			DV.c.period.ids = DV.util.dimension.period.getIds();
+			DV.c.fixedperiod.ids = DV.util.dimension.fixedperiod.getIds();
 			DV.c.organisationunit.ids = DV.util.dimension.organisationunit.getIds();
             
             if (id) {
 				this.setUI();
 			}
-            
+			
             if (exe) {
                 DV.value.getValues(true);
             }
@@ -1685,7 +1742,8 @@ Ext.onReady( function() {
             p.indicatorIds = DV.c.indicator.ids;
             p.dataElementIds = DV.c.dataelement.ids;
             p.dataSetIds = DV.c.dataset.ids;
-            p = Ext.Object.merge(p, DV.c.period.rp);
+            p = Ext.Object.merge(p, DV.c.relativeperiod.rp);
+            p.periodIds = DV.c.fixedperiod.ids;
             p.organisationUnitIds = DV.c.organisationunit.ids;
             if (DV.c.organisationunit.groupsetid) {
 				p.organisationUnitGroupSetId = DV.c.organisationunit.groupsetid;
@@ -1718,27 +1776,33 @@ Ext.onReady( function() {
 			DV.cmp.settings.filter.setValue(DV.conf.finals.dimension[DV.c.dimension.filter].value);
 			
 			DV.store.indicator.selected.removeAll();
-			if (DV.c.indicator.objects) {
-				DV.store.indicator.selected.add(DV.c.indicator.objects);
-				DV.util.store.addToStorage(DV.store.indicator.available, DV.c.indicator.objects);
+			if (DV.c.indicator.records) {
+				DV.store.indicator.selected.add(DV.c.indicator.records);
+				DV.util.store.addToStorage(DV.store.indicator.available, DV.c.indicator.records);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
 			}
 			
 			DV.store.dataelement.selected.removeAll();
-			if (DV.c.dataelement.objects) {
-				DV.store.dataelement.selected.add(DV.c.dataelement.objects);
-				DV.util.store.addToStorage(DV.store.dataelement.available, DV.c.dataelement.objects);
+			if (DV.c.dataelement.records) {
+				DV.store.dataelement.selected.add(DV.c.dataelement.records);
+				DV.util.store.addToStorage(DV.store.dataelement.available, DV.c.dataelement.records);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
 			}
 												
 			DV.store.dataset.selected.removeAll();
-			if (DV.c.dataset.objects) {
-				DV.store.dataset.selected.add(DV.c.dataset.objects);
-				DV.util.store.addToStorage(DV.store.dataset.available, DV.c.dataset.objects);
+			if (DV.c.dataset.records) {
+				DV.store.dataset.selected.add(DV.c.dataset.records);
+				DV.util.store.addToStorage(DV.store.dataset.available, DV.c.dataset.records);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
 			}
 			
 			DV.util.checkbox.setRelativePeriods(DV.c.period.rp);
+			
+			DV.store.fixedperiod.selected.removeAll();
+			if (DV.c.fixedperiod.records) {
+				DV.store.fixedperiod.selected.add(DV.c.fixedperiod.records);
+				DV.util.multiselect.filterAvailable(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
+			}
 			
 			DV.cmp.dimension.organisationunit.treepanel.selectByIds(DV.c.organisationunit.ids);
 			
@@ -1766,39 +1830,62 @@ Ext.onReady( function() {
 				}
 				return true;
 			},
-			objects: {
+			records: {
 				selection: function() {
-					if (!DV.c.data.objects.length) {
+					if (!DV.c.data.records.length) {
 						DV.util.notification.error(DV.i18n.et_no_indicators_dataelements_datasets, DV.i18n.em_no_indicators_dataelements_datasets);
 						return false;
 					}
-					if (!DV.c.period.objects.length) {
+					if (!DV.c.period.records.length) {
 						DV.util.notification.error(DV.i18n.et_no_periods, DV.i18n.em_no_periods);
 						return false;
 					}
-					if (!DV.c.organisationunit.objects.length) {
+					if (DV.c.organisationunit.groupsetid) {
+						if (DV.init.system.ougs[DV.c.organisationunit.groupsetid]) {
+							if (DV.init.system.ougs[DV.c.organisationunit.groupsetid].length < 1) {
+								DV.util.notification.error(DV.i18n.et_no_orgunitgroups, DV.i18n.em_no_orgunitgroups);
+								return false;
+							}
+						}
+					}
+					else if (!DV.c.organisationunit.records.length) {
 						DV.util.notification.error(DV.i18n.et_no_orgunits, DV.i18n.em_no_orgunits);
 						return false;
-					}
+					}						
 					return true;
 				},
 				data: function(isFilter) {
-					if (isFilter && DV.c.data.objects.length > 1) {
+					if (isFilter && DV.c.data.records.length > 1) {
 						DV.chart.warnings.push(DV.i18n.wm_multiple_filter_ind_de_ds + ' ' + DV.i18n.wm_first_filter_used);
-						DV.c.data.objects = DV.c.data.objects.slice(0,1);
 					}
 				},
 				period: function(isFilter) {
-					if (isFilter && DV.c.period.objects.length > 1) {
+					if (isFilter && DV.c.period.records.length > 1) {
 						DV.chart.warnings.push(DV.i18n.wm_multiple_filter_period + ' ' + DV.i18n.wm_first_filter_used);
-						DV.c.period.objects = DV.c.period.objects.slice(0,1);
 					}
 				},
 				organisationunit: function(isFilter) {
-					if (isFilter && DV.c.organisationunit.names.length > 1) {
-						var msg = DV.c.organisationunit.groupsetid ? DV.i18n.wm_multiple_filter_groups : DV.i18n.wm_multiple_filter_orgunit;
-						DV.chart.warnings.push(msg + ' ' + DV.i18n.wm_first_filter_used);
-						DV.c.organisationunit.names = DV.c.organisationunit.names.slice(0,1);
+					if (isFilter) {
+						if (DV.c.organisationunit.groupsetid) {
+							if (DV.init.system.ougs[DV.c.organisationunit.groupsetid]) {
+								if (DV.init.system.ougs[DV.c.organisationunit.groupsetid].length > 1) {
+									DV.chart.warnings.push(DV.i18n.wm_multiple_filter_groups + ' ' + DV.i18n.wm_first_filter_used);
+								}
+							}
+						}
+						else {
+							if (DV.c.userorganisationunit || DV.c.userorganisationunitchildren) {
+								var i = 0;
+								i += DV.c.userorganisationunit ? 1 : 0;
+								i += DV.c.userorganisationunitchildren && DV.init.user.ouc ? DV.init.user.ouc.length : 0;
+								if (i > 1) {
+									DV.chart.warnings.push(DV.i18n.wm_multiple_filter_orgunit + ' ' + DV.i18n.wm_first_filter_used);
+								}
+							}
+							else if (DV.c.organisationunit.records.length > 1) {
+								DV.chart.warnings.push(DV.i18n.wm_multiple_filter_orgunit + ' ' + DV.i18n.wm_first_filter_used);
+							}
+						}
 					}
 				}
 			},
@@ -1964,21 +2051,19 @@ Ext.onReady( function() {
 					}
 					
                     DV.value.values = DV.util.value.jsonfy(r.v);
-                    
+                                        
 					DV.c.data.names = DV.conf.util.jsonEncodeArray(r.d);
 					DV.c.period.names = DV.conf.util.jsonEncodeArray(r.p);
 					DV.c.organisationunit.names = DV.conf.util.jsonEncodeArray(r.o);
-			
-					DV.state.validation.objects[DV.c.dimension.series]();
-					DV.state.validation.objects[DV.c.dimension.category]();
-					DV.state.validation.objects[DV.c.dimension.filter](true);
 								
 					if (!DV.state.validation.categories()) {
 						return;
 					}
             
-					DV.state.validation.trendline();					
-					DV.state.validation.targetline();					
+					DV.state.validation.trendline();
+					
+					DV.state.validation.targetline();
+					
 					DV.state.validation.baseline();
             
 					DV.state.validation.render();
@@ -2001,7 +2086,8 @@ Ext.onReady( function() {
 			indicator: {},
 			dataelement: {},
 			dataset: {},
-			period: {},
+			relativeperiod: {},
+			fixedperiod: {},
 			organisationunit: {},
 			hidesubtitle: false,
 			hidelegend: false,
@@ -3049,7 +3135,7 @@ Ext.onReady( function() {
 										}
 									},
 									{
-										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.periods + '</div>',
+										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.relative_periods + '</div>',
 										hideCollapseTool: true,
 										autoScroll: true,
 										items: [
@@ -3067,7 +3153,7 @@ Ext.onReady( function() {
 															listeners: {
 																added: function(chb) {
 																	if (chb.xtype === 'checkbox') {
-																		DV.cmp.dimension.period.checkbox.push(chb);
+																		DV.cmp.dimension.relativeperiod.checkbox.push(chb);
 																	}
 																}
 															}
@@ -3100,7 +3186,7 @@ Ext.onReady( function() {
 															listeners: {
 																added: function(chb) {
 																	if (chb.xtype === 'checkbox') {
-																		DV.cmp.dimension.period.checkbox.push(chb);
+																		DV.cmp.dimension.relativeperiod.checkbox.push(chb);
 																	}
 																}
 															}
@@ -3132,7 +3218,7 @@ Ext.onReady( function() {
 															listeners: {
 																added: function(chb) {
 																	if (chb.xtype === 'checkbox') {
-																		DV.cmp.dimension.period.checkbox.push(chb);
+																		DV.cmp.dimension.relativeperiod.checkbox.push(chb);
 																	}
 																}
 															}
@@ -3171,7 +3257,7 @@ Ext.onReady( function() {
 															listeners: {
 																added: function(chb) {
 																	if (chb.xtype === 'checkbox') {
-																		DV.cmp.dimension.period.checkbox.push(chb);
+																		DV.cmp.dimension.relativeperiod.checkbox.push(chb);
 																	}
 																}
 															}
@@ -3204,10 +3290,149 @@ Ext.onReady( function() {
 										],
 										listeners: {
 											added: function() {
-												DV.cmp.dimension.period.panel = this;
+												DV.cmp.dimension.relativeperiod.panel = this;
 											},
 											expand: function() {
-												DV.util.dimension.panel.setHeight(DV.conf.layout.west_maxheight_accordion_period);
+												DV.util.dimension.panel.setHeight(DV.conf.layout.west_maxheight_accordion_relativeperiod);
+											}
+										}
+									},
+									{
+										title: '<div style="height:17px; background-image:url(images/period.png); background-repeat:no-repeat; padding-left:20px">' + DV.i18n.fixed_periods + '</div>',
+										hideCollapseTool: true,
+										items: [
+											{
+												xtype: 'combobox',
+												cls: 'dv-combo',
+												style: 'margin-bottom:8px',
+												width: DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor,
+												valueField: 'id',
+												displayField: 'name',
+												fieldLabel: DV.i18n.select_type,
+												labelStyle: 'padding-left:7px;',
+												labelWidth: 90,
+												editable: false,
+												queryMode: 'remote',
+												store: DV.store.periodtype,
+												listeners: {
+													select: function(cb) {														
+														var pt = new PeriodType();
+														var periods = pt.reverse( pt.filterFuturePeriods( pt.get(cb.getValue()).generatePeriods(0) ) );
+														DV.store.fixedperiod.available.setIndex(periods);
+														DV.store.fixedperiod.available.loadData(periods);
+														DV.util.multiselect.filterAvailable(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
+													}
+												}
+											},
+											{
+												xtype: 'panel',
+												layout: 'column',
+												bodyStyle: 'border-style:none',
+												items: [
+													{
+														xtype: 'multiselect',
+														name: 'availableFixedPeriods',
+														cls: 'dv-toolbar-multiselect-left',
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														valueField: 'id',
+														displayField: 'name',
+														store: DV.store.fixedperiod.available,
+														tbar: [
+															{
+																xtype: 'label',
+																text: DV.i18n.available,
+																cls: 'dv-toolbar-multiselect-left-label'
+															},
+															'->',
+															{
+																xtype: 'button',
+																icon: 'images/arrowright.png',
+																width: 22,
+																handler: function() {
+																	DV.util.multiselect.select(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
+																}
+															},
+															{
+																xtype: 'button',
+																icon: 'images/arrowrightdouble.png',
+																width: 22,
+																handler: function() {
+																	DV.util.multiselect.selectAll(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
+																}
+															},
+															' '
+														],
+														listeners: {
+															added: function() {
+																DV.cmp.dimension.fixedperiod.available = this;
+															},
+															afterrender: function() {
+																this.boundList.on('itemdblclick', function() {
+																	DV.util.multiselect.select(this, DV.cmp.dimension.fixedperiod.selected);
+																}, this);
+															}
+														}
+													},                                            
+													{
+														xtype: 'multiselect',
+														name: 'selectedFixedPeriods',
+														cls: 'dv-toolbar-multiselect-right',
+														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
+														displayField: 'name',
+														valueField: 'id',
+														ddReorder: true,
+														queryMode: 'local',
+														store: DV.store.fixedperiod.selected,
+														tbar: [
+															' ',
+															{
+																xtype: 'button',
+																icon: 'images/arrowleftdouble.png',
+																width: 22,
+																handler: function() {
+																	DV.util.multiselect.unselectAll(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
+																}
+															},
+															{
+																xtype: 'button',
+																icon: 'images/arrowleft.png',
+																width: 22,
+																handler: function() {
+																	DV.util.multiselect.unselect(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
+																}
+															},
+															'->',
+															{
+																xtype: 'label',
+																text: DV.i18n.selected,
+																cls: 'dv-toolbar-multiselect-right-label'
+															}
+														],
+														listeners: {
+															added: function() {
+																DV.cmp.dimension.fixedperiod.selected = this;
+															},
+															afterrender: function() {
+																this.boundList.on('itemdblclick', function() {
+																	DV.util.multiselect.unselect(DV.cmp.dimension.fixedperiod.available, this);
+																}, this);
+															}
+														}
+													}
+												]
+											}
+										],
+										listeners: {
+											added: function() {
+												DV.cmp.dimension.fixedperiod.panel = this;
+											},
+											expand: function() {
+												DV.util.dimension.panel.setHeight(DV.conf.layout.west_maxheight_accordion_fixedperiod);
+												DV.util.multiselect.setHeight(
+													[DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected],
+													DV.cmp.dimension.fixedperiod.panel,
+													DV.conf.layout.west_fill_accordion_fixedperiod
+												);
 											}
 										}
 									},
@@ -4410,13 +4635,18 @@ Ext.onReady( function() {
 									this.setTooltip(DV.i18n.save_load_favorite_before_sharing);
 								}
 							},
+							getTitle: function() {
+								return DV.i18n.share + ' ' + DV.i18n.interpretation +
+										': <span style="font-weight:normal; font-size:10px">' + DV.c.currentFavorite.name + '</span>';
+							},
 							handler: function() {
 								if (DV.cmp.share.window) {
+									DV.cmp.share.window.setTitle(this.getTitle());
 									DV.cmp.share.window.show();
 								}
 								else {
 									DV.cmp.share.window = Ext.create('Ext.window.Window', {
-										title: DV.i18n.share + ' ' + DV.i18n.interpretation + ': <span style="font-weight:normal; font-size:10px">' + DV.c.currentFavorite.name + '</span>',
+										title: this.getTitle(),
 										iconCls: 'dv-window-title-interpretation',
 										layout: 'fit',
 										bodyStyle: 'padding:8px 8px 3px; background-color:#fff',
@@ -4443,9 +4673,9 @@ Ext.onReady( function() {
 											}
 										],
 										bbar: {
-											cls: 'dv-toolbar-1',
+											cls: 'dv-toolbar-bbar',
 											defaults: {
-												height: 30
+												height: 28
 											},
 											items: [
 												'->',

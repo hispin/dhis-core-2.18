@@ -50,6 +50,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -113,6 +115,7 @@ public class ChartPluginController
     public String getChartValues( @RequestParam( required = false ) Set<String> in,
         @RequestParam( required = false ) Set<String> de,
         @RequestParam( required = false ) Set<String> ds,
+        @RequestParam( required = false ) Set<String> p,
         @RequestParam Set<String> ou,
         @RequestParam( required = false ) boolean orgUnitIsParent,
         @RequestParam( required = false ) String organisationUnitGroupSetId,
@@ -128,8 +131,23 @@ public class ChartPluginController
         // ---------------------------------------------------------------------
         // Periods
         // ---------------------------------------------------------------------
+        
+        List<Period> periods = relativePeriods.getRelativePeriods();
 
-        List<Period> periods = periodService.reloadPeriods( setNames( relativePeriods.getRelativePeriods(), format ) );
+        if ( p != null && p.size() > 0 )
+        {
+            for ( String iso : p )
+            {
+                Period period = PeriodType.getPeriodFromIsoString( iso );
+                
+                if ( !periods.contains( period ) )
+                {
+                    periods.add( period );
+                }
+            }
+        }
+
+        periods = periodService.reloadPeriods( setNames( periods, format ) );
         
         if ( periodIsFilter )
         {
@@ -305,7 +323,12 @@ public class ChartPluginController
 
         if ( ds != null )
         {
-            List<DataSet> dataSets = dataSetService.getDataSetsByUid( ds );
+            Set<DataSet> dataSets = new HashSet<DataSet>();
+            
+            for ( String id : ds )
+            {
+                dataSets.add( dataSetService.getDataSet( id ) );
+            }
             
             if ( dataSets.isEmpty() )
             {
