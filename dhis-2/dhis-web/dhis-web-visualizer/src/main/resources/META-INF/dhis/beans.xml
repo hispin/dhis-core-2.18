@@ -71,9 +71,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="i18nManager" ref="org.hisp.dhis.i18n.I18nManager" />
     </bean>
 
     <bean id="org.hisp.dhis.visualizer.action.UpdateChartNameAction"

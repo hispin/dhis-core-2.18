@@ -27,15 +27,22 @@ package org.hisp.dhis.visualizer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.DateUtils.setNames;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -78,6 +85,13 @@ public class AddOrUpdateChartAction
     {
         this.dataSetService = dataSetService;
     }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -98,6 +112,13 @@ public class AddOrUpdateChartAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+    
+    private I18nManager i18nManager;
+
+    public void setI18nManager( I18nManager i18nManager )
+    {
+        this.i18nManager = i18nManager;
     }
 
     // -------------------------------------------------------------------------
@@ -228,6 +249,13 @@ public class AddOrUpdateChartAction
     public void setLast5Years( boolean last5Years )
     {
         this.last5Years = last5Years;
+    }
+    
+    private List<String> periodIds;
+    
+    public void setPeriodIds( List<String> periodIds )
+    {
+        this.periodIds = periodIds;
     }
 
     private List<String> organisationUnitIds;
@@ -416,6 +444,18 @@ public class AddOrUpdateChartAction
             rp.setLast5Years( last5Years );
 
             chart.setRelatives( rp );
+        }
+        
+        if ( periodIds != null )
+        {
+            List<Period> periods = new ArrayList<Period>();
+            
+            for ( String id : periodIds )
+            {
+                periods.add( PeriodType.getPeriodFromIsoString( id ) );
+            }
+            
+            chart.getPeriods().addAll( periodService.reloadPeriods( setNames( periods, i18nManager.getI18nFormat() ) ) );
         }
 
         chart.getOrganisationUnits().clear();
