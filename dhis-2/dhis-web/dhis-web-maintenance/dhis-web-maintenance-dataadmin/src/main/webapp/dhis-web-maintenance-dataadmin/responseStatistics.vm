@@ -53,26 +53,6 @@
         <td>$objects.getValue( "DATAVALUE" )</td>
     </tr>
     <tr>
-        <td>$i18n.getString( "aggregated_data_values" )</td>
-        <td>$objects.getValue( "AGGREGATEDDATAVALUE" )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "aggregated_indicator_values" )</td>
-        <td>$objects.getValue( "AGGREGATEDINDICATORVALUE" )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "aggregated_org_unit_data_values" )</td>
-        <td>$objects.getValue( "AGGREGATEDORGUNITDATAVALUE" )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "aggregated_org_unit_indicator_values" )</td>
-        <td>$objects.getValue( "AGGREGATEDORGUNITINDICATORVALUE" )</td>
-    </tr>
-    <tr>
-        <td>$i18n.getString( "aggregated_data_set_completeness" )</td>
-        <td>$objects.getValue( "AGGREGATEDDATASETCOMPLETENESS" )</td>
-    </tr>
-    <tr>
     	<td colspan="2" style="height:15px"></td>
     </tr>
 </table>
