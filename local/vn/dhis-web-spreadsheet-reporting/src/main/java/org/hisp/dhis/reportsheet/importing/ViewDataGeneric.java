@@ -35,6 +35,7 @@ import org.hisp.dhis.reportsheet.importitem.ImportItem;
 import org.hisp.dhis.reportsheet.importitem.ImportReport;
 import org.hisp.dhis.reportsheet.importitem.ImportReportService;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -50,19 +51,11 @@ public abstract class ViewDataGeneric
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     protected ImportReportService importReportService;
 
-    public void setImportReportService( ImportReportService importReportService )
-    {
-        this.importReportService = importReportService;
-    }
-
+    @Autowired
     protected SelectionManager selectionManager;
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
 
     private I18n i18n;
 

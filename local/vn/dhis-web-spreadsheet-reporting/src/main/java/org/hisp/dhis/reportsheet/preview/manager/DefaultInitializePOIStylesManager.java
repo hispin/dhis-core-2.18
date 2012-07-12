@@ -111,7 +111,7 @@ public class DefaultInitializePOIStylesManager
     // -------------------------------------------------------------------------
     // Customized Methods - Using for XLS Extension
     // -------------------------------------------------------------------------
-    
+
     public void initHeader( HSSFHeader poi_header, String center, String left, String right )
     {
 

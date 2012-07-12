@@ -46,6 +46,7 @@ import org.hisp.dhis.reportsheet.importitem.ImportReportService;
 import org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Dang Duy Hieu
@@ -59,75 +60,35 @@ public abstract class ImportDataGeneric
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     protected CurrentUserService currentUserService;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
+    @Autowired
     protected DataElementService dataElementService;
 
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
+    @Autowired
     protected DataElementCategoryService categoryService;
 
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
+    @Autowired
     protected DataValueService dataValueService;
 
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
+    @Autowired
     protected ExpressionService expressionService;
 
-    public void setExpressionService( ExpressionService expressionService )
-    {
-        this.expressionService = expressionService;
-    }
-
+    @Autowired
     protected ImportReportService importReportService;
 
-    public void setImportReportService( ImportReportService importReportService )
-    {
-        this.importReportService = importReportService;
-    }
-
+    @Autowired
     protected OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
+    @Autowired
     protected OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-    {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-    }
-
+    @Autowired
     protected PeriodGenericManager periodGenericManager;
 
-    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
-    {
-        this.periodGenericManager = periodGenericManager;
-    }
-
+    @Autowired
     protected SelectionManager selectionManager;
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -172,7 +133,7 @@ public abstract class ImportDataGeneric
     protected void addDataValue( OrganisationUnit unit, Period period, String expression, String value )
     {
         value = value.replaceAll( "\\.", "" ).replace( ",", "." );
-        
+
         DataElementOperand operand = expressionService.getOperandsInExpression( expression ).iterator().next();
 
         DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
