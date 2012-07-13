@@ -296,13 +296,14 @@ span#info
 
 div#detailsArea 
 {
-  border: 1px solid #8f8ffd;
-  background-color: #dadaff;
+  border: 1px solid #a9c2dc;
+  background-color: #ebf0f6;
   position: fixed;
   width: 18em;
   max-height: 75%;
   padding: 0.5em;
   overflow: auto;
+  border-radius: 3px;
 }
 
 div#detailsArea label 
