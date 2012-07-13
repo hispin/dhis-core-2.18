@@ -97,8 +97,6 @@ public class ShowAddPatientFormAction
 
     private OrganisationUnit organisationUnit;
 
-    private String year;
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -114,10 +112,6 @@ public class ShowAddPatientFormAction
         Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
-        SimpleDateFormat dataFormat = new SimpleDateFormat( "y" );
-
-        year = dataFormat.format( new Date() );
 
         return SUCCESS;
     }
@@ -144,10 +138,5 @@ public class ShowAddPatientFormAction
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
-    }
-
-    public String getYear()
-    {
-        return year;
     }
 }
