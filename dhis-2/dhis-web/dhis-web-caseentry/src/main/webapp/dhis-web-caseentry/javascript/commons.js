@@ -116,6 +116,10 @@ function searchObjectOnChange( this_ )
 	{
 		element.replaceWith( getGenderSelector() );
 	}
+	else if ( attributeId=='fixedAttr_age' )
+	{
+		element.replaceWith( getAgeTextBox() );
+	}
 	else if ( valueType=='YES/NO' )
 	{
 		element.replaceWith( getTrueFalseBox() );
@@ -124,13 +128,6 @@ function searchObjectOnChange( this_ )
 	{
 		element.replaceWith( searchTextBox );
 	}
-}
-
-function getDateField( container )
-{
-	var dateField = '<select id="dateOperator" style="width:40px;" name="dateOperator" ><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option><option value=">"> > </option><option value=">="> >= </option></select>';
-	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:200px;">';
-	return dateField;
 }
 
 function getTrueFalseBox()
@@ -150,6 +147,13 @@ function getGenderSelector()
 		genderSelector += '<option value="T">' + i18n_transgender + '</option>';
 		genderSelector += '</select>';
 	return genderSelector;
+}
+
+function getAgeTextBox( container )
+{
+	var ageField = '<select id="dateOperator" style="width:40px;" name="dateOperator" ><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option><option value=">"> > </option><option value=">="> >= </option></select>';
+	ageField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:200px;">';
+	return ageField;
 }
 
 //-----------------------------------------------------------------------------

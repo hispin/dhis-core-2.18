@@ -68,7 +68,7 @@
 						#set( $hasOptionSet = 'false')
 					#end
 					#if( $programStageDataElement.dataElement.textType == "longText" )
-						<textarea name="entryfield" type="text" data="{compulsory: $programStageDataElement.compulsory }" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" ></textarea>
+						<textarea name="entryfield" type="text" data="{compulsory: $programStageDataElement.compulsory }" id="$id" name="entryfield" onchange="saveVal( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >$!encoder.htmlEncode( $patientDataValue.value )</textarea>
 					#elseif( $programStageDataElement.dataElement.type == "bool" )
 						<select name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" id="$id" onchange="saveOpt( $programStageDataElement.dataElement.id )" tabindex="$tabIndex">
 							<option value="">[$i18n.getString( "select_value" )]</option>

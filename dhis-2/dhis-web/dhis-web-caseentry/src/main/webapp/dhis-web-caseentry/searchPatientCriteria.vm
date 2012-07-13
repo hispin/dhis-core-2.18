@@ -34,8 +34,8 @@
 					<option value="iden">$i18n.getString( "search_by_name_identifier" )</option>
 					<option value="prg">$i18n.getString( "search_by_program" )</option>
 					<option value="fixedAttr_birthDate">$i18n.getString( "date_of_birth" )</option>
+					<option value="fixedAttr_age">$i18n.getString( "age_year" )</option>
 					<option value="fixedAttr_gender">$i18n.getString( "gender" )</option>
-					<!-- option value="-3">$i18n.getString( "age" )</option -->
 					<option value="fixedAttr_phoneNumber">$i18n.getString( "phone_number" )</option>
 					#foreach( $attribute in $patientAttributes )
 						<option value="attr_$attribute.id" valueType='$attribute.valueType'>$encoder.htmlEncode( $attribute.name )</option>

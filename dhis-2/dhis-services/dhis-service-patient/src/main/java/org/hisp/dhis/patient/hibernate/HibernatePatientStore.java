@@ -325,6 +325,10 @@ public class HibernatePatientStore
                 {
                     patientWhere += " p." + id + value;
                 }
+                else if ( id.equals( Patient.FIXED_ATTR_AGE ) )
+                {
+                    patientWhere += " ((DATE(now()) - DATE(birthdate))/365) " + value;
+                }
                 else
                 {
                     patientWhere += " lower(p." + id + ")='" + value + "'";
@@ -375,7 +379,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-
+System.out.println("\n\n === \n SQL : " + sql );
         return sql;
     }
 
