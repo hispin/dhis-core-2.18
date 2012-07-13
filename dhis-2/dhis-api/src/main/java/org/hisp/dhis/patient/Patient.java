@@ -64,6 +64,7 @@ public class Patient
     public static String PREFIX_PATIENT_ATTRIBUTE = "attr";
     public static String PREFIX_PROGRAM = "prg";
     public static String FIXED_ATTR_BIRTH_DATE = "birthDate";
+    public static String FIXED_ATTR_AGE = "age";
 
     private Integer id;
 
