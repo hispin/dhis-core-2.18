@@ -24,20 +24,24 @@
 <div class="header-box" align="center">
 	<p style="text-align: left;">
 		#foreach( $dataElement in $dataElements)
+			#set( $key = "DE${dataElement.id}" )
 			#if( $dataElement.shortName )
 				#set( $dataElementName = $dataElement.shortName )
 			#else
 				#set( $dataElementName = $dataElement.name )
 			#end
-				#if (! $dataElement.getOptionSet())			
-					#set( $key = "DE${dataElement.id}" )
-					<label>$encoder.htmlEncode( $dataElementName )
+			
+			<label>$encoder.htmlEncode( $dataElementName )
+					#if($dataElement.isCompulsory())*#end
 					#if($dataElement.type=="date") [yyyy-MM-dd] #end
-					</label>
-					#if( $typeViolations.get( $key ) )
+			</label>
+			
+			#if( $typeViolations.get( $key ) )
                 		#set( $typeViolation = $typeViolations.get( $key ) )
             			<br /><span style="color: #990000;">$prevDataValues.get($key) $i18n.getString($typeViolation)</span>
-            		#end
+            #end
+			
+				#if (! $dataElement.getOptionSet())			
 					
 					#if($dataElement.type=="bool")
 						<select name="$key">
@@ -50,17 +54,7 @@
 					#end
 
 				#elseif ($dataElement.getOptionSet())
-					
 					#set( $options = $dataElement.getOptionSet().getOptions() )
-					#set( $key = "DE${dataElement.id}" )
-					<label>$encoder.htmlEncode( $dataElementName )
-					#if($dataElement.type=="date") [yyyy-MM-dd] #end
-					</label>
-					#if( $typeViolations.get( $key ) )
-                    	#set( $typeViolation = $typeViolations.get( $key ) )
-                		<br /><span style="color: #990000;"> $prevDataValues.get($key) $i18n.getString($typeViolation)</span>
-                	#end
-                
 					<select type="text" name="$key" />
 					#set( $selected=false )
 					#foreach ($option in $options)

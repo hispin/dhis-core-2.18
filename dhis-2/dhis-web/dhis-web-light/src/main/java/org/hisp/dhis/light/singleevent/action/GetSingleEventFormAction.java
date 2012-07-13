@@ -31,9 +31,6 @@ import com.opensymphony.xwork2.Action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
-
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -124,13 +121,6 @@ public class GetSingleEventFormAction
         return this.update;
     }
 
-    List<DataElement> dataElements = new ArrayList<DataElement>();
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
     private ArrayList<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
 
     public ArrayList<ProgramStageDataElement> getProgramStageDataElements()
@@ -155,14 +145,6 @@ public class GetSingleEventFormAction
         ProgramStage programStage = program.getProgramStages().iterator().next();
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
         Collections.sort( programStageDataElements, OrderBySortOrder );
-
-        if ( programStageDataElements != null )
-        {
-            for ( ProgramStageDataElement each : programStageDataElements )
-            {
-                dataElements.add( each.getDataElement() );
-            }
-        }
         return SUCCESS;
     }
 

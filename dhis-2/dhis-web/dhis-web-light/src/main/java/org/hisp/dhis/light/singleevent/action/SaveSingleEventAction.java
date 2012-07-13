@@ -53,6 +53,7 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.util.ContextUtils;
@@ -120,12 +121,24 @@ public class SaveSingleEventAction
     {
         this.util = util;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
+    }
+
+    private ProgramStageDataElementService programStageDataElementService;
+
+    public ProgramStageDataElementService getProgramStageDataElementService()
+    {
+        return programStageDataElementService;
+    }
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -138,24 +151,12 @@ public class SaveSingleEventAction
     {
         return typeViolations;
     }
-    
+
     private Map<String, String> prevDataValues = new HashMap<String, String>();
 
     public Map<String, String> getPrevDataValues()
     {
         return prevDataValues;
-    }
-    
-    List<DataElement> dataElements = new ArrayList<DataElement>();
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    public void setDataElements( List<DataElement> dataElements )
-    {
-        this.dataElements = dataElements;
     }
 
     private Integer programId;
@@ -231,7 +232,7 @@ public class SaveSingleEventAction
     {
         return this.instId;
     }
-    
+
     private List<String> dynForm = new ArrayList<String>();
 
     public void setDynForm( List<String> dynForm )
@@ -284,16 +285,11 @@ public class SaveSingleEventAction
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
         Collections.sort( programStageDataElements, OrderBySortOrder );
-        
-        for ( ProgramStageDataElement each : programStageDataElements )
-        {
-            dataElements.add( each.getDataElement() );
-        }
-        
+
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
             ServletActionContext.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
-        
+
         typeViolations.clear();
 
         prevDataValues.clear();
@@ -301,8 +297,7 @@ public class SaveSingleEventAction
         // -------------------------------------------------------------------------
         // Validation
         // -------------------------------------------------------------------------
-        
-        
+
         for ( String key : parameterMap.keySet() )
         {
             if ( key.startsWith( "DE" ) )
@@ -312,6 +307,9 @@ public class SaveSingleEventAction
                 String value = parameterMap.get( key );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+                ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
+                    dataElement );
 
                 value = value.trim();
 
@@ -327,9 +325,14 @@ public class SaveSingleEventAction
                     }
                     prevDataValues.put( key, value );
                 }
+                else if ( valueIsEmpty && programStageDataElement.isCompulsory() )
+                {
+                    typeViolations.put( key, "is_empty" );
+                    prevDataValues.put( key, value );
+                }
             }
         }
-        
+
         if ( !typeViolations.isEmpty() )
         {
             return ERROR;
@@ -351,7 +354,6 @@ public class SaveSingleEventAction
         programStageInstance.setExecutionDate( new Date() );
         programStageInstance.setCompleted( false );
         programStageInstanceService.addProgramStageInstance( programStageInstance );
-
 
         for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
         {

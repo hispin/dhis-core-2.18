@@ -176,6 +176,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementCategoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
 
 	<bean
@@ -372,6 +373,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
 
 	<!-- Dashboard -->
@@ -464,6 +466,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
-
 </beans>

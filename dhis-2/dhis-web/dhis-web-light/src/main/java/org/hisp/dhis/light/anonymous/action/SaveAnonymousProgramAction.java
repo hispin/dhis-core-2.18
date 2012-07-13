@@ -32,11 +32,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -49,6 +46,7 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.util.ContextUtils;
@@ -115,6 +113,18 @@ public class SaveAnonymousProgramAction
         this.util = util;
     }
 
+    private ProgramStageDataElementService programStageDataElementService;
+
+    public ProgramStageDataElementService getProgramStageDataElementService()
+    {
+        return programStageDataElementService;
+    }
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
+    }
+
     // -------------------------------------------------------------------------
     // Input Output
     // -------------------------------------------------------------------------
@@ -161,23 +171,16 @@ public class SaveAnonymousProgramAction
         return program;
     }
 
-    List<DataElement> dataElements = new ArrayList<DataElement>();
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    public void setDataElements( List<DataElement> dataElements )
-    {
-        this.dataElements = dataElements;
-    }
-
     private ArrayList<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
 
     public ArrayList<ProgramStageDataElement> getProgramStageDataElements()
     {
         return this.programStageDataElements;
+    }
+    
+    public void setProgramStageDataElements( ArrayList<ProgramStageDataElement> programStageDataElements )
+    {
+        this.programStageDataElements = programStageDataElements;
     }
 
     static final Comparator<ProgramStageDataElement> OrderBySortOrder = new Comparator<ProgramStageDataElement>()
@@ -206,12 +209,6 @@ public class SaveAnonymousProgramAction
         programStage = program.getProgramStages().iterator().next();
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
-
-        for ( ProgramStageDataElement each : programStageDataElements )
-        {
-            dataElements.add( each.getDataElement() );
-        }
-
         Collections.sort( programStageDataElements, OrderBySortOrder );
 
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
@@ -237,6 +234,9 @@ public class SaveAnonymousProgramAction
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
+                ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
+                    dataElement );
+
                 value = value.trim();
 
                 Boolean valueIsEmpty = (value == null || value.length() == 0);
@@ -249,6 +249,11 @@ public class SaveAnonymousProgramAction
                     {
                         typeViolations.put( key, typeViolation );
                     }
+                    prevDataValues.put( key, value );
+                }
+                else if ( valueIsEmpty && programStageDataElement.isCompulsory() )
+                {
+                    typeViolations.put( key, "is_empty" );
                     prevDataValues.put( key, value );
                 }
             }

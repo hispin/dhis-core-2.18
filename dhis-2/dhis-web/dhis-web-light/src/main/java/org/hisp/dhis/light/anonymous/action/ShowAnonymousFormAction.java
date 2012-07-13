@@ -28,15 +28,12 @@
 package org.hisp.dhis.light.anonymous.action;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.hisp.dhis.dataelement.DataElement;
+import java.util.Collections;
+import java.util.Comparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
-
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -89,12 +86,25 @@ public class ShowAnonymousFormAction implements Action
         return program;
     }
     
-    List<DataElement> dataElements = new ArrayList<DataElement>();
-    
-    public List<DataElement> getDataElements()
+    private ArrayList<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
+
+    public ArrayList<ProgramStageDataElement> getProgramStageDataElements()
     {
-        return dataElements;
+        return this.programStageDataElements;
     }
+    
+    public void setProgramStageDataElements( ArrayList<ProgramStageDataElement> programStageDataElements )
+    {
+        this.programStageDataElements = programStageDataElements;
+    }
+    
+    static final Comparator<ProgramStageDataElement> OrderBySortOrder = new Comparator<ProgramStageDataElement>()
+    {
+        public int compare( ProgramStageDataElement i1, ProgramStageDataElement i2 )
+        {
+            return i1.getSortOrder().compareTo( i2.getSortOrder() );
+        }
+    };
     
     // -------------------------------------------------------------------------
     // Implementation Action
@@ -109,17 +119,10 @@ public class ShowAnonymousFormAction implements Action
         
         programStage = program.getProgramStages().iterator().next();
         
-        Set<ProgramStageDataElement> programStageDataElement = null;
-    
-        programStageDataElement = programStage.getProgramStageDataElements();  
+        programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
+            
+        Collections.sort( programStageDataElements, OrderBySortOrder );
         
-        if( programStageDataElement != null )
-        {    
-            for( ProgramStageDataElement each: programStageDataElement )
-            {
-                dataElements.add( each.getDataElement() );
-            }
-        }
         return SUCCESS;
     }
 
