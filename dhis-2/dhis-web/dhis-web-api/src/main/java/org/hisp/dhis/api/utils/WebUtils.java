@@ -190,7 +190,8 @@ public class WebUtils
         try
         {
             port = Integer.parseInt( xForwardedPort );
-        } catch ( NumberFormatException e )
+        } 
+        catch ( NumberFormatException e )
         {
             port = request.getServerPort();
         }
