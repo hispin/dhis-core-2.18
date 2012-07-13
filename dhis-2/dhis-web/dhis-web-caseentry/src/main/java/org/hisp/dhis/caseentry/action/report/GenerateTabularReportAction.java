@@ -340,10 +340,7 @@ public class GenerateTabularReportAction
             grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
                 startValue, endValue, !orderByOrgunitAsc, null, null );
         }
-
-        System.out.println();
-        System.out.println( grid );
-
+        
         return type == null ? SUCCESS : type;
     }
 
