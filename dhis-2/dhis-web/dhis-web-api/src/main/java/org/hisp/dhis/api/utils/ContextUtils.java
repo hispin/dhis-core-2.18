@@ -125,24 +125,36 @@ public class ContextUtils
     }
 
     public static void conflictResponse( HttpServletResponse response, String message )
-        throws IOException
     {
         response.setStatus( HttpServletResponse.SC_CONFLICT );
-        response.setContentType( CONTENT_TYPE_TEXT );
-
-        PrintWriter writer = response.getWriter();
-        writer.println( message );
-        writer.flush();
+        printResponse( response, message );
     }
     
     public static void okResponse( HttpServletResponse response, String message )
-        throws IOException
     {
         response.setStatus( HttpServletResponse.SC_OK );
+        printResponse( response, message );
+    }
+    
+    public static void notFoundResponse( HttpServletResponse response, String message )
+    {
+        response.setStatus( HttpServletResponse.SC_NOT_FOUND );
+        printResponse( response, message );
+    }
+    
+    private static void printResponse( HttpServletResponse response, String message )
+    {
         response.setContentType( CONTENT_TYPE_TEXT );
-
-        PrintWriter writer = response.getWriter();
-        writer.println( message );
-        writer.flush();
+        
+        try
+        {
+            PrintWriter writer = response.getWriter();
+            writer.println( message );
+            writer.flush();
+        }
+        catch ( IOException ex )
+        {
+            // Ignore
+        }
     }
 }

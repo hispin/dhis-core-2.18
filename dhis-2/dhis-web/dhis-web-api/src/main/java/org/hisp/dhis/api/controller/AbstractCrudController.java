@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
@@ -62,7 +63,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @Autowired
     protected IdentifiableObjectManager manager;
-
+    
     //--------------------------------------------------------------------------
     // GET
     //--------------------------------------------------------------------------
@@ -88,11 +89,18 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
+    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, 
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         T entity = getEntity( uid );
 
+        if ( entity == null )
+        {
+            ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
+            return null;
+        }
+        
         if ( options.hasLinks() )
         {
             WebUtils.generateLinks( entity );
@@ -104,13 +112,19 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() );
     }
 
-    // FIXME proper error handling?
     @RequestMapping( value = "/search/{query}", method = RequestMethod.GET )
-    public String search( @PathVariable String query, @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
+    public String search( @PathVariable String query, @RequestParam Map<String, String> parameters, 
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         T entity = manager.search( getEntityClass(), query );
 
+        if ( entity == null )
+        {
+            ContextUtils.notFoundResponse( response, "Object not found for query: " + query );
+            return null;
+        }
+        
         if ( options.hasLinks() )
         {
             WebUtils.generateLinks( entity );
@@ -256,15 +270,18 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         try
         {
             return (T) Class.forName( getEntityName() ).newInstance();
-        } catch ( InstantiationException e )
+        }
+        catch ( InstantiationException ex )
         {
-            throw new RuntimeException( e );
-        } catch ( IllegalAccessException e )
+            throw new RuntimeException( ex );
+        }
+        catch ( IllegalAccessException ex )
         {
-            throw new RuntimeException( e );
-        } catch ( ClassNotFoundException e )
+            throw new RuntimeException( ex );
+        }
+        catch ( ClassNotFoundException ex )
         {
-            throw new RuntimeException( e );
+            throw new RuntimeException( ex );
         }
     }
 }
