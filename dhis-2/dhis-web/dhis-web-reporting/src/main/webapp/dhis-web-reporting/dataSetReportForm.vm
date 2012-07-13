@@ -31,6 +31,10 @@ h3#dataset_report_header {
 #download_buttons {
     display: none;
 }
+
+.gridTable {
+    width: 100%;
+}
 </style>
 
 <style type="text/css">
