@@ -47,6 +47,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.util.ContextUtils;
 import com.opensymphony.xwork2.Action;
@@ -130,6 +132,18 @@ public class SaveProgramStageFormAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
+    }
+
+    private ProgramStageDataElementService programStageDataElementService;
+
+    public ProgramStageDataElementService getProgramStageDataElementService()
+    {
+        return programStageDataElementService;
+    }
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
+    {
+        this.programStageDataElementService = programStageDataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -290,9 +304,11 @@ public class SaveProgramStageFormAction
 
         programStage = util.getProgramStage( programId, programStageId );
         program = programStageService.getProgramStage( programStageId ).getProgram();
+        org.hisp.dhis.program.ProgramStage dhisProgramStage = programStageService.getProgramStage( programStageId );
+        
         patient = patientService.getPatient( patientId );
         dataElements = programStage.getDataElements();
-        
+
         int defaultCategoryOptionId = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId();
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
             ServletActionContext.HTTP_REQUEST );
@@ -313,6 +329,8 @@ public class SaveProgramStageFormAction
 
                 // validate types
                 org.hisp.dhis.dataelement.DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                ProgramStageDataElement programStageDataElement = programStageDataElementService.get( dhisProgramStage,
+                    dataElement );
                 value = value.trim();
                 Boolean valueIsEmpty = (value == null || value.length() == 0);
 
@@ -324,6 +342,11 @@ public class SaveProgramStageFormAction
                     {
                         typeViolations.put( key, typeViolation );
                     }
+                    prevDataValues.put( key, value );
+                }
+                else if ( valueIsEmpty && programStageDataElement.isCompulsory() )
+                {
+                    typeViolations.put( key, "is_empty" );
                     prevDataValues.put( key, value );
                 }
 
@@ -357,7 +380,7 @@ public class SaveProgramStageFormAction
             return ERROR;
         }
 
-        if ( programStageService.getProgramStage( programStageId ).getIrregular() )
+        if ( dhisProgramStage.getIrregular() )
         {
             return REGISTER_NEXT_DUEDATE;
         }

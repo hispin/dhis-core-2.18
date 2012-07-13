@@ -277,7 +277,6 @@ public class GetProgramStageFormAction
         {
             prevDataValues.put( "DE" + patientDataValue.getDataElement().getId(), patientDataValue.getValue() );
         }
-        
         return SUCCESS;
     }
 }

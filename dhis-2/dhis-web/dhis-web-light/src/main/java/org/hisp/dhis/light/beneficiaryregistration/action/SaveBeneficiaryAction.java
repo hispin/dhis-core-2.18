@@ -356,7 +356,6 @@ public class SaveBeneficiaryAction
                     else if ( patientIdentifierType.getType().equals( "number" ) && !FormUtils.isNumber( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_number" );
-                        this.previousValues.put( key, value );
                     }
                     else
                     {
@@ -366,6 +365,7 @@ public class SaveBeneficiaryAction
                         patientIdentifierSet.add( patientIdentifier );
                         patientIdentifier.setIdentifier( value.trim() );
                     }
+                    this.previousValues.put( key, value );
                 }
             }
         }
@@ -387,13 +387,11 @@ public class SaveBeneficiaryAction
                         && !FormUtils.isInteger( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_number" );
-                        this.previousValues.put( key, value );
                     }
                     else if ( patientAttribute.getValueType().equals( PatientAttribute.TYPE_DATE )
                         && !FormUtils.isDate( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_date" );
-                        this.previousValues.put( key, value );
                     }
                     else
                     {
@@ -412,6 +410,7 @@ public class SaveBeneficiaryAction
                         patientAttributeValue.setValue( value.trim() );
                         patientAttributeValues.add( patientAttributeValue );
                     }
+                    this.previousValues.put( key, value );
                 }
             }
         }

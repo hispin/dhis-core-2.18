@@ -15,20 +15,28 @@
 <input type="hidden" value="$programId" name="programId" />
 <div class="header-box" align="center">
 	<p style="text-align: left;">
-	#foreach( $dataElement in $dataElements)
+
+	#foreach( $programStageDataElement in $programStageDataElements)
+		#set($dataElement = $programStageDataElement.getDataElement())
+		#set( $key = "DE${dataElement.id}" )
+			
 		#if( $dataElement.shortName )
 			#set( $dataElementName = $dataElement.shortName )
 		#else
 			#set( $dataElementName = $dataElement.name )
-		#end		
-		#if (! $dataElement.getOptionSet())
-			#set( $key = "DE${dataElement.id}" )
-			<label>$encoder.htmlEncode( $dataElementName ) #if($dataElement.type=="date") [yyyy-MM-dd] #end </label>
-			#if( $typeViolations.get( $key ) )
+		#end
+		
+		<label>$encoder.htmlEncode( $dataElementName ) 
+			#if($dataElement.type=="date") [yyyy-MM-dd] #end
+			#if($programStageDataElement.isCompulsory())*#end 
+		</label>
+		
+		#if( $typeViolations.get( $key ) )
                 #set( $typeViolation = $typeViolations.get( $key ) )
             	<br /><span style="color: #990000;">$prevDataValues.get($key) $i18n.getString($typeViolation)</span>
-            #end
-            
+        #end
+            		
+		#if (! $dataElement.getOptionSet())
 			#if($dataElement.type=="bool")
 				<select name="$key">
 					<option value="">$i18n.getString("please_select")</option>
@@ -40,15 +48,8 @@
 			#end	
 		#elseif ($dataElement.getOptionSet())
 			#set( $options = $dataElement.getOptionSet().getOptions() )
-			#set( $key = "DE${dataElement.id}" )
-			<label>$encoder.htmlEncode( $dataElementName ) #if($dataElement.type=="date") [yyyy-MM-dd] #end </label>		
-			#if( $typeViolations.get( $key ) )
-				#set( $typeViolation = $typeViolations.get( $key ) )
-				<br /><span style="color: #990000;"> $prevDataValues.get($key) $i18n.getString($typeViolation)</span>
-            #end
 			<select type="text" name="$key" />
-			#set( $selected=false )	
-			<option selected > $i18n.getString("select_option") </option>
+				<option selected > $i18n.getString("select_option") </option>
 			#foreach ($option in $options)
 				<option value="$option" #if($prevDataValues.get($key) == $option) selected #end> $option </option>
 			#end
@@ -69,6 +70,7 @@
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
+	<li><a href="anonymous.action">$i18n.getString("anomynous_program_list")</a></li>
     <li><a href="feedback.action">$i18n.getString("feedback")</a></li>
 	<li><a href="../dhis-web-commons-security/logout.action">$i18n.getString("logout")</a></li>
     <li style="padding-top: 5px;"><a href="../">$i18n.getString("desktop_version")</a></li>
