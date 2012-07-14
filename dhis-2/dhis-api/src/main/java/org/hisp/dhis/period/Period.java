@@ -220,7 +220,8 @@ public class Period
             format.applyPattern( DEFAULT_DATE_FORMAT );
 
             return dateString != null ? format.parse( dateString ) : null;
-        } catch ( ParseException ex )
+        } 
+        catch ( ParseException ex )
         {
             throw new RuntimeException( "Failed to parse medium date", ex );
         }
