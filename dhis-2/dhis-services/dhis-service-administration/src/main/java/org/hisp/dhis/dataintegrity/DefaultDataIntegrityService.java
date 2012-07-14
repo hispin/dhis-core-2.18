@@ -38,7 +38,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -69,8 +68,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultDataIntegrityService.java 2010-03-18 11:52:20Z Chau Thu
- *          Tran $
  */
 @Transactional
 public class DefaultDataIntegrityService
@@ -457,29 +454,6 @@ public class DefaultDataIntegrityService
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
         return organisationUnitService.getOrganisationUnitsWithoutGroups();
-    }
-
-    public Collection<OrganisationUnit> getOrganisationUnitsViolatingCompulsoryGroupSets()
-    {
-        Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService
-            .getCompulsoryOrganisationUnitGroupSets();
-
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getAllOrganisationUnits();
-
-        Set<OrganisationUnit> targets = new HashSet<OrganisationUnit>();
-
-        for ( OrganisationUnit unit : organisationUnits )
-        {
-            for ( OrganisationUnitGroupSet groupSet : groupSets )
-            {
-                if ( !CollectionUtils.containsAny( groupSet.getOrganisationUnitGroups(), unit.getGroups() ) )
-                {
-                    targets.add( unit );
-                }
-            }
-        }
-
-        return targets;
     }
 
     public SortedMap<OrganisationUnit, Collection<OrganisationUnitGroup>> getOrganisationUnitsViolatingExclusiveGroupSets()
