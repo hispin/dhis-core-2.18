@@ -29,6 +29,7 @@ package org.hisp.dhis.common.adapter;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import org.hisp.dhis.period.Period;
@@ -43,10 +44,17 @@ public class JacksonPeriodDeserializer
     extends JsonDeserializer<Period>
 {
     @Override
-    public Period deserialize( JsonParser jp, DeserializationContext ctxt ) throws IOException, JsonProcessingException
+    public Period deserialize( JsonParser jp, DeserializationContext ctxt )
+        throws IOException, JsonProcessingException
     {
-        String periodString = jp.readValueAs( String.class );
-
-        return PeriodType.getPeriodFromIsoString( periodString );
+        while ( jp.nextToken() != JsonToken.END_OBJECT )
+        {
+            if ( "id".equals( jp.getCurrentName() ) )
+            {
+                return PeriodType.getPeriodFromIsoString( jp.getText() );
+            }
+        }
+        
+        return null;        
     }
 }

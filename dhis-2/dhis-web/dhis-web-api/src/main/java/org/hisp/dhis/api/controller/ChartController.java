@@ -27,15 +27,23 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -46,12 +54,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Date;
-
-import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -123,5 +125,19 @@ public class ChartController
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "chart.png", false );
 
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
+    }
+    
+    @Override
+    public void postProcessEntity( Chart chart ) throws Exception
+    {
+        I18nFormat format = i18nManager.getI18nFormat();
+        
+        if ( chart.getPeriods() != null && !chart.getPeriods().isEmpty() )
+        {
+            for ( Period period : chart.getPeriods() )
+            {
+                period.setName( format.formatPeriod( period ) );
+            }
+        }
     }
 }

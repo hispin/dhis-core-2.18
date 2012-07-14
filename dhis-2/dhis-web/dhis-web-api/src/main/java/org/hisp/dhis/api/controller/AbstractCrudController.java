@@ -106,6 +106,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             WebUtils.generateLinks( entity );
         }
 
+        postProcessEntity( entity );
+        
         model.addAttribute( "model", entity );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
@@ -130,6 +132,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             WebUtils.generateLinks( entity );
         }
 
+        postProcessEntity( entity );
+        
         model.addAttribute( "model", entity );
         model.addAttribute( "viewClass", "detailed" );
 
@@ -186,6 +190,18 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
 
+    //--------------------------------------------------------------------------
+    // Hooks
+    //--------------------------------------------------------------------------
+
+    /**
+     * Override to process a single entity after it has been retrieved from 
+     * storage and before it is returned to the view. Entity is null-safe.
+     */
+    public void postProcessEntity( T entity ) throws Exception
+    {
+    }
+    
     //--------------------------------------------------------------------------
     // Helpers
     //--------------------------------------------------------------------------

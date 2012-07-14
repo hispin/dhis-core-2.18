@@ -46,7 +46,15 @@ public class JacksonPeriodSerializer
     {
         if ( value.getIsoDate() != null )
         {
-            jgen.writeString( value.getIsoDate() );
+            jgen.writeStartObject();
+            jgen.writeStringField( "id", value.getIsoDate() );
+            
+            if ( value.getName() != null )
+            {
+                jgen.writeStringField( "name", value.getName() );
+            }
+            
+            jgen.writeEndObject();
         }
     }
 }
