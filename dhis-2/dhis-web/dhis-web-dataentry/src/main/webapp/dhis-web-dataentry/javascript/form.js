@@ -61,6 +61,8 @@ var FORMTYPE_CUSTOM = 'custom';
 var FORMTYPE_SECTION = 'section';
 var FORMTYPE_DEFAULT = 'default';
 
+var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded";
+
 /**
  * Page init. The order of events is:
  *
@@ -785,6 +787,8 @@ function displayEntryFormCompleted()
 
     dataEntryFormIsLoaded = true;
     hideLoader();
+    
+    $( 'body' ).trigger( EVENT_FORM_LOADED );
 }
 
 function valueFocus( e )
