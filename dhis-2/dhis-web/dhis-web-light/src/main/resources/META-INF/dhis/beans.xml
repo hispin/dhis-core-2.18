@@ -266,6 +266,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean
