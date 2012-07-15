@@ -27,13 +27,15 @@
 
 package org.hisp.dhis.light.beneficiaryregistration.action;
 
-import java.util.Collection;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
 
 public class RegisterBeneficiaryAction
     implements Action
@@ -64,6 +66,13 @@ public class RegisterBeneficiaryAction
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
@@ -106,13 +115,17 @@ public class RegisterBeneficiaryAction
         this.patientAttributes = patientAttributes;
     }
 
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception
     {
         patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
         patientAttributes = patientAttributeService.getAllPatientAttributes();
+
         return SUCCESS;
     }
-
 }
