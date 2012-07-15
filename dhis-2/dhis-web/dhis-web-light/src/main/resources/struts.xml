@@ -221,7 +221,7 @@
 
     <action name="saveBeneficiary"
         class="org.hisp.dhis.light.beneficiaryregistration.action.SaveBeneficiaryAction">
-		<result name="success" type="redirect">/light/showPatientProgramList.action?patientId=${patientId}</result>
+      <result name="success" type="redirect">/light/showPatientProgramList.action?patientId=${patientId}</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/registration/beneficiaryRegistrationForm.vm</param>
     </action>
@@ -260,7 +260,7 @@
 
     <action name="saveMobileProgramEnrollment"
         class="org.hisp.dhis.light.beneficiaryenrollment.action.SaveMobileProgramEnrollmentAction">
-      <result name="success" type="redirect">/light/selectEnrollmentProgram.action?patientId=${patientId}&amp;validated=true</result>
+      <result name="success" type="redirect">/light/showPatientProgramList.action?patientId=${patientId}</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/enrollment/programEnrollmentForm.vm</param>
     </action>
