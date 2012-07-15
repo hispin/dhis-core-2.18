@@ -27,6 +27,8 @@ package org.hisp.dhis.dataset.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -35,11 +37,9 @@ import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ConversionUtils;
-
-import java.util.Collection;
 
 /**
  * @author Kristian Nordal
@@ -52,11 +52,11 @@ public class HibernateDataSetStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PeriodStore periodStore;
+    private PeriodService periodService;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.periodStore = periodStore;
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
@@ -66,7 +66,7 @@ public class HibernateDataSetStore
     @Override
     public int save( DataSet dataSet )
     {
-        PeriodType periodType = periodStore.getPeriodType( dataSet.getPeriodType().getClass() );
+        PeriodType periodType = periodService.reloadPeriodType( dataSet.getPeriodType() );
 
         dataSet.setPeriodType( periodType );
 
@@ -76,7 +76,7 @@ public class HibernateDataSetStore
     @Override
     public void update( DataSet dataSet )
     {
-        PeriodType periodType = periodStore.getPeriodType( dataSet.getPeriodType().getClass() );
+        PeriodType periodType = periodService.reloadPeriodType( dataSet.getPeriodType() );
 
         dataSet.setPeriodType( periodType );
 
@@ -86,7 +86,7 @@ public class HibernateDataSetStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType )
     {
-        periodType = periodStore.getPeriodType( periodType.getClass() );
+        periodType = periodService.reloadPeriodType( periodType );
 
         Session session = sessionFactory.getCurrentSession();
 
