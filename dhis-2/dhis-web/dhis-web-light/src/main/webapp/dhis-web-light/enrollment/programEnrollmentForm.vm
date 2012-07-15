@@ -13,7 +13,7 @@
 		#if( $validationMap.get( "incidentDate" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "incidentDate" ))</span>
      	#end
-		<input type="text" name="incidentDate" value="$!previousValues.get("incidentDate")" />
+    <input type="text" name="incidentDate" value="#if($previousValues.get("incidentDate"))$previousValues.get("incidentDate")#else$now#end" />
 	</p>
 </div>
 
