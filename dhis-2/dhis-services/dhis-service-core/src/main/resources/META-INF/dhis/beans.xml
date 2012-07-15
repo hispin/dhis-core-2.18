@@ -89,7 +89,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.dataset.DataSetStore" class="org.hisp.dhis.dataset.hibernate.HibernateDataSetStore">
     <property name="clazz" value="org.hisp.dhis.dataset.DataSet" />
     <property name="sessionFactory" ref="sessionFactory" />
-    <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="cacheable" value="true" />
   </bean>
 
@@ -121,7 +121,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.validation.ValidationRuleStore" class="org.hisp.dhis.validation.hibernate.HibernateValidationRuleStore">
     <property name="clazz" value="org.hisp.dhis.validation.ValidationRule" />
     <property name="sessionFactory" ref="sessionFactory" />
-    <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="cacheable" value="true" />
   </bean>
 
