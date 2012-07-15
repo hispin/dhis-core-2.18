@@ -119,7 +119,7 @@
         /light/selectBeneficiary.action?organisationUnitId=${orgUnitId}&amp;current=${current}&amp;validated=true
       </result>
       <result name="success_back_to_programstage" type="redirect">
-        /light/showPatientProgramStageList.action?patientId=${patientId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=true
+        /light/showPatientProgramList.action?patientId=${patientId}
       </result>
       <result name="register_next_duedate" type="redirect">
         showRepeatableEventRegistrationForm.action?programInstanceId=${programInstanceId}&amp;programStageId=${programStageId}&amp;currentProgramStageInstanceId=${programStageInstanceId}
