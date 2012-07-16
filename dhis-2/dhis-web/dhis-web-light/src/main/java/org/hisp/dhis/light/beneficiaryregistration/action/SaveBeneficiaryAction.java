@@ -27,35 +27,21 @@
 
 package org.hisp.dhis.light.beneficiaryregistration.action;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.patient.PatientAttributeOptionService;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.*;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.util.ContextUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 public class SaveBeneficiaryAction
     implements Action
@@ -317,8 +303,7 @@ public class SaveBeneficiaryAction
             try
             {
                 patient.setBirthDateFromAge( Integer.parseInt( dateOfBirth ), Patient.AGE_TYPE_YEAR );
-            }
-            catch ( NumberFormatException nfe )
+            } catch ( NumberFormatException nfe )
             {
                 validationMap.put( "dob", "is_invalid_number" );
             }
@@ -330,8 +315,7 @@ public class SaveBeneficiaryAction
                 DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
                 DateTime date = sdf.parseDateTime( dateOfBirth );
                 patient.setBirthDate( date.toDate() );
-            }
-            catch ( Exception e )
+            } catch ( Exception e )
             {
                 validationMap.put( "dob", "is_invalid_date" );
             }
@@ -340,7 +324,7 @@ public class SaveBeneficiaryAction
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
             ServletActionContext.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
-         
+
         for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypeService.getAllPatientIdentifierTypes() )
         {
             if ( patientIdentifierType.getProgram() == null )
@@ -376,19 +360,20 @@ public class SaveBeneficiaryAction
             if ( patientAttribute.getProgram() == null )
             {
                 String key = "AT" + patientAttribute.getId();
-                String value = parameterMap.get( key );
+                String value = parameterMap.get( key ).trim();
+
                 if ( value != null )
                 {
                     if ( patientAttribute.isMandatory() && value.trim().equals( "" ) )
                     {
                         this.validationMap.put( key, "is_empty" );
                     }
-                    else if ( patientAttribute.getValueType().equals( PatientAttribute.TYPE_INT )
+                    else if ( value.trim().length() > 0 && patientAttribute.getValueType().equals( PatientAttribute.TYPE_INT )
                         && !FormUtils.isInteger( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_number" );
                     }
-                    else if ( patientAttribute.getValueType().equals( PatientAttribute.TYPE_DATE )
+                    else if ( value.trim().length() > 0 && patientAttribute.getValueType().equals( PatientAttribute.TYPE_DATE )
                         && !FormUtils.isDate( value ) )
                     {
                         this.validationMap.put( key, "is_invalid_date" );
@@ -396,6 +381,7 @@ public class SaveBeneficiaryAction
                     else
                     {
                         PatientAttributeValue patientAttributeValue = new PatientAttributeValue();
+
                         if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttribute.getValueType() ) )
                         {
                             PatientAttributeOption option = patientAttributeOptionService.get( NumberUtils.toInt(
@@ -405,11 +391,13 @@ public class SaveBeneficiaryAction
                                 patientAttributeValue.setPatientAttributeOption( option );
                             }
                         }
+
                         patientAttributeValue.setPatient( patient );
                         patientAttributeValue.setPatientAttribute( patientAttribute );
                         patientAttributeValue.setValue( value.trim() );
                         patientAttributeValues.add( patientAttributeValue );
                     }
+
                     this.previousValues.put( key, value );
                 }
             }
@@ -424,6 +412,7 @@ public class SaveBeneficiaryAction
             this.previousValues.put( "dobType", this.dobType );
             return ERROR;
         }
+
         patient.setIdentifiers( patientIdentifierSet );
         patient.setAttributes( patientAttributeSet );
         patientId = patientService.createPatient( patient, null, null, patientAttributeValues );
