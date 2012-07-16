@@ -27,17 +27,20 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
-import com.opensymphony.xwork2.Action;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class GetProgramStageListAction
     implements Action
@@ -147,7 +150,7 @@ public class GetProgramStageListAction
     }
 
     private Set<ProgramStage> repeatableStages;
-    
+
     public Set<ProgramStage> getRepeatableStages()
     {
         return repeatableStages;
@@ -157,9 +160,9 @@ public class GetProgramStageListAction
     {
         this.repeatableStages = repeatableStages;
     }
-    
+
     private Map<Integer, ProgramStage> exclusedRepeatableStages;
-    
+
     public Map<Integer, ProgramStage> getExclusedRepeatableStages()
     {
         return exclusedRepeatableStages;
@@ -168,6 +171,11 @@ public class GetProgramStageListAction
     public void setExclusedRepeatableStages( Map<Integer, ProgramStage> exclusedRepeatableStages )
     {
         this.exclusedRepeatableStages = exclusedRepeatableStages;
+    }
+
+    public DateFormat getDateFormat()
+    {
+        return new SimpleDateFormat( "yyyy-MM-dd" );
     }
 
     @Override
@@ -180,21 +188,24 @@ public class GetProgramStageListAction
         programStageInstances = programInstance.getProgramStageInstances();
         repeatableStages = new HashSet<ProgramStage>();
         Set<ProgramStage> programStages = programInstance.getProgram().getProgramStages();
-        
-        for (ProgramStage programStage : programStages) {
-            if (programStage.getIrregular()) {
+
+        for ( ProgramStage programStage : programStages )
+        {
+            if ( programStage.getIrregular() )
+            {
                 repeatableStages.add( programStage );
             }
         }
-        
+
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
-           ProgramStage programStage =  programStageInstance.getProgramStage();
-           if (programStage.getIrregular() && !programStageInstance.isCompleted()) {
-               exclusedRepeatableStages.put( programStage.getId(), programStage );
-           }
+            ProgramStage programStage = programStageInstance.getProgramStage();
+            if ( programStage.getIrregular() && !programStageInstance.isCompleted() )
+            {
+                exclusedRepeatableStages.put( programStage.getId(), programStage );
+            }
         }
-        
+
         return SUCCESS;
     }
 
