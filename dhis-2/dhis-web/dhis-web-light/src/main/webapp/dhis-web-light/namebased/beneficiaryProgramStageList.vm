@@ -1,16 +1,14 @@
 <h2>$!encoder.htmlEncode( ${patient.getFullName()} )</h2>
 
 #if( $validated == true)
-		<div class="header-box">
-			<h3 style="text-align: left;">$i18n.getString("successfully_saved")</h3>
-		</div>
-	#else
-	
-	#end
-
+    <div class="header-box">
+        <h3 style="text-align: left;">$i18n.getString("successfully_saved")</h3>
+    </div>
+#end
 <p>
 <ul>
 #set($i = 0)
+
 #foreach( $programStageInstance in $programStageInstances )
 	#set($programInstanceId = $programStageInstance.getProgramInstance().getId())
 	#set($i = $i + 1)
@@ -20,10 +18,10 @@
 	<li>
 		 #if( $programStageInstance.isCompleted() == true )
 		 	<a href="showCompletedProgramStageForm.action?programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&patientId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">
-			$programStageInstance.getProgramStage().getName()<img src="../dhis-web-light/images/checkmark.jpg" /></a>
+			$programStageInstance.getProgramStage().getName() (${dateFormat.format( $programStageInstance.executionDate )}) <img src="../dhis-web-light/images/checkmark.jpg" /></a>
 		 #else 
 		 	<a href="showProgramStageForm.action?programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&patientId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">
-		 	$programStageInstance.getProgramStage().getName()</a>
+		 	$programStageInstance.getProgramStage().getName() (${dateFormat.format( $programStageInstance.dueDate)})</a>
 		 #end
 	</li>
 #end
