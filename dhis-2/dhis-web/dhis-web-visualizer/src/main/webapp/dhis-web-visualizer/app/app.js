@@ -1602,8 +1602,8 @@ Ext.onReady( function() {
 						
 						if (f.periods) {
 							for (var i = 0; i < f.periods.length; i++) {
-								//DV.c.fixedperiod.records.push({id: f.periods[i].id, name: DV.conf.util.jsonEncodeString(f.periods[i].name)});
-								DV.c.fixedperiod.records.push({id: f.periods[i], name: f.periods[i]});
+								DV.c.fixedperiod.records.push({id: f.periods[i].id, name: DV.conf.util.jsonEncodeString(f.periods[i].name)});
+								//DV.c.fixedperiod.records.push({id: f.periods[i], name: f.periods[i]});
 							}
 						}							
 						
