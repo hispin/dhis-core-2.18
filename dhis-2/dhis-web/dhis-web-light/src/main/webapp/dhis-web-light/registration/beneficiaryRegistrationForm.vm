@@ -59,8 +59,8 @@
 			#end
 			>$i18n.getString( "verified" )</option>
 		</select>
-		
-		<label>$i18n.getString( "date_of_birth" )</label>
+
+		<label>$i18n.getString( "date_of_birth" )*</label>
 		#if( $validationMap.get( "dob" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
      	#end
@@ -76,7 +76,7 @@
 				<input type="text" name="$key" value="$!previousValues.get($key)" />
 			#end
 		#end
-		
+
 		#foreach($patientAttribute in $patientAttributes)
 			#if(! $patientAttribute.program)
 				#set($key = "AT${patientAttribute.id}")

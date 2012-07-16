@@ -27,11 +27,8 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.api.mobile.ActivityReportingService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
@@ -51,8 +48,12 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.util.ContextUtils;
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SaveProgramStageFormAction
     implements Action
@@ -305,7 +306,7 @@ public class SaveProgramStageFormAction
         programStage = util.getProgramStage( programId, programStageId );
         program = programStageService.getProgramStage( programStageId ).getProgram();
         org.hisp.dhis.program.ProgramStage dhisProgramStage = programStageService.getProgramStage( programStageId );
-        
+
         patient = patientService.getPatient( patientId );
         dataElements = programStage.getDataElements();
 
@@ -342,6 +343,7 @@ public class SaveProgramStageFormAction
                     {
                         typeViolations.put( key, typeViolation );
                     }
+
                     prevDataValues.put( key, value );
                 }
                 else if ( valueIsEmpty && programStageDataElement.isCompulsory() )
@@ -373,8 +375,7 @@ public class SaveProgramStageFormAction
         try
         {
             activityReportingService.saveActivityReport( organisationUnit, activityValue );
-        }
-        catch ( NotAllowedException e )
+        } catch ( NotAllowedException e )
         {
             e.printStackTrace();
             return ERROR;
