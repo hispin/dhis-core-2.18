@@ -161,7 +161,6 @@ public class SaveRepeatableEventAction
     public String execute()
         throws Exception
     {
-
         ProgramStageInstance currentStageInstance = programStageInstanceService
             .getProgramStageInstance( currentProgramStageInstanceId );
         DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
@@ -185,6 +184,7 @@ public class SaveRepeatableEventAction
         programStageInstance.setProgramStage( programStage );
         programStageInstance.setStageInProgram( currentStageInstance.getStageInProgram() );
         programStageInstanceService.addProgramStageInstance( programStageInstance );
+
         return SUCCESS;
     }
 }
