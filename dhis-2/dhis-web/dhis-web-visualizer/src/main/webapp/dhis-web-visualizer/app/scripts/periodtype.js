@@ -101,9 +101,9 @@ function WeeklyPeriodType( format_yyyymmdd )
 		else
 		{
 			date.setDate( date.getDate() + ( 8 - day ) );
-		}		
+		}
 		
-		while ( date.getFullYear() === year )
+		while ( date.getFullYear() <= year )
 		{
 			var period = {};
 			period['startDate'] = format_yyyymmdd( date );
