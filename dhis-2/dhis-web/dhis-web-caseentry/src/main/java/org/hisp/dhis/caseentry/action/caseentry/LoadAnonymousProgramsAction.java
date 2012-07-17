@@ -111,7 +111,7 @@ public class LoadAnonymousProgramsAction
             programs = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, orgunit );
         }
         
-        levels = organisationUnitService.getFilledOrganisationUnitLevels();
+        levels = organisationUnitService.getOrganisationUnitLevels();
 
         return SUCCESS;
     }
