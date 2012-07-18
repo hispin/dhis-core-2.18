@@ -677,7 +677,7 @@ function doComplete( isCreateEvent )
 
 function doUnComplete( isCreateEvent )
 {	
-	if( confirm(i18n_uncomplete_confirm_message) )
+	if( confirm(i18n_incomplete_confirm_message) )
 	{
 		$.postJSON( "uncompleteDataEntry.action",
 			{
