@@ -358,7 +358,7 @@ function removeEmptyEvents()
 		{   
 			if(json.response=='success')
 			{
-				showSuccessMessage( i18n_remove_success );
+				showSuccessMessage( i18n_remove_empty_events_success );
 				validateSearchEvents( true )
 			}
 		});
