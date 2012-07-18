@@ -1604,7 +1604,6 @@ Ext.onReady( function() {
 						if (f.periods) {
 							for (var i = 0; i < f.periods.length; i++) {
 								DV.c.fixedperiod.records.push({id: f.periods[i].id, name: DV.conf.util.jsonEncodeString(f.periods[i].name)});
-								//DV.c.fixedperiod.records.push({id: f.periods[i], name: f.periods[i]});
 							}
 						}							
 						
@@ -1697,6 +1696,7 @@ Ext.onReady( function() {
             }
         },
         setOptions: function() {
+			DV.c.relativeperiod.rewind = DV.cmp.dimension.relativeperiod.rewind.getValue();
             DV.c.hidesubtitle = DV.cmp.favorite.hidesubtitle.getValue();
             DV.c.hidelegend = DV.cmp.favorite.hidelegend.getValue();
             DV.c.trendline = DV.cmp.favorite.trendline.getValue();
@@ -2033,7 +2033,8 @@ Ext.onReady( function() {
             params = {
 				periodIsFilter: (DV.c.dimension.filter === DV.conf.finals.dimension.period.value),
 				userOrganisationUnit: DV.c.userorganisationunit,
-				userOrganisationUnitChildren: DV.c.userorganisationunitchildren
+				userOrganisationUnitChildren: DV.c.userorganisationunitchildren,
+				rewind: DV.c.relativeperiod.rewind
 			};
 			if (DV.c.organisationunit.groupsetid) {
 				params.organisationUnitGroupSetId = DV.c.organisationunit.groupsetid;
@@ -2088,6 +2089,7 @@ Ext.onReady( function() {
 			dataelement: {},
 			dataset: {},
 			relativeperiod: {},
+			rewind: false,
 			fixedperiod: {},
 			organisationunit: {},
 			hidesubtitle: false,
@@ -3283,6 +3285,32 @@ Ext.onReady( function() {
 																xtype: 'checkbox',
 																paramName: 'last5Years',
 																boxLabel: DV.i18n.last_5_years
+															}
+														]
+													},
+													{
+														xtype: 'panel',
+														layout: 'anchor',
+														bodyStyle: 'border-style:none; padding:5px 0 0 46px',
+														defaults: {
+															labelSeparator: ''
+														},
+														items: [
+															{
+																xtype: 'label',
+																text: 'Options',
+																cls: 'dv-label-period-heading',
+																style: 'color:#666'
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'rewind',
+																boxLabel: 'Rewind one period',
+																listeners: {
+																	added: function() {
+																		DV.cmp.dimension.relativeperiod.rewind = this;
+																	}
+																}
 															}
 														]
 													}
