@@ -109,7 +109,7 @@
 	<p>
 		<input type="button" id='backBtn' value="$i18n.getString( 'back' )" onclick="javascript:backEventList();" style='width:150px;'>
 		<input type="button" onclick="doComplete()" value="$i18n.getString('complete')" id="completeBtn" style='width:150px;'>
-		<input type="button" onclick="doUnComplete()" value="$i18n.getString('uncomplete')" id="uncompleteBtn" style='width:150px;' >
+		<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBtn" style='width:150px;' >
 		<input type="button" onclick="completedAndAddNewEvent()" value="$i18n.getString('complete_and_add_new_event')" id="completeAndAddNewBtn" style='width:150px;'>
 	</p>
 	<div id='dataEntryFormDiv'></div>
