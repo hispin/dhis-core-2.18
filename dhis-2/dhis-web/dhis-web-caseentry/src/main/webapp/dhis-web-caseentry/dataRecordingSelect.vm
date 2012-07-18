@@ -57,19 +57,19 @@
 						</tr>
 					</thead>
 					<tr>
-						<td id='colorGreenTD' class='input-column'><script>byId('colorGreenTD').style.backgroundColor = COLOR_LIGHT_GREEN;</script></td>
+						<td id='colorGreenTD' class='input-column'><script>byId('colorGreenTD').style.backgroundColor = COLOR_GREEN;</script></td>
 						<td>$i18n.getString('event_is_completed')</td>
 					</tr>
 					<tr>
-						<td id='colorLightredTD'><script>byId('colorLightredTD').style.backgroundColor = COLOR_LIGHT_LIGHTRED;</script></td>
+						<td id='colorLightredTD'><script>byId('colorLightredTD').style.backgroundColor = COLOR_LIGHTRED;</script></td>
 						<td>$i18n.getString('the_stage_is_started_but_not_completed_yet')</td>
 					</tr>
 					<tr>
-						<td id='colorYellowTD'><script>byId('colorYellowTD').style.backgroundColor = COLOR_LIGHT_YELLOW;</script></td>
+						<td id='colorYellowTD'><script>byId('colorYellowTD').style.backgroundColor = COLOR_YELLOW;</script></td>
 						<td>$i18n.getString('the_stage_is_started_and_due_date_is_after_the_current_date')</td>
 					</tr>
 					<tr>
-						<td id='colorRedTD'><script>byId('colorRedTD').style.backgroundColor = COLOR_LIGHT_RED;</script></td>
+						<td id='colorRedTD'><script>byId('colorRedTD').style.backgroundColor = COLOR_RED;</script></td>
 						<td>$i18n.getString('the_stage_is_not_started_and_due_date_is_before_the_current_date')</td>
 					</tr>
 				</table>
