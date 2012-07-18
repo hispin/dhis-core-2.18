@@ -209,7 +209,7 @@ function validateAdvancedSearch()
 						params += dateOperator + "'" +  item.value.toLowerCase() + "'";
 					}
 					else{
-						params += htmlEncode( item.value.toLowerCase() );
+						params += htmlEncode( item.value.toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "") );
 					}
 				}
 			})
