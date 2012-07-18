@@ -122,6 +122,7 @@ public class ChartPluginController
         @RequestParam( required = false ) boolean userOrganisationUnit,
         @RequestParam( required = false ) boolean userOrganisationUnitChildren,
         @RequestParam( required = false ) boolean periodIsFilter,
+        @RequestParam( required = false ) boolean rewind,
         RelativePeriods relativePeriods, Model model, HttpServletResponse response ) throws Exception
     {
         ChartPluginValue chartValue = new ChartPluginValue();
@@ -132,7 +133,7 @@ public class ChartPluginController
         // Periods
         // ---------------------------------------------------------------------
         
-        List<Period> periods = relativePeriods.getRelativePeriods();
+        List<Period> periods = relativePeriods.getRelativePeriods( null, false, rewind ? 1 : 0 );
 
         if ( p != null && p.size() > 0 )
         {

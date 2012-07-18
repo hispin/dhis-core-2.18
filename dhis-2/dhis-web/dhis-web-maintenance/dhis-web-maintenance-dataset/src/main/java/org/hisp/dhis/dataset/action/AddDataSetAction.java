@@ -156,13 +156,6 @@ public class AddDataSetAction
         this.indicatorsSelectedList = indicatorsSelectedList;
     }
 
-    private boolean mobile;
-
-    public void setMobile( boolean mobile )
-    {
-        this.mobile = mobile;
-    }
-
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -200,7 +193,7 @@ public class AddDataSetAction
         dataSet.setDescription( description );
         dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setVersion( 1 );
-        dataSet.setMobile( mobile );
+        dataSet.setMobile( false );
         dataSet.setIndicators( indicators );
 
         dataSetService.addDataSet( dataSet );
