@@ -1,9 +1,9 @@
 <script>
-	jQuery('#addRelationshipPatientForm').ready(	function(){
+	jQuery('#patientForm').ready(	function(){
 
 		checkedDuplicate = false;
 		
-		jQuery("#addRelationshipPatientForm").validate({
+		jQuery("#patientForm").validate({
 			 meta:"validate"
 			,errorElement:"span"
 			,submitHandler: function(form)
@@ -12,24 +12,24 @@
 				}
 			,beforeValidateHandler: function(form)
 				{
-					var birthDate = $('#addRelationshipPatientForm [id=birthDate]').val();
-					var age = $('#addRelationshipPatientForm [id=age]').val();
+					var birthDate = $('#patientForm [id=birthDate]').val();
+					var age = $('#patientForm [id=age]').val();
 					if(age !=''){
-						$( "#addRelationshipPatientForm [id=memberValidator]").val(age);
+						$( "#patientForm [id=memberValidator]").val(age);
 					}else{
-						$( "#addRelationshipPatientForm [id=memberValidator]").val(birthDate);
+						$( "#patientForm [id=memberValidator]").val(birthDate);
 					}
 				}
 		});
 		
-		hideById('addRelationshipPatientForm [id=underAgeDiv]');
-		addEventForPatientForm('addRelationshipPatientForm');
+		hideById('patientForm [id=underAgeDiv]');
+		addEventForPatientForm('patientForm');
 	});		
 </script>
 
 <h4>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h4>
 																		
-<form id="addRelationshipPatientForm" action="addRelationshipPatient.action" method="get" >
+<form id="patientForm" action="addRelationshipPatient.action" method="get" >
 <input type="hidden" id="relationshipId"  name="relationshipId" value="$patient.id"/> 
 <table>	
 	<tr>
