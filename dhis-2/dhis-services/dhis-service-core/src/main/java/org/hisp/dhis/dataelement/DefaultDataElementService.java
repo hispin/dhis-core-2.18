@@ -299,16 +299,6 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementsWithDataSets() );
     }
 
-    public boolean dataElementExists( int id )
-    {
-        return dataElementStore.dataElementExists( id );
-    }
-
-    public boolean dataElementCategoryOptionComboExists( int id )
-    {
-        return dataElementStore.dataElementCategoryOptionComboExists( id );
-    }
-
     public Collection<DataElement> getDataElementsLikeName( String name )
     {
         return getObjectsByName( i18nService, dataElementStore, name );

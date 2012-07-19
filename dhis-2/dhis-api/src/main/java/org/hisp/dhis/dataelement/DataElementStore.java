@@ -152,22 +152,6 @@ public interface DataElementStore
      */
     Collection<DataElement> getDataElementsWithDataSets();
     
-    /**
-     * Checks whether a DataElement with the given identifier exists.
-     * 
-     * @param id the DataElement identifier.
-     * @return true or false.
-     */
-    boolean dataElementExists( int id );
-    
-    /**
-     * Checks whether a DataElementCategoryOptionCombo with the given identifier exists.
-     * 
-     * @param id the DataElementCategoryOptionCombo identifier.
-     * @return true or false.
-     */
-    boolean dataElementCategoryOptionComboExists( int id );
-    
     Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets );
 
     Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos();
