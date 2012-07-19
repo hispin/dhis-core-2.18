@@ -379,7 +379,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-System.out.println("\n\n === \n SQL : " + sql );
+
         return sql;
     }
 

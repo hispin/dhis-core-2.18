@@ -748,7 +748,7 @@ Ext.onReady( function() {
 						var json = Ext.JSON.decode(r.responseText);
 						TR.state.total = json.total;
 						TR.value.columns = json.columns;
-						TR.value.values=json.items;
+						TR.value.values = json.items;
 						
 						// Get fields
 						var fields = [];
@@ -800,7 +800,14 @@ Ext.onReady( function() {
 				params: this.getParams(),
 				success: function(r) {
 					var json = Ext.JSON.decode(r.responseText);
-					TR.store.datatable.loadData(json.items,false);
+					TR.value.values = json.items;
+					var record = new Array();
+					for( var index=1; index < TR.value.columns.length; index++ ){
+						record.push('');
+					}
+					TR.value.values.unshift(record);
+					
+					TR.store.datatable.loadData(TR.value.values,false);
 					if ( json.items.length > 1 )
 					{
 						Ext.getCmp('btnClean').enable();
@@ -1167,7 +1174,7 @@ Ext.onReady( function() {
 			Ext.Msg.confirm( TR.i18n.confirmation, TR.i18n.are_you_sure, function(btn){
 				if (btn == 'yes')
 				{
-					var params = 'programStageInstanceId=' + psiId; 
+					var params = 'id=' + psiId; 
 					Ext.Ajax.request({
 						url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_delete,
 						method: 'GET',
