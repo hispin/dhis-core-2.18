@@ -100,6 +100,11 @@
       <param name="javascripts">javascript/report.js</param>
     </action>
 	
+    <action name="getReport" class="org.hisp.dhis.reporting.reportviewer.action.GetReportAction">
+      <result name="success" type="velocity-json">/dhis-web-reporting/jsonReport.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
     <action name="getReports" class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction">
       <result name="success" type="velocity-json">/dhis-web-reporting/jsonReports.vm</result>
       <param name="onExceptionReturn">plainTextError</param>

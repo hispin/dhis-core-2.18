@@ -34,3 +34,23 @@ function addToDashboard( id )
         $.get( "addReportToDashboard.action?id=" + id );
     }
 }
+
+// -----------------------------------------------------------------------------
+// View details
+// -----------------------------------------------------------------------------
+
+function showReportDetails( reportId )
+{
+	jQuery.get( 'getReport.action', { "id": reportId }, function( json )
+	{
+		setInnerHTML( 'nameField', json.report.name );
+
+		var reportTableName = json.report.reportTableName;
+		setInnerHTML( 'reportTableNameField', reportTableName ? reportTableName : '[' + i18n_none + ']' );
+
+		var orgGroupSets = json.report.orgGroupSets;
+		setInnerHTML( 'orgGroupSetsField', orgGroupSets == 'true' ? i18n_yes : i18n_no );
+
+		showDetails();
+	});
+}
