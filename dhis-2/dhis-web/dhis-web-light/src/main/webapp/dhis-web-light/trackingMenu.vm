@@ -1,4 +1,3 @@
-
 #if( $dataSet.alternativeName )
     #set( $dataSetName = $dataSet.alternativeName )
 #else
@@ -23,6 +22,7 @@
     <li><a href="showFindBeneficiaryForm.action">$i18n.getString( "find_beneficiary" )</a></li>
     <li><a href="selectNamebasedOrganisationUnit.action">$i18n.getString( "activity_plan" )</a></li>
     <li><a href="selectRegistrationOrganisationUnit.action">$i18n.getString( "beneficiary_registration" )</a></li>
+    <li><a href="anonymous.action">Anonymous</a></li>
     <!-- <li><a href="showBeneficiarySearchingForm.action">$i18n.getString( "beneficiary_enrollment" )</a></li> -->
 </ul>
 </p>
