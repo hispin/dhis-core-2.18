@@ -30,7 +30,7 @@ package org.hisp.dhis.system.util;
 import static junit.framework.Assert.assertEquals;
 import static org.hisp.dhis.system.util.TextUtils.subString;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
-import static org.hisp.dhis.system.util.TextUtils.htmlLinks;
+import static org.hisp.dhis.system.util.TextUtils.*;
 
 import org.junit.Test;
 
