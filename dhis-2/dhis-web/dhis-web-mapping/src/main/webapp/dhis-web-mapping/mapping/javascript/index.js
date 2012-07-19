@@ -788,6 +788,13 @@ Ext.onReady( function() {
                         document.getElementById('layerField').value = 0;
                     }
                     
+                    if (boundaryLayer.visibility) {
+						if (boundary.formValidation.validateForm.call(boundary)) {
+                            var str = document.getElementById(boundaryLayer.svgId).parentNode.innerHTML;
+							svg = G.util.mergeSvg(svg, [str]);   
+						}
+					}
+                    
                     var overlays = G.util.getVisibleLayers(G.util.getLayersByType(G.conf.map_layer_type_overlay));
                     svg = G.util.mergeSvg(svg, G.util.getOverlaysSvg(overlays));
                     
