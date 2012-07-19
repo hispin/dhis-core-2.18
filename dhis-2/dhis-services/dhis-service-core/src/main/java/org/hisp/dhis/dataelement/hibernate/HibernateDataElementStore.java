@@ -223,20 +223,6 @@ public class HibernateDataElementStore
         return getQuery( hql ).setCacheable( true ).list();
     }
 
-    public boolean dataElementExists( int id )
-    {
-        final String sql = "select count(*) from dataelement where dataelementid=" + id;
-
-        return statementManager.getHolder().queryForInteger( sql ) > 0;
-    }
-
-    public boolean dataElementCategoryOptionComboExists( int id )
-    {
-        final String sql = "select count(*) from categoryoptioncombo where categoryoptioncomboid=" + id;
-
-        return statementManager.getHolder().queryForInteger( sql ) > 0;
-    }
-
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )
     {

@@ -355,12 +355,12 @@ public class DefaultExpressionService
                     return ID_NOT_NUMERIC;
                 }
 
-                if ( !dataElementService.dataElementExists( operand.getDataElementId() ) )
+                if ( dataElementService.getDataElement( operand.getDataElementId() ) == null )
                 {
                     return DATAELEMENT_DOES_NOT_EXIST;
                 }
 
-                if ( !operand.isTotal() && !dataElementService.dataElementCategoryOptionComboExists( operand.getOptionComboId() ) )
+                if ( !operand.isTotal() && categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() ) == null )
                 {
                     return CATEGORYOPTIONCOMBO_DOES_NOT_EXIST;
                 }
