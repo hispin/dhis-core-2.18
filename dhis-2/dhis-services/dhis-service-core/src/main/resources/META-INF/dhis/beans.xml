@@ -29,7 +29,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.dataelement.DataElementStore" class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElement" />
     <property name="sessionFactory" ref="sessionFactory" />
-    <property name="statementManager" ref="statementManager" />
 	<property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="cacheable" value="true" />
   </bean>

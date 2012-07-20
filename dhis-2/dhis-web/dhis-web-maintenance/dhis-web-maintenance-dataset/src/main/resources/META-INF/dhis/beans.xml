@@ -305,8 +305,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService" />
     </property>
-    <property name="dataElementService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="dataElementCategoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
     </property>
   </bean>
 

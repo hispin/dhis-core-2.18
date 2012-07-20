@@ -574,19 +574,4 @@ public class DefaultDataElementService
     {
         return getObjectsBetweenByName( i18nService, dataElementGroupSetStore, name, first, max );
     }
-
-    // -------------------------------------------------------------------------
-    // DataElementOperand
-    // -------------------------------------------------------------------------
-
-    public Collection<DataElementOperand> getAllGeneratedOperands()
-    {
-        return dataElementStore.getAllGeneratedOperands();
-    }
-
-    public Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements )
-    {
-        return dataElementStore.getAllGeneratedOperands( dataElements );
-    }
-
 }
