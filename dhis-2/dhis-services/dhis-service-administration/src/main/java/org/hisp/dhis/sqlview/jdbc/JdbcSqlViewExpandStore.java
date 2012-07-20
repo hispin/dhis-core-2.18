@@ -37,8 +37,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewExpandStore;
@@ -68,13 +66,6 @@ public class JdbcSqlViewExpandStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
@@ -89,13 +80,12 @@ public class JdbcSqlViewExpandStore
     @Override
     public Collection<String> getAllSqlViewNames()
     {
-        final StatementHolder holder = statementManager.getHolder();
         DatabaseMetaData mtdt;
         Set<String> viewersName = new HashSet<String>();
 
         try
         {
-            mtdt = holder.getConnection().getMetaData();
+            mtdt = jdbcTemplate.getDataSource().getConnection().getMetaData();
 
             ResultSet rs = mtdt.getTables( null, null, PREFIX_VIEWNAME + "%", types );
 
@@ -103,15 +93,10 @@ public class JdbcSqlViewExpandStore
             {
                 viewersName.add( rs.getString( "TABLE_NAME" ) );
             }
-
         }
         catch ( SQLException e )
         {
             e.printStackTrace();
-        }
-        finally
-        {
-            holder.close();
         }
 
         return viewersName;
@@ -121,12 +106,11 @@ public class JdbcSqlViewExpandStore
     @Override
     public boolean isViewTableExists( String viewTableName )
     {
-        final StatementHolder holder = statementManager.getHolder();
         DatabaseMetaData mtdt;
 
         try
         {
-            mtdt = holder.getConnection().getMetaData();
+            mtdt = jdbcTemplate.getDataSource().getConnection().getMetaData();
             ResultSet rs = mtdt.getTables( null, null, viewTableName.toLowerCase(), types );
 
             return rs.next();
@@ -134,10 +118,6 @@ public class JdbcSqlViewExpandStore
         catch ( Exception e )
         {
             return false;
-        }
-        finally
-        {
-            holder.close();
         }
     }
 
@@ -163,12 +143,11 @@ public class JdbcSqlViewExpandStore
     @Override
     public void setUpDataSqlViewTable( Grid grid, String viewTableName )
     {
-        final StatementHolder holder = statementManager.getHolder();
-
         ResultSet rs;
+
         try
         {
-            rs = this.getScrollableResult( PREFIX_SELECT_QUERY + viewTableName, holder );
+            rs = this.getScrollableResult( PREFIX_SELECT_QUERY + viewTableName, jdbcTemplate );
         }
         catch ( SQLException e )
         {
@@ -177,8 +156,6 @@ public class JdbcSqlViewExpandStore
 
         grid.addHeaders( rs );
         grid.addRow( rs );
-
-        holder.close();
     }
 
     @Override
@@ -214,19 +191,13 @@ public class JdbcSqlViewExpandStore
     @Override
     public void dropViewTable( String viewName )
     {
-        final StatementHolder holder = statementManager.getHolder();
-
         try
         {
-            holder.getStatement().executeUpdate( PREFIX_DROPVIEW_QUERY + viewName );
+            jdbcTemplate.update( PREFIX_DROPVIEW_QUERY + viewName );
         }
-        catch ( SQLException ex )
+        catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to drop view: " + viewName, ex );
-        }
-        finally
-        {
-            holder.close();
         }
     }
 
@@ -242,10 +213,10 @@ public class JdbcSqlViewExpandStore
      * @param holder the StatementHolder object
      * @return null or the ResultSet
      */
-    private ResultSet getScrollableResult( String sql, StatementHolder holder )
+    private ResultSet getScrollableResult( String sql, JdbcTemplate jdbcTemplate )
         throws SQLException
     {
-        Connection con = holder.getConnection();
+        Connection con = jdbcTemplate.getDataSource().getConnection();
         Statement stm = con.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY );
         stm.execute( sql );
         return stm.getResultSet();

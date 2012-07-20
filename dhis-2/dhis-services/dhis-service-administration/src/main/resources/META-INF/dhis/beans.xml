@@ -56,7 +56,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.databrowser.DataBrowserGridStore" class="org.hisp.dhis.databrowser.jdbc.JDBCDataBrowserStore">
     <property name="statementBuilder" ref="statementBuilder" />
-    <property name="statementManager" ref="statementManager" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
@@ -128,7 +128,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   </bean>
 
   <bean id="org.hisp.dhis.sqlview.SqlViewExpandStore" class="org.hisp.dhis.sqlview.jdbc.JdbcSqlViewExpandStore">
-    <property name="statementManager" ref="statementManager" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
