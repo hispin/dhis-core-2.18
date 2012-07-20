@@ -28,7 +28,6 @@ package org.hisp.dhis.api.mobile.model;
  */
 
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -189,7 +188,6 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
         dataOutputStream.writeUTF( this.searchUrl );
         dataOutputStream.writeUTF( this.updateNewVersionUrl );
-
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -235,6 +233,7 @@ public class MobileOrgUnitLinks
         dataOutputStream.writeUTF( this.updateDataSetUrl );
         dataOutputStream.writeUTF( this.changeUpdateDataSetLangUrl );
         dataOutputStream.writeUTF( this.searchUrl );
+        dataOutputStream.writeUTF( this.updateNewVersionUrl );
     }
 
 }

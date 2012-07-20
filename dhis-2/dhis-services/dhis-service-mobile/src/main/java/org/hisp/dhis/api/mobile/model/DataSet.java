@@ -188,7 +188,6 @@ public class DataSet
             section.deSerialize( dataInputStream );
             sections.add( section );
         }
-
     }
 
     @Override

@@ -32,10 +32,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
 
 @XmlRootElement
 public class OrgUnits
@@ -79,13 +77,20 @@ public class OrgUnits
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
-        //send the current version to client for updating or not
-        dataOutputStream.writeDouble( MobileOrgUnitLinks.currentVersion );
-        
-        dataOutputStream.writeInt( orgUnits.size() );
-        for ( MobileOrgUnitLinks unit : orgUnits )
+        // send the current version to client for updating or not
+        // dataOutputStream.writeDouble( MobileOrgUnitLinks.currentVersion );
+        // dataOutputStream.writeInt( orgUnits.size() );
+        // for ( MobileOrgUnitLinks unit : orgUnits )
+        // {
+        // unit.serialize( dataOutputStream );
+        // }
+        if ( this.getClientVersion().equals( DataStreamSerializable.TWO_POINT_EIGHT ) )
         {
-            unit.serialize( dataOutputStream );
+            this.serializeVerssion2_8( dataOutputStream );
+        }
+        else
+        {
+            this.serializeVerssion2_9( dataOutputStream );
         }
     }
 
@@ -112,7 +117,7 @@ public class OrgUnits
         dataOutputStream.writeInt( orgUnits.size() );
         for ( MobileOrgUnitLinks unit : orgUnits )
         {
-            unit.serialize( dataOutputStream );
+            unit.serializeVerssion2_8( dataOutputStream );
         }
     }
 
@@ -120,6 +125,8 @@ public class OrgUnits
     public void serializeVerssion2_9( DataOutputStream dataOutputStream )
         throws IOException
     {
+        // send the current version to client for updating or not
+        dataOutputStream.writeDouble( MobileOrgUnitLinks.currentVersion );
         dataOutputStream.writeInt( orgUnits.size() );
         for ( MobileOrgUnitLinks unit : orgUnits )
         {
