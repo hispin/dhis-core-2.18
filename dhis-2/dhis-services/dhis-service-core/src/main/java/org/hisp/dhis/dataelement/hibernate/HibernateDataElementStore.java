@@ -35,8 +35,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.amplecode.quick.StatementManager;
-import org.amplecode.quick.mapper.ObjectMapper;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -44,12 +42,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.system.objectmapper.DataElementOperandMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
-import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.jdbc.core.RowCallbackHandler;
 
 /**
@@ -61,17 +56,6 @@ public class HibernateDataElementStore
     extends HibernateIdentifiableObjectStore<DataElement>
     implements DataElementStore
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-    
     // -------------------------------------------------------------------------
     // DataElement
     // -------------------------------------------------------------------------
@@ -272,57 +256,5 @@ public class HibernateDataElementStore
         query.setMaxResults( max );
         
         return query.list();
-    }
-    
-    // -------------------------------------------------------------------------
-    // DataElementOperand
-    // -------------------------------------------------------------------------
-
-    public Collection<DataElementOperand> getAllGeneratedOperands()
-    {
-        final ObjectMapper<DataElementOperand> mapper = new ObjectMapper<DataElementOperand>();
-
-        final String sql = "SELECT de.dataelementid, de.name, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname "
-            + "FROM dataelement as de "
-            + "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid "
-            + "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid "
-            + "LEFT JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid;";
-
-        try
-        {
-            ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
-
-            return mapper.getCollection( resultSet, new DataElementOperandMapper() );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get all operands", ex );
-        }
-    }
-
-    public Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements )
-    {
-        final String dataElementString = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers(
-            DataElement.class, dataElements ) );
-
-        final ObjectMapper<DataElementOperand> mapper = new ObjectMapper<DataElementOperand>();
-
-        final String sql = "SELECT de.dataelementid, de.name, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname "
-            + "FROM dataelement as de "
-            + "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid "
-            + "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid "
-            + "LEFT JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid "
-            + "WHERE de.dataelementid IN (" + dataElementString + ");";
-
-        try
-        {
-            ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
-
-            return mapper.getCollection( resultSet, new DataElementOperandMapper() );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get all operands", ex );
-        }
     }
 }

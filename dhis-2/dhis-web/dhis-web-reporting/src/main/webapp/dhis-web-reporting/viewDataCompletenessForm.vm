@@ -25,9 +25,7 @@
             <input type="radio" name="criteria" id="registrationRadio" value="registration" checked="checked"/>
             <label for="registrationRadio">$i18n.getString( 'based_on_registration' )</label><br/>
             <input type="radio" name="criteria" id="compulsoryRadio" value="compulsory" />
-            <label for="compulsoryRadio">$i18n.getString( 'based_on_compulsory' )</label><br/>
-            <input type="radio" name="criteria" id="ratioRadio" value="ratio" />
-            <label for="ratioRadio">$i18n.getString( 'based_on_ratio' )</label><br/><br/>
+            <label for="compulsoryRadio">$i18n.getString( 'based_on_compulsory' )</label><br/><br/>
             
             <!-- DataSet -->
             

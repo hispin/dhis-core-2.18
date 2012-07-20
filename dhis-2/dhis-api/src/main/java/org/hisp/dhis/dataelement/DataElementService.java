@@ -448,27 +448,4 @@ public interface DataElementService
     int getDataElementGroupSetCount();
 
     int getDataElementGroupSetCountByName( String name );
-
-    // -------------------------------------------------------------------------
-    // DataElementOperand
-    // -------------------------------------------------------------------------
-
-    /**
-     * Returns all Operands. Requires the categoryoptioncomboname resource table
-     * to be populated.
-     *
-     * @return a collection of all Operands.
-     */
-    Collection<DataElementOperand> getAllGeneratedOperands();
-
-    /**
-     * Returns all generated permutations of Operands for the given collection
-     * of DataElements. Requires the categoryoptioncomboname resource table to
-     * be populated.
-     *
-     * @param dataElements the DataElements.
-     * @return a collection of all Operands.
-     */
-    Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements );
-    
 }

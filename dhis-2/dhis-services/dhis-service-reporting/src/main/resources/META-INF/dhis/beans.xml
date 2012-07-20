@@ -87,12 +87,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
           </key>
           <ref bean="compulsoryDataCompletenessService" />
         </entry>
-        <entry>
-          <key>
-            <value>ratio</value>
-          </key>
-          <ref bean="ratioDataCompletenessService" />
-        </entry>
       </map>
     </property>
   </bean>
@@ -117,9 +111,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="completenessStore" ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
-
-  <bean id="ratioDataCompletenessService" class="org.hisp.dhis.completeness.impl.RatioDataSetCompletenessService"
-    parent="compulsoryDataCompletenessService" />
 
   <bean id="registrationDataCompletenessService" class="org.hisp.dhis.completeness.impl.RegistrationDataSetCompletenessService"
     parent="compulsoryDataCompletenessService">
