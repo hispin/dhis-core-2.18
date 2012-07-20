@@ -238,6 +238,8 @@ public class RunValidationAction
 
         SessionUtils.setSessionVar( KEY_VALIDATIONRESULT, validationResults );
 
+        log.info( "Validation done" );
+        
         return SUCCESS;
     }
 }

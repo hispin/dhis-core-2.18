@@ -31,6 +31,7 @@ import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -211,5 +212,10 @@ public class DefaultDataValueService
         cal.add( Calendar.DAY_OF_YEAR, (days * -1) );
 
         return dataValueStore.getDataValueCount( cal.getTime() );
+    }
+    
+    public Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit unit )
+    {
+        return dataValueStore.getDataValueMap( dataElements, period, unit );
     }
 }

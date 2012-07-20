@@ -398,9 +398,9 @@ public class ExpressionServiceTest
         Map<Integer, Double> constantMap = new HashMap<Integer, Double>();
         constantMap.put( constantIdA, 2.0 );
 
-        assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, constantMap, null ) );
-        assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, constantMap, 5 ) );
-        assertEquals( "12.0*2.0", expressionService.generateExpression( expressionE, valueMap, constantMap, null ) );
+        assertEquals( "12.0+34.0", expressionService.generateExpression( expressionA, valueMap, constantMap, null, false ) );
+        assertEquals( "12.0+5", expressionService.generateExpression( expressionD, valueMap, constantMap, 5, false ) );
+        assertEquals( "12.0*2.0", expressionService.generateExpression( expressionE, valueMap, constantMap, null, false ) );
     }
 
     // -------------------------------------------------------------------------

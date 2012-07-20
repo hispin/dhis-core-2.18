@@ -161,6 +161,6 @@ public class IndicatorAggregation
             valueMap.put( operand, aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit ) );            
         }
         
-        return expressionService.generateExpression( expression, valueMap, constantMap, null );
+        return expressionService.generateExpression( expression, valueMap, constantMap, null, false );
     }
 }

@@ -29,6 +29,7 @@ package org.hisp.dhis.datavalue;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -263,4 +264,6 @@ public interface DataValueStore
      * @return the number of DataValues.
      */
     int getDataValueCount( Date date );
+    
+    Map<DataElementOperand, Double> getDataValueMap( Collection<DataElement> dataElements, Period period, OrganisationUnit unit );
 }

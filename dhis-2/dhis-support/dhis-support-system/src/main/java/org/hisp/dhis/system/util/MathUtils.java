@@ -315,4 +315,28 @@ public class MathUtils
         
         return sum;
     }
+    
+    /**
+     * Parses the given string and returns a double value. Returns null if the
+     * given string is null or cannot be parsed as a double.
+     * 
+     * @param value the string value.
+     * @return a double value.
+     */
+    public static Double parseDouble( String value )
+    {
+        if ( value == null )
+        {
+            return null;
+        }
+        
+        try
+        {
+            return Double.parseDouble( value );
+        }
+        catch ( NumberFormatException ex )
+        {
+            return null;
+        }
+    }
 }

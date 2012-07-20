@@ -121,6 +121,9 @@ public interface ExpressionService
      */
     Double getExpressionValue( Expression expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregate, Integer days );
     
+    Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
+        Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues );
+    
     /**
      * Returns all DataElements included in the given expression string.
      * 
@@ -251,7 +254,7 @@ public interface ExpressionService
      * @param valueMap The map containing data element identifiers and aggregated value.
      * @param days The number to be substituted with the days expression in the formula.
      */
-    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<Integer, Double> constantMap, Integer days );
+    String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues );
     
     /**
      * Returns all Operands included in the formulas for the given collection of
