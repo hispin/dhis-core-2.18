@@ -403,11 +403,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataanalysis.GapAnalysisService" class="org.hisp.dhis.dataanalysis.GapAnalysisService">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore" />
-  </bean>
-
   <bean id="org.hisp.dhis.dataanalysis.FollowupAnalysisService" class="org.hisp.dhis.dataanalysis.FollowupAnalysisService">
     <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore" />
   </bean>
@@ -426,12 +421,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
             <value>minmaxoutlier</value>
           </key>
           <ref bean="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
-        </entry>
-        <entry>
-          <key>
-            <value>gap</value>
-          </key>
-          <ref bean="org.hisp.dhis.dataanalysis.GapAnalysisService" />
         </entry>
         <entry>
           <key>
