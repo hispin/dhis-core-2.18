@@ -1051,20 +1051,9 @@ Ext.onReady( function() {
 					TR.util.notification.error( message, message);
 					return false;
 				}
-				
-				if( TR.cmp.settings.startDate.getValue() > TR.cmp.settings.endDate.getValue() )
-				{
-					TR.util.notification.error(TR.i18n.start_date_must_be_less_then_or_equals_to_end_date, TR.i18n.start_date_must_be_less_then_or_equals_to_end_date);
-					return false;
-				}
 			
 				if (TR.state.orgunitId == '') {
 					TR.util.notification.error(TR.i18n.et_no_orgunits, TR.i18n.em_no_orgunits);
-					return false;
-				}
-				
-				if (!TR.cmp.params.dataelement.selected.store.data.length) {
-					TR.util.notification.error(TR.i18n.et_no_dataelement, TR.i18n.et_no_dataelement);
 					return false;
 				}
 				
