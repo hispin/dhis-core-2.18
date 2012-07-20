@@ -911,8 +911,8 @@ Ext.onReady( function() {
             p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
 			p += "&facilityLB=" + TR.cmp.settings.facilityLB.getValue();
 			p += "&level=" + TR.cmp.settings.level.getValue();
-			p += "&orderByOrgunitAsc=" + 'true';
-			p += "&orderByExecutionDateByAsc=" +'true';
+			p += "&orderByOrgunitAsc=" + this.orderByOrgunitAsc;
+			p += "&orderByExecutionDateByAsc=" + this.orderByExecutionDateByAsc;
 			p += "&programStageId=" + TR.cmp.params.programStage.getValue();
 			p += "&type=" + type;
 			
