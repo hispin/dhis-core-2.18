@@ -2,7 +2,6 @@ package org.hisp.dhis.databrowser.jdbc;
 
 import java.util.List;
 
-import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.databrowser.DataBrowserGridStore;
@@ -10,6 +9,7 @@ import org.hisp.dhis.databrowser.util.DataBrowserUtils;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.grid.ListGrid;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author joakibj, martinwa, briane, eivinhb
@@ -23,11 +23,11 @@ public class JDBCDataBrowserStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -72,7 +72,7 @@ public class JDBCDataBrowserStore
         dataSetGrid.addHeader( new GridHeader( "drilldown_data_set", false, false ) );
         dataSetGrid.addHeader( new GridHeader( "counts_of_aggregated_values", false, false ) );
 
-        fillUpDataBasic( dataSetGrid, sqlsb, isZeroAdded, statementManager );
+        fillUpDataBasic( dataSetGrid, sqlsb, isZeroAdded, jdbcTemplate );
 
         return dataSetGrid;
     }
@@ -95,7 +95,7 @@ public class JDBCDataBrowserStore
         gridDEG.addHeader( new GridHeader( "drilldown_data_element_group", false, false ) );
         gridDEG.addHeader( new GridHeader( "counts_of_aggregated_values", false, false ) );
 
-        fillUpDataBasic( gridDEG, sqlsb, isZeroAdded, statementManager );
+        fillUpDataBasic( gridDEG, sqlsb, isZeroAdded, jdbcTemplate );
 
         return gridDEG;
     }
@@ -118,7 +118,7 @@ public class JDBCDataBrowserStore
         gridOUG.addHeader( new GridHeader( "drilldown_orgunit_group", false, false ) );
         gridOUG.addHeader( new GridHeader( "counts_of_aggregated_values", false, false ) );
 
-        fillUpDataBasic( gridOUG, sqlsb, isZeroAdded, statementManager );
+        fillUpDataBasic( gridOUG, sqlsb, isZeroAdded, jdbcTemplate );
 
         return gridOUG;
     }
@@ -138,7 +138,7 @@ public class JDBCDataBrowserStore
         sqlsb.append( "ORDER BY de.name) " );
 
         grid.addHeader( new GridHeader( "drilldown_data_element", false, false ) );
-        setMetaStructure( grid, sqlsb, metaIds, statementManager );
+        setMetaStructure( grid, sqlsb, metaIds, jdbcTemplate );
     }
 
     public void setDataElementStructureForDataElementGroup( Grid grid, Integer dataElementGroupId, List<Integer> metaIds )
@@ -153,7 +153,7 @@ public class JDBCDataBrowserStore
         sqlsb.append( "ORDER BY de.name) " );
 
         grid.addHeader( new GridHeader( "drilldown_data_element", false, false ) );
-        setMetaStructure( grid, sqlsb, metaIds, statementManager );
+        setMetaStructure( grid, sqlsb, metaIds, jdbcTemplate );
     }
 
     public void setDataElementGroupStructureForOrgUnitGroup( Grid grid, Integer orgUnitGroupId, List<Integer> metaIds )
@@ -171,7 +171,7 @@ public class JDBCDataBrowserStore
         sqlsb.append( "ORDER BY deg.name ASC) " );
 
         grid.addHeader( new GridHeader( "drilldown_data_element_group", false, false ) );
-        setMetaStructure( grid, sqlsb, metaIds, statementManager );
+        setMetaStructure( grid, sqlsb, metaIds, jdbcTemplate );
 
     }
 
@@ -185,7 +185,7 @@ public class JDBCDataBrowserStore
         sqlsb.append( "ORDER BY o.name)" );
 
         grid.addHeader( new GridHeader( "drilldown_orgunit", false, false ) );
-        setMetaStructure( grid, sqlsb, metaIds, statementManager );
+        setMetaStructure( grid, sqlsb, metaIds, jdbcTemplate );
     }
 
     public void setDataElementStructureForOrgUnit( Grid grid, Integer orgUnitId, List<Integer> metaIds )
@@ -195,7 +195,7 @@ public class JDBCDataBrowserStore
         sqlsb.append( statementBuilder.queryDataElementStructureForOrgUnit() );
 
         grid.addHeader( new GridHeader( "drilldown_data_element", false, false ) );
-        setMetaStructure( grid, sqlsb, metaIds, statementManager );
+        setMetaStructure( grid, sqlsb, metaIds, jdbcTemplate );
     }
 
     // -------------------------------------------------------------------------
@@ -229,7 +229,7 @@ public class JDBCDataBrowserStore
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader" : " UNION " );
         }
 
-        return fillUpDataAdvance( grid, sqlsb, metaIds, isZeroAdded, statementManager );
+        return fillUpDataAdvance( grid, sqlsb, metaIds, isZeroAdded, jdbcTemplate );
     }
 
     public Integer setCountDataElementsForDataElementGroupBetweenPeriods( Grid grid, Integer dataElementGroupId,
@@ -254,7 +254,7 @@ public class JDBCDataBrowserStore
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader" : " UNION " );
         }
 
-        return fillUpDataAdvance( grid, sqlsb, metaIds, isZeroAdded, statementManager );
+        return fillUpDataAdvance( grid, sqlsb, metaIds, isZeroAdded, jdbcTemplate );
     }
 
     public Integer setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( Grid grid, Integer orgUnitGroupId,
@@ -283,7 +283,7 @@ public class JDBCDataBrowserStore
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader" : " UNION " );
         }
 
-        return fillUpDataAdvance( grid, sqlsb, metaIds, isZeroAdded, statementManager );
+        return fillUpDataAdvance( grid, sqlsb, metaIds, isZeroAdded, jdbcTemplate );
     }
 
     public Integer setCountOrgUnitsBetweenPeriods( Grid grid, Integer orgUnitParent, List<Integer> betweenPeriodIds,
@@ -294,7 +294,7 @@ public class JDBCDataBrowserStore
         boolean valid = this.setUpQueryForDrillDownDescendants( sqlsbDescentdants, orgUnitParent, betweenPeriodIds,
             maxLevel );
 
-        return (valid ? fillUpDataAdvance( grid, sqlsbDescentdants, metaIds, isZeroAdded, statementManager ) : 0);
+        return (valid ? fillUpDataAdvance( grid, sqlsbDescentdants, metaIds, isZeroAdded, jdbcTemplate ) : 0);
 
     }
 
@@ -307,7 +307,7 @@ public class JDBCDataBrowserStore
 
         sqlsb.append( statementBuilder.queryRawDataElementsForOrgUnitBetweenPeriods( orgUnitId, betweenPeriodIds ) );
 
-        return fillUpDataAdvance( grid, sqlsb, metaIds, isZeroAdded, statementManager );
+        return fillUpDataAdvance( grid, sqlsb, metaIds, isZeroAdded, jdbcTemplate );
     }
 
     // -------------------------------------------------------------------------
