@@ -38,7 +38,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.system.util.TextUtils;
 
 /**
  * @author Lars Helge Overland
@@ -147,21 +146,6 @@ public class JDBCDataSetCompletenessStore
     // -------------------------------------------------------------------------
     // Based on number of data values
     // -------------------------------------------------------------------------
-
-    public Integer getNumberOfValues( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods )
-    {
-        final String childrenIds = TextUtils.getCommaDelimitedString( children );
-        
-        final String sql =
-            "SELECT count(*) FROM datavalue dv " +
-            "JOIN datasetmembers dsm ON dv.dataelementid=dsm.dataelementid " +
-            "JOIN dataset ds ON dsm.datasetid=ds.datasetid " +
-            "WHERE ds.datasetid = " + dataSet.getId() + " " +
-            "AND periodid IN ( " + getCommaDelimitedString( periods ) + " ) " +
-            "AND sourceid IN (" + childrenIds + ")";
-
-        return statementManager.getHolder().queryForInteger( sql );
-    }
     
     public Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets )
     {
