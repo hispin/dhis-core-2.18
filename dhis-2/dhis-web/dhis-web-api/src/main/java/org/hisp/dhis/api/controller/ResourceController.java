@@ -61,7 +61,7 @@ public class ResourceController
         {
             for ( Resource resource : resources.getResources() )
             {
-                resource.setLink( WebUtils.getPath( resource.getClazz() ) );
+                resource.setHref( WebUtils.getPath( resource.getClazz() ) );
             }
         }
 

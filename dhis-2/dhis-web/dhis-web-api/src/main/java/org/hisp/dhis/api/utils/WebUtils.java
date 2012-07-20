@@ -110,7 +110,7 @@ public class WebUtils
     @SuppressWarnings( "unchecked" )
     public static void generateLinks( IdentifiableObject identifiableObject )
     {
-        identifiableObject.setLink( getPathWithUid( identifiableObject ) );
+        identifiableObject.setHref( getPathWithUid( identifiableObject ) );
 
         Collection<Field> fields = ReflectionUtils.collectFields( identifiableObject.getClass(), alwaysTrue );
 
@@ -123,7 +123,7 @@ public class WebUtils
                 if ( object != null )
                 {
                     IdentifiableObject idObject = (IdentifiableObject) object;
-                    idObject.setLink( getPathWithUid( idObject ) );
+                    idObject.setHref( getPathWithUid( idObject ) );
                 }
             }
             else if ( ReflectionUtils.isCollection( field.getName(), identifiableObject, IdentifiableObject.class ) )
@@ -138,7 +138,7 @@ public class WebUtils
                     {
                         if ( object != null )
                         {
-                            object.setLink( getPathWithUid( object ) );
+                            object.setHref( getPathWithUid( object ) );
                         }
                     }
                 }

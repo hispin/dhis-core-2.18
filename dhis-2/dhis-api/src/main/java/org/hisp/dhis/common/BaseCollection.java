@@ -79,14 +79,14 @@ public class BaseCollection
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
-    public String getLink()
+    public String getHref()
     {
         if ( linkableObject == null )
         {
             return null;
         }
 
-        return linkableObject.getLink();
+        return linkableObject.getHref();
     }
 
     /**
@@ -94,11 +94,11 @@ public class BaseCollection
      *
      * @param link
      */
-    public void setLink( String link )
+    public void setHref( String link )
     {
         if ( linkableObject != null )
         {
-            linkableObject.setLink( link );
+            linkableObject.setHref( link );
         }
     }
 }

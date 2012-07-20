@@ -42,17 +42,17 @@ public class BaseLinkableObject
      * As part of the serializing process, this field can be set to indicate a link to this
      * identifiable object (will be used on the web layer for navigating the REST API)
      */
-    private transient String link;
+    private transient String href;
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public String getLink()
+    public String getHref()
     {
-        return link;
+        return href;
     }
 
-    public void setLink( String link )
+    public void setHref( String href )
     {
-        this.link = link;
+        this.href = href;
     }
 }
