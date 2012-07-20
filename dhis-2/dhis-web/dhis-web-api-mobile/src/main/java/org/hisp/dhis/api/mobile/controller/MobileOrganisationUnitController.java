@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping( value = "/mobile/orgUnits" )
+@RequestMapping( value = "/mobile" )
 public class MobileOrganisationUnitController
     extends AbstractMobileController
 {
@@ -51,7 +51,8 @@ public class MobileOrganisationUnitController
     @Autowired
     private I18nService i18nService;
 
-    @RequestMapping( method = RequestMethod.GET, value = "{id}/all" )
+    // Initialize download for client version 2.8 and lower
+    @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/all" )
     @ResponseBody
     public MobileModel getAllDataForOrgUnit( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
     {
@@ -65,10 +66,12 @@ public class MobileOrganisationUnitController
         mobileModel.setLocales( getLocalStrings( i18nService.getAvailableLocales() ) );
         return mobileModel;
     }
-    
-    @RequestMapping( method = RequestMethod.GET, value = "{id}/all/2.9" )
+
+    // Initialize download for client version 2.9 and higher
+    @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/all" )
     @ResponseBody
-    public MobileModel getAllDataForOrgUnit2_9( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
+    public MobileModel getAllDataForOrgUnit2_9( @PathVariable String clientVersion, @PathVariable int id,
+        @RequestHeader( "accept-language" ) String locale )
     {
         MobileModel mobileModel = new MobileModel();
         mobileModel.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
@@ -82,7 +85,7 @@ public class MobileOrganisationUnitController
         return mobileModel;
     }
 
-    @RequestMapping( method = RequestMethod.POST, value = "{id}/updateDataSets" )
+    @RequestMapping( method = RequestMethod.POST, value = "orgUnits/{id}/updateDataSets" )
     @ResponseBody
     public DataSetList checkUpdatedDataSet( @PathVariable int id, @RequestBody DataSetList dataSetList,
         @RequestHeader( "accept-language" ) String locale )
@@ -90,7 +93,15 @@ public class MobileOrganisationUnitController
         return facilityReportingService.getUpdatedDataSet( dataSetList, getUnit( id ), locale );
     }
 
-    @RequestMapping( method = RequestMethod.GET, value = "{id}/changeLanguageDataSet" )
+    @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/updateDataSets" )
+    @ResponseBody
+    public DataSetList checkUpdatedDataSet2_9( @PathVariable String clientVersion, @PathVariable int id,
+        @RequestBody DataSetList dataSetList, @RequestHeader( "accept-language" ) String locale )
+    {
+        return facilityReportingService.getUpdatedDataSet( dataSetList, getUnit( id ), locale );
+    }
+
+    @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/changeLanguageDataSet" )
     @ResponseBody
     public DataSetList changeLanguageDataSet( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
     {
@@ -103,7 +114,7 @@ public class MobileOrganisationUnitController
      * @param dataSetValue - the report to save
      * @throws NotAllowedException if the {@link DataSetValue} is invalid
      */
-    @RequestMapping( method = RequestMethod.POST, value = "     {id}/dataSets" )
+    @RequestMapping( method = RequestMethod.POST, value = "orgUnits/{id}/dataSets" )
     @ResponseBody
     public String saveDataSetValues( @PathVariable int id, @RequestBody DataSetValue dataSetValue )
         throws NotAllowedException
@@ -119,7 +130,7 @@ public class MobileOrganisationUnitController
      * @throws NotAllowedException if the {@link ActivityValue activity value}
      *         is invalid
      */
-    @RequestMapping( method = RequestMethod.POST, value = "{id}/activities" )
+    @RequestMapping( method = RequestMethod.POST, value = "orgUnits/{id}/activities" )
     @ResponseBody
     public String saveActivityReport( @PathVariable int id, @RequestBody ActivityValue activityValue )
         throws NotAllowedException
@@ -128,7 +139,7 @@ public class MobileOrganisationUnitController
         return ACTIVITY_REPORT_UPLOADED;
     }
 
-    @RequestMapping( method = RequestMethod.POST, value = "{id}/activitiyplan" )
+    @RequestMapping( method = RequestMethod.POST, value = "orgUnits/{id}/activitiyplan" )
     @ResponseBody
     public MobileModel updatePrograms( @PathVariable int id, @RequestHeader( "accept-language" ) String locale,
         @RequestBody ModelList programsFromClient )
@@ -140,7 +151,7 @@ public class MobileOrganisationUnitController
         return model;
     }
 
-    @RequestMapping( method = RequestMethod.GET, value = "{id}/search" )
+    @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/search" )
     @ResponseBody
     public ActivityPlan search( @PathVariable int id, @RequestHeader( "identifier" ) String identifier )
         throws NotAllowedException
