@@ -77,19 +77,6 @@ public interface DataAnalysisStore
         Collection<Period> periods, OrganisationUnit organisationUnit, int lowerBound, int upperBound );
     
     /**
-     * Returns a collection of gap DeflatedDataValues for the given input. A gap
-     * is a period for which there is no registered data values among the input periods.
-     * 
-     * @param dataElement the DataElement.
-     * @param categoryOptionCombo the DataElementCategoryOptionCombo.
-     * @param periods the collection of Periods.
-     * @param organisationUnit the OrganisationUnit.
-     * @return
-     */
-    Collection<DeflatedDataValue> getDeflatedDataValueGaps( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
-        Collection<Period> periods, OrganisationUnit organisationUnit );
-
-    /**
      * Returns a collection of DeflatedDataValues which are marked for followup.
      * 
      * @return a collection of DeflatedDataValues.

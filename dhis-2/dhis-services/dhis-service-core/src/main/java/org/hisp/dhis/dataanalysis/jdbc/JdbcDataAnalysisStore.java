@@ -115,61 +115,6 @@ public class JdbcDataAnalysisStore
         }
     }
     
-    public Collection<DeflatedDataValue> getDeflatedDataValueGaps( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
-        Collection<Period> periods, OrganisationUnit organisationUnit )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-
-        final ObjectMapper<DeflatedDataValue> mapper = new ObjectMapper<DeflatedDataValue>();
-        
-        final String periodIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( Period.class, periods ) );
-        
-        final String minValueSql = 
-            "SELECT minvalue FROM minmaxdataelement " +
-            "WHERE sourceid=' " + organisationUnit.getId() + "' " +
-            "AND dataelementid='" + dataElement.getId() + "' " +
-            "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "'";
-    
-        final String maxValueSql = 
-            "SELECT maxvalue FROM minmaxdataelement " +
-            "WHERE sourceid=' " + organisationUnit.getId() + "' " +
-            "AND dataelementid='" + dataElement.getId() + "' " +
-            "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "'";
-        
-        final String sql = 
-            "SELECT '" + dataElement.getId() + "' AS dataelementid, pe.periodid, " +
-            "'" + organisationUnit.getId() + "' AS sourceid, '" + categoryOptionCombo.getId() + "' AS categoryoptioncomboid, " +
-            "'' AS value, '' AS storedby, '1900-01-01' AS lastupdated, '' AS comment, false AS followup, " +
-            "( " + minValueSql + " ) AS minvalue, ( " + maxValueSql + " ) AS maxvalue, " +
-            statementBuilder.encode( dataElement.getName() ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " +
-            statementBuilder.encode( organisationUnit.getName() ) + " AS sourcename, " + 
-            statementBuilder.encode( categoryOptionCombo.getName() ) + " AS categoryoptioncomboname " + //TODO join?
-            "FROM period AS pe " +
-            "JOIN periodtype AS pt ON (pe.periodtypeid = pt.periodtypeid) " +
-            "WHERE periodid IN (" + periodIds + ") " +
-            "AND pt.periodtypeid='" + dataElement.getPeriodType().getId() + "' " +
-            "AND periodid NOT IN ( " +
-                "SELECT periodid FROM datavalue " +
-                "WHERE dataelementid='" + dataElement.getId() + "' " +
-                "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " +
-                "AND sourceid='" + organisationUnit.getId() + "' )";
-        
-        try
-        {   
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return mapper.getCollection( resultSet, new DeflatedDataValueNameMinMaxRowMapper() );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get deflated data values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-
     public Collection<DeflatedDataValue> getDataValuesMarkedForFollowup()
     {
         final StatementHolder holder = statementManager.getHolder();
