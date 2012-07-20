@@ -168,6 +168,14 @@ public class DefaultExpressionService
 
         return expressionString != null ? calculateExpression( expressionString ) : null;
     }
+    
+    public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
+        Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues )
+    {
+        final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, days, nullIfNoValues );
+
+        return expressionString != null ? calculateExpression( expressionString ) : null;
+    }
 
     public Set<DataElement> getDataElementsInExpression( String expression )
     {
@@ -637,7 +645,7 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
 
-    public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<Integer, Double> constantMap, Integer days )
+    public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues )
     {
         StringBuffer buffer = null;
 
@@ -665,9 +673,14 @@ public class DefaultExpressionService
                 {
                     final DataElementOperand operand = DataElementOperand.getOperand( match );
 
-                    final Double aggregatedValue = valueMap.get( operand );
+                    final Double value = valueMap.get( operand );
 
-                    match = aggregatedValue != null ? String.valueOf( aggregatedValue ) : NULL_REPLACEMENT;
+                    if ( value == null && nullIfNoValues )
+                    {
+                        return null;
+                    }
+
+                    match = value != null ? String.valueOf( value ) : NULL_REPLACEMENT;
                 }
 
                 matcher.appendReplacement( buffer, match );
