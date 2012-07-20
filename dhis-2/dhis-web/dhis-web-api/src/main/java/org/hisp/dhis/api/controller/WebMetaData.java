@@ -65,14 +65,14 @@ public class WebMetaData
             return null;
         }
 
-        return linkableObject.getLink();
+        return linkableObject.getHref();
     }
 
     public void setLink( String link )
     {
         if ( linkableObject != null )
         {
-            linkableObject.setLink( link );
+            linkableObject.setHref( link );
         }
     }
 }
