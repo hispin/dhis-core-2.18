@@ -18,22 +18,6 @@
 
 		<!-- Data Entry -->
 
-		<action name="dataEntrySelect"
-			class="org.hisp.dhis.caseentry.action.patient.SelectAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-caseentry/select.vm</param>
-			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js
-				,javascript/commons.js
-				,javascript/form.js
-				,javascript/entry.js
-				,../dhis-web-commons/javascripts/date.js
-			</param>
-			<param name="stylesheets">style/style.css</param>
-			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
-		</action>
-
 		<action name="validateSearch"
 			class="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction">
 			<result name="success" type="velocity-xml">

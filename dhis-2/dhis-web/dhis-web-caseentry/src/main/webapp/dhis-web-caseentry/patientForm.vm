@@ -42,13 +42,13 @@
 <tr>
 	<td class='text-column' ><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 	<td class="input-column">	
-		<select id='dobType' name="dobType" style='width:100px' onchange='dobTypeOnChange("patientForm")' >
+		<select id='dobType' name="dobType" style='width:120px' onchange='dobTypeOnChange("patientForm")' >
 			<option value="A" selected >$i18n.getString( "approximated" )</option>
 			<option value="D" >$i18n.getString( "declared" )</option>
 			<option value="V" >$i18n.getString( "verified" )</option>
 		</select>
-		<input type="text" id="age" name="age" class="{validate:{number:true}}" style="width:156px" />
-		<input type="text" id="birthDate" name="birthDate" style='width:156px;display:none;' />
+		<input type="text" id="age" name="age" class="{validate:{number:true}}" style="width:136px" />
+		<input type="text" id="birthDate" name="birthDate" style='width:136px;display:none;' />
 		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 	</td>
 </tr>
@@ -60,19 +60,17 @@
 	</td>
 </tr>
 
-<tr><td>&nbsp;</td></tr>	
-<tr>
-	<td></td>
-	<td><input type="button" class='button' id='checkDuplicateBtn' name='checkDuplicateBtn' value="$i18n.getString('check_duplicate')" /></td>
-</tr>
-<tr><td colspan="2">&nbsp;</td></tr>	
-
 <!-- UNDERAGE -->
 <tr id='underAgeDiv'>
 	<td class='text-column'>$i18n.getString("has_guardian")</td>
 	<td>
 		<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true"/>
 	</td>
+</tr>
+
+<tr>
+	<td></td>
+	<td><input type="button" class='button' id='checkDuplicateBtn' name='checkDuplicateBtn' value="$i18n.getString('check_duplicate')" /></td>
 </tr>
 
 <!--IDENTIFIERS -->
