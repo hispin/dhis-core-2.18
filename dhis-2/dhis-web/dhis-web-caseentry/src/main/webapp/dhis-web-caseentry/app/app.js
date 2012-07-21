@@ -625,6 +625,7 @@ Ext.onReady( function() {
 					if( TR.store.programStage.data.items.length > 1 )
 					{
 						Ext.getCmp('programStageCombobox').setVisible(true);
+						Ext.getCmp('programStageCombobox').setValue( "" );
 					}
 					else
 					{

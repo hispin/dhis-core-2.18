@@ -94,13 +94,13 @@
 	<tr>
 		<td class='text-column' ><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td class="input-column">
-			<select id='dobType' name="dobType" style='width:100px' onchange='dobTypeOnChange("patientForm")' >
+			<select id='dobType' name="dobType" style='width:120px' onchange='dobTypeOnChange("patientForm")' >
 				<option value="A" #if($patient.dobType=='A') selected #end >$i18n.getString( "approximated" )</option>
 				<option value="D" #if($patient.dobType=='D') selected #end >$i18n.getString( "declared" )</option>
 				<option value="V" #if($patient.dobType=='V') selected #end >$i18n.getString( "verified" )</option>
 			</select>
-			<input type="text" id="birthDate" name="birthDate" value='$format.formatDate($!patient.birthDate)' style='width:156px;' />
-			<input type="text" id="age" name="age" value='$!patient.getIntegerValueOfAge()' class="{validate:{number:true}}" style='width:156px;' />
+			<input type="text" id="birthDate" name="birthDate" value='$format.formatDate($!patient.birthDate)' style='width:136px;' />
+			<input type="text" id="age" name="age" value='$!patient.getIntegerValueOfAge()' class="{validate:{number:true}}" style='width:136px;' />
 		</td>
 	</tr>
 
@@ -118,8 +118,6 @@
 		</td>
 	</tr>
 	
-	<tr><td>&nbsp;</td></tr>	
-
 	<!-- UNDERAGE -->
 
 	<tr>
@@ -171,7 +169,6 @@
 				</tr>
 			#end
 		#end
-		<tr><td>&nbsp;</td></tr>
 	#end
 	<!-- ATTRIBUTES IN GROUPS -->
 
