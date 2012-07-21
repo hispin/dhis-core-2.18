@@ -177,6 +177,19 @@ public interface ExpressionService
      *         CATEGORYOPTIONCOMBO_DOES_NOT_EXIST if the category option combo does not exist.
      */
     String expressionIsValid( String formula );
+
+    /**
+     * Tests whether the expression is valid. Returns a positive value if the
+     * expression is valid, or a negative value if not.
+     * 
+     * @param formula the expression formula.
+     * @return VALID if the expression is valid.
+     *         DATAELEMENT_ID_NOT_NUMERIC if the data element is not a number.
+     *         CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC if the category option combo id is not a number.
+     *         DATAELEMENT_DOES_NOT_EXIST if the data element does not exist.
+     *         CATEGORYOPTIONCOMBO_DOES_NOT_EXIST if the category option combo does not exist.
+     */
+    String expressionIsValid( String formula, Set<Integer> dataElements, Set<Integer> categoryOptionCombos, Set<Integer> constants );
     
     /**
      * Creates an expression string containing DataElement names and the names of

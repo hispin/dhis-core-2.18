@@ -315,6 +315,11 @@ public class DefaultExpressionService
 
     public String expressionIsValid( String formula )
     {
+        return expressionIsValid( formula, null, null, null );
+    }
+    
+    public String expressionIsValid( String formula, Set<Integer> dataElements, Set<Integer> categoryOptionCombos, Set<Integer> constants )
+    {
         if ( formula == null )
         {
             return EXPRESSION_IS_EMPTY;
@@ -347,7 +352,7 @@ public class DefaultExpressionService
                     return ID_NOT_NUMERIC;
                 }
                 
-                if ( constantService.getConstant( id ) == null )
+                if ( constants != null ? !constants.contains( id ) : constantService.getConstant( id ) == null )
                 {
                     return CONSTANT_DOES_NOT_EXIST;
                 }                    
@@ -363,12 +368,13 @@ public class DefaultExpressionService
                     return ID_NOT_NUMERIC;
                 }
 
-                if ( dataElementService.getDataElement( operand.getDataElementId() ) == null )
+                if ( dataElements != null ? !dataElements.contains( operand.getDataElementId() ) : dataElementService.getDataElement( operand.getDataElementId() ) == null )
                 {
                     return DATAELEMENT_DOES_NOT_EXIST;
                 }
 
-                if ( !operand.isTotal() && categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() ) == null )
+                if ( !operand.isTotal() && ( categoryOptionCombos != null ? !categoryOptionCombos.contains( operand.getOptionComboId() ) :
+                    categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() ) == null ) )
                 {
                     return CATEGORYOPTIONCOMBO_DOES_NOT_EXIST;
                 }
