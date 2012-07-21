@@ -27,6 +27,8 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.regex.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -44,6 +46,8 @@ import org.hisp.dhis.common.view.ExportView;
 public class SqlView
     extends BaseIdentifiableObject
 {
+    public static final String PREFIX_VIEWNAME = "_view";
+
     // -------------------------------------------------------------------------
     // Variables
     // -------------------------------------------------------------------------
@@ -108,6 +112,28 @@ public class SqlView
         return "[ Name: " + name + ", sql query: " + sqlQuery + " ]";
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public String getViewName()
+    {
+        final Pattern p = Pattern.compile( "\\W" );
+
+        String input = new String( this.name );
+        
+        String[] items = p.split( input.trim().replaceAll( "_", "" ) );
+
+        input = "";
+
+        for ( String s : items )
+        {
+            input += (s.equals( "" ) == true) ? "" : ("_" + s);
+        }
+
+        return PREFIX_VIEWNAME + input;
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

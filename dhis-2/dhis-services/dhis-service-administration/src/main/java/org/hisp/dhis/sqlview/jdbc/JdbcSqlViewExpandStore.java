@@ -35,7 +35,6 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.sqlview.SqlView;
@@ -56,11 +55,7 @@ public class JdbcSqlViewExpandStore
 
     private static final String PREFIX_SELECT_QUERY = "SELECT * FROM ";
 
-    private static final String PREFIX_VIEWNAME = "_view";
-
     private static final String[] types = { "VIEW" };
-
-    private static final Pattern p = Pattern.compile( "\\W" );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -87,7 +82,7 @@ public class JdbcSqlViewExpandStore
         {
             mtdt = jdbcTemplate.getDataSource().getConnection().getMetaData();
 
-            ResultSet rs = mtdt.getTables( null, null, PREFIX_VIEWNAME + "%", types );
+            ResultSet rs = mtdt.getTables( null, null, SqlView.PREFIX_VIEWNAME + "%", types );
 
             while ( rs.next() )
             {
@@ -124,7 +119,7 @@ public class JdbcSqlViewExpandStore
     @Override
     public String createView( SqlView sqlViewInstance )
     {
-        String viewName = setUpViewTableName( sqlViewInstance.getName() );
+        String viewName = sqlViewInstance.getViewName();
 
         try
         {
@@ -147,7 +142,7 @@ public class JdbcSqlViewExpandStore
 
         try
         {
-            rs = this.getScrollableResult( PREFIX_SELECT_QUERY + viewTableName, jdbcTemplate );
+            rs = this.getResultSet( PREFIX_SELECT_QUERY + viewTableName, jdbcTemplate );
         }
         catch ( SQLException e )
         {
@@ -156,21 +151,6 @@ public class JdbcSqlViewExpandStore
 
         grid.addHeaders( rs );
         grid.addRow( rs );
-    }
-
-    @Override
-    public String setUpViewTableName( String input )
-    {
-        String[] items = p.split( input.trim().replaceAll( "_", "" ) );
-
-        input = "";
-
-        for ( String s : items )
-        {
-            input += (s.equals( "" ) == true) ? "" : ("_" + s);
-        }
-
-        return PREFIX_VIEWNAME + input;
     }
 
     @Override
@@ -213,7 +193,7 @@ public class JdbcSqlViewExpandStore
      * @param holder the StatementHolder object
      * @return null or the ResultSet
      */
-    private ResultSet getScrollableResult( String sql, JdbcTemplate jdbcTemplate )
+    private ResultSet getResultSet( String sql, JdbcTemplate jdbcTemplate )
         throws SQLException
     {
         Connection con = jdbcTemplate.getDataSource().getConnection();
