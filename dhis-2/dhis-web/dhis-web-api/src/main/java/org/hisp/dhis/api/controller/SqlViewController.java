@@ -27,9 +27,19 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.sqlview.SqlViewService;
+import org.hisp.dhis.system.grid.GridUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -40,4 +50,34 @@ public class SqlViewController
     extends AbstractCrudController<SqlView>
 {
     public static final String RESOURCE_PATH = "/sqlViews";
+    
+    @Autowired
+    private SqlViewService sqlViewService;
+
+    @Autowired
+    private ContextUtils contextUtils;
+
+    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
+    public void getViewXml( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    {
+        SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
+        
+        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.xml", false );
+        
+        GridUtils.toXml( grid, response.getOutputStream() );
+    }
+
+    @RequestMapping( value = "/{uid}/data.csv", method = RequestMethod.GET )
+    public void getViewCsv( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    {
+        SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
+        
+        Grid grid = sqlViewService.getDataSqlViewGrid( sqlView );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, "sqlview.csv", true );
+        
+        GridUtils.toCsv( grid, response.getOutputStream() );
+    }
 }
