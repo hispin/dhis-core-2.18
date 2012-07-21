@@ -53,7 +53,7 @@ public class ImportCount
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( isAttribute = true )
     public int getImported()
     {
         return imported;
@@ -65,7 +65,7 @@ public class ImportCount
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( isAttribute = true )
     public int getUpdated()
     {
         return updated;
@@ -77,7 +77,7 @@ public class ImportCount
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( isAttribute = true )
     public int getIgnored()
     {
         return ignored;

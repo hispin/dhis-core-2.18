@@ -58,7 +58,7 @@ public class ImportTypeSummary
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( isAttribute = true )
     public String getType()
     {
         return type;
