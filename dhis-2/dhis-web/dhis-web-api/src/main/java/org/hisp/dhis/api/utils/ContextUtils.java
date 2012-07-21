@@ -31,12 +31,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javassist.util.proxy.ProxyObject;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
 import static org.apache.commons.lang.StringUtils.trimToNull;
@@ -156,5 +162,66 @@ public class ContextUtils
         {
             // Ignore
         }
+    }
+
+    public static HttpServletRequest getRequest()
+    {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    }
+
+    public static String getPathWithUid( IdentifiableObject identifiableObject )
+    {
+        return getPath( identifiableObject.getClass() ) + "/" + identifiableObject.getUid();
+    }
+
+    public static String getPath( Class<?> clazz )
+    {
+        if ( ProxyObject.class.isAssignableFrom( clazz ) )
+        {
+            clazz = clazz.getSuperclass();
+        }
+
+        String resourcePath = ExchangeClasses.getExportMap().get( clazz );
+
+        return getRootPath( getRequest() ) + "/" + resourcePath;
+    }
+
+    public static String getRootPath( HttpServletRequest request )
+    {
+        StringBuilder builder = new StringBuilder();
+        String xForwardedProto = request.getHeader( "X-Forwarded-Proto" );
+        String xForwardedPort = request.getHeader( "X-Forwarded-Port" );
+
+        if ( xForwardedProto != null && (xForwardedProto.equalsIgnoreCase( "http" ) || xForwardedProto.equalsIgnoreCase( "https" )) )
+        {
+            builder.append( xForwardedProto );
+        }
+        else
+        {
+            builder.append( request.getScheme() );
+        }
+
+        builder.append( "://" ).append( request.getServerName() );
+
+        int port;
+
+        try
+        {
+            port = Integer.parseInt( xForwardedPort );
+        }
+        catch ( NumberFormatException e )
+        {
+            port = request.getServerPort();
+        }
+
+        if ( port != 80 && port != 443 )
+        {
+            builder.append( ":" ).append( port );
+        }
+
+        builder.append( request.getContextPath() );
+        builder.append( request.getServletPath() );
+
+        return builder.toString();
     }
 }
