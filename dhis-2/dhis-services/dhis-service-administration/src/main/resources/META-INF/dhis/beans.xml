@@ -33,6 +33,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 	<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
+	<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
   </bean>
   
   <!-- Maintenance -->
