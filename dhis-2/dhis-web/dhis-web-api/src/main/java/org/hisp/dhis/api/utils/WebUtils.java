@@ -27,18 +27,13 @@ package org.hisp.dhis.api.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javassist.util.proxy.ProxyObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.controller.WebMetaData;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
 import org.hisp.dhis.system.util.ReflectionUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;

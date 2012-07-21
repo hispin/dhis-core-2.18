@@ -27,13 +27,6 @@ package org.hisp.dhis.api.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Calendar;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import javassist.util.proxy.ProxyObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.metadata.ExchangeClasses;
@@ -44,8 +37,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Calendar;
+
 import static org.apache.commons.lang.StringUtils.trimToNull;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
 
 /**
  * @author Lars Helge Overland
@@ -74,7 +73,7 @@ public class ContextUtils
 
     @Autowired
     private SystemSettingManager systemSettingManager;
-    
+
     public enum CacheStrategy
     {
         NO_CACHE,
@@ -82,9 +81,9 @@ public class ContextUtils
         CACHE_TWO_WEEKS,
         RESPECT_SYSTEM_SETTING
     }
-    
+
     public void configureResponse( HttpServletResponse response, String contentType, CacheStrategy cacheStrategy,
-        String filename, boolean attachment )
+                                   String filename, boolean attachment )
     {
         if ( contentType != null )
         {
@@ -94,10 +93,10 @@ public class ContextUtils
         if ( cacheStrategy.equals( CacheStrategy.RESPECT_SYSTEM_SETTING ) )
         {
             String strategy = trimToNull( (String) systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY ) );
-            
+
             cacheStrategy = strategy != null ? CacheStrategy.valueOf( strategy ) : CacheStrategy.NO_CACHE;
         }
-        
+
         if ( cacheStrategy == null || cacheStrategy.equals( CacheStrategy.NO_CACHE ) )
         {
             // -----------------------------------------------------------------
@@ -117,7 +116,7 @@ public class ContextUtils
         {
             Calendar cal = Calendar.getInstance();
             cal.add( Calendar.DAY_OF_YEAR, 14 );
-            
+
             response.setHeader( HEADER_CACHE_CONTROL, "public, max-age=1209600" );
             response.setHeader( HEADER_EXPIRES, DateUtils.getHttpDateString( cal.getTime() ) );
         }
@@ -135,30 +134,29 @@ public class ContextUtils
         response.setStatus( HttpServletResponse.SC_CONFLICT );
         printResponse( response, message );
     }
-    
+
     public static void okResponse( HttpServletResponse response, String message )
     {
         response.setStatus( HttpServletResponse.SC_OK );
         printResponse( response, message );
     }
-    
+
     public static void notFoundResponse( HttpServletResponse response, String message )
     {
         response.setStatus( HttpServletResponse.SC_NOT_FOUND );
         printResponse( response, message );
     }
-    
+
     private static void printResponse( HttpServletResponse response, String message )
     {
         response.setContentType( CONTENT_TYPE_TEXT );
-        
+
         try
         {
             PrintWriter writer = response.getWriter();
             writer.println( message );
             writer.flush();
-        }
-        catch ( IOException ex )
+        } catch ( IOException ex )
         {
             // Ignore
         }
@@ -208,8 +206,7 @@ public class ContextUtils
         try
         {
             port = Integer.parseInt( xForwardedPort );
-        }
-        catch ( NumberFormatException e )
+        } catch ( NumberFormatException e )
         {
             port = request.getServerPort();
         }
