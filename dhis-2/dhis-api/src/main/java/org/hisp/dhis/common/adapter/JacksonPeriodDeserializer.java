@@ -29,13 +29,43 @@ package org.hisp.dhis.common.adapter;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
 import java.io.IOException;
+
+class LocalPeriod
+{
+    private String id;
+
+    private String name;
+
+    LocalPeriod()
+    {
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId( String id )
+    {
+        this.id = id;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+}
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -47,14 +77,8 @@ public class JacksonPeriodDeserializer
     public Period deserialize( JsonParser jp, DeserializationContext ctxt )
         throws IOException, JsonProcessingException
     {
-        while ( jp.nextToken() != JsonToken.END_OBJECT )
-        {
-            if ( "id".equals( jp.getCurrentName() ) )
-            {
-                return PeriodType.getPeriodFromIsoString( jp.getText() );
-            }
-        }
-        
-        return null;        
+        LocalPeriod p = jp.readValueAs( LocalPeriod.class );
+
+        return p.getId() == null ? null : PeriodType.getPeriodFromIsoString( p.getId() );
     }
 }
