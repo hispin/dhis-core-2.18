@@ -45,6 +45,14 @@ implements Action
     {
         this.catalogTypeId = catalogTypeId;
     }
+    
+    private Boolean isCustom;
+    
+    public Boolean getIsCustom()
+    {
+        return isCustom;
+    }
+    
 /*
     private Collection<CatalogTypeAttribute> catalogTypeAttributes;
     
@@ -54,6 +62,8 @@ implements Action
     }
 */    
     
+    
+
     private List<CatalogTypeAttribute> catalogTypeAttributes = new ArrayList<CatalogTypeAttribute>();
     
     public List<CatalogTypeAttribute> getCatalogTypeAttributes()
@@ -92,14 +102,11 @@ implements Action
     // Action implementation
     // -------------------------------------------------------------------------
 
- 
-
-
-
     public String execute()
     {
+        System.out.println("entering into  ShowAddCatalogFormAction action");
         catalogType = catalogTypeService.getCatalogType( catalogTypeId );
-        
+        isCustom = false;
         String disabled = ""; 
         if ( catalogType != null )
         {
@@ -109,14 +116,20 @@ implements Action
 
             DataEntryForm dataEntryForm = catalogType.getDataEntryForm();
 
+            System.out.println("dataentryform object retrieved");
+            
             if ( dataEntryForm != null )
             {
+                isCustom = true;
+                System.out.println("dataentryform object is not null");
                 Collection<CatalogDataValue> catalogDataValues = new ArrayList<CatalogDataValue>();
                 
                 customDataEntryFormCode = catalogDataEntryService.prepareDataEntryFormForCatalog( dataEntryForm.getHtmlCode(), catalogDataValues, disabled, i18n, catalogType );
+                //customDataEntryFormCode = "custom dataentry form";
             }
             
-            catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes());
+            catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes() );
+            
             //Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
             
             /*
@@ -131,7 +144,7 @@ implements Action
             */
         }
         
-
+        System.out.println("going out from  ShowAddCatalogFormAction action");
         return SUCCESS;
     }
 

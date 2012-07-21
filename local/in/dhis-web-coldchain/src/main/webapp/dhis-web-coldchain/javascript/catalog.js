@@ -445,7 +445,7 @@ function addCatalog()
 	$.ajax({
     type: "POST",
     url: 'addCatalog.action',
-    data: getParamsForDiv('addCatalogFormDiv'),
+    data: getParamsForDiv('addEditCatalogFormDiv'),
     success: function(json) {
 		var type = json.response;
 		jQuery('#resultSearchDiv').dialog('close');
