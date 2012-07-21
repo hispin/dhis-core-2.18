@@ -135,12 +135,6 @@ public class DefaultSqlViewService
     // -------------------------------------------------------------------------
 
     @Override
-    public String setUpViewTableName( String input )
-    {
-        return sqlViewExpandStore.setUpViewTableName( input );
-    }
-
-    @Override
     public Collection<String> getAllSqlViewNames()
     {
         return sqlViewExpandStore.getAllSqlViewNames();
@@ -182,6 +176,12 @@ public class DefaultSqlViewService
         sqlViewExpandStore.setUpDataSqlViewTable( sqlViewGrid, viewTableName );
 
         return sqlViewGrid;
+    }
+
+    @Override
+    public Grid getDataSqlViewGrid( SqlView sqlView )
+    {
+        return getDataSqlViewGrid( sqlView.getViewName() );
     }
 
     @Override

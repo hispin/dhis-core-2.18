@@ -65,8 +65,6 @@ public interface SqlViewService
 
     String makeUpForQueryStatement( String query );
 
-    String setUpViewTableName( String input );
-
     // -------------------------------------------------------------------------
     // SqlView Expanded
     // -------------------------------------------------------------------------
@@ -84,6 +82,8 @@ public interface SqlViewService
     void dropAllSqlViewTables();
 
     Grid getDataSqlViewGrid( String viewTableName );
-
+    
+    Grid getDataSqlViewGrid( SqlView sqlView );
+    
     String testSqlGrammar( String sql );
 }

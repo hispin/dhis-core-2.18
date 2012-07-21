@@ -26,7 +26,5 @@ public interface SqlViewExpandStore
 
     void setUpDataSqlViewTable( Grid sqlViewGrid, String viewTableName );
 
-    String setUpViewTableName( String input );
-
     String testSqlGrammar( String sql );
 }
