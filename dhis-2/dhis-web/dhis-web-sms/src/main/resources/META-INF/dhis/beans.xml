@@ -18,16 +18,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
 	</bean>
 	
-        <!-- added by Chris -->
-        <bean id="org.hisp.dhis.sms.input.SMSInput" class="org.hisp.dhis.sms.input.SMSInput">
-            <property name="smsStore" ref="org.hisp.dhis.sms.incoming.IncomingSmsStore"/>
-            <property name="userService" ref="org.hisp.dhis.user.UserService"/>
-            <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-            <property name="smsCommandService" ref="smsCommandService" />
-            <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-            <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
-            
-        </bean>
+    <bean id="org.hisp.dhis.sms.input.SMSInput" class="org.hisp.dhis.sms.input.SMSInput">
+        <property name="smsStore" ref="org.hisp.dhis.sms.incoming.IncomingSmsStore"/>
+        <property name="userService" ref="org.hisp.dhis.user.UserService"/>
+        <property name="smsCommandService" ref="smsCommandService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
+        <property name="smsOutput" ref="org.hisp.dhis.sms.output.BulkSMSOutput" /> <!--  replace later -->
+    </bean>
+    
+  <bean id="org.hisp.dhis.sms.output.BulkSMSOutput" class="org.hisp.dhis.sms.output.BulkSMSOutput" />
+  
         
 	<!-- Data entry -->
 	

@@ -82,18 +82,19 @@
 		<th>Code</th>
       </tr>
     </thead>
-		
          #foreach( $dataElement in $dataSetElements)
-            #if ($dataElement.categoryCombo && $dataElement.categoryCombo.categories) 
-                #foreach($category in $dataElement.categoryCombo.categories)
-                    #foreach($option in $category.categoryOptions)
-                    <tr>
-                        <td>$dataElement.name $option.name</td>
-                        #set ($str = ""+$dataElement.id+""+$option.id)
-                        <td><input type="text" name="$dataElement.id.$option.id" value='$!codes[$str]'></td>
-                    </tr>         
-                    #end
-                #end
+            #if ($dataElement.categoryCombo && $dataElement.categoryCombo.sortedOptionCombos) 
+                   #foreach($x in $dataElement.categoryCombo.sortedOptionCombos)    
+                       #set ($str = ""+$dataElement.id+""+$x.id)
+                       <tr>
+                           <td>
+                               $dataElement.name $x.name
+                           </td>
+                           <td>
+                               <input type="text" name="$dataElement.id.$x.id" value='$!codes[$str]'>
+                           </td>
+                       </tr>
+                   #end
             #else
             <tr>
                <td>$dataElement.name</td>
