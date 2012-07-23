@@ -35,7 +35,6 @@ import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: PostgreSQLStatementBuilder.java 5715 2008-09-17 14:05:28Z larshelg $
  */
 public class PostgreSQLStatementBuilder
     extends AbstractStatementBuilder
@@ -117,8 +116,7 @@ public class PostgreSQLStatementBuilder
             + "AND datavalue.dataelementid="
             + destDataElementId
             + " AND datavalue.categoryoptioncomboid="
-            + destCategoryOptionComboId
-            + " "
+            + destCategoryOptionComboId + " "
             + "AND d2.dataelementid="
             + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
     }
@@ -126,36 +124,36 @@ public class PostgreSQLStatementBuilder
     public String getStandardDeviation( int dataElementId, int categoryOptionComboId, int organisationUnitId )
     {
     	return "SELECT STDDEV( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue " +
-	         "WHERE dataelementid='" + dataElementId + "' " +
-	         "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
-	         "AND sourceid='" + organisationUnitId + "'";
+    	    "WHERE dataelementid='" + dataElementId + "' " +
+	    "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
+	    "AND sourceid='" + organisationUnitId + "'";
     }
     
     public String getAverage( int dataElementId, int categoryOptionComboId, int organisationUnitId )
     {
        	 return "SELECT AVG( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue " +
-               "WHERE dataelementid='" + dataElementId + "' " +
-               "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
-               "AND sourceid='" + organisationUnitId + "'";
+       	     "WHERE dataelementid='" + dataElementId + "' " +
+             "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
+             "AND sourceid='" + organisationUnitId + "'";
     }
    
     public String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
         String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound )
     {
    	return "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
-           "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, " +
-           encode( dataElementName ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " + 
-           encode( organisationUnitName ) + " AS sourcename, cc.categoryoptioncomboname " +
-           "FROM datavalue AS dv " +
-           "JOIN period AS pe USING (periodid) " +
-           "JOIN periodtype AS pt USING (periodtypeid) " +
-           "LEFT JOIN _categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
-           "WHERE dv.dataelementid='" + dataElementId + "' " +
-           "AND dv.categoryoptioncomboid='" + categoryOptionComboId + "' " +
-           "AND dv.periodid IN (" + periodIds + ") " +
-           "AND dv.sourceid='" + organisationUnitId + "' " +
-           "AND ( CAST( dv.value AS " + getDoubleColumnType() + " ) < '" + lowerBound + "' " +
-           "OR CAST( dv.value AS " + getDoubleColumnType() + " ) > '" + upperBound + "' )";
+            "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, " +
+            encode( dataElementName ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " + 
+            encode( organisationUnitName ) + " AS sourcename, cc.categoryoptioncomboname " +
+            "FROM datavalue AS dv " +
+            "JOIN period AS pe USING (periodid) " +
+            "JOIN periodtype AS pt USING (periodtypeid) " +
+            "LEFT JOIN _categoryoptioncomboname AS cc USING (categoryoptioncomboid) " +
+            "WHERE dv.dataelementid='" + dataElementId + "' " +
+            "AND dv.categoryoptioncomboid='" + categoryOptionComboId + "' " +
+            "AND dv.periodid IN (" + periodIds + ") " +
+            "AND dv.sourceid='" + organisationUnitId + "' " +
+            "AND ( CAST( dv.value AS " + getDoubleColumnType() + " ) < '" + lowerBound + "' " +
+            "OR CAST( dv.value AS " + getDoubleColumnType() + " ) > '" + upperBound + "' )";
     }
     
     public String archiveData( String startDate, String endDate )
@@ -222,67 +220,66 @@ public class PostgreSQLStatementBuilder
     public String archivePatientData ( String startDate, String endDate )
     {
         return "DELETE FROM patientdatavalue AS pdv " 
-                + "USING programstageinstance AS psi ,  programinstance AS pi "
-                + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
-                + "AND pi.programinstanceid = psi.programinstanceid "
-                + "AND pi.enddate >= '" + startDate + "' "
-                +    "AND pi.enddate <= '" +  endDate + "';";
+            + "USING programstageinstance AS psi ,  programinstance AS pi "
+            + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
+            + "AND pi.programinstanceid = psi.programinstanceid "
+            + "AND pi.enddate >= '" + startDate + "' "
+            + "AND pi.enddate <= '" +  endDate + "';";
     }
     
     public String unArchivePatientData ( String startDate, String endDate )
     {
         return "DELETE FROM patientdatavaluearchive AS pdv " 
-                + "USING programstageinstance AS psi ,  programinstance AS pi "
-                + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
-                + "AND pi.programinstanceid = psi.programinstanceid "
-                + "AND pi.enddate >= '" + startDate + "' "
-                +    "AND pi.enddate <= '" +  endDate + "';";
+            + "USING programstageinstance AS psi ,  programinstance AS pi "
+            + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
+            + "AND pi.programinstanceid = psi.programinstanceid "
+            + "AND pi.enddate >= '" + startDate + "' "
+            + "AND pi.enddate <= '" +  endDate + "';";
     }
     
     public String deleteRegularOverlappingPatientData()
     {
         return "DELETE FROM patientdatavalue AS d " +
-                "USING patientdatavaluearchive AS a " +
-                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-                "AND d.dataelementid=a.dataelementid; ";
+            "USING patientdatavaluearchive AS a " +
+            "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+            "AND d.dataelementid=a.dataelementid; ";
     }
     
     public String deleteArchivedOverlappingPatientData()
     {
         return "DELETE FROM patientdatavaluearchive AS a " +
-                "USING patientdatavalue AS d " +
-                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-                "AND d.dataelementid=a.dataelementid ";
+            "USING patientdatavalue AS d " +
+            "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+            "AND d.dataelementid=a.dataelementid ";
     }
     
     public String deleteOldestOverlappingPatientDataValue()
     {
         return "DELETE FROM patientdatavalue AS d " +
-                "USING patientdatavaluearchive AS a " +
-                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-                "AND d.dataelementid=a.dataelementid " +
-                "AND d.timestamp<a.timestamp;";
+            "USING patientdatavaluearchive AS a " +
+            "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+            "AND d.dataelementid=a.dataelementid " +
+            "AND d.timestamp<a.timestamp;";
     }
     
     public String deleteOldestOverlappingPatientArchiveData()
     {
         return "DELETE FROM patientdatavalue AS d " +
-                "USING patientdatavaluearchive AS a " +
-                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-                "AND d.dataelementid=a.dataelementid " +
-                "AND a.timestamp<=d.timestamp;";
+            "USING patientdatavaluearchive AS a " +
+            "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+            "AND d.dataelementid=a.dataelementid " +
+            "AND a.timestamp<=d.timestamp;";
     }
     
     public String queryDataElementStructureForOrgUnit()
     {
-           StringBuffer sqlsb = new StringBuffer();
-           sqlsb.append( "(SELECT DISTINCT de.dataelementid, (de.name || ' ' || cc.categoryoptioncomboname) AS DataElement " );
-           sqlsb.append( "FROM dataelement AS de " );
-           sqlsb.append( "INNER JOIN categorycombos_optioncombos cat_opts on de.categorycomboid = cat_opts.categorycomboid ");
-           sqlsb.append( "INNER JOIN _categoryoptioncomboname cc on cat_opts.categoryoptioncomboid = cc.categoryoptioncomboid ");
-           sqlsb.append( "ORDER BY DataElement) " );
-           return sqlsb.toString();
-           
+        StringBuffer sqlsb = new StringBuffer();
+        sqlsb.append( "(SELECT DISTINCT de.dataelementid, (de.name || ' ' || cc.categoryoptioncomboname) AS DataElement " );
+        sqlsb.append( "FROM dataelement AS de " );
+        sqlsb.append( "INNER JOIN categorycombos_optioncombos cat_opts on de.categorycomboid = cat_opts.categorycomboid ");
+        sqlsb.append( "INNER JOIN _categoryoptioncomboname cc on cat_opts.categoryoptioncomboid = cc.categoryoptioncomboid ");
+        sqlsb.append( "ORDER BY DataElement) " );
+        return sqlsb.toString();           
     }
 
     public String queryRawDataElementsForOrgUnitBetweenPeriods(Integer orgUnitId, List<Integer> betweenPeriodIds)
@@ -290,6 +287,7 @@ public class PostgreSQLStatementBuilder
         StringBuffer sqlsb = new StringBuffer();
 
         int i = 0;
+        
         for ( Integer periodId : betweenPeriodIds )
         {
             i++;
@@ -305,6 +303,7 @@ public class PostgreSQLStatementBuilder
 
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader,dataelement" : " UNION " );
         }
+        
         return sqlsb.toString();
     }
     

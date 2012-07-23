@@ -32,9 +32,9 @@ import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
 import java.util.List;
 
 import org.hisp.dhis.period.Period;
+
 /**
  * @author Lars Helge Overland
- * @version $Id: H2StatementBuilder.java 5715 2008-09-17 14:05:28Z larshelg $
  */
 public class H2StatementBuilder
     extends AbstractStatementBuilder
@@ -73,9 +73,9 @@ public class H2StatementBuilder
     public String getMoveDataValueToDestination( int sourceId, int destinationId )
     {
         return "UPDATE datavalue AS d1 SET sourceid=" + destinationId + " " + "WHERE sourceid=" + sourceId + " "
-        + "AND NOT EXISTS ( " + "SELECT * from datavalue AS d2 " + "WHERE d2.sourceid=" + destinationId + " "
-        + "AND d1.dataelementid=d2.dataelementid " + "AND d1.periodid=d2.periodid "
-        + "AND d1.categoryoptioncomboid=d2.categoryoptioncomboid );";
+            + "AND NOT EXISTS ( " + "SELECT * from datavalue AS d2 " + "WHERE d2.sourceid=" + destinationId + " "
+            + "AND d1.dataelementid=d2.dataelementid " + "AND d1.periodid=d2.periodid "
+            + "AND d1.categoryoptioncomboid=d2.categoryoptioncomboid );";
     }
 
     @Override
@@ -89,7 +89,6 @@ public class H2StatementBuilder
             + "AND d1.dataelementid=de.dataelementid " + "AND de.valuetype='int';";
     }
 
-
     @Override
     public String getUpdateDestination( int destDataElementId, int destCategoryOptionComboId,
         int sourceDataElementId, int sourceCategoryOptionComboId )
@@ -100,7 +99,6 @@ public class H2StatementBuilder
             + "SELECT * FROM datavalue AS d2 " + "WHERE d2.dataelementid=" + destDataElementId + " "
             + "AND d2.categoryoptioncomboid=" + destCategoryOptionComboId + " " + "AND d1.periodid=d2.periodid "
             + "AND d1.sourceid=d2.sourceid );";
-
     }
 
     @Override
@@ -115,8 +113,7 @@ public class H2StatementBuilder
             + "AND datavalue.dataelementid="
             + destDataElementId
             + " AND datavalue.categoryoptioncomboid="
-            + destCategoryOptionComboId
-            + " "
+            + destCategoryOptionComboId + " "
             + "AND d2.dataelementid="
             + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
     }
@@ -124,17 +121,17 @@ public class H2StatementBuilder
     public String getStandardDeviation( int dataElementId, int categoryOptionComboId, int organisationUnitId ){
     	
         return "SELECT STDDEV( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue " +
-	         "WHERE dataelementid='" + dataElementId + "' " +
-	         "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
-	         "AND sourceid='" + organisationUnitId + "'";
+            "WHERE dataelementid='" + dataElementId + "' " +
+	    "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
+	    "AND sourceid='" + organisationUnitId + "'";
     }
     
     public String getAverage( int dataElementId, int categoryOptionComboId, int organisationUnitId )
     {    
       	 return "SELECT AVG( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue " +
-              "WHERE dataelementid='" + dataElementId + "' " +
-              "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
-              "AND sourceid='" + organisationUnitId + "'";
+      	     "WHERE dataelementid='" + dataElementId + "' " +
+             "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
+             "AND sourceid='" + organisationUnitId + "'";
     }
     
     public String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
@@ -226,56 +223,56 @@ public class H2StatementBuilder
     public String archivePatientData ( String startDate, String endDate )
     {
         return "DELETE FROM patientdatavalue AS pdv " 
-                + "USING programstageinstance AS psi ,  programinstance AS pi "
-                + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
-                + "AND pi.programinstanceid = psi.programinstanceid "
-                + "WHERE pi.enddate >= '" + startDate + "' "
-                +    "AND pi.enddate <= '" +  endDate + "';";
+            + "USING programstageinstance AS psi ,  programinstance AS pi "
+            + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
+            + "AND pi.programinstanceid = psi.programinstanceid "
+            + "WHERE pi.enddate >= '" + startDate + "' "
+            + "AND pi.enddate <= '" +  endDate + "';";
     }
     
     public String unArchivePatientData ( String startDate, String endDate )
     {
         return "DELETE FROM patientdatavaluearchive AS pdv " 
-                + "USING programstageinstance AS psi ,  programinstance AS pi "
-                + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
-                + "AND pi.programinstanceid = psi.programinstanceid "
-                + "WHERE pi.enddate >= '" + startDate + "' "
-                +    "AND pi.enddate <= '" +  endDate + "';";
+            + "USING programstageinstance AS psi ,  programinstance AS pi "
+            + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
+            + "AND pi.programinstanceid = psi.programinstanceid "
+            + "WHERE pi.enddate >= '" + startDate + "' "
+            + "AND pi.enddate <= '" +  endDate + "';";
     }
 
     public String deleteRegularOverlappingPatientData()
     {
         return "DELETE FROM patientdatavalue AS d " +
-                "USING patientdatavaluearchive AS a " +
-                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-                "AND d.dataelementid=a.dataelementid " +
-                "AND d.timestamp<a.timestamp;";
+            "USING patientdatavaluearchive AS a " +
+            "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+            "AND d.dataelementid=a.dataelementid " +
+            "AND d.timestamp<a.timestamp;";
     }
     
     public String deleteArchivedOverlappingPatientData()
     {
         return "DELETE FROM patientdatavaluearchive AS a " +
-                "USING patientdatavalue AS d " +
-                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-                "AND d.dataelementid=a.dataelementid ";
+            "USING patientdatavalue AS d " +
+            "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+            "AND d.dataelementid=a.dataelementid ";
     }
     
     public String deleteOldestOverlappingPatientDataValue()
     {
         return "DELETE FROM patientdatavalue AS d " +
-                "USING patientdatavaluearchive AS a " +
-                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-                "AND d.dataelementid=a.dataelementid " +
-                "AND d.timestamp<a.timestamp;";
+            "USING patientdatavaluearchive AS a " +
+            "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+            "AND d.dataelementid=a.dataelementid " +
+            "AND d.timestamp<a.timestamp;";
     }
     
     public String deleteOldestOverlappingPatientArchiveData()
     {
         return "DELETE FROM patientdatavalue AS d " +
-                "USING patientdatavaluearchive AS a " +
-                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-                "AND d.dataelementid=a.dataelementid " +
-                "AND a.timestamp<=d.timestamp;";
+            "USING patientdatavaluearchive AS a " +
+            "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+            "AND d.dataelementid=a.dataelementid " +
+            "AND a.timestamp<=d.timestamp;";
     }
     
     public String queryDataElementStructureForOrgUnit()
@@ -295,6 +292,7 @@ public class H2StatementBuilder
         StringBuffer sqlsb = new StringBuffer();
 
         int i = 0;
+        
         for ( Integer periodId : betweenPeriodIds )
         {
             i++;
@@ -310,6 +308,7 @@ public class H2StatementBuilder
 
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader,dataelement" : " UNION " );
         }
+        
         return sqlsb.toString();
     }
     
