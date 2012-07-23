@@ -205,6 +205,17 @@
       <result name="success" type="redirect">showPatientProgramStageList.action?patientId=${patientId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=false
       </result>
     </action>
+	  
+	  <action name="showPatientLocationForm"
+        class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+	  <param name="page">/dhis-web-light/namebased/patientLocationForm.vm</param>
+    </action>
+	  
+	  <action name="registerPatientLocation"
+        class="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction">
+      <result name="success" type="redirect">showPatientProgramList.action?patientId=${patientId}</result>
+    </action>
 
     <!-- Beneficiary Registration -->
 

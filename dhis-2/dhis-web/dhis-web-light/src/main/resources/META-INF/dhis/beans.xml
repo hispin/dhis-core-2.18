@@ -251,6 +251,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+	
 	<!-- Beneficiary Registration -->
 
 	<bean
