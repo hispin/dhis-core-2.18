@@ -374,11 +374,11 @@ public class RelativePeriods
      */
     public List<Period> getRewindedRelativePeriods( Integer rewindedPeriods )
     {
-        List<Period> periods = getRelativePeriods();
-        
+        List<Period> periods = getRelativePeriods();        
         PeriodType periodType = getHighestFrequencyPeriodType( periods );
         
-        Date rewindedDate = periodType.getRewindedDate( null, rewindedPeriods );
+        Date rewindedDate = periodType.getRewindedDate( null, rewindedPeriods );        
+        rewindedDate = subtractMonth( 1, rewindedDate );
         
         return getRelativePeriods( rewindedDate, null, false );
     }
@@ -423,7 +423,7 @@ public class RelativePeriods
      */
     public List<Period> getRelativePeriods( Date date, I18nFormat format, boolean dynamicNames )
     {        
-        date = date == null ? subtractMonth( 1, new Date() ) : subtractMonth( 1, date );
+        date = date == null ? subtractMonth( 1, new Date() ) : date;
         
         List<Period> periods = new ArrayList<Period>();
 
