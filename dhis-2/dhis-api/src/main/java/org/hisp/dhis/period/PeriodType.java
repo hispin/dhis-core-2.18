@@ -187,6 +187,13 @@ public abstract class PeriodType
      */
     public abstract int getFrequencyOrder();
 
+    /**
+     * Returns a new date rewinded from now.
+     *
+     * @return the Date.
+     */    
+    public abstract Date getRewindedDate( Date date, Integer rewindedPeriods );
+
     // -------------------------------------------------------------------------
     // Calendar support
     // -------------------------------------------------------------------------

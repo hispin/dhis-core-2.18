@@ -1600,6 +1600,7 @@ Ext.onReady( function() {
 						}
 						
 						DV.c.relativeperiod.rp = f.relativePeriods;
+						DV.c.relativeperiod.rewind = f.rewindRelativePeriods;
 						
 						if (f.periods) {
 							for (var i = 0; i < f.periods.length; i++) {
@@ -3299,8 +3300,7 @@ Ext.onReady( function() {
 															{
 																xtype: 'label',
 																text: 'Options',
-																cls: 'dv-label-period-heading',
-																style: 'color:#666'
+																cls: 'dv-label-period-heading-options'
 															},
 															{
 																xtype: 'checkbox',
