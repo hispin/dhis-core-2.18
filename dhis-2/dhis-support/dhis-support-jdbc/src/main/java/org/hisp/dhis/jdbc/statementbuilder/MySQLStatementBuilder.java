@@ -35,7 +35,6 @@ import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: MySQLStatementBuilder.java 5715 2008-09-17 14:05:28Z larshelg $
  */
 public class MySQLStatementBuilder
     extends AbstractStatementBuilder
@@ -129,21 +128,20 @@ public class MySQLStatementBuilder
     	return "SELECT STDDEV( value ) FROM datavalue " +
             "WHERE dataelementid='" + dataElementId + "' " +
             "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
-            "AND sourceid='" + organisationUnitId + "'";
-        
+            "AND sourceid='" + organisationUnitId + "'";        
     }
     
     public String getAverage( int dataElementId, int categoryOptionComboId, int organisationUnitId ){
-    	 return  "SELECT AVG( value ) FROM datavalue " +
+    	 return "SELECT AVG( value ) FROM datavalue " +
             "WHERE dataelementid='" + dataElementId + "' " +
             "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
             "AND sourceid='" + organisationUnitId + "'";
     }
     
     public String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
-    		String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound ){
-    	
-    	return  "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
+    		String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound )
+    {    	
+    	return "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, dv.storedby, dv.lastupdated, " +
             "dv.comment, dv.followup, '" + lowerBound + "' AS minvalue, '" + upperBound + "' AS maxvalue, " +
             encode( dataElementName ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, " + 
             encode( organisationUnitName ) + " AS sourcename, cc.categoryoptioncomboname " +
@@ -162,10 +160,10 @@ public class MySQLStatementBuilder
     public String archiveData( String startDate, String endDate )
     {
         return "DELETE d FROM datavalue AS d " +
-             "INNER JOIN period as p " +
-             "WHERE d.periodid=p.periodid " +
-             "AND p.startdate>='" + startDate + "' " +
-             "AND p.enddate<='" + endDate + "'";
+            "INNER JOIN period as p " +
+            "WHERE d.periodid=p.periodid " +
+            "AND p.startdate>='" + startDate + "' " +
+            "AND p.enddate<='" + endDate + "'";
     }
     
     public String unArchiveData( String startDate, String endDate )
@@ -185,7 +183,6 @@ public class MySQLStatementBuilder
             "AND d.periodid=a.periodid " +
             "AND d.sourceid=a.sourceid " +
             "AND d.categoryoptioncomboid=a.categoryoptioncomboid";
-
     }
     
     public String deleteArchivedOverlappingData()
@@ -292,6 +289,7 @@ public class MySQLStatementBuilder
         StringBuffer sqlsb = new StringBuffer();
 
         int i = 0;
+        
         for ( Integer periodId : betweenPeriodIds )
         {
             i++;
@@ -307,6 +305,7 @@ public class MySQLStatementBuilder
 
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader,dataelement" : " UNION " );
         }
+        
         return sqlsb.toString();
     }
     
