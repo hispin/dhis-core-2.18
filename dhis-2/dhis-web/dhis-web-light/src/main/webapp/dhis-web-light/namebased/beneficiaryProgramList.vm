@@ -39,6 +39,7 @@
 		#if($patient.getPhoneNumber())
 			<li><strong>$i18n.getString("phone_number"):</strong>  $patient.getPhoneNumber()</li>
 		#end
+		<li><strong>$i18n.getString("orgunit"):</strong>  $patient.getOrganisationUnit().getName() <a href="showPatientLocationForm.action?patientId=$patient.id">[$i18n.getString("change")]</a></li>
 		#foreach($patientIdentifier in $patientIdentifiers)
 			#if($patientIdentifier.getIdentifierType())
 				<li><strong>$patientIdentifier.getIdentifierType().getName():</strong>  $patientIdentifier.getIdentifier()</li>
