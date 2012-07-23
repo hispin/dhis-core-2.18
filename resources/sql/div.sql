@@ -59,15 +59,16 @@ and om.orgunitgroupid=22755);
 
 -- Facility overview --
 
-select ou.name, ou.uid, ou.code, ou.coordinates, oustr.level, gsstr.type, gsstr.ownership,
-  (select name from organisationunit where organisationunitid=oustr.idlevel2) as province,
-  (select name from organisationunit where organisationunitid=oustr.idlevel3) as county,
-  (select name from organisationunit where organisationunitid=oustr.idlevel4) as district
-from _orgunitstructure as oustr
-join organisationunit as ou on oustr.organisationunitid=ou.organisationunitid
-join _organisationunitgroupsetstructure as gsstr on ou.organisationunitid=gsstr.organisationunitid
-where oustr.level >= 5
-order by province, county, district, type, ownership, ou.name;
+select distinct ous.idlevel5 as internalid, ou.uid, ou.code, ou.name, ougs.type, ougs.ownership,
+ou2.name as province, ou3.name as county, ou4.name as district, ou.coordinates as longitide_latitude
+from _orgunitstructure ous
+left join organisationunit ou on ous.organisationunitid=ou.organisationunitid
+left join organisationunit ou2 on ous.idlevel2=ou2.organisationunitid
+left join organisationunit ou3 on ous.idlevel3=ou3.organisationunitid
+left join organisationunit ou4 on ous.idlevel4=ou4.organisationunitid
+left join _organisationunitgroupsetstructure ougs on ous.organisationunitid=ougs.organisationunitid
+where ous.level=5
+order by province, county, district, ou.name;
 
 -- Compare user roles --
 

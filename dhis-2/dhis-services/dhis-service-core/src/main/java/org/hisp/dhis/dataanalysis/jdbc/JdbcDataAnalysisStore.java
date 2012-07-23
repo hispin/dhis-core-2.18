@@ -44,6 +44,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueNameMinMaxRowMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -67,6 +68,13 @@ public class JdbcDataAnalysisStore
     public void setStatementBuilder( StatementBuilder statementBuilder )
     {
         this.statementBuilder = statementBuilder;
+    }
+    
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -117,8 +125,6 @@ public class JdbcDataAnalysisStore
     
     public Collection<DeflatedDataValue> getDataValuesMarkedForFollowup()
     {
-        final StatementHolder holder = statementManager.getHolder();
-        
         final String sql =
             "SELECT dv.dataelementid, dv.periodid, dv.sourceid, dv.categoryoptioncomboid, dv.value, " +
             "dv.storedby, dv.lastupdated, dv.comment, dv.followup, mm.minvalue, mm.maxvalue, de.name AS dataelementname, " +
@@ -132,19 +138,6 @@ public class JdbcDataAnalysisStore
             "LEFT JOIN _categoryoptioncomboname AS cc ON (dv.categoryoptioncomboid = cc.categoryoptioncomboid) " +
             "WHERE dv.followup=true";
         
-        try
-        {
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return new ObjectMapper<DeflatedDataValue>().getCollection( resultSet, new DeflatedDataValueNameMinMaxRowMapper() );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get deflated data values for followup", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return jdbcTemplate.query( sql, new DeflatedDataValueNameMinMaxRowMapper() );        
     }        
 }
