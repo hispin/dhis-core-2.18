@@ -348,27 +348,25 @@ public class RelativePeriods
      * Gets the PeriodType with the highest frequency from a list of Periods.
      */
     public PeriodType getHighestFrequencyPeriodType( List<Period> periods )
-    {        
+    {
+        PeriodType periodType = null;
+        
         if ( periods != null )
         {            
-            PeriodType periodType = periods.get( 0 ).getPeriodType();
-            
-            int lowestFrequencyOrder = periodType.getFrequencyOrder();
+            PeriodType lowestFrequencyOrder = periods.get( 0 ).getPeriodType();
             
             for ( Period period : periods )
             {
-                if ( period.getPeriodType().getFrequencyOrder() < lowestFrequencyOrder )
+                if ( period.getPeriodType().getFrequencyOrder() < lowestFrequencyOrder.getFrequencyOrder() )
                 {
-                    lowestFrequencyOrder = period.getPeriodType().getFrequencyOrder();
-                    
-                    periodType = period.getPeriodType();
+                    lowestFrequencyOrder = period.getPeriodType();
                 }
             }
             
-            return periodType;
+            return lowestFrequencyOrder;
         }
         
-        return null;
+        return periodType;
     }
 
     /**
