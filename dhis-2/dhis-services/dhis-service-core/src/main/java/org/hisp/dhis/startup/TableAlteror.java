@@ -268,6 +268,7 @@ public class TableAlteror
         executeSql( "UPDATE chart SET type='LINE' where type='line3d'" );
         executeSql( "UPDATE chart SET type='PIE' where type='pie'" );
         executeSql( "UPDATE chart SET type='PIE' where type='pie3d'" );
+        executeSql( "UPDATE chart SET rewindRelativePeriods = false WHERE rewindRelativePeriods is null" );
 
         executeSql( "ALTER TABLE chart ALTER COLUMN dimension DROP NOT NULL" );
         executeSql( "ALTER TABLE chart RENAME COLUMN title TO name" );

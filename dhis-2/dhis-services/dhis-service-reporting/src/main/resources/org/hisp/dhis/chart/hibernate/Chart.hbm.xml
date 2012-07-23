@@ -106,6 +106,8 @@
     <property name="userOrganisationUnitChildren" />
 
     <property name="showData" />
+	
+	<property name="rewindRelativePeriods" />
 
     <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_chart_userid" />
 
