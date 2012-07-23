@@ -2006,8 +2006,9 @@ Ext.onReady( function() {
 													TR.cmp.params.patientProperty.panel
 												);
 												
-												var programId = TR.cmp.settings.program.getValue();													
-												if (programId != null && !TR.store.patientProperty.available.isloaded) {
+												var programId = TR.cmp.settings.program.getValue();			
+												var programType = TR.cmp.settings.program.displayTplData[0].type;											
+												if (programId != null && !TR.store.patientProperty.available.isloaded && programType !='3') {
 													TR.store.patientProperty.available.load({params: {programId: programId}});
 												}
 											}
