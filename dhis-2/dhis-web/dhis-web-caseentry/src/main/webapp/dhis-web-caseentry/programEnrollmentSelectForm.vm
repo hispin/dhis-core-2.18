@@ -1,3 +1,4 @@
+<h4>$i18n.getString( "program_management" )</h4>
 <div>
 	<table class='mainPageTable'>
 		<tr>

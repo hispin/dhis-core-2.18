@@ -1,5 +1,4 @@
 <h3>$i18n.getString( "patient_management" ) #openHelp( "patient" )</h3>
-<h4>$i18n.getString( "program_management" )</h4>
 
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
 <input type='hidden' id='isShowPatientList' name= 'isShowPatientList' >
