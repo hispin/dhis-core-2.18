@@ -49,7 +49,17 @@ public class LoadAttributeValuesAction
 
     private LocalAttributeValueService localAttributeValueService;
 
+    public void setLocalAttributeValueService( LocalAttributeValueService localAttributeValueService )
+    {
+        this.localAttributeValueService = localAttributeValueService;
+    }
+
     private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -62,16 +72,6 @@ public class LoadAttributeValuesAction
     public Collection<String> getValues()
     {
         return values;
-    }
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    public void setLocalAttributeValueService( LocalAttributeValueService localAttributeValueService )
-    {
-        this.localAttributeValueService = localAttributeValueService;
     }
 
     public void setDataSetId( Integer dataSetId )
@@ -88,9 +88,9 @@ public class LoadAttributeValuesAction
         throws Exception
     {
         DataSet dataset = dataSetService.getDataSet( dataSetId );
-        
+
         values = localAttributeValueService.getValuesByDataSet( dataset );
-            
+
         return SUCCESS;
     }
 }

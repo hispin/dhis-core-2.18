@@ -30,7 +30,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.attribute.hibernate.HibernateLocalAttributeValueStore">		
 		<property name="clazz" value="org.hisp.dhis.attribute.AttributeValue" />
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="statementManager" ref="statementManager" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 	
 	<!-- LocalDataSet -->
