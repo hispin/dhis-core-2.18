@@ -77,28 +77,21 @@ public class ActivityPlan
     public void serialize( DataOutputStream dout )
         throws IOException
     {
-
-        if ( activitiesList == null )
+        if ( this.clientVersion.equals( TWO_POINT_NINE ) )
         {
-            dout.writeInt( 0 );
+            serializeVerssion2_9( dout );
         }
         else
         {
-            dout.writeInt( activitiesList.size() );
-            for ( int i = 0; i < activitiesList.size(); i++ )
-            {
-                activitiesList.get( i ).serialize( dout );
-            }
+            serializeVerssion2_8( dout );
         }
-
     }
 
     @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        // FIXME: Get implementation from client
-
+       
     }
 
     @Override
