@@ -534,11 +534,16 @@ body {
 }
 
 /* Label heading periods */
-.dv-label-period-heading {
+.dv-label-period-heading, .dv-label-period-heading-options {
     font-size: 11px;
     font-weight: bold;
     color: #333;
     line-height: 20px;
+}
+.dv-label-period-heading-options {
+    background-color: #e1e1e1;
+    padding: 1px 5px;
+    border-radius: 2px
 }
 
 /* Grid datatable columns */

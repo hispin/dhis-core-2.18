@@ -258,4 +258,16 @@ public class WeeklyPeriodType
     {
         return ISO_FORMAT;
     }
+    
+    @Override
+    public Date getRewindedDate( Date date, Integer rewindedPeriods )
+    {
+        date = date != null ? date : new Date();        
+        rewindedPeriods = rewindedPeriods != null ? rewindedPeriods : 1;
+
+        Calendar cal = createCalendarInstance( date );        
+        cal.add( Calendar.DAY_OF_YEAR, (rewindedPeriods * -7) );
+
+        return cal.getTime();
+    }
 }

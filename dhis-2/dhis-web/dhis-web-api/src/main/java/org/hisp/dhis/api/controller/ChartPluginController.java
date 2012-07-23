@@ -133,7 +133,8 @@ public class ChartPluginController
         // Periods
         // ---------------------------------------------------------------------
         
-        List<Period> periods = relativePeriods.getRelativePeriods( null, false, rewind ? 1 : 0 );
+        List<Period> periods = rewind ? relativePeriods.getRewindedRelativePeriods() :
+            relativePeriods.getRelativePeriods();
 
         if ( p != null && p.size() > 0 )
         {
