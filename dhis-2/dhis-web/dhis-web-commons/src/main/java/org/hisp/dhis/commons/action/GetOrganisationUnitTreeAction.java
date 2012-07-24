@@ -166,7 +166,7 @@ public class GetOrganisationUnitTreeAction
             }
         }
 
-        if ( !versionOnly )
+        if ( !versionOnly && !rootOrganisationUnits.isEmpty() )
         {
             for ( OrganisationUnit unit : userOrganisationUnits )
             {
