@@ -267,7 +267,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="tasks">
       <map>
         <entry key="dataMartLast12MonthsTask" value-ref="dataMartLast12MonthsTask" />
-		<entry key="dataMartLast3MonthsTask" value-ref="dataMartLast3MonthsTask" />
 		<entry key="dataMartLast6MonthsTask" value-ref="dataMartLast6MonthsTask" />
 		<entry key="dataMartFrom6To12MonthsTask" value-ref="dataMartFrom6To12MonthsTask" />
       </map>
@@ -289,10 +288,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="dataMartLast12MonthsTask" class="org.hisp.dhis.system.scheduling.DataMartTask" parent="abstractDataMartTask">
 	<property name="last6Months" value="true"/>
 	<property name="last6To12Months" value="true"/>
-  </bean>
-  
-  <bean id="dataMartLast3MonthsTask" class="org.hisp.dhis.system.scheduling.DataMartTask" parent="abstractDataMartTask">
-	<property name="last6Months" value="true"/>
   </bean>
     
   <bean id="dataMartLast6MonthsTask" class="org.hisp.dhis.system.scheduling.DataMartTask" parent="abstractDataMartTask">
