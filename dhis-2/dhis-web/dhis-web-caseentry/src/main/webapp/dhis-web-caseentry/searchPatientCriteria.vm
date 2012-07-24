@@ -7,16 +7,16 @@
 			<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
 		</td>
 		<td rowspan='2' valign='bottom'>
-			<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" #if($organisationUnit) #else disabled #end>
-			<input type="button" id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();">
-			<input type="button" value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();">
+			<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" disabled >
+			<input type="button" id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();" disabled >
+			<input type="button" value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" disabled >
 		</td>
 	</tr> 
 	<tr id='programAddPatientTR'class='hidden'>
 		<td>$i18n.getString('program')</td>
 		<td>
 			<select id='programIdAddPatient' name='programIdAddPatient'>
-				<option value=''>[$i18n.getString("please_select")]</option>
+				<option value='' type='2'>[$i18n.getString("please_select")]</option>
 				#foreach($program in $programs)
 					<option value="$program.id" type='$program.type'>$program.name</option>
 				#end
