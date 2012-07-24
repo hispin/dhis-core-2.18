@@ -173,34 +173,38 @@ public class GetOrganisationUnitTreeAction
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
             }
 
-            OrganisationUnitLevel offlineOrganisationUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
-
-            int size = organisationUnitService.getOrganisationUnitLevels().size();
-
-            if ( offlineOrganisationUnitLevel == null )
+            // only try OU-level filtering if there are any levels available
+            if ( !organisationUnitService.getOrganisationUnitLevels().isEmpty() )
             {
-                offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size );
-            }
+                OrganisationUnitLevel offlineOrganisationUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
 
-            int minLevel = rootOrganisationUnits.get( 0 ).getLevel();
-            int maxLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size ).getLevel();
-            int total = minLevel + offlineOrganisationUnitLevel.getLevel() - 1;
+                int size = organisationUnitService.getOrganisationUnitLevels().size();
 
-            if ( total > offlineOrganisationUnitLevel.getLevel() )
-            {
-                total = maxLevel;
-            }
-
-            final int finalTotal = total;
-
-            CollectionUtils.filter( organisationUnits, new Predicate<OrganisationUnit>()
-            {
-                @Override
-                public boolean evaluate( OrganisationUnit organisationUnit )
+                if ( offlineOrganisationUnitLevel == null )
                 {
-                    return organisationUnit.getLevel() <= finalTotal;
+                    offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size );
                 }
-            } );
+
+                int minLevel = rootOrganisationUnits.get( 0 ).getLevel();
+                int maxLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size ).getLevel();
+                int total = minLevel + offlineOrganisationUnitLevel.getLevel() - 1;
+
+                if ( total > offlineOrganisationUnitLevel.getLevel() )
+                {
+                    total = maxLevel;
+                }
+
+                final int finalTotal = total;
+
+                CollectionUtils.filter( organisationUnits, new Predicate<OrganisationUnit>()
+                {
+                    @Override
+                    public boolean evaluate( OrganisationUnit organisationUnit )
+                    {
+                        return organisationUnit.getLevel() <= finalTotal;
+                    }
+                } );
+            }
         }
 
         Collections.sort( rootOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
