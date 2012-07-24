@@ -34,7 +34,7 @@
     <tr>
 		<td><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<input id="aggregationDataElementInput" name="aggregationDataElementInput" value='$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name' style='width:303px'>
+			<input id="aggregationDataElementInput" name="aggregationDataElementInput" value='$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name' style='width:290px'>
 			<button type='button' id='dataElementsButton' disabled>&nbsp;</button>
 			<input id="aggregationDataElementId" name="aggregationDataElementId" value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id" class="{validate:{required:true}} hidden" >
 		</td>				

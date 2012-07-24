@@ -35,7 +35,7 @@
     <tr>
 		<td><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>			
-			<input id="aggregationDataElementInput" name="aggregationDataElementInput" style='width:290px'>
+			<input id="aggregationDataElementInput" name="aggregationDataElementInput" style='width:290px;'>
 			<button type='button' id='dataElementsButton' class='ui-icon-triangle-1-s' disabled>&nbsp;</button>
 			<input type='hidden' id="aggregationDataElementId" name="aggregationDataElementId" class="{validate:{required:true}}" >
 		</td>
