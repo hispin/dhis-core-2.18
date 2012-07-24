@@ -348,6 +348,7 @@ public class GenerateCCEMReportAction implements Action
             ccemReportOutput.setTableHeadings( tableHeadings );
             ccemReportOutput.setReportHeading( ccemReport.getReportName() );
         }
+        
         else if( ccemReport.getReportType().equals( CCEMReport.ORGUNITGROUP_DATAVALUE ) )
         {
             ccemReportOutput = new CCEMReportOutput();
