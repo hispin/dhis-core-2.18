@@ -255,7 +255,7 @@ Ext.onReady( function() {
 				Ext.Array.each(s.store.data.items, function(item) {
 					if( elements[index].style.display != 'none' )
 					{
-					  array.push({id: a.store.getAt(i).data.id, name: a.store.getAt(i).data.name, compulsory: a.store.getAt(i).data.compulsory, valueType: a.store.getAt(i).data.valueType});
+					  arr.push(item.data.id);
 					}
 					index++;
 				}); 
