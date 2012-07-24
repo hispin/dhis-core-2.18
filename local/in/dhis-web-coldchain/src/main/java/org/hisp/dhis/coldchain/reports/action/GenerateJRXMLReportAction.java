@@ -367,23 +367,21 @@ public class GenerateJRXMLReportAction
             detailStyle.setFont( font );
             detailStyle.setHorizontalAlign( HorizontalAlign.LEFT );
             detailStyle.setVerticalAlign( VerticalAlign.MIDDLE );
-            AbstractColumn column;            
+              
             ccemReportOutput = new CCEMReportOutput();
             List<String> tableHeadings = new ArrayList<String>();
             List<List<String>> tableSubHeadings = new ArrayList<List<String>>();
             List tableData = new ArrayList();
-            
             List<String> oneSubHeadingRow = new ArrayList<String>();
             List<String> content= new ArrayList<String>();
             
-            FastReportBuilder frb = new FastReportBuilder();
-            
+            FastReportBuilder frb = new FastReportBuilder();            
             Integer periodId = 0;
             Date date1 = new Date();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime( date1 );
-            String periodStartDate = "";
-            Map<String, Integer> dataValueCountMap = new HashMap<String, Integer>();
+            String periodStartDate = "";            
+            Map<String, Integer> subHeadingNumber= new HashMap<String, Integer>();
             if( periodRadio.equalsIgnoreCase( CCEMReport.CURRENT_YEAR ) )
             {
                 periodStartDate = calendar.get( Calendar.YEAR ) + "-01-01";
@@ -416,17 +414,18 @@ public class GenerateJRXMLReportAction
                 hash.put( "dataElementId", dataElementId );
                 hash.put( "optComboId", optComboId );
                 List<String> distinctDataElementValues = new ArrayList<String>( ccemReportManager.getDistinctDataElementValue( dataElementId, optComboId, periodId ) );
-                
+                int number=0;
                 for( int i = 0; i < distinctDataElementValues.size(); i++ )
-                {
+                {                    
                     if( i != 0 )
                     {
-                        tableHeadings.add( " " );
-                        
+                        tableHeadings.add( " " );                                                
                     }
                     oneSubHeadingRow.add( distinctDataElementValues.get( i ).split( ":" )[2] );
                     dataElementOptions.add( distinctDataElementValues.get( i ) );
-                }                
+                    number++;
+                }
+                subHeadingNumber.put( ccemReportDesign1.getDisplayheading(), number );
             }
             
             tableSubHeadings.add( oneSubHeadingRow );            
@@ -441,7 +440,7 @@ public class GenerateJRXMLReportAction
                 {
                     if(i==0 || i==1)
                     {
-                        frb.addColumn(tableHeadings.get( i ), tableHeadings.get( i ), String.class.getName(), 100,true).build();
+                        frb.addColumn(tableHeadings.get( i ), tableHeadings.get( i ), String.class.getName(), 50,true);
                         count++;
                         
                     }
@@ -460,27 +459,30 @@ public class GenerateJRXMLReportAction
                     else
                     {   
                         frb.addColumn(tableSubHeadings.get( j ).get( k ),
-                            tableSubHeadings.get( j ).get( k ), String.class.getName(), 100,false).build() ;   
+                            tableSubHeadings.get( j ).get( k ), String.class.getName(), 50, true);   
                         content.add( tableSubHeadings.get( j ).get( k ) );                        
                             count++;
                     }
-                }
-             
-            }
-            //frb.build();
+                }             
+            }            
             frb.setPrintColumnNames(true);
-            frb.setColumnsPerPage(1, count).setUseFullPageWidth(true);   
-            Style colspanStyle = new Style();
-            colspanStyle.setBackgroundColor(Color.GRAY);
-            colspanStyle.setTransparency(Transparency.OPAQUE);
-            colspanStyle.setBorder(Border.PEN_1_POINT());
-           
-            frb.setColspan(2, 5, "Estimated", colspanStyle);
+            frb.setHeaderHeight( 100 );
+            frb.setColumnsPerPage(1, count).setUseFullPageWidth(true); 
             
-            frb.setTemplateFile( path+"report1.jrxml" );
-            
-            //dynamicReport.getOptions().getDefaultHeaderStyle().setBorder(Border.PEN_1_POINT());
-            
+            int start=2; 
+            for(int i=2;i<=tableHeadings.size()-1;i++)
+            {  
+                if(tableHeadings.get( i )== " ")
+                {
+                    
+                }
+            else
+            {  
+                frb.setColspan(start, subHeadingNumber.get( tableHeadings.get( i ) ), tableHeadings.get( i ));  
+                start=start + subHeadingNumber.get( tableHeadings.get( i ) );
+            }
+            }
+            frb.setTemplateFile( path+"ORGUNITGROUP_DATAVALUE.jrxml" );
             for( Integer orgUnitGroupId : orgunitGroupList )
             {
                 Map numberOfData=new HashMap();
@@ -493,8 +495,7 @@ public class GenerateJRXMLReportAction
                 {
                     OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
     
-                    String orgUnitIdsBycomma = getCommaDelimitedString( orgUnitIds );
-                    System.out.println("Organisation Group"+orgUnitGroup.getName());                    
+                    String orgUnitIdsBycomma = getCommaDelimitedString( orgUnitIds );                                        
                     numberOfData.put( "Facility Type", orgUnitGroup.getName() );                    
                     numberOfData.put( "Total Facilities", ""+orgUnitIds.size() );                   
                     Map<String, Integer> dataValueCountMap2 = new HashMap<String, Integer>( ccemReportManager.getDataValueCountforDataElements( dataElementIdsByComma, optComboIdsByComma, periodId, orgUnitIdsBycomma ) );
@@ -516,25 +517,18 @@ public class GenerateJRXMLReportAction
             
             JRDataSource ds = new JRMapCollectionDataSource(tableData );
             DynamicReport dynamicReport = frb.build();
+            dynamicReport.getOptions().getDefaultDetailStyle().setBackgroundColor( Color.BLUE );
             dynamicReport.getOptions().getDefaultHeaderStyle().setBorder(Border.THIN());
+            dynamicReport.getOptions().getDefaultHeaderStyle().setHorizontalAlign(HorizontalAlign.CENTER );
             dynamicReport.getOptions().getDefaultDetailStyle().setBorder(Border.THIN()); 
             dynamicReport.getOptions().getDefaultDetailStyle().setHorizontalAlign(HorizontalAlign.CENTER );
+            dynamicReport.getOptions().getDefaultDetailStyle().setVerticalAlign( VerticalAlign.MIDDLE );            
             jr = DynamicJasperHelper.generateJasperReport( dynamicReport, new ClassicLayoutManager(), hash );
-            jasperPrint = JasperFillManager.fillReport( jr, hash, ds );        
-            
-             
-             //JasperExportManager.exportReportToPdfFile( jasperPrint, "C:/report1.pdf" );
-            //hash.put( "periodId", periodId );
-           // hash.put( "tableData", tableData );
-            //hash.put( "tableHeadings", tableHeadings );
-            //hash.put( "tableSubHeadings",tableSubHeadings  );
-            //fileName = "report1.jrxml";
+            jasperPrint = JasperFillManager.fillReport( jr, hash, ds ); 
         }
         
         ServletOutputStream ouputStream = response.getOutputStream();
         JRExporter exporter = null;
-
-        System.out.println( "Type is:" + type );
         if ( "pdf".equalsIgnoreCase( type ) )
         {            
             response.setContentType( "application/pdf" );
@@ -603,8 +597,6 @@ public class GenerateJRXMLReportAction
                 }
             }
         }
-
-     
         return SUCCESS;
     }
 
