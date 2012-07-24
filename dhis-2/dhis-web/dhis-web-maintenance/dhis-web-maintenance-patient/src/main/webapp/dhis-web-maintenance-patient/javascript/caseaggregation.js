@@ -137,7 +137,7 @@ function getParams()
 					var id = json.fixedAttributes[i].id;
 					var name = json.fixedAttributes[i].name;
 					
-					caseProperty.append( "<option value='" + id + "' title='" + name + "'>" + name + "</option>" );
+					caseProperty.append( "<option value='" + id + "' title='" + name + "' suggested='" + json.fixedAttributes[i].suggested + "'>" + name + "</option>" );
 				}
 				
 				for ( i in json.patientAttributes )
