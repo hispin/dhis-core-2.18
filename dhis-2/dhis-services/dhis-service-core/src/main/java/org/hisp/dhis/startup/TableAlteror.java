@@ -296,7 +296,6 @@ public class TableAlteror
         
         // remove outdated relative periods
         
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last3months" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN last6months" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN last9months" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN sofarthisyear" );
@@ -308,7 +307,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE reporttable DROP COLUMN individualmonthsthisyear" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN individualquartersthisyear" );
 
-        executeSql( "ALTER TABLE chart DROP COLUMN last3months" );
         executeSql( "ALTER TABLE chart DROP COLUMN last6months" );
         executeSql( "ALTER TABLE chart DROP COLUMN last9months" );
         executeSql( "ALTER TABLE chart DROP COLUMN sofarthisyear" );
@@ -403,6 +401,7 @@ public class TableAlteror
         executeSql( "update reporttable set lastsixmonth = false where lastsixmonth is null" );
         executeSql( "update reporttable set last4quarters = false where last4quarters is null" );
         executeSql( "update reporttable set last12months = false where last12months is null" );
+		executeSql( "update reporttable set last3months = false where last3months is null" );
         executeSql( "update reporttable set last6bimonths = false where last6bimonths is null" );
         executeSql( "update reporttable set last4quarters = false where last4quarters is null" );
         executeSql( "update reporttable set last2sixmonths = false where last2sixmonths is null" );
@@ -422,9 +421,9 @@ public class TableAlteror
         executeSql( "update chart set lastyear = false where lastyear is null" );
         executeSql( "update chart set lastsixmonth = false where lastsixmonth is null" );
         executeSql( "update chart set last12months = false where last12months is null" );
+        executeSql( "update chart set last3months = false where last3months is null" );
         executeSql( "update chart set last5years = false where last5years is null" );
         executeSql( "update chart set last4quarters = false where last4quarters is null" );
-        executeSql( "update chart set last12months = false where last12months is null" );
         executeSql( "update chart set last6bimonths = false where last6bimonths is null" );
         executeSql( "update chart set last4quarters = false where last4quarters is null" );
         executeSql( "update chart set last2sixmonths = false where last2sixmonths is null" );

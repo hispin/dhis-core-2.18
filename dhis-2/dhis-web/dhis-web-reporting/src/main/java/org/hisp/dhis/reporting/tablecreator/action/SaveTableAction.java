@@ -362,6 +362,13 @@ public class SaveTableAction
     {
         this.paramLeafParentOrganisationUnit = paramLeafParentOrganisationUnit;
     }
+    
+    private boolean last3Months;
+    
+    public void setLast3Months( boolean last3Months )
+    {
+        this.last3Months = last3Months;
+    }
 
     private boolean paramGrandParentOrganisationUnit;
     
@@ -438,7 +445,7 @@ public class SaveTableAction
         RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter, lastSixMonth,
             monthsThisYear, quartersThisYear, thisYear, 
             monthsLastYear, quartersLastYear, lastYear, 
-            last5Years, last12Months, false, last4Quarters, last2SixMonths,
+            last5Years, last12Months, last3Months, false, last4Quarters, last2SixMonths,
             thisFinancialYear, lastFinancialYear, last5FinancialYears, false );
         
         ReportParams reportParams = new ReportParams();

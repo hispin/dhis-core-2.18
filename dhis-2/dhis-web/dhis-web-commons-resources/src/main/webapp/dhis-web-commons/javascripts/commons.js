@@ -1460,6 +1460,7 @@ function relativePeriodsChecked()
          isChecked( "lastYear" ) ||
          isChecked( "last5Years" ) ||
          isChecked( "last12Months" ) ||
+         isChecked( "last3Months" ) ||
          isChecked( "last6BiMonths" ) ||
          isChecked( "last4Quarters" ) ||
          isChecked( "last2SixMonths" ) ||
