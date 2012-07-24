@@ -89,7 +89,8 @@ function saveGatewayConfig()
 			gatewayType: getFieldValue( 'gatewayType' ),
 			name: getFieldValue( 'bulksmsFields input[id=name]' ),
 			username: getFieldValue( 'bulksmsFields input[id=username]' ),
-			password: getFieldValue( 'bulksmsFields input[id=password]' )
+			password: getFieldValue( 'bulksmsFields input[id=password]' ),
+			region: getFieldValue( 'bulksmsFields select[id=region]' )
 		}, function ( json ) {
 			showMessage( json );
 		} );

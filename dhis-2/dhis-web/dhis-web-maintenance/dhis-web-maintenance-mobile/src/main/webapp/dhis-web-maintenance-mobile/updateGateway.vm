@@ -91,6 +91,19 @@
 				<td>$i18n.getString( "password" ):</td>
 				<td><input type="text" name="password" id="password" style="width: 28em" value="$!bulkGateway.password"/></td>
 			</tr>
+			<tr>
+				<td>$i18n.getString( "region" ):</td>
+				<td>
+					<select id="region" name="region" style="width:100%;">
+						<option value="INTERNATIONAL" #if ( $bulkGateway.region == "INTERNATIONAL" ) selected #end>$i18n.getString( "international" )</option>
+						<option value="UNITEDKINGDOM" #if ( $bulkGateway.region == "UNITEDKINGDOM" ) selected #end>$i18n.getString( "uk" )</option>
+						<option value="SOUTHAFRICA" #if ( $bulkGateway.region == "SOUTHAFRICA" ) selected #end>$i18n.getString( "south_africa" )</option>
+						<option value="SPAIN" #if ( $bulkGateway.region == "SPAIN" ) selected #end>$i18n.getString( "spain" )</option>
+						<option value="USA" #if ( $bulkGateway.region == "USA" ) selected #end>$i18n.getString( "usa" )</option>
+						<option value="GERMANY" #if ( $bulkGateway.region == "GERMANY" ) selected #end>$i18n.getString( "germany" )</option>
+					</select>
+				</td>
+			</tr>
 		</tbody>
 		#set( $clickatellGateway = $!gatewayConfigMap1.get( $gatewayConfigMap2.get( 1 ) ) )
 		<tbody id="clickatellFields">

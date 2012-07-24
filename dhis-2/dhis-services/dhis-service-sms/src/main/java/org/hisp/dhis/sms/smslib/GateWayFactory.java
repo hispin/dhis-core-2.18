@@ -36,6 +36,7 @@ import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.smslib.AGateway;
 import org.smslib.AGateway.Protocols;
 import org.smslib.http.BulkSmsHTTPGateway;
+import org.smslib.http.BulkSmsHTTPGateway.Regions;
 import org.smslib.http.ClickatellHTTPGateway;
 import org.smslib.modem.SerialModemGateway;
 
@@ -66,18 +67,46 @@ public class GateWayFactory
 
     public AGateway createBulkSmsGateway( BulkSmsGatewayConfig config )
     {
-        BulkSmsHTTPGateway gateway = new BulkSmsHTTPGateway( "bulksms.http.1", config.getUsername(), config
-            .getPassword() );
+        BulkSmsHTTPGateway gateway = new BulkSmsHTTPGateway( "bulksms.http.1", config.getUsername(),
+            config.getPassword(), this.getRegion( config.getRegion() ) );
         gateway.setOutbound( true );
         gateway.setInbound( false );
         return gateway;
     }
 
+    private Regions getRegion( String region )
+    {
+        if ( region.equals( "INTERNATIONAL" ) )
+        {
+            return BulkSmsHTTPGateway.Regions.INTERNATIONAL;
+        }
+        else if ( region.equals( "UNITEDKINGDOM" ) )
+        {
+            return BulkSmsHTTPGateway.Regions.UNITEDKINGDOM;
+        }
+        else if ( region.equals( "SOUTHAFRICA" ) )
+        {
+            return BulkSmsHTTPGateway.Regions.SOUTHAFRICA;
+        }
+        else if ( region.equals( "SPAIN" ) )
+        {
+            return BulkSmsHTTPGateway.Regions.SPAIN;
+        }
+        else if ( region.equals( "USA" ) )
+        {
+            return BulkSmsHTTPGateway.Regions.USA;
+        }
+        else
+        {
+            return BulkSmsHTTPGateway.Regions.GERMANY;
+        }
+    }
+
     public AGateway createModemGateway( ModemGatewayConfig c )
     {
         // TODO: DETECT MODEM CLASS AND INSTANTIATE
-        SerialModemGateway gateway = new SerialModemGateway( c.getName(), c.getPort(), c.getBaudRate(), c
-            .getManufacturer(), c.getModel() );
+        SerialModemGateway gateway = new SerialModemGateway( c.getName(), c.getPort(), c.getBaudRate(),
+            c.getManufacturer(), c.getModel() );
 
         if ( c.getSimMemLocation() != null )
         {
@@ -98,8 +127,8 @@ public class GateWayFactory
 
     public AGateway createClickatellGateway( ClickatellGatewayConfig c )
     {
-        ClickatellHTTPGateway gateway = new ClickatellHTTPGateway( c.getName(), c.getApiId(), c.getUsername(), c
-            .getPassword() );
+        ClickatellHTTPGateway gateway = new ClickatellHTTPGateway( c.getName(), c.getApiId(), c.getUsername(),
+            c.getPassword() );
         gateway.setOutbound( true );
         gateway.setInbound( false );
         return gateway;
@@ -107,8 +136,8 @@ public class GateWayFactory
 
     public AGateway createSimplisticHttpGetGateway( GenericHttpGatewayConfig c )
     {
-        SimplisticHttpGetGateWay gateway = new SimplisticHttpGetGateWay( c.getName(), c.getUrlTemplate(), c
-            .getParameters() );
+        SimplisticHttpGetGateWay gateway = new SimplisticHttpGetGateWay( c.getName(), c.getUrlTemplate(),
+            c.getParameters() );
         gateway.setOutbound( true );
         gateway.setInbound( false );
         return gateway;
