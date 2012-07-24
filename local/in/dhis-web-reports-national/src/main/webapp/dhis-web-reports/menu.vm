@@ -75,7 +75,13 @@
 		#end
 		#if( $auth.hasAccess( "dhis-web-reports", "mdReportAnalyser") )
 			<li><a href = "mdReportAnalyser.action">MD Report</a>
-		#end			
+		#end
+        #if( $auth.hasAccess( "dhis-web-reports", "ranking2ReportForm") )
+            <li><a href = "ranking2ReportForm.action">Ranking Report</a></li>  
+        #end
+        #if( $auth.hasAccess( "dhis-web-reports", "districtFeedbackReportAnalyser") )
+            <li><a href = "districtFeedbackReportAnalyser.action">Feedback Template</a></li>
+        #end				
 		<!--<li><a href = "advancedReportAnalyser.action">Advanced Reports</a></li>-->
 	</ul>
 </ul>
