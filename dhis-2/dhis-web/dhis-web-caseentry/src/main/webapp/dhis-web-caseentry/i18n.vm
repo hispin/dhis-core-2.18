@@ -91,4 +91,5 @@ true_value:'$encoder.jsEscape($i18n.getString( 'true_value' ) , "'")',
 false_value:'$encoder.jsEscape($i18n.getString( 'false_value' ) , "'")',
 value_is_invalid:'$encoder.jsEscape($i18n.getString( 'value_is_invalid' ) , "'")',
 value_is_valid:'$encoder.jsEscape($i18n.getString( 'value_is_valid' ) , "'")',
+em_no_program_stage: '$encoder.jsEscape($i18n.getString( 'em_no_program_stage' ) , "'")'
 };

@@ -1058,6 +1058,11 @@ Ext.onReady( function() {
 					return false;
 				}
 				
+				if (Ext.getCmp('programStageCombobox').getValue() == '') {
+					TR.util.notification.error(TR.i18n.em_no_program_stage, TR.i18n.em_no_program_stage);
+					return false;
+				}
+				
 				return true;
 			},
 			response: function(r) {

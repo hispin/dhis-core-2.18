@@ -290,6 +290,7 @@ public class GenerateTabularReportAction
         }
         else
         {
+            organisationUnits.addAll( orgunitIds );
             for ( Integer orgunitId : orgunitIds )
             {
                 OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
@@ -300,7 +301,7 @@ public class GenerateTabularReportAction
                 }
                 else
                 {
-                    organisationUnits = organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunitId );
+                    organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunitId ));
                 }
             }
         }
