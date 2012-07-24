@@ -112,6 +112,13 @@ public class InitializeAction
     {
         return last12Months;
     }
+    
+    private List<Period> last3Months;
+
+    public List<Period> getLast3Months()
+    {
+        return last3Months;
+    }
 
     private List<Period> lastQuarter;
 
@@ -185,6 +192,9 @@ public class InitializeAction
 
         rp.clear().setLast12Months( true );
         last12Months = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
+
+        rp.clear().setLast3Months( true );
+        last3Months = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
 
         rp.clear().setReportingQuarter( true );
         lastQuarter = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
