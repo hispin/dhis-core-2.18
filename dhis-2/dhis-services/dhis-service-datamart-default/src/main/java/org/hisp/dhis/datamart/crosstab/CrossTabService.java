@@ -30,7 +30,6 @@ package org.hisp.dhis.datamart.crosstab;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -45,15 +44,6 @@ import org.hisp.dhis.period.Period;
 public interface CrossTabService
 {
     String ID = CrossTabService.class.getName();
-
-    /**
-     * Filters and returns the DataElementOperands with data from the given
-     * collection of DataElementOperands.
-     * 
-     * @param operands the DataElementOperands.
-     * @return the DataElementOperands with data.
-     */
-    Set<DataElementOperand> getOperandsWithData( Set<DataElementOperand> operands );
 
     String createCrossTabTable( List<DataElementOperand> operands );
     

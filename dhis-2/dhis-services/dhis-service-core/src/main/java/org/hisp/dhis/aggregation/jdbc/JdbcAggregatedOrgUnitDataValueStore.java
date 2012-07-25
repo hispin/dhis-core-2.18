@@ -36,8 +36,6 @@ import java.util.Collection;
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.amplecode.quick.mapper.ObjectMapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueStore;
@@ -47,8 +45,6 @@ import org.hisp.dhis.system.objectmapper.AggregatedOrgUnitIndicatorValueRowMappe
 public class JdbcAggregatedOrgUnitDataValueStore
     implements AggregatedOrgUnitDataValueStore
 {
-    private static final Log log = LogFactory.getLog( JdbcAggregatedOrgUnitDataValueStore.class );
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -121,15 +117,6 @@ public class JdbcAggregatedOrgUnitDataValueStore
         statementManager.getHolder().executeUpdate( sql );
     }
 
-    public void deleteAggregatedDataValues( Collection<Integer> periodIds )
-    {
-        final String sql =
-            "DELETE FROM aggregatedorgunitdatavalue " +
-            "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
-        
-        statementManager.getHolder().executeUpdate( sql );
-    }
-
     public void deleteAggregatedDataValues()
     {
         final String sql = "DELETE FROM aggregatedorgunitdatavalue";
@@ -137,64 +124,6 @@ public class JdbcAggregatedOrgUnitDataValueStore
         statementManager.getHolder().executeUpdate( sql );
     }
 
-    public void createIndex( boolean dataElement, boolean indicator )
-    {
-        if ( dataElement )
-        {
-            try
-            {
-                final String sql = "CREATE INDEX aggregatedorgunitdatavalue_index ON aggregatedorgunitdatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid, organisationunitgroupid)";        
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index already exists" );
-            }
-        }
-        
-        if ( indicator )
-        {
-            try
-            {
-                final String sql = "CREATE INDEX aggregatedorgunitindicatorvalue_index ON aggregatedorgunitindicatorvalue (indicatorid, periodid, organisationunitid, organisationunitgroupid)";        
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index already exists" );
-            }
-        }
-    }
-    
-    public void dropIndex( boolean dataElement, boolean indicator )
-    {
-        if ( dataElement )
-        {
-            try
-            {
-                final String sql = "DROP INDEX aggregatedorgunitdatavalue_index";
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index does not exist" );
-            }
-        }
-        
-        if ( indicator )
-        {
-            try
-            {
-                final String sql = "DROP INDEX aggregatedorgunitindicatorvalue_index";
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index does not exist" );
-            }
-        }
-    }
-    
     // -------------------------------------------------------------------------
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
@@ -255,15 +184,6 @@ public class JdbcAggregatedOrgUnitDataValueStore
         statementManager.getHolder().executeUpdate( sql );
     }
 
-    public void deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
-    {
-        final String sql =
-            "DELETE FROM aggregatedorgunitindicatorvalue " +
-            "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
-
-        statementManager.getHolder().executeUpdate( sql );
-    }
-    
     public void deleteAggregatedIndicatorValues()
     {
         final String sql = "DELETE FROM aggregatedorgunitindicatorvalue ";
