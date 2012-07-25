@@ -17,10 +17,10 @@
 	<li><a href="app/index.html"> $i18n.getString( "tabular_report" )&nbsp;</a></li> 
 </ul>
 
-<h2>$i18n.getString( "activity_planning" )&nbsp;</h2>
+<!-- <h2>$i18n.getString( "activity_planning" )&nbsp;</h2>
 <ul>
     <li><a href="visitplan.action">$i18n.getString( "visit_plan" )&nbsp;</a></li>     
-</ul>
+</ul> -->
 
 <h2>$i18n.getString( "case_aggregation" )&nbsp;</h2>
 <ul>
