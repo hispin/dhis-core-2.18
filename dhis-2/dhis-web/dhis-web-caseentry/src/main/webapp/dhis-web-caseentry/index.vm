@@ -3,7 +3,7 @@
 
 <ul class="introList">
 	#introListImgItem( "patient.action" "patient" "patient" )
-	#introListImgItem( "multipledataEntrySelect.action" "multiple_name_based_data_entry" "dataentry" )
+	#introListImgItem( "multipledataEntrySelect.action" "multiple_individual_records" "dataentry" )
 	#introListImgItem( "anonymousRegistration.action" "anonymous_events" "dataentry" )
 	#introListImgItem( "singleEventSelect.action" "single_event_with_registration" "dataentry" )
     #introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
