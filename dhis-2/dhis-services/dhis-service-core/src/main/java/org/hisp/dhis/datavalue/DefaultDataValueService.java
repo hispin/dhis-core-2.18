@@ -32,7 +32,6 @@ import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -112,11 +111,6 @@ public class DefaultDataValueService
         DataElementCategoryOptionCombo optionCombo )
     {
         return dataValueStore.getDataValue( source, dataElement, period, optionCombo );
-    }
-
-    public String getValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId )
-    {
-        return dataValueStore.getValue( dataElementId, periodId, sourceId, categoryOptionComboId );
     }
 
     // -------------------------------------------------------------------------
@@ -199,11 +193,6 @@ public class DefaultDataValueService
             return false;
         }
         return true;
-    }
-
-    public Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands )
-    {
-        return dataValueStore.getOperandsWithDataValues( operands );
     }
 
     public int getDataValueCount( int days )

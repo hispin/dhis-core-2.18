@@ -43,11 +43,9 @@ import org.amplecode.quick.StatementManager;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -81,21 +79,7 @@ public class DefaultCrossTabService
     {
         this.crossTabStore = crossTabTableManager;
     }
-
-    private AggregatedDataValueService aggregatedDataValueService;
-
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
-    {
-        this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-    
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-    
+        
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -109,7 +93,7 @@ public class DefaultCrossTabService
 
     public Set<DataElementOperand> getOperandsWithData( Set<DataElementOperand> operands )
     {
-        return dataValueService.getOperandsWithDataValues( operands );
+        return crossTabStore.getOperandsWithDataValues( operands );
     }
     
     public String createCrossTabTable( List<DataElementOperand> operands )
@@ -137,7 +121,7 @@ public class DefaultCrossTabService
         {
             for ( final Integer sourceId : organisationUnitIds )
             {
-                final Map<DataElementOperand, String> map = aggregatedDataValueService.getDataValueMap( periodId, sourceId );
+                final Map<DataElementOperand, String> map = crossTabStore.getDataValueMap( periodId, sourceId );
 
                 final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
 

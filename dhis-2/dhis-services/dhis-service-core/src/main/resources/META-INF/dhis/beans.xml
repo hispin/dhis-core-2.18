@@ -53,7 +53,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.datavalue.DataValueStore" class="org.hisp.dhis.datavalue.hibernate.HibernateDataValueStore">
     <property name="sessionFactory" ref="sessionFactory" />
-    <property name="statementManager" ref="statementManager" />
     <property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 	<property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
@@ -357,8 +356,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="expressionStore" ref="org.hisp.dhis.expression.ExpressionStore" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 

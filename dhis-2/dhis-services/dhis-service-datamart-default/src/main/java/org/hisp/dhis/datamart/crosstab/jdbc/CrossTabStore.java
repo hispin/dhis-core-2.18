@@ -30,6 +30,7 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
@@ -142,4 +143,21 @@ public interface CrossTabStore
      */
     Map<DataElementOperand, Double> getAggregatedOrgUnitDataCacheValue( Collection<DataElementOperand> operands, 
         int periodId, int sourceId, int organisationUnitGroupId, String key );
+    
+    /**
+     * Gets a set of DataElementOperands which have data values associated.
+     * 
+     * @param operands the DataElementOperands to check.
+     * @return a set of DataElementOperands.
+     */
+    Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands );
+
+    /**
+     * Gets a Map with entries containing Operand and value for all DataValues registered for the given Period and Source.
+     * 
+     * @param periodId the Period identifier.
+     * @param sourceId the Source identifier.
+     * @return map of data values.
+     */
+    Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId );
 }

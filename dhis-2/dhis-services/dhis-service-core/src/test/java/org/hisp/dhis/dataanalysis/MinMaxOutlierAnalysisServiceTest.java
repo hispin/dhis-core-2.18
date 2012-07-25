@@ -53,8 +53,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.ListUtils;
 import org.junit.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * @author eirikmi
@@ -98,8 +96,6 @@ public class MinMaxOutlierAnalysisServiceTest
 
     private MinMaxDataElement minMaxDataElement;
 
-    private JdbcTemplate jdbcTemplate;
-    
     // ----------------------------------------------------------------------
     // Fixture
     // ----------------------------------------------------------------------
@@ -108,8 +104,6 @@ public class MinMaxOutlierAnalysisServiceTest
     public void setUpTest()
         throws Exception
     {
-        jdbcTemplate = (JdbcTemplate) getBean( "jdbcTemplate" );
-        
         minMaxOutlierAnalysisService = (DataAnalysisService) getBean( "org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
@@ -192,13 +186,6 @@ public class MinMaxOutlierAnalysisServiceTest
         
         minMaxDataElement = new MinMaxDataElement( organisationUnitA, dataElementA, categoryOptionCombo, -40, 40, false );
         minMaxDataElementService.addMinMaxDataElement( minMaxDataElement );
-
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( "select mm.minvalue from minmaxdataelement mm" );
-        
-        while ( rowSet.next() )
-        {
-            System.out.println( "min value " + rowSet.getInt( "minvalue" ) );
-        }
                 
         Collection<Period> periods = new ArrayList<Period>();
         periods.add( periodI );

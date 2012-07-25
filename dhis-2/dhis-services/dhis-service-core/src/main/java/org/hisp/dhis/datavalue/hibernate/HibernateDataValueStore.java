@@ -34,10 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -74,13 +71,6 @@ public class HibernateDataValueStore
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
-    }
-
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
     }
 
     private PeriodStore periodStore;
@@ -165,15 +155,6 @@ public class HibernateDataValueStore
         criteria.add( Restrictions.eq( "optionCombo", optionCombo ) );
 
         return (DataValue) criteria.uniqueResult();
-    }
-
-    public String getValue( int dataElementId, int periodId, int sourceId, int categoryOptionComboId )
-    {
-        final String sql = "SELECT value " + "FROM datavalue " + "WHERE dataelementid='" + dataElementId + "' "
-            + "AND periodid='" + periodId + "' " + "AND sourceid='" + sourceId + "' " + "AND categoryoptioncomboid='"
-            + categoryOptionComboId + "'";
-
-        return statementManager.getHolder().queryForString( sql );
     }
 
     // -------------------------------------------------------------------------
@@ -411,31 +392,7 @@ public class HibernateDataValueStore
 
         return (DataValue) query.uniqueResult();
     }
-    
-    public Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands )
-    {
-        final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>();
         
-        final StatementHolder holder = statementManager.getHolder();
-        
-        for ( DataElementOperand operand : operands )
-        {
-            final String sql = 
-                "SELECT COUNT(*) FROM datavalue " + 
-                "WHERE dataelementid=" + operand.getDataElementId() + " " +
-                "AND categoryoptioncomboid=" + operand.getOptionComboId();
-            
-            Integer count = holder.queryForInteger( sql );
-            
-            if ( count != null && count > 0 )
-            {
-                operandsWithData.add( operand );
-            }
-        }
-        
-        return operandsWithData;
-    }
-    
     public int getDataValueCount( Date date )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( DataValue.class );

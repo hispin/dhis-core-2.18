@@ -44,7 +44,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
@@ -54,10 +53,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,20 +102,6 @@ public class DefaultExpressionService
         this.constantService = constantService;
     }
 
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
-    private AggregatedDataValueService aggregatedDataValueService;
-
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
-    {
-        this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-
     private DataElementCategoryService categoryService;
 
     public void setCategoryService( DataElementCategoryService categoryService )
@@ -159,15 +141,6 @@ public class DefaultExpressionService
     // -------------------------------------------------------------------------
     // Business logic
     // -------------------------------------------------------------------------
-
-    public Double getExpressionValue( Expression expression, Period period, OrganisationUnit source,
-        boolean nullIfNoValues, boolean aggregate, Integer days )
-    {
-        final String expressionString = generateExpression( expression.getExpression(), period, source, nullIfNoValues,
-            aggregate, days );
-
-        return expressionString != null ? calculateExpression( expressionString ) : null;
-    }
     
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
         Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues )
@@ -590,67 +563,6 @@ public class DefaultExpressionService
         return buffer != null ? buffer.toString() : null;
     }
     
-    public String generateExpression( String expression, Period period, OrganisationUnit source,
-        boolean nullIfNoValues, boolean aggregated, Integer days )
-    {
-        StringBuffer buffer = null;
-
-        if ( expression != null )
-        {
-            buffer = new StringBuffer();
-
-            final Matcher matcher = FORMULA_PATTERN.matcher( expression );
-
-            while ( matcher.find() )
-            {
-                String match = matcher.group();
-                
-                if ( DAYS_EXPRESSION.equals( match ) ) // Days
-                {
-                    match = days != null ? String.valueOf( days ) : NULL_REPLACEMENT;
-                }
-                else if ( match.matches( CONSTANT_EXPRESSION ) ) // Constant
-                {
-                    final Constant constant = constantService.getConstant( Integer.parseInt( stripConstantExpression( match ) ) );
-                    
-                    match = constant != null ? String.valueOf( constant.getValue() ) : NULL_REPLACEMENT; 
-                }
-                else // Operand
-                {
-                    final DataElementOperand operand = DataElementOperand.getOperand( match );
-
-                    String value = null;
-
-                    if ( aggregated )
-                    {
-                        final Double aggregatedValue = aggregatedDataValueService.getAggregatedDataValue( operand
-                            .getDataElementId(), operand.getOptionComboId(), period.getId(), source.getId() );
-
-                        value = aggregatedValue != null ? String.valueOf( aggregatedValue ) : null;
-                    }
-                    else
-                    {
-                        value = dataValueService.getValue( operand.getDataElementId(), period.getId(), source.getId(),
-                            operand.getOptionComboId() );
-                    }
-
-                    if ( value == null && nullIfNoValues )
-                    {
-                        return null;
-                    }
-
-                    match = value != null ? value : NULL_REPLACEMENT;
-                }
-
-                matcher.appendReplacement( buffer, match );
-            }
-
-            matcher.appendTail( buffer );
-        }
-
-        return buffer != null ? buffer.toString() : null;
-    }
-
     public String generateExpression( String expression, Map<DataElementOperand, Double> valueMap, Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues )
     {
         StringBuffer buffer = null;

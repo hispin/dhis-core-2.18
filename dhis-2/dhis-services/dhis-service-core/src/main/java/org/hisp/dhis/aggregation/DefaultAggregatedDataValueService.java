@@ -28,13 +28,11 @@ package org.hisp.dhis.aggregation;
  */
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.indicator.Indicator;
@@ -249,10 +247,5 @@ public class DefaultAggregatedDataValueService
     public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
     {
         return aggregatedDataValueStore.getDataValue( dataElementId, categoryOptionComboId, periodId, sourceId );
-    }
-    
-    public Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId )
-    {
-        return aggregatedDataValueStore.getDataValueMap( periodId, sourceId );
     }
 }

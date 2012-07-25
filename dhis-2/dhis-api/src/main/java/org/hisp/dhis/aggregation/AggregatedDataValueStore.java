@@ -28,12 +28,10 @@ package org.hisp.dhis.aggregation;
  */
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -356,13 +354,4 @@ public interface AggregatedDataValueStore
      * @param sourceId the Source identifier.
      */
     DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId );
-    
-    /**
-     * Gets a Map with entries containing Operand and value for all DataValues registered for the given Period and Source.
-     * 
-     * @param periodId the Period identifier.
-     * @param sourceId the Source identifier.
-     * @return map of data values.
-     */
-    Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId );
 }
