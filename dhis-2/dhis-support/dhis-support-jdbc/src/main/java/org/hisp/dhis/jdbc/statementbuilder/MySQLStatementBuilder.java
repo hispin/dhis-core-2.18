@@ -102,7 +102,6 @@ public class MySQLStatementBuilder
             + destDataElementId + ", d1.categoryoptioncomboid = " + destCategoryOptionComboId
             + " WHERE d1.dataelementid = " + sourceDataElementId + " AND d1.categoryoptioncomboid = "
             + sourceCategoryOptionComboId + " AND d2.dataelementid IS NULL";
-
     }
 
     @Override

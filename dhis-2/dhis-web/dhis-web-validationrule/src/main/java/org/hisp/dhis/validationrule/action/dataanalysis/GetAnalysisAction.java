@@ -41,6 +41,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -89,6 +90,13 @@ public class GetAnalysisAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     private I18nFormat format;
@@ -175,8 +183,12 @@ public class GetAnalysisAction
     {
         Set<DataElement> dataElements = new HashSet<DataElement>();
         Collection<Period> periods = null;
-        OrganisationUnit unit = selectionTreeManager.getReloadedSelectedOrganisationUnit();;
+        OrganisationUnit unit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
 
+        Collection<OrganisationUnit> orgUnits = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
+        
+        // TODO filter periods with data element period type
+        
         if ( fromDate != null && toDate != null && dataSets != null )
         {
             periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) );
@@ -186,9 +198,9 @@ public class GetAnalysisAction
                 dataElements.addAll( dataSetService.getDataSet( Integer.parseInt( id ) ).getDataElements() );
             }
 
-
             log.info( "From date: " + fromDate + ", To date: " + toDate + ", Organisation unit: " + unit
                 + ", Std dev: " + standardDeviation + ", Key: " + key );
+            
             log.info( "Nr of data elements: " + dataElements.size() + " Nr of periods: " + periods.size() );
         }
 
@@ -196,7 +208,7 @@ public class GetAnalysisAction
 
         if ( service != null ) // Follow-up analysis has no input params
         {
-            dataValues = service.analyse( unit, dataElements, periods, standardDeviation );
+            dataValues = service.analyse( orgUnits, dataElements, periods, standardDeviation );
 
             maxExceeded = dataValues.size() > DataAnalysisService.MAX_OUTLIERS;
         }

@@ -219,22 +219,8 @@
     <!-- Min/Max validation -->
 
     <action name="generateMinMaxValue" class="org.hisp.dhis.dataadmin.action.minmaxvalidation.GenerateMinMaxValuesAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseSuccess.vm
-      </result>
-      <result name="input" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseError.vm
-      </result>
-	  <param name="requiredAuthorities">F_GENERATE_MIN_MAX_VALUES</param>
-    </action>
-
-    <action name="removeMinMaxValue" class="org.hisp.dhis.dataadmin.action.minmaxvalidation.RemoveMinMaxValueAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseSuccess.vm
-      </result>
-      <result name="input" type="velocity-xml">
-        /dhis-web-maintenance-dataadmin/responseError.vm
-      </result>
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseSuccess.vm</result>
+      <result name="input" type="velocity-xml">/dhis-web-maintenance-dataadmin/responseError.vm</result>
 	  <param name="requiredAuthorities">F_GENERATE_MIN_MAX_VALUES</param>
     </action>
 
@@ -242,7 +228,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataadmin/minMaxValidation.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="javascripts">javascript/minMaxValidation.js, javascript/minMaxValidationForm.js </param>
+      <param name="javascripts">javascript/minMaxValidation.js</param>
 	  <param name="requiredAuthorities">F_GENERATE_MIN_MAX_VALUES</param>
     </action>
 

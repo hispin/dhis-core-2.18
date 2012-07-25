@@ -187,8 +187,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore" class="org.hisp.dhis.dataanalysis.jdbc.JdbcDataAnalysisStore">
-    <property name="statementManager" ref="statementManager" />
+  <bean id="org.hisp.dhis.dataanalysis.DataAnalysisStore" class="org.hisp.dhis.dataanalysis.jdbc.JdbcDataAnalysisStore">
     <property name="statementBuilder" ref="statementBuilder" />
 	<property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
@@ -397,18 +396,17 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </bean>
 
   <bean id="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" class="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore" />
+    <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.DataAnalysisStore" />
   </bean>
 
   <bean id="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" class="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
-    <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore" />
+    <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.DataAnalysisStore" />
+	<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
+	<property name="batchHandlerFactory" ref="batchHandlerFactory" />
   </bean>
 
   <bean id="org.hisp.dhis.dataanalysis.FollowupAnalysisService" class="org.hisp.dhis.dataanalysis.FollowupAnalysisService">
-    <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore" />
+    <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.DataAnalysisStore" />
   </bean>
 
   <bean id="dataAnalysisServiceProvider" class="org.hisp.dhis.common.ServiceProvider">
@@ -876,12 +874,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     </property>
   </bean>
 
-  <!-- Min/Max validation -->
-
-  <bean id="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService" class="org.hisp.dhis.minmax.validation.DefaultMinMaxValuesGenerationService">
-    <property name="dataAnalysisStore" ref="org.hisp.dhis.dataanalysis.jdbc.DataAnalysisStore" />
-  </bean>
-
   <!-- AOP definitions -->
 
   <aop:config>
@@ -904,11 +896,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
       <aop:before pointcut="execution( * org.hisp.dhis.user.UserGroupService.delete*(..) )" method="intercept" />
       <aop:before pointcut="execution( * org.hisp.dhis.option.OptionService.delete*(..) )" method="intercept" />
       <aop:before pointcut="execution( * org.hisp.dhis.attribute.AttributeService.delete*(..) )" method="intercept" />	  
-    </aop:aspect>
-
-    <aop:aspect ref="statementInterceptor">
-      <aop:around pointcut="execution( * org.hisp.dhis.dataanalysis.DataAnalysisService.analyse(..) )"
-        method="intercept" />
     </aop:aspect>
 
     <!-- <aop:aspect ref="i18nTranslationInterceptor"> <aop:after-returning pointcut="execution( * org.hisp.dhis.dataelement.DataElementService.get*(..) 

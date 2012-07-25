@@ -27,10 +27,10 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
-
-import java.util.Collection;
 
 /**
  * @author Abyot Asalefew
@@ -419,7 +419,7 @@ public interface DataElementCategoryService
      * @return a collection of all DataElementCategories, or an empty collection.
      */
     Collection<DataElementCategory> getDataElementCategorysByConcept( Concept concept );
-
+    
     int getDataElementCategoryCount();
 
     int getDataElementCategoryCountByName( String name );

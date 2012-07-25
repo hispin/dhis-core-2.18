@@ -339,4 +339,34 @@ public class MathUtils
             return null;
         }
     }
+    
+    /**
+     * Returns the lower bound for the given standard deviation, number of standard
+     * deviations and average.
+     * 
+     * @param stdDev the standard deviation.
+     * @param stdDevNo the number of standard deviations.
+     * @param average the average.
+     * @return a double.
+     */
+    public static double getLowBound( double stdDev, double stdDevNo, double average )
+    {
+        double deviation = stdDev * stdDevNo;
+        return average - deviation;
+    }
+
+    /**
+     * Returns the high bound for the given standard deviation, number of standard
+     * deviations and average.
+     * 
+     * @param stdDev the standard deviation.
+     * @param stdDevNo the number of standard deviations.
+     * @param average the average.
+     * @return a double.
+     */
+    public static double getHighBound( double stdDev, double stdDevFactor, double average )
+    {
+        double deviation = stdDev * stdDevFactor;
+        return average + deviation;
+    }
 }
