@@ -27,10 +27,6 @@ package org.hisp.dhis.dataanalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,43 +37,26 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.util.ListUtils;
 import org.junit.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
+
+import static junit.framework.Assert.*;
 
 /**
- * @author eirikmi
- * @version $Id: MinMaxOutlierAnalysisServiceTest.java 883 2009-05-15 00:42:45Z daghf $
+ * @author Lars Helge Overland
  */
-public class MinMaxOutlierAnalysisServiceTest
+public class DataAnalysisStoreTest
     extends DhisTest
 {
-    private DataAnalysisService minMaxOutlierAnalysisService;
-
-    private MinMaxDataElementService minMaxDataElementService;
-
+    private DataAnalysisStore dataAnalysisStore;
+    
     private DataElement dataElementA;
     private DataElement dataElementB;
-    private DataElement dataElementC;
-    private DataElement dataElementD;
-
-    private DataValue dataValueA;
-    private DataValue dataValueB;
-
-    private Set<DataElement> dataElementsA = new HashSet<DataElement>();
-    private Set<DataElement> dataElementsB = new HashSet<DataElement>();
-    private Set<DataElement> dataElementsC = new HashSet<DataElement>();
 
     private DataElementCategoryCombo categoryCombo;
 
@@ -85,20 +64,19 @@ public class MinMaxOutlierAnalysisServiceTest
 
     private Period periodA;
     private Period periodB;
-    private Period periodC;
-    private Period periodD;
-    private Period periodE;
-    private Period periodF;
+    private Period periodC;    
+    private Period periodD;    
+    private Period periodE;    
+    private Period periodF;    
     private Period periodG;
     private Period periodH;
     private Period periodI;
     private Period periodJ;
 
     private OrganisationUnit organisationUnitA;
-
-    private MinMaxDataElement minMaxDataElement;
-
-    private JdbcTemplate jdbcTemplate;
+    private OrganisationUnit organisationUnitB;
+    
+    private Set<Integer> organisationUnits;
     
     // ----------------------------------------------------------------------
     // Fixture
@@ -106,22 +84,17 @@ public class MinMaxOutlierAnalysisServiceTest
 
     @Override
     public void setUpTest()
-        throws Exception
     {
-        jdbcTemplate = (JdbcTemplate) getBean( "jdbcTemplate" );
+        dataAnalysisStore = (DataAnalysisStore) getBean( DataAnalysisStore.ID );
         
-        minMaxOutlierAnalysisService = (DataAnalysisService) getBean( "org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" );
-
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-
-        minMaxDataElementService = (MinMaxDataElementService) getBean( MinMaxDataElementService.ID );
 
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
         dataSetService = (DataSetService) getBean( DataSetService.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
+        
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
         periodService = (PeriodService) getBean( PeriodService.ID );
@@ -130,21 +103,11 @@ public class MinMaxOutlierAnalysisServiceTest
 
         dataElementA = createDataElement( 'A', categoryCombo );
         dataElementB = createDataElement( 'B', categoryCombo );
-        dataElementC = createDataElement( 'C', categoryCombo );
-        dataElementD = createDataElement( 'D', categoryCombo );
 
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
-        dataElementService.addDataElement( dataElementC );
-        dataElementService.addDataElement( dataElementD );
 
-        dataElementsA.add( dataElementA );
-        dataElementsA.add( dataElementB );
-        dataElementsB.add( dataElementC );
-        dataElementsB.add( dataElementD );
-        dataElementsC.add( dataElementB );
-
-        categoryOptionCombo = categoryCombo.getOptionCombos().iterator().next();
+        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         periodA = createPeriod( new MonthlyPeriodType(), getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );
         periodB = createPeriod( new MonthlyPeriodType(), getDate( 2000, 4, 1 ), getDate( 2000, 4, 30 ) );
@@ -158,8 +121,14 @@ public class MinMaxOutlierAnalysisServiceTest
         periodJ = createPeriod( new MonthlyPeriodType(), getDate( 2000, 12, 1 ), getDate( 2000, 12, 30 ) );
 
         organisationUnitA = createOrganisationUnit( 'A' );
+        organisationUnitB = createOrganisationUnit( 'B' );
 
         organisationUnitService.addOrganisationUnit( organisationUnitA );
+        organisationUnitService.addOrganisationUnit( organisationUnitB );
+        
+        organisationUnits = new HashSet<Integer>();
+        organisationUnits.add( organisationUnitA.getId() );
+        organisationUnits.add( organisationUnitB.getId() );
     }
 
     @Override
@@ -173,41 +142,38 @@ public class MinMaxOutlierAnalysisServiceTest
     // ----------------------------------------------------------------------
 
     @Test
-    public void testGetFindOutliers()
+    public void getGetStdDev()
     {
-        dataValueA = createDataValue( dataElementA, periodI, organisationUnitA, "41", categoryOptionCombo );
-        dataValueB = createDataValue( dataElementA, periodJ, organisationUnitA, "-41", categoryOptionCombo );
-
         dataValueService.addDataValue( createDataValue( dataElementA, periodA, organisationUnitA, "5", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, organisationUnitA, "-5", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, organisationUnitA, "5", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodD, organisationUnitA, "-5", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, organisationUnitA, "2", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, organisationUnitA, "1", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodD, organisationUnitA, "12", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodE, organisationUnitA, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodF, organisationUnitA, "-10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodG, organisationUnitA, "13", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodH, organisationUnitA, "-13", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodF, organisationUnitA, "7", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodG, organisationUnitA, "52", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodH, organisationUnitA, "23", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodI, organisationUnitA, "3", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodJ, organisationUnitA, "15", categoryOptionCombo ) );
         
-        dataValueService.addDataValue( dataValueA );
-        dataValueService.addDataValue( dataValueB );
+        assertEquals( 14.49, dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), 0.01 );
+        assertNull( dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitB.getId() ) );
+    }
+
+    @Test
+    public void getGetAvg()
+    {
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, organisationUnitA, "5", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, organisationUnitA, "2", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, organisationUnitA, "1", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodD, organisationUnitA, "12", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodE, organisationUnitA, "10", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodF, organisationUnitA, "7", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodG, organisationUnitA, "52", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodH, organisationUnitA, "23", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodI, organisationUnitA, "3", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodJ, organisationUnitA, "15", categoryOptionCombo ) );
         
-        minMaxDataElement = new MinMaxDataElement( organisationUnitA, dataElementA, categoryOptionCombo, -40, 40, false );
-        minMaxDataElementService.addMinMaxDataElement( minMaxDataElement );
-
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( "select mm.minvalue from minmaxdataelement mm" );
-        
-        while ( rowSet.next() )
-        {
-            System.out.println( "min value " + rowSet.getInt( "minvalue" ) );
-        }
-                
-        Collection<Period> periods = new ArrayList<Period>();
-        periods.add( periodI );
-        periods.add( periodJ );
-        periods.add( periodA );
-        periods.add( periodE );
-
-        Collection<DeflatedDataValue> result = minMaxOutlierAnalysisService.analyse( ListUtils.getCollection( organisationUnitA ), dataElementsA, periods, null );
-
-        assertEquals( 2, result.size() );
+        assertEquals( 13, dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), 0.01 );
+        assertNull( dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitB.getId() ) );
     }
 }

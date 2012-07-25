@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataanalysis;
+package org.hisp.dhis.system.filter;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
@@ -27,35 +27,24 @@ package org.hisp.dhis.dataanalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.minmax.MinMaxDataElement;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.util.Filter;
 
 /**
  * @author Lars Helge Overland
  */
-public class MinMaxValueMap
-    extends HashMap<String, MinMaxDataElement>
+public class DataElementTypeFilter
+    implements Filter<DataElement>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -6046170950071436264L;
-
-    private static final String SEP = "-";
+    private String type;
     
-    public void put( MinMaxDataElement element )
+    public DataElementTypeFilter( String type )
     {
-        final String key = element.getSource().getId() + SEP + element.getDataElement().getId() + SEP + element.getOptionCombo().getId();
-        
-        super.put( key, element );
+        this.type = type;
     }
     
-    public MinMaxDataElement get( OrganisationUnit source, DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
+    public boolean retain( DataElement object )
     {
-        return super.get( source.getId() + SEP + dataElement.getId() + SEP + categoryOptionCombo.getId() );
+        return object != null && type.equals( object.getType() );
     }
 }

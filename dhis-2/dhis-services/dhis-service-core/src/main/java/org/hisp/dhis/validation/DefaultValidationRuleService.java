@@ -27,7 +27,11 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.*;
+import static org.hisp.dhis.i18n.I18nUtils.getCountByName;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsByName;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 

@@ -501,7 +501,7 @@ public class DefaultDataElementCategoryService
 
         updateDataElementCategoryCombo( categoryCombo );
     }
-
+    
     public int getDataElementCategoryCount()
     {
         return dataElementCategoryStore.getCount();
