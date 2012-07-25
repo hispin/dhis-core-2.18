@@ -582,7 +582,7 @@ public class GenerateJRXMLReportAction
             Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
             periodIdsByComma = getCommaDelimitedString( periodIds );
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yy" );
-            System.out.println(simpleDateFormat.format( sDate) +" : "+ simpleDateFormat.format( eDate ) );
+            
             
             String dataElementIdsByComma = "-1";
             String optComboIdsByComma = "-1";
@@ -654,16 +654,24 @@ public class GenerateJRXMLReportAction
             }
            for(int j=0;j<=tableSubHeadings.size()-1;j++)
             { 
+               int increment=0;
+               
                 for(int k=0; k<=tableSubHeadings.get( j ).size()-1;k++)
                 {
+                   
                     if(tableSubHeadings.get( j ).get( k )==" ")
                     {                                    
                     }
                     else
-                    {   
+                    { 
+                        if(tableSubHeadings.get( j ).get( k ).contains( tableSubHeadings.get( j ).get( k ) ))
+                        {
+                            increment++;
+                        }
+                        
                         frb.addColumn(tableSubHeadings.get( j ).get( k ),
-                            tableSubHeadings.get( j ).get( k ), String.class.getName(), 50, true);   
-                        content.add( tableSubHeadings.get( j ).get( k ) );                        
+                            tableSubHeadings.get( j ).get( k )+ " "+ increment , String.class.getName(), 50, true);   
+                        content.add( tableSubHeadings.get( j ).get( k )+ " "+increment );                        
                             count++;
                     }
                 }             
@@ -688,7 +696,7 @@ public class GenerateJRXMLReportAction
             
             for( OrganisationUnit orgUnit : orgUnitList )
             {
-                Map numberOfData=new HashMap();
+                Map<String, String> numberOfData=new HashMap<String, String>();
                 List<String> oneTableDataRow = new ArrayList<String>();
                 String orgUnitBranch = "";
                 if( orgUnit.getParent() != null )
@@ -702,25 +710,27 @@ public class GenerateJRXMLReportAction
                 
                 numberOfData.put( content.get( 0 ), orgUnitBranch );
                 numberOfData.put( content.get( 1 ), orgUnit.getName() );
+                int i=2;
                 for( CCEMReportDesign ccemReportDesign1 :  reportDesignList )
                 {                
                     String ccemCellContent1 = ccemSettingsMap.get( ccemReportDesign1.getContent() );
                     Integer dataElementId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
                     Integer optComboId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
                     
-                    for(int i=0;i<=periodList.size()-1;i++)
-                    {
-                        Period period=new Period();
+                    for(Period period : periodList)
+                    { 
                         Integer temp = equipmentDataValueMap.get( orgUnit.getId()+":"+dataElementId+":"+period.getId() );
                         if( temp == null )
                         {                            
-                            numberOfData.put(content.get( i+2 ), " " );
+                            numberOfData.put(content.get( i ), " " );                            
                         }
                         else
-                        {                            
-                            numberOfData.put(content.get( i+2 ), temp );
+                        {                       
+                            numberOfData.put(content.get( i ) , temp+"" );
                         }
-                    }                    
+                        i++; 
+                    }  
+                    
                 }                
                 tableData.add( numberOfData );
             }
@@ -737,6 +747,7 @@ public class GenerateJRXMLReportAction
             jr = DynamicJasperHelper.generateJasperReport( dynamicReport, new ClassicLayoutManager(), hash );
             jasperPrint = JasperFillManager.fillReport( jr, hash, ds );
         }
+        
         ServletOutputStream ouputStream = response.getOutputStream();
         JRExporter exporter = null;
         if ( "pdf".equalsIgnoreCase( type ) )
