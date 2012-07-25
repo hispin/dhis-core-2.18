@@ -35,8 +35,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 
 /**
  * Interface for ExpressionService. Defines service functionality for
@@ -104,23 +102,6 @@ public interface ExpressionService
      */
     Collection<Expression> getAllExpressions();
 
-    /**
-     * Calculates the value of the given Expression.
-     * 
-     * @param expression The Expression.
-     * @param source The Source.
-     * @param period The Period.
-     * @param nullIfNoValues indicates whether null should be returned if no
-     *        DataValues are registered for a DataElement in the expression.
-     * @param aggregated indicates whether aggregated or raw data should be
-     *        used when evaluating the expression.     *        
-     * @param days The number to be substituted with the days expression in the formula.
-     * @return The value of the given Expression, or null
-     *         if no values are registered for a given combination of 
-     *         DataElement, Source, and Period.
-     */
-    Double getExpressionValue( Expression expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregate, Integer days );
-    
     Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
         Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues );
     
@@ -239,24 +220,6 @@ public interface ExpressionService
      */
     String substituteExpression( String expression, Integer days );
     
-    /**
-     * Converts an expression on the form [34] + [23], where the numbers are 
-     * IDs of DataElements, to the form 200 + 450, where the numbers are the 
-     * values of the DataValues registered for the Period and Source. "0" is
-     * included if there is no DataValue registered for the given parameters.
-     * 
-     * @param expression The expression string.
-     * @param period The Period.
-     * @param source The Source.
-     * @param nullIfNoValues indicates whether null should be returned if no
-     *        DataValues are registered for a DataElement in the expression.
-     * @param aggregated indicates whether aggregated or raw data should be
-     *        used when evaluating the expression.
-     * @param days The number to be substituted with the days expression in the formula.
-     * @return A numerical expression.
-     */    
-    String generateExpression( String expression, Period period, OrganisationUnit source, boolean nullIfNoValues, boolean aggregated, Integer days );
-
     /**
      * Generates an expression where the Operand identifiers, consisting of 
      * data element id and category option combo id, are replaced

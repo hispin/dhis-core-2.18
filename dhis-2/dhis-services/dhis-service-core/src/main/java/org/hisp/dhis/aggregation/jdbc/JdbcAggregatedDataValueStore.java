@@ -34,8 +34,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -52,7 +50,6 @@ import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -744,41 +741,6 @@ public class JdbcAggregatedDataValueStore
         catch ( SQLException ex )
         {
             throw new RuntimeException( "Failed to get deflated data values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-    
-    public Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-            
-        try
-        {
-            final String sql =
-                "SELECT dataelementid, categoryoptioncomboid, value " +
-                "FROM datavalue " +
-                "WHERE periodid = " + periodId + " " +
-                "AND sourceid = " + sourceId;
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
-            
-            while ( resultSet.next() )
-            {
-                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
-                
-                map.put( operand, resultSet.getString( 3 ) );
-            }
-            
-            return map;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get DataValues", ex );
         }
         finally
         {

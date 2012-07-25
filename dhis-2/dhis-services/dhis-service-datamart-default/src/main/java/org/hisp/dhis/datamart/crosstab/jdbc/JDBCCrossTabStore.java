@@ -34,8 +34,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -44,7 +46,6 @@ import org.hisp.dhis.datamart.CrossTabDataValue;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: JDBCCrossTabStore.java 6216 2008-11-06 18:06:42Z eivindwa $
  */
 public class JDBCCrossTabStore
     implements CrossTabStore
@@ -58,6 +59,13 @@ public class JDBCCrossTabStore
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
+    }
+    
+    private StatementManager fileDbStatementManager;
+
+    public void setFileDbStatementManager( StatementManager fileDbStatementManager )
+    {
+        this.fileDbStatementManager = fileDbStatementManager;
     }
 
     // -------------------------------------------------------------------------
@@ -232,6 +240,69 @@ public class JDBCCrossTabStore
         catch ( SQLException ex )
         {
             throw new RuntimeException( "Failed to get Map", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Methods on file database
+    // -------------------------------------------------------------------------
+
+    public Set<DataElementOperand> getOperandsWithDataValues( Set<DataElementOperand> operands )
+    {
+        final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>();
+        
+        final StatementHolder holder = fileDbStatementManager.getHolder();
+        
+        for ( DataElementOperand operand : operands )
+        {
+            final String sql = 
+                "SELECT COUNT(*) FROM datavalue " + 
+                "WHERE dataelementid=" + operand.getDataElementId() + " " +
+                "AND categoryoptioncomboid=" + operand.getOptionComboId();
+            
+            Integer count = holder.queryForInteger( sql );
+            
+            if ( count != null && count > 0 )
+            {
+                operandsWithData.add( operand );
+            }
+        }
+        
+        return operandsWithData;
+    }
+
+    public Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId )
+    {
+        final StatementHolder holder = fileDbStatementManager.getHolder();
+            
+        try
+        {
+            final String sql =
+                "SELECT dataelementid, categoryoptioncomboid, value " +
+                "FROM datavalue " +
+                "WHERE periodid = " + periodId + " " +
+                "AND sourceid = " + sourceId;
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
+            
+            while ( resultSet.next() )
+            {
+                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
+                
+                map.put( operand, resultSet.getString( 3 ) );
+            }
+            
+            return map;
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get DataValues", ex );
         }
         finally
         {

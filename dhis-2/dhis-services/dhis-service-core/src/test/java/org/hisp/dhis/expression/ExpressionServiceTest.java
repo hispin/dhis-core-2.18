@@ -254,34 +254,6 @@ public class ExpressionServiceTest
     }
 
     @Test
-    public void testGetExpressionValue()
-    {
-        Expression expression = new Expression( expressionA, descriptionA, dataElements, optionCombos );
-
-        Double value = expressionService.getExpressionValue( expression, period, source, false, false, null );
-
-        assertEquals( value, 15.0, 0.1 );
-
-        expression = new Expression( expressionB, descriptionB, dataElements, optionCombos );
-
-        value = expressionService.getExpressionValue( expression, period, source, false, false, null );
-
-        assertEquals( 0.0, value, 0.1 );
-
-        expression = new Expression( expressionD, descriptionB, dataElements, optionCombos );
-
-        value = expressionService.getExpressionValue( expression, period, source, false, false, 5 );
-
-        assertEquals( 15.0, value, 0.1 );
-
-        expression = new Expression( expressionE, descriptionB, dataElements, optionCombos );
-
-        value = expressionService.getExpressionValue( expression, period, source, false, false, null );
-
-        assertEquals( 20.0, value, 0.1 );
-    }
-
-    @Test
     public void testGetDataElementsInExpression()
     {
         Set<DataElement> dataElements = expressionService.getDataElementsInExpression( expressionA );
@@ -377,15 +349,6 @@ public class ExpressionServiceTest
         description = expressionService.getExpressionDescription( expressionE );
         
         assertEquals( description, "DataElementA*ConstantA" );
-    }
-
-    @Test
-    public void testGenerateExpression()
-    {
-        assertEquals( "10+5", expressionService.generateExpression( expressionA, period, source, false, false, null ) );
-        assertEquals( "0-0", expressionService.generateExpression( expressionB, period, source, false, false, null ) );
-        assertEquals( "10+7", expressionService.generateExpression( expressionD, period, source, false, false, 7 ) );
-        assertEquals( "10*2.0", expressionService.generateExpression( expressionE, period, source, false, false, null ) );
     }
 
     @Test
