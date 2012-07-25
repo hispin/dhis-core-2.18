@@ -258,6 +258,13 @@ public class AddOrUpdateChartAction
         this.last5Years = last5Years;
     }
     
+    private boolean rewind;
+    
+    public void setRewind( boolean rewind )
+    {
+        this.rewind = rewind;
+    }
+    
     private List<String> periodIds;
     
     public void setPeriodIds( List<String> periodIds )
@@ -453,6 +460,8 @@ public class AddOrUpdateChartAction
 
             chart.setRelatives( rp );
         }
+        
+        chart.setRewindRelativePeriods( rewind );
         
         if ( periodIds != null )
         {
