@@ -121,4 +121,7 @@
 		showById('searchDiv');
 	#end
 	
+	enable('addPatientBtn');
+	enable('listPatientBtn');
+	
 </script>

@@ -402,3 +402,12 @@ function checkDuplicateCompleted( messageElement, divname )
     	showListPatientDuplicate( messageElement, true );
     }
 }
+
+function enableBtn(){
+	var programIdAddPatient = getFieldValue('programIdAddPatient');
+	if( programIdAddPatient!='' ){
+		enable('listPatientBtn');
+		enable('addPatientBtn');
+		enable('advancedSearchBtn');
+	}
+}
