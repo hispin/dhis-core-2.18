@@ -11,7 +11,8 @@
 								<td>
 									<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
 								</td>
-								#foreach( $programStageInstance in $programInstance.programStageInstances )
+								#set($programStageInstances = $programStageInstanceMap.get($programInstance) )
+								#foreach( $programStageInstance in $programStageInstances )
 									<td>
 										<img src='images/rightarrow.png'>
 									</td>

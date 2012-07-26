@@ -50,6 +50,7 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.comparator.ProgramStageInstanceComparator;
+import org.hisp.dhis.program.comparator.ProgramStageInstanceDueDateComparator;
 
 public class GetDataRecordsAction
     extends ActionPagingSupport<Patient>
@@ -244,12 +245,11 @@ public class GetDataRecordsAction
                 for ( ProgramInstance programInstance : _programInstances )
                 {
                     programInstanceMap.put( patient, programInstance );
-
                     programInstances.add( programInstance );
-
+                    
                     List<ProgramStageInstance> programStageInstanceList = new ArrayList<ProgramStageInstance>(
                         programInstance.getProgramStageInstances() );
-                    Collections.sort( programStageInstanceList, new ProgramStageInstanceComparator() );
+                    Collections.sort( programStageInstanceList, new ProgramStageInstanceDueDateComparator() );
 
                     programStageInstanceMap.put( programInstance, programStageInstanceList );
                     programStageInstances.addAll( programStageInstanceList );

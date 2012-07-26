@@ -161,8 +161,7 @@ public class LoadProgramStageInstancesAction
                 {
                     programStageInstances.addAll( programInstance.getProgramStageInstances() );
                     Collections.sort( programStageInstances, new ProgramStageInstanceDueDateComparator() );
-                                        statusMap = programStageInstanceService.statusProgramStageInstances( programInstance
-                        .getProgramStageInstances() );
+                    statusMap = programStageInstanceService.statusProgramStageInstances( programInstance.getProgramStageInstances() );
                 }
                 else
                 {
