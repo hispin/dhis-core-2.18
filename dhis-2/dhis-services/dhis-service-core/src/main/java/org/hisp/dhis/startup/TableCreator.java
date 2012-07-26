@@ -65,10 +65,10 @@ public class TableCreator
 
     public void execute()
     {
-        createSilently( statementBuilder.getCreateAggregatedDataValueTable(), "aggregateddatavalue" );
-        createSilently( statementBuilder.getCreateAggregatedOrgUnitDataValueTable(), "aggregatedorgunitdatavalue" );
-        createSilently( statementBuilder.getCreateAggregatedIndicatorTable(), "aggregatedindicatorvalue" );
-        createSilently( statementBuilder.getCreateAggregatedOrgUnitIndicatorTable(), "aggregatedorgunitindicatorvalue" );
+        createSilently( statementBuilder.getCreateAggregatedDataValueTable( false ), "aggregateddatavalue" );
+        createSilently( statementBuilder.getCreateAggregatedOrgUnitDataValueTable( false ), "aggregatedorgunitdatavalue" );
+        createSilently( statementBuilder.getCreateAggregatedIndicatorTable( false ), "aggregatedindicatorvalue" );
+        createSilently( statementBuilder.getCreateAggregatedOrgUnitIndicatorTable( false ), "aggregatedorgunitindicatorvalue" );
         createSilently( statementBuilder.getCreateDataSetCompletenessTable(), "aggregateddatasetcompleteness" );
         createSilently( statementBuilder.getCreateOrgUnitDataSetCompletenessTable(), "aggregatedorgunitdatasetcompleteness" );
         

@@ -42,6 +42,7 @@ import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.jdbc.StatementBuilder;
 
 /**
  * @author Lars Helge Overland
@@ -62,6 +63,13 @@ public class JdbcDataMartManager
         this.statementManager = statementManager;
     }
     
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
+
     // -------------------------------------------------------------------------
     // DataMartManager implementation
     // -------------------------------------------------------------------------
@@ -126,6 +134,10 @@ public class JdbcDataMartManager
             holder.close();
         }
     }
+
+    // -------------------------------------------------------------------------
+    // AggregatedDataValue
+    // -------------------------------------------------------------------------
 
     @Override
     public void createAggregatedValueIndex( boolean dataElement, boolean indicator )
@@ -206,7 +218,11 @@ public class JdbcDataMartManager
 
         statementManager.getHolder().executeUpdate( sql );
     }
-    
+
+    // -------------------------------------------------------------------------
+    // AggregatedOrgUnitDataValue
+    // -------------------------------------------------------------------------
+
     @Override
     public void createAggregatedOrgUnitValueIndex( boolean dataElement, boolean indicator )
     {
@@ -285,5 +301,57 @@ public class JdbcDataMartManager
             "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
 
         statementManager.getHolder().executeUpdate( sql );
-    }    
+    }
+
+    // -------------------------------------------------------------------------
+    // Data mart tables
+    // -------------------------------------------------------------------------
+
+    public void createTempAggregatedTables()
+    {
+        executeSilently( statementBuilder.getCreateAggregatedDataValueTable( true ) );
+        executeSilently( statementBuilder.getCreateAggregatedIndicatorTable( true ) );
+        executeSilently( statementBuilder.getCreateAggregatedOrgUnitDataValueTable( true ) );
+        executeSilently( statementBuilder.getCreateAggregatedOrgUnitIndicatorTable( true ) );
+    }
+    
+    public void dropTempAggregatedTables()
+    {
+        executeSilently( "drop table aggregateddatavalue_temp" );
+        executeSilently( "drop table aggregatedindicatorvalue_temp" );
+        executeSilently( "drop table aggregatedorgunitdatavalue_temp" );
+        executeSilently( "drop table aggregatedorgunitindicatorvalue_temp" );
+    }
+    
+    public void copyAggregatedDataValuesFromTemp()
+    {
+        executeSilently( "insert into aggregateddatavalue select * from aggregateddatavalue_temp" );
+    }
+
+    public void copyAggregatedIndicatorValuesFromTemp()
+    {
+        executeSilently( "insert into aggregatedindicatorvalue select * from aggregatedindicatorvalue_temp" );
+    }
+
+    public void copyAggregatedOrgUnitDataValuesFromTemp()
+    {
+        executeSilently( "insert into aggregatedorgunitdatavalue select * from aggregatedorgunitdatavalue_temp" );
+    }
+
+    public void copyAggregatedOrgUnitIndicatorValuesFromTemp()
+    {
+        executeSilently( "insert into aggregatedorgunitindicatorvalue select * from aggregatedorgunitindicatorvalue_temp" );
+    }
+
+    private void executeSilently( String sql )
+    {
+        try
+        {
+            statementManager.getHolder().executeUpdate( sql, true );
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex.getMessage() );
+        }
+    }
 }
