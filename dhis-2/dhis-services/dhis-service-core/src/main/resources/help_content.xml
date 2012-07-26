@@ -5793,41 +5793,23 @@ The case update  is designed in the same manner so that services which are recei
 </listitem>
 </orderedlist>
 </section>
-<section id='multi_name_based_data_entry'>
-<title>Multiple Name-based Data Entry</title>
-<para>This is an advanced functionality for data entry. On the same interface on above, many persons are listed for entering data by stages. </para>
-<para>To access the multiple person data entry module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Name Based Data Records</emphasis> option and click on it. Select <emphasis role="italic">Multiple Name-based</emphasis> option on left menu to proceed.</para>
-<screenshot>
-<screeninfo>Figure 2.5.3.1</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.3.1.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<para><emphasis role="bold">Step 1 - Show person list</emphasis>. You will first have to select the facility for which persons belong to in order to enter data. Simply clicking on the concerned facility from the facilities hierarchy displayed on the left side of the data entry screen. The next step is listing all persons by the certain program as follows -</para>
-<para>1) Select a program in <emphasis role="italic">program</emphasis> list. The person list by the selected facility and program is shown. Each person in the list is shown with each corresponded stages.</para>
-<para>2) Select an option from <emphasis role="italic">Sort by</emphasis> box to sort by person&apos;s attributes.</para>
-<para><emphasis role="bold">Step 2 - Open treatment form</emphasis>. </para>
-<para>See the below figure illustrates for person named <emphasis role="italic">Nguyen Van Nam</emphasis> and the second stage with name <emphasis role="italic">At 6 weeks after birth</emphasis>.</para>
-<screenshot>
-<screeninfo>Figure 2.5.3.3</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.3.3.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<para><screenshot>
-<screeninfo>Figure 2.5.3.2</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.3.2.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot></para>
-<para><emphasis role="bold">Step 3 - Enter data</emphasis> ( arrow <emphasis role="italic">labelled 1</emphasis> in Fig. 2.5.3.3 ). After finishing the entering, close the pop-up ( arrow <emphasis role="italic">labelled 2</emphasis> in Fig. 2.5.3.3 )</para>
-<para>The benefits of this advanced function is to optimize the time-transition consuming when entering data for a long list persons by not switching the main window/interface.</para>
+<section id='multiple_individual_records'>
+<title>Multiple individual records</title>
+<para>The multiple individual records function is where individual data is manually registered in the DHIS database. A list events for each person who enrolled into the seleted program after clicking a multi events with registration.</para>
+<para>To access the multiple individual records function, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Individual Records</emphasis> option and click on it. Select <emphasis role="italic">Multiple individual records</emphasis> option on left menu to proceed.</para>
+<para>To start enter data, the first step is to open a list events of person who enrolled a certain progam by clicking a program in the list on the main page. Follow these steps:</para>
+<orderedlist>
+<listitem>
+<para>Locate the orgunit you want to register data for in the tree menu to the left. Expand and close branches by clicking on the +/- symbols. A quick way to find an orgunit is to use the search box just above the tree (the green symbol), but you need to write in the full name to get a match.</para>
+<para>The system loads multi events with registration which belong to the selected orgunit.</para>
+</listitem>
+<listitem>
+<para>Select a program in the list. A list events of persons who enrolled into the selected program is shown.</para>
+</listitem>
+<listitem>
+<para>Click an event to open data entry form.</para>
+</listitem>
+</orderedlist>
 </section>
 <section id='single_event_without_registration'>
 <title>Single event without registration</title>
@@ -5865,34 +5847,19 @@ The case update  is designed in the same manner so that services which are recei
 </section>
 </section>
 <section id='program_summary_report'>
-<title>Program Summary Report</title>
-<para>This module provides two main functions, include NBITS Activity Plan report and NBITS Summary report.</para>
-<orderedlist>
-<listitem>
-<para>NBITS Activity Plan report - This report is a feedback report to the facilities to help them in planning activities. This is also called as activity plan or visit plan. Basically, view the visit plan to get an overview of outstanding, pending, and completed visits. </para>
-<para>See the illustration for Immunization program for Children under 1yr old.</para>
+<title>Program summary</title>
+<para><emphasis role="bold">Program summary</emphasis> provides a tool for   generating summary list of individual information with  color shown on program stages to identify status of receiving services in each stage.</para>
+<para>To access the program summary report, choose  <emphasis role="italic">Services</emphasis> -&gt; <emphasis role="italic">Name-based Data Records</emphasis> &gt;  <emphasis role="italic">Program summary</emphasis>.</para>
+<para>Select a <emphasis role="italic">organisation unit</emphasis>  which provides services on the left menu. Then on the main page, select <emphasis role="italic">Program</emphasis>, <emphasis role="italic">Start date</emphasis>, <emphasis role="italic">End date </emphasis>to get period. Finally, click <emphasis role="italic">Generate</emphasis> button. </para>
+<para>The result is get based on the date of enrollment of each person who registered the selected organisation unit and enrolled in the selected program in the interval from start-date and end-date what health provider entered.</para>
 <screenshot>
-<screeninfo>Figure 2.3.17</screeninfo>
 <mediaobject>
 <imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.3.17.png" format="PNG"/>
+<imagedata width="70%" fileref="resources/images/patients_programs/program_summary_report.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot>
-<para>Each card ( see above Fig. 2.3.17 ) present a coming stage information for a person of a program.</para>
-</listitem>
-<listitem>
-<para>NBITS Summary report - View the summary report to get an overview of the services provided for a program.</para>
-<para>See an example -</para>
-<screenshot>
-<screeninfo>Figure 2.3.18: Each row is a summary of stages of the Immunization program for Children under 1yr old</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.3.18.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<para>The color highlight the status of the stages:</para>
+<para>The color highlight the status of the stages -</para>
 <itemizedlist>
 <listitem>
 <para>PURPLE: Data entered and uncompleted stages.</para>
@@ -5907,8 +5874,6 @@ The case update  is designed in the same manner so that services which are recei
 <para>GREEN: Compete stages.</para>
 </listitem>
 </itemizedlist>
-</listitem>
-</orderedlist>
 </section>
 <section>
 <title>Person Aggregation Query Builder</title>
