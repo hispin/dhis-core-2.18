@@ -18,6 +18,8 @@ function displayCompleteness()
         return false;
     }
 
+    $( '#reportButton' ).attr( 'disabled', true );
+
     showLoader();
 
     var url = "getDataCompleteness.action" + "?periodId=" + periodId + "&criteria=" + criteria + "&dataSetId="
@@ -27,6 +29,8 @@ function displayCompleteness()
     {
         hideLoader();
         setTableStyles();
+
+        $( '#reportButton').removeAttr( 'disabled' );
     } );
 }
 
