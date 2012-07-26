@@ -292,17 +292,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="tabularReportStore"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportStore" />
 	</bean>
-
-	<!-- Aggregation engine -->
-
-	<bean
-		id="org.hisp.dhis.patientdatavalue.aggregation.PatientDataValueAggregationEngine"
-		class="org.hisp.dhis.patientdatavalue.aggregation.DefaultPatientDataValueAggregationEngine">
-		<property name="statementManager" ref="statementManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-
+	
 	<!-- DeletionHandlers -->
 
 	<bean id="org.hisp.dhis.patient.PatientIdentifierDeletionHandler"
