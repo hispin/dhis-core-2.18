@@ -3,8 +3,8 @@
 
 <ul>
 	<li><a href="multipledataEntrySelect.action">$i18n.getString( "multiple_individual_records" )&nbsp;</a></li>
-	<li><a href="anonymousRegistration.action">$i18n.getString( "anonymous_events" )</a></li>
 	<li><a href="singleEventSelect.action">$i18n.getString( "single_event_with_registration" )</a></li>
+	<li><a href="anonymousRegistration.action">$i18n.getString( "anonymous_events" )</a></li>
 </ul>
 
 <br>
