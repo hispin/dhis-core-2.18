@@ -30,6 +30,7 @@ package org.hisp.dhis.integration.routes;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.model.DescriptionDefinition;
+import org.apache.camel.model.ProcessorDefinition;
 
 /**
  * XMLDataIn route implements a Content Based Routing pattern
@@ -44,9 +45,10 @@ public class XMLDataIn
     
     public static final String XMLDATA_IN = "direct:xmlDataIn"; 
 
-    // Route description texts
-    
+    // Route description and ID
     public static final String XMLDATA_IN_DESC = "Internal: XML Data to DXF2 Input";
+    // IDs beginning with 'internal-*' do not show up in UI
+    public static final String XMLDATA_IN_ID = "internal-xml-datain";
     
     // Route definitions
     @Override
@@ -59,12 +61,17 @@ public class XMLDataIn
         DescriptionDefinition xmlDesc = new DescriptionDefinition();
         xmlDesc.setText( XMLDATA_IN_DESC);
         
-        from(XMLDATA_IN).convertBodyTo(java.lang.String.class, "UTF-8")
+        ProcessorDefinition xmlDataIn = from(XMLDATA_IN).convertBodyTo(java.lang.String.class, "UTF-8")
             .choice()
+            // send native dxf2 data directly to dhis2:data 
             .when().xpath( "boolean(/d:dataValueSet)", ns).convertBodyTo( java.io.InputStream.class).to("dhis2:data")
+            // send sdmx data to sdmx route
             .when().xpath( "boolean(/m:CrossSectionalData)", ns).to("direct:sdmxDataIn")
+            // unknown xml
             .otherwise().to("log:org.hisp.dhis.integration?level=DEBUG" )
-            .end()
-            .setDescription( xmlDesc );
+            .end();
+        
+        xmlDataIn.setDescription( xmlDesc );
+        xmlDataIn.setId( XMLDATA_IN_ID );
     }
 }

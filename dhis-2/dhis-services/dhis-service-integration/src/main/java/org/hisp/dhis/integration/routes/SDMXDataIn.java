@@ -29,6 +29,7 @@ package org.hisp.dhis.integration.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.DescriptionDefinition;
+import org.apache.camel.model.RouteDefinition;
 
 /**
  * SDMXDataIn route takes an SDMX cross-sectional message, transforms to dxf2 datavalueset
@@ -43,10 +44,10 @@ public class SDMXDataIn
 
     public static final String SDMXDATA_IN = "direct:sdmxDataIn";
     
-    // Route description texts
-    
+    // Route description and ID
     public static final String SDMXDATA_IN_DESC = "Internal: SDMX Data to DXF2 Input";
- 
+    // IDs beginning with 'internal-*' do not show up in UI
+    public static final String SDMXDATA_IN_ID = "internal-sdmx-datain";
     
     @Override
     public void configure() throws Exception
@@ -54,10 +55,12 @@ public class SDMXDataIn
         DescriptionDefinition desc = new DescriptionDefinition();
         desc.setText( "SDMX Data to DXF2 Input");
         
-        from(SDMXDATA_IN).
+        RouteDefinition sdmxDataIn = from(SDMXDATA_IN).
             convertBodyTo( java.lang.String.class, "UTF-8" ).to( "log:org.hisp.dhis.integration?level=INFO").
             to("xslt:transform/cross2dxf2.xsl").convertBodyTo( java.io.InputStream.class).
-            inOut("dhis2:data?orgUnitIdScheme=CODE&dataElementIdScheme=CODE&importStrategy=NEW_AND_UPDATES").
-            setDescription( desc );
+            inOut("dhis2:data?orgUnitIdScheme=CODE&dataElementIdScheme=CODE&importStrategy=NEW_AND_UPDATES");
+        
+        sdmxDataIn.setDescription( desc );
+        sdmxDataIn.setId( SDMXDATA_IN_ID );
     }    
 }
