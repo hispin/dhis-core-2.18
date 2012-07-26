@@ -184,13 +184,14 @@ public class GetAnalysisAction
         Set<DataElement> dataElements = new HashSet<DataElement>();
         Collection<Period> periods = null;
         OrganisationUnit unit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
-
-        Collection<OrganisationUnit> orgUnits = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
-        
+        Collection<OrganisationUnit> orgUnits = null;
+                
         // TODO filter periods with data element period type
         
-        if ( fromDate != null && toDate != null && dataSets != null )
+        if ( fromDate != null && toDate != null && dataSets != null && unit != null )
         {
+            orgUnits = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
+            
             periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) );
 
             for ( String id : dataSets )
