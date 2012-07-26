@@ -53,7 +53,7 @@
             <select id="periodId" name="periodId" style="width:330px" disabled="disabled">
             </select><br><br>
             
-            <input type="button" value="$i18n.getString( 'get_report' )" style="width:135px" onclick="displayCompleteness()"/><br><br>
+            <input id="reportButton" type="button" value="$i18n.getString( 'get_report' )" style="width:135px" onclick="displayCompleteness()"/><br><br>
             
             <!-- Export -->
             

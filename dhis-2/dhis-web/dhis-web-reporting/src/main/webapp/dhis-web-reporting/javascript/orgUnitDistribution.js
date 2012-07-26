@@ -8,7 +8,7 @@ function displayOrgUnitDistribution()
         return false;
     }
 
-    $('#reportButton').attr('disabled', true);
+    $( '#reportButton' ).attr( 'disabled', true );
 
     displayDiv( "loaderDiv", distributionDivs );
 
@@ -19,7 +19,7 @@ function displayOrgUnitDistribution()
         displayDiv( "tableDiv", distributionDivs );
         setTableStyles();
 
-        $('#reportButton').removeAttr('disabled');
+        $( '#reportButton' ).removeAttr( 'disabled' );
     } );
 }
 
