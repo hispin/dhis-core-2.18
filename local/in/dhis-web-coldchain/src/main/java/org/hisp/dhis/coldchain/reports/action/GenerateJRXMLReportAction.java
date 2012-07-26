@@ -776,9 +776,42 @@ public class GenerateJRXMLReportAction
             
             frb.setColumnsPerPage(1, 10).setUseFullPageWidth(true); 
             frb.setTemplateFile( path+"ORGUNIT_EQUIPMENT_ROUTINE_DATAVALUE.jrxml" );
+
+            String dataElementIdsByComma = "-1";
+            String optComboIdsByComma = "-1";            
             
-            Map content=new HashMap();
-            tableData.add( content );
+            for( Integer orgUnitGroupId : orgunitGroupList )
+            {
+                OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroupId );
+                orgUnitGroupMembers.addAll( orgUnitGroup.getMembers() );
+            }
+            
+            for( Integer orgUnitId : selOrgUnitList )
+            {
+                orgUnitList.addAll( organisationUnitService.getOrganisationUnitWithChildren( orgUnitId ) );
+            }
+            
+            orgUnitList.retainAll( orgUnitGroupMembers );
+            for( OrganisationUnit orgUnit : orgUnitList )
+            {
+                Map<String, String> numberOfData=new HashMap<String, String>(); 
+                List<String> oneTableDataRow = new ArrayList<String>();
+                String orgUnitBranch = "";
+                if( orgUnit.getParent() != null )
+                {
+                    orgUnitBranch = getOrgunitBranch( orgUnit.getParent() );
+                }
+                else
+                {
+                    orgUnitBranch = " ";
+                }
+                
+                numberOfData.put( "OrgUnit Hierarchy", orgUnitBranch );
+                numberOfData.put( "OrgUnit", orgUnit.getName()+"" );
+                numberOfData.put( "OrgUnit Code", orgUnit.getCode()+"" );                
+                tableData.add( numberOfData );
+            }
+            
             JRDataSource ds = new JRMapCollectionDataSource(tableData );
             DynamicReport dynamicReport = frb.build();
             dynamicReport.getOptions().getDefaultDetailStyle().setBackgroundColor( Color.BLUE );
