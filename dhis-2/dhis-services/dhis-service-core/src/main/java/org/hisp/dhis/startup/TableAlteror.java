@@ -387,7 +387,7 @@ public class TableAlteror
         executeSql( "update dataelement set zeroissignificant = false where zeroissignificant is null" );
         executeSql( "update organisationunit set haspatients = false where haspatients is null" );
         executeSql( "update dataset set expirydays = 0 where expirydays is null" );
-        executeSql( "update expression set nullifblank = false where nullifblank is null" );
+        executeSql( "update expression set nullifblank = true where nullifblank is null" );
 
         executeSql( "update reporttable set reportingmonth = false where reportingmonth is null" );
         executeSql( "update reporttable set reportingbimonth = false where reportingbimonth is null" );
