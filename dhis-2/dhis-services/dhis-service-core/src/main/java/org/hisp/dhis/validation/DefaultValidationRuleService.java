@@ -146,7 +146,7 @@ public class DefaultValidationRuleService
     // -------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------
-    // Aggregate
+    // Aggregate TODO remove
     // -------------------------------------------------------------------------
 
     public Grid getAggregateValidationResult( Collection<ValidationResult> results, List<Period> periods,
@@ -377,11 +377,11 @@ public class DefaultValidationRuleService
                 if ( validationRule.getPeriodType() != null
                     && validationRule.getPeriodType().equals( period.getPeriodType() ) )
                 {
-                    leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), valueMap, constantMap, null, true );
+                    leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), valueMap, constantMap, null );
 
                     if ( leftSide != null )
                     {
-                        rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), valueMap, constantMap, null, true );
+                        rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), valueMap, constantMap, null );
 
                         if ( rightSide != null )
                         {

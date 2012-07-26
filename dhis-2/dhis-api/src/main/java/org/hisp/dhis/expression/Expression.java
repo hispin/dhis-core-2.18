@@ -91,6 +91,12 @@ public class Expression
      * A description of the Expression.
      */
     private String description;
+    
+    /**
+     * Indicates whether the expression should evaluate to null if there are 
+     * missing data values in the expression.
+     */
+    private boolean nullIfBlank;
 
     /**
      * A reference to the DataElements in the Expression.
@@ -273,5 +279,18 @@ public class Expression
     public void setDescription( String description )
     {
         this.description = description;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty
+    public boolean isNullIfBlank()
+    {
+        return nullIfBlank;
+    }
+
+    public void setNullIfBlank( boolean nullIfBlank )
+    {
+        this.nullIfBlank = nullIfBlank;
     }
 }

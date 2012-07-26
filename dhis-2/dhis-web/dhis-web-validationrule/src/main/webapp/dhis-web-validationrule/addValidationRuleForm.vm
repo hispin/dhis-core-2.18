@@ -45,10 +45,13 @@
 			<input type="hidden" id="leftSideDescription" name="leftSideDescription">
 			<input type="hidden" id="leftSideExpression" name="leftSideExpression">
 			<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression">
+			<input type="hidden" id="leftSideNullIfBlank" name="leftSideNullIfBlank">
+			
 			<input type="button" value="$i18n.getString( 'edit_right_side' )" style="width:10em" onclick="editRightExpression();"></td>
 			<input type="hidden" id="rightSideDescription" name="rightSideDescription">
 			<input type="hidden" id="rightSideExpression" name="rightSideExpression">
 			<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression">
+			<input type="hidden" id="rightSideNullIfBlank" name="rightSideNullIfBlank">
 		</td>	
 	</tr>
 	<tr>

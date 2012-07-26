@@ -81,7 +81,6 @@ function updateTextualExpression( expressionFieldName )
 
 function checkNotEmpty( field, message )
 {
-
     if ( field.value.length == 0 )
     {
         setInnerHTML( field.name + "Info", message );
@@ -139,7 +138,8 @@ function validateExpressionReceived( xmlObject )
         var side = byId( "side" ).value;
         saveExpression( side, description, expression, textualDescription );
         disable( 'periodTypeName' );
-    } else if ( type == "error" )
+    } 
+    else if ( type == "error" )
     {
         byId( "textualExpression" ).innerHTML = message;
     }
@@ -152,7 +152,8 @@ function saveExpression( side, description, expression, textualDescription )
         byId( "leftSideDescription" ).value = description;
         byId( "leftSideExpression" ).value = expression;
         byId( "leftSideTextualExpression" ).value = textualDescription;
-    } else if ( side == "right" )
+    } 
+    else if ( side == "right" )
     {
         byId( "rightSideDescription" ).value = description;
         byId( "rightSideExpression" ).value = expression;

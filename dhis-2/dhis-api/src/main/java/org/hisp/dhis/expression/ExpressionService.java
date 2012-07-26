@@ -103,7 +103,7 @@ public interface ExpressionService
     Collection<Expression> getAllExpressions();
 
     Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
-        Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues );
+        Map<Integer, Double> constantMap, Integer days );
     
     /**
      * Returns all DataElements included in the given expression string.
