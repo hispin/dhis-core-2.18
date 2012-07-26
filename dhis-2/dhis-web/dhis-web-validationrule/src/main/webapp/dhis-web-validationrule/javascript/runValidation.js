@@ -16,6 +16,8 @@ function validateRunValidation()
 	aggregate = $( '#aggregate' ).val();
 	validationRuleGroupId = $( '#validationRuleGroupId' ).val();
 
+    $( '#validateButton' ).attr( 'disabled', true )
+
 	$.getJSON( 'validateRunValidation.action',
 	{ startDate:startDate, endDate:endDate, aggregate:aggregate }, function( json )
 	{
@@ -30,6 +32,8 @@ function validateRunValidation()
 	            $( 'div#analysisResult' ).show();
 	            $( 'div#analysisResult' ).html( data );
 	            setTableStyles();
+
+                $( '#validateButton' ).removeAttr( 'disabled' );
 	        } );
 	    }
 	    else if ( json.response == 'input' )

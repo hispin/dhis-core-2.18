@@ -68,7 +68,7 @@
     </tr>
     <tr>
     	<td>
-    		<input type="button" value="$i18n.getString( 'validate' )" style="width:10em" onclick="validateRunValidation()">
+    		<input id="validateButton" type="button" value="$i18n.getString( 'validate' )" style="width:10em" onclick="validateRunValidation()">
     	</td>
     	<td></td>
     </tr>
