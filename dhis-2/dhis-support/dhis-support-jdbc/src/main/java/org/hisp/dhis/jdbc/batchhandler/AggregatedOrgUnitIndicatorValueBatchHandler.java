@@ -52,7 +52,7 @@ public class AggregatedOrgUnitIndicatorValueBatchHandler
 
     protected void setTableName()
     {
-        statementBuilder.setTableName( "aggregatedorgunitindicatorvalue_temp" );
+        statementBuilder.setTableName( "aggregatedorgunitindicatorvalue" );
     }
 
     protected void setUniqueColumns()

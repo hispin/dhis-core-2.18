@@ -154,11 +154,15 @@ public class PerformMaintenanceAction
         
         if ( dataMartIndex )
         {
-            dataMartManager.dropAggregatedValueIndex( true, true );
-            dataMartManager.createAggregatedValueIndex( true, true );
+            dataMartManager.dropDataValueIndex();
+            dataMartManager.dropIndicatorValueIndex();
+            dataMartManager.dropOrgUnitDataValueIndex();
+            dataMartManager.dropOrgUnitIndicatorValueIndex();
             
-            dataMartManager.dropAggregatedOrgUnitValueIndex( true, true );
-            dataMartManager.createAggregatedOrgUnitValueIndex( true, true );
+            dataMartManager.createDataValueIndex();
+            dataMartManager.createIndicatorValueIndex();
+            dataMartManager.createOrgUnitDataValueIndex();
+            dataMartManager.createOrgUnitIndicatorValueIndex();
             
             completenessService.dropIndex();
             completenessService.createIndex();
