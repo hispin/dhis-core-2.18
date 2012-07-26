@@ -369,7 +369,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<!-- Startup -->
 
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror">
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
+		<property name="statementManager" ref="statementManager" />
 		<property name="name" value="PatientTableAlteror" />
 		<property name="runlevel" value="4" />
 		<property name="skipInTests" value="true" />
