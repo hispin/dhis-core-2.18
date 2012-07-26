@@ -874,9 +874,10 @@ public class RelativePeriods
         return last3Months;
     }
 
-    public void setLast3Months( boolean last3Months )
+    public RelativePeriods setLast3Months( boolean last3Months )
     {
         this.last3Months = last3Months;
+        return this;
     }
 
     @JsonProperty
