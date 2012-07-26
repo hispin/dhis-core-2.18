@@ -74,12 +74,18 @@ public class LoginAction
     public String execute()
     {
         Device device = deviceResolver.resolveDevice( ServletActionContext.getRequest() );
-
+        
+        System.out.println(ServletActionContext.getRequest().getHeader( "User-Agent" ));
+        System.out.println(ServletActionContext.getRequest().getHeader("x-wap-profile"));
+        System.out.println(ServletActionContext.getRequest().getHeader("Profile"));
+        System.out.println(ServletActionContext.getRequest().getHeader("Accept"));
+        
         if ( device.isMobile() )
         {
+            System.out.println("mobile");
             return "mobile";
         }
-
+            System.out.println("PC");
         return "standard";
     }
 }

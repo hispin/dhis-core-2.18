@@ -58,7 +58,7 @@ public class MobileOrgUnitLinks
 
     private String searchUrl;
 
-    public static double currentVersion = 2.9;
+    public static double currentVersion = 3.0;
 
     private String updateNewVersionUrl;
 
