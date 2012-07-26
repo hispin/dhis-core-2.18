@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "multiple_individual_records" ) #openHelp('multi_name_based_data_entry')</h3>
+<h3>$i18n.getString( "multiple_individual_records" ) #openHelp('multiple_individual_records')</h3>
 
 <h4 id='programName' name='programName'></h4>
 <input type="button" id='btnBack' name='btnBack' style='width: 150px;display:none;' value="$i18n.getString( 'back' )" onclick="backButtonOnClick();"/>
