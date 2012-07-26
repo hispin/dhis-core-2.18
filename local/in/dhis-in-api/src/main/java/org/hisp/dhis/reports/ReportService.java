@@ -105,6 +105,8 @@ public interface ReportService
     
     List<Report_inDesign> getReportDesign( String fileName );
     
+    List<Report_inDesign> getDistrictFeedbackReportDesign( String fileName );
+    
     String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB );
     
     String getIndividualResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit, String reportModelTB );
