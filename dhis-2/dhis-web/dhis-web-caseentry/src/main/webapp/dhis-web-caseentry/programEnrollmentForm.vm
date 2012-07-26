@@ -1,3 +1,6 @@
+#set($noIden = $identifierTypes.size() )
+#set($noOtherGroup = $noGroupAttributes.size() )
+#set($noGroup = $attributeGroups.size() )
 #if( $programInstance || $hasDataEntry=='true')
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programInstance.id' />
 <div id="tabs">
@@ -16,12 +19,12 @@
 	<!-- Enroll program TAB -->
 	<div id="tab-2">
 		<form id='programEnrollmentInforForm' name='programEnrollmentInforForm' action='#' method="POST" >
-			#if( $identifierTypes.size() > 0 || $noGroupAttributes.size() > 0 || $attributeGroups.size() > 0 )
+			#if( $noIden > 0 || $noOtherGroup > 0 || $noGroup > 0 )
 				<input type='hidden' id='programId' name='programId' value='$programInstance.program.id'>
 				<input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id'>
 				<!-- IDENTIFIERS -->
 				<table id='enrollmentInforDiv' name='enrollmentInforDiv' class='mainPageTable' >
-					#if( $identifierTypes.size() > 0 )
+					#if( $noIden > 0 )
 					<tr>
 						<th colspan='2'>$i18n.getString( "identifier" )</th> 
 					</tr>
@@ -83,7 +86,7 @@
 
 				<!-- ATTRIBUTES NOT IN GROUPS -->
 
-				#if ( $noGroupAttributes && $noGroupAttributes.size() > 0) 	
+				#if ( $noGroupAttributes && $noOtherGroup > 0) 	
 					<tr><th colspan="2" class="heading-column">$i18n.getString( "Other details" )</th></tr>
 					#set( $mark = false )
 					#foreach($attribute in $noGroupAttributes )
@@ -195,7 +198,7 @@
 			$("#tabs").tabs("remove", 2);
 		#end
 		
-		#if( $identifierTypes.size() > 0 || $noGroupAttributes.size() > 0 || $attributeGroups.size() > 0 )
+		#if( $noIden > 0 || $noOtherGroup > 0 || $noGroup > 0 )
 			$( "#tabs" ).tabs( "option", "selected", 1 );
 		#else
 			$( "#tabs" ).tabs( "option", "selected", 2 );
