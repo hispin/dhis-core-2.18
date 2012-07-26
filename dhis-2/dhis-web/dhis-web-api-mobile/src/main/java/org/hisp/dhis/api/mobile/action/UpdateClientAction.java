@@ -49,7 +49,6 @@ public class UpdateClientAction
     // -------------------------------------------------------------------------
 
     private String fileName = "DHISMobile-Aggregate.jar";
-    //private String fileName = "../webapps/dhis/dhis-web-commons/DHISMobile-Aggregate.jar";
     private InputStream inputStream;
     public String getFileName()
     {
@@ -75,15 +74,11 @@ public class UpdateClientAction
     public String execute()
         throws Exception
     {
-//        File fileToDownload = new File( System.getenv("dhis2_home"), fileName );
-        File dir1 = new File(".");
-        System.out.println("Current dir: " + dir1.getCanonicalPath());
         File fileToDownload = new File( fileName );
+        
         if ( fileToDownload != null )
-
+            
             inputStream = new BufferedInputStream( new FileInputStream( fileToDownload ) );
-         
-         
         
         return SUCCESS;
     }
