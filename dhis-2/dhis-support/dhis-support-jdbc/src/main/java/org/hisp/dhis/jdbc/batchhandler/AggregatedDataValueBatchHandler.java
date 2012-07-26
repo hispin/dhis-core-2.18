@@ -53,7 +53,7 @@ public class AggregatedDataValueBatchHandler
     
     protected void setTableName()
     {
-        statementBuilder.setTableName( "aggregateddatavalue" );
+        statementBuilder.setTableName( "aggregateddatavalue_temp" );
     }
     
     protected void setUniqueColumns()

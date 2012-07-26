@@ -63,24 +63,24 @@ public interface StatementBuilder
     /**
      * Creates a create table statement for the aggregated datavalue table.
      */
-    String getCreateAggregatedDataValueTable();
+    String getCreateAggregatedDataValueTable( boolean temp );
 
     /**
      * Creates a create table statement for the aggregated organisation unit
      * group datavalue table.
      */
-    String getCreateAggregatedOrgUnitDataValueTable();
+    String getCreateAggregatedOrgUnitDataValueTable( boolean temp );
     
     /**
      * Creates a create table statement for the aggregated indicatorvalue table.
      */
-    String getCreateAggregatedIndicatorTable();
+    String getCreateAggregatedIndicatorTable( boolean temp );
 
     /**
      * Creates a create table statement for the aggregated organisation unit
      * group indicatorvalue table.
      */
-    String getCreateAggregatedOrgUnitIndicatorTable();
+    String getCreateAggregatedOrgUnitIndicatorTable( boolean temp );
 
     /**
      * Creates a create table statement for the aggregated datasetcompleteness table.

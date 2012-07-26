@@ -46,10 +46,10 @@ public abstract class AbstractStatementBuilder
         return QUOTE + value + QUOTE;
     }
 
-    public String getCreateAggregatedDataValueTable()
+    public String getCreateAggregatedDataValueTable( boolean temp )
     {
         return
-            "CREATE TABLE aggregateddatavalue ( " +
+            "CREATE TABLE aggregateddatavalue" + ( temp ? "_temp" : "" ) + " ( " +
             "dataelementid INTEGER, " +
             "categoryoptioncomboid INTEGER, " +
             "periodid INTEGER, " +
@@ -59,10 +59,10 @@ public abstract class AbstractStatementBuilder
             "value " + getDoubleColumnType() + " );";
     }
 
-    public String getCreateAggregatedOrgUnitDataValueTable()
+    public String getCreateAggregatedOrgUnitDataValueTable( boolean temp )
     {
         return
-            "CREATE TABLE aggregatedorgunitdatavalue ( " +
+            "CREATE TABLE aggregatedorgunitdatavalue" + ( temp ? "_temp" : "" ) + " ( " +
             "dataelementid INTEGER, " +
             "categoryoptioncomboid INTEGER, " +
             "periodid INTEGER, " +
@@ -73,10 +73,10 @@ public abstract class AbstractStatementBuilder
             "value " + getDoubleColumnType() + " );";
     }
     
-    public String getCreateAggregatedIndicatorTable()
+    public String getCreateAggregatedIndicatorTable( boolean temp )
     {
         return
-            "CREATE TABLE aggregatedindicatorvalue ( " +
+            "CREATE TABLE aggregatedindicatorvalue" + ( temp ? "_temp" : "" ) + " ( " +
             "indicatorid INTEGER, " +
             "periodid INTEGER, " +
             "organisationunitid INTEGER, " +
@@ -89,10 +89,10 @@ public abstract class AbstractStatementBuilder
             "denominatorvalue " + getDoubleColumnType() + " );";
     }
 
-    public String getCreateAggregatedOrgUnitIndicatorTable()
+    public String getCreateAggregatedOrgUnitIndicatorTable( boolean temp )
     {
         return
-            "CREATE TABLE aggregatedorgunitindicatorvalue ( " +
+            "CREATE TABLE aggregatedorgunitindicatorvalue" + ( temp ? "_temp" : "" ) + " ( " +
             "indicatorid INTEGER, " +
             "periodid INTEGER, " +
             "organisationunitid INTEGER, " +

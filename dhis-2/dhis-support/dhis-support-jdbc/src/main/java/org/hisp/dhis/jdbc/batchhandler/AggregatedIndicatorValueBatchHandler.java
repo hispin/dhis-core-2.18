@@ -53,7 +53,7 @@ public class AggregatedIndicatorValueBatchHandler
 
     protected void setTableName()
     {
-        statementBuilder.setTableName( "aggregatedindicatorvalue" );
+        statementBuilder.setTableName( "aggregatedindicatorvalue_temp" );
     }
 
     protected void setUniqueColumns()

@@ -58,4 +58,16 @@ public interface DataMartManager
     void deleteAggregatedOrgUnitIndicatorValues( Collection<Integer> periodIds );
 
     void deleteAggregatedOrgUnitDataValues( Collection<Integer> periodIds );
+    
+    void createTempAggregatedTables();
+    
+    void dropTempAggregatedTables();
+    
+    void copyAggregatedDataValuesFromTemp();
+    
+    void copyAggregatedIndicatorValuesFromTemp();
+    
+    void copyAggregatedOrgUnitDataValuesFromTemp();
+    
+    void copyAggregatedOrgUnitIndicatorValuesFromTemp();
 }
