@@ -18,24 +18,14 @@ public interface DataMartManager
     Set<DataElementOperand> getOperandsWithData( Set<DataElementOperand> operands );
 
     Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId );
-
-    /**
-     * Creates indexes on the aggregateddatavalue and aggregatedindicatorvalue
-     * tables.
-     * 
-     * @param dataElement indicates whether to create an index on aggregateddatavalue.
-     * @param indicator indicates whether to create an index on aggregatedindicatorvalue.
-     */
-    void createAggregatedValueIndex( boolean dataElement, boolean indicator );
     
-    /**
-     * Drops the indexes on the aggregateddatavalue and aggregatedindicatorvalue
-     * tables.
-     * 
-     * @param dataElement indicates whether to drop the index on aggregateddatavalue.
-     * @param indicator indicates whether to drop the index on aggregatedindicatorvalue.
-     */
-    void dropAggregatedValueIndex( boolean dataElement, boolean indicator );
+    void createDataValueIndex();
+    
+    void createIndicatorValueIndex();
+    
+    void dropDataValueIndex();
+    
+    void dropIndicatorValueIndex();
     
     /**
      * Deletes AggregatedDataValues registered for the given parameters.
@@ -51,10 +41,14 @@ public interface DataMartManager
      */
     void deleteAggregatedIndicatorValues( Collection<Integer> periodIds );
     
-    void createAggregatedOrgUnitValueIndex( boolean dataElement, boolean indicator );
+    void createOrgUnitDataValueIndex();
     
-    void dropAggregatedOrgUnitValueIndex( boolean dataElement, boolean indicator );
-
+    void createOrgUnitIndicatorValueIndex();
+    
+    void dropOrgUnitDataValueIndex();
+    
+    void dropOrgUnitIndicatorValueIndex();
+    
     void deleteAggregatedOrgUnitIndicatorValues( Collection<Integer> periodIds );
 
     void deleteAggregatedOrgUnitDataValues( Collection<Integer> periodIds );

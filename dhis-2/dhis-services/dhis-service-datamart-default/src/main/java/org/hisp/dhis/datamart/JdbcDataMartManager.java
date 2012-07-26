@@ -140,63 +140,27 @@ public class JdbcDataMartManager
     // -------------------------------------------------------------------------
 
     @Override
-    public void createAggregatedValueIndex( boolean dataElement, boolean indicator )
+    public void createDataValueIndex()
     {
-        if ( dataElement )
-        {
-            try
-            {
-                final String sql = "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid)";        
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index already exists" );
-            }
-        }
-        
-        if ( indicator )
-        {
-            try
-            {
-                final String sql = "CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid)";        
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index already exists" );
-            }
-        }
+        executeSilently( "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid)" );
     }
 
     @Override
-    public void dropAggregatedValueIndex( boolean dataElement, boolean indicator )
+    public void createIndicatorValueIndex()
     {
-        if ( dataElement )
-        {
-            try
-            {
-                final String sql = "DROP INDEX aggregateddatavalue_index";
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index does not exist" );
-            }
-        }
-        
-        if ( indicator )
-        {
-            try
-            {
-                final String sql = "DROP INDEX aggregatedindicatorvalue_index";
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index does not exist" );
-            }
-        }
+        executeSilently( "CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid)" );
+    }
+
+    @Override
+    public void dropDataValueIndex()
+    {
+        executeSilently( "DROP INDEX aggregateddatavalue_index" );
+    }
+
+    @Override
+    public void dropIndicatorValueIndex()
+    {
+        executeSilently( "DROP INDEX aggregatedindicatorvalue_index" );
     }
 
     @Override
@@ -224,63 +188,27 @@ public class JdbcDataMartManager
     // -------------------------------------------------------------------------
 
     @Override
-    public void createAggregatedOrgUnitValueIndex( boolean dataElement, boolean indicator )
+    public void createOrgUnitDataValueIndex()
     {
-        if ( dataElement )
-        {
-            try
-            {
-                final String sql = "CREATE INDEX aggregatedorgunitdatavalue_index ON aggregatedorgunitdatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid, organisationunitgroupid)";        
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index already exists" );
-            }
-        }
-        
-        if ( indicator )
-        {
-            try
-            {
-                final String sql = "CREATE INDEX aggregatedorgunitindicatorvalue_index ON aggregatedorgunitindicatorvalue (indicatorid, periodid, organisationunitid, organisationunitgroupid)";        
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index already exists" );
-            }
-        }
+        executeSilently( "CREATE INDEX aggregatedorgunitdatavalue_index ON aggregatedorgunitdatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid, organisationunitgroupid)" );
     }
 
     @Override
-    public void dropAggregatedOrgUnitValueIndex( boolean dataElement, boolean indicator )
+    public void createOrgUnitIndicatorValueIndex()
     {
-        if ( dataElement )
-        {
-            try
-            {
-                final String sql = "DROP INDEX aggregatedorgunitdatavalue_index";
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index does not exist" );
-            }
-        }
-        
-        if ( indicator )
-        {
-            try
-            {
-                final String sql = "DROP INDEX aggregatedorgunitindicatorvalue_index";
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
-            catch ( Exception ex )
-            {
-                log.debug( "Index does not exist" );
-            }
-        }
+        executeSilently( "CREATE INDEX aggregatedorgunitindicatorvalue_index ON aggregatedorgunitindicatorvalue (indicatorid, periodid, organisationunitid, organisationunitgroupid)" );        
+    }
+
+    @Override
+    public void dropOrgUnitDataValueIndex()
+    {
+        executeSilently( "DROP INDEX aggregatedorgunitdatavalue_index" );
+    }
+
+    @Override
+    public void dropOrgUnitIndicatorValueIndex()
+    {
+        executeSilently( "DROP INDEX aggregatedorgunitindicatorvalue_index" );
     }
 
     @Override
