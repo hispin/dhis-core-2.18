@@ -143,9 +143,9 @@ public class DefaultExpressionService
     // -------------------------------------------------------------------------
     
     public Double getExpressionValue( Expression expression, Map<DataElementOperand, Double> valueMap, 
-        Map<Integer, Double> constantMap, Integer days, boolean nullIfNoValues )
+        Map<Integer, Double> constantMap, Integer days )
     {
-        final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, days, nullIfNoValues );
+        final String expressionString = generateExpression( expression.getExpression(), valueMap, constantMap, days, expression.isNullIfBlank() );
 
         return expressionString != null ? calculateExpression( expressionString ) : null;
     }
