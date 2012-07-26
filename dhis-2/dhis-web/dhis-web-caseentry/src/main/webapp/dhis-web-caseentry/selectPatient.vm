@@ -1,3 +1,16 @@
+<script>
+	jQuery(document).ready(	function(){
+		#if($organisationUnit)
+			enable('listPatientBtn');
+			enable('addPatientBtn');
+			enable('advancedSearchBtn');
+		#else
+			disable('listPatientBtn');
+			disable('addPatientBtn');
+			disable('advancedSearchBtn');
+		#end
+	});
+</script>
 <h3>$i18n.getString( "patient_management" ) #openHelp( "patient" )</h3>
 
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
