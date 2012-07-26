@@ -41,7 +41,7 @@ function loadProgramStages()
 			hideById('executionDateTB');
 				
 			var type = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('type');
-			if( type == 1 && json.programStageInstances.length > 1 )
+			if( type == 1 )
 			{
 				showById('colorHelpLink');
 				for ( i in json.programStageInstances ) 
@@ -782,6 +782,7 @@ function registerIrregularEncounter( dueDate )
 			disable('newEncounterBtn');
 			
 			var programStageName = jQuery(".stage-object-selected").attr('psname');
+			var elementId = prefixId + programStageInstanceId;
 			var flag = false;
 			jQuery("#programStageIdTR input[name='programStageBtn']").each(function(i,item){
 				var element = jQuery(item);
@@ -789,7 +790,6 @@ function registerIrregularEncounter( dueDate )
 				
 				if( dueDate < dueDateInStage && !flag)
 				{	
-					var elementId = prefixId + programStageInstanceId;
 					jQuery('<td><input name="programStageBtn" '
 						+ 'id="' + elementId + '" ' 
 						+ 'psid="' + programStageInstanceId + '" '
@@ -805,6 +805,21 @@ function registerIrregularEncounter( dueDate )
 					flag = true;
 				}
 			});
+			
+			if( !flag )
+			{
+				jQuery("#programStageIdTR").append('<td><img src="images/rightarrow.png"></td>'
+					+ '<td><input name="programStageBtn" '
+					+ 'id="' + elementId + '" ' 
+					+ 'psid="' + programStageInstanceId + '" '
+					+ 'psname="' + programStageName + '" '
+					+ 'dueDate="' + dueDate + '" '
+					+ 'value="'+ programStageName + ' ' + dueDate + '" '
+					+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')" '
+					+ 'type="button" class="stage-object" '
+					+ '></td>');
+				setEventColorStatus( elementId, 3 );
+			}
 		});
 }
 
@@ -890,13 +905,17 @@ function disableCompletedButton( disabled )
 	if(disabled){
 		disable('completeBtn');
 		disable('completeAndAddNewBtn');
+		disable('completeInBelowBtn');
 		enable('uncompleteBtn');
 		enable('uncompleteAndAddNewBtn');
+		enable('uncompleteBelowBtn');
 	}
 	else{
 		enable('completeBtn');
 		enable('completeAndAddNewBtn');
+		enable('completeInBelowBtn');
 		disable('uncompleteBtn');
 		disable('uncompleteAndAddNewBtn');
+		disable('uncompleteBelowBtn');
 	}
 }
