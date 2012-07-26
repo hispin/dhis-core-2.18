@@ -137,4 +137,7 @@ select * from categoryoptioncombo where categoryoptioncomboid not in (select dis
 
 select * from categoryoptioncombos_categoryoptions order by categoryoptioncomboid, sort_order;
 
+-- Get category combinations without data elements
+
+select * from categorycombo where categorycomboid not in (select distinct categorycomboid from dataelement);
 
