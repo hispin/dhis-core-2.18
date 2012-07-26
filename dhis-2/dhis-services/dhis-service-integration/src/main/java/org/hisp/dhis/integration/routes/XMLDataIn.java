@@ -30,7 +30,7 @@ package org.hisp.dhis.integration.routes;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.model.DescriptionDefinition;
-import org.apache.camel.model.ProcessorDefinition;
+import org.apache.camel.model.RouteDefinition;
 
 /**
  * XMLDataIn route implements a Content Based Routing pattern
@@ -61,7 +61,7 @@ public class XMLDataIn
         DescriptionDefinition xmlDesc = new DescriptionDefinition();
         xmlDesc.setText( XMLDATA_IN_DESC);
         
-        ProcessorDefinition xmlDataIn = from(XMLDATA_IN).convertBodyTo(java.lang.String.class, "UTF-8")
+        RouteDefinition xmlDataIn = (RouteDefinition) from(XMLDATA_IN).convertBodyTo(java.lang.String.class, "UTF-8")
             .choice()
             // send native dxf2 data directly to dhis2:data 
             .when().xpath( "boolean(/d:dataValueSet)", ns).convertBodyTo( java.io.InputStream.class).to("dhis2:data")
