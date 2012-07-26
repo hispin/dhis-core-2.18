@@ -747,6 +747,50 @@ public class GenerateJRXMLReportAction
             jr = DynamicJasperHelper.generateJasperReport( dynamicReport, new ClassicLayoutManager(), hash );
             jasperPrint = JasperFillManager.fillReport( jr, hash, ds );
         }
+        else if( ccemReport.getReportType().equals( CCEMReport.VACCINE_STORAGE_CAPACITY ) )
+        {
+            List<String> tableHeadings = new ArrayList<String>();
+            List<List<String>> tableSubHeadings = new ArrayList<List<String>>();
+            List<String> oneSubHeadingRow = new ArrayList<String>();
+            List tableData = new ArrayList();
+            
+            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
+            List<OrganisationUnit> orgUnitGroupMembers = new ArrayList<OrganisationUnit>();
+            String orgUnitGroupIdsByComma = "-1";
+            
+            Integer periodId = 0;
+            Date date2 = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime( date2 );
+            String periodStartDate = "";
+            
+            periodStartDate = calendar.get( Calendar.YEAR ) + "-01-01";
+           
+            periodId = ccemReportManager.getPeriodId( periodStartDate, "Yearly" );
+            
+            FastReportBuilder frb = new FastReportBuilder();            
+            frb.addColumn( "OrgUnit Hierarchy", "OrgUnit Hierarchy", String.class.getName(), 100,true );
+            frb.addColumn( "OrgUnit", "OrgUnit", String.class.getName(), 100,true );    
+            frb.addColumn( "OrgUnit Code", "OrgUnit Code", String.class.getName(), 100,true );
+            frb.setPrintColumnNames(true);
+            
+            frb.setColumnsPerPage(1, 10).setUseFullPageWidth(true); 
+            frb.setTemplateFile( path+"ORGUNIT_EQUIPMENT_ROUTINE_DATAVALUE.jrxml" );
+            
+            Map content=new HashMap();
+            tableData.add( content );
+            JRDataSource ds = new JRMapCollectionDataSource(tableData );
+            DynamicReport dynamicReport = frb.build();
+            dynamicReport.getOptions().getDefaultDetailStyle().setBackgroundColor( Color.BLUE );
+            dynamicReport.getOptions().getDefaultHeaderStyle().setBorder(Border.THIN());
+            dynamicReport.getOptions().getDefaultHeaderStyle().setHorizontalAlign(HorizontalAlign.CENTER );
+            dynamicReport.getOptions().getDefaultDetailStyle().setBorder(Border.THIN()); 
+            dynamicReport.getOptions().getDefaultDetailStyle().setHorizontalAlign(HorizontalAlign.CENTER );
+            dynamicReport.getOptions().getDefaultDetailStyle().setVerticalAlign( VerticalAlign.MIDDLE );            
+            jr = DynamicJasperHelper.generateJasperReport( dynamicReport, new ClassicLayoutManager(), hash );
+            jasperPrint = JasperFillManager.fillReport( jr, hash, ds );
+                      
+        }
         
         ServletOutputStream ouputStream = response.getOutputStream();
         JRExporter exporter = null;
