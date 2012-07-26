@@ -9,15 +9,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore"
 		class="org.hisp.dhis.caseaggregation.jdbc.JdbcCaseAggregationConditionStore">
-		<property name="statementManager" ref="statementManager" />
-		<property name="clazz"
-			value="org.hisp.dhis.caseaggregation.CaseAggregationCondition" />
+		<property name="clazz" value="org.hisp.dhis.caseaggregation.CaseAggregationCondition" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
 	<bean id="org.hisp.dhis.activityplan.jdbc.JdbcActivityPlanStore"
 		class="org.hisp.dhis.activityplan.jdbc.JdbcActivityPlanStore">
-		<property name="statementManager" ref="statementManager" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="statementBuilder" ref="statementBuilder" />
 	</bean>
 
@@ -66,7 +65,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.patient.PatientStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientStore">
 		<property name="clazz" value="org.hisp.dhis.patient.Patient" />
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="statementManager" ref="statementManager" />
 		<property name="statementBuilder" ref="statementBuilder" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
@@ -371,7 +369,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<!-- Startup -->
 
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror">
-		<property name="statementManager" ref="statementManager" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="name" value="PatientTableAlteror" />
 		<property name="runlevel" value="4" />
 		<property name="skipInTests" value="true" />

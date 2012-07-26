@@ -28,15 +28,13 @@
 package org.hisp.dhis.patient.hibernate;
 
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -51,6 +49,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientStore;
 import org.hisp.dhis.program.Program;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -71,13 +70,6 @@ public class HibernatePatientStore
     public void setStatementBuilder( StatementBuilder statementBuilder )
     {
         this.statementBuilder = statementBuilder;
-    }
-
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
     }
 
     private JdbcTemplate jdbcTemplate;
@@ -108,6 +100,8 @@ public class HibernatePatientStore
     @Override
     public Collection<Patient> getByNames( String fullName, Integer min, Integer max )
     {
+        List<Patient> patients = new ArrayList<Patient>();
+
         fullName = fullName.toLowerCase();
         String sql = "SELECT patientid FROM patient " + "where lower( " + statementBuilder.getPatientFullName() + ") "
             + "like '%" + fullName + "%' ";
@@ -117,29 +111,20 @@ public class HibernatePatientStore
             sql += statementBuilder.limitRecord( min, max );
         }
 
-        StatementHolder holder = statementManager.getHolder();
-
-        Set<Patient> patients = new HashSet<Patient>();
-
         try
         {
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement.executeQuery( sql );
-
-            while ( resultSet.next() )
+            patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
             {
-                Patient p = get( resultSet.getInt( 1 ) );
-                patients.add( p );
-            }
+                public Patient mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    return get( rs.getInt( 1 ) );
+                }
+            } );
         }
         catch ( Exception ex )
         {
             ex.printStackTrace();
-        }
-        finally
-        {
-            holder.close();
         }
 
         return patients;
@@ -257,29 +242,24 @@ public class HibernatePatientStore
     public Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
     {
         String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
+
         Collection<Patient> patients = new HashSet<Patient>();
-        StatementHolder holder = statementManager.getHolder();
+
         try
         {
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement.executeQuery( sql );
-
-            while ( resultSet.next() )
+            patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
             {
-                int patientId = resultSet.getInt( 1 );
-                patients.add( get( patientId ) );
-            }
+                public Patient mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    return get( rs.getInt( 1 ) );
+                }
+            } );
         }
         catch ( Exception ex )
         {
             ex.printStackTrace();
         }
-        finally
-        {
-            holder.close();
-        }
-
         return patients;
     }
 

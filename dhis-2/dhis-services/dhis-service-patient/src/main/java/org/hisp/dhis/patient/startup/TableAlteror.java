@@ -32,15 +32,15 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_I
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
 
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -59,11 +59,11 @@ public class TableAlteror
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setStatementManager( StatementManager statementManager )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.statementManager = statementManager;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -126,21 +126,21 @@ public class TableAlteror
 
     private void updateProgramStageInstanceOrgunit()
     {
-        StatementHolder holder = statementManager.getHolder();
-
         try
         {
-            Statement statement = holder.getStatement();
+            String sql = "SELECT distinct programstageinstanceid, organisationunitid, providedByAnotherFacility FROM patientdatavalue";
 
-            ResultSet resultSet = statement
-                .executeQuery( "SELECT distinct programstageinstanceid, organisationunitid, providedByAnotherFacility FROM patientdatavalue" );
-
-            while ( resultSet.next() )
+            jdbcTemplate.query( sql, new RowMapper<Boolean>()
             {
-                executeSql( "UPDATE programstageinstance SET organisationunitid=" + resultSet.getInt( 2 )
-                    + ", providedByAnotherFacility=" + resultSet.getBoolean( 3 ) + "  WHERE programstageinstanceid="
-                    + resultSet.getInt( 1 ) );
-            }
+                public Boolean mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    executeSql( "UPDATE programstageinstance SET organisationunitid=" + rs.getInt( 2 )
+                        + ", providedByAnotherFacility=" + rs.getBoolean( 3 ) + "  WHERE programstageinstanceid="
+                        + rs.getInt( 1 ) );
+                    return true;
+                }
+            } );
 
             executeSql( "ALTER TABLE patientdatavalue DROP COLUMN organisationUnitid" );
             executeSql( "ALTER TABLE patientdatavalue DROP COLUMN providedByAnotherFacility" );
@@ -150,69 +150,60 @@ public class TableAlteror
         {
             log.debug( ex );
         }
-        finally
-        {
-            holder.close();
-        }
     }
 
     private void updateCaseAggregationCondition()
     {
-        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
-            + "[0-9]+" + "\\]";
 
         try
         {
-            StatementHolder holder = statementManager.getHolder();
+            String sql = "SELECT caseaggregationconditionid, aggregationExpression FROM caseaggregationcondition";
 
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement
-                .executeQuery( "SELECT caseaggregationconditionid, aggregationExpression FROM caseaggregationcondition" );
-
-            while ( resultSet.next() )
+            jdbcTemplate.query( sql, new RowMapper<Boolean>()
             {
-                StringBuffer formular = new StringBuffer();
-
-                // ---------------------------------------------------------------------
-                // parse expressions
-                // ---------------------------------------------------------------------
-
-                Pattern pattern = Pattern.compile( regExp );
-
-                Matcher matcher = pattern.matcher( resultSet.getString( 2 ) );
-
-                while ( matcher.find() )
+                public Boolean mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
                 {
-                    String match = matcher.group();
-                    match = match.replaceAll( "[\\[\\]]", "" );
+                    String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+"
+                        + SEPARATOR_ID + "[0-9]+" + "\\]";
 
-                    String[] info = match.split( SEPARATOR_OBJECT );
-                    String[] ids = info[1].split( SEPARATOR_ID );
-                    int programStageId = Integer.parseInt( ids[0] );
+                    StringBuffer formula = new StringBuffer();
 
-                    StatementHolder _holder = statementManager.getHolder();
-                    Statement _statement = _holder.getStatement();
-                    ResultSet rsProgramId = _statement
-                        .executeQuery( "SELECT programid FROM programstage where programstageid=" + programStageId );
+                    // ---------------------------------------------------------------------
+                    // parse expressions
+                    // ---------------------------------------------------------------------
 
-                    if ( rsProgramId.next() )
+                    Pattern pattern = Pattern.compile( regExp );
+
+                    Matcher matcher = pattern.matcher( rs.getString( 2 ) );
+
+                    while ( matcher.find() )
                     {
-                        int programId = rsProgramId.getInt( 1 );
+                        String match = matcher.group();
+                        match = match.replaceAll( "[\\[\\]]", "" );
+
+                        String[] info = match.split( SEPARATOR_OBJECT );
+                        String[] ids = info[1].split( SEPARATOR_ID );
+                        int programStageId = Integer.parseInt( ids[0] );
+
+                        String subSQL = "SELECT programid FROM programstage where programstageid=" + programStageId;
+
+                        int programId = jdbcTemplate.queryForInt( subSQL );
 
                         String aggregationExpression = "[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT
                             + programId + "." + programStageId + "." + ids[1] + "]";
 
-                        matcher.appendReplacement( formular, aggregationExpression );
+                        matcher.appendReplacement( formula, aggregationExpression );
                     }
+
+                    matcher.appendTail( formula );
+
+                    executeSql( "UPDATE caseaggregationcondition SET aggregationExpression='" + formula.toString()
+                        + "'  WHERE caseaggregationconditionid=" + rs.getInt( 1 ) );
+
+                    return true;
                 }
-
-                matcher.appendTail( formular );
-
-                executeSql( "UPDATE caseaggregationcondition SET aggregationExpression='" + formular.toString()
-                    + "'  WHERE caseaggregationconditionid=" + resultSet.getInt( 1 ) );
-
-            }
+            } );
         }
         catch ( Exception e )
         {
@@ -224,18 +215,19 @@ public class TableAlteror
     {
         try
         {
-            StatementHolder holder = statementManager.getHolder();
+            String sql = "SELECT patienttabularreportid, organisationunitid FROM patienttabularreport";
 
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement
-                .executeQuery( "SELECT patienttabularreportid, organisationunitid FROM patienttabularreport" );
-
-            while ( resultSet.next() )
+            jdbcTemplate.query( sql, new RowMapper<Boolean>()
             {
-                executeSql( " INSERT INTO patienttabularreport_organisationUnits ( patienttabularreportid, organisationunitid ) VALUES ( "
-                    + resultSet.getInt( 1 ) + ", " + resultSet.getInt( 2 ) + ")" );
-            }
+                public Boolean mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    executeSql( " INSERT INTO patienttabularreport_organisationUnits ( patienttabularreportid, organisationunitid ) VALUES ( "
+                        + rs.getInt( 1 ) + ", " + rs.getInt( 2 ) + ")" );
+                    return true;
+                }
+            } );
+
             executeSql( "ALTER TABLE patienttabularreport DROP COLUMN organisationunitid" );
         }
         catch ( Exception e )
@@ -248,26 +240,21 @@ public class TableAlteror
     {
         try
         {
-            StatementHolder holder = statementManager.getHolder();
+            String sql = "SELECT pd.patienttabularreportid, tr.programstageid, pd.elt, sort_order "
+                + " FROM patienttabularreport_dataelements pd inner join patienttabularreport  tr"
+                + " on pd.patienttabularreportid=tr.patienttabularreportid" + " order by pd.patienttabularreportid";
 
-            Statement statement = holder.getStatement();
-
-            ResultSet resultSet = statement
-                .executeQuery( "SELECT pd.patienttabularreportid, tr.programstageid, pd.elt, sort_order "
-                    + " FROM patienttabularreport_dataelements pd inner join patienttabularreport  tr"
-                    + " on pd.patienttabularreportid=tr.patienttabularreportid" + " order by pd.patienttabularreportid" );
-
-            while ( resultSet.next() )
+            jdbcTemplate.query( sql, new RowMapper<Boolean>()
             {
-                executeSql( "INSERT INTO patienttabularreport_programstagedataelements ( patienttabularreportid, programstageid, dataelementid, sort_order ) VALUES ( "
-                    + resultSet.getInt( 1 )
-                    + ", "
-                    + resultSet.getInt( 2 )
-                    + ", "
-                    + resultSet.getInt( 3 )
-                    + ", "
-                    + resultSet.getInt( 4 ) + ")" );
-            }
+                public Boolean mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    executeSql( "INSERT INTO patienttabularreport_programstagedataelements ( patienttabularreportid, programstageid, dataelementid, sort_order ) VALUES ( "
+                        + rs.getInt( 1 ) + ", " + rs.getInt( 2 ) + ", " + rs.getInt( 3 ) + ", " + rs.getInt( 4 ) + ")" );
+                    return true;
+                }
+            } );
+
             executeSql( "ALTER TABLE patienttabularreport DROP COLUMN programstageid" );
             executeSql( "DROP TABLE patienttabularreport_dataelements" );
         }
@@ -281,17 +268,19 @@ public class TableAlteror
     {
         try
         {
-            StatementHolder holder = statementManager.getHolder();
-            Statement statement = holder.getStatement();
+            String sql = "SELECT programstageinstanceid, storedBy"
+                + " FROM programstageinstance where storedBy is not null";
 
-            ResultSet resultSet = statement.executeQuery( "SELECT programstageinstanceid, storedBy"
-                + " FROM programstageinstance where storedBy is not null" );
-
-            while ( resultSet.next() )
+            jdbcTemplate.query( sql, new RowMapper<Boolean>()
             {
-                executeSql( "UPDATE patientdatavalue SET storedBy='" + resultSet.getString( 2 )
-                    + "' where programstageinstanceid=" + resultSet.getInt( 1 ) );
-            }
+                public Boolean mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    executeSql( "UPDATE patientdatavalue SET storedBy='" + rs.getString( 2 )
+                        + "' where programstageinstanceid=" + rs.getInt( 1 ) );
+                    return true;
+                }
+            } );
 
             executeSql( "ALTER TABLE programstageinstance DROP COLUMN storedBy" );
         }
@@ -299,18 +288,9 @@ public class TableAlteror
         {
         }
     }
-
-    private int executeSql( String sql )
+    
+    private void executeSql(String sql)
     {
-        try
-        {
-            return statementManager.getHolder().executeUpdate( sql );
-        }
-        catch ( Exception ex )
-        {
-            log.debug( ex );
-
-            return -1;
-        }
+        jdbcTemplate.execute( sql );
     }
 }
