@@ -2514,50 +2514,43 @@ Ext.onReady( function() {
                                 icon: 'images/column.png',
                                 name: DV.conf.finals.chart.column,
                                 tooltip: DV.i18n.column_chart,
-								width: 40,
                                 pressed: true
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/column-stacked.png',
                                 name: DV.conf.finals.chart.stackedcolumn,
-                                tooltip: DV.i18n.stacked_column_chart,
-								width: 40
+                                tooltip: DV.i18n.stacked_column_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar.png',
                                 name: DV.conf.finals.chart.bar,
-                                tooltip: DV.i18n.bar_chart,
-								width: 40
+                                tooltip: DV.i18n.bar_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar-stacked.png',
                                 name: DV.conf.finals.chart.stackedbar,
-                                tooltip: DV.i18n.stacked_bar_chart,
-								width: 40
+                                tooltip: DV.i18n.stacked_bar_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/line.png',
                                 name: DV.conf.finals.chart.line,
-                                tooltip: DV.i18n.line_chart,
-								width: 40
+                                tooltip: DV.i18n.line_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/area.png',
                                 name: DV.conf.finals.chart.area,
-                                tooltip: DV.i18n.area_chart,
-								width: 40
+                                tooltip: DV.i18n.area_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/pie.png',
                                 name: DV.conf.finals.chart.pie,
-                                tooltip: DV.i18n.pie_chart,
-								width: 40
+                                tooltip: DV.i18n.pie_chart
                             }
                         ]
                     },
