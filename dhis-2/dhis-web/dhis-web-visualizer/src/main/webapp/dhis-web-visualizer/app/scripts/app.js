@@ -190,15 +190,16 @@ DV.conf = {
     },
     period: {
 		relativeperiodunits: {
+			reportingMonth: 1,
+			last3Months: 3,
+			last12Months: 12,
+			reportingQuarter: 1,
+			last4Quarters: 4,
 			lastSixMonth: 1,
+			last2SixMonths: 2,
 			thisYear: 1,
 			lastYear: 1,
-			last5Years: 5,
-			last12Months: 12,
-			last4Quarters: 4,
-			last2SixMonths: 2,
-			reportingMonth: 1,
-			reportingQuarter: 1
+			last5Years: 5
 		},
 		periodtypes: [
 			{id: 'Daily', name: 'Daily'},
@@ -242,7 +243,7 @@ DV.conf = {
         west_maxheight_accordion_indicator: 478,
         west_maxheight_accordion_dataelement: 478,
         west_maxheight_accordion_dataset: 478,
-        west_maxheight_accordion_relativeperiod: 396,
+        west_maxheight_accordion_relativeperiod: 423,
         west_maxheight_accordion_fixedperiod: 478,
         west_maxheight_accordion_organisationunit: 756,
         west_maxheight_accordion_organisationunitgroup: 298,
@@ -1801,7 +1802,7 @@ Ext.onReady( function() {
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
 			}
 			
-			DV.util.checkbox.setRelativePeriods(DV.c.period.rp);
+			DV.util.checkbox.setRelativePeriods(DV.c.relativeperiod.rp);
 			DV.cmp.dimension.relativeperiod.rewind.setValue(DV.c.relativeperiod.rewind);
 			
 			DV.store.fixedperiod.selected.removeAll();
@@ -3176,6 +3177,11 @@ Ext.onReady( function() {
 																xtype: 'checkbox',
 																paramName: 'reportingMonth',
 																boxLabel: DV.i18n.last_month
+															},
+															{
+																xtype: 'checkbox',
+																paramName: 'last3Months',
+																boxLabel: DV.i18n.last_3_months
 															},
 															{
 																xtype: 'checkbox',
