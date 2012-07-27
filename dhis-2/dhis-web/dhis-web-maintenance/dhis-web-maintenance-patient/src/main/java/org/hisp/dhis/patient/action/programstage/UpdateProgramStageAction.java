@@ -189,7 +189,8 @@ public class UpdateProgramStageAction
 
                 programStageDataElement.setSortOrder( new Integer( i ) );
 
-                programStageDataElement.setAllowProvidedElsewhere( allowProvidedElsewhere.get( i ) );
+                Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
+                programStageDataElement.setAllowProvidedElsewhere( allowed );
                 
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
 

@@ -41,7 +41,7 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
  */
 public interface ProgramDataEntryService
 {
-    final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?|<textarea.*?)[/]?>", Pattern.DOTALL );
+    final Pattern INPUT_PATTERN = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
     
     final Pattern IDENTIFIER_PATTERN_FIELD = Pattern.compile( "id=\"(\\d+)-(\\d+)-val\"" );
     
