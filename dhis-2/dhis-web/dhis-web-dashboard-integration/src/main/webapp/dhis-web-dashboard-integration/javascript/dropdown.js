@@ -99,3 +99,13 @@ function shareInterpretation()
 	    } );
     }
 }
+
+function showShareHelp()
+{
+	$( "#shareHelpForm" ).dialog( {
+		modal: true,
+		width: 380,
+		resizable: false,
+		title: "Share your data interpretations"
+	} );
+}
