@@ -350,16 +350,21 @@ function completedAndAddNewEvent()
 
 function removeEmptyEvents()
 {	
-	jQuery.getJSON( "removeEmptyEvents.action",
-		{
-			programStageId: jQuery('#selectDiv [id=programId] option:selected').attr('programStageId')
-		}, 
-		function( json ) 
-		{   
-			if(json.response=='success')
+	var result = window.confirm( i18n_confirm_remove_empty_events );
+    
+    if ( result )
+    {
+		jQuery.getJSON( "removeEmptyEvents.action",
 			{
-				showSuccessMessage( i18n_remove_empty_events_success );
-				validateSearchEvents( true )
-			}
-		});
+				programStageId: jQuery('#selectDiv [id=programId] option:selected').attr('programStageId')
+			}, 
+			function( json ) 
+			{   
+				if(json.response=='success')
+				{
+					showSuccessMessage( i18n_remove_empty_events_success );
+					validateSearchEvents( true )
+				}
+			});
+	}
 }
