@@ -288,8 +288,16 @@ public class UpdateDataElementAction
         dataElement.setActive( active );
         dataElement.setDomainType( domainType );
         dataElement.setType( valueType );
-        dataElement.setNumberType( numberType );
-        dataElement.setTextType( textType );
+        if ( DataElement.VALUE_TYPE_STRING.equalsIgnoreCase( valueType ) )
+        {
+            dataElement.setTextType( textType );
+            dataElement.setNumberType( null );
+        }
+        else
+        {
+            dataElement.setNumberType( numberType );
+            dataElement.setTextType( null );
+        }
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setZeroIsSignificant( zeroIsSignificant );

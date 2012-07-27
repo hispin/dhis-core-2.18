@@ -258,8 +258,14 @@ public class AddDataElementAction
         dataElement.setActive( true );
         dataElement.setDomainType( domainType );
         dataElement.setType( valueType );
-        dataElement.setNumberType( numberType );
-        dataElement.setTextType ( textType );
+        if ( DataElement.VALUE_TYPE_STRING.equalsIgnoreCase( valueType ) )
+        {
+            dataElement.setTextType( textType );
+        }
+        else
+        {
+            dataElement.setNumberType( numberType );
+        }
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setZeroIsSignificant( zeroIsSignificant );

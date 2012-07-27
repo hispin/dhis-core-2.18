@@ -156,7 +156,7 @@ public class TableAlteror
         
         executeSql( "ALTER TABLE organisationunit DROP COLUMN hasPatients" );
         
-        executeSql( "update dataelement set texttype='text' where valuetype='string'" );
+        executeSql( "update dataelement set texttype='text' where valuetype='string' and texttype is null" );
         
         // ---------------------------------------------------------------------
         // Update tables for dimensional model
