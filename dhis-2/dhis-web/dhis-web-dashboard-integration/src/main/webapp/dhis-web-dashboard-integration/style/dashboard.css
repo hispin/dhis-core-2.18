@@ -107,6 +107,29 @@
   display: none;
 }
 
+#shareHelpForm
+{
+  display: none;
+  padding: 5px 35px 5px 35px;
+}
+
+#shareHelpForm li
+{
+  margin-bottom: 10px;
+}
+
+#shareHelpForm a
+{
+  color: #3567cd;
+  outline: none;
+}
+
+#shareHelpLink
+{
+  color: #3567cd;
+  cursor: pointer;
+}
+
 #chartView
 {
   display: none; 
