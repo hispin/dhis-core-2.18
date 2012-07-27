@@ -6055,303 +6055,57 @@ The case update  is designed in the same manner so that services which are recei
             </orderedlist></para>
         </section>
       </section>
-<section id='run_case_aggregation'>
-<title>Person Aggregation</title>
-<para>To access <emphasis role="italic">Persons Aggregation</emphasis> module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Name-Based Data Records</emphasis> option. Select <emphasis role="italic">Person Aggregation</emphasis> option on left menu to proceed. Here are the main screen shots:</para>
-<screenshot>
-<screeninfo>Figure 2.5.4.4</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.4.4.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<screenshot>
-<screeninfo>Figure 2.5.4.5</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.4.5.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<para><itemizedlist>
-<listitem>
-<para>Area in the ORANGE frame: the facility hierarchy tree. </para>
-</listitem>
-<listitem>
-<para>Area in the BLUE frame: for choosing the data set, the start and end date of the aggregated period.</para>
-</listitem>
-</itemizedlist></para>
-<para>Click on the 
-<emphasis role="italic">Aggregate</emphasis> button to execute aggregate function.
-</para>
-<screenshot>
-<screeninfo>Figure 2.5.4.6 - Shows the result from the example</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.4.6.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<para></para>
-<para><emphasis role="bold">A Sample for Person Aggregation</emphasis></para>
-<para>E.g. Find the number of the children vaccinated BCG by defining a linking rule between the data elements of aggregate dataset named <emphasis role="italic">Number of children - BCG</emphasis> and the data element of a program stage named <emphasis role="italic">BCG dose given date</emphasis>.<orderedlist>
-<listitem>
-<para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Data Element and Indicators</emphasis> option and click on it. Select <emphasis role="italic">Data Element</emphasis> option to define two new data elements -</para>
-<para><itemizedlist>
-<listitem>
-<para>Define a new data element named <emphasis role="italic">Number of children - BCG</emphasis> with <emphasis role="italic">Aggregate</emphasis> option for Domain Type.</para>
-</listitem>
-<listitem>
-<para>Define a new data element named <emphasis role="italic">BCG dose give date</emphasis> with <emphasis role="italic">Patient</emphasis> option for Domain Type.</para>
-</listitem>
-</itemizedlist></para>
-<screenshot>
-<screeninfo>Figure 2.5.2.1</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.2.1.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<screenshot>
-<screeninfo>Figure 2.5.2.2 - Define a data element with <emphasis role="italic">Patient</emphasis> option for <emphasis role="italic">Domain Type</emphasis>.</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.2.2.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<screenshot>
-<screeninfo>Figure 2.5.2.3 - <emphasis role="italic">Add Data Element </emphasis>form</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata fileref="resources/images/patients_programs/Fig. 2.5.2.3.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-</listitem>
-<listitem>
-<para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Datasets</emphasis> option and click on it. Select <emphasis role="italic">Dataset</emphasis> option to create a new dataset named <emphasis role="italic">BCG Report</emphasis> and add <emphasis role="italic">Number of children - BCG</emphasis> data element into the dataset.</para>
-</listitem>
-<listitem>
-<para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Benificaries and Programs</emphasis> option and click on it. Select <emphasis role="italic">Program</emphasis> option to create a program named <emphasis role="italic">Child Health Program</emphasis> with a stage named <emphasis role="italic">Birth Details</emphasis> and add the <emphasis role="italic">BCG dose give date</emphasis> data element into this stage.</para>
-</listitem>
-<listitem>
-<para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Program </emphasis>option and click on it. Select <emphasis role="italic">Person</emphasis> option to create three benificiaries named <emphasis role="italic">Micheal</emphasis>, <emphasis role="italic">Alice</emphasis> and <emphasis role="italic">Tom</emphasis> and enrol them into <emphasis role="italic">Child Health Program</emphasis>.</para>
-</listitem>
-<listitem>
-<para>Create a new Person Aggregation QueryBuilder named <emphasis role="italic">Number of children - BCG Builder </emphasis>to linking between the data elements.</para>
-<screenshot>
-<screeninfo>Figure 2.5.3.4</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.3.4.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-</listitem>
-<listitem>
-<para>From <emphasis role="italic">Services</emphasis> menu, go to <emphasis role="italic">Name-Based Data Records</emphasis> option and click on it. Select <emphasis role="italic">Data Entry</emphasis> option.</para>
-<itemizedlist>
-<listitem>
-<para>Choose benificiary <emphasis role="italic">Micheal</emphasis> and open the <emphasis role="italic">Birth Details</emphasis> stage into <emphasis role="italic">Child Health Program</emphasis>. Enter value for <emphasis role="italic">BCG dose give date</emphasis> data element as &quot;<emphasis role="italic">2011-02-18</emphasis>&quot;</para>
-</listitem>
-<listitem>
-<para>Choose benificiary <emphasis role="italic">Alice</emphasis> and open the <emphasis role="italic">Birth Details</emphasis> stage into Child Health Program. Enter Enter value for <emphasis role="italic">BCG dose give date</emphasis> data element as &quot;<emphasis role="italic">2011-02-18</emphasis>&quot;</para>
-</listitem>
-<listitem>
-<para>Choose benificiary <emphasis role="italic">Tom</emphasis> and no enter data value for <emphasis role="italic">Birth Details</emphasis> stage.</para>
-<warning>
-<para>Before entering data value for the stage, choose <emphasis role="italic">Report Date</emphasis> as &quot;<emphasis role="italic">2011-02-28</emphasis>&quot;</para>
-</warning>
-</listitem>
-</itemizedlist>
-</listitem>
-<listitem>
-<para>From <emphasis role="italic">Services</emphasis> menu, go to Name-Based Data Records option and click on it. Select <emphasis role="italic">Case Aggregation</emphasis> option to run<emphasis role="italic"> Number of children - BCG Builder</emphasis> to get data value and save it into database.</para>
-<screenshot>
-<screeninfo>Figure 2.5.3.5</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.3.5.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<screenshot>
-<screeninfo>Figure 2.5.4.6 - Result after running the query builder</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="70%" fileref="resources/images/patients_programs/Fig. 2.5.4.6.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-</listitem>
-</orderedlist></para>
-</section>
-</section>
-<section>
-<title>Advanced functions</title>
-<para>The content in this part is for the expert users or administrative users who are capable and responsible for development and change</para>
-<section>
-<title>Person attribute and Person attribute group</title>
-<section id='patient_attribute'>
-<title>Person attribute</title>
-<para>Create, modify and view person attributes. An attribute can be used to register extra information for a person.</para>
-<para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Attribute</emphasis> option to create a new attribute for persons. </para>
-<para>After, click on <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Person Attribute Management</emphasis> window to go to <emphasis role="italic">Add New Person Attribute Management</emphasis> window.</para>
-<para>Basic information</para>
-<itemizedlist>
-<listitem>
-<para><emphasis role="italic">Name</emphasis>: Name of person attribute.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Description</emphasis>: Description of person attribute.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Mandatory</emphasis>: Entering value for this attribute is required or not.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Inheritable</emphasis></para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Value Type</emphasis>: Data type of value inputed.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Program</emphasis>: specify a program which this attribute belongs to.</para>
-</listitem>
-</itemizedlist>
-</section>
-<section id='patient_attribute_group'>
-<title>Person attribute group</title>
-<para>To access the person attribute group maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Attribute Group</emphasis> option to create a new an attribute group.</para>
-<para>To create a new attribute group, click the <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Person Attribute Group</emphasis> window to go to <emphasis role="italic">Add New Person Attribute Group</emphasis> window , click the <emphasis role="italic">Add new</emphasis> button. Fill in the <emphasis role="italic">Name</emphasis> and <emphasis role="italic">Description</emphasis> fields and then select attributes that should belong to the group from the left panel. </para>
-<para>Click the <emphasis role="italic">Move selected items</emphasis> button to add the selected attributes to the attribute group. Click the <emphasis role="italic">Remove selected items</emphasis> button to remove attributes from the group that have been selected in the right panel. </para>
-<para>Finally, click the <emphasis role="italic">Add</emphasis> button to save changes, or the <emphasis role="italic">Cancel</emphasis> button to discard any changes..</para>
-</section>
-</section>
-<section id='patient_identifier_type'>
-<title>Person identifier type</title>
-<para>To access the person identifier type maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Person Identifier Type</emphasis> option to create a new identifier type.</para>
-<para>To creating a new identifier type, click the <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Person Identifier Type Management </emphasis>window to go to <emphasis role="italic">Add New Person Identifier Type</emphasis> window.</para>
-<para>Basic information -</para>
-<itemizedlist>
-<listitem>
-<para><emphasis role="italic">Name</emphasis>: Name of identifier type.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Description</emphasis>: Description of identifier type.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Mandatory</emphasis>: Entering value for the identifier is required or not.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Related</emphasis></para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Number of characters</emphasis>: Maximum number of characters for value inputed. </para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Type</emphasis>: Data type of value inputted.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Program</emphasis>: specify a program which the identyfier type belongs to.</para>
-</listitem>
-</itemizedlist>
-</section>
-<section id='relationship_type'>
-<title>Relationship type</title>
-<para>Relationship type section provides a mechanism for defining any relationship types and link persons through these relationship types by creating specific relationships.</para>
-<para>To access the relationship type maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Relationship Type</emphasis> option to create a new relationship type.</para>
-<screenshot>
-<screeninfo>Fig. 2.7.3a</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="80%" fileref="resources/images/patients_programs/Fig. 2.7.3a.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<para>To define a new relationship type, click <emphasis role="italic">Add</emphasis> button into <emphasis role="italic">Relationship Type Management </emphasis>window to go to <emphasis role="italic">Add new Relationship Type</emphasis> window.</para>
-<screenshot>
-<screeninfo>Fig 2.7.3b</screeninfo>
-<mediaobject>
-<imageobject>
-<imagedata width="80%" fileref="resources/images/patients_programs/Fig. 2.7.3b.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-</section>
-<section id="program">
-<title>Program and Program stage</title>
-<section>
-<title>Program</title>
-<para>Program section provides a mechanism for defining a health programme.</para>
-<para>To access the program maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Program</emphasis> option.</para>
-<para>To define a new program, click the <emphasis role="italic">Add new</emphasis> button on the main page. Fill all fields with read asterisk, and then click the &quot;Add&quot; button.</para>
-<para>Basic information -</para>
-<itemizedlist>
-<listitem>
-<para><emphasis role="italic">Name</emphasis>: The name of the program</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Description</emphasis>: Descriptions, meanings, explanation, etc. of/about the program.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Type</emphasis>: There are three type of program: multi events with registration, single event with registration and single event without registration.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Show provided elsewhere</emphasis>: Set show/hide status of provided elsewhere column in data entry form.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Description of enrollment date</emphasis>: The date in which a person is registered to the system.
-For example: the date in which a person enrolls to the system.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Description of incident date</emphasis>: The date when the person got the disease or he/she has just been committed to an equivalent program for being followed-up. E.g. In the Immunization program for child under 1yr old, the incident date is the birthday; in the maternal program, the incident date is the date of last menstrual period (LMP).</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Duration in days</emphasis>: System gets the days to calculate the activity plan of each person in mobile project ( refer mobile chapter ).</para>
-</listitem>
-</itemizedlist>
-</section>
-<section>
-<title>Program stage</title>
-<para>To define a program stage, click the <emphasis role="italic">Program Stage Management</emphasis> icon  and then <emphasis role="italic">Add new</emphasis> button. Fill in the Name and Description fields and then select the data elements that should belong to the group from the left panel. Click the Move selected button to add the selected data elements to the right panel. Click the Remove selected button to remove data elements that have been selected in the right panel. Finally, click the Add button to save changes, or the Cancel button to discard any changes.</para>
-<para>Basic information -</para>
-<itemizedlist>
-<listitem>
-<para><emphasis role="italic">Name</emphasis>: Name of the program stage</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Description</emphasis>: The description of the program stage</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Scheduled days from start</emphasis>: The minimum number of days to wait for starting the program stage.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Repeatable</emphasis>: specify the program stage as repeatable or not.</para>
-</listitem>
-<listitem>
-<para><emphasis role="italic">Standard interval days</emphasis>: specify the number of days to repeat the repeatable program stage.</para>
-</listitem>
-</itemizedlist>
-</section>
-</section>
-<section id='validation_criteria'>
-<title>Validation criteria</title>
-<para>Validation criteria section provide a mechanism for defining criteria for persons when enrolling a program.</para>
-<para>To access the validation criteria maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Validation Criteria</emphasis> option to create a new program</para>
-<para>To create a new validation criterion, click the <emphasis role="italic">Add new</emphasis> button. Fill all fields with read asterisk, and click <emphasis role="italic">Add</emphasis> button.</para>
-<screenshot>
-<screeninfo/>
-<mediaobject>
-<imageobject>
-<imagedata width="80%" fileref="resources/images/patients_programs/Fig. 2.6.6.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-<para>You can assign facilities to a validation criterion in the <emphasis role="italic">Validation Criteria Management </emphasis>(list of available validation criteria are shown) by clicking the blue folder icon, the first icon under Operations, corresponding to the validation criterion you would like to assign. Click the <emphasis role="italic">Move selected</emphasis> button to add the selected programs to the validation criterion. Click the <emphasis role="italic">Remove selected</emphasis> button to remove programs from the group that have been selected in the right panel. Finally, click the <emphasis role="italic">Save</emphasis> button to save changes, or the <emphasis role="italic">Cancel</emphasis> button to discard any changes.</para>
-</section>
+	  <section id="run_case_aggregation">
+        <title>Person aggregation</title>
+        <para><emphasis role="italic">Person Aggregation</emphasis> module is used for aggregating individual data and import into aggregated data element. To open <emphasis>Person Aggregation</emphasis> module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Individual Records</emphasis> option. Select <emphasis role="italic">Person Aggregation</emphasis> option on left menu.  <emphasis>Person Aggregation form</emphasis> is opened as below -</para>
+        <screenshot>
+          <screeninfo>Figure 2.5.4.4</screeninfo>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" fileref="resources/images/patients_programs/person_aggregation_form.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>In the <emphasis>Person aggregation form</emphasis> above</para>
+        <orderedlist>
+          <listitem>
+            <para>Select <emphasis role="italic">dataset</emphasis> from Dataset List to get aggregate values. Note that only datasets which were assigned to at least one organisation unit will be shown in this list.</para>
+          </listitem>
+          <listitem>
+            <para>Depend on frequency of the selected dataset, select <emphasis role="italic">period</emphasis> to get aggregate data. For example, if frequency of dataset is quarterly, then select begin quarter and end quarter. To select a particular quarter, then begin quarter and end quarter is the same particular quarter name.</para>
+          </listitem>
+          <listitem>
+            <para>Select <emphasis role="italic">organisation unit level</emphasis> where person data will be select to aggregate. There are 3 options - </para>
+            <para>- <emphasis role="italic">Children only</emphasis>: Individual data from the children of  the selected organisation unit will be aggregated.</para>
+            <para>- <emphasis role="italic"> Selected</emphasis>: Individual  data from the selected organisation unit will be aggregated. </para>
+            <para>- <emphasis role="italic">All</emphasis>: Individual data from both selected organisation unit and its children will be aggregated.</para>
+          </listitem>
+          <listitem>
+            <para>Click on the 
+<emphasis role="italic">Aggregate</emphasis> button to execute aggregate function. The <emphasis>Person aggregation result</emphasis>page is opened as below figure -</para>
+          </listitem>
+        </orderedlist>
+        <screenshot>
+          <screeninfo>Figure - Person aggregation result</screeninfo>
+          <mediaobject>
+            <imageobject>
+              <imagedata width="70%" fileref="resources/images/patients_programs/person_aggregation_result.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+        <para>In <emphasis>Person aggregation result</emphasis> page -</para>
+        <itemizedlist>
+          <listitem>
+            <para>Click <emphasis role="italic">Save all values</emphasis> button to save all aggregated data values .</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="italic"><emphasis role="italic">Click</emphasis> Orange arrow</emphasis> next to period name for showing list of aggregated data values at this period. Select only necessary data values and click <emphasis role="italic">Save</emphasis> selected values to save them</para>
+          </listitem>
+          <listitem>
+            <para><emphasis><emphasis role="italic">Click </emphasis>Show details</emphasis> icon  to view detail  information which aggregated.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
 </section>
 </section>
 </chapter>
