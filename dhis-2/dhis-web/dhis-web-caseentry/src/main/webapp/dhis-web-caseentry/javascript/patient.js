@@ -10,6 +10,8 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	hideById('addRelationshipDiv');
 	hideById('migrationPatientDiv');
 	enable('listPatientBtn');
+	enable('addPatientBtn');
+	enable('advancedSearchBtn');
 	setFieldValue("orgunitName", orgUnitNames[0]);
 }
 

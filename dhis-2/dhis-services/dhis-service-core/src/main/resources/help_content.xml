@@ -5795,13 +5795,13 @@ The case update  is designed in the same manner so that services which are recei
 </section>
 <section id='multiple_individual_records'>
 <title>Multiple individual records</title>
-<para>The multiple individual records function is where individual data is manually registered in the DHIS database. A list events for each person who enrolled into the seleted program after clicking a multi events with registration.</para>
+<para>The multiple individual records function is where individual data is manually registered in the DHIS database. A list events for each person who enrolled into the selected program after clicking a multi events with registration.</para>
 <para>To access the multiple individual records function, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Individual Records</emphasis> option and click on it. Select <emphasis role="italic">Multiple individual records</emphasis> option on left menu to proceed.</para>
-<para>To start enter data, the first step is to open a list events of person who enrolled a certain progam by clicking a program in the list on the main page. Follow these steps:</para>
+<para>To start enter data, the first step is to open a list events of person who enrolled a certain program by clicking a program in the list on the main page. Follow these steps:</para>
 <orderedlist>
 <listitem>
-<para>Locate the orgunit you want to register data for in the tree menu to the left. Expand and close branches by clicking on the +/- symbols. A quick way to find an orgunit is to use the search box just above the tree (the green symbol), but you need to write in the full name to get a match.</para>
-<para>The system loads multi events with registration which belong to the selected orgunit.</para>
+<para>Locate the organisation unit you want to register data for in the tree menu to the left. Expand and close branches by clicking on the +/- symbols. A quick way to find an orgunit is to use the search box just above the tree (the green symbol), but you need to write in the full name to get a match.</para>
+<para>The system loads multi events with registration which belong to the selected organisation unit.</para>
 </listitem>
 <listitem>
 <para>Select a program in the list. A list events of persons who enrolled into the selected program is shown.</para>

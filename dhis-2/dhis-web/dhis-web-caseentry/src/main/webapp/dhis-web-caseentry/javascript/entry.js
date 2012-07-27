@@ -629,11 +629,10 @@ function doComplete( isCreateEvent )
 					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
 
 					disableCompletedButton(true);
-					enable('newEncounterBtn');
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					if( irregular == 'true' )
 					{
-						enable('createEventBtn');
+						enable('newEncounterBtn');
 						jQuery('#createNewEncounterDiv').dialog({
 								title: i18n_create_new_event,
 								maximize: true, 
@@ -652,6 +651,10 @@ function doComplete( isCreateEvent )
 						var edate= new Date(y, m, d);
 												
 						jQuery('#dueDateNewEncounter').datepicker( "setDate" , edate );
+					}
+					else
+					{
+						disable('newEncounterBtn');
 					}
 					
 					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');
