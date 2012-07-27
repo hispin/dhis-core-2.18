@@ -403,9 +403,6 @@ public class DefaultReportService
 
         Pattern p = Pattern.compile( "\\[(.*?)\\]" );
         Matcher matcher = p.matcher( expression );
-
-        System.out.println( "*INFO :Expression: " + expression );
-
         String localValue;
 
         while ( matcher.find() )
@@ -416,9 +413,6 @@ public class DefaultReportService
         }
 
         result = expression;
-
-        System.out.println( "*INFO :Result:" + result );
-
         return result;
     }
 
