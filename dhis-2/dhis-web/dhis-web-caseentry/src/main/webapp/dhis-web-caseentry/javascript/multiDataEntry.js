@@ -28,6 +28,7 @@ function selectProgram( programId, programName )
 		function()
 		{
 			hideById('programDiv');
+			showById('colorHelpLink');
 			
 			setFieldValue('programId', programId);
 			setInnerHTML('programName', programName);
@@ -46,6 +47,7 @@ function backButtonOnClick()
 	hideById('btnBack');
 	hideById('programName');
 	showById('programDiv');
+	hideById('colorHelpLink');
 }
 function viewPrgramStageRecords( programStageInstanceId ) 
 {

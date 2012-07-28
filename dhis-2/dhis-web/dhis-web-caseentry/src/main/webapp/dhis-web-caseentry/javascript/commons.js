@@ -411,3 +411,15 @@ function enableBtn(){
 		enable('advancedSearchBtn');
 	}
 }
+
+function showColorHelp()
+{
+	jQuery('#colorHelpDiv').dialog({
+		title: i18n_color_quick_help,
+		maximize: true, 
+		closable: true,
+		modal:false,
+		width: 500,
+		height: 180
+	}).show('fast');
+}
