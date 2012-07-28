@@ -1991,7 +1991,7 @@ Ext.onReady( function() {
 			render: function() {
 				if (!DV.c.rendered) {
 					DV.cmp.toolbar.datatable.enable();
-					DV.cmp.toolbar.datatable.setTooltip('');
+					DV.cmp.toolbar.datatable.disabledTooltip.destroy();
 					DV.c.rendered = true;
 				}
 			},
@@ -2499,6 +2499,12 @@ Ext.onReady( function() {
                                 afterrender: function(b) {
                                     if (b.xtype === 'button') {
                                         DV.cmp.charttype.push(b);
+                                        
+										Ext.create('Ext.tip.ToolTip', {
+											target: b.getEl(),
+											html: b.tooltiptext,
+											'anchor': 'bottom'
+										});
                                     }
                                 }
                             }
@@ -2513,44 +2519,44 @@ Ext.onReady( function() {
 								xtype: 'button',
                                 icon: 'images/column.png',
                                 name: DV.conf.finals.chart.column,
-                                tooltip: DV.i18n.column_chart,
+                                tooltiptext: DV.i18n.column_chart,
                                 pressed: true
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/column-stacked.png',
                                 name: DV.conf.finals.chart.stackedcolumn,
-                                tooltip: DV.i18n.stacked_column_chart
+                                tooltiptext: DV.i18n.stacked_column_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar.png',
                                 name: DV.conf.finals.chart.bar,
-                                tooltip: DV.i18n.bar_chart
+                                tooltiptext: DV.i18n.bar_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar-stacked.png',
                                 name: DV.conf.finals.chart.stackedbar,
-                                tooltip: DV.i18n.stacked_bar_chart
+                                tooltiptext: DV.i18n.stacked_bar_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/line.png',
                                 name: DV.conf.finals.chart.line,
-                                tooltip: DV.i18n.line_chart
+                                tooltiptext: DV.i18n.line_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/area.png',
                                 name: DV.conf.finals.chart.area,
-                                tooltip: DV.i18n.area_chart
+                                tooltiptext: DV.i18n.area_chart
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/pie.png',
                                 name: DV.conf.finals.chart.pie,
-                                tooltip: DV.i18n.pie_chart
+                                tooltiptext: DV.i18n.pie_chart
                             }
                         ]
                     },
@@ -4695,17 +4701,27 @@ Ext.onReady( function() {
 							xable: function() {
 								if (DV.c.currentFavorite) {
 									this.enable();
-									this.setTooltip('');
+									this.disabledTooltip.destroy();
 								}
 								else {
-									this.disable();
-									this.setTooltip(DV.i18n.save_load_favorite_before_sharing);
+									if (DV.c.rendered) {
+										this.disable();
+										this.createTooltip();
+									}
 								}
 							},
 							getTitle: function() {
 								return DV.i18n.share + ' ' + DV.i18n.interpretation +
 										': <span style="font-weight:normal; font-size:10px">' + DV.c.currentFavorite.name + '</span>';
 							},
+							disabledTooltip: null,
+							createTooltip: function() {
+								this.disabledTooltip = Ext.create('Ext.tip.ToolTip', {
+									target: this.getEl(),
+									html: DV.i18n.save_load_favorite_before_sharing,
+									'anchor': 'bottom'
+								});
+							},								
 							handler: function() {
 								if (DV.cmp.share.window) {
 									DV.cmp.share.window.setTitle(this.getTitle());
@@ -4787,7 +4803,10 @@ Ext.onReady( function() {
                             listeners: {
                                 added: function() {
                                     DV.cmp.toolbar.share = this;
-                                }
+                                },
+                                afterrender: function() {
+									this.createTooltip();
+								}
                             }
 						},
                         {
@@ -4849,7 +4868,6 @@ Ext.onReady( function() {
 							cls: 'dv-toolbar-btn-2',
                             text: DV.i18n.data_table,
                             disabled: true,
-                            tooltip: DV.i18n.create_chart_before_datatable,
                             handler: function() {
                                 var p = DV.cmp.region.east;
                                 if (p.collapsed && p.items.length) {
@@ -4865,7 +4883,14 @@ Ext.onReady( function() {
                             listeners: {
                                 added: function() {
                                     DV.cmp.toolbar.datatable = this;
-                                }
+                                },
+                                afterrender: function() {
+									this.disabledTooltip = Ext.create('Ext.tip.ToolTip', {
+										target: this.getEl(),
+										html: DV.i18n.create_chart_before_datatable,
+										'anchor': 'bottom'
+									});
+								}
                             }
                         },
                         '->',
