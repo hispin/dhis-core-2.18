@@ -6161,7 +6161,7 @@ The case update  is designed in the same manner so that services which are recei
               <para>YELLOW: Coming stages.</para>
             </listitem>
             <listitem>
-              <para>GREEN: Compete stages.</para>
+              <para>GREEN: Completed stages.</para>
             </listitem>
           </itemizedlist>
         </section>

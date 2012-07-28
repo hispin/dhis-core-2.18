@@ -532,13 +532,13 @@ public class DefaultProgramDataEntryService
         {
             inputHTML += jsCodeForOnchange;
         }
-System.out.println("\n\n === \n dataElement.getDetailedTextType() : " + dataElement.getDetailedTextType() );
+        
         if ( DataElement.VALUE_TYPE_LONG_TEXT.equals( dataElement.getDetailedTextType() ) )
         {
             inputHTML = inputHTML.replaceFirst( "input", "textarea" );
             inputHTML += " >$VALUE</textarea>";
         }
-System.out.println("\n\n inputHTML: " + inputHTML );        
+        
         return inputHTML;
     }
 
