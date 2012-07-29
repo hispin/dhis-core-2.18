@@ -27,14 +27,14 @@
 
 package org.hisp.dhis.light.utils;
 
-import java.util.Collection;
-import java.util.Set;
-
 import org.hisp.dhis.api.mobile.IProgramService;
 import org.hisp.dhis.api.mobile.model.Program;
 import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
+
+import java.util.Collection;
+import java.util.Set;
 
 public class NamebasedUtils
 {
@@ -127,6 +127,7 @@ public class NamebasedUtils
                 return programStageInstance;
             }
         }
+
         return null;
     }
 }
