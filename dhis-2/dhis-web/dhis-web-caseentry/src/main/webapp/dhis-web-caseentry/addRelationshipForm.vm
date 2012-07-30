@@ -1,5 +1,5 @@
 <script>
-	jQuery('#relationshipSelectForm').ready(	function(){
+	jQuery('#relationshipSelectForm').ready(function(){
 		
 		jQuery('name').focus();
 			
@@ -103,7 +103,7 @@
             </tr>
             <tr>
             	<td>
-					<input type="button" value="$i18n.getString( 'assign_relationship' )" onclick="javascript:addRelationship()" />
+					<input type="button" value="$i18n.getString( 'assign_relationship' )" onclick="javascript:validateAddRelationship()" />
 					<input type="button" value="$i18n.getString( 'back_to_relationship' )" onclick="showRelationshipList($patient.id)" />
 				</td>
             </tr>            
