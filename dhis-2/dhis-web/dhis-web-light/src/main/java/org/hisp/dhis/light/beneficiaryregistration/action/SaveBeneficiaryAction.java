@@ -39,6 +39,7 @@ import org.hisp.dhis.util.ContextUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -314,8 +315,7 @@ public class SaveBeneficiaryAction
             try
             {
                 patient.setBirthDateFromAge( Integer.parseInt( dateOfBirth ), Patient.AGE_TYPE_YEAR );
-            }
-            catch ( NumberFormatException nfe )
+            } catch ( NumberFormatException nfe )
             {
                 validationMap.put( "dob", "is_invalid_number" );
             }
@@ -327,8 +327,7 @@ public class SaveBeneficiaryAction
                 DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
                 DateTime date = sdf.parseDateTime( dateOfBirth );
                 patient.setBirthDate( date.toDate() );
-            }
-            catch ( Exception e )
+            } catch ( Exception e )
             {
                 validationMap.put( "dob", "is_invalid_date" );
             }
@@ -344,12 +343,19 @@ public class SaveBeneficiaryAction
             {
                 String key = "IDT" + patientIdentifierType.getId();
                 String value = parameterMap.get( key );
-                PatientIdentifier duplicateId = patientIdentifierService.get( patientIdentifierType, value );
+
+                PatientIdentifier duplicateId = null;
+
+                if ( !value.isEmpty() )
+                {
+                    patientIdentifierService.get( patientIdentifierType, value );
+                }
+
                 if ( value != null )
                 {
                     if ( patientIdentifierType.isMandatory() && value.trim().equals( "" ) )
                     {
-                        this.validationMap.put( key, "is_empty" );
+                        this.validationMap.put( key, "is_mandatory" );
                     }
                     else if ( patientIdentifierType.getType().equals( "number" ) && !FormUtils.isNumber( value ) )
                     {
@@ -367,6 +373,7 @@ public class SaveBeneficiaryAction
                         patientIdentifierSet.add( patientIdentifier );
                         patientIdentifier.setIdentifier( value.trim() );
                     }
+
                     this.previousValues.put( key, value );
                 }
             }
@@ -384,7 +391,7 @@ public class SaveBeneficiaryAction
                 {
                     if ( patientAttribute.isMandatory() && value.trim().equals( "" ) )
                     {
-                        this.validationMap.put( key, "is_empty" );
+                        this.validationMap.put( key, "is_mandatory" );
                     }
                     else if ( value.trim().length() > 0
                         && patientAttribute.getValueType().equals( PatientAttribute.TYPE_INT )
@@ -406,6 +413,7 @@ public class SaveBeneficiaryAction
                         {
                             PatientAttributeOption option = patientAttributeOptionService.get( NumberUtils.toInt(
                                 value, 0 ) );
+
                             if ( option != null )
                             {
                                 patientAttributeValue.setPatientAttributeOption( option );
