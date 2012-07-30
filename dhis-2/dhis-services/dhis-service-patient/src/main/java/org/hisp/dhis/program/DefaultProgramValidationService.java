@@ -27,6 +27,9 @@
 
 package org.hisp.dhis.program;
 
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
 import static org.hisp.dhis.program.ProgramValidation.AFTER_CURRENT_DATE;
 import static org.hisp.dhis.program.ProgramValidation.AFTER_DUE_DATE;
 import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_CURRENT_DATE;
@@ -36,9 +39,6 @@ import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE;
 import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS;
 import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_CURRENT_DATE;
 import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_DUE_DATE;
-import static org.hisp.dhis.program.ProgramValidation.OBJECT_PROGRAM_STAGE_DATAELEMENT;
-import static org.hisp.dhis.program.ProgramValidation.SEPARATOR_ID;
-import static org.hisp.dhis.program.ProgramValidation.SEPARATOR_OBJECT;
 
 import java.util.Collection;
 import java.util.Date;
@@ -65,6 +65,8 @@ public class DefaultProgramValidationService
 {
     private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
         + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
+
+    private final String INVALID_CONDITION = "Invalid condition";
 
     private ProgramValidationStore validationStore;
 
@@ -328,6 +330,43 @@ public class DefaultProgramValidationService
         }
 
         return programValidation;
+    }
+
+    public String getValidationDescription( String condition )
+    {
+        StringBuffer description = new StringBuffer();
+
+        Pattern patternCondition = Pattern.compile( regExp );
+
+        Matcher matcher = patternCondition.matcher( condition );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+            String[] ids = info[1].split( SEPARATOR_ID );
+
+            String programStageId = ids[0];
+            ProgramStage programStage = programStageService.getProgramStage( Integer.parseInt( programStageId ) );
+
+            int dataElementId = Integer.parseInt( ids[1] );
+            DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+            if ( programStage == null || dataElement == null )
+            {
+                return INVALID_CONDITION;
+            }
+
+            matcher.appendReplacement( description, "[" + programStage.getName() + SEPARATOR_ID + dataElement.getName()
+                + "]" );
+
+        }
+
+        matcher.appendTail( description );
+
+        return description.toString();
     }
 
     // -------------------------------------------------------------------------

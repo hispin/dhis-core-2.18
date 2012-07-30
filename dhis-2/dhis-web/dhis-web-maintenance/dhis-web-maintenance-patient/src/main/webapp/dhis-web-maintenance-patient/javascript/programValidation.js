@@ -69,7 +69,7 @@ function insertOperator( decriptionDiv, target, value )
 
 function getValidationDescription( decriptionDiv, sideDiv )
 {
-	$.get("getCaseAggregationDescription.action",
+	$.postUTF8("getProgramValidationDescription.action",
 		{
 			condition: getFieldValue( sideDiv )
 		},

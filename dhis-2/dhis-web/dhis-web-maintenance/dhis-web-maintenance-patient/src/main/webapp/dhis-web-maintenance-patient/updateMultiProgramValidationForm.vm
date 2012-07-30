@@ -19,7 +19,7 @@
 	</tr>
 	<tr>
 		<td colspan='2'>			
-			<input type="text" id='description' style='width:640px' name='description' value='$validation.description'>
+			<input type="text" id='description' style='width:640px' name='description' value='$validation.description' style='width:640px;'>
 		</td>
 	</tr>
 	<tr>
@@ -40,7 +40,7 @@
 	</tr>
 	<tr>
 		<td>
-			<select id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();">
+			<select id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();" style='width:320px;'>
 				<option value=''>[$i18n.getString( "please_select" )]</option>
 				#foreach($stage in $validation.program.programStages)
 				<option value='$stage.id'>$stage.name</option>
@@ -48,7 +48,7 @@
 			</select>
 		</td>
 		<td>
-			<select id='rightStage' name='rightStage' onchange="getRightPrgramStageDataElements();">
+			<select id='rightStage' name='rightStage' onchange="getRightPrgramStageDataElements();" style='width:320px;'>
 				<option value=''>[$i18n.getString( "please_select" )]</option>
 				#foreach($stage in $validation.program.programStages)
 				<option value='$stage.id'>$stage.name</option>
@@ -58,11 +58,11 @@
 	</tr>
 	<tr>
 		<td>
-			<select id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide');">
+			<select id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide');" style='width:320px;'>
 			</select>
 		</td>
 		<td>
-			<select id='rightSideDE' name='rightSideDE' size='7' ondblclick="insertDataElement(this, 'rightSide');">
+			<select id='rightSideDE' name='rightSideDE' size='7' ondblclick="insertDataElement(this, 'rightSide');" style='width:320px;'>
 			</select>
 		</td>
 	</tr>
@@ -95,23 +95,23 @@
 	</tr>
 	<tr>
 		<td>
-			<textarea rows='5' id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')">$validation.leftSide</textarea>
+			<textarea rows='5' id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:320px;'>$validation.leftSide</textarea>
 		</td>
 		<td>
-			<textarea rows='5' id='rightSide' name='rightSide' onkeyup="getValidationDescription('rightStageDescription', 'rightSide')">$validation.rightSide</textarea>
+			<textarea rows='5' id='rightSide' name='rightSide' onkeyup="getValidationDescription('rightStageDescription', 'rightSide')" style='width:320px;'>$validation.rightSide</textarea>
 		</td>
 	</tr>
 	<tr>	
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='leftStageDescription'>$!leftDescription</div>
+				<div id='leftStageDescription' style='width:320px;'>$!leftDescription</div>
 			</fieldset>
 		</td>
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='rightStageDescription'>$!rightDescription</div>
+				<div id='rightStageDescription' style='width:320px;'>$!rightDescription</div>
 			</fieldset>
 		</td>
 	</tr>

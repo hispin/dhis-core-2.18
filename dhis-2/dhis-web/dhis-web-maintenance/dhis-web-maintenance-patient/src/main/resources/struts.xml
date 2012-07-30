@@ -835,5 +835,12 @@
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
 
+		<action name="getProgramValidationDescription"
+			class="org.hisp.dhis.patient.action.validation.GetProgramValidationDescriptionAction">
+			<result name="success" type="velocity">
+				/dhis-web-maintenance-patient/responseCaseAggDescription.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
 	</package>
 </struts>

@@ -777,9 +777,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programValidationService">
 			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
 		</property>
-		<property name="aggregationConditionService">
-			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
-		</property>
 	</bean>
 
 	<bean
@@ -821,6 +818,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="programValidationService"
 			ref="org.hisp.dhis.program.ProgramValidationService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.validation.GetProgramValidationDescriptionAction"
+		class="org.hisp.dhis.patient.action.validation.GetProgramValidationDescriptionAction"
+		scope="prototype">
+		<property name="programValidationService">
+			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
+		</property>
 	</bean>
 
 </beans>

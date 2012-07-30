@@ -24,51 +24,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.hisp.dhis.patient.action.validation;
 
-import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $ GetProgramValidationAction.java Apr 28, 2011 11:17:58 AM $
+ * @version $ID : GetAggConditionDescriptionAction.java Jan 11, 2011 9:14:19 PM
+ *          $
  */
-public class GetProgramValidationAction
+public class GetProgramValidationDescriptionAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private ProgramValidationService programValidationService;
-    
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
 
-    private Integer validationId;
+    private String condition;
 
-    private ProgramValidation validation;
-
-    private String leftDescription;
-
-    public String getLeftDescription()
-    {
-        return leftDescription;
-    }
-
-    private String rightDescription;
-
-    public String getRightDescription()
-    {
-        return rightDescription;
-    }
+    private String description;
 
     // -------------------------------------------------------------------------
-    // Getter && Setter
+    // Getters && Setters
     // -------------------------------------------------------------------------
 
     public void setProgramValidationService( ProgramValidationService programValidationService )
@@ -76,30 +61,26 @@ public class GetProgramValidationAction
         this.programValidationService = programValidationService;
     }
 
-    public void setValidationId( Integer validationId )
+    public String getDescription()
     {
-        this.validationId = validationId;
+        return description;
     }
 
-    public ProgramValidation getValidation()
+    public void setCondition( String condition )
     {
-        return validation;
+        this.condition = condition;
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override
     public String execute()
         throws Exception
     {
-        validation = programValidationService.getProgramValidation( validationId );
-
-        leftDescription = programValidationService.getValidationDescription( validation.getLeftSide() );
-        rightDescription = programValidationService.getValidationDescription( validation.getRightSide() );
+        description = programValidationService.getValidationDescription( condition );
 
         return SUCCESS;
     }
-
 }
