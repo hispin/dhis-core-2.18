@@ -332,11 +332,12 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         Map<Field, Object> fields = detachFields( object );
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
+        reattachFields( object, fields );
+
         log.debug( "Trying to save new object => " + ImportUtils.getDisplayName( object ) + " (" + object.getClass().getSimpleName() + ")" );
         objectBridge.saveObject( object );
 
         updatePeriodTypes( object );
-        reattachFields( object, fields );
         reattachCollectionFields( object, collectionFields );
 
         objectBridge.updateObject( object );
@@ -369,10 +370,11 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
         Map<Field, Object> fields = detachFields( object );
         Map<Field, Collection<Object>> collectionFields = detachCollectionFields( object );
 
+        reattachFields( object, fields );
+
         persistedObject.mergeWith( object );
         updatePeriodTypes( persistedObject );
 
-        reattachFields( persistedObject, fields );
         reattachCollectionFields( persistedObject, collectionFields );
 
         log.debug( "Starting update of object " + ImportUtils.getDisplayName( persistedObject ) + " (" + persistedObject.getClass()

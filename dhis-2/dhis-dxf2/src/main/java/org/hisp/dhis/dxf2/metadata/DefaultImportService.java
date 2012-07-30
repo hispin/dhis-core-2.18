@@ -108,11 +108,13 @@ public class DefaultImportService
             objectBridge.setWriteEnabled( false );
         }
 
-        log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + new Date() );
-
-        if(taskId != null)
+        if ( taskId != null )
         {
             notifier.notify( taskId, TaskCategory.METADATA_IMPORT, "Importing meta-data" );
+        }
+        else
+        {
+            log.info( "User '" + currentUserService.getCurrentUsername() + "' started import at " + new Date() );
         }
 
         for ( Map.Entry<Class<? extends IdentifiableObject>, String> entry : ExchangeClasses.getImportMap().entrySet() )
@@ -129,9 +131,13 @@ public class DefaultImportService
                     {
                         String message = "Importing " + objects.size() + " " + StringUtils.capitalize( entry.getValue() );
 
-                        if(taskId != null)
+                        if ( taskId != null )
                         {
                             notifier.notify( taskId, TaskCategory.METADATA_IMPORT, message );
+                        }
+                        else
+                        {
+                            log.info( message );
                         }
 
                         ImportTypeSummary importTypeSummary = doImport( objects, importOptions );
@@ -162,10 +168,14 @@ public class DefaultImportService
         cacheManager.clearCache();
         objectBridge.destroy();
 
-        if(taskId != null)
+        if ( taskId != null )
         {
             notifier.notify( taskId, TaskCategory.METADATA_IMPORT, NotificationLevel.INFO, "Import done", true ).
                 addTaskSummary( taskId, TaskCategory.METADATA_IMPORT, importSummary );
+        }
+        else
+        {
+            log.info( "Import done." );
         }
 
         return importSummary;

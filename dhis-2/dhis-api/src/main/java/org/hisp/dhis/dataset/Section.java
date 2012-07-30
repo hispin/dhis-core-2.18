@@ -255,7 +255,7 @@ public class Section
         {
             Section section = (Section) other;
 
-            dataSet = section.getDataSet() == null ? dataSet : section.getDataSet();
+            dataSet = section.getDataSet();
 
             removeAllDataElements();
 
