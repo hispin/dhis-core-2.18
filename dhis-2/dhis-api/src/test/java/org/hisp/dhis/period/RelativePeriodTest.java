@@ -157,14 +157,14 @@ public class RelativePeriodTest
     @Test
     public void testGetLast3Months()
     {
-        RelativePeriods relativePeriods = new RelativePeriods();
-        relativePeriods.setLast3Months( true );
-        List<Period> relatives = relativePeriods.getRelativePeriods( getDate( 2012, 3, 1 ), null, false );
-
+        RelativePeriods relativePeriods = new RelativePeriods().setLast3Months( true );
+        
+        List<Period> relatives = relativePeriods.getRelativePeriods( getDate( 2001, 7, 1 ), null, false );
+        
         assertEquals( 3, relatives.size() );
-        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2012, 1, 1 ), getDate( 2012, 1, 31 ) ) ) );
-        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2012, 2, 1 ), getDate( 2012, 2, 29 ) ) ) );
-        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2012, 3, 1 ), getDate( 2012, 3, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 5, 1 ), getDate( 2001, 5, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 6, 1 ), getDate( 2001, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 7, 1 ), getDate( 2001, 7, 31 ) ) ) );
     }
     
     @Test

@@ -73,6 +73,7 @@ public class HibernateIncomingSmsStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -81,6 +82,7 @@ public class HibernateIncomingSmsStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<IncomingSms> getSmsByOriginator( String originator )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( IncomingSms.class );
@@ -89,6 +91,7 @@ public class HibernateIncomingSmsStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<IncomingSms> getAllSmses()
     {
         return sessionFactory.getCurrentSession().createCriteria( IncomingSms.class ).addOrder( Order.desc( "id" ) ).list();
