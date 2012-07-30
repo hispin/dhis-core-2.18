@@ -1,13 +1,16 @@
-body {
-    font: normal 10px arial,sans-serif,ubuntu,consolas;
-}
-
+body,
 .x-body,
 .x-btn-default-toolbar-small .x-btn-inner,
 .x-form-item,
 .x-panel-header-text-default,
-.x-grid-cell-inner {
+.x-grid-cell-inner,
+.x-form-item-label,
+.x-window-header-text-default {
 	font-family: arial,sans-serif,ubuntu,consolas;
+}
+
+body {
+    font-size: 10px;
 }
 	
 .x-panel-body {
@@ -54,7 +57,7 @@ body {
 
 /* Combobox field label font */
 .x-form-item-label {
-    font: 11px arial,sans-serif,ubuntu,consolas;
+    font-size: 11px;
     color: #111;
 }
 

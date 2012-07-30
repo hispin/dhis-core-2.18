@@ -133,12 +133,12 @@ public class ChartPluginController
         // Periods
         // ---------------------------------------------------------------------
         
-        List<Period> allPeriods = rewind ? relativePeriods.getRewindedRelativePeriods() :
+        List<Period> allRelativePeriods = rewind ? relativePeriods.getRewindedRelativePeriods() :
             relativePeriods.getRelativePeriods();
         
         List<Period> periods = new ArrayList<Period>();
         
-        for ( Period period : allPeriods )
+        for ( Period period : allRelativePeriods )
         {
             if ( periods.contains( period ) )
             {
