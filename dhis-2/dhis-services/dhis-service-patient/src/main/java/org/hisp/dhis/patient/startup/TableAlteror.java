@@ -83,7 +83,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE patientdatavalue DROP COLUMN categoryoptioncomboid" );
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN providedbyanotherfacility" );
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN organisationunitid" );
-        executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN storedby" );
+        executeSql( "ALTER TABLE patientdatavaluearchive ADD COLUMN storedby VARCHAR(31)" );
+        executeSql( "ALTER TABLE patientdatavaluearchive ADD COLUMN providedelsewhere BOOLEAN" );
         executeSql( "DROP TABLE patientchart" );
 
         executeSql( "ALTER TABLE program DROP COLUMN hidedateofincident" );
