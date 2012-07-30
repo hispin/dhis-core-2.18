@@ -39,7 +39,7 @@
 	</tr>
 	<tr>
 		<td>
-			<select id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide');">
+			<select id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide', 'leftStageDescription');">
 			</select>
 		</td>
 	</tr>
@@ -59,7 +59,7 @@
 	</tr>
 	<tr>
 		<td>
-			<textarea rows='5' id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')">$validation.leftSide</textarea>
+			<textarea rows='5' id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:320px;'>$validation.leftSide</textarea>
 			<input type='hidden' id='rightSide' name='rightSide' value='1==1'>
 		</td>
 	</tr>
@@ -67,7 +67,7 @@
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='leftStageDescription'>$!leftDescription</div>
+				<div id='leftStageDescription' style='width:320px;'>$!leftDescription</div>
 			</fieldset>
 		</td>
 	</tr>

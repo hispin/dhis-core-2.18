@@ -59,4 +59,6 @@ public interface ProgramValidationService
 
     boolean runValidation( ProgramValidation validation, ProgramStageInstance programStageInstance,
         I18nFormat format );
+    
+    String getValidationDescription( String condition );
 }
