@@ -12,9 +12,6 @@ function showPatientAttributeDetails( patientAttributeId )
 			var mandatory = ( json.patientAttribute.mandatory == 'true') ? i18n_yes : i18n_no;
 			setInnerHTML( 'mandatoryField', mandatory );
 			
-			var inheritable = ( json.patientAttribute.inheritable == 'true') ? i18n_yes : i18n_no;
-			setInnerHTML( 'inheritableField', inheritable );
-			
 			setInnerHTML( 'valueTypeField', json.patientAttribute.valueType );    
 	   
 			var programName = json.patientAttribute.program;

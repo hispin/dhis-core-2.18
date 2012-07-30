@@ -67,8 +67,6 @@ public class PatientAttribute
 
     private boolean mandatory;
 
-    private boolean inheritable;
-
     private Boolean groupBy;
 
     private PatientAttributeGroup patientAttributeGroup;
@@ -208,16 +206,6 @@ public class PatientAttribute
     public void setPatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
     {
         this.patientAttributeGroup = patientAttributeGroup;
-    }
-
-    public boolean isInheritable()
-    {
-        return inheritable;
-    }
-
-    public void setInheritable( boolean inheritable )
-    {
-        this.inheritable = inheritable;
     }
 
 }
