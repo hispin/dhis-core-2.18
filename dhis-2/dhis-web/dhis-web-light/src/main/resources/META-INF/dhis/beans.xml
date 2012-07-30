@@ -292,6 +292,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="patientAttributeOptionService" ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
 	</bean>
 
 	<!-- Beneficiary Enrollment -->
