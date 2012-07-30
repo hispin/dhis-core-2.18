@@ -43,8 +43,6 @@ public class ImportOptions
 
     private ImportStrategy importStrategy;
 
-    private String strategy;
-
     private boolean skipExistingCheck;
 
     private static final ImportOptions DEFAULT_OPTIONS = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES, false );
