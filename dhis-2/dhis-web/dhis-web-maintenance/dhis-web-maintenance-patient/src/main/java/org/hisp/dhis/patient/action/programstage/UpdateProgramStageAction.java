@@ -173,7 +173,8 @@ public class UpdateProgramStageAction
         for ( int i = 0; i < this.selectedDataElementsValidator.size(); i++ )
         {
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
-
+            Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
+            
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
 
@@ -181,6 +182,7 @@ public class UpdateProgramStageAction
             {
                 programStageDataElement = new ProgramStageDataElement( programStage, dataElement, this.compulsories
                     .get( i ), new Integer( i ) );
+                programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
             else
@@ -189,7 +191,6 @@ public class UpdateProgramStageAction
 
                 programStageDataElement.setSortOrder( new Integer( i ) );
 
-                Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
