@@ -2,7 +2,6 @@ package org.hisp.dhis.sms.incoming;
 
 import java.util.List;
 
-import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.smslib.InboundMessage;
 
 /*
