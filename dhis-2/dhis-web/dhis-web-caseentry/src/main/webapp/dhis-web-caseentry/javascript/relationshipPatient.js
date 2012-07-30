@@ -259,9 +259,25 @@ function searchValidationCompleted( messageElement )
 	}
 }
 
+function validateAddRelationship()
+{
+	var relationshipTypeId = jQuery( '#relationshipSelectForm [id=relationshipTypeId] option:selected' ).val();
+	var partnerId = jQuery( '#relationshipSelectForm [id=availablePartnersList]' ).val();
+	
+	if( relationshipTypeId==''){
+		showWarningMessage( i18n_please_select_relationship_type );
+		return;
+	}
+	if( partnerId==null){
+		showWarningMessage( i18n_please_select_a_patient_for_setting_relationship );
+		return;
+	}
+	addRelationship();
+}
+
 function addRelationship() 
 {
-	var relationshipTypeId = jQuery( '#relationshipSelectForm [id=relationshipTypeId]' ).val();
+	var relationshipTypeId = jQuery( '#relationshipSelectForm [id=relationshipTypeId] option:selected' ).val();
 	var partnerId = jQuery( '#relationshipSelectForm [id=availablePartnersList]' ).val();
 	
 	var relTypeId = relationshipTypeId.substr( 0, relationshipTypeId.indexOf(':') );
