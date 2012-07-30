@@ -272,7 +272,7 @@ public class SaveBeneficiaryAction
 
         if ( this.patientFullName.trim().length() < 7 )
         {
-            validationMap.put( "fullName", "is_invalid_name" );
+            validationMap.put( "fullName", "is_invalid_name_length" );
         }
         else
         {

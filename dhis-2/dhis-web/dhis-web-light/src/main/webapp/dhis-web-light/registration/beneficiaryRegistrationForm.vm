@@ -13,11 +13,13 @@
 <input type="hidden" name="orgUnitId" value="$orgUnitId"/>	
 	<p style="text-align: left;">
 		<label>$i18n.getString( "full_name" )</label>
+
 		#if( $validationMap.get( "fullName" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "fullName" ))</span>
      	#end
+
 		<input type="text" name="patientFullName" value="$!previousValues.get("fullName")" />
-		
+
 		<label>$i18n.getString( "gender" )</label>
 		<select name="gender">
 			<option value="M"
@@ -61,10 +63,10 @@
 		</select>
 
 		#if( $validationMap.get( "dob" ) )
-           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
+           	<span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
      	#end
 		<input type="text" name="dateOfBirth" value="$!previousValues.get("dob")" />
-		
+
 		#foreach($patientIdentifierType in $patientIdentifierTypes)
 			#if(! $patientIdentifierType.program)
 				#set($key = "IDT${patientIdentifierType.id}")
