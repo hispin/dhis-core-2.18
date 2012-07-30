@@ -348,7 +348,7 @@ public class SaveBeneficiaryAction
 
                 if ( !value.isEmpty() )
                 {
-                    patientIdentifierService.get( patientIdentifierType, value );
+                    duplicateId = patientIdentifierService.get( patientIdentifierType, value );
                 }
 
                 if ( value != null )
