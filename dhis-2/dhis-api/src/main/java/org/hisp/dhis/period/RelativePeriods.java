@@ -102,11 +102,6 @@ public class RelativePeriods
         "month11",
         "month12"};
 
-    public static final String[] MONTHS_LAST_3 = {
-        "lastmonth1",
-        "lastmonth2",
-        "lastmonth3"};
-
     public static final String[] BIMONTHS_LAST_6 = {
         "bimonth1",
         "bimonth2",
@@ -484,7 +479,7 @@ public class RelativePeriods
 
         if ( isLast3Months() )
         {
-           periods.addAll( getRollingRelativePeriodList( new MonthlyPeriodType(), MONTHS_LAST_3, date, dynamicNames, format ) );
+            periods.addAll( getRollingRelativePeriodList( new MonthlyPeriodType(), MONTHS_LAST_12, date, dynamicNames, format ).subList( 9, 12 ) );
         }
         
         if ( isLast6BiMonths() )
@@ -637,10 +632,10 @@ public class RelativePeriods
         List<Period> periods = new ArrayList<Period>();
 
         int c = 0;
-        int index =  relatives.size() - periodNames.length;
-        for ( int i= index; i< relatives.size();i++ )
+        
+        for ( Period period : relatives )
         {
-            periods.add( setName( relatives.get( i ), periodNames[c++], dynamicNames, format ) );
+            periods.add( setName( period, periodNames[c++], dynamicNames, format ) );
         }
 
         return periods;
