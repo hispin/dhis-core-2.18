@@ -67,6 +67,6 @@ public class AscendingPeriodEndDateComparator
             return 1;
         }
         
-        return period1.getPeriodType().getFrequencyOrder() < period2.getPeriodType().getFrequencyOrder() ? -1 : 1;
+        return new Integer( period1.getPeriodType().getFrequencyOrder() ).compareTo( new Integer( period2.getPeriodType().getFrequencyOrder() ) );
     }
 }
