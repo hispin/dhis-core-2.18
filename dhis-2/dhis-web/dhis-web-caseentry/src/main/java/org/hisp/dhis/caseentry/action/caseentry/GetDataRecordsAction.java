@@ -49,7 +49,6 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.comparator.ProgramStageInstanceComparator;
 import org.hisp.dhis.program.comparator.ProgramStageInstanceDueDateComparator;
 
 public class GetDataRecordsAction

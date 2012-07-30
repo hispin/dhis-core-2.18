@@ -11,7 +11,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
@@ -21,8 +20,6 @@ import com.opensymphony.xwork2.Action;
 public class EditSMSCommandForm
     implements Action
 {
-
-    // services
     private SMSCommandService smsCommandService;
 
     private DataSetService dataSetService;

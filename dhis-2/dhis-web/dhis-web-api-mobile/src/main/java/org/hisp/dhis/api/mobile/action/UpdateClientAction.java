@@ -32,9 +32,7 @@ import com.opensymphony.xwork2.Action;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * @author Nguyen Kim Lai

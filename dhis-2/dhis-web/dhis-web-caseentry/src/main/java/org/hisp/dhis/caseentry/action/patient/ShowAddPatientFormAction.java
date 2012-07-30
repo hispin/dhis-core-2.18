@@ -27,11 +27,9 @@
 
 package org.hisp.dhis.caseentry.action.patient;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
