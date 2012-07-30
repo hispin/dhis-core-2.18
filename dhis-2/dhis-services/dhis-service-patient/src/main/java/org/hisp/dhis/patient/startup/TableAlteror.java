@@ -118,6 +118,8 @@ public class TableAlteror
         updateMultiOrgunitTabularReportTable();
         updateProgramStageTabularReportTable();
         moveStoredByFormStageInstanceToDataValue();
+        
+        executeSql( "ALTER TABLE patientattribute DROP COLUMN inheritable" );
     }
 
     // -------------------------------------------------------------------------

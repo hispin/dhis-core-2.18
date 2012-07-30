@@ -124,13 +124,6 @@ public class UpdatePatientAttributeAction
         this.mandatory = mandatory;
     }
 
-    private Boolean inheritable;
-
-    public void setInheritable( Boolean inheritable )
-    {
-        this.inheritable = inheritable;
-    }
-
     private List<String> attrOptions;
 
     public void setAttrOptions( List<String> attrOptions )
@@ -160,9 +153,6 @@ public class UpdatePatientAttributeAction
         
         mandatory = (mandatory == null) ? false : true;
         patientAttribute.setMandatory( mandatory );
-        
-        inheritable = (inheritable == null) ? false : true;
-        patientAttribute.setInheritable( inheritable );
         
         Program program = (programId != null) ? programService.getProgram( programId ) : null;
         patientAttribute.setProgram( program );
