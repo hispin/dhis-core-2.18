@@ -32,7 +32,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
 import java.util.Collection;
