@@ -23,13 +23,15 @@
 			<tr>
 				<td><label>$i18n.getString( "scheduled_days_from_start" )</label></td>
 				<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" value="$programStage.minDaysFromStart" class="{validate:{number:true,min:0}}"/></td>
-			</tr> 
-
+			</tr>
+			
+			#if($programStage.program.type!=3)
 			<tr>
 				<td><label>$i18n.getString( "repeatable" )</label></td>
 				<td><input type="checkbox" id="irregular" name="irregular" value='true' #if( $programStage.irregular && $programStage.irregular=='true' ) checked #end onchange='repeatableOnChange();' /></td>
 			</tr>	
-		  
+			#end
+
 			<tr>
 				<td><label>$i18n.getString( "standard_interval_days" )</label></td>
 				<td><input type="text" id="standardInterval" name="standardInterval" value='$!programStage.standardInterval' class="{validate:{required:true,number:true}}" #if($programStage.irregular!='true' ) disabled #end /></td>
