@@ -28,19 +28,41 @@ package org.hisp.dhis.importexport.action.integration;
  */
 
 import com.opensymphony.xwork2.Action;
-import java.util.Collection;
-import java.util.LinkedList;
 import org.apache.camel.CamelContext;
 import org.apache.camel.model.ModelCamelContext;
-import org.apache.camel.model.RouteDefinition;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Bob Jolliffe
  * @version $Id$
  */
-public class DisplayRoutesAction
+public class RouteOperationAction
     implements Action
 {
+
+    private static final Log log = LogFactory.getLog( RouteOperationAction.class );
+    
+    // -------------------------------------------------------------------------
+    // Http Parameters
+    // -------------------------------------------------------------------------
+    
+    private String id;
+    
+    public void setId( String id )
+    {
+        this.id = id;
+    }
+
+    public enum Operation { enable, disable ; }
+    
+    private Operation operation;
+
+    public void setOperation( Operation operation )
+    {
+        this.operation = operation;
+    }
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -57,13 +79,6 @@ public class DisplayRoutesAction
         return builtinCamelContext;
     }
     
-    private Collection<RouteDefinition> routeDefinitions;
-
-    public Collection<RouteDefinition> getRouteDefinitions()
-    {
-        return routeDefinitions;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -72,15 +87,42 @@ public class DisplayRoutesAction
     public String execute()
         throws Exception
     {
-        routeDefinitions = new LinkedList<RouteDefinition>();
-        for (RouteDefinition routeDefinition : builtinCamelContext.getRouteDefinitions()) 
-        {
-            // hide the internal routes
-            if (!routeDefinition.getId().startsWith( "internal") )
-            {
-                routeDefinitions.add( routeDefinition);
-            }
+        switch (operation) {
+            case enable:
+                enableRoute();
+                break;
+                
+            case disable:
+                disableRoute();
+                break;
+                
+            default:
+                log.debug( "Unsupported route operation");
+                break;
         }
+        
         return SUCCESS;
+    }
+
+    private void enableRoute()
+    {
+        try
+        {
+            builtinCamelContext.startRoute( id );
+        } catch ( Exception ex )
+        {
+            log.info( "Route start exception: " + ex.getMessage());
+        }
+    }
+
+    private void disableRoute()
+    {
+        try
+        {
+            builtinCamelContext.stopRoute( id );
+        } catch ( Exception ex )
+        {
+            log.info( "Route stop exception: " + ex.getMessage());
+        }
     }
 }

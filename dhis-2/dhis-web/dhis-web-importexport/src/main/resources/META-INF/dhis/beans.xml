@@ -194,6 +194,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="builtinCamelContext" ref="camel-builtin" />
   </bean>
 
+  <bean id="org.hisp.dhis.importexport.action.integration.RouteOperationAction"
+      class="org.hisp.dhis.importexport.action.integration.RouteOperationAction">
+    <property name="builtinCamelContext" ref="camel-builtin" />
+  </bean>
+
   <!-- DXF2 MetaData import/export -->
 
   <bean id="org.hisp.dhis.importexport.action.dxf2.MetaDataImportFormAction"
