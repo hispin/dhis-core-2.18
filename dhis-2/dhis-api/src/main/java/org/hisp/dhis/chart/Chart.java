@@ -53,9 +53,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.period.comparator.AscendingPeriodEndDateComparator;
 import org.hisp.dhis.user.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -66,6 +69,8 @@ public class Chart
     extends BaseIdentifiableObject
 {
     private static final long serialVersionUID = 2570074075484545534L;
+    
+    private static final Comparator<Period> PERIOD_COMPARATOR = new AscendingPeriodEndDateComparator();
 
     public static final String DIMENSION_PERIOD_INDICATOR = "period";
     public static final String DIMENSION_ORGANISATIONUNIT_INDICATOR = "organisationUnit";
@@ -216,6 +221,23 @@ public class Chart
         List<OrganisationUnit> units = getAllOrganisationUnits();
         return units != null && !units.isEmpty() ? units.iterator().next() : null;
     }
+    
+    public List<Period> getAllPeriods()
+    {
+        List<Period> list = new ArrayList<Period>();
+        
+        list.addAll( relativePeriods );
+        
+        for ( Period period : periods )
+        {
+            if ( !list.contains( period ) )
+            {
+                list.add( period );
+            }
+        }
+        
+        return list;
+    }
 
     private List<NameableObject> dimensionToList( String dimension )
     {
@@ -229,9 +251,10 @@ public class Chart
         }
         else if ( DIMENSION_PERIOD.equals( dimension ) )
         {
-            namePeriods( getRelativePeriods(), format );
-
-            list.addAll( relativePeriods );
+            List<Period> periods = getAllPeriods();
+            namePeriods( periods, format );
+            Collections.sort( periods, PERIOD_COMPARATOR );
+            list.addAll( periods );
         }
         else if ( DIMENSION_ORGANISATIONUNIT.equals( dimension ) )
         {

@@ -92,12 +92,12 @@ public class JDBCReportTableManager
         if ( chart.isOrganisationUnitGroupBased() )
         {
             return getAggregatedValueMapOrgUnitGroups( chart.getDataElements(), chart.getIndicators(),
-                chart.getRelativePeriods(), chart.getOrganisationUnitGroupSet().getOrganisationUnitGroups(), chart.getFirstOrganisationUnit() );
+                chart.getAllPeriods(), chart.getOrganisationUnitGroupSet().getOrganisationUnitGroups(), chart.getFirstOrganisationUnit() );
         }
         else
         {
             return getAggregatedValueMapOrgUnitHierarchy( chart.getDataElements(), chart.getIndicators(), chart.getDataSets(),
-                chart.getRelativePeriods(), chart.getAllOrganisationUnits(), null, false, false );
+                chart.getAllPeriods(), chart.getAllOrganisationUnits(), null, false, false );
         }
     }
 
