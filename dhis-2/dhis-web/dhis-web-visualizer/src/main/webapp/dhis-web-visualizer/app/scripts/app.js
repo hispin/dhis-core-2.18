@@ -1166,13 +1166,24 @@ Ext.onReady( function() {
         },
         checkbox: {
             setRelativePeriods: function(rp) {
-                for (var r in rp) {
-                    var cmp = DV.util.getCmp('checkbox[paramName="' + r + '"]');
-                    if (cmp) {
-                        cmp.setValue(rp[r]);
-                    }
-                }
-            }
+				if (rp) {
+					for (var r in rp) {
+						var cmp = DV.util.getCmp('checkbox[paramName="' + r + '"]');
+						if (cmp) {
+							cmp.setValue(rp[r]);
+						}
+					}
+				}
+				else {
+					DV.util.checkbox.setFalse();
+				}
+            },
+            setFalse: function() {
+				var a = DV.cmp.dimension.relativeperiod.checkbox;				
+				for (var i = 0; i < a.length; i++) {
+					a[i].setValue(false);
+				}
+			}
         },
         toolbar: {
 			separator: {
