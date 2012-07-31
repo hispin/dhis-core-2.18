@@ -791,7 +791,7 @@ Ext.onReady( function() {
                     if (boundaryLayer.visibility) {
 						if (boundary.formValidation.validateForm.call(boundary)) {
                             var str = document.getElementById(boundaryLayer.svgId).parentNode.innerHTML;
-							svg = G.util.mergeSvg(svg, [str]);   
+							svg = svg ? G.util.mergeSvg(svg, [str]) : str;
 						}
 					}
                     
