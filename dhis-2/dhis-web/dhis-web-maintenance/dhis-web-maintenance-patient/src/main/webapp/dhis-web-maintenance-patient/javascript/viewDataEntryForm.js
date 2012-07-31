@@ -162,7 +162,7 @@ function insertDataElement( source, programStageId )
 		var displayName = dataElementName;
 		htmlCode = "<input type=\"checkbox\" title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" title=\"" + displayName + "\">";
 	} 
-	else if ( dataElementType == "int" || dataElementType == "text" || dataElementType == "longText" ) 
+	else
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName +" (" + dataElementType + ") --";
 		var displayName = dataElementName;
