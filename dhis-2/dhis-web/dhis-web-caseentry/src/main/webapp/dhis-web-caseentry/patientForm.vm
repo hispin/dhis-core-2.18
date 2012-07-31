@@ -40,7 +40,7 @@
 </tr>
 
 <tr>
-	<td class='text-column' ><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+	<td class='text-column'><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 	<td class="input-column">	
 		<select id='dobType' name="dobType" style='width:120px' onchange='dobTypeOnChange("patientForm")' >
 			<option value="A" selected >$i18n.getString( "approximated" )</option>
