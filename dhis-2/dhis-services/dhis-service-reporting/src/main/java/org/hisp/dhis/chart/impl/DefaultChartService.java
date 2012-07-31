@@ -190,8 +190,11 @@ public class DefaultChartService
     {
         if ( chart.getRelatives() != null )
         {
-            chart.setRelativePeriods( periodService.reloadPeriods( chart.getRelatives().getRelativePeriods( 
-                date, format, true ) ) );
+            List<Period> periods = chart.isRewindRelativePeriods() ?
+                chart.getRelatives().getRewindedRelativePeriods( 1, date, format, true ) :
+                chart.getRelatives().getRelativePeriods( date, format, true );
+            
+            chart.setRelativePeriods( periodService.reloadPeriods( periods ) );
         }
 
         User user = currentUserService.getCurrentUser();

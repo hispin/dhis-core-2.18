@@ -342,14 +342,6 @@ public class RelativePeriods
     }
 
     /**
-     * Gets a list of Periods rewinded from current date.
-     */
-    public List<Period> getRewindedRelativePeriods()
-    {
-        return getRewindedRelativePeriods( null );
-    }
-
-    /**
      * Gets the PeriodType with the highest frequency from a list of Periods.
      */
     public PeriodType getHighestFrequencyPeriodType( List<Period> periods )
@@ -377,24 +369,24 @@ public class RelativePeriods
     /**
      * Gets a list of Periods rewinded from current date.
      */
-    public List<Period> getRewindedRelativePeriods( Integer rewindedPeriods )
+    public List<Period> getRewindedRelativePeriods()
+    {
+        return getRewindedRelativePeriods( null, null, null, false );
+    }
+
+    /**
+     * Gets a list of Periods rewinded from current date.
+     */
+    public List<Period> getRewindedRelativePeriods( Integer rewindedPeriods, Date date, I18nFormat format, boolean dynamicNames )
     {
         List<Period> periods = getRelativePeriods();        
         PeriodType periodType = getHighestFrequencyPeriodType( periods );
         
-        Date rewindedDate = periodType.getRewindedDate( null, rewindedPeriods );        
+        Date rewindedDate = periodType.getRewindedDate( date, rewindedPeriods );        
         rewindedDate = subtractMonth( 1, rewindedDate );
         
-        return getRelativePeriods( rewindedDate, null, false );
+        return getRelativePeriods( rewindedDate, format, dynamicNames );
     }
-
-    /**
-     * Gets a list of Periods based on the given input and the state of this
-     * RelativePeriods. The current date is set to todays date minus one month.
-     *
-     * @param format the i18n format.
-     * @return a list of relative Periods.
-     */
 
     /**
      * Gets a list of Periods relative to current date.
