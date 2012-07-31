@@ -1054,7 +1054,8 @@ Ext.onReady( function() {
                     return [
                         {
                             type: 'text',
-                            text: DV.c.filter.names[0],
+                            //text: DV.c.filter.names[0],
+                            text: DV.c.currentFavorite ? DV.c.currentFavorite.name + ' (' + DV.c.filter.names[0] + ')' : DV.c.filter.names[0],
                             font: 'bold 15px ' + DV.conf.chart.style.font,
                             fill: '#222',
                             width: 300,
@@ -1175,15 +1176,24 @@ Ext.onReady( function() {
 					}
 				}
 				else {
-					DV.util.checkbox.setFalse();
+					DV.util.checkbox.setAllFalse();
 				}
             },
-            setFalse: function() {
+            setAllFalse: function() {
 				var a = DV.cmp.dimension.relativeperiod.checkbox;				
 				for (var i = 0; i < a.length; i++) {
 					a[i].setValue(false);
 				}
-			}
+			},
+			isAllFalse: function() {
+				var a = DV.cmp.dimension.relativeperiod.checkbox;				
+				for (var i = 0; i < a.length; i++) {
+					if (a[i].getValue()) {
+						return false;
+					}
+				}
+				return true;
+			}				
         },
         toolbar: {
 			separator: {
@@ -1566,6 +1576,7 @@ Ext.onReady( function() {
 		setChart: function(exe, id) {
 			DV.chart.reset();
 			
+			
 			if (id) {
                 Ext.Ajax.request({
                     url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + id + '.json?links=false&paging=false',
@@ -1598,7 +1609,7 @@ Ext.onReady( function() {
 							for (var i = 0; i < f.indicators.length; i++) {
 								DV.c.indicator.records.push({id: f.indicators[i].id, name: DV.conf.util.jsonEncodeString(f.indicators[i].name)});
 							}							
-							if (expand) {
+							if (DV.init.cmd && expand) {
 								DV.cmp.dimension.indicator.panel.expand();
 								expand = false;
 							}
@@ -1608,7 +1619,7 @@ Ext.onReady( function() {
 							for (var i = 0; i < f.dataElements.length; i++) {
 								DV.c.dataelement.records.push({id: f.dataElements[i].id, name: DV.conf.util.jsonEncodeString(f.dataElements[i].name)});
 							}						
-							if (expand) {
+							if (DV.init.cmd && expand) {
 								DV.cmp.dimension.dataelement.panel.expand();
 								expand = false;
 							}
@@ -1618,7 +1629,7 @@ Ext.onReady( function() {
 							for (var i = 0; i < f.dataSets.length; i++) {
 								DV.c.dataset.records.push({id: f.dataSets[i].id, name: DV.conf.util.jsonEncodeString(f.dataSets[i].name)});
 							}						
-							if (expand) {
+							if (DV.init.cmd && expand) {
 								DV.cmp.dimension.dataset.panel.expand();
 								expand = false;
 							}
@@ -1631,7 +1642,7 @@ Ext.onReady( function() {
 							for (var i = 0; i < f.periods.length; i++) {
 								DV.c.fixedperiod.records.push({id: f.periods[i].id, name: DV.conf.util.jsonEncodeString(f.periods[i].name)});
 							}
-						}							
+						}
 						
 						for (var i = 0; i < f.organisationUnits.length; i++) {
 							DV.c.organisationunit.records.push({id: f.organisationUnits[i].id, name: DV.conf.util.jsonEncodeString(f.organisationUnits[i].name)});
@@ -1658,6 +1669,8 @@ Ext.onReady( function() {
 				});
 			}
 			else {
+				
+console.log("1: " + DV.init.cmd);return;
 				DV.c.type = DV.util.button.type.getValue();
 				DV.c.dimension.series = DV.cmp.settings.series.getValue();
 				DV.c.dimension.category = DV.cmp.settings.category.getValue();
@@ -1828,6 +1841,7 @@ Ext.onReady( function() {
 			
 			DV.util.checkbox.setRelativePeriods(DV.c.relativeperiod.rp);
 			DV.cmp.dimension.relativeperiod.rewind.setValue(DV.c.relativeperiod.rewind);
+			DV.cmp.dimension.relativeperiod.rewind.xable();
 			
 			DV.store.fixedperiod.selected.removeAll();
 			if (DV.c.fixedperiod.records) {
@@ -3187,6 +3201,9 @@ Ext.onReady( function() {
 																	if (chb.xtype === 'checkbox') {
 																		DV.cmp.dimension.relativeperiod.checkbox.push(chb);
 																	}
+																},
+																change: function() {
+																	DV.cmp.dimension.relativeperiod.rewind.xable();
 																}
 															}
 														},
@@ -3339,6 +3356,9 @@ Ext.onReady( function() {
 																xtype: 'checkbox',
 																paramName: 'rewind',
 																boxLabel: 'Rewind one period',
+																xable: function() {
+																	this.setDisabled(DV.util.checkbox.isAllFalse());
+																},
 																listeners: {
 																	added: function() {
 																		DV.cmp.dimension.relativeperiod.rewind = this;
