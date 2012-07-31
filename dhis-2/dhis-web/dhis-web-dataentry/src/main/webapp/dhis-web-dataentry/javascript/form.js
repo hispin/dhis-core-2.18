@@ -555,6 +555,7 @@ function displayPeriodsInternal()
     var periodType = dataSets[dataSetId].periodType;
     var allowFuturePeriods = dataSets[dataSetId].allowFuturePeriods;
     var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
+    periods = periodTypeFactory.reverse( periods );
     
     if ( allowFuturePeriods == "false" )
     {
@@ -586,6 +587,7 @@ function dataSetSelected()
     var periodType = dataSets[dataSetId].periodType;
     var allowFuturePeriods = dataSets[dataSetId].allowFuturePeriods;
     var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
+    periods = periodTypeFactory.reverse( periods );
     
     if ( allowFuturePeriods == "false" )
     {
