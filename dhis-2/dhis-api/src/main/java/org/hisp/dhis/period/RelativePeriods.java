@@ -356,7 +356,7 @@ public class RelativePeriods
     {
         PeriodType periodType = null;
         
-        if ( periods != null )
+        if ( periods != null && !periods.isEmpty() )
         {            
             PeriodType lowestFrequencyOrder = periods.get( 0 ).getPeriodType();
             
