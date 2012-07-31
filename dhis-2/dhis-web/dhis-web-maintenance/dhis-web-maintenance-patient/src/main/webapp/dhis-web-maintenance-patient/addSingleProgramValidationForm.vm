@@ -20,7 +20,7 @@
 	</tr>
 	<tr>
 		<td>			
-			<input type="text" id='description' name='description' class="{validate:{required:true,minlength:4}}">
+			<input type="text" id='description' name='description' class="{validate:{required:true,minlength:4}}" style='width:320px;'>
 		</td>
 	</tr>
 	<tr>
@@ -30,7 +30,7 @@
 	</tr>
 	<tr>
 		<td>
-			<select id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();">
+			<select id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();" style='width:320px;'>
 				<option value=''>[$i18n.getString( "please_select" )]</option>
 				#foreach($stage in $program.programStages)
 				<option value='$stage.id'>$stage.name</option>
@@ -40,7 +40,7 @@
 	</tr>
 	<tr>
 		<td>
-			<select id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide', 'leftStageDescription');" >
+			<select id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide', 'leftStageDescription');" style='width:320px;'>
 			</select>
 		</td>
 	</tr>
@@ -60,7 +60,7 @@
 	</tr>
 	<tr>	
 		<td>
-			<textarea rows='5' id='leftSide' name='leftSide' class="{validate:{required:true,minlength:4}}" onkeyup="getValidationDescription('leftStageDescription', 'leftSide')"></textarea>
+			<textarea rows='5' id='leftSide' name='leftSide' class="{validate:{required:true,minlength:4}}" onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:320px;'></textarea>
 			<input type='hidden' id='rightSide' name='rightSide' value='1==1'>
 		</td>
 	</tr>
@@ -68,7 +68,7 @@
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='leftStageDescription'></div>
+				<div id='leftStageDescription' style='width:320px;'></div>
 			</fieldset>
 		</td>
 	</tr>
