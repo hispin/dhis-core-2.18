@@ -1575,7 +1575,8 @@ Ext.onReady( function() {
 							return;
 						}
 						
-						var f = Ext.JSON.decode(r.responseText);
+						var f = Ext.JSON.decode(r.responseText),
+							expand = true;
 						
 						if (!this.validation.favorite(f)) {
 							return;
@@ -1596,18 +1597,30 @@ Ext.onReady( function() {
                         if (f.indicators) {
 							for (var i = 0; i < f.indicators.length; i++) {
 								DV.c.indicator.records.push({id: f.indicators[i].id, name: DV.conf.util.jsonEncodeString(f.indicators[i].name)});
+							}							
+							if (expand) {
+								DV.cmp.dimension.indicator.panel.expand();
+								expand = false;
 							}
 						}
 						
 						if (f.dataElements) {
 							for (var i = 0; i < f.dataElements.length; i++) {
 								DV.c.dataelement.records.push({id: f.dataElements[i].id, name: DV.conf.util.jsonEncodeString(f.dataElements[i].name)});
+							}						
+							if (expand) {
+								DV.cmp.dimension.dataelement.panel.expand();
+								expand = false;
 							}
 						}
 						
 						if (f.dataSets) {
 							for (var i = 0; i < f.dataSets.length; i++) {
 								DV.c.dataset.records.push({id: f.dataSets[i].id, name: DV.conf.util.jsonEncodeString(f.dataSets[i].name)});
+							}						
+							if (expand) {
+								DV.cmp.dimension.dataset.panel.expand();
+								expand = false;
 							}
 						}
 						
