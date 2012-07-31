@@ -3464,7 +3464,7 @@ Ext.onReady( function() {
 														width: (DV.conf.layout.west_fieldset_width - DV.conf.layout.west_width_subtractor) / 2,
 														displayField: 'name',
 														valueField: 'id',
-														ddReorder: true,
+														ddReorder: false,
 														queryMode: 'local',
 														store: DV.store.fixedperiod.selected,
 														tbar: [
