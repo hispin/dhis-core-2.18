@@ -60,18 +60,3 @@ function programTypeOnChange()
 		enable('dateOfIncidentDescription');
 	}
 }
-
-function hideIncidentDateOnchange()
-{
-	var checked = byId( 'hideDateOfIncident' ).checked;
-	
-	if( checked)
-	{
-		disable( 'dateOfIncidentDescription' );
-	}
-	else
-	{
-		enable( 'dateOfIncidentDescription' );
-	}
-}
-
