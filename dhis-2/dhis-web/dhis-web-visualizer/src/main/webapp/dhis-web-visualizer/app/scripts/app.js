@@ -3239,6 +3239,9 @@ Ext.onReady( function() {
 																	if (chb.xtype === 'checkbox') {
 																		DV.cmp.dimension.relativeperiod.checkbox.push(chb);
 																	}
+																},
+																change: function() {
+																	DV.cmp.dimension.relativeperiod.rewind.xable();
 																}
 															}
 														},
@@ -3271,6 +3274,9 @@ Ext.onReady( function() {
 																	if (chb.xtype === 'checkbox') {
 																		DV.cmp.dimension.relativeperiod.checkbox.push(chb);
 																	}
+																},
+																change: function() {
+																	DV.cmp.dimension.relativeperiod.rewind.xable();
 																}
 															}
 														},
@@ -3310,6 +3316,9 @@ Ext.onReady( function() {
 																	if (chb.xtype === 'checkbox') {
 																		DV.cmp.dimension.relativeperiod.checkbox.push(chb);
 																	}
+																},
+																change: function() {
+																	DV.cmp.dimension.relativeperiod.rewind.xable();
 																}
 															}
 														},
