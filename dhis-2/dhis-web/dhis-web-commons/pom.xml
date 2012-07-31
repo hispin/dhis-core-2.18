@@ -11,37 +11,6 @@
   <packaging>jar</packaging>
   <name>DHIS Common Functionality for Web</name>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.6</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <configuration>
-              <target>
-                <tstamp>
-                  <format property="now" pattern="yyyy-MM-dd HH:mm:ss" />
-                </tstamp>
-                <mkdir dir="${project.build.outputDirectory}" />
-                <exec executable="bzr" outputproperty="revision" failifexecutionfails="false">
-                  <arg value="revno" />
-                </exec>
-                <echo file="${project.build.outputDirectory}/build.properties"
-                  message="build.version = ${project.version}&#10;build.time = ${now}&#10;build.revision = ${revision}&#10;" />
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
 
     <!-- DHIS -->
