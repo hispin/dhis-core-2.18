@@ -16,6 +16,11 @@
 <form id="updateOptionSetForm" name="updateOptionSetForm" action="updateOptionSet.action" method="post">
   <input id='id' name='id' value='$optionSet.id' type='hidden'>
   <table>
+    <colgroup>
+        <col width="50px" />
+        <col width="150px"/>
+        <col width="50px"/>
+    </colgroup>
     <tr>
       <th colspan='3'>$i18n.getString( "details" )</th>      
     </tr>
@@ -56,12 +61,6 @@
 			<a href="javascript:removeSelectedOption( 'options' )"><img src="../images/delete.png"/></a>
 		</td>
 	</tr>
-	<tr>
-      <td style="width:30px; text-align:center">&nbsp;</td>
-    </tr>
-    <tr>
-      <td colspan="2" style="height:15px"></td>
-    </tr>
 	<tr>
 	  <td></td>
 	  <td colspan="2">

@@ -16,6 +16,12 @@
 
 <form id="addOptionSetForm" name="addOptionSetForm" action="addOptionSet.action" method="post">
   <table>
+      <colgroup>
+          <col width="50px" />
+          <col width="150px"/>
+          <col width="50px"/>
+      </colgroup>
+
     <tr>
       <th colspan="4">$i18n.getString( "details" )</th>      
     </tr>
@@ -56,13 +62,7 @@
       </td>
 	  </tr>
 	 </table>
-      </td>
-    
-      <td style="width:30px; text-align:center">&nbsp;</td>
-    </tr>
-    <tr>
-      <td colspan="4" style="height:15px"></td>
-    </tr>
+
 	<tr>
 	  <td></td>
 	  <td colspan="3">
