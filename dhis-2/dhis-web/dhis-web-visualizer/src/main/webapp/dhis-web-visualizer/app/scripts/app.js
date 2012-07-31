@@ -1054,7 +1054,6 @@ Ext.onReady( function() {
                     return [
                         {
                             type: 'text',
-                            //text: DV.c.filter.names[0],
                             text: DV.c.currentFavorite ? DV.c.currentFavorite.name + ' (' + DV.c.filter.names[0] + ')' : DV.c.filter.names[0],
                             font: 'bold 15px ' + DV.conf.chart.style.font,
                             fill: '#222',
@@ -1669,8 +1668,6 @@ Ext.onReady( function() {
 				});
 			}
 			else {
-				
-console.log("1: " + DV.init.cmd);return;
 				DV.c.type = DV.util.button.type.getValue();
 				DV.c.dimension.series = DV.cmp.settings.series.getValue();
 				DV.c.dimension.category = DV.cmp.settings.category.getValue();
