@@ -122,7 +122,7 @@
 				<tr>
 					<td style='width:12.2em'><label for="relationship_type">$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 					<td >
-						<select name="relationshipTypeId" id="relationshipTypeId" style="width:28.2em" class="{validate:{required:true}}">
+						<select name="relationshipTypeId" id="relationshipTypeId" class="{validate:{required:true}}">
 							<option value="">[$i18n.getString( "please_select" )]</option>        
 							#foreach ($relationship in $relationshipTypes)
 								<option value="$relationship.id">$relationship.aIsToB</option>
