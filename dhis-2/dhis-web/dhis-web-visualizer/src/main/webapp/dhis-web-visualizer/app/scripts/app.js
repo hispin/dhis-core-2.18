@@ -1676,7 +1676,8 @@ Ext.onReady( function() {
 				DV.c.dataelement.records = DV.util.dimension.dataelement.getRecords();
 				DV.c.dataset.records = DV.util.dimension.dataset.getRecords();
 				DV.c.relativeperiod.rp = DV.util.dimension.relativeperiod.getRelativePeriodObject();
-				DV.c.relativeperiod.rewind = DV.cmp.dimension.relativeperiod.rewind.getValue();
+				DV.c.relativeperiod.rewind = DV.cmp.dimension.relativeperiod.rewind.isDisabled() ?
+					false : DV.cmp.dimension.relativeperiod.rewind.getValue();
 				DV.c.fixedperiod.records = DV.util.dimension.fixedperiod.getRecords();
 				DV.c.organisationunit.records = DV.util.dimension.organisationunit.getRecords();
 				DV.c.organisationunit.groupsetid = DV.util.dimension.organisationunit.getGroupSetId();
