@@ -43,7 +43,7 @@
 		</td>
 		#if( $programStageInstance )
             <td><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
-            <td><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled" </td>
+            <td><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"></td>
         #end            
     </tr>
     
