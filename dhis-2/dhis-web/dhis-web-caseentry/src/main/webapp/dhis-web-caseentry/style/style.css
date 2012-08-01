@@ -14,7 +14,7 @@ input.small-button[type="button"]
 
 input.large-button[type="button"] 
 {
-    width: 105px;
+    width: 140px;
 }
 
 input[type="text"] 
@@ -128,8 +128,8 @@ div.enrollment-form
 
 .entryScreen
 {
-	margin-bottom: 20px; 
-	width: 70%;
+	margin-bottom: 20px;
+	width: 95%;
 	font-size: 13px; 
 	line-height: 18px;
 }
