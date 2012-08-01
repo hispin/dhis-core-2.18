@@ -606,3 +606,7 @@ ul.pageSizeSelection input
   font-size: 9pt !important;
 }
 
+.ui-state-default
+{
+  font-weight: normal !important;
+}
