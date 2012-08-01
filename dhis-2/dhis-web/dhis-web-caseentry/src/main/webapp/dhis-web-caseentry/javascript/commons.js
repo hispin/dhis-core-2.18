@@ -426,7 +426,7 @@ function showColorHelp()
 		maximize: true, 
 		closable: true,
 		modal:false,
-		width: 500,
-		height: 220
+		width: 380,
+		height: 250
 	}).show('fast');
 }

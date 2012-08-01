@@ -201,3 +201,8 @@ div.provided-elsewhere
 {
     display: none;
 }
+
+.colorHelpTable td
+{
+	height: 32px;
+}
