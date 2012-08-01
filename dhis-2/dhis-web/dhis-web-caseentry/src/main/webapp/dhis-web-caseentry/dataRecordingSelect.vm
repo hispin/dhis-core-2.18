@@ -50,7 +50,7 @@
 </div>
 
 <div id='programInstanceDiv' class='hidden '>
-	<div id='programInstanceFlowDiv' style="width:800px;height:115px;overflow-x:auto;">
+	<div id='programInstanceFlowDiv' style="width:720px;height:115px;overflow-x:auto;">
 		<table>
 			<tr id='programStageIdTR'></tr>
 		</table>
