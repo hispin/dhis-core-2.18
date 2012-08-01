@@ -592,7 +592,7 @@ ul.pageSizeSelection input
   font-size: 9pt !important;
 }
 
-.ui-widget-header
+.ui-widget-header, .ui-widget-header a
 {
   font-family: LiberationSansBold, arial, sans-serif !important;
   font-weight: normal !important;
