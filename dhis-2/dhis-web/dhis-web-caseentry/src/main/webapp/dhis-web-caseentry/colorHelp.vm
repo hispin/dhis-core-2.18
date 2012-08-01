@@ -20,7 +20,7 @@
 		</tr>
 		<tr>
 			<td id='colorRedTD'><script>byId('colorRedTD').style.backgroundColor = COLOR_RED;</script></td>
-			<td>$i18n.getString('stages_open_but_no_data_entered_while_the_date_estimated_for_closing_completing_is_over')</td>
+			<td>$i18n.getString('stages_open_but_no_data_entered')</td>
 		</tr>
 	</table>
 </div>
