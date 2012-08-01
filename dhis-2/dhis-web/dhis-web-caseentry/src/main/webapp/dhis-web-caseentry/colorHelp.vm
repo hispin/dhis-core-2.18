@@ -1,5 +1,5 @@
 <a href="javascript:showColorHelp()" id='colorHelpLink' title="$i18n.getString( 'what_do_colors_mean' )" class="hidden">$i18n.getString('what_do_colors_mean')</a>
-<div id="colorHelpDiv" class="hidden history">
+<div id="colorHelpDiv" class="hidden history page">
 	<table>
 		<col width='80px;'/>
 		<thead>
