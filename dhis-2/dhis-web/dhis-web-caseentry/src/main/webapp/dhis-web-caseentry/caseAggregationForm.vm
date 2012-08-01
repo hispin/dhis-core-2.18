@@ -7,7 +7,7 @@
 <div id='caseAggregationDiv'>
 
 	<h1> $i18n.getString( "case_aggregation_form" ) #openHelp('run_case_aggregation')</h1>
-	<hr/>
+	
 	<form id="caseAggregationForm" name="caseAggregationForm" action="caseAggregationResult.action" method="post">
 		<table>
 			<tr>
