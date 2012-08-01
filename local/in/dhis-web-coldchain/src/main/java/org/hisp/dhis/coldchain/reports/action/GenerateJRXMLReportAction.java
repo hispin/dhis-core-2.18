@@ -775,7 +775,7 @@ public class GenerateJRXMLReportAction
             frb.setPrintColumnNames(true);
             
             frb.setColumnsPerPage(1, 10).setUseFullPageWidth(true); 
-            frb.setTemplateFile( path+"ORGUNIT_EQUIPMENT_ROUTINE_DATAVALUE.jrxml" );
+            frb.setTemplateFile( path+"VACCINE_STORAGE_CAPACITY.jrxml" );
 
             String dataElementIdsByComma = "-1";
             String optComboIdsByComma = "-1";            
@@ -818,6 +818,7 @@ public class GenerateJRXMLReportAction
             dynamicReport.getOptions().getDefaultHeaderStyle().setBorder(Border.THIN());
             dynamicReport.getOptions().getDefaultHeaderStyle().setHorizontalAlign(HorizontalAlign.CENTER );
             dynamicReport.getOptions().getDefaultDetailStyle().setBorder(Border.THIN()); 
+            dynamicReport.getOptions().getDefaultDetailStyle().setBackgroundColor( Color.WHITE );
             dynamicReport.getOptions().getDefaultDetailStyle().setHorizontalAlign(HorizontalAlign.CENTER );
             dynamicReport.getOptions().getDefaultDetailStyle().setVerticalAlign( VerticalAlign.MIDDLE );            
             jr = DynamicJasperHelper.generateJasperReport( dynamicReport, new ClassicLayoutManager(), hash );
