@@ -71,11 +71,11 @@
 				#end
 			</tr>
 			<tr>
-				<td>$i18n.getString('report_date')</td>
+				<td>$i18n.getString('report_date_from_to')</td>
 				<td colspan='3'>&nbsp;<input type="text" id='startDate' name='startDate' style='width:240px'></td>
-				<td colspan='4'>$i18n.getString('to') <input type="text" id='endDate' name='endDate' style='width:240px'></td>
+				<td colspan='4'><input type="text" id='endDate' name='endDate' style='width:240px'></td>
 				#set($cols = $levels.size() - 7)
-				<td colspan='$cols'><input type="button" id='searchBtn' class='large-button' value='$i18n.getString( "search" )' onclick='validateSearchEvents( false )'></td>
+				<td colspan='$cols'><input type="button" id='searchBtn' value='$i18n.getString( "search" )' onclick='validateSearchEvents( false )'></td>
 			</tr>
 			<tr>
 				<td valign="top">$i18n.getString('data_elements')</td>
@@ -84,13 +84,13 @@
 					<table id='advancedSearchTB'>	
 						<tbody>
 							<tr id='advSearchBox0'>	
-								<td id='searchingAttributeIdTD' >
+								<td id='searchingAttributeIdTD' style="width:298px">
 									<select id="searchObjectId" name="searchObjectId" style='margin-right:18px;' onchange='dataElementOnChange(this);'></select>
 								</td>		
-								<td style='padding-right:30px;'>
+								<td>
 									<input type="text" id="searchText" name="searchText" value="$!searchText">
+									<input type="button" id='addSearchOptionBtn' name='addSearchOptionBtn' class='small-button' value='+' onclick='addAttributeOption()'>
 								</td>
-								<td><input type="button" id='addSearchOptionBtn' name='addSearchOptionBtn' class='small-button' value='+' onclick='addAttributeOption();'> </td>
 							</tr>
 						</tbody>
 					</table>
