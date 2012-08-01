@@ -4,7 +4,9 @@
 		jQuery("#tabs").tabs();
 		hideById('addRepresentativeForm [id=underAgeDiv]');
 		addEventForPatientForm('addRepresentativeForm');
-		
+		$('#addRepresentativeForm [id=dobType]').removeAttr('onchange');
+		$('#addRepresentativeForm [id=dobType]').attr('onchange', 'dobTypeOnChange( "addRepresentativeForm" );');
+				
 		jQuery("#searchForm").validate({
 			meta:"validate"
 			,errorElement:"span"
