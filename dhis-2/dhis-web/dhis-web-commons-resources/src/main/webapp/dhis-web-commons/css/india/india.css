@@ -451,6 +451,7 @@ div#menuDropDown3
   padding: 12px;
   cursor: pointer;
   border: 1px solid #d5efd5;
+  min-height: 44px;
   border-radius: 3px;
 }
 

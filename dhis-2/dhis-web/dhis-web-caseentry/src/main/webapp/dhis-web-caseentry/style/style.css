@@ -128,15 +128,15 @@ div.enrollment-form
 
 .entryScreen
 {
-	margin-bottom:20px; 
-	width:70%;
+	margin-bottom: 20px; 
+	width: 70%;
 	font-size: 13px; 
-	line-height:18px;
+	line-height: 18px;
 }
 
 input.criteria
 {
-	width:150px;
+	width: 150px;
 	margin-right: 5px;
 }
 
@@ -145,8 +145,8 @@ input.stage-object[type="button"]
 	width: 100px;
 	height: 60px;
     white-space: normal;
-	border:2px solid; 
-	cursor:pointer;
+	border: 2px solid; 
+	cursor: pointer;
 	opacity: 1.0;
 	border: 1px solid;
 	margin: 5px;
@@ -165,13 +165,15 @@ input.stage-object-selected[type="button"]
 
 input.patient-object[type="button"]
 {
-	width: 100px;
-	height: 40px;
+	width: 130px;
+	height: 60px;
     white-space: normal;
-	border:2px solid; 
-	border-color:#bbbbbb;
-	background-color:#cccccc;
-	cursor:pointer;
+	border-color: #bbbbbb;
+	background-color: #ddd;
+	cursor: pointer;
+	border: 1px solid #aaa;
+	margin: 5px;
+	border-radius: 2px;
 }
 
 input.optionset[type="text"]
