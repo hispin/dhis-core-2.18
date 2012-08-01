@@ -156,6 +156,13 @@ function getAgeTextBox( container )
 	return ageField;
 }
 
+function getDateField( container )
+{
+	var dateField = '<select id="dateOperator" name="dateOperator" style="width:30px"><option value=">"> > </option><option value=">="> >= </option><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option></select>';
+	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" maxlength="30" style="width:18em" onkeyup="searchPatientsOnKeyUp( event );">';
+	return dateField;
+}
+
 //-----------------------------------------------------------------------------
 // Search Patient
 //-----------------------------------------------------------------------------
@@ -198,7 +205,7 @@ function validateAdvancedSearch()
 			var dateOperator = "";
 			jQuery( this ).find(':input').each( function( idx, item ){
 				if( idx == 0){
-					params += "searchTexts=" + item.value;
+					params += "&searchTexts=" + item.value;
 				}
 				else if( item.name == 'dateOperator'){
 					dateOperator = item.value;
