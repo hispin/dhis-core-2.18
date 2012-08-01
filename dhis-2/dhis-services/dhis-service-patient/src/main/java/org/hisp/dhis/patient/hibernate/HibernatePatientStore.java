@@ -317,7 +317,7 @@ public class HibernatePatientStore
             }
             else if ( keys[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
-                patientWhere = operator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%" + id
+                patientWhere = patientOperator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%" + id
                     + "%' ) or lower(pi.identifier)='" + id + "') ";
                 patientOperator = " and ";
                 hasIdentifier = true;
@@ -338,20 +338,21 @@ public class HibernatePatientStore
             }
         }
 
+        if ( orgunit != null )
+        {
+            sql += "(select organisationunitid from patient where patientid=p.patientid and organisationunitid = " + orgunit.getId() + " ) as orgunitid,";
+            otherWhere += operator + "orgunitid=" + orgunit.getId();
+        }
+        
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Removing last comma
-
+        
         sql += " from patient p ";
         if ( hasIdentifier )
         {
             sql += " left join patientidentifier pi on p.patientid=pi.patientid ";
         }
 
-        if ( orgunit != null )
-        {
-            patientWhere += " and p.organisationunitid = " + orgunit.getId();
-        }
-
-        sql += patientWhere + " order by p.patientid desc ";
+        sql += patientWhere ;
         sql += " ) as searchresult";
         sql += otherWhere;
 
