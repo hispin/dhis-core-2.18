@@ -522,6 +522,7 @@ function uploadCatalogImage()
 {
 	$.ajax({
       type: "POST",
+      contentType: 'multipart/form-data',
       url: 'uploadCatalogImage.action',
       data: getParamsForDiv('uploadCatalogImageDiv'),
       success: function( json ) {

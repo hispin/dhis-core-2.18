@@ -2,13 +2,18 @@ package org.hisp.dhis.coldchain.catalog.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.coldchain.catalog.CatalogDataEntryService;
 import org.hisp.dhis.coldchain.catalog.CatalogDataValue;
 import org.hisp.dhis.coldchain.catalog.CatalogType;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeAttribute;
+import org.hisp.dhis.coldchain.catalog.CatalogTypeAttributeOption;
 import org.hisp.dhis.coldchain.catalog.CatalogTypeService;
+import org.hisp.dhis.coldchain.catalog.comparator.CatalogTypeAttributeOptionComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 
@@ -96,6 +101,21 @@ implements Action
     {
         this.i18n = i18n;
     }
+    /*
+    private List<CatalogTypeAttributeOption> catalogTypeAttributesOptions = new ArrayList<CatalogTypeAttributeOption>();
+    
+    public List<CatalogTypeAttributeOption> getCatalogTypeAttributesOptions()
+    {
+        return catalogTypeAttributesOptions;
+    }
+    */
+    
+    private Map<Integer, List<CatalogTypeAttributeOption>> catalogTypeAttributesOptionsMap = new HashMap<Integer, List<CatalogTypeAttributeOption>>();
+    
+    public Map<Integer, List<CatalogTypeAttributeOption>> getCatalogTypeAttributesOptionsMap()
+    {
+        return catalogTypeAttributesOptionsMap;
+    }
     
     
     // -------------------------------------------------------------------------
@@ -129,6 +149,25 @@ implements Action
             }
             
             catalogTypeAttributes = new ArrayList<CatalogTypeAttribute> ( catalogType.getCatalogTypeAttributes() );
+            
+            for( CatalogTypeAttribute catalogTypeAttribute : catalogTypeAttributes )
+            {
+                List<CatalogTypeAttributeOption> catalogTypeAttributesOptions = new ArrayList<CatalogTypeAttributeOption>();
+                if( CatalogTypeAttribute.TYPE_COMBO.equalsIgnoreCase( catalogTypeAttribute.getValueType() ) )
+                {
+                    System.out.println(" inside CatalogTypeAttribute.TYPE_COMBO ");
+                    catalogTypeAttributesOptions = new ArrayList<CatalogTypeAttributeOption>( catalogTypeAttribute.getAttributeOptions() );
+                    Collections.sort( catalogTypeAttributesOptions, new CatalogTypeAttributeOptionComparator() );
+                    catalogTypeAttributesOptionsMap.put( catalogTypeAttribute.getId(), catalogTypeAttributesOptions );
+                }
+
+                /*
+                System.out.println( "Name :" + catalogTypeAttribute.getName() );
+                System.out.println( "valueType :" + catalogTypeAttribute.getValueType() );
+                System.out.println( "Is mandatory :" + catalogTypeAttribute.isMandatory() );
+                */
+            }
+            
             
             //Collections.sort( catalogTypeAttributes, new CatalogTypeAttributeComparator() );
             
