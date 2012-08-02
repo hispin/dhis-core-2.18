@@ -37,10 +37,12 @@
 </script>
 
 <form id='singleEventForm'>
-
+ 
 	<h3>$i18n.getString( "add_new_patient" )</h3>	
 	<input type="hidden" id="representativeId" name="representativeId"/> 
 	<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
+	<input type="hidden" id="programStageId" name="programStageId" value='$programStage.id'/>
+	
 	<table id='patientForm'>
 		#parse( "/dhis-web-caseentry/patientForm.vm" )
 	</table>
@@ -56,7 +58,7 @@
 <script>
 	var i18n_error_connect_to_server = '$encoder.jsEscape( $i18n.getString( "error_connect_to_server" ) , "'" )';
 	var i18n_add_person_successfully = '$encoder.jsEscape( $i18n.getString( "add_person_successfully" ) , "'" )';
-	setInnerHTML('entryName', jQuery('#programIdAddPatient').text() );
+	setInnerHTML('entryName', jQuery('#programIdAddPatient option:selected').text() );
 	
 	jQuery(document).ready(	function(){
 
@@ -83,12 +85,5 @@
 					}
 				}
 			});
-		
-		jQuery("#dataForm :input").each(function()
-		{
-			$( this ).unbind( 'focus' );
-			$( this ).unbind( 'blur' );
-			$( this ).unbind( 'change' );
-		});
 	});
 </script>

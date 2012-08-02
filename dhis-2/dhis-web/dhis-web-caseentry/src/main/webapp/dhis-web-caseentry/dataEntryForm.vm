@@ -1,6 +1,8 @@
 <script>
 	jQuery("#entryFormContainer").ready(function(){
-		setFieldValue('programStageId', "$!programStageInstance.programStage.id");
+		#if($!programStageInstance.programStage.id)
+			setFieldValue('programStageId', "$!programStageInstance.programStage.id");
+		#end
 		#if( $programStageInstance )
 			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
