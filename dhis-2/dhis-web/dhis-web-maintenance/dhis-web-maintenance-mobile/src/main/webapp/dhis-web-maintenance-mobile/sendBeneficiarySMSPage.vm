@@ -98,7 +98,7 @@
 					
 					$i18n.getString( 'search_by_selected_unit' )
 					<input type='checkbox' id='searchBySelectedOrgunit' name='searchBySelectedOrgunit' value='true' />
-					<input type="button" value='$i18n.getString( "search" )' onclick='searchAdvancedPatients();'/>
+					<input type="button" value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();'/>
 				</td>
 				<td>
 				</td>
