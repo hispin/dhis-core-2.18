@@ -110,6 +110,7 @@
 	//  0: show list all patient
 	//  1: search with conditions
 	var statusSearching = -1;
+	unSave = false;
 	isAjax = true;
 	contentDiv = '';
 	
