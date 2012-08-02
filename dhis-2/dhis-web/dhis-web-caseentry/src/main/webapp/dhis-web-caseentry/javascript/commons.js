@@ -417,6 +417,12 @@ function enableBtn(){
 		enable('addPatientBtn');
 		enable('advancedSearchBtn');
 	}
+	else
+	{
+		disable('listPatientBtn');
+		disable('addPatientBtn');
+		disable('advancedSearchBtn');
+	}
 }
 
 function showColorHelp()

@@ -10,6 +10,7 @@ function orgunitSelected( orgUnits, orgUnitNames )
 			for ( i in json.programs ) {
 				jQuery( '#programIdAddPatient').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
 			}
+			enableBtn();
 		});
 }
 selection.setListenerFunction( orgunitSelected );
@@ -232,6 +233,7 @@ function removeDisabledIdentifier()
 function backAddNewBtn()
 {
 	showSearchForm();
-	if( getFieldValue('listAll')=='true')
-		listPatientBtn();
+	if( getFieldValue('listAll')=='true'){
+		listAllPatient();
+	}
 }
