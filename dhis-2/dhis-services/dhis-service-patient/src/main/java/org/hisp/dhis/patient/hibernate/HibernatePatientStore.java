@@ -318,7 +318,16 @@ public class HibernatePatientStore
             else if ( keys[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
                 patientWhere = patientOperator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%" + id
-                    + "%' ) or lower(pi.identifier)='" + id + "') ";
+                    + "%' ) or lower(pi.identifier)='" + id + "' ";
+                
+                String[] keyValues = id.split( " " );
+                if( keyValues.length==2)
+                {
+                    String otherId = keyValues[0] + "  " + keyValues[1]; 
+                    patientWhere += " or lower( " + statementBuilder.getPatientFullName() + " ) like '%" + otherId
+                        + "%'  ";
+                }
+                patientWhere += ")"; 
                 patientOperator = " and ";
                 hasIdentifier = true;
             }
