@@ -1,5 +1,5 @@
 <form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
-<div class="actions" style='margin-top:30px;'>
+<div class="actions" style='margin-top:30px;' #if($program.type!=1) style='display:none;' #end>
 	<input type="button" class='stage-object' id="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript: registerIrregularEncounter( getFieldValue('executionDate') );" disabled="disabled" >
 </div>
 <table class="mainPageTable" id='patientInfoDiv'> 
@@ -22,7 +22,6 @@
 	</tr>
 </table>
 
-<p>
 #parse( "/dhis-web-caseentry/colorHelp.vm" )
 </p>
 		
