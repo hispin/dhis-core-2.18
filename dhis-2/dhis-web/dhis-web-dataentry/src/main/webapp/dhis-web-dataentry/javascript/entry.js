@@ -139,7 +139,7 @@ function saveVal( dataElementId, optionComboId )
     {
         if ( type == 'string' || type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
         {
-            if ( value.length > 254 )
+            if ( value.length > 255 )
             {
                 return alertField( fieldId, i18n_value_too_long + ': ' + dataElementName );
             }
