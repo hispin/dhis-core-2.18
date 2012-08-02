@@ -1,5 +1,8 @@
 <script>
 	jQuery("#entryFormContainer").ready(function(){
+		#if($!programStageInstance.programStage.program.type!='1')
+			hideById('newEncounterBtn');
+		#end
 		#if($!programStageInstance.programStage.id)
 			setFieldValue('programStageId', "$!programStageInstance.programStage.id");
 		#end

@@ -230,10 +230,11 @@ function removeDisabledIdentifier()
 	});
 }
 
-function backAddNewBtn()
+function backMainPage()
 {
 	showSearchForm();
 	if( getFieldValue('listAll')=='true'){
 		listAllPatient();
 	}
+	hideById('backBtnFromEntry');
 }
