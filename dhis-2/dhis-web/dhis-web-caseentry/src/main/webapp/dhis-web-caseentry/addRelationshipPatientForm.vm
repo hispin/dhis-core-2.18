@@ -23,6 +23,7 @@
 		});
 		
 		hideById('patientForm [id=underAgeDiv]');
+		datePickerValid( 'patientForm [id=birthDate]' );
 		addEventForPatientForm('patientForm');
 	});		
 </script>
