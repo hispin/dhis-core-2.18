@@ -843,7 +843,8 @@ function autocompletedField( idField )
 		minLength: 0,
 		select: function( event, ui ) {
 			input.val(ui.item.value);
-			saveVal( dataElementId );
+			if(!unSave)
+				saveVal( dataElementId );
 			input.autocomplete( "close" );
 		},
 		change: function( event, ui ) {
@@ -852,7 +853,8 @@ function autocompletedField( idField )
 					valid = false;
 				if ( !valid ) {
 					$( this ).val( "" );
-					saveVal( dataElementId );
+					if(!unSave)
+						saveVal( dataElementId );
 					input.data( "autocomplete" ).term = "";
 					return false;
 				}

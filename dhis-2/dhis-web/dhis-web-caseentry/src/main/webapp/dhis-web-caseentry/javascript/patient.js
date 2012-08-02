@@ -778,6 +778,7 @@ function advancedSearch( params )
 				statusSearching = 1;
 				setInnerHTML( 'listPatientDiv', html );
 				showById('listPatientDiv');
+				setFieldValue('listAll',false);
 				jQuery( "#loaderDiv" ).hide();
 			}
 		});

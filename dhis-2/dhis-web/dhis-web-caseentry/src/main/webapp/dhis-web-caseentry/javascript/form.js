@@ -152,6 +152,7 @@ function advancedSearch( params )
 				setInnerHTML( 'contentDiv', html );
 				showById('contentDiv');
 				setInnerHTML('searchInforTD', i18n_search_patients_by_attributes );
+				setFieldValue('listAll',false);
 				jQuery( "#loaderDiv" ).hide();
 			}
 		});

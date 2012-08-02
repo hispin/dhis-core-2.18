@@ -121,7 +121,9 @@ public class ShowEventWithRegistrationFormAction
     private String customDataEntryFormCode;
 
     private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
-
+    
+    private ProgramStage programStage;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -142,7 +144,7 @@ public class ShowEventWithRegistrationFormAction
 
         Program program = programService.getProgram( programId );
 
-        ProgramStage programStage = program.getProgramStages().iterator().next();
+        programStage = program.getProgramStages().iterator().next();
 
         DataEntryForm dataEntryForm = programStage.getDataEntryForm();
 
@@ -176,6 +178,11 @@ public class ShowEventWithRegistrationFormAction
     public void setProgramId( Integer programId )
     {
         this.programId = programId;
+    }
+
+    public ProgramStage getProgramStage()
+    {
+        return programStage;
     }
 
     public Collection<PatientAttribute> getNoGroupAttributes()

@@ -1,3 +1,4 @@
+var unSave = true;
 function orgunitSelected( orgUnits, orgUnitNames )
 {	
 	organisationUnitSelected( orgUnits, orgUnitNames );
@@ -26,6 +27,13 @@ function showAddPatientForm()
 		{
 			showById('addNewDiv');
 			showById('entryForm');
+			hideById('newEncounterBtn');
+			jQuery("#dataForm :input").each(function()
+			{
+				$( this ).attr('onchange','');
+				$( this ).attr('onblur','');
+				$( this ).attr('onkeypress','');
+			});
 			jQuery('#loaderDiv').hide();
 		});
 }
@@ -105,8 +113,15 @@ function addData( programId, patientId )
 		success: function(json) {
 			showSuccessMessage( i18n_save_success );
 			jQuery("#resultSearchDiv").dialog("close");
-			setFieldvalue('listAll', true);
-		  }
+			hideById('addNewDiv');
+			if( getFieldValue('listAll')=='true'){
+				listAllPatient();
+			}
+			else{
+				showById('searchDiv');
+				showById('contentDiv');
+			}
+		}
      });
     return false;
 }
@@ -195,6 +210,6 @@ function removeDisabledIdentifier()
 function backAddNewBtn()
 {
 	showSearchForm();
-	if( getFieldvalue('listAll')=='true')
+	if( getFieldValue('listAll')=='true')
 		listPatientBtn();
 }
