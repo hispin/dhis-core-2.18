@@ -132,9 +132,9 @@
 </div>
 
 <div id='inputCriteriaDiv' class="page inputCriteria" style="display:none;width:490px;height:29px;">	
-	<input type="button" class='button' id="completeInBelowBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled">
-	<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBelowBtn" disabled="disabled">
-	<input type="button" class='button' id="validationInBelowBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" disabled="disabled">
+	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled">
+	<input type="button" id="uncompleteBtn" value="$i18n.getString('incomplete')" onclick="doUnComplete()" disabled="disabled">
+	<input type="button" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" disabled="disabled">
 </div>
 
 </div>
