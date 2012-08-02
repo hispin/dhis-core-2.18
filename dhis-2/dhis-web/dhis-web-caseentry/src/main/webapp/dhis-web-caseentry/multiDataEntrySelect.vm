@@ -14,7 +14,7 @@
 <div id='listPatient'></div>
 
 <script>
-	
+	unSave = false;
 	var i18n_select = '[' + '$encoder.jsEscape( $i18n.getString( "select" ) , "'")' + ']';
 	var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
 	var i18n_value_must_number = '$encoder.jsEscape( $i18n.getString( "value_must_number" ) , "'")';
