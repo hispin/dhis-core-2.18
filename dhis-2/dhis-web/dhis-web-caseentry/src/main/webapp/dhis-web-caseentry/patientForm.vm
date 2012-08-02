@@ -43,12 +43,12 @@
 	<td class='text-column'><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 	<td class="input-column">	
 		<select id='dobType' name="dobType" style='width:120px' onchange='dobTypeOnChange("patientForm")' >
-			<option value="A" selected >$i18n.getString( "approximated" )</option>
+			<option value="V" selected>$i18n.getString( "verified" )</option>
 			<option value="D" >$i18n.getString( "declared" )</option>
-			<option value="V" >$i18n.getString( "verified" )</option>
+			<option value="A" >$i18n.getString( "approximated" )</option>
 		</select>
-		<input type="text" id="age" name="age" class="{validate:{number:true}}" style="width:136px" />
-		<input type="text" id="birthDate" name="birthDate" style='width:136px;display:none;' />
+		<input type="text" id="age" name="age" placeholder="$i18n.getString('please_enter_age_in_year')" class="{validate:{number:true}}" style="width:136px;display:none;" />
+		<input type="text" id="birthDate" name="birthDate" style='width:136px;' />
 		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 	</td>
 </tr>
