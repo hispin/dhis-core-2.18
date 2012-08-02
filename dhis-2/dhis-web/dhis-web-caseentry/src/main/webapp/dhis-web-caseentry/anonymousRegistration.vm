@@ -1,6 +1,6 @@
 <script type="text/javascript">
    jQuery(document).ready(	function(){
-		datePickerInRange( 'startDate' , 'endDate' );
+		datePickerInRange( 'startDate' , 'endDate' );		
 		disableCriteriaDiv();
 		
 		var standardInterval = 3;
@@ -10,7 +10,7 @@
 		var y = date.getFullYear();
 		var edate= new Date(y, m, d);
 		jQuery('#startDate').datepicker( "setDate" , edate );				
-	});		
+	});
 </script>
 				
 <h3>$i18n.getString( "anonymous_events" ) #openHelp('single_event_without_registration')</h3>
@@ -52,7 +52,7 @@
 					<input type="button" class='large-button' id='removeBtn' value='$i18n.getString( "remove_empty_events" )' onclick="removeEmptyEvents();">
 				</td>
 				<td>
-					<input type="button" class='large-button' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();">
+					<input type="button" class='large-button' id='advancedBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();">
 				</td>
 			</tr>
 		</table>
