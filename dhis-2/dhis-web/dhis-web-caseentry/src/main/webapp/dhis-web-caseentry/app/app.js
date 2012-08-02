@@ -110,7 +110,7 @@ TR.conf = {
 		west_multiselect: 100,
         west_width_subtractor: 18,
         west_fill: 117,
-        west_fill_accordion_organisationunit: 50,
+        west_fill_accordion_organisationunit: 43,
         west_maxheight_accordion_organisationunit: 225,
         center_tbar_height: 31,
         east_gridcolumn_height: 30,
@@ -1822,7 +1822,7 @@ Ext.onReady( function() {
 												cls: 'tr-tree',
 												id: 'treeOrg',
 												width: TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor,
-												height: 273,
+												height: 305,
 												autoScroll: true,
 												multiSelect: true,
 												isrendered: false,
@@ -1886,6 +1886,7 @@ Ext.onReady( function() {
 												TR.cmp.params.organisationunit.panel = this;
 											},
 											expand: function() {
+												alert(TR.cmp.params.organisationunit.panel.getHeight() - TR.conf.layout.west_fill_accordion_organisationunit);
 												TR.cmp.params.organisationunit.treepanel.setHeight(TR.cmp.params.organisationunit.panel.getHeight() - TR.conf.layout.west_fill_accordion_organisationunit);
 											}
 										}
