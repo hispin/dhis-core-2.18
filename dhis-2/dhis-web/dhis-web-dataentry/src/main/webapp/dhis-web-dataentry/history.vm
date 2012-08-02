@@ -30,7 +30,7 @@ var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
     </tr>
     <tr>
 		<td valign="top">
-			<textarea id="commentTextArea" style="height:130px;width:240px">$!encoder.htmlEncode( $dataValue.comment )</textarea><br>
+			<textarea id="commentTextArea" maxlength="360" style="height:130px;width:240px">$!encoder.htmlEncode( $dataValue.comment )</textarea><br>
 			<input type="button" value="$i18n.getString( 'save_comment' )" style="width:130px" onclick="saveComment()">
 		</td>		
         <td valign="top">
