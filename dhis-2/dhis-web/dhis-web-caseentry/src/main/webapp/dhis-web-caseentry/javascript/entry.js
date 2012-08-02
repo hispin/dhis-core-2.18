@@ -149,8 +149,8 @@ function loadDataEntry( programStageInstanceId )
 
 function saveVal( dataElementId )
 {
-	if( byId('programStageId') == null) return;
-	var programStageId = byId('programStageId').value;
+	if( jQuery('#entryFormContainer [id=programStageId]') == null) return;
+	var programStageId = jQuery('#entryFormContainer [id=programStageId]').val();;
 	
 	var fieldId = programStageId + '-' + dataElementId + '-val';
 	
@@ -418,7 +418,7 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
  
     function markValue( color )
     {
-		var programStageId = getFieldValue('programStageId');
+		var programStageId = jQuery('#entryFormContainer [id=programStageId]').val();
         var element = byId( programStageId + "-" + dataElementId + '-val' );
         element.style.backgroundColor = color;
     }

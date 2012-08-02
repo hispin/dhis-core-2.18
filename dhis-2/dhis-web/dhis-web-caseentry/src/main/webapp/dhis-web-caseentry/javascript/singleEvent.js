@@ -1,4 +1,3 @@
-var unSave = true;
 var _continue = false;
 function orgunitSelected( orgUnits, orgUnitNames )
 {	
@@ -20,7 +19,9 @@ function showAddPatientForm()
 	hideById('contentDiv');
 	hideById('searchDiv');
 	hideById('advanced-search');
-	
+	setInnerHTML('addNewDiv','');
+	setInnerHTML('dataRecordingSelectDiv','');
+	unSave = true;
 	jQuery('#loaderDiv').show();
 	jQuery('#addNewDiv').load('showEventWithRegistrationForm.action',
 		{
