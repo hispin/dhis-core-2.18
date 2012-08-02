@@ -748,6 +748,7 @@ function showSelectedDataRecoding( patientId )
 	hideById('searchDiv');
 	hideById('dataEntryFormDiv');
 	hideById('migrationPatientDiv');
+	
 	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
 		{
 			patientId: patientId

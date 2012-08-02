@@ -26,6 +26,7 @@
 <input type='hidden' name='programInstanceId' id='programInstanceId' value='$!programStageInstance.programInstance.id'>
 <input type='hidden' name='irregular' id='irregular' value='$!programStageInstance.programStage.irregular'>
 <input type='hidden' name='completed' id='completed' value='$!programStageInstance.completed'>
+<input type='hidden' name='programStageId' id='programStageId' value='$!programStageInstance.programStage.id'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>
 	#if( $customDataEntryFormCode )
@@ -149,3 +150,8 @@
 </div>
 
 <div id='validateProgramDiv'></div>
+
+<script>
+	var i18n_create_new_event = '$encoder.jsEscape( $i18n.getString( "create_new_event" ) , "'" )';
+</script>
+
