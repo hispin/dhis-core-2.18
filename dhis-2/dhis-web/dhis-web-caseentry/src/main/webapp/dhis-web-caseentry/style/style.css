@@ -10,7 +10,6 @@ input[type="button"], input[type="submit"]
 input.small-button[type="button"] 
 {
     width: 30px;
-	height: 30px;
 }
 
 input.large-button[type="button"] 
@@ -167,7 +166,7 @@ input.stage-object-selected[type="button"]
 
 input.patient-object[type="button"]
 {
-	width: 130px;
+	width: 140px;
 	height: 60px;
     white-space: normal;
 	border-color: #bbbbbb;

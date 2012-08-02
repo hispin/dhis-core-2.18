@@ -8,7 +8,7 @@
 					#foreach( $patient in $patientListByOrgUnit )
 						#set( $programInstance = $programInstanceMap.get( $patient ) )
 							<tr #alternate( $mark )>
-								<td>
+								<td width='150px;'>
 									<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
 								</td>
 								#set($programStageInstances = $programStageInstanceMap.get($programInstance) )
