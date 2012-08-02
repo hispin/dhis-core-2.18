@@ -16,9 +16,7 @@ function loadProgramStages()
 	setFieldValue('dueDate','');
 	disableCompletedButton(true);
 	disable('uncompleteBtn');
-	disable('uncompleteInBelowBtn');
 	disable('validationBtn');
-	disable('validationInBelowBtn');
 	disable('newEncounterBtn');
 	hideById('inputCriteriaDiv');
 	$('#programStageIdTR').html('');
@@ -70,7 +68,6 @@ function loadProgramStages()
 				
 				disableCompletedButton(true);
 				disable('validationBtn');
-				disable('validationInBelowBtn');
 				showById('programStageIdTR');
 				showById('programInstanceFlowDiv');
 			}
@@ -103,10 +100,8 @@ function loadDataEntry( programStageInstanceId )
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
 	disable('validationBtn');
-	disable('validationInBelowBtn');
 	disableCompletedButton(true);
 	disable('uncompleteBtn');
-	disable('uncompleteInBelowBtn');
 	disable('newEncounterBtn');
 	
 	jQuery(".stage-object-selected").removeClass('stage-object-selected');
@@ -125,11 +120,9 @@ function loadDataEntry( programStageInstanceId )
 			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
 			showById('inputCriteriaDiv');
 			enable('validationBtn');
-			enable('validationInBelowBtn');
 			if( executionDate == '' )
 			{
 				disable('validationBtn');
-				disable('validationInBelowBtn');
 			}
 			else if( executionDate != '' && completed == 'false' )
 			{
@@ -515,7 +508,6 @@ function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
 					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
 					disableCompletedButton(false);
 					enable('validationBtn');
-					enable('validationInBelowBtn');
 					disable('newEncounterBtn');
 					setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
 					
@@ -639,8 +631,8 @@ function doComplete( isCreateEvent )
 								closable: true,
 								modal:false,
 								overlay:{background:'#000000', opacity:0.1},
-								width: 300,
-								height: 100
+								width: 400,
+								height: 140
 							}).show('fast');
 							
 						var standardInterval =  jQuery('#dataRecordingSelectDiv [name=programStageId] option:selected').attr('standardInterval');
@@ -896,17 +888,13 @@ function disableCompletedButton( disabled )
 	if(disabled){
 		disable('completeBtn');
 		disable('completeAndAddNewBtn');
-		disable('completeInBelowBtn');
 		enable('uncompleteBtn');
 		enable('uncompleteAndAddNewBtn');
-		enable('uncompleteBelowBtn');
 	}
 	else{
 		enable('completeBtn');
 		enable('completeAndAddNewBtn');
-		enable('completeInBelowBtn');
 		disable('uncompleteBtn');
 		disable('uncompleteAndAddNewBtn');
-		disable('uncompleteBelowBtn');
 	}
 }
