@@ -9,7 +9,7 @@
 		<td rowspan='2' valign='bottom'>
 			<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'list_all_patients' )" onclick="javascript:listAllPatient();" disabled >
 			<input type="button" id='addPatientBtn' name='addPatientBtn' class='large-button' value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();" disabled >
-			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" >
+			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" #if( $organisationUnit ) #else disabled #end>
 		</td>
 	</tr> 
 	<tr id='programAddPatientTR'class='hidden'>
