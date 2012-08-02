@@ -50,7 +50,8 @@
 	<h3 id='entryName'></h3>
 	<div id='dataForm'>#parse( "/dhis-web-caseentry/dataEntryForm.vm" )</div>
 	<p>
-		<input type="submit" class="button" value="$i18n.getString( 'add' )" />
+		<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick='_continue=false;'/>
+		<input type="submit" class="button" value="$i18n.getString( 'add_and_continue' )" onclick='_continue=true;'/>
 		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="javascript:backAddNewBtn();"/>
 	</p>
 </form>
