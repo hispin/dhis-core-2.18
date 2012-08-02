@@ -1,77 +1,58 @@
-
-#if( $patient )
-<table> 
-	<tr>            
-        <td>
-            <span class='bold'>$i18n.getString( "full_name" ):</span>
-		</td>
-		<td>
-			$encoder.htmlEncode( $patient.getFullName() )
-		<td>
-	</tr>
-	<tr>
-		<td>
-            <span class='bold'>$i18n.getString( "gender" ):</span>
-		</td>
-		<td>
-			$i18n.getString( "$patient.gender" )
-		</td>
-	</tr>
-	<tr>
-		<td>
-            <span class='bold'>$i18n.getString( "date_of_birth" ):</span>
-		</td>
-		<td>
-			$format.formatDate( $patient.birthDate )
-		</td>
-	<tr>
-		<td>
-            <span class='bold'>$i18n.getString( "age" ):</span>
-        </td>
-		<td>
-			$encoder.htmlEncode( $patient.getAge() )
-		</td>
-	</tr>
-</table>
-#end
-
-<table id='programDiv'>    
-   <tr>
-        <td><label for="programId">$i18n.getString( "program" )</label></td>
-        <td>
-			<input id="programId" name="programId" type="text" readonly="readonly" value="$encoder.htmlEncode( $program.name )" style="min-width:350px">		
-		</td>
+	<table> 
+		#if( $patient )
+		<tr>            
+			<td>
+				<span class='bold'>$i18n.getString( "full_name" ):</span>
+			</td>
+			<td>
+				$encoder.htmlEncode( $patient.getFullName() )
+			</td>
+			<td class='bold text-column' style="vertical-align:top">$i18n.getString('program'): </td>
+			<td style="vertical-align:right">$program.name</td>
+		</tr>
+		<tr>
+			<td>
+				<span class='bold'>$i18n.getString( "gender" ):</span>
+			</td>
+			<td>
+				$i18n.getString( "$patient.gender" )
+			</td>
+			<td class='bold text-column' style="vertical-align:top">$i18n.getString('program_stage'): </td>
+			<td style="vertical-align:right">$programStageInstance.programStage.name</td>
+		</tr>
+		<tr>
+			<td>
+				<span class='bold'>$i18n.getString( "date_of_birth" ):</span>
+			</td>
+			<td>
+				$format.formatDate( $patient.birthDate )
+			</td>
+		<tr>
+			<td>
+				<span class='bold'>$i18n.getString( "age" ):</span>
+			</td>
+			<td>
+				$encoder.htmlEncode( $patient.getAge() )
+			</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		#end
+		
 		#if( $programStageInstance )
-            <td><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
-            <td><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"></td>
-        #end            
-    </tr>
-    
-    <tr>
-        <td><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
-        <td>
-			<input id="programStageId" name="programStageId" type="hidden" value="$programStage.id" style="min-width:350px">            
-			<input type="text" readonly="readonly" value="$encoder.htmlEncode( $programStage.name )" style="min-width:350px">            
-        </td>        
-        #if( $programStageInstance )
-            <td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-            <td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, getFieldValue('executionDate') )" >
+		<tr>
+		    <th><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
+            <th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, getFieldValue('executionDate') )" ></th>
                 <script type="text/javascript">
                    datePickerValid( 'executionDate', false );
-                </script>                
-        #end
-    </tr>   
-    <tr>
-		<td>&nbsp;</td>
-		<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" #if($!programStageInstance.executionDate) #if($programStageInstance.completed=='true') disabled #end #else disabled #end>
-			<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBtn" #if($!programStageInstance.executionDate) #if($programStageInstance.completed=='false') disabled #end #else disabled #end >
-			<input type="button" id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" style="width:12em " #if($programStageInstance.executionDate) #else disabled #end>
-		</td>
-		<td></td>
-		<td></td>
-    </tr>
-	
-</table>
+                </script>  
+			<th><label for="dueDate">$i18n.getString( "due_date" ) </label></th>
+            <th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"></th>
+        </tr>
+		#end
+	</table>
+
+<input type='hidden' id="programId" name="programId" type="text" readonly="readonly" value="$encoder.htmlEncode( $program.name )" style="min-width:350px">		
+<input id="programStageId" name="programStageId" type="hidden" value="$programStage.id" style="min-width:350px">            
 
 </form>
 <p></p>
@@ -81,6 +62,18 @@
 </form>
 
 <script type="text/javascript">
+	jQuery('#patientForm').ready(	function(){
+		showById('inputCriteriaDiv');
+		enable('validationBtn');
+		#if($programStageInstance.completed=='true') 
+			disable('completeBtn');
+			enable('uncompleteBtn');
+		#else
+			enable('completeBtn');
+			disable('uncompleteBtn');
+		#end
+	});
+	
 	var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
 	var i18n_value_must_number = '$encoder.jsEscape( $i18n.getString( "value_must_number" ) , "'")';
 	var i18n_value_must_positive_integer = '$encoder.jsEscape( $i18n.getString( "value_must_positive_integer" ) , "'")';
