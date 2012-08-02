@@ -47,7 +47,7 @@
 			<option value="D" >$i18n.getString( "declared" )</option>
 			<option value="A" >$i18n.getString( "approximated" )</option>
 		</select>
-		<input type="text" id="age" name="age" placeholder="$i18n.getString('enter_age_in_years').." class="{validate:{number:true}}" style="width:136px;display:none;" />
+		<input type="text" id="age" name="age" placeholder="$i18n.getString('please_enter_age_in_year')" class="{validate:{number:true}}" style="width:136px;display:none;" />
 		<input type="text" id="birthDate" name="birthDate" style='width:136px;' />
 		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 	</td>
