@@ -47,7 +47,6 @@ import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -100,7 +99,7 @@ public class ReportTableController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/data", method = RequestMethod.GET )
-    public String getReportTableDynamicData( @RequestParam( required = false, value = "in" ) List<String> indicators,
+    public void getReportTableDynamicDataHtml( @RequestParam( required = false, value = "in" ) List<String> indicators,
         @RequestParam( required = false, value = "de" ) List<String> dataElements,
         @RequestParam( required = false, value = "ds" ) List<String> dataSets,
         @RequestParam( value = "ou" ) List<String> orgUnits,
@@ -108,16 +107,15 @@ public class ReportTableController
         @RequestParam( required = false ) boolean orgUnitIsParent,
         @RequestParam( required = false ) boolean minimal,
         RelativePeriods relatives,
-        Model model,
         HttpServletResponse response ) throws Exception
     {
         Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
             orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
 
-        model.addAttribute( "model", grid );
-        model.addAttribute( "viewClass", "detailed" );
+        String filename = DATA_NAME + ".html";
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
 
-        return grid != null ? "reportTableData" : null;
+        GridUtils.toHtml( grid, response.getWriter() );
     }
 
     @RequestMapping( value = "/data.xml", method = RequestMethod.GET )
@@ -138,26 +136,6 @@ public class ReportTableController
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
 
         GridUtils.toXml( grid, response.getOutputStream() );
-    }
-
-    @RequestMapping( value = "/data.html", method = RequestMethod.GET )
-    public void getReportTableDynamicDataHtml( @RequestParam( required = false, value = "in" ) List<String> indicators,
-        @RequestParam( required = false, value = "de" ) List<String> dataElements,
-        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
-        @RequestParam( value = "ou" ) List<String> orgUnits,
-        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
-        @RequestParam( required = false ) boolean orgUnitIsParent,
-        @RequestParam( required = false ) boolean minimal,
-        RelativePeriods relatives,
-        HttpServletResponse response ) throws Exception
-    {
-        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
-            orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
-
-        String filename = DATA_NAME + ".html";
-        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
-
-        GridUtils.toHtml( grid, response.getWriter() );
     }
 
     @RequestMapping( value = "/data.pdf", method = RequestMethod.GET )
@@ -272,18 +250,6 @@ public class ReportTableController
     //--------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
-    public String getReportTableData( @PathVariable( "uid" ) String uid, Model model,
-        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-        @RequestParam( value = "pe", required = false ) String period,
-        HttpServletResponse response ) throws Exception
-    {
-        model.addAttribute( "model", getReportTableGrid( uid, organisationUnitUid, period ) );
-        model.addAttribute( "viewClass", "detailed" );
-
-        return "grid";
-    }
-
-    @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
     public void getReportTableHtml( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "ou", required = false ) String organisationUnitUid,
         @RequestParam( value = "pe", required = false ) String period,
