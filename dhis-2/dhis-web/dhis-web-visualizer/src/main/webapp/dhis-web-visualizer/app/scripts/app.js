@@ -4204,7 +4204,7 @@ Ext.onReady( function() {
                                                                         {
                                                                             xtype: 'textfield',
                                                                             cls: 'dv-textfield',
-                                                                            fieldLabel: 'Name',
+                                                                            fieldLabel: DV.i18n.name,
                                                                             maxLength: 160,
                                                                             enforceMaxLength: true,
                                                                             labelWidth: DV.conf.layout.form_label_width,

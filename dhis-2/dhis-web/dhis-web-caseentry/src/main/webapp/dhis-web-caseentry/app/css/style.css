@@ -515,7 +515,7 @@ TR.utilbody {
 }
 .tr-textfield .x-form-item-label {
     padding-left: 5px;
-    line-height: 20px;
+    line-height: 17px;
 }
 .tr-textfield-alt1 .x-form-item-label {
     padding-left: 5px;
@@ -765,3 +765,15 @@ TR.utilbody {
     background-image: url(../images/equals.png) !important;
 }
 
+/* TR toolbar */
+
+.tr-toolbar-tbar {
+	height: 30px;
+	padding: 0 0 0 2px;
+	border-bottom-width: 1px !important;
+	border-radius: 2px;
+}
+.tr-toolbar-bbar {
+	height: 29px;
+	padding: 0;
+}
