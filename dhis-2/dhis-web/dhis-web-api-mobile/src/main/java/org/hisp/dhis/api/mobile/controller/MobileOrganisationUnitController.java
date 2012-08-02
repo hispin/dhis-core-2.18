@@ -123,6 +123,8 @@ public class MobileOrganisationUnitController
     public ActivityPlan search2_8( @PathVariable int id, @RequestHeader( "identifier" ) String identifier )
         throws NotAllowedException
     {
+        ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );;
+        activityPlan.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
         return activityReportingService.getActivitiesByIdentifier( identifier );
     }
     
