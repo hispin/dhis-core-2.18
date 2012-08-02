@@ -106,7 +106,7 @@
 			validation( 'programEnrollmentSelectDiv', function(form){
                 validateProgramEnrollment();
             });
-			
+			var unSave = false;
 			datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate' );
 		}); 
 </script>

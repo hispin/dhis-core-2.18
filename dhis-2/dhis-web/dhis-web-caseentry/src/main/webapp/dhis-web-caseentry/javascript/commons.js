@@ -413,12 +413,18 @@ function checkDuplicateCompleted( messageElement, divname )
 function enableBtn(){
 	var programIdAddPatient = getFieldValue('programIdAddPatient');
 	if( programIdAddPatient!='' ){
+		enable('listPatientBtn');
+		enable('addPatientBtn');
+		enable('advancedSearchBtn');
 		jQuery('#criteriaDiv :input').each( function( idx, item ){
 			enable(this.id);
 		});
 	}
 	else
 	{
+		disable('listPatientBtn');
+		disable('addPatientBtn');
+		disable('advancedSearchBtn');
 		jQuery('#criteriaDiv :input').each( function( idx, item ){
 			disable(this.id);
 		});
