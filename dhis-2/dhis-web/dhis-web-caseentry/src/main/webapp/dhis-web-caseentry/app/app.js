@@ -116,7 +116,7 @@ TR.conf = {
         east_gridcolumn_height: 30,
         form_label_width: 90,
 		grid_favorite_width: 450,
-		grid_favorite_height: 305,
+		grid_favorite_height: 500,
         window_favorite_ypos: 100,
         window_confirm_width: 250,
 		window_record_width: 450,
@@ -2522,9 +2522,8 @@ Ext.onReady( function() {
 																	}
 																],
 																setHeightInWindow: function(store) {
-																	var h = (store.getCount() * 23) + 30,
-																		sh = TR.util.viewport.getSize().y * 0.6;
-																	this.setHeight(h > sh ? sh : h);
+																	var window = this.up('window');																	
+																	this.setHeight(window.getHeight() - 105);																	
 																	this.doLayout();
 																	this.up('window').doLayout();
 																},
@@ -2533,7 +2532,7 @@ Ext.onReady( function() {
 																	id: 'favorite_t',
 																	cls: 'tr-toolbar-tbar',
 																	defaults: {
-																		height: 28
+																		height: 24
 																	},
 																	items: [
 																		{
@@ -2778,105 +2777,104 @@ Ext.onReady( function() {
 															}
 														],
 														bbar: {
-																cls: 'dv-toolbar-bbar',
-																defaults: {
-																	height: 28
-																},
-																items: [
-																	{
-																		xtype: 'label',
-																		style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:70%',
-																		listeners: {
-																			added: function() {
-																				TR.cmp.favorite.label = this;
-																			}
-																		}
-																	},																
-																	'->',
-																	{
-																		text: TR.i18n.save,
-																		disabled: true,
-																		xable: function() {
-																			if (TR.cmp.favorite.name.getValue()) {
-																				var index = TR.store.favorite.findExact('name', TR.cmp.favorite.name.getValue());
-																				if (index != -1) {
-																					this.enable();
-																					TR.cmp.favorite.label.setText('');
-																					return true;
-																				}
-																				else {
-																					this.enable();
-																					TR.cmp.favorite.label.setText('');
-																					return true;
-																				}
-																			}
-																			else {
-																				TR.cmp.favorite.label.setText('');
-																			}
-																			
-																			this.disable();
-																			return false;
-																		},
-																		handler: function() {
-																			if (this.xable()) {
-																				var value = TR.cmp.favorite.name.getValue();
-																				if (TR.store.favorite.findExact('name', value) != -1) {
-																					var item = value.length > 40 ? (value.substr(0,40) + '...') : value;
-																					var w = Ext.create('Ext.window.Window', {
-																						title: TR.i18n.save_favorite,
-																						width: TR.conf.layout.window_confirm_width,
-																						bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
-																						modal: true,
-																						items: [
-																							{
-																								html: TR.i18n.are_you_sure,
-																								bodyStyle: 'border-style:none'
-																							},
-																							{
-																								html: '<br/>' + item,
-																								cls: 'dv-window-confirm-list'
-																							}
-																						],
-																						bbar: [
-																							{
-																								text: TR.i18n.cancel,
-																								handler: function() {
-																									this.up('window').close();
-																								}
-																							},
-																							'->',
-																							{
-																								text: TR.i18n.overwrite,
-																								handler: function() {
-																									this.up('window').close();
-																									TR.util.crud.favorite.update(function() {
-																										TR.cmp.favorite.window.resetForm();
-																									});
-																									
-																								}
-																							}
-																						]
-																					});
-																					w.setPosition((screen.width/2)-(TR.conf.layout.window_confirm_width/2), TR.conf.layout.window_favorite_ypos + 100, true);
-																					w.show();
-																				}
-																				else {
-																					TR.util.crud.favorite.create(function() {
-																						TR.cmp.favorite.window.resetForm();
-																						TR.cmp.favorite.window.down('grid').setHeightInWindow(TR.store.favorite);
-																					});
-																				}                                                                                    
-																			}
-																		},
-																		listeners: {
-																			added: function() {
-																				TR.cmp.favorite.save = this;
-																			}
+															cls: 'tr-toolbar-bbar',
+															defaults: {
+																height: 24
+															},
+															items: [
+																{
+																	xtype: 'label',
+																	style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:70%',
+																	listeners: {
+																		added: function() {
+																			TR.cmp.favorite.label = this;
 																		}
 																	}
-																]
-															}
-														,
+																},																
+																'->',
+																{
+																	text: TR.i18n.save,
+																	disabled: true,
+																	xable: function() {
+																		if (TR.cmp.favorite.name.getValue()) {
+																			var index = TR.store.favorite.findExact('name', TR.cmp.favorite.name.getValue());
+																			if (index != -1) {
+																				this.enable();
+																				TR.cmp.favorite.label.setText('');
+																				return true;
+																			}
+																			else {
+																				this.enable();
+																				TR.cmp.favorite.label.setText('');
+																				return true;
+																			}
+																		}
+																		else {
+																			TR.cmp.favorite.label.setText('');
+																		}
+																		
+																		this.disable();
+																		return false;
+																	},
+																	handler: function() {
+																		if (this.xable()) {
+																			var value = TR.cmp.favorite.name.getValue();
+																			if (TR.store.favorite.findExact('name', value) != -1) {
+																				var item = value.length > 40 ? (value.substr(0,40) + '...') : value;
+																				var w = Ext.create('Ext.window.Window', {
+																					title: TR.i18n.save_favorite,
+																					width: TR.conf.layout.window_confirm_width,
+																					bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
+																					modal: true,
+																					items: [
+																						{
+																							html: TR.i18n.are_you_sure,
+																							bodyStyle: 'border-style:none'
+																						},
+																						{
+																							html: '<br/>' + item,
+																							cls: 'dv-window-confirm-list'
+																						}
+																					],
+																					bbar: [
+																						{
+																							text: TR.i18n.cancel,
+																							handler: function() {
+																								this.up('window').close();
+																							}
+																						},
+																						'->',
+																						{
+																							text: TR.i18n.overwrite,
+																							handler: function() {
+																								this.up('window').close();
+																								TR.util.crud.favorite.update(function() {
+																									TR.cmp.favorite.window.resetForm();
+																								});
+																								
+																							}
+																						}
+																					]
+																				});
+																				w.setPosition((screen.width/2)-(TR.conf.layout.window_confirm_width/2), TR.conf.layout.window_favorite_ypos + 100, true);
+																				w.show();
+																			}
+																			else {
+																				TR.util.crud.favorite.create(function() {
+																					TR.cmp.favorite.window.resetForm();
+																					TR.cmp.favorite.window.down('grid').setHeightInWindow(TR.store.favorite);
+																				});
+																			}                                                                                    
+																		}
+																	},
+																	listeners: {
+																		added: function() {
+																			TR.cmp.favorite.save = this;
+																		}
+																	}
+																}
+															]
+														},
 														listeners: {
 															show: function() {                                               
 																TR.cmp.favorite.save.xable();
