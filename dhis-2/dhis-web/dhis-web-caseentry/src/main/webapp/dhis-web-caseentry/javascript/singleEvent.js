@@ -1,4 +1,5 @@
 var unSave = true;
+var _continue = false;
 function orgunitSelected( orgUnits, orgUnitNames )
 {	
 	organisationUnitSelected( orgUnits, orgUnitNames );
@@ -113,13 +114,34 @@ function addData( programId, patientId )
 		success: function(json) {
 			showSuccessMessage( i18n_save_success );
 			jQuery("#resultSearchDiv").dialog("close");
-			hideById('addNewDiv');
-			if( getFieldValue('listAll')=='true'){
-				listAllPatient();
+			if( _continue==true )
+			{
+				jQuery('#patientForm :input').each(function()
+				{
+					var type=$( this ).attr('type');
+					if(type!='button'){
+						$( this ).val('');
+					}
+					enable(this.id);
+				});
+				jQuery('#dataForm :input').each(function()
+				{
+					var type=$( this ).attr('type');
+					if(type!='button'){
+						$( this ).val('');
+					}
+				});
 			}
-			else{
-				showById('searchDiv');
-				showById('contentDiv');
+			else
+			{
+				hideById('addNewDiv');
+				if( getFieldValue('listAll')=='true'){
+					listAllPatient();
+				}
+				else{
+					showById('searchDiv');
+					showById('contentDiv');
+				}
 			}
 		}
      });
