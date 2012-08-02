@@ -150,8 +150,8 @@ function loadDataEntry( programStageInstanceId )
 function saveVal( dataElementId )
 {
 	if( jQuery('#entryFormContainer [id=programStageId]') == null) return;
-	var programStageId = jQuery('#entryFormContainer [id=programStageId]').val();;
-	
+	var programStageId = jQuery('#entryFormContainer [id=programStageId]').val();
+        
 	var fieldId = programStageId + '-' + dataElementId + '-val';
 	
 	var field = byId( fieldId ); 
@@ -229,7 +229,7 @@ function saveVal( dataElementId )
 
 function saveOpt( dataElementId )
 {
-	var programStageId = byId('programStageId').value;
+	var programStageId = jQuery('#entryFormContainer [id=programStageId]').val();
 	var field = byId( programStageId + '-' + dataElementId + '-val' );	
 	field.style.backgroundColor = SAVING_COLOR;
 	
@@ -419,7 +419,7 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
     function markValue( color )
     {
 		var programStageId = jQuery('#entryFormContainer [id=programStageId]').val();
-        var element = byId( programStageId + "-" + dataElementId + '-val' );
+		var element = byId( programStageId + "-" + dataElementId + '-val' );
         element.style.backgroundColor = color;
     }
 }
