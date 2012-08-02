@@ -963,7 +963,10 @@ Ext.onReady( function() {
 				var col = cols[i];
 				if( col.name && col.name == colname )
 				{
-					var value = editor.data[col.dataIndex].toLowerCase();
+					var value = '';
+					if(editor.data[col.dataIndex]!=undefined){
+						value = editor.data[col.dataIndex].toLowerCase();
+					}
 					var hidden = (col.hidden==undefined)? false : col.hidden;
 					if( value!=null && value!= '')
 					{
