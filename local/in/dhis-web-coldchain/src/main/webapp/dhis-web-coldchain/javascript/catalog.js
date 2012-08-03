@@ -497,6 +497,7 @@ function updateCatalog()
      });
 }
 
+
 /*
 function showUploadCatalogImageForm( catalogId )
 {
@@ -529,7 +530,7 @@ function upLoadImage()
 		jQuery('#imageSaveDiv').load('uploadCatalogImage.action',
 			{
 				catalogID:catalogID,
-				enctype:"multipart/form-data"
+				contentType:"multipart/form-data"
 				//eDateLB:eDateLB
 			}, function()
 			{
@@ -538,7 +539,20 @@ function upLoadImage()
 				//jQuery('#loaderDiv').hide();
 			});	
 }	
+/*
+jQuery('#imageSaveDiv').load('uploadCatalogImage.action',
+		{
+			catalogID:catalogID,
+			contentType:"multipart/form-data"
+			//eDateLB:eDateLB
+		}, function()
+		{
+			showById('imageSaveDiv');
+			//document.getElementById( "aggregate" ).disabled = false;
+			//jQuery('#loaderDiv').hide();
+		});	
 
+*/
 function showUploadCatalogImageForm( catalogId )
 {
 	hideById('listCatalogDiv');
