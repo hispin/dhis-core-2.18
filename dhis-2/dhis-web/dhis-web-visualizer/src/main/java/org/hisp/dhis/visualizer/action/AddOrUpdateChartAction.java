@@ -463,6 +463,8 @@ public class AddOrUpdateChartAction
         
         chart.setRewindRelativePeriods( rewind );
         
+        chart.getPeriods().clear();
+        
         if ( periodIds != null )
         {
             List<Period> periods = new ArrayList<Period>();
