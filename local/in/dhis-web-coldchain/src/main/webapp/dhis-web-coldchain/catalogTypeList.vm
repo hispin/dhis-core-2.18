@@ -17,7 +17,7 @@
 			<tr>
 				<td>#filterDiv( "catalogType" )</td>
 				<!--<td>$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/></td>-->
-				<td colspan="9" style="text-align:right">
+				<td colspan="9" style="text-align:right"><br/>
 					<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='addCatalogTypeForm.action'" style="width:80px"/></a>
 				</td>
 			</tr>

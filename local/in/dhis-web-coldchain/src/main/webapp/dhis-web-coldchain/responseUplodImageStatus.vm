@@ -3,6 +3,6 @@
 
 <br/><br/>
 
-<!--<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='catalog.action'" />-->
+<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='catalog.action'" />
 
-<input type="button" value="$i18n.getString( 'back' )" onclick="loadAllCatalogs();"/>
+<!--<input type="button" value="$i18n.getString( 'back' )" onclick="loadAllCatalogs();"/>-->
