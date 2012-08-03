@@ -48,9 +48,9 @@
             <td>
 				<select id="status" name="status" class="{validate:{required:true}}">
 					<option value="" >[$i18n.getString( "please_select" )]</option>
+					<option value="NOTWORKING" >$i18n.getString( "notworking" )</option>
+					<option value="UNDERREPAIR" >$i18n.getString( "under_repair" )</option>
                     <option value="WORKING">$i18n.getString( "working" )</option>
-                    <option value="NOTWORKING" >$i18n.getString( "notworking" )</option>
-					<option value="UNDERREPAIR" >$i18n.getString( "under_repair" )</option>					
 				</select>
 			</td>
         </tr>

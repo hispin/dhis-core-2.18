@@ -278,8 +278,12 @@ unction showUpdateCatalogForm( catalogId )
 // ----------------------------------------------------------------
 // On CatalogTypeChange  - Loading CatalogType Attributes
 // ----------------------------------------------------------------
-function getCatalogTypeChange( catalogTypeId )
+//function getCatalogTypeChange( catalogTypeId )
+function getCatalogTypeChange()
 {
+	
+	var catalogTypeId = $( '#catalogType' ).val();
+	
 	if( catalogTypeId == "0" )
 		return;
 	
@@ -364,7 +368,6 @@ function loadAllCatalogs()
 	});
 	hideLoader();
 }
-
 
 //----------------------------------------------------------------
 //Load Equipments On Filter by catalogType Attribute
@@ -494,6 +497,47 @@ function updateCatalog()
      });
 }
 
+/*
+function showUploadCatalogImageForm( catalogId )
+{
+	setInnerHTML('uploadCatalogImageDiv', '');
+	jQuery('#uploadCatalogImageDiv').dialog('destroy').remove();
+	jQuery('<div id="uploadCatalogImageDiv">' ).load( 'showUploadImageForm.action?id='+catalogId ).dialog({
+		title: i18n_upload_catalog_image,
+		maximize: true,
+		closable: true,
+		modal:true,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 800,
+		height: 450
+	});
+	
+}
+*/
+function upLoadImage()
+{
+	
+		$( '#imageSaveDiv' ).html( ' ' );
+		
+		var catalogID = $( '#catalogID' ).val();
+		//var sDateLB = $( '#sDateLB' ).val();
+		//var eDateLB = $( '#eDateLB' ).val();
+		
+		//jQuery('#loaderDiv').show();
+		//document.getElementById( "aggregate" ).disabled = true;
+		
+		jQuery('#imageSaveDiv').load('uploadCatalogImage.action',
+			{
+				catalogID:catalogID,
+				enctype:"multipart/form-data"
+				//eDateLB:eDateLB
+			}, function()
+			{
+				showById('imageSaveDiv');
+				//document.getElementById( "aggregate" ).disabled = false;
+				//jQuery('#loaderDiv').hide();
+			});	
+}	
 
 function showUploadCatalogImageForm( catalogId )
 {
@@ -517,7 +561,7 @@ function showUploadCatalogImageForm( catalogId )
 		
 	jQuery('#resultSearchDiv').dialog('close');
 }
-
+/*
 function uploadCatalogImage()
 {
 	$.ajax({
@@ -530,7 +574,7 @@ function uploadCatalogImage()
       }
      });
 }
-
+*/
 
 
 //----------------------------------------------------------------
