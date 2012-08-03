@@ -47,6 +47,7 @@ import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -98,7 +99,28 @@ public class ReportTableController
     // GET - Dynamic data
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/data", method = RequestMethod.GET )
+    @RequestMapping( value = "/data", method = RequestMethod.GET ) // For json, jsonp
+    public String getReportTableDynamicData( @RequestParam( required = false, value = "in" ) List<String> indicators,
+        @RequestParam( required = false, value = "de" ) List<String> dataElements,
+        @RequestParam( required = false, value = "ds" ) List<String> dataSets,
+        @RequestParam( value = "ou" ) List<String> orgUnits,
+        @RequestParam( required = false, value = "crosstab" ) List<String> crossTab,
+        @RequestParam( required = false ) boolean orgUnitIsParent,
+        @RequestParam( required = false ) boolean minimal,
+        RelativePeriods relatives,
+        Model model,
+        HttpServletResponse response ) throws Exception
+    {
+        Grid grid = getReportTableDynamicGrid( indicators, dataElements, dataSets,
+            orgUnits, crossTab, orgUnitIsParent, minimal, relatives, response );
+
+        model.addAttribute( "model", grid );
+        model.addAttribute( "viewClass", "detailed" );
+
+        return grid != null ? "reportTableData" : null;
+    }
+
+    @RequestMapping( value = "/data.html", method = RequestMethod.GET )
     public void getReportTableDynamicDataHtml( @RequestParam( required = false, value = "in" ) List<String> indicators,
         @RequestParam( required = false, value = "de" ) List<String> dataElements,
         @RequestParam( required = false, value = "ds" ) List<String> dataSets,
@@ -249,7 +271,19 @@ public class ReportTableController
     // GET - Report table data
     //--------------------------------------------------------------------------
 
-    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
+    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET ) // For json, jsonp
+    public String getReportTableData( @PathVariable( "uid" ) String uid, Model model,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletResponse response ) throws Exception
+    {
+        model.addAttribute( "model", getReportTableGrid( uid, organisationUnitUid, period ) );
+        model.addAttribute( "viewClass", "detailed" );
+
+        return "grid";
+    }
+
+    @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
     public void getReportTableHtml( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "ou", required = false ) String organisationUnitUid,
         @RequestParam( value = "pe", required = false ) String period,
