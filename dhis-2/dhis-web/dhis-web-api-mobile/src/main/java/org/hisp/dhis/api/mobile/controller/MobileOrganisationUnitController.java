@@ -125,7 +125,7 @@ public class MobileOrganisationUnitController
     {
         ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );;
         activityPlan.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
-        return activityReportingService.getActivitiesByIdentifier( identifier );
+        return activityPlan;
     }
     
     @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/changeLanguageDataSet" )
