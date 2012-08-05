@@ -376,7 +376,7 @@ public class DefaultDataMartEngine
         dataMartManager.copyAggregatedDataValuesFromTemp();
         
         clock.logTime( "Copied data element data from temporary table" );
-        notifier.notify( id, DATAMART, "Exporting data for indicator data" );
+        notifier.notify( id, DATAMART, "Creating data element index" );
 
         // ---------------------------------------------------------------------
         // 6. Create data element index
@@ -432,8 +432,8 @@ public class DefaultDataMartEngine
 
         dataMartManager.copyAggregatedIndicatorValuesFromTemp();
         
-        clock.logTime( "Copied aggregated indicator data from temporary table" );
-        notifier.notify( id, DATAMART, "Creating indexes" );
+        clock.logTime( "Copied indicator data from temporary table" );
+        notifier.notify( id, DATAMART, "Creating indicator index" );
         
         // ---------------------------------------------------------------------
         // 11. Create indicator index
@@ -488,13 +488,13 @@ public class DefaultDataMartEngine
             notifier.notify( id, DATAMART, "Dropping data element data indexes" );
 
             // -----------------------------------------------------------------
-            // 3. Drop potential indexes
+            // 3. Drop data element index
             // -----------------------------------------------------------------
 
             dataMartManager.dropOrgUnitDataValueIndex();
 
             clock.logTime( "Dropped org unit data element index" );
-            notifier.notify( id, DATAMART, "Deleting existing data element data" );
+            notifier.notify( id, DATAMART, "Deleting existing org unit data element data" );
 
             // ---------------------------------------------------------------------
             // 4. Delete existing aggregated data values
@@ -511,8 +511,8 @@ public class DefaultDataMartEngine
 
             dataMartManager.copyAggregatedOrgUnitDataValuesFromTemp();
             
-            clock.logTime( "Copied aggregated org unit data element data from temporary table" );
-            notifier.notify( id, DATAMART, "Exporting org unit indicator data" );
+            clock.logTime( "Copied org unit data element data from temporary table" );
+            notifier.notify( id, DATAMART, "Creating org unit data element index" );
 
             // ---------------------------------------------------------------------
             // 6. Create org unit data element index
@@ -521,10 +521,10 @@ public class DefaultDataMartEngine
             dataMartManager.createOrgUnitDataValueIndex();
 
             clock.logTime( "Created org unit data element index" );
-            notifier.notify( id, DATAMART, "Exporting data for indicator data" );
+            notifier.notify( id, DATAMART, "Exporting data for org unit indicator data" );
             
             // ---------------------------------------------------------------------
-            // 6. Export indicator values
+            // 7. Export indicator values
             // ---------------------------------------------------------------------
 
             if ( isIndicators )
@@ -541,43 +541,44 @@ public class DefaultDataMartEngine
             }
             
             clock.logTime( "Exported values for indicators (" + indicators.size() + "), pages: " + organisationUnitPages.size() + ", " + SystemUtils.getMemoryString() );
+            notifier.notify( id, DATAMART, "Dropping org unit indicator index" );
 
             // ---------------------------------------------------------------------
-            // 7. Drop aggregated data cache and indicator index
+            // 8. Drop aggregated data cache and indicator index
             // ---------------------------------------------------------------------
 
             crossTabService.dropAggregatedOrgUnitDataCache( key );
             dataMartManager.dropOrgUnitIndicatorValueIndex();
                         
             clock.logTime( "Dropped org unit indicator index, " + SystemUtils.getMemoryString() );
-            notifier.notify( id, DATAMART, "Deleting existing indicator data" );
+            notifier.notify( id, DATAMART, "Deleting existing org unit indicator data" );
 
             // ---------------------------------------------------------------------
-            // 8. Delete existing aggregated indicatorvalues
+            // 9. Delete existing aggregated indicator values
             // ---------------------------------------------------------------------
 
             dataMartManager.deleteAggregatedOrgUnitIndicatorValues( periodIds );
             
             clock.logTime( "Deleted existing aggregated org unit indicatorvalues" );
-            notifier.notify( id, DATAMART, "Copying indicator data from temporary table" );
+            notifier.notify( id, DATAMART, "Copying org unit indicator data from temporary table" );
 
             // ---------------------------------------------------------------------
-            // 9. Copy aggregated org unit indicator values from temporary table
+            // 10. Copy aggregated org unit indicator values from temporary table
             // ---------------------------------------------------------------------
 
             dataMartManager.copyAggregatedOrgUnitIndicatorValuesFromTemp();
             
-            clock.logTime( "Copied aggregated org unit indicator data from temporary table" );
-            notifier.notify( id, DATAMART, "Creating data element indexes" );
+            clock.logTime( "Copied org unit indicator data from temporary table" );
+            notifier.notify( id, DATAMART, "Creating org unit indicator indexes" );
             
             // ---------------------------------------------------------------------
-            // 10. Create org unit indicator index
+            // 11. Create org unit indicator index
             // ---------------------------------------------------------------------
 
             dataMartManager.createOrgUnitIndicatorValueIndex();
             
-            clock.logTime( "Created org unit indexes" );
-            clock.logTime( "Aggregated organisation unit data export done" );            
+            clock.logTime( "Created org unit indicator index" );
+            clock.logTime( "Aggregated org unit data export done" );            
         }
 
         // ---------------------------------------------------------------------
