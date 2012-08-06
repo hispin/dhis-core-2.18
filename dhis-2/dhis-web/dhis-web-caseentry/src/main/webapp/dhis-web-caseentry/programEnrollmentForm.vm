@@ -19,12 +19,12 @@
 	<!-- Enroll program TAB -->
 	<div id="tab-2">
 		<form id='programEnrollmentInforForm' name='programEnrollmentInforForm' action='#' method="POST" >
-			#if( $noIden > 0 || $noOtherGroup > 0 || $noGroup > 0 )
+			#if( ( $!noIden && $!noIden > 0) || ( $!noOtherGroup && $!noOtherGroup > 0) || ( $!noGroup && $!noGroup > 0 ) )
 				<input type='hidden' id='programId' name='programId' value='$programInstance.program.id'>
 				<input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id'>
 				<!-- IDENTIFIERS -->
 				<table id='enrollmentInforDiv' name='enrollmentInforDiv' class='mainPageTable' >
-					#if( $noIden > 0 )
+					#if( $!noIden && $noIden > 0 )
 					<tr>
 						<th colspan='2'>$i18n.getString( "identifier" )</th> 
 					</tr>
@@ -198,7 +198,7 @@
 			$("#tabs").tabs("remove", 2);
 		#end
 		
-		#if( $noIden > 0 || $noOtherGroup > 0 || $noGroup > 0 )
+		#if( ( $noIden && $noIden > 0) || ( $noOtherGroup && $noOtherGroup > 0) || ( $noGroup && $noGroup > 0 ))
 			$( "#tabs" ).tabs( "option", "selected", 1 );
 		#else
 			$( "#tabs" ).tabs( "option", "selected", 2 );
