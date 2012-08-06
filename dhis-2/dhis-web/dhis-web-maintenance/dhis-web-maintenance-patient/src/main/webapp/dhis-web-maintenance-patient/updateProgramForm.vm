@@ -26,7 +26,7 @@
       <tr>
 		<td><label>$i18n.getString( "type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select style="width: 336px;" id="type" name="type" onchange='programTypeOnChange();' class="{validate:{required:true}}">
+			<select style="width: 336px;" id="type" name="type" onchange='programOnChange();' class="{validate:{required:true}}">
 				<option value=''>[$i18n.getString('please_select')]</option>
 				<option value='1' #if( $program.type=='1' ) selected #end>$i18n.getString('multiple_events_with_registration')</option>
 				<option value='2' #if( $program.type=='2' ) selected #end>$i18n.getString('single_event_with_registration')</option>
@@ -39,6 +39,12 @@
 	<tr>
 		<td><label>$i18n.getString( "show_provided_provided_elsewhere" )</label></td>
 		<td><input style="margin: 0;" type="checkbox" id="displayProvidedOtherFacility" name="displayProvidedOtherFacility" value='true' #if( $program.displayProvidedOtherFacility=='false' ) checked #end ></td>
+		<td></td>
+	</tr>
+	
+	<tr>
+		<td><label>$i18n.getString( "show_incident_date" )</label></td>
+		<td><input style="margin: 0;"type="checkbox" id="displayIncidentDate" name="displayIncidentDate" value='true' onchange='programOnChange();' #if( $program.type=='3' ) disabled #elseif($program.displayIncidentDate=='true') checked #end></td>
 		<td></td>
 	</tr>
 		

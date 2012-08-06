@@ -83,6 +83,8 @@ public class Program
     private Integer type;
 
     private Boolean displayProvidedOtherFacility;
+    
+    private Boolean displayIncidentDate;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -298,6 +300,16 @@ public class Program
         {
             throw new RuntimeException( ex );
         }
+    }
+
+    public Boolean getDisplayIncidentDate()
+    {
+        return displayIncidentDate;
+    }
+
+    public void setDisplayIncidentDate( Boolean displayIncidentDate )
+    {
+        this.displayIncidentDate = displayIncidentDate;
     }
 
     private Object getValueFromPatient( String property, Patient patient )

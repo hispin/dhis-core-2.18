@@ -38,7 +38,7 @@ function removeProgram( programId, name )
 	removeItem( programId, name, i18n_confirm_delete, 'removeProgram.action' );
 }
 
-function programTypeOnChange()
+function programOnChange()
 {
 	var type = getFieldValue('type');
 	
@@ -46,17 +46,17 @@ function programTypeOnChange()
 	if(type == "3")
 	{
 		disable('dateOfEnrollmentDescription');
-		disable('dateOfIncidentDescription');
+		disable("displayIncidentDate");
+		disable("dateOfIncidentDescription");
 	}
-	// single-event
-	else if( type=='2')
-	{
+	else{
 		enable('dateOfEnrollmentDescription');
-		disable('dateOfIncidentDescription');
-	}
-	else
-	{
-		enable('dateOfEnrollmentDescription');
-		enable('dateOfIncidentDescription');
+		enable("displayIncidentDate");
+		if(byId('displayIncidentDate').checked){
+			enable("dateOfIncidentDescription");
+		}
+		else {
+			disable("dateOfIncidentDescription");
+		}
 	}
 }

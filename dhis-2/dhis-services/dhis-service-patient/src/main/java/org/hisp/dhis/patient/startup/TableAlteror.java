@@ -121,6 +121,8 @@ public class TableAlteror
         moveStoredByFormStageInstanceToDataValue();
         
         executeSql( "ALTER TABLE patientattribute DROP COLUMN inheritable" );
+
+        executeSql( "ALTER TABLE patientattribute DROP COLUMN inheritable" );
     }
 
     // -------------------------------------------------------------------------
@@ -272,7 +274,8 @@ public class TableAlteror
                     + resultSet.getInt( 4 ) + ")" );
             }
             executeSql( "ALTER TABLE patienttabularreport DROP COLUMN programstageid" );
-            executeSql( "DROP TABLE patienttabularreport_dataelements" );
+            executeSql( "UPDATE program SET displayIncidentDate=true WHERE displayIncidentDate is null and type!=3" );
+            executeSql( "UPDATE program SET displayIncidentDate=false WHERE displayIncidentDate is null and type==3" );
         }
         catch ( Exception e )
         {
