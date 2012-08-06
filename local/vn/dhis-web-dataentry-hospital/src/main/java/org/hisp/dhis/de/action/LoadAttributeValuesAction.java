@@ -27,7 +27,9 @@
 
 package org.hisp.dhis.de.action;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.attribute.LocalAttributeValueService;
 import org.hisp.dhis.dataset.DataSet;
@@ -67,9 +69,9 @@ public class LoadAttributeValuesAction
 
     private Integer dataSetId;
 
-    private Collection<String> values;
+    private List<String> values;
 
-    public Collection<String> getValues()
+    public List<String> getValues()
     {
         return values;
     }
@@ -89,7 +91,9 @@ public class LoadAttributeValuesAction
     {
         DataSet dataset = dataSetService.getDataSet( dataSetId );
 
-        values = localAttributeValueService.getValuesByDataSet( dataset );
+        values = new ArrayList<String>( localAttributeValueService.getValuesByDataSet( dataset ) );
+
+        Collections.sort( values );
 
         return SUCCESS;
     }
