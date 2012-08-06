@@ -391,6 +391,13 @@ function showProgramEnrollmentForm( patientId, programId )
 				}
 			}
 			
+			var displayIncidentDate = jQuery('#enrollmentDiv [name=programId] option:selected').attr('displayIncidentDate');
+			if(displayIncidentDate=='true'){
+				showIncidentDateField();
+			}else{
+				hideIncidentDateField();
+			}
+			
 			jQuery('#loaderDiv').hide();
 		});
 }
@@ -722,7 +729,20 @@ function showEnrolmentField()
 {
 	showById('enrollmentDateTR');
 	showById('dateOfIncidentTR');
+	enable('dateOfIncident');
 	showById('enrollBtn');
+}
+
+function hideIncidentDateField()
+{
+	setFieldValue( 'dateOfIncident', '' );
+	disable('dateOfIncident');
+	hideById('dateOfIncidentTR');
+}
+  
+function showIncidentDateField()
+{
+	showById('dateOfIncidentTR');
 }
 
 function saveIdentifierAndAttribute()

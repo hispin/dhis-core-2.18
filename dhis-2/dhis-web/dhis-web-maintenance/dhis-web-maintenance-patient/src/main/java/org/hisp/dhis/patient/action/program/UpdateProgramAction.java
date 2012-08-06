@@ -122,6 +122,13 @@ public class UpdateProgramAction
         this.displayProvidedOtherFacility = displayProvidedOtherFacility;
     }
 
+    private Boolean displayIncidentDate;
+
+    public void setDisplayIncidentDate( Boolean displayIncidentDate )
+    {
+        this.displayIncidentDate = displayIncidentDate;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -130,7 +137,8 @@ public class UpdateProgramAction
         throws Exception
     {
         displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
-
+        displayIncidentDate = (displayIncidentDate == null) ? false : displayIncidentDate;
+        
         Program program = programService.getProgram( id );
         program.setName( name );
         program.setDescription( description );
@@ -140,6 +148,7 @@ public class UpdateProgramAction
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         program.setType( type );
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
+        program.setDisplayIncidentDate(displayIncidentDate);
 
         programService.updateProgram( program );
 

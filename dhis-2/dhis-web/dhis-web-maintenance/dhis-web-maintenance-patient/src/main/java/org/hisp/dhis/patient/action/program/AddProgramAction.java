@@ -125,6 +125,13 @@ public class AddProgramAction
         this.displayProvidedOtherFacility = displayProvidedOtherFacility;
     }
 
+    private Boolean displayIncidentDate;
+
+    public void setDisplayIncidentDate( Boolean displayIncidentDate )
+    {
+        this.displayIncidentDate = displayIncidentDate;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -133,7 +140,8 @@ public class AddProgramAction
         throws Exception
     {
         displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
-
+        displayIncidentDate = (displayIncidentDate == null) ? false : displayIncidentDate;
+        
         Program program = new Program();
 
         program.setName( name );
@@ -144,11 +152,12 @@ public class AddProgramAction
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         program.setType( type );
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
+        program.setDisplayIncidentDate(displayIncidentDate);
         
         programService.saveProgram( program );
 
-        if ( program.getType().equals( Program.SINGLE_EVENT_WITH_REGISTRATION ) || 
-            program.getType().equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ))
+        if ( program.getType().equals( Program.SINGLE_EVENT_WITH_REGISTRATION )
+            || program.getType().equals( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) )
         {
             ProgramStage programStage = new ProgramStage();
 
