@@ -5,6 +5,7 @@
 	"description": "$!encoder.jsEncode( ${program.description} )",
 	"type": "$!program.type",
 	"displayProvidedOtherFacility": "$!program.displayProvidedOtherFacility",
+	"displayIncidentDate": "$!program.displayIncidentDate",
 	"dateOfEnrollmentDescription": "$!encoder.jsEncode( ${program.dateOfEnrollmentDescription} )",
 	"dateOfIncidentDescription": "$!encoder.jsEncode( ${program.dateOfIncidentDescription} )",
 	"programStageCount": "${program.programStages.size()}",
