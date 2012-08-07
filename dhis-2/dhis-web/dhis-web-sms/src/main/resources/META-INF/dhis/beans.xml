@@ -46,8 +46,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService"/>
 		<property name="minMaxOutlierAnalysisService"
 			ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService"/>
-		<property name="minMaxValuesGenerationService"
-			ref="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService"/>
+<!--		<property name="minMaxValuesGenerationService"
+			ref="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService"/> -->
 		<property name="minMaxDataElementService"
 			ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
 		<property name="systemSettingManager"
