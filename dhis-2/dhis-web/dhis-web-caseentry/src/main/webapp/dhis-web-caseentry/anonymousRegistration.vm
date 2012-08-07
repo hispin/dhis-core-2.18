@@ -21,7 +21,7 @@
 
 <select multiple id='compulsoryDE' name='compulsoryDE' class='hidden'></select>
 
-<div id='criteriaDiv'>
+<div id='advanced-search'>
 	<div id='selectDiv'>
 		<table>		
 			<tr>

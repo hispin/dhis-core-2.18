@@ -416,7 +416,7 @@ function enableBtn(){
 		enable('listPatientBtn');
 		enable('addPatientBtn');
 		enable('advancedSearchBtn');
-		jQuery('#criteriaDiv :input').each( function( idx, item ){
+		jQuery('#advanced-search :input').each( function( idx, item ){
 			enable(this.id);
 		});
 	}
@@ -425,7 +425,7 @@ function enableBtn(){
 		disable('listPatientBtn');
 		disable('addPatientBtn');
 		disable('advancedSearchBtn');
-		jQuery('#criteriaDiv :input').each( function( idx, item ){
+		jQuery('#advanced-search :input').each( function( idx, item ){
 			disable(this.id);
 		});
 	}

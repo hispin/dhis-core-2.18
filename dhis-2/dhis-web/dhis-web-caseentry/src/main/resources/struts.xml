@@ -197,15 +197,13 @@
 			<param name="page">/dhis-web-caseentry/multiDataEntrySelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
 			<param name="stylesheets">style/style.css</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,
-				javascript/form.js,javascript/multiDataEntry.js</param>			
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,javascript/multiDataEntry.js</param>			
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 
 		<action name="getPrograms"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/multiDataEntryIndex.vm</param>
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonPrograms.vm</result>
 		</action>
 
 		<action name="getDataRecords"
@@ -219,7 +217,7 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
-			<param name="javascripts">javascript/form.js,javascript/entry.js,../dhis-web-commons/javascripts/date.js</param>
+			<param name="javascripts">javascript/entry.js,../dhis-web-commons/javascripts/date.js</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
 
@@ -227,7 +225,7 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
-			<param name="javascripts">javascript/form.js,../dhis-web-commons/javascripts/date.js</param>
+			<param name="javascripts">../dhis-web-commons/javascripts/date.js</param>
 		</action>
 
 		<action name="completeProgramStageDataEntry"
