@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
@@ -80,8 +79,6 @@ public class ValidateProgramInstanceAction
 
     private ProgramValidationService programValidationService;
 
-    private CaseAggregationConditionService aggregationConditionService;
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -114,11 +111,6 @@ public class ValidateProgramInstanceAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
-    }
-
-    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
-    {
-        this.aggregationConditionService = aggregationConditionService;
     }
 
     public Map<Integer, String> getLeftsideFormulaMap()
@@ -266,8 +258,8 @@ public class ValidateProgramInstanceAction
 
             for ( ProgramValidation validation : programValidations )
             {
-                leftsideFormulaMap.put( validation.getId(), aggregationConditionService
-                    .getConditionDescription( validation.getLeftSide() ) );
+                leftsideFormulaMap.put( validation.getId(), programValidationService
+                    .getValidationDescription( validation.getLeftSide() ) );
 
                 if ( validation.getDateType() )
                 {
@@ -334,8 +326,8 @@ public class ValidateProgramInstanceAction
                 }
                 else
                 {
-                    rightsideFormulaMap.put( validation.getId(), aggregationConditionService
-                        .getConditionDescription( validation.getRightSide() ) );
+                    rightsideFormulaMap.put( validation.getId(), programValidationService
+                        .getValidationDescription( validation.getRightSide() ) );
                 }
             }
         }
