@@ -49,7 +49,7 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
-import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
+//import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -128,12 +128,12 @@ public class FormUtils
         this.systemSettingManager = systemSettingManager;
     }
 
-    private MinMaxValuesGenerationService minMaxValuesGenerationService;
-
-    public void setMinMaxValuesGenerationService( MinMaxValuesGenerationService minMaxValuesGenerationService )
-    {
-        this.minMaxValuesGenerationService = minMaxValuesGenerationService;
-    }
+//    private MinMaxValuesGenerationService minMaxValuesGenerationService;
+//
+//    public void setMinMaxValuesGenerationService( MinMaxValuesGenerationService minMaxValuesGenerationService )
+//    {
+//        this.minMaxValuesGenerationService = minMaxValuesGenerationService;
+//    }
 
     private MinMaxDataElementService minMaxDataElementService;
 
@@ -175,26 +175,26 @@ public class FormUtils
             Double factor = (Double) systemSettingManager.getSystemSetting(
                 SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
 
-            Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse( organisationUnit,
-                dataElements, ListUtils.getCollection( period ), factor );
+//            Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse( organisationUnit,
+//                dataElements, ListUtils.getCollection( period ), factor );
+//
+//            Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse( organisationUnit,
+//                dataElements, ListUtils.getCollection( period ), null );
 
-            Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse( organisationUnit,
-                dataElements, ListUtils.getCollection( period ), null );
-
-            deflatedDataValues = CollectionUtils.union( stdDevs, minMaxs );
+//            deflatedDataValues = CollectionUtils.union( stdDevs, minMaxs );
         }
         else
         {
-            deflatedDataValues = minMaxValuesGenerationService.findOutliers( organisationUnit,
-                ListUtils.getCollection( period ), minmaxs );
+//            deflatedDataValues = minMaxValuesGenerationService.findOutliers( organisationUnit,
+//                ListUtils.getCollection( period ), minmaxs );
         }
 
-        for ( DeflatedDataValue deflatedDataValue : deflatedDataValues )
-        {
-            String key = String.format( "DE%dOC%d", deflatedDataValue.getDataElementId(),
-                deflatedDataValue.getCategoryOptionComboId() );
-            validationErrorMap.put( key, deflatedDataValue );
-        }
+//        for ( DeflatedDataValue deflatedDataValue : deflatedDataValues )
+//        {
+//            String key = String.format( "DE%dOC%d", deflatedDataValue.getDataElementId(),
+//                deflatedDataValue.getCategoryOptionComboId() );
+//            validationErrorMap.put( key, deflatedDataValue );
+//        }
 
         return validationErrorMap;
     }
