@@ -47,14 +47,15 @@
 					<input type="text" id="searchText" name="searchText" value="$!searchText" onkeyup='searchPatientsOnKeyUp( event );' style='margin-right:30px;'>
 				</td>	
 				<td></td>
-				<td><input type="button" class='small-button' value='+' onclick='addAttributeOption();'>
-					<td>
-						$i18n.getString('search_by_selected_unit')
-						<input type='checkbox' id='searchBySelectedOrgunit' name='searchBySelectedOrgunit' />
-					</td>
-					<td>
-						<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();'>
-					</td>
+				<td>
+					<input type="button" class='small-button' value='+' onclick='addAttributeOption();'>
+				</td>
+				<td id='searchBySelectedUnitTD'>
+					$i18n.getString('search_by_selected_unit')
+					<input type='checkbox' id='searchBySelectedOrgunit' name='searchBySelectedOrgunit' />
+				</td>
+				<td>
+					<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
 				</td>
 			</tr>
 		</tbody>

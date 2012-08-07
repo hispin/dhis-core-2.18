@@ -7,7 +7,7 @@
 			#if($!listAll)
 				$i18n.getString( "list_all_patients" )
 			#else
-				$i18n.getString( "search_patients_by_attributes" )
+				$i18n.getString( "advanced_search_patients" )
 			#end
 		</td>
 	</tr>	
