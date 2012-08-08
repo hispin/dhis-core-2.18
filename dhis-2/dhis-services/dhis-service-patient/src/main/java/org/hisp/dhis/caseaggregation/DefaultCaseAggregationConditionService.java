@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.caseaggregation;
 
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_COUNT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_SUM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
@@ -82,7 +83,7 @@ public class DefaultCaseAggregationConditionService
     private final String regExp = "\\[(" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE + "|"
         + OBJECT_PROGRAM_STAGE_PROPERTY + "|" + OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY + "|"
         + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|"
-        + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+[" + SEPARATOR_ID + "[0-9]*]*)"
+        + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9@#\\- ]+[" + SEPARATOR_ID + "[a-zA-Z0-9]*]*)"
         + "\\]";
 
     private final String IS_NULL = "is null";
@@ -98,6 +99,8 @@ public class DefaultCaseAggregationConditionService
     private final String IN_CONDITION_START_SIGN = "@";
 
     private final String IN_CONDITION_END_SIGN = "#";
+
+    private final String IN_CONDITION_COUNT_X_TIMES = "COUNT";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -384,7 +387,6 @@ public class DefaultCaseAggregationConditionService
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE ) )
                 {
                     int objectId = Integer.parseInt( ids[0] );
-
                     ProgramStage programStage = programStageService.getProgramStage( objectId );
 
                     if ( programStage == null )
@@ -392,8 +394,10 @@ public class DefaultCaseAggregationConditionService
                         return INVALID_CONDITION;
                     }
 
+                    String count = (ids.length == 2) ? SEPARATOR_ID + ids[1] : "";
                     matcher.appendReplacement( description, "[" + OBJECT_PROGRAM_STAGE + SEPARATOR_OBJECT
-                        + programStage.getName() + "]" );
+                        + programStage.getName() + count + "]" );
+
                 }
             }
 
@@ -661,7 +665,15 @@ public class DefaultCaseAggregationConditionService
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE ) )
                 {
-                    condition = getConditionForProgramStage( info[1], operator, orgunitId, startDate, endDate );
+                    String[] ids = info[1].split( SEPARATOR_ID );
+                    if ( ids.length == 2 && ids[1].equals( IN_CONDITION_COUNT_X_TIMES ) )
+                    {
+                        condition = getConditionForCountProgramStage( ids[0], operator, orgunitId, startDate, endDate );
+                    }
+                    else
+                    {
+                        condition = getConditionForProgramStage( ids[0], operator, orgunitId, startDate, endDate );
+                    }
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE_PROPERTY ) )
                 {
@@ -906,6 +918,34 @@ public class DefaultCaseAggregationConditionService
             + "ON pi.programinstanceid = psi.programinstanceid WHERE psi.programstageid=" + programStageId + " "
             + "AND psi.executiondate >= '" + startDate + "' AND psi.executiondate <= '" + endDate
             + "' AND psi.organisationunitid = " + orgunitId + " ";
+    }
+
+    private String getConditionForCountProgramStage( String programStageId, String operator, int orgunitId,
+        String startDate, String endDate )
+    {
+        String select = "SELECT distinct(pi.patientid) ";
+
+        if ( operator.equals( AGGRERATION_SUM ) )
+        {
+            select = "SELECT psi.programstageinstanceid ";
+        }
+
+        select += "FROM programstageinstance as psi "
+            + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
+            + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
+            + "WHERE psi.organisationunitid = " + orgunitId + " and psi.programstageid = " + programStageId + " "
+            + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
+            + "GROUP BY psi.programinstanceid ";
+
+        if ( operator.equals( AGGRERATION_COUNT ) )
+        {
+            select += ",pi.patientid ";
+        }
+
+        select += "HAVING count(psi.programstageinstanceid) ";
+
+        return select;
+
     }
 
     private String getConditionForProgramStageProperty( String property, String operator, int orgunitId,
