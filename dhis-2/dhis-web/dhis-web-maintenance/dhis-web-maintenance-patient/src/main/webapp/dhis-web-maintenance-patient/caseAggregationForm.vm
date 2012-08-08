@@ -65,6 +65,7 @@
 				<td>
 					<select multiple id="programStageProperty" size="10"  name="programStageProperty" ondblclick="insertInfo(this, true);" disabled >
 						<option value="[PS:*]">$i18n.getString( "visit_selected_program_stage" )</option>
+						<option value="[PS:*.COUNT]">$i18n.getString( "visit_selected_program_stage_x_th_times" )</option>
 						<option value="[PS:*] AND [PSP:DATE@executionDate#-DATE@dueDate#]">$i18n.getString( "report_date" ) - $i18n.getString( "due_date" )</option>
 						<option value="[PS:*] AND [PC:DATE@executionDate#-DATE@birthDate#]">$i18n.getString( "report_date" ) - $i18n.getString( "date_of_birth" )</option>
 					</select>
