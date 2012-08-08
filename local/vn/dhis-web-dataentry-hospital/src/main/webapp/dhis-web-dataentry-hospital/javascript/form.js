@@ -37,6 +37,9 @@ var currentOrganisationUnitName = "";
 // Currently selected data set identifier
 var currentDataSetId = null;
 
+// Currently selected period type name
+var currentPeriodType = "";
+
 // Current offset, next or previous corresponding to increasing or decreasing
 // value with one
 var currentPeriodOffset = 0;
@@ -110,24 +113,36 @@ function loadDataSets( _unitName )
 			//async: false,
 			success: function( json )
 			{
-				var dataSetList = json.dataSets;
-
-				$( '#selectedDataSetId' ).removeAttr( 'disabled' );
-
-				var dataSetId = $( '#selectedDataSetId option:selected' ).val();
-				var periodId = $( '#selectedPeriodId option:selected' ).val();
-
 				clearListById( 'selectedDataSetId' );
-				//addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
 
-				var dataSetValid = false;
-
-				for ( i in dataSetList )
+				if ( json.dataSets.length > 0 )
 				{
-					$('#selectedDataSetId').append('<option value=' + dataSetList[i].id  + ' formType="'+ dataSetList[i].formType + '" periodType="' + dataSetList[i].periodType + '" >' + dataSetList[i].name + '</option>');
+					$( '#selectedDataSetId' ).removeAttr( 'disabled' );
+					
+					addOptionById( 'selectedDataSetId', '-1', '[ ' + i18n_select_data_set + ' ]' );
+
+					jQuery.each( json.dataSets, function( i, item )
+					{
+						if ( item.id == currentDataSetId )
+						{
+							$('#selectedDataSetId').append('<option value=' + item.id  + ' formType="'+ item.formType + '" periodType="' + item.periodType + '" selected="true">' + item.name + '</option>');
+						}
+						else
+						{
+							$('#selectedDataSetId').append('<option value=' + item.id  + ' formType="'+ item.formType + '" periodType="' + item.periodType + '" >' + item.name + '</option>');
+						}
+					} );
+					
+					enable( 'selectedDataSetId' );
+					var periodType = $( '#selectedDataSetId option:selected' ).attr( 'periodType' );
+					
+					if ( currentPeriodType && currentPeriodType != -1 && currentPeriodType == periodType )
+					{
+						loadForm( currentDataSetId, getFieldValue( 'valueInput' ) );
+					}
+				} else {
+					resetCriteriaDiv();
 				}
-				
-				enable('selectedDataSetId');
 			}
 		});
 	}
@@ -198,9 +213,19 @@ function addEventListeners()
     } );
 }
 
-function clearPeriod()
+function resetCriteriaDiv()
 {
-    clearListById( 'selectedPeriodId' );
+	currentDataSetId = null;
+	currentPeriodType = null;
+	
+	clearListById( 'selectedPeriodId' );
+	
+	hideById( 'chapterTR' );
+	hideById( 'attributeTR' );
+	
+	byId( 'inputCriteria' ).style.width = '504px';
+	byId( 'inputCriteria' ).style.height = '80px';
+    
     clearEntryForm();
 }
 
@@ -218,7 +243,7 @@ function clearEntryForm()
 
 function loadForm( dataSetId, value )
 {
-	hideExportDiv();
+	//hideExportDiv();
 	showLoader();
 
 	$( '#contentDiv' ).load( 'loadForm.action',
@@ -326,6 +351,8 @@ function displayPeriodsInternal()
 
     clearListById( 'selectedPeriodId' );
 
+	addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
+	
     for ( i in periods )
     {
         addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
@@ -348,6 +375,7 @@ function dataSetSelected()
     $( '#prevButton' ).removeAttr( 'disabled' );
     $( '#nextButton' ).removeAttr( 'disabled' );
 	$( '#valueInput' ).val('');
+
     var dataSetId = $( '#selectedDataSetId option:selected' ).val();
     var periodId = $( '#selectedPeriodId option:selected' ).val();
     var periodType = $( '#selectedDataSetId option:selected' ).attr('periodType');
@@ -356,14 +384,14 @@ function dataSetSelected()
 
     if ( dataSetId != -1 )
     {
+		addOptionById( 'selectedPeriodId', "-1", '[ ' + i18n_select_period + ' ]' );
+	
         for ( i in periods )
         {
             addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
         }
 
-        var previousPeriodType = currentDataSetId ? periodType : null;
-
-        if ( periodId && periodId != -1 && previousPeriodType && previousPeriodType == periodType )
+        if ( periodId && periodId != -1 && currentPeriodType && currentPeriodType == periodType )
         {
             $( '#selectedPeriodId' ).val( periodId );
         }
@@ -373,8 +401,10 @@ function dataSetSelected()
         }
 
         currentDataSetId = dataSetId;
+		currentPeriodType = periodType;
 		
-		loadSubDataSets( dataSetId );
+		//loadSubDataSets( dataSetId );
+		loadAttributeValues( dataSetId );
     }
 }
 
@@ -441,20 +471,25 @@ function loadAttributeValues( dataSetId )
 
 			autoCompletedField();
 
-			byId( 'inputCriteria' ).style.width = '670px';
-			byId( 'inputCriteria' ).style.height = '320px';
+			byId( 'inputCriteria' ).style.width = '504px';
+			byId( 'inputCriteria' ).style.height = '130px';
 
-			hideById( 'departmentTitleDiv' );
-			hideById( 'departmentDiv' );
-			showById( 'attributeDiv' );
+			//hideById( 'departmentTitleDiv' );
+			//hideById( 'departmentDiv' );
+
+			showById( 'chapterTR' );
+			showById( 'attributeTR' );
 		}
 		else
 		{
-			byId( 'inputCriteria' ).style.width = '640px';
-			byId( 'inputCriteria' ).style.height = '250px';
+			byId( 'inputCriteria' ).style.width = '504px';
+			byId( 'inputCriteria' ).style.height = '80px';
 			
-			hideById( 'attributeDiv' );
+			hideById( 'chapterTR' );
+			hideById( 'attributeTR' );
 		}
+		
+		jQuery( '#selectedPeriodId' ).bind( 'change', periodSelected );
 	} );
 }
 
@@ -529,29 +564,34 @@ function loadDepartmentFormSelected()
 function periodSelected()
 {
 	var periodName = $( '#selectedPeriodId option:selected' ).text();
-    var dataSetId = $( '#selectedDataSetId option:selected' ).val();
+	var dataSetId = $( '#selectedDataSetId option:selected' ).val();
 
-    $( '#currentPeriod' ).html( periodName );
-
-    var periodId = getFieldValue( 'selectedPeriodId' );
-
-    if ( periodId && periodId != -1 )
-    {
-		if ( hasElements( 'subDataSetId' ) && getFieldValue( 'subDataSetId' ) == null )
-		{
-			return;
-		}
-		else if ( getFieldValue( 'subDataSetId' ) )
-		{
-			dataSetId = $( '#subDataSetId option:selected' ).val();
-		}
-
-		showLoader();
-		loadForm( dataSetId, getFieldValue( 'valueInput' ) );
-    }
-	else
+	if ( dataSetId && dataSetId != -1 )
 	{
-		clearEntryForm();
+		$( '#currentPeriod' ).html( periodName );
+
+		var periodId = getFieldValue( 'selectedPeriodId' );
+
+		if ( periodId && periodId != -1 )
+		{
+			if ( hasElements( 'subDataSetId' ) && getFieldValue( 'subDataSetId' ) == null )
+			{
+				return;
+			}
+			else if ( getFieldValue( 'subDataSetId' ) )
+			{
+				dataSetId = $( '#subDataSetId option:selected' ).val();
+			}
+
+			showLoader();
+			loadForm( dataSetId, getFieldValue( 'valueInput' ) );
+		}
+		else
+		{
+			clearEntryForm();
+		}
+	} else {
+		setHeaderDelayMessage( i18n_please_select_data_set );
 	}
 }
 
