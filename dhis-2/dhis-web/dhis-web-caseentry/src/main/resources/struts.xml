@@ -814,19 +814,6 @@
 			<param name="stylesheets">style/style.css</param>
 		</action>
 		
-		<action name="getOutboundSmsList"
-			class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/smsReminderList.vm</param>
-			<param name="stylesheets">style/style.css</param>
-		</action>
-		
-		<action name="showSendSMSForm" class="org.hisp.dhis.caseentry.action.reminder.GetGetwayListAction">
-	     <result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/sendSMSForm.vm</param>
-			<param name="stylesheets">style/style.css</param>
-	    </action>
-	    
 	    <action name="sendSMS" class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction">
 	      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 	      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>

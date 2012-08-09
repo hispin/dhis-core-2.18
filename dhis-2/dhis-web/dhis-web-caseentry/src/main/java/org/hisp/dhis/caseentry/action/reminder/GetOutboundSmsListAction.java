@@ -29,10 +29,13 @@ package org.hisp.dhis.caseentry.action.reminder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -50,15 +53,20 @@ public class GetOutboundSmsListAction
 
     private ProgramStageInstanceService programStageInstanceService;
 
+    @Autowired
+    private OutboundSmsTransportService transportService;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
     private Integer programStageInstanceId;
-    
+
     private ProgramStageInstance programStageInstance;
-    
+
     private List<OutboundSms> outboundSms;
+
+    public Map<String, String> gatewayMap;
 
     // -------------------------------------------------------------------------
     // Getter/Setter
@@ -84,6 +92,11 @@ public class GetOutboundSmsListAction
         return outboundSms;
     }
 
+    public Map<String, String> getGatewayMap()
+    {
+        return gatewayMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -92,11 +105,12 @@ public class GetOutboundSmsListAction
     public String execute()
         throws Exception
     {
-        programStageInstance = programStageInstanceService
-            .getProgramStageInstance( programStageInstanceId );
-        
-        outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
+        programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
+        outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
+        
+        gatewayMap = transportService.getGatewayMap();
+        
         return SUCCESS;
     }
 

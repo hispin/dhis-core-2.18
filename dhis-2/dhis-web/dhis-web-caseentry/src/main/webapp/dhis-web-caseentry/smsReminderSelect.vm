@@ -19,7 +19,7 @@
 <form>
 	<input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
 	<input type='hidden' id='listAll' name='listAll'>
-	<input type='hidden' id='programStageInstanceId' name='programStageInstanceId'>
+	<input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='$programStageInstance.id'>
 	<div id='searchDiv'>
 		#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	
 	</div>
