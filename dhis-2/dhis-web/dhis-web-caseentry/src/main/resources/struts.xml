@@ -807,13 +807,6 @@
 			<param name="stylesheets">style/style.css</param>
 		</action>
 		
-		<action name="getOutboundSms"
-			class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/jsonSmsReminder.vm</param>
-			<param name="stylesheets">style/style.css</param>
-		</action>
-		
 		<action name="getOutboundSmsList"
 			class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction">
 			<result name="success" type="velocity">/content.vm</result>
