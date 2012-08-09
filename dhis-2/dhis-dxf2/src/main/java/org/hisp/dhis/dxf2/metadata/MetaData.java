@@ -178,8 +178,8 @@ public class MetaData
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "userAuthorityGroups", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "userAuthorityGroup", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "userRoles", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "userRole", namespace = Dxf2Namespace.NAMESPACE )
     public List<UserAuthorityGroup> getUserRoles()
     {
         return userRoles;
