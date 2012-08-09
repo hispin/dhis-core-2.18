@@ -1,3 +1,12 @@
+<script type="text/javascript">
+	jQuery(document).ready(	function(){
+		$('#tabs').tabs();
+		validation( 'sendSMSForm', function(form){
+			sendSMS();
+		});
+	});
+</script>
+
 <h4>$i18n.getString( "sms_message_management" )</h4>
 
 <table class="mainPageTable"> 
@@ -15,32 +24,77 @@
 	</tr>
 </table>
 
-<table class="mainPageTable">
-	<tr>
-		<td colspan='3' align='right'><input type='button' value="$i18n.getString('send_sms')" onclick='showSendSMSForm();'></td>
-	</tr>
-	<tr>
-		<th>$i18n.getString( "date" )</th>
-		<th>$i18n.getString( "message" )</th>
-	</tr>
-		  
-    <tbody id='smsManagementList'>	
-		  #set( $mark = false )
-          #foreach( $sms in $outboundSms )
-          	<tr id="tr${sms.id}" #alternate($mark) >
-				<td>$format.formatDate($!sms.date)</td>
-				<td>$sms.message</td>
+<div id="tabs">
+	<ul>
+		<li><a href="#tab-1">$i18n.getString("data_entry_screen")</a></li>
+		<li><a href="#tab-2">$i18n.getString("identifier_and_attribute")</a></li>
+	</ul>
+	
+	<div id="tab-1">
+		<table class="mainPageTable">
+			<tr>
+				<td colspan='3' align='right'><input type='button' value="$i18n.getString('send_sms')" onclick='showSendSMSForm();'></td>
 			</tr>
-			#set( $mark = !$mark)
-    	#end
-    	</tbody>
-    
-	 </table>
-    </td>
-  </tr>
-</table>
-
-<div id="detailsInfo"></div>
+			<tr>
+				<th>$i18n.getString( "date" )</th>
+				<th>$i18n.getString( "message" )</th>
+			</tr>
+			<tbody id='smsManagementList'>	
+				  #set( $mark = false )
+				  #foreach( $sms in $outboundSms )
+					<tr id="tr${sms.id}" #alternate($mark) >
+						<td>$format.formatDate($!sms.date)</td>
+						<td>$sms.message</td>
+					</tr>
+					#set( $mark = !$mark)
+				#end
+			</tbody>
+		</table>
+	</div>
+	
+	<div id="tab-2">
+		#if ( $!gatewayMap && $!gatewayMap.size() > 0 )
+		<form id="sendSMSForm" name="sendSMSForm" action="sendSMS.action">
+			<table id="detailsList">
+				<col width="300px"/>
+				<col width="80px"/>
+				<tbody>
+					<tr>
+						<th>$i18n.getString( "gateway_type" )</th>
+					</tr>
+					<tr>
+						<td>
+							#set( $keys = $!gatewayMap.keySet() )
+							<select id="gatewayId" name="gatewayId">
+								#foreach( $key in $!keys )
+								<option value="$gatewayMap.get( $key )">$i18n.getString( $key )</option>
+								#end
+							</select>
+						</td>
+					</tr>
+					
+					<tr><th>$i18n.getString( "message" )</th></tr>
+					<tr><td><textarea id="smsMessage" name="smsMessage" class="{validate:{required:true}}"></textarea></td></tr>
+				
+					<tr>
+						<td><input type="submit" name="send" value="$i18n.getString( 'send_sms' )"/></td>
+					</tr>
+					
+				</tbody>
+			</table>
+		</form>
+		<div class='hidden'>
+			<input type='hidden' id='currentDate'>
+			<script>
+				datePickerValid( 'currentDate', true );
+			</script>
+		</div>
+	</div>
+	#else
+	<p>No Sms service available</p>
+	#end
+	</div>
+</div>
 
 <script type="text/javascript">
 	var i18n_color_quick_help = '$encoder.jsEscape( $i18n.getString( "color_quick_help" ) , "'")';

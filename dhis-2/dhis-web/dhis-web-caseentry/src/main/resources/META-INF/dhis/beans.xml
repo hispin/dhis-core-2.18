@@ -978,9 +978,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.caseentry.action.reminder.GetGetwayListAction"
-		class="org.hisp.dhis.caseentry.action.reminder.GetGetwayListAction" scope="prototype" />
-	
 	<bean id="org.hisp.dhis.caseentry.action.reminder.SendSmsAction"
 		class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction"
 		scope="prototype">
