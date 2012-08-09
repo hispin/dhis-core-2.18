@@ -29,7 +29,6 @@
 
 <div id='listPatientDiv'></div>
 <div id='smsManagementDiv'></div>
-<div id='sendSmsFormFiv'></div>
 
 <script>
 	unSave = false;

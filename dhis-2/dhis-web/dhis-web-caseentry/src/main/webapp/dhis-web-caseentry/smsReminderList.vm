@@ -33,9 +33,6 @@
 	<div id="tab-1">
 		<table class="mainPageTable">
 			<tr>
-				<td colspan='3' align='right'><input type='button' value="$i18n.getString('send_sms')" onclick='showSendSMSForm();'></td>
-			</tr>
-			<tr>
 				<th>$i18n.getString( "date" )</th>
 				<th>$i18n.getString( "message" )</th>
 			</tr>
