@@ -49,7 +49,7 @@
 									</tr>
 									<tr>
 										<td>
-											($programStageInstance.outboundSms.size() $i18n.getString('messages') )<br/>
+											(<span id='noMessageDiv_$programStageInstance.id'>$programStageInstance.outboundSms.size()</span> $i18n.getString('messages') )<br/>
 											<img src='images/sms_list.gif' style="width:32px" title="$i18n.getString('send_message')" onclick='setFieldValue( "programStageInstanceId", "$!programStageInstance.id" );showSendSMSForm();'/>
 											<img src='images/new_sms.gif' style="width:32px" title="$i18n.getString('sms_message_management')" onclick='javascript:getOutboundSmsList( $programStageInstance.id );' />
 										</td>

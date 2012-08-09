@@ -87,11 +87,12 @@ function showSendSMSForm()
 		});
 }
 
-function sendSMS( programStageInstanceId )
+function sendSMS()
 {
+	programStageInstanceId = getFieldValue( 'programStageInstanceId' );
 	jQuery.postUTF8( 'sendSMS.action',
 	{
-		programStageInstanceId: getFieldValue( 'programStageInstanceId' ),
+		programStageInstanceId: programStageInstanceId,
 		gatewayId: getFieldValue( 'gatewayId' ),
 		msg: getFieldValue( 'smsMessage' )
 	}, function ( json )
@@ -100,11 +101,13 @@ function sendSMS( programStageInstanceId )
 			showSuccessMessage( json.message );
 			jQuery('#smsManagementList').prepend("<tr><td>" + getFieldValue('currentDate') + "</td><td>" + getFieldValue('smsMessage') + "</td></tr>");
 			$('#sendSmsFormFiv' ).dialog("close");
+			var noMessage = eval( getInnerHTML('noMessageDiv_' + programStageInstanceId)) + 1;
+			jQuery('#noMessageDiv_' + programStageInstanceId).html(noMessage);
 		}
 		else {
 			showErrorMessage( json.message, 7000 );
 		}
-	} );
+	} ); 
 }
 
 
