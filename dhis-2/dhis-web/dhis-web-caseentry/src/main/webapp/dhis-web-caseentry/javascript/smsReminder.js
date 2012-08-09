@@ -56,11 +56,19 @@ function advancedSearch( params )
 	});
 }
 
-function getOutboundSmsList( programStageInstanceId ) 
+function getOutboundSmsList( programStageInstanceId, isSendSMS ) 
 {
 	$('#smsManagementDiv' ).load("getOutboundSmsList.action",
 		{
 			programStageInstanceId: programStageInstanceId
+		}
+		, function(){
+			if(isSendSMS){
+				$('#tabs').tabs({ selected: 0 }); 
+			}
+			else{
+				$('#tabs').tabs({ selected: 1 });
+			}
 		}).dialog(
 		{
 			title:i18n_sms_message_management,
@@ -69,7 +77,7 @@ function getOutboundSmsList( programStageInstanceId )
 			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
 			width:800,
-			height:400
+			height:500
 		});
 }
 

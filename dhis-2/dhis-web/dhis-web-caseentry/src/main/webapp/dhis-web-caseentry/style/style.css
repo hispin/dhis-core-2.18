@@ -212,12 +212,10 @@ div.provided-elsewhere
 	height: 32px;
 }
 
-
 table.stage-object
 {
 	white-space: normal;
-	border: 2px solid; 
-	cursor: pointer;
+	border: 2px solid;
 	opacity: 1.0;
 	border: 1px solid;
 	margin: 5px;
