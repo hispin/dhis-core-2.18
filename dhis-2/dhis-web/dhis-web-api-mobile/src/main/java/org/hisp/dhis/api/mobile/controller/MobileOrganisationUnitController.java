@@ -72,7 +72,9 @@ public class MobileOrganisationUnitController
     public DataSetList checkUpdatedDataSet2_8( @PathVariable int id, @RequestBody DataSetList dataSetList,
         @RequestHeader( "accept-language" ) String locale )
     {
-        return facilityReportingService.getUpdatedDataSet( dataSetList, getUnit( id ), locale );
+        DataSetList returnList = facilityReportingService.getUpdatedDataSet( dataSetList, getUnit( id ), locale );
+        returnList.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
+        return returnList;
     }
 
     /**
@@ -89,7 +91,7 @@ public class MobileOrganisationUnitController
         facilityReportingService.saveDataSetValues( getUnit( id ), dataSetValue );
         return DATASET_REPORT_UPLOADED;
     }
-    
+
     /**
      * Save activity report for unit
      * 
@@ -112,22 +114,24 @@ public class MobileOrganisationUnitController
         @RequestBody ModelList programsFromClient )
     {
         MobileModel model = new MobileModel();
+        model.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
         model.setPrograms( programService.updateProgram( programsFromClient, locale, getUnit( id ) ) );
         model.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit( id ), locale ) );
         model.setServerCurrentDate( new Date() );
         return model;
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/search" )
     @ResponseBody
     public ActivityPlan search2_8( @PathVariable int id, @RequestHeader( "identifier" ) String identifier )
         throws NotAllowedException
     {
-        ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );;
+        ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );
+        ;
         activityPlan.setClientVersion( DataStreamSerializable.TWO_POINT_EIGHT );
         return activityPlan;
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "orgUnits/{id}/changeLanguageDataSet" )
     @ResponseBody
     public DataSetList changeLanguageDataSet2_8( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
@@ -136,7 +140,7 @@ public class MobileOrganisationUnitController
     }
 
     // For client version 2.9 and higher
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/all" )
     @ResponseBody
     public MobileModel getAllDataForOrgUnit( @PathVariable String clientVersion, @PathVariable int id,
@@ -159,16 +163,18 @@ public class MobileOrganisationUnitController
     public DataSetList checkUpdatedDataSet( @PathVariable String clientVersion, @PathVariable int id,
         @RequestBody DataSetList dataSetList, @RequestHeader( "accept-language" ) String locale )
     {
-        return facilityReportingService.getUpdatedDataSet( dataSetList, getUnit( id ), locale );
+        DataSetList returnList = facilityReportingService.getUpdatedDataSet( dataSetList, getUnit( id ), locale );
+        returnList.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
+        return returnList;
     }
-    
+
     /**
      * Save a facility report for unit
      * 
      * @param dataSetValue - the report to save
      * @throws NotAllowedException if the {@link DataSetValue} is invalid
      */
-    
+
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/dataSets" )
     @ResponseBody
     public String saveDataSetValues( @PathVariable int id, @RequestBody DataSetValue dataSetValue )
@@ -177,20 +183,21 @@ public class MobileOrganisationUnitController
         facilityReportingService.saveDataSetValues( getUnit( id ), dataSetValue );
         return DATASET_REPORT_UPLOADED;
     }
-    
+
     @RequestMapping( method = RequestMethod.POST, value = "{clientVersion}/orgUnits/{id}/activitiyplan" )
     @ResponseBody
-    public MobileModel updatePrograms(@PathVariable String clientVersion, @PathVariable int id, @RequestHeader( "accept-language" ) String locale,
-        @RequestBody ModelList programsFromClient )
+    public MobileModel updatePrograms( @PathVariable String clientVersion, @PathVariable int id,
+        @RequestHeader( "accept-language" ) String locale, @RequestBody ModelList programsFromClient )
     {
         MobileModel model = new MobileModel();
+        model.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
         model.setPrograms( programService.updateProgram( programsFromClient, locale, getUnit( id ) ) );
         model.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit( id ), locale ) );
         model.setServerCurrentDate( new Date() );
         model.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
         return model;
     }
-    
+
     /**
      * Save activity report for unit
      * 
@@ -206,25 +213,26 @@ public class MobileOrganisationUnitController
         activityReportingService.saveActivityReport( getUnit( id ), activityValue );
         return ACTIVITY_REPORT_UPLOADED;
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/search" )
     @ResponseBody
     public ActivityPlan search( @PathVariable int id, @RequestHeader( "identifier" ) String identifier )
         throws NotAllowedException
     {
-        ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );;
+        ActivityPlan activityPlan = activityReportingService.getActivitiesByIdentifier( identifier );
+        ;
         activityPlan.setClientVersion( DataStreamSerializable.TWO_POINT_NINE );
         return activityPlan;
     }
-    
+
     @RequestMapping( method = RequestMethod.GET, value = "{clientVersion}/orgUnits/{id}/changeLanguageDataSet" )
     @ResponseBody
     public DataSetList changeLanguageDataSet( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
     {
         return facilityReportingService.getDataSetsForLocale( getUnit( id ), locale );
     }
-    
-    //Supportive methods
+
+    // Supportive methods
 
     private Collection<String> getLocalStrings( Collection<Locale> locales )
     {
