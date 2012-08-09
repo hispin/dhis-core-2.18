@@ -787,5 +787,58 @@
 			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
 		</action>
 		
+		<!-- SMS Reminder -->
+
+		<action name="smsReminderSelect"
+			class="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-caseentry/smsReminderSelect.vm</param>
+			<param name="menu">/dhis-web-caseentry/smsMenu.vm</param>
+			<param name="stylesheets">style/style.css</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,javascript/smsReminder.js</param>			
+			<param name="requiredAuthorities">F_SMS_REMINDER</param>
+		</action>
+		
+		<action name="getSMSPatientRecords"
+			class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/smsPatientRecords.vm</param>
+			<param name="stylesheets">style/style.css</param>
+		</action>
+		
+		<action name="getOutboundSms"
+			class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/jsonSmsReminder.vm</param>
+			<param name="stylesheets">style/style.css</param>
+		</action>
+		
+		<action name="getOutboundSmsList"
+			class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/smsReminderList.vm</param>
+			<param name="stylesheets">style/style.css</param>
+		</action>
+		
+		<action name="getOutboundSmsList"
+			class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/smsReminderList.vm</param>
+			<param name="stylesheets">style/style.css</param>
+		</action>
+		
+		<action name="showSendSMSForm" class="org.hisp.dhis.caseentry.action.reminder.GetGetwayListAction">
+	     <result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/sendSMSForm.vm</param>
+			<param name="stylesheets">style/style.css</param>
+	    </action>
+	    
+	    <action name="sendSMS" class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction">
+	      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+	      <param name="onExceptionReturn">plainTextError</param>
+	    </action>
+		
 	</package>
 </struts>

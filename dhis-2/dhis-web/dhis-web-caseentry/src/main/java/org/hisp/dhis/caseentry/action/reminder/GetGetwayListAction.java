@@ -1,7 +1,5 @@
-package org.hisp.dhis.sms.outbound;
-
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,31 +25,51 @@ package org.hisp.dhis.sms.outbound;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+package org.hisp.dhis.caseentry.action.reminder;
 
-import org.hisp.dhis.sms.SmsServiceException;
-import org.hisp.dhis.sms.config.SmsConfigurable;
+import java.util.Map;
+
+import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * OutboundSmsService provides support for sending SMSes.
+ * @author Chau Thu Tran
+ * 
+ * @version GetGetwayListAction.java 1:50:25 PM Aug 9, 2012 $
  */
-public interface OutboundSmsService
-    extends SmsConfigurable
+public class GetGetwayListAction
+    implements Action
 {
-    String ID = OutboundSmsService.class.getName();
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    boolean isEnabled();
+    @Autowired
+    private OutboundSmsTransportService transportService;
 
-    /**
-     * Send an SMS message.
-     * 
-     * @param sms the message to be sent
-     * @throws SmsServiceException if unable to sent Message
-     */
-    String sendMessage( OutboundSms sms, String gatewayId )
-        throws SmsServiceException;
-    
-    List<OutboundSms> getAllOutboundSms();
-    
-    OutboundSms getOutboundSms( int id );
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    public Map<String, String> gatewayMap;
+
+    public Map<String, String> getGatewayMap()
+    {
+        return gatewayMap;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
+    {
+        gatewayMap = transportService.getGatewayMap();
+
+        return SUCCESS;
+    }
+
 }

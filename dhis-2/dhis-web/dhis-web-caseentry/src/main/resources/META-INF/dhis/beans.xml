@@ -968,5 +968,33 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="tabularReportService"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportService" />
 	</bean>
+	
+	<!-- SMS Reminder -->
+	
+	<bean id="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsAction"
+		class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsAction"
+		scope="prototype">
+		<property name="outboundSmsService"
+			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction"
+		class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.reminder.GetGetwayListAction"
+		class="org.hisp.dhis.caseentry.action.reminder.GetGetwayListAction" scope="prototype" />
+	
+	<bean id="org.hisp.dhis.caseentry.action.reminder.SendSmsAction"
+		class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction"
+		scope="prototype">
+		<property name="outboundSmsService"
+			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
 
 </beans>

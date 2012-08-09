@@ -1,0 +1,38 @@
+<script>
+	jQuery(document).ready(	function(){
+		showById('programAddPatientTR');
+		jQuery("#programIdAddPatient option").each(function(){
+			var item = jQuery(this);
+			if( item.attr('type')!=1 && item.val()!='' ){
+				item.remove();
+			}
+		});
+		
+		jQuery("#searchObjectId [value=prg]").remove();
+		hideById('addPatientBtn');
+		disable('advancedSearchBtn');
+		hideById('searchBySelectedUnitTD');
+	});	
+</script>
+
+<h3>$i18n.getString( "sms_reminder" )</h3>
+<form>
+	<input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
+	<input type='hidden' id='listAll' name='listAll'>
+	<input type='hidden' id='programStageInstanceId' name='programStageInstanceId'>
+	<div id='searchDiv'>
+		#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	
+	</div>
+</form>
+
+#parse( "dhis-web-commons/loader/loader.vm" )
+
+<div id='listPatientDiv'></div>
+<div id='smsManagementDiv'></div>
+<div id='sendSmsFormFiv'></div>
+
+<script>
+	unSave = false;
+	var i18n_sms_message_management = '$encoder.jsEscape( $i18n.getString( "sms_message_management" ) , "'")';
+	var i18n_sent_sms = '$encoder.jsEscape( $i18n.getString( "sent_sms" ) , "'")';
+</script>

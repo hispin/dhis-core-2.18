@@ -1,0 +1,74 @@
+<table>
+	<tr>
+		<td class='text-column' >$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>
+		#if($!listAll)
+			$i18n.getString( "list_all_patients" )
+		#else
+			$i18n.getString( "advanced_search_patients" )
+		#end
+		</td>
+	</tr>	
+	
+	<tr>
+		<td class='text-column' >$i18n.getString( "total_result" ):</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>$!total</td>
+	</tr>
+</table>
+
+#if( $patients && $patients.size()>0 )
+	<p>#parse( "/dhis-web-caseentry/colorHelp.vm" )</p>
+	
+	<table class="listTable mainPageTable" id="patientList">
+		#set( $mark = false )                 
+		#foreach( $patient in $patients )
+			#set( $programInstance = '')
+			#set( $programInstance = $programInstanceMap.get( $patient ) )
+				<tr #alternate( $mark )>
+					<td>
+						<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
+					</td>
+					#if($!programStageInstanceMap.get($programInstance))
+						#set($programStageInstances = $programStageInstanceMap.get($programInstance) )
+						#foreach( $programStageInstance in $programStageInstances )
+							<td>
+								<img src='images/rightarrow.png'>
+							</td>
+							<td>
+								<table class='stage-object'>
+									<tr>
+										<td><input type='button' id='ps_$programStageInstance.id' name='programStageBtn' class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:getOutboundSmsList( $programStageInstance.id );'></td>
+										<script>	
+											var status = $statusMap.get( $programStageInstance.id ); 
+											setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
+										</script>
+									</tr>
+									<tr>
+										<td>
+											($programStageInstance.outboundSms.size() $i18n.getString('messages') )<br/>
+											<img src='images/sms_list.gif' style="width:32px" title="$i18n.getString('send_message')" onclick='setFieldValue( "programStageInstanceId", "$!programStageInstance.id" );showSendSMSForm();'/>
+											<img src='images/new_sms.gif' style="width:32px" title="$i18n.getString('sms_message_management')" onclick='javascript:getOutboundSmsList( $programStageInstance.id );' />
+										</td>
+									</tr>
+								</table>
+							</td>
+						#end
+					#end
+				</tr>
+			#if( $mark )
+				#set( $mark = false )
+			#else
+				#set( $mark = true )
+			#end 
+		#end
+	</table>
+	<div class="paging-container">
+		#parse( "/dhis-web-commons/paging/paging.vm" )
+	</div>
+	
+	<div id="detailsInfo"></div>
+#end
