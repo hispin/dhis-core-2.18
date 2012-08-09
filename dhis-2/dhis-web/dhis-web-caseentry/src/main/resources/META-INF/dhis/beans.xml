@@ -971,13 +971,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- SMS Reminder -->
 	
-	<bean id="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsAction"
-		class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsAction"
-		scope="prototype">
-		<property name="outboundSmsService"
-			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
-	</bean>
-	
 	<bean id="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction"
 		class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction"
 		scope="prototype">

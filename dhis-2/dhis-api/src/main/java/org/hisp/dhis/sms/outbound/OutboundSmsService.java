@@ -52,6 +52,4 @@ public interface OutboundSmsService
         throws SmsServiceException;
     
     List<OutboundSms> getAllOutboundSms();
-    
-    OutboundSms getOutboundSms( int id );
 }
