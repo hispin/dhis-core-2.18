@@ -68,22 +68,8 @@ function getOutboundSmsList( programStageInstanceId )
 			closable:true,
 			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
-			width:700,
+			width:800,
 			height:400
-		});
-}
-
-function showSendSMSForm()
-{
-	$('#sendSmsFormFiv' ).load( "showSendSMSForm.action",{} ).dialog(
-		{
-			title:i18n_send_sms,
-			maximize:true, 
-			closable:true,
-			modal:true,
-			overlay:{background:'#000000', opacity:0.1},
-			width:400,
-			height:250
 		});
 }
 
@@ -100,7 +86,6 @@ function sendSMS()
 		if ( json.response == "success" ) {
 			showSuccessMessage( json.message );
 			jQuery('#smsManagementList').prepend("<tr><td>" + getFieldValue('currentDate') + "</td><td>" + getFieldValue('smsMessage') + "</td></tr>");
-			$('#sendSmsFormFiv' ).dialog("close");
 			var noMessage = eval( getInnerHTML('noMessageDiv_' + programStageInstanceId)) + 1;
 			jQuery('#noMessageDiv_' + programStageInstanceId).html(noMessage);
 		}
