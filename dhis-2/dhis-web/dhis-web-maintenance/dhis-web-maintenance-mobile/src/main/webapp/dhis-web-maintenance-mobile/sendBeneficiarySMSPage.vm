@@ -56,7 +56,7 @@
 					<select id="sendTarget" name="sendTarget" onchange="javascript:toggleBasicSMSGUI();">
 						<option value="phone">$i18n.getString( "raw_phone_number" )</option>
 						<option value="user">$i18n.getString( "assigned_user_number" )</option>
-						<option value="unit">$i18n.getString( "selected_unit_number" )</option>
+						<option value="unit">$i18n.getString( "stakeholder_number" )</option>
 						<option value="patient" selected="true">$i18n.getString( "patient_number" )</option>
 					</select>
 				</td>
