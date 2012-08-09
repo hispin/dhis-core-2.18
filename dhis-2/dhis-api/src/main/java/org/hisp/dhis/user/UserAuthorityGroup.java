@@ -47,7 +47,7 @@ import java.util.Set;
 /**
  * @author Nguyen Hong Duc
  */
-@JacksonXmlRootElement( localName = "userAuthorityGroup", namespace = Dxf2Namespace.NAMESPACE )
+@JacksonXmlRootElement( localName = "userRole", namespace = Dxf2Namespace.NAMESPACE )
 public class UserAuthorityGroup
     extends BaseIdentifiableObject
 {
