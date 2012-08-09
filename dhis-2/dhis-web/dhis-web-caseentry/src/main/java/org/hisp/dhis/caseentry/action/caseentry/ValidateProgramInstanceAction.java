@@ -307,7 +307,6 @@ public class ValidateProgramInstanceAction
                     }
                     else
                     {
-
                         int rightValidation = Integer.parseInt( rightSide.substring( 0, index ) );
 
                         int daysValue = Integer.parseInt( rightSide.substring( index + 1, rightSide.length() ) );
