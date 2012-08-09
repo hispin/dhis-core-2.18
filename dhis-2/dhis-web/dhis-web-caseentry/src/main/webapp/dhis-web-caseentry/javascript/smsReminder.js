@@ -77,7 +77,7 @@ function showSendSMSForm()
 {
 	$('#sendSmsFormFiv' ).load( "showSendSMSForm.action",{} ).dialog(
 		{
-			title:i18n_sent_sms,
+			title:i18n_send_sms,
 			maximize:true, 
 			closable:true,
 			modal:true,
