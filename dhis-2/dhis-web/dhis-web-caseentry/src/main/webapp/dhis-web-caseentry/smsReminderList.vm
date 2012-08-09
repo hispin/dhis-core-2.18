@@ -1,0 +1,48 @@
+<h4>$i18n.getString( "sms_message_management" )</h4>
+
+<table class="mainPageTable"> 
+	<tr>            
+		<td class="bold">$i18n.getString( "full_name" ):</td>
+		<td>$encoder.htmlEncode( $programStageInstance.programInstance.patient.getFullName() )<td>
+	</tr>
+	<tr>
+		<td class="bold">$i18n.getString( "gender" ):</td>
+		<td>$programStageInstance.programInstance.patient.gender</td>
+	</tr>
+	<tr>
+		<td class="bold">$i18n.getString( "date_of_birth" ):</td>
+		<td>$format.formatDate( $programStageInstance.programInstance.patient.birthDate ) $programStageInstance.programInstance.patient.getAge()<td>
+	</tr>
+</table>
+
+<table class="mainPageTable">
+	<tr>
+		<td colspan='3' align='right'><input type='button' value="$i18n.getString('send_sms')" onclick='showSendSMSForm();'></td>
+	</tr>
+	<tr>
+		<th>$i18n.getString( "date" )</th>
+		<th>$i18n.getString( "message" )</th>
+	</tr>
+		  
+    <tbody id='smsManagementList'>	
+		  #set( $mark = false )
+          #foreach( $sms in $outboundSms )
+          	<tr id="tr${sms.id}" #alternate($mark) >
+				<td>$format.formatDate($!sms.date)</td>
+				<td>$sms.message</td>
+			</tr>
+			#set( $mark = !$mark)
+    	#end
+    	</tbody>
+    
+	 </table>
+    </td>
+  </tr>
+</table>
+
+<div id="detailsInfo"></div>
+
+<script type="text/javascript">
+	var i18n_color_quick_help = '$encoder.jsEscape( $i18n.getString( "color_quick_help" ) , "'")';
+	setFieldValue( "programStageInstanceId", "$!programStageInstance.id" );
+</script>

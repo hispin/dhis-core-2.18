@@ -28,8 +28,10 @@ package org.hisp.dhis.program;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
  * @author Abyot Asalefew
@@ -63,6 +65,8 @@ public class ProgramStageInstance
     private OrganisationUnit organisationUnit;
 
     private boolean completed = false;
+    
+    private List<OutboundSms> outboundSms;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -245,5 +249,15 @@ public class ProgramStageInstance
     public void setOrganisationUnit( OrganisationUnit organisationUnit )
     {
         this.organisationUnit = organisationUnit;
+    }
+
+    public List<OutboundSms> getOutboundSms()
+    {
+        return outboundSms;
+    }
+
+    public void setOutboundSms( List<OutboundSms> outboundSms )
+    {
+        this.outboundSms = outboundSms;
     }
 }

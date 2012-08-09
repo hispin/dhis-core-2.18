@@ -46,7 +46,11 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-patient</artifactId>
-    </dependency>   
+    </dependency>
+	<dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-service-sms</artifactId>
+    </dependency>
     
   </dependencies>
   <properties>

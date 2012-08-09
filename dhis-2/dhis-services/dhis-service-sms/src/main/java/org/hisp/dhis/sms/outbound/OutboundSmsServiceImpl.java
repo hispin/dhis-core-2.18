@@ -118,6 +118,12 @@ public class OutboundSmsServiceImpl
         return outboundSmsStore.getAll();
     }
 
+    @Override
+    public OutboundSms getOutboundSms( int id )
+    {
+        return outboundSmsStore.get( id );
+    }
+    
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
