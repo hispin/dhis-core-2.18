@@ -115,7 +115,7 @@
 							#set( $gw = $!gatewayConfigMap1.get( $key ) )
 							<td>$!encoder.htmlEncode( $gw.name )</td>
 							<td style="text-align:right">
-							  <a href="showUpdateGateWayConfigForm.action?name=$key" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>		
+							  <a href="showUpdateGateWayConfigForm.action?index=$key" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>		
 							  <a href="javascript:removeGateway( $key, '$!encoder.jsEncode( $gw.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 							</td>
 						</tr>

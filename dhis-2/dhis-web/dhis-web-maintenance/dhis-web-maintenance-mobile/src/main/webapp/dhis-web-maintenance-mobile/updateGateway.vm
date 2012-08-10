@@ -26,7 +26,7 @@
 			<td>$i18n.getString( "type" ):</td>
 			<td>
 				<select id="gatewayType" style="width:100%;" onchange="changeValueType( this.value )">
-					#if($name == $bulkIndex)
+					#if($index == $bulkIndex)
 						<option value="bulksms" selected="selected">$i18n.getString( "bulk_gw" )</option>
 						<script type="text/javascript">
 							changeGwType("bulksms");
@@ -35,7 +35,7 @@
 						<option value="bulksms">$i18n.getString( "bulk_gw" )</option>
 					#end
 					
-					#if($name == $clickatellIndex)					
+					#if($index == $clickatellIndex)					
 						<option value="clickatell" selected="selected">$i18n.getString( "clickatell_gw" )</option>
 						<script type="text/javascript">
 							changeGwType("clickatell");
@@ -44,7 +44,7 @@
 						<option value="clickatell">$i18n.getString( "clickatell_gw" )</option>
 					#end
 					
-					#if($name == $httpIndex)
+					#if($index == $httpIndex)
 						<option value="http" selected="selected">$i18n.getString( "generic_http_gw" )</option>
 						<script type="text/javascript">
 							changeGwType("http");
@@ -53,7 +53,7 @@
 						<option value="http">$i18n.getString( "generic_http_gw" )</option>
 					#end
 
-					#if($name == $modemIndex)
+					#if($index == $modemIndex)
 						<option value="modem" selected="selected" changeValueType( "modem" )>$i18n.getString( "modem_gw" )</option>
 						<script type="text/javascript">
 							changeGwType("modem");
