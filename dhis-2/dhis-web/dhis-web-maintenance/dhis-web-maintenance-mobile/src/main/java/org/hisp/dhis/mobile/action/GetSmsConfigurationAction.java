@@ -55,14 +55,14 @@ public class GetSmsConfigurationAction
 
     @Autowired
     private SmsConfigurationManager smsConfigurationManager;
-    
+
     @Autowired
     private OutboundSmsTransportService smsLibService;
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-    
+
     private String index;
 
     public String getIndex()
@@ -90,20 +90,19 @@ public class GetSmsConfigurationAction
     }
 
     private String smsServiceStatus;
-    
+
     public String getSmsServiceStatus()
     {
         return this.smsServiceStatus;
     }
-    
-    public Integer bulkIndex;
 
+    public Integer bulkIndex;
 
     public Integer getBulkIndex()
     {
         return bulkIndex;
     }
-    
+
     public Integer clickatellIndex;
 
     public Integer getClickatellIndex()
@@ -112,18 +111,19 @@ public class GetSmsConfigurationAction
     }
 
     public Integer modemIndex;
-    
+
     public Integer getModemIndex()
     {
         return modemIndex;
     }
 
     public Integer httpIndex;
-    
+
     public Integer getHttpIndex()
     {
         return httpIndex;
     }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -131,9 +131,9 @@ public class GetSmsConfigurationAction
     public String execute()
         throws Exception
     {
-        
+
         smsServiceStatus = smsLibService.getServiceStatus();
-        
+
         smsConfig = smsConfigurationManager.getSmsConfiguration();
 
         if ( smsConfig != null )
@@ -147,11 +147,11 @@ public class GetSmsConfigurationAction
                 gatewayConfigMap.put( index, gw );
 
                 if ( gw instanceof BulkSmsGatewayConfig )
-                {                    
+                {
                     bulkIndex = index;
                 }
                 else if ( gw instanceof ClickatellGatewayConfig )
-                {   
+                {
                     clickatellIndex = index;
                 }
                 else if ( gw instanceof ModemGatewayConfig )
@@ -159,7 +159,7 @@ public class GetSmsConfigurationAction
                     modemIndex = index;
                 }
                 else
-                {   
+                {
                     httpIndex = index;
                 }
             }
