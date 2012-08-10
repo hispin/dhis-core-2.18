@@ -3,7 +3,6 @@ currentType = '';
 function changeValueType( value )
 {
 	hideAll();
-
     if ( value == 'modem' ) {
         showById( "modemFields" );
     } else if ( value == 'bulksms' ) {
@@ -13,7 +12,6 @@ function changeValueType( value )
     } else {
 	    showById( "genericHTTPFields" );
 	}
-	
 	currentType = value;
 }
 

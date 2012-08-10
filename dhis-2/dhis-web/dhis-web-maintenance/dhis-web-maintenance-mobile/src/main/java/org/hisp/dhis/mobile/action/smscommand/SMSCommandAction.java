@@ -63,7 +63,6 @@ public class SMSCommandAction
 
     public Collection<SMSCommand> getSMSCommands()
     {
-        System.out.println( "get:" + smsCommandService.getSMSCommands() );
         return smsCommandService.getSMSCommands();
     }
 

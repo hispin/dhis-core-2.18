@@ -31,9 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.sms.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
+import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -62,6 +65,9 @@ public class ReceivingSMSAction
     {
         this.i18n = i18n;
     }
+    
+    @Autowired
+    private SmsConfigurationManager smsConfigurationManager;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -80,6 +86,13 @@ public class ReceivingSMSAction
     {
         return message;
     }
+    
+    private Integer pollingInterval;
+    
+    public Integer getPollingInterval()
+    {
+        return pollingInterval;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -89,6 +102,16 @@ public class ReceivingSMSAction
     public String execute()
         throws Exception
     {
+        SmsConfiguration smsConfig = smsConfigurationManager.getSmsConfiguration();
+
+        if ( smsConfig == null )
+        {
+            pollingInterval = 0;
+        }
+        else
+        {
+            pollingInterval = smsConfig.getPollingInterval()*1000;
+        }
         listIncomingSms = incomingSmsService.listAllMessageFromModem();
 
         if ( listIncomingSms.size() > 0 )
