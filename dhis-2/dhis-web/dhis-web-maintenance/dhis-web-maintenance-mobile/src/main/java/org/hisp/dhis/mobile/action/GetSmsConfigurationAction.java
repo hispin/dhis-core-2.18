@@ -63,16 +63,16 @@ public class GetSmsConfigurationAction
     // Input & Output
     // -------------------------------------------------------------------------
     
-    private String name;
+    private String index;
 
-    public String getName()
+    public String getIndex()
     {
-        return name;
+        return index;
     }
 
-    public void setName( String name )
+    public void setIndex( String index )
     {
-        this.name = name;
+        this.index = index;
     }
 
     private Map<Integer, SmsGatewayConfig> gatewayConfigMap1 = new HashMap<Integer, SmsGatewayConfig>();
