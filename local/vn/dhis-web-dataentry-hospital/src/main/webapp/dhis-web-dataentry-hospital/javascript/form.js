@@ -134,8 +134,15 @@ function loadDataSets( _unitName )
 					} );
 					
 					enable( 'selectedDataSetId' );
-					var periodType = $( '#selectedDataSetId option:selected' ).attr( 'periodType' );
+
+					var periodId = $( '#selectedPeriodId option:selected' ).val();
+					var periodType = "";
 					
+					if ( periodId && periodId != -1 )
+					{
+						periodType = periodId.split( '_' )[0];
+					}
+
 					if ( currentPeriodType && currentPeriodType != -1 && currentPeriodType == periodType )
 					{
 						loadForm( currentDataSetId, getFieldValue( 'valueInput' ) );
