@@ -75,18 +75,11 @@ public class GetSmsConfigurationAction
         this.index = index;
     }
 
-    private Map<Integer, SmsGatewayConfig> gatewayConfigMap1 = new HashMap<Integer, SmsGatewayConfig>();
+    private Map<Integer, SmsGatewayConfig> gatewayConfigMap = new HashMap<Integer, SmsGatewayConfig>();
 
-    public Map<Integer, SmsGatewayConfig> getGatewayConfigMap1()
+    public Map<Integer, SmsGatewayConfig> getGatewayConfigMap()
     {
-        return gatewayConfigMap1;
-    }
-
-    private Map<Integer, Integer> gatewayConfigMap2 = new HashMap<Integer, Integer>();
-
-    public Map<Integer, Integer> getGatewayConfigMap2()
-    {
-        return gatewayConfigMap2;
+        return gatewayConfigMap;
     }
 
     private SmsConfiguration smsConfig;
@@ -151,30 +144,22 @@ public class GetSmsConfigurationAction
             {
                 index = smsConfig.getGateways().indexOf( gw );
 
-                gatewayConfigMap1.put( index, gw );
+                gatewayConfigMap.put( index, gw );
 
                 if ( gw instanceof BulkSmsGatewayConfig )
-                {
-                    gatewayConfigMap2.put( 0, index );
-                    
+                {                    
                     bulkIndex = index;
                 }
                 else if ( gw instanceof ClickatellGatewayConfig )
-                {
-                    gatewayConfigMap2.put( 1, index );
-                    
+                {   
                     clickatellIndex = index;
                 }
                 else if ( gw instanceof ModemGatewayConfig )
                 {
-                    gatewayConfigMap2.put( 2, index );
-                    
                     modemIndex = index;
                 }
                 else
-                {
-                    gatewayConfigMap2.put( 3, index );
-                    
+                {   
                     httpIndex = index;
                 }
             }
