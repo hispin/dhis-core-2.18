@@ -60,8 +60,20 @@ public class GetSmsConfigurationAction
     private OutboundSmsTransportService smsLibService;
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
+    
+    private String name;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
     private Map<Integer, SmsGatewayConfig> gatewayConfigMap1 = new HashMap<Integer, SmsGatewayConfig>();
 
@@ -90,7 +102,35 @@ public class GetSmsConfigurationAction
     {
         return this.smsServiceStatus;
     }
+    
+    public Integer bulkIndex;
 
+
+    public Integer getBulkIndex()
+    {
+        return bulkIndex;
+    }
+    
+    public Integer clickatellIndex;
+
+    public Integer getClickatellIndex()
+    {
+        return clickatellIndex;
+    }
+
+    public Integer modemIndex;
+    
+    public Integer getModemIndex()
+    {
+        return modemIndex;
+    }
+
+    public Integer httpIndex;
+    
+    public Integer getHttpIndex()
+    {
+        return httpIndex;
+    }
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -98,6 +138,7 @@ public class GetSmsConfigurationAction
     public String execute()
         throws Exception
     {
+        
         smsServiceStatus = smsLibService.getServiceStatus();
         
         smsConfig = smsConfigurationManager.getSmsConfiguration();
@@ -115,18 +156,26 @@ public class GetSmsConfigurationAction
                 if ( gw instanceof BulkSmsGatewayConfig )
                 {
                     gatewayConfigMap2.put( 0, index );
+                    
+                    bulkIndex = index;
                 }
                 else if ( gw instanceof ClickatellGatewayConfig )
                 {
                     gatewayConfigMap2.put( 1, index );
+                    
+                    clickatellIndex = index;
                 }
                 else if ( gw instanceof ModemGatewayConfig )
                 {
                     gatewayConfigMap2.put( 2, index );
+                    
+                    modemIndex = index;
                 }
                 else
                 {
                     gatewayConfigMap2.put( 3, index );
+                    
+                    httpIndex = index;
                 }
             }
         }

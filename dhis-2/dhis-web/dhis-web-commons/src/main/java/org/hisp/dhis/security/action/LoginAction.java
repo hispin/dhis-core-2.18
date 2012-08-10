@@ -74,7 +74,7 @@ public class LoginAction
     public String execute()
     {
         Device device = deviceResolver.resolveDevice( ServletActionContext.getRequest() );
-
+        
         if ( device.isMobile() )
         {
             return "mobile";
