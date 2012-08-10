@@ -109,10 +109,10 @@
 						</tr>
 					</thead>
 					<tbody id="list">
-					#set( $keys = $!gatewayConfigMap1.keySet() )
+					#set( $keys = $!gatewayConfigMap.keySet() )
 					#foreach ($key in $!keys )
 						<tr id="tr${key}">
-							#set( $gw = $!gatewayConfigMap1.get( $key ) )
+							#set( $gw = $!gatewayConfigMap.get( $key ) )
 							<td>$!encoder.htmlEncode( $gw.name )</td>
 							<td style="text-align:right">
 							  <a href="showUpdateGateWayConfigForm.action?index=$key" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>		

@@ -1,23 +1,19 @@
 <script type="text/javascript">
-	 jQuery(document).ready(function() {
+	jQuery(document).ready(function() {
 	 
 		validation2( "addGateWayConfigForm", function( form ) {
 			saveGatewayConfig();
 		}, {
 			'rules' : getValidationRulesGateway()
 		} );
-        changeValueType( document.getElementById( 'gwType' ).value );
+		
+		changeValueType( getFieldValue( 'gatewayType' ) );
     });
-	
-	function changeGwType( arg ) {
-		document.getElementById( 'gwType' ).value = arg;
-	};
 	
 	var i18n_add_update_success = '$encoder.jsEscape( $i18n.getString( "add_update_gateway_success" ) , "'")';
 </script>
 <h3>$i18n.getString( "add_update_gateway_management" )</h3>
 <form id="addGateWayConfigForm" name="addGateWayConfigForm">
-<input id="gwType" name="gwType" type="hidden" value=""/>
 	<table id="detailsList">
 		<tr>
 			<th colspan="2">$i18n.getString( "gateway_type" )</th>
@@ -26,49 +22,45 @@
 			<td>$i18n.getString( "type" ):</td>
 			<td>
 				<select id="gatewayType" style="width:100%;" onchange="changeValueType( this.value )">
-					#if($index == $bulkIndex)
-						<option value="bulksms" selected="selected">$i18n.getString( "bulk_gw" )</option>
-						<script type="text/javascript">
-							changeGwType("bulksms");
-						</script>
-					#else
-						<option value="bulksms">$i18n.getString( "bulk_gw" )</option>
-					#end
-					
-					#if($index == $clickatellIndex)					
-						<option value="clickatell" selected="selected">$i18n.getString( "clickatell_gw" )</option>
-						<script type="text/javascript">
-							changeGwType("clickatell");
-						</script>
-					#else
-						<option value="clickatell">$i18n.getString( "clickatell_gw" )</option>
-					#end
-					
-					#if($index == $httpIndex)
-						<option value="http" selected="selected">$i18n.getString( "generic_http_gw" )</option>
-						<script type="text/javascript">
-							changeGwType("http");
-						</script>
-					#else
-						<option value="http">$i18n.getString( "generic_http_gw" )</option>
-					#end
-
-					#if($index == $modemIndex)
-						<option value="modem" selected="selected" changeValueType( "modem" )>$i18n.getString( "modem_gw" )</option>
-						<script type="text/javascript">
-							changeGwType("modem");
-						</script>
-					#else
-						<option value="modem">$i18n.getString( "modem_gw" )</option>
-					#end					
-					
+					<option value="bulksms" #if ( $!index == $!bulkIndex ) selected='selected' #end>$i18n.getString( "bulk_gw" )</option>
+					<option value="clickatell" #if ( $!index == $!clickatellIndex ) selected='selected' #end>$i18n.getString( "clickatell_gw" )</option>
+					<option value="http" #if ( $!index == $!httpIndex ) selected='selected' #end>$i18n.getString( "generic_http_gw" )</option>
+					<option value="modem" #if ( $!index == $!modemIndex ) selected='selected' #end>$i18n.getString( "modem_gw" )</option>					
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<th colspan="2">$i18n.getString( "gateway_configuration" )</th>
 		</tr>
-		#set( $modemGateway = $!gatewayConfigMap1.get( $gatewayConfigMap2.get( 2 ) ) )
+		#set( $bulkGateway = $!gatewayConfigMap.get( $bulkIndex ) )
+		<tbody id="bulksmsFields">
+			<tr>
+				<td>$i18n.getString( "gateway_name" ):</td>
+				<td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!bulkGateway.name )"/></td>
+			</tr>
+			<tr>
+				<td>$i18n.getString( "username" ):</td>
+				<td><input type="text" name="username" id="username" style="width: 28em" value="$!bulkGateway.username"/></td>
+			</tr>
+			<tr>
+				<td>$i18n.getString( "password" ):</td>
+				<td><input type="text" name="password" id="password" style="width: 28em" value="$!bulkGateway.password"/></td>
+			</tr>
+			<tr>
+				<td>$i18n.getString( "region" ):</td>
+				<td>
+					<select id="region" name="region" style="width:100%;">
+						<option value="INTERNATIONAL" #if ( $bulkGateway.region == "INTERNATIONAL" ) selected #end>$i18n.getString( "international" )</option>
+						<option value="UNITEDKINGDOM" #if ( $bulkGateway.region == "UNITEDKINGDOM" ) selected #end>$i18n.getString( "uk" )</option>
+						<option value="SOUTHAFRICA" #if ( $bulkGateway.region == "SOUTHAFRICA" ) selected #end>$i18n.getString( "south_africa" )</option>
+						<option value="SPAIN" #if ( $bulkGateway.region == "SPAIN" ) selected #end>$i18n.getString( "spain" )</option>
+						<option value="USA" #if ( $bulkGateway.region == "USA" ) selected #end>$i18n.getString( "usa" )</option>
+						<option value="GERMANY" #if ( $bulkGateway.region == "GERMANY" ) selected #end>$i18n.getString( "germany" )</option>
+					</select>
+				</td>
+			</tr>
+		</tbody>
+		#set( $modemGateway = $!gatewayConfigMap.get( $modemIndex ) )
 		<tbody id="modemFields">
 			<tr>
 				<td>$i18n.getString( "gateway_name" ):</td>
@@ -113,35 +105,7 @@
 				</td>
 			</tr>
 		</tbody>
-		#set( $bulkGateway = $!gatewayConfigMap1.get( $gatewayConfigMap2.get( 0 ) ) )
-		<tbody id="bulksmsFields">
-			<tr>
-				<td>$i18n.getString( "gateway_name" ):</td>
-				<td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!bulkGateway.name )"/></td>
-			</tr>
-			<tr>
-				<td>$i18n.getString( "username" ):</td>
-				<td><input type="text" name="username" id="username" style="width: 28em" value="$!bulkGateway.username"/></td>
-			</tr>
-			<tr>
-				<td>$i18n.getString( "password" ):</td>
-				<td><input type="text" name="password" id="password" style="width: 28em" value="$!bulkGateway.password"/></td>
-			</tr>
-			<tr>
-				<td>$i18n.getString( "region" ):</td>
-				<td>
-					<select id="region" name="region" style="width:100%;">
-						<option value="INTERNATIONAL" #if ( $bulkGateway.region == "INTERNATIONAL" ) selected #end>$i18n.getString( "international" )</option>
-						<option value="UNITEDKINGDOM" #if ( $bulkGateway.region == "UNITEDKINGDOM" ) selected #end>$i18n.getString( "uk" )</option>
-						<option value="SOUTHAFRICA" #if ( $bulkGateway.region == "SOUTHAFRICA" ) selected #end>$i18n.getString( "south_africa" )</option>
-						<option value="SPAIN" #if ( $bulkGateway.region == "SPAIN" ) selected #end>$i18n.getString( "spain" )</option>
-						<option value="USA" #if ( $bulkGateway.region == "USA" ) selected #end>$i18n.getString( "usa" )</option>
-						<option value="GERMANY" #if ( $bulkGateway.region == "GERMANY" ) selected #end>$i18n.getString( "germany" )</option>
-					</select>
-				</td>
-			</tr>
-		</tbody>
-		#set( $clickatellGateway = $!gatewayConfigMap1.get( $gatewayConfigMap2.get( 1 ) ) )
+		#set( $clickatellGateway = $!gatewayConfigMap.get( $clickatellIndex ) )
 		<tbody id="clickatellFields">
 			<tr>
 				<td>$i18n.getString( "gateway_name" ):</td>
@@ -160,7 +124,7 @@
 				<td><input type="text" name="apiId" id="apiId" style="width: 28em" value="$!clickatellGateway.apiId"/></td>
 			</tr>
 		</tbody>
-		#set( $httpGateway = $!gatewayConfigMap1.get( $gatewayConfigMap2.get( 3 ) ) )
+		#set( $httpGateway = $!gatewayConfigMap.get( $httpIndex ) )
 		<tbody id="genericHTTPFields">
 			<tr>
 				<td>$i18n.getString( "gateway_name" ):</td>
