@@ -35,6 +35,17 @@
 			actionType = "start";
 			jQuery( "#startStopButton" ).attr( "value", i18n_start_sms_service );
 		#end
+		
+		if ( getFieldValue( 'isSettingAvailable' ) == 'false' )
+		{
+			hideById('listTable');
+			hideById('btnAddGw');
+		}
+		else
+		{
+			showById('listTable');
+			showById('btnAddGw');
+		}
 	} );
 
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_gateway" ) , "'")';
@@ -47,9 +58,9 @@
 </script>
 
 <h3>$i18n.getString( "sms_service_configuration" )</h3>
-
+<input id="isSettingAvailable" name="isSettingAvailable" type="hidden" #if ( $!smsConfig ) value="true" #else value="false" #end/>
 <form id="saveSmsConfigurationForm" name="saveSmsConfigurationForm" action="saveSmsConfiguration.action" method="post" >
-  <table id="detailsList">
+  <table id="detailsList" border="0">
     <col/> ## Labels
     <col/> ## Input
     <thead>
@@ -93,13 +104,12 @@
 		<tr>
 			<td><label for="serverPhoneNumber">$i18n.getString( "server_phone_number" )</label></td>
 			<td><input type="text" id="serverPhoneNumber" name="serverPhoneNumber" style="width:20em" value="$!smsConfig.longNumber"/>
-			<input type="submit" value="$i18n.getString( 'save_settings' )" style="width:13em"/></td>
-		</tr>
-		<tr>
-			<td align="right" colspan="2">
-				<input type="button" value="$i18n.getString( 'add_update_gw' )" style="width:13em" #if( !$smsConfig )disabled="true"#end onclick="window.location.href='showUpdateGateWayConfigForm.action'"/>
+				<input type="submit" value="$i18n.getString( 'save_settings' )" style="width:13em"/>
 			</td>
 		</tr>
+
+		<tr><td align="right" colspan="2"><br/></td></tr>
+
 		<tr>
 			<td colspan="2">
 				<table id="listTable" class="listTable">
@@ -109,6 +119,7 @@
 							<th style="text-align:center; width: 50px;">$i18n.getString( "operation" )</th>
 						</tr>
 					</thead>
+					
 					<tbody id="list">
 					#set( $keys = $!gatewayConfigMap.keySet() )
 					#foreach ($key in $!keys )
@@ -120,11 +131,16 @@
 							  <a href="javascript:removeGateway( $key, '$!encoder.jsEncode( $gw.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 							</td>
 						</tr>
-					#end 					
-					</tbody>
+					#end
+					</tbody>					
 				</table>
 			</td>
 		</tr>
+		<tr>
+			<td align="right" colspan="2">
+				<input type="button" id="btnAddGw" value="$i18n.getString( 'add_gw' )" style="width:13em" onclick="window.location.href='showUpdateGateWayConfigForm.action'"/>
+			</td>
+		</tr>	
 	</tbody>
 	</table>
 </form>
