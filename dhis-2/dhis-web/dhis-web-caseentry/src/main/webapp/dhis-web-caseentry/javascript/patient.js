@@ -305,16 +305,17 @@ function showUpdatePatientForm( patientId )
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('migrationPatientDiv');
-				
+	setInnerHTML('patientDashboard','');
+	
 	jQuery('#loaderDiv').show();
 	jQuery('#editPatientDiv').load('showUpdatePatientForm.action',
 		{
 			id:patientId
 		}, function()
 		{
-			showById('editPatientDiv');
 			jQuery('#searchPatientsDiv').dialog('close');
 			jQuery('#loaderDiv').hide();
+			showById('editPatientDiv');
 		});
 		
 	jQuery('#resultSearchDiv').dialog('close');
@@ -343,6 +344,7 @@ function showProgramEnrollmentSelectForm( patientId )
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('migrationPatientDiv');
+	setInnerHTML('patientDashboard','');
 				
 	jQuery('#loaderDiv').show();
 	jQuery('#enrollmentDiv').load('showProgramEnrollmentForm.action',
@@ -531,6 +533,7 @@ function saveDueDate( programStageInstanceId, programStageInstanceName )
 function showRelationshipList( patientId )
 {
 	hideById('addRelationshipDiv');
+	setInnerHTML('patientDashboard','');
 	
 	if ( getFieldValue('isShowPatientList') == 'false' )
 	{
@@ -569,6 +572,7 @@ function onClickBackBtn()
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
 	hideById('migrationPatientDiv');
+	setInnerHTML('patientDashboard','');
 }
 
 function loadPatientList()
@@ -814,6 +818,7 @@ function getPatientLocation( patientId )
 	hideById('listPatientDiv');
 	hideById('selectDiv');
 	hideById('searchDiv');
+	setInnerHTML('patientDashboard','');
 				
 	jQuery('#loaderDiv').show();
 	
@@ -834,4 +839,75 @@ function registerPatientLocation( patientId )
 		{
 			showSuccessMessage( i18n_save_success );
 		} );
+}
+
+// ----------------------------------------------------------------
+// Dash board
+// ----------------------------------------------------------------
+
+function activeProgramInstanceDiv( programInstanceId )
+{
+	jQuery("[name=eventDiv]").each(function(){
+		jQuery(this).removeClass("link-area-active");
+	});
+	
+	jQuery("[name=imgActive]").each(function(){
+		jQuery(this).attr('src','');
+	});
+	
+	jQuery('#pi_' + programInstanceId ).addClass("link-area-active");
+	jQuery("#img_" + programInstanceId ).attr('src','images/flag-blue.png');
+	showById('pi_' + programInstanceId);
+}
+
+function hideProgramInstanceDiv( programInstanceId )
+{
+	hideById('pi_' + programInstanceId);
+	jQuery('#pi_' + programInstanceId).removeClass("link-area-active");
+	jQuery("#img_" + programInstanceId ).attr('src','');
+}
+
+function showPatientDashboardForm( patientId )
+{
+	hideById('listPatientDiv');
+	hideById('editPatientDiv');
+	hideById('selectDiv');
+	hideById('searchDiv');
+	hideById('migrationPatientDiv');
+				
+	jQuery('#loaderDiv').show();
+	jQuery('#patientDashboard').load('patientDashboard.action',
+		{
+			patientId:patientId
+		}, function()
+		{	
+			showById('patientDashboard');
+			jQuery('#loaderDiv').hide();
+		});
+}
+
+function loadProgramStageRecords( programStageInstanceId, completed ) 
+{
+	showLoader();
+    jQuery('#dataEntryFromDashboard').load( "viewProgramStageRecords.action",
+		{
+			programStageInstanceId: programStageInstanceId
+		}, function() {
+			if(completed){
+				jQuery( "#dataEntryFromDashboard :input").each(function(){
+					disable(this.id);
+				});
+			}
+			showById('dataEntryFormDashboardDiv');
+			hideLoader();
+		}).dialog(
+		{
+			title:i18n_program_stage,
+			maximize:true, 
+			closable:true,
+			modal:false,
+			overlay:{background:'#000000', opacity:0.1},
+			width:1000,
+			height:500
+		});
 }

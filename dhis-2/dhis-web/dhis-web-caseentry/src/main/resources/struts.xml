@@ -819,6 +819,14 @@
 	      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
 	      <param name="onExceptionReturn">plainTextError</param>
 	    </action>
+	    
+	    <!-- Dashboard -->
+	    
+	    <action name="patientDashboard" class="org.hisp.dhis.caseentry.action.patient.PatientDashboardAction">
+	      <result name="success" type="velocity">/content.vm</result>
+		  <param name="page">/dhis-web-caseentry/patientDashboard.vm</param>
+		  <param name="stylesheets">style/style.css</param>
+	    </action>
 		
 	</package>
 </struts>

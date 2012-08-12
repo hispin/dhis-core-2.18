@@ -1,0 +1,196 @@
+<h4>$i18n.getString("patient_dashboard")
+ &#8226; <a href="javascript:showUpdatePatientForm( '$patient.id', true )">$i18n.getString( "edit_profile" )</a>
+ &#8226; <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );">$i18n.getString( "manage_relationship" )</a>
+ &#8226; <a href="javascript:getPatientLocation( '$patient.id' );">$i18n.getString( "change_patient_location" )</a>
+</h4>
+
+
+<div id="subMenu">
+	<ul>
+		<li><a href="javascript:onClickBackBtn();">$i18n.getString( 'back_to_registration' )</a></li>
+		<li><a href="javascript:showProgramEnrollmentSelectForm( '$patient.id' )">$i18n.getString( "program_management" )</a></li>
+	</ul>
+</div>
+
+<table>
+	<tr>
+		<td valign='top'>
+			<table>
+				<tr>
+					<td>
+						<div class="link-area">
+							<table width='100%'>
+								<tr><th>$i18n.getString("demographics")</th></tr>
+							</table>
+							<div class="contentProviderTable">
+								<table>
+									<tr>
+										<td>$i18n.getString("full_name")</td>
+										<td>$!patient.getFullName()</td>
+									</tr>
+									<tr>
+										<td>$i18n.getString("gender")</td>
+										<td>$i18n.getString($!patient.gender)</td>
+									</tr>
+									<tr>
+										<td>$i18n.getString("date_of_birth")</td>
+										<td>$format.formatDate( $!patient.birthDate) $!patient.getAge()</td>
+									</tr>
+									#foreach( $identifier in $identifiers )
+									<tr>
+										#if($!identifier.identifierType)
+											<td>$identifier.identifierType.name</td>
+										#else
+											<td>$i18n.getString("system_identifier")</td>
+										#end
+										<td>$identifier.identifier</td>
+									</tr>
+									#end
+									#foreach( $attributeValue in $attributeValues )
+									<tr>
+										<td>$attributeValue.patientAttribute.name</td>
+										<td>$attributeValue.value</td>
+									</tr>
+									#end
+									
+									#foreach( $rel in $relationship )
+										#if($rel.patientA.id==$patient.id)
+											<tr>
+												<td>$rel.relationshipType.bIsToA</td>
+												<td>$rel.patientB.getFullName()</td>
+											</tr>
+										#else
+											<tr>
+												<td>$rel.relationshipType.aIsToB</td>
+												<td>$rel.patientA.getFullName()</td>
+											</tr>
+										#end
+									#end
+								</table>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+					<td>
+						<div class="link-area">
+							<table width='100%'>
+								<tr><th>$i18n.getString("active_programs")</th></tr>
+							</table>
+							<div class="contentProviderTable">
+								<table width='100%'>
+									#foreach( $programInstance in $activeProgramInstances )
+										<tr onclick="javascript:activeProgramInstanceDiv('$programInstance.id');" style='cursor:pointer;'>
+											<td>
+												<a href='#pi_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
+												<img id="img_$programInstance.id" name='imgActive'>
+											</td>
+										</tr>
+										#set($flag = 'false')
+										#foreach( $programStageInstance in $programInstance.programStageInstances )
+											#set( $status = $statusMap.get( $programStageInstance.id ) )
+											#if( $status!=1 && $flag=='false')
+												<tr onclick="javascript:loadProgramStageRecords($programStageInstance.id, false)" style='cursor:pointer;'>
+													<td>
+														<a>>> $programStageInstance.programStage.name ($format.formatDate($programStageInstance.dueDate))</a>
+													</td>
+												</tr>
+											#set($flag = 'true')
+											#end
+										#end
+									#end
+								</table>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+					<td>
+						<div class="link-area">
+							<table width='100%'>
+								<tr><th>$i18n.getString("completed_programs")</th></tr>
+							</table>
+							<div class="contentProviderTable">
+								<table  width='100%'>
+									#foreach( $programInstance in $completedProgramInstances )
+										<tr>
+											<td onclick="javascript:activeProgramInstanceDiv('$programInstance.id');" style='cursor:pointer;'>
+												<a href='#pi_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
+												<img id="img_$programInstance.id" name='imgActive'>
+											</td>
+										</tr>
+									#end
+								</table>					
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</td>
+		
+		<td valign='top'>
+			<!-- Active program-stage-instances -->
+			#foreach( $programInstance in $activeProgramInstances )
+				<div id='pi_$programInstance.id' name="eventDiv" #if( $programInstance.completed!='true' ) class="event-dashboard" #else class="event-dashboard hidden" #end>
+					<table width="100%" onclick="hideProgramInstanceDiv('$programInstance.id')" style='cursor:pointer;'>
+						<tr>
+							<th>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate) - $i18n.getString("active"))
+							</th>
+						</tr>
+					</table>
+					<div class='event-flow-dashboard'>
+						<table>
+							<tr>
+							#foreach( $programStageInstance in $programInstance.programStageInstances )
+								<td>
+									<img src='images/rightarrow.png'>
+								</td>
+								<td><input type='button' id='ps_$programStageInstance.id' name='programStageBtn' class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' 
+										onclick='javascript:loadProgramStageRecords($programStageInstance.id, $programInstance.completed );'></td>
+								<script>	
+									var status = $statusMap.get( $programStageInstance.id ); 
+									setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
+								</script>
+							#end
+							</tr>
+						</table>
+					</div>
+				</div>
+			#end
+			
+			<!-- Completed program-stage-instances -->
+			#foreach( $programInstance in $completedProgramInstances )
+				<div id='pi_$programInstance.id' name="eventDiv" #if( $programInstance.completed!='true' ) class="event-dashboard" #else class="event-dashboard hidden" #end>
+					<table width="100%" onclick="hideProgramInstanceDiv('$programInstance.id')" style='cursor:pointer;'>
+						<tr>
+							<th>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate) - $i18n.getString("completed"))
+							</th>
+						</tr>
+					</table>
+					
+					<div class='event-flow-dashboard'>
+						<table>
+							<tr>
+							#foreach( $programStageInstance in $programInstance.programStageInstances )
+								<td>
+									<img src='images/rightarrow.png'>
+								</td>
+								<td><input type='button' id='ps_$programStageInstance.id' name='programStageBtn' class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' 
+										onclick='javascript:loadProgramStageRecords($programStageInstance.id, $programInstance.completed );'></td>
+								<script>	
+									var status = $statusMap.get( $programStageInstance.id ); 
+									setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
+								</script>
+							#end
+							</tr>
+						</table>
+					</div>
+				</div>
+			#end
+		</td>
+	</tr>
+</table>
+
+<div id='dataEntryFromDashboard'></div>

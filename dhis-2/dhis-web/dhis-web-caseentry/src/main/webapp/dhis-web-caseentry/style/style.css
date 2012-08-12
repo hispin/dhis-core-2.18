@@ -192,7 +192,6 @@ div.provided-elsewhere
 .ui-button
 {
 	max-height: 100px;
-	max-height: 100px;
 }
 
 .ui-autocomplete
@@ -223,3 +222,91 @@ table.stage-object
 	text-align:center;
 }
 
+div.link-area
+{
+  border:1px solid #d0d0d0;
+  padding-top:1px;
+  padding-right:1px;
+  padding-left:1px;
+  padding-bottom:0px;
+  height:200px;
+  width:350px;
+  overflow:hidden;
+  position:relative;
+  top: 45px;
+}
+
+.contentProviderTable
+{
+  height: 150px;
+  width: 340px;
+  margin-top:-10px;
+  overflow-y: auto;
+  overflow-x:hidden;
+}
+
+.contentProviderTable td
+{
+  padding-top:3px;
+  padding-bottom:3px;
+  border-bottom:1px solid #cad5e5;
+}
+
+div.event-dashboard
+{
+	width:900px;
+	border:1px solid #d0d0d0;
+	position:relative;
+	top: 47px;
+}
+
+div.link-area-active
+{
+	width:900px;
+	border:10px solid #d0d0d0;
+	position:relative;
+	top: 47px;
+}
+
+div.event-flow-dashboard
+{
+	width:900px;
+	height:140px;
+	overflow-x:auto;
+	overflow-y:hidden;
+}
+
+#subMenu
+{
+  position:absolute;
+}
+
+#subMenu ul
+{
+  list-style-type:none;
+  margin: 0;
+}
+
+#subMenu li
+{
+  float:left;
+}
+
+#subMenu a
+{
+  padding: 6px 12px;
+  height: 25px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  margin-right: 4px;
+  font-family: LiberationSansBold, arial;
+  font-size: 13px;
+  color: #606060;
+  background-color: #f3f3f3;
+}
+
+#subMenu a:hover
+{
+  text-decoration: none;
+  background-color: #f8f8f8;
+}
