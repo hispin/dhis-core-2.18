@@ -986,5 +986,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
+	
+	<!-- Dashboard -->
+	
+	<bean id="org.hisp.dhis.caseentry.action.patient.PatientDashboardAction"
+		class="org.hisp.dhis.caseentry.action.patient.PatientDashboardAction"
+		scope="prototype">
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
 
 </beans>
