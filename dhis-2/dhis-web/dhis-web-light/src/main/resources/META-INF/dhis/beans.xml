@@ -195,7 +195,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction" scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />

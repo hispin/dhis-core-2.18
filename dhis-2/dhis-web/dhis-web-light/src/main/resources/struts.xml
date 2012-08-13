@@ -410,7 +410,7 @@
 
     <action name="saveAnonymousForm"
         class="org.hisp.dhis.light.anonymous.action.SaveAnonymousProgramAction">
-      <result name="success" type="redirect">/light/anonymous.action</result>
+      <result name="success" type="redirect">/light/anonymous.action?validated=true</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/anonymous/anonymousProgramForm.vm</param>
     </action>
