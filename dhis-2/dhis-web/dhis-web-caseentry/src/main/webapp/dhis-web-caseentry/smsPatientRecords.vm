@@ -34,28 +34,47 @@
 					</td>
 					#if($!programStageInstanceMap.get($programInstance))
 						#set($programStageInstances = $programStageInstanceMap.get($programInstance) )
-						#foreach( $programStageInstance in $programStageInstances )
-							<td>
-								<img src='images/rightarrow.png'>
-							</td>
-							<td>
-								<table class='stage-object'>
-									<tr>
-										<td><input type='button' id='ps_$programStageInstance.id' name='programStageBtn' class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'></td>
-										<script>	
-											var status = $statusMap.get( $programStageInstance.id ); 
-											setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
-										</script>
-									</tr>
-									<tr>
-										<td>
-											<img src='images/sms.png' title="$i18n.getString('send_sms')" onclick="getOutboundSmsList( $programStageInstance.id, true );" style='cursor:pointer;'/>
-											<span id='noMessageDiv_$programStageInstance.id'>$programStageInstance.outboundSms.size()</span> $i18n.getString('messages')
-										</td>
-									</tr>
-								</table>
-							</td>
-						#end
+					<td>
+						<table class="stage-container">	
+							<tr>
+								<td>
+									<div class="arrow-left" onclick="moveLeft('flow_$programInstance.id')">&nbsp;</div>
+								</td>
+								<td class='stage-flow'>
+									<div id='flow_$programInstance.id' class='stage-flow'><table class="stage-flow">
+										<tr>
+										#foreach( $programStageInstance in $programStageInstances )
+											<td>
+												<img src='images/rightarrow.png'>
+											</td>
+											<td>
+												<table class='stage-object'>
+													<tr>
+														<td><input type='button' id='ps_$programStageInstance.id' name='programStageBtn' class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'></td>
+														<script>	
+															var status = $statusMap.get( $programStageInstance.id ); 
+															setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
+														</script>
+													</tr>
+													<tr>
+														<td>
+															<img src='images/sms.png' title="$i18n.getString('send_sms')" onclick="getOutboundSmsList( $programStageInstance.id, true );" style='cursor:pointer;'/>
+															<span id='noMessageDiv_$programStageInstance.id'>$programStageInstance.outboundSms.size()</span> $i18n.getString('messages')
+														</td>
+													</tr>
+												</table>
+											</td>
+										#end
+										</tr>
+									</table></div>
+								</td>
+								
+								<td>
+									<div class="arrow-right" onclick="moveRight('flow_$programInstance.id')">&nbsp;</div>
+								</td>
+							</tr>
+						</table>
+					</td>
 					#end
 				</tr>
 			#if( $mark )
@@ -65,6 +84,7 @@
 			#end 
 		#end
 	</table>
+	
 	<div class="paging-container">
 		#parse( "/dhis-web-commons/paging/paging.vm" )
 	</div>
