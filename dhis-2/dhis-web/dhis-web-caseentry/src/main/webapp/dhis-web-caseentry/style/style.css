@@ -178,6 +178,17 @@ input.patient-object[type="button"]
 	border-radius: 2px;
 }
 
+input.move-button
+{
+	width: 20px;
+	height: 60px;
+    white-space: normal;
+	border-color: #bbbbbb;
+	cursor: pointer;
+	border: 1px solid #aaa;
+	margin: 0px;
+}
+
 input.optionset[type="text"]
 {
 	width:222px; 
@@ -211,16 +222,9 @@ div.provided-elsewhere
 	height: 32px;
 }
 
-table.stage-object
-{
-	white-space: normal;
-	border: 2px solid;
-	opacity: 1.0;
-	border: 1px solid;
-	margin: 5px;
-	border-radius: 2px;
-	text-align:center;
-}
+/* --------------------------------------------------------------
+// Dashboard
+// -------------------------------------------------------------- */
 
 div.link-area
 {
@@ -309,4 +313,51 @@ div.event-flow-dashboard
 {
   text-decoration: none;
   background-color: #f8f8f8;
+}
+
+/* --------------------------------------------------------------
+// program-stage-instances
+// -------------------------------------------------------------- */
+
+.stage-container
+{
+	width:850px;
+	height:125px;
+}
+
+.stage-flow
+{
+	width:750px;
+	height:125px;
+	overflow-x:hidden;
+	overflow-y:hidden;
+}
+
+table.stage-object
+{
+	white-space: normal;
+	border: 2px solid;
+	opacity: 1.0;
+	border: 1px solid;
+	margin: 5px;
+	border-radius: 2px;
+	text-align:center;
+}
+
+.arrow-right {
+	width: 0; 
+	height: 0; 
+	border-top: 30px solid transparent;
+	border-bottom: 30px solid transparent;
+	border-left: 30px solid #d0d0d0;
+	cursor:pointer;
+}
+
+.arrow-left {
+	width: 0; 
+	height: 0; 
+	border-top: 30px solid transparent;
+	border-bottom: 30px solid transparent; 
+	border-right:30px solid #d0d0d0; 
+	cursor:pointer;
 }

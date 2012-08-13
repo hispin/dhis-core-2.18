@@ -68,7 +68,7 @@ function loadProgramStages()
 				
 				disableCompletedButton(true);
 				disable('validationBtn');
-				showById('programStageIdTR');
+				showById('programStageIdTB');
 				showById('programInstanceFlowDiv');
 			}
 			// Load entry form for Single-event program or normal program with only one program-stage
@@ -76,7 +76,7 @@ function loadProgramStages()
 			{
 				jQuery('#dueDateTR').attr('class','hidden');
 				disableCompletedButton(false);
-				hideById('programStageIdTR');
+				hideById('programStageIdTB');
 				hideById('programInstanceFlowDiv');
 				var programStageInstanceId = '';
 				if( json.programStageInstances.length == 1 )
