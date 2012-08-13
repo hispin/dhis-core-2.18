@@ -447,10 +447,10 @@ function showColorHelp()
 // Move stage-flow
 // ----------------------------------------------------------------------------
 
-function moveLeft(){
-	jQuery("#programInstanceFlowDiv").animate({scrollLeft: "-=200"}, 'fast');
+function moveLeft( programInstanceFlowDiv ){
+	jQuery("#" + programInstanceFlowDiv).animate({scrollLeft: "-=200"}, 'fast');
 }
 
-function moveRight(){
-	jQuery("#programInstanceFlowDiv").animate({scrollLeft: "+=200"}, 'fast');
+function moveRight(programInstanceFlowDiv){
+	jQuery("#" + programInstanceFlowDiv).animate({scrollLeft: "+=200"}, 'fast');
 }
