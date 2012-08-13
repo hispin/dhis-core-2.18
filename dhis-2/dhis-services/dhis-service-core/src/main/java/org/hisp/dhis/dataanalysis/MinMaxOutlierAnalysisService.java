@@ -92,18 +92,20 @@ public class MinMaxOutlierAnalysisService
     public Collection<DeflatedDataValue> analyse( Collection<OrganisationUnit> organisationUnits,
         Collection<DataElement> dataElements, Collection<Period> periods, Double stdDevFactor )
     {
-        FilterUtils.filter( dataElements, DATALEMENT_INT_FILTER );
+        Set<DataElement> elements = new HashSet<DataElement>( dataElements );
+        
+        FilterUtils.filter( elements, DATALEMENT_INT_FILTER );
         
         Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
         
-        for ( DataElement dataElement : dataElements )
+        for ( DataElement dataElement : elements )
         {
             categoryOptionCombos.addAll( dataElement.getCategoryCombo().getOptionCombos() );
         }
 
-        log.info( "Starting min-max analysis, no of data elements: " + dataElements.size() + ", no of org units: " + organisationUnits.size() );
+        log.info( "Starting min-max analysis, no of data elements: " + elements.size() + ", no of org units: " + organisationUnits.size() );
         
-        return dataAnalysisStore.getMinMaxViolations( dataElements, categoryOptionCombos, periods, organisationUnits, MAX_OUTLIERS );
+        return dataAnalysisStore.getMinMaxViolations( elements, categoryOptionCombos, periods, organisationUnits, MAX_OUTLIERS );
     }
     
     public void generateMinMaxValues( Collection<OrganisationUnit> organisationUnits,
