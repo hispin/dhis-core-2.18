@@ -175,7 +175,6 @@
 	</table>
 	<br/>
 	<input type="button" name="btnShowConfig" value="$i18n.getString( 'config_my_gateway' )" onclick="window.location='showSMSConfigureForm.action'"/>
-	<input type="button" name="btnDelete" value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/>
-	<input type="button" name="btnImport" value="$i18n.getString( 'import' )" onclick="importChecked()"/>		
+	<input type="button" name="btnDelete" value="$i18n.getString( 'delete_checked_option' )" onclick="deleteChecked()"/>	
 	
 </form>
