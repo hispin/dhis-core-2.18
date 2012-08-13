@@ -106,7 +106,14 @@ public class GetDataRecordsAction
     {
         this.listAll = listAll;
     }
-
+    
+    private Boolean searchBySelectedOrgunit;
+    
+    public void setSearchBySelectedOrgunit( Boolean searchBySelectedOrgunit )
+    {
+        this.searchBySelectedOrgunit = searchBySelectedOrgunit;
+    }
+    
     private List<String> searchTexts = new ArrayList<String>();
 
     public void setSearchTexts( List<String> searchTexts )
@@ -149,7 +156,7 @@ public class GetDataRecordsAction
         return programInstanceMap;
     }
 
-    Collection<Patient> patients;
+    private Collection<Patient> patients;
 
     public Collection<Patient> getPatients()
     {
@@ -184,6 +191,8 @@ public class GetDataRecordsAction
         // search patients
         else if ( searchTexts.size() > 0 )
         {
+            orgunit = (searchBySelectedOrgunit) ? orgunit : null;
+            
             total = patientService.countSearchPatients( searchTexts, orgunit );
             this.paging = createPaging( total );
             patients = patientService.searchPatients( searchTexts, orgunit, paging.getStartPos(),
