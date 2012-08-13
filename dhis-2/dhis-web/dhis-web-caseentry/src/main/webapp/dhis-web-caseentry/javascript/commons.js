@@ -442,3 +442,15 @@ function showColorHelp()
 		height: 250
 	}).show('fast');
 }
+
+// ----------------------------------------------------------------------------
+// Move stage-flow
+// ----------------------------------------------------------------------------
+
+function moveLeft(){
+	jQuery("#programInstanceFlowDiv").animate({scrollLeft: "-=200"}, 'fast');
+}
+
+function moveRight(){
+	jQuery("#programInstanceFlowDiv").animate({scrollLeft: "+=200"}, 'fast');
+}

@@ -1,7 +1,4 @@
 <form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
-<div class="actions" style='margin-top:30px;' #if($program.type!=1) style='display:none;' #end>
-	<input type="button" class='stage-object' id="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript: registerIrregularEncounter( getFieldValue('executionDate') );" disabled="disabled" >
-</div>
 <table class="mainPageTable" id='patientInfoDiv'> 
 	<tr>
 		<td valign="top">
@@ -43,12 +40,7 @@
 </div>
 
 <div id='programInstanceDiv' class='hidden '>
-	<div id='programInstanceFlowDiv' style="width:78%;height:115px;overflow-x:auto;">
-		<table>
-			<tr id='programStageIdTR'></tr>
-		</table>
-	</div>
-	
+	#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
 	<br>		
 	<table id='executionDateTB'>
 		<tr>
@@ -87,6 +79,7 @@
 
 <script>
 	jQuery('#dataRecordingSelectForm').ready(function(){ 
+		jQuery("#programInstanceFlowDiv").animate({scrollLeft: 0});
 		var programs = byId('programId');
 		if( programs.options.length == 2 )
 		{
