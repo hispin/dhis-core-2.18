@@ -273,7 +273,7 @@ public class DefaultDataEntryFormService
 
                 if ( categoryOptionCombo == null )
                 {
-                    return i18n.getString( "cate_option_combo_with_id" ) + ": " + optionComboId + " " + i18n.getString( "does_not_exist" );
+                    return i18n.getString( "category_option_combo_with_id" ) + ": " + optionComboId + " " + i18n.getString( "does_not_exist" );
                 }
 
                 if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )

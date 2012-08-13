@@ -229,9 +229,9 @@ public class DefaultDataElementCategoryService
 
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombos( final Collection<Integer> identifiers )
     {
-        Collection<DataElementCategoryCombo> categoryCombo = getAllDataElementCategoryCombos();
+        Collection<DataElementCategoryCombo> categoryCombos = getAllDataElementCategoryCombos();
 
-        return identifiers == null ? categoryCombo : FilterUtils.filter( categoryCombo,
+        return identifiers == null ? categoryCombos : FilterUtils.filter( categoryCombos,
             new Filter<DataElementCategoryCombo>()
             {
                 public boolean retain( DataElementCategoryCombo object )

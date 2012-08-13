@@ -211,11 +211,11 @@ public class DefaultUserService
 
     public Collection<UserCredentials> getUsers( final Collection<Integer> identifiers, User user )
     {
-        Collection<UserCredentials> userCredentialsS = getAllUserCredentials();
+        Collection<UserCredentials> userCredentials = getAllUserCredentials();
 
-        FilterUtils.filter( userCredentialsS, new UserCredentialsCanUpdateFilter( user ) );
+        FilterUtils.filter( userCredentials, new UserCredentialsCanUpdateFilter( user ) );
 
-        return identifiers == null ? userCredentialsS : FilterUtils.filter( userCredentialsS,
+        return identifiers == null ? userCredentials : FilterUtils.filter( userCredentials,
             new Filter<UserCredentials>()
             {
                 public boolean retain( UserCredentials object )
