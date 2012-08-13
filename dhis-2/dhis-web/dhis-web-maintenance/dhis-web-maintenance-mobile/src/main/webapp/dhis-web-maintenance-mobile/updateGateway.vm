@@ -67,11 +67,11 @@
 				<td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!modemGateway.name )"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "port" ):</td>
+				<td>$i18n.getString( "port" )<em title="Required" class="required">*</em>:</td>
 				<td><input type="text" name="port" id="port" style="width: 28em" value="$!modemGateway.port"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "baudrate" ):</td>
+				<td>$i18n.getString( "baudrate" )<em title="Required" class="required">*</em>:</td>
 				<td><input type="text" name="baudRate" id="baudRate" style="width: 28em" value="$!modemGateway.baudRate"/></td>
 			</tr>
 			<tr>

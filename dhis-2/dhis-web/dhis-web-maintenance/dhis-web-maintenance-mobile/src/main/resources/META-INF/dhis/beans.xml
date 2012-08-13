@@ -40,13 +40,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.mobile.action.incoming.ImportReceiveSMSAction"
-		class="org.hisp.dhis.mobile.action.incoming.ImportReceiveSMSAction"
-		scope="prototype">
-		<property name="incomingSmsService"
-			ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.mobile.action.ShowSendSMSBeneficiaryFormAction"
 		class="org.hisp.dhis.mobile.action.ShowSendSMSBeneficiaryFormAction"
 		scope="prototype" />
