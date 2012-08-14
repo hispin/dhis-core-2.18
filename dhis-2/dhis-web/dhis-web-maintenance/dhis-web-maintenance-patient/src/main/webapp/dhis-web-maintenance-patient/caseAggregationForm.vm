@@ -108,7 +108,7 @@
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "condition" )</legend>
-				<textarea id="aggregationCondition" name="aggregationCondition" class="{validate:{required:true}}" onkeyup='getConditionDescription();'>$!caseAggregation.aggregationExpression</textarea>
+				<textarea id="aggregationCondition" name="aggregationCondition" class="{validate:{required:true}}" onkeyup='getConditionDescription();' maxlength="254">$!caseAggregation.aggregationExpression</textarea>
 			</fieldset>
 		</td>
 	</tr>
