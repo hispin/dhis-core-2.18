@@ -131,7 +131,7 @@ public class GetSmsConfigurationAction
     public String execute()
         throws Exception
     {
-
+        
         smsServiceStatus = smsLibService.getServiceStatus();
 
         smsConfig = smsConfigurationManager.getSmsConfiguration();

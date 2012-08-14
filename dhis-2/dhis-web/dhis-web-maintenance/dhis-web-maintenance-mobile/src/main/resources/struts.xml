@@ -115,6 +115,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-mobile/smsServiceConfiguration.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
+      <param name="javascripts">javascript/gateway.js</param>
 	  <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
     </action>
 	

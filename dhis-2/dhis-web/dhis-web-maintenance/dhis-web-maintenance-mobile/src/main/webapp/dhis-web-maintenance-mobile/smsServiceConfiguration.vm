@@ -47,6 +47,20 @@
 			showById('btnAddGw');
 		}
 	} );
+	
+	function refreshIndex( indexDeleted ) {
+		var gwSize = getFieldValue( 'gatewaySize' ); 
+		
+		if ( indexDeleted < gwSize )
+		{
+			for ( indexDeleted + 1 ;indexDeleted + 1 <= gwSize - 1 ;indexDeleted++ )
+			{
+				document.getElementById(indexDeleted + 1).href = 'showUpdateGateWayConfigForm.action?index='+indexDeleted;
+			}			
+		}
+		//var theLink = document.getElementById("1").getAttribute("href");
+		
+	};
 
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_gateway" ) , "'")';
 	var i18n_stop_sms_service = '$encoder.jsEscape( $i18n.getString( "stop_sms_service" ) , "'")';
@@ -59,6 +73,7 @@
 
 <h3>$i18n.getString( "sms_service_configuration" )</h3>
 <input id="isSettingAvailable" name="isSettingAvailable" type="hidden" #if ( $!smsConfig ) value="true" #else value="false" #end/>
+<input id="gatewaySize" name="gatewaySize" type="hidden" value="$gatewayConfigMap.keySet().size()"/>
 <form id="saveSmsConfigurationForm" name="saveSmsConfigurationForm" action="saveSmsConfiguration.action" method="post" >
   <table id="detailsList" border="0">
     <col/> ## Labels
@@ -127,7 +142,7 @@
 							#set( $gw = $!gatewayConfigMap.get( $key ) )
 							<td>$!encoder.htmlEncode( $gw.name )</td>
 							<td style="text-align:right">
-							  <a href="showUpdateGateWayConfigForm.action?index=$key" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>		
+							  <a id="$key" href="showUpdateGateWayConfigForm.action?index=$key" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>		
 							  <a href="javascript:removeGateway( $key, '$!encoder.jsEncode( $gw.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 							</td>
 						</tr>
@@ -177,6 +192,6 @@
 	
 	function removeGateway( key, name )
 	{
-		removeItem( key, name, i18n_confirm_delete, "removeGatewayConfig.action", function() { window.location="showSMSConfigureForm.action"; } );
+		removeItem( key, name, i18n_confirm_delete, "removeGatewayConfig.action");
 	}
 </script>
