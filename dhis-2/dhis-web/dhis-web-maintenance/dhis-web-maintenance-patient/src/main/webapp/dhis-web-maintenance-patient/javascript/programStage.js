@@ -76,7 +76,7 @@ function selectDataElements()
 	var selectedList = jQuery("#selectedList");
 	jQuery("#availableList").children().each(function(i, item){
 		if( item.selected ){
-			html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onclick='select(this)'>" + item.text + "</td>";
+			html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onmousedown='select(event,this)'>" + item.text + "</td>";
 			html += "<td align='center'><input type='checkbox' name='compulsory' value='" + item.value + "'></td>";
 			html += "<td align='center'><input type='checkbox' name='allowProvided' value='" + item.value + "'></td>";
 			html += "</tr>";
@@ -91,7 +91,7 @@ function selectAllDataElements()
 {
 	var selectedList = jQuery("#selectedList");
 	jQuery("#availableList").children().each(function(i, item){
-		html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onclick='select(this)'>" + item.text + "</td>";
+		html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onmousedown='select(this)'>" + item.text + "</td>";
 		html += "<td align='center'><input type='checkbox' name='compulsory' value='" + item.value + "'></td>";
 		html += "<td align='center'><input type='checkbox' name='allowProvided' value='" + item.value + "'></td>";
 		html += "</tr>";
@@ -175,11 +175,38 @@ function unSelectDataElement( element )
 	element.remove();
 }
 
-function select( element )
+function select( event, element )
 {
+	if ( !getKeyCode( event ) )// Ctrl
+	{
+		jQuery("#selectedList .selected").removeClass( 'selected' );
+	}
+	
 	element = jQuery( element ).parent();
 	if( element.hasClass( 'selected') ) element.removeClass( 'selected' );
 	else element.addClass( 'selected' );
+}
+
+function getKeyCode(e)
+{
+	var ctrlPressed=0;
+
+	if (parseInt(navigator.appVersion)>3) {
+
+		var evt = e ? e:window.event;
+
+		if (document.layers && navigator.appName=="Netscape"
+		&& parseInt(navigator.appVersion)==4) {
+			// NETSCAPE 4 CODE
+			var mString =(e.modifiers+32).toString(2).substring(3,6);
+			ctrlPressed =(mString.charAt(1)=="1");
+		}
+		else {
+			// NEWER BROWSERS [CROSS-PLATFORM]
+			ctrlPressed=evt.ctrlKey;
+		}
+	}
+	return ctrlPressed;
 }
 
 function repeatableOnChange()
