@@ -39,9 +39,6 @@ public class DataElementFormNameComparator
 {
     public int compare( DataElement dataElement0, DataElement dataElement1 )
     {
-        String name0 = dataElement0.getFormNameFallback();
-        String name1 = dataElement1.getFormNameFallback();
-
-        return name0.compareToIgnoreCase( name1 );
+        return dataElement0.getFormNameFallback().compareToIgnoreCase( dataElement1.getFormNameFallback() );
     }
 }
