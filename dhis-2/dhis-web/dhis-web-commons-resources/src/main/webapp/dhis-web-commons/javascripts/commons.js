@@ -1119,7 +1119,6 @@ function validation2(formId, submitHandler, kwargs)
 {
 	var beforeValidateHandler = kwargs["beforeValidateHandler"];
 	var rules = kwargs["rules"];
-
 	var validator = jQuery("#" + formId ).validate({
 		meta:"validate",
 		errorElement:"span",

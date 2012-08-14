@@ -65,39 +65,60 @@ function getValidationRulesGateway()
 
 function saveGatewayConfig()
 {
-	lockScreen();
+	
 	if ( currentType == 'modem' )
 	{
-		jQuery.postJSON( "saveModemConfig.action", {
-			gatewayType: getFieldValue( 'gatewayType' ),
-			name: getFieldValue( 'modemFields input[id=name]' ),
-			port: getFieldValue( 'modemFields input[id=port]' ),
-			baudRate: getFieldValue( 'modemFields input[id=baudRate]' ),
-			manufacturer: getFieldValue( 'modemFields input[id=manufacturer]' ),
-			model: getFieldValue( 'modemFields input[id=model]' ),
-			pin: getFieldValue( 'modemFields input[id=pin]' ),
-			inbound: getFieldValue( 'modemFields select[id=inbound]' ),
-			outbound: getFieldValue( 'modemFields select[id=outbound]' )
-		}, function ( json ) {
-			unLockScreen();
-			showMessage( json );
-		} );
+		var port = getFieldValue( 'modemFields input[id=port]' );
+		var baudRate = getFieldValue( 'modemFields input[id=baudRate]' );
+		if ( port == "" || baudRate == "")
+		{	
+			showErrorMessage( i18n_required_data_error );
+		}
+		else
+		{
+			lockScreen();		
+			jQuery.postJSON( "saveModemConfig.action", {
+				gatewayType: getFieldValue( 'gatewayType' ),
+				name: getFieldValue( 'modemFields input[id=name]' ),
+				port: getFieldValue( 'modemFields input[id=port]' ),
+				baudRate: getFieldValue( 'modemFields input[id=baudRate]' ),
+				manufacturer: getFieldValue( 'modemFields input[id=manufacturer]' ),
+				model: getFieldValue( 'modemFields input[id=model]' ),
+				pin: getFieldValue( 'modemFields input[id=pin]' ),
+				inbound: getFieldValue( 'modemFields select[id=inbound]' ),
+				outbound: getFieldValue( 'modemFields select[id=outbound]' )
+			}, function ( json ) {
+				unLockScreen();
+				showMessage( json );
+			} );
+		}
 	}
 	else if ( currentType == 'bulksms' )
 	{
-		jQuery.postJSON( "saveBulkSMSConfig.action", {
-			gatewayType: getFieldValue( 'gatewayType' ),
-			name: getFieldValue( 'bulksmsFields input[id=name]' ),
-			username: getFieldValue( 'bulksmsFields input[id=username]' ),
-			password: getFieldValue( 'bulksmsFields input[id=password]' ),
-			region: getFieldValue( 'bulksmsFields select[id=region]' )
-		}, function ( json ) {
-			unLockScreen();
-			showMessage( json );
-		} );
+		var username = getFieldValue( 'bulksmsFields input[id=username]' );
+		var password = getFieldValue( 'bulksmsFields input[id=password]' );
+		if ( username == "" || password == "")
+		{	
+			showErrorMessage( i18n_required_data_error );
+		}
+		else
+		{
+			lockScreen();
+			jQuery.postJSON( "saveBulkSMSConfig.action", {
+				gatewayType: getFieldValue( 'gatewayType' ),
+				name: getFieldValue( 'bulksmsFields input[id=name]' ),
+				username: getFieldValue( 'bulksmsFields input[id=username]' ),
+				password: getFieldValue( 'bulksmsFields input[id=password]' ),
+				region: getFieldValue( 'bulksmsFields select[id=region]' )
+			}, function ( json ) {
+				unLockScreen();
+				showMessage( json );
+			} );
+		}
 	}
 	else if ( currentType == 'clickatell' )
 	{
+		lockScreen();
 		jQuery.postJSON( "saveClickatellConfig.action", {
 			gatewayType: getFieldValue( 'gatewayType' ),
 			name: getFieldValue( 'clickatellFields input[id=name]' ),
@@ -111,6 +132,7 @@ function saveGatewayConfig()
 	}
 	else
 	{
+		lockScreen();
 		jQuery.postJSON( "saveHTTPConfig.action", {
 			gatewayType: getFieldValue( 'gatewayType' ),
 			name: getFieldValue( 'genericHTTPFields input[id=name]' ),
@@ -131,4 +153,43 @@ function showMessage( json )
 	} else {
 		showErrorMessage( json.message, 7000 );
 	}
+}
+
+function deleteItem( itemId, itemName, confirmation, action, success )
+{                
+    var result = window.confirm( confirmation + "\n\n" + itemName );
+    
+    if ( result )
+    {
+		refreshIndex( itemId );
+    	$.postJSON(
+    	    action,
+    	    {
+    	        "id": itemId   
+    	    },
+    	    function( json )
+    	    { 
+    	    	if ( json.response == "success" )
+    	    	{
+					jQuery( "tr#tr" + itemId ).remove();
+	                
+					jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+	                jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+	                jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
+					jQuery( "table.listTable tbody" ).trigger("update");
+  
+					if ( success && typeof( success) == "function" )
+					{
+						success.call();
+					}
+  
+					showSuccessMessage( i18n_delete_success );
+    	    	}
+    	    	else if ( json.response == "error" )
+    	    	{ 
+					showWarningMessage( json.message );
+    	    	}
+    	    }
+    	);
+    }
 }

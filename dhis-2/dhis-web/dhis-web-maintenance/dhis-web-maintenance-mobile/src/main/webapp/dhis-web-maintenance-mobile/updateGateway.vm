@@ -11,6 +11,7 @@
     });
 	
 	var i18n_add_update_success = '$encoder.jsEscape( $i18n.getString( "add_update_gateway_success" ) , "'")';
+	var i18n_required_data_error = '$encoder.jsEscape( $i18n.getString( "required_data_error" ) , "'" )';
 </script>
 <h3>$i18n.getString( "add_update_gateway_management" )</h3>
 <form id="addGateWayConfigForm" name="addGateWayConfigForm">
@@ -39,11 +40,11 @@
 				<td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!bulkGateway.name )"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "username" ):</td>
+				<td>$i18n.getString( "username" ) <em title="Required" class="required">*</em>:</td>
 				<td><input type="text" name="username" id="username" style="width: 28em" value="$!bulkGateway.username"/></td>
-			</tr>
+			</tr> 
 			<tr>
-				<td>$i18n.getString( "password" ):</td>
+				<td>$i18n.getString( "password" ) <em title="Required" class="required">*</em>:</td>
 				<td><input type="text" name="password" id="password" style="width: 28em" value="$!bulkGateway.password"/></td>
 			</tr>
 			<tr>
@@ -67,11 +68,11 @@
 				<td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!modemGateway.name )"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "port" )<em title="Required" class="required">*</em>:</td>
+				<td>$i18n.getString( "port" ) <em title="Required" class="required">*</em>:</td>
 				<td><input type="text" name="port" id="port" style="width: 28em" value="$!modemGateway.port"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "baudrate" )<em title="Required" class="required">*</em>:</td>
+				<td>$i18n.getString( "baudrate" ) <em title="Required" class="required">*</em>:</td>
 				<td><input type="text" name="baudRate" id="baudRate" style="width: 28em" value="$!modemGateway.baudRate"/></td>
 			</tr>
 			<tr>
