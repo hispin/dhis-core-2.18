@@ -15,8 +15,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.dataelement.hibernate.HibernateLocalDataElementStore">		
 		<property name="clazz" value="org.hisp.dhis.dataelement.DataElement" />
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="statementManager" ref="statementManager" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 	
 	<!-- LocalAttributeValue -->
