@@ -331,7 +331,7 @@ public class DefaultProgramDataEntryService
         {
             String inputHTML = inputMatcher.group();
             inputHTML = inputHTML.replace( ">", "" );
-
+            
             // -----------------------------------------------------------------
             // Get HTML input field code
             // -----------------------------------------------------------------
@@ -348,29 +348,11 @@ public class DefaultProgramDataEntryService
 
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
-                if ( dataElement != null )
-                {
-                    if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
-                    {
-                        inputHTML = populateCustomDataEntryForDate( dataElement, inputHTML );
-                    }
-                    else if ( DataElement.VALUE_TYPE_BOOL.equals( dataElement.getType() ) )
-                    {
-                        inputHTML = populateCustomDataEntryForBoolean( dataElement, inputHTML );
-                    }
-                    else if ( !DataElement.VALUE_TYPE_TRUE_ONLY.equals( dataElement.getType() ) )
-                    {
-                        inputHTML = populateCustomDataEntryForTrueOnly( dataElement, inputHTML );
-                    }
-                    else
-                    {
-                        inputHTML = populateCustomDataEntryForTextBox( dataElement, inputHTML );
-                    }
-                }
-
+                
+                inputHTML = populateCustomDataEntryForTextBox( dataElement, inputHTML );
+                
                 inputHTML = inputHTML + ">";
-
+                
                 inputMatcher.appendReplacement( sb, inputHTML );
 
             }
@@ -387,60 +369,21 @@ public class DefaultProgramDataEntryService
 
     private String populateCustomDataEntryForTextBox( DataElement dataElement, String inputHTML )
     {
-        String displayValue = (dataElement == null) ? " value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " value=\"[ "
-            + dataElement.getName() + " ]\"";
-        inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
-            : inputHTML + " " + displayValue;
+        if ( dataElement != null )
+        {
+            inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, " value=\"[" + dataElement.getDisplayName() +"]\"" )
+                : inputHTML + " value=\"[" + dataElement.getDisplayName() + "]\" ";
 
-        String displayTitle = (dataElement == null) ? " title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " title=\""
-            + dataElement.getId() + "." + dataElement.getName() + "-" + dataElement.getDetailedNumberType() + "\" ";
-        inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
-            : inputHTML + " " + displayTitle;
-        return inputHTML;
-    }
-
-    private String populateCustomDataEntryForBoolean( DataElement dataElement, String inputHTML )
-    {
-        String displayValue = (dataElement == null) ? " value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " value=\"[ "
-            + dataElement.getName() + " ]\" ";
-        inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
-            : inputHTML + " " + displayValue;
-
-        String displayTitle = (dataElement == null) ? " title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " title=\""
-            + dataElement.getId() + "." + dataElement.getName() + "-" + dataElement.getDetailedNumberType() + "\" ";
-        inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
-            : inputHTML + " " + displayTitle;
-
-        return inputHTML;
-    }
-
-    private String populateCustomDataEntryForTrueOnly( DataElement dataElement, String inputHTML )
-    {
-        String displayValue = (dataElement == null) ? " value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " value=\"[ "
-            + dataElement.getName() + " ]\" ";
-        inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
-            : inputHTML + " " + displayValue;
-
-        String displayTitle = (dataElement == null) ? " title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " title=\""
-            + dataElement.getId() + "." + dataElement.getName() + "-" + dataElement.getDetailedNumberType() + "\" ";
-        inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
-            : inputHTML + " " + displayTitle;
-
-        return inputHTML;
-    }
-
-    private String populateCustomDataEntryForDate( DataElement dataElement, String inputHTML )
-    {
-        String displayValue = (dataElement == null) ? " value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\"" : " value=\"[ "
-            + dataElement.getName() + " ]\"";
-        inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
-            : inputHTML + " " + displayValue;
-
-        String displayTitle = (dataElement == null) ? " title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\"" : " title=\""
-            + dataElement.getId() + "." + dataElement.getName() + "-" + dataElement.getDetailedNumberType() + "\" ";
-        inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
-            : inputHTML + " " + displayTitle;
-
+            String displayTitle = dataElement.getId() + " - " + dataElement.getName() + " - " + dataElement.getDetailedNumberType() + " - ";
+            inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, " title=\"" + displayTitle + "\"" )
+                : inputHTML + " title=\"" + displayTitle + "\"";
+        }
+        else
+        {
+            inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? " value=\"[" + DATA_ELEMENT_DOES_NOT_EXIST + "]\" "
+                : " value=\"[ " + DATA_ELEMENT_DOES_NOT_EXIST + " ]\"";
+        }
+        
         return inputHTML;
     }
 
@@ -532,13 +475,13 @@ public class DefaultProgramDataEntryService
         {
             inputHTML += jsCodeForOnchange;
         }
-        
+
         if ( DataElement.VALUE_TYPE_LONG_TEXT.equals( dataElement.getDetailedTextType() ) )
         {
             inputHTML = inputHTML.replaceFirst( "input", "textarea" );
             inputHTML += " >$VALUE</textarea>";
         }
-        
+
         return inputHTML;
     }
 
