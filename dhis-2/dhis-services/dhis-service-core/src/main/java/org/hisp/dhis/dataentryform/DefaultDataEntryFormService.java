@@ -141,16 +141,16 @@ public class DefaultDataEntryFormService
             // -----------------------------------------------------------------
 
             String dataElementCode = inputMatcher.group();
-
+            
             Matcher valueTagMatcher = VALUE_TAG_PATTERN.matcher( dataElementCode );
             Matcher titleTagMatcher = TITLE_TAG_PATTERN.matcher( dataElementCode );
 
             if ( valueTagMatcher.find() && valueTagMatcher.groupCount() > 0 )
             {
-                dataElementCode = dataElementCode.replace( valueTagMatcher.group( 1 ), EMPTY );
+                dataElementCode = dataElementCode.replace( valueTagMatcher.group( 1 ), EMPTY );                
             }
 
-            if ( titleTagMatcher.find() && valueTagMatcher.groupCount() > 0 )
+            if ( titleTagMatcher.find() && titleTagMatcher.groupCount() > 0 )
             {
                 dataElementCode = dataElementCode.replace( titleTagMatcher.group( 1 ), EMPTY );
             }

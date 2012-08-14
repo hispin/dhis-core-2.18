@@ -148,25 +148,23 @@ function insertDataElement( source, programStageId )
 	var dataElementType = dataElement.type;
 	
 	var htmlCode = "";
-	var id = programStageId + "-" + dataElementId + "-val" ;
+	var id = programStageId + "-" + dataElementId + "-val" ;	
+	var titleValue = dataElementId + " - " + dataElementName + " - " + dataElementType;
 	
 	if ( dataElementType == "bool" )
 	{
-		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
 		var displayName = dataElementName;
-		htmlCode = "<input title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
+		htmlCode = "<input title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" value=\"[" + displayName + "]\" title=\"" + displayName + "\">";
 	} 
 	else if ( dataElementType == "trueOnly" )
 	{
-		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
 		var displayName = dataElementName;
 		htmlCode = "<input type=\"checkbox\" title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" title=\"" + displayName + "\">";
 	} 
 	else
 	{
-		var titleValue = "-- " + dataElementId + "." + dataElementName +" (" + dataElementType + ") --";
 		var displayName = dataElementName;
-		htmlCode += "<input title=\"" + titleValue + "\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + id + "\" />";
+		htmlCode += "<input title=\"" + titleValue + "\" value=\"[" + displayName + "]\" name=\"entryfield\" id=\"" + id + "\" />";
 	}
 	
 	if( checkExisted( id ) )
