@@ -27,9 +27,13 @@
 
 package org.hisp.dhis.patient.action.caseaggregation;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
@@ -87,9 +91,9 @@ public class GetDataElementsByDataSetAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<DataElement> dataElements;
+    private List<DataElement> dataElements;
 
-    public Collection<DataElement> getDataElements()
+    public List<DataElement> getDataElements()
     {
         return dataElements;
     }
@@ -104,7 +108,10 @@ public class GetDataElementsByDataSetAction
 
         query = StringUtils.trimToNull( query );
 
-        dataElements = dataElementService.getDataElements( dataSet, query, MAX_DATAELEMENTS_DISPLAYED );
+        dataElements = new ArrayList<DataElement>( dataElementService.getDataElements( dataSet, query,
+            MAX_DATAELEMENTS_DISPLAYED ) );
+
+        Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }
