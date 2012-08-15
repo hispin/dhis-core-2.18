@@ -232,7 +232,10 @@ function resetCriteriaDiv()
 	
 	byId( 'inputCriteria' ).style.width = '504px';
 	byId( 'inputCriteria' ).style.height = '80px';
-    
+
+    $( '#currentPeriod' ).html( i18n_no_period_selected );
+    $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
+	
     clearEntryForm();
 }
 
@@ -250,8 +253,9 @@ function clearEntryForm()
 
 function loadForm( dataSetId, value )
 {
-	//hideExportDiv();
 	showLoader();
+
+    $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
 
 	$( '#contentDiv' ).load( 'loadForm.action',
 	{
@@ -374,6 +378,9 @@ function dataSetSelected()
 {
     clearEntryForm();
 	
+    $( '#currentPeriod' ).html( i18n_no_period_selected );
+    $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
+
 	clearListById( 'selectedPeriodId' );
 	hideById('attributeDiv');
 	
