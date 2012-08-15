@@ -103,6 +103,13 @@ public class LoadProgramStageInstancesAction
     {
         return statusMap;
     }
+    
+    private ProgramInstance programInstance;
+    
+    public ProgramInstance getProgramInstance()
+    {
+        return programInstance;
+    }
 
     private List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
@@ -117,7 +124,7 @@ public class LoadProgramStageInstancesAction
     {
         return program;
     }
-
+    
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -130,7 +137,7 @@ public class LoadProgramStageInstancesAction
 
         Patient patient = selectedStateManager.getSelectedPatient();
 
-        Program program = programService.getProgram( programId );
+        program = programService.getProgram( programId );
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
@@ -151,7 +158,7 @@ public class LoadProgramStageInstancesAction
 
         if ( programInstances != null && programInstances.size() > 0 )
         {
-            ProgramInstance programInstance = programInstances.iterator().next();
+            programInstance = programInstances.iterator().next();
 
             selectedStateManager.setSelectedProgramInstance( programInstance );
 
@@ -159,19 +166,7 @@ public class LoadProgramStageInstancesAction
             {
                 if ( program.isRegistration() )
                 {
-                    programStageInstances.addAll( programInstance.getProgramStageInstances() );
-                    Collections.sort( programStageInstances, new ProgramStageInstanceDueDateComparator() );
                     statusMap = programStageInstanceService.statusProgramStageInstances( programInstance.getProgramStageInstances() );
-                }
-                else
-                {
-                    ProgramStage programStage = program.getProgramStages().iterator().next();
-                    ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance(
-                        programInstance, programStage );
-                    if( programStageInstance!= null )
-                    {
-                        programStageInstances.add( programStageInstance );
-                    }
                 }
             }
         }

@@ -17,7 +17,6 @@ function loadProgramStages()
 	disableCompletedButton(true);
 	disable('uncompleteBtn');
 	disable('validationBtn');
-	disable('newEncounterBtn');
 	hideById('inputCriteriaDiv');
 	$('#programStageIdTR').html('');
 	hideById('programInstanceDiv');
@@ -37,7 +36,11 @@ function loadProgramStages()
 		{    
 			showById('programInstanceDiv');
 			hideById('executionDateTB');
-				
+			if(byId('repeatableProgramStageId').options.length == 0)
+			{
+				hideById("newEncounterBtn");
+			}
+			
 			var type = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('type');
 			if( type == 1 )
 			{
@@ -102,7 +105,6 @@ function loadDataEntry( programStageInstanceId )
 	disable('validationBtn');
 	disableCompletedButton(true);
 	disable('uncompleteBtn');
-	disable('newEncounterBtn');
 	
 	jQuery(".stage-object-selected").removeClass('stage-object-selected');
 	var selectedProgramStageInstance = jQuery( '#' + prefixId + programStageInstanceId );
@@ -131,11 +133,6 @@ function loadDataEntry( programStageInstanceId )
 			else if( completed == 'true' )
 			{
 				disableCompletedButton(true);
-			}
-			
-			if( completed == 'true' && irregular == 'true' )
-			{
-				enable( 'newEncounterBtn' );
 			}
 			
 			hideLoader();
@@ -508,7 +505,6 @@ function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
 					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
 					disableCompletedButton(false);
 					enable('validationBtn');
-					disable('newEncounterBtn');
 					setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
 					
 			   },
@@ -624,29 +620,7 @@ function doComplete( isCreateEvent )
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					if( irregular == 'true' )
 					{
-						enable('newEncounterBtn');
-						jQuery('#createNewEncounterDiv').dialog({
-								title: i18n_create_new_event,
-								maximize: true, 
-								closable: true,
-								modal:false,
-								overlay:{background:'#000000', opacity:0.1},
-								width: 400,
-								height: 140
-							}).show('fast');
-							
-						var standardInterval =  jQuery('#dataRecordingSelectDiv [name=programStageId] option:selected').attr('standardInterval');
-						var date = new Date();
-						var d = date.getDate() + eval(standardInterval);
-						var m = date.getMonth();
-						var y = date.getFullYear();
-						var edate= new Date(y, m, d);
-												
-						jQuery('#dueDateNewEncounter').datepicker( "setDate" , edate );
-					}
-					else
-					{
-						disable('newEncounterBtn');
+						showCreateNewEvent();
 					}
 					
 					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');
@@ -688,6 +662,27 @@ function doUnComplete( isCreateEvent )
     
 }
 
+function showCreateNewEvent()
+{
+	jQuery('#createNewEncounterDiv').dialog({
+			title: i18n_create_new_event,
+			maximize: true, 
+			closable: true,
+			modal:false,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 450,
+			height: 160
+		}).show('fast');
+		
+	var standardInterval =  jQuery('#dataRecordingSelectDiv [name=programStageId] option:selected').attr('standardInterval');
+	var date = new Date();
+	var d = date.getDate() + eval(standardInterval);
+	var m = date.getMonth();
+	var y = date.getFullYear();
+	var edate= new Date(y, m, d);
+							
+	jQuery('#dueDateNewEncounter').datepicker( "setDate" , edate );
+}
 
 function closeDueDateDiv()
 {
@@ -766,17 +761,20 @@ function runValidation()
 // Register Irregular-encounter
 //------------------------------------------------------
 
-function registerIrregularEncounter( dueDate )
+function registerIrregularEncounter( programInstanceId, programStageId, programStageName, dueDate )
 {
-	jQuery.postJSON( "registerIrregularEncounter.action",{ dueDate: dueDate }, 
+	setInnerHTML('createEventMessage','');
+	jQuery.postJSON( "registerIrregularEncounter.action",
+		{ 
+			programInstanceId:programInstanceId,
+			programStageId: programStageId, 
+			dueDate: dueDate 
+		}, 
 		function( json ) 
 		{   
 			var programStageInstanceId = json.message;
-			jQuery('#createNewEncounterDiv').dialog('close');
 			disableCompletedButton(false);
-			disable('newEncounterBtn');
 			
-			var programStageName = jQuery(".stage-object-selected").attr('psname');
 			var elementId = prefixId + programStageInstanceId;
 			var flag = false;
 			jQuery("#programStageIdTR input[name='programStageBtn']").each(function(i,item){
@@ -815,6 +813,7 @@ function registerIrregularEncounter( dueDate )
 					+ '></td>');
 				setEventColorStatus( elementId, 3 );
 			}
+			setInnerHTML('createEventMessage',i18n_create_event_success);
 		});
 }
 
