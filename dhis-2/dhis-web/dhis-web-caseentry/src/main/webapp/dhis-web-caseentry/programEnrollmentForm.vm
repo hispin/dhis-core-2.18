@@ -161,7 +161,7 @@
 					</td>        
 						   
 					##entry
-					#set( $duedateId = "value_"+$programStageInstance.id+"_date" )        
+					#set( $duedateId = "value_" + $programStageInstance.id + "_date" )        
 					<td class='input-column '>        
 						<input type="text" id="$duedateId" name="entryfield" value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
 						<script type="text/javascript">
@@ -175,9 +175,10 @@
 		#end
 	</div>
 
-</div>	
-
+</div>
 #end
+
+#parse( "/dhis-web-caseentry/addRepeatableEventForm.vm" )
 
 <script type="text/javascript">
 	

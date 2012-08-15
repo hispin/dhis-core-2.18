@@ -1,8 +1,7 @@
-
- #set( $size = $programStageInstances.size() )
+#set( $size = $programInstance.programStageInstances.size() )
 { 
 "programStageInstances": [
-	#foreach( $programStageInstance in $!programStageInstances )
+	#foreach( $programStageInstance in $!programInstance.programStageInstances )
 	  {
 		"id": "$programStageInstance.id",
 		"programStageId": "$programStageInstance.programStage.id",
