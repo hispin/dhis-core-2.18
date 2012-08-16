@@ -180,7 +180,6 @@ public class SaveExecutionDateAction
                 programStageInstance = new ProgramStageInstance();
                 programStageInstance.setProgramInstance( programInstance );
                 programStageInstance.setProgramStage( programStage );
-                programStageInstance.setStageInProgram( programStage.getStageInProgram() );
                 programStageInstance.setDueDate( dateValue );
                 programStageInstance.setExecutionDate( dateValue );
                 programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );

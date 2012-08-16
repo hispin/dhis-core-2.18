@@ -190,8 +190,6 @@ public class SaveProgramEnrollmentAction
                 ProgramStageInstance programStageInstance = new ProgramStageInstance();
                 programStageInstance.setProgramInstance( programInstance );
                 programStageInstance.setProgramStage( programStage );
-                programStageInstance.setStageInProgram( programStage.getStageInProgram() );
-
                 Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ), programStage
                     .getMinDaysFromStart() );
 

@@ -182,7 +182,6 @@ public class SaveRepeatableEventAction
 
         programStageInstance.setProgramInstance( programInstance );
         programStageInstance.setProgramStage( programStage );
-        programStageInstance.setStageInProgram( currentStageInstance.getStageInProgram() );
         programStageInstanceService.addProgramStageInstance( programStageInstance );
 
         return SUCCESS;

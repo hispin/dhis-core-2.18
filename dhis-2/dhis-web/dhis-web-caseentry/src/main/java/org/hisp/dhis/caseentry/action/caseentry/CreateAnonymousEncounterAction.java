@@ -144,10 +144,7 @@ public class CreateAnonymousEncounterAction
 
             ProgramStageInstance programStageInstance = new ProgramStageInstance();
             programStageInstance.setProgramInstance( programInstance );
-
             programStageInstance.setProgramStage( programStage );
-
-            programStageInstance.setStageInProgram( programInstance.getProgramStageInstances().size() + 1 );
             programStageInstance.setDueDate( date );
             programStageInstance.setExecutionDate( date );
             programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );

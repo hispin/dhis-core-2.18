@@ -176,7 +176,6 @@ public class SaveValuesAction
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
         programStageInstance.setProgramInstance( programInstance );
         programStageInstance.setProgramStage( programStage );
-        programStageInstance.setStageInProgram( programStage.getStageInProgram() );
         programStageInstance.setDueDate( currentDate );
         programStageInstance.setExecutionDate( currentDate );
         programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );

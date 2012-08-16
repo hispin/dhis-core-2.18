@@ -124,7 +124,6 @@ public class RegisterIrregularEncounterAction
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
         programStageInstance.setProgramInstance( programInstance );
         programStageInstance.setProgramStage( progamStage );
-        programStageInstance.setStageInProgram( progamStage.getStageInProgram() );
         programStageInstance.setDueDate( format.parseDate( dueDate ) );
 
         int id = programStageInstanceService.addProgramStageInstance( programStageInstance );

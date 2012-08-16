@@ -16,8 +16,6 @@
     <many-to-one name="programStage" class="org.hisp.dhis.program.ProgramStage" column="programstageid"
       not-null="true" foreign-key="fk_programstageinstance_programstageid" />
 
-    <property name="stageInProgram" column="stageinprogram" not-null="true" />
-
     <property name="dueDate" column="duedate" />
 
     <property name="executionDate" column="executiondate" />

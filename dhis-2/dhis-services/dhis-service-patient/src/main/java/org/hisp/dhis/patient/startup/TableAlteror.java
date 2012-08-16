@@ -121,8 +121,7 @@ public class TableAlteror
         moveStoredByFormStageInstanceToDataValue();
         
         executeSql( "ALTER TABLE patientattribute DROP COLUMN inheritable" );
-
-        executeSql( "ALTER TABLE patientattribute DROP COLUMN inheritable" );
+        executeSql( "ALTER TABLE programstageinstance DROP COLUMN stageInProgram" );
     }
 
     // -------------------------------------------------------------------------
