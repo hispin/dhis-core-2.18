@@ -63,7 +63,7 @@ public class SearchPatientAction
     private Boolean searchBySelectedOrgunit;
 
     private boolean listAll;
-
+    
     private Collection<Patient> patients = new ArrayList<Patient>();
 
     // -------------------------------------------------------------------------

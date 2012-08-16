@@ -1,6 +1,7 @@
 <script>
 	jQuery(document).ready(	function(){
 		showById('programAddPatientTR');
+		showById('programStageAddPatientTR');
 		jQuery("#programIdAddPatient option").each(function(){
 			var item = jQuery(this);
 			if( item.attr('type')!=1 && item.val()!='' ){
@@ -12,6 +13,7 @@
 		hideById('addPatientBtn');
 		disable('advancedSearchBtn');
 		hideById('searchBySelectedUnitTD');
+		setFieldValue('searchByProgramStage', 'true');
 	});	
 </script>
 
@@ -35,4 +37,7 @@
 	var i18n_sms_message_management = '$encoder.jsEscape( $i18n.getString( "sms_message_management" ) , "'")';
 	var i18n_send_sms = '$encoder.jsEscape( $i18n.getString( "send_sms" ) , "'")';
 	var i18n_please_select = '[' + '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'")' + ']';
+	var i18n_specify_search_criteria = '$encoder.jsEscape( $i18n.getString( "specify_search_criteria" ) , "'")';
+	var i18n_color_quick_help = '$encoder.jsEscape( $i18n.getString( "color_quick_help" ) , "'")';
+	var searchTextBox = '<input type="text" id="searchText" name="searchText">';
 </script>

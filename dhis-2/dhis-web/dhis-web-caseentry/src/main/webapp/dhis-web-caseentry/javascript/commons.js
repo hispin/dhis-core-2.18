@@ -221,6 +221,13 @@ function validateAdvancedSearch()
 				}
 			})
 		});
+		
+		if( getFieldValue('searchByProgramStage') == "true"){
+			var programStageId = jQuery('#programStageAddPatientTR [id=programStageAddPatient_' + getFieldValue('programIdAddPatient') + ']').val();
+			var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]:checked').val();
+			params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent;
+		}
+		
 		params += '&listAll=false';
 		params += '&searchBySelectedOrgunit=' + byId('searchBySelectedOrgunit').checked;
 		
@@ -412,6 +419,9 @@ function checkDuplicateCompleted( messageElement, divname )
 
 function enableBtn(){
 	var programIdAddPatient = getFieldValue('programIdAddPatient');
+	jQuery('#programStageAddPatientTR [name=programStageAddPatient]').addClass("hidden");
+	jQuery('#programStageAddPatientTR [id=programStageAddPatient_' + programIdAddPatient + ']').removeClass("hidden");
+	
 	if( programIdAddPatient!='' ){
 		enable('listPatientBtn');
 		enable('addPatientBtn');
@@ -419,6 +429,7 @@ function enableBtn(){
 		jQuery('#advanced-search :input').each( function( idx, item ){
 			enable(this.id);
 		});
+		jQuery('#programStageAddPatientTR [name=statusEvent]').attr("disabled", true);
 	}
 	else
 	{
@@ -428,6 +439,17 @@ function enableBtn(){
 		jQuery('#advanced-search :input').each( function( idx, item ){
 			disable(this.id);
 		});
+	}
+}
+
+function enableRadioButton( programId )
+{
+	var prorgamStageId = jQuery('#programStageAddPatientTR [id=programStageAddPatient_' + programId + ']').val();
+	if( prorgamStageId== ''){
+		jQuery('#programStageAddPatientTR [name=statusEvent]').attr("disabled", true);
+	}
+	else{
+		jQuery('#programStageAddPatientTR [name=statusEvent]').removeAttr("disabled");
 	}
 }
 

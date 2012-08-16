@@ -103,8 +103,6 @@ function sendSMS()
 	} ); 
 }
 
-
-
 function loadProgramStageRecords( programStageInstanceId ) 
 {
 	setInnerHTML('dataEntryFormDiv', '');
