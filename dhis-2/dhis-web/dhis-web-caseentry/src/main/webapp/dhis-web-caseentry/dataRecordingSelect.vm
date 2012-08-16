@@ -21,9 +21,6 @@
 		</table>
 	</tr>
 </table>
-
-#parse( "/dhis-web-caseentry/colorHelp.vm" )
-</p>
 		
 <div id='inputCriteria' class="page inputCriteria" style="width:490px;height:29px;">	
 	<input type='hidden' id='programStageId' name='programStageId'>
@@ -42,56 +39,11 @@
 	</table>
 </div>
 
-<div id='programInstanceDiv' class='hidden '>
-	<div id='programInstanceFlowDiv' style="width:78%;height:115px;overflow-x:auto;">
-		<table>
-			<tr id='programStageIdTR'></tr>
-		</table>
-	</div>
-	
-	<br>		
-	<table id='executionDateTB'>
-		<tr>
-			<th class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
-			<th><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >
-				<script type="text/javascript">
-				   datePickerValid( 'executionDate', false );
-				</script>
-			</th>
-			<th class='text-column'><label for="dueDate">$i18n.getString( "due_date" ) </label></th>
-			<th><input type="text" id="dueDate" name="dueDate" class='criteria' value="$!format.formatDate( $programStageInstance.dueDate )" readonly > </th>
-		</tr>
-	</table>
-</div>
-
 </form>
-
-<p></p>
-	
-<div id='createNewEncounterDiv' class='hidden'>
-	<table>
-		<tr>
-			<td>$i18n.getString( 'due_date' )</td>
-			<td><input id='dueDateNewEncounter' name='dueDateNewEncounter' style='width:260px;'></td>
-			<script type="text/javascript">
-			   datePicker( 'dueDateNewEncounter', false );
-			</script>
-		</tr>
-		<tr>
-			<td></td>
-			<td>
-				<input type='button' value='$i18n.getString("create")' onclick='registerIrregularEncounter( getFieldValue("dueDateNewEncounter" ) );' />
-				<input type='button' value='$i18n.getString("cancel")' onclick="closeDueDateDiv();" />
-			</td>
-</div>
 
 <script>
 	jQuery('#dataRecordingSelectForm').ready(function(){ 
-		var programs = byId('programId');
-		if( programs.options.length == 2 )
-		{
-			 byId('programId').selectedIndex = 1;
-			 loadProgramStages();
-		}
+		byId('programId').selectedIndex = 1;
+		loadProgramStages();
 	});
 </script>
