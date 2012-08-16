@@ -13,8 +13,9 @@
 
 <h3>$i18n.getString( "single_event_with_registration" ) #openHelp('single_event_with_registration')</h3>
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='true'>
-<input type='hidden' id='listAll' name= 'listAll' >
-<input type='hidden' id='patientId' name= 'patientId' >
+<input type='hidden' id='listAll' name='listAll'>
+<select class='hidden' id='repeatableProgramStageId' name='repeatableProgramStageId'></select>
+<input type='hidden' id='patientId' name= 'patientId'>
 
 <div id='searchDiv'>
 	#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	

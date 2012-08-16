@@ -14,6 +14,54 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	enable('searchBtn');	
 	enable('listPatientBtn');
 }
+//------------------------------------------------------------------------------
+// Load data entry form
+//------------------------------------------------------------------------------
+
+function loadDataEntry( programStageInstanceId )
+{
+	setInnerHTML('dataEntryFormDiv', '');
+	showById('executionDateTB');
+	showById('dataEntryFormDiv');
+	setFieldValue( 'dueDate', '' );
+	setFieldValue( 'executionDate', '' );
+	disable('validationBtn');
+	disableCompletedButton(true);
+	disable('uncompleteBtn');
+	
+	jQuery(".stage-object-selected").removeClass('stage-object-selected');
+	var selectedProgramStageInstance = jQuery( '#' + prefixId + programStageInstanceId );
+	selectedProgramStageInstance.addClass('stage-object-selected');
+	setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
+	
+	showLoader();	
+	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
+		{ 
+			programStageInstanceId: programStageInstanceId
+		},function( )
+		{
+			var executionDate = jQuery('#dataRecordingSelectDiv input[id=executionDate]').val();
+			var completed = jQuery('#entryFormContainer input[id=completed]').val();
+			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
+			showById('inputCriteriaDiv');
+			enable('validationBtn');
+			if( executionDate == '' )
+			{
+				disable('validationBtn');
+			}
+			else if( executionDate != '' && completed == 'false' )
+			{
+				disableCompletedButton(false);
+			}
+			else if( completed == 'true' )
+			{
+				disableCompletedButton(true);
+			}
+			
+			hideLoader();
+			hideById('contentDiv'); 
+		} );
+}
 
 //--------------------------------------------------------------------------------------------
 // Show search-form
@@ -71,40 +119,6 @@ function getKeyCode(e)
 	 return (e)? e.which : null;
 }
 
-function searchValidationCompleted( messageElement )
-{
-    messageElement = messageElement.getElementsByTagName( 'message' )[0];
-	var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-	
-    if ( type == 'success' )
-    {
-		showLoader();
-		hideById('dataEntryFormDiv');
-		hideById('dataRecordingSelectDiv');
-		$('#contentDiv').load( 'searchPatient.action', 
-			{
-				searchObjectId: getFieldValue('searchObjectId'), 
-				searchText: getFieldValue('searchText'),
-				searchBySelectedOrgunit: byId('searchBySelectedOrgunit').checked
-			},
-			function()
-			{
-				showById('searchDiv');
-				setFieldValue('listAll', false);
-				hideLoader();
-			});
-    }
-    else if ( type == 'error' )
-    {
-        showErrorMessage( i18n_searching_patient_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        showWarningMessage( message );
-    }
-}
-
 //--------------------------------------------------------------------------------------------
 // Show selected data-recording
 //--------------------------------------------------------------------------------------------
@@ -151,7 +165,7 @@ function advancedSearch( params )
 				statusSearching = 1;
 				setInnerHTML( 'contentDiv', html );
 				showById('contentDiv');
-				setInnerHTML('searchInforTD', i18n_search_patients_by_attributes );
+				setInnerHTML('searchInforTD', i18n_advanced_search_patients );
 				setFieldValue('listAll',false);
 				jQuery( "#loaderDiv" ).hide();
 			}

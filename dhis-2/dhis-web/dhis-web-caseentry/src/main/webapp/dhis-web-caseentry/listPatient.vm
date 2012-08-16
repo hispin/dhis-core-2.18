@@ -102,5 +102,5 @@
 <script>
 	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';
 	var i18n_list_all_patients = '$encoder.jsEscape( $i18n.getString( "list_all_patients" ) , "'" )';
-	var i18n_search_patients_by_attributes = '$encoder.jsEscape( $i18n.getString( "search_patients_by_attributes" ) , "'" )';
+	var i18n_advanced_search_patients = '$encoder.jsEscape( $i18n.getString( "advanced_search_patients" ) , "'" )';
 </script>
