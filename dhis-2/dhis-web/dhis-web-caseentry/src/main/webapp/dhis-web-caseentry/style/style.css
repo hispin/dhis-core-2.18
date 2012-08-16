@@ -157,12 +157,12 @@ input.stage-object[type="button"]
 
 input.stage-object[type="button"]:hover
 {
-	opacity: 0.75;
+	border: 5px solid;
 }
 
 input.stage-object-selected[type="button"]
 {
-    opacity: 0.75;
+    border: 5px solid;
 }
 
 input.patient-object[type="button"]

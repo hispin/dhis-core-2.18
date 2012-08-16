@@ -1,3 +1,51 @@
+//------------------------------------------------------------------------------
+// Load data entry form
+//------------------------------------------------------------------------------
+
+function loadDataEntry( programStageInstanceId )
+{
+	setInnerHTML('dataEntryFormDiv', '');
+	showById('executionDateTB');
+	showById('dataEntryFormDiv');
+	setFieldValue( 'dueDate', '' );
+	setFieldValue( 'executionDate', '' );
+	disable('validationBtn');
+	disableCompletedButton(true);
+	disable('uncompleteBtn');
+	
+	jQuery(".stage-object-selected").removeClass('stage-object-selected');
+	var selectedProgramStageInstance = jQuery( '#' + prefixId + programStageInstanceId );
+	selectedProgramStageInstance.addClass('stage-object-selected');
+	setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
+	
+	showLoader();	
+	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
+		{ 
+			programStageInstanceId: programStageInstanceId
+		},function( )
+		{
+			var executionDate = jQuery('#dataRecordingSelectDiv input[id=executionDate]').val();
+			var completed = jQuery('#entryFormContainer input[id=completed]').val();
+			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
+			showById('inputCriteriaDiv');
+			enable('validationBtn');
+			if( executionDate == '' )
+			{
+				disable('validationBtn');
+			}
+			else if( executionDate != '' && completed == 'false' )
+			{
+				disableCompletedButton(false);
+			}
+			else if( completed == 'true' )
+			{
+				disableCompletedButton(true);
+			}
+			
+			hideLoader();
+			hideById('contentDiv'); 
+		} );
+}
 
 //------------------------------------------------------------------------------
 // Add Relationship

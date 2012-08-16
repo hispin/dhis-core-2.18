@@ -47,13 +47,14 @@ function loadGeneratedReport()
 		endDate: getFieldValue( 'endDate' )
 	}, function() 
 	{ 
+		jQuery( "[name=newEncounterBtn]" ).addClass("hidden");
 		hideLoader();
 		hideById( 'message' );
 		showById( 'contentDiv' );
 	});
 }
 
-function viewRecords( programStageInstanceId ) 
+function loadDataEntry( programStageInstanceId ) 
 {
 	$('#viewRecordsDiv' )
 		.load( 'viewRecords.action?id=' + programStageInstanceId )

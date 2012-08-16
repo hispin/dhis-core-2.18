@@ -787,7 +787,7 @@ function showSelectedDataRecoding( patientId )
 			$('#dataRecordingSelectDiv [id=programId]').val( programId );
 			$('#dataRecordingSelectDiv [id=inputCriteria]').hide();
 			
-			loadProgramStages();
+			//loadProgramStages();
 			hideLoader();
 			hideById('contentDiv');
 		});
