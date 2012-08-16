@@ -46,6 +46,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.patientreport.TabularReportColumn;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -289,5 +290,12 @@ public class DefaultProgramStageInstanceService
     public void removeEmptyEvents( ProgramStage programStage )
     {
     	programStageInstanceStore.removeEmptyEvents(programStage);
+    }
+
+    @Override
+    public void updateProgramStageInstances( Collection<Integer> programStageInstanceIds,
+        OutboundSms outboundSms )
+    {
+        programStageInstanceStore.update( programStageInstanceIds, outboundSms );
     }
 }

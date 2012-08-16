@@ -814,7 +814,20 @@
 			<param name="stylesheets">style/style.css</param>
 		</action>
 		
+		<action name="getGateway"
+			class="org.hisp.dhis.caseentry.action.reminder.GetGatewayAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/sendSmsForm.vm</param>
+			<param name="stylesheets">style/style.css</param>
+		</action>
+		
 	    <action name="sendSMS" class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction">
+	      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+	      <param name="onExceptionReturn">plainTextError</param>
+	    </action>
+	    
+	    <action name="sendSMSTotList" class="org.hisp.dhis.caseentry.action.reminder.SendSmsToListAction">
 	      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 	      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
 	      <param name="onExceptionReturn">plainTextError</param>

@@ -263,6 +263,59 @@ public class HibernatePatientStore
         }
         return patients;
     }
+    
+    @Override
+    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    {
+        String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
+
+        Collection<String> phoneNumbers = new HashSet<String>();
+        
+        try
+        {
+            phoneNumbers = jdbcTemplate.query( sql, new RowMapper<String>()
+            {
+                public String mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    String phoneNumber = rs.getString( "phonenumber" );
+                    return ( phoneNumber==null || phoneNumber.isEmpty()) ? "0" : phoneNumber;
+                }
+            } );
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        return phoneNumbers;
+    }
+    
+    @Override
+    public Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    {
+        String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
+
+        Collection<Integer> programStageInstanceIds = new HashSet<Integer>();
+        
+        try
+        {
+            programStageInstanceIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
+            {
+                public Integer mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    return rs.getInt( "programstageinstanceid" );
+                }
+            } );
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        
+        return programStageInstanceIds;
+    }
+
 
     public int countSearch( List<String> searchKeys, OrganisationUnit orgunit )
     {
@@ -348,7 +401,7 @@ public class HibernatePatientStore
             }
             else if ( keys[0].equals( Patient.PREFIX_PROGRAM_STAGE ) )
             {
-                sql += "(select COUNT(psi.programstageinstanceid) from programstageinstance psi ";
+                sql += "(select psi.programstageinstanceid from programstageinstance psi ";
                 sql += "left join programinstance pgi on (psi.programinstanceid=pgi.programinstanceid) ";
                 sql += "where pgi.patientid=p.patientid and psi.programstageid=" + id + " and ";
 
@@ -371,9 +424,8 @@ public class HibernatePatientStore
                     break;
                 }
 
-                sql += " ) as " + Patient.PREFIX_PROGRAM_STAGE + "_" + id + ",";
-
-                otherWhere += operator + Patient.PREFIX_PROGRAM_STAGE + "_" + id + ">0";
+                sql += " limit 1 ) as programstageinstanceid,";
+                otherWhere += operator + " programstageinstanceid is not null";
                 operator = " and ";
             }
         }

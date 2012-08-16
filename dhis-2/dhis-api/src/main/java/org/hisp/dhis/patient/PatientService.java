@@ -206,4 +206,9 @@ public interface PatientService
     Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
     
     int countSearchPatients( List<String> searchKeys, OrganisationUnit orgunit );
+    
+    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
+
+    Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
+
 }

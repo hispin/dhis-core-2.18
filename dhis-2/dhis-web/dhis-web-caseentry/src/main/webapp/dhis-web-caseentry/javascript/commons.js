@@ -190,51 +190,66 @@ function validateAdvancedSearch()
 	var flag = true;
 	var params = '';
 	var dateOperator = '';
-	jQuery("#searchDiv :input").each( function( i, item )
-    {
-		var elementName = $(this).attr('name');
-		if( elementName=='searchText' && jQuery( item ).val() == '' )
+	if (getFieldValue('searchByProgramStage') == "false"){
+		jQuery("#searchDiv :input").each( function( i, item )
 		{
-			showWarningMessage( i18n_specify_search_criteria );
-			flag = false;
-		}
-	});
-	
-	if(flag){
-		jQuery( '#advancedSearchTB tbody tr' ).each( function( i, row ){
-			var dateOperator = "";
-			jQuery( this ).find(':input').each( function( idx, item ){
-				if( idx == 0){
-					params += "&searchTexts=" + item.value;
-				}
-				else if( item.name == 'dateOperator'){
-					dateOperator = item.value;
-				}
-				else if( item.name == 'searchText'){
-					params += "_";
-					if ( dateOperator.length >0 ) {
-						params += dateOperator + "'" +  item.value.toLowerCase() + "'";
-					}
-					else{
-						params += htmlEncode( item.value.toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "") );
-					}
-				}
-			})
+			var elementName = $(this).attr('name');
+			if( elementName=='searchText' && jQuery( item ).val() == '' )
+			{
+				showWarningMessage( i18n_specify_search_criteria );
+				flag = false;
+			}
 		});
-		
-		if( getFieldValue('searchByProgramStage') == "true"){
-			var programStageId = jQuery('#programStageAddPatientTR [id=programStageAddPatient_' + getFieldValue('programIdAddPatient') + ']').val();
-			var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]:checked').val();
-			params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent;
-		}
-		
-		params += '&listAll=false';
-		params += '&searchBySelectedOrgunit=' + byId('searchBySelectedOrgunit').checked;
-		
+	}
+	if(flag){
 		contentDiv = 'listPatientDiv';
 		jQuery( "#loaderDiv" ).show();
-		advancedSearch( params );
+		advancedSearch( getSearchParams() );
 	}
+}
+
+function getSearchParams()
+{
+	var params = "";
+	if( getFieldValue('searchByProgramStage') == "true"){
+		var programStageId = jQuery('#programStageAddPatientTR [id=programStageAddPatient_' + getFieldValue('programIdAddPatient') + ']').val();
+		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]:checked').val();
+		params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent;
+	}
+	
+	jQuery( '#advancedSearchTB tbody tr' ).each( function( i, row ){
+		var dateOperator = "";
+		var p = "";
+		jQuery( this ).find(':input').each( function( idx, item ){
+			if( idx == 0){
+				p = "&searchTexts=" + item.value;
+			}
+			else if( item.name == 'dateOperator'){
+				dateOperator = item.value;
+			}
+			else if( item.name == 'searchText'){
+				if( item.value!='')
+				{
+					p += "_";
+					if ( dateOperator.length >0 ) {
+						p += dateOperator + "'" +  item.value.toLowerCase() + "'";
+					}
+					else{
+						p += htmlEncode( item.value.toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "") );
+					}
+				}
+				else {
+					p = "";
+				}
+			}
+		})
+		params += p;
+	});
+		
+	params += '&listAll=false';
+	params += '&searchBySelectedOrgunit=' + byId('searchBySelectedOrgunit').checked;
+	
+	return params;
 }
 
 // ----------------------------------------------------------------------------

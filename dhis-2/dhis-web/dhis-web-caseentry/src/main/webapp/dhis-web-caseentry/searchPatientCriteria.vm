@@ -44,10 +44,14 @@
 				#end
 			</td>
 			<td>
-				<input type="radio" disabled id="statusEvent" name="statusEvent" value='1'> $i18n.getString("completed") 
+				<input type="radio" disabled id="statusEvent" name="statusEvent" value='1' checked> $i18n.getString("completed") 
 				<input type="radio" disabled id="statusEvent" name="statusEvent" value='2'> $i18n.getString("incomplete") 
 				<input type="radio" disabled id="statusEvent" name="statusEvent" value='3'> $i18n.getString("scheduled_in_future") 
 				<input type="radio" disabled id="statusEvent" name="statusEvent" value='4'> $i18n.getString("overdue") 
+			</td>
+			<td colspan=2=></td>
+			<td>
+				<input type="button" id='programStageActionBtn' value="$i18n.getString('send_sms_for_result_list')" onclick="showSendSmsForm();">
 			</td>
 		</tr>
 		</thead>

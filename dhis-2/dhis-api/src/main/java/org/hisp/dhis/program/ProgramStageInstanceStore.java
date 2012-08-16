@@ -37,6 +37,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientreport.TabularReportColumn;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
  * @author Abyot Asalefew
@@ -82,4 +83,6 @@ public interface ProgramStageInstanceStore
         Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate );
     
     void removeEmptyEvents( ProgramStage programStage );
+
+    void update( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms );
 }

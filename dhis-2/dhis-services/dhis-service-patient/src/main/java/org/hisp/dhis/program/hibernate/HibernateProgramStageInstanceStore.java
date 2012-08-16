@@ -47,6 +47,7 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceStore;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
@@ -79,7 +80,7 @@ public class HibernateProgramStageInstanceStore
     {
         this.statementBuilder = statementBuilder;
     }
-    
+
     // -------------------------------------------------------------------------
     // Implemented methods
     // -------------------------------------------------------------------------
@@ -195,16 +196,16 @@ public class HibernateProgramStageInstanceStore
         // ---------------------------------------------------------------------
         // Headers TODO hidden cols
         // ---------------------------------------------------------------------
- 
+
         Grid grid = new ListGrid();
 
         grid.addHeader( new GridHeader( "id", true, true ) );
         grid.addHeader( new GridHeader( "Report date", false, true ) );
 
-        for ( int i=level; i<=maxLevel; i++ )
+        for ( int i = level; i <= maxLevel; i++ )
         {
             String name = orgUnitLevelMap.containsKey( i ) ? orgUnitLevelMap.get( i ).getName() : "Level " + i;
-            
+
             grid.addHeader( new GridHeader( name, false, true ) );
         }
 
@@ -214,11 +215,11 @@ public class HibernateProgramStageInstanceStore
         }
 
         // ---------------------------------------------------------------------
-        // Get SQL and build grid 
+        // Get SQL and build grid
         // ---------------------------------------------------------------------
-        
-        String sql = getTabularReportSql( false, programStage, columns, orgUnits, level, maxLevel, startDate,
-            endDate, descOrder, min, max );
+
+        String sql = getTabularReportSql( false, programStage, columns, orgUnits, level, maxLevel, startDate, endDate,
+            descOrder, min, max );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -230,18 +231,41 @@ public class HibernateProgramStageInstanceStore
     public int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate )
     {
-        String sql = getTabularReportSql( true, programStage, columns, organisationUnits, level, maxLevel,
-            startDate, endDate, false, null, null );
+        String sql = getTabularReportSql( true, programStage, columns, organisationUnits, level, maxLevel, startDate,
+            endDate, false, null, null );
 
         return jdbcTemplate.queryForInt( sql );
     }
-    
+
     public void removeEmptyEvents( ProgramStage programStage )
     {
-    	String sql = "delete from programstageinstance where programstageid=" +  programStage.getId() + " and programstageinstanceid not in " +
-    			"(select pdv.programstageinstanceid from patientdatavalue pdv )";
-    	
-    	jdbcTemplate.execute( sql );
+        String sql = "delete from programstageinstance where programstageid=" + programStage.getId()
+            + " and programstageinstanceid not in " + "(select pdv.programstageinstanceid from patientdatavalue pdv )";
+
+        jdbcTemplate.execute( sql );
+    }
+
+    @Override
+    public void update( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms )
+    {
+        for ( Integer programStageInstanceId : programStageInstanceIds )
+        {
+            if ( programStageInstanceId != null && programStageInstanceId != 0 )
+            {
+                ProgramStageInstance programStageInstance = get( programStageInstanceId );
+                
+                List<OutboundSms> outboundSmsList = programStageInstance.getOutboundSms();
+                
+                if( outboundSmsList == null)
+                {
+                    outboundSmsList = new ArrayList<OutboundSms>();
+                }
+                
+                outboundSmsList.add( outboundSms );
+                programStageInstance.setOutboundSms( outboundSmsList );
+                update( programStageInstance );
+            }
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -258,9 +282,10 @@ public class HibernateProgramStageInstanceStore
         String where = "";
         String operator = "where ";
 
-        for ( int i=level; i<=maxLevel; i++ )
+        for ( int i = level; i <= maxLevel; i++ )
         {
-            sql += "(select name from organisationunit where organisationunitid=ous.idlevel" + i + ") as level_" + i + ",";
+            sql += "(select name from organisationunit where organisationunitid=ous.idlevel" + i + ") as level_" + i
+                + ",";
         }
 
         for ( TabularReportColumn column : columns )
@@ -290,7 +315,7 @@ public class HibernateProgramStageInstanceStore
             {
                 sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid="
                     + column.getIdentifier() + ") as attribute_" + column.getIdentifier() + ",";
-                
+
                 if ( column.hasQuery() )
                 {
                     where += operator + "lower(attribute_" + column.getIdentifier() + ") " + column.getQuery() + " ";
@@ -328,7 +353,7 @@ public class HibernateProgramStageInstanceStore
             sql += "and psi.executiondate >= '" + sDate + "' ";
             sql += "and psi.executiondate <= '" + eDate + "' ";
         }
-        
+
         if ( orgUnits != null )
         {
             sql += "and ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnits ) + ") ";
@@ -336,7 +361,7 @@ public class HibernateProgramStageInstanceStore
 
         sql += "order by ";
 
-        for ( int i=level; i<=maxLevel; i++ )
+        for ( int i = level; i <= maxLevel; i++ )
         {
             sql += "level_" + i + ",";
         }
