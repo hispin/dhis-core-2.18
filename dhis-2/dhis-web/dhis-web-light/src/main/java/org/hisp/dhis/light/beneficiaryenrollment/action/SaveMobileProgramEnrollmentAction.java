@@ -221,7 +221,6 @@ public class SaveMobileProgramEnrollmentAction
                 ProgramStageInstance programStageInstance = new ProgramStageInstance();
                 programStageInstance.setProgramInstance( programInstance );
                 programStageInstance.setProgramStage( programStage );
-                programStageInstance.setStageInProgram( programStage.getStageInProgram() );
 
                 Date dueDate = DateUtils.getDateAfterAddition( sdf.parseDateTime( incidentDate ).toDate(),
                     programStage.getMinDaysFromStart() );

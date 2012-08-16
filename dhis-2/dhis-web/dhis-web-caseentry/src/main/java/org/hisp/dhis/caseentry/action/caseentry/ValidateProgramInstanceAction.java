@@ -73,8 +73,6 @@ public class ValidateProgramInstanceAction
 
     private SelectedStateManager selectedStateManager;
 
-    private ProgramStageInstanceService programStageInstanceService;
-
     private PatientDataValueService patientDataValueService;
 
     private ProgramValidationService programValidationService;
@@ -132,12 +130,7 @@ public class ValidateProgramInstanceAction
     {
         this.programValidationService = programValidationService;
     }
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
+    
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
@@ -208,21 +201,25 @@ public class ValidateProgramInstanceAction
      * ------------------------------------------------------------------------
      **/
 
-    private void checkDataElementInMultiStage( ProgramStageInstance programStageInstance,
-        DataElement dataElement )
+    private void checkDataElementInMultiStage( ProgramStageInstance programStageInstance, DataElement dataElement )
     {
         ProgramInstance programInstance = programStageInstance.getProgramInstance();
-        List<ProgramStage> stages = new ArrayList<ProgramStage>( programInstance.getProgram().getProgramStages() );
+        List<ProgramStageInstance> pogramStageInstances = new ArrayList<ProgramStageInstance>(
+            programInstance.getProgramStageInstances() );
 
-        int index = programStageInstance.getStageInProgram();
+        int index=0;
+        for ( index=0; index<pogramStageInstances.size(); index++ )
+        {
+            if ( programStageInstance.equals( pogramStageInstances.get( index ) ) )
+            {
+                break;
+            }
+        }
 
         if ( index > 0 )
         {
-            ProgramStage prevStage = stages.get( index - 1 );
-            ProgramStageInstance prevStageInstance = programStageInstanceService.getProgramStageInstance(
-                programInstance, prevStage );
+            ProgramStageInstance prevStageInstance = pogramStageInstances.get( index );
             PatientDataValue prevValue = patientDataValueService.getPatientDataValue( prevStageInstance, dataElement );
-
             if ( prevValue == null )
             {
                 String message = i18n.getString( "selected" ) + " " + i18n.getString( "program_stage" ) + " "
@@ -258,8 +255,8 @@ public class ValidateProgramInstanceAction
 
             for ( ProgramValidation validation : programValidations )
             {
-                leftsideFormulaMap.put( validation.getId(), programValidationService
-                    .getValidationDescription( validation.getLeftSide() ) );
+                leftsideFormulaMap.put( validation.getId(),
+                    programValidationService.getValidationDescription( validation.getLeftSide() ) );
 
                 if ( validation.getDateType() )
                 {
@@ -275,22 +272,22 @@ public class ValidateProgramInstanceAction
                             rightsideFormulaMap.put( validation.getId(), i18n.getString( "before_current_date" ) );
                             break;
                         case BEFORE_OR_EQUALS_TO_CURRENT_DATE:
-                            rightsideFormulaMap.put( validation.getId(), i18n
-                                .getString( "before_or_equals_to_current_date" ) );
+                            rightsideFormulaMap.put( validation.getId(),
+                                i18n.getString( "before_or_equals_to_current_date" ) );
                             break;
                         case AFTER_CURRENT_DATE:
                             rightsideFormulaMap.put( validation.getId(), i18n.getString( "after_current_date" ) );
                             break;
                         case AFTER_OR_EQUALS_TO_CURRENT_DATE:
-                            rightsideFormulaMap.put( validation.getId(), i18n
-                                .getString( "after_or_equals_to_current_date" ) );
+                            rightsideFormulaMap.put( validation.getId(),
+                                i18n.getString( "after_or_equals_to_current_date" ) );
                             break;
                         case BEFORE_DUE_DATE:
                             rightsideFormulaMap.put( validation.getId(), i18n.getString( "before_due_date" ) );
                             break;
                         case BEFORE_OR_EQUALS_TO_DUE_DATE:
-                            rightsideFormulaMap.put( validation.getId(), i18n
-                                .getString( "before_or_equals_to_due_date" ) );
+                            rightsideFormulaMap.put( validation.getId(),
+                                i18n.getString( "before_or_equals_to_due_date" ) );
                             break;
                         case AFTER_DUE_DATE:
                             rightsideFormulaMap.put( validation.getId(), i18n.getString( "after_due_date" ) );
@@ -313,9 +310,10 @@ public class ValidateProgramInstanceAction
 
                         if ( rightValidation == BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS )
                         {
-                            rightsideFormulaMap.put( validation.getId(), i18n
-                                .getString( "in_range_due_date_plus_or_minus" )
-                                + " " + daysValue + i18n.getString( "days" ) );
+                            rightsideFormulaMap.put(
+                                validation.getId(),
+                                i18n.getString( "in_range_due_date_plus_or_minus" ) + " " + daysValue
+                                    + i18n.getString( "days" ) );
                         }
                     }
                 }
@@ -325,8 +323,8 @@ public class ValidateProgramInstanceAction
                 }
                 else
                 {
-                    rightsideFormulaMap.put( validation.getId(), programValidationService
-                        .getValidationDescription( validation.getRightSide() ) );
+                    rightsideFormulaMap.put( validation.getId(),
+                        programValidationService.getValidationDescription( validation.getRightSide() ) );
                 }
             }
         }
