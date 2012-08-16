@@ -36,6 +36,7 @@
 						#set($programStageInstances = $programStageInstanceMap.get($programInstance) )
 						<td>
 							#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
+							#parse( "/dhis-web-caseentry/addRepeatableEventForm.vm" )
 						</td>
 					#end
 				</tr>

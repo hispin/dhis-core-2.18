@@ -19,7 +19,6 @@ function loadProgramStages()
 	disable('validationBtn');
 	hideById('inputCriteriaDiv');
 	$('#programStageIdTR').html('');
-	hideById('programInstanceDiv');
 	hideById('colorHelpLink');
 	
 	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
@@ -34,7 +33,6 @@ function loadProgramStages()
 		},  
 		function( json ) 
 		{    
-			showById('programInstanceDiv');
 			hideById('executionDateTB');
 			if(byId('repeatableProgramStageId').options.length == 0)
 			{
@@ -89,55 +87,6 @@ function loadProgramStages()
 				loadDataEntry( programStageInstanceId );
 			}
 	});
-}
-
-//--------------------------------------------------------------------------------------------
-// Load data-entry-form
-//--------------------------------------------------------------------------------------------
-
-function loadDataEntry( programStageInstanceId )
-{
-	setInnerHTML('dataEntryFormDiv', '');
-	showById('executionDateTB');
-	showById('dataEntryFormDiv');
-	setFieldValue( 'dueDate', '' );
-	setFieldValue( 'executionDate', '' );
-	disable('validationBtn');
-	disableCompletedButton(true);
-	disable('uncompleteBtn');
-	
-	jQuery(".stage-object-selected").removeClass('stage-object-selected');
-	var selectedProgramStageInstance = jQuery( '#' + prefixId + programStageInstanceId );
-	selectedProgramStageInstance.addClass('stage-object-selected');
-	setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
-	
-	showLoader();	
-	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
-		{ 
-			programStageInstanceId: programStageInstanceId
-		},function( )
-		{
-			var executionDate = jQuery('#dataRecordingSelectDiv input[id=executionDate]').val();
-			var completed = jQuery('#entryFormContainer input[id=completed]').val();
-			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
-			showById('inputCriteriaDiv');
-			enable('validationBtn');
-			if( executionDate == '' )
-			{
-				disable('validationBtn');
-			}
-			else if( executionDate != '' && completed == 'false' )
-			{
-				disableCompletedButton(false);
-			}
-			else if( completed == 'true' )
-			{
-				disableCompletedButton(true);
-			}
-			
-			hideLoader();
-			hideById('contentDiv'); 
-		} );
 }
 
 //------------------------------------------------------------------------------
@@ -620,7 +569,8 @@ function doComplete( isCreateEvent )
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					if( irregular == 'true' )
 					{
-						showCreateNewEvent();
+						var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val()
+						showCreateNewEvent( programInstanceId );
 					}
 					
 					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');
@@ -660,33 +610,6 @@ function doUnComplete( isCreateEvent )
 			});
 	}
     
-}
-
-function showCreateNewEvent()
-{
-	jQuery('#createNewEncounterDiv').dialog({
-			title: i18n_create_new_event,
-			maximize: true, 
-			closable: true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 450,
-			height: 160
-		}).show('fast');
-		
-	var standardInterval =  jQuery('#dataRecordingSelectDiv [name=programStageId] option:selected').attr('standardInterval');
-	var date = new Date();
-	var d = date.getDate() + eval(standardInterval);
-	var m = date.getMonth();
-	var y = date.getFullYear();
-	var edate= new Date(y, m, d);
-							
-	jQuery('#dueDateNewEncounter').datepicker( "setDate" , edate );
-}
-
-function closeDueDateDiv()
-{
-	jQuery('#createNewEncounterDiv').dialog('close');
 }
 
 TOGGLE = {
@@ -757,65 +680,6 @@ function runValidation()
 		});
 }
 
-//------------------------------------------------------
-// Register Irregular-encounter
-//------------------------------------------------------
-
-function registerIrregularEncounter( programInstanceId, programStageId, programStageName, dueDate )
-{
-	setInnerHTML('createEventMessage','');
-	jQuery.postJSON( "registerIrregularEncounter.action",
-		{ 
-			programInstanceId:programInstanceId,
-			programStageId: programStageId, 
-			dueDate: dueDate 
-		}, 
-		function( json ) 
-		{   
-			var programStageInstanceId = json.message;
-			disableCompletedButton(false);
-			
-			var elementId = prefixId + programStageInstanceId;
-			var flag = false;
-			jQuery("#programStageIdTR input[name='programStageBtn']").each(function(i,item){
-				var element = jQuery(item);
-				var dueDateInStage = element.attr('dueDate');
-				
-				if( dueDate < dueDateInStage && !flag)
-				{	
-					jQuery('<td><input name="programStageBtn" '
-						+ 'id="' + elementId + '" ' 
-						+ 'psid="' + programStageInstanceId + '" '
-						+ 'psname="' + programStageName + '" '
-						+ 'dueDate="' + dueDate + '" '
-						+ 'value="'+ programStageName + ' ' + dueDate + '" '
-						+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')" '
-						+ 'type="button" class="stage-object" '
-						+ '></td>'
-						+ '<td><img src="images/rightarrow.png"></td>')
-					.insertBefore(element.parent());
-					setEventColorStatus( elementId, 3 );
-					flag = true;
-				}
-			});
-			
-			if( !flag )
-			{
-				jQuery("#programStageIdTR").append('<td><img src="images/rightarrow.png"></td>'
-					+ '<td><input name="programStageBtn" '
-					+ 'id="' + elementId + '" ' 
-					+ 'psid="' + programStageInstanceId + '" '
-					+ 'psname="' + programStageName + '" '
-					+ 'dueDate="' + dueDate + '" '
-					+ 'value="'+ programStageName + ' ' + dueDate + '" '
-					+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')" '
-					+ 'type="button" class="stage-object" '
-					+ '></td>');
-				setEventColorStatus( elementId, 3 );
-			}
-			setInnerHTML('createEventMessage',i18n_create_event_success);
-		});
-}
 
 function autocompletedField( idField )
 {
@@ -893,20 +757,4 @@ function autocompletedField( idField )
 			input.autocomplete( "search", "" );
 			input.focus();
 		});
-}
-
-function disableCompletedButton( disabled )
-{
-	if(disabled){
-		disable('completeBtn');
-		disable('completeAndAddNewBtn');
-		enable('uncompleteBtn');
-		enable('uncompleteAndAddNewBtn');
-	}
-	else{
-		enable('completeBtn');
-		enable('completeAndAddNewBtn');
-		disable('uncompleteBtn');
-		disable('uncompleteAndAddNewBtn');
-	}
 }

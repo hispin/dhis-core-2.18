@@ -12,7 +12,28 @@
 	
 	
 	<div id="tab-1">
-		<div id='dataRecordingSelectDiv' class='hidden'></div>
+		<div id='dataRecordingSelectDiv'>
+			<form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
+				#parse( "/dhis-web-caseentry/colorHelp.vm" )
+				</p>
+				<div id='programInstanceDiv'>
+					#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
+					<br>		
+					<table id='executionDateTB' class='hidden'>
+						<tr>
+							<th class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
+							<th><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >
+								<script type="text/javascript">
+								   datePickerValid( 'executionDate', false );
+								</script>
+							</th>
+							<th class='text-column'><label for="dueDate">$i18n.getString( "due_date" ) </label></th>
+							<th><input type="text" id="dueDate" name="dueDate" class='criteria' value="$!format.formatDate( $programStageInstance.dueDate )" readonly > </th>
+						</tr>
+					</table>
+				</div>
+			</form>
+		</div>
 		<div id='dataEntryFormDiv' class='hidden'></div>
 	</div>
 	
@@ -207,7 +228,6 @@
 		#end
 		
 		#if( $hasDataEntry == 'true' )
-			showSelectedDataRecoding( getFieldValue('patientId') );
 			$( "#tabs" ).tabs( "option", "selected", 0 );
 		#else
 			$( "#tabs" ).tabs( "option", "disabled", [0] );

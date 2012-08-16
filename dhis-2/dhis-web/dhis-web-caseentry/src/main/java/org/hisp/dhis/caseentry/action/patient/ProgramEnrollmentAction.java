@@ -53,6 +53,7 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -72,6 +73,8 @@ public class ProgramEnrollmentAction
     private ProgramService programService;
 
     private ProgramInstanceService programInstanceService;
+
+    private ProgramStageInstanceService programStageInstanceService;
 
     private PatientIdentifierTypeService identifierTypeService;
 
@@ -112,6 +115,8 @@ public class ProgramEnrollmentAction
     private Map<Integer, String> patientAttributeValueMap = new HashMap<Integer, String>();
 
     private Boolean hasDataEntry;
+
+    private Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
 
     // -------------------------------------------------------------------------
     // Getters/Setters
@@ -182,6 +187,11 @@ public class ProgramEnrollmentAction
         this.programInstanceService = programInstanceService;
     }
 
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
         return identifierTypes;
@@ -222,6 +232,11 @@ public class ProgramEnrollmentAction
         return hasDataEntry;
     }
 
+    public Map<Integer, Integer> getStatusMap()
+    {
+        return statusMap;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -247,6 +262,12 @@ public class ProgramEnrollmentAction
             programInstance = programInstances.iterator().next();
 
             programStageInstances = programInstance.getProgramStageInstances();
+
+            if ( program.isRegistration() && programInstance.getProgramStageInstances() != null )
+            {
+                statusMap = programStageInstanceService.statusProgramStageInstances( programInstance
+                    .getProgramStageInstances() );
+            }
 
             loadIdentifierTypes();
 
@@ -289,8 +310,8 @@ public class ProgramEnrollmentAction
         // Load patient-attributes of the selected program
         // ---------------------------------------------------------------------
 
-        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
-            .getPatientAttributeGroups( program ) );
+        attributeGroups = new ArrayList<PatientAttributeGroup>(
+            patientAttributeGroupService.getPatientAttributeGroups( program ) );
         Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
 
         noGroupAttributes = patientAttributeService.getPatientAttributes( program, null );
@@ -300,8 +321,8 @@ public class ProgramEnrollmentAction
 
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
-            patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
-                .getValue() );
+            patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                patientAttributeValue.getValue() );
         }
     }
 

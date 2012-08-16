@@ -56,7 +56,7 @@ function advancedSearch( params )
 	});
 }
 
-function viewPrgramStageRecords( programStageInstanceId ) 
+function loadDataEntry( programStageInstanceId ) 
 {
 	jQuery("#patientList input[name='programStageBtn']").each(function(i,item){
 		jQuery(item).removeClass('stage-object-selected');

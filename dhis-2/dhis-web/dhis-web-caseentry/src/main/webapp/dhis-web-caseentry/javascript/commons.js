@@ -454,3 +454,110 @@ function moveLeft( programInstanceFlowDiv ){
 function moveRight(programInstanceFlowDiv){
 	jQuery("#" + programInstanceFlowDiv).animate({scrollLeft: "+=200"}, 'fast');
 }
+
+// ----------------------------------------------------------------------------
+// Create New Event
+// ----------------------------------------------------------------------------
+
+function showCreateNewEvent( programInstanceId )
+{
+	jQuery('#createNewEncounterDiv_' + programInstanceId ).dialog({
+			title: i18n_create_new_event,
+			maximize: true, 
+			closable: true,
+			modal:false,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 450,
+			height: 160
+		}).show('fast');
+		
+	var standardInterval =  jQuery('#dataRecordingSelectDiv [name=programStageId] option:selected').attr('standardInterval');
+	var date = new Date();
+	var d = date.getDate() + eval(standardInterval);
+	var m = date.getMonth();
+	var y = date.getFullYear();
+	var edate= new Date(y, m, d);
+							
+	jQuery( '#dueDateNewEncounter_' + programInstanceId ).datepicker( "setDate" , edate );
+}
+
+function closeDueDateDiv( programInstanceId )
+{
+	jQuery('#createNewEncounterDiv_' + programInstanceId).dialog('close');
+}
+
+//------------------------------------------------------
+// Register Irregular-encounter
+//------------------------------------------------------
+
+function registerIrregularEncounter( programInstanceId, programStageId, programStageName, dueDate )
+{
+	setInnerHTML('createEventMessage_' + programInstanceId,'');
+	jQuery.postJSON( "registerIrregularEncounter.action",
+		{ 
+			programInstanceId:programInstanceId,
+			programStageId: programStageId, 
+			dueDate: dueDate 
+		}, 
+		function( json ) 
+		{   
+			var programStageInstanceId = json.message;
+			disableCompletedButton(false);
+			
+			var elementId = prefixId + programStageInstanceId;
+			var flag = false;
+			jQuery("#programStageIdTR_" + programInstanceId + " input[name='programStageBtn']").each(function(i,item){
+				var element = jQuery(item);
+				var dueDateInStage = element.attr('dueDate');
+				
+				if( dueDate < dueDateInStage && !flag)
+				{	
+					jQuery('<td><input name="programStageBtn" '
+						+ 'id="' + elementId + '" ' 
+						+ 'psid="' + programStageInstanceId + '" '
+						+ 'psname="' + programStageName + '" '
+						+ 'dueDate="' + dueDate + '" '
+						+ 'value="'+ programStageName + ' ' + dueDate + '" '
+						+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')" '
+						+ 'type="button" class="stage-object" '
+						+ '></td>'
+						+ '<td><img src="images/rightarrow.png"></td>')
+					.insertBefore(element.parent());
+					setEventColorStatus( elementId, 3 );
+					flag = true;
+				}
+			});
+			
+			if( !flag )
+			{
+				jQuery("#programStageIdTR_" + programInstanceId).append('<td><img src="images/rightarrow.png"></td>'
+					+ '<td><input name="programStageBtn" '
+					+ 'id="' + elementId + '" ' 
+					+ 'psid="' + programStageInstanceId + '" '
+					+ 'psname="' + programStageName + '" '
+					+ 'dueDate="' + dueDate + '" '
+					+ 'value="'+ programStageName + ' ' + dueDate + '" '
+					+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')" '
+					+ 'type="button" class="stage-object" '
+					+ '></td>');
+				setEventColorStatus( elementId, 3 );
+			}
+			setInnerHTML('createEventMessage_' + programInstanceId,i18n_create_event_success);
+		});
+}
+
+function disableCompletedButton( disabled )
+{
+	if(disabled){
+		disable('completeBtn');
+		disable('completeAndAddNewBtn');
+		enable('uncompleteBtn');
+		enable('uncompleteAndAddNewBtn');
+	}
+	else{
+		enable('completeBtn');
+		enable('completeAndAddNewBtn');
+		disable('uncompleteBtn');
+		disable('uncompleteAndAddNewBtn');
+	}
+}
