@@ -50,7 +50,7 @@
 											<td>
 												<table class='stage-object'>
 													<tr>
-														<td><input type='button' id='ps_$programStageInstance.id' name='programStageBtn' class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'></td>
+														<td><input type='button' id='ps_$programStageInstance.id' name='programStageBtn' programStageInstanceId='$programStageInstance.id' programStageId='$programStageInstance.programStage.id' status="$statusMap.get( $programStageInstance.id )" class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'></td>
 														<script>	
 															var status = $statusMap.get( $programStageInstance.id ); 
 															setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
@@ -91,3 +91,13 @@
 	
 	<div id="detailsInfo"></div>
 #end
+
+<script>
+	#if($!listAll)
+	#else
+		var programId = jQuery("#programIdAddPatient").val();
+		var programStageId = jQuery("#programStageAddPatientTR [id=programStageAddPatient_" + programId + "]").val();
+		var status = jQuery('#programStageAddPatientTR [id=statusEvent]:checked').val();
+		jQuery("#patientList [programStageId=" + programStageId + "][status=" + status + "]" ).addClass("stage-object-selected");
+	#end
+</script>

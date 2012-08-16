@@ -37,6 +37,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientreport.TabularReportColumn;
+import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
  * @author Abyot Asalefew
@@ -96,4 +97,6 @@ public interface ProgramStageInstanceService
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
     
     void removeEmptyEvents( ProgramStage programStage );
+
+    void updateProgramStageInstances( Collection<Integer> programStageInstances, OutboundSms outboundSms );
 }
