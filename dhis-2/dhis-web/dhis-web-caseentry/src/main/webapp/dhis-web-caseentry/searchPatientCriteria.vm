@@ -1,3 +1,4 @@
+<input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
 <table style="margin-bottom:8px">    
 	<tr>
 		<td>
@@ -12,7 +13,7 @@
 			<input type="button" id='advancedSearchBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();" #if( $organisationUnit ) #else disabled #end>
 		</td>
 	</tr> 
-	<tr id='programAddPatientTR'class='hidden'>
+	<tr id='programAddPatientTR' class='hidden'>
 		<td>$i18n.getString('program')</td>
 		<td>
 			<select id='programIdAddPatient' name='programIdAddPatient' onchange='enableBtn();'>
@@ -27,6 +28,29 @@
 
 <div id='advanced-search' class='hidden'>
 	<table id='advancedSearchTB'>	
+		<thead>
+		<tr id='programStageAddPatientTR' class='hidden'>
+			<td>
+				<select id='programStageAddPatient_' name='programStageAddPatient' disabled>
+					<option value=''>[$i18n.getString("please_select_program_stage")]</option>
+				</select>
+				#foreach($program in $programs)
+					<select id='programStageAddPatient_$program.id' name='programStageAddPatient' onchange='enableRadioButton($program.id);' class='hidden'>
+						<option value=''>[$i18n.getString("please_select_program_stage")]</option>
+						#foreach($programStage in $program.programStages)
+						<option value="$programStage.id">$programStage.name</option>
+						#end
+					</select>
+				#end
+			</td>
+			<td>
+				<input type="radio" disabled id="statusEvent" name="statusEvent" value='1'> $i18n.getString("completed") 
+				<input type="radio" disabled id="statusEvent" name="statusEvent" value='2'> $i18n.getString("incomplete") 
+				<input type="radio" disabled id="statusEvent" name="statusEvent" value='3'> $i18n.getString("scheduled_in_future") 
+				<input type="radio" disabled id="statusEvent" name="statusEvent" value='4'> $i18n.getString("overdue") 
+			</td>
+		</tr>
+		</thead>
 		<tbody>
 			<tr id='advSearchBox0'>	       
 				<td id='searchingAttributeIdTD'>

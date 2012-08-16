@@ -48,6 +48,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientStore;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStageInstance;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
@@ -317,17 +318,17 @@ public class HibernatePatientStore
             }
             else if ( keys[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
-                patientWhere = patientOperator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%" + id
-                    + "%' ) or lower(pi.identifier)='" + id + "' ";
-                
+                patientWhere += patientOperator + "( ( lower( " + statementBuilder.getPatientFullName() + " ) like '%"
+                    + id + "%' ) or lower(pi.identifier)='" + id + "' ";
+
                 String[] keyValues = id.split( " " );
-                if( keyValues.length==2)
+                if ( keyValues.length == 2 )
                 {
-                    String otherId = keyValues[0] + "  " + keyValues[1]; 
+                    String otherId = keyValues[0] + "  " + keyValues[1];
                     patientWhere += " or lower( " + statementBuilder.getPatientFullName() + " ) like '%" + otherId
                         + "%'  ";
                 }
-                patientWhere += ")"; 
+                patientWhere += ")";
                 patientOperator = " and ";
                 hasIdentifier = true;
             }
@@ -335,33 +336,64 @@ public class HibernatePatientStore
             {
                 sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid="
                     + id + " ) as " + Patient.PREFIX_PATIENT_ATTRIBUTE + "_" + id + ",";
-                otherWhere = operator + "lower(" + Patient.PREFIX_PATIENT_ATTRIBUTE + "_" + id + ")='" + value + "'";
+                otherWhere += operator + "lower(" + Patient.PREFIX_PATIENT_ATTRIBUTE + "_" + id + ")='" + value + "'";
                 operator = " and ";
             }
             else if ( keys[0].equals( Patient.PREFIX_PROGRAM ) )
             {
                 sql += "(select programid from patient_programs where patientid=p.patientid and programid=" + keys[1]
                     + " ) as " + Patient.PREFIX_PROGRAM + "_" + id + ",";
-                otherWhere = operator + Patient.PREFIX_PROGRAM + "_" + id + "=" + id;
+                otherWhere += operator + Patient.PREFIX_PROGRAM + "_" + id + "=" + id;
+                operator = " and ";
+            }
+            else if ( keys[0].equals( Patient.PREFIX_PROGRAM_STAGE ) )
+            {
+                sql += "(select COUNT(psi.programstageinstanceid) from programstageinstance psi ";
+                sql += "left join programinstance pgi on (psi.programinstanceid=pgi.programinstanceid) ";
+                sql += "where pgi.patientid=p.patientid and psi.programstageid=" + id + " and ";
+
+                int statusEvent = Integer.parseInt( keys[2] );
+                switch ( statusEvent )
+                {
+                case ProgramStageInstance.COMPLETED_STATUS:
+                    sql += "psi.completed=true";
+                    break;
+                case ProgramStageInstance.VISITED_STATUS:
+                    sql += "psi.executiondate is not null";
+                    break;
+                case ProgramStageInstance.FUTURE_VISIT_STATUS:
+                    sql += "psi.executiondate is null and psi.duedate >= now()";
+                    break;
+                case ProgramStageInstance.LATE_VISIT_STATUS:
+                    sql += "psi.executiondate is null and psi.duedate < now()";
+                    break;
+                default:
+                    break;
+                }
+
+                sql += " ) as " + Patient.PREFIX_PROGRAM_STAGE + "_" + id + ",";
+
+                otherWhere += operator + Patient.PREFIX_PROGRAM_STAGE + "_" + id + ">0";
                 operator = " and ";
             }
         }
 
         if ( orgunit != null )
         {
-            sql += "(select organisationunitid from patient where patientid=p.patientid and organisationunitid = " + orgunit.getId() + " ) as orgunitid,";
+            sql += "(select organisationunitid from patient where patientid=p.patientid and organisationunitid = "
+                + orgunit.getId() + " ) as orgunitid,";
             otherWhere += operator + "orgunitid=" + orgunit.getId();
         }
-        
+
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Removing last comma
-        
+
         sql += " from patient p ";
         if ( hasIdentifier )
         {
             sql += " left join patientidentifier pi on p.patientid=pi.patientid ";
         }
 
-        sql += patientWhere ;
+        sql += patientWhere;
         sql += " ) as searchresult";
         sql += otherWhere;
 
