@@ -199,8 +199,6 @@
 </div>
 #end
 
-#parse( "/dhis-web-caseentry/addRepeatableEventForm.vm" )
-
 <script type="text/javascript">
 	
 	jQuery("#programEnrollmentInforForm").ready( function(){
