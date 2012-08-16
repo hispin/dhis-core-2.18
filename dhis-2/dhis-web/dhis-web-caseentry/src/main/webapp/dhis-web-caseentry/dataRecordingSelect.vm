@@ -1,11 +1,56 @@
 <form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
+<div class="actions" style='margin-top:30px;' #if($program.type!=1) style='display:none;' #end>
+	<input type="button" class='stage-object' id="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript: registerIrregularEncounter( getFieldValue('executionDate') );" disabled="disabled" >
+</div>
+<table class="mainPageTable" id='patientInfoDiv'> 
+	<tr>
+		<td valign="top">
+	<table>
+		<tr>            
+			<td class="bold">$i18n.getString( "full_name" ):</td>
+			<td>$encoder.htmlEncode( $patient.getFullName() )<td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString( "gender" ):</td>
+			<td>$i18n.getString( $patient.gender )</td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString( "date_of_birth" ):</td>
+			<td>$format.formatDate( $patient.birthDate ) $patient.getAge()<td>
+		</tr>
+		</table>
+	</tr>
+</table>
+
 #parse( "/dhis-web-caseentry/colorHelp.vm" )
 </p>
+		
+<div id='inputCriteria' class="page inputCriteria" style="width:490px;height:29px;">	
+	<input type='hidden' id='programStageId' name='programStageId'>
+	<table>
+	   <tr id='programIdTR'>
+			<td class='text-column'><label for="programId">$i18n.getString( "program" )</label></td>
+			<td>
+				<select id="programId" name="programId" class="criteria" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
+					<option value="0">[$i18n.getString( "select" )]</option>
+					#foreach( $program in $programs )
+						<option value="$program.id" type="$program.type" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
+					#end
+				</select>
+			</td>
+		</tr>
+	</table>
+</div>
 
-<div id='programInstanceDiv' class='hidden'>
-	#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
+<div id='programInstanceDiv' class='hidden '>
+	<div id='programInstanceFlowDiv' style="width:78%;height:115px;overflow-x:auto;">
+		<table>
+			<tr id='programStageIdTR'></tr>
+		</table>
+	</div>
+	
 	<br>		
-	<table id='executionDateTB' class='hidden'>
+	<table id='executionDateTB'>
 		<tr>
 			<th class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
 			<th><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >
@@ -18,17 +63,35 @@
 		</tr>
 	</table>
 </div>
+
 </form>
 
-<p></p> 
+<p></p>
+	
+<div id='createNewEncounterDiv' class='hidden'>
+	<table>
+		<tr>
+			<td>$i18n.getString( 'due_date' )</td>
+			<td><input id='dueDateNewEncounter' name='dueDateNewEncounter' style='width:260px;'></td>
+			<script type="text/javascript">
+			   datePicker( 'dueDateNewEncounter', false );
+			</script>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type='button' value='$i18n.getString("create")' onclick='registerIrregularEncounter( getFieldValue("dueDateNewEncounter" ) );' />
+				<input type='button' value='$i18n.getString("cancel")' onclick="closeDueDateDiv();" />
+			</td>
+</div>
 
 <script>
 	jQuery('#dataRecordingSelectForm').ready(function(){ 
-		jQuery("#programInstanceFlowDiv").animate({scrollLeft: 0});
 		var programs = byId('programId');
 		if( programs.options.length == 2 )
 		{
-			byId('programId').selectedIndex = 1;
+			 byId('programId').selectedIndex = 1;
+			 loadProgramStages();
 		}
 	});
 </script>
