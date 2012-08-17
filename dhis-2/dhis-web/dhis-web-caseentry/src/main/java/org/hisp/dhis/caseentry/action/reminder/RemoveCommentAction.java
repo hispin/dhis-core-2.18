@@ -29,114 +29,73 @@ package org.hisp.dhis.caseentry.action.reminder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.patient.comment.Comment;
+import org.hisp.dhis.patient.comment.CommentService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version GetOutboundSmsListAction.java 10:57:08 AM Aug 9, 2012 $
+ * @version RemoveCommentAction.java 10:02:15 AM Aug 17, 2012 $
  */
-public class GetOutboundSmsListAction
+public class RemoveCommentAction
     implements Action
 {
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private ProgramStageInstanceService programStageInstanceService;
-    
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-    
-    @Autowired
-    private OutboundSmsTransportService transportService;
-
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
-
-    private Integer programStageInstanceId;
-
-    private ProgramStageInstance programStageInstance;
-
-    private List<OutboundSms> outboundSms;
-
-    private Map<String, String> gatewayMap;
-
-    private List<Comment> comments;
-    
-    private String currentUsername;
-    
-    // -------------------------------------------------------------------------
-    // Getter/Setter
-    // -------------------------------------------------------------------------
 
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    public ProgramStageInstance getProgramStageInstance()
+    private CommentService commentService;
+
+    public void setCommentService( CommentService commentService )
     {
-        return programStageInstance;
+        this.commentService = commentService;
     }
 
-    public String getCurrentUsername()
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        return currentUsername;
+        this.id = id;
     }
 
-    public List<Comment> getComments()
-    {
-        return comments;
-    }
+    private Integer programStageInstanceId;
 
     public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
     }
 
-    public List<OutboundSms> getOutboundSms()
-    {
-        return outboundSms;
-    }
-
-    public Map<String, String> getGatewayMap()
-    {
-        return gatewayMap;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
-        throws Exception
     {
-        programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
+        Comment comment = commentService.getComment( id );
 
-        outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
-        
-        gatewayMap = transportService.getGatewayMap();
-        
-        comments = new ArrayList<Comment>( programStageInstance.getComments() );
-        
-        currentUsername = currentUserService.getCurrentUsername();
+        ProgramStageInstance programStageInstance = programStageInstanceService
+            .getProgramStageInstance( programStageInstanceId );
+
+        programStageInstance.getComments().remove( comment );
+
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
         
         return SUCCESS;
     }

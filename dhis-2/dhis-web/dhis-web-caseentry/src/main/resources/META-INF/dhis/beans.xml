@@ -983,6 +983,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.caseentry.action.reminder.SendSmsAction"
@@ -1020,6 +1022,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 		<property name="programInstanceService"
 			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+	
+	<!-- Comment -->
+	
+	<bean id="org.hisp.dhis.caseentry.action.reminder.AddCommentAction"
+		class="org.hisp.dhis.caseentry.action.reminder.AddCommentAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="currentUserService"
+			ref="org.hisp.dhis.user.CurrentUserService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.reminder.RemoveCommentAction"
+		class="org.hisp.dhis.caseentry.action.reminder.RemoveCommentAction"
+		scope="prototype">
+		<property name="commentService"
+			ref="org.hisp.dhis.patient.comment.CommentService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>

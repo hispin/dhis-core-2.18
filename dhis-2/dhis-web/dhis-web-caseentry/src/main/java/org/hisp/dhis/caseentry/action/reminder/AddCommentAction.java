@@ -27,26 +27,23 @@
 
 package org.hisp.dhis.caseentry.action.reminder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.patient.comment.Comment;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version GetOutboundSmsListAction.java 10:57:08 AM Aug 9, 2012 $
+ * @version AddCommentAction.java 9:55:04 AM Aug 17, 2012 $
  */
-public class GetOutboundSmsListAction
+public class AddCommentAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -54,90 +51,58 @@ public class GetOutboundSmsListAction
     // -------------------------------------------------------------------------
 
     private ProgramStageInstanceService programStageInstanceService;
-    
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-    
-    @Autowired
-    private OutboundSmsTransportService transportService;
-
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
-
-    private Integer programStageInstanceId;
-
-    private ProgramStageInstance programStageInstance;
-
-    private List<OutboundSms> outboundSms;
-
-    private Map<String, String> gatewayMap;
-
-    private List<Comment> comments;
-    
-    private String currentUsername;
-    
-    // -------------------------------------------------------------------------
-    // Getter/Setter
-    // -------------------------------------------------------------------------
 
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    public ProgramStageInstance getProgramStageInstance()
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
     {
-        return programStageInstance;
+        this.currentUserService = currentUserService;
     }
 
-    public String getCurrentUsername()
-    {
-        return currentUsername;
-    }
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
 
-    public List<Comment> getComments()
-    {
-        return comments;
-    }
+    private Integer programStageInstanceId;
 
     public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
         this.programStageInstanceId = programStageInstanceId;
     }
 
-    public List<OutboundSms> getOutboundSms()
-    {
-        return outboundSms;
-    }
+    private String commentText;
 
-    public Map<String, String> getGatewayMap()
+    public void setCommentText( String commentText )
     {
-        return gatewayMap;
+        this.commentText = commentText;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
-        throws Exception
     {
-        programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
+        ProgramStageInstance programStageInstance = programStageInstanceService
+            .getProgramStageInstance( programStageInstanceId );
 
-        outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
-        
-        gatewayMap = transportService.getGatewayMap();
-        
-        comments = new ArrayList<Comment>( programStageInstance.getComments() );
-        
-        currentUsername = currentUserService.getCurrentUsername();
-        
+        Set<Comment> comments = programStageInstance.getComments();
+
+        if ( comments == null )
+        {
+            comments = new HashSet<Comment>();
+        }
+
+        Comment comment = new Comment( commentText, currentUserService.getCurrentUsername(), new Date() );
+        comments.add( comment );
+
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+
         return SUCCESS;
     }
 

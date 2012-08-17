@@ -167,3 +167,43 @@ function loadProgramStageRecords( programStageInstanceId )
 			hideLoader();
 		});
 }
+
+function keypress(event, programStageInstanceId )
+{
+	var key = getKeyCode( event );
+	if ( key==13 ){ // Enter
+		addComment( programStageInstanceId );
+	}
+}
+
+function addComment( programStageInstanceId )
+{
+	var commentText = getFieldValue( 'commentText' );
+	if( commentText != '')
+	{
+		jQuery.postUTF8( 'addComment.action',
+			{
+				programStageInstanceId: programStageInstanceId,
+				commentText: commentText 
+			}, function ( json )
+			{
+				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + " - " + getFieldValue('currentUsername') + " - " + commentText + "</td></tr>");
+				setFieldValue( 'commentText','' );
+				showSuccessMessage( i18n_comment_added );
+			} );
+	}
+}
+
+
+function removeComment( programStageInstanceId, commentId )
+{
+	jQuery.postUTF8( 'removeComment.action',
+		{
+			programStageInstanceId:programStageInstanceId,
+			id: commentId
+		}, function ( json )
+		{
+			showSuccessMessage( json.message );
+			hideById( 'comment_' + commentId );
+		} );
+}

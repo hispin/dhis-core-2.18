@@ -840,6 +840,16 @@
 		  <param name="page">/dhis-web-caseentry/patientDashboard.vm</param>
 		  <param name="stylesheets">style/style.css</param>
 	    </action>
-		
+	    
+	     <!-- Comment -->
+	    
+	    <action name="addComment" class="org.hisp.dhis.caseentry.action.reminder.AddCommentAction">
+	       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	    </action>
+	    
+	    <action name="removeComment" class="org.hisp.dhis.caseentry.action.reminder.RemoveCommentAction">
+	       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	    </action>
+	    
 	</package>
 </struts>

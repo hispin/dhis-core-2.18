@@ -30,6 +30,11 @@
       <list-index column="sort_order" base="1" />
       <many-to-many class="org.hisp.dhis.sms.outbound.OutboundSms" column="outboundsmsid" />
     </list>
+     
+    <set name="comments" order-by="createdDate desc" >
+      <key column="programstageinstanceid" />
+      <one-to-many class="org.hisp.dhis.patient.comment.Comment" />
+    </set>
     
   </class>
 </hibernate-mapping>
