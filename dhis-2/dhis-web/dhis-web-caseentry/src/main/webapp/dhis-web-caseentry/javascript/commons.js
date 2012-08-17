@@ -212,7 +212,7 @@ function getSearchParams()
 	var params = "";
 	var programStageId = jQuery('#programStageAddPatient').val();
 	if( getFieldValue('searchByProgramStage') == "true" && programStageId!=''){
-		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]:checked').val();
+		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
 		params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent;
 	}
 	
