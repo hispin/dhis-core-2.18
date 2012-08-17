@@ -74,9 +74,7 @@ public class GetOutboundSmsListAction
     private ProgramStageInstance programStageInstance;
 
     private List<OutboundSms> outboundSms;
-
-    private Map<String, String> gatewayMap;
-
+    
     private List<Comment> comments;
     
     private String currentUsername;

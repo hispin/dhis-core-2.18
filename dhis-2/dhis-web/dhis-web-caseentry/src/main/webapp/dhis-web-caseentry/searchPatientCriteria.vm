@@ -29,19 +29,14 @@
 <div id='advanced-search' class='hidden'>
 	<table id='advancedSearchTB'>	
 		<thead>
-		<tr id='programStageAddPatientTR' class='hidden'>
+		<tr id='programStageAddPatientTR'>
 			<td>
-				<select id='programStageAddPatient_' name='programStageAddPatient' disabled>
-					<option value=''>[$i18n.getString('please_select_program_stage')]</option>
+				<select id='programStageAddPatient' name='programStageAddPatient' onchange='enableRadioButton();'>
+					<option value=''>[$i18n.getString('')]</option>
+					#foreach($programStage in $program.programStages)
+					<option value="$programStage.id">$programStage.name</option>
+					#end
 				</select>
-				#foreach($program in $programs)
-					<select id='programStageAddPatient_$program.id' name='programStageAddPatient' onchange='enableRadioButton($program.id);' class='hidden'>
-						<option value=''>[$i18n.getString('please_select_program_stage')]</option>
-						#foreach($programStage in $program.programStages)
-						<option value="$programStage.id">$programStage.name</option>
-						#end
-					</select>
-				#end
 			</td>
 			<td colspan='2'>
 				<input type="radio" disabled id="statusEvent" name="statusEvent" value='1' checked> $i18n.getString("completed") 
