@@ -29,7 +29,7 @@
 <div id='advanced-search' class='hidden'>
 	<table id='advancedSearchTB'>	
 		<thead>
-		<tr id='programStageAddPatientTR'>
+		<tr id='programStageAddPatientTR' class='hidden'>
 			<td>
 				<select id='programStageAddPatient' name='programStageAddPatient' onchange='enableRadioButton();'>
 					<option value=''>[$i18n.getString('')]</option>
