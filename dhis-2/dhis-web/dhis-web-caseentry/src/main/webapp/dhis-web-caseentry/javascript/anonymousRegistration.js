@@ -216,7 +216,7 @@ function searchEvents( listAll )
 	}
 	
 	params += '&facilityLB=' + $('input[name=facilityLB]:checked').val();
-	params += '&level=' + $('input[name=level]:checked').val();
+	params += '&level=' + $('select[id=level]').val();
 	params += '&orgunitIds=' + getFieldValue('orgunitId');
 	params += '&programStageId=' + getFieldValue('programStageId');
 	params += '&orderByOrgunitAsc=false';
