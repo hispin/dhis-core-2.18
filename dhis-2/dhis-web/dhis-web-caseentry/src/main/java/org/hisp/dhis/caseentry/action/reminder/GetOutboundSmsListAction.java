@@ -117,7 +117,7 @@ public class GetOutboundSmsListAction
 
     public Map<String, String> getGatewayMap()
     {
-        return gatewayMap;
+        return transportService.getGatewayMap();
     }
 
     // -------------------------------------------------------------------------
@@ -131,8 +131,6 @@ public class GetOutboundSmsListAction
         programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
         outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
-        
-        gatewayMap = transportService.getGatewayMap();
         
         comments = new ArrayList<Comment>( programStageInstance.getComments() );
         

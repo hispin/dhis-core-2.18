@@ -43,5 +43,5 @@
 		</script>
 	</div>
 #else
-	<p>No Sms service available</p>
+	<p>$i18n.getString('no_sms_service_available')</p>
 #end
