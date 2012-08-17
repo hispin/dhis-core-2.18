@@ -188,7 +188,6 @@ function validateAdvancedSearch()
 {
 	hideById( 'listPatientDiv' );
 	var flag = true;
-	var params = '';
 	var dateOperator = '';
 	if (getFieldValue('searchByProgramStage') == "false"){
 		jQuery("#searchDiv :input").each( function( i, item )
@@ -211,8 +210,8 @@ function validateAdvancedSearch()
 function getSearchParams()
 {
 	var params = "";
-	if( getFieldValue('searchByProgramStage') == "true"){
-		var programStageId = jQuery('#programStageAddPatientTR [id=programStageAddPatient_' + getFieldValue('programIdAddPatient') + ']').val();
+	var programStageId = jQuery('#programStageAddPatient').val();
+	if( getFieldValue('searchByProgramStage') == "true" && programStageId!=''){
 		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]:checked').val();
 		params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent;
 	}
@@ -434,32 +433,44 @@ function checkDuplicateCompleted( messageElement, divname )
 
 function enableBtn(){
 	var programIdAddPatient = getFieldValue('programIdAddPatient');
-	jQuery('#programStageAddPatientTR [name=programStageAddPatient]').addClass("hidden");
-	jQuery('#programStageAddPatientTR [id=programStageAddPatient_' + programIdAddPatient + ']').removeClass("hidden");
-	
 	if( programIdAddPatient!='' ){
-		enable('listPatientBtn');
-		enable('addPatientBtn');
-		enable('advancedSearchBtn');
-		jQuery('#advanced-search :input').each( function( idx, item ){
-			enable(this.id);
+		$.getJSON( 'loadReportProgramStages.action', 
+		{
+			programId: getFieldValue('programIdAddPatient')
+		}, function( json )
+		{	
+			clearListById('programStageAddPatient');
+			$('#programStageAddPatient').append("<option value=''>" + i18n_please_select_program_stage + "</option>");
+			for ( i in json.programStages ) 
+			{
+				$('#programStageAddPatient').append("<option value='" + json.programStages[i].id + "'>" + json.programStages[i].name + "</option>");
+			}
+			enable('listPatientBtn');
+			enable('addPatientBtn');
+			enable('advancedSearchBtn');
+			jQuery('#advanced-search :input').each( function( idx, item ){
+				enable(this.id);
+			});
+			jQuery('#programStageAddPatientTR [name=statusEvent]').attr("disabled", true);
 		});
-		jQuery('#programStageAddPatientTR [name=statusEvent]').attr("disabled", true);
 	}
 	else
 	{
-		disable('listPatientBtn');
-		disable('addPatientBtn');
-		disable('advancedSearchBtn');
-		jQuery('#advanced-search :input').each( function( idx, item ){
-			disable(this.id);
-		});
+		
+			
+			disable('listPatientBtn');
+			disable('addPatientBtn');
+			disable('advancedSearchBtn');
+			jQuery('#advanced-search :input').each( function( idx, item ){
+				disable(this.id);
+			});	
+		
 	}
 }
 
 function enableRadioButton( programId )
 {
-	var prorgamStageId = jQuery('#programStageAddPatientTR [id=programStageAddPatient_' + programId + ']').val();
+	var prorgamStageId = jQuery('#programStageAddPatient').val();
 	if( prorgamStageId== ''){
 		jQuery('#programStageAddPatientTR [name=statusEvent]').attr("disabled", true);
 	}

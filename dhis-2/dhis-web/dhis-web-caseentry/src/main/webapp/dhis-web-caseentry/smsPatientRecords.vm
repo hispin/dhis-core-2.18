@@ -96,7 +96,7 @@
 	#if($!listAll)
 	#else
 		var programId = jQuery("#programIdAddPatient").val();
-		var programStageId = jQuery("#programStageAddPatientTR [id=programStageAddPatient_" + programId + "]").val();
+		var programStageId = jQuery("#programStageAddPatient").val();
 		var status = jQuery('#programStageAddPatientTR [id=statusEvent]:checked').val();
 		jQuery("#patientList [programStageId=" + programStageId + "][status=" + status + "]" ).addClass("stage-object-selected");
 	#end

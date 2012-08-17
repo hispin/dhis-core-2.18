@@ -4,6 +4,7 @@ function orgunitSelected( orgUnits, orgUnitNames )
 	hideById("listPatientDiv");
 	clearListById('programIdAddPatient');
 	$('#contentDataRecord').html('');
+	setFieldValue('orgunitName', orgUnitNames[0]);
 	jQuery.get("getPrograms.action",{}, 
 		function(json)
 		{
