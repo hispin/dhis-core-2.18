@@ -29,8 +29,10 @@ package org.hisp.dhis.program;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.comment.Comment;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 
 /**
@@ -65,6 +67,8 @@ public class ProgramStageInstance
     private boolean completed = false;
     
     private List<OutboundSms> outboundSms;
+    
+    private Set<Comment> comments;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -240,5 +244,15 @@ public class ProgramStageInstance
     public void setOutboundSms( List<OutboundSms> outboundSms )
     {
         this.outboundSms = outboundSms;
+    }
+
+    public Set<Comment> getComments()
+    {
+        return comments;
+    }
+
+    public void setComments( Set<Comment> comments )
+    {
+        this.comments = comments;
     }
 }

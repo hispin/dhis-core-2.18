@@ -34,6 +34,13 @@
 <div id='smsManagementDiv'></div>
 <div id='sendSmsFormDiv'></div>
 
+<div class='hidden'>
+	<input type='textbox' id='currentDate' name='currentDate'>
+	<script>
+		datePickerValid( 'currentDate', true );
+	</script>
+</div>
+
 <script>
 	unSave = false;
 	var i18n_sms_message_management = '$encoder.jsEscape( $i18n.getString( "sms_message_management" ) , "'")';

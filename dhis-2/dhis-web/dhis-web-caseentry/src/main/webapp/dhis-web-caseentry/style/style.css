@@ -7,6 +7,12 @@ input[type="button"], input[type="submit"]
     width: 130px;
 }
 
+input.tiny-button[type="button"] 
+{
+    width: 20px;
+	height: 20px;
+}
+
 input.small-button[type="button"] 
 {
     width: 30px;
