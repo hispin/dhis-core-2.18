@@ -2,13 +2,14 @@
 	jQuery(document).ready(	function(){
 		showById('programAddPatientTR');
 		showById('programStageAddPatientTR');
+		showById('sendSmsToListBtn');
 		jQuery("#programIdAddPatient option").each(function(){
 			var item = jQuery(this);
 			if( item.attr('type')!=1 && item.val()!='' ){
 				item.remove();
 			}
 		});
-
+		
 		jQuery("#searchObjectId [value=prg]").remove();
 		hideById('addPatientBtn');
 		disable('advancedSearchBtn');
