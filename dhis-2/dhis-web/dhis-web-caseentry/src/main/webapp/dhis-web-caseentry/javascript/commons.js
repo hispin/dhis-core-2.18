@@ -213,7 +213,9 @@ function getSearchParams()
 	var programStageId = jQuery('#programStageAddPatient').val();
 	if( getFieldValue('searchByProgramStage') == "true" && programStageId!=''){
 		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
-		params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent;
+		var startDueDate = getFieldValue('startDueDate');
+		var endDueDate = getFieldValue('endDueDate');
+		params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent + '_' + startDueDate + '_' + endDueDate;
 	}
 	
 	jQuery( '#advancedSearchTB tbody tr' ).each( function( i, row ){
