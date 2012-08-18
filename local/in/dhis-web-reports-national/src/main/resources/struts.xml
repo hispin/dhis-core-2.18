@@ -1087,5 +1087,18 @@
             <param name="onExceptionReturn">plainTextError</param>
         </action>
 
+		<!-- Daily Food Situation Reports -->
+    <action name="dailyFoodReportAnalyser" class="org.hisp.dhis.reports.action.NoAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="menu">/dhis-web-reports/menu.vm</param>
+        <param name="page">/dhis-web-reports/dailyFoodSituationForm.vm</param>        
+    </action>
+		
+	<action name="generateDailyFoodReport" class="org.hisp.dhis.reports.dailyfood.action.GenerateDailyFoodReportAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="menu">/dhis-web-reports/menu.vm</param>
+        <param name="page">/dhis-web-reports/welcome.vm</param>        
+    </action>
+		
     </package>
 </struts>
