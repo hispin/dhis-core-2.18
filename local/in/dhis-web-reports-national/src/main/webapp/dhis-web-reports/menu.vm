@@ -13,6 +13,7 @@
 <ul>
 	<li>Report Analysis</li>
 	<ul>
+	    <li><a href = "dailyFoodReportAnalyser.action">Daily Food Situation Reports</a></li>
 		#if( $auth.hasAccess( "dhis-web-reports", "upwardReportAnalyser") )
 			<li><a href = "upwardReportAnalyser.action">GOI Reports</a></li>
 		#end
