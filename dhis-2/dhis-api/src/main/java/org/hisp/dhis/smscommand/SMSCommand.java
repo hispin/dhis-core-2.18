@@ -16,6 +16,8 @@ public class SMSCommand {
     private Set<SMSCode> codes;
     private String codeSeperator; 
     
+    private String defaultMessage;
+
     public SMSCommand(String name, String parser, String seperator, DataSet dataset, Set<SMSCode> codes,
             String codeSeperator) {
         this.name = name;
@@ -114,5 +116,12 @@ public class SMSCommand {
         this.codeSeperator = codeSeperator;
     }
 
+    public String getDefaultMessage() {
+        return defaultMessage;
+    }
+
+    public void setDefaultMessage(String defaultMessage) {
+        this.defaultMessage = defaultMessage;
+    }
 
 }

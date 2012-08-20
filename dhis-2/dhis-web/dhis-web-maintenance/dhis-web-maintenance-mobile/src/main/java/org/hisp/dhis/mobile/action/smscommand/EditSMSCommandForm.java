@@ -36,6 +36,8 @@ public class EditSMSCommandForm
 
     private String codeSeperator;
 
+    private String defaultMessage;
+    
     private int selectedCommandID = -1;
 
     // -------------------------------------------------------------------------
@@ -67,11 +69,12 @@ public class EditSMSCommandForm
         SMSCommand c = getSMSCommand();
         if ( selectedDataSetID > -1 && c != null )
         {
-            c.setDataset( getDataSetService().getDataSet( getSelectedDataSetID() ) );
+           // c.setDataset( getDataSetService().getDataSet( getSelectedDataSetID() ) );
             c.setName( name );
             c.setSeperator( seperator );
             c.setCodes( codeSet );
-            c.setCodeSeperator( codeSeperator );
+           // c.setCodeSeperator( codeSeperator );
+            c.setDefaultMessage( defaultMessage );
             smsCommandService.save( c );
         }
 
@@ -96,7 +99,6 @@ public class EditSMSCommandForm
     public SMSCommand getSMSCommand()
     {
         return smsCommandService.getSMSCommand( selectedCommandID );
-
     }
 
     public DataSetService getDataSetService()
@@ -187,5 +189,13 @@ public class EditSMSCommandForm
     public void setCodeSeperator( String codeSeperator )
     {
         this.codeSeperator = codeSeperator;
+    }
+
+    public String getDefaultMessage() {
+        return defaultMessage;
+    }
+
+    public void setDefaultMessage(String defaultMessage) {
+        this.defaultMessage = defaultMessage;
     }
 }

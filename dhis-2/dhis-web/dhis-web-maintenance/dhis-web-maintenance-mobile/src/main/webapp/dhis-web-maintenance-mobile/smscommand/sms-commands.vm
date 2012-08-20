@@ -11,10 +11,9 @@
 	<td style="vertical-align:top">
 	<table width="100%">
 		<tr>
-				
-				<td >
-					<input type="button" value="New command" onclick="window.location.href='newSMSCommand.action'" style="width:100px"/></a>	
-				</td>
+			<td >
+			   <input type="button" value="New command" onclick="window.location.href='newSMSCommand.action'" style="width:100px"/></a>	
+			</td>
 		</tr>
 	</table>
 	
