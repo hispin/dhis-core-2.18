@@ -1443,4 +1443,56 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="jchartDataService" ref="org.hisp.dhis.jchart.data.JChartDataService" />
 	</bean>
 
+	<!-- OrganisationUnitPrototype -->
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototype.action.AddOrgUnitPrototypeAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototype.action.AddOrgUnitPrototypeAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeListAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeListAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototype.action.RemoveOrgUnitPrototypeAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototype.action.RemoveOrgUnitPrototypeAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototype.action.UpdateOrgUnitPrototypeAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototype.action.UpdateOrgUnitPrototypeAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototype.action.ValidateOrgUnitPrototypeAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototype.action.ValidateOrgUnitPrototypeAction"
+		scope="prototype" />
+
+	<!-- OrganisationUnitPrototypeGroup -->
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.AddOrgUnitPrototypeGroupAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.AddOrgUnitPrototypeGroupAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.GetOrgUnitPrototypeGroupAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.GetOrgUnitPrototypeGroupAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.GetOrgUnitPrototypeGroupListAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.GetOrgUnitPrototypeGroupListAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.RemoveOrgUnitPrototypeGroupAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.RemoveOrgUnitPrototypeGroupAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.UpdateOrgUnitPrototypeGroupAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.UpdateOrgUnitPrototypeGroupAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.ValidateOrgUnitPrototypeGroupAction"
+		class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.ValidateOrgUnitPrototypeGroupAction"
+		scope="prototype" />
+	
 </beans>

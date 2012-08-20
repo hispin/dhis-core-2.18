@@ -1,3 +1,4 @@
+<script src="javascript/tooltip.js" type="text/javascript"></script>
 <table>
 	<tr>
 		<td class='text-column' >$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
@@ -51,7 +52,17 @@
 											<td>
 												<table class='stage-object'>
 													<tr>
-														<td><input type='button' id='ps_$programStageInstance.id' name='programStageBtn' programStageInstanceId='$programStageInstance.id' programStageId='$programStageInstance.programStage.id' status="$statusMap.get( $programStageInstance.id )" class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'></td>
+														<td>
+															
+															<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' 
+																programStageInstanceId='$programStageInstance.id' 
+																programStageId='$programStageInstance.programStage.id' 
+																status="$statusMap.get( $programStageInstance.id )" 
+																class='stage-object' 
+																value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' 
+																onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'>
+															</div>
+														</td>
 														<script>
 															var status = $statusMap.get( $programStageInstance.id ); 
 															var programStageId = '$programStageInstance.programStage.id';
@@ -71,8 +82,31 @@
 													</tr>
 													<tr>
 														<td>
-															<img src='images/sms.png' title="$i18n.getString('send_sms')" onclick="getOutboundSmsList( $programStageInstance.id, true );" style='cursor:pointer;'/>
-															<span id='noMessageDiv_$programStageInstance.id'>$programStageInstance.outboundSms.size()</span> $i18n.getString('messages')
+															<a href="#" id="comment-$programStageInstance.id" class="tooltip">
+																<img src='images/comments.png'>
+																#set( $divid = 'comment-' + $programStageInstance.id + '-content')
+																<div id="$divid" class="tooltip-target">
+																	#if( $programStageInstance.comments.size() > 0 )
+																		#foreach( $comment in $programStageInstance.comments )
+																			<p>- $format.formatDate($comment.createdDate)- $comment.creator - $comment.commentText</p>
+																		#end
+																	#else
+																		<p>($i18n.getString('no_comment'))</p>
+																	#end
+																</div>
+															</a>
+															#if( $!programInstance.patient.phoneNumber && $!programInstance.patient.phoneNumber != '' )
+																<img src='images/sms.png' class='comment-font' onclick="getOutboundSmsList( $programStageInstance.id, true );" style='cursor:pointer;' title="$programStageInstance.outboundSms.size() $i18n.getString('messages')"/>&nbsp;
+															#end
+														</td>
+													</tr>
+													<tr class='hidden'>
+														<td>
+															#if( $!programInstance.patient.phoneNumber && $!programInstance.patient.phoneNumber != '' )
+																(<span id='noMessageDiv_$programStageInstance.id'>$programStageInstance.outboundSms.size()</span> $i18n.getString('messages'))
+															#else
+																(<span id='noMessageDiv_$programStageInstance.id'>$i18n.getString("no_phone_number")</span>)
+															#end
 														</td>
 													</tr>
 												</table>
@@ -104,13 +138,3 @@
 	
 	<div id="detailsInfo"></div>
 #end
-
-<script>
-	/* #if($!listAll)
-	#else
-		var programId = jQuery("#programIdAddPatient").val();
-		var programStageId = jQuery("#programStageAddPatient").val();
-		var status = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
-		jQuery("#patientList [programStageId=" + programStageId + "][status=" + status + "]" ).addClass("stage-object-selected");
-	#end */
-</script>

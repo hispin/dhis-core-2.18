@@ -97,6 +97,28 @@ function showSendSmsForm()
 			height:250
 		});
 }
+
+function showCommentList( programStageInstanceId, isSendSMS ) 
+{
+	setFieldValue('sendToList', "false");
+	$('#smsManagementDiv' ).load("getOutboundSmsList.action",
+		{
+			programStageInstanceId: programStageInstanceId
+		}
+		, function(){
+			hideById('smsManagementForm');
+		}).dialog(
+		{
+			title:i18n_sms_message_management,
+			maximize:true, 
+			closable:true,
+			modal:false,
+			overlay:{background:'#000000', opacity:0.1},
+			width:800,
+			height:500
+		});
+}
+
 function sendSMS()
 {
 	var sendToList = getFieldValue('sendToList');
