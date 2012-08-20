@@ -16,7 +16,8 @@ import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsStore;
 import org.hisp.dhis.sms.incoming.SmsMessageEncoding;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
-import org.hisp.dhis.sms.output.SMSOutput;
+import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommand;
 import org.hisp.dhis.smscommand.SMSCommandService;
@@ -54,11 +55,16 @@ public class SMSInput
     private UserService userService;
 
     private SMSCommandService smsCommandService;
-    
+
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
-    
-    private SMSOutput smsOutput;
+
+    private OutboundSmsService outboundSmsService;
+
+    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    {
+        this.outboundSmsService = outboundSmsService;
+    }
 
     public SMSInput()
     {
@@ -93,8 +99,7 @@ public class SMSInput
         sms.setId( msg_id );
         sms.setGatewayId( "HARDCODEDTESTGATEWAY" );
 
-        int result = smsStore.save( sms );
-        System.out.println( "The result of SMS save is *trommevirvel* " + result );
+        smsStore.save( sms );
 
         OrganisationUnit orgunit = null;
         for ( User user : userService.getUsersByPhoneNumber( sender ) )
@@ -103,7 +108,6 @@ public class SMSInput
 
             // Might be undefined if the user has more than one org.units
             // "attached"
-
             if ( orgunit == null )
             {
                 orgunit = ou;
@@ -114,34 +118,50 @@ public class SMSInput
             }
             else
             {
-                // orgunit and ou are different, ie. the phone number is
-                // registered to users at multiple facilities.
-                // Now what should we do?
-                System.out.println( "user is registered to more than one orgunit, what orgunit should we pick?" );
+                sendSMS( "User is associated with more than one orgunit. Please contact your supervisor." );
                 return ERROR;
             }
+        }
+
+        if ( orgunit == null )
+        {
+            sendSMS( "No user associated with this phone number. Please contact your supervisor." );
+            return ERROR;
         }
 
         String[] marr = message.trim().split( " " );
         if ( marr.length < 1 )
         {
+            sendSMS("No marr");
             return ERROR;
         }
         String commandString = marr[0];
 
+        boolean foundCommand = false;
         for ( SMSCommand command : smsCommandService.getSMSCommands() )
         {
             if ( command.getName().equalsIgnoreCase( commandString ) )
             {
+                foundCommand = true;
                 // Insert message type handler later :)
-                IParser p = new SMSParserKeyValue( command.getSeperator(), " ", " ", true, false );
-                Map<String, String> parsedMessage = p.parse( message );
+                SMSParserKeyValue p = new SMSParserKeyValue();
+                if ( !StringUtils.isBlank( command.getSeperator() ) )
+                {
+                    p.setSeparator( command.getSeperator() );
+                }
 
+                Map<String, String> parsedMessage = p.parse( message );
+                if ( parsedMessage.isEmpty() )
+                {
+                    sendSMS( command.getDefaultMessage() );
+                    return ERROR;
+                }
                 for ( SMSCode code : command.getCodes() )
                 {
 
                     String upperCaseCode = code.getCode().toUpperCase();
-                    if ( parsedMessage.containsKey( upperCaseCode ) )  // Or fail hard??? 
+                    if ( parsedMessage.containsKey( upperCaseCode ) ) // Or fail
+                                                                      // hard???
                     {
 
                         String storedBy = currentUserService.getCurrentUsername();
@@ -189,12 +209,31 @@ public class SMSInput
                 }
             }
         }
-
-
-        smsOutput.sendSMS( "Your sms has been received", sender );
+        if ( foundCommand )
+        {
+            sendSMS( "SMS successfully received" );
+        }
+        else
+        {
+            sendSMS( "Command '" + commandString + "' does not exist" );
+            return ERROR;
+        }
 
         // TODO DataEntry stuff
         return SUCCESS;
+    }
+
+    private void sendSMS( String message )
+    {
+        if ( outboundSmsService != null )
+        {
+            outboundSmsService.sendMessage( new OutboundSms( message, sender ), null );
+        }
+        else
+        {
+            // Just for testing
+            System.out.println( "\n\n\n SMS: " + message + "\n\n\n" );
+        }
     }
 
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
@@ -356,11 +395,6 @@ public class SMSInput
     public void setSource_id( String source_id )
     {
         this.source_id = source_id;
-    }
-
-    public void setSmsOutput( SMSOutput smsOutput )
-    {
-        this.smsOutput = smsOutput;
     }
 
 }

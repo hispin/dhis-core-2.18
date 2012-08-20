@@ -26,8 +26,6 @@
     * OID
  -->
     
-	
-	
 	<table>
 	<thead>
       <tr>
@@ -39,33 +37,21 @@
 				<input type="hidden" value="$selectedCommandID" name="selectedCommandID" />
 			</td>
 		</tr>
+		
 		<tr>
 			<td>Name:</td>
 			<td><input type="text" name="name" value="$SMSCommand.name" style="width:20em" /></td>
 		</tr>
 		<tr>
-			<td>DataSet:</td>
-			<td>
-	
-				<!-- onchange="window.location.href='editSMSCommand.action?selectedDataSetID=' + this.options[this.selectedIndex].value" -->
-				<select name="selectedDataSetID" style="min-width:20em; margin:0;" >
-				#foreach( $dataSet in $dataSets )
-				<option value="$dataSet.id" #if ($SMSCommand.dataset.id == $dataSet.id) selected #end >$dataSet.name</option>
-				#end
-				</select> 
-			</td>
-		</tr> 
-		<tr>
-			<td>Separator:</td>
+			<td>Code and value Separator:</td>
 			<td>
 				<input type="text"  #if($SMSCommand.seperator) value="$SMSCommand.seperator" #end name="seperator" style="width:20em" />
 			</td>
-		</tr>
-		<tr>
-			<td>Code seperator:</td>
-			<td><input type="text" #if($SMSCommand.codeSeperator) value="$SMSCommand.codeSeperator" #end name="codeSeperator" style="width:20em" /></td>
-		</tr>
-	
+		</tr> 
+        <tr>
+            <td>Reply message if no codes <br /> are sent (only the command):</td>
+            <td><textarea type="text" name="defaultMessage">#if($SMSCommand.defaultMessage)$SMSCommand.defaultMessage#end</textarea></td>
+        </tr>	
 	</table>
 	
 	</br>
