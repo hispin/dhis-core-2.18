@@ -1640,6 +1640,151 @@
 				/dhis-web-spreadsheet-reporting/jsonBookmarks.vm
 			</result>
 		</action>
+
+		<!-- OrganisationUnitPrototype -->
+
+		<action name="getOrgUnitPrototype"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonOrganisationUnitPrototype.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_MANAGEMENT</param>
+		</action>
+
+		<action name="getOrgUnitPrototypes"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeListAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonOrganisationUnitPrototypes.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_MANAGEMENT</param>
+		</action>
+
+		<action name="orgUnitPrototype"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="page">
+				/dhis-web-spreadsheet-reporting/organisationUnitPrototype.vm</param>
+			<param name="javascripts">javascript/organisationUnitPrototype.js</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_MANAGEMENT</param>
+		</action>
+
+		<action name="showAddOrgUnitPrototypeForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="page">
+				/dhis-web-spreadsheet-reporting/addOrgUnitPrototypeForm.vm</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_ADD</param>
+		</action>
+
+		<action name="addOrgUnitPrototype"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.AddOrgUnitPrototypeAction">
+			<result name="success" type="redirect">orgUnitPrototype.action</result>
+			<result name="error" type="redirect">index.action</result>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_ADD</param>
+		</action>
+
+		<action name="showUpdateOrgUnitPrototypeForm"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="page">
+				/dhis-web-spreadsheet-reporting/updateOrgUnitPrototypeForm.vm</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_UPDATE</param>
+		</action>
+
+		<action name="updateOrgUnitPrototype"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.UpdateOrgUnitPrototypeAction">
+			<result name="success" type="redirect">orgUnitPrototype.action</result>
+			<result name="error" type="redirect">index.action</result>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_UPDATE</param>
+		</action>
+
+		<action name="validateOrgUnitPrototype"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.ValidateOrgUnitPrototypeAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="removeOrgUnitPrototype"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.RemoveOrgUnitPrototypeAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_DELETE</param>
+		</action>
 		
+		<!-- OrganisationUnitPrototypeGroup -->
+
+		<action name="orgUnitPrototypeGroup"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeGroupListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/organisationUnitPrototypeGroup.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="javascripts">javascript/organisationUnitPrototypeGroup.js</param>
+		</action>
+
+		<action name="getOrgUnitPrototypeGroup"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeGroupAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonOrganisationUnitPrototypeGroup.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_MANAGEMENT</param>
+		</action>
+
+		<action name="getOrgUnitPrototypeGroups"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeGroupListAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonOrganisationUnitPrototypeGroups.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_MANAGEMENT</param>
+		</action>
+
+		<action name="removeOrgUnitPrototypeGroup"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.RemoveOrgUnitPrototypeGroupAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPEGROUP_DELETE</param>
+		</action>
+
+		<action name="showAddOrgUnitPrototypeGroupForm"
+			class="org.hisp.dhis.reportsheet.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/addOrgUnitPrototypeGroupForm.vm</param>
+			<param name="javascripts">javascript/organisationUnitPrototypeGroup.js</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPEGROUP_ADD</param>
+		</action>
+
+		<action name="addOrgUnitPrototypeGroup"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.AddOrgUnitPrototypeGroupAction">
+			<result name="success" type="redirect">orgUnitPrototypeGroup.action</result>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPEGROUP_ADD</param>
+		</action>
+
+		<action name="showUpdateOrgUnitPrototypeGroupForm"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeGroupAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/updateOrgUnitPrototypeGroupForm.vm</param>
+			<param name="javascripts">javascript/organisationUnitPrototypeGroup.js</param>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPEGROUP_UPDATE</param>
+		</action>
+
+		<action name="updateOrgUnitPrototypeGroup"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.UpdateOrgUnitPrototypeGroupAction">
+			<result name="success" type="redirect">orgUnitPrototypeGroup.action</result>
+			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPEGROUP_UPDATE</param>
+		</action>
+
+		<action name="validateOrgUnitPrototypeGroup"
+			class="org.hisp.dhis.reportsheet.orgunitprototype.action.ValidateOrgUnitPrototypeGroupAction">
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 	</package>
 </struts>

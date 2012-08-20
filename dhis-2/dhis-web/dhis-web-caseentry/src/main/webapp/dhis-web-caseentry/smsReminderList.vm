@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
-		$('#tabs').tabs();
+		$('#smsManagementForm').tabs();
 		validation( 'sendSMSForm', function(form){
 			sendSMS();
 		});
@@ -31,10 +31,14 @@
 		<td valign='bottom' style="width:360px;">
 			<div class="contentProviderTable">
 				<table id='commentTB' width='100%'>
-					#foreach( $comment in $comments )
-						<tr id="comment_$comment.id">
-							<td>$format.formatDate($comment.createdDate) - $comment.creator - $comment.commentText</td>
-						</tr>
+					#if( $comments.size() > 0 )
+						#foreach( $comment in $comments )
+							<tr id="comment_$comment.id">
+								<td>$format.formatDate($comment.createdDate) - $comment.creator - $comment.commentText</td>
+							</tr>
+						#end
+					#else
+						<tr><td>($i18n.getString("no_comment"))</td></tr>
 					#end
 				</table>
 			</div>
@@ -50,7 +54,7 @@
 	</tr>
 </table>
 
-<div id="tabs">
+<div id="smsManagementForm">
 	<ul>
 		<li><a href="#tab-1">$i18n.getString("send_sms")</a></li>
 		<li><a href="#tab-2">$i18n.getString("sms_reminder_list")</a></li>

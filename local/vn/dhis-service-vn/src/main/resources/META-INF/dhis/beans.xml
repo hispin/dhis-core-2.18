@@ -44,5 +44,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="sessionFactory" ref="sessionFactory" />	
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	</bean>
+
+	<!-- OrganisationUnitPrototype -->
 	
+	<bean id="org.hisp.dhis.organisationunitprototype.OrganisationUnitPrototypeStore"
+		class="org.hisp.dhis.organisationunitprototype.hibernate.HibernateOrganisationUnitPrototypeStore">
+		<property name="clazz" value="org.hisp.dhis.organisationunitprototype.OrganisationUnitPrototype" />
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheable" value="true" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.organisationunitprototype.OrganisationUnitPrototypeService"
+		class="org.hisp.dhis.organisationunitprototype.DefaultOrganisationUnitPrototypeService">
+		<property name="organisationUnitPrototypeStore" ref="org.hisp.dhis.organisationunitprototype.OrganisationUnitPrototypeStore" />
+		<property name="organisationUnitPrototypeGroupStore" ref="org.hisp.dhis.organisationunitprototype.OrganisationUnitPrototypeGroupStore" />
+		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	</bean>
 </beans>
