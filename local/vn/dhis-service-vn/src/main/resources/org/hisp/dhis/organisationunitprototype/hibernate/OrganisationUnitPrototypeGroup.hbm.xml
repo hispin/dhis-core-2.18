@@ -6,7 +6,7 @@
 >
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.organisationunit.OrganisationUnitPrototypeGroup" table="orgunitprototypegroup">
+  <class name="org.hisp.dhis.organisationunitprototype.OrganisationUnitPrototypeGroup" table="orgunitprototypegroup">
 
     <cache usage="read-write" />
 
@@ -18,7 +18,7 @@
     <set name="members" table="orgunitprototypegroupmembers">
       <cache usage="read-write" />
       <key column="orgunitprototypegroupid" foreign-key="fk_orgunitprototypegroupmembers_orgunitprototypegroupid" />
-      <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitPrototype" column="orgunitprototypeid"
+      <many-to-many class="org.hisp.dhis.organisationunitprototype.OrganisationUnitPrototype" column="orgunitprototypeid"
         foreign-key="fk_orgunitprototypegroup_orgunitprototypeid" />
     </set>
 
