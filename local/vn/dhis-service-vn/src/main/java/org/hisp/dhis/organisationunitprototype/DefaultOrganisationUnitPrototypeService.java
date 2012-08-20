@@ -57,7 +57,7 @@ public class DefaultOrganisationUnitPrototypeService
 
     private OrganisationUnitPrototypeStore organisationUnitPrototypeStore;
 
-    public void setOrganisationUnitPrototypeTypeStore( OrganisationUnitPrototypeStore organisationUnitPrototypeStore )
+    public void setOrganisationUnitPrototypeStore( OrganisationUnitPrototypeStore organisationUnitPrototypeStore )
     {
         this.organisationUnitPrototypeStore = organisationUnitPrototypeStore;
     }

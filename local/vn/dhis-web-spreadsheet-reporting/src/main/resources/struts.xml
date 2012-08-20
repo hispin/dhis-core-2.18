@@ -1718,7 +1718,7 @@
 		<!-- OrganisationUnitPrototypeGroup -->
 
 		<action name="orgUnitPrototypeGroup"
-			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeGroupListAction">
+			class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.GetOrgUnitPrototypeGroupListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/organisationUnitPrototypeGroup.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
@@ -1726,7 +1726,7 @@
 		</action>
 
 		<action name="getOrgUnitPrototypeGroup"
-			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeGroupAction">
+			class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.GetOrgUnitPrototypeGroupAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-spreadsheet-reporting/jsonOrganisationUnitPrototypeGroup.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
@@ -1734,7 +1734,7 @@
 		</action>
 
 		<action name="getOrgUnitPrototypeGroups"
-			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeGroupListAction">
+			class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.GetOrgUnitPrototypeGroupListAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-spreadsheet-reporting/jsonOrganisationUnitPrototypeGroups.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
@@ -1742,7 +1742,7 @@
 		</action>
 
 		<action name="removeOrgUnitPrototypeGroup"
-			class="org.hisp.dhis.reportsheet.orgunitprototype.action.RemoveOrgUnitPrototypeGroupAction">
+			class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.RemoveOrgUnitPrototypeGroupAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="error" type="velocity-json">
@@ -1760,13 +1760,13 @@
 		</action>
 
 		<action name="addOrgUnitPrototypeGroup"
-			class="org.hisp.dhis.reportsheet.orgunitprototype.action.AddOrgUnitPrototypeGroupAction">
+			class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.AddOrgUnitPrototypeGroupAction">
 			<result name="success" type="redirect">orgUnitPrototypeGroup.action</result>
 			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPEGROUP_ADD</param>
 		</action>
 
 		<action name="showUpdateOrgUnitPrototypeGroupForm"
-			class="org.hisp.dhis.reportsheet.orgunitprototype.action.GetOrgUnitPrototypeGroupAction">
+			class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.GetOrgUnitPrototypeGroupAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/updateOrgUnitPrototypeGroupForm.vm</param>
 			<param name="javascripts">javascript/organisationUnitPrototypeGroup.js</param>
@@ -1774,13 +1774,13 @@
 		</action>
 
 		<action name="updateOrgUnitPrototypeGroup"
-			class="org.hisp.dhis.reportsheet.orgunitprototype.action.UpdateOrgUnitPrototypeGroupAction">
+			class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.UpdateOrgUnitPrototypeGroupAction">
 			<result name="success" type="redirect">orgUnitPrototypeGroup.action</result>
 			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPEGROUP_UPDATE</param>
 		</action>
 
 		<action name="validateOrgUnitPrototypeGroup"
-			class="org.hisp.dhis.reportsheet.orgunitprototype.action.ValidateOrgUnitPrototypeGroupAction">
+			class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.ValidateOrgUnitPrototypeGroupAction">
 			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
