@@ -6,7 +6,6 @@ package org.hisp.dhis.sms.input;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +43,7 @@ public class SMSParserKeyValue
 
     public void setSeparator( String separator )
     {
-        String x = "(\\w+)\\s*:\\s*(\\d+)";
+        String x = "(\\w+)\\s*" + separator.trim()  + "\\s*(\\d+)";
         pattern = Pattern.compile( x );
     }
 
