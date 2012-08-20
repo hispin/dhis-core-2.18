@@ -80,7 +80,7 @@ function addAttributeOption()
 		contend += '&nbsp;<input type="button" class="small-button" value="-" onclick="removeAttributeOption(' + "'" + rowId + "'" + ');"></td>';
 		contend = '<tr id="' + rowId + '">' + contend + '</tr>';
 
-	jQuery('#advancedSearchTB > tbody:last').append( contend );
+	jQuery('#advancedSearchTB').append( contend );
 }	
 
 function removeAttributeOption( rowId )
@@ -189,17 +189,23 @@ function validateAdvancedSearch()
 	hideById( 'listPatientDiv' );
 	var flag = true;
 	var dateOperator = '';
-	if (getFieldValue('searchByProgramStage') == "false"){
-		jQuery("#searchDiv :input").each( function( i, item )
-		{
-			var elementName = $(this).attr('name');
-			if( elementName=='searchText' && jQuery( item ).val() == '' )
-			{
-				showWarningMessage( i18n_specify_search_criteria );
-				flag = false;
-			}
-		});
+	
+	if (getFieldValue('searchByProgramStage') == "true" 
+		&& getFieldValue('programStageAddPatient') == '' 
+		&& jQuery("#searchDiv :input[name=searchText]").val() == ''){
+		flag = false;
 	}
+	
+	jQuery("#searchDiv :input").each( function( i, item )
+	{
+		var elementName = $(this).attr('name');
+		if( elementName=='searchText' && jQuery( item ).val() == '' && !flag)
+		{
+			showWarningMessage( i18n_specify_search_criteria );
+			flag = false;
+		}
+	});
+	
 	if(flag){
 		contentDiv = 'listPatientDiv';
 		jQuery( "#loaderDiv" ).show();
@@ -218,7 +224,7 @@ function getSearchParams()
 		params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent + '_' + startDueDate + '_' + endDueDate;
 	}
 	
-	jQuery( '#advancedSearchTB tbody tr' ).each( function( i, row ){
+	jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
 		var dateOperator = "";
 		var p = "";
 		jQuery( this ).find(':input').each( function( idx, item ){

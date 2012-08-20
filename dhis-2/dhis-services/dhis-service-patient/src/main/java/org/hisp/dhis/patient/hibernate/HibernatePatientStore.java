@@ -405,7 +405,7 @@ public class HibernatePatientStore
                 sql += " MIN( psi.programstageinstanceid ) as programstageinstanceid,";
                 isSearchEvent = true;
                 patientWhere += patientOperator + "pgi.patientid=p.patientid and psi.programstageid=" + id + " and ";
-                patientWhere += "psi.duedate>='" + keys[3] + "' and psi.duedate<='" + keys[3] + "' and ";
+                patientWhere += "psi.duedate>='" + keys[3] + "' and psi.duedate<='" + keys[4] + "' and ";
                     
                 int statusEvent = Integer.parseInt( keys[2] );
                 switch ( statusEvent )

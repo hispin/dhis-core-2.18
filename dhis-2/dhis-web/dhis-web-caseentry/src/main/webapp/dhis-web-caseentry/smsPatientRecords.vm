@@ -43,6 +43,7 @@
 								<td class='stage-flow'>
 									<div id='flow_$programInstance.id' class='stage-flow'><table class="stage-flow">
 										<tr>
+										#set( $flag = "false" )
 										#foreach( $programStageInstance in $programStageInstances )
 											<td>
 												<img src='images/rightarrow.png'>
@@ -51,9 +52,21 @@
 												<table class='stage-object'>
 													<tr>
 														<td><input type='button' id='ps_$programStageInstance.id' name='programStageBtn' programStageInstanceId='$programStageInstance.id' programStageId='$programStageInstance.programStage.id' status="$statusMap.get( $programStageInstance.id )" class='stage-object' value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'></td>
-														<script>	
+														<script>
 															var status = $statusMap.get( $programStageInstance.id ); 
+															var programStageId = '$programStageInstance.programStage.id';
+															var dueDate = '$programStageInstance.dueDate';
+															var flag = "$flag"
 															setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
+														
+															if( status == getFieldValue('statusEvent') 
+																&& programStageId == getFieldValue('programStageAddPatient')
+																&& dueDate >= getFieldValue('startDueDate') && dueDate <= getFieldValue('endDueDate') 
+																&& flag == "false")
+															{
+																jQuery("#ps_$programStageInstance.id").addClass("stage-object-selected");
+																#set( $flag = "true" )
+															}
 														</script>
 													</tr>
 													<tr>
@@ -93,11 +106,11 @@
 #end
 
 <script>
-	#if($!listAll)
+	/* #if($!listAll)
 	#else
 		var programId = jQuery("#programIdAddPatient").val();
 		var programStageId = jQuery("#programStageAddPatient").val();
 		var status = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
 		jQuery("#patientList [programStageId=" + programStageId + "][status=" + status + "]" ).addClass("stage-object-selected");
-	#end
+	#end */
 </script>
