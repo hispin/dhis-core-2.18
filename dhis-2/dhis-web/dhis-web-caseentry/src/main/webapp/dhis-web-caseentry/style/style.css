@@ -344,6 +344,20 @@ div.event-flow-dashboard
 	z-index:1001;
 }
 
+.comment-table
+{
+  width:320px;
+  overflow-y: auto;
+  overflow-x:hidden;
+}
+
+.comment-table td
+{
+  padding-top:3px;
+  padding-bottom:3px;
+  border-bottom:1px solid #cad5e5;
+}
+
 /* --------------------------------------------------------------
 // program-stage-instances
 // -------------------------------------------------------------- */
