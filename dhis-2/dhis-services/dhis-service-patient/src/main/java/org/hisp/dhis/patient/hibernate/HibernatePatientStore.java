@@ -425,7 +425,10 @@ public class HibernatePatientStore
                 default:
                     break;
                 }
+                
+                patientWhere += " and pgi.completed=false ";
                 patientOperator = " and ";
+
             }
         }
 

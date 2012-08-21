@@ -10,27 +10,19 @@
 <h4>$i18n.getString( "sms_message_management" )</h4>
 <input type='hidden' id='currentUsername' name='currentUsername' value='$currentUsername'>
 <table class="mainPageTable">
+	<tr>            
+		<td class="bold">$i18n.getString( "full_name" ):</td>
+		<td>$encoder.htmlEncode( $programStageInstance.programInstance.patient.getFullName() )( $programStageInstance.programInstance.patient.gender )<td>
+	</tr>
 	<tr>
-		<td>
-			<table> 
-				<tr>            
-					<td class="bold">$i18n.getString( "full_name" ):</td>
-					<td>$encoder.htmlEncode( $programStageInstance.programInstance.patient.getFullName() )<td>
-				</tr>
-				<tr>
-					<td class="bold">$i18n.getString( "gender" ):</td>
-					<td>$programStageInstance.programInstance.patient.gender</td>
-				</tr>
-				<tr>
-					<td class="bold">$i18n.getString( "date_of_birth" ):</td>
-					<td>$format.formatDate( $programStageInstance.programInstance.patient.birthDate ) $programStageInstance.programInstance.patient.getAge()<td>
-				</tr>
-			</table>
-		</td>
-		<td valign='top' style="width:90px;" class="bold">$i18n.getString('comments'):</td>
-		<td valign='bottom' style="width:360px;">
-			<div class="contentProviderTable">
-				<table id='commentTB' width='100%'>
+		<td class="bold">$i18n.getString( "date_of_birth" ):</td>
+		<td>$format.formatDate( $programStageInstance.programInstance.patient.birthDate ) $programStageInstance.programInstance.patient.getAge()<td>
+	</tr>
+	<tr>
+		<td class="bold" valign='top'>$i18n.getString('comments'):</td>
+		<td colspan='2'>
+			<div class="comment-table" style='max-height:150px;'>
+				<table id='commentTB'>
 					#if( $comments.size() > 0 )
 						#foreach( $comment in $comments )
 							<tr id="comment_$comment.id">
@@ -38,16 +30,15 @@
 							</tr>
 						#end
 					#else
-						<tr><td>($i18n.getString("no_comment"))</td></tr>
+						<tr><td>$i18n.getString("no_comment")</td></tr>
 					#end
 				</table>
 			</div>
 		</td>
 	</tr>
 	<tr>
-		<td></td>
-		<td align='right' class="bold">$i18n.getString('post_comment'):</td>
-		<td align='right'>
+		<td class="bold">$i18n.getString('post_comment'):</td>
+		<td>
 			<input type='textbox' id='commentText' name='commentText' style="width:320px;" onkeypress="keypress(event,'$programStageInstance.id')">
 			<input type='button' value="+" class='tiny-button' onclick="addComment('$programStageInstance.id')">
 		</td>
