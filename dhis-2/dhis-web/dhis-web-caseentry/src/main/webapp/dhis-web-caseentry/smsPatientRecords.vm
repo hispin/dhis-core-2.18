@@ -46,14 +46,13 @@
 										<tr>
 										#set( $flag = "false" )
 										#foreach( $programStageInstance in $programStageInstances )
-											<td>
+											<td id="img_$programStageInstance.id">
 												<img src='images/rightarrow.png'>
 											</td>
-											<td>
+											<td id="td_$programStageInstance.id">
 												<table class='stage-object'>
 													<tr>
 														<td>
-															
 															<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' 
 																programStageInstanceId='$programStageInstance.id' 
 																programStageId='$programStageInstance.programStage.id' 
@@ -61,23 +60,11 @@
 																class='stage-object' 
 																value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' 
 																onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'>
-															</div>
 														</td>
 														<script>
 															var status = $statusMap.get( $programStageInstance.id ); 
-															var programStageId = '$programStageInstance.programStage.id';
-															var dueDate = '$programStageInstance.dueDate';
-															var flag = "$flag"
-															setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
-														
-															if( status == getFieldValue('statusEvent') 
-																&& programStageId == getFieldValue('programStageAddPatient')
-																&& dueDate >= getFieldValue('startDueDate') && dueDate <= getFieldValue('endDueDate') 
-																&& flag == "false")
-															{
-																jQuery("#ps_$programStageInstance.id").addClass("stage-object-selected");
-																#set( $flag = "true" )
-															}
+															var dueDate = "$format.formatDate($programStageInstance.dueDate)";
+															setEventColorStatus( 'ps_' + $programStageInstance.id ,status, dueDate );
 														</script>
 													</tr>
 													<tr>
@@ -138,3 +125,20 @@
 	
 	<div id="detailsInfo"></div>
 #end
+
+<script>
+	#if( $programStageInstanceIds )
+		jQuery("#patientList .stage-object").each( function(){
+			var programStageInstance = this.id.split('_')[1];
+			hideById('img_' + programStageInstance );
+			hideById('td_' + programStageInstance );
+		});
+		
+		jQuery(".arrow-left").css("display", "none");
+		jQuery(".arrow-right").css("display", "none");
+		#foreach( $id in $programStageInstanceIds )
+			showById('td_$id');
+			jQuery("#ps_$id").addClass("stage-object-selected");
+		#end
+	#end
+</script>

@@ -414,7 +414,7 @@ public class HibernatePatientStore
                     patientWhere += "psi.completed=true";
                     break;
                 case ProgramStageInstance.VISITED_STATUS:
-                    patientWhere += "psi.executiondate is not null";
+                    patientWhere += "psi.executiondate is not null and psi.completed=false";
                     break;
                 case ProgramStageInstance.FUTURE_VISIT_STATUS:
                     patientWhere += "psi.executiondate is null and psi.duedate >= now()";
@@ -464,6 +464,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
+
         return sql;
     }
 

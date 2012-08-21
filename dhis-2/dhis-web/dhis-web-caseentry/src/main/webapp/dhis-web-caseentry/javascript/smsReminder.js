@@ -22,6 +22,7 @@ selection.setListenerFunction( orgunitSelected );
 
 function listAllPatient()
 {
+	setFieldValue('listAll', "true");
 	hideById('listPatientDiv');
 	contentDiv = 'listPatientDiv';
 	$('#contentDataRecord').html('');
@@ -41,6 +42,8 @@ function listAllPatient()
 
 function advancedSearch( params )
 {
+	
+	setFieldValue('listAll', "false");
 	$('#contentDataRecord').html('');
 	params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
 	params += "&programId=" + getFieldValue('programIdAddPatient');
