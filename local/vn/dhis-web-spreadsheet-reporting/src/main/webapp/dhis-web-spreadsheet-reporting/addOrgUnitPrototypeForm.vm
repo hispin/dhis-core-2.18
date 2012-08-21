@@ -11,7 +11,7 @@
 	
 </script>
 
-<h3>$i18n.getString( "create_new_organisationunitprototype" )</h3>
+<h3>$i18n.getString( "create_new_orgunit_prototype" )</h3>
 
 <form id="addOrgUnitPrototypeForm" action="addOrgUnitPrototype.action" method="post" >
 

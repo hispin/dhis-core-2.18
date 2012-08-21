@@ -1494,5 +1494,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.ValidateOrgUnitPrototypeGroupAction"
 		class="org.hisp.dhis.reportsheet.orgunitprototypegroup.action.ValidateOrgUnitPrototypeGroupAction"
 		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.organisationunit.action.ShowAddOrganisationUnitFormAction"
+		class="org.hisp.dhis.reportsheet.organisationunit.action.ShowAddOrganisationUnitFormAction"
+		scope="prototype" />
+
+	<bean id="org.hisp.dhis.reportsheet.organisationunit.action.AddMultiOrganisationUnitAction"
+		class="org.hisp.dhis.reportsheet.organisationunit.action.AddMultiOrganisationUnitAction"
+		scope="prototype" />
 	
 </beans>

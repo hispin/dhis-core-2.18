@@ -3,8 +3,9 @@
         validation2('addOrgUnitPrototypeGroupForm', function ( form ) {
             form.submit();
         }, {
-            'beforeValidateHandler' : function () {
-                beforeSubmit();
+            'beforeValidateHandler' : function ()
+			{
+                listValidator( 'memberValidator', 'groupMembers' );
             },
             'rules' : getValidationRules( "orgUnitPrototypeGroup" )
         });
@@ -32,6 +33,9 @@
 				"alphanumericwithbasicpuncspaces" : true,
 				"notOnlyDigits" : true,
 				"rangelength" : [ 2, 160 ]
+			},
+			"memberValidator" : {
+				"required" : true
 			}
 		}
     };
@@ -58,7 +62,7 @@
     <col style="width: 450px"/>
 
 	<tr>
-		<th>$i18n.getString( "available_orgunit_prototype" )</th>
+		<th>$i18n.getString( "available_orgunit_prototypes" )</th>
 		<th></th>
 		<th>$i18n.getString( "group_members" )</th>
 	</tr>
@@ -77,6 +81,7 @@
 
 		<td>
 			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;"></select>
+			<select id="memberValidator" name="memberValidator" style="display:none"></select>
 		</td>
 	</tr>
 </table>

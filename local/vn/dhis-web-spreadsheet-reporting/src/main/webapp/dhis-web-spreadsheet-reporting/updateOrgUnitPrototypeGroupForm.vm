@@ -55,7 +55,7 @@
     <col style="width: 450px"/>
 
 	<tr>
-		<th>$i18n.getString( "available_data_elements" )</th>
+		<th>$i18n.getString( "available_orgunit_prototypes" )</th>
 		<th></th>
 		<th>$i18n.getString( "group_members" )</th>
 	</tr>

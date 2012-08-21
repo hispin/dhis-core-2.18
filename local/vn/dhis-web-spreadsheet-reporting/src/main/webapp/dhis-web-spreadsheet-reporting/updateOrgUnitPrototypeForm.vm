@@ -11,7 +11,7 @@
 	
 </script>
 
-<h3>$i18n.getString( "edit_constant" )</h3>
+<h3>$i18n.getString( "edit_org_unit_prototype" )</h3>
 
 <form id="updateOrgUnitPrototypeForm" action="updateOrgUnitPrototype.action" method="post" >
 <input type="hidden" id="id" name="id" value="$!organisationUnitPrototype.id"/>
