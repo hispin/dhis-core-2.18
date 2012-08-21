@@ -30,7 +30,9 @@ package org.hisp.dhis.user.hibernate;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
@@ -45,6 +47,17 @@ public class HibernateUserStore
     // -------------------------------------------------------------------------
     // UserStore implementation
     // -------------------------------------------------------------------------
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<User> getBetween( int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        return criteria.list();
+    }
 
     public Collection<User> getUsersWithoutOrganisationUnit()
     {
