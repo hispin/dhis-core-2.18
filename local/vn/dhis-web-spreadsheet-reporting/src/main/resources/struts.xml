@@ -1669,7 +1669,7 @@
 			<param name="requiredAuthorities">F_ORGANISATIONUNITPROTOTYPE_MANAGEMENT</param>
 		</action>
 
-		<action name="showAddOrgUnitPrototypeForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+		<action name="showAddOrgUnitPrototypeForm" class="org.hisp.dhis.reportsheet.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="page">
@@ -1784,6 +1784,20 @@
 			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="showAddMultiOrganisationUnit"
+			class="org.hisp.dhis.reportsheet.organisationunit.action.ShowAddOrganisationUnitFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/addMultiOrganisationUnitForm.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menuWithTree.vm</param>
+			<param name="requiredAuthorities">F_MULTI_ORGANISATION_UNIT_ADD</param>
+		</action>
+
+		<action name="addMultiOrganisationUnit"
+			class="org.hisp.dhis.reportsheet.organisationunit.action.AddMultiOrganisationUnitAction">
+			<result name="success" type="redirect">administration.action</result>
+			<param name="requiredAuthorities">F_MULTI_ORGANISATION_UNIT_ADD</param>
 		</action>
 
 	</package>
