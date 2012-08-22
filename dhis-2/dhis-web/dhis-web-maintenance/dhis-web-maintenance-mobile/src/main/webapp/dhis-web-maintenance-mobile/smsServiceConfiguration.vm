@@ -58,8 +58,13 @@
 				document.getElementById(indexDeleted + 1).href = 'showUpdateGateWayConfigForm.action?index='+indexDeleted;
 			}			
 		}
-		//var theLink = document.getElementById("1").getAttribute("href");
+		jQuery( '#gatewaySize' ).val(gwSize - 1);
 		
+		if ( gwSize == 4 )
+		{
+			document.getElementById( 'btnAddGw' ).disabled = false;
+		}
+		//document.getElementById("1").getAttribute("href");		
 	};
 
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_gateway" ) , "'")';
@@ -74,6 +79,7 @@
 <h3>$i18n.getString( "sms_service_configuration" )</h3>
 <input id="isSettingAvailable" name="isSettingAvailable" type="hidden" #if ( $!smsConfig ) value="true" #else value="false" #end/>
 <input id="gatewaySize" name="gatewaySize" type="hidden" value="$gatewayConfigMap.keySet().size()"/>
+#set( $gwSizeTemp = $gatewayConfigMap.keySet().size() )
 <form id="saveSmsConfigurationForm" name="saveSmsConfigurationForm" action="saveSmsConfiguration.action" method="post" >
   <table id="detailsList" border="0">
     <col/> ## Labels
@@ -110,7 +116,8 @@
       <tr>
         <th colspan="2">$i18n.getString("configuration")</th>
       </tr>
-
+	</thead>
+	
 	<tbody>
 		<tr>
 			<td><label for="pollingInterval">$i18n.getString( "polling_interval_in_seconds" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -153,7 +160,7 @@
 		</tr>
 		<tr>
 			<td align="right" colspan="2">
-				<input type="button" id="btnAddGw" value="$i18n.getString( 'add_gw' )" style="width:13em" onclick="window.location.href='showUpdateGateWayConfigForm.action'"/>
+				<input type="button" id="btnAddGw" value="$i18n.getString( 'add_gw' )" style="width:13em" #if( $!gwSizeTemp == 4 ) disabled="true" #end onclick="window.location.href='showUpdateGateWayConfigForm.action'"/>
 			</td>
 		</tr>	
 	</tbody>

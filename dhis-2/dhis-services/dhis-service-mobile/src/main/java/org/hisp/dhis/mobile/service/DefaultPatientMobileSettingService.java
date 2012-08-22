@@ -28,6 +28,7 @@ package org.hisp.dhis.mobile.service;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.api.mobile.PatientMobileSettingService;
 import org.hisp.dhis.api.mobile.PatientMobileSettingStore;
@@ -70,5 +71,10 @@ public class DefaultPatientMobileSettingService
     {
         return patientMobileSettingStore.getCurrentSetting();
     }
-
+   
+    @Override
+    public PatientMobileSetting get( int id )
+    {
+        return patientMobileSettingStore.get( id );
+    }    
 }
