@@ -455,12 +455,12 @@ public class DefaultDataMartEngine
         }
 
         clock.logTime( "Aggregated data export done" );
-        
-        final boolean isGroups = organisationUnitGroups != null && organisationUnitGroups.size() > 0;
-        
+
         final int groupLevel = (Integer) systemSettingManager.getSystemSetting( KEY_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
         
-        if ( isGroups && groupLevel > 0 )
+        final boolean isGroups = organisationUnitGroups != null && organisationUnitGroups.size() > 0 && groupLevel > 0;
+        
+        if ( isGroups )
         {
             // ---------------------------------------------------------------------
             // 1. Export data element values
