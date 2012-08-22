@@ -455,5 +455,11 @@ var validationRules = {
 		"serverPhoneNumber" : {
 			"digits" : true
 		}
+	},
+	"autoUpdateClient" : {
+		"version" : {
+			"required" : true,
+			"number" : true
+		}
 	}
 };

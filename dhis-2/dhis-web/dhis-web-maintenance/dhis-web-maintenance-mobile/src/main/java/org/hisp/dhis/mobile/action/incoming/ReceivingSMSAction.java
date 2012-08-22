@@ -32,7 +32,6 @@ import java.util.List;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;

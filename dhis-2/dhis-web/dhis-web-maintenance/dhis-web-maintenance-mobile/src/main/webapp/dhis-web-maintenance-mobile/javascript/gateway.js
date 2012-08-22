@@ -63,6 +63,17 @@ function getValidationRulesGateway()
 	return rules;
 }
 
+function getValidationRulesUpdateClient()
+{
+	var rules = { 
+		"version" : { 
+			"required" : true,
+			"digits" : true
+		}
+	};
+	return rules;
+}
+
 function saveGatewayConfig()
 {
 	
@@ -155,12 +166,13 @@ function showMessage( json )
 	}
 }
 
-function deleteItem( itemId, itemName, confirmation, action, success )
+function removeItem( itemId, itemName, confirmation, action, success )
 {                
     var result = window.confirm( confirmation + "\n\n" + itemName );
     
     if ( result )
     {
+		lockScreen();
 		refreshIndex( itemId );
     	$.postJSON(
     	    action,
@@ -182,11 +194,12 @@ function deleteItem( itemId, itemName, confirmation, action, success )
 					{
 						success.call();
 					}
-  
+					unLockScreen();
 					showSuccessMessage( i18n_delete_success );
     	    	}
     	    	else if ( json.response == "error" )
     	    	{ 
+					unLockScreen();
 					showWarningMessage( json.message );
     	    	}
     	    }

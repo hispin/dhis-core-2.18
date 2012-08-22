@@ -40,11 +40,11 @@
 				<td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!bulkGateway.name )"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "username" ) <em title="Required" class="required">*</em>:</td>
+				<td>$i18n.getString( "username" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
 				<td><input type="text" name="username" id="username" style="width: 28em" value="$!bulkGateway.username"/></td>
 			</tr> 
 			<tr>
-				<td>$i18n.getString( "password" ) <em title="Required" class="required">*</em>:</td>
+				<td>$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
 				<td><input type="text" name="password" id="password" style="width: 28em" value="$!bulkGateway.password"/></td>
 			</tr>
 			<tr>
@@ -68,11 +68,11 @@
 				<td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!modemGateway.name )"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "port" ) <em title="Required" class="required">*</em>:</td>
+				<td>$i18n.getString( "port" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
 				<td><input type="text" name="port" id="port" style="width: 28em" value="$!modemGateway.port"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "baudrate" ) <em title="Required" class="required">*</em>:</td>
+				<td>$i18n.getString( "baudrate" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
 				<td><input type="text" name="baudRate" id="baudRate" style="width: 28em" value="$!modemGateway.baudRate"/></td>
 			</tr>
 			<tr>
