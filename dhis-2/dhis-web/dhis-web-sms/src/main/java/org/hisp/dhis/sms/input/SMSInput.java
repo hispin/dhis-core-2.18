@@ -144,10 +144,10 @@ public class SMSInput
             {
                 foundCommand = true;
                 // Insert message type handler later :)
-                SMSParserKeyValue p = new SMSParserKeyValue();
-                if ( !StringUtils.isBlank( command.getSeperator() ) )
+                IParser p = new SMSParserKeyValue();
+                if ( !StringUtils.isBlank( command.getSeparator() ) )
                 {
-                    p.setSeparator( command.getSeperator() );
+                    p.setSeparator( command.getSeparator() );
                 }
 
                 Map<String, String> parsedMessage = p.parse( message );

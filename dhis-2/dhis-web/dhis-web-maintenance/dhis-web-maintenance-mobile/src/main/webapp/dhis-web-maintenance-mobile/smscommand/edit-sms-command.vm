@@ -45,7 +45,7 @@
 		<tr>
 			<td>Code and value Separator:</td>
 			<td>
-				<input type="text"  #if($SMSCommand.seperator) value="$SMSCommand.seperator" #end name="seperator" style="width:20em" />
+				<input type="text"  #if($SMSCommand.separator) value="$SMSCommand.separator" #end name="separator" style="width:20em" />
 			</td>
 		</tr> 
         <tr>

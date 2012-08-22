@@ -32,9 +32,9 @@ public class EditSMSCommandForm
 
     private String codeDataelementOption;
 
-    private String seperator;
+    private String separator;
 
-    private String codeSeperator;
+    private String codeSeparator;
 
     private String defaultMessage;
     
@@ -71,9 +71,9 @@ public class EditSMSCommandForm
         {
            // c.setDataset( getDataSetService().getDataSet( getSelectedDataSetID() ) );
             c.setName( name );
-            c.setSeperator( seperator );
+            c.setSeparator( separator );
             c.setCodes( codeSet );
-           // c.setCodeSeperator( codeSeperator );
+           // c.setCodeSeparator( codeSeparator );
             c.setDefaultMessage( defaultMessage );
             smsCommandService.save( c );
         }
@@ -161,14 +161,14 @@ public class EditSMSCommandForm
         this.selectedCommandID = selectedCommandID;
     }
 
-    public String getSeperator()
+    public String getSeparator()
     {
-        return seperator;
+        return separator;
     }
 
-    public void setSeperator( String seperator )
+    public void setSeparator( String separator )
     {
-        this.seperator = seperator;
+        this.separator = separator;
     }
 
     public DataElementService getDataElementService()
@@ -181,14 +181,14 @@ public class EditSMSCommandForm
         this.dataElementService = dataElementService;
     }
 
-    public String getCodeSeperator()
+    public String getCodeSeparator()
     {
-        return codeSeperator;
+        return codeSeparator;
     }
 
-    public void setCodeSeperator( String codeSeperator )
+    public void setCodeSeparator( String codeSeparator )
     {
-        this.codeSeperator = codeSeperator;
+        this.codeSeparator = codeSeparator;
     }
 
     public String getDefaultMessage() {
