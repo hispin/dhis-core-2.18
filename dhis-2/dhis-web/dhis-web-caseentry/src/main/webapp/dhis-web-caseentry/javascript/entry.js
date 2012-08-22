@@ -569,8 +569,9 @@ function doComplete( isCreateEvent )
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					if( irregular == 'true' )
 					{
-						var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val()
-						showCreateNewEvent( programInstanceId );
+						var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
+						var programStageId = jQuery(".stage-object-selected").css('psid');
+						showCreateNewEvent( programInstanceId, programStageId );
 					}
 					
 					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');

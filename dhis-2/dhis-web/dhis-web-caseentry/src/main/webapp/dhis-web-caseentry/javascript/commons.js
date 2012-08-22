@@ -515,7 +515,7 @@ function moveRight(programInstanceFlowDiv){
 // Create New Event
 // ----------------------------------------------------------------------------
 
-function showCreateNewEvent( programInstanceId )
+function showCreateNewEvent( programInstanceId, programStageId )
 {
 	jQuery('#createNewEncounterDiv_' + programInstanceId ).dialog({
 			title: i18n_create_new_event,
@@ -527,13 +527,21 @@ function showCreateNewEvent( programInstanceId )
 			height: 160
 		}).show('fast');
 		
-	var standardInterval =  jQuery('#dataRecordingSelectDiv [name=programStageId] option:selected').attr('standardInterval');
+	if( programStageId != undefined )
+	{
+		jQuery('#repeatableProgramStageId').val(programStageId);
+	}
+	setSuggestedDueDate( programInstanceId );
+}
+
+function setSuggestedDueDate( programInstanceId )
+{
+	var standardInterval =  jQuery('#repeatableProgramStageId option:selected').attr('standardInterval');
 	var date = new Date();
 	var d = date.getDate() + eval(standardInterval);
 	var m = date.getMonth();
 	var y = date.getFullYear();
 	var edate= new Date(y, m, d);
-							
 	jQuery( '#dueDateNewEncounter_' + programInstanceId ).datepicker( "setDate" , edate );
 }
 
