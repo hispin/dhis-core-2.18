@@ -81,7 +81,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.datamart.dataelement.DataElementDataMart" class="org.hisp.dhis.datamart.dataelement.DefaultDataElementDataMart">
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
-    <property name="inMemoryBatchHandlerFactory" ref="inMemoryBatchHandlerFactory" />
     <property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
     <property name="sumIntAggregator" ref="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator" />
     <property name="averageIntAggregator" ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator" />

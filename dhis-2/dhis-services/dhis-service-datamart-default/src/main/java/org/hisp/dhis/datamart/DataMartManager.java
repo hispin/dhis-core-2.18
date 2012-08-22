@@ -19,6 +19,8 @@ public interface DataMartManager
 
     Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId );
     
+    Map<DataElementOperand, String> getAggregatedValueMap( int periodId, int organisationUnitId );
+    
     void createDataValueIndex();
     
     void createIndicatorValueIndex();
@@ -40,6 +42,8 @@ public interface DataMartManager
      * @param periodIds a collection of Period identifiers.
      */
     void deleteAggregatedIndicatorValues( Collection<Integer> periodIds );
+
+    Map<DataElementOperand, String> getAggregatedOrgUnitValueMap( int periodId, int organisationUnitId, int organisationUnitGroupId );
     
     void createOrgUnitDataValueIndex();
     

@@ -27,8 +27,6 @@ package org.hisp.dhis.datamart.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore.AGGREGATEDDATA_CACHE_PREFIX;
-import static org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore.AGGREGATEDORGUNITDATA_CACHE_PREFIX;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
 import java.util.Collection;
@@ -44,11 +42,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.DataElementOperandList;
+import org.hisp.dhis.datamart.DataMartEngine;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
-import org.hisp.dhis.datamart.DataMartEngine;
-import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
@@ -77,13 +73,6 @@ public class DefaultDataElementDataMart
         this.batchHandlerFactory = batchHandlerFactory;
     }
     
-    private BatchHandlerFactory inMemoryBatchHandlerFactory;
-        
-    public void setInMemoryBatchHandlerFactory( BatchHandlerFactory inMemoryBatchHandlerFactory )
-    {
-        this.inMemoryBatchHandlerFactory = inMemoryBatchHandlerFactory;
-    }
-
     private AggregationCache aggregationCache;
 
     public void setAggregationCache( AggregationCache aggregationCache )
@@ -140,15 +129,11 @@ public class DefaultDataElementDataMart
     @Async
     public Future<?> exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
         Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
-        DataElementOperandList operandList, OrganisationUnitHierarchy hierarchy, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key )
+        OrganisationUnitHierarchy hierarchy, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key )
     {
         statementManager.initialise(); // Running in separate thread
         
         final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( clazz ).init();
-        
-        final String tableName = organisationUnitGroups != null ? AGGREGATEDORGUNITDATA_CACHE_PREFIX : AGGREGATEDDATA_CACHE_PREFIX;
-        
-        final BatchHandler<Object> cacheHandler = inMemoryBatchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).setTableName( tableName + key ).init();
         
         final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
         
@@ -168,8 +153,6 @@ public class DefaultDataElementDataMart
             {
                 for ( final OrganisationUnit unit : organisationUnits )
                 {
-                    operandList.init( period, unit, group );
-                    
                     final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
                     
                     final Collection<Integer> orgUnitChildren = hierarchy.getChildren( unit.getId(), group );
@@ -199,14 +182,7 @@ public class DefaultDataElementDataMart
                             aggregatedValue.setValue( value );
                             
                             batchHandler.addObject( aggregatedValue );
-                            
-                            operandList.addValue( entry.getKey(), value );
                         }
-                    }
-                    
-                    if ( operandList.hasValues() )
-                    {
-                        cacheHandler.addObject( operandList.getList() );
                     }
                 }
             }
@@ -216,8 +192,6 @@ public class DefaultDataElementDataMart
         
         batchHandler.flush();
         
-        cacheHandler.flush();
-
         statementManager.destroy();
         
         aggregationCache.clearCache();
