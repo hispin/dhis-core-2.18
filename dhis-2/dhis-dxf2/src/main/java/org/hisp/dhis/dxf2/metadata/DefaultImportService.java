@@ -195,7 +195,6 @@ public class DefaultImportService
         return null;
     }
 
-    @SuppressWarnings( "unchecked" )
     private <T> Importer<T> findImporterClass( Class<?> clazz )
     {
         for ( Importer<T> i : importerClasses )

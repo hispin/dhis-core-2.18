@@ -412,7 +412,6 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     //-------------------------------------------------------------------------------------------------------
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public ImportTypeSummary importObjects( List<T> objects, ImportOptions options )
     {
         this.options = options;
