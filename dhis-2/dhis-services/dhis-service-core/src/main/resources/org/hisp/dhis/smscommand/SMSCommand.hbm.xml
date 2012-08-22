@@ -13,8 +13,8 @@
     </id>
     <property name="name" type="text" />
     <property name="parser" type="text" />
-    <property name="seperator" type="text" />
-    <property name="codeSeperator" type="text" />
+    <property name="separator" type="text" />
+    <property name="codeSeparator" type="text" />
     <property name="defaultMessage" type="text" />
     <many-to-one name="dataset" class="org.hisp.dhis.dataset.DataSet" column="datasetid" foreign-key="fk_dataset_datasetid" />
 
