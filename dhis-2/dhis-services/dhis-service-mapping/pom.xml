@@ -11,7 +11,7 @@
   
   <artifactId>dhis-service-mapping</artifactId>
   <packaging>jar</packaging>
-  <name>DHIS OrganisationUnit API Implementations</name>
+  <name>DHIS Mapping Service Implementation</name>
   
   <dependencies>
     
