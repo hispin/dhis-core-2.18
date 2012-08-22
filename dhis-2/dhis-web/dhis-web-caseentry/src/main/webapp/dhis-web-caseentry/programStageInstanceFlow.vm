@@ -45,10 +45,10 @@
 		<tr>
 			<td>$i18n.getString( 'program_stage' )</td>
 			<td>
-				<select id='repeatableProgramStageId' name='repeatableProgramStageId'>
+				<select id='repeatableProgramStageId' name='repeatableProgramStageId' onchange="setSuggestedDueDate('$programInstance.id')">
 					#foreach( $programStage in $programInstance.program.programStages )
 						#if( $programStage.irregular=='true')
-							<option value="$programStage.id">$!programStage.name</option>
+							<option value="$programStage.id" standardInterval='$programStage.standardInterval'>$!programStage.name</option>
 						#end
 					#end
 				</select>
