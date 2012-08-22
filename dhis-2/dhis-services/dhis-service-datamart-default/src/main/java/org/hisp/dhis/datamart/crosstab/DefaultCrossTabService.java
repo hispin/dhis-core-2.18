@@ -107,7 +107,7 @@ public class DefaultCrossTabService
 
         return key;
     }
-    
+
     @Async
     public Future<?> populateCrossTabTable( List<DataElementOperand> operands,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key )
@@ -190,7 +190,55 @@ public class DefaultCrossTabService
     {
         crossTabStore.createAggregatedDataCache( operands, key );
     }
-    
+
+    @Async
+    public Future<?> populateAggregatedDataCache( List<DataElementOperand> operands,
+        Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, String key )
+    {
+        statementManager.initialise();
+        
+        final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( CrossTabStore.AGGREGATEDDATA_CACHE_PREFIX + key ).init();
+        
+        for ( final Period period : periods )
+        {
+            for ( final OrganisationUnit organisationUnit : organisationUnits )
+            {
+                final Map<DataElementOperand, String> map = dataMartManager.getAggregatedValueMap( period.getId(), organisationUnit.getId() );
+
+                final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
+
+                valueList.add( String.valueOf( period.getId() ) );
+                valueList.add( String.valueOf( organisationUnit.getId() ) );
+
+                boolean hasValues = false;
+
+                for ( DataElementOperand operand : operands )
+                {
+                    String value = map.get( operand );
+                    
+                    if ( value != null )
+                    {
+                        hasValues = true;
+                    }
+
+                    valueList.add( value );
+                }
+
+                if ( hasValues )
+                {
+                    batchHandler.addObject( valueList );
+                }
+            }
+        }
+        
+        batchHandler.flush();
+        
+        statementManager.destroy();
+        
+        return null;
+    }
+
     public void dropAggregatedDataCache( String key )
     {
         crossTabStore.dropAggregatedDataCache( key );
@@ -200,7 +248,59 @@ public class DefaultCrossTabService
     {
         crossTabStore.createAggregatedOrgUnitDataCache( operands, key );
     }
+
+    @Async
+    public Future<?> populateAggregatedOrgUnitDataCache( List<DataElementOperand> operands,
+        Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, String key )
+    {
+        statementManager.initialise();
+        
+        final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( CrossTabStore.AGGREGATEDORGUNITDATA_CACHE_PREFIX + key ).init();
+        
+        for ( final Period period : periods )
+        {
+            for ( final OrganisationUnitGroup group : organisationUnitGroups )
+            {
+                for ( final OrganisationUnit organisationUnit : organisationUnits )
+                {
+                    final Map<DataElementOperand, String> map = dataMartManager.getAggregatedOrgUnitValueMap( period.getId(), organisationUnit.getId(), group.getId() );
     
+                    final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
+    
+                    valueList.add( String.valueOf( period.getId() ) );
+                    valueList.add( String.valueOf( organisationUnit.getId() ) );
+                    valueList.add( String.valueOf( group.getId() ) );
+    
+                    boolean hasValues = false;
+    
+                    for ( DataElementOperand operand : operands )
+                    {
+                        String value = map.get( operand );
+                        
+                        if ( value != null )
+                        {
+                            hasValues = true;
+                        }
+    
+                        valueList.add( value );
+                    }
+    
+                    if ( hasValues )
+                    {
+                        batchHandler.addObject( valueList );
+                    }
+                }
+            }
+        }
+        
+        batchHandler.flush();
+        
+        statementManager.destroy();
+        
+        return null;
+    }
+
     public void dropAggregatedOrgUnitDataCache( String key )
     {
         crossTabStore.dropAggregatedOrgUnitDataCache( key );

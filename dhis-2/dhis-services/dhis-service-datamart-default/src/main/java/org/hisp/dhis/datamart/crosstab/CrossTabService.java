@@ -74,6 +74,9 @@ public interface CrossTabService
      */
     void createAggregatedDataCache( List<DataElementOperand> operands, String key );
     
+    Future<?> populateAggregatedDataCache( List<DataElementOperand> operands,
+        Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, String key );
+    
     /**
      * Drops the aggregated data cache table.
      * @param key the key used in the table name.
@@ -90,7 +93,10 @@ public interface CrossTabService
      * @param key the key to use in table name.
      */
     void createAggregatedOrgUnitDataCache( List<DataElementOperand> operands, String key );
-
+    
+    Future<?> populateAggregatedOrgUnitDataCache( List<DataElementOperand> operands,
+        Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, String key );
+    
     /**
      * Drops the aggregated org unit data cache table.
      * 

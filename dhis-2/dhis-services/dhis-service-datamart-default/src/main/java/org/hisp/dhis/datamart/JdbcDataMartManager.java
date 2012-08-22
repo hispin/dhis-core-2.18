@@ -140,9 +140,46 @@ public class JdbcDataMartManager
     // -------------------------------------------------------------------------
 
     @Override
+    public Map<DataElementOperand, String> getAggregatedValueMap( int periodId, int organisationUnitId )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+            
+        try
+        {
+            final String sql =
+                "SELECT dataelementid, categoryoptioncomboid, value " +
+                "FROM aggregateddatavalue " +
+                "WHERE periodid = " + periodId + " " +
+                "AND organisationunitid = " + organisationUnitId;
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
+            
+            while ( resultSet.next() )
+            {
+                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
+                
+                map.put( operand, resultSet.getString( 3 ) );
+            }
+            
+            return map;
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get AggregatedDataValues", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    @Override
     public void createDataValueIndex()
     {
         executeSilently( "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid)" );
+        executeSilently( "CREATE INDEX aggregateddatavalue_period_index ON aggregateddatavalue (periodid, organisationunitid)" );
     }
 
     @Override
@@ -155,6 +192,7 @@ public class JdbcDataMartManager
     public void dropDataValueIndex()
     {
         executeSilently( "DROP INDEX aggregateddatavalue_index" );
+        executeSilently( "DROP INDEX aggregateddatavalue_period_index" );
     }
 
     @Override
@@ -188,9 +226,47 @@ public class JdbcDataMartManager
     // -------------------------------------------------------------------------
 
     @Override
+    public Map<DataElementOperand, String> getAggregatedOrgUnitValueMap( int periodId, int organisationUnitId, int organisationUnitGroupId )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+            
+        try
+        {
+            final String sql =
+                "SELECT dataelementid, categoryoptioncomboid, value " +
+                "FROM aggregatedorgunitdatavalue " +
+                "WHERE periodid = " + periodId + " " +
+                "AND organisationunitid = " + organisationUnitId + " " +
+                "AND organisationunitgroupid = " + organisationUnitGroupId;
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
+            
+            while ( resultSet.next() )
+            {
+                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
+                
+                map.put( operand, resultSet.getString( 3 ) );
+            }
+            
+            return map;
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get AggregatedOrgUnitDataValues", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+    
+    @Override
     public void createOrgUnitDataValueIndex()
     {
         executeSilently( "CREATE INDEX aggregatedorgunitdatavalue_index ON aggregatedorgunitdatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid, organisationunitgroupid)" );
+        executeSilently( "CREATE INDEX aggregatedorgunitdatavalue_period_index ON aggregatedorgunitdatavalue (periodid, organisationunitid, organisationunitgroupid)" );
     }
 
     @Override
@@ -203,6 +279,7 @@ public class JdbcDataMartManager
     public void dropOrgUnitDataValueIndex()
     {
         executeSilently( "DROP INDEX aggregatedorgunitdatavalue_index" );
+        executeSilently( "DROP INDEX aggregatedorgunitdatavalue_period_index" );
     }
 
     @Override
