@@ -6,7 +6,15 @@
     <include file="dhis-web-commons.xml" />
 
     <package name="dhis-web-sms" extends="dhis-web-commons" namespace="/sms">
-		
+
+
+        <action name="index" class="org.hisp.dhis.sms.action.NoAction">
+            <result name="success" type="velocity">
+                /dhis-web-sms/main.vm
+            </result>
+            <param name="page">/dhis-web-sms/menu.vm</param>
+        </action>
+        
         <action name="smsinput" class="org.hisp.dhis.sms.input.SMSInput">
             <result name="success" type="velocity">/dhis-web-sms/smssuccess.vm</result>
             <result name="error" type="velocity">/dhis-web-sms/smserror.vm</result>
