@@ -117,7 +117,7 @@ public class LoadFormAction
     {
         return this.customDataEntryFormCode;
     }
-    
+
     private DataEntryForm dataEntryForm;
 
     public DataEntryForm getDataEntryForm()
@@ -311,8 +311,8 @@ public class LoadFormAction
 
             for ( DataElementOperand operand : section.getGreyedFields() )
             {
-                greyedFields.put( operand.getDataElement().getId() + ":" +
-                    operand.getCategoryOptionCombo().getId(), true );
+                greyedFields.put( operand.getDataElement().getId() + ":" + operand.getCategoryOptionCombo().getId(),
+                    true );
             }
         }
     }

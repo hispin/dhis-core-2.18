@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+   [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+>
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.program.ProgramStageSection" table="programstagesection">
+
+    <id name="id" column="programstagesectionid">
+      <generator class="native" />
+    </id>
+
+	&identifiableProperties;
+    
+    <list name="programStageDataElements" table="programstagesection_dataelement">
+      <key column="programstagesectionid" />
+      <list-index column="sort_order" base="1" />
+      <many-to-many class="org.hisp.dhis.program.ProgramStageDataElement">
+      	<column name="programstageid"/>
+      	<column name="dataelementid" />
+      </many-to-many>
+    </list>
+    
+   <property name="sortOrder" column="sortorder" not-null="true" />
+        
+  </class>
+</hibernate-mapping>

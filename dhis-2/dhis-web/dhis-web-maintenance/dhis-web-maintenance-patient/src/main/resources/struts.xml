@@ -345,7 +345,92 @@
 			<param name="page">/dhis-web-maintenance-patient/programStageList.vm</param>
 			<param name="javascripts">javascript/programStage.js</param>
 		</action>
+		
+		<action name="validateProgramStageSection"
+			class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageSectionAction">
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseError.vm</result>
+		</action>
+		
+		<!-- Program stage section -->
+		
+		<action name="programStageSectionList"
+			class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/programStageSection.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
+			<param name="stylesheets">style/basic.css</param>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_MANAGEMENT</param>
+		</action>
+		
+		<action name="showAddProgramStageSectionForm"
+			class="org.hisp.dhis.patient.action.programstage.ShowAddProgramStageSectionAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/addProgramStageSectionForm.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
+			<param name="stylesheets">style/basic.css</param>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_ADD</param>
+		</action>
+		
+		<action name="addProgramStageSection"
+			class="org.hisp.dhis.patient.action.programstage.AddProgramStageSectionAction">
+			<result name="success" type="redirect">programStageSectionList.action?id=${programStageId}
+			</result>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_ADD</param>
+		</action>
+		
+		<action name="showUpdateProgramStageSectionForm"
+			class="org.hisp.dhis.patient.action.programstage.GetProgramStageSectionAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/updateProgramStageSectionForm.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
+			<param name="stylesheets">style/basic.css</param>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_UPDATE</param>
+		</action>
+		
+		<action name="updateProgramStageSection"
+			class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageSectionAction">
+			<result name="success" type="redirect">programStageSectionList.action?id=${programStageId}
+			</result>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_UPDATE</param>
+		</action>
 
+		<action name="getProgramStageSection"
+			class="org.hisp.dhis.patient.action.programstage.GetProgramStageSectionAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-patient/jsonProgramStageSection.vm</result>
+		</action>
+		
+		<action name="removeProgramStageSection"
+			class="org.hisp.dhis.patient.action.programstage.RemoveProgramStageSectionAction">
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_DELETE</param>
+		</action>
+		
+		<action name="showProgramStageSectionSortedOderForm"
+			class="org.hisp.dhis.patient.action.programstage.GetProgramStageAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-patient/programStageSectionSortOder.vm</param>
+			<param name="javascripts">javascript/commons.js,javascript/programStageSection.js</param>
+			<param name="stylesheets">style/basic.css</param>
+			<param name="requiredAuthorities">F_PROGRAMSTAGE_SECTION_MANAGEMENT</param>
+		</action>
+		
+		<action name="saveProgramStageSectionSortOrder"
+			class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSectionSortOrderAction">
+			<result name="success" type="redirect">programStageSectionList.action?id=${id}</result>
+		</action>
+		
+		
 		<!-- Data Entry Form -->
 
 		<action name="viewDataEntryForm"

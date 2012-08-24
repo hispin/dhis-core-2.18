@@ -50,6 +50,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="clazz" value="org.hisp.dhis.program.ProgramStage" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.program.ProgramStageSectionStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramStageSection" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStore" class="org.hisp.dhis.program.hibernate.HibernateProgramStore">
 		<property name="clazz" value="org.hisp.dhis.program.Program" />
@@ -212,6 +217,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="programStageStore" ref="org.hisp.dhis.program.ProgramStageStore" />
 	</bean>
 
+	<bean id="org.hisp.dhis.program.ProgramStageSectionService" class="org.hisp.dhis.program.DefaultProgramStageSectionService">
+		<property name="programStageSectionStore" ref="org.hisp.dhis.program.ProgramStageSectionStore" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.program.ProgramService" class="org.hisp.dhis.program.DefaultProgramService">
 		<property name="programStore" ref="org.hisp.dhis.program.ProgramStore" />
 	</bean>
