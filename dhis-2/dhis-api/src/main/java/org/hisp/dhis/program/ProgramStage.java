@@ -38,6 +38,12 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 public class ProgramStage
     extends BaseIdentifiableObject
 {
+    public static final String TYPE_DEFAULT = "default";
+
+    public static final String TYPE_SECTION = "section";
+
+    public static final String TYPE_CUSTOM = "custom";
+
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -55,8 +61,10 @@ public class ProgramStage
 
     private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
 
+    private Set<ProgramStageSection> programStageSections = new HashSet<ProgramStageSection>();
+
     private DataEntryForm dataEntryForm;
-    
+
     private Integer standardInterval;
 
     // -------------------------------------------------------------------------
@@ -116,7 +124,7 @@ public class ProgramStage
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-  
+
     public DataEntryForm getDataEntryForm()
     {
         return dataEntryForm;
@@ -130,6 +138,16 @@ public class ProgramStage
     public String getDescription()
     {
         return description;
+    }
+
+    public Set<ProgramStageSection> getProgramStageSections()
+    {
+        return programStageSections;
+    }
+
+    public void setProgramStageSections( Set<ProgramStageSection> programStageSections )
+    {
+        this.programStageSections = programStageSections;
     }
 
     public Integer getStandardInterval()
@@ -197,4 +215,18 @@ public class ProgramStage
         this.programStageDataElements = programStageDataElements;
     }
 
+    public String getDataEntryType()
+    {
+        if ( dataEntryForm != null )
+        {
+            return TYPE_CUSTOM;
+        }
+
+        if ( programStageSections.size() > 0 )
+        {
+            return TYPE_SECTION;
+        }
+
+        return TYPE_DEFAULT;
+    }
 }

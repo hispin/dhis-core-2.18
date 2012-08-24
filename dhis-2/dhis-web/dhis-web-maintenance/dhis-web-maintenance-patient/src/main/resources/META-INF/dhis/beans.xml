@@ -278,7 +278,51 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
+	
+	<!-- Program Stage Section -->
 
+	<bean id="org.hisp.dhis.patient.action.programstage.AddProgramStageSectionAction"
+		class="org.hisp.dhis.patient.action.programstage.AddProgramStageSectionAction" scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.programstage.UpdateProgramStageSectionAction"
+		class="org.hisp.dhis.patient.action.programstage.UpdateProgramStageSectionAction" scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.programstage.RemoveProgramStageSectionAction"
+		class="org.hisp.dhis.patient.action.programstage.RemoveProgramStageSectionAction" scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.programstage.GetProgramStageSectionAction"
+		class="org.hisp.dhis.patient.action.programstage.GetProgramStageSectionAction" scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.programstage.ShowAddProgramStageSectionAction"
+		class="org.hisp.dhis.patient.action.programstage.ShowAddProgramStageSectionAction" scope="prototype">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.programstage.ValidateProgramStageSectionAction"
+		class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageSectionAction" scope="prototype">
+		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.programstage.SaveProgramStageSectionSortOrderAction"
+		class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSectionSortOrderAction" scope="prototype">
+		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
+	</bean>
+	
 	<!-- Data Entry Form -->
 
 	<bean

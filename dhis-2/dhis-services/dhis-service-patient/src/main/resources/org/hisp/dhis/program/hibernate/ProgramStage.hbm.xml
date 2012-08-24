@@ -34,5 +34,10 @@
       
     <property name="standardInterval" />
     
+    <set name="programStageSections" order-by="sortOrder" cascade="all">
+      <key column="programStageid" />
+      <one-to-many class="org.hisp.dhis.program.ProgramStageSection" />
+    </set>
+    
   </class>
 </hibernate-mapping>
