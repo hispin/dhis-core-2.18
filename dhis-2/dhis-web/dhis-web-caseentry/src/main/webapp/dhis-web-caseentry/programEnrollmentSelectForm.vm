@@ -100,7 +100,8 @@
 <script>
 	var i18n_enroll = '$encoder.jsEscape( $i18n.getString( "enroll" ) , "'")';
 	var i18n_program_stage = '$encoder.jsEscape( $i18n.getString( "program_stage" ) , "'")';
-
+	var isDashboard = false;
+	
 	jQuery('#programEnrollmentSelectDiv').ready(function()
 		{
 			validation( 'programEnrollmentSelectDiv', function(form){

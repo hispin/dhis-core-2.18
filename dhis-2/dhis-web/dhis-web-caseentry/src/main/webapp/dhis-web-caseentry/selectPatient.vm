@@ -110,6 +110,7 @@
 	unSave = false;
 	isAjax = true;
 	contentDiv = '';
+	var isDashboard = true;
 	
 	// ----------------------------------------------------------------
 	// Search field

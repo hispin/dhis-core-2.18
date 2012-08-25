@@ -1,3 +1,7 @@
+<script>
+	isDashboard = true;
+</script>
+
 <h4>$i18n.getString("patient_dashboard")
  &#8226; <a href="javascript:showUpdatePatientForm( '$patient.id', true )">$i18n.getString( "edit_profile" )</a>
  &#8226; <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );">$i18n.getString( "manage_relationship" )</a>
@@ -166,4 +170,4 @@
 	</tr>
 </table>
 
-<div id='dataEntryFromDashboard'></div>
+<div id='dataEntryFormDiv'></div>
