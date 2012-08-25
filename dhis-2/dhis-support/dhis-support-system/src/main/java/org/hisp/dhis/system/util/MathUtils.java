@@ -223,6 +223,17 @@ public class MathUtils
     }
     
     /**
+     * Tests whether the given double is equal to zero.
+     * 
+     * @param value the value.
+     * @return true or false.
+     */
+    public static boolean isZero( double value )
+    {
+        return isEqual( value, 0d );
+    }
+    
+    /**
      * Returns a random int between 0 and 999.
      */
     public static int getRandom()

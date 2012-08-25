@@ -98,19 +98,19 @@ public class DefaultCrossTabService
     // CrossTabService implementation
     // -------------------------------------------------------------------------
     
-    public String createCrossTabTable( List<DataElementOperand> operands )
+    public String createCrossTabTable( List<Integer> organisationUnitIds )
     {
         final String key = RandomStringUtils.randomAlphanumeric( 8 );
         
         crossTabStore.dropCrossTabTable( key );    
-        crossTabStore.createCrossTabTable( operands, key );
+        crossTabStore.createCrossTabTable( organisationUnitIds, key );
 
         return key;
     }
 
     @Async
-    public Future<?> populateCrossTabTable( List<DataElementOperand> operands,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key )
+    public Future<?> populateCrossTabTable( Collection<DataElementOperand> operands,
+        Collection<Integer> periodIds, List<Integer> organisationUnitIds, String key )
     {
         statementManager.initialise();
         
@@ -119,22 +119,23 @@ public class DefaultCrossTabService
 
         int rows = 0;
         
-        for ( final Integer periodId : periodIds )
+        for ( DataElementOperand operand : operands )
         {
-            for ( final Integer sourceId : organisationUnitIds )
+            for ( int periodId : periodIds )
             {
-                final Map<DataElementOperand, String> map = dataMartManager.getDataValueMap( periodId, sourceId );
+                final Map<Integer, String> map = dataMartManager.getDataValueMap( operand, periodId );
 
-                final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
+                final List<String> valueList = new ArrayList<String>( operands.size() + 3 );
 
+                valueList.add( String.valueOf( operand.getDataElementId() ) );
+                valueList.add( String.valueOf( operand.getOptionComboId() ) );
                 valueList.add( String.valueOf( periodId ) );
-                valueList.add( String.valueOf( sourceId ) );
 
                 boolean hasValues = false;
 
-                for ( DataElementOperand operand : operands )
+                for ( int organisationUnitId : organisationUnitIds )
                 {
-                    String value = map.get( operand );
+                    String value = map.get( organisationUnitId );
 
                     if ( value != null && value.length() > MAX_LENGTH )
                     {
@@ -306,18 +307,12 @@ public class DefaultCrossTabService
         crossTabStore.dropAggregatedOrgUnitDataCache( key );
     }
     
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
-        Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
+    public Collection<CrossTabDataValue> getCrossTabDataValues( DataElementOperand operand, 
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key )
     {
-        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceIds, key );
+        return crossTabStore.getCrossTabDataValues( operand, periodIds, organisationUnitIds, key );
     }
 
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
-        Collection<Integer> periodIds, int sourceId, String key )
-    {
-        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceId, key );
-    }
-    
     public Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
         Period period, OrganisationUnit unit, OrganisationUnitGroup group, String key )
     {

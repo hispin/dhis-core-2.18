@@ -30,21 +30,22 @@ package org.hisp.dhis.datamart.aggregation.dataelement;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
+import org.hisp.dhis.datamart.OrgUnitOperand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.springframework.util.CollectionUtils;
+import org.hisp.dhis.system.util.MathUtils;
 
 /**
  * @author Lars Helge Overland
@@ -76,62 +77,72 @@ public class AverageIntSingleValueAggregator
     // DataElementAggregator implementation
     // -------------------------------------------------------------------------
 
-    public Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
-        final Period period, int unitLevel, final Collection<Integer> organisationUnits, String key )
+    public List<OrgUnitOperand> getAggregatedValues( DataElementOperand operand, Period period, 
+        Collection<Integer> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, OrganisationUnitHierarchy hierarchy, String key )
     {
-        if ( CollectionUtils.isEmpty( operands ) )
+        final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operand, 
+            aggregationCache.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ), hierarchy.getChildren( organisationUnits ), key );
+        
+        final List<OrgUnitOperand> values = new ArrayList<OrgUnitOperand>();
+
+        if ( crossTabValues.size() == 0 )
         {
-            return EMPTY_MAP;
+            return values;
         }
         
-        final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operands, 
-            aggregationCache.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ), organisationUnits, key );
-        
-        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
-
-        for ( final CrossTabDataValue crossTabValue : crossTabValues )
+        for ( Integer organisationUnit : organisationUnits )
         {
-            final int dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
+            final int unitLevel = operand.isHasAggregationLevels() ? aggregationCache.getLevelOfOrganisationUnit( organisationUnit ) : 0; //TODO aggregation level
             
-            for ( final Entry<DataElementOperand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
+            for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
-                if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel )  )
+                final Collection<Integer> orgUnitChildren = hierarchy.getChildren( organisationUnit, group ); // TODO group
+
+                double value = 0d;
+                
+                for ( Integer orgUnitChild : orgUnitChildren )
                 {
-                    double value = 0.0;
+                    final int dataValueLevel = operand.isHasAggregationLevels() ? aggregationCache.getLevelOfOrganisationUnit( orgUnitChild ) : 0; //TODO aggregation level
                     
-                    try
+                    if ( operand.isHasAggregationLevels() && !operand.aggregationLevelIsValid( unitLevel, dataValueLevel ) )
                     {
-                        value = Double.parseDouble( entry.getValue() );
-                    }
-                    catch ( NumberFormatException ex )
-                    {
-                        log.warn( "Value skipped, not numeric: '" + entry.getValue() );
                         continue;
                     }
-
-                    final Double current = values.get( entry.getKey() );
-                    value += current != null ? current : 0.0;        
-                    values.put( entry.getKey(), value );
+                    
+                    for ( CrossTabDataValue crossTabValue : crossTabValues ) // Iterate periods
+                    {
+                        String val = crossTabValue.getValueMap().get( orgUnitChild ); // TODO make set of periods, avoid iteration?
+    
+                        if ( val == null )
+                        {
+                            continue;
+                        }
+                        
+                        try
+                        {
+                            value += Double.parseDouble( val );
+                        }
+                        catch ( NumberFormatException ex )
+                        {
+                            log.warn( "Value skipped, not numeric: '" + val );
+                            continue;
+                        }
+                    }
+                }
+                
+                if ( !MathUtils.isZero( value ) )
+                {
+                    values.add( new OrgUnitOperand( organisationUnit, group != null ? group.getId() : 0, value ) );
                 }
             }
-        }                    
+        }
         
         return values;
     }
     
-    public Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final PeriodType periodType )
+    public boolean isApplicable( DataElementOperand operand, PeriodType periodType )
     {
-        final Collection<DataElementOperand> filteredOperands = new HashSet<DataElementOperand>();
-        
-        for ( final DataElementOperand operand : operands )
-        {
-            if ( operand.getValueType().equals( VALUE_TYPE_INT ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) &&
-                operand.getFrequencyOrder() >= periodType.getFrequencyOrder() )
-            {
-                filteredOperands.add( operand );
-            }
-        }
-        
-        return filteredOperands;
+        return ( operand.getValueType().equals( VALUE_TYPE_INT ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) &&
+            operand.getFrequencyOrder() >= periodType.getFrequencyOrder() );
     }    
 }

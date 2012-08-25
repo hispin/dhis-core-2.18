@@ -100,27 +100,26 @@ public class JdbcDataMartManager
     }
 
     @Override
-    public Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId )
+    public Map<Integer, String> getDataValueMap( DataElementOperand operand, int periodId )
     {
         final StatementHolder holder = statementManager.getHolder();
             
         try
         {
             final String sql =
-                "SELECT dataelementid, categoryoptioncomboid, value " +
+                "SELECT sourceid, value " +
                 "FROM datavalue " +
-                "WHERE periodid = " + periodId + " " +
-                "AND sourceid = " + sourceId;
+                "WHERE dataelementid = " + operand.getDataElementId() + " " +
+                "AND categoryoptioncomboid = " + operand.getOptionComboId() + " " +
+                "AND periodid = " + periodId;
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
-            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
+            final Map<Integer, String> map = new HashMap<Integer, String>();
             
             while ( resultSet.next() )
             {
-                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
-                
-                map.put( operand, resultSet.getString( 3 ) );
+                map.put( resultSet.getInt( 1 ), resultSet.getString( 2 ) );
             }
             
             return map;

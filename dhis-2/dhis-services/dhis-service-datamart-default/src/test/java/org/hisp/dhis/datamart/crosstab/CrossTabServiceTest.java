@@ -65,7 +65,6 @@ import org.junit.Test;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: CrossTabServiceTest.java 6217 2008-11-06 18:53:04Z larshelg $
  */
 public class CrossTabServiceTest
     extends DhisTest
@@ -78,7 +77,7 @@ public class CrossTabServiceTest
 
     private List<DataElementOperand> operands;
     private Collection<Integer> periodIds;
-    private Collection<Integer> organisationUnitIds;
+    private List<Integer> organisationUnitIds;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -146,7 +145,7 @@ public class CrossTabServiceTest
         Character[] characters = { 'A', 'B', 'C', 'D', 'E' };
         
         periodIds = new HashSet<Integer>();
-        organisationUnitIds = new HashSet<Integer>();
+        organisationUnitIds = new ArrayList<Integer>();
         
         Collection<DataElement> dataElements = new HashSet<DataElement>();
         Collection<Period> periods = new HashSet<Period>();
@@ -192,27 +191,28 @@ public class CrossTabServiceTest
     public void testPopulateCrossTabValue()
         throws Exception
     {
-        String key = crossTabService.createCrossTabTable( operands );
+        String key = crossTabService.createCrossTabTable( organisationUnitIds );
         crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key ).get();
         
-        Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operands, periodIds, organisationUnitIds, key );
-        
-        assertNotNull( values );
-        
-        assertEquals( 25, values.size() );
-        
-        for ( CrossTabDataValue crossTabValue : values )
+        for ( DataElementOperand operand : operands )
         {
-            assertTrue( crossTabValue.getPeriodId() != 0 );
-            assertTrue( crossTabValue.getSourceId() != 0 );
+            Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operand, periodIds, organisationUnitIds, key );
+
+            assertNotNull( values );
+
+            assertEquals( 5, values.size() );
             
-            assertNotNull( crossTabValue.getValueMap() );
-            
-            assertEquals( 10, crossTabValue.getValueMap().size() );
-            
-            for ( String value : crossTabValue.getValueMap().values() )
+            for ( CrossTabDataValue crossTabValue : values )
             {
-                assertEquals( "10", value );
+                assertTrue( crossTabValue.getPeriodId() != 0 );
+                
+                assertNotNull( crossTabValue.getValueMap() );
+                assertEquals( 5, crossTabValue.getValueMap().size() );
+                
+                for ( String value : crossTabValue.getValueMap().values() )
+                {
+                    assertEquals( "10", value );
+                }
             }
         }
     }

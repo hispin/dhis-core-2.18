@@ -238,7 +238,6 @@ public class DefaultDataMartEngine
         // ---------------------------------------------------------------------
 
         organisationUnitService.filterOrganisationUnitsWithoutData( organisationUnits );
-        Collections.shuffle( organisationUnits );
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
         FilterUtils.filter( dataElements, new DataElementWithAggregationFilter() );
         expressionService.filterInvalidIndicators( indicators );
@@ -297,18 +296,24 @@ public class DefaultDataMartEngine
         // Create crosstabtable
         // ---------------------------------------------------------------------
 
+        //TODO improve index on datavalue for crosstab
+        
         final Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
-        final Set<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
-        final List<List<Integer>> childrenPages = new PaginatedList<Integer>( childrenIds ).setNumberOfPages( cpuCores ).getPages();
+        final Set<Integer> orgUnitChildrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
+        final List<Integer> crossTabOrgUnitIds = new ArrayList<Integer>( orgUnitChildrenIds );
+        
+        final String key = crossTabService.createCrossTabTable( crossTabOrgUnitIds );
 
-        final List<DataElementOperand> crossTabOperands = new ArrayList<DataElementOperand>( allOperands );
-        final String key = crossTabService.createCrossTabTable( crossTabOperands );
+        final List<DataElementOperand> operandList = new ArrayList<DataElementOperand>( allOperands );
+        Collections.shuffle( operandList );
+        
+        final List<List<DataElementOperand>> operandPages = new PaginatedList<DataElementOperand>( operandList ).setNumberOfPages( cpuCores ).getPages();
         
         List<Future<?>> crossTabFutures = new ArrayList<Future<?>>();
         
-        for ( List<Integer> childrenPage : childrenPages )
+        for ( List<DataElementOperand> operandPage : operandPages )
         {
-            crossTabFutures.add( crossTabService.populateCrossTabTable( crossTabOperands, intersectingPeriodIds, childrenPage, key ) );
+            crossTabFutures.add( crossTabService.populateCrossTabTable( operandPage, intersectingPeriodIds, crossTabOrgUnitIds, key ) );
         }
 
         ConcurrentUtils.waitForCompletion( crossTabFutures );
@@ -324,32 +329,30 @@ public class DefaultDataMartEngine
         
         final boolean isGroups = organisationUnitGroups != null && organisationUnitGroups.size() > 0 && groupLevel > 0;
 
-        List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<OrganisationUnit>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
-
         if ( isDataElements )
         {
             // -----------------------------------------------------------------
             // 1. Export data element values
             // -----------------------------------------------------------------
             
-            if ( allOperands.size() > 0 )
+            if ( operandList.size() > 0 )
             {
                 final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
-    
+                
                 List<Future<?>> futures = new ArrayList<Future<?>>();
                 
-                for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
+                for ( List<DataElementOperand> operandPage : operandPages )
                 {
-                    futures.add( dataElementDataMart.exportDataValues( allOperands, periods, organisationUnitPage, 
+                    futures.add( dataElementDataMart.exportDataValues( operandPage, periods, organisationUnits, 
                         null, hierarchy, AggregatedDataValueTempBatchHandler.class, key ) );
                 }
-    
+                
                 ConcurrentUtils.waitForCompletion( futures );
             }
             
-            clock.logTime( "Exported values for data element operands (" + allOperands.size() + "), pages: " + organisationUnitPages.size() + ", " + SystemUtils.getMemoryString() );
+            clock.logTime( "Exported values for data element operands (" + operandList.size() + "), pages: " + operandPages.size() + ", " + SystemUtils.getMemoryString() );
             notifier.notify( id, DATAMART, "Dropping data element index" );
-    
+
             // -----------------------------------------------------------------
             // 2. Drop data element index
             // -----------------------------------------------------------------
@@ -398,24 +401,22 @@ public class DefaultDataMartEngine
             
             FilterUtils.filter( groupOrganisationUnits, new OrganisationUnitAboveOrEqualToLevelFilter( groupLevel ) );
             
-            organisationUnitPages = new PaginatedList<OrganisationUnit>( groupOrganisationUnits ).setNumberOfPages( cpuCores ).getPages();
-            
-            if ( allOperands.size() > 0 )
+            if ( operandList.size() > 0 )
             {
-                final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits, organisationUnitGroups );
+                final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( groupOrganisationUnits, organisationUnitGroups );
                 
                 List<Future<?>> futures = new ArrayList<Future<?>>();
                 
-                for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
+                for ( List<DataElementOperand> operandPage : operandPages )
                 {
-                    futures.add( dataElementDataMart.exportDataValues( allOperands, periods, organisationUnitPage, 
+                    futures.add( dataElementDataMart.exportDataValues( operandPage, periods, groupOrganisationUnits, 
                         organisationUnitGroups, hierarchy, AggregatedOrgUnitDataValueTempBatchHandler.class, key ) );
                 }
 
                 ConcurrentUtils.waitForCompletion( futures );
             }
             
-            clock.logTime( "Exported values for data element operands (" + allOperands.size() + "), pages: " + organisationUnitPages.size()  + ", " + SystemUtils.getMemoryString() );
+            clock.logTime( "Exported values for data element operands (" + operandList.size() + "), pages: " + operandPages.size()  + ", " + SystemUtils.getMemoryString() );
             notifier.notify( id, DATAMART, "Dropping data element data indexes" );
 
             // -----------------------------------------------------------------
@@ -457,6 +458,8 @@ public class DefaultDataMartEngine
 
         crossTabService.dropCrossTabTable( key );
         
+        List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<OrganisationUnit>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
+        
         if ( isIndicators )
         {
             // -----------------------------------------------------------------
@@ -477,7 +480,7 @@ public class DefaultDataMartEngine
 
             ConcurrentUtils.waitForCompletion( aggregatedDataCacheFutures );
         
-            clock.logTime( "Created aggregated data cache, number of indicator operands: " + indicatorOperands.size() + ", operands with data: " + allOperands.size() );
+            clock.logTime( "Created aggregated data cache, number of indicator operands: " + indicatorOperands.size() );
             notifier.notify( id, DATAMART, "Exporting indicator data" );
             
             // -----------------------------------------------------------------
