@@ -15,6 +15,7 @@
 		disable('advancedSearchBtn');
 		hideById('searchBySelectedUnitTD');
 		setFieldValue('searchByProgramStage', 'true');
+		showById('dueDateTR');
 	});	
 </script>
 
