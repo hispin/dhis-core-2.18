@@ -86,7 +86,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "expiry_days" )</label></td>
-        <td><input type="text" id="expiryDays" name="expiryDays" style="width:20em"/></td>
+        <td><input type="text" id="expiryDays" name="expiryDays" value="0" style="width:20em"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
