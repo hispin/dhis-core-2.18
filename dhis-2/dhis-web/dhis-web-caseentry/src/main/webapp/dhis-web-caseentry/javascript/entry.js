@@ -96,7 +96,7 @@ function loadProgramStages()
 function saveVal( dataElementId )
 {
 	if( jQuery('#entryFormContainer [id=programStageId]') == null) return;
-	var programStageId = jQuery('#entryFormContainer [id=programStageId]').val();
+	var programStageId = jQuery('.stage-object-selected').attr('psid');
         
 	var fieldId = programStageId + '-' + dataElementId + '-val';
 	
@@ -175,7 +175,7 @@ function saveVal( dataElementId )
 
 function saveOpt( dataElementId )
 {
-	var programStageId = jQuery('#entryFormContainer [id=programStageId]').val();
+	var programStageId = jQuery('.stage-object-selected').attr('psid');
 	var field = byId( programStageId + '-' + dataElementId + '-val' );	
 	field.style.backgroundColor = SAVING_COLOR;
 	
@@ -570,12 +570,12 @@ function doComplete( isCreateEvent )
 					var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
 					if( irregular == 'true' )
 					{
-						var programStageId = jQuery(".stage-object-selected").css('psid');
+						var programStageId = jQuery(".stage-object-selected").attr('psid');
 						showCreateNewEvent( programInstanceId, programStageId );
 					}
 					
-					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');
-					if( selectedProgram.attr('type')=='2' && irregular == 'false' )
+					var selectedProgram = jQuery('.stage-object-selected');
+					if( selectedProgram.attr('programType')=='2' )
 					{
 						selectedProgram.remove();
 						hideById('programInstanceDiv');
@@ -590,7 +590,6 @@ function doComplete( isCreateEvent )
 					jQuery('#completedTB' ).prepend("<tr><td>" + completedRow + "</td></tr>");
 					hideById('tr1_' + programInstanceId );
 					hideById('tr2_' + programInstanceId );
-					hideById('programEnrollmentDiv');	
 					jQuery('#img_' + programInstanceId).attr('src','');					
 					
 					if( isCreateEvent )
