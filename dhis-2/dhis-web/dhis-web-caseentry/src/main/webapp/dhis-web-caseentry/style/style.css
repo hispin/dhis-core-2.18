@@ -122,14 +122,6 @@ div.actions
 	text-align: right;
 }
 
-div.enrollment-form
-{
-	border:1px solid #c0c0c0; 
-	padding:10px;
-	margin-right:10px;
-	border-radius:3px;
-}
-
 /*----------------------------------------------------------------------------*/
 /* Data entry form                                                        */
 /*----------------------------------------------------------------------------*/
@@ -250,7 +242,6 @@ div.link-area
 {
   height: 150px;
   width: 340px;
-  margin-top:-10px;
   overflow-y: auto;
   overflow-x:hidden;
 }

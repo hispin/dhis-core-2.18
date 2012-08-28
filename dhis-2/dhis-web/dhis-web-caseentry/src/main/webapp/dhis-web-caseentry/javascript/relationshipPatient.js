@@ -44,21 +44,6 @@ function loadDataEntry( programStageInstanceId )
 			
 			hideLoader();
 			hideById('contentDiv'); 
-			
-			if(isDashboard){
-				showById('executionDateTB');
-				showById('patientInfoDiv');
-				$( '#dataEntryFormDiv' ).dialog(
-					{
-						title:i18n_program_stage,
-						maximize:true, 
-						closable:true,
-						modal:false,
-						overlay:{background:'#000000', opacity:0.1},
-						width:1000,
-						height:500
-					});
-			}
 		} );
 }
 

@@ -111,26 +111,7 @@ public class SaveProgramEnrollmentAction
     {
         this.programId = programId;
     }
-
-    public Integer getProgramId()
-    {
-        return programId;
-    }
-
-    private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
-
-    private Program program;
-
-    public Program getProgram()
-    {
-        return program;
-    }
-
+    
     private String enrollmentDate;
 
     public void setEnrollmentDate( String enrollmentDate )
@@ -145,6 +126,20 @@ public class SaveProgramEnrollmentAction
         this.dateOfIncident = dateOfIncident;
     }
 
+    private ProgramInstance programInstance;
+    
+    public ProgramInstance getProgramInstance()
+    {
+        return programInstance;
+    }
+
+    private ProgramStageInstance activeProgramStageInstance;
+    
+    public ProgramStageInstance getActiveProgramStageInstance()
+    {
+        return activeProgramStageInstance;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -152,19 +147,17 @@ public class SaveProgramEnrollmentAction
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( patientId );
+        Patient patient = patientService.getPatient( patientId );
 
-        program = programService.getProgram( programId );
+        Program program = programService.getProgram( programId );
 
-        if ( dateOfIncident == null || dateOfIncident.isEmpty()  )
+        if ( dateOfIncident == null || dateOfIncident.isEmpty() )
         {
             dateOfIncident = enrollmentDate;
         }
 
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
             false );
-
-        ProgramInstance programInstance = null;
 
         if ( programInstances.iterator().hasNext() )
         {
@@ -185,17 +178,24 @@ public class SaveProgramEnrollmentAction
             patient.getPrograms().add( program );
             patientService.updatePatient( patient );
 
+            boolean isFirstStage = false;
             for ( ProgramStage programStage : program.getProgramStages() )
             {
                 ProgramStageInstance programStageInstance = new ProgramStageInstance();
                 programStageInstance.setProgramInstance( programInstance );
                 programStageInstance.setProgramStage( programStage );
-                Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ), programStage
-                    .getMinDaysFromStart() );
+                Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ),
+                    programStage.getMinDaysFromStart() );
 
                 programStageInstance.setDueDate( dueDate );
 
                 programStageInstanceService.addProgramStageInstance( programStageInstance );
+                
+                if( !isFirstStage )
+                {
+                    activeProgramStageInstance = programStageInstance;
+                    isFirstStage = true;
+                }
             }
         }
         else
@@ -215,7 +215,7 @@ public class SaveProgramEnrollmentAction
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
             }
         }
-
+        
         return SUCCESS;
     }
 }

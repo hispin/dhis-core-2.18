@@ -1,7 +1,3 @@
-<script>
-	isDashboard = true;
-</script>
-
 <h4>$i18n.getString("patient_dashboard")
  &#8226; <a href="javascript:showUpdatePatientForm( '$patient.id', true )">$i18n.getString( "edit_profile" )</a>
  &#8226; <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );">$i18n.getString( "manage_relationship" )</a>
@@ -11,7 +7,7 @@
 <div id="subMenu">
 	<ul>
 		<li><a href="javascript:onClickBackBtn();">$i18n.getString( 'back_to_registration' )</a></li>
-		<li><a href="javascript:showProgramEnrollmentSelectForm( '$patient.id' )">$i18n.getString( "program_management" )</a></li>
+		<li><a href="javascript:showProgramEnrollmentForm( '$patient.id' )">$i18n.getString( "program_management" )</a></li>
 	</ul>
 </div>
 
@@ -26,7 +22,7 @@
 								<tr><th>$i18n.getString("demographics")</th></tr>
 							</table>
 							<div class="contentProviderTable">
-								<table>
+								<table width='100%'>
 									<tr>
 										<td>$i18n.getString("full_name")</td>
 										<td>$!patient.getFullName()</td>
@@ -73,30 +69,37 @@
 							</div>
 						</div>
 					</td>
-				</tr>
-				<tr><td></td></tr>
-				<tr>
 					<td>
 						<div class="link-area">
 							<table width='100%'>
 								<tr><th>$i18n.getString("active_programs")</th></tr>
 							</table>
 							<div class="contentProviderTable">
-								<table width='100%'>
+								<table width='100%' id='activeTB'>
 									#foreach( $programInstance in $activeProgramInstances )
-										<tr onclick="javascript:activeProgramInstanceDiv('$programInstance.id');" style='cursor:pointer;'>
-											<td>
-												<a href='#pi_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
+										#set($programStageInstanceId = '')
+										#if($programInstance.program.type==2)
+											#foreach( $programStageInstance in $programInstance.programStageInstances)
+												#set($programStageInstanceId = $programStageInstance.id)
+											#end
+										#end
+										<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
+											programStageInstanceId='$programStageInstanceId'>
+											<td id='td_$programInstance.id'>
+												<a href='javascript:loadProgramInstance("$programInstance.id", false)'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
 												<img id="img_$programInstance.id" name='imgActive'>
+											</td>
+											<td>
+												<img src='../images/checked.png' style='cursor:pointer;' onclick='unenrollmentForm("$programInstance.id")'>
 											</td>
 										</tr>
 										#set($flag = 'false')
 										#foreach( $programStageInstance in $programInstance.programStageInstances )
 											#set( $status = $statusMap.get( $programStageInstance.id ) )
 											#if( $status!=1 && $flag=='false')
-												<tr onclick="javascript:loadProgramStageRecords($programStageInstance.id, false)" style='cursor:pointer;'>
-													<td>
-														<a>>> $programStageInstance.programStage.name ($format.formatDate($programStageInstance.dueDate))</a>
+												<tr id='tr2_$programInstance.id' onclick='javascript:loadProgramStageRecords("$programStageInstance.id", false)' style='cursor:pointer;'>
+													<td colspan='2'>
+														<a>&#8226; $programStageInstance.programStage.name ($format.formatDate($programStageInstance.dueDate))</a>
 													</td>
 												</tr>
 											#set($flag = 'true')
@@ -107,20 +110,24 @@
 							</div>
 						</div>
 					</td>
-				</tr>
-				<tr><td></td></tr>
-				<tr>
 					<td>
 						<div class="link-area">
 							<table width='100%'>
 								<tr><th>$i18n.getString("completed_programs")</th></tr>
 							</table>
 							<div class="contentProviderTable">
-								<table  width='100%'>
-									#foreach( $programInstance in $completedProgramInstances )
-										<tr>
-											<td onclick="javascript:activeProgramInstanceDiv('$programInstance.id');" style='cursor:pointer;'>
-												<a href='#pi_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
+								<table id='completedTB' width='100%'>
+									#foreach($programInstance in $completedProgramInstances)
+										#set($programStageInstanceId = '')
+										#if($programInstance.program.type==2)
+											#foreach( $programStageInstance in $programInstance.programStageInstances)
+												#set($programStageInstanceId = $programStageInstance.id)
+											#end
+										#end
+										<tr id='tr_$programInstance.id' type='$programInstance.program.type' onclick="javascript:loadProgramInstance('$programInstance.id', true);" style='cursor:pointer;'
+											programStageInstanceId='$programStageInstanceId'>
+											<td>
+												<a>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
 												<img id="img_$programInstance.id" name='imgActive'>
 											</td>
 										</tr>
@@ -132,42 +139,9 @@
 				</tr>
 			</table>
 		</td>
-		
-		<td valign='top'>
-			<!-- Active program-stage-instances -->
-			#foreach( $programInstance in $activeProgramInstances )
-				<div id='pi_$programInstance.id' name="eventDiv" #if( $programInstance.completed!='true' ) class="event-dashboard" #else class="event-dashboard hidden" #end>
-					<table width="100%" onclick="hideProgramInstanceDiv('$programInstance.id')" style='cursor:pointer;'>
-						<tr>
-							<th>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate) - $i18n.getString("active"))
-							</th>
-						</tr>
-					</table>
-					<div class='event-flow-dashboard'>
-						#set( $programStageInstances = $programInstance.programStageInstances )
-						#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
-					</div>
-				</div>
-			#end
-			
-			<!-- Completed program-stage-instances -->
-			#foreach( $programInstance in $completedProgramInstances )
-				<div id='pi_$programInstance.id' name="eventDiv" #if( $programInstance.completed!='true' ) class="event-dashboard" #else class="event-dashboard hidden" #end>
-					<table width="100%" onclick="hideProgramInstanceDiv('$programInstance.id')" style='cursor:pointer;'>
-						<tr>
-							<th>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate) - $i18n.getString("completed"))
-							</th>
-						</tr>
-					</table>
-					
-					<div class='event-flow-dashboard'>
-						#set( $programStageInstances = $programInstance.programStageInstances )
-						#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
-					</div>
-				</div>
-			#end
-		</td>
 	</tr>
 </table>
 
+<p>&nbsp;</p>
+<div id='programEnrollmentDiv' class='hidden'></div>
 <div id='dataEntryFormDiv'></div>

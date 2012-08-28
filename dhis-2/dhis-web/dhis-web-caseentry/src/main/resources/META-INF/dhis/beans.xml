@@ -618,9 +618,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.caseentry.action.patient.ProgramEnrollmentAction"
 		class="org.hisp.dhis.caseentry.action.patient.ProgramEnrollmentAction"
 		scope="prototype">
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="identifierTypeService"
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		<property name="patientIdentifierService"

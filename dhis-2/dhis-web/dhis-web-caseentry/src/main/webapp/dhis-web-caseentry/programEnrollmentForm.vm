@@ -10,12 +10,9 @@
 		<li><a href="#tab-3">$i18n.getString("modify_due_date_or_visit_date")</a></li>
 	</ul>
 	
-	
 	<div id="tab-1">
 		<div id='dataRecordingSelectDiv'>
 			<form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
-				#parse( "/dhis-web-caseentry/colorHelp.vm" )
-				</p>
 				<div id='programInstanceDiv'>
 					#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
 					<br>		
@@ -233,7 +230,6 @@
 		#end
 	#end
 	
-	byId('enrollBtn').value = i18n_update;
 	setInnerHTML('enrollmentDateDescription', "$!program.dateOfEnrollmentDescription" );
 	setInnerHTML('dateOfIncidentDescription', "$!program.dateOfIncidentDescription" );
 	setFieldValue('enrollmentDate', "$!format.formatDate( $programInstance.enrollmentDate )" );

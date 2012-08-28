@@ -29,39 +29,6 @@
 <input type='hidden' name='programStageId' id='programStageId' value='$!programStageInstance.programStage.id'>
 
 
-<table class="mainPageTable" id='patientInfoDiv' class='hidden'> 
-	<tr>
-		<td valign="top">
-	<table>
-		<tr>            
-			<td class="bold">$i18n.getString( "full_name" ):</td>
-			<td>$encoder.htmlEncode( $programStageInstance.programInstance.patient.getFullName() )<td>
-		</tr>
-		<tr>
-			<td class="bold">$i18n.getString( "gender" ):</td>
-			<td>$i18n.getString("$programStageInstance.programInstance.patient.gender")</td>
-		</tr>
-		<tr>
-			<td class="bold">$i18n.getString( "date_of_birth" ):</td>
-			<td>$format.formatDate( $programStageInstance.programInstance.patient.birthDate ) $programStageInstance.programInstance.patient.getAge()<td>
-		</tr>
-		</table>
-	</tr>
-</table>
-
-<table id='executionDateTB' class='hidden'>
-	<tr>
-		<th class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
-		<th><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >
-			<script type="text/javascript">
-			   datePickerValid( 'executionDate', false );
-			</script>
-		</th>
-		<th class='text-column'><label for="dueDate">$i18n.getString( "due_date" ) </label></th>
-		<th><input type="text" id="dueDate" name="dueDate" class='criteria' value="$!format.formatDate( $programStageInstance.dueDate )" readonly > </th>
-	</tr>
-</table>
-
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	#if( $customDataEntryFormCode )
 		#parse( "/dhis-web-caseentry/customDataEntryForm.vm" )
