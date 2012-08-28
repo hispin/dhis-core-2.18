@@ -35,7 +35,6 @@ import java.util.Map;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
 import org.hisp.dhis.patient.PatientAttributeGroupService;
@@ -44,14 +43,12 @@ import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
@@ -67,10 +64,6 @@ public class ProgramEnrollmentAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private PatientService patientService;
-
-    private ProgramService programService;
 
     private ProgramInstanceService programInstanceService;
 
@@ -92,15 +85,9 @@ public class ProgramEnrollmentAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
-
-    private Integer programId;
+    private Integer programInstanceId;
 
     private Map<Integer, String> identiferMap;
-
-    private Patient patient;
-
-    private Program program;
 
     private ProgramInstance programInstance;
 
@@ -125,11 +112,6 @@ public class ProgramEnrollmentAction
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
-    }
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
     }
 
     public Collection<PatientAttribute> getNoGroupAttributes()
@@ -176,12 +158,7 @@ public class ProgramEnrollmentAction
     {
         this.identifierTypeService = identifierTypeService;
     }
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
+    
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
@@ -192,34 +169,19 @@ public class ProgramEnrollmentAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    public void setProgramInstanceId( Integer programInstanceId )
+    {
+        this.programInstanceId = programInstanceId;
+    }
+
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
         return identifierTypes;
     }
 
-    public void setPatientId( Integer patientId )
-    {
-        this.patientId = patientId;
-    }
-
     public ProgramInstance getProgramInstance()
     {
         return programInstance;
-    }
-
-    public Patient getPatient()
-    {
-        return patient;
-    }
-
-    public Program getProgram()
-    {
-        return program;
-    }
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
     }
 
     public Collection<ProgramStageInstance> getProgramStageInstances()
@@ -246,35 +208,25 @@ public class ProgramEnrollmentAction
     {
         OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
 
-        patient = patientService.getPatient( patientId );
-
-        program = programService.getProgram( programId );
-
         // ---------------------------------------------------------------------
         // Load active ProgramInstance, completed = false
         // ---------------------------------------------------------------------
 
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
-            false );
+        programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
-        if ( programInstances.iterator().hasNext() )
+        programStageInstances = programInstance.getProgramStageInstances();
+
+        if ( programInstance.getProgram().isRegistration() && programInstance.getProgramStageInstances() != null )
         {
-            programInstance = programInstances.iterator().next();
-
-            programStageInstances = programInstance.getProgramStageInstances();
-
-            if ( program.isRegistration() && programInstance.getProgramStageInstances() != null )
-            {
-                statusMap = programStageInstanceService.statusProgramStageInstances( programInstance
-                    .getProgramStageInstances() );
-            }
-
-            loadIdentifierTypes();
-
-            loadPatientAttributes();
+            statusMap = programStageInstanceService.statusProgramStageInstances( programInstance
+                .getProgramStageInstances() );
         }
 
-        hasDataEntry = showDataEntry( orgunit, program, programInstance );
+        loadIdentifierTypes(programInstance);
+
+        loadPatientAttributes(programInstance);
+
+        hasDataEntry = showDataEntry( orgunit, programInstance.getProgram(), programInstance );
 
         return SUCCESS;
     }
@@ -283,19 +235,19 @@ public class ProgramEnrollmentAction
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void loadIdentifierTypes()
+    private void loadIdentifierTypes( ProgramInstance programInstance )
     {
         // ---------------------------------------------------------------------
         // Load identifier types of the selected program
         // ---------------------------------------------------------------------
 
-        identifierTypes = identifierTypeService.getPatientIdentifierTypes( program );
+        identifierTypes = identifierTypeService.getPatientIdentifierTypes( programInstance.getProgram() );
         identiferMap = new HashMap<Integer, String>();
 
         if ( identifierTypes != null && identifierTypes.size() > 0 )
         {
             Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
-                identifierTypes, patient );
+                identifierTypes, programInstance.getPatient() );
 
             for ( PatientIdentifier identifier : patientIdentifiers )
             {
@@ -304,20 +256,20 @@ public class ProgramEnrollmentAction
         }
     }
 
-    private void loadPatientAttributes()
+    private void loadPatientAttributes( ProgramInstance programInstance )
     {
         // ---------------------------------------------------------------------
         // Load patient-attributes of the selected program
         // ---------------------------------------------------------------------
 
         attributeGroups = new ArrayList<PatientAttributeGroup>(
-            patientAttributeGroupService.getPatientAttributeGroups( program ) );
+            patientAttributeGroupService.getPatientAttributeGroups( programInstance.getProgram() ) );
         Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
 
-        noGroupAttributes = patientAttributeService.getPatientAttributes( program, null );
+        noGroupAttributes = patientAttributeService.getPatientAttributes( programInstance.getProgram(), null );
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patient );
+            .getPatientAttributeValues( programInstance.getPatient() );
 
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
