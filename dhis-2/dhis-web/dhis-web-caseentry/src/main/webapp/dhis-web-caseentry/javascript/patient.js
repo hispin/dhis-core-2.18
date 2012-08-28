@@ -288,7 +288,7 @@ function addPatient()
 		jQuery('#advSearchBox0 [id="searchText"]').val( systemIdentifierId );
 		statusSearching = 1;
 		
-		showProgramEnrollmentSelectForm( patientId );
+		showPatientDashboardForm( patientId );
 		jQuery('#resultSearchDiv').dialog('close');
       }
      });
@@ -329,7 +329,7 @@ function updatePatient()
       url: 'updatePatient.action',
       data: getParamsForDiv('editPatientDiv'),
       success: function( json ) {
-		showProgramEnrollmentSelectForm( getFieldValue('id') );
+		showPatientDashboardForm( getFieldValue('id') );
       }
      });
 }
