@@ -18,6 +18,7 @@
 								id="ps_$!programStageInstance.id"
 								psid="$programStageInstance.programStage.id"
 								psname="$programStageName.programStage.name"
+								programType='$programInstance.program.type'
 								dueDate="$format.formatDate( $programStageInstance.dueDate )"
 								class="stage-object" 
 								value="$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )" 

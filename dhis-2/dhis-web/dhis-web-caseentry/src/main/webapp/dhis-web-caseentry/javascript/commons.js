@@ -517,6 +517,7 @@ function moveRight(programInstanceFlowDiv){
 
 function showCreateNewEvent( programInstanceId, programStageId )
 {
+	setInnerHTML('createEventMessage_' + programInstanceId, '');
 	jQuery('#createNewEncounterDiv_' + programInstanceId ).dialog({
 			title: i18n_create_new_event,
 			maximize: true, 
@@ -556,7 +557,7 @@ function closeDueDateDiv( programInstanceId )
 
 function registerIrregularEncounter( programInstanceId, programStageId, programStageName, dueDate )
 {
-	setInnerHTML('createEventMessage_' + programInstanceId,'');
+	setInnerHTML('createEventMessage_' + programInstanceId, '');
 	jQuery.postJSON( "registerIrregularEncounter.action",
 		{ 
 			programInstanceId:programInstanceId,
@@ -570,15 +571,17 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			
 			var elementId = prefixId + programStageInstanceId;
 			var flag = false;
+			var programType = jQuery('.stage-object-selected').attr('type');
+			
 			jQuery("#programStageIdTR_" + programInstanceId + " input[name='programStageBtn']").each(function(i,item){
 				var element = jQuery(item);
 				var dueDateInStage = element.attr('dueDate');
-				
 				if( dueDate < dueDateInStage && !flag)
 				{	
 					jQuery('<td><input name="programStageBtn" '
 						+ 'id="' + elementId + '" ' 
-						+ 'psid="' + programStageInstanceId + '" '
+						+ 'psid="' + programStageId + '" '
+						+ 'programType="' + programType + '" '
 						+ 'psname="' + programStageName + '" '
 						+ 'dueDate="' + dueDate + '" '
 						+ 'value="'+ programStageName + ' ' + dueDate + '" '
@@ -597,7 +600,8 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				jQuery("#programStageIdTR_" + programInstanceId).append('<td><img src="images/rightarrow.png"></td>'
 					+ '<td><input name="programStageBtn" '
 					+ 'id="' + elementId + '" ' 
-					+ 'psid="' + programStageInstanceId + '" '
+					+ 'psid="' + programStageId + '" '
+					+ 'programType="' + programType + '" '
 					+ 'psname="' + programStageName + '" '
 					+ 'dueDate="' + dueDate + '" '
 					+ 'value="'+ programStageName + ' ' + dueDate + '" '
