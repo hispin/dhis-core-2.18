@@ -567,9 +567,9 @@ function doComplete( isCreateEvent )
 
 					disableCompletedButton(true);
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
+					var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
 					if( irregular == 'true' )
 					{
-						var programInstanceId = jQuery('#entryFormContainer [id=programInstanceId]').val();
 						var programStageId = jQuery(".stage-object-selected").css('psid');
 						showCreateNewEvent( programInstanceId, programStageId );
 					}
@@ -585,6 +585,13 @@ function doComplete( isCreateEvent )
 					selection.enable();
 					hideLoader();
 					hideById('contentDiv');
+					
+					var completedRow = jQuery('#td_' + programInstanceId).html();
+					jQuery('#completedTB' ).prepend("<tr><td>" + completedRow + "</td></tr>");
+					hideById('tr1_' + programInstanceId );
+					hideById('tr2_' + programInstanceId );
+					hideById('programEnrollmentDiv');	
+					jQuery('#img_' + programInstanceId).attr('src','');					
 					
 					if( isCreateEvent )
 					{
