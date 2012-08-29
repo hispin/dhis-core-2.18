@@ -133,7 +133,7 @@ public class DefaultIndicatorDataMart
         Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups,
         Collection<DataElementOperand> operands, Class<? extends BatchHandler<AggregatedIndicatorValue>> clazz, String key )
     {
-        statementManager.initialise(); // Running in separate thread
+        statementManager.initialise(); // Running in separate thread // TODO initialize file statement manager
         
         final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( clazz ).init();
 
