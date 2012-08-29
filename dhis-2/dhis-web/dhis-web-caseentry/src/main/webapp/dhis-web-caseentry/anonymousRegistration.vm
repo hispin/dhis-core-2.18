@@ -15,8 +15,8 @@
 				
 <h3>$i18n.getString( "anonymous_events" ) #openHelp('single_event_without_registration')</h3>
 <input type='hidden' id='orgunitId' name='orgunitId' value='$orgunit.id'>
-<input type='hidden' id='programStageInstanceId' name='programStageInstanceIdrgunitId'>
-<input type='hidden' id='programStageId' name='programStageId'>
+<input type='hidden' id='programStageInstanceId' name='programStageInstanceId'>
+<input type='hidden' id='programStageId' name='programStageId' class='stage-object-selected'>
 <input type='hidden' id='isShowEventList' name='isShowEventList'>
 
 <select multiple id='compulsoryDE' name='compulsoryDE' class='hidden'></select>
@@ -33,11 +33,10 @@
 				  $i18n.getString("program") <em title="$i18n.getString( "required" )" class="required">*</em></label>
 				</td>		
 				<td>
-					<select type="text" id="programId" name="programId" onchange='getDataElements();' >
-						<option value='' programStageId='' >[$i18n.getString("please_select")]</option>
+					<select type="text" id="programId" name="programId" onchange='getDataElements();' class='stage-object-selected'>
 						#foreach( $program in $programs )
 							#foreach( $programStage in $program.programStages )
-								<option value='$program.id' programStageId='$programStage.id'>$program.name</option>
+								<option value='$program.id' psid='$programStage.id'>$program.name</option>
 							#end
 						#end
 					</select>
@@ -104,8 +103,6 @@
 	</div>
 </div>
 
-#parse( "dhis-web-commons/loader/loader.vm" )
-
 <div id='listDiv'></div>
 
 <div id='dataEntryInfor' class='hidden'>
@@ -116,16 +113,23 @@
 		<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBtn" style='width:150px;' >
 		<input type="button" onclick="completedAndAddNewEvent()" value="$i18n.getString('complete_and_add_new_event')" id="completeAndAddNewBtn" style='width:150px;'>
 	</p>
+	<table>
+		<tr>
+		    <th><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
+            <th><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();"></th>
+                <script type="text/javascript">
+                   datePickerValid( 'executionDate', false );
+                </script>  
+			<th><label for="dueDate">$i18n.getString( "due_date" ) </label></th>
+            <th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"></th>
+        </tr>
+	</table>
 	<div id='dataEntryFormDiv'></div>
 </div>
 
-<div class='hidden'>
-	<input id='executionDateNewEvent' name='executionDateNewEvent'>
-</div>
+#parse( "dhis-web-commons/loader/loader.vm" )
 
-<script>
-	datePickerValid( 'executionDateNewEvent', true );
-	
+<script>	
 	var i18n_please_select = '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'")';
 	
 	var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
