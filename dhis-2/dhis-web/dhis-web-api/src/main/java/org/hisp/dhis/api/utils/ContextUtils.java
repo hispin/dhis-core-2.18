@@ -141,6 +141,12 @@ public class ContextUtils
         printResponse( response, message );
     }
 
+    public static void createdResponse( HttpServletResponse response, String message )
+    {
+        response.setStatus( HttpServletResponse.SC_CREATED );
+        printResponse( response, message );
+    }
+
     public static void notFoundResponse( HttpServletResponse response, String message )
     {
         response.setStatus( HttpServletResponse.SC_NOT_FOUND );
