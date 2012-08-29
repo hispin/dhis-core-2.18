@@ -99,6 +99,8 @@ function searchObjectOnChange( this_ )
 	var element = jQuery('#' + container + ' [id=searchText]');
 	var valueType = jQuery('#' + container+ ' [id=searchObjectId] option:selected').attr('valueType');
 	
+	jQuery('#searchText_' + container).removeAttr('readonly', false);
+	jQuery('#searchText_' + container).val("");
 	if( attributeId == 'fixedAttr_birthDate' )
 	{
 		element.replaceWith( getDateField( container ) );
