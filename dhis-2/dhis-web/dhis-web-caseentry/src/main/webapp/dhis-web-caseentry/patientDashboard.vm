@@ -35,6 +35,10 @@
 										<td>$i18n.getString("date_of_birth")</td>
 										<td>$format.formatDate( $!patient.birthDate) $!patient.getAge()</td>
 									</tr>
+									<tr>
+										<td>$i18n.getString("phone_number")</td>
+										<td>$!patient.phoneNumber</td>
+									</tr>
 									#foreach( $identifier in $identifiers )
 									<tr>
 										#if($!identifier.identifierType)
@@ -83,6 +87,30 @@
 												#set($programStageInstanceId = $programStageInstance.id)
 											#end
 										#end
+										
+										#set($flag = 'false')
+										#foreach( $programStageInstance in $programInstance.programStageInstances )
+											#set( $status = $statusMap.get( $programStageInstance.id ) )
+											#if( $status!=1 && $flag=='false')
+												<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
+													programStageInstanceId='$programStageInstanceId'>
+													<td id='td_$programInstance.id'>
+														<a href='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
+														<img id="img_$programInstance.id" name='imgActive'>
+													</td>
+													<td>
+														<img src='../images/checked.png' style='cursor:pointer;' onclick='unenrollmentForm("$programInstance.id")'>
+													</td>
+												</tr>
+												<tr id='tr2_$programInstance.id' onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' style='cursor:pointer;'>
+													<td colspan='2'>
+														<a>&#8226; $programStageInstance.programStage.name ($format.formatDate($programStageInstance.dueDate))</a>
+													</td>
+												</tr>
+											#set($flag = 'true')
+											#end
+										#end
+										#if($flag=='false')
 										<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
 											programStageInstanceId='$programStageInstanceId'>
 											<td id='td_$programInstance.id'>
@@ -93,17 +121,6 @@
 												<img src='../images/checked.png' style='cursor:pointer;' onclick='unenrollmentForm("$programInstance.id")'>
 											</td>
 										</tr>
-										#set($flag = 'false')
-										#foreach( $programStageInstance in $programInstance.programStageInstances )
-											#set( $status = $statusMap.get( $programStageInstance.id ) )
-											#if( $status!=1 && $flag=='false')
-												<tr id='tr2_$programInstance.id' onclick='javascript:loadProgramStageRecords("$programStageInstance.id", false)' style='cursor:pointer;'>
-													<td colspan='2'>
-														<a>&#8226; $programStageInstance.programStage.name ($format.formatDate($programStageInstance.dueDate))</a>
-													</td>
-												</tr>
-											#set($flag = 'true')
-											#end
 										#end
 									#end
 								</table>
