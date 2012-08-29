@@ -139,7 +139,16 @@ public class AverageBoolAggregator
         
         return values;        
     }
-    
+
+    public boolean isApplicable( DataElementOperand operand )
+    {
+        return operand.getValueType().equals( VALUE_TYPE_BOOL ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     private double[] getAggregate( int organisationUnit, Period period, String val, Date startDate, Date endDate, int unitLevel )
     {
         double value = 0.0;                        
@@ -180,10 +189,5 @@ public class AverageBoolAggregator
         final double[] values = { value, relevantDays };
         
         return values;
-    }
-
-    public boolean isApplicable( DataElementOperand operand )
-    {
-        return operand.getValueType().equals( VALUE_TYPE_BOOL ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE );
     }
 }

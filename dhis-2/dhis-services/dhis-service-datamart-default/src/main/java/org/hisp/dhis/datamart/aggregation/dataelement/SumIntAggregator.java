@@ -142,7 +142,11 @@ public class SumIntAggregator
         return operand.getValueType().equals( VALUE_TYPE_INT ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM );
     }
 
-    public boolean isApplicable( DataElementOperand operand, PeriodType periodType )
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private boolean isApplicable( DataElementOperand operand, PeriodType periodType )
     {
         return operand.getFrequencyOrder() <= periodType.getFrequencyOrder(); // Ignore disaggregation
     }

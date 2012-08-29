@@ -162,7 +162,11 @@ public class DefaultDataElementDataMart
         
         return null;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
     private Map<DataElementOperand, DataElementAggregator> getAggregatorMap( Collection<DataElementOperand> operands )
     {
         Map<DataElementOperand, DataElementAggregator> map = new HashMap<DataElementOperand, DataElementAggregator>();
@@ -182,7 +186,7 @@ public class DefaultDataElementDataMart
         return map;
     }
     
-    public void populateHasAggregationLevels( Collection<DataElementOperand> operands ) //TODO check effect
+    private void populateHasAggregationLevels( Collection<DataElementOperand> operands ) //TODO check effect
     {
         for ( DataElementOperand operand : operands )
         {
