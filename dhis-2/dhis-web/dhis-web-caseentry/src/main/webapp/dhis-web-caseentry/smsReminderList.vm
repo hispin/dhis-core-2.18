@@ -23,14 +23,10 @@
 		<td colspan='2'>
 			<div class="comment-table" style='max-height:150px;'>
 				<table id='commentTB'>
-					#if( $comments.size() > 0 )
-						#foreach( $comment in $comments )
-							<tr id="comment_$comment.id">
-								<td>$format.formatDate($comment.createdDate) - $comment.creator - $comment.commentText</td>
-							</tr>
-						#end
-					#else
-						<tr><td>$i18n.getString("no_comment")</td></tr>
+					#foreach( $comment in $comments )
+						<tr id="comment_$comment.id">
+							<td>$format.formatDate($comment.createdDate) - $comment.creator - $comment.commentText</td>
+						</tr>
 					#end
 				</table>
 			</div>
