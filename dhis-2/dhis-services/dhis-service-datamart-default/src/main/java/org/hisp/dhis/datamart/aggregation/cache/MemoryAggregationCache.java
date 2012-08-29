@@ -30,8 +30,11 @@ package org.hisp.dhis.datamart.aggregation.cache;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -170,6 +173,23 @@ public class MemoryAggregationCache
         organisationUnitLevelCache.put( key, level );
         
         return level;
+    }
+    
+    public void filterForAggregationLevel( Set<Integer> organisationUnits, DataElementOperand operand, int unitLevel )
+    {
+        final Iterator<Integer> iter = organisationUnits.iterator();
+        
+        while ( iter.hasNext() )
+        {
+            final Integer orgUnitId = iter.next();
+            
+            final int dataValueLevel = operand.isHasAggregationLevels() ? getLevelOfOrganisationUnit( orgUnitId ) : 0;
+            
+            if ( operand.isHasAggregationLevels() && !operand.aggregationLevelIsValid( unitLevel, dataValueLevel ) )
+            {
+                iter.remove();
+            }
+        }        
     }
     
     public void clearCache()

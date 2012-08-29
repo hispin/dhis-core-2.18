@@ -43,7 +43,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.DataMartManager;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
@@ -307,7 +306,7 @@ public class DefaultCrossTabService
         crossTabStore.dropAggregatedOrgUnitDataCache( key );
     }
     
-    public Collection<CrossTabDataValue> getCrossTabDataValues( DataElementOperand operand, 
+    public Map<String, String> getCrossTabDataValues( DataElementOperand operand, 
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key )
     {
         return crossTabStore.getCrossTabDataValues( operand, periodIds, organisationUnitIds, key );

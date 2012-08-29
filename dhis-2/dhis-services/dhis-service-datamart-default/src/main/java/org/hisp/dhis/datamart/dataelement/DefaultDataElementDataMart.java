@@ -30,7 +30,9 @@ package org.hisp.dhis.datamart.dataelement;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Future;
 
@@ -49,9 +51,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.PeriodHierarchy;
 import org.hisp.dhis.system.util.ConversionUtils;
-import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -103,7 +104,7 @@ public class DefaultDataElementDataMart
     @Async
     public Future<?> exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
         Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
-        OrganisationUnitHierarchy hierarchy, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key )
+        PeriodHierarchy periodHierarchy, OrganisationUnitHierarchy orgUnitHierarchy, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key )
     {
         statementManager.initialise(); // Running in separate thread
         
@@ -113,47 +114,42 @@ public class DefaultDataElementDataMart
         
         final Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits );
 
+        final Map<DataElementOperand, DataElementAggregator> operandAggregatorMap = getAggregatorMap( operands );
+        
         populateHasAggregationLevels( operands );
         
         organisationUnitGroups = organisationUnitGroups != null ? organisationUnitGroups : DataMartEngine.DUMMY_ORG_UNIT_GROUPS;
         
-        for ( final Period period : periods )
+        for ( final DataElementOperand dataElementOperand : operands )
         {
-            operands : for ( final DataElementOperand operand : operands )
+            final DataElementAggregator aggregator = operandAggregatorMap.get( dataElementOperand );
+
+            if ( aggregator == null )
             {
-                final PeriodType periodType = period.getPeriodType();
-                
-                final DataElementAggregator aggregator = getAggregator( operand, periodType );
-
-                if ( aggregator == null )
-                {
-                    continue operands;
-                }
-                
-                final List<OrgUnitOperand> values = aggregator.getAggregatedValues( operand, period, organisationUnitIds, organisationUnitGroups, hierarchy, key );
-                
-                for ( OrgUnitOperand orgUnitOperand : values )
-                {
-                    final int level = aggregationCache.getLevelOfOrganisationUnit( orgUnitOperand.getOrgUnitId() );
-                    
-                    final double value = getRounded( orgUnitOperand.getValue(), DECIMALS );
-
-                    aggregatedValue.clear();
-                    
-                    aggregatedValue.setDataElementId( operand.getDataElementId() );
-                    aggregatedValue.setCategoryOptionComboId( operand.getOptionComboId() );
-                    aggregatedValue.setPeriodId( period.getId() );
-                    aggregatedValue.setPeriodTypeId( period.getPeriodType().getId() );
-                    aggregatedValue.setOrganisationUnitId( orgUnitOperand.getOrgUnitId() );
-                    aggregatedValue.setOrganisationUnitGroupId( orgUnitOperand.getOrgUnitGroupId() );
-                    aggregatedValue.setLevel( level );
-                    aggregatedValue.setValue( value );
-                    
-                    batchHandler.addObject( aggregatedValue );
-                }
+                continue;
             }
             
-            log.debug( "Exported data values for period: " + period + ", " + SystemUtils.getMemoryString() );
+            final List<OrgUnitOperand> values = aggregator.getAggregatedValues( dataElementOperand, periods, organisationUnitIds, organisationUnitGroups, periodHierarchy, orgUnitHierarchy, key );
+            
+            for ( OrgUnitOperand orgUnitOperand : values )
+            {
+                final int level = aggregationCache.getLevelOfOrganisationUnit( orgUnitOperand.getOrgUnitId() );
+                
+                final double value = getRounded( orgUnitOperand.getValue(), DECIMALS );
+
+                aggregatedValue.clear();
+                
+                aggregatedValue.setDataElementId( dataElementOperand.getDataElementId() );
+                aggregatedValue.setCategoryOptionComboId( dataElementOperand.getOptionComboId() );
+                aggregatedValue.setPeriodId( orgUnitOperand.getPeriodId() );
+                aggregatedValue.setPeriodTypeId( orgUnitOperand.getPeriodTypeId() );
+                aggregatedValue.setOrganisationUnitId( orgUnitOperand.getOrgUnitId() );
+                aggregatedValue.setOrganisationUnitGroupId( orgUnitOperand.getOrgUnitGroupId() );
+                aggregatedValue.setLevel( level );
+                aggregatedValue.setValue( value );
+                
+                batchHandler.addObject( aggregatedValue );
+            }
         }
         
         batchHandler.flush();
@@ -167,20 +163,26 @@ public class DefaultDataElementDataMart
         return null;
     }
     
-    private DataElementAggregator getAggregator( DataElementOperand operand, PeriodType periodType )
+    private Map<DataElementOperand, DataElementAggregator> getAggregatorMap( Collection<DataElementOperand> operands )
     {
-        for ( DataElementAggregator aggregator : aggregators )
+        Map<DataElementOperand, DataElementAggregator> map = new HashMap<DataElementOperand, DataElementAggregator>();
+        
+        operand : for ( DataElementOperand operand : operands )
         {
-            if ( aggregator.isApplicable( operand, periodType ) )
+            for ( DataElementAggregator aggregator : aggregators )
             {
-                return aggregator;
+                if ( aggregator.isApplicable( operand ) )
+                {
+                    map.put( operand, aggregator );
+                    continue operand;
+                }
             }
         }
         
-        return null;
+        return map;
     }
     
-    public void populateHasAggregationLevels( Collection<DataElementOperand> operands ) //TODO check
+    public void populateHasAggregationLevels( Collection<DataElementOperand> operands ) //TODO check effect
     {
         for ( DataElementOperand operand : operands )
         {

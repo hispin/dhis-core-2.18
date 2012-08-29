@@ -486,8 +486,8 @@ public class DataElementOperand
         final int prime = 31;
         int result = 1;
 
-        result = prime * result + ((categoryOptionCombo == null) ? 0 : categoryOptionCombo.hashCode());
-        result = prime * result + ((dataElement == null) ? 0 : dataElement.hashCode());
+        result = prime * result + ( ( categoryOptionCombo == null) ? 0 : categoryOptionCombo.hashCode() );
+        result = prime * result + ( ( dataElement == null) ? 0 : dataElement.hashCode() );
         result = prime * result + dataElementId;
         result = prime * result + optionComboId;
 

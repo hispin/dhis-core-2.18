@@ -67,11 +67,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
   </bean>
 
-  <bean id="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator" class="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator">
-    <property name="crossTabService" ref="org.hisp.dhis.datamart.crosstab.CrossTabService" />
-    <property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
-  </bean>
-
   <bean id="org.hisp.dhis.datamart.aggregation.dataelement.AverageBoolAggregator" class="org.hisp.dhis.datamart.aggregation.dataelement.AverageBoolAggregator">
     <property name="crossTabService" ref="org.hisp.dhis.datamart.crosstab.CrossTabService" />
     <property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
@@ -86,7 +81,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="aggregators">
       <list>
         <ref bean="org.hisp.dhis.datamart.aggregation.dataelement.SumIntAggregator"/>
-        <ref bean="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
         <ref bean="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
         <ref bean="org.hisp.dhis.datamart.aggregation.dataelement.SumBoolAggregator"/>
         <ref bean="org.hisp.dhis.datamart.aggregation.dataelement.AverageBoolAggregator"/>

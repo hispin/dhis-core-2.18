@@ -362,13 +362,13 @@ public class DataMartServiceTest
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitG ), 0.0 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitH ), 100.0 );
         
-        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitA ), 66.8, 0.5 );
-        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitB ), 66.8, 0.5 );
-        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitC ), 65.9, 0.5 );
-        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitD ), 67.0, 0.5 );
-        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitE ), 33.0, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitA ), 66.7, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitB ), 66.7, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitC ), 66.7, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitD ), 66.7, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitE ), 33.3, 0.5 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitF ), 78.0, 0.5 );
-        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitG ), 34.1, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitG ), 33.1, 0.5 );
         assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitH ), 100.0, 0.5 );
     }
 
