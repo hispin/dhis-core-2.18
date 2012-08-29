@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
@@ -107,14 +106,15 @@ public interface CrossTabService
 
     /**
      * Gets all CrossTabDataValues for the given collection of period identifiers 
-     * and organisation unit identifiers.
+     * and organisation unit identifiers as a map. The map key is a 
+     * concatenation of <period identifier>-<organisation unit identifier>.
      * 
      * @param operand the data element operand.
      * @param periodIds the period identifiers.
      * @param organisationUnitIds the organisation unit identifiers.
      * @return collection of CrossTabDataValues.
      */
-    Collection<CrossTabDataValue> getCrossTabDataValues( DataElementOperand operand, 
+    Map<String, String> getCrossTabDataValues( DataElementOperand operand, 
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key );
 
     /**

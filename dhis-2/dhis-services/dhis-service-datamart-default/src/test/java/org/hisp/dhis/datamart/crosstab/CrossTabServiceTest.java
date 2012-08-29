@@ -29,7 +29,6 @@ package org.hisp.dhis.datamart.crosstab;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,7 +50,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
@@ -196,23 +194,15 @@ public class CrossTabServiceTest
         
         for ( DataElementOperand operand : operands )
         {
-            Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operand, periodIds, organisationUnitIds, key );
+            Map<String, String> values = crossTabService.getCrossTabDataValues( operand, periodIds, organisationUnitIds, key );
 
             assertNotNull( values );
 
-            assertEquals( 5, values.size() );
+            assertEquals( 25, values.size() );
             
-            for ( CrossTabDataValue crossTabValue : values )
+            for ( String valueKey : values.keySet() )
             {
-                assertTrue( crossTabValue.getPeriodId() != 0 );
-                
-                assertNotNull( crossTabValue.getValueMap() );
-                assertEquals( 5, crossTabValue.getValueMap().size() );
-                
-                for ( String value : crossTabValue.getValueMap().values() )
-                {
-                    assertEquals( "10", value );
-                }
+                assertEquals( "10", values.get( valueKey ) );
             }
         }
     }

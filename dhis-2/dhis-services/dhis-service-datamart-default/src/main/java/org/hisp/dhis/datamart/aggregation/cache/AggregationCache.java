@@ -29,7 +29,9 @@ package org.hisp.dhis.datamart.aggregation.cache;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
@@ -48,6 +50,8 @@ public interface AggregationCache
     Period getPeriod( int id );
     
     int getLevelOfOrganisationUnit( int id );
+    
+    void filterForAggregationLevel( Set<Integer> organisationUnits, DataElementOperand operand, int unitLevel );
     
     void clearCache();
 }

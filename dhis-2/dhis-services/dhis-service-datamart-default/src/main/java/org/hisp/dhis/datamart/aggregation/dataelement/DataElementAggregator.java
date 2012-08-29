@@ -37,7 +37,7 @@ import org.hisp.dhis.datamart.OrgUnitOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.PeriodHierarchy;
 
 /**
  * @author Lars Helge Overland
@@ -47,8 +47,9 @@ public interface DataElementAggregator
     final String TRUE = "true";
     final Map<DataElementOperand, Double> EMPTY_MAP = new HashMap<DataElementOperand, Double>();
 
-    List<OrgUnitOperand> getAggregatedValues( DataElementOperand operand, Period period, 
-        Collection<Integer> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, OrganisationUnitHierarchy hierarchy, String key );
+    List<OrgUnitOperand> getAggregatedValues( DataElementOperand operand, Collection<Period> periods, 
+        Collection<Integer> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
+        PeriodHierarchy periodHierarchy, OrganisationUnitHierarchy hierarchy, String key );
     
-    boolean isApplicable( DataElementOperand operand, PeriodType periodType );
+    boolean isApplicable( DataElementOperand operand );
 }

@@ -37,6 +37,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodHierarchy;
 
 /**
  * @author Lars Helge Overland
@@ -45,5 +46,5 @@ public interface DataElementDataMart
 {
     Future<?> exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
         Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
-        OrganisationUnitHierarchy hierarchy, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key );
+        PeriodHierarchy periodHierarchy, OrganisationUnitHierarchy hierarchy, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key );
 }

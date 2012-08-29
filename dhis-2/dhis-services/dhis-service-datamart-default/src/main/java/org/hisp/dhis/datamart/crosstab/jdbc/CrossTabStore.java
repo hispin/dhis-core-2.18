@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.CrossTabDataValue;
 
 /**
  * @author Lars Helge Overland
@@ -45,6 +44,7 @@ public interface CrossTabStore
     final String COLUMN_PREFIX = "col";
     final String AGGREGATEDDATA_CACHE_PREFIX = "aggregateddata_cache_";
     final String AGGREGATEDORGUNITDATA_CACHE_PREFIX = "aggregatedorgunitdata_cache_";
+    final String SEPARATOR = "-";
     
     /**
      * Creates a crosstab table where the first column is the period identifier,
@@ -97,14 +97,15 @@ public interface CrossTabStore
     
     /**
      * Gets all CrossTabDataValues for the given collection of period identifiers 
-     * and organisation unit identifiers.
+     * and organisation unit identifiers as a map. The map key is a 
+     * concatenation of <period identifier>-<organisation unit identifier>.
      * 
      * @param operand the data element operand.
      * @param periodIds the period identifiers.
      * @param organisationUnitIds the organisation unit identifiers.
      * @return collection of CrossTabDataValues.
      */
-    Collection<CrossTabDataValue> getCrossTabDataValues( DataElementOperand operand, 
+    Map<String, String> getCrossTabDataValues( DataElementOperand operand, 
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key );
 
     /**

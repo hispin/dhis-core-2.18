@@ -31,7 +31,6 @@ import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +39,6 @@ import java.util.Map;
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.CrossTabDataValue;
 
 /**
  * @author Lars Helge Overland
@@ -135,7 +133,7 @@ public class JDBCCrossTabStore
     // CrossTabDataValue
     // -------------------------------------------------------------------------
 
-    public Collection<CrossTabDataValue> getCrossTabDataValues( DataElementOperand operand, 
+    public Map<String, String> getCrossTabDataValues( DataElementOperand operand, 
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key )
     {
         final StatementHolder holder = statementManager.getHolder();
@@ -161,7 +159,11 @@ public class JDBCCrossTabStore
             holder.close();
         }
     }
-    
+
+    // -------------------------------------------------------------------------
+    // AggregatedDataCacheValue
+    // -------------------------------------------------------------------------
+
     public Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
         int periodId, int sourceId, String key )
     {
@@ -218,28 +220,24 @@ public class JDBCCrossTabStore
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Collection<Integer> organisationUnitIds )
+    private Map<String, String> getCrossTabDataValues( ResultSet resultSet, Collection<Integer> organisationUnitIds )
         throws SQLException
     {
-        final List<CrossTabDataValue> values = new ArrayList<CrossTabDataValue>();
+        final Map<String, String> values = new HashMap<String, String>();
         
         while ( resultSet.next() )
-        {
-            final CrossTabDataValue value = new CrossTabDataValue();
+        {   
+            int periodId = resultSet.getInt( 3 );
             
-            value.setPeriodId( resultSet.getInt( 3 ) );
-            
-            for ( Integer id : organisationUnitIds )
+            for ( Integer organisationUnitId : organisationUnitIds )
             {
-                final String columnValue = resultSet.getString( CrossTabStore.COLUMN_PREFIX + id );
+                final String columnValue = resultSet.getString( CrossTabStore.COLUMN_PREFIX + organisationUnitId );
                 
                 if ( columnValue != null )
                 {
-                    value.getValueMap().put( id, columnValue );
+                    values.put( periodId + CrossTabStore.SEPARATOR + organisationUnitId, columnValue );
                 }
             }
-            
-            values.add( value );
         }
         
         return values;

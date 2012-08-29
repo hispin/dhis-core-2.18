@@ -62,6 +62,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodHierarchy;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -299,6 +300,7 @@ public class DefaultDataMartEngine
         //TODO improve index on datavalue for crosstab
         
         final Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
+        final PeriodHierarchy periodHierarchy = periodService.getPeriodHierarchy( periods );
         final Set<Integer> orgUnitChildrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
         final List<Integer> crossTabOrgUnitIds = new ArrayList<Integer>( orgUnitChildrenIds );
         
@@ -337,14 +339,14 @@ public class DefaultDataMartEngine
             
             if ( operandList.size() > 0 )
             {
-                final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
+                final OrganisationUnitHierarchy orgUnitHierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
                 
                 List<Future<?>> futures = new ArrayList<Future<?>>();
                 
                 for ( List<DataElementOperand> operandPage : operandPages )
                 {
                     futures.add( dataElementDataMart.exportDataValues( operandPage, periods, organisationUnits, 
-                        null, hierarchy, AggregatedDataValueTempBatchHandler.class, key ) );
+                        null, periodHierarchy, orgUnitHierarchy, AggregatedDataValueTempBatchHandler.class, key ) );
                 }
                 
                 ConcurrentUtils.waitForCompletion( futures );
@@ -403,14 +405,14 @@ public class DefaultDataMartEngine
             
             if ( operandList.size() > 0 )
             {
-                final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( groupOrganisationUnits, organisationUnitGroups );
+                final OrganisationUnitHierarchy orgUnitHierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( groupOrganisationUnits, organisationUnitGroups );
                 
                 List<Future<?>> futures = new ArrayList<Future<?>>();
                 
                 for ( List<DataElementOperand> operandPage : operandPages )
                 {
                     futures.add( dataElementDataMart.exportDataValues( operandPage, periods, groupOrganisationUnits, 
-                        organisationUnitGroups, hierarchy, AggregatedOrgUnitDataValueTempBatchHandler.class, key ) );
+                        organisationUnitGroups, periodHierarchy, orgUnitHierarchy, AggregatedOrgUnitDataValueTempBatchHandler.class, key ) );
                 }
 
                 ConcurrentUtils.waitForCompletion( futures );
