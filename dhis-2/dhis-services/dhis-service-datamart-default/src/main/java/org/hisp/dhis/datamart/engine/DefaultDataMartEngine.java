@@ -297,8 +297,6 @@ public class DefaultDataMartEngine
         // Create crosstabtable
         // ---------------------------------------------------------------------
 
-        //TODO improve index on datavalue for crosstab
-        
         final Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
         final PeriodHierarchy periodHierarchy = periodService.getPeriodHierarchy( periods );
         final Set<Integer> orgUnitChildrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
