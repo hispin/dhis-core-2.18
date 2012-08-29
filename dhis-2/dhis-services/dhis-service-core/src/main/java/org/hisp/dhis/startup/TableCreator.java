@@ -72,7 +72,7 @@ public class TableCreator
         createSilently( statementBuilder.getCreateDataSetCompletenessTable(), "aggregateddatasetcompleteness" );
         createSilently( statementBuilder.getCreateOrgUnitDataSetCompletenessTable(), "aggregatedorgunitdatasetcompleteness" );
         
-        createSilently( "CREATE INDEX crosstab ON datavalue ( periodid, sourceid )", "crosstab" );
+        createSilently( "CREATE INDEX datamart_crosstab ON datavalue ( dataelementid, categoryoptioncomboid, periodid )", "datamart_crosstab" );
         
         final String sqlDataValueArchive = 
             "CREATE TABLE datavaluearchive ( " +
