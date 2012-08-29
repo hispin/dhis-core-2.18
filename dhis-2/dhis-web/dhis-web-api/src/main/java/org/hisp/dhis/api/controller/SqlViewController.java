@@ -80,4 +80,27 @@ public class SqlViewController
         
         GridUtils.toCsv( grid, response.getOutputStream() );
     }
+    
+    @RequestMapping( value = "/{uid}/execute", method = RequestMethod.POST )
+    public void executeView( @PathVariable( "uid" ) String uid, HttpServletResponse response )
+    {
+        SqlView sqlView = sqlViewService.getSqlViewByUid( uid );
+        
+        if ( sqlView == null )
+        {
+            ContextUtils.notFoundResponse( response, "SQL view not found" );
+            return;
+        }
+        
+        String result = sqlViewService.createViewTable( sqlView );
+        
+        if ( result != null )
+        {
+            ContextUtils.conflictResponse( response, result );
+        }
+        else
+        {
+            ContextUtils.createdResponse( response, "SQL view created" );
+        }
+    }
 }
