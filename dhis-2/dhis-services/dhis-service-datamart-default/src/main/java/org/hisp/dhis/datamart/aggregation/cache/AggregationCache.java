@@ -33,7 +33,6 @@ import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Lars Helge Overland
@@ -44,8 +43,6 @@ public interface AggregationCache
     Collection<Integer> getIntersectingPeriods( Date startDate, Date endDate );
     
     Collection<Integer> getPeriodsBetweenDates( Date startDate, Date endDate );
-    
-    Collection<Integer> getPeriodsBetweenDatesPeriodType( PeriodType periodType, Date startDate, Date endDate );
     
     Period getPeriod( int id );
     

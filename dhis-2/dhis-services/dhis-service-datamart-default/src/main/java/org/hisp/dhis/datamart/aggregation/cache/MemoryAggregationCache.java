@@ -38,7 +38,6 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
@@ -121,24 +120,6 @@ public class MemoryAggregationCache
         return periods;
     }
 
-    public Collection<Integer> getPeriodsBetweenDatesPeriodType( final PeriodType periodType, final Date startDate, final Date endDate ) //TODO remove?
-    {
-        final String key = periodType.getName() + SEPARATOR + startDate.toString() + SEPARATOR + endDate.toString();
-        
-        Collection<Integer> periods = null;
-        
-        if ( ( periods = periodBetweenDatesPeriodTypeCache.get( key ) ) != null )
-        {
-            return periods;
-        }
-        
-        periods = ConversionUtils.getIdentifiers( Period.class, periodService.getPeriodsBetweenDates( periodType, startDate, endDate ) );
-        
-        periodBetweenDatesPeriodTypeCache.put( key, periods );
-        
-        return periods;
-    }
-    
     public Period getPeriod( final int id )
     {
         final String key = String.valueOf( id );
