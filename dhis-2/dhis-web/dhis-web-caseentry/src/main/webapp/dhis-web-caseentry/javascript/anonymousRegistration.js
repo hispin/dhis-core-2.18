@@ -11,9 +11,9 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 			clearListById('compulsoryDE');
 			clearListById('programId');
 			
-			jQuery( '#programId').append( '<option value="" programStageId="">[' + i18n_please_select + ']</option>' );
+			jQuery( '#programId').append( '<option value="" psid="">[' + i18n_please_select + ']</option>' );
 			for ( i in json.programs ) {
-				jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" programStageId="' + json.programs[i].programStageId + '">' + json.programs[i].name + '</option>' );
+				jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" psid="' + json.programs[i].psid + '">' + json.programs[i].name + '</option>' );
 			}
 			
 			disableCriteriaDiv();
@@ -48,7 +48,7 @@ function getDataElements()
 	hideById('dataEntryInfor');
 	hideById('listDiv');
 	clearListById('searchObjectId');
-	programStageId = jQuery('#programId option:selected').attr('programStageId');
+	programStageId = jQuery('#programId option:selected').attr('psid');
 	setFieldValue('programStageId', programStageId );
 	
 	if( programStageId == '')
@@ -218,7 +218,7 @@ function searchEvents( listAll )
 	params += '&facilityLB=' + $('input[name=facilityLB]:checked').val();
 	params += '&level=' + $('select[id=level]').val();
 	params += '&orgunitIds=' + getFieldValue('orgunitId');
-	params += '&programStageId=' + getFieldValue('programStageId');
+	params += '&programStageId=' + jQuery('#programId option:selected').attr('psid');
 	params += '&orderByOrgunitAsc=false';
 	
 	contentDiv = 'listDiv';
@@ -276,28 +276,29 @@ function getValueFormula( value )
 	return value;
 }
 
-function removeEvent( psId )
+function removeEvent( programStageId )
 {	
-	removeItem( psId, '', i18n_comfirm_delete_event, 'removeCurrentEncounter.action' );	
+	removeItem( programStageId, '', i18n_comfirm_delete_event, 'removeCurrentEncounter.action' );	
 }
 
-function showUpdateEvent( psId )
+function showUpdateEvent( programStageInstanceId )
 {
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('listDiv');
-	setFieldValue('programStageInstanceId', psId);
+	setFieldValue('programStageInstanceId', programStageInstanceId);
 	setInnerHTML('dataEntryFormDiv','');
 	showLoader();
 	
 	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
 		{ 
-			programStageInstanceId: psId
+			programStageInstanceId: programStageInstanceId
 		},function( )
 		{
 			var programName  = jQuery('#programId option:selected').text();
 				programName += ' - ' + i18n_report_date + ' : ' + jQuery('#incidentDate').val();
-			
+			var programStageId = jQuery('#programId option:selected').attr('psid');
+			jQuery('.stage-object-selected').attr('psid',programStageId);
 			setInnerHTML('programName', programName );
 			
 			if( getFieldValue('completed')=='true' ){
@@ -324,16 +325,26 @@ function backEventList()
 
 function showAddEventForm()
 {
+	setInnerHTML('dataEntryFormDiv','');
+	setFieldValue('executionDate','');
+	hideById('selectDiv');
+	hideById('searchDiv');
+	hideById('listDiv');
+	showById('dataEntryInfor');
+}
+
+function addNewEvent()
+{
 	jQuery.postJSON( "createAnonymousEncounter.action",
 		{
 			programId: jQuery('#programId option:selected').val(),
-			executionDate: getFieldValue('executionDateNewEvent')
+			executionDate: getFieldValue('executionDate')
 		}, 
 		function( json ) 
 		{    
 			if(json.response=='success')
 			{
-				setFieldValue('programStageInstanceId', json.message );
+				setFieldValue('programStageInstanceId',json.message);
 				showUpdateEvent( json.message )
 			}
 			else
@@ -356,7 +367,7 @@ function removeEmptyEvents()
     {
 		jQuery.getJSON( "removeEmptyEvents.action",
 			{
-				programStageId: jQuery('#selectDiv [id=programId] option:selected').attr('programStageId')
+				programStageId: jQuery('#selectDiv [id=programId] option:selected').attr('psid')
 			}, 
 			function( json ) 
 			{   
