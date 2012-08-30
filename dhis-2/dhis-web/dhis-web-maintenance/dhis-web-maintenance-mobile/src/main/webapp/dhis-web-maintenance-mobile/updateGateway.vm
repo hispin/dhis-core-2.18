@@ -26,13 +26,37 @@
 					<option value="bulksms" #if ( $!index == $!bulkIndex ) selected='selected' #end>$i18n.getString( "bulk_gw" )</option>
 					<option value="clickatell" #if ( $!index == $!clickatellIndex ) selected='selected' #end>$i18n.getString( "clickatell_gw" )</option>
 					<option value="http" #if ( $!index == $!httpIndex ) selected='selected' #end>$i18n.getString( "generic_http_gw" )</option>
-					<option value="modem" #if ( $!index == $!modemIndex ) selected='selected' #end>$i18n.getString( "modem_gw" )</option>					
+					<option value="modem" #if ( $!index == $!modemIndex ) selected='selected' #end>$i18n.getString( "modem_gw" )</option>
+					<option value="smpp_gw" #if ( $!index == $!smppIndex ) selected='selected' #end>$i18n.getString( "smpp_gw" )</option>					
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<th colspan="2">$i18n.getString( "gateway_configuration" )</th>
 		</tr>
+		  #set( $smppGateway = $!gatewayConfigMap.get( $smppIndex ) )
+        <tbody id="smppFields">
+            <tr>
+                <td>$i18n.getString( "gateway_name" ):</td>
+                <td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!smppGateway.name )"/></td>
+            </tr>
+            <tr>
+                <td>$i18n.getString( "username" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
+                <td><input type="text" name="username" id="username" style="width: 28em" value="$!smppGateway.username"/></td>
+            </tr> 
+            <tr>
+                <td>$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
+                <td><input type="text" name="password" id="password" style="width: 28em" value="$!smppGateway.password"/></td>
+            </tr>
+            <tr>
+                <td>$i18n.getString( "address" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
+                <td><input type="text" name="address" id="address" style="width: 28em" value="$!smppGateway.address"/></td>
+            </tr>
+            <tr>
+                <td>$i18n.getString( "port" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
+                <td><input type="text" name="port" id="port" style="width: 28em" value="$!smppGateway.port"/></td>
+            </tr>
+        </tbody>
 		#set( $bulkGateway = $!gatewayConfigMap.get( $bulkIndex ) )
 		<tbody id="bulksmsFields">
 			<tr>

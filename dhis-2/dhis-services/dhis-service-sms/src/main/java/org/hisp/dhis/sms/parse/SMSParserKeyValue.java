@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.hisp.dhis.sms.input;
+package org.hisp.dhis.sms.parse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +15,8 @@ import java.util.regex.Pattern;
 public class SMSParserKeyValue
     implements IParser
 {
-
-    private String defaultPattern = "([a-zA-Z]+)\\s*(\\d+)";
-
+  //= "([a-zA-Z]+)\\s*(\\d+)";
+    private String defaultPattern = "(\\w+)\\s*\\*\\s*([\\w ]+)\\s*(\\*|$)*\\s*";
     private Pattern pattern = Pattern.compile( defaultPattern );
 
     @Override

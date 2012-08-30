@@ -32,6 +32,7 @@ import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
 import org.hisp.dhis.sms.config.GenericHttpGatewayConfig;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
+import org.hisp.dhis.sms.config.SMPPGatewayConfig;
 import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.smslib.AGateway;
 import org.smslib.AGateway.Protocols;
@@ -39,6 +40,9 @@ import org.smslib.http.BulkSmsHTTPGateway;
 import org.smslib.http.BulkSmsHTTPGateway.Regions;
 import org.smslib.http.ClickatellHTTPGateway;
 import org.smslib.modem.SerialModemGateway;
+import org.smslib.smpp.BindAttributes;
+import org.smslib.smpp.BindAttributes.BindType;
+import org.smslib.smpp.jsmpp.JSMPPGateway;
 
 public class GateWayFactory
 {
@@ -60,9 +64,23 @@ public class GateWayFactory
         {
             return createModemGateway( (ModemGatewayConfig) config );
         }
+        else if ( config instanceof SMPPGatewayConfig )
+        {
+            return createSMPPGatewayConfig( (SMPPGatewayConfig) config );
+        }
 
         throw new SmsServiceException( "Gateway config of unknown type: " + config.getClass().getName() );
 
+    }
+
+    public AGateway createSMPPGatewayConfig( SMPPGatewayConfig config )
+    {
+
+        AGateway gateway = new JSMPPGateway( config.getName(), config.getAddress(), config.getPort(),
+            new BindAttributes( config.getUsername(), config.getPassword(), "cp", BindType.TRANSCEIVER ) );
+        gateway.setInbound( true );
+        gateway.setOutbound( true );
+        return gateway;
     }
 
     public AGateway createBulkSmsGateway( BulkSmsGatewayConfig config )

@@ -161,7 +161,6 @@ public class MenuAction
             dataSet = dataSetService.getDataSet( dataSetId );
         }
 
-        unreadMessageConversationCount = messageService.getUnreadMessageConversationCount();
 
         return SUCCESS;
     }

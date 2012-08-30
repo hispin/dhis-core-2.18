@@ -28,18 +28,20 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-administration</artifactId>
     </dependency>
-    
-	<!-- SMS -->
-    
+
+    <!-- SMS -->
+
     <dependency>
       <groupId>org.smslib</groupId>
       <artifactId>smslib</artifactId>
     </dependency>
+
     <dependency>
-	  <groupId>org.rxtx</groupId>
-	  <artifactId>rxtx</artifactId>
-	</dependency>
-    
+      <groupId>com.googlecode.jsmpp</groupId>
+      <artifactId>jsmpp</artifactId>
+      <version>2.1.0-RELEASE</version>
+    </dependency>
+
   </dependencies>
 
   <properties>

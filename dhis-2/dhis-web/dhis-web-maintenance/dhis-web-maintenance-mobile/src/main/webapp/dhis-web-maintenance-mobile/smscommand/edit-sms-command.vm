@@ -1,6 +1,6 @@
-<script langauge="Javascript">
+#parse("/dhis-web-maintenance-mobile/smscommand/validate_javascript.vm")
 
-    var VALIDATION_ERRORS = 0;
+<script langauge="Javascript">
 
     function prepSubmit(){
     
@@ -22,41 +22,13 @@
       $("#updateSMSCommand").submit(); 
 
     }
-    
-    function validate(obj){
-        var validationErrorId = "#" + $(obj).attr("name") + "-validation-error";
-        validationErrorId = validationErrorId.replace(/\./g,'\\\.');
-        if(obj.value != null && obj.value.indexOf(" ") > -1){
-          if(!$(validationErrorId).length>0){
-            $(obj).after("<span id='" + $(obj).attr("name") + "-validation-error' style='color:red'>* whitespace not allowed</span>");
-            VALIDATION_ERRORS++;
-          }
-        }else{
-          if($(validationErrorId).length>0){
-            $(validationErrorId).remove();
-            VALIDATION_ERRORS--;
-          }
-        }
-    }
-    
-    $(document).ready(function() {   
-        $(".validate").each(function(){
-            validate(this);
-        });
-        $(".validate").change(function() {
-            validate(this);
-        });
-    });
+  
     
 </script>
 
-
-<div>
-    </div>
-<h3>Edit command</h3>
+<h3>$i18n.getString( "edit_command" )</h3>
 
 <form id="updateSMSCommand" name="updateSMSCommand" action="saveEditSMSCommandForm.action" method="post">
-
 	<table>
 	<thead>
       <tr>
@@ -68,7 +40,6 @@
 				<input type="hidden" value="$selectedCommandID" name="selectedCommandID" />
 			</td>
 		</tr>
-		
 		<tr>
 			<td>$i18n.getString( "name" )</td>
 			<td><input type="text" name="name" id="name" value="$SMSCommand.name" style="width:20em" class="validate" /></td>
@@ -78,13 +49,17 @@
 		  <td>$i18n.getString( "dataset" )</td>
 		  <td>#if($SMSCommand.dataset.name) $SMSCommand.dataset.name #end</td>
 		<tr>
+		<tr>
+          <td>$i18n.getString( "parser" )</td>
+          <td>#if($SMSCommand.parserType) $SMSCommand.parserType #end</td>
+        <tr>
 			<td>$i18n.getString( "code_value_separator" )</td>
 			<td>
 				<input type="text"  #if($SMSCommand.separator) value="$SMSCommand.separator" #end name="separator" style="width:20em" class="validate" />
 			</td>
 		</tr> 
-        <tr>
-            <td>$i18n.getString( "no_codes_message" )</td>
+        <tr >
+            <td style="width:150px">$i18n.getString( "no_codes_message" )</td>
             <td><textarea cols="35" type="text" name="defaultMessage">#if($SMSCommand.defaultMessage)$SMSCommand.defaultMessage#end</textarea></td>
         </tr>	
 	</table>
@@ -99,8 +74,8 @@
     <col style="width: 450px"/>
     <thead>
       <tr>
-        <th>Data Element Category Combination</th>
-		<th>Code</th>
+        <th>$i18n.getString( "data_element_category_combination")</th>
+		<th>$i18n.getString( "code" )</th>
       </tr>
     </thead>
          #foreach( $dataElement in $dataSetElements)
@@ -124,9 +99,10 @@
             #end  
          #end
     </table>
-	<br/>
-	
+    
+
+	<br/>	
     <input type="hidden" name="codeDataelementOption" id="codeDataelementOption" />
     <input  type="button" style="width: 100px" onclick="prepSubmit()" value="$i18n.getString( "save" )" />
-	
+    <input type="button" id ="btnBack" name ="btnBack" value="Back" style="width:8em" onclick="window.location.href='SMSCommands.action'"/>
 </form>

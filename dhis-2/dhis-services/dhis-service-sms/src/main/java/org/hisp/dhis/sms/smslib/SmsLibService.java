@@ -39,12 +39,14 @@ import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
 import org.hisp.dhis.sms.config.GenericHttpGatewayConfig;
+import org.hisp.dhis.sms.config.SMPPGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.smslib.AGateway;
 import org.smslib.GatewayException;
+import org.smslib.IInboundMessageNotification;
 import org.smslib.IOutboundMessageNotification;
 import org.smslib.OutboundMessage;
 import org.smslib.SMSLibException;
@@ -72,9 +74,14 @@ public class SmsLibService
 
     private final String MODEM_GATEWAY = "modem_gw";
 
+    private final String SMPP_GATEWAY = "smpp_gw";
+
+    private IInboundMessageNotification smppInboundMessageNotification;
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
+
 
     @Override
     public boolean isEnabled()
@@ -272,6 +279,11 @@ public class SmsLibService
                     {
                         gatewayMap.put( HTTP_GATEWAY, gateway.getGatewayId() );
                     }
+                    else if ( gatewayConfig instanceof SMPPGatewayConfig )
+                    {
+                        gatewayMap.put( SMPP_GATEWAY, gateway.getGatewayId() );
+                 //       Service.getInstance().setInboundMessageNotification( new InboundNotification() );
+                    }
                     else
                     {
                         gatewayMap.put( MODEM_GATEWAY, gateway.getGatewayId() );
@@ -298,6 +310,11 @@ public class SmsLibService
             try
             {
                 getService().startService();
+                if ( gatewayMap.containsKey( SMPP_GATEWAY ) )
+                {
+                    getService().setInboundMessageNotification( smppInboundMessageNotification );
+                }
+
             }
             catch ( SMSLibException e )
             {
@@ -414,6 +431,12 @@ public class SmsLibService
             log.debug( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg );
         }
     }
+    
+    public void setSmppInboundMessageNotification( IInboundMessageNotification smppInboundMessageNotification )
+    {
+        this.smppInboundMessageNotification = smppInboundMessageNotification;
+    }
+
 
     @Override
     public List<OutboundSms> getAllOutboundSms()

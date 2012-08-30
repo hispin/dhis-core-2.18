@@ -6,10 +6,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
     <bean id="org.hisp.dhis.sms.input.SMSInput" class="org.hisp.dhis.sms.input.SMSInput">
         <property name="smsStore" ref="org.hisp.dhis.sms.incoming.IncomingSmsStore"/>
-        <property name="userService" ref="org.hisp.dhis.user.UserService"/>
-        <property name="smsCommandService" ref="smsCommandService" />
-        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
+        <property name="smsParserManager" ref="org.hisp.dhis.sms.parse.DefaultParserManager" />
     </bean>
     
  
