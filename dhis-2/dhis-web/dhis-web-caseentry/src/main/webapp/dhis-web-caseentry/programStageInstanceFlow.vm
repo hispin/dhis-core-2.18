@@ -1,4 +1,3 @@
-#parse( "/dhis-web-caseentry/colorHelp.vm" )
 <br/>
 <table id='programStageIdTB_$!programInstance.id' style="width:850px;height:125px;">
 	<tr>
