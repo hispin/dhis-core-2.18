@@ -142,6 +142,11 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	
+    <action name="updateSMPPConfig" class="org.hisp.dhis.mobile.action.UpdateSMPPGateWayConfigAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+  
     <action name="saveModemConfig" class="org.hisp.dhis.mobile.action.UpdateModemGateWayConfigAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>

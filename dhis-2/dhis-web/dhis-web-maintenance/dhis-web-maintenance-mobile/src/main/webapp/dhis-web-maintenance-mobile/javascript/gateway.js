@@ -9,6 +9,8 @@ function changeValueType( value )
     	showById( "bulksmsFields" );
     } else if ( value == 'clickatell' ) {
     	showById( "clickatellFields" );
+    } else if ( value == "smpp_gw"){
+    	showById( "smppFields" );
     } else {
 	    showById( "genericHTTPFields" );
 	}
@@ -19,8 +21,10 @@ function hideAll()
 {
 	 hideById( "modemFields" );
 	 hideById( "bulksmsFields" );
+	 hideById( "smppFields" );
 	 hideById( "clickatellFields" );
 	 hideById( "genericHTTPFields" );
+	 
 }
 
 function getValidationRulesGateway()
@@ -39,6 +43,12 @@ function getValidationRulesGateway()
 			'modemFields select[id=outbound]' : { 'required' : true }
 		};
 	} else if ( currentType == 'bulksms' ) {
+		rules = {
+			'bulksmsFields input[id=name]' : { 'required' : true },
+			'bulksmsFields input[id=username]' : { 'required' : true },
+			'bulksmsFields input[id=password]' : { 'required' : true }
+		};
+	} else if ( currentType == 'smpp_gw' ) {
 		rules = {
 			'bulksmsFields input[id=name]' : { 'required' : true },
 			'bulksmsFields input[id=username]' : { 'required' : true },
@@ -121,6 +131,30 @@ function saveGatewayConfig()
 				username: getFieldValue( 'bulksmsFields input[id=username]' ),
 				password: getFieldValue( 'bulksmsFields input[id=password]' ),
 				region: getFieldValue( 'bulksmsFields select[id=region]' )
+			}, function ( json ) {
+				unLockScreen();
+				showMessage( json );
+			} );
+		}
+	}
+	else if ( currentType == 'smpp_gw' )
+	{
+		var username = getFieldValue( 'smppFields input[id=username]' );
+		var password = getFieldValue( 'smppFields input[id=password]' );
+		if ( username == "" || password == "")
+		{	
+			showErrorMessage( i18n_required_data_error );
+		}
+		else
+		{
+			lockScreen();
+			jQuery.postJSON( "updateSMPPConfig.action", {
+				gatewayType: getFieldValue( 'gatewayType' ),
+				name: getFieldValue( 'smppFields input[id=name]' ),
+				username: getFieldValue( 'smppFields input[id=username]' ),
+				password: getFieldValue( 'smppFields input[id=password]' ),
+				port: getFieldValue( 'smppFields input[id=port]' ),
+				address: getFieldValue( 'smppFields input[id=address]' ),
 			}, function ( json ) {
 				unLockScreen();
 				showMessage( json );

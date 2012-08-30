@@ -12,7 +12,16 @@
       <generator class="increment" />
     </id>
     <property name="name" type="text" />
+    
     <property name="parser" type="text" />
+    
+     <property name="parserType">
+      <type name="org.hibernate.type.EnumType">
+         <param name="enumClass">org.hisp.dhis.sms.parse.ParserType</param>
+      </type>
+   </property>
+    
+    
     <property name="separator" type="text" />
     <property name="codeSeparator" type="text" />
     <property name="defaultMessage" type="text" />

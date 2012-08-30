@@ -27,17 +27,9 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
-import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
-import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SMPPGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
-import org.hisp.dhis.sms.config.SmsGatewayConfig;
-import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -47,7 +39,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class GetSmsConfigurationAction
+public class UpdateSMPPGateWayConfigAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -57,79 +49,50 @@ public class GetSmsConfigurationAction
     @Autowired
     private SmsConfigurationManager smsConfigurationManager;
 
-    @Autowired
-    private OutboundSmsTransportService smsLibService;
-
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------------------------------------
 
-    private String index;
+    private String name;
 
-    public String getIndex()
+    public void setName( String name )
     {
-        return index;
+        this.name = name;
     }
 
-    public void setIndex( String index )
+    private String password;
+
+    public void setPassword( String password )
     {
-        this.index = index;
+        this.password = password;
     }
 
-    private Map<Integer, SmsGatewayConfig> gatewayConfigMap = new HashMap<Integer, SmsGatewayConfig>();
+    private String username;
 
-    public Map<Integer, SmsGatewayConfig> getGatewayConfigMap()
+    public void setUsername( String username )
     {
-        return gatewayConfigMap;
+        this.username = username;
     }
 
-    private SmsConfiguration smsConfig;
+    private String gatewayType;
 
-    public SmsConfiguration getSmsConfig()
+    public void setGatewayType( String gatewayType )
     {
-        return smsConfig;
+        this.gatewayType = gatewayType;
     }
 
-    private String smsServiceStatus;
+    private int port;
 
-    public String getSmsServiceStatus()
+    public void setPort( int port )
     {
-        return this.smsServiceStatus;
+        this.port = port;
     }
 
-    public Integer bulkIndex;
+    private String address;
 
-    public Integer getBulkIndex()
+    public void setAddress( String address )
     {
-        return bulkIndex;
-    }
-
-    public Integer clickatellIndex;
-
-    public Integer getClickatellIndex()
-    {
-        return clickatellIndex;
-    }
-
-    public Integer modemIndex;
-
-    public Integer getModemIndex()
-    {
-        return modemIndex;
-    }
-
-    public Integer httpIndex;
-
-    public Integer getHttpIndex()
-    {
-        return httpIndex;
-    }
-
-    public Integer smppIndex;
-
-    public Integer getSmppIndex()
-    {
-        return smppIndex;
+        this.address = address;
     }
 
     // -------------------------------------------------------------------------
@@ -139,41 +102,41 @@ public class GetSmsConfigurationAction
     public String execute()
         throws Exception
     {
-
-        smsServiceStatus = smsLibService.getServiceStatus();
-
-        smsConfig = smsConfigurationManager.getSmsConfiguration();
-
-        if ( smsConfig != null )
+        if ( gatewayType != null && gatewayType.equals( "smpp_gw" ) )
         {
-            int index = 0;
+            SmsConfiguration config = smsConfigurationManager.getSmsConfiguration();
 
-            for ( SmsGatewayConfig gw : smsConfig.getGateways() )
+            if ( config != null )
             {
-                index = smsConfig.getGateways().indexOf( gw );
+                SMPPGatewayConfig gatewayConfig = (SMPPGatewayConfig) smsConfigurationManager
+                    .checkInstanceOfGateway( SMPPGatewayConfig.class );
 
-                gatewayConfigMap.put( index, gw );
+                int index = -1;
 
-                if ( gw instanceof BulkSmsGatewayConfig )
+                if ( gatewayConfig == null )
                 {
-                    bulkIndex = index;
-                }
-                else if ( gw instanceof ClickatellGatewayConfig )
-                {
-                    clickatellIndex = index;
-                }
-                else if ( gw instanceof ModemGatewayConfig )
-                {
-                    modemIndex = index;
-                }
-                else if ( gw instanceof SMPPGatewayConfig )
-                {
-                    smppIndex = index;
+                    gatewayConfig = new SMPPGatewayConfig();
                 }
                 else
                 {
-                    httpIndex = index;
+                    index = config.getGateways().indexOf( gatewayConfig );
                 }
+
+                gatewayConfig.setName( name );
+                gatewayConfig.setPassword( password );
+                gatewayConfig.setUsername( username );
+                gatewayConfig.setAddress( address );
+                gatewayConfig.setPort( port  );
+                if ( index >= 0 )
+                {
+                    config.getGateways().set( index, gatewayConfig );
+                }
+                else
+                {
+                    config.getGateways().add( gatewayConfig );
+                }
+
+                smsConfigurationManager.updateSmsConfiguration( config );
             }
         }
 

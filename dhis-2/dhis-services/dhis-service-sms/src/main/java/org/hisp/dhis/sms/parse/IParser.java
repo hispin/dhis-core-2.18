@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.hisp.dhis.sms.input;
+package org.hisp.dhis.sms.parse;
 
 import java.util.Map;
 

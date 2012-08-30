@@ -180,6 +180,7 @@ public class EditSMSCommandForm
     {
         this.dataElementService = dataElementService;
     }
+    
 
     public String getCodeSeparator()
     {
@@ -198,4 +199,5 @@ public class EditSMSCommandForm
     public void setDefaultMessage(String defaultMessage) {
         this.defaultMessage = defaultMessage;
     }
+
 }

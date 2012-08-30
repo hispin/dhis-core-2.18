@@ -12,6 +12,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCode;
 import org.hisp.dhis.smscommand.SMSCommandService;
 import org.hisp.dhis.smscommand.SMSCommand;
@@ -54,9 +55,9 @@ public class SMSCommandAction
             DataSet d = getSMSCommand().getDataset();
             if ( d != null )
             {
-                List<DataElement> dataElements = new ArrayList<DataElement>( d.getDataElements() );
-                Collections.sort( dataElements, new DataElementSortOrderComparator() );
-                return dataElements;
+                List<DataElement> x = new ArrayList<DataElement>( d.getDataElements() );
+                Collections.sort( x, new DataElementSortOrderComparator() );
+                return x;
             }
         }
 
@@ -123,6 +124,10 @@ public class SMSCommandAction
     public void setCodes( Map<String, String> codes )
     {
         this.codes = codes;
+    }
+    
+    public ParserType[] getParserType(){       
+        return ParserType.values();
     }
 
 }

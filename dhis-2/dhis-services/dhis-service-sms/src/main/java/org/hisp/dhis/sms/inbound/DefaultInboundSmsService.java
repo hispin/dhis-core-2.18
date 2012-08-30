@@ -119,6 +119,8 @@ public class DefaultInboundSmsService
     public void save( IncomingSms incomingSms )
     {
         incomingSmsStore.save( incomingSms );
+        
+        //TODO: run parser ?
     }
 
     @Override
