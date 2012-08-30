@@ -74,8 +74,8 @@
 							</div>
 						</div>
 					</td>
-					<td>
-						<div class="link-area">
+					<td class="link-area">
+						<div class="link-area"  style='height:160px;'>
 							<table width='100%'>
 								<tr><th>$i18n.getString("active_programs")</th></tr>
 							</table>
@@ -127,6 +127,7 @@
 								</table>
 							</div>
 						</div>
+						<br><input type='button' value='$i18n.getString("enroll_program")' onclick='showProgramEnrollmentForm( "$patient.id" )'/>
 					</td>
 					<td>
 						<div class="link-area">
