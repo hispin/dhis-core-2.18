@@ -250,6 +250,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="interpretationStore" ref="org.hisp.dhis.interpretation.InterpretationStore" />
 	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	<property name="userService" ref="org.hisp.dhis.user.UserService" />
+	<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
   <bean id="org.hisp.dhis.interpretation.InterpretationStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">

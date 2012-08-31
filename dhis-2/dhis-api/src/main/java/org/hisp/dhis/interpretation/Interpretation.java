@@ -38,8 +38,10 @@ import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 
@@ -60,7 +62,11 @@ public class Interpretation
     
     private ReportTable reportTable;
     
-    private OrganisationUnit organisationUnit; // Applicable to report table only
+    private DataSet dataSet;
+    
+    private Period period; // Applicable to data set report
+    
+    private OrganisationUnit organisationUnit; // Applicable to report table and data set report
     
     private String text;
 
@@ -101,6 +107,15 @@ public class Interpretation
         this.text = text;
         this.created = new Date();
     }
+    
+    public Interpretation( DataSet dataSet, Period period, OrganisationUnit organisationUnit, String text )
+    {
+        this.dataSet = dataSet;
+        this.period = period;
+        this.organisationUnit = organisationUnit;
+        this.text = text;
+        this.created = new Date();
+    }
 
     // -------------------------------------------------------------------------
     // Logic
@@ -124,6 +139,11 @@ public class Interpretation
     public boolean isReportTableInterpretation()
     {
         return reportTable != null;
+    }
+    
+    public boolean isDataSetReportInterpretation()
+    {
+        return dataSet != null;
     }
         
     // -------------------------------------------------------------------------
@@ -170,6 +190,34 @@ public class Interpretation
     public void setReportTable( ReportTable reportTable )
     {
         this.reportTable = reportTable;
+    }
+
+    @JsonProperty
+    @JsonDeserialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
+
+    public void setDataSet( DataSet dataSet )
+    {
+        this.dataSet = dataSet;
+    }
+
+    @JsonProperty
+    @JsonDeserialize( as = BaseIdentifiableObject.class )
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public Period getPeriod()
+    {
+        return period;
+    }
+
+    public void setPeriod( Period period )
+    {
+        this.period = period;
     }
 
     @JsonProperty
