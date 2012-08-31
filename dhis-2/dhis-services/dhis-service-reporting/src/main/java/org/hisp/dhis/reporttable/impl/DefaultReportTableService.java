@@ -487,8 +487,7 @@ public class DefaultReportTableService
             {
                 for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() )
                 {
-                    grid.addValue( map
-                        .get( getIdentifier( row, DataElementCategoryOption.class, categoryOption.getId() ) ) );
+                    grid.addValue( map.get( getIdentifier( row, DataElementCategoryOption.class, categoryOption.getId() ) ) );
                 }
             }
 
