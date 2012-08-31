@@ -24,6 +24,12 @@
 	<many-to-one name="reportTable" class="org.hisp.dhis.reporttable.ReportTable" column="reporttableid"
 		foreign-key="fk_interpretation_reporttableid" />
 	
+	<many-to-one name="dataSet" class="org.hisp.dhis.dataset.DataSet" column="datasetid"
+		foreign-key="fk_interpretation_datasetid"/>
+	
+	<many-to-one name="period" class="org.hisp.dhis.period.Period" column="periodid"
+		foreign-key="fk_interpretation_periodid"/>
+	
 	<many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
 		foreign-key="fk_interpretation_organisationunitid" />
 	

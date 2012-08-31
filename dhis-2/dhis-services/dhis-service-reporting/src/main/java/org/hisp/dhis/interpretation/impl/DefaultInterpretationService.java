@@ -35,6 +35,7 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationComment;
 import org.hisp.dhis.interpretation.InterpretationService;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -71,6 +72,13 @@ public class DefaultInterpretationService
     {
         this.userService = userService;
     }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
 
     // -------------------------------------------------------------------------
     // InterpretationService implementation
@@ -83,6 +91,11 @@ public class DefaultInterpretationService
         if ( user != null )
         {
             interpretation.setUser( user );
+        }
+        
+        if ( interpretation != null && interpretation.getPeriod() != null )
+        {
+            interpretation.setPeriod( periodService.reloadPeriod( interpretation.getPeriod() ) );
         }
         
         return interpretationStore.save( interpretation );

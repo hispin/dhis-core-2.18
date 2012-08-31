@@ -38,12 +38,16 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +76,9 @@ public class InterpretationController
     
     @Autowired
     private ReportTableService reportTableService;
+    
+    @Autowired
+    private DataSetService dataSetService;
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
@@ -184,7 +191,46 @@ public class InterpretationController
         response.setStatus( HttpServletResponse.SC_CREATED );
         response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
-    
+
+    @RequestMapping( value = "/dataSetReport/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
+    public void shareDataSetReportInterpretation( 
+        @PathVariable( "uid" ) String dataSetUid,
+        @RequestParam( "pe" ) String isoPeriod,
+        @RequestParam( "ou" ) String orgUnitUid,
+        @RequestBody String text, HttpServletResponse response ) throws IOException
+    {
+        DataSet dataSet = dataSetService.getDataSet( dataSetUid );
+        
+        if ( dataSet == null )
+        {
+            ContextUtils.conflictResponse( response, "Data set identifier not valid: " + dataSetUid );
+            return;
+        }
+        
+        Period period = PeriodType.getPeriodFromIsoString( isoPeriod );
+        
+        if ( period == null )
+        {
+            ContextUtils.conflictResponse( response, "Period identifier not valid: " + isoPeriod );
+            return;
+        }
+        
+        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( orgUnitUid );
+        
+        if ( orgUnit == null )
+        {
+            ContextUtils.conflictResponse( response, "Organisation unit identifier not valid: " + orgUnitUid );
+            return;
+        }
+        
+        Interpretation interpretation = new Interpretation( dataSet, period, orgUnit, text );
+        
+        interpretationService.saveInterpretation( interpretation );
+
+        response.setStatus( HttpServletResponse.SC_CREATED );
+        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
+    }
+
     @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
     public void postComment( 
         @PathVariable( "uid" ) String uid, 
