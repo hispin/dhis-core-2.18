@@ -27,11 +27,17 @@
 		<a class="bold" 
 		   title="$i18n.getString( 'click_to_view_in_gis' )" 
 		   href="../dhis-web-mapping/mapping/index.html?id=${ip.mapView.uid}">$encoder.htmlEncode( $ip.mapView.name )</a>
-	#else
-		#if( $ip.organisationUnit )#set( $ou = "&ou=" + $ip.organisationUnit.uid )#else#set( $ou = "" )#end		
+	#elseif( $ip.reportTableInterpretation )
+		#if( $ip.organisationUnit )#set( $ou = "&ou=" + $ip.organisationUnit.uid )#else#set( $ou = "" )#end
 		<a class="bold" 
 		   title="$i18n.getString( 'click_to_view_report_table' )" 
-		   href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}&pe=${format.formatDate( $ip.created )}${ou}">$encoder.htmlEncode( $ip.reportTable.name )</a>
+		   href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}&pe=${format.formatDate( $ip.created )}${ou}">
+		   	$encoder.htmlEncode( $ip.reportTable.name )</a>
+	#elseif( $ip.dataSetReportInterpretation )
+	    <a class="bold"
+		   title="$i18n.getString( 'click_to_view_data_set_report' )"
+		   href="../dhis-web-reporting/showDataSetReportForm.action?ds=${ip.dataSet.uid}&pe=${ip.period.isoDate}&ou=${ip.organisationUnit.uid}">
+		   $i18n.getString( "view_data_set_report" )</a>
 	#end
 	</div>
 	

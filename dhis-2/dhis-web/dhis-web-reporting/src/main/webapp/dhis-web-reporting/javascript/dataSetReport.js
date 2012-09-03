@@ -1,19 +1,93 @@
 
-function getPeriods( periodTypeList, availableList, selectedList, timespan )
-{
-    $( "#periodId" ).removeAttr( "disabled" );
+var currentPeriodOffset = 0;
+var periodTypeFactory = new PeriodType();
 
-    getAvailablePeriods( periodTypeList, availableList, selectedList, timespan );
+//------------------------------------------------------------------------------
+// Get and set methods
+//------------------------------------------------------------------------------
+
+function getDataSetReport()
+{
+    var dataSetReport = {
+        dataSet: $( "#dataSetId" ).val(),
+        periodType: $( "#periodType" ).val(),
+        period: $( "#periodId" ).val(),
+        orgUnit: selectionTreeSelection.getSelectedUid()[0],
+        selectedUnitOnly: $( "#selectedUnitOnly" ).is( ":checked" ),
+        offset: currentPeriodOffset
+    };
+    
+    return dataSetReport;
 }
+
+function setDataSetReport( dataSetReport )
+{
+	$( "#dataSetId" ).val( dataSetReport.dataSet );
+	$( "#periodType" ).val( dataSetReport.periodType );
+	
+	currentPeriodOffset = dataSetReport.offset;
+	
+	displayPeriods();
+	$( "#periodId" ).val( dataSetReport.period );
+	
+	selectionTreeSelection.setMultipleSelectionAllowed( false );
+	selectionTree.buildSelectionTree();
+		
+	$( "body" ).on( "oust.selected", function() {
+		$( "body" ).off( "oust.selected" );
+		validateDataSetReport();
+	} );
+}
+
+//------------------------------------------------------------------------------
+// Period
+//------------------------------------------------------------------------------
+
+function displayPeriods()
+{
+    var periodType = $( "#periodType" ).val();
+    var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
+    periods = periodTypeFactory.reverse( periods );
+    periods = periodTypeFactory.filterFuturePeriodsExceptCurrent( periods );
+
+    $( "#periodId" ).removeAttr( "disabled" );
+    clearListById( "periodId" );
+
+    for ( i in periods )
+    {
+        addOptionById( "periodId", periods[i].iso, periods[i].name );
+    }
+}
+
+function displayNextPeriods()
+{
+    if ( currentPeriodOffset < 0 ) // Cannot display future periods
+    {
+        currentPeriodOffset++;
+        displayPeriods();
+    }
+}
+
+function displayPreviousPeriods()
+{
+    currentPeriodOffset--;
+    displayPeriods();
+}
+
+//------------------------------------------------------------------------------
+// Run report
+//------------------------------------------------------------------------------
 
 function validateDataSetReport()
 {
-    if ( !$( "#dataSetId" ).val() )
+	var dataSetReport = getDataSetReport();
+	
+    if ( !dataSetReport.dataSet )
     {
         setHeaderMessage( i18n_select_data_set );
         return false;
     }
-    if ( !$( "#periodId" ).val() )
+    if ( !dataSetReport.period )
     {
         setHeaderMessage( i18n_select_period );
         return false;
@@ -26,15 +100,10 @@ function validateDataSetReport()
     
     hideHeaderMessage();
     hideCriteria();
-	hideContent();
-	showLoader();
+    hideContent();
+    showLoader();
 	
-    var dataSetId = $( "#dataSetId" ).val();
-    var periodId = $( "#periodId" ).val();
-    var selectedUnitOnly = $( "#selectedUnitOnly" ).is( ":checked" );
-    var orgUnitId = selectionTreeSelection.getSelected()[0]; 
-    
-    var currentParams = { dataSetId: dataSetId, periodId: periodId, selectedUnitOnly: selectedUnitOnly, orgUnitId: orgUnitId };
+    var currentParams = { ds: dataSetReport.dataSet, pe: dataSetReport.period, selectedUnitOnly: dataSetReport.selectedUnitOnly, ou: dataSetReport.orgUnit };
     
     $( '#content' ).load( 'generateDataSetReport.action', currentParams, function() {
     	hideLoader();
@@ -45,11 +114,13 @@ function validateDataSetReport()
 
 function exportDataSetReport( type )
 {
+	var dataSetReport = getDataSetReport();
+	
 	var url = "generateDataSetReport.action?useLast=true" + 
-		"&dataSetId=" + $( "#currentDataSetId" ).val() +
-	    "&periodId=" + $( "#currentPeriodId" ).val() +
-	    "&selectedUnitOnly=" + $( "#currentSelectedUnitOnly" ).val() +
-	    "&orgUnitId=" + selectionTreeSelection.getSelected() +
+		"&ds=" + dataSetReport.dataSet +
+	    "&pe=" + dataSetReport.period +
+	    "&selectedUnitOnly=" + dataSetReport.selectedUnitOnly +
+	    "&ou=" + dataSetReport.orgUnit +
 	    "&type=" + type;
 	    
 	window.location.href = url;
@@ -85,4 +156,44 @@ function showContent()
 function hideContent()
 {
 	$( "#content" ).hide( "fast" );
+}
+
+//------------------------------------------------------------------------------
+// Share
+//------------------------------------------------------------------------------
+
+function viewShareForm()
+{
+	$( "#shareForm" ).dialog( {
+		modal : true,
+		width : 550,
+		resizable: false,
+		title : i18n_share_your_interpretation
+	} );
+}
+
+function shareInterpretation()
+{
+	var dataSetReport = getDataSetReport();
+    var text = $( "#interpretationArea" ).val();
+    
+    if ( text.length && $.trim( text ).length )
+    {
+    	text = $.trim( text );
+    	
+	    var url = "../api/interpretations/dataSetReport/" + $( "#currentDataSetId" ).val() +
+	    	"?pe=" + dataSetReport.period +
+	    	"&ou=" + dataSetReport.orgUnit;
+	    	    
+	    $.ajax( url, {
+	    	type: "POST",
+	    	contentType: "text/html",
+	    	data: text,
+	    	success: function() {
+	    		$( "#shareForm" ).dialog( "close" );
+	    		$( "#interpretationArea" ).val( "" );
+	    		setHeaderDelayMessage( i18n_interpretation_was_shared );
+	    	}    	
+	    } );
+    }
 }

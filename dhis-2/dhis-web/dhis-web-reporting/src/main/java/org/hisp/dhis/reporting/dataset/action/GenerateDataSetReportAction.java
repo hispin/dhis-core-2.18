@@ -47,6 +47,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -83,18 +84,18 @@ public class GenerateDataSetReportAction
         this.registrationService = registrationService;
     }
 
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
     private OrganisationUnitService organisationUnitService;
     
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private PeriodService periodService;
+    
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     private I18nFormat format;
@@ -115,25 +116,25 @@ public class GenerateDataSetReportAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer dataSetId;
+    private String ds;
 
-    public void setDataSetId( Integer dataSetId )
+    public void setDs( String ds )
     {
-        this.dataSetId = dataSetId;
+        this.ds = ds;
     }
 
-    private String periodId;
+    private String pe;
 
-    public void setPeriodId( String periodId )
+    public void setPe( String pe )
     {
-        this.periodId = periodId;
+        this.pe = pe;
     }
 
-    private Integer orgUnitId;
+    private String ou;
     
-    public void setOrgUnitId( Integer orgUnitId )
+    public void setOu( String ou )
     {
-        this.orgUnitId = orgUnitId;
+        this.ou = ou;
     }
 
     private boolean selectedUnitOnly;
@@ -224,19 +225,20 @@ public class GenerateDataSetReportAction
     public String execute()
         throws Exception
     {
-        selectedDataSet = dataSetService.getDataSet( dataSetId );
+        selectedDataSet = dataSetService.getDataSet( ds );
 
-        if ( periodId != null )
+        if ( pe != null )
         {
-            selectedPeriod = periodService.getPeriodByExternalId( periodId );
+            selectedPeriod = PeriodType.getPeriodFromIsoString( pe );
+            selectedPeriod = periodService.reloadPeriod( selectedPeriod );
         }
      
-        selectedOrgunit = organisationUnitService.getOrganisationUnit( orgUnitId );
+        selectedOrgunit = organisationUnitService.getOrganisationUnit( ou );
         
         String dataSetType = selectedDataSet.getDataSetType();
 
         registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, selectedPeriod, selectedOrgunit );
-        
+            
         if ( TYPE_CUSTOM.equals( dataSetType ) )
         {
             if ( useLast )

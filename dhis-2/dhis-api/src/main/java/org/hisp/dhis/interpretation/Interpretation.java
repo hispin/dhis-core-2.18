@@ -42,6 +42,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 
@@ -145,7 +146,12 @@ public class Interpretation
     {
         return dataSet != null;
     }
-        
+    
+    public PeriodType getPeriodType()
+    {
+        return period != null ? period.getPeriodType() : null;
+    }
+    
     // -------------------------------------------------------------------------
     // Get and set methods
     // -------------------------------------------------------------------------
