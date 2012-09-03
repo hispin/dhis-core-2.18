@@ -14,6 +14,19 @@
 			}
 		});
 
+		jQuery("#availableProgramList").dhisAjaxSelect({
+			source: "../dhis-web-commons-ajax-json/getPrograms.action",
+			iterator: 'programs',
+			connectedTo: 'selectedProgramList',
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.attr( "value", item.id );
+
+				return option;
+			}
+		});
+		
 		jQuery("#availableListAuthority").dhisAjaxSelect({
 			source: "getSystemAuthorities.action",
 			iterator: 'systemAuthorities',
@@ -84,6 +97,28 @@
             	#end
 				</select>
         	</td>
+		</tr>
+		
+		<tr>
+			<td><label>$i18n.getString( "programs" )</label></td>		
+			<td>
+			  <select id="availableProgramList" name="availableProgramList" multiple="multiple" style="height: 200px; width: 100%;"></select>
+			</td>
+
+			<td style="text-align:center">
+				<input type="button" value="&gt;" title="$i18n.getString( 'move_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'availableProgramList' );"/><br/>
+				<input type="button" value="&lt;" title="$i18n.getString( 'remove_selected' )" style="width:50px" onclick="dhisAjaxSelect_moveAllSelected( 'selectedProgramList' );"/><br/>
+				<input type="button" value="&gt;&gt;" title="$i18n.getString('move_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'availableProgramList' );"/><br/>
+				<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="dhisAjaxSelect_moveAll( 'selectedProgramList' );"/>
+			</td>
+
+			<td>
+				<select id="selectedProgramList" name="selectedProgramList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
+					#foreach ( $selectedProgram in $rolePrograms )
+						<option value="$selectedProgram.id">$encoder.htmlEncode( $selectedProgram.name )</option>
+					#end
+				</select>
+			</td>
 		</tr>
 		
 		<tr>

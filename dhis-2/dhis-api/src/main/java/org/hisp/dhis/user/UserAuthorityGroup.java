@@ -40,6 +40,7 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.program.Program;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -64,6 +65,9 @@ public class UserAuthorityGroup
 
     @Scanned
     private Set<DataSet> dataSets = new HashSet<DataSet>();
+
+    @Scanned
+    private Set<Program> programs = new HashSet<Program>();
 
     // -------------------------------------------------------------------------
     // hashCode and equals
@@ -168,6 +172,21 @@ public class UserAuthorityGroup
     public void setDataSets( Set<DataSet> dataSets )
     {
         this.dataSets = dataSets;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "programs", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "programs", namespace = Dxf2Namespace.NAMESPACE )
+    public Set<Program> getPrograms()
+    {
+        return programs;
+    }
+
+    public void setPrograms( Set<Program> programs )
+    {
+        this.programs = programs;
     }
 
     @Override

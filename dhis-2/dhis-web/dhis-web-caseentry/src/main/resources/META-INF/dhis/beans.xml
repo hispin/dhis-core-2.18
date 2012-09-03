@@ -41,6 +41,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
@@ -154,6 +156,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
@@ -163,6 +167,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction"
@@ -203,6 +209,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="programService"
 			ref="org.hisp.dhis.program.ProgramService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 	
 	<bean
@@ -276,6 +284,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.report.GenerateReportAction"
@@ -405,6 +415,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
@@ -458,6 +470,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.GetPatientAction"
@@ -613,6 +627,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.ProgramEnrollmentAction"
@@ -865,6 +881,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
