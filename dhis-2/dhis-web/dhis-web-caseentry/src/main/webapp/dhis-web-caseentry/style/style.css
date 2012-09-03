@@ -142,12 +142,15 @@ input.criteria
 
 input.stage-object[type="button"]
 {
-	width: 120px;
+	width: 100px;
 	height: 60px;
-    cursor: pointer;
+    white-space: normal;
+	border: 2px solid; 
+	cursor: pointer;
 	opacity: 1.0;
-	border: 2px solid;
+	border: 1px solid;
 	margin: 5px;
+	border-radius: 2px;
 }
 
 input.stage-object[type="button"]:hover

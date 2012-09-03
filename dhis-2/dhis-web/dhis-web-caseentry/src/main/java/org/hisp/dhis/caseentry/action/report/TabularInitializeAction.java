@@ -40,9 +40,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -77,20 +74,6 @@ public class TabularInitializeAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -132,18 +115,15 @@ public class TabularInitializeAction
     public String execute()
         throws Exception
     {
-        Collection<OrganisationUnit> rootUnits = new ArrayList<OrganisationUnit>(
-            organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
+        Collection<OrganisationUnit> rootUnits = new ArrayList<OrganisationUnit>( organisationUnitService
+            .getOrganisationUnitsAtLevel( 1 ) );
 
         rootNode = rootUnits.size() > 0 ? rootUnits.iterator().next() : new OrganisationUnit();
 
-        orgunitGroups = new ArrayList<OrganisationUnitGroup>(
-            organisationUnitGroupService.getAllOrganisationUnitGroups() );
+        orgunitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
         Collections.sort( orgunitGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         programs = programService.getAllPrograms();
-        UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
-        programs.retainAll( userCredentials.getAllPrograms() );
 
         levels = organisationUnitService.getOrganisationUnitLevels();
 

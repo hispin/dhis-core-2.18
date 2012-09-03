@@ -184,7 +184,6 @@
 			<param name="page">/dhis-web-maintenance-patient/programList.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/program.js</param>
-			<param name="requiredAuthorities">F_PROGRAM_MANAGEMENT</param>
 		</action>
 
 		<action name="getProgram"

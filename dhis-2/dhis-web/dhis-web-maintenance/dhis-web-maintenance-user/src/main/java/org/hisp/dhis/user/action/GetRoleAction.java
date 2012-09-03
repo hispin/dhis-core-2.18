@@ -34,8 +34,6 @@ import java.util.List;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
@@ -67,20 +65,13 @@ public class GetRoleAction
         this.dataSetService = dataSetService;
     }
 
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
     private SystemAuthoritiesProvider authoritiesProvider;
 
     public void setAuthoritiesProvider( SystemAuthoritiesProvider authoritiesProvider )
     {
         this.authoritiesProvider = authoritiesProvider;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -131,20 +122,6 @@ public class GetRoleAction
         return roleAuthorities;
     }
 
-    private List<Program> availablePrograms;
-
-    public List<Program> getAvailablePrograms()
-    {
-        return availablePrograms;
-    }
-
-    private List<Program> rolePrograms;
-
-    public List<Program> getRolePrograms()
-    {
-        return rolePrograms;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -167,20 +144,6 @@ public class GetRoleAction
         roleDataSets = new ArrayList<DataSet>( userAuthorityGroup.getDataSets() );
 
         Collections.sort( roleDataSets, IdentifiableObjectNameComparator.INSTANCE );
-
-        // ---------------------------------------------------------------------
-        // DataSets
-        // ---------------------------------------------------------------------
-
-        availablePrograms = new ArrayList<Program>( programService.getAllPrograms() );
-
-        availablePrograms.removeAll( userAuthorityGroup.getPrograms() );
-
-        Collections.sort( availableDataSets, IdentifiableObjectNameComparator.INSTANCE );
-
-        rolePrograms = new ArrayList<Program>( userAuthorityGroup.getPrograms() );
-
-        Collections.sort( rolePrograms, IdentifiableObjectNameComparator.INSTANCE );
 
         // ---------------------------------------------------------------------
         // Authorities

@@ -36,9 +36,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -73,20 +70,6 @@ public class LoadAnonymousProgramsAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -126,10 +109,8 @@ public class LoadAnonymousProgramsAction
         if ( orgunit != null )
         {
             programs = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, orgunit );
-            UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
-            programs.retainAll( userCredentials.getAllPrograms() );
         }
-
+        
         levels = organisationUnitService.getOrganisationUnitLevels();
 
         return SUCCESS;

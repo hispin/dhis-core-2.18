@@ -38,7 +38,6 @@ import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.program.Program;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -133,23 +132,6 @@ public class UserCredentials
         return dataSets;
     }
 
-
-    /**
-     * Returns a set of the aggregated programs for all user authority groups
-     * of this user credentials.
-     */
-    public Set<Program> getAllPrograms()
-    {
-        Set<Program> programs = new HashSet<Program>();
-
-        for ( UserAuthorityGroup group : userAuthorityGroups )
-        {
-            programs.addAll( group.getPrograms() );
-        }
-
-        return programs;
-    }
-    
     /**
      * Indicates whether this user credentials can issue the given user authority
      * group. First the given authority group must not be null. Second this

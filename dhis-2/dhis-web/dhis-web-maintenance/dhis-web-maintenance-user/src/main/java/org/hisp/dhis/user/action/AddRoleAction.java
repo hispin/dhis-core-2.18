@@ -32,8 +32,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 
@@ -64,13 +62,6 @@ public class AddRoleAction
         this.dataSetService = dataSetService;
     }
 
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -94,13 +85,6 @@ public class AddRoleAction
     public void setSelectedList( Collection<String> selectedList )
     {
         this.selectedList = selectedList;
-    }
-
-    private Collection<String> selectedProgramList = new ArrayList<String>();
-
-    public void setSelectedProgramList( Collection<String> selectedProgramList )
-    {
-        this.selectedProgramList = selectedProgramList;
     }
 
     private Collection<String> selectedListAuthority = new ArrayList<String>();
@@ -127,13 +111,6 @@ public class AddRoleAction
             DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
 
             group.getDataSets().add( dataSet );
-        }
-
-        for ( String id : selectedProgramList )
-        {
-            Program program = programService.getProgram( Integer.parseInt( id ) );
-
-            group.getPrograms().add( program );
         }
 
         group.getAuthorities().addAll( selectedListAuthority );
