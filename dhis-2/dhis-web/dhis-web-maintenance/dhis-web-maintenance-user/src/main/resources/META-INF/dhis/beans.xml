@@ -158,6 +158,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService" />
     </property>
+    <property name="programService">
+      <ref bean="org.hisp.dhis.program.ProgramService" />
+    </property>
   </bean>
 
   <bean id="org.hisp.dhis.user.action.GetRoleAction" class="org.hisp.dhis.user.action.GetRoleAction" scope="prototype">
@@ -166,6 +169,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService" />
+    </property>
+    <property name="programService">
+      <ref bean="org.hisp.dhis.program.ProgramService" />
     </property>
     <property name="authoritiesProvider" ref="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" />
   </bean>
@@ -188,6 +194,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService" />
+    </property>
+    <property name="programService">
+      <ref bean="org.hisp.dhis.program.ProgramService" />
     </property>
   </bean>
 

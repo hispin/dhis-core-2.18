@@ -540,7 +540,12 @@
   </bean>
 
   <bean id="org.hisp.dhis.commons.action.NoAction" class="org.hisp.dhis.commons.action.NoAction" />
-
+ 
+  <bean id="org.hisp.dhis.commons.action.GetProgramsAction" class="org.hisp.dhis.commons.action.GetProgramsAction"
+    scope="prototype">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+  </bean>
+  
   <!-- Interceptor -->
 
   <bean id="org.hisp.dhis.interceptor.ExceptionInterceptor" class="org.hisp.dhis.interceptor.ExceptionInterceptor">

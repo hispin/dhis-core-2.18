@@ -34,6 +34,9 @@ import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -62,7 +65,21 @@ public class GetProgramsByOrgunitAction
     {
         this.selectedStateManager = selectedStateManager;
     }
+    
+    private CurrentUserService currentUserService;
 
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -95,6 +112,8 @@ public class GetProgramsByOrgunitAction
             programs = programService.getPrograms( organisationUnit );
             Collection<Program> anonymousPrograms = programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION, organisationUnit );
             programs.removeAll( anonymousPrograms );
+            UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
+            programs.retainAll( userCredentials.getAllPrograms() );
         }
         
         selectedStateManager.clearSelectedPatient();
