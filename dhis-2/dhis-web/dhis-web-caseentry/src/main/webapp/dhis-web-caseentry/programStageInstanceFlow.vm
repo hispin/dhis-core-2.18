@@ -9,7 +9,9 @@
 				<table class="stage-flow">											
 					<tr id='programStageIdTR_$!programInstance.id'>
 						#foreach( $programStageInstance in $programInstance.programStageInstances )
-						<td width="5px" style='font-size:25px;'>&rarr;</td>
+						<td width="5px">
+							<img src='images/rightarrow.png'>
+						</td>
 						<td>
 							<input type="button" name="programStageBtn"
 								id="ps_$!programStageInstance.id"
@@ -18,7 +20,7 @@
 								programType='$programInstance.program.type'
 								dueDate="$format.formatDate( $programStageInstance.dueDate )"
 								class="stage-object" 
-								value="$programStageInstance.programStage.name&#13;&#10;$format.formatDate( $programStageInstance.dueDate )" 
+								value="$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )" 
 								onclick="javascript:loadDataEntry( $programStageInstance.id );">
 							<script>	
 								var status = $statusMap.get( $programStageInstance.id ); 
@@ -35,7 +37,7 @@
 		</td>
 		<td>&nbsp;</td>
 		<td>
-			<input type="button" class='patient-object' id="newEncounterBtn_$!programInstance.id" name="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript:showCreateNewEvent('$!programInstance.id');" >
+			<input type="button" class='stage-object' id="newEncounterBtn_$!programInstance.id" name="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript:showCreateNewEvent('$!programInstance.id');" >
 		</td>
 	</tr>			
 </table>
@@ -77,7 +79,6 @@
 </div>
 
 <script>
-	var i18n_create_new_event = '$encoder.jsEscape( $i18n.getString( "create_new_event" ) , "'" )';
 	var i18n_create_event_success = '$encoder.jsEscape( $i18n.getString( "create_event_success" ) , "'" )';
 	var options = jQuery("#createNewEncounterDiv_$!programInstance.id [id=repeatableProgramStageId] option").length;
 	if( options==0 )
