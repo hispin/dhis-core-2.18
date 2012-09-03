@@ -49,6 +49,24 @@ function PeriodType()
 
         return array;
     };
+    
+    this.filterFuturePeriodsExceptCurrent = function( periods )
+    {
+        var array = [];
+        var i = 0;
+
+        var now = new Date().getTime();
+
+        for ( var j = 0; j < periods.length; j++ )
+        {
+            if ( $.date( periods[j]['startDate'], dateFormat ).date().getTime() <= now )
+            {
+                array[i++] = periods[j];
+            }
+        }
+
+        return array;
+    };
 }
 
 function DailyPeriodType( dateFormat )

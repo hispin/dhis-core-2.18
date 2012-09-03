@@ -238,6 +238,7 @@
       <param name="page">/dhis-web-reporting/dataSetReportForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataSetReport.js</param>
+	  <param name="stylesheets">style/dhis-web-reporting.css</param>
     </action>
 
     <action name="generateDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDataSetReportAction">
