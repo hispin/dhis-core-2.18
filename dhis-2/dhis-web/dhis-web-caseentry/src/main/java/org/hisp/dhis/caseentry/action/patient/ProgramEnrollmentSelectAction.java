@@ -129,10 +129,21 @@ public class ProgramEnrollmentSelectAction
         // Get single-event if patient no have any single event
         // OR have un-completed single-event
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, false );
-        
+
         for ( ProgramInstance programInstance : programInstances )
         {
             programs.remove( programInstance.getProgram() );
+        }
+
+        // Remove single-event with registation programs which patient completed
+        Collection<ProgramInstance> completedProgramInstances = programInstanceService.getProgramInstances( patient, true );
+
+        for ( ProgramInstance programInstance : completedProgramInstances )
+        {
+            if ( programInstance.getProgram().isSingleEvent() )
+            {
+                programs.remove( programInstance.getProgram() );
+            }
         }
 
         return SUCCESS;

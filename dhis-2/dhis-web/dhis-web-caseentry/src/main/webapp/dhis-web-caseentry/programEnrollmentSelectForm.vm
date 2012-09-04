@@ -44,8 +44,8 @@
 		<tr>
 			<td></td>
 			<td colspan='2'>
-				<input type="button" id='enrollBtn' name='enrollBtn' class='button' value="$i18n.getString( 'enroll' )" onclick='saveEnrollment()'/>
-				<input type="button" id='cancelBtn' name='cancelBtn' class='button' value="$i18n.getString( 'cancel' )" onclick="jQuery('#enrollmentDiv').dialog('close')"/>
+				<input type="button" class='button' value="$i18n.getString( 'enroll' )" onclick='saveEnrollment()'/>
+				<input type="button" class='button' value="$i18n.getString( 'cancel' )" onclick="jQuery('#enrollmentDiv').dialog('close')"/>
 			</td>
 		</tr>
 		<tr>

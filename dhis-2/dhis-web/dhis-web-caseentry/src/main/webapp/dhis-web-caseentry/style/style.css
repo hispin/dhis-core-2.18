@@ -142,15 +142,12 @@ input.criteria
 
 input.stage-object[type="button"]
 {
-	width: 100px;
+	width: 120px;
 	height: 60px;
-    white-space: normal;
-	border: 2px solid; 
-	cursor: pointer;
+    cursor: pointer;
 	opacity: 1.0;
-	border: 1px solid;
+	border: 2px solid;
 	margin: 5px;
-	border-radius: 2px;
 }
 
 input.stage-object[type="button"]:hover
@@ -377,17 +374,6 @@ div.event-flow-dashboard
 	height:145px;
 	overflow-x:hidden;
 	overflow-y:hidden;
-}
-
-table.stage-object
-{
-	white-space: normal;
-	border: 2px solid;
-	opacity: 1.0;
-	border: 1px solid;
-	margin: 5px;
-	border-radius: 2px;
-	text-align:center;
 }
 
 .arrow-right {

@@ -96,15 +96,11 @@
 												<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
 													programStageInstanceId='$programStageInstanceId'>
 													<td id='td_$programInstance.id'>
-														<a href='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
-														<img id="img_$programInstance.id" name='imgActive'>
-													</td>
-													<td>
-														<img src='../images/checked.png' style='cursor:pointer;' onclick='unenrollmentForm("$programInstance.id")'>
+														<a href='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")'><span id='infor_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</span></a>
 													</td>
 												</tr>
 												<tr id='tr2_$programInstance.id' onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' style='cursor:pointer;'>
-													<td colspan='2'>
+													<td>
 														<a>&#8226; $programStageInstance.programStage.name ($format.formatDate($programStageInstance.dueDate))</a>
 													</td>
 												</tr>
@@ -116,10 +112,6 @@
 											programStageInstanceId='$programStageInstanceId'>
 											<td id='td_$programInstance.id'>
 												<a href='javascript:loadProgramInstance("$programInstance.id", false)'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
-												<img id="img_$programInstance.id" name='imgActive'>
-											</td>
-											<td>
-												<img src='../images/checked.png' style='cursor:pointer;' onclick='unenrollmentForm("$programInstance.id")'>
 											</td>
 										</tr>
 										#end
@@ -146,8 +138,7 @@
 										<tr id='tr_$programInstance.id' type='$programInstance.program.type' onclick="javascript:loadProgramInstance('$programInstance.id', true);" style='cursor:pointer;'
 											programStageInstanceId='$programStageInstanceId'>
 											<td>
-												<a>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
-												<img id="img_$programInstance.id" name='imgActive'>
+												<a><span id='infor_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</span></a>
 											</td>
 										</tr>
 									#end
