@@ -39,6 +39,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="localDataElementService" ref="org.hisp.dhis.dataelement.LocalDataElementService" />
   </bean>
 
+  <bean id="org.hisp.dhis.de.action.LoadICDFormAction" class="org.hisp.dhis.de.action.LoadICDFormAction" scope="prototype" />
+
   <bean id="org.hisp.dhis.de.action.SaveValueAction" class="org.hisp.dhis.de.action.SaveValueAction" scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />

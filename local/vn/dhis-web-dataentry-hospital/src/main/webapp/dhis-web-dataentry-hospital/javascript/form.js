@@ -35,6 +35,9 @@ var currentOrganisationUnitId = null;
 var currentOrganisationUnitName = "";
 
 // Currently selected data set identifier
+var currentChapterId = null;
+
+// Currently selected data set identifier
 var currentDataSetId = null;
 
 // Currently selected period type name
@@ -89,8 +92,6 @@ function showExportDiv()
  
 function organisationUnitSelectedHospitals( orgUnits, orgUnitNames )
 {
-	clearEntryForm();
-
     currentOrganisationUnitId = orgUnits[0];
     currentOrganisationUnitName = orgUnitNames[0];
 
@@ -136,16 +137,14 @@ function loadDataSets( _unitName )
 					enable( 'selectedDataSetId' );
 
 					var periodId = $( '#selectedPeriodId option:selected' ).val();
-					var periodType = "";
+					var dataSetId = $( '#selectedDataSetId option:selected' ).val();
+					var chapterId = $( '#chapterId option:selected' ).val();
 					
-					if ( periodId && periodId != -1 )
+					if ( (dataSetId && dataSetId != -1) && (currentDataSetId && currentDataSetId != -1) && (dataSetId = currentDataSetId) && (periodId && periodId != -1) )
 					{
-						periodType = periodId.split( '_' )[0];
-					}
-
-					if ( currentPeriodType && currentPeriodType != -1 && currentPeriodType == periodType )
-					{
-						loadForm( currentDataSetId, getFieldValue( 'valueInput' ) );
+						loadDataValues( dataSetId, chapterId );
+					} else {
+						clearEntryForm();
 					}
 				} else {
 					resetCriteriaDiv();
@@ -218,62 +217,6 @@ function addEventListeners()
 
         $( this ).css( 'width', '100%' );
     } );
-}
-
-function resetCriteriaDiv()
-{
-	currentDataSetId = null;
-	currentPeriodType = null;
-	
-	clearListById( 'selectedPeriodId' );
-	
-	hideById( 'chapterTR' );
-	hideById( 'attributeTR' );
-	
-	byId( 'inputCriteria' ).style.width = '504px';
-	byId( 'inputCriteria' ).style.height = '80px';
-
-    $( '#currentPeriod' ).html( i18n_no_period_selected );
-    $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
-	
-    clearEntryForm();
-}
-
-function clearEntryForm()
-{
-    $( '#contentDiv' ).html( '' );
-
-    currentPeriodOffset = 0;
-
-    dataEntryFormIsLoaded = false;
-
-    $( '#completenessDiv' ).hide();
-    $( '#infoDiv' ).hide();
-}
-
-function loadForm( dataSetId, value )
-{
-	showLoader();
-
-    $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
-
-	$( '#contentDiv' ).load( 'loadForm.action',
-	{
-		dataSetId : dataSetId,
-		value: value
-	}, 
-	function ( responseText, textStatus, req )
-	{
-		if ( textStatus == "error" ) {
-			hideLoader();
-			hideById( 'showReportButton' );
-			hideById( 'ICDButtonDiv' );
-			clearEntryForm();
-			setHeaderDelayMessage( i18n_disconnect_server );
-			return;
-        }
-		loadDataValues( dataSetId );
-	} );
 }
 
 function getDataElementType( dataElementId )
@@ -382,13 +325,11 @@ function dataSetSelected()
     $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
 
 	clearListById( 'selectedPeriodId' );
-	hideById('attributeDiv');
 	
 	$( '#selectedPeriodId' ).unbind( 'change' );
 	$( '#selectedPeriodId' ).removeAttr( 'disabled' );
     $( '#prevButton' ).removeAttr( 'disabled' );
     $( '#nextButton' ).removeAttr( 'disabled' );
-	$( '#valueInput' ).val('');
 
     var dataSetId = $( '#selectedDataSetId option:selected' ).val();
     var periodId = $( '#selectedPeriodId option:selected' ).val();
@@ -416,8 +357,8 @@ function dataSetSelected()
 
         currentDataSetId = dataSetId;
 		currentPeriodType = periodType;
-		
-		//loadSubDataSets( dataSetId );
+
+		showById( 'chapterTR' );
 		loadAttributeValues( dataSetId );
     }
 }
@@ -471,28 +412,12 @@ function loadAttributeValues( dataSetId )
 	}
 	, function( json )
 	{
-		clearListById( 'value' );
-	
 		if ( json.attributeValues.length > 0 )
 		{
-			arrAttributeValues = [];
-		
-			jQuery.each( json.attributeValues, function( i, item )
-			{
-				arrAttributeValues.push( item );
-				jQuery( '#value' ).append( '<option value="' + item + '">' + item + '</option>' );
-			} );
-
-			autoCompletedField();
-
 			byId( 'inputCriteria' ).style.width = '504px';
 			byId( 'inputCriteria' ).style.height = '130px';
 
-			//hideById( 'departmentTitleDiv' );
-			//hideById( 'departmentDiv' );
-
 			showById( 'chapterTR' );
-			showById( 'attributeTR' );
 		}
 		else
 		{
@@ -500,7 +425,6 @@ function loadAttributeValues( dataSetId )
 			byId( 'inputCriteria' ).style.height = '80px';
 			
 			hideById( 'chapterTR' );
-			hideById( 'attributeTR' );
 		}
 		
 		jQuery( '#selectedPeriodId' ).bind( 'change', periodSelected );
@@ -555,6 +479,131 @@ function loadAttributeValuesByChapter( chapterId )
 // Period Selection
 // -----------------------------------------------------------------------------
 
+function periodSelected()
+{
+	var periodName = $( '#selectedPeriodId option:selected' ).text();
+	var dataSetId = $( '#selectedDataSetId option:selected' ).val();
+	var formLoaded = (getInnerHTML('contentDiv') != '');
+
+	if ( dataSetId && dataSetId != -1 )
+	{
+		$( '#currentPeriod' ).html( periodName );
+
+		var periodId = getFieldValue( 'selectedPeriodId' );
+		var chapterId = getFieldValue( 'chapterId' );
+
+		if ( periodId && periodId != -1 )
+		{
+			if ( currentDataSetId && currentDataSetId == dataSetId )
+			{
+				if ( formLoaded )
+				{
+					loadDataValues( dataSetId, chapterId );
+				} else {
+					loadForm( dataSetId, "" );
+				}
+			} else {
+				loadForm( dataSetId, "" );
+			}
+		}
+		else {
+			clearEntryForm();
+		}
+	} else {
+		setHeaderDelayMessage( i18n_please_select_data_set );
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Form
+// -----------------------------------------------------------------------------
+
+function resetCriteriaDiv()
+{
+	currentDataSetId = null;
+	currentPeriodType = null;
+	currentChapterId = null;
+	
+	clearListById( 'selectedPeriodId' );
+	
+	hideById( 'chapterTR' );
+	
+	byId( 'inputCriteria' ).style.width = '504px';
+	byId( 'inputCriteria' ).style.height = '80px';
+
+    $( '#currentPeriod' ).html( i18n_no_period_selected );
+    $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
+	
+    clearEntryForm();
+}
+
+function clearEntryForm()
+{
+    $( '#contentDiv' ).html( '' );
+
+    currentPeriodOffset = 0;
+
+    dataEntryFormIsLoaded = false;
+
+    $( '#completenessDiv' ).hide();
+    $( '#infoDiv' ).hide();
+}
+
+function loadForm( dataSetId, value )
+{
+	showLoader();
+
+    $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
+
+	var chapterId = getFieldValue( 'chapterId' );
+	var	url = ( chapterId && chapterId != -1 ? 'loadICDForm.action' : 'loadForm.action' );
+	
+	if ( chapterId )
+	{
+	}
+
+	$( '#contentDiv' ).load( url,
+	{
+		dataSetId : dataSetId,
+		chapterId: chapterId,
+		value: value
+	}, 
+	function ( responseText, textStatus, req )
+	{
+		if ( textStatus == "error" ) {
+			hideLoader();
+			hideById( 'showReportButton' );
+			hideById( 'ICDButtonDiv' );
+			clearEntryForm();
+			setHeaderDelayMessage( i18n_disconnect_server );
+			return;
+        }
+		loadDataValues( dataSetId, chapterId );
+	} );
+}
+
+function loadFormByChapter( chapterId )
+{
+	var periodId = getFieldValue( 'selectedPeriodId' );
+	var dataSetId = getFieldValue( 'selectedDataSetId' );
+
+	if ( dataSetId == null || dataSetId == -1 )
+	{
+		setHeaderDelayMessage( i18n_please_select_data_set );
+		return;
+	}
+	
+	if ( periodId == null || periodId == -1 )
+	{
+		setHeaderDelayMessage( i18n_please_select_period );
+		return;
+	}
+	
+	loadForm( dataSetId );
+
+	currentChapterId = chapterId;
+}
+
 function loadDepartmentFormSelected()
 {
     var periodName = $( '#selectedPeriodId option:selected' ).text();
@@ -575,56 +624,18 @@ function loadDepartmentFormSelected()
 	}
 }
 
-function periodSelected()
-{
-	var periodName = $( '#selectedPeriodId option:selected' ).text();
-	var dataSetId = $( '#selectedDataSetId option:selected' ).val();
-
-	if ( dataSetId && dataSetId != -1 )
-	{
-		$( '#currentPeriod' ).html( periodName );
-
-		var periodId = getFieldValue( 'selectedPeriodId' );
-
-		if ( periodId && periodId != -1 )
-		{
-			if ( hasElements( 'subDataSetId' ) && getFieldValue( 'subDataSetId' ) == null )
-			{
-				return;
-			}
-			else if ( getFieldValue( 'subDataSetId' ) )
-			{
-				dataSetId = $( '#subDataSetId option:selected' ).val();
-			}
-
-			showLoader();
-			loadForm( dataSetId, getFieldValue( 'valueInput' ) );
-		}
-		else
-		{
-			clearEntryForm();
-		}
-	} else {
-		setHeaderDelayMessage( i18n_please_select_data_set );
-	}
-}
-
-// -----------------------------------------------------------------------------
-// Form
-// -----------------------------------------------------------------------------
-
-function loadDataValues( dataSetId )
+function loadDataValues( dataSetId, chapterId )
 {
     $( '#completeButton' ).removeAttr( 'disabled' );
     $( '#undoButton' ).attr( 'disabled', 'disabled' );
     $( '#infoDiv' ).css( 'display', 'none' );
 	showById( 'showReportButton' );
 
-    insertDataValues( dataSetId );
+    insertDataValues( dataSetId, chapterId );
     displayEntryFormCompleted();
 }
 
-function insertDataValues( dataSetId )
+function insertDataValues( dataSetId, chapterId )
 {
     var dataValueMap = [];
 	currentMinMaxValueMap = []; // Reset
@@ -650,6 +661,7 @@ function insertDataValues( dataSetId )
 	    {
 	        periodId : periodId,
 	        dataSetId : dataSetId,
+			chapterId: chapterId,
 			attributeId: getFieldValue( 'attributeId' ),
 			value: getFieldValue( 'valueInput' ),
 	        organisationUnitId : currentOrganisationUnitId
@@ -918,7 +930,6 @@ function undoCompleteDataSet()
                     disableUndoButton();
 	                //storageManager.clearCompleteDataSet( params );
                 }
-
 	        },
 	        error: function()
 	        {
