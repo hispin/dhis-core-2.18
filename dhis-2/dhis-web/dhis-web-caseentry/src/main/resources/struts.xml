@@ -501,6 +501,12 @@
 			<param name="page">/dhis-web-caseentry/patientHistory.vm</param>
 		</action>
 		
+		<action name="getProgramReportHistory"
+			class="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceHistoryAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/programInstanceHistory.vm</param>
+		</action>
+		
 		<action name="getPatientLocation"
 			class="org.hisp.dhis.caseentry.action.patient.GetPatientLocationAction">
 			<result name="success" type="velocity">/content.vm</result>
@@ -552,6 +558,13 @@
 			class="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/responseProgramInstance.vm</result>
+		</action>
+		
+		<action name="getEventMessages"
+			class="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/eventMessage.vm</param>
+			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
 		<action name="removeEnrollment"

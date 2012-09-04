@@ -417,9 +417,7 @@ function saveEnrollment( patientId, programId )
 							+ " programStageInstanceId='" + programStageInstanceId + "'>"
 							+ " <td id='td_" + programInstanceId + "'>"
 							+ " <a href='javascript:loadActiveProgramStageRecords(" + programInstanceId + "," + programStageInstanceId + "')'>"
-							+ programName + "(" + enrollmentDate + ")</a>"
-							+ "<img id='img_" + programInstanceId + "' name='imgActive'></td>"
-							+ "<td><img src='../images/checked.png' style='cursor:pointer;' onclick='unenrollmentForm(" + programInstanceId + ")'></td>"
+							+ programName + "(" + enrollmentDate + ")</a></td>"
 							+ "</tr>";
 			
 			activedRow += "<tr id='tr2_" + programInstanceId +"'"+
@@ -906,15 +904,14 @@ function registerPatientLocation( patientId )
 
 function activeProgramInstanceDiv( programInstanceId )
 {
-	jQuery("[name=eventDiv]").each(function(){
-		hideById(this.id);
+	jQuery(".selected").each(function(){
+		jQuery(this).removeClass();
 	});
 	
-	jQuery("[name=imgActive]").each(function(){
-		jQuery(this).attr('src','');
+	jQuery("#infor_" + programInstanceId).each(function(){
+		jQuery(this).addClass('selected bold');
 	});
 	
-	jQuery("#img_" + programInstanceId ).attr('src','images/flag-blue.png');
 	showById('pi_' + programInstanceId);
 }
 
@@ -982,5 +979,35 @@ function loadProgramStageRecords( programStageInstanceId, completed )
 			}
 			showById('dataEntryFormDiv');
 			hideLoader();
+		});
+}
+
+function programReports( programInstanceId )
+{
+	$('#programReportDiv').load("getProgramReportHistory.action", {programInstanceId:programInstanceId});
+}
+
+function getEventMessages( programInstanceId )
+{
+	$('#eventMessagesDiv').load("getEventMessages.action", {programInstanceId:programInstanceId});
+}
+
+function updateEnrollment( patientId, programId, programInstanceId, programName )
+{
+	var dateOfIncident = jQuery('#tab-3 [id=dateOfIncident]').val();
+	var enrollmentDate = jQuery('#tab-3 [id=enrollmentDate]').val();
+	
+	jQuery.postJSON( "saveProgramEnrollment.action",
+		{
+			patientId: getFieldValue('patientId'),
+			programId: programId,
+			dateOfIncident: dateOfIncident,
+			enrollmentDate: enrollmentDate
+		}, 
+		function( json ) 
+		{    
+			var infor = programName + " (" + enrollmentDate + ")";
+			setInnerHTML("infor_" + programInstanceId, infor );
+			showSuccessMessage(i18n_enrol_success);
 		});
 }

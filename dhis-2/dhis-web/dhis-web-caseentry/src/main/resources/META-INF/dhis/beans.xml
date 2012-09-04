@@ -584,6 +584,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceHistoryAction"
+		class="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceHistoryAction"
+		scope="prototype">
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.GetPatientLocationAction"
 		class="org.hisp.dhis.caseentry.action.patient.GetPatientLocationAction"
