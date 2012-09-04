@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
@@ -14,8 +13,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.sms.parse.ParserType;
 import org.hisp.dhis.smscommand.SMSCode;
-import org.hisp.dhis.smscommand.SMSCommandService;
 import org.hisp.dhis.smscommand.SMSCommand;
+import org.hisp.dhis.smscommand.SMSCommandService;
 
 import com.opensymphony.xwork2.Action;
 
