@@ -46,7 +46,7 @@
             </tr> 
             <tr>
                 <td>$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
-                <td><input type="text" name="password" id="password" style="width: 28em" value="$!smppGateway.password"/></td>
+                <td><input type="password" name="password" id="password" style="width: 28em" value="$!smppGateway.password"/></td>
             </tr>
             <tr>
                 <td>$i18n.getString( "address" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
@@ -69,7 +69,7 @@
 			</tr> 
 			<tr>
 				<td>$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
-				<td><input type="text" name="password" id="password" style="width: 28em" value="$!bulkGateway.password"/></td>
+				<td><input type="password" name="password" id="password" style="width: 28em" value="$!bulkGateway.password"/></td>
 			</tr>
 			<tr>
 				<td>$i18n.getString( "region" ):</td>
@@ -142,7 +142,7 @@
 			</tr>
 			<tr>
 				<td>$i18n.getString( "password" ):</td>
-				<td><input type="text" name="password" id="password" style="width: 28em" value="$!clickatellGateway.password"/></td>
+				<td><input type="password" name="password" id="password" style="width: 28em" value="$!clickatellGateway.password"/></td>
 			</tr>
 			<tr>
 				<td>$i18n.getString( "api_id" ):</td>
@@ -150,6 +150,7 @@
 			</tr>
 		</tbody>
 		#set( $httpGateway = $!gatewayConfigMap.get( $httpIndex ) )
+		#set( $params = $!httpGateway.getParameters() )
 		<tbody id="genericHTTPFields">
 			<tr>
 				<td>$i18n.getString( "gateway_name" ):</td>
@@ -157,11 +158,11 @@
 			</tr>
 			<tr>
 				<td>$i18n.getString( "username" ):</td>
-				<td><input type="text" name="username" id="username" style="width: 28em" value="$!httpGateway.username"/></td>
+				<td><input type="text" name="username" id="username" style="width: 28em" value="$!params.get( 'username' )"/></td>
 			</tr>
 			<tr>
 				<td>$i18n.getString( "password" ):</td>
-				<td><input type="text" name="password" id="password" style="width: 28em" value="$!httpGateway.password"/></td>
+				<td><input type="password" name="password" id="password" style="width: 28em" value="$!params.get( 'password' )"/></td>
 			</tr>
 			<tr>
 				<td>$i18n.getString( "url_template" ):</td>

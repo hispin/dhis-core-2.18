@@ -3,7 +3,6 @@ package org.hisp.dhis.sms.config;
 public class SMPPGatewayConfig
     extends SmsGatewayConfig
 {
-
     private static final long serialVersionUID = 780006289158356660L;
 
     private String address;
