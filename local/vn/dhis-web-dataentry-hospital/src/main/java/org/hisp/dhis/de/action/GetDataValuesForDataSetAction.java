@@ -27,7 +27,15 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.LocalDataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -40,9 +48,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collection;
-import java.util.Date;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
@@ -89,6 +99,12 @@ public class GetDataValuesForDataSetAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    @Autowired
+    private LocalDataElementService localDataElementService;
+
+    @Autowired
+    private AttributeValueGroupOrderService attributeValueGroupOrderService;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -112,6 +128,13 @@ public class GetDataValuesForDataSetAction
     public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
+    }
+
+    private Integer chapterId;
+
+    public void setChapterId( Integer chapterId )
+    {
+        this.chapterId = chapterId;
     }
 
     // -------------------------------------------------------------------------
@@ -160,6 +183,8 @@ public class GetDataValuesForDataSetAction
         return storedBy;
     }
 
+    private List<String> values = new ArrayList<String>();
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -174,13 +199,35 @@ public class GetDataValuesForDataSetAction
         // Data values
         // ---------------------------------------------------------------------
 
-        dataValues = dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements() );
+        AttributeValueGroupOrder group = attributeValueGroupOrderService.getAttributeValueGroupOrder( chapterId );
+
+        if ( group != null )
+        {
+            values = group.getAttributeValues();
+        }
+
+        if ( values != null && !values.isEmpty() )
+        {
+            Collection<DataElement> dataElements = new HashSet<DataElement>();
+
+            for ( String value : values )
+            {
+                dataElements.addAll( localDataElementService.getDataElements( dataSet, value ) );
+            }
+
+            dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements );
+        }
+        else
+        {
+            dataValues = dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements() );
+        }
 
         // ---------------------------------------------------------------------
         // Min-max data elements
         // ---------------------------------------------------------------------
 
-        minMaxDataElements = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataSet.getDataElements() );
+        minMaxDataElements = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataSet
+            .getDataElements() );
 
         // ---------------------------------------------------------------------
         // Data set completeness info
@@ -188,14 +235,15 @@ public class GetDataValuesForDataSetAction
 
         if ( dataSet != null && period != null && organisationUnit != null )
         {
-            CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit );
+            CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet,
+                period, organisationUnit );
 
             if ( registration != null )
             {
                 complete = true;
                 date = registration.getDate();
                 storedBy = registration.getStoredBy();
-            }            
+            }
 
             locked = dataSetService.isLocked( dataSet, period, organisationUnit, null );
         }

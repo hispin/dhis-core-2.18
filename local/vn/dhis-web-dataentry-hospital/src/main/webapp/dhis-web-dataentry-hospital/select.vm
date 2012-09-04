@@ -53,10 +53,10 @@
 	
 	<tr id='chapterTR' style='display:none;'>
 		<td><label class='bold' for="chapterId">$i18n.getString( "chapter" )</label></td>
-		<td><select id='chapterId' name='chapterId' style="width:370px" onchange="loadAttributeValuesByChapter( this.value );"></select></td>
+		<td><select id='chapterId' name='chapterId' style="width:370px" onchange="loadFormByChapter( this.value );"></select></td>
 	</tr>
 
-	<tr id='attributeTR' style='display:none;'>
+	<!--tr id='attributeTR' style='display:none;'>
 		<td>
 			<label class='bold' for="attributeId">$i18n.getString( "disease" )</label>
 		</td>
@@ -66,8 +66,7 @@
 			<button type='button' id='valueButton' class='small-button' >&nbsp;</button>
 			<input type="button" id="showReportButton" value="$i18n.getString( 'show_icd_report' )" style="display:none;width:120px" onclick="showICDReport();"/>
 		</td>
-	</tr>
-	
+	</tr-->
 
 </table>
 </div>
@@ -127,8 +126,6 @@
 
 <script type="text/javascript">
 
-//leftBar.hideAnimated();
-
 var openICD = true;
 
 var i18n_select_data_set = '$encoder.jsEscape( $i18n.getString( "select_data_set" ) , "'")';
@@ -175,6 +172,7 @@ var i18n_show_all_items = '$encoder.jsEscape( $i18n.getString( "show_all_items" 
 var i18n_select_department = "[ " + '$encoder.jsEscape( $i18n.getString( "please_select_department" ) , "'")' + " ]";
 var i18n_please_select_unit = "[ " + '$encoder.jsEscape( $i18n.getString( "please_select_organisation_unit" ) , "'")' + " ]";
 var i18n_please_select_data_set = "[ " + '$encoder.jsEscape( $i18n.getString( "please_select_data_set" ) , "'")' + " ]";
+var i18n_please_select_chapter = "[ " + '$encoder.jsEscape( $i18n.getString( "please_select_chapter" ) , "'")' + " ]";
 var i18n_select_chapter = "[ " + '$encoder.jsEscape( $i18n.getString( "select_chapter" ) , "'")' + " ]";
 var i18n_explore_icd_report_result = '$encoder.jsEscape( $i18n.getString( "explore_icd_report_result" ) , "'")';
 var i18n_collpase_icd_report_result = '$encoder.jsEscape( $i18n.getString( "collapse_icd_report_result" ) , "'")';
