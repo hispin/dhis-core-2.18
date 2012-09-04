@@ -41,6 +41,12 @@
 
   <dependencies>
   
+  	<dependency>
+		<groupId>org.hisp.dhis</groupId>
+		<artifactId>dhis-service-patient</artifactId>
+		<version>${project.version}</version>
+	</dependency>
+  
 	<!-- web service call -->
 	<dependency>
 		<groupId>commons-httpclient</groupId>
