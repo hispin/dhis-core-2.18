@@ -69,22 +69,22 @@ public class RemoveGatewayConfigAction
     public String execute()
         throws Exception
     {
+
         SmsConfiguration smsConfig = smsConfigurationManager.getSmsConfiguration();
 
         Iterator<SmsGatewayConfig> it = smsConfig.getGateways().iterator();
-        
-        while( it.hasNext() )
+
+        while ( it.hasNext() )
         {
             if ( smsConfig.getGateways().indexOf( it.next() ) == id )
             {
                 it.remove();
-                
+
                 smsConfigurationManager.updateSmsConfiguration( smsConfig );
-                
+
                 break;
             }
         }
-
         return SUCCESS;
     }
 }

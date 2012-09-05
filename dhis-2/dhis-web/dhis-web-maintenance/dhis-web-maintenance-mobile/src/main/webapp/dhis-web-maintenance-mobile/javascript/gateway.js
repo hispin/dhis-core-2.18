@@ -209,7 +209,6 @@ function removeItem( itemId, itemName, confirmation, action, success )
     if ( result )
     {
 		lockScreen();
-		refreshIndex( itemId );
     	$.postJSON(
     	    action,
     	    {
@@ -232,6 +231,7 @@ function removeItem( itemId, itemName, confirmation, action, success )
 					}
 					unLockScreen();
 					showSuccessMessage( i18n_delete_success );
+					refreshIndex( itemId );
     	    	}
     	    	else if ( json.response == "error" )
     	    	{ 
