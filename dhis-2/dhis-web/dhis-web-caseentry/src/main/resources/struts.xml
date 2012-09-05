@@ -410,6 +410,24 @@
 			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_PATIENT_MANAGEMENT</param>
 		</action>
+		
+		<action name="showAddPatientFormFormMenu"
+			class="org.hisp.dhis.caseentry.action.patient.ShowAddPatientFormAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-caseentry/addPatientForm.vm</param>
+			<param name="menu">/dhis-web-caseentry/registrationMenu.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js
+				,javascript/commons.js
+				,javascript/patient.js
+				,javascript/entry.js
+				,javascript/relationshipPatient.js
+			</param>
+			<param name="stylesheets">style/style.css</param>
+			<param name="requiredAuthorities">F_PATIENT_ADD</param>
+		</action>
+		
 
 		<action name="searchRegistrationPatient"
 			class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction">
