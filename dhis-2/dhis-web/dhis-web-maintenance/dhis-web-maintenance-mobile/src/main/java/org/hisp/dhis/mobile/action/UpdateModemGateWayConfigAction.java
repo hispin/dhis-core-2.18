@@ -81,6 +81,13 @@ public class UpdateModemGateWayConfigAction
         this.baudRate = baudRate;
     }
 
+    private Integer pollingInterval;
+
+    public void setPollingInterval( Integer pollingInterval )
+    {
+        this.pollingInterval = pollingInterval;
+    }
+
     private String manufacturer;
 
     public void setManufacturer( String manufacturer )
@@ -142,10 +149,11 @@ public class UpdateModemGateWayConfigAction
                 {
                     index = config.getGateways().indexOf( gatewayConfig );
                 }
-
+                
                 gatewayConfig.setName( name );
                 gatewayConfig.setPort( port );
                 gatewayConfig.setBaudRate( baudRate );
+                gatewayConfig.setPollingInterval( pollingInterval );
                 gatewayConfig.setManufacturer( manufacturer );
                 gatewayConfig.setModel( model );
                 gatewayConfig.setPin( pin );

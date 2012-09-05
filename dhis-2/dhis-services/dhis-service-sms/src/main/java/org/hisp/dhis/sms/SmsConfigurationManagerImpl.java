@@ -124,7 +124,6 @@ public class SmsConfigurationManagerImpl
                 return gateway;
             }
         }
-
         return null;
     }
 }
