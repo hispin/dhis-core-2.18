@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,11 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.report;
+package org.hisp.dhis.patient.action.program;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
@@ -41,89 +44,132 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $LoadPatientPropertiesAction.java Apr 5, 2012 7:27:52 PM$
+ * @version $Id$
  */
-public class LoadPatientPropertiesAction
+public class ShowUpdateProgramFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientIdentifierTypeService identifierTypeService;
-
     private ProgramService programService;
-
-    private PatientAttributeService attributeService;
-
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
-
-    private Integer programId;
-
-    private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
-
-    private Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
-
-    // -------------------------------------------------------------------------
-    // Getter && Setters
-    // -------------------------------------------------------------------------
 
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
     }
 
-    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
-        this.identifierTypeService = identifierTypeService;
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
 
-    public void setAttributeService( PatientAttributeService attributeService )
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
-        this.attributeService = attributeService;
+        this.patientAttributeService = patientAttributeService;
     }
 
-    public void setProgramId( Integer programId )
+    // -------------------------------------------------------------------------
+    // Input/Output
+    // -------------------------------------------------------------------------
+
+    private int id;
+
+    public int getId()
     {
-        this.programId = programId;
+        return id;
     }
 
-    public Collection<PatientIdentifierType> getIdentifierTypes()
+    public void setId( int id )
     {
-        return identifierTypes;
+        this.id = id;
     }
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    private Program program;
+
+    public Program getProgram()
     {
-        return patientAttributes;
+        return program;
+    }
+
+    private List<OrganisationUnitLevel> levels;
+
+    public List<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
+    }
+
+    private List<OrganisationUnitGroup> groups;
+
+    public List<OrganisationUnitGroup> getGroups()
+    {
+        return groups;
+    }
+
+    private Integer level;
+
+    public Integer getLevel()
+    {
+        return level;
+    }
+
+    public void setLevel( Integer level )
+    {
+        this.level = level;
+    }
+
+    private Integer organisationUnitGroupId;
+
+    public Integer getOrganisationUnitGroupId()
+    {
+        return organisationUnitGroupId;
+    }
+
+    public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
+    {
+        this.organisationUnitGroupId = organisationUnitGroupId;
+    }
+
+    private Collection<PatientIdentifierType> availableIdentifierTypes;
+
+    public Collection<PatientIdentifierType> getAvailableIdentifierTypes()
+    {
+        return availableIdentifierTypes;
+    }
+
+    private Collection<PatientAttribute> availableAttributes;
+
+    public Collection<PatientAttribute> getAvailableAttributes()
+    {
+        return availableAttributes;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
         throws Exception
     {
-        Program program = programService.getProgram( programId );
+        program = programService.getProgram( id );
 
-        identifierTypes = identifierTypeService.getAllPatientIdentifierTypes();
-        patientAttributes = attributeService.getAllPatientAttributes();
+        availableIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+
+        availableAttributes = patientAttributeService.getAllPatientAttributes();
 
         Collection<Program> programs = programService.getAllPrograms();
-        programs.remove( program );
-        
-        for ( Program _program : programs )
+
+        for ( Program program : programs )
         {
-            identifierTypes.removeAll( _program.getPatientIdentifierTypes() );
-            patientAttributes.removeAll( _program.getPatientAttributes() );
+            availableIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            availableAttributes.removeAll( program.getPatientAttributes() );
         }
 
         return SUCCESS;
     }
-
 }

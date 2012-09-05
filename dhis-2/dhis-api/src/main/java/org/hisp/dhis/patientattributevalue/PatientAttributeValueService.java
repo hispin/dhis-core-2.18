@@ -32,7 +32,6 @@ import java.util.Map;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.program.Program;
 
 /**
  * @author Abyot Asalefew
@@ -75,9 +74,4 @@ public interface PatientAttributeValueService
     Collection<Patient> getPatient( PatientAttribute attribute, String value );
     
     void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption);
-    
-    Collection<PatientAttributeValue> getPatientAttributeValues( Patient patient, Program program );
-    
-    Collection<PatientAttributeValue> getPatientAttributeValuesWithoutProgram( Patient patient );
-    
 }

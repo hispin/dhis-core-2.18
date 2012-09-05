@@ -220,7 +220,7 @@
 		</action>
 
 		<action name="showUpdateProgramForm"
-			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			class="org.hisp.dhis.patient.action.program.ShowUpdateProgramFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramForm.vm</param>
 			<param name="javascripts">javascript/program.js</param>

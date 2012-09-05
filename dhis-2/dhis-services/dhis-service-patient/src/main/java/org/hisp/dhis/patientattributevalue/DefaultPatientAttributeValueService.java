@@ -38,7 +38,6 @@ import java.util.TreeMap;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
-import org.hisp.dhis.program.Program;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -218,15 +217,5 @@ public class DefaultPatientAttributeValueService
     public void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption )
     {
         patientAttributeValueStore.updatePatientAttributeValues( patientAttributeOption );
-    }
-
-    public Collection<PatientAttributeValue> getPatientAttributeValues( Patient patient, Program program )
-    {
-        return patientAttributeValueStore.get( patient, program );
-    }
-
-    public Collection<PatientAttributeValue> getPatientAttributeValuesWithoutProgram( Patient patient )
-    {
-        return patientAttributeValueStore.getWithoutProgram( patient );
     }
 }

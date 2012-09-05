@@ -24,7 +24,7 @@
 
     <property name="type" />
     
-    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_identifiertype_program" />
-
+    <property name="personDisplayName" />
+    
   </class>
 </hibernate-mapping>

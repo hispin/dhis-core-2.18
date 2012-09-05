@@ -83,16 +83,5 @@ public class DefaultPatientAttributeGroupService
     {
         return patientAttributeGroupStore.getAll();
     }
-
-    @Override
-    public Collection<PatientAttributeGroup> getPatientAttributeGroups( Program program )
-    {
-        return patientAttributeGroupStore.get( program );
-    }
-
-    @Override
-    public Collection<PatientAttributeGroup> getPatientAttributeGroupsWithoutProgram()
-    {
-        return patientAttributeGroupStore.getWithoutProgram();
-    }
+    
 }

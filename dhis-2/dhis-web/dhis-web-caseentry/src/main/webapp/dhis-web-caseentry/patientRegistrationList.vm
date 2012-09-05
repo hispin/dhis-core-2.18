@@ -28,7 +28,13 @@
 			#foreach( $attribute in $patientAttributes )
 				#if($attribute)<col/>#end
 			#end
-          <col/>
+			
+			#foreach( $identifierType in $identifierTypes)
+				<col/>
+			#end
+			#if( $identifierTypes.size()==0 )
+				<col/>       
+			#end
           <col/>
           <col/>
           <col/>
@@ -42,16 +48,27 @@
 				<th>#</th>
 				#foreach( $attribute in $patientAttributes )
 					#if($attribute)
-					<th id="patientAttributeName">$attribute.name</th>
+						<th id="patientAttributeName">$attribute.name</th>
 					#end
 				#end
-				<th>$i18n.getString( "full_name" )</th>          
+				
+				#foreach( $identifierType in $identifierTypes)
+					<th>
+						$identifierType.name
+					</th>
+				#end
+				#if( $identifierTypes.size()==0 )
+					<th>$i18n.getString( "full_name" )</th>          
+				#end
+				
 				<th>$i18n.getString( "gender" )</th>
 				<th>$i18n.getString( "date_of_birth" )</th> 
 				<th class="{sorter: false}">$i18n.getString( "age" )</th>
+				
 				#if($mapPatientOrgunit.size()!=0)
-				<th>$i18n.getString( "hierachy_orgunit" )</th>
+					<th>$i18n.getString( "hierachy_orgunit" )</th>
 				#end
+				
 				<th style="text-align:center" class="{sorter: false}">$i18n.getString( "operations" )</th>
 			  </tr>
           </thead>
@@ -79,7 +96,21 @@
 					#end
 				#end
 					
-				<td onclick="javascript:showPatientDashboardForm( '$patient.id' )">$!patient.getFullName()</td>
+				#foreach( $identifierType in $identifierTypes)
+					#foreach( $identifier in $patient.identifiers)
+						#if($identifier.identifierType.id==$identifierType.id)
+							<td onclick="javascript:showPatientDashboardForm( '$patient.id' )">
+								$identifier.identifier
+							</td>
+						#end
+					#end
+				#end
+				#if( $identifierTypes.size()==0 )
+					<td onclick="javascript:showPatientDashboardForm( '$patient.id' )">
+						$!patient.getFullName()
+					</td>
+				#end
+				
 				
 				<td>$i18n.getString($!patient.gender)</td>
 				

@@ -29,19 +29,19 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramService;
@@ -76,13 +76,6 @@ public class ShowEventWithRegistrationFormAction
         this.patientAttributeService = patientAttributeService;
     }
 
-    private PatientAttributeGroupService patientAttributeGroupService;
-
-    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
-    {
-        this.patientAttributeGroupService = patientAttributeGroupService;
-    }
-
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
@@ -110,9 +103,9 @@ public class ShowEventWithRegistrationFormAction
 
     private Integer programId;
 
-    private Collection<PatientAttribute> noGroupAttributes;
+    private Collection<PatientAttribute> noGroupAttributes = new HashSet<PatientAttribute>();
 
-    private List<PatientAttributeGroup> attributeGroups;
+    private Map<PatientAttributeGroup, Collection<PatientAttribute>> attributeGroupsMap = new HashMap<PatientAttributeGroup, Collection<PatientAttribute>>();
 
     private Collection<PatientIdentifierType> identifierTypes;
 
@@ -121,23 +114,46 @@ public class ShowEventWithRegistrationFormAction
     private String customDataEntryFormCode;
 
     private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
-    
+
     private ProgramStage programStage;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        identifierTypes = patientIdentifierTypeService.getPatientIdentifierTypesWithoutProgram();
+        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
+        Collection<Program> programs = programService.getAllPrograms();
+        for ( Program program : programs )
+        {
+            identifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientAttributes.removeAll( program.getPatientAttributes() );
+        }
 
-        noGroupAttributes = patientAttributeService.getPatientAttributes( null, null );
-
-        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
-            .getPatientAttributeGroupsWithoutProgram() );
-        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
-
+        for( PatientAttribute patientAttribute : patientAttributes )
+        {
+            PatientAttributeGroup attributeGroup = patientAttribute.getPatientAttributeGroup();
+            if( attributeGroup!=null){
+                if( attributeGroupsMap.containsKey( attributeGroup ) )
+                {
+                    Collection<PatientAttribute> attributes = attributeGroupsMap.get( attributeGroup );
+                    attributes.add(patientAttribute);
+                }
+                else
+                {
+                    Collection<PatientAttribute> attributes = new HashSet<PatientAttribute>(); 
+                    attributes.add(patientAttribute);
+                    attributeGroupsMap.put( attributeGroup, attributes );
+                }
+            }
+            else
+            {
+                noGroupAttributes.add( patientAttribute );
+            }
+        }
+        
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         // Get data entry form
@@ -154,8 +170,8 @@ public class ShowEventWithRegistrationFormAction
         }
         else
         {
-            programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage
-                .getProgramStageDataElements() );
+            programStageDataElements = new ArrayList<ProgramStageDataElement>(
+                programStage.getProgramStageDataElements() );
         }
 
         return SUCCESS;
@@ -170,9 +186,9 @@ public class ShowEventWithRegistrationFormAction
         return identifierTypes;
     }
 
-    public List<PatientAttributeGroup> getAttributeGroups()
+    public Map<PatientAttributeGroup, Collection<PatientAttribute>> getAttributeGroupsMap()
     {
-        return attributeGroups;
+        return attributeGroupsMap;
     }
 
     public void setProgramId( Integer programId )

@@ -30,7 +30,5 @@
       <one-to-many class="org.hisp.dhis.patient.PatientAttributeOption" />
     </set>
 
-    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_patientattribute_program" />
-
   </class>
 </hibernate-mapping>

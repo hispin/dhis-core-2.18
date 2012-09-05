@@ -66,14 +66,14 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-		<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
-		
+
 		<action name="uncompleteDataEntry"
 			class="org.hisp.dhis.caseentry.action.caseentry.UncompleteDataEntryAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-		<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
 
 		<action name="saveExecutionDate"
@@ -85,7 +85,7 @@
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
-		
+
 		<action name="registerIrregularEncounter"
 			class="org.hisp.dhis.caseentry.action.caseentry.RegisterIrregularEncounterAction">
 			<result name="success" type="velocity-json">
@@ -107,28 +107,28 @@
 			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
-		
+
 		<action name="anonymousPrograms"
 			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonSingleEventPrograms.vm</result>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
-		
+
 		<action name="createAnonymousEncounter"
 			class="org.hisp.dhis.caseentry.action.caseentry.CreateAnonymousEncounterAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="input" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseInput.vm</result>			
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
-		
+
 		<action name="loadAnonymousPrograms"
 			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonProgramInstances.vm</result>
 		</action>
-		
+
 		<action name="removeCurrentEncounter"
 			class="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction">
 			<result name="success" type="velocity-json">
@@ -137,36 +137,37 @@
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
-		
+
 		<action name="validateProgram"
 			class="org.hisp.dhis.caseentry.action.caseentry.ValidateProgramInstanceAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/validationResult.vm</param>
 		</action>
-		
-		<action name="getOptions" class="org.hisp.dhis.caseentry.action.caseentry.GetOptionsByDataElementAction">
-	      <result name="success" type="velocity-json">/dhis-web-caseentry/jsonOptions.vm</result>
-	    </action>
-		
+
+		<action name="getOptions"
+			class="org.hisp.dhis.caseentry.action.caseentry.GetOptionsByDataElementAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonOptions.vm</result>
+		</action>
+
 		<action name="getProgramStageDataElementList"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetProgramStageDataElementsAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStageDataElements.vm</result>
 		</action>
-		
+
 		<action name="searchProgramStageInstances"
 			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageInstancesList.vm</param>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
-		
+
 		<action name="removeEmptyEvents"
 			class="org.hisp.dhis.caseentry.action.caseentry.RemoveEmptyEventsAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_REMOVE_EMPTY_EVENTS</param>
 		</action>
-		
+
 		<!-- save value -->
 
 		<action name="saveValue"
@@ -197,7 +198,7 @@
 			<param name="page">/dhis-web-caseentry/multiDataEntrySelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
 			<param name="stylesheets">style/style.css</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,javascript/multiDataEntry.js</param>			
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,javascript/multiDataEntry.js</param>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 
@@ -234,9 +235,9 @@
 				getDataRecords.action?programId=${programId}</result>
 			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
-		
+
 		<!-- Single-event DataEntry -->
-		
+
 		<action name="singleEventSelect"
 			class="org.hisp.dhis.caseentry.action.patient.SelectAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
@@ -253,26 +254,26 @@
 			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
-		
+
 		<action name="singleEventPrograms"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetSingleEventProgramListAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonSingleEventPrograms.vm</result>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
-		
+
 		<action name="showEventWithRegistrationForm"
 			class="org.hisp.dhis.caseentry.action.caseentry.ShowEventWithRegistrationFormAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/addSingleEventRegistration.vm</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
-		
+
 		<action name="saveValues"
 			class="org.hisp.dhis.caseentry.action.caseentry.SaveValuesAction">
 			<result name="success" type="velocity-xml">status.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
-		
+
 		<!-- Visit Plan -->
 
 		<action name="visitplan"
@@ -319,18 +320,18 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/records.vm</param>
 		</action>
-        
-        <action name="getReportPrograms"
+
+		<action name="getReportPrograms"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetProgramsByOrgunitAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/responsePrograms.vm</result>
 		</action>
 		<!-- i18n -->
 
-        <action name="i18n" class="org.hisp.dhis.caseentry.action.NoAction">
-            <result name="success" type="velocity-javascript">/dhis-web-caseentry/i18n.vm</result>
-        </action>
-        
+		<action name="i18n" class="org.hisp.dhis.caseentry.action.NoAction">
+			<result name="success" type="velocity-javascript">/dhis-web-caseentry/i18n.vm</result>
+		</action>
+
 		<!-- Case Aggregation -->
 
 		<action name="caseAggregationForm"
@@ -367,7 +368,7 @@
 			<param name="javascripts">javascript/caseagg.js</param>
 			<param name="requiredAuthorities">F_PATIENT_AGGREGATION</param>
 		</action>
-		
+
 		<action name="saveAggregateDataValue"
 			class="org.hisp.dhis.caseentry.action.caseaggregation.SaveAggregateDataValueAction">
 			<result name="success" type="velocity-json">
@@ -410,7 +411,7 @@
 			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_PATIENT_MANAGEMENT</param>
 		</action>
-		
+
 		<action name="showAddPatientFormFormMenu"
 			class="org.hisp.dhis.caseentry.action.patient.ShowAddPatientFormAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
@@ -427,7 +428,7 @@
 			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
-		
+
 
 		<action name="searchRegistrationPatient"
 			class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction">
@@ -435,7 +436,7 @@
 			<param name="page">/dhis-web-caseentry/patientRegistrationList.vm</param>
 			<param name="requiredAuthorities">F_PATIENT_MANAGEMENT</param>
 		</action>
-		
+
 		<action name="removePatient"
 			class="org.hisp.dhis.caseentry.action.patient.RemovePatientAction">
 			<result name="success" type="velocity-json">
@@ -510,35 +511,35 @@
 			</result>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
- 
-   		<action name="getPatientHistory"
+
+		<action name="getPatientHistory"
 			class="org.hisp.dhis.caseentry.action.patient.GetPatientHistoryAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<result name="xls" type="gridXlsResult" />
-      		<result name="pdf" type="gridPdfResult" />
+			<result name="pdf" type="gridPdfResult" />
 			<param name="page">/dhis-web-caseentry/patientHistory.vm</param>
 		</action>
-		
+
 		<action name="getProgramReportHistory"
 			class="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceHistoryAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programInstanceHistory.vm</param>
 		</action>
-		
+
 		<action name="getPatientLocation"
 			class="org.hisp.dhis.caseentry.action.patient.GetPatientLocationAction">
 			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/patientLocation.vm</param>			
+			<param name="page">/dhis-web-caseentry/patientLocation.vm</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
-		
+
 		<action name="registerPatientLocation"
 			class="org.hisp.dhis.caseentry.action.patient.RegisterPatientLocationAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
-		
+
 		<!-- Patient-Program Enrollment -->
 
 		<action name="showProgramEnrollmentForm"
@@ -577,7 +578,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/responseProgramInstance.vm</result>
 		</action>
-		
+
 		<action name="getEventMessages"
 			class="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceAction">
 			<result name="success" type="velocity">/content.vm</result>
@@ -598,19 +599,19 @@
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_PROGRAM_ENROLLMENT</param>
 		</action>
-		
+
 		<action name="savePatientIdentifierAndAttribute"
 			class="org.hisp.dhis.caseentry.action.patient.SaveIdentifierAndAttributeAction">
 			<result name="success" type="velocity-xml">status.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
 		</action>
-		
+
 		<action name="removeEnrollment"
 			class="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentAction">
 			<result name="success" type="velocity-xml">status.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
 		</action>
-		
+
 		<!-- Relationship -->
 
 		<action name="getPartner"
@@ -660,7 +661,7 @@
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<result name="input" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>			
+			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_RELATIONSHIP_ADD</param>
 		</action>
 
@@ -690,7 +691,7 @@
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>
 			<result name="input" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>			
+			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_RELATIONSHIP_DELETE</param>
 		</action>
 
@@ -720,9 +721,9 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_RELATIONSHIP_ADD</param>
 		</action>
-		
+
 		<!-- Tabular report -->
-		
+
 		<action name="tabularReportSelect"
 			class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
@@ -733,40 +734,40 @@
 			<param name="stylesheets">style/style.css</param>
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
-		
+
 		<action name="getOrganisationUnitChildren"
 			class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonminOrganisationUnitChildren.vm</result>
 		</action>
-		
+
 		<action name="tabularInitialize"
 			class="org.hisp.dhis.caseentry.action.report.TabularInitializeAction">
-			 <result name="success" type="velocity-json">
-		        /dhis-web-caseentry/jsonTabularInitialize.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonTabularInitialize.vm</result>
 		</action>
-		
+
 		<action name="loadPatientProperties"
 			class="org.hisp.dhis.caseentry.action.report.LoadPatientPropertiesAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonPatientProperties.vm</result>
 		</action>
-		
+
 		<action name="loadReportProgramStages"
 			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStages.vm</result>
 		</action>
-	
+
 		<action name="loadDataElements"
 			class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responseDataElements.vm</result>
 		</action>
-		
+
 		<action name="getTabularParams"
 			class="org.hisp.dhis.caseentry.action.report.GetTabularParamsAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responseTabularParams.vm</result>
 		</action>
-		
+
 		<action name="validateTabularReport"
 			class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction">
 			<result name="success" type="velocity-json">
@@ -774,51 +775,51 @@
 			<result name="input" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		</action>
-		
+
 		<action name="generateTabularReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonTabularReportResult.vm</result>
 			<result name="xls" type="gridXlsResult" />
-		    <result name="pdf" type="gridPdfResult" />
+			<result name="pdf" type="gridPdfResult" />
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
-			
-		<action name="saveTabularReport"
-            class="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction">
-            <result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-        </action>
-        
-        <action name="getTabularReports"
-            class="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-caseentry/jsonTabularReportList.vm</result>
-        </action>
 
- 		<action name="getTabularReport"
-            class="org.hisp.dhis.caseentry.action.report.GetTabularReportAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-caseentry/jsonTabularReport.vm</result>
-        </action>
-        
-        <action name="updateTabularReportName"
-            class="org.hisp.dhis.caseentry.action.report.UpdateTabularReportNameAction">
-            <result name="success" type="velocity-json">
+		<action name="saveTabularReport"
+			class="org.hisp.dhis.caseentry.action.report.SaveTabularReportAction">
+			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-        </action>
-        
-        <action name="deleteTabularReport"
-            class="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction">
-            <result name="success" type="velocity-json">
+		</action>
+
+		<action name="getTabularReports"
+			class="org.hisp.dhis.caseentry.action.report.GetTabularReportsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonTabularReportList.vm</result>
+		</action>
+
+		<action name="getTabularReport"
+			class="org.hisp.dhis.caseentry.action.report.GetTabularReportAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonTabularReport.vm</result>
+		</action>
+
+		<action name="updateTabularReportName"
+			class="org.hisp.dhis.caseentry.action.report.UpdateTabularReportNameAction">
+			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-        </action>
-        
-        <action name="viewRecord"
+		</action>
+
+		<action name="deleteTabularReport"
+			class="org.hisp.dhis.caseentry.action.report.DeleteTabularReportAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+
+		<action name="viewRecord"
 			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
 		</action>
-		
+
 		<!-- SMS Reminder -->
 
 		<action name="smsReminderSelect"
@@ -828,60 +829,65 @@
 			<param name="page">/dhis-web-caseentry/smsReminderSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/smsMenu.vm</param>
 			<param name="stylesheets">style/style.css</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,javascript/smsReminder.js</param>			
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,javascript/smsReminder.js</param>
 			<param name="requiredAuthorities">F_SMS_REMINDER</param>
 		</action>
-		
+
 		<action name="getSMSPatientRecords"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/smsPatientRecords.vm</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
-		
+
 		<action name="getOutboundSmsList"
 			class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/smsReminderList.vm</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
-		
+
 		<action name="getGateway"
 			class="org.hisp.dhis.caseentry.action.reminder.GetGatewayAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/sendSmsForm.vm</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
-		
-	    <action name="sendSMS" class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction">
-	      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-	      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
-	      <param name="onExceptionReturn">plainTextError</param>
-	    </action>
-	    
-	    <action name="sendSMSTotList" class="org.hisp.dhis.caseentry.action.reminder.SendSmsToListAction">
-	      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-	      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
-	      <param name="onExceptionReturn">plainTextError</param>
-	    </action>
-	    
-	    <!-- Dashboard -->
-	    
-	    <action name="patientDashboard" class="org.hisp.dhis.caseentry.action.patient.PatientDashboardAction">
-	      <result name="success" type="velocity">/content.vm</result>
-		  <param name="page">/dhis-web-caseentry/patientDashboard.vm</param>
-		  <param name="stylesheets">style/style.css</param>
-	    </action>
-	    
-	     <!-- Comment -->
-	    
-	    <action name="addComment" class="org.hisp.dhis.caseentry.action.reminder.AddCommentAction">
-	       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-	    </action>
-	    
-	    <action name="removeComment" class="org.hisp.dhis.caseentry.action.reminder.RemoveCommentAction">
-	       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-	    </action>
-	    
+
+		<action name="sendSMS"
+			class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="sendSMSTotList"
+			class="org.hisp.dhis.caseentry.action.reminder.SendSmsToListAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<!-- Dashboard -->
+
+		<action name="patientDashboard"
+			class="org.hisp.dhis.caseentry.action.patient.PatientDashboardAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/patientDashboard.vm</param>
+			<param name="stylesheets">style/style.css</param>
+		</action>
+
+		<!-- Comment -->
+
+		<action name="addComment"
+			class="org.hisp.dhis.caseentry.action.reminder.AddCommentAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+
+		<action name="removeComment"
+			class="org.hisp.dhis.caseentry.action.reminder.RemoveCommentAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+
 	</package>
 </struts>

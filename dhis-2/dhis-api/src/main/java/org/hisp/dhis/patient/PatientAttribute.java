@@ -35,7 +35,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.program.Program;
 
 /**
  * @author Abyot Asalefew
@@ -72,8 +71,6 @@ public class PatientAttribute
     private PatientAttributeGroup patientAttributeGroup;
 
     private Set<PatientAttributeOption> attributeOptions;
-
-    private Program program;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -186,16 +183,6 @@ public class PatientAttribute
     public void setValueType( String valueType )
     {
         this.valueType = valueType;
-    }
-
-    public Program getProgram()
-    {
-        return program;
-    }
-
-    public void setProgram( Program program )
-    {
-        this.program = program;
     }
 
     public PatientAttributeGroup getPatientAttributeGroup()

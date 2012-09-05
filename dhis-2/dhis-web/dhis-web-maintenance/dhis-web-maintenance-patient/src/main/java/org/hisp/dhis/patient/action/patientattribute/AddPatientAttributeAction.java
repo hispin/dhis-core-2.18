@@ -33,8 +33,6 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -62,14 +60,7 @@ public class AddPatientAttributeAction
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
     }
-
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -109,13 +100,6 @@ public class AddPatientAttributeAction
         this.attrOptions = attrOptions;
     }
 
-    private Integer programId;
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -132,9 +116,6 @@ public class AddPatientAttributeAction
         mandatory = (mandatory == null) ? false : true;
         patientAttribute.setMandatory( mandatory );
         
-        Program program = (programId != null) ? programService.getProgram( programId ) : null;
-        patientAttribute.setProgram( program );
-
         patientAttributeService.savePatientAttribute( patientAttribute );
 
         if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )

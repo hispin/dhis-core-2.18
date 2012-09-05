@@ -37,7 +37,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -54,6 +57,8 @@ public class SearchPatientAction
 
     private PatientService patientService;
 
+    private ProgramService programService;
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -63,7 +68,7 @@ public class SearchPatientAction
     private Boolean searchBySelectedOrgunit;
 
     private boolean listAll;
-    
+
     private Collection<Patient> patients = new ArrayList<Patient>();
 
     // -------------------------------------------------------------------------
@@ -73,6 +78,11 @@ public class SearchPatientAction
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     public void setSearchBySelectedOrgunit( Boolean searchBySelectedOrgunit )
@@ -88,6 +98,11 @@ public class SearchPatientAction
     public void setSearchTexts( List<String> searchTexts )
     {
         this.searchTexts = searchTexts;
+    }
+
+    public boolean isListAll()
+    {
+        return listAll;
     }
 
     public void setListAll( boolean listAll )
@@ -112,6 +127,20 @@ public class SearchPatientAction
     public Map<Integer, String> getMapPatientOrgunit()
     {
         return mapPatientOrgunit;
+    }
+
+    private List<Integer> programIds;
+
+    public void setProgramIds( List<Integer> programIds )
+    {
+        this.programIds = programIds;
+    }
+
+    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
+
+    public List<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
     }
 
     // -------------------------------------------------------------------------
@@ -146,6 +175,15 @@ public class SearchPatientAction
             for ( Patient patient : patients )
             {
                 mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+            }
+
+            if ( programIds != null )
+            {
+                for( Integer programId : programIds )
+                {
+                    Program progam = programService.getProgram( programId );
+                    identifierTypes.addAll( progam.getPatientIdentifierTypes() );
+                }
             }
         }
 

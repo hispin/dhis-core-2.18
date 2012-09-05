@@ -65,16 +65,57 @@
 			<td><label>$i18n.getString( "duration_in_days" )</label></td>
 			<td><input style="width: 330px;" type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" class="{validate:{number:true}}"></td>
 			<td></td>
-		</tr>	
-		
-		<tr>
-			<td></td>
-			<td>
-				<input type="submit" value="$i18n.getString( 'add' )" >
-				<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'" >
-			</td>
 		</tr>
-	</tbody>
+	<tbody>
+</table>
+	
+<table id="programStageMembersArea">    
+	<thead>
+	  <tr>        
+		<th>$i18n.getString( "available_identifiers_and_attributes" )</th>
+		<th></th>
+		<th>$i18n.getString( "select_identifiers_and_attributes" )							
+			<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
+			<select style='display:none;' multiple id="personDisplayNames" name="personDisplayNames" ></select>
+		</th>
+	  </tr>
+	</thead>
+	<tr>
+		<td>
+			<select size="15" style="width: 330px;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();">
+				#foreach( $identifier in $availableIdentifierTypes )
+					<option value="iden_$identifier.id">$identifier.name</option>
+				#end
+				#foreach( $attribute in $availableAttributes )
+					<option value="attr_$attribute.id">$attribute.name</option>
+				#end
+			</select>
+		</td>
+		<td style="text-align:center">
+        	<input type="button" value="&gt;" class='filterButton' onclick="selectProperties();"/><br/>
+            <input type="button" value="&lt;" class='filterButton' onclick="unSelectProperties();"/><br/>
+			<input type="button" value="&gt;&gt;" class='filterButton' onclick="selectAllProperties();"/><br/>
+			<input type="button" value="&lt;&lt;" class='filterButton' onclick="unSelectAllProperties();"/>
+		</td>
+		<td>
+			<div class="dataElementDiv">
+				<table>
+					<thead>
+						<tr>
+							<th>$i18n.getString( "identifiers_and_attributes" )</th>
+							<th width="20px">$i18n.getString( "displayed_in_list" )</th>
+					</thead>
+					<tbody id="selectedList"></tbody>
+				</table>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="submit" value="$i18n.getString( 'add' )" >
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'" >
+		</td>
+	</tr>
 </table>
 
 </form>

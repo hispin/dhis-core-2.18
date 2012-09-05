@@ -27,8 +27,17 @@
 
 package org.hisp.dhis.patient.action.program;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -70,6 +79,20 @@ public class AddProgramAction
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
         this.programInstanceService = programInstanceService;
+    }
+
+    private PatientIdentifierTypeService patientIdentifierTypeService;
+
+    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    {
+        this.patientIdentifierTypeService = patientIdentifierTypeService;
+    }
+
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -132,6 +155,20 @@ public class AddProgramAction
         this.displayIncidentDate = displayIncidentDate;
     }
 
+    private List<String> selectedPropertyIds = new ArrayList<String>();
+
+    public void setSelectedPropertyIds( List<String> selectedPropertyIds )
+    {
+        this.selectedPropertyIds = selectedPropertyIds;
+    }
+
+    private List<Boolean> personDisplayNames = new ArrayList<Boolean>();
+
+    public void setPersonDisplayNames( List<Boolean> personDisplayNames )
+    {
+        this.personDisplayNames = personDisplayNames;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -141,7 +178,7 @@ public class AddProgramAction
     {
         displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
         displayIncidentDate = (displayIncidentDate == null) ? false : displayIncidentDate;
-        
+
         Program program = new Program();
 
         program.setName( name );
@@ -152,8 +189,38 @@ public class AddProgramAction
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         program.setType( type );
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
-        program.setDisplayIncidentDate(displayIncidentDate);
-        
+        program.setDisplayIncidentDate( displayIncidentDate );
+
+        Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
+        Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
+        int index = 0;
+        for ( String selectedPropertyId : selectedPropertyIds )
+        {
+            String[] ids = selectedPropertyId.split( "_" );
+
+            if ( ids[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
+            {
+                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
+                    .parseInt( ids[1] ) );
+
+                identifierType.setPersonDisplayName( personDisplayNames.get( index ) );
+                patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
+
+                identifierTypes.add( identifierType );
+            }
+            else if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
+            {
+                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
+                    .parseInt( ids[1] ) );
+                patientAttributes.add( patientAttribute );
+            }
+
+            index++;
+        }
+
+        program.setPatientIdentifierTypes( identifierTypes );
+        program.setPatientAttributes( patientAttributes );
+
         programService.saveProgram( program );
 
         if ( program.getType().equals( Program.SINGLE_EVENT_WITH_REGISTRATION )

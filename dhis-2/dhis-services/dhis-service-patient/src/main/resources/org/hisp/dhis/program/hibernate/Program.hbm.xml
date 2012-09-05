@@ -44,6 +44,16 @@
     <property name="displayProvidedOtherFacility" />
     
     <property name="displayIncidentDate" />
+    
+    <set name="patientIdentifierTypes" table="program_patientIdentifierTypes">
+      <key column="programid" foreign-key="fk_program_patientIdentifierTypes_programid" />
+      <many-to-many column="patientidentifiertypeid" class="org.hisp.dhis.patient.PatientIdentifierType" foreign-key="fk_program_patientIdentifierTypes_patientidentifiertypeid" />
+    </set>
+    
+    <set name="patientAttributes" table="program_patientAttributes">
+      <key column="programid" foreign-key="fk_program_patientAttributes_programid" />
+      <many-to-many column="patientattributeid" class="org.hisp.dhis.patient.PatientAttribute" foreign-key="fk_program_patientAttributes_patientattributeid" />
+    </set>
         
   </class>
 </hibernate-mapping>
