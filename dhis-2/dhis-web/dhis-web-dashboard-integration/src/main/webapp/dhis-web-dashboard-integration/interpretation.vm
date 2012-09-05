@@ -37,7 +37,7 @@
 	    <a class="bold"
 		   title="$i18n.getString( 'click_to_view_data_set_report' )"
 		   href="../dhis-web-reporting/showDataSetReportForm.action?ds=${ip.dataSet.uid}&pe=${ip.period.isoDate}&ou=${ip.organisationUnit.uid}">
-		   $i18n.getString( "view_data_set_report" )</a>
+		   $encoder.htmlEncode( $ip.dataSet.name )</a>
 	#end
 	</div>
 	
