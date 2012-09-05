@@ -1,6 +1,17 @@
 <script type="text/javascript">
 	jQuery(document).ready( function() {
 		setTableStyles();
+
+		var filterSpan = jQuery( "#filterSpan" );
+		filterSpan.val( i18n_filter_disease_or_icd_code );
+		
+		filterSpan.blur( function() {
+			filterSpan.val( i18n_filter_disease_or_icd_code );
+		} );
+
+		filterSpan.focus( function() {
+			filterSpan.val( "" );
+		} );
 	});
 </script>
 
@@ -9,7 +20,7 @@
 
 <table class="listTable" id="listTable" cellspacing="0">
 	<thead>
-	<tr><td></td>
+	<tr><td><span><input type="text" id="filterSpan" style="width:25em" onkeyup="filterValues( this.value, 1 );"/></span></td>
 		<th>$i18n.getString( "icd_element_1" )</th>
 		<th>$i18n.getString( "icd_element_2" )</th>
 		<th>$i18n.getString( "icd_element_3" )</th>

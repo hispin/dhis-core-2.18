@@ -28,6 +28,9 @@ var dataEntryFormIsLoaded = false;
 // Indicates whether meta data is loaded
 var metaDataIsLoaded = false;
 
+// Indicates whether meta data is loaded
+var chapterIsShowed = false;
+
 // Currently selected organisation unit identifier
 var currentOrganisationUnitId = null;
 
@@ -332,13 +335,14 @@ function dataSetSelected()
     $( '#nextButton' ).removeAttr( 'disabled' );
 
     var dataSetId = $( '#selectedDataSetId option:selected' ).val();
-    var periodId = $( '#selectedPeriodId option:selected' ).val();
-    var periodType = $( '#selectedDataSetId option:selected' ).attr('periodType');
-    var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
-    periods = periodTypeFactory.filterFuturePeriods( periods );
 
     if ( dataSetId != -1 )
     {
+		var periodId = $( '#selectedPeriodId option:selected' ).val();
+		var periodType = $( '#selectedDataSetId option:selected' ).attr('periodType');
+		var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
+		periods = periodTypeFactory.filterFuturePeriods( periods );
+	
 		addOptionById( 'selectedPeriodId', "-1", '[ ' + i18n_select_period + ' ]' );
 	
         for ( i in periods )
@@ -358,9 +362,10 @@ function dataSetSelected()
         currentDataSetId = dataSetId;
 		currentPeriodType = periodType;
 
-		showById( 'chapterTR' );
 		loadAttributeValues( dataSetId );
-    }
+    } else {
+		resetCriteriaDiv();
+	}
 }
 
 function loadSubDataSets( dataSetId )
@@ -415,9 +420,10 @@ function loadAttributeValues( dataSetId )
 		if ( json.attributeValues.length > 0 )
 		{
 			byId( 'inputCriteria' ).style.width = '504px';
-			byId( 'inputCriteria' ).style.height = '130px';
+			byId( 'inputCriteria' ).style.height = '100px';
 
 			showById( 'chapterTR' );
+			chapterIsShowed = true;
 		}
 		else
 		{
@@ -425,6 +431,8 @@ function loadAttributeValues( dataSetId )
 			byId( 'inputCriteria' ).style.height = '80px';
 			
 			hideById( 'chapterTR' );
+			chapterIsShowed = false;
+			currentChapterId = null;
 		}
 		
 		jQuery( '#selectedPeriodId' ).bind( 'change', periodSelected );
@@ -494,6 +502,11 @@ function periodSelected()
 
 		if ( periodId && periodId != -1 )
 		{
+			if ( chapterIsShowed && (currentChapterId == null || currentChapterId == -1) )
+			{
+				return;
+			}
+		
 			if ( currentDataSetId && currentDataSetId == dataSetId )
 			{
 				if ( formLoaded )
@@ -505,8 +518,7 @@ function periodSelected()
 			} else {
 				loadForm( dataSetId, "" );
 			}
-		}
-		else {
+		} else {
 			clearEntryForm();
 		}
 	} else {
@@ -551,7 +563,7 @@ function clearEntryForm()
 
 function loadForm( dataSetId, value )
 {
-	showLoader();
+	lockScreen();
 
     $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
 
@@ -571,7 +583,7 @@ function loadForm( dataSetId, value )
 	function ( responseText, textStatus, req )
 	{
 		if ( textStatus == "error" ) {
-			hideLoader();
+			unLockScreen();
 			hideById( 'showReportButton' );
 			hideById( 'ICDButtonDiv' );
 			clearEntryForm();
@@ -587,6 +599,8 @@ function loadFormByChapter( chapterId )
 	var periodId = getFieldValue( 'selectedPeriodId' );
 	var dataSetId = getFieldValue( 'selectedDataSetId' );
 
+	currentChapterId = chapterId;
+	
 	if ( dataSetId == null || dataSetId == -1 )
 	{
 		setHeaderDelayMessage( i18n_please_select_data_set );
@@ -598,10 +612,8 @@ function loadFormByChapter( chapterId )
 		setHeaderDelayMessage( i18n_please_select_period );
 		return;
 	}
-	
-	loadForm( dataSetId );
 
-	currentChapterId = chapterId;
+	loadForm( dataSetId );
 }
 
 function loadDepartmentFormSelected()
@@ -615,7 +627,7 @@ function loadDepartmentFormSelected()
 
     if ( periodId && periodId != -1 && dataSetId != -1 )
     {
-        showLoader();
+        lockScreen();
         loadForm( dataSetId, getFieldValue( 'valueInput' ) );
     }
 	else
@@ -626,6 +638,8 @@ function loadDepartmentFormSelected()
 
 function loadDataValues( dataSetId, chapterId )
 {
+	lockScreen();
+
     $( '#completeButton' ).removeAttr( 'disabled' );
     $( '#undoButton' ).attr( 'disabled', 'disabled' );
     $( '#infoDiv' ).css( 'display', 'none' );
@@ -753,8 +767,8 @@ function insertDataValues( dataSetId, chapterId )
 	            $( '#infoDiv' ).hide();
 	        }
 
-			showById('completenessDiv');
-			hideLoader();
+			showById( 'completenessDiv' );
+			unLockScreen();
 	    }
 	} );
 }
@@ -764,8 +778,6 @@ function displayEntryFormCompleted()
     addEventListeners();
 
     $( '#validationButton' ).removeAttr( 'disabled' );
-
-    hideLoader();
 }
 
 function valueFocus( e )
