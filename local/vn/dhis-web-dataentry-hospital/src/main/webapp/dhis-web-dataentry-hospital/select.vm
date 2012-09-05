@@ -176,4 +176,5 @@ var i18n_please_select_chapter = "[ " + '$encoder.jsEscape( $i18n.getString( "pl
 var i18n_select_chapter = "[ " + '$encoder.jsEscape( $i18n.getString( "select_chapter" ) , "'")' + " ]";
 var i18n_explore_icd_report_result = '$encoder.jsEscape( $i18n.getString( "explore_icd_report_result" ) , "'")';
 var i18n_collpase_icd_report_result = '$encoder.jsEscape( $i18n.getString( "collapse_icd_report_result" ) , "'")';
+var i18n_filter_disease_or_icd_code = '$encoder.jsEscape( $i18n.getString( "filter_disease_or_icd_code" ) , "'")';
 </script>
