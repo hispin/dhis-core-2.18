@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.program;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +35,8 @@ import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.validation.ValidationCriteria;
 
 /**
@@ -52,7 +55,6 @@ public class Program
     public static final int SINGLE_EVENT_WITH_REGISTRATION = 2;
 
     public static final int SINGLE_EVENT_WITHOUT_REGISTRATION = 3;
-    
 
     private String description;
 
@@ -83,8 +85,12 @@ public class Program
     private Integer type;
 
     private Boolean displayProvidedOtherFacility;
-    
+
     private Boolean displayIncidentDate;
+
+    private Collection<PatientIdentifierType> patientIdentifierTypes;
+
+    private Collection<PatientAttribute> patientAttributes;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -247,6 +253,26 @@ public class Program
         this.patientValidationCriteria = patientValidationCriteria;
     }
 
+    public Collection<PatientIdentifierType> getPatientIdentifierTypes()
+    {
+        return patientIdentifierTypes;
+    }
+
+    public void setPatientIdentifierTypes( Collection<PatientIdentifierType> patientIdentifierTypes )
+    {
+        this.patientIdentifierTypes = patientIdentifierTypes;
+    }
+
+    public Collection<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
+
+    public void setPatientAttributes( Collection<PatientAttribute> patientAttributes )
+    {
+        this.patientAttributes = patientAttributes;
+    }
+
     // -------------------------------------------------------------------------
     // Logic methods
     // -------------------------------------------------------------------------
@@ -317,14 +343,14 @@ public class Program
     {
         return Patient.class.getMethod( "get" + property ).invoke( patient );
     }
-    
+
     public boolean isSingleEvent()
     {
-        return type != null && ( SINGLE_EVENT_WITH_REGISTRATION == type || SINGLE_EVENT_WITHOUT_REGISTRATION == type ); 
+        return type != null && (SINGLE_EVENT_WITH_REGISTRATION == type || SINGLE_EVENT_WITHOUT_REGISTRATION == type);
     }
-    
+
     public boolean isRegistration()
     {
-        return type != null && ( SINGLE_EVENT_WITH_REGISTRATION == type || MULTIPLE_EVENTS_WITH_REGISTRATION == type ); 
+        return type != null && (SINGLE_EVENT_WITH_REGISTRATION == type || MULTIPLE_EVENTS_WITH_REGISTRATION == type);
     }
 }

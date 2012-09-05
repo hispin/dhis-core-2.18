@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.program.Program;
 
 @XmlRootElement( name = "patientIdentifierType", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
@@ -63,8 +62,8 @@ public class PatientIdentifierType
 
     private String type;
 
-    private Program program;
-
+    private Boolean personDisplayName;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -186,14 +185,14 @@ public class PatientIdentifierType
         this.type = type;
     }
 
-    public Program getProgram()
+    public Boolean getPersonDisplayName()
     {
-        return program;
+        return personDisplayName;
     }
 
-    public void setProgram( Program program )
+    public void setPersonDisplayName( Boolean personDisplayName )
     {
-        this.program = program;
+        this.personDisplayName = personDisplayName;
     }
-
+    
 }

@@ -218,6 +218,7 @@ function validateAdvancedSearch()
 function getSearchParams()
 {
 	var params = "";
+	var programIds = "";
 	var programStageId = jQuery('#programStageAddPatient').val();
 	if( getFieldValue('searchByProgramStage') == "true" && programStageId!=''){
 		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
@@ -226,12 +227,17 @@ function getSearchParams()
 		params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent + '_' + startDueDate + '_' + endDueDate;
 	}
 	
+	var flag = false;
 	jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
 		var dateOperator = "";
 		var p = "";
 		jQuery( this ).find(':input').each( function( idx, item ){
 			if( idx == 0){
 				p = "&searchTexts=" + item.value;
+				if(item.value=='prg'){
+					programIds += '&programIds=';
+					flag = true;
+				}
 			}
 			else if( item.name == 'dateOperator'){
 				dateOperator = item.value;
@@ -246,6 +252,11 @@ function getSearchParams()
 					else{
 						p += htmlEncode( item.value.toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "") );
 					}
+					
+					if( flag ){
+						programIds += item.value;
+						flag = false;
+					}
 				}
 				else {
 					p = "";
@@ -257,6 +268,7 @@ function getSearchParams()
 		
 	params += '&listAll=false';
 	params += '&searchBySelectedOrgunit=' + byId('searchBySelectedOrgunit').checked;
+	params += programIds;
 	
 	return params;
 }

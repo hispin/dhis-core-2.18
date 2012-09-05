@@ -90,12 +90,11 @@
 #end
 
 <!-- ATTRIBUTES IN GROUPS -->
-#foreach ($attributeGroup in $attributeGroups )
+#foreach ($attributeGroup in $attributeGroupsMap.keySet() )
 	<tr><td>&nbsp;</td></tr>
 	<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
-	#foreach($attribute in $attributeGroup.attributes )
-		#if( $!attribute && $attribute.program )
-		#elseif( $!attribute)
+	#set($attributes = $attributeGroupsMap.get($attributeGroup))
+	#foreach($attribute in $attributes )
 		<tr>
 			<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 			<td class="input-column">
@@ -122,7 +121,6 @@
 				#end
 			</td>		
 		</tr>
-		#end
 	#end
 #end
 

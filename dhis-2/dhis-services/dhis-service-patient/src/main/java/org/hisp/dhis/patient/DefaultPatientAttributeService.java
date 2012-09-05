@@ -103,20 +103,10 @@ public class DefaultPatientAttributeService
     {
         return patientAttributeStore.getByMandatory( mandatory );
     }
-
-    public Collection<PatientAttribute> getPatientAttributes( Program program, PatientAttributeGroup group )
-    {
-        return patientAttributeStore.get( program, group );
-    }
     
     public Collection<PatientAttribute> getPatientAttributesWithoutGroup()
     {
         return patientAttributeStore.getWithoutGroup();
-    }
-    
-    public Collection<PatientAttribute> getPatientAttributes( Program program )
-    {
-        return patientAttributeStore.get( program );
     }
 
 }
