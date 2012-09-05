@@ -87,6 +87,18 @@ public class ShowAddPatientFormAction
     // Input/Output
     // -------------------------------------------------------------------------
 
+    private Boolean addNewForm;
+    
+    public Boolean getAddNewForm()
+    {
+        return addNewForm;
+    }
+
+    public void setAddNewForm( Boolean addNewForm )
+    {
+        this.addNewForm = addNewForm;
+    }
+
     private Collection<PatientAttribute> noGroupAttributes;
 
     private List<PatientAttributeGroup> attributeGroups;

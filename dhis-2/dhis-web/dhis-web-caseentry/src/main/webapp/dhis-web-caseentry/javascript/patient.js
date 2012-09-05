@@ -48,11 +48,11 @@ function sortPatients()
 
 function validateAddPatient()
 {	
-	$("#editPatientDiv :input").attr("disabled", true);
+	$("#patientForm :input").attr("disabled", true);
 	$.ajax({
 		type: "POST",
 		url: 'validatePatient.action',
-		data: getParamsForDiv('editPatientDiv'),
+		data: getParamsForDiv('patientForm'),
 		success:addValidationCompleted
     });	
 }
@@ -69,7 +69,6 @@ function addValidationCompleted( data )
 	}
 	else
 	{
-		$("#editPatientDiv :input").attr("disabled", true);
 		if ( type == 'error' )
 		{
 			showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + message );
@@ -83,7 +82,7 @@ function addValidationCompleted( data )
 			showListPatientDuplicate(data, false);
 		}
 			
-		$("#editPatientDiv :input").attr("disabled", false);
+		$("#patientForm :input").attr("disabled", false);
 	}
 }
 
@@ -281,15 +280,27 @@ function addPatient()
 	$.ajax({
       type: "POST",
       url: 'addPatient.action',
-      data: getParamsForDiv('editPatientDiv'),
+      data: getParamsForDiv('patientForm'),
       success: function(json) {
 		var patientId = json.message.split('_')[0];
 		var systemIdentifierId = json.message.split('_')[1];
 		jQuery('#advSearchBox0 [id="searchText"]').val( systemIdentifierId );
 		statusSearching = 1;
-		
-		showPatientDashboardForm( patientId );
-		jQuery('#resultSearchDiv').dialog('close');
+		if( getFieldValue("addNewForm")=="true")
+		{
+			$("#patientForm :input").attr("disabled", false);
+			$("#patientForm :input").each(function(){
+				if( this.type!='button' || this.type!='submit' ){
+					this.value = "";
+				}
+			});
+			showSuccessMessage(i18n_add_person_successfully);
+		}
+		else
+		{
+			showPatientDashboardForm( patientId );
+			jQuery('#resultSearchDiv').dialog('close');
+		}
       }
      });
     return false;

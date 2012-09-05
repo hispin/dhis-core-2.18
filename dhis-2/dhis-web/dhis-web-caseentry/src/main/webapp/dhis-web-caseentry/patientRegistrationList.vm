@@ -10,8 +10,7 @@
 			$i18n.getString( "advanced_search_patients" )
 		#end
 		</td>
-	</tr>	
-	
+	</tr>
 	<tr>
 		<td class='text-column' >$i18n.getString( "total_result" )</td>
 		<td>&nbsp;</td>
@@ -80,7 +79,7 @@
 					#end
 				#end
 					
-				<td>$!patient.getFullName()</td>
+				<td onclick="javascript:showPatientDashboardForm( '$patient.id' )">$!patient.getFullName()</td>
 				
 				<td>$i18n.getString($!patient.gender)</td>
 				
