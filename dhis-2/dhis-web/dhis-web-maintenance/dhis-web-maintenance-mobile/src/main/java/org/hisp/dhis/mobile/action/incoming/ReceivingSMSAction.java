@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.sms.SmsConfigurationManager;
+import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
@@ -101,15 +102,16 @@ public class ReceivingSMSAction
     public String execute()
         throws Exception
     {
-        SmsConfiguration smsConfig = smsConfigurationManager.getSmsConfiguration();
+        ModemGatewayConfig gatewayConfig = (ModemGatewayConfig) smsConfigurationManager
+        .checkInstanceOfGateway( ModemGatewayConfig.class );
 
-        if ( smsConfig == null )
+        if ( gatewayConfig != null )
         {
-            pollingInterval = 0;
+            pollingInterval = gatewayConfig.getPollingInterval()*1000;
         }
         else
         {
-            pollingInterval = smsConfig.getPollingInterval()*1000;
+            pollingInterval = 0;
         }
         listIncomingSms = incomingSmsService.listAllMessageFromModem();
 

@@ -100,6 +100,10 @@
 				<td><input type="text" name="baudRate" id="baudRate" style="width: 28em" value="$!modemGateway.baudRate"/></td>
 			</tr>
 			<tr>
+				<td>$i18n.getString( "polling_interval_in_seconds" ): <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
+				<td><input type="text" name="pollingInterval" id="pollingInterval" style="width: 28em" value="$!modemGateway.pollingInterval"/></td>
+			</tr>
+			<tr>
 				<td>$i18n.getString( "manufacturer" ):</td>
 				<td><input type="text" name="manufacturer" id="manufacturer" style="width: 28em" value="$!modemGateway.manufacturer"/></td>
 			</tr>
