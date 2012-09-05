@@ -51,18 +51,37 @@
 	function refreshIndex( indexDeleted ) {
 		var gwSize = getFieldValue( 'gatewaySize' ); 
 		
-		if ( indexDeleted < gwSize )
+		if ( indexDeleted + 1 < gwSize )
 		{
-			for ( indexDeleted + 1 ;indexDeleted + 1 <= gwSize - 1 ;indexDeleted++ )
+			for ( indexDeleted + 1 ; indexDeleted + 1 <= gwSize - 1; indexDeleted++ )
 			{
-				document.getElementById(indexDeleted + 1).href = 'showUpdateGateWayConfigForm.action?index='+indexDeleted;
+				var temp = indexDeleted + 1;
+				
+				document.getElementById('edit'+temp).href = "showUpdateGateWayConfigForm.action?index="+ indexDeleted;
+				
+				var removeLinkTemp = document.getElementById('remove'+temp).getAttribute("href");
+				
+				var newRemoveLink = removeLinkTemp.substring(removeLinkTemp.lastIndexOf(','),removeLinkTemp.length-1);
+				
+				document.getElementById('remove'+temp).href = "javascript:removeGateway("+ indexDeleted + newRemoveLink +")";
+				
+				document.getElementById('tr'+temp).id = "tr" + indexDeleted;
+				
+				document.getElementById('edit'+temp).id = "edit" + indexDeleted;
+				
+				document.getElementById('remove'+temp).id = "remove" + indexDeleted;
 			}			
 		}
 		jQuery( '#gatewaySize' ).val(gwSize - 1);
 		
-		if ( gwSize == 4 )
+		if ( gwSize == 5 )
 		{
 			document.getElementById( 'btnAddGw' ).disabled = false;
+		}
+		
+		if ( gwSize == 1 )
+		{
+			window.location.href='showSMSConfigureForm.action';
 		}
 		//document.getElementById("1").getAttribute("href");		
 	};
@@ -92,13 +111,13 @@
     <tbody>
 		<tr>
 			<td colspan="2">
-				#if( $!smsConfig )
+				#if( $gwSizeTemp != 0)
 				<div class="generalOverlaps overlaps" id="noOverlapsDiv" style="display: block;">
 					$i18n.getString( $!encoder.htmlEncode( $!smsServiceStatus ) )
 				</div>
 				#else
 				<div class="generalOverlaps overlapsWarning" id="noOverlapsDiv" style="display: block;">
-					$i18n.getString( "sms_configuration_not_initialized" )
+					$i18n.getString( "unable_load_configuration_cause_of_there_is_no_gateway" )
 				</div>
 				#end
 			</td>
@@ -110,27 +129,6 @@
 			</td>
 		</tr>
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-    </tbody>
-
-	<thead>
-      <tr>
-        <th colspan="2">$i18n.getString("configuration")</th>
-      </tr>
-	</thead>
-	
-	<tbody>
-		<tr>
-			<td><label for="pollingInterval">$i18n.getString( "polling_interval_in_seconds" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="pollingInterval" name="pollingInterval" style="width:20em" value="$!smsConfig.pollingInterval"/></td>
-		</tr>
-		<tr>
-			<td><label for="serverPhoneNumber">$i18n.getString( "server_phone_number" )</label></td>
-			<td><input type="text" id="serverPhoneNumber" name="serverPhoneNumber" style="width:20em" value="$!smsConfig.longNumber"/>
-				<input type="submit" value="$i18n.getString( 'save_settings' )" style="width:13em"/>
-			</td>
-		</tr>
-
-		<tr><td align="right" colspan="2"><br/></td></tr>
 
 		<tr>
 			<td colspan="2">
@@ -149,8 +147,8 @@
 							#set( $gw = $!gatewayConfigMap.get( $key ) )
 							<td>$!encoder.htmlEncode( $gw.name )</td>
 							<td style="text-align:right">
-							  <a id="$key" href="showUpdateGateWayConfigForm.action?index=$key" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>		
-							  <a href="javascript:removeGateway( $key, '$!encoder.jsEncode( $gw.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+							  <a id="edit$key" href="showUpdateGateWayConfigForm.action?index=$key" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>		
+							  <a id="remove$key" href="javascript:removeGateway($key,'$!encoder.jsEncode( $gw.name )')" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 							</td>
 						</tr>
 					#end
@@ -160,7 +158,7 @@
 		</tr>
 		<tr>
 			<td align="right" colspan="2">
-				<input type="button" id="btnAddGw" value="$i18n.getString( 'add_gw' )" style="width:13em" #if( $!gwSizeTemp == 4 ) disabled="true" #end onclick="window.location.href='showUpdateGateWayConfigForm.action'"/>
+				<input type="button" id="btnAddGw" value="$i18n.getString( 'add_gw' )" style="width:13em" #if( $!gwSizeTemp == 5 ) disabled="true" #end onclick="window.location.href='showUpdateGateWayConfigForm.action'"/>
 			</td>
 		</tr>	
 	</tbody>
