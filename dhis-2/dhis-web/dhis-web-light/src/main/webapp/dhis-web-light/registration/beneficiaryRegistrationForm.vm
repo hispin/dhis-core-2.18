@@ -22,17 +22,20 @@
 
 		<label>$i18n.getString( "gender" )</label>
 		<select name="gender">
+		
+		<option value="F"
+			#if($previousValues.get("gender") == "F")
+				selected
+			#end
+			>$i18n.getString( "female" )</option>
+			
 			<option value="M"
 			#if($previousValues.get("gender") == "M")
 				selected
 			#end
 			>$i18n.getString( "male" )</option>
 			
-			<option value="F"
-			#if($previousValues.get("gender") == "F")
-				selected
-			#end
-			>$i18n.getString( "female" )</option>
+			
 			
 			<option value="T"
 			#if($previousValues.get("gender") == "T")

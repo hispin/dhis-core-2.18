@@ -20,7 +20,7 @@
 
 <p>
 <ul>
-    <li><a href="selectOrganisationUnit.action">$i18n.getString( "data_entry" )</a></li>
+    <li><a href="selectOrganisationUnit.action">$i18n.getString( "agregate_reporting" )</a></li>
     <li><a href="trackingMenu.action">$i18n.getString( "tracking" )</a></li>
     <li><a href="messages.action">$i18n.getString( "messages" ) #if($unreadMessageConversationCount > 0)($unreadMessageConversationCount)#end</a></li>
     <li><a href="reports.action">$i18n.getString( "reports" )</a></li>
@@ -31,7 +31,7 @@
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
-    <li><a href="feedback.action">$i18n.getString("feedback")</a></li>
+    
 	<li><a href="../dhis-web-commons-security/logout.action">$i18n.getString("logout")</a></li>
     <li style="padding-top: 5px;"><a href="../">$i18n.getString("desktop_version")</a></li>
 </ul>
