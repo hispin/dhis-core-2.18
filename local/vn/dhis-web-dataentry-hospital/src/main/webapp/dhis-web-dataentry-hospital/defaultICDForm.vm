@@ -1,6 +1,22 @@
+<link href="style/myTheme.css" rel="stylesheet" media="screen" />
+
+<style>
+
+	#filterSpan
+	{
+		width:25em;
+		font-style: oblique;
+		color: #A9A9A9
+	}
+
+	.fancyTable tbody#list input
+	{
+		width: 5em; text-align: right
+	}
+</style>
+
 <script type="text/javascript">
 	jQuery(document).ready( function() {
-		setTableStyles();
 
 		var filterSpan = jQuery( "#filterSpan" );
 		filterSpan.val( i18n_filter_disease_or_icd_code );
@@ -18,9 +34,9 @@
 #set( $tabIndex = 1 )
 #set( $hasAccess = $auth.hasAccess( "dhis-web-dataentry-hospital", "saveValue" ) )
 
-<table class="listTable" id="listTable" cellspacing="0">
+<table class="fancyTable" id="listTable" cellspacing="0">
 	<thead>
-	<tr><td><span><input type="text" id="filterSpan" style="width:25em" onkeyup="filterValues( this.value, 1 );"/></span></td>
+	<tr><th><span><input type="text" id="filterSpan" onkeyup="filterValues( this.value, 1 );"/></span></th>
 		<th>$i18n.getString( "icd_element_1" )</th>
 		<th>$i18n.getString( "icd_element_2" )</th>
 		<th>$i18n.getString( "icd_element_3" )</th>
@@ -37,7 +53,7 @@
 	</thead>
 
 	<tbody id="list">
-	#foreach( $key in $!orderedDiseaseDataElements.keySet() )
+	#foreach( $key in $!values )
 	<tr>
 		<td>${encoder.htmlEncode( $key )}</td>
 		#foreach( $dataElement in $!orderedDiseaseDataElements.get( $key ) )

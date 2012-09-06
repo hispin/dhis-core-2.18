@@ -569,17 +569,13 @@ function loadForm( dataSetId, value )
 
 	var chapterId = getFieldValue( 'chapterId' );
 	var	url = ( chapterId && chapterId != -1 ? 'loadICDForm.action' : 'loadForm.action' );
-	
-	if ( chapterId )
-	{
-	}
 
 	$( '#contentDiv' ).load( url,
 	{
 		dataSetId : dataSetId,
 		chapterId: chapterId,
-		value: value
-	}, 
+		value: (value == undefined ? "" : value)
+	},
 	function ( responseText, textStatus, req )
 	{
 		if ( textStatus == "error" ) {
