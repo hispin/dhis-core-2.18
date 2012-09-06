@@ -96,10 +96,10 @@
 				#set($index = 0)
 				#set( $mark = false )
 				#foreach( $comment in $comments )
-					#if( $index < 1 )
+					#if( $index < 5 )
 						<tr id="comment_$comment.id" #alternate($mark)>
 							<td>$format.formatDate($comment.createdDate)</td>
-							<td> $programStageInstance.programStage.name</td>
+							<td>$programStageInstance.programStage.name</td>
 							<td>$comment.creator - $comment.commentText</td>
 							#set($index = $index + 1)
 							#set( $mark = !$mark)
@@ -109,9 +109,8 @@
 			</tbody>	
 			
 			<tbody id='smsManagementList'>
-				  #set( $mark = false )
 				  #foreach( $sms in $outboundSms )
-					#if( $index < 1 )
+					#if( $index < 5 )
 						<tr id="tr${sms.id}" #alternate($mark) >
 							<td>$format.formatDate($!sms.date)</td>
 							<td> $programStageInstance.programStage.name</td>
@@ -124,7 +123,7 @@
 			
 			<tbody id='moreComments' class='hidden'>
 				#foreach( $comment in $comments )
-					#if( $index >= 1 )
+					#if( $index >= 5 )
 						<tr id="comment_$comment.id" #alternate($mark)>
 							<td>$format.formatDate($comment.createdDate)</td>
 							<td> $programStageInstance.programStage.name</td>
@@ -135,7 +134,7 @@
 				#end	
 				
 				#foreach( $sms in $outboundSms )
-					#if( $index >= 1 )
+					#if( $index >= 5 )
 						<tr id="tr${sms.id}" #alternate($mark) >
 							<td>$format.formatDate($!sms.date)</td>
 							<td>$programStageInstance.programStage.name</td>
