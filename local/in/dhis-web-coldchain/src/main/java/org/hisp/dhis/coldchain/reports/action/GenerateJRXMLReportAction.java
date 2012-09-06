@@ -203,53 +203,12 @@ public class GenerateJRXMLReportAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private Grid grid;
-
-    public Grid getGrid()
-    {
-        return grid;
-    }
-
-    private Map<String, Object> params = new HashMap<String, Object>();
-
-    public Map<String, Object> getParams()
-    {
-        return params;
-    }
-
-    // -------------------------------------------------------------------------
     // Result implementation
     // -------------------------------------------------------------------------
-    private InputStream fileStream;
-
-    public void setFileStream( InputStream arg )
-    {
-        fileStream = arg;
-    }
-
-    public InputStream getFileStream()
-    {
-        return fileStream;
-    }
-
-    private String ReportPath;
-
-    public String getReportPath()
-    {
-        return ReportPath;
-    }
-
-    public void setReportPath( String reportPath )
-    {
-        ReportPath = reportPath;
-    }
-
+  
     @Override
     public String execute()
-        throws Exception
+        throws Exception,JRException 
     {
         Connection con = jdbcTemplate.getDataSource().getConnection();
         String fileName = null;
@@ -260,8 +219,7 @@ public class GenerateJRXMLReportAction
         String orgUnitIdsByComma = ccemReportManager.getOrgunitIdsByComma( selOrgUnitList, orgunitGroupList );
         ccemReport = ccemReportManager.getCCEMReportByReportId( reportList );
         Map<String, String> ccemSettingsMap = new HashMap<String, String>( ccemReportManager.getCCEMSettings() );
-        List<CCEMReportDesign> reportDesignList = new ArrayList<CCEMReportDesign>( ccemReportManager
-            .getCCEMReportDesign( ccemReport.getXmlTemplateName() ) );
+        List<CCEMReportDesign> reportDesignList = new ArrayList<CCEMReportDesign>( ccemReportManager.getCCEMReportDesign( ccemReport.getXmlTemplateName() ) );
 
         String oName = null;
         String oUnitGrpName = null;
@@ -362,8 +320,7 @@ public class GenerateJRXMLReportAction
             jasperPrint = JasperFillManager.fillReport( jasperReport, hash, con );
         }
         else if ( ccemReport.getReportType().equals( CCEMReport.ORGUNITGROUP_DATAVALUE ) )
-        {
-            ccemReportOutput = new CCEMReportOutput();
+        {            
             List<String> tableHeadings = new ArrayList<String>();
             List<List<String>> tableSubHeadings = new ArrayList<List<String>>();
             List tableData = new ArrayList();
@@ -476,6 +433,7 @@ public class GenerateJRXMLReportAction
                 }
             }
             frb.setTemplateFile( path + "ORGUNITGROUP_DATAVALUE.jrxml" );
+            frb.setPrintBackgroundOnOddRows(true);
             for ( Integer orgUnitGroupId : orgunitGroupList )
             {
                 Map numberOfData = new HashMap();
@@ -513,7 +471,7 @@ public class GenerateJRXMLReportAction
 
             JRDataSource ds = new JRMapCollectionDataSource( tableData );
             DynamicReport dynamicReport = frb.build();
-            dynamicReport.getOptions().getDefaultDetailStyle().setBackgroundColor( Color.BLUE );
+            dynamicReport.getOptions().getOddRowBackgroundStyle().setBackgroundColor( Color.decode( "#F5F5F6" ) );
             dynamicReport.getOptions().getDefaultHeaderStyle().setBorder( Border.THIN() );
             dynamicReport.getOptions().getDefaultHeaderStyle().setHorizontalAlign( HorizontalAlign.CENTER );
             dynamicReport.getOptions().getDefaultDetailStyle().setBorder( Border.THIN() );
@@ -524,8 +482,7 @@ public class GenerateJRXMLReportAction
         }
 
         else if ( ccemReport.getReportType().equals( CCEMReport.ORGUNIT_EQUIPMENT_ROUTINE_DATAVALUE ) )
-        {
-            ccemReportOutput = new CCEMReportOutput();
+        {            
             List<String> tableHeadings = new ArrayList<String>();
             List<List<String>> tableSubHeadings = new ArrayList<List<String>>();
             List<String> oneSubHeadingRow = new ArrayList<String>();
@@ -707,8 +664,7 @@ public class GenerateJRXMLReportAction
 
             for ( OrganisationUnit orgUnit : orgUnitList )
             {
-                Map<String, String> numberOfData = new HashMap<String, String>();
-                List<String> oneTableDataRow = new ArrayList<String>();
+                Map<String, String> numberOfData = new HashMap<String, String>();               
                 String orgUnitBranch = "";
                 if ( orgUnit.getParent() != null )
                 {
@@ -725,8 +681,7 @@ public class GenerateJRXMLReportAction
                 for ( CCEMReportDesign ccemReportDesign1 : reportDesignList )
                 {
                     String ccemCellContent1 = ccemSettingsMap.get( ccemReportDesign1.getContent() );
-                    Integer dataElementId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );
-                    Integer optComboId = Integer.parseInt( ccemCellContent1.split( ":" )[1] );
+                    Integer dataElementId = Integer.parseInt( ccemCellContent1.split( ":" )[0] );                    
 
                     for ( Period period : periodList )
                     {
@@ -748,9 +703,10 @@ public class GenerateJRXMLReportAction
             }
 
             frb.setTemplateFile( path + "ORGUNIT_EQUIPMENT_ROUTINE_DATAVALUE.jrxml" );
+            frb.setPrintBackgroundOnOddRows(true);
             JRDataSource ds = new JRMapCollectionDataSource( tableData );
             DynamicReport dynamicReport = frb.build();
-            dynamicReport.getOptions().getDefaultDetailStyle().setBackgroundColor( Color.BLUE );
+            dynamicReport.getOptions().getOddRowBackgroundStyle().setBackgroundColor( Color.decode( "#F5F5F6" ) );
             dynamicReport.getOptions().getDefaultHeaderStyle().setBorder( Border.THIN() );
             dynamicReport.getOptions().getDefaultHeaderStyle().setHorizontalAlign( HorizontalAlign.CENTER );
             dynamicReport.getOptions().getDefaultDetailStyle().setBorder( Border.THIN() );
@@ -760,18 +716,11 @@ public class GenerateJRXMLReportAction
             jasperPrint = JasperFillManager.fillReport( jr, hash, ds );
         }
         else if ( ccemReport.getReportType().equals( CCEMReport.VACCINE_STORAGE_CAPACITY ) )
-        {
-            ccemReportOutput = new CCEMReportOutput();
-            List<String> tableHeadings = new ArrayList<String>();
-            List<List<String>> tableSubHeadings = new ArrayList<List<String>>();
-            List<String> oneSubHeadingRow = new ArrayList<String>();
+        {            
             List tableData = new ArrayList();
-
             List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
-            List<OrganisationUnit> orgUnitGroupMembers = new ArrayList<OrganisationUnit>();
-            List<String> content = new ArrayList<String>();
-            String orgUnitGroupIdsByComma = "-1";
-            Map<String, Integer> subHeadingNumber = new HashMap<String, Integer>();
+            List<OrganisationUnit> orgUnitGroupMembers = new ArrayList<OrganisationUnit>();            
+            String orgUnitGroupIdsByComma = "-1";           
             Integer periodId = 0;
             Date date2 = new Date();
             Calendar calendar = Calendar.getInstance();
@@ -1112,12 +1061,7 @@ public class GenerateJRXMLReportAction
                         System.out.println( "Exception while calculating individualVaccineRequirement" );
                         individualVaccineRequirement = 0.0;
                     }
-
-                    // System.out.println( vsReqUsageData
-                    // +":"+vsReqTargetPopData +":"+vsReqDosesData
-                    // +":"+vsReqPackedVolData +":"+ vsReqWastageData +":"+
-                    // vsReqSupplyIntervalData +":"+ vsReqReserveStockData );
-
+                    
                     vaccineRequirement += individualVaccineRequirement;
 
                 }
@@ -1177,15 +1121,14 @@ public class GenerateJRXMLReportAction
             frb.setPrintColumnNames( true );
             frb.setHeaderHeight( 100 );
             frb.setColumnsPerPage( 1, 15 ).setUseFullPageWidth( true );
+            frb.setPrintBackgroundOnOddRows(true);
             frb.setTemplateFile( path + "VACCINE_STORAGE_CAPACITY.jrxml" );
-            Style oddRowStyle = new Style();
-            oddRowStyle.setBorder( Border.NO_BORDER() );
-            oddRowStyle.setBackgroundColor( Color.LIGHT_GRAY );
-            oddRowStyle.setTransparency( Transparency.OPAQUE );
+            
             JRDataSource ds = new JRMapCollectionDataSource( tableData );
-            frb.setOddRowBackgroundStyle( oddRowStyle );
             DynamicReport dynamicReport = frb.build();
             dynamicReport.getOptions().getDefaultHeaderStyle().setBorder( Border.THIN() );
+            //Color.LIGHT_GRAY
+            dynamicReport.getOptions().getOddRowBackgroundStyle().setBackgroundColor( Color.decode( "#F5F5F6" ) );
             dynamicReport.getOptions().getDefaultHeaderStyle().setHorizontalAlign( HorizontalAlign.CENTER );
             dynamicReport.getOptions().getDefaultDetailStyle().setBorder( Border.THIN() );
             dynamicReport.getOptions().getDefaultDetailStyle().setHorizontalAlign( HorizontalAlign.CENTER );
@@ -1201,7 +1144,6 @@ public class GenerateJRXMLReportAction
         {
             response.setContentType( "application/pdf" );
             response.setHeader( "Content-Disposition", "inline; fileName=\"file.pdf\"" );
-
             exporter = new JRPdfExporter();
             exporter.setParameter( JRExporterParameter.JASPER_PRINT, jasperPrint );
             exporter.setParameter( JRExporterParameter.OUTPUT_STREAM, ouputStream );
@@ -1220,14 +1162,13 @@ public class GenerateJRXMLReportAction
             exporter = new JRHtmlExporter();
             exporter.setParameter( JRHtmlExporterParameter.OUTPUT_STREAM, false );
             exporter.setParameter( JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, new Boolean( false ) );
-
             exporter.setParameter( JRExporterParameter.JASPER_PRINT, jasperPrint );
             exporter.setParameter( JRExporterParameter.OUTPUT_STREAM, ouputStream );
         }
         else if ( "xls".equalsIgnoreCase( type ) )
         {
             response.setContentType( "application/xls" );
-            response.setHeader( "Content-Disposition", "attachment; fileName=\"file.xls\"" );
+            response.setHeader( "Content-Disposition", "inline; fileName=\"file.xls\"" );
 
             exporter = new JRXlsExporter();
             exporter.setParameter( JRExporterParameter.JASPER_PRINT, jasperPrint );
@@ -1242,7 +1183,7 @@ public class GenerateJRXMLReportAction
             exporter.setParameter( JRExporterParameter.JASPER_PRINT, jasperPrint );
             exporter.setParameter( JRExporterParameter.OUTPUT_STREAM, ouputStream );
         }
-        con.close();
+        con.close();       
         try
         {
             exporter.exportReport();
@@ -1251,20 +1192,7 @@ public class GenerateJRXMLReportAction
         {
             throw new ServletException( e );
         }
-        finally
-        {
-            if ( ouputStream != null )
-            {
-                try
-                {
-                    ouputStream.close();
-                }
-                catch ( IOException ex )
-                {
-                    System.out.println( "exception thrown" );
-                }
-            }
-        }
+        
         return SUCCESS;
     }
 
