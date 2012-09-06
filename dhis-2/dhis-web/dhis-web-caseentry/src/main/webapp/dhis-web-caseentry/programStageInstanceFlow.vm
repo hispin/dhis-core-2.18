@@ -8,7 +8,7 @@
 				<table class="stage-flow">											
 					<tr id='programStageIdTR_$!programInstance.id'>
 						#foreach( $programStageInstance in $programInstance.programStageInstances )
-						<td width="5px" style='font-size:25px;'>&rarr;</td>
+						<td width="5px" style='font-size:25px;' title='$i18n.getString("show_hide_event_flow")'>&rarr;</td>
 						<td>
 							<input type="button" name="programStageBtn"
 								id="ps_$!programStageInstance.id"

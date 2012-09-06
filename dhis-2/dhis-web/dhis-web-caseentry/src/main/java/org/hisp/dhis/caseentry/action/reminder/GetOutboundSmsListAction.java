@@ -28,10 +28,13 @@
 package org.hisp.dhis.caseentry.action.reminder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.patient.comment.Comment;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -54,14 +57,16 @@ public class GetOutboundSmsListAction
     // -------------------------------------------------------------------------
 
     private ProgramStageInstanceService programStageInstanceService;
-    
+
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-    
+
+    private PatientAttributeValueService patientAttributeValueService;
+
     @Autowired
     private OutboundSmsTransportService transportService;
 
@@ -74,11 +79,13 @@ public class GetOutboundSmsListAction
     private ProgramStageInstance programStageInstance;
 
     private List<OutboundSms> outboundSms;
-    
+
     private List<Comment> comments;
-    
+
     private String currentUsername;
-    
+
+    private Collection<PatientAttributeValue> attributeValues;
+
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
@@ -88,9 +95,19 @@ public class GetOutboundSmsListAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
+
     public ProgramStageInstance getProgramStageInstance()
     {
         return programStageInstance;
+    }
+
+    public Collection<PatientAttributeValue> getAttributeValues()
+    {
+        return attributeValues;
     }
 
     public String getCurrentUsername()
@@ -129,10 +146,12 @@ public class GetOutboundSmsListAction
         programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
         outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
-        
+
         comments = new ArrayList<Comment>( programStageInstance.getComments() );
-        
+
         currentUsername = currentUserService.getCurrentUsername();
+
+        attributeValues = patientAttributeValueService.getPatientAttributeValues( programStageInstance.getProgramInstance().getPatient() );
         
         return SUCCESS;
     }

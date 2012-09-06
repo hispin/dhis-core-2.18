@@ -5,6 +5,7 @@ function orgunitSelected( orgUnits, orgUnitNames )
 	clearListById('programIdAddPatient');
 	$('#contentDataRecord').html('');
 	setFieldValue('orgunitName', orgUnitNames[0]);
+	setFieldValue('orgunitId', orgUnits[0]);
 	jQuery.get("getPrograms.action",{}, 
 		function(json)
 		{
@@ -26,11 +27,19 @@ function listAllPatient()
 	hideById('listPatientDiv');
 	contentDiv = 'listPatientDiv';
 	$('#contentDataRecord').html('');
+	
+	var programId = getFieldValue('programIdAddPatient');
+	var searchTexts = "stat_" + programId + "_4_" 
+					+ getFieldValue('startDueDate') + "_" + getFieldValue('endDueDate') 
+					+ "_" + getFieldValue('orgunitId');
+	
 	showLoader();
 	jQuery('#listPatientDiv').load('getSMSPatientRecords.action',
 		{
-			programId:getFieldValue('programIdAddPatient'),
-			listAll:true
+			programId:programId,
+			listAll:false,
+			searchBySelectedOrgunit: false,
+			searchTexts: searchTexts
 		}, 
 		function()
 		{
@@ -42,7 +51,6 @@ function listAllPatient()
 
 function advancedSearch( params )
 {
-	
 	setFieldValue('listAll', "false");
 	$('#contentDataRecord').html('');
 	params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
@@ -68,21 +76,9 @@ function getOutboundSmsList( programStageInstanceId, isSendSMS )
 			programStageInstanceId: programStageInstanceId
 		}
 		, function(){
-			if(isSendSMS){
-				$('#tabs').tabs({ selected: 0 }); 
-			}
-			else{
-				$('#tabs').tabs({ selected: 1 });
-			}
-		}).dialog(
-		{
-			title:i18n_sms_message_management,
-			maximize:true, 
-			closable:true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width:800,
-			height:500
+			hideById('searchDiv');
+			hideById('listPatientDiv');
+			showById('smsManagementDiv');
 		});
 }
 
@@ -213,13 +209,15 @@ function addComment( programStageInstanceId )
 				commentText: commentText 
 			}, function ( json )
 			{
-				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + " - " + getFieldValue('currentUsername') + " - " + commentText + "</td></tr>");
+				var programStageName = jQuery("#ps_" + programStageInstanceId).attr('programStageName');
+				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + "</td>"
+						+ "<td>" + programStageName + "</td>"
+						+ "<td>" + getFieldValue('currentUsername') + " - " + commentText + "</td></tr>");
 				setFieldValue( 'commentText','' );
 				showSuccessMessage( i18n_comment_added );
 			} );
 	}
 }
-
 
 function removeComment( programStageInstanceId, commentId )
 {
@@ -232,4 +230,30 @@ function removeComment( programStageInstanceId, commentId )
 			showSuccessMessage( json.message );
 			hideById( 'comment_' + commentId );
 		} );
+}
+
+function eventFlowToggle( programInstanceId )
+{
+	jQuery("#tb_" + programInstanceId + " .stage-object").each( function(){
+			var programStageInstance = this.id.split('_')[1];
+			jQuery('#arrow_' + programStageInstance ).toggle();
+			jQuery('#td_' + programStageInstance ).toggle();
+			jQuery(this).removeClass("stage-object-selected");
+		});
+	
+	jQuery("#tb_" + programInstanceId + " .arrow-left").toggle();
+	jQuery("#tb_" + programInstanceId + " .arrow-right").toggle();
+	if( jQuery("#tb_" + programInstanceId + " .searched").length==0)
+	{	
+		var id = jQuery("#tb_" + programInstanceId + " .searched").attr('id').split('_')[1];
+		showById("arrow_" + id);
+		showById("td_" + id );
+	}
+}
+
+function backToSelect()
+{
+	showById('searchDiv');
+	showById('listPatientDiv');
+	hideById('smsManagementDiv');
 }

@@ -11,4 +11,5 @@
 	#introListImgItem( "app/index.html" "tabular_report" "summaryreport" )
 	<!-- #introListImgItem( "visitplan.action" "visit_plan" "visitplan" ) -->
     #introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )
+	#introListImgItem( "smsReminderSelect.action" "program_tracking" "attribute" )
 </ul>

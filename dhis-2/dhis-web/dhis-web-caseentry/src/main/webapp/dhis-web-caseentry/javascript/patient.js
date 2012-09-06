@@ -993,16 +993,6 @@ function loadProgramStageRecords( programStageInstanceId, completed )
 		});
 }
 
-function programReports( programInstanceId )
-{
-	$('#programReportDiv').load("getProgramReportHistory.action", {programInstanceId:programInstanceId});
-}
-
-function getEventMessages( programInstanceId )
-{
-	$('#eventMessagesDiv').load("getEventMessages.action", {programInstanceId:programInstanceId});
-}
-
 function updateEnrollment( patientId, programId, programInstanceId, programName )
 {
 	var dateOfIncident = jQuery('#tab-3 [id=dateOfIncident]').val();

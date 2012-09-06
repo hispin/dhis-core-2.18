@@ -103,5 +103,11 @@ public class Comment
     {
         this.creator = creator;
     }
+    
+    @Override
+    public String toString()
+    {
+        return createdDate + " - "  + creator + "_" + commentText;
+    }
 
 }
