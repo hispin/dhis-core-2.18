@@ -172,10 +172,10 @@ public class DefaultProgramInstanceService
         return programInstanceStore.get( program, organisationUnit, startDate, endDate );
     }
 
-    public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit,
+    public Collection<ProgramInstance> getProgramInstances( Program program, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, int min, int max )
     {
-        return programInstanceStore.get( program, organisationUnit, startDate, endDate, min, max );
+        return programInstanceStore.get( program, orgunitIds, startDate, endDate, min, max );
     }
 
     public int countProgramInstances( Program program, OrganisationUnit organisationUnit )

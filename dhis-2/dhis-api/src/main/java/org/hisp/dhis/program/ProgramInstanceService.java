@@ -79,7 +79,7 @@ public interface ProgramInstanceService
     
     Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
 
-    Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate,
+    Collection<ProgramInstance> getProgramInstances( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         int min, int max );
 
     int countProgramInstances( Program program, OrganisationUnit organisationUnit );

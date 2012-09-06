@@ -13,8 +13,10 @@
 							<input type="button" name="programStageBtn"
 								id="ps_$!programStageInstance.id"
 								psid="$programStageInstance.programStage.id"
-								psname="$programStageName.programStage.name"
+								psname="$programStageInstance.programStage.name"
+								orgunit="$!programStageInstance.organisationUnit.name"
 								programType='$programInstance.program.type'
+								reportDate="$!format.formatDate( $!programStageInstance.executionDate )"
 								dueDate="$format.formatDate( $programStageInstance.dueDate )"
 								class="stage-object" 
 								value="$programStageInstance.programStage.name&#13;&#10;$format.formatDate( $programStageInstance.dueDate )" 
