@@ -66,7 +66,7 @@ public interface ProgramInstanceStore
 
     Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
 
-    Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate,
+    Collection<ProgramInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate,
         int min, int max );
 
     int count( Program program, OrganisationUnit organisationUnit );

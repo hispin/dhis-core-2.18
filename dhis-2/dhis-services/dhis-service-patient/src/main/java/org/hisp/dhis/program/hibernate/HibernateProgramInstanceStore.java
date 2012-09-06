@@ -130,7 +130,7 @@ public class HibernateProgramInstanceStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, Date startDate,
+    public Collection<ProgramInstance> get( Program program, Collection<Integer> orgunitIds, Date startDate,
         Date endDate, int min, int max )
     {
         return getCriteria( Restrictions.eq( "program", program ), 
@@ -138,7 +138,8 @@ public class HibernateProgramInstanceStore
             Restrictions.ge( "enrollmentDate", startDate ),
             Restrictions.le( "enrollmentDate", endDate ) )
             .createAlias( "patient", "patient" )
-            .add(Restrictions.eq( "patient.organisationUnit", organisationUnit ) )
+            .createAlias( "patient.organisationUnit", "organisationUnit" )
+            .add(Restrictions.in( "organisationUnit.id", orgunitIds ) )
             .addOrder( Order.asc( "patient.id" ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 

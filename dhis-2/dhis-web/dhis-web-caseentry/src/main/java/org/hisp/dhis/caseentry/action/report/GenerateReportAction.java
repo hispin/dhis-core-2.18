@@ -31,10 +31,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.Program;
@@ -43,6 +45,7 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -83,6 +86,13 @@ public class GenerateReportAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -113,6 +123,13 @@ public class GenerateReportAction
     public void setEndDate( String endDate )
     {
         this.endDate = endDate;
+    }
+
+    private String facilityLB;
+
+    public void setFacilityLB( String facilityLB )
+    {
+        this.facilityLB = facilityLB;
     }
 
     private OrganisationUnit organisationUnit;
@@ -159,6 +176,27 @@ public class GenerateReportAction
         Date eDate = format.parseDate( endDate );
 
         // ---------------------------------------------------------------------
+        // Get orgunitIds
+        // ---------------------------------------------------------------------
+
+        Collection<Integer> orgunitIds = new HashSet<Integer>();
+
+        if ( facilityLB.equals( "selected" ) )
+        {
+            orgunitIds.add( organisationUnit.getId() );
+        }
+        else if ( facilityLB.equals( "childrenOnly" ) )
+        {
+            orgunitIds = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class,
+                organisationUnit.getChildren() ) );
+        }
+        else
+        {
+            orgunitIds.add( organisationUnit.getId() );
+            orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnit.getId() ) );
+        }
+
+        // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
 
@@ -166,8 +204,8 @@ public class GenerateReportAction
 
         this.paging = createPaging( total );
 
-        programInstances = programInstanceService.getProgramInstances( program, organisationUnit, sDate, eDate, paging
-            .getStartPos(), paging.getPageSize() );
+        programInstances = programInstanceService.getProgramInstances( program, orgunitIds, sDate, eDate,
+            paging.getStartPos(), paging.getPageSize() );
 
         Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 

@@ -44,7 +44,8 @@ function loadGeneratedReport()
 	{
 		programId: getFieldValue( 'programId' ),
 		startDate: getFieldValue( 'startDate' ),
-		endDate: getFieldValue( 'endDate' )
+		endDate: getFieldValue( 'endDate' ),
+		facilityLB: $('input[name=facilityLB]:checked').val()
 	}, function() 
 	{ 
 		jQuery( "[name=newEncounterBtn]" ).addClass("hidden");
@@ -56,8 +57,30 @@ function loadGeneratedReport()
 
 function loadDataEntry( programStageInstanceId ) 
 {
-	$('#viewRecordsDiv' )
-		.load( 'viewRecords.action?id=' + programStageInstanceId )
+	setInnerHTML('viewRecordsDiv', '' );
+	jQuery('#viewRecordsDiv' )
+		.load( 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId
+		,function(){
+			jQuery( "#viewRecordsDiv :input").each(function(){
+					disable(this.id);
+				});
+			hideById('inputCriteriaDiv');
+			
+			var programStageInstance = jQuery("#ps_" + programStageInstanceId);
+			var header = "";
+			if( programStageInstance.attr("reportDate")=='')
+			{
+				header = "<h4>" + i18n_no_records + "</h4>";
+			}
+			else
+			{
+				header = "<h4>" + i18n_records_for + " " + programStageInstance.attr("orgunit")
+						+ " " + i18n_at + " " + programStageInstance.attr("psname")
+						+ " " + i18n_on_date + " " + programStageInstance.attr("reportDate") + "</h4><hr>";
+			}
+			
+			setInnerHTML('patientInforTB', header );
+		})
 		.dialog({
 			title: i18n_reports,
 			maximize: true, 
@@ -68,3 +91,5 @@ function loadDataEntry( programStageInstanceId )
 			height: 400
 		});
 }
+
+function entryFormContainerOnReady(){}

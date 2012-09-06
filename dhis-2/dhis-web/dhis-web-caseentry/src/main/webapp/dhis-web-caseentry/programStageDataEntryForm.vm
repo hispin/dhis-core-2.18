@@ -1,5 +1,5 @@
-	
-<table> 
+<div id='patientInforTB'>
+	<table> 
 		#if( $patient )
 		<tr>            
 			<td>
@@ -41,21 +41,21 @@
 		
 		#if( $programStageInstance )
 		<tr>
-		    <th><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
-            <th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, getFieldValue('executionDate') )" ></th>
-                <script type="text/javascript">
-                   datePickerValid( 'executionDate', false );
-                </script>  
+			<th><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
+			<th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, getFieldValue('executionDate') )" ></th>
+				<script type="text/javascript">
+				   datePickerValid( 'executionDate', false );
+				</script>  
 			<th><label for="dueDate">$i18n.getString( "due_date" ) </label></th>
-            <th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"></th>
-        </tr>
+			<th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"></th>
+		</tr>
 		#end
 	</table>
+</div>
 
 <input type='hidden' id="programId" name="programId" type="text" readonly="readonly" value="$encoder.htmlEncode( $program.name )" style="min-width:350px">		
 <input id="programStageId" name="programStageId" type="hidden" value="$programStage.id" style="min-width:350px">            
 
-</form>
 <p></p>
 #parse( "dhis-web-commons/loader/loader.vm" )
 <form id='dataEntryFormDiv' name='dataEntryFormDiv' >
