@@ -160,7 +160,7 @@ public interface PatientService
      * @return
      */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, Integer min, Integer max );
-
+    
     /**
      * Sort the result by PatientAttribute
      * 

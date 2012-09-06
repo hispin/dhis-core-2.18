@@ -29,7 +29,7 @@
 </ul>
 
 
-<h2>$i18n.getString( "sms" )&nbsp;</h2>
+<h2>$i18n.getString( "tracking" )&nbsp;</h2>
 <ul>
-    <li><a href="smsReminderSelect.action">$i18n.getString( "sms_reminder" )</a></li>     
+    <li><a href="smsReminderSelect.action">$i18n.getString( "program_tracking" )</a></li>     
 </ul>

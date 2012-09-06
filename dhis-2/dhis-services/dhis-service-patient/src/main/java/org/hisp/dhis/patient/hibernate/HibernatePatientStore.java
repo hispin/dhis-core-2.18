@@ -263,13 +263,14 @@ public class HibernatePatientStore
         }
         return patients;
     }
-    
+
     @Override
-    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
+        Integer max )
     {
         String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
         Collection<String> phoneNumbers = new HashSet<String>();
-        
+
         try
         {
             phoneNumbers = jdbcTemplate.query( sql, new RowMapper<String>()
@@ -278,7 +279,7 @@ public class HibernatePatientStore
                     throws SQLException
                 {
                     String phoneNumber = rs.getString( "phonenumber" );
-                    return ( phoneNumber==null || phoneNumber.isEmpty()) ? "0" : phoneNumber;
+                    return (phoneNumber == null || phoneNumber.isEmpty()) ? "0" : phoneNumber;
                 }
             } );
         }
@@ -288,14 +289,15 @@ public class HibernatePatientStore
         }
         return phoneNumbers;
     }
-    
+
     @Override
-    public Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    public Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit,
+        Integer min, Integer max )
     {
         String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
 
         Collection<Integer> programStageInstanceIds = new HashSet<Integer>();
-        
+
         try
         {
             programStageInstanceIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
@@ -311,10 +313,9 @@ public class HibernatePatientStore
         {
             ex.printStackTrace();
         }
-        
+
         return programStageInstanceIds;
     }
-
 
     public int countSearch( List<String> searchKeys, OrganisationUnit orgunit )
     {
@@ -400,13 +401,19 @@ public class HibernatePatientStore
                 otherWhere += operator + Patient.PREFIX_PROGRAM + "_" + id + "=" + id;
                 operator = " and ";
             }
-            else if ( keys[0].equals( Patient.PREFIX_PROGRAM_STAGE ) )
+            else if ( keys[0].equals( Patient.PREFIX_PROGRAM_EVENT_BY_STATUS ) )
             {
+                sql += "(select programid from patient_programs where patientid=p.patientid and programid=" + keys[1]
+                    + " ) as " + Patient.PREFIX_PROGRAM + "_" + id + ",";
+                otherWhere += operator + Patient.PREFIX_PROGRAM + "_" + id + "=" + id;
+                operator = " and ";
+
                 sql += " MIN( psi.programstageinstanceid ) as programstageinstanceid,";
                 isSearchEvent = true;
-                patientWhere += patientOperator + "pgi.patientid=p.patientid and psi.programstageid=" + id + " and ";
+                patientWhere += patientOperator + "pgi.patientid=p.patientid and ";
                 patientWhere += "psi.duedate>='" + keys[3] + "' and psi.duedate<='" + keys[4] + "' and ";
-                    
+                patientWhere += "psi.organisationunitid = " + keys[5] + " and ";
+
                 int statusEvent = Integer.parseInt( keys[2] );
                 switch ( statusEvent )
                 {
@@ -425,7 +432,38 @@ public class HibernatePatientStore
                 default:
                     break;
                 }
-                
+
+                patientWhere += " and pgi.completed=false ";
+                patientOperator = " and ";
+
+            }
+            else if ( keys[0].equals( Patient.PREFIX_PROGRAM_STAGE ) )
+            {
+                sql += " MIN( psi.programstageinstanceid ) as programstageinstanceid,";
+                isSearchEvent = true;
+                patientWhere += patientOperator + "pgi.patientid=p.patientid and psi.programstageid=" + id + " and ";
+                patientWhere += "psi.duedate>='" + keys[3] + "' and psi.duedate<='" + keys[4] + "' and ";
+                patientWhere += "psi.organisationunitid = " + keys[5] + " and ";
+
+                int statusEvent = Integer.parseInt( keys[2] );
+                switch ( statusEvent )
+                {
+                case ProgramStageInstance.COMPLETED_STATUS:
+                    patientWhere += "psi.completed=true";
+                    break;
+                case ProgramStageInstance.VISITED_STATUS:
+                    patientWhere += "psi.executiondate is not null and psi.completed=false";
+                    break;
+                case ProgramStageInstance.FUTURE_VISIT_STATUS:
+                    patientWhere += "psi.executiondate is null and psi.duedate >= now()";
+                    break;
+                case ProgramStageInstance.LATE_VISIT_STATUS:
+                    patientWhere += "psi.executiondate is null and psi.duedate < now()";
+                    break;
+                default:
+                    break;
+                }
+
                 patientWhere += " and pgi.completed=false ";
                 patientOperator = " and ";
 
@@ -446,20 +484,18 @@ public class HibernatePatientStore
         {
             sql += " left join patientidentifier pi on p.patientid=pi.patientid ";
         }
-        if(isSearchEvent)
+        if ( isSearchEvent )
         {
-            sql += " left join programinstance pgi on " +
-                        " (pgi.patientid=p.patientid) " +
-                   " left join programstageinstance psi on " +
-            		" (psi.programinstanceid=pgi.programinstanceid) ";
+            sql += " left join programinstance pgi on " + " (pgi.patientid=p.patientid) "
+                + " left join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) ";
         }
 
         sql += patientWhere;
-        if( isSearchEvent )
+        if ( isSearchEvent )
         {
             sql += patientGroupBy;
         }
-        
+
         sql += " ) as searchresult";
         sql += otherWhere;
 

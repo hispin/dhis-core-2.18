@@ -1,0 +1,173 @@
+<script type="text/javascript">
+	jQuery(document).ready(	function(){
+		$('#smsManagementForm').tabs();
+		validation( 'sendSMSForm', function(form){
+			sendSMS();
+		});
+	});
+</script>
+
+<input type='hidden' id='currentUsername' name='currentUsername' value='$currentUsername'>
+<input type='hidden' id='programInstanceId' name='programInstanceId' value='$programStageInstance.programInstance.id'>
+
+<table>
+	<tr>            
+		<td class="bold">$i18n.getString( "full_name" ):</td>
+		<td>$programStageInstance.programInstance.patient.getFullName()<td>
+	</tr>
+	<tr>            
+		<td class="bold">$i18n.getString( "gender" ):</td>
+		<td>$programStageInstance.programInstance.patient.gender<td>
+	</tr>
+	<tr>
+		<td class="bold">$i18n.getString( "date_of_birth" ):</td>
+		<td>$format.formatDate( $programStageInstance.programInstance.patient.birthDate )<td>
+	</tr>
+	<tr>
+		<td class="bold">$i18n.getString( "age" ):</td>
+		<td>$programStageInstance.programInstance.patient.getAge()<td>
+	</tr>
+	<tr>
+		<td class="bold">$i18n.getString("phone_number")</td>
+		<td>
+			#if($!programStageInstance.programInstance.patient.phoneNumber && $!programStageInstance.programInstance.patient.phoneNumber!='')
+				$!programStageInstance.programInstance.patient.phoneNumber
+			#else
+				[$i18n.getString('none')]
+			#end
+		</td>
+	</tr>
+	<tr>
+		<td><input type='button' value='$i18n.getString("back")' onclick='backToSelect();'></td>
+	</tr>
+</table>
+
+<div id="smsManagementForm">
+	<ul>
+		<li><a href="#tab-1">$i18n.getString("demographics")</a></li>
+		<li><a href="#tab-2">$i18n.getString("tracking_history")</a></li>
+		<li><a href="#tab-3">$i18n.getString("send_sms")</a></li>
+		<li><a href="#tab-4">$i18n.getString("program_reports")</a></li>
+	</ul>
+		
+	<div id='tab-1'>
+		<table width='100%'>
+			#set($mark = true)
+			#foreach( $identifier in $programStageInstance.programInstance.patient.identifiers )
+				<tr #alternate($mark)>
+					#if($!identifier.identifierType)
+						<td>$identifier.identifierType.name</td>
+					#else
+						<td>$i18n.getString("system_identifier")</td>
+					#end
+					<td>$identifier.identifier</td>
+				</tr>
+				#set($mark = !$mark)
+			#end
+			#foreach( $attributeValue in $attributeValues )
+				<tr #alternate($mark)>
+					<td>$attributeValue.patientAttribute.name</td>
+					<td>$attributeValue.value</td>
+				</tr>
+				#set($mark = !$mark)
+			#end
+		</table>
+	</div>
+	
+	<div id="tab-2">
+		<table class="mainPageTable">
+			<col width="160px"/>
+			<col/>
+			<tr>
+				<td class="bold">$i18n.getString('post_comment'):</td>
+				<td>
+					<input type='textbox' id='commentText' name='commentText' style="width:320px;" onkeypress="keypress(event,'$programStageInstance.id')">
+					<input type='button' value="+" class='tiny-button' onclick="addComment('$programStageInstance.id')">
+				</td>
+			</tr>
+			<tr><td>&nbsp;</td></tr>
+			<tr>
+				<th>$i18n.getString( "date" )</th>
+				<th>$i18n.getString( "program_stage" )</th>
+				<th>$i18n.getString( "message" )</th>
+			</tr>
+			
+			<tbody id='commentTB'>
+				#set($index = 0)
+				#set( $mark = false )
+				#foreach( $comment in $comments )
+					#if( $index < 1 )
+						<tr id="comment_$comment.id" #alternate($mark)>
+							<td>$format.formatDate($comment.createdDate)</td>
+							<td> $programStageInstance.programStage.name</td>
+							<td>$comment.creator - $comment.commentText</td>
+							#set($index = $index + 1)
+							#set( $mark = !$mark)
+						</tr>
+					#end
+				#end
+			</tbody>	
+			
+			<tbody id='smsManagementList'>
+				  #set( $mark = false )
+				  #foreach( $sms in $outboundSms )
+					#if( $index < 1 )
+						<tr id="tr${sms.id}" #alternate($mark) >
+							<td>$format.formatDate($!sms.date)</td>
+							<td> $programStageInstance.programStage.name</td>
+							<td>$sms.message</td>
+							#set( $mark = !$mark)
+						</tr>
+					#end
+				#end
+			</tbody>
+			
+			<tbody id='moreComments' class='hidden'>
+				#foreach( $comment in $comments )
+					#if( $index >= 1 )
+						<tr id="comment_$comment.id" #alternate($mark)>
+							<td>$format.formatDate($comment.createdDate)</td>
+							<td> $programStageInstance.programStage.name</td>
+							<td>$comment.creator - $comment.commentText</td>
+							#set( $mark = !$mark)
+						</tr>
+					#end
+				#end	
+				
+				#foreach( $sms in $outboundSms )
+					#if( $index >= 1 )
+						<tr id="tr${sms.id}" #alternate($mark) >
+							<td>$format.formatDate($!sms.date)</td>
+							<td>$programStageInstance.programStage.name</td>
+							<td>$sms.message</td>
+							#set( $mark = !$mark)
+						</tr>
+					#end
+				#end
+			</tbody>
+		</table>
+		<br>
+		<input type='button' value='$i18n.getString("show_hide_more")' onclick='jQuery("#moreComments").toggle();'>
+	</div>
+	
+	<div id="tab-3">
+		#parse( "/dhis-web-caseentry/sendSmsForm.vm" )
+	</div>
+	
+	<div id='tab-4'><div id='programReportDiv'></div></div>
+</div>
+
+<script type="text/javascript">
+	jQuery(document).ready(	function(){
+		var i18n_color_quick_help = '$encoder.jsEscape( $i18n.getString( "color_quick_help" ) , "'")';
+		var i18n_comment_added = '$encoder.jsEscape( $i18n.getString( "comment_added" ) , "'")';
+		setFieldValue( "programStageInstanceId", "$!programStageInstance.id" );
+		
+		$( "#smsManagementForm" ).bind( "tabsselect", function(event, ui) {
+			if( ui.tab.hash == '#tab-4' ){
+				programReports(getFieldValue('programInstanceId'));
+			}
+		});
+	});
+	
+</script>

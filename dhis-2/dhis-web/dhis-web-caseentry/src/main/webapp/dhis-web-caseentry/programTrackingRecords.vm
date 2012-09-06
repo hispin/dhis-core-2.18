@@ -33,10 +33,13 @@
 					<td>
 						<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
 					</td>
+					<td class='bold' style='cursor:pointer;font-size:25px' onclick="eventFlowToggle($programInstance.id)">
+						<a>&raquo;</a>
+					</td>
 					#if($!programStageInstanceMap.get($programInstance))
 						#set($programStageInstances = $programStageInstanceMap.get($programInstance) )
 					<td>
-						<table class="stage-container">	
+						<table class="stage-container" id='tb_$programInstance.id'>	
 							<tr>
 								<td>
 									<div class="arrow-left" onclick="moveLeft('flow_$programInstance.id')">&nbsp;</div>
@@ -46,55 +49,40 @@
 										<tr>
 										#set( $flag = "false" )
 										#foreach( $programStageInstance in $programStageInstances )
-											<td id="img_$programStageInstance.id">
-												<img src='images/rightarrow.png'>
-											</td>
+											<td id="arrow_$programStageInstance.id" width="5px" style='font-size:25px;'>&rarr;</td>
 											<td id="td_$programStageInstance.id">
 												<table class='stage-object'>
 													<tr>
 														<td>
+															#set($title="")
+															#set($index = 0)
+															#foreach( $comment in $programStageInstance.comments)
+																#if( $index < 5)
+																	#set( $title= $title + "$format.formatDate( $comment.createdDate ) - $comment.creator - $comment.commentText &#13;&#10;" )
+																	#set( $index = $index + 1 )
+																#end
+															#end
+															#foreach( $sms in $programStageInstance.outboundSms)
+																#if( $index < 5)
+																	#set( $title= $title + "$format.formatDate( $sms.date ) - $sms.message &#13;&#10;")
+																	#set( $index = $index + 1)
+																#end
+															#end
+																	
 															<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' 
 																programStageInstanceId='$programStageInstance.id' 
+																programStageName='$programStageInstance.programStage.name' 
 																programStageId='$programStageInstance.programStage.id' 
 																status="$statusMap.get( $programStageInstance.id )" 
 																class='stage-object' 
-																value='$programStageInstance.programStage.name $format.formatDate( $programStageInstance.dueDate )' 
-																onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'>
+																value='$programStageInstance.programStage.name&#13;&#10;$format.formatDate( $programStageInstance.dueDate )' 
+																title="$title" onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'>
 														</td>
 														<script>
 															var status = $statusMap.get( $programStageInstance.id ); 
 															var dueDate = "$format.formatDate($programStageInstance.dueDate)";
 															setEventColorStatus( 'ps_' + $programStageInstance.id ,status, dueDate );
 														</script>
-													</tr>
-													<tr>
-														<td>
-															<a href="#" id="comment-$programStageInstance.id" class="tooltip">
-																<img src='images/comments.png'>
-																#set( $divid = 'comment-' + $programStageInstance.id + '-content')
-																<div id="$divid" class="tooltip-target">
-																	#if( $programStageInstance.comments.size() > 0 )
-																		#foreach( $comment in $programStageInstance.comments )
-																			<p>- $format.formatDate($comment.createdDate)- $comment.creator - $comment.commentText</p>
-																		#end
-																	#else
-																		<p>($i18n.getString('no_comment'))</p>
-																	#end
-																</div>
-															</a>
-															#if( $!programInstance.patient.phoneNumber && $!programInstance.patient.phoneNumber != '' )
-																<img src='images/sms.png' class='comment-font' onclick="getOutboundSmsList( $programStageInstance.id, true );" style='cursor:pointer;' title="$programStageInstance.outboundSms.size() $i18n.getString('messages')"/>&nbsp;
-															#end
-														</td>
-													</tr>
-													<tr class='hidden'>
-														<td>
-															#if( $!programInstance.patient.phoneNumber && $!programInstance.patient.phoneNumber != '' )
-																(<span id='noMessageDiv_$programStageInstance.id'>$programStageInstance.outboundSms.size()</span> $i18n.getString('messages'))
-															#else
-																(<span id='noMessageDiv_$programStageInstance.id'>$i18n.getString("no_phone_number")</span>)
-															#end
-														</td>
 													</tr>
 												</table>
 											</td>
@@ -127,18 +115,19 @@
 #end
 
 <script>
-	#if( $programStageInstanceIds )
+	#if( $programStageInstanceIds && $programStageInstanceIds.size() > 0 )
 		jQuery("#patientList .stage-object").each( function(){
 			var programStageInstance = this.id.split('_')[1];
-			hideById('img_' + programStageInstance );
+			hideById('arrow_' + programStageInstance );
 			hideById('td_' + programStageInstance );
 		});
 		
 		jQuery(".arrow-left").css("display", "none");
 		jQuery(".arrow-right").css("display", "none");
 		#foreach( $id in $programStageInstanceIds )
+			showById('arrow_$id');
 			showById('td_$id');
-			jQuery("#ps_$id").addClass("stage-object-selected");
+			jQuery("#ps_$id").addClass("stage-object-selected searched");
 		#end
 	#end
 </script>
