@@ -31,15 +31,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.LocalDataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
 import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
+import org.hisp.dhis.util.SessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -51,9 +54,14 @@ import com.opensymphony.xwork2.Action;
 public class LoadICDFormAction
     implements Action
 {
+    protected static final String KEY_ICD_FORM_RESULT = "icdFormResults";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    @Autowired
+    private DataElementService dataElementService;
 
     @Autowired
     private DataSetService dataSetService;
@@ -95,6 +103,11 @@ public class LoadICDFormAction
 
     private List<String> values = new ArrayList<String>();
 
+    public List<String> getValues()
+    {
+        return values;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -113,16 +126,27 @@ public class LoadICDFormAction
 
         Collections.sort( values );
 
+        Map<String, List<Integer>> orderedDiseaseDEIdentifiers = localDataElementService.get( dataSet, values );
+        
+        Collection<DataElement> dataElementList = new HashSet<DataElement>();
+
+        List<DataElement> dataElements = null;
+        
         for ( String value : values )
         {
-            if ( value != null && !value.trim().isEmpty() )
-            {
-                List<DataElement> dataElements = new ArrayList<DataElement>( localDataElementService.getDataElements(
-                    dataSet, value ) );
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElements( orderedDiseaseDEIdentifiers.get( value ) ) );
+            
+            dataElementList.addAll( dataElements );
 
-                orderedDiseaseDataElements.put( value, dataElements );
-            }
+            orderedDiseaseDataElements.put( value, dataElements );
         }
+
+        group = null;
+        dataSet = null;
+        dataElements = null;
+        orderedDiseaseDEIdentifiers = null;
+
+        SessionUtils.setSessionVar( KEY_ICD_FORM_RESULT, dataElementList );
 
         return DataSet.TYPE_DEFAULT;
     }

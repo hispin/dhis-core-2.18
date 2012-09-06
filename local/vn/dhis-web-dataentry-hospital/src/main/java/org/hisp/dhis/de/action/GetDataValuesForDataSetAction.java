@@ -27,14 +27,10 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.LocalDataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -47,9 +43,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
-import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,6 +53,8 @@ import com.opensymphony.xwork2.Action;
 public class GetDataValuesForDataSetAction
     implements Action
 {
+    protected static final String KEY_ICD_FORM_RESULT = "icdFormResults";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -97,12 +93,6 @@ public class GetDataValuesForDataSetAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-
-    @Autowired
-    private LocalDataElementService localDataElementService;
-
-    @Autowired
-    private AttributeValueGroupOrderService attributeValueGroupOrderService;
 
     // -------------------------------------------------------------------------
     // Input
@@ -182,12 +172,11 @@ public class GetDataValuesForDataSetAction
         return storedBy;
     }
 
-    private List<String> values = new ArrayList<String>();
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings( "unchecked" )
     public String execute()
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
@@ -198,35 +187,24 @@ public class GetDataValuesForDataSetAction
         // Data values
         // ---------------------------------------------------------------------
 
-        AttributeValueGroupOrder group = attributeValueGroupOrderService.getAttributeValueGroupOrder( chapterId );
+        Collection<DataElement> dataElements = null;
 
-        if ( group != null )
+        if ( chapterId != null && chapterId != -1 )
         {
-            values = group.getAttributeValues();
-        }
-
-        if ( values != null && !values.isEmpty() )
-        {
-            Collection<DataElement> dataElements = new HashSet<DataElement>();
-
-            for ( String value : values )
-            {
-                dataElements.addAll( localDataElementService.getDataElements( dataSet, value ) );
-            }
-
-            dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements );
+            dataElements = (Collection<DataElement>) SessionUtils.getSessionVar( KEY_ICD_FORM_RESULT );
         }
         else
         {
-            dataValues = dataValueService.getDataValues( organisationUnit, period, dataSet.getDataElements() );
+            dataElements = dataSet.getDataElements();
         }
+
+        dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements );
 
         // ---------------------------------------------------------------------
         // Min-max data elements
         // ---------------------------------------------------------------------
 
-        minMaxDataElements = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataSet
-            .getDataElements() );
+        minMaxDataElements = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElements );
 
         // ---------------------------------------------------------------------
         // Data set completeness info
@@ -246,6 +224,8 @@ public class GetDataValuesForDataSetAction
 
             locked = dataSetService.isLocked( dataSet, period, organisationUnit, null );
         }
+        
+        dataElements = null;
 
         return SUCCESS;
     }

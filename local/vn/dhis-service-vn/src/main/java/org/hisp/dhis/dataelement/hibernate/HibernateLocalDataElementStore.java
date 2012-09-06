@@ -29,7 +29,9 @@ package org.hisp.dhis.dataelement.hibernate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -84,12 +86,11 @@ public class HibernateLocalDataElementStore
         try
         {
             String sql = "select de.dataelementid, de.name, de.formname from dataelement de "
-                + "inner join datasetmembers dsm on de.dataelementid = dsm.dataelementid "
-                + "inner join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid "
-                + "inner join attributevalue av on av.attributevalueid = deav.attributevalueid "
-                + "inner join attribute att on att.attributeid = av.attributeid " + "where dsm.datasetid = "
-                + dataSet.getId() + " and av.value='" + value + "'";
-
+                + "join datasetmembers dsm on de.dataelementid = dsm.dataelementid "
+                + "join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid "
+                + "join attributevalue av on av.attributevalueid = deav.attributevalueid "
+                + "where dsm.datasetid = " + dataSet.getId() + " and av.value='" + value + "'";
+            
             SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
             while ( rowSet.next() )
@@ -104,5 +105,56 @@ public class HibernateLocalDataElementStore
             e.printStackTrace();
             return new ArrayList<DataElement>();
         }
+    }
+    
+    @Override
+    public Map<String, List<Integer>> get(DataSet dataSet, List<String> values)
+    {
+        StringBuffer sql = new StringBuffer();
+
+        int i = 0;
+        for ( String value : values )
+        {
+            i++;
+
+            if ( value != null && !value.trim().isEmpty() )
+            {
+                sql.append( "select av.value, de.dataelementid, de.name, de.formname from dataelement de " );
+                sql.append( "join datasetmembers dsm on de.dataelementid = dsm.dataelementid " );
+                sql.append( "join dataelementattributevalues deav on deav.dataelementid = dsm.dataelementid " );
+                sql.append( "join attributevalue av on av.attributevalueid = deav.attributevalueid " );
+                sql.append( "where dsm.datasetid = " + dataSet.getId() + " and av.value='" + value + "'" );
+                sql.append( i == values.size() ? " ORDER BY name" : " UNION " );
+            }
+        }
+
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql.toString() );
+
+        sql = null;
+        String key = null;
+
+        Map<String, List<Integer>> map = new HashMap<String, List<Integer>>();
+
+        while ( rowSet.next() )
+        {
+            key = rowSet.getString( 1 );
+
+            if ( !map.containsKey( key ) )
+            {
+                List<Integer> ids = new ArrayList<Integer>();
+                ids.add( rowSet.getInt( 2 ) );
+
+                map.put( key, ids );
+            }
+            else
+            {
+                map.get( key ).add( rowSet.getInt( 2 ) );
+            }
+        }
+        
+        rowSet = null;
+        key = null;
+        
+        return map;
     }
 }
