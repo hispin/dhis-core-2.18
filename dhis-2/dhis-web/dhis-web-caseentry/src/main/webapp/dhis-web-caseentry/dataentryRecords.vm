@@ -30,7 +30,19 @@
 			#set( $programInstance = $programInstanceMap.get( $patient ) )
 				<tr #alternate( $mark )>
 					<td>
-						<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
+						<input type='button' class='patient-object' value=
+							#if($program.patientIdentifierTypes)
+								#foreach( $identifierType in $program.patientIdentifierTypes )
+									#foreach( $pIdentifier in $patient.identifiers )
+										#if($identifierType.id==$pIdentifier.identifierType.id)
+											'$pIdentifier.identifier&#13;&#10;'
+										#end
+									#end
+								#end
+							#else
+								'$patient.getFullName()'
+							#end
+							onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
 					</td>
 					#if($!programStageInstanceMap.get($programInstance))
 						#set($programStageInstances = $programStageInstanceMap.get($programInstance) )

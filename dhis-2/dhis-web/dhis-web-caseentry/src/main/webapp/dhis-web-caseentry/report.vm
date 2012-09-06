@@ -8,7 +8,19 @@
 			#foreach( $programInstance in $programInstances )
                 <tr #alternate( $mark )>                
 					<td>
-						<input type='button' class='patient-object' value='$programInstance.patient.getFullName()' onclick='javascript:showPatientHistory( $programInstance.patient.id )' title='$i18n.getString( "patient_details_and_history" )'>
+						<input type='button' class='patient-object' value=
+							#if($program.patientIdentifierTypes)
+								#foreach( $identifierType in $program.patientIdentifierTypes )
+									#foreach( $pIdentifier in $programInstance.patient.identifiers )
+										#if($identifierType.id==$pIdentifier.identifierType.id)
+											'$pIdentifier.identifier&#13;&#10;'
+										#end
+									#end
+								#end
+							#else
+								'$programInstance.patient.getFullName()' 
+							#end
+						onclick='javascript:showPatientHistory( $programInstance.patient.id )' title='$i18n.getString( "patient_details_and_history" )'>
 					</td>	
 					<td>
 						#set( $programStageInstances = $programInstance.programStageInstances )

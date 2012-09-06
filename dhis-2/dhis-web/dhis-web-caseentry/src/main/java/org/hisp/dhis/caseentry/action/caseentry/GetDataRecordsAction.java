@@ -170,6 +170,13 @@ public class GetDataRecordsAction
         return programStageInstanceIds;
     }
 
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -179,7 +186,7 @@ public class GetDataRecordsAction
     {
         OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
 
-        Program program = programService.getProgram( programId );
+        program = programService.getProgram( programId );
 
         // ---------------------------------------------------------------------
         // Program instances for the selected program
@@ -203,8 +210,9 @@ public class GetDataRecordsAction
             total = patientService.countSearchPatients( searchTexts, orgunit );
             this.paging = createPaging( total );
             patients = patientService.searchPatients( searchTexts, orgunit, paging.getStartPos(), paging.getPageSize() );
-            
-            programStageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunit, paging.getStartPos(), paging.getPageSize() );
+
+            programStageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunit,
+                paging.getStartPos(), paging.getPageSize() );
         }
 
         Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
