@@ -67,6 +67,8 @@ public class ProgramStage
 
     private Integer standardInterval;
 
+    private String reportDateDescription;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -213,6 +215,16 @@ public class ProgramStage
     public void setProgramStageDataElements( Set<ProgramStageDataElement> programStageDataElements )
     {
         this.programStageDataElements = programStageDataElements;
+    }
+
+    public String getReportDateDescription()
+    {
+        return reportDateDescription;
+    }
+
+    public void setReportDateDescription( String reportDateDescription )
+    {
+        this.reportDateDescription = reportDateDescription;
     }
 
     public String getDataEntryType()

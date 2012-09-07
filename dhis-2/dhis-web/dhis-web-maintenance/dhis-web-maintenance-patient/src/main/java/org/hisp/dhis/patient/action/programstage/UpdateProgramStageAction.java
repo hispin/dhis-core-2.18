@@ -119,12 +119,14 @@ public class UpdateProgramStageAction
     {
         this.compulsories = compulsories;
     }
- private List<Boolean> allowProvidedElsewhere = new ArrayList<Boolean>();
-    
+
+    private List<Boolean> allowProvidedElsewhere = new ArrayList<Boolean>();
+
     public void setAllowProvidedElsewhere( List<Boolean> allowProvidedElsewhere )
     {
         this.allowProvidedElsewhere = allowProvidedElsewhere;
     }
+
     private int programId;
 
     public int getProgramId()
@@ -146,6 +148,13 @@ public class UpdateProgramStageAction
         this.standardInterval = standardInterval;
     }
 
+    private String reportDateDescription;
+
+    public void setReportDateDescription( String reportDateDescription )
+    {
+        this.reportDateDescription = reportDateDescription;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -158,6 +167,7 @@ public class UpdateProgramStageAction
         programStage.setName( name );
         programStage.setDescription( description );
         programStage.setStandardInterval( standardInterval );
+        programStage.setReportDateDescription( reportDateDescription );
 
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
@@ -167,21 +177,21 @@ public class UpdateProgramStageAction
 
         programStageService.updateProgramStage( programStage );
 
-        Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>( programStage
-            .getProgramStageDataElements() );
+        Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>(
+            programStage.getProgramStageDataElements() );
 
         for ( int i = 0; i < this.selectedDataElementsValidator.size(); i++ )
         {
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
-            
+
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
 
             if ( programStageDataElement == null )
             {
-                programStageDataElement = new ProgramStageDataElement( programStage, dataElement, this.compulsories
-                    .get( i ), new Integer( i ) );
+                programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
+                    this.compulsories.get( i ), new Integer( i ) );
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
@@ -192,7 +202,7 @@ public class UpdateProgramStageAction
                 programStageDataElement.setSortOrder( new Integer( i ) );
 
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
-                
+
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
 
                 programStageDataElements.remove( programStageDataElement );

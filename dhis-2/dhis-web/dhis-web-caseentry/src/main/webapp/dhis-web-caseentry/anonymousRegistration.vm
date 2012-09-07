@@ -36,7 +36,7 @@
 					<select type="text" id="programId" name="programId" onchange='getDataElements();' class='stage-object-selected'>
 						#foreach( $program in $programs )
 							#foreach( $programStage in $program.programStages )
-								<option value='$program.id' psid='$programStage.id'>$program.name</option>
+								<option value='$program.id' psid='$programStage.id' reportDateDes="$programStage.reportDateDescription">$program.name</option>
 							#end
 						#end
 					</select>
@@ -76,7 +76,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>$i18n.getString('report_date_from_to')</td>
+				<td><span id="reportDateDescriptionField"></span>$i18n.getString('from_to')</td>
 				<td><input type="text" id='startDate' name='startDate' style='width:240px'></td>
 				<td><input type="text" id='endDate' name='endDate' style='width:240px'></td>
 				<td><input type="button" id='searchBtn' value='$i18n.getString( "search" )' onclick='validateSearchEvents( false )'></td>
@@ -115,7 +115,7 @@
 	</p>
 	<table>
 		<tr>
-		    <th><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
+		    <th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" ) </label></th>
             <th><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();"></th>
                 <script type="text/javascript">
                    datePickerValid( 'executionDate', false );
@@ -163,4 +163,6 @@
 	contentDiv = '';
 	var unSave = false;
 	var searchTextBox = '<input type="text" id="searchText" name="searchText">';	
+	setInnerHTML('reportDateDescriptionField', jQuery('#programId option:selected').attr('reportDateDes'));
+	setInnerHTML('reportDateDescriptionField2', jQuery('#programId option:selected').attr('reportDateDes'));
 </script>

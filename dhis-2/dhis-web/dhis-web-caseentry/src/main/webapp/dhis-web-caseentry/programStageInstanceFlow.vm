@@ -17,6 +17,7 @@
 								orgunit="$!programStageInstance.organisationUnit.name"
 								programType='$programInstance.program.type'
 								reportDate="$!format.formatDate( $!programStageInstance.executionDate )"
+								reportDateDes="$programStageInstance.programStage.reportDateDescription"
 								dueDate="$format.formatDate( $programStageInstance.dueDate )"
 								class="stage-object" 
 								value="$programStageInstance.programStage.name&#13;&#10;$format.formatDate( $programStageInstance.dueDate )" 

@@ -55,6 +55,7 @@ public class AddProgramAction
     implements Action
 {
     private static String SINGLE_EVENT = "Single-Event";
+    private static String REPORT_DATE_DESCRIPTION = "Report date";
 
     // -------------------------------------------------------------------------
     // Dependency
@@ -233,6 +234,7 @@ public class AddProgramAction
             programStage.setStageInProgram( program.getProgramStages().size() + 1 );
             programStage.setProgram( program );
             programStage.setMinDaysFromStart( 0 );
+            programStage.setReportDateDescription( REPORT_DATE_DESCRIPTION );
 
             programStageService.saveProgramStage( programStage );
         }
