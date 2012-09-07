@@ -1,9 +1,3 @@
-var SUCCESS_COLOR = '#ccffcc';
-var ERROR_COLOR = '#ccccff';
-var SAVING_COLOR = '#ffffcc';
-var SUCCESS = 'success';
-var ERROR = 'error';
-	
 //--------------------------------------------------------------------------------------------
 // Load program-stages by the selected program
 //--------------------------------------------------------------------------------------------

@@ -31,7 +31,7 @@
 			#set( $programInstance = $programInstanceMap.get( $patient ) )
 				<tr #alternate( $mark )>
 					<td>
-						<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
+						<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientProgramTracking( "$programInstance.id" );' title='$i18n.getString( "patient_dashboard" )'>
 					</td>
 					<td class='bold' style='cursor:pointer;font-size:25px' onclick="eventFlowToggle($programInstance.id)">
 						<a>&raquo;</a>
@@ -69,7 +69,7 @@
 																#end
 															#end
 																	
-															<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' 
+															<input type='button' id='box_$programStageInstance.id' name='programStageBtn' 
 																programStageInstanceId='$programStageInstance.id' 
 																programStageName='$programStageInstance.programStage.name' 
 																programStageId='$programStageInstance.programStage.id' 
@@ -81,7 +81,7 @@
 														<script>
 															var status = $statusMap.get( $programStageInstance.id ); 
 															var dueDate = "$format.formatDate($programStageInstance.dueDate)";
-															setEventColorStatus( 'ps_' + $programStageInstance.id ,status, dueDate );
+															setEventColorStatus( 'box_' + $programStageInstance.id ,status, dueDate );
 														</script>
 													</tr>
 												</table>
@@ -127,7 +127,7 @@
 		#foreach( $id in $programStageInstanceIds )
 			showById('arrow_$id');
 			showById('td_$id');
-			jQuery("#ps_$id").addClass("stage-object-selected searched");
+			jQuery("#box_$id").addClass("stage-object-selected searched");
 		#end
 	#end
 </script>

@@ -71,6 +71,7 @@ function advancedSearch( params )
 function getOutboundSmsList( programStageInstanceId, isSendSMS ) 
 {
 	setFieldValue('sendToList', "false");
+	setInnerHTML('patientProgramTrackingDiv', '');
 	$('#smsManagementDiv' ).load("getOutboundSmsList.action",
 		{
 			programStageInstanceId: programStageInstanceId
@@ -82,9 +83,10 @@ function getOutboundSmsList( programStageInstanceId, isSendSMS )
 		});
 }
 
-function showSendSmsForm()
+function showSendSmsForm(programStageName, programStageInstanceId)
 {
-	setFieldValue('sendToList', "true");
+	setFieldValue( 'programStageInstanceId', programStageInstanceId );
+	setFieldValue( 'programStageName', programStageName );
 	$('#sendSmsFormDiv' ).load("getGateway.action").dialog(
 		{
 			title:i18n_send_sms,
@@ -121,7 +123,6 @@ function showCommentList( programStageInstanceId, isSendSMS )
 function sendSMS()
 {
 	var sendToList = getFieldValue('sendToList');
-	
 	if( sendToList == 'false'){	
 		sendSmsOnePatient()
 	}
@@ -143,9 +144,10 @@ function sendSmsOnePatient()
 		{
 			if ( json.response == "success" ) {
 				showSuccessMessage( json.message );
-				jQuery('#smsManagementList').prepend("<tr><td>" + getFieldValue('currentDate') + "</td><td>" + getFieldValue('smsMessage') + "</td></tr>");
+				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue('currentDate') + "</td>"
+					+ "<td>" + getFieldValue('programStageName') + "</td>"
+					+ "<td>" + getFieldValue('smsMessage') + "</td></tr>");
 				var noMessage = eval( getInnerHTML('noMessageDiv_' + programStageInstanceId)) + 1;
-				jQuery('#noMessageDiv_' + programStageInstanceId).html(noMessage);
 			}
 			else {
 				showErrorMessage( json.message, 7000 );
@@ -158,18 +160,18 @@ function sendSmsToList()
 	params = getSearchParams();
 	params += "&gatewayId=" + getFieldValue( 'gatewayId' );
 	params += "&msg=" + getFieldValue( 'smsMessage' );
+	params += "&programStageInstanceId=" + getFieldValue('programStageInstanceId');
 	$.ajax({
 		url: 'sendSMSTotList.action',
 		type:"POST",
 		data: params,
 		success: function( json ){
 			if ( json.response == "success" ) {
+				var programStageName = getFieldValue('programStageName');
+				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + "</td>"
+						+ "<td>" + programStageName + "</td>"
+						+ "<td>" + getFieldValue( 'smsMessage' ) + "</td></tr>");
 				showSuccessMessage( json.message );
-				jQuery("#patientList [programStageId=" + programStageId + "][status=" + status + "]" ).each( function(){
-					var programStageInstanceId = jQuery(this).attr('programStageInstanceId');
-					var noMessage = eval( getInnerHTML('noMessageDiv_' + programStageInstanceId)) + 1;
-					jQuery('#noMessageDiv_' + programStageInstanceId).html(noMessage);
-				});
 			}
 			else {
 				showErrorMessage( json.message );
@@ -190,16 +192,17 @@ function loadProgramStageRecords( programStageInstanceId )
 		});
 }
 
-function keypress(event, programStageInstanceId )
+function keypress(event, field, programStageInstanceId )
 {
 	var key = getKeyCode( event );
 	if ( key==13 ){ // Enter
-		addComment( programStageInstanceId );
+		addComment( field, programStageInstanceId );
 	}
 }
 
-function addComment( programStageInstanceId )
+function addComment( field, programStageInstanceId )
 {
+	field.style.backgroundColor = SAVING_COLOR;
 	var commentText = getFieldValue( 'commentText' );
 	if( commentText != '')
 	{
@@ -209,12 +212,13 @@ function addComment( programStageInstanceId )
 				commentText: commentText 
 			}, function ( json )
 			{
-				var programStageName = jQuery("#ps_" + programStageInstanceId).attr('programStageName');
+				var programStageName = jQuery("#box_" + programStageInstanceId).attr('programStageName');
 				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + "</td>"
 						+ "<td>" + programStageName + "</td>"
 						+ "<td>" + getFieldValue('currentUsername') + " - " + commentText + "</td></tr>");
-				setFieldValue( 'commentText','' );
-				showSuccessMessage( i18n_comment_added );
+				field.value="";
+				jQuery(field).attr('placeholder', i18n_comment_added );
+				field.style.backgroundColor = SUCCESS_COLOR;
 			} );
 	}
 }
@@ -243,7 +247,7 @@ function eventFlowToggle( programInstanceId )
 	
 	jQuery("#tb_" + programInstanceId + " .arrow-left").toggle();
 	jQuery("#tb_" + programInstanceId + " .arrow-right").toggle();
-	if( jQuery("#tb_" + programInstanceId + " .searched").length==0)
+	if( jQuery("#tb_" + programInstanceId + " .searched").length>0)
 	{	
 		var id = jQuery("#tb_" + programInstanceId + " .searched").attr('id').split('_')[1];
 		showById("arrow_" + id);
@@ -251,9 +255,79 @@ function eventFlowToggle( programInstanceId )
 	}
 }
 
-function backToSelect()
+// --------------------------------------------------------------------
+// Patient program tracking
+// --------------------------------------------------------------------
+
+function showPatientProgramTracking(programInstanceId)
+{
+	hideById("listPatientDiv");
+	hideById("searchDiv");
+	setInnerHTML("smsManagementDiv", "");
+	showLoader();	
+	$( '#patientProgramTrackingDiv' ).load( "patientProgramTracking.action", 
+		{ 
+			programInstanceId:programInstanceId
+		},function( )
+		{
+			showById('patientProgramTrackingDiv');
+			hideLoader();
+		});
+}
+
+function setEventStatus( field, programStageInstanceId )
+{	
+	field.style.backgroundColor = SAVING_COLOR;
+	jQuery.postUTF8( 'setEventStatus.action',
+		{
+			programStageInstanceId:programStageInstanceId,
+			status:field.value
+		}, function ( json )
+		{
+			field.style.backgroundColor = SUCCESS_COLOR;
+		} );
+}
+
+function removeEvent( programStageId )
+{	
+    var result = window.confirm( i18n_comfirm_delete_event );
+    
+    if ( result )
+    {
+    	$.postJSON(
+    	    "removeCurrentEncounter.action",
+    	    {
+    	        "id": programStageId   
+    	    },
+    	    function( json )
+    	    { 
+    	    	if ( json.response == "success" )
+    	    	{
+					jQuery( "tr#tr" + programStageId ).remove();
+	                
+					jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+	                jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+	                jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
+					jQuery( "table.listTable tbody" ).trigger("update");
+					
+					hideById('smsManagementDiv');
+					
+					showSuccessMessage( i18n_delete_success );
+    	    	}
+    	    	else if ( json.response == "error" )
+    	    	{ 
+					showWarningMessage( json.message );
+    	    	}
+    	    }
+    	);
+    }
+}
+
+
+function onClickBackBtn()
 {
 	showById('searchDiv');
 	showById('listPatientDiv');
 	hideById('smsManagementDiv');
+	hideById('patientProgramTrackingDiv');	
 }

@@ -15,6 +15,7 @@
 		disable('advancedSearchBtn');
 		hideById('searchBySelectedUnitTD');
 		setFieldValue('searchByProgramStage', 'true');
+		setFieldValue('hideLink', 'true');
 		showById('dueDateTR');
 	});	
 </script>
@@ -25,16 +26,17 @@
 	<input type='hidden' id='listAll' name='listAll'>
 	<input type='hidden' id='sendToList' name='sendToList'>
 	<input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='$programStageInstance.id'>
+	<input type='hidden' id='programStageName' name='programStageName'>
 	<div id='searchDiv'>
 		#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	
 	</div>
 </form>
 
-#parse( "dhis-web-commons/loader/loader.vm" )
-
 <div id='listPatientDiv'></div>
+<div id='patientProgramTrackingDiv'></div>
 <div id='smsManagementDiv'></div>
 <div id='sendSmsFormDiv'></div>
+#parse( "dhis-web-commons/loader/loader.vm" )
 
 <div class='hidden'>
 	<input type='textbox' id='currentDate' name='currentDate'>
@@ -53,4 +55,6 @@
 	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'")';
 	var i18n_please_select_program_stage = '[' + '$encoder.jsEscape( $i18n.getString( "please_select_program_stage" ) , "'")' + ']';
 	var i18n_comment_added = '$encoder.jsEscape( $i18n.getString( "comment_added" ) , "'")';
+	var i18n_update = '$encoder.jsEscape( $i18n.getString( "update" ) , "'")';
+	var i18n_comfirm_delete_event = '$encoder.jsEscape( $i18n.getString( "comfirm_delete_event" ) , "'")';
 </script>

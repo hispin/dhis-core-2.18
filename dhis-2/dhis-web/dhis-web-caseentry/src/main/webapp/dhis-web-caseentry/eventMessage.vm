@@ -1,31 +1,71 @@
-<table class='mainPageTable'>
+#set($programStageInstances = $programInstance.programStageInstances)
+<table class="mainPageTable">
+	<col width="160px"/>
+	<col/>
 	<tr>
-		<th>$i18n.getString('date')</th>
-		<th>$i18n.getString('program_stage')</th>
-		<th>$i18n.getString('message')</th>
+		<th>$i18n.getString( "date" )</th>
+		<th>$i18n.getString( "program_stage" )</th>
+		<th>$i18n.getString( "message" )</th>
 	</tr>
-	#set( $mark = false )
-	#foreach( $programStageInstance in $programInstance.programStageInstances )	
-		#if( $programStageInstance.outboundSms.size() > 0 || 
-			$programStageInstance.outboundSms.size() > 0 )
-			
+	
+	<tbody id='commentTB'>
+		#set($index = 0)
+		#set( $mark = false )
+		#foreach($programStageInstance in $programStageInstances)
 			#foreach( $comment in $programStageInstance.comments )
-			<tr #alternate( $mark ) >
-				<td>$!format.formatDate( $comment.createdDate )</td>
-				<td>$programStageInstance.programStage.name</td>
-				<td>($comment.creator) $comment.commentText</td>
-			</tr>
-			#set( $mark = !$mark )
-			#end
-		
-			#foreach( $sms in $programStageInstance.outboundSms )
-			<tr #alternate( $mark ) >
-				<td>$!format.formatDate( $sms.date )</td>
-				<td>$programStageInstance.programStage.name</td>
-				<td>$sms.message</td>
-			</tr>
-			#set( $mark = !$mark )
+				#if( $index < 5 )
+					<tr id="comment_$comment.id" #alternate($mark)>
+						<td>$format.formatDate($comment.createdDate)</td>
+						<td>$programStageInstance.programStage.name</td>
+						<td>$comment.creator - $comment.commentText</td>
+						#set($index = $index + 1)
+						#set( $mark = !$mark)
+					</tr>
+				#end
 			#end
 		#end
-	#end
+	</tbody>	
+	
+	<tbody id='smsManagementList'>
+		#foreach($programStageInstance in $programStageInstances)
+			#foreach( $sms in $programStageInstance.outboundSms )
+				#if( $index < 5 )
+					<tr id="tr${sms.id}" #alternate($mark) >
+						<td>$format.formatDate($!sms.date)</td>
+						<td> $programStageInstance.programStage.name</td>
+						<td>$sms.message</td>
+						#set( $mark = !$mark)
+					</tr>
+				#end
+			#end
+		#end
+	</tbody>
+	
+	<tbody id='moreComments' class='hidden'>
+		#foreach($programStageInstance in $programStageInstances)
+			#foreach( $comment in $programStageInstance.comments )
+				#if( $index >= 5 )
+					<tr id="comment_$comment.id" #alternate($mark)>
+						<td>$format.formatDate($comment.createdDate)</td>
+						<td> $programStageInstance.programStage.name</td>
+						<td>$comment.creator - $comment.commentText</td>
+						#set( $mark = !$mark)
+					</tr>
+				#end
+			#end
+		#end	
+		
+		#foreach($programStageInstance in $programStageInstances)
+			#foreach( $sms in $programStageInstance.outboundSms )
+				#if( $index >= 5 )
+					<tr id="tr${sms.id}" #alternate($mark) >
+						<td>$format.formatDate($!sms.date)</td>
+						<td>$programStageInstance.programStage.name</td>
+						<td>$sms.message</td>
+						#set( $mark = !$mark)
+					</tr>
+				#end
+			#end
+		#end
+	</tbody>
 </table>
