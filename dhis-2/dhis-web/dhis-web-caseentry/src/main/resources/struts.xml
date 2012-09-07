@@ -68,9 +68,8 @@
 
 		<action name="completeDataEntry"
 			class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="programcompleted" type="velocity-json">/dhis-web-caseentry/jsonResponseProgramCompleted.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
 

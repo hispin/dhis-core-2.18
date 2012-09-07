@@ -701,7 +701,6 @@ function showPatientDashboardForm( patientId )
 		}, function()
 		{	
 			showById('patientDashboard');
-			hideById('enrollProgramBtn');
 			jQuery('#loaderDiv').hide();
 		});
 }

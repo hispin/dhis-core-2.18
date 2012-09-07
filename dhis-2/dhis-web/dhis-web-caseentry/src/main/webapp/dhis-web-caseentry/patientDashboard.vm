@@ -119,7 +119,7 @@
 								</table>
 							</div>
 						</div>
-						<br><input type='button' value='$i18n.getString("enroll_program")' id="enrollProgramBtn" name="enrollProgramBtn" onclick='showProgramEnrollmentForm( "$patient.id" )'/>
+						<br><input type='button' value='$i18n.getString("enroll_program")' onclick='showProgramEnrollmentForm( "$patient.id" )'/>
 					</td>
 					<td>
 						<div class="link-area">
