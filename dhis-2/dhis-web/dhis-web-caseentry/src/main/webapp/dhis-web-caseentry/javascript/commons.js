@@ -1,3 +1,17 @@
+var prefixId = 'ps_';
+var COLOR_RED = "#fb4754";
+var COLOR_GREEN = "#8ffe8f";
+var COLOR_YELLOW = "#f9f95a";
+var COLOR_LIGHTRED = "#fb6bfb";
+var COLOR_LIGHT_RED = "#ff7676";
+var COLOR_LIGHT_YELLOW = "#ffff99";
+var COLOR_LIGHT_GREEN = "#ccffcc";
+var COLOR_LIGHT_LIGHTRED = "#ff99ff";
+var SUCCESS_COLOR = '#ccffcc';
+var ERROR_COLOR = '#ccccff';
+var SAVING_COLOR = '#ffffcc';
+var SUCCESS = 'success';
+var ERROR = 'error';
 
 // Disable caching for ajax requests in general 
 
@@ -379,16 +393,6 @@ function exportPatientHistory( patientId, type )
 	window.location.href = url;
 }
 
-var prefixId = 'ps_';
-var COLOR_RED = "#fb4754";
-var COLOR_GREEN = "#8ffe8f";
-var COLOR_YELLOW = "#f9f95a";
-var COLOR_LIGHTRED = "#fb6bfb";
-var COLOR_LIGHT_RED = "#ff7676";
-var COLOR_LIGHT_YELLOW = "#ffff99";
-var COLOR_LIGHT_GREEN = "#ccffcc";
-var COLOR_LIGHT_LIGHTRED = "#ff99ff";
-
 function setEventColorStatus( elementId, status )
 {
 	status = eval(status);
@@ -658,3 +662,185 @@ function getEventMessages( programInstanceId )
 	$('#eventMessagesDiv').load("getEventMessages.action", {programInstanceId:programInstanceId});
 }
 
+// ----------------------------------------------------------------
+// Dash board
+// ----------------------------------------------------------------
+
+function activeProgramInstanceDiv( programInstanceId )
+{
+	jQuery(".selected").each(function(){
+		jQuery(this).removeClass();
+	});
+	
+	jQuery("#infor_" + programInstanceId).each(function(){
+		jQuery(this).addClass('selected bold');
+	});
+	
+	showById('pi_' + programInstanceId);
+}
+
+function hideProgramInstanceDiv( programInstanceId )
+{
+	hideById('pi_' + programInstanceId);
+	jQuery('#pi_' + programInstanceId).removeClass("link-area-active");
+	jQuery("#img_" + programInstanceId).attr('src','');
+}
+
+function showPatientDashboardForm( patientId )
+{
+	hideById('listPatientDiv');
+	hideById('editPatientDiv');
+	hideById('selectDiv');
+	hideById('searchDiv');
+	hideById('migrationPatientDiv');
+				
+	jQuery('#loaderDiv').show();
+	jQuery('#patientDashboard').load('patientDashboard.action',
+		{
+			patientId:patientId
+		}, function()
+		{	
+			showById('patientDashboard');
+			hideById('enrollProgramBtn');
+			jQuery('#loaderDiv').hide();
+		});
+}
+
+function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInstanceId)
+{
+	jQuery('#loaderDiv').show();
+	jQuery('#programEnrollmentDiv').load('enrollmentform.action',
+		{
+			programInstanceId:programInstanceId
+		}, function()
+		{
+			showById('programEnrollmentDiv');
+			var type = jQuery('#tr_'+programInstanceId).attr('programType');
+			if(type=='2'){
+				hideById('programInstanceDiv');
+				var programStageInstanceId = jQuery('#tr_'+programInstanceId).attr('programStageInstanceId');
+				loadDataEntry( programStageInstanceId );
+			}
+			else{
+				showById('programInstanceDiv');
+			}
+			activeProgramInstanceDiv( programInstanceId );
+			loadDataEntry( activeProgramStageInstanceId );
+			jQuery('#loaderDiv').hide();
+		});
+}
+
+function loadProgramStageRecords( programStageInstanceId, completed ) 
+{
+	showLoader();
+    jQuery('#dataEntryFormDiv').load( "viewProgramStageRecords.action",
+		{
+			programStageInstanceId: programStageInstanceId
+		}, function() {
+			if(completed){
+				jQuery( "#dataEntryFormDiv :input").each(function(){
+					disable(this.id);
+				});
+			}
+			showById('dataEntryFormDiv');
+			hideLoader();
+		});
+}
+
+function updateEnrollment( patientId, programId, programInstanceId, programName )
+{
+	var dateOfIncident = jQuery('#tab-3 [id=dateOfIncident]').val();
+	var enrollmentDate = jQuery('#tab-3 [id=enrollmentDate]').val();
+	
+	jQuery.postJSON( "saveProgramEnrollment.action",
+		{
+			patientId: getFieldValue('patientId'),
+			programId: programId,
+			dateOfIncident: dateOfIncident,
+			enrollmentDate: enrollmentDate
+		}, 
+		function( json ) 
+		{    
+			var infor = programName + " (" + enrollmentDate + ")";
+			setInnerHTML("infor_" + programInstanceId, infor );
+			showSuccessMessage(i18n_enrol_success);
+		});
+}
+
+//-----------------------------------------------------------------------------
+// Save due-date
+//-----------------------------------------------------------------------------
+
+function saveDueDate( programStageInstanceId, programStageInstanceName )
+{
+	var field = document.getElementById( 'value_' + programStageInstanceId + '_date' );
+	
+	var dateOfIncident = new Date( byId('dateOfIncident').value );
+	var dueDate = new Date(field.value);
+	
+	if( dueDate < dateOfIncident )
+	{
+		field.style.backgroundColor = '#FFCC00';
+		alert( i18n_date_less_incident );
+		return;
+	}
+	
+	field.style.backgroundColor = '#ffffcc';
+	
+	var dateDueSaver = new DateDueSaver( programStageInstanceId, field.value, '#ccffcc' );
+	dateDueSaver.save();
+}
+
+function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
+{
+	var programStageInstanceId = programStageInstanceId_;	
+	var dueDate = dueDate_;
+	var resultColor = resultColor_;	
+
+	this.save = function()
+	{
+		var params = 'programStageInstanceId=' + programStageInstanceId + '&dueDate=' + dueDate;
+		$.ajax({
+			   type: "POST",
+			   url: "saveDueDate.action",
+			   data: params,
+			   dataType: "xml",
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
+	};
+
+	function handleResponse( rootElement )
+	{
+		var codeElement = rootElement.getElementsByTagName( 'code' )[0];
+		var code = parseInt( codeElement.firstChild.nodeValue );
+   
+		if ( code == 0 )
+		{
+			markValue( resultColor );                   
+		}
+		else
+		{
+			markValue( COLOR_GREY );
+			window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+		}
+	}
+
+	function handleHttpError( errorCode )
+	{
+		markValue( COLOR_GREY );
+		window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
+	}   
+
+	function markValue( color )
+	{       
+   
+		var element = document.getElementById( 'value_' + programStageInstanceId + '_date' );	
+           
+		element.style.backgroundColor = color;
+	}
+}

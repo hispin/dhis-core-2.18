@@ -627,8 +627,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientIdentifierService"
 			ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="patientAttributeGroupService"
-			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
 		<property name="patientAttributeValueService"
 			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		<property name="selectedStateManager"
@@ -1005,6 +1003,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.reminder.SetEventStatusAction"
+		class="org.hisp.dhis.caseentry.action.reminder.SetEventStatusAction"
+		scope="prototype">
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+	
 	
 	<!-- Dashboard -->
 	

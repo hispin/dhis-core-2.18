@@ -30,7 +30,7 @@
 			
 				<tr>
 					<td></td>
-					<td><input type="submit" name="send" value="$i18n.getString( 'send_sms' )"/></td>
+					<td><input type="submit" name="send" value="$i18n.getString( 'send_sms' )" onclick="jQuery('#sendSmsFormDiv').dialog('close')"/></td>
 				</tr>
 				
 			</tbody>

@@ -128,35 +128,7 @@ public class DefaultProgramStageInstanceService
 
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
-            if ( programStageInstance.isCompleted() )
-            {
-                colorMap.put( programStageInstance.getId(), ProgramStageInstance.COMPLETED_STATUS );
-            }
-            else if ( programStageInstance.getExecutionDate() != null )
-            {
-                colorMap.put( programStageInstance.getId(), ProgramStageInstance.VISITED_STATUS );
-            }
-            else
-            {
-                // -------------------------------------------------------------
-                // If a program stage is not provided even a day after its due
-                // date, then that service is alerted red - because we are
-                // getting late
-                // -------------------------------------------------------------
-
-                Calendar dueDateCalendar = Calendar.getInstance();
-                dueDateCalendar.setTime( programStageInstance.getDueDate() );
-                dueDateCalendar.add( Calendar.DATE, 1 );
-
-                if ( dueDateCalendar.getTime().before( new Date() ) )
-                {
-                    colorMap.put( programStageInstance.getId(), ProgramStageInstance.LATE_VISIT_STATUS );
-                }
-                else
-                {
-                    colorMap.put( programStageInstance.getId(), ProgramStageInstance.FUTURE_VISIT_STATUS );
-                }
-            }
+            colorMap.put( programStageInstance.getId(), programStageInstance.getEventStatus() );
         }
 
         return colorMap;
@@ -205,8 +177,8 @@ public class DefaultProgramStageInstanceService
 
         Map<Integer, OrganisationUnitLevel> orgUnitLevelMap = organisationUnitService.getOrganisationUnitLevelMap();
 
-        return programStageInstanceStore.getTabularReport( programStage, orgUnitLevelMap, organisationUnits,
-            columns, level, maxLevel, startDate, endDate, descOrder, min, max );
+        return programStageInstanceStore.getTabularReport( programStage, orgUnitLevelMap, organisationUnits, columns,
+            level, maxLevel, startDate, endDate, descOrder, min, max );
     }
 
     public int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
@@ -289,12 +261,11 @@ public class DefaultProgramStageInstanceService
 
     public void removeEmptyEvents( ProgramStage programStage )
     {
-    	programStageInstanceStore.removeEmptyEvents(programStage);
+        programStageInstanceStore.removeEmptyEvents( programStage );
     }
 
     @Override
-    public void updateProgramStageInstances( Collection<Integer> programStageInstanceIds,
-        OutboundSms outboundSms )
+    public void updateProgramStageInstances( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms )
     {
         programStageInstanceStore.update( programStageInstanceIds, outboundSms );
     }

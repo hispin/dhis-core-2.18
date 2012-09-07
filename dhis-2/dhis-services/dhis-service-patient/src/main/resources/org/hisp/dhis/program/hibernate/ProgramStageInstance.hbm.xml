@@ -36,5 +36,7 @@
       <one-to-many class="org.hisp.dhis.patient.comment.Comment" />
     </set>
     
+    <property name="status" column="status" />
+    
   </class>
 </hibernate-mapping>

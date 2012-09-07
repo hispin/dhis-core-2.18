@@ -1,5 +1,6 @@
 <input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
 <input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.id' >
+<input type="hidden" id='hideLink' name='hideLink' value='false'>
 
 <table style="margin-bottom:8px">    
 	<tr>

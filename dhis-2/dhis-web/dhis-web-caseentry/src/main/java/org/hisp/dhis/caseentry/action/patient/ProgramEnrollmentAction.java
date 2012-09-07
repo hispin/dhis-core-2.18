@@ -28,7 +28,6 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -38,11 +37,9 @@ import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientAttributeGroupService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
@@ -69,8 +66,6 @@ public class ProgramEnrollmentAction
     private ProgramStageInstanceService programStageInstanceService;
 
     private PatientIdentifierService patientIdentifierService;
-
-    private PatientAttributeGroupService patientAttributeGroupService;
 
     private PatientAttributeValueService patientAttributeValueService;
 
@@ -125,12 +120,7 @@ public class ProgramEnrollmentAction
     {
         return patientAttributeValueMap;
     }
-
-    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
-    {
-        this.patientAttributeGroupService = patientAttributeGroupService;
-    }
-
+    
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
