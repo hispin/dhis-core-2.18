@@ -278,7 +278,11 @@ public class ProgramStageInstance
 
     public Integer getEventStatus()
     {
-        if ( this.isCompleted() )
+        if ( this.status != null )
+        {
+            return status;
+        }
+        else if ( this.isCompleted() )
         {
             return ProgramStageInstance.COMPLETED_STATUS;
         }

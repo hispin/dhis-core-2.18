@@ -39,5 +39,7 @@
       <one-to-many class="org.hisp.dhis.program.ProgramStageSection" />
     </set>
     
+    <property name="reportDateDescription" />
+    
   </class>
 </hibernate-mapping>

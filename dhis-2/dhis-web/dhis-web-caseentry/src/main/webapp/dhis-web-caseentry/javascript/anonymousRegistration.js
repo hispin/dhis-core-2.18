@@ -50,6 +50,8 @@ function getDataElements()
 	clearListById('searchObjectId');
 	programStageId = jQuery('#programId option:selected').attr('psid');
 	setFieldValue('programStageId', programStageId );
+	setInnerHTML('reportDateDescriptionField', jQuery('#programId option:selected').attr('reportDateDes'));
+	setInnerHTML('reportDateDescriptionField2', jQuery('#programId option:selected').attr('reportDateDes'));
 	
 	if( programStageId == '')
 	{

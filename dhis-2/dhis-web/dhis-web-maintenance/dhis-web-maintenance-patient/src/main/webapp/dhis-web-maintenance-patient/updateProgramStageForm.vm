@@ -36,6 +36,12 @@
 				<td><label>$i18n.getString( "standard_interval_days" )</label></td>
 				<td><input type="text" id="standardInterval" name="standardInterval" value='$!programStage.standardInterval' class="{validate:{required:true,number:true}}" #if($programStage.irregular!='true' ) disabled #end /></td>
 			</tr>
+			
+			<tr>
+				<td><label>$i18n.getString( "report_date_description" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+				<td><input type="text" id="reportDateDescription" name="reportDateDescription" value='$!programStage.reportDateDescription' class="{validate:{required:true}}" /></td>
+			</tr>
+			
 			<tr><td>&nbsp;</td></tr>       
 		  
 		</tbody>

@@ -125,6 +125,9 @@ public class TableAlteror
         
         updateRelationshipIdentifiers();
         updateRelationshipAttributes();
+        
+        executeSql( "UPDATE programstage SET reportDateDescription='Report date' WHERE reportDateDescription is null" );
+        
     }
 
     // -------------------------------------------------------------------------

@@ -41,7 +41,7 @@
 		
 		#if( $programStageInstance )
 		<tr>
-			<th><label for="executionDate">$i18n.getString( "report_date" ) </label></th>
+			<th><label for="executionDate">$programStageInstance.programStage.reportDateDescription </label></th>
 			<th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, getFieldValue('executionDate') )" ></th>
 				<script type="text/javascript">
 				   datePickerValid( 'executionDate', false );

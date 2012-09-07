@@ -153,6 +153,13 @@ public class AddProgramStageAction
         this.standardInterval = standardInterval;
     }
 
+    private String reportDateDescription;
+
+    public void setReportDateDescription( String reportDateDescription )
+    {
+        this.reportDateDescription = reportDateDescription;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -170,6 +177,7 @@ public class AddProgramStageAction
         programStage.setStageInProgram( program.getProgramStages().size() + 1 );
         programStage.setProgram( program );
         programStage.setStandardInterval( standardInterval );
+        programStage.setReportDateDescription( reportDateDescription );
 
         irregular = (irregular == null) ? false : irregular;
         programStage.setIrregular( irregular );

@@ -7,6 +7,7 @@
 	"minDaysFromStart": "${programStage.minDaysFromStart}",
 	"dataElementCount": "${programStageDataElements.size()}",
 	"standardInterval": "$!programStage.standardInterval",
+	"reportDateDescription": "$!programStage.reportDateDescription",
 	
 	#set( $size = ${programStageDataElements.size()} )
 	"dataElement": [
