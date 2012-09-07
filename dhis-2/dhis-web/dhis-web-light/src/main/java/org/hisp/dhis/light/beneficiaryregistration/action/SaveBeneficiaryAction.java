@@ -339,7 +339,7 @@ public class SaveBeneficiaryAction
 
         for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypeService.getAllPatientIdentifierTypes() )
         {
-            if ( patientIdentifierType.getProgram() == null )
+//            if ( patientIdentifierType.getProgram() == null )
             {
                 String key = "IDT" + patientIdentifierType.getId();
                 String value = parameterMap.get( key );
@@ -382,7 +382,7 @@ public class SaveBeneficiaryAction
         for ( PatientAttribute patientAttribute : patientAttributeService.getAllPatientAttributes() )
         {
             patientAttributeSet.add( patientAttribute );
-            if ( patientAttribute.getProgram() == null )
+//            if ( patientAttribute.getProgram() == null )
             {
                 String key = "AT" + patientAttribute.getId();
                 String value = parameterMap.get( key ).trim();
