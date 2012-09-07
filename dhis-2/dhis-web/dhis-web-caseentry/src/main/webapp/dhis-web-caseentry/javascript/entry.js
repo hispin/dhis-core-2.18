@@ -554,7 +554,7 @@ function doComplete( isCreateEvent )
 				{
 					programStageInstanceId: getFieldValue('programStageInstanceId')
 				},
-				function (data)
+				function (json)
 				{
 					jQuery(".stage-object-selected").css('border-color', COLOR_GREEN);
 					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_GREEN);
@@ -569,7 +569,7 @@ function doComplete( isCreateEvent )
 					}
 					
 					var selectedProgram = jQuery('.stage-object-selected');
-					if( selectedProgram.attr('programType')=='2' )
+					if( selectedProgram.attr('programType')=='2' || json.response == 'programcompleted' )
 					{
 						selectedProgram.remove();
 						hideById('programInstanceDiv');
