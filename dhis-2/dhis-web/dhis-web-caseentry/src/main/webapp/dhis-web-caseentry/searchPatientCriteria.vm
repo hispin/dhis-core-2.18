@@ -87,7 +87,7 @@
 					<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
 				</td>
 				<td>
-					<input type="button" id='sendSmsToListBtn' value="$i18n.getString('send_sms_to_list')" onclick="showSendSmsForm();" class='hidden'>
+					<input type="button" id='sendSmsToListBtn' value="$i18n.getString('send_sms_to_list')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" class='hidden'>
 				</td>
 			</tr>
 		</tbody>

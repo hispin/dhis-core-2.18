@@ -92,7 +92,7 @@ function showSendSmsForm(programStageName, programStageInstanceId)
 			title:i18n_send_sms,
 			maximize:true, 
 			closable:true,
-			modal:false,
+			modal:true,
 			overlay:{background:'#000000', opacity:0.1},
 			width:400,
 			height:250
