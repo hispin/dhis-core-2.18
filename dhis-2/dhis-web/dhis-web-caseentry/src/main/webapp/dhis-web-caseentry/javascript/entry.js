@@ -574,17 +574,16 @@ function doComplete( isCreateEvent )
 						selectedProgram.remove();
 						hideById('programInstanceDiv');
 						hideById('entryFormContainer');
+						var completedRow = jQuery('#td_' + programInstanceId).html();
+						jQuery('#completedTB' ).prepend("<tr><td>" + completedRow + "</td></tr>");
+						hideById('tr1_' + programInstanceId );
+						hideById('tr2_' + programInstanceId );
 					}
 					
 					selection.enable();
 					hideLoader();
 					hideById('contentDiv');
 					
-					var completedRow = jQuery('#td_' + programInstanceId).html();
-					jQuery('#completedTB' ).prepend("<tr><td>" + completedRow + "</td></tr>");
-					hideById('tr1_' + programInstanceId );
-					hideById('tr2_' + programInstanceId );
-					jQuery('#img_' + programInstanceId).attr('src','');					
 					
 					if( isCreateEvent )
 					{
