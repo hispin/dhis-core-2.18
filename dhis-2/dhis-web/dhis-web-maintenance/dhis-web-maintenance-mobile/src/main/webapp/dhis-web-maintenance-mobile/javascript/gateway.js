@@ -30,7 +30,7 @@ function hideAll()
 function getValidationRulesGateway()
 {
 	var rules = {};
-
+	alert('outside');
 	if ( currentType == 'modem' ) {
 		rules = {
 			'modemFields input[id=name]' : { 'required' : true },
@@ -43,6 +43,8 @@ function getValidationRulesGateway()
 			'modemFields select[id=inbound]' : { 'required' : true },
 			'modemFields select[id=outbound]' : { 'required' : true }
 		};
+		alert(currentType);
+		alert('hehehhe');
 	} else if ( currentType == 'bulksms' ) {
 		rules = {
 			'bulksmsFields input[id=name]' : { 'required' : true },

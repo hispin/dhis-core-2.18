@@ -141,11 +141,11 @@
 				<td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!clickatellGateway.name )"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "username" ):</td>
+				<td>$i18n.getString( "username" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
 				<td><input type="text" name="username" id="username" style="width: 28em" value="$!clickatellGateway.username"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "password" ):</td>
+				<td>$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
 				<td><input type="password" name="password" id="password" style="width: 28em" value="$!clickatellGateway.password"/></td>
 			</tr>
 			<tr>
@@ -161,11 +161,11 @@
 				<td><input type="text" name="name" id="name" style="width: 28em" value="$!encoder.htmlEncode( $!httpGateway.name )"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "username" ):</td>
+				<td>$i18n.getString( "username" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
 				<td><input type="text" name="username" id="username" style="width: 28em" value="$!params.get( 'username' )"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "password" ):</td>
+				<td>$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
 				<td><input type="password" name="password" id="password" style="width: 28em" value="$!params.get( 'password' )"/></td>
 			</tr>
 			<tr>
