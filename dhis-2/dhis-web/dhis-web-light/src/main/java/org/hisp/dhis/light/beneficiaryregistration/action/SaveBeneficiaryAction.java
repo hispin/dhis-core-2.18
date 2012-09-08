@@ -35,6 +35,8 @@ import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.*;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.util.ContextUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -120,6 +122,18 @@ public class SaveBeneficiaryAction
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
+    }
+
+    private ProgramService programService;
+
+    public ProgramService getProgramService()
+    {
+        return programService;
+    }
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
@@ -315,7 +329,8 @@ public class SaveBeneficiaryAction
             try
             {
                 patient.setBirthDateFromAge( Integer.parseInt( dateOfBirth ), Patient.AGE_TYPE_YEAR );
-            } catch ( NumberFormatException nfe )
+            }
+            catch ( NumberFormatException nfe )
             {
                 validationMap.put( "dob", "is_invalid_number" );
             }
@@ -327,7 +342,8 @@ public class SaveBeneficiaryAction
                 DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
                 DateTime date = sdf.parseDateTime( dateOfBirth );
                 patient.setBirthDate( date.toDate() );
-            } catch ( Exception e )
+            }
+            catch ( Exception e )
             {
                 validationMap.put( "dob", "is_invalid_date" );
             }
@@ -337,9 +353,20 @@ public class SaveBeneficiaryAction
             ServletActionContext.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
 
-        for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypeService.getAllPatientIdentifierTypes() )
+        // Add Identifier and Attributes
+        Collection<PatientIdentifierType> patientIdentifierTypes = patientIdentifierTypeService
+            .getAllPatientIdentifierTypes();
+        Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
+        Collection<Program> programs = programService.getAllPrograms();
+
+        for ( Program program : programs )
         {
-//            if ( patientIdentifierType.getProgram() == null )
+            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientAttributes.removeAll( program.getPatientAttributes() );
+        }
+
+        for ( PatientIdentifierType patientIdentifierType : patientIdentifierTypes )
+        {
             {
                 String key = "IDT" + patientIdentifierType.getId();
                 String value = parameterMap.get( key );
@@ -379,10 +406,9 @@ public class SaveBeneficiaryAction
             }
         }
 
-        for ( PatientAttribute patientAttribute : patientAttributeService.getAllPatientAttributes() )
+        for ( PatientAttribute patientAttribute : patientAttributes )
         {
             patientAttributeSet.add( patientAttribute );
-//            if ( patientAttribute.getProgram() == null )
             {
                 String key = "AT" + patientAttribute.getId();
                 String value = parameterMap.get( key ).trim();
