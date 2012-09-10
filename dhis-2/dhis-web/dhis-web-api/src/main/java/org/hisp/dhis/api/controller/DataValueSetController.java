@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
 import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_XML;
 
 import java.io.IOException;
@@ -104,7 +105,22 @@ public class DataValueSetController
         response.setContentType( CONTENT_TYPE_XML );        
         JacksonUtils.toXml( response.getOutputStream(), summary );
     }
-    
+
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
+    public void postJsonDataValueSet( ImportOptions importOptions,
+                                  HttpServletResponse response,
+                                  InputStream in,
+                                  Model model ) throws IOException
+    {
+        ImportSummary summary = dataValueSetService.saveDataValueSetJson( in, importOptions );
+
+        log.info( "Data values set saved " + importOptions );
+
+        response.setContentType( CONTENT_TYPE_JSON );
+        JacksonUtils.toJson( response.getOutputStream(), summary );
+    }
+
     @RequestMapping( method = RequestMethod.POST, consumes = "application/sdmx+xml" )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void postSDMXDataValueSet( ImportOptions importOptions,
