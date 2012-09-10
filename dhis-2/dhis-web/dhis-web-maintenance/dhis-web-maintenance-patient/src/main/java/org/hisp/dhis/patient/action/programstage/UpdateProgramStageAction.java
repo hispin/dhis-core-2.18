@@ -154,7 +154,21 @@ public class UpdateProgramStageAction
     {
         this.reportDateDescription = reportDateDescription;
     }
+    
+    private Integer daysAllowedSendMessage;
 
+    public void setDaysAllowedSendMessage( Integer daysAllowedSendMessage )
+    {
+        this.daysAllowedSendMessage = daysAllowedSendMessage;
+    }
+
+    private String templateMessage;
+
+    public void setTemplateMessage( String templateMessage )
+    {
+        this.templateMessage = templateMessage;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -168,6 +182,8 @@ public class UpdateProgramStageAction
         programStage.setDescription( description );
         programStage.setStandardInterval( standardInterval );
         programStage.setReportDateDescription( reportDateDescription );
+        programStage.setDaysAllowedSendMessage( daysAllowedSendMessage );
+        programStage.setTemplateMessage( templateMessage );
 
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );

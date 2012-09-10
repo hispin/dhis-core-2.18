@@ -43,6 +43,13 @@ public class ProgramStage
     public static final String TYPE_SECTION = "section";
 
     public static final String TYPE_CUSTOM = "custom";
+    
+    public static final String TEMPLATE_MESSSAGE_PATIENT_NAME = "patient-name";
+    public static final String TEMPLATE_MESSSAGE_PROGRAM_NAME = "program-name";
+    public static final String TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME = "program-stage-name";
+    public static final String TEMPLATE_MESSSAGE_DUE_DATE = "due-date";
+    public static final String TEMPLATE_MESSSAGE_ORGUNIT_NAME = "orgunit-name";
+    public static final String TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE = "days-since-due-date";
 
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -68,6 +75,10 @@ public class ProgramStage
     private Integer standardInterval;
 
     private String reportDateDescription;
+    
+    private Integer daysAllowedSendMessage;
+    
+    private String templateMessage;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -150,6 +161,26 @@ public class ProgramStage
     public void setProgramStageSections( Set<ProgramStageSection> programStageSections )
     {
         this.programStageSections = programStageSections;
+    }
+
+    public Integer getDaysAllowedSendMessage()
+    {
+        return daysAllowedSendMessage;
+    }
+
+    public void setDaysAllowedSendMessage( Integer daysAllowedSendMessage )
+    {
+        this.daysAllowedSendMessage = daysAllowedSendMessage;
+    }
+
+    public String getTemplateMessage()
+    {
+        return templateMessage;
+    }
+
+    public void setTemplateMessage( String templateMessage )
+    {
+        this.templateMessage = templateMessage;
     }
 
     public Integer getStandardInterval()
@@ -240,5 +271,10 @@ public class ProgramStage
         }
 
         return TYPE_DEFAULT;
+    }
+    
+    public String getDefaultTemplateMessage()
+    {
+        return "Dear {person-name}, please come to your appointment on {program-stage-name} at {due-date}";
     }
 }
