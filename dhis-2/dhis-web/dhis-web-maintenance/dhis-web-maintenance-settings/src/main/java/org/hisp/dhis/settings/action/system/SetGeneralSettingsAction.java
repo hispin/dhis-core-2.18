@@ -167,6 +167,13 @@ public class SetGeneralSettingsAction
         this.completenessOffset = completenessOffset;
     }
 
+    private String timeSendingMessage;
+    
+    public void setTimeSendingMessage( String timeSendingMessage )
+    {
+        this.timeSendingMessage = timeSendingMessage;
+    }
+
     private String message;
 
     public String getMessage()
@@ -192,6 +199,7 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
+        systemSettingManager.saveSystemSetting( KEY_TIME_FOR_SENDING_MESSAGE, timeSendingMessage );
 
         Configuration configuration = configurationService.getConfiguration();
 
