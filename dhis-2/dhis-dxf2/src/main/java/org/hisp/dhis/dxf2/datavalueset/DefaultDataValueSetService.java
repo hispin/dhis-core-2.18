@@ -36,10 +36,7 @@ import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 import static org.hisp.dhis.system.util.ConversionUtils.wrap;
 import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,6 +63,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportStatus;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -178,11 +176,21 @@ public class DefaultDataValueSetService
         return saveDataValueSet( in, ImportOptions.getDefaultImportOptions(), null );
     }
 
+    public ImportSummary saveDataValueSetJson( InputStream in )
+    {
+        return saveDataValueSetJson( in, ImportOptions.getDefaultImportOptions(), null );
+    }
+
     public ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions )
     {
         return saveDataValueSet( in, importOptions, null );
     }
-    
+
+    public ImportSummary saveDataValueSetJson( InputStream in, ImportOptions importOptions )
+    {
+        return saveDataValueSetJson( in, importOptions, null );
+    }
+
     public ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId id )
     {
         try
@@ -191,6 +199,22 @@ public class DefaultDataValueSetService
             return saveDataValueSet( importOptions, id, dataValueSet );
         }
         catch ( RuntimeException ex )
+        {
+            log.error( DebugUtils.getStackTrace( ex ) );
+            notifier.notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );
+            return new ImportSummary( ImportStatus.ERROR, "The import process failed: " + ex.getMessage() );
+        }
+    }
+
+    public ImportSummary saveDataValueSetJson( InputStream in, ImportOptions importOptions, TaskId id )
+    {
+        try
+        {
+            DataValueSet dataValueSet = JacksonUtils.fromJson( in, DataValueSet.class );
+            log.info( dataValueSet );
+            return saveDataValueSet( importOptions, id, dataValueSet );
+        }
+        catch ( Exception ex )
         {
             log.error( DebugUtils.getStackTrace( ex ) );
             notifier.notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );
@@ -237,7 +261,7 @@ public class DefaultDataValueSetService
         
         Period outerPeriod = PeriodType.getPeriodFromIsoString( dataValueSet.getPeriod() );
         OrganisationUnit outerOrgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, dataValueSet.getOrgUnit() ) : null;
-        
+
         if ( dataSet != null && completeDate != null )
         {
             notifier.notify( id, DATAVALUE_IMPORT, "Completing data set" );
@@ -257,7 +281,8 @@ public class DefaultDataValueSetService
         int totalCount = 0;
         
         notifier.notify( id, DATAVALUE_IMPORT, "Importing data values" );
-        
+        log.info( "importing data values" );
+
         while ( dataValueSet.hasNextDataValue() )
         {
             org.hisp.dhis.dxf2.datavalue.DataValue dataValue = dataValueSet.getNextDataValue();
