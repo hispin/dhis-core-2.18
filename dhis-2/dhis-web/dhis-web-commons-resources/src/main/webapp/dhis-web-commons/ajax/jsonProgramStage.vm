@@ -8,6 +8,8 @@
 	"dataElementCount": "${programStageDataElements.size()}",
 	"standardInterval": "$!programStage.standardInterval",
 	"reportDateDescription": "$!programStage.reportDateDescription",
+	"daysAllowedSendMessage": "$!programStage.daysAllowedSendMessage",
+	"templateMessage": "$!encoder.jsonEncode($!programStage.templateMessage)",
 	
 	#set( $size = ${programStageDataElements.size()} )
 	"dataElement": [

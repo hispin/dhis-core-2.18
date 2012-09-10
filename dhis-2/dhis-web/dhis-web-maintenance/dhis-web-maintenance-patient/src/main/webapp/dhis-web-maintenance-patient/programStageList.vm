@@ -47,8 +47,11 @@
 				<p><label class="bold">$i18n.getString( "scheduled_days_from_start" ):</label><br><span id="scheduledDaysFromStartField"></span></p>
 				<p><label class="bold">$i18n.getString( "irregular" ):</label><br><span id="irregularField"></span></p>
 				<p><label class="bold">$i18n.getString( "standard_interval_days" ):</label><br><span id="standardIntervalField"></span></p>
-				<p><label class="bold">$i18n.getString( "report_date_description" ):</label><br><span id="reportDateDescriptionField">reportDateDescription</span></p>
-				<p><label class="bold">$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>			  		
+				<p><label class="bold">$i18n.getString( "report_date_description" ):</label><br><span id="reportDateDescriptionField"></span></p>
+				<p><label class="bold">$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>		
+				<p><label class="bold">$i18n.getString( "days_allowed_send_message" ):</label><br><span id="daysAllowedSendMessageField"></span></p>	  		
+				<p><label class="bold">$i18n.getString( "template_message" ):</label><br><span id="templateMessageField"></span></p>
+				
 			</div>
 		</td>
 	</tr>

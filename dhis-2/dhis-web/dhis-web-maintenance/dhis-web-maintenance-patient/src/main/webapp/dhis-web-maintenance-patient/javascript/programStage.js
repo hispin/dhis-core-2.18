@@ -62,6 +62,8 @@ function showProgramStageDetails( programStageId )
 		setInnerHTML( 'standardIntervalField', json.programStage.standardInterval );  
 		setInnerHTML( 'reportDateDescriptionField', json.programStage.reportDateDescription );  
 		setInnerHTML( 'dataElementCountField', json.programStage.dataElementCount );   
+		setInnerHTML( 'daysAllowedSendMessageField', json.programStage.daysAllowedSendMessage );   
+		setInnerHTML( 'templateMessageField', json.programStage.templateMessage );   
 	   
 		showDetails();
 	});
@@ -221,4 +223,10 @@ function repeatableOnChange()
 		disable('standardInterval');
 		setFieldValue('standardInterval', '0');
 	}
+}
+
+function insertParams( paramValue )
+{
+	var templateMessage = paramValue;
+	insertTextCommon('templateMessage', templateMessage);
 }
