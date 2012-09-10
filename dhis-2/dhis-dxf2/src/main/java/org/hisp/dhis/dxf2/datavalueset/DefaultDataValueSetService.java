@@ -211,7 +211,6 @@ public class DefaultDataValueSetService
         try
         {
             DataValueSet dataValueSet = JacksonUtils.fromJson( in, DataValueSet.class );
-            log.info( dataValueSet );
             return saveDataValueSet( importOptions, id, dataValueSet );
         }
         catch ( Exception ex )
