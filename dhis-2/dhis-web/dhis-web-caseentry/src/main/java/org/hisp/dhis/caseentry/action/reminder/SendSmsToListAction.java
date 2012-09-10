@@ -174,16 +174,4 @@ public class SendSmsToListAction
         return SUCCESS;
     }
     
-//    private String convertPhoneNumberList( Collection<String> phoneNumberList )
-//    {
-//        String result = "";
-//        
-//        for( String phoneNumber : phoneNumberList )
-//        {
-//            result = phoneNumber + ";";
-//        }
-//        
-//        return result;
-//    }
-
 }

@@ -70,6 +70,8 @@ public interface SystemSettingManager
     final String KEY_SMS_CONFIG = "SMS_CONFIG";
     final String KEY_CACHE_STRATEGY = "keyCacheStrategy";
     final String KEY_TIME_FOR_SENDING_MESSAGE = "timeSendingMessage";
+    final String KEY_SEND_MESSAGE_SCHEDULED_TASKS = "sendMessageScheduled";
+    final String KEY_SEND_MESSAGE_GATEWAY = "keySendMessageGateway";
 
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;

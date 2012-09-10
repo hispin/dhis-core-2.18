@@ -388,7 +388,29 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<!-- Startup -->
+	<!-- Scheduling -->
+	
+	<bean id="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" class="org.hisp.dhis.patient.scheduling.DefaultProgramSchedulingManager"
+   	 init-method="scheduleTasks">
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+    <property name="scheduler" ref="scheduler" />
+    <property name="tasks">
+      <map>
+        <entry key="sendMessageScheduled" value-ref="sendMessageScheduled" />
+      </map>
+    </property>
+   </bean>
+  
+ 	<bean id="sendMessageScheduledTasks" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" >
+ 		<constructor-arg ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+ 		<constructor-arg ref="org.hisp.dhis.setting.SystemSettingManager" />
+ 		<constructor-arg ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+ 	</bean>
+ 	
+ 	<bean id="sendMessageScheduled" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" parent="sendMessageScheduledTasks">
+	</bean>  
+  	
+    <!-- Startup -->
 
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror">
 		<property name="statementManager" ref="statementManager" />

@@ -15,4 +15,5 @@ jQuery(function() {
     #introListImgItem( "program.action" "program" "program" )
     #introListImgItem( "caseAggregation.action" "patient_aggregation_query_builder" "caseaggregationmapping" )
 	#introListImgItem( "validationCriteria.action" "validation_criteria" "validationcriteria" )
+	#introListImgItem( "viewScheduleTasks.action" "schedule_sending_message" "validationcriteria" )
 </ul>
