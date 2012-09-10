@@ -12,9 +12,3 @@
 	<li><a href="caseAggregation.action">$i18n.getString( "aggregation_query_builder" )</a></li>
 	<li><a href="validationCriteria.action">$i18n.getString( "validation_criteria" )</a></li>
 </ul>
-
-<h2>$i18n.getString( "scheduling" )</h2>
-<ul>
-	<li><a href="viewScheduleTasks.action">$i18n.getString( "schedule_sending_message" )</a></li>
-</ul>
-

@@ -927,5 +927,22 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
+		<!-- Scheduling -->
+		
+		<action name="viewScheduleTasks" class="org.hisp.dhis.patient.action.schedule.GetGatewayAction">
+	      <result name="success" type="velocity">/main.vm</result>
+	      <param name="page">/dhis-web-maintenance-patient/scheduleSendMessage.vm</param>
+	      <param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+	      <param name="javascripts">javascript/scheduling.js</param>
+		  <param name="schedule">true</param>
+	      <param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
+	    </action>
+	    
+		<action name="scheduleTasks" class="org.hisp.dhis.patient.action.schedule.ScheduleSendMessageTasksAction">
+	      <result name="success" type="velocity-json">
+				/dhis-web-maintenance-patient/jsonResponseScheduleTasks.vm</result>
+	      <param name="requiredAuthorities">F_SCHEDULING_SEND_MESSAGE</param>
+	    </action>
+		
 	</package>
 </struts>

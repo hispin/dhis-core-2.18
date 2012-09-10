@@ -99,4 +99,6 @@ public interface ProgramStageInstanceService
     void removeEmptyEvents( ProgramStage programStage );
 
     void updateProgramStageInstances( Collection<Integer> programStageInstances, OutboundSms outboundSms );
+    
+    Collection<SchedulingProgramObject> getSendMesssageEvents();
 }

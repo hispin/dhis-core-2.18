@@ -880,5 +880,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
 		</property>
 	</bean>
+	
+	<!-- Scheduling -->
+	
+	<bean id="org.hisp.dhis.patient.action.schedule.GetGatewayAction"
+		class="org.hisp.dhis.patient.action.schedule.GetGatewayAction"
+		scope="prototype">
+		<property name="schedulingManager" ref="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.schedule.ScheduleSendMessageTasksAction" class="org.hisp.dhis.patient.action.schedule.ScheduleSendMessageTasksAction"  scope="prototype">
+ 		 <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+ 		 <property name="schedulingManager" ref="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" />
+ 	</bean>
 
 </beans>

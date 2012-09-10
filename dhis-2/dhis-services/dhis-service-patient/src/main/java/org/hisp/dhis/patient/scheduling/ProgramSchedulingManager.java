@@ -1,7 +1,5 @@
-package org.hisp.dhis.scheduling;
-
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,17 +25,19 @@ package org.hisp.dhis.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.patient.scheduling;
+
 import java.util.Map;
 
 /**
- * @author Lars Helge Overland
+ * @author Chau Thu Tran
+ *
+ * @version ProgramSchedulingManager.java 12:47:57 PM Sep 10, 2012 $
  */
-public interface SchedulingManager
+public interface ProgramSchedulingManager
 {
-    final String TASK_DATAMART_LAST_12_MONTHS = "dataMartLast12MonthsTask";
-    final String TASK_DATAMART_LAST_6_MONTS = "dataMartLast6MonthsTask";
-    final String TASK_DATAMART_FROM_6_TO_12_MONTS = "dataMartFrom6To12MonthsTask";
-        
+    final String TASK_SENDING_MESSAGE = "sendingMessageTask";
+    
     void scheduleTasks();
     
     void scheduleTasks( Map<String, String> keyCronMap );

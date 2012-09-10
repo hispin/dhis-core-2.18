@@ -85,4 +85,6 @@ public interface ProgramStageInstanceStore
     void removeEmptyEvents( ProgramStage programStage );
 
     void update( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms );
+    
+    Collection<SchedulingProgramObject> getSendMesssageEvents();
 }

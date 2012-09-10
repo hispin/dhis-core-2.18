@@ -27,7 +27,6 @@
 package org.hisp.dhis.program;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -268,5 +267,10 @@ public class DefaultProgramStageInstanceService
     public void updateProgramStageInstances( Collection<Integer> programStageInstanceIds, OutboundSms outboundSms )
     {
         programStageInstanceStore.update( programStageInstanceIds, outboundSms );
+    }
+
+    public Collection<SchedulingProgramObject> getSendMesssageEvents()
+    {
+        return programStageInstanceStore.getSendMesssageEvents();
     }
 }

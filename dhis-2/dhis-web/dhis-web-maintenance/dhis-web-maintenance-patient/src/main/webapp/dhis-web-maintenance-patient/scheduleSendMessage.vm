@@ -1,0 +1,39 @@
+<h3>$i18n.getString('schedule_sending_message')</h3>
+<table>
+	<tbody>
+		<tr>
+			<td>$i18n.getString( "gateway_type" )</td>
+			<td>
+				#set( $keys = $!gatewayMap.keySet() )
+				<select id="gatewayId" name="gatewayId" style="width:300px;">
+					#foreach( $key in $!keys )
+					<option value="$gatewayMap.get( $key )" >$i18n.getString( $key )</option>
+					#end
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" style="width:150px;" id="scheduledBtn" name="scheduledBtn"
+				#if ( $running )
+					value="$i18n.getString( 'stop' )"
+				#else
+					value="$i18n.getString( 'start' )"
+				#end
+				onclick="scheduleTasks();"/>
+				<input type="button" style="width:150px;" value="$i18n.getString( 'execute' )" onclick="executeTasks();"/>
+			</td>
+		</tr>
+		
+	</tbody>
+</table>
+<span id='message' style="display:block;">$i18n.getString( "scheduling_is" ) $!i18n.getString( $!status )</span>
+
+<script>
+	var i18n_scheduled = '$encoder.jsEscape( $i18n.getString( "run_success" ) , "'" )';
+	var i18n_start = '$encoder.jsEscape( $i18n.getString( "start" ) , "'" )';
+	var i18n_stop = '$encoder.jsEscape( $i18n.getString( "stop" ) , "'" )';
+	var i18n_scheduling_is = '$encoder.jsEscape( $i18n.getString( "scheduling_is" ) , "'" )';
+</script>
