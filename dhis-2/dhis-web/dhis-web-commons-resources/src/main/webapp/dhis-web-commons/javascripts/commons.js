@@ -1482,7 +1482,7 @@ function relativePeriodsChecked()
  */
 function isValidZeroNumber( value )
 {
-	var regex = /^0(?:\.0*)?$/;
+	var regex = /^0(\.0*)?$/;
 	return regex.test( value );
 }
 
