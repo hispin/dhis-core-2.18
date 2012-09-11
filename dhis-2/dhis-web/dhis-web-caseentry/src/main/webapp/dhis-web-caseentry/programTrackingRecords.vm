@@ -67,7 +67,7 @@
 														<td>
 															#set($title="")
 															#set($index = 0)
-															#foreach( $comment in $programStageInstance.comments)
+															#foreach( $comment in $programStageInstance.patientComments)
 																#if( $index < 5)
 																	#set( $title= $title + "$format.formatDate( $comment.createdDate ) - $comment.creator - $comment.commentText &#13;&#10;" )
 																	#set( $index = $index + 1 )

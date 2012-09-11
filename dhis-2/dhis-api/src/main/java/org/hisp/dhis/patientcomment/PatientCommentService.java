@@ -25,63 +25,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.comment;
+package org.hisp.dhis.patientcomment;
 
 import java.util.Collection;
-
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version DefaultCommentService.java 9:45:40 AM Aug 17, 2012 $
+ * @version CommentService.java 9:27:31 AM Aug 17, 2012 $
  */
-public class DefaultCommentService
-    implements CommentService
+public interface PatientCommentService
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    String ID = PatientCommentService.class.getName();
 
-    private GenericIdentifiableObjectStore<Comment> commentStore;
+    int addPatientComment( PatientComment patientComment );
 
-    public void setCommentStore( GenericIdentifiableObjectStore<Comment> commentStore )
-    {
-        this.commentStore = commentStore;
-    }
+    void deletePatientComment( PatientComment patientComment );
 
-    // -------------------------------------------------------------------------
-    // Implementation methods
-    // -------------------------------------------------------------------------
+    void updatePatientComment( PatientComment patientComment );
 
-    @Override
-    public int addComment( Comment comment )
-    {
-        return commentStore.save( comment );
-    }
+    PatientComment getPatientComment( int id );
 
-    @Override
-    public void deleteComment( Comment comment )
-    {
-        commentStore.delete( comment );
-    }
-
-    @Override
-    public void updateComment( Comment comment )
-    {
-        commentStore.update( comment );
-    }
-
-    @Override
-    public Comment getComment( int id )
-    {
-        return commentStore.get( id );
-    }
-
-    @Override
-    public Collection<Comment> getAllComments()
-    {
-        return commentStore.getAll();
-    }
+    Collection<PatientComment> getAllPatientComments();
 
 }

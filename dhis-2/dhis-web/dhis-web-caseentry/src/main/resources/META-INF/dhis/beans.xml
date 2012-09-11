@@ -1021,18 +1021,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Comment -->
 
-	<bean id="org.hisp.dhis.caseentry.action.reminder.AddCommentAction"
-		class="org.hisp.dhis.caseentry.action.reminder.AddCommentAction"
+	<bean id="org.hisp.dhis.caseentry.action.reminder.AddPatientCommentAction"
+		class="org.hisp.dhis.caseentry.action.reminder.AddPatientCommentAction"
 		scope="prototype">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.caseentry.action.reminder.RemoveCommentAction"
-		class="org.hisp.dhis.caseentry.action.reminder.RemoveCommentAction"
+	<bean id="org.hisp.dhis.caseentry.action.reminder.RemovePatientCommentAction"
+		class="org.hisp.dhis.caseentry.action.reminder.RemovePatientCommentAction"
 		scope="prototype">
-		<property name="commentService" ref="org.hisp.dhis.patient.comment.CommentService" />
+		<property name="commentService" ref="org.hisp.dhis.patientcomment.PatientCommentService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>

@@ -206,7 +206,7 @@ function addComment( field, programStageInstanceId )
 	var commentText = getFieldValue( 'commentText' );
 	if( commentText != '')
 	{
-		jQuery.postUTF8( 'addComment.action',
+		jQuery.postUTF8( 'addPatientComment.action',
 			{
 				programStageInstanceId: programStageInstanceId,
 				commentText: commentText 
@@ -225,7 +225,7 @@ function addComment( field, programStageInstanceId )
 
 function removeComment( programStageInstanceId, commentId )
 {
-	jQuery.postUTF8( 'removeComment.action',
+	jQuery.postUTF8( 'removePatientComment.action',
 		{
 			programStageInstanceId:programStageInstanceId,
 			id: commentId
