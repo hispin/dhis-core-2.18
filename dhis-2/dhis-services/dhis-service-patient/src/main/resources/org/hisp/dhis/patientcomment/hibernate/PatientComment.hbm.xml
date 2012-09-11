@@ -4,9 +4,9 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.patient.comment.Comment" table="comment">
+  <class name="org.hisp.dhis.patientcomment.PatientComment" table="patientcomment">
 
-    <id name="id" column="commentid">
+    <id name="id" column="patientcommentid">
       <generator class="native" />
     </id>
 

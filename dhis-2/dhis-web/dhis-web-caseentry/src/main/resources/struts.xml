@@ -974,14 +974,14 @@
 		
 		<!-- Comment -->
 
-		<action name="addComment"
-			class="org.hisp.dhis.caseentry.action.reminder.AddCommentAction">
+		<action name="addPatientComment"
+			class="org.hisp.dhis.caseentry.action.reminder.AddPatientCommentAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
 
-		<action name="removeComment"
-			class="org.hisp.dhis.caseentry.action.reminder.RemoveCommentAction">
+		<action name="removePatientComment"
+			class="org.hisp.dhis.caseentry.action.reminder.RemovePatientCommentAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>

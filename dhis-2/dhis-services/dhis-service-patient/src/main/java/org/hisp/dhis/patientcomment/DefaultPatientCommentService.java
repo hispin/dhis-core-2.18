@@ -25,79 +25,63 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.reminder;
+package org.hisp.dhis.patientcomment;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import org.hisp.dhis.patient.comment.Comment;
-import org.hisp.dhis.patient.comment.CommentService;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version RemoveCommentAction.java 10:02:15 AM Aug 17, 2012 $
+ * @version DefaultPatientCommentService.java 9:45:40 AM Aug 17, 2012 $
  */
-public class RemoveCommentAction
-    implements Action
+public class DefaultPatientCommentService
+    implements PatientCommentService
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageInstanceService programStageInstanceService;
+    private GenericIdentifiableObjectStore<PatientComment> patientCommentStore;
 
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    public void setPatientCommentStore( GenericIdentifiableObjectStore<PatientComment> patientCommentStore )
     {
-        this.programStageInstanceService = programStageInstanceService;
+        this.patientCommentStore = patientCommentStore;
     }
-
-    private CommentService commentService;
-
-    public void setCommentService( CommentService commentService )
-    {
-        this.commentService = commentService;
-    }
-
+    
     // -------------------------------------------------------------------------
-    // Input
+    // Implementation methods
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
-    public void setId( Integer id )
+    @Override
+    public int addPatientComment( PatientComment patientComment )
     {
-        this.id = id;
+        return patientCommentStore.save( patientComment );
     }
 
-    private Integer programStageInstanceId;
-
-    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    @Override
+    public void deletePatientComment( PatientComment patientComment )
     {
-        this.programStageInstanceId = programStageInstanceId;
+        patientCommentStore.delete( patientComment );
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
+    @Override
+    public void updatePatientComment( PatientComment patientComment )
     {
-        Comment comment = commentService.getComment( id );
+        patientCommentStore.update( patientComment );
+    }
 
-        ProgramStageInstance programStageInstance = programStageInstanceService
-            .getProgramStageInstance( programStageInstanceId );
+    @Override
+    public PatientComment getPatientComment( int id )
+    {
+        return patientCommentStore.get( id );
+    }
 
-        programStageInstance.getComments().remove( comment );
-
-        programStageInstanceService.updateProgramStageInstance( programStageInstance );
-        
-        return SUCCESS;
+    @Override
+    public Collection<PatientComment> getAllPatientComments()
+    {
+        return patientCommentStore.getAll();
     }
 
 }

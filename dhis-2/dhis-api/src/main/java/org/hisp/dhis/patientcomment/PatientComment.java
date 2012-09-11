@@ -25,27 +25,83 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.comment;
+package org.hisp.dhis.patientcomment;
 
-import java.util.Collection;
+import java.util.Date;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version CommentService.java 9:27:31 AM Aug 17, 2012 $
+ * @version PatientComment.java 9:24:52 AM Aug 17, 2012 $
  */
-public interface CommentService
+public class PatientComment
 {
-    String ID = CommentService.class.getName();
+    private int id;
 
-    int addComment( Comment comment );
+    private String commentText;
 
-    void deleteComment( Comment comment );
+    private Date createdDate;
 
-    void updateComment( Comment comment );
+    private String creator;
 
-    Comment getComment( int id );
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
 
-    Collection<Comment> getAllComments();
+    public PatientComment()
+    {
+
+    }
+
+    public PatientComment( String commentText, String creator, Date createdDate )
+    {
+        this.commentText = commentText;
+        this.creator = creator;
+        this.createdDate = createdDate;
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
+
+    public String getCommentText()
+    {
+        return commentText;
+    }
+
+    public void setCommentText( String commentText )
+    {
+        this.commentText = commentText;
+    }
+
+    public Date getCreatedDate()
+    {
+        return createdDate;
+    }
+
+    public void setCreatedDate( Date createdDate )
+    {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreator()
+    {
+        return creator;
+    }
+
+    public void setCreator( String creator )
+    {
+        this.creator = creator;
+    }
 
 }

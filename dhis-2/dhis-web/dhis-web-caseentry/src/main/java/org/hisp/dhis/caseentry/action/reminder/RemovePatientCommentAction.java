@@ -27,25 +27,22 @@
 
 package org.hisp.dhis.caseentry.action.reminder;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hisp.dhis.patient.comment.Comment;
+import org.hisp.dhis.patientcomment.PatientComment;
+import org.hisp.dhis.patientcomment.PatientCommentService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version AddCommentAction.java 9:55:04 AM Aug 17, 2012 $
+ * @version RemovePatientCommentAction.java 10:02:15 AM Aug 17, 2012 $
  */
-public class AddCommentAction
+public class RemovePatientCommentAction
     implements Action
 {
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -57,16 +54,23 @@ public class AddCommentAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    private CurrentUserService currentUserService;
+    private PatientCommentService commentService;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setCommentService( PatientCommentService commentService )
     {
-        this.currentUserService = currentUserService;
+        this.commentService = commentService;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
     private Integer programStageInstanceId;
 
@@ -75,34 +79,21 @@ public class AddCommentAction
         this.programStageInstanceId = programStageInstanceId;
     }
 
-    private String commentText;
-
-    public void setCommentText( String commentText )
-    {
-        this.commentText = commentText;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
+        PatientComment patientComment = commentService.getPatientComment( id );
+
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 
-        Set<Comment> comments = programStageInstance.getComments();
-
-        if ( comments == null )
-        {
-            comments = new HashSet<Comment>();
-        }
-
-        Comment comment = new Comment( commentText, currentUserService.getCurrentUsername(), new Date() );
-        comments.add( comment );
+        programStageInstance.getPatientComments().remove( patientComment );
 
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
+        
         return SUCCESS;
     }
 

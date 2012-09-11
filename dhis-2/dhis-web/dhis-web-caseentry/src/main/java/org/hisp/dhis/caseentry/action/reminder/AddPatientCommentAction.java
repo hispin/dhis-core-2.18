@@ -25,89 +25,85 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.comment;
+package org.hisp.dhis.caseentry.action.reminder;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.hisp.dhis.patientcomment.PatientComment;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.user.CurrentUserService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version Comment.java 9:24:52 AM Aug 17, 2012 $
+ * @version AddPatientCommentAction.java 9:55:04 AM Aug 17, 2012 $
  */
-public class Comment
+public class AddPatientCommentAction
+    implements Action
 {
-    private int id;
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer programStageInstanceId;
+
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
+    }
 
     private String commentText;
-
-    private Date createdDate;
-
-    private String creator;
-
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
-
-    public Comment()
-    {
-
-    }
-
-    public Comment( String commentText, String creator, Date createdDate )
-    {
-        this.commentText = commentText;
-        this.creator = creator;
-        this.createdDate = createdDate;
-    }
-
-    // -------------------------------------------------------------------------
-    // Getters/Setters
-    // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getCommentText()
-    {
-        return commentText;
-    }
 
     public void setCommentText( String commentText )
     {
         this.commentText = commentText;
     }
 
-    public Date getCreatedDate()
-    {
-        return createdDate;
-    }
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-    public void setCreatedDate( Date createdDate )
+    public String execute()
     {
-        this.createdDate = createdDate;
-    }
+        ProgramStageInstance programStageInstance = programStageInstanceService
+            .getProgramStageInstance( programStageInstanceId );
 
-    public String getCreator()
-    {
-        return creator;
-    }
+        Set<PatientComment> comments = programStageInstance.getPatientComments();
 
-    public void setCreator( String creator )
-    {
-        this.creator = creator;
-    }
-    
-    @Override
-    public String toString()
-    {
-        return createdDate + " - "  + creator + "_" + commentText;
+        if ( comments == null )
+        {
+            comments = new HashSet<PatientComment>();
+        }
+
+        PatientComment comment = new PatientComment( commentText, currentUserService.getCurrentUsername(), new Date() );
+        comments.add( comment );
+
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+
+        return SUCCESS;
     }
 
 }

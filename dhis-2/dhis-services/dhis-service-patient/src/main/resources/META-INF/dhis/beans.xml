@@ -375,16 +375,16 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
-	<!-- Comment -->
+	<!-- PatientComment -->
 	
-	<bean id="org.hisp.dhis.patient.comment.CommentService"
-		class="org.hisp.dhis.patient.comment.DefaultCommentService">
-		<property name="commentStore" ref="org.hisp.dhis.patient.comment.CommentStore" />
+	<bean id="org.hisp.dhis.patientcomment.PatientCommentService"
+		class="org.hisp.dhis.patientcomment.DefaultPatientCommentService">
+		<property name="patientCommentStore" ref="org.hisp.dhis.patientcomment.PatientCommentStore" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.patient.comment.CommentStore"
+	<bean id="org.hisp.dhis.patientcomment.PatientCommentStore"
 		class="org.hisp.dhis.hibernate.HibernateGenericStore">
-		<property name="clazz" value="org.hisp.dhis.patient.comment.Comment" />
+		<property name="clazz" value="org.hisp.dhis.patientcomment.PatientComment" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

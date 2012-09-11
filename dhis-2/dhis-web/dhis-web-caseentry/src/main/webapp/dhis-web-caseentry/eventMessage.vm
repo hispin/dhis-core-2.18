@@ -12,7 +12,7 @@
 		#set($index = 0)
 		#set( $mark = false )
 		#foreach($programStageInstance in $programStageInstances)
-			#foreach( $comment in $programStageInstance.comments )
+			#foreach( $comment in $programStageInstance.patientComments )
 				#if( $index < 5 )
 					<tr id="comment_$comment.id" #alternate($mark)>
 						<td>$format.formatDate($comment.createdDate)</td>
@@ -43,7 +43,7 @@
 	
 	<tbody id='moreComments' class='hidden'>
 		#foreach($programStageInstance in $programStageInstances)
-			#foreach( $comment in $programStageInstance.comments )
+			#foreach( $comment in $programStageInstance.patientComments )
 				#if( $index >= 5 )
 					<tr id="comment_$comment.id" #alternate($mark)>
 						<td>$format.formatDate($comment.createdDate)</td>

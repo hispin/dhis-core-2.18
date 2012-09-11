@@ -32,9 +32,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.patient.comment.Comment;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -80,7 +80,7 @@ public class GetOutboundSmsListAction
 
     private List<OutboundSms> outboundSms;
 
-    private List<Comment> comments;
+    private List<PatientComment> comments;
 
     private String currentUsername;
 
@@ -115,7 +115,7 @@ public class GetOutboundSmsListAction
         return currentUsername;
     }
 
-    public List<Comment> getComments()
+    public List<PatientComment> getComments()
     {
         return comments;
     }
@@ -147,7 +147,7 @@ public class GetOutboundSmsListAction
 
         outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
 
-        comments = new ArrayList<Comment>( programStageInstance.getComments() );
+        comments = new ArrayList<PatientComment>( programStageInstance.getPatientComments() );
 
         currentUsername = currentUserService.getCurrentUsername();
 
