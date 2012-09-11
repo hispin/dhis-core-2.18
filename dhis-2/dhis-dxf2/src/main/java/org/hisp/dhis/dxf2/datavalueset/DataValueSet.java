@@ -213,7 +213,7 @@ public class DataValueSet
 
     public boolean hasNextDataValue()
     {
-        if(dataValueIterator == null)
+        if ( dataValueIterator == null )
         {
             refreshDataValueIterator();
         }
@@ -223,7 +223,7 @@ public class DataValueSet
 
     public DataValue getNextDataValue()
     {
-        if(dataValueIterator == null)
+        if ( dataValueIterator == null )
         {
             refreshDataValueIterator();
         }
