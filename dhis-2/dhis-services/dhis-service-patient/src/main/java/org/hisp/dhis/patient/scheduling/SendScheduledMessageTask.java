@@ -31,13 +31,13 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_SEND_MESSAGE_GATEWA
 
 import java.util.Collection;
 
-import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.SchedulingProgramObject;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Chau Thu Tran
@@ -60,28 +60,32 @@ public class SendScheduledMessageTask
     {
         this.programStageInstanceService = programStageInstanceService;
     }
+    
+    private JdbcTemplate jdbcTemplate;
 
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     private OutboundSmsService outboundSmsService;
 
     public void setOutboundSmsService( OutboundSmsService outboundSmsService )
     {
         this.outboundSmsService = outboundSmsService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public SendScheduledMessageTask()
-    {
-    }
-    
     public SendScheduledMessageTask( SystemSettingManager systemSettingManager,
-        ProgramStageInstanceService programStageInstanceService, OutboundSmsService outboundSmsService )
+        ProgramStageInstanceService programStageInstanceService, OutboundSmsService outboundSmsService,JdbcTemplate jdbcTemplate )
     {
         this.systemSettingManager = systemSettingManager;
         this.programStageInstanceService = programStageInstanceService;
         this.outboundSmsService = outboundSmsService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -101,10 +105,8 @@ public class SendScheduledMessageTask
             for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
             {
                 String message = schedulingProgramObject.getMessage();
-                 
+
                 String phoneNumber = schedulingProgramObject.getPhoneNumber();
-                
-                ProgramStageInstance programStageInstance = schedulingProgramObject.getProgramStageInstance();
                 
                 if ( phoneNumber != null && !phoneNumber.isEmpty() )
                 {
@@ -112,16 +114,12 @@ public class SendScheduledMessageTask
                     {
                         OutboundSms outboundSms = new OutboundSms( message, phoneNumber );
                         outboundSmsService.sendMessage( outboundSms, gatewayId );
-                        System.out.println("\n\n === \n outboundSms : " + outboundSms.getId() );
-
-//                        List<OutboundSms> outboundSmsList = programStageInstance.getOutboundSms();
-//                        if ( outboundSmsList == null )
-//                        {
-//                            outboundSmsList = new ArrayList<OutboundSms>();
-//                        }
-//                        outboundSmsList.add( outboundSms );
-//                        programStageInstance.setOutboundSms( outboundSmsList );
-//                        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+                        
+                        String sql = " INSERT INTO programstageinstance_outboundsms"
+                            + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
+                            + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + ",1) ";
+                        
+                       jdbcTemplate.execute( sql );
                     }
                     catch ( SmsServiceException e )
                     {

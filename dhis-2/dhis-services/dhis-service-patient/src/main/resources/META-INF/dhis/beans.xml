@@ -405,6 +405,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
  		<constructor-arg ref="org.hisp.dhis.program.ProgramStageInstanceService" />
  		<constructor-arg ref="org.hisp.dhis.setting.SystemSettingManager" />
  		<constructor-arg ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+ 		<constructor-arg ref="jdbcTemplate" />
  	</bean>
  	
  	<bean id="sendMessageScheduled" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" parent="sendMessageScheduledTasks">
