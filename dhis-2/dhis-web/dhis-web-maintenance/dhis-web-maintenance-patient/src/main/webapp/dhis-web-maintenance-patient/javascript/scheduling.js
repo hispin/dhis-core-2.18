@@ -3,7 +3,8 @@ function scheduleTasks()
 	$.post( 'scheduleTasks.action',{
 		execute:false,
 		schedule: true,
-		gateWayId: getFieldValue("gatewayId")
+		gateWayId: getFieldValue("gatewayId"),
+		timeSendingMessage: getFieldValue("timeSendingMessage")
 	}, function( json ){
 		setMessage(i18n_scheduling_is + " " + json.scheduleTasks.status);
 		if( json.scheduleTasks.running ){
@@ -20,6 +21,7 @@ function executeTasks()
 	$.post( 'scheduleTasks.action',{
 		execute:true,
 		schedule: false,
-		gateWayId: getFieldValue("gatewayId")
+		gateWayId: getFieldValue("gatewayId"),
+		timeSendingMessage: getFieldValue("timeSendingMessage")
 	});
 }

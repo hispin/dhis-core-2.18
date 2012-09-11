@@ -11,8 +11,7 @@
 				omitIndicatorsZeroNumeratorDataMart: jQuery( '#omitIndicatorsZeroNumeratorDataMart' ).is( ':checked' ),
 				disableDataEntryWhenCompleted: jQuery( '#disableDataEntryWhenCompleted' ).is( ':checked' ),
 				factorDeviation: getFieldValue( 'factorDeviation' ),
-				completenessOffset: getFieldValue( 'completenessOffset' ),
-				timeSendingMessage: getFieldValue( 'timeSendingMessage' )
+				completenessOffset: getFieldValue( 'completenessOffset' )
 			}, function( json ) {
 				if ( json.response == "success" )
 					setHeaderDelayMessage( json.message );
@@ -122,11 +121,4 @@
 	<input type="text" id="completenessOffset" name="completenessOffset" value="$!completenessOffset"/>
 </p>
 
-
-<!-- days_after_period_timeliness -->
-<h4>$i18n.getString( "time_for_sending_message" )</h4>
-
-<p>
-	<input type="text" id="timeSendingMessage" name="timeSendingMessage" value="$!timeSendingMessage"/>
-</p>
 <p><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></p>

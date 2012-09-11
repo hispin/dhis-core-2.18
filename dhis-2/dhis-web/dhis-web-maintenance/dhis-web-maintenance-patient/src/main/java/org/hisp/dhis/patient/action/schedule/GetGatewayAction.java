@@ -27,9 +27,13 @@
 
 package org.hisp.dhis.patient.action.schedule;
 
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIME_FOR_SENDING_MESSAGE;
+import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_TIME_FOR_SENDING_MESSAGE;
+
 import java.util.Map;
 
 import org.hisp.dhis.patient.scheduling.ProgramSchedulingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.system.scheduling.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +52,13 @@ public class GetGatewayAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
     @Autowired
     private OutboundSmsTransportService transportService;
 
@@ -61,6 +72,13 @@ public class GetGatewayAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+    private String timeSendingMessage;
+
+    public String getTimeSendingMessage()
+    {
+        return timeSendingMessage;
+    }
 
     public Map<String, String> gatewayMap;
 
@@ -91,6 +109,8 @@ public class GetGatewayAction
     public String execute()
         throws Exception
     {
+        timeSendingMessage = (String)systemSettingManager.getSystemSetting( KEY_TIME_FOR_SENDING_MESSAGE, DEFAULT_TIME_FOR_SENDING_MESSAGE );
+        
         gatewayMap = transportService.getGatewayMap();
 
         status = schedulingManager.getTaskStatus();
