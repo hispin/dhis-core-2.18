@@ -92,6 +92,13 @@ public class ScheduleSendMessageTasksAction
         this.gateWayId = gateWayId;
     }
 
+    private String timeSendingMessage;
+
+    public void setTimeSendingMessage( String timeSendingMessage )
+    {
+        this.timeSendingMessage = timeSendingMessage;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -116,6 +123,7 @@ public class ScheduleSendMessageTasksAction
 
     public String execute()
     {
+        systemSettingManager.saveSystemSetting( KEY_TIME_FOR_SENDING_MESSAGE, timeSendingMessage );
         systemSettingManager.saveSystemSetting( KEY_SEND_MESSAGE_GATEWAY, gateWayId );
 
         if ( execute )
@@ -149,7 +157,7 @@ public class ScheduleSendMessageTasksAction
                     minute = "0";
                 }
 
-                String cron = "0 " + Integer.parseInt(minute) + " " + Integer.parseInt( hour ) + " ? * *";
+                String cron = "0 " + Integer.parseInt( minute ) + " " + Integer.parseInt( hour ) + " ? * *";
 
                 keyCronMap.put( KEY_SEND_MESSAGE_SCHEDULED_TASKS, cron );
 

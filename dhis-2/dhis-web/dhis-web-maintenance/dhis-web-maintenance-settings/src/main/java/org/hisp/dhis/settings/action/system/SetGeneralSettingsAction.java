@@ -167,13 +167,6 @@ public class SetGeneralSettingsAction
         this.completenessOffset = completenessOffset;
     }
 
-    private String timeSendingMessage;
-    
-    public void setTimeSendingMessage( String timeSendingMessage )
-    {
-        this.timeSendingMessage = timeSendingMessage;
-    }
-
     private String message;
 
     public String getMessage()

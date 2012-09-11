@@ -2,6 +2,13 @@
 <table>
 	<tbody>
 		<tr>
+			<td>$i18n.getString( "time_for_sending_message" )</td>
+			<td>
+				<input type="text" id="timeSendingMessage" name="timeSendingMessage" value="$!timeSendingMessage" style="width:295px;"/>
+			</td>
+		</tr>
+
+		<tr>
 			<td>$i18n.getString( "gateway_type" )</td>
 			<td>
 				#set( $keys = $!gatewayMap.keySet() )

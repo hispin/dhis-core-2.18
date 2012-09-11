@@ -307,7 +307,7 @@ public class HibernateProgramStageInstanceStore
                 String organisationunitName = rs.getString( "orgunitName" );
                 String programName = rs.getString( "programName" );
                 String programStageName = rs.getString( "programStageName" );
-                String days_since_due_date = rs.getString( "days_since_due_date" );
+                String daysSinceDueDate = rs.getString( "days_since_due_date" );
                 String dueDate = rs.getString( "duedate" );
                 
                 message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
@@ -315,7 +315,7 @@ public class HibernateProgramStageInstanceStore
                 message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
                 message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
                 message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
-                message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, dueDate );
+                message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
                 
                 SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
                 schedulingProgramObject.setProgramStageInstance( get(rs.getInt( "programstageinstanceid" )) );

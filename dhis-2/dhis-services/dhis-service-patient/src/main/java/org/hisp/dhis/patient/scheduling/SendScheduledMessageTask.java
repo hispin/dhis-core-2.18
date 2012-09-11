@@ -29,9 +29,7 @@ package org.hisp.dhis.patient.scheduling;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SEND_MESSAGE_GATEWAY;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
