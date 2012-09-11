@@ -40,6 +40,16 @@
 		</td>
 	</tr>
 	<tr>
+		<td>$i18n.getString("health_worker")</td>
+		<td>
+			#if($!programStageInstance.programInstance.patient.healthWorker )
+				$!programStageInstance.programInstance.patient.healthWorker.name
+			#else
+				[$i18n.getString('none')]
+			#end
+		</td>
+	</tr>
+	<tr>
 		<td>
 			<br><input type='button' value='$i18n.getString("back")' onclick='onClickBackBtn();'>
 			<input type='button' value='$i18n.getString("patient_dashboard")' onclick='javascript:showPatientProgramTracking( "$programStageInstance.programInstance.id" );'>

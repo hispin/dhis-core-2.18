@@ -118,6 +118,18 @@
 		</td>
 	</tr>
 	
+	<tr>
+		<td class='text-column'><label for="healthWorker">$i18n.getString( "health_worker" )</label></td>
+		<td class="input-column">
+			<select id="healthWorkerId" name="healthWorkerId">
+				<option value="">[$i18n.getString("please_select")]</option>
+				#foreach( $healthWorker in $healthWorkers)
+					<option value="$healthWorker.id" #if($patient.healthWorker.id == $healthWorker.id) selected #end>$healthWorker.name</option>
+				#end
+			</select>
+		</td>
+	</tr>
+
 	<!-- UNDERAGE -->
 
 	<tr>

@@ -35,6 +35,7 @@ import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -101,6 +102,8 @@ public class Patient
     private boolean underAge;
 
     private Character dobType;
+    
+    private User healthWorker;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -353,6 +356,16 @@ public class Patient
     public void setPrograms( Set<Program> programs )
     {
         this.programs = programs;
+    }
+
+    public User getHealthWorker()
+    {
+        return healthWorker;
+    }
+
+    public void setHealthWorker( User healthWorker )
+    {
+        this.healthWorker = healthWorker;
     }
 
     public void setRegistrationDate( Date registrationDate )
