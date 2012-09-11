@@ -40,6 +40,16 @@
 											#end
 										</td>
 									</tr>
+									<tr>
+										<td>$i18n.getString("health_worker")</td>
+										<td>
+											#if($!patient.healthWorker )
+												$!patient.healthWorker.name
+											#else
+												[$i18n.getString('none')]
+											#end
+										</td>
+									</tr>
 									#foreach( $identifier in $identifiers )
 									<tr>
 										#if($!identifier.identifierType)

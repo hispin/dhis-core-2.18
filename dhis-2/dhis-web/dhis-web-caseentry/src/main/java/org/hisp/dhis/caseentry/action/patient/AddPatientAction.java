@@ -52,6 +52,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -86,6 +87,8 @@ public class AddPatientAction
 
     private PatientAttributeOptionService patientAttributeOptionService;
 
+    private UserService userService;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -109,6 +112,8 @@ public class AddPatientAction
     private Integer representativeId;
 
     private Integer relationshipTypeId;
+
+    private Integer healthWorkerId;
 
     private String message;
 
@@ -169,6 +174,7 @@ public class AddPatientAction
         patient.setPhoneNumber( phoneNumber );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
+        patient.setHealthWorker( userService.getUser( healthWorkerId ) );
 
         Character dobType = (verified) ? 'V' : 'D';
 
@@ -310,10 +316,20 @@ public class AddPatientAction
     // -----------------------------------------------------------------------------
     // Getter/Setter
     // -----------------------------------------------------------------------------
+    
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
 
     public String getMessage()
     {
         return message;
+    }
+
+    public void setHealthWorkerId( Integer healthWorkerId )
+    {
+        this.healthWorkerId = healthWorkerId;
     }
 
     public void setVerified( Boolean verified )

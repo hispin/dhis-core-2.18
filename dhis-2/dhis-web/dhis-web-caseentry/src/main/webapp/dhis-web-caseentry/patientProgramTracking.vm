@@ -41,7 +41,17 @@
 	<!-- Demographics -->
 	<div id="tab-2">
 		<table class="mainPageTable">
-			#set( $mark = false )
+			<tr>
+				<td>$i18n.getString("health_worker")</td>
+				<td>
+					#if($!programInstance.patient.healthWorker )
+						$!programInstance.patient.healthWorker.name
+					#else
+						[$i18n.getString('none')]
+					#end
+				</td>
+			</tr>
+		#set( $mark = true )
 			#foreach ($identifierType in $identifierTypes) 
 				#set( $identifier = '')
 				#set( $identifier = $identiferMap.get( $identifierType.id ) )
