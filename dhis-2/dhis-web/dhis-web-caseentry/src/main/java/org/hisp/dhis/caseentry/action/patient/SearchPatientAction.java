@@ -160,7 +160,6 @@ public class SearchPatientAction
 
             patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(),
                 paging.getPageSize() ) );
-
         }
         // search patients
         else if ( searchTexts.size() > 0 )

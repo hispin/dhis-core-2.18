@@ -31,7 +31,18 @@
 			#set( $programInstance = $programInstanceMap.get( $patient ) )
 				<tr #alternate( $mark )>
 					<td>
-						<input type='button' class='patient-object' value='$patient.getFullName()' onclick='javascript:showPatientProgramTracking( "$programInstance.id" );' title='$i18n.getString( "patient_dashboard" )'>
+						#set( $value="")
+						#foreach( $identifierType in $programInstance.program.patientIdentifierTypes )
+							#foreach( $pIdentifier in $patient.identifiers )
+								#if($identifierType.id==$pIdentifier.identifierType.id)
+									#set($value=$value + "&#13;&#10;" + $pIdentifier.identifier)
+								#end
+							#end
+						#end
+						#if($value=="")
+							#set($value=$patient.getFullName())
+						#end
+						<input type='button' class='patient-object' value='$value' onclick='javascript:showPatientProgramTracking( "$programInstance.id" );' title='$i18n.getString( "patient_dashboard" )'>
 					</td>
 					<td class='bold' style='cursor:pointer;font-size:25px' onclick="eventFlowToggle($programInstance.id)">
 						<a>&raquo;</a>

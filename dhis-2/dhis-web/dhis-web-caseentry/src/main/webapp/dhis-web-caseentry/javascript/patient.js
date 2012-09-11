@@ -656,8 +656,7 @@ function listAllPatient()
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listPatientDiv';
 	jQuery('#listPatientDiv').load('searchRegistrationPatient.action',{
-			listAll:true,
-			sortPatientAttributeId: getFieldValue('sortPatientAttributeId')
+			listAll:true
 		},
 		function(){
 			statusSearching = 0;
