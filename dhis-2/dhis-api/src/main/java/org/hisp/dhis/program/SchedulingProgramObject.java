@@ -36,7 +36,7 @@ public class SchedulingProgramObject
 {
     private String phoneNumber;
 
-    private ProgramStageInstance programStageInstance;
+    private Integer programStageInstanceId;
 
     private String message;
 
@@ -45,10 +45,10 @@ public class SchedulingProgramObject
 
     }
 
-    public SchedulingProgramObject( String phonenumber, ProgramStageInstance programStageInstance, String message )
+    public SchedulingProgramObject( String phonenumber, Integer programStageInstanceId, String message )
     {
         this.phoneNumber = phonenumber;
-        this.programStageInstance = programStageInstance;
+        this.programStageInstanceId = programStageInstanceId;
         this.message = message;
     }
 
@@ -62,14 +62,14 @@ public class SchedulingProgramObject
         this.phoneNumber = phoneNumber;
     }
 
-    public ProgramStageInstance getProgramStageInstance()
+    public Integer getProgramStageInstanceId()
     {
-        return programStageInstance;
+        return programStageInstanceId;
     }
 
-    public void setProgramStageInstance( ProgramStageInstance programStageInstance )
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
     {
-        this.programStageInstance = programStageInstance;
+        this.programStageInstanceId = programStageInstanceId;
     }
 
     public String getMessage()

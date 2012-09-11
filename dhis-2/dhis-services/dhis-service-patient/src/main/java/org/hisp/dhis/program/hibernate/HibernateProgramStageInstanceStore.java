@@ -319,7 +319,7 @@ public class HibernateProgramStageInstanceStore
             }
 
             SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
-            schedulingProgramObject.setProgramStageInstance( get(rs.getInt( "programstageinstanceid" )) );
+            schedulingProgramObject.setProgramStageInstanceId(rs.getInt( "programstageinstanceid" ) );
             schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
             schedulingProgramObject.setMessage( message );
             
