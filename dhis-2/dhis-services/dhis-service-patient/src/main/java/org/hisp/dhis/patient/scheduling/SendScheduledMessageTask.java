@@ -112,6 +112,7 @@ public class SendScheduledMessageTask
                     {
                         OutboundSms outboundSms = new OutboundSms( message, phoneNumber );
                         outboundSmsService.sendMessage( outboundSms, gatewayId );
+                        System.out.println("\n\n === \n outboundSms : " + outboundSms.getId() );
 
 //                        List<OutboundSms> outboundSmsList = programStageInstance.getOutboundSms();
 //                        if ( outboundSmsList == null )

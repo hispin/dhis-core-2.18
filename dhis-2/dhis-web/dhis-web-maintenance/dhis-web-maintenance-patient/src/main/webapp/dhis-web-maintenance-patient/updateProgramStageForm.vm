@@ -48,10 +48,17 @@
 			</tr>
 			
 			<tr>
-				<td><label>$i18n.getString( "days_allowed_send_message" )</label></td>
+				<td><label>$i18n.getString( "days_after_due_date" )</label></td>
 				<td><input type="text" id="daysAllowedSendMessage" name="daysAllowedSendMessage" class="{validate:{number:true}}" value="$!programStage.daysAllowedSendMessage"/></td>
 			</tr>
 			
+			<tr>
+				<td></td>
+				<td><i>($i18n.getString("negative_numbers") = $i18n.getString( "days_before_due_date" ))</i></td>
+			</tr>
+		
+		<tr><td>&nbsp;</td></tr>
+		
 			<tr>
 				<td>$i18n.getString( "params" )</td>
 				<td>
@@ -68,7 +75,7 @@
 			
 			<tr>
 				<td><label>$i18n.getString( "template_message" )</label></td>
-				<td><textarea id="templateMessage" name="templateMessage">$!programStage.templateMessage</textarea></td>
+				<td><textarea id="templateMessage" name="templateMessage" style="width:320px">$!programStage.templateMessage</textarea></td>
 			</tr>
 			
 			<tr><td>&nbsp;</td></tr>       

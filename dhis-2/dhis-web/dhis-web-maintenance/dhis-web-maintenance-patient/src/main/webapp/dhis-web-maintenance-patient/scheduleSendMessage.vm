@@ -24,7 +24,7 @@
 			<td></td>
 			<td>
 				<input type="button" style="width:150px;" id="scheduledBtn" name="scheduledBtn"
-				#if ( $running )
+				#if ( $running=='true' )
 					value="$i18n.getString( 'stop' )"
 				#else
 					value="$i18n.getString( 'start' )"
