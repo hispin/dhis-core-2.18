@@ -34,8 +34,8 @@
 						#set( $value="")
 						#foreach( $identifierType in $programInstance.program.patientIdentifierTypes )
 							#foreach( $pIdentifier in $patient.identifiers )
-								#if($identifierType.id==$pIdentifier.identifierType.id)
-									#set($value=$value + "&#13;&#10;" + $pIdentifier.identifier)
+								#if($identifierType.personDisplayName=="true" && $identifierType.id==$pIdentifier.identifierType.id)
+									#set($value=$value + $pIdentifier.identifier + "&#13;&#10;" )
 								#end
 							#end
 						#end
