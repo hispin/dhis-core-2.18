@@ -113,7 +113,64 @@ $( document ).ready( function() {
 		text: false
 	}).click(function() {
 		filterSelectList( 'indicatorSelector', $("#indicatorsFilterInput").val() );
+	});	
+
+	$("#dataElementSelector").dhisAjaxSelect({
+		source: "../dhis-web-commons-ajax-json/getDataElementOperands.action",
+		iterator: "operands",
+		handler: function(item) {
+			var option = jQuery("<option />");
+			option.text( item.operandName );
+			option.data( "dataelement-id", item.dataElement.id );
+			option.data( "dataelement-name", item.dataElement.name );
+			option.data( "dataelement-type", item.dataElement.type );
+			option.data( "optioncombo-id", item.categoryOptionCombo.id );
+			option.data( "optioncombo-name", item.categoryOptionCombo.name );
+			option.dblclick(insertDataElement);
+
+			return option;
+		},
+		params: {
+			dataSetId: dataSetId
+		}
 	});
+
+	$("#totalSelector").dhisAjaxSelect({
+		source: "../dhis-web-commons-ajax-json/getDataElements.action",
+		iterator: "dataElements",
+		handler: function(item) {
+			var option = jQuery("<option />");
+			option.text( item.name );
+			option.data( "id", item.id );
+			option.dblclick(insertTotal);
+
+			return option;
+		},
+		params: {
+			dataSetId: dataSetId
+		}
+	});
+
+	$("#indicatorSelector").dhisAjaxSelect({
+		source: "../dhis-web-commons-ajax-json/getIndicators.action",
+		iterator: "indicators",
+		handler: function(item) {
+			var option = jQuery("<option />");
+			option.text( item.name );
+			option.data("id", item.id);
+			option.dblclick(insertIndicator);
+
+			return option;
+		},
+		params: {
+			dataSetId: dataSetId
+		}
+	});
+			
+	if( autoSave == 'true' )
+	{
+		window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
+	}
 });
 
 function showDataElements() {
