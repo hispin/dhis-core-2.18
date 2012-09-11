@@ -96,20 +96,20 @@
 					#end
 				#end
 					
+				#set($value="")
 				#foreach( $identifierType in $identifierTypes)
 					#foreach( $identifier in $patient.identifiers)
 						#if($identifier.identifierType.id==$identifierType.id)
-							<td onclick="javascript:showPatientDashboardForm( '$patient.id' )">
-								$identifier.identifier
-							</td>
+							#set($value=$identifier.identifier)
 						#end
 					#end
 				#end
-				#if( $identifierTypes.size()==0 )
-					<td onclick="javascript:showPatientDashboardForm( '$patient.id' )">
-						$!patient.getFullName()
-					</td>
+				#if($value=="")
+					#set($value=$patient.getFullName())
 				#end
+				<td onclick="javascript:showPatientDashboardForm( '$patient.id' )">
+					$value
+				</td>
 				
 				
 				<td>$i18n.getString($!patient.gender)</td>

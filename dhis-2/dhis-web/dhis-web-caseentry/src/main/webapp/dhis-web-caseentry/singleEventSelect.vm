@@ -8,6 +8,7 @@
 			}
 		});
 		disable('advancedSearchBtn');
+		setFieldValue('isSearchByProgram', true);
 		$("#searchObjectId option[value='prg']").remove();
 	});
 </script>

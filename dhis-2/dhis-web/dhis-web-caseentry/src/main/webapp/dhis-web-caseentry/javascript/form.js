@@ -86,7 +86,12 @@ isAjax = true;
 function listAllPatient()
 {
 	showLoader();
-	jQuery('#contentDiv').load( 'listAllPatients.action',{},
+	jQuery('#contentDiv').load( 'listAllPatients.action',{
+			listAll:false,
+			programIds:	getFieldValue("programIdAddPatient"),
+			searchTexts: "prg_" + getFieldValue("programIdAddPatient"),
+			searchBySelectedOrgunit:true
+		},
 		function()
 		{
 			hideById('dataRecordingSelectDiv');
