@@ -32,49 +32,73 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.interpretation.Interpretation;
-import org.hisp.dhis.message.MessageConversation;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "inbox", namespace = Dxf2Namespace.NAMESPACE )
-public class Inbox
+@JacksonXmlRootElement( localName = "settings", namespace = Dxf2Namespace.NAMESPACE )
+public class Settings
 {
-    private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
+    private String firstName;
 
-    private List<Interpretation> interpretations = new ArrayList<Interpretation>();
+    private String surname;
 
-    public Inbox()
+    private String email;
+
+    private String phoneNumber;
+
+    public Settings()
     {
+    }
+
+    @JsonProperty(required = true)
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName( String firstName )
+    {
+        this.firstName = firstName;
+    }
+
+    @JsonProperty(required = true)
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    public String getSurname()
+    {
+        return surname;
+    }
+
+    public void setSurname( String surname )
+    {
+        this.surname = surname;
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "messageConversations", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "messageConversation", namespace = Dxf2Namespace.NAMESPACE )
-    public List<MessageConversation> getMessageConversations()
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    public String getEmail()
     {
-        return messageConversations;
+        return email;
     }
 
-    public void setMessageConversations( List<MessageConversation> messageConversations )
+    public void setEmail( String email )
     {
-        this.messageConversations = messageConversations;
+        this.email = email;
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "interpretations", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "interpretation", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Interpretation> getInterpretations()
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    public String getPhoneNumber()
     {
-        return interpretations;
+        return phoneNumber;
     }
 
-    public void setInterpretations( List<Interpretation> interpretations )
+    public void setPhoneNumber( String phoneNumber )
     {
-        this.interpretations = interpretations;
+        this.phoneNumber = phoneNumber;
     }
 }

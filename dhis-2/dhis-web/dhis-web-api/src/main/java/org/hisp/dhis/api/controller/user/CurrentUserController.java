@@ -32,12 +32,17 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.api.webdomain.user.Dashboard;
 import org.hisp.dhis.api.webdomain.user.Inbox;
+import org.hisp.dhis.api.webdomain.user.Settings;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.i18n.locale.LocaleManager;
+import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,8 +53,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -64,19 +68,28 @@ public class CurrentUserController
     private CurrentUserService currentUserService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private MessageService messageService;
 
     @Autowired
     private InterpretationService interpretationService;
+
+    @Autowired
+    private ResourceBundleManager resourceBundleManager;
+
+    @Autowired
+    private LocaleManager localeManager;
 
     @RequestMapping
     public String getCurrentUser( @RequestParam Map<String, String> parameters,
       Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        User user = currentUserService.getCurrentUser();
+        User currentUser = currentUserService.getCurrentUser();
 
-        if ( user == null )
+        if ( currentUser == null )
         {
             ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
             return null;
@@ -84,10 +97,10 @@ public class CurrentUserController
 
         if ( options.hasLinks() )
         {
-            WebUtils.generateLinks( user );
+            WebUtils.generateLinks( currentUser );
         }
 
-        model.addAttribute( "model", user );
+        model.addAttribute( "model", currentUser );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
         return StringUtils.uncapitalize( "user" );
@@ -95,12 +108,12 @@ public class CurrentUserController
 
     @RequestMapping( value = "/inbox" )
     public String getInbox( @RequestParam Map<String, String> parameters,
-      Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        User user = currentUserService.getCurrentUser();
+        User currentUser = currentUserService.getCurrentUser();
 
-        if ( user == null )
+        if ( currentUser == null )
         {
             ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
             return null;
@@ -123,12 +136,12 @@ public class CurrentUserController
 
     @RequestMapping( value = "/dashboard" )
     public String getDashboard( @RequestParam Map<String, String> parameters,
-      Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
-        User user = currentUserService.getCurrentUser();
+        User currentUser = currentUserService.getCurrentUser();
 
-        if ( user == null )
+        if ( currentUser == null )
         {
             ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
             return null;
@@ -146,6 +159,76 @@ public class CurrentUserController
         model.addAttribute( "model", dashboard );
         model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
 
-        return StringUtils.uncapitalize( "inbox" );
+        return StringUtils.uncapitalize( "dashboard" );
+    }
+
+    @RequestMapping( value = "/settings" )
+    public String getSettings( @RequestParam Map<String, String> parameters,
+       Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser == null )
+        {
+            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
+            return null;
+        }
+
+        Settings settings = new Settings();
+        settings.setFirstName( currentUser.getFirstName() );
+        settings.setSurname( currentUser.getSurname() );
+        settings.setEmail( currentUser.getEmail() );
+        settings.setPhoneNumber( currentUser.getPhoneNumber() );
+
+        if ( options.hasLinks() )
+        {
+            WebUtils.generateLinks( settings );
+        }
+
+        model.addAttribute( "model", settings );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+
+        return StringUtils.uncapitalize( "settings" );
+    }
+
+    @RequestMapping( value = "/settings", method = RequestMethod.POST, consumes = "application/xml" )
+    public void postSettingsXml(HttpServletResponse response, HttpServletRequest request) throws Exception
+    {
+        Settings settings = JacksonUtils.fromXml( request.getInputStream(), Settings.class );
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser == null )
+        {
+            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
+            return;
+        }
+
+        currentUser.setFirstName( settings.getFirstName() );
+        currentUser.setSurname( settings.getSurname() );
+        currentUser.setEmail( settings.getEmail() );
+        currentUser.setPhoneNumber( settings.getPhoneNumber() );
+
+        userService.updateUser( currentUser );
+    }
+
+    @RequestMapping( value = "/settings", method = RequestMethod.POST, consumes = "application/json" )
+    public void postSettingsJson(HttpServletResponse response, HttpServletRequest request) throws Exception
+    {
+        Settings settings = JacksonUtils.fromJson( request.getInputStream(), Settings.class );
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser == null )
+        {
+            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
+            return;
+        }
+
+        currentUser.setFirstName( settings.getFirstName() );
+        currentUser.setSurname( settings.getSurname() );
+        currentUser.setEmail( settings.getEmail() );
+        currentUser.setPhoneNumber( settings.getPhoneNumber() );
+
+        userService.updateUser( currentUser );
     }
 }
