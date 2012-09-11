@@ -103,37 +103,41 @@ public class WebUtils
     }
 
     @SuppressWarnings( "unchecked" )
-    public static void generateLinks( IdentifiableObject identifiableObject )
+    public static void generateLinks( Object object )
     {
-        identifiableObject.setHref( ContextUtils.getPathWithUid( identifiableObject ) );
+        if(IdentifiableObject.class.isAssignableFrom( object.getClass() ))
+        {
+            IdentifiableObject identifiableObject = (IdentifiableObject) object;
+            identifiableObject.setHref( ContextUtils.getPathWithUid( identifiableObject ) );
+        }
 
-        Collection<Field> fields = ReflectionUtils.collectFields( identifiableObject.getClass(), alwaysTrue );
+        Collection<Field> fields = ReflectionUtils.collectFields( object.getClass(), alwaysTrue );
 
         for ( Field field : fields )
         {
             if ( IdentifiableObject.class.isAssignableFrom( field.getType() ) )
             {
-                Object object = ReflectionUtils.getFieldObject( field, identifiableObject );
+                Object fieldObject = ReflectionUtils.getFieldObject( field, object );
 
-                if ( object != null )
+                if ( fieldObject != null )
                 {
-                    IdentifiableObject idObject = (IdentifiableObject) object;
+                    IdentifiableObject idObject = (IdentifiableObject) fieldObject;
                     idObject.setHref( ContextUtils.getPathWithUid( idObject ) );
                 }
             }
-            else if ( ReflectionUtils.isCollection( field.getName(), identifiableObject, IdentifiableObject.class ) )
+            else if ( ReflectionUtils.isCollection( field.getName(), object, IdentifiableObject.class ) )
             {
-                Object collection = ReflectionUtils.getFieldObject( field, identifiableObject );
+                Object collection = ReflectionUtils.getFieldObject( field, object );
 
                 if ( collection != null )
                 {
-                    Collection<IdentifiableObject> objects = (Collection<IdentifiableObject>) collection;
+                    Collection<IdentifiableObject> collectionObjects = (Collection<IdentifiableObject>) collection;
 
-                    for ( IdentifiableObject object : objects )
+                    for ( IdentifiableObject collectionObject : collectionObjects )
                     {
-                        if ( object != null )
+                        if ( collectionObject != null )
                         {
-                            object.setHref( ContextUtils.getPathWithUid( object ) );
+                            collectionObject.setHref( ContextUtils.getPathWithUid( collectionObject ) );
                         }
                     }
                 }

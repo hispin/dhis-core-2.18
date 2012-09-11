@@ -330,6 +330,8 @@ public class MessageConversation
     // Transient fields
     //-------------------------------------------------------------------------------------------------------
 
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true)
     public boolean isRead()
     {
         return read;
@@ -340,6 +342,8 @@ public class MessageConversation
         this.read = read;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true)
     public boolean isFollowUp()
     {
         return followUp;
