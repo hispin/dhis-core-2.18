@@ -288,21 +288,21 @@ public class HibernateProgramStageInstanceStore
             + "         and p.phonenumber is not NULL and p.phonenumber != '' "
             + "         and ps.templatemessage is not NULL and ps.templatemessage != '' "
             + "         and pg.type=1 and ps.daysallowedsendmessage is not null "
-            + "         and (DATE(now()) - DATE(psi.duedate) ) = ps.daysallowedsendmessage ";
+            + "         and (  DATE(now()) - DATE(psi.duedate) ) = ps.daysallowedsendmessage ";
 
         SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
-
+        
         int cols = rs.getMetaData().getColumnCount();
 
         Collection<SchedulingProgramObject> schedulingProgramObjects = new HashSet<SchedulingProgramObject>();
 
         while ( rs.next() )
         {
-          
+            String message = "";
             for ( int i = 1; i <= cols; i++ )
             {
                  
-                String message = rs.getString( "templatemessage" );
+                message = rs.getString( "templatemessage" );
                 String patientName = rs.getString( "firstName" );
                 String organisationunitName = rs.getString( "orgunitName" );
                 String programName = rs.getString( "programName" );
@@ -310,21 +310,20 @@ public class HibernateProgramStageInstanceStore
                 String daysSinceDueDate = rs.getString( "days_since_due_date" );
                 String dueDate = rs.getString( "duedate" );
                 
-                message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
-                message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
-                message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
-                message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
-                message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
-                message.replaceAll( ProgramStage.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
-                
-                SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
-                schedulingProgramObject.setProgramStageInstance( get(rs.getInt( "programstageinstanceid" )) );
-                schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
-                schedulingProgramObject.setMessage( message );
-                
-                schedulingProgramObjects.add(schedulingProgramObject);
-               
+                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_PATIENT_NAME, patientName );
+                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_PROGRAM_NAME, programName );
+                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_PROGAM_STAGE_NAME, programStageName );
+                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_DUE_DATE, dueDate );
+                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_ORGUNIT_NAME, organisationunitName );
+                message = message.replace( ProgramStage.TEMPLATE_MESSSAGE_DAYS_SINCE_DUE_DATE, daysSinceDueDate );
             }
+
+            SchedulingProgramObject schedulingProgramObject = new SchedulingProgramObject();
+            schedulingProgramObject.setProgramStageInstance( get(rs.getInt( "programstageinstanceid" )) );
+            schedulingProgramObject.setPhoneNumber( rs.getString( "phonenumber" ) );
+            schedulingProgramObject.setMessage( message );
+            
+            schedulingProgramObjects.add(schedulingProgramObject);
         }
 
         /*

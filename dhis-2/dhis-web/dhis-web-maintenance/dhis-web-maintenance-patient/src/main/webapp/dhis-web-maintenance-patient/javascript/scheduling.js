@@ -7,7 +7,7 @@ function scheduleTasks()
 		timeSendingMessage: getFieldValue("timeSendingMessage")
 	}, function( json ){
 		setMessage(i18n_scheduling_is + " " + json.scheduleTasks.status);
-		if( json.scheduleTasks.running ){
+		if( json.scheduleTasks.running=="true" ){
 			setFieldValue('scheduledBtn', i18n_stop );
 		}
 		else{
