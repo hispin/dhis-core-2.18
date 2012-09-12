@@ -41,11 +41,11 @@ public class SDMXDataIn
     extends RouteBuilder
 { 
     // DataInput endpoint
-
     public static final String SDMXDATA_IN = "direct:sdmxDataIn";
     
     // Route description and ID
     public static final String SDMXDATA_IN_DESC = "Internal: SDMX Data to DXF2 Input";
+    
     // IDs beginning with 'internal-*' do not show up in UI
     public static final String SDMXDATA_IN_ID = "internal-sdmx-datain";
     
@@ -53,7 +53,7 @@ public class SDMXDataIn
     public void configure() throws Exception
     {
         DescriptionDefinition desc = new DescriptionDefinition();
-        desc.setText( "SDMX Data to DXF2 Input");
+        desc.setText(SDMXDATA_IN_DESC);
         
         RouteDefinition sdmxDataIn = from(SDMXDATA_IN).
             convertBodyTo( java.lang.String.class, "UTF-8" ).to( "log:org.hisp.dhis.integration?level=INFO").
