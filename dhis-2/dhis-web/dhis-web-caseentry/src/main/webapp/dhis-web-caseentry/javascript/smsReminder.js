@@ -153,7 +153,8 @@ function sendSmsOnePatient()
 		{
 			if ( json.response == "success" ) {
 				showSuccessMessage( json.message );
-				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue('currentDate') + "</td>"
+				var currentTime = date.getHours() + ":" + date.getMinutes();
+				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
 					+ "<td>" + getFieldValue('programStageName') + "</td>"
 					+ "<td>" + getFieldValue('currentUsername') + "</td>"
 					+ "<td>" + getFieldValue('smsMessage') + "</td></tr>");
@@ -185,7 +186,8 @@ function sendSmsToList()
 		success: function( json ){
 			if ( json.response == "success" ) {
 				var programStageName = getFieldValue('programStageName');
-				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + "</td>"
+				var currentTime = date.getHours() + ":" + date.getMinutes();
+				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + " " + currentTime + "</td>"
 						+ "<td>" + programStageName + "</td>"
 						+ "<td>" + getFieldValue( 'smsMessage' ) + "</td></tr>");
 				showSuccessMessage( json.message );
@@ -230,7 +232,9 @@ function addComment( field, programStageInstanceId )
 			}, function ( json )
 			{
 				var programStageName = jQuery("#box_" + programStageInstanceId).attr('programStageName');
-				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + "</td>"
+				var date = new Date();
+				var currentTime = date.getHours() + ":" + date.getMinutes();
+				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + " " + currentTime + "</td>"
 						+ "<td>" + programStageName + "</td>"
 						+ "<td>" + getFieldValue('currentUsername') + "</td>"
 						+ "<td>" + commentText + "</td></tr>");
