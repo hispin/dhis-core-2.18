@@ -49,6 +49,8 @@ function loadGeneratedReport()
 	}, function() 
 	{ 
 		jQuery( "[name=newEncounterBtn]" ).addClass("hidden");
+		jQuery( "[name=newEncounterBtn]" ).removeClass("show-new-event");
+		resize();
 		hideLoader();
 		hideById( 'message' );
 		showById( 'contentDiv' );

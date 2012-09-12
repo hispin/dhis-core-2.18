@@ -195,7 +195,15 @@ public class GetDataRecordsAction
         // List all patients
         if ( listAll )
         {
-            total = patientService.countGetPatientsByOrgUnit( orgunit );
+            if ( program == null )
+            {
+                total = patientService.countGetPatientsByOrgUnit( orgunit );
+            }
+            else
+            {
+                total = patientService.countGetPatientsByOrgUnitProgram( orgunit, program );
+            }
+            
             this.paging = createPaging( total );
 
             patients = new ArrayList<Patient>( patientService.getPatients( orgunit, program, paging.getStartPos(),

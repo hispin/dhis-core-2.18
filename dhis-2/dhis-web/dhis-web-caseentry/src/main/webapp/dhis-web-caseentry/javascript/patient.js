@@ -405,8 +405,8 @@ function saveEnrollment( patientId, programId )
 {
 	var programId = jQuery('#enrollmentDiv [id=programId] option:selected').val();
 	var programName = jQuery('#enrollmentDiv [id=programId] option:selected').text();
-	var dateOfIncident = jQuery('#enrollmentDiv [id=dateOfIncident]').val();
-	var enrollmentDate = jQuery('#enrollmentDiv [id=enrollmentDate]').val();
+	var dateOfIncident = jQuery('#enrollmentDiv [id=dateOfIncidentField]').val();
+	var enrollmentDate = jQuery('#enrollmentDiv [id=enrollmentDateField]').val();
 	
 	jQuery.postJSON( "saveProgramEnrollment.action",
 		{

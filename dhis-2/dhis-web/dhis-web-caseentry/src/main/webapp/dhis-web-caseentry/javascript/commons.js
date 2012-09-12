@@ -620,6 +620,10 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 					+ '></td>');
 				setEventColorStatus( elementId, 3 );
 			}
+			if( jQuery('#tb_' + programInstanceId + " :input" ).length > 4 ){
+				jQuery('#tb_' + programInstanceId + ' .arrow-left').removeClass("hidden");
+				jQuery('#tb_' + programInstanceId + ' .arrow-right').removeClass("hidden");
+			}
 			setInnerHTML('createEventMessage_' + programInstanceId,i18n_create_event_success);
 		});
 }
@@ -832,4 +836,22 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
            
 		element.style.backgroundColor = color;
 	}
+}
+
+function resize(){
+	var width = 400;
+	var w = $(window).width(); 
+	if(jQuery(".patient-object").length > 1 ){
+		width += 150;
+	}
+	if(jQuery(".show-new-event").length > 0 ){
+		width += 150;
+	}
+	
+	$('.stage-flow').css('width', w-width); 
+	$('.table-flow').css('width', w-width); 
+	$('.table-flow tr').each(function(){
+		jQuery(this).find('td').attr("width", "10px");
+		jQuery(this).find('td:last').attr("width", "");
+	});
 }

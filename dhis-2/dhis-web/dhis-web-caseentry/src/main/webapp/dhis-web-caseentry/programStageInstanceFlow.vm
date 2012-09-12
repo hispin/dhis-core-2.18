@@ -1,14 +1,14 @@
-<table id='programStageIdTB_$!programInstance.id' style="width:850px;height:125px;">
+<table id='tb_$!programInstance.id' class="stage-container">
 	<tr>
 		<td>
-			<div class="arrow-left" onclick="moveLeft('flow_$!programInstance.id')">&nbsp;</div>
+			<div #if($programInstance.programStageInstances.size()<4) class="arrow-left hidden"  #else class="arrow-left" #end onclick="moveLeft('flow_$!programInstance.id')">&nbsp;</div>
 		</td>
 		<td>
 			<div id='flow_$!programInstance.id' class="stage-flow">
-				<table class="stage-flow">											
+				<table class="table-flow">											
 					<tr id='programStageIdTR_$!programInstance.id'>
 						#foreach( $programStageInstance in $programInstance.programStageInstances )
-						<td width="5px" style='font-size:25px;' title='$i18n.getString("show_hide_event_flow")'>&rarr;</td>
+						<td style='font-size:25px;'>&rarr;</td>
 						<td>
 							<input type="button" name="programStageBtn"
 								id="ps_$!programStageInstance.id"
@@ -33,10 +33,10 @@
 			</div>
 		</td>
 		<td>
-			<div class="arrow-right" onclick="moveRight('flow_$!programInstance.id')">&nbsp;</div>
+			<div #if($programInstance.programStageInstances.size()<4) class="arrow-right hidden"  #else class="arrow-right" #end onclick="moveRight('flow_$!programInstance.id')">&nbsp;</div>
 		</td>
 		<td>&nbsp;</td>
-		<td>
+		<td align="right">
 			<input type="button" class='patient-object' id="newEncounterBtn_$!programInstance.id" name="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript:showCreateNewEvent('$!programInstance.id');" >
 		</td>
 	</tr>			
@@ -81,9 +81,21 @@
 <script>
 	var i18n_create_new_event = '$encoder.jsEscape( $i18n.getString( "create_new_event" ) , "'" )';
 	var i18n_create_event_success = '$encoder.jsEscape( $i18n.getString( "create_event_success" ) , "'" )';
-	var options = jQuery("#createNewEncounterDiv_$!programInstance.id [id=repeatableProgramStageId] option").length;
-	if( options==0 )
-		jQuery("[name=newEncounterBtn]").addClass("hidden");
+	jQuery(document).ready(	function(){
+		var options = jQuery("#createNewEncounterDiv_$!programInstance.id [id=repeatableProgramStageId] option").length;
+		if( options==0 ){
+			jQuery("[name=newEncounterBtn]").addClass("hidden");
+		}
+		else{
+			jQuery("[name=newEncounterBtn]").addClass("show-new-event");
+		}
+		resize();
+	});
+	
+    $(window).bind('resize', function(e){ 
+		resize();
+	});
+	
 </script>
 
 
