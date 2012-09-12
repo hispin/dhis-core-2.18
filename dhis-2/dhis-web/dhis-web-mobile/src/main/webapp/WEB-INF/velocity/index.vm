@@ -3,8 +3,8 @@
 <head>
 	<title>DHIS2</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="../dhis-web-mobile-resources/css/jquery.mobile.min.css?v=1.1.1" />
-	<script src="../dhis-web-commons/javascripts/jQuery/jquery.min.js?v=1.7.1"></script>
+	<link rel="stylesheet" href="./dhis-web-mobile-resources/css/jquery.mobile.min.css?v=1.1.1" />
+	<script src="./dhis-web-commons/javascripts/jQuery/jquery.min.js?v=1.7.1"></script>
 
     <script>
     $(document).bind('mobileinit',function(){
@@ -12,7 +12,7 @@
     });
     </script>
 
-	<script src="../dhis-web-mobile-resources/js/jquery.mobile.min.js?v=1.1.1"></script>
+	<script src="./dhis-web-mobile-resources/js/jquery.mobile.min.js?v=1.1.1"></script>
 </head>
 <body>
 
