@@ -1549,6 +1549,21 @@ function getRandomNumber()
 	return Math.floor( 100000000 * Math.random() );
 }
 
+function getRandomCode()
+{
+	var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";	
+	var len = 11;	
+	var string = "";
+	
+	for ( var i=0; i < len; i++ ) 
+	{
+		var rnum = Math.floor( Math.random() * chars.length );
+		string += chars.substring( rnum, rnum+1 );
+	}
+	
+	return string;
+}
+
 function getDC()
 {
 	return "_dc=" + getRandomNumber();

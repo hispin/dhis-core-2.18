@@ -12,6 +12,7 @@
     var selected = null;
     var autoSave = ${autoSave};
     var dataSetId = ${dataSet.id};
+    var currentDynamicElementCode = "";
 
 	#if( $dataEntryForm )
     stat = "EDIT";
