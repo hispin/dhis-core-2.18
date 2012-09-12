@@ -89,11 +89,11 @@
     </tr>
     <tr>
       <td>
-	    <button type="button" id="saveButton" name="save" onclick="validateDataEntryForm( false )">$i18n.getString( 'save' )</button>
-        <button type="button" id="saveCloseButton" name="saveClose" onclick="validateDataEntryForm( true )">$i18n.getString( 'save_close' )</button>
-        <button type="button" id="cancelButton" name="cancel" onclick="window.location.href='dataSet.action'">$i18n.getString( 'cancel' )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
-        <button type="button" id="showSelectionBoxButton" name="showselectionbox">$i18n.getString( 'show_selection_box' )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
-        <button type="button" id="delete" name="delete" onclick="removeDataEntryForm( '$dataSet.id', '$dataEntryForm.id', '$dataEntryForm.name' )">$i18n.getString( 'delete' )</button>
+	    <button type="button" id="saveButton" onclick="validateDataEntryForm( false )">$i18n.getString( 'save' )</button>
+        <button type="button" id="saveCloseButton" onclick="validateDataEntryForm( true )">$i18n.getString( 'save_close' )</button>
+        <button type="button" id="cancelButton" onclick="window.location.href='dataSet.action'">$i18n.getString( 'cancel' )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
+        <button type="button" id="insertDataElementsButton" >$i18n.getString( 'insert_data_elements' )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
+        <button type="button" id="delete" onclick="removeDataEntryForm( '$dataSet.id', '$dataEntryForm.id', '$dataEntryForm.name' )">$i18n.getString( 'delete' )</button>
       </td>          
 	  <script>
 		if(stat == "EDIT")

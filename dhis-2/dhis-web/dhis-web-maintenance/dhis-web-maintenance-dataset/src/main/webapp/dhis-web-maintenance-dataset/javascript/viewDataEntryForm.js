@@ -28,16 +28,16 @@ $( document ).ready( function() {
 	$("#indicatorInsertButton").click(insertIndicator);
 
 	$("#selectionDialog").bind("dialogopen", function(event, ui) {
-		$("#showSelectionBoxButton").button("disable");
+		$("#insertDataElementsButton").button("disable");
 	});
 
 	$("#selectionDialog").bind("dialogclose", function(event, ui) {
-		$("#showSelectionBoxButton").button("enable");
+		$("#insertDataElementsButton").button("enable");
 	});
 
-	$("#showSelectionBoxButton").button("disable");
+	$("#insertDataElementsButton").button("disable");
 
-	$("#showSelectionBoxButton").click(function() {
+	$("#insertDataElementsButton").click(function() {
 		$("#selectionDialog").dialog("open");
 	});
 	
@@ -84,7 +84,7 @@ $( document ).ready( function() {
 	$("#insertButton").button("option", "icons", { primary: "ui-icon-plusthick" });
 	$("#saveButton").button("option", "icons", { primary: "ui-icon-disk" });
 	$("#saveCloseButton").button("option", "icons", { primary: "ui-icon-disk" });
-	$("#showSelectionBoxButton").button("option", "icons", { primary: "ui-icon-newwin" });
+	$("#insertDataElementsButton").button("option", "icons", { primary: "ui-icon-newwin" });
 	$("#cancelButton").button("option", "icons", { primary: "ui-icon-cancel" });
 	$("#delete").button("option", "icons", { primary: "ui-icon-trash" });
 	
