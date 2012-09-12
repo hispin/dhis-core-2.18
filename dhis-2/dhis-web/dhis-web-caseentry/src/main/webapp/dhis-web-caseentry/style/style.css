@@ -148,6 +148,7 @@ input.stage-object[type="button"]
 	opacity: 1.0;
 	border: 2px solid;
 	margin: 5px;
+	white-space:normal;
 }
 
 input.stage-object[type="button"]:hover

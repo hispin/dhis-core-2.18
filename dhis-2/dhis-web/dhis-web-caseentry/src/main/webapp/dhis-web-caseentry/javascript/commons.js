@@ -206,21 +206,17 @@ function validateAdvancedSearch()
 	var flag = true;
 	var dateOperator = '';
 	
-	if (getFieldValue('searchByProgramStage') == "true" 
-		&& getFieldValue('programStageAddPatient') == '' 
-		&& jQuery("#searchDiv :input[name=searchText]").val() == ''){
-		flag = false;
-	}
-	
-	jQuery("#searchDiv :input").each( function( i, item )
-	{
-		var elementName = $(this).attr('name');
-		if( elementName=='searchText' && jQuery( item ).val() == '' && !flag)
+	if (getFieldValue('searchByProgramStage') == "false"){
+		jQuery("#searchDiv :input").each( function( i, item )
 		{
-			showWarningMessage( i18n_specify_search_criteria );
-			flag = false;
-		}
-	});
+			var elementName = $(this).attr('name');
+			if( elementName=='searchText' && jQuery( item ).val() == '')
+			{
+				showWarningMessage( i18n_specify_search_criteria );
+				flag = false;
+			}
+		});
+	}
 	
 	if(flag){
 		contentDiv = 'listPatientDiv';
@@ -238,9 +234,8 @@ function getSearchParams()
 		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
 		var startDueDate = getFieldValue('startDueDate');
 		var endDueDate = getFieldValue('endDueDate');
-		params += '&searchTexts=prgst_' + programStageId + '_' + statusEvent 
-				+ '_' + startDueDate + '_' + endDueDate + "_" 
-				+ getFieldValue('orgunitId');
+		params += '&searchTexts=stat_' + getFieldValue('programIdAddPatient') 
+				+ '_' + statusEvent + '_' + startDueDate + '_' + endDueDate;
 	}
 	
 	var flag = false;
@@ -462,37 +457,21 @@ function checkDuplicateCompleted( messageElement, divname )
 function enableBtn(){
 	var programIdAddPatient = getFieldValue('programIdAddPatient');
 	if( programIdAddPatient!='' ){
-		$.getJSON( 'loadReportProgramStages.action', 
-		{
-			programId: getFieldValue('programIdAddPatient')
-		}, function( json )
-		{	
-			clearListById('programStageAddPatient');
-			$('#programStageAddPatient').append("<option value=''>" + i18n_please_select_program_stage + "</option>");
-			for ( i in json.programStages ) 
-			{
-				$('#programStageAddPatient').append("<option value='" + json.programStages[i].id + "'>" + json.programStages[i].name + "</option>");
-			}
-			enable('listPatientBtn');
-			enable('addPatientBtn');
-			enable('advancedSearchBtn');
-			jQuery('#advanced-search :input').each( function( idx, item ){
-				enable(this.id);
-			});
-			jQuery('#programStageAddPatientTR [name=statusEvent]').attr("disabled", true);
+		enable('listPatientBtn');
+		enable('addPatientBtn');
+		enable('advancedSearchBtn');
+		jQuery('#advanced-search :input').each( function( idx, item ){
+			enable(this.id);
 		});
 	}
 	else
 	{
-		
-			
-			disable('listPatientBtn');
-			disable('addPatientBtn');
-			disable('advancedSearchBtn');
-			jQuery('#advanced-search :input').each( function( idx, item ){
-				disable(this.id);
-			});	
-		
+		disable('listPatientBtn');
+		disable('addPatientBtn');
+		disable('advancedSearchBtn');
+		jQuery('#advanced-search :input').each( function( idx, item ){
+			disable(this.id);
+		});
 	}
 }
 
