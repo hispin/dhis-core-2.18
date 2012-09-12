@@ -45,7 +45,7 @@
 					<input type="button" class='large-button' id='listBtn' value="$i18n.getString( 'list_all_events' )" onclick='validateSearchEvents( true );'>
 				</td>
 				<td>
-					<input type="button" class='large-button' id='addBtn' value='$i18n.getString( "add_new" )' onclick="showAddEventForm();">
+					<input type="button" class='large-button' id='addBtn' value='$i18n.getString( "add_new" )' onclick="setFieldValue('isShowEventList', true);showAddEventForm();">
 				</td>
 				<td>
 					<input type="button" class='large-button' id='removeBtn' value='$i18n.getString( "remove_empty_events" )' onclick="removeEmptyEvents();">
@@ -79,7 +79,7 @@
 				<td><span id="reportDateDescriptionField"></span>$i18n.getString('from_to')</td>
 				<td><input type="text" id='startDate' name='startDate' style='width:240px'></td>
 				<td><input type="text" id='endDate' name='endDate' style='width:240px'></td>
-				<td><input type="button" id='searchBtn' value='$i18n.getString( "search" )' onclick='validateSearchEvents( false )'></td>
+				<td><input type="button" id='searchBtn' value='$i18n.getString( "search" )' onclick='setFieldValue("isShowEventList", false);validateSearchEvents( false )'></td>
 			</tr>
 			<tr>
 				<td valign="top">$i18n.getString('data_elements')</td>
