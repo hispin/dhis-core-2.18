@@ -15,8 +15,8 @@
 		#foreach($programStageInstance in $programStageInstances)
 			#foreach( $comment in $programStageInstance.patientComments )
 				#if( $index < 5 )
-					<tr id="comment_$comment.id" #alternate($mark)>
-						<td>$format.formatDate($comment.createdDate)</td>
+					<tr id="comment_$comment.id">
+						<td>$format.formatDateTime($comment.createdDate)</td>
 						<td>$programStageInstance.programStage.name</td>
 						<td>$comment.creator</td>
 						<td>$comment.commentText</td>
@@ -29,8 +29,8 @@
 		#foreach($programStageInstance in $programStageInstances)
 			#foreach( $sms in $programStageInstance.outboundSms )
 				#if( $index < 5 )
-					<tr id="tr${sms.id}" #alternate($mark) >
-						<td>$format.formatDate($!sms.date)</td>
+					<tr id="tr${sms.id}">
+						<td>$format.formatDateTime($!sms.date)</td>
 						<td> $programStageInstance.programStage.name</td>
 						<td>$sms.sender</td>
 						<td>$sms.message</td>
@@ -42,8 +42,8 @@
 		#foreach($programStageInstance in $programStageInstances)
 			#foreach( $comment in $programStageInstance.patientComments )
 				#if( $index >= 5 )
-					<tr id="comment_$comment.id" #alternate($mark) class="hidden">
-						<td>$format.formatDate($comment.createdDate)</td>
+					<tr id="comment_$comment.id" class="hidden">
+						<td>$format.formatDateTime($comment.createdDate)</td>
 						<td>$programStageInstance.programStage.name</td>
 						<td>$comment.creator</td>
 						<td>$comment.commentText</td>
@@ -56,8 +56,8 @@
 		#foreach($programStageInstance in $programStageInstances)
 			#foreach( $sms in $programStageInstance.outboundSms )
 				#if( $index >= 5 )
-					<tr id="tr${sms.id}" #alternate($mark) >
-						<td>$format.formatDate($!sms.date)</td>
+					<tr id="tr${sms.id}"  class='hidden'>
+						<td>$format.formatDateTime($!sms.date)</td>
 						<td>$programStageInstance.programStage.name</td>
 						<td>$sms.sender</td>
 						<td>$sms.message</td>
@@ -68,3 +68,8 @@
 		#end
 	</tbody>
 </table>
+
+<br>
+#set($count = $programStageInstance.patientComments.size() + $programStageInstance.outboundSms.size() )
+<input type='button' id="showCommentBtn" name="showCommentBtn" value='$i18n.getString("show_hide_more")' #if($count<=5) class='hidden' #end onclick='commentDivToggle(false);'>
+<input type='button' id="hideCommentBtn" name="hideCommentBtn" value='$i18n.getString("show_hide_more")' class='hidden' onclick='commentDivToggle(true);'>

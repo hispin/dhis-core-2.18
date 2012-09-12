@@ -133,7 +133,7 @@
 				#foreach( $comment in $comments )
 					#if( $index < 5 )
 						<tr id="comment_$comment.id">
-							<td>$format.formatDate($comment.createdDate)</td>
+							<td>$format.formatDateTime($comment.createdDate)</td>
 							<td>$programStageInstance.programStage.name</td>
 							<td>$comment.creator</td>
 							<td>$comment.commentText</td>
@@ -145,7 +145,7 @@
 				#foreach( $sms in $outboundSms )
 					#if( $index < 5 )
 						<tr id="tr${sms.id}" >
-							<td>$format.formatDate($!sms.date)</td>
+							<td>$format.formatDateTime($!sms.date)</td>
 							<td>$programStageInstance.programStage.name</td>
 							<td>$sms.sender</td>
 							<td>$sms.message</td>
@@ -155,7 +155,7 @@
 				#foreach( $comment in $comments )
 					#if( $index >= 5 )
 						<tr id="comment_$comment.id" class='hidden'>
-							<td>$format.formatDate($comment.createdDate)</td>
+							<td>$format.formatDateTime($comment.createdDate)</td>
 							<td>$programStageInstance.programStage.name</td>
 							<td>$comment.creator</td>
 							<td>$comment.commentText</td>
@@ -166,7 +166,7 @@
 				#foreach( $sms in $outboundSms )
 					#if( $index >= 5 )
 						<tr id="tr${sms.id}" class='hidden' >
-							<td>$format.formatDate($!sms.date)</td>
+							<td>$format.formatDateTime($!sms.date)</td>
 							<td>$programStageInstance.programStage.name</td>
 							<td>$sms.sender</td>
 							<td>$sms.message</td>
