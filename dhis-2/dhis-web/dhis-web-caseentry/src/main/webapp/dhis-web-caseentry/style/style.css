@@ -140,40 +140,6 @@ input.criteria
 	margin-right: 5px;
 }
 
-input.stage-object[type="button"]
-{
-	width: 120px;
-	height: 60px;
-    cursor: pointer;
-	opacity: 1.0;
-	border: 2px solid;
-	margin: 5px;
-	white-space:normal;
-}
-
-input.stage-object[type="button"]:hover
-{
-	border: 5px solid;
-}
-
-input.stage-object-selected[type="button"]
-{
-    border: 5px solid;
-}
-
-input.patient-object[type="button"]
-{
-	width: 130px;
-	height: 60px;
-    white-space: normal;
-	border-color: #bbbbbb;
-	background-color: #ddd;
-	cursor: pointer;
-	border: 1px solid #aaa;
-	margin: 5px;
-	border-radius: 2px;
-}
-
 input.move-button
 {
 	width: 20px;
@@ -365,13 +331,21 @@ div.event-flow-dashboard
 
 .stage-container
 {
-	width:850px;
+	width:100%;
 	height:125px;
 }
 
 .stage-flow
 {
-	width:750px;
+	width:90%;
+	height:145px;
+	overflow-x:hidden;
+	overflow-y:hidden;
+}
+
+.table-flow
+{
+	width:100%;
 	height:145px;
 	overflow-x:hidden;
 	overflow-y:hidden;
@@ -393,4 +367,38 @@ div.event-flow-dashboard
 	border-bottom: 30px solid transparent; 
 	border-right:30px solid #d0d0d0; 
 	cursor:pointer;
+}
+
+input.stage-object[type="button"]
+{
+	width: 120px;
+	height: 60px;
+    cursor: pointer;
+	opacity: 1.0;
+	border: 2px solid;
+	margin: 5px;
+	white-space:normal;
+}
+
+input.stage-object[type="button"]:hover
+{
+	border: 5px solid;
+}
+
+input.stage-object-selected[type="button"]
+{
+    border: 5px solid;
+}
+
+input.patient-object[type="button"]
+{
+	width: 130px;
+	height: 60px;
+    white-space: normal;
+	border-color: #bbbbbb;
+	background-color: #ddd;
+	cursor: pointer;
+	border: 1px solid #aaa;
+	margin: 5px;
+	border-radius: 2px;
 }

@@ -271,14 +271,13 @@ function eventFlowToggle( programInstanceId )
 			jQuery(this).removeClass("stage-object-selected");
 		});
 	
-	jQuery("#tb_" + programInstanceId + " .arrow-left").toggle();
-	jQuery("#tb_" + programInstanceId + " .arrow-right").toggle();
 	if( jQuery("#tb_" + programInstanceId + " .searched").length>0)
 	{	
 		var id = jQuery("#tb_" + programInstanceId + " .searched").attr('id').split('_')[1];
 		showById("arrow_" + id);
 		showById("td_" + id );
 	}
+	resize();
 }
 
 // --------------------------------------------------------------------
