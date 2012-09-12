@@ -171,7 +171,10 @@ public class UpdatePatientAction
         patient.setGender( gender );
         patient.setIsDead( isDead );
         patient.setPhoneNumber( phoneNumber );
-        patient.setHealthWorker( userService.getUser( healthWorkerId ) );
+        if ( healthWorkerId != null )
+        {
+            patient.setHealthWorker( userService.getUser( healthWorkerId ) );
+        }
 
         if ( deathDate != null )
         {

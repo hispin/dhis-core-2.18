@@ -5,6 +5,7 @@
 	<tr>
 		<th>$i18n.getString( "date" )</th>
 		<th>$i18n.getString( "program_stage" )</th>
+		<th>$i18n.getString( "sender" )</th>
 		<th>$i18n.getString( "message" )</th>
 	</tr>
 	
@@ -17,7 +18,8 @@
 					<tr id="comment_$comment.id" #alternate($mark)>
 						<td>$format.formatDate($comment.createdDate)</td>
 						<td>$programStageInstance.programStage.name</td>
-						<td>$comment.creator - $comment.commentText</td>
+						<td>$comment.creator</td>
+						<td>$comment.commentText</td>
 						#set($index = $index + 1)
 						#set( $mark = !$mark)
 					</tr>
@@ -30,6 +32,7 @@
 					<tr id="tr${sms.id}" #alternate($mark) >
 						<td>$format.formatDate($!sms.date)</td>
 						<td> $programStageInstance.programStage.name</td>
+						<td>$sms.sender</td>
 						<td>$sms.message</td>
 						#set( $mark = !$mark)
 					</tr>
@@ -41,8 +44,9 @@
 				#if( $index >= 5 )
 					<tr id="comment_$comment.id" #alternate($mark) class="hidden">
 						<td>$format.formatDate($comment.createdDate)</td>
-						<td> $programStageInstance.programStage.name</td>
-						<td>$comment.creator - $comment.commentText</td>
+						<td>$programStageInstance.programStage.name</td>
+						<td>$comment.creator</td>
+						<td>$comment.commentText</td>
 						#set( $mark = !$mark)
 					</tr>
 				#end
@@ -55,6 +59,7 @@
 					<tr id="tr${sms.id}" #alternate($mark) >
 						<td>$format.formatDate($!sms.date)</td>
 						<td>$programStageInstance.programStage.name</td>
+						<td>$sms.sender</td>
 						<td>$sms.message</td>
 						#set( $mark = !$mark)
 					</tr>

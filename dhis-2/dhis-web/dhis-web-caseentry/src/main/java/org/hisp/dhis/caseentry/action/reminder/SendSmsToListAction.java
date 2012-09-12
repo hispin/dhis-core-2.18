@@ -41,6 +41,7 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -64,6 +65,8 @@ public class SendSmsToListAction
 
     private ProgramStageInstanceService programStageInstanceService;
 
+    private CurrentUserService currentUserService;
+
     private I18n i18n;
 
     // -------------------------------------------------------------------------
@@ -77,6 +80,11 @@ public class SendSmsToListAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     public void setOutboundSmsService( OutboundSmsService outboundSmsService )
     {
@@ -116,7 +124,7 @@ public class SendSmsToListAction
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-    
+
     private String gatewayId;
 
     public void setGatewayId( String gatewayId )
@@ -159,6 +167,7 @@ public class SendSmsToListAction
             OutboundSms outboundSms = new OutboundSms();
             outboundSms.setMessage( msg );
             outboundSms.setRecipients( phoneNumberList );
+            outboundSms.setSender( currentUserService.getCurrentUsername() );
 
             outboundSmsService.sendMessage( outboundSms, gatewayId );
 
@@ -173,5 +182,5 @@ public class SendSmsToListAction
 
         return SUCCESS;
     }
-    
+
 }

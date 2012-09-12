@@ -174,8 +174,11 @@ public class AddPatientAction
         patient.setPhoneNumber( phoneNumber );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
-        patient.setHealthWorker( userService.getUser( healthWorkerId ) );
-
+        if ( healthWorkerId != null )
+        {
+            patient.setHealthWorker( userService.getUser( healthWorkerId ) );
+        }
+        
         Character dobType = (verified) ? 'V' : 'D';
 
         if ( !verified && age != null )
@@ -316,7 +319,7 @@ public class AddPatientAction
     // -----------------------------------------------------------------------------
     // Getter/Setter
     // -----------------------------------------------------------------------------
-    
+
     public void setUserService( UserService userService )
     {
         this.userService = userService;
