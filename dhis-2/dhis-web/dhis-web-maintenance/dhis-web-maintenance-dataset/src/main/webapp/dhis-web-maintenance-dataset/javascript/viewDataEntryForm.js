@@ -1,9 +1,12 @@
+
+var currentDynamicElementCode = "";
+
 $( document ).ready( function() {
 	
 	leftBar.hideAnimated();
 
 	$("#selectionDialog").dialog({
-		minWidth: 555,
+		minWidth: 595,
 		minHeight: 263,
 		position: [($("body").width() - 555) - 50, 50],
 		zIndex: 10000
@@ -14,18 +17,20 @@ $( document ).ready( function() {
 		var dataElementSelector = $("#dataElementSelector");
 		var totalSelector = $("#totalSelector");
 		var indicatorSelector = $("#indicatorSelector");
+		var dynamicElementSelector = $("#dynamicElementSelector");
 
 		dataElementSelector.height( dialog.height() - 97 );
 		totalSelector.height( dialog.height() - 97 );
 		indicatorSelector.height( dialog.height() - 97 );
+		dynamicElementSelector.height( dialog.height() - 97 );
 	});
 
 	$(":button").button();
 	$(":submit").button();
 
-	$("#dataElementInsertButton").click(insertDataElement);
-	$("#totalInsertButton").click(insertTotal);
-	$("#indicatorInsertButton").click(insertIndicator);
+	//$("#dataElementInsertButton").click(insertDataElement); //TODO remove?
+	//$("#totalInsertButton").click(insertTotal); //TODO remove?
+	//$("#indicatorInsertButton").click(insertIndicator); //TODO remove?
 
 	$("#selectionDialog").bind("dialogopen", function(event, ui) {
 		$("#insertDataElementsButton").button("disable");
@@ -41,6 +46,11 @@ $( document ).ready( function() {
 		$("#selectionDialog").dialog("open");
 	});
 	
+	$("#startButton").button("option", "icons", { primary: "ui-icon-triangle-1-e" });
+	$("#startButton").click( showDynamicElementInsert );
+	$("#doneButton").click( showDynamicElementSelect );
+	$("#insertDynamicElementButton").button("option", "icons", { primary: "ui-icon-plusthick" });
+	
 	showDataElements();
 
 	$("#dataElementsButton").addClass("ui-state-active2");
@@ -49,6 +59,7 @@ $( document ).ready( function() {
 		$("#dataElementsButton").addClass("ui-state-active2");
 		$("#totalsButton").removeClass("ui-state-active2");
 		$("#indicatorsButton").removeClass("ui-state-active2");
+		$("#dynamicElementsButton").removeClass("ui-state-active2");
 
 		showDataElements();
 	});
@@ -57,6 +68,7 @@ $( document ).ready( function() {
 		$("#dataElementsButton").removeClass("ui-state-active2");
 		$("#totalsButton").addClass("ui-state-active2");
 		$("#indicatorsButton").removeClass("ui-state-active2");
+		$("#dynamicElementsButton").removeClass("ui-state-active2");
 		
 		showTotals();
 	});
@@ -65,8 +77,18 @@ $( document ).ready( function() {
 		$("#dataElementsButton").removeClass("ui-state-active2");
 		$("#totalsButton").removeClass("ui-state-active2");
 		$("#indicatorsButton").addClass("ui-state-active2");
+		$("#dynamicElementsButton").removeClass("ui-state-active2");
 
 		showIndicators();
+	});
+
+	$("#dynamicElementsButton").click(function() {	
+		$("#dataElementsButton").removeClass("ui-state-active2");
+		$("#totalsButton").removeClass("ui-state-active2");
+		$("#indicatorsButton").removeClass("ui-state-active2");
+		$("#dynamicElementsButton").addClass("ui-state-active2");
+
+		showDynamicElements();
 	});
 
 	$("#insertButton").click(function() {
@@ -76,8 +98,11 @@ $( document ).ready( function() {
 		else if( $("#totalsTab").is(":visible") ) {
 			insertTotal();
 		}
-		else {
+		else if( $("#indicatorsTab").is(":visible") ) {
 			insertIndicator();
+		}
+		else if( $("#dynamicElementsTab").is(":visible") ) {
+			insertDynamicElement();
 		}
 	});
 
@@ -166,7 +191,9 @@ $( document ).ready( function() {
 			dataSetId: dataSetId
 		}
 	});
-			
+	
+	$("#dynamicElementSelector").dblclick(insertDynamicElement);
+	
 	if( autoSave == 'true' )
 	{
 		window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
@@ -180,6 +207,7 @@ function showDataElements() {
 	$("#totalsFilter").hide();
 	$("#indicatorsTab").hide();
 	$("#indicatorsFilter").hide();
+	$("#dynamicElementsTab").hide();
 }
 
 function showTotals() {
@@ -189,6 +217,7 @@ function showTotals() {
 	$("#totalsFilter").show();
 	$("#indicatorsTab").hide();
 	$("#indicatorsFilter").hide();
+	$("#dynamicElementsTab").hide();
 }
 
 function showIndicators() {
@@ -198,6 +227,17 @@ function showIndicators() {
 	$("#totalsFilter").hide();
 	$("#indicatorsTab").show();
 	$("#indicatorsFilter").show();
+	$("#dynamicElementsTab").hide();
+}
+
+function showDynamicElements() {
+	$("#dataElementsTab").hide();
+	$("#dataElementsFilter").hide();
+	$("#totalsTab").hide();
+	$("#totalsFilter").hide();
+	$("#indicatorsTab").hide();
+	$("#indicatorsFilter").hide();
+	$("#dynamicElementsTab").show();	
 }
 
 function filterSelectList( select_id, filter )
@@ -325,6 +365,48 @@ function insertIndicator() {
 	} else {
 		setHeaderDelayMessage( i18n_no_indicator_was_selected );
 	}
+}
+
+function insertDynamicElement() {
+	var oEditor = $("#designTextarea").ckeditorGet();
+	var $option = $("#dynamicElementSelector option:selected");
+	
+	if( $option.length !== 0 ) {
+		var categoryOptionComboId = $option.val();
+		var categoryOptionComboName = $option.text();
+		var id = currentDynamicElementCode + "-dynamic";
+		
+		var template = '<input id="' + id + '" categoryoptioncomboid="' + categoryOptionComboId + '" value="[ ' + categoryOptionComboName + ' ]" style="width:7em;text-align:center;" />';
+		oEditor.insertHtml( template );
+	}
+}
+
+function showDynamicElementSelect() {
+	$("#dynamicElementSelect").show();
+	$("#dynamicElementInsert").hide();	
+}
+
+/**
+ * A unique code is used to associate the data element drop down with the input
+ * fields for each category option combo. The format for input field keys is:
+ * 
+ * <unique code>-<category option combo uid>-dynamic
+ */
+function showDynamicElementInsert() {
+	$("#dynamicElementSelect").hide();
+	$("#dynamicElementInsert").show();
+	
+	currentDynamicElementCode = getRandomCode();
+	
+	var categoryComboUid = $("#categoryComboSelect").val();
+	
+	clearListById( "dynamicElementSelector" );
+	
+	var optionCombos = $.getJSON( "../api/categoryCombos/" + categoryComboUid + ".json", function( json ) {
+		$.each( json.categoryOptionCombo, function( index, value ) {
+			addOptionById( "dynamicElementSelector", value.id, value.name );
+		} );
+	} );	
 }
 
 function checkExisted(id) {
