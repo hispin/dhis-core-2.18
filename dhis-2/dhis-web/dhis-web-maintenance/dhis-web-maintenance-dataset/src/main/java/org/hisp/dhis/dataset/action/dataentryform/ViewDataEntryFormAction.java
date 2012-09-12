@@ -33,6 +33,8 @@ import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
@@ -74,6 +76,13 @@ public class ViewDataEntryFormAction
         this.dataEntryFormService = dataEntryFormService;
     }
     
+    private DataElementCategoryService categoryService;
+    
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -127,6 +136,13 @@ public class ViewDataEntryFormAction
         return dataElementList;
     }
 
+    private List<DataElementCategoryCombo> categoryCombos;
+
+    public List<DataElementCategoryCombo> getCategoryCombos()
+    {
+        return categoryCombos;
+    }
+
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -145,8 +161,12 @@ public class ViewDataEntryFormAction
         
         dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-        Collections.sort( dataElementList, new IdentifiableObjectNameComparator() );
+        Collections.sort( dataElementList, IdentifiableObjectNameComparator.INSTANCE );
 
+        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
+        
+        Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );
+        
         return SUCCESS;
     }
 }

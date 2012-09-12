@@ -262,6 +262,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataEntryFormService">
       <ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
     </property>
+    <property name="categoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    </property>
   </bean>
 
   <bean id="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction" class="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction"
