@@ -31,5 +31,8 @@
 
 <h2>$i18n.getString( "tracking" )&nbsp;</h2>
 <ul>
+    <li><a href="activityPlanSelect.action">$i18n.getString( "activity_plan" )</a></li>     
+</ul>
+<ul>
     <li><a href="smsReminderSelect.action">$i18n.getString( "program_tracking" )</a></li>     
 </ul>

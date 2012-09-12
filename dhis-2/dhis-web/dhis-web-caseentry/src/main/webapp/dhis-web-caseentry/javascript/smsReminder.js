@@ -33,11 +33,8 @@ function listAllPatient()
 	var m = date.getMonth();
 	var y1 = date.getFullYear() - 100;
 	var y2 = date.getFullYear();
-	jQuery( '#currentDate' ).datepicker( "setDate" , new Date(y1, m, d) );
-	var startDate = jQuery( '#currentDate' ).val();
-	jQuery( '#currentDate' ).datepicker( "setDate" , new Date(y2, m, d) ).val();
-	var endDate = jQuery( '#currentDate' ).val();
-	jQuery( '#currentDate' ).val(getCurrentDate());
+	var startDate = jQuery.datepicker.formatDate( dateFormat, new Date(y1, m, d) );
+	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y2, m, d) );
 	
 	var programId = getFieldValue('programIdAddPatient');
 	var searchTexts = "stat_" + programId + "_4_" + startDate + "_" + endDate 
