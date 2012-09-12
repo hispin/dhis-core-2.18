@@ -985,6 +985,26 @@
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
+		
+		<!-- Activity plan -->
+
+		<action name="activityPlanSelect"
+			class="org.hisp.dhis.caseentry.action.caseentry.MultiDataEntrySelectAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-caseentry/activityPlanSelect.vm</param>
+			<param name="menu">/dhis-web-caseentry/trackingMenu.vm</param>
+			<param name="stylesheets">style/style.css</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,javascript/activityPlan.js</param>
+			<param name="requiredAuthorities">F_ACTIVITY_PLAN</param>
+		</action>
+
+		<action name="getActivityPlanRecords"
+			class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/activityPlanRecords.vm</param>
+			<param name="stylesheets">style/style.css</param>
+		</action>
 
 	</package>
 </struts>

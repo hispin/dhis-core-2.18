@@ -274,11 +274,22 @@ function getSearchParams()
 				}
 			}
 		})
+		
+		if( getFieldValue('searchByProgramStage') == "true" 
+			&& byId('searchBySelectedOrgunit').checked){
+			p += "_" + getFieldValue('orgunitId');
+		}
 		params += p;
 	});
 		
 	params += '&listAll=false';
-	params += '&searchBySelectedOrgunit=' + byId('searchBySelectedOrgunit').checked;
+	if( getFieldValue('searchByProgramStage') == "false"){
+		params += '&searchBySelectedOrgunit=' + byId('searchBySelectedOrgunit').checked;
+	}
+	else
+	{
+		params += '&searchBySelectedOrgunit=false';
+	}
 	params += programIds;
 	
 	return params;

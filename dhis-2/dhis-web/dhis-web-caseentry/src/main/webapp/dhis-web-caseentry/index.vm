@@ -9,7 +9,7 @@
     #introListImgItem( "anonymousRegistration.action" "anonymous_events" "dataentry" )
 	#introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
 	#introListImgItem( "app/index.html" "tabular_report" "summaryreport" )
-	<!-- #introListImgItem( "visitplan.action" "visit_plan" "visitplan" ) -->
     #introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )
+	#introListImgItem( "activityPlanSelect.action" "activity_plan" "attribute" )
 	#introListImgItem( "smsReminderSelect.action" "program_tracking" "attribute" )
 </ul>
