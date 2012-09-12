@@ -40,7 +40,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>$i18n.getString("health_worker")</td>
+		<td class="bold">$i18n.getString("health_worker")</td>
 		<td>
 			#if($!programStageInstance.programInstance.patient.healthWorker )
 				$!programStageInstance.programInstance.patient.healthWorker.name
@@ -129,59 +129,51 @@
 			
 			<tbody id='commentTB'>
 				#set($index = 0)
-				#set( $mark = false )
 				#foreach( $comment in $comments )
 					#if( $index < 5 )
-						<tr id="comment_$comment.id" #alternate($mark)>
+						<tr id="comment_$comment.id">
 							<td>$format.formatDate($comment.createdDate)</td>
 							<td>$programStageInstance.programStage.name</td>
 							<td>$comment.creator - $comment.commentText</td>
 							#set($index = $index + 1)
-							#set( $mark = !$mark)
 						</tr>
 					#end
 				#end
-			</tbody>	
-			
-			<tbody id='smsManagementList'>
-				  #foreach( $sms in $outboundSms )
+				
+				#foreach( $sms in $outboundSms )
 					#if( $index < 5 )
-						<tr id="tr${sms.id}" #alternate($mark) >
+						<tr id="tr${sms.id}" >
 							<td>$format.formatDate($!sms.date)</td>
 							<td> $programStageInstance.programStage.name</td>
 							<td>$sms.message</td>
-							#set( $mark = !$mark)
 						</tr>
 					#end
 				#end
-			</tbody>
-			
-			<tbody id='moreComments' class='hidden'>
 				#foreach( $comment in $comments )
 					#if( $index >= 5 )
-						<tr id="comment_$comment.id" #alternate($mark)>
+						<tr id="comment_$comment.id" class='hidden'>
 							<td>$format.formatDate($comment.createdDate)</td>
 							<td> $programStageInstance.programStage.name</td>
 							<td>$comment.creator - $comment.commentText</td>
-							#set( $mark = !$mark)
 						</tr>
 					#end
 				#end	
 				
 				#foreach( $sms in $outboundSms )
 					#if( $index >= 5 )
-						<tr id="tr${sms.id}" #alternate($mark) >
+						<tr id="tr${sms.id}" class='hidden' >
 							<td>$format.formatDate($!sms.date)</td>
 							<td>$programStageInstance.programStage.name</td>
 							<td>$sms.message</td>
-							#set( $mark = !$mark)
 						</tr>
 					#end
 				#end
 			</tbody>
 		</table>
 		<br>
-		<input type='button' value='$i18n.getString("show_hide_more")' onclick='jQuery("#moreComments").toggle();'>
+		#set($count = $comments.size() + $outboundSms.size() )
+		<input type='button' id="showCommentBtn" name="showCommentBtn" value='$i18n.getString("show_hide_more")' #if($count<=5) class='hidden' #end onclick='commentDivToggle(false);'>
+		<input type='button' id="hideCommentBtn" name="hideCommentBtn" value='$i18n.getString("show_hide_more")' class='hidden' onclick='commentDivToggle(true);'>
 	</div>
 	
 	<div id="tab-3">

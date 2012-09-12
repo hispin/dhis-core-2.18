@@ -403,17 +403,20 @@ public class HibernatePatientStore
             }
             else if ( keys[0].equals( Patient.PREFIX_PROGRAM_EVENT_BY_STATUS ) )
             {
-                sql += "(select programid from patient_programs where patientid=p.patientid and programid=" + keys[1]
-                    + " ) as " + Patient.PREFIX_PROGRAM + "_" + id + ",";
-                otherWhere += operator + Patient.PREFIX_PROGRAM + "_" + id + "=" + id;
+                sql += "pgi.programid as programid,";
+                patientGroupBy += ",pgi.programid ";
                 operator = " and ";
 
                 sql += " MIN( psi.programstageinstanceid ) as programstageinstanceid,";
                 isSearchEvent = true;
                 patientWhere += patientOperator + "pgi.patientid=p.patientid and ";
+                patientWhere += "programid=" + id + " and ";
                 patientWhere += "psi.duedate>='" + keys[3] + "' and psi.duedate<='" + keys[4] + "' and ";
-                patientWhere += "psi.organisationunitid = " + keys[5] + " and ";
-
+                if ( keys.length == 6 )
+                {
+                    patientWhere += "psi.organisationunitid = " + keys[5] + " and ";
+                }
+                
                 int statusEvent = Integer.parseInt( keys[2] );
                 switch ( statusEvent )
                 {
@@ -466,7 +469,6 @@ public class HibernatePatientStore
 
                 patientWhere += " and pgi.completed=false ";
                 patientOperator = " and ";
-
             }
         }
 

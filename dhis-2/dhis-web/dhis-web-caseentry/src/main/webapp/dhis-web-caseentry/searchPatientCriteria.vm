@@ -33,20 +33,13 @@
 <div id='advanced-search' class='hidden'>
 	<table>	
 		<tr id='programStageAddPatientTR' class='hidden'>
-			<td>
-				<select id='programStageAddPatient' name='programStageAddPatient' onchange='enableRadioButton();'>
-					<option value=''>[$i18n.getString('')]</option>
-					#foreach($programStage in $program.programStages)
-					<option value="$programStage.id">$programStage.name</option>
-					#end
-				</select>
-			</td>
+			<td>$i18n.getString('status')</td>
 			<td>
 				<select id="statusEvent" name="statusEvent">
-					<option value='1'>$i18n.getString("completed")</option>
-					<option value='2'>$i18n.getString("incomplete")</option>
-					<option value='3'>$i18n.getString("scheduled_in_future")</option> 
 					<option value='4'>$i18n.getString("overdue")</option>
+					<option value='2'>$i18n.getString("incomplete")</option>
+					<option value='1'>$i18n.getString("completed")</option>
+					<option value='3'>$i18n.getString("scheduled_in_future")</option> 
 				</select>
 			</td>
 		</tr>

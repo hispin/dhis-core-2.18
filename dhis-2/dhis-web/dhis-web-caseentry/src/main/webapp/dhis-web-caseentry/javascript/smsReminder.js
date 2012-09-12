@@ -28,9 +28,19 @@ function listAllPatient()
 	contentDiv = 'listPatientDiv';
 	$('#contentDataRecord').html('');
 	
+	var date = new Date();
+	var d = date.getDate() - 1;
+	var m = date.getMonth();
+	var y1 = date.getFullYear() - 100;
+	var y2 = date.getFullYear();
+	jQuery( '#currentDate' ).datepicker( "setDate" , new Date(y1, m, d) );
+	var startDate = jQuery( '#currentDate' ).val();
+	jQuery( '#currentDate' ).datepicker( "setDate" , new Date(y2, m, d) ).val();
+	var endDate = jQuery( '#currentDate' ).val();
+	jQuery( '#currentDate' ).val(getCurrentDate());
+	
 	var programId = getFieldValue('programIdAddPatient');
-	var searchTexts = "stat_" + programId + "_4_" 
-					+ getFieldValue('startDueDate') + "_" + getFieldValue('endDueDate') 
+	var searchTexts = "stat_" + programId + "_4_" + startDate + "_" + endDate 
 					+ "_" + getFieldValue('orgunitId');
 	
 	showLoader();
@@ -53,7 +63,6 @@ function advancedSearch( params )
 {
 	setFieldValue('listAll', "false");
 	$('#contentDataRecord').html('');
-	params += "&searchTexts=prg_" + getFieldValue('programIdAddPatient');
 	params += "&programId=" + getFieldValue('programIdAddPatient');
 	$.ajax({
 		url: 'getSMSPatientRecords.action',
@@ -152,7 +161,14 @@ function sendSmsOnePatient()
 			else {
 				showErrorMessage( json.message, 7000 );
 			}
-		} ); 
+			
+			if( jQuery("#commentTB tr.hidden").length > 0 ){
+				commentDivToggle(true);
+			}
+			else{
+				commentDivToggle(false);
+			}
+		}); 
 }
 
 function sendSmsToList()
@@ -217,9 +233,16 @@ function addComment( field, programStageInstanceId )
 						+ "<td>" + programStageName + "</td>"
 						+ "<td>" + getFieldValue('currentUsername') + " - " + commentText + "</td></tr>");
 				field.value="";
-				jQuery(field).attr('placeholder', i18n_comment_added );
+				showSuccessMessage( i18n_comment_added );
 				field.style.backgroundColor = SUCCESS_COLOR;
-			} );
+				
+				if( jQuery("#commentTB tr.hidden").length > 0 ){
+					commentDivToggle(true);
+				}
+				else{
+					commentDivToggle(false);
+				}
+			});
 	}
 }
 
@@ -323,6 +346,30 @@ function removeEvent( programStageId )
     }
 }
 
+function commentDivToggle(isHide)
+{
+	var index = 1;
+	jQuery("#commentTB tr").removeClass("hidden");
+	jQuery("#commentTB tr").each( function(){
+		if(isHide && index > 5){
+			jQuery(this).addClass("hidden");
+		}
+		else if(!isHide){		
+			jQuery(this).removeClass("hidden");
+		}
+		index++;
+	});
+	
+	if( isHide ){
+		showById('showCommentBtn');
+		hideById('hideCommentBtn');
+	}
+	else
+	{
+		hideById('showCommentBtn');
+		showById('hideCommentBtn');
+	}
+}
 
 function onClickBackBtn()
 {
