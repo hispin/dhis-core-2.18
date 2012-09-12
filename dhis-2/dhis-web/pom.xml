@@ -26,6 +26,7 @@
     <module>dhis-web-api</module>
     <module>dhis-web-api-mobile</module>
     <module>dhis-web-light</module>
+    <module>dhis-web-mobile</module>
     <module>dhis-web-portal</module>
   </modules>
   <build>
