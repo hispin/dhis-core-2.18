@@ -47,6 +47,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class SendScheduledMessageTask
     implements Runnable
 {
+    private final String DHIS_SYSTEM = "DHIS system";
+    
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -113,6 +115,7 @@ public class SendScheduledMessageTask
                     try
                     {
                         OutboundSms outboundSms = new OutboundSms( message, phoneNumber );
+                        outboundSms.setSender( DHIS_SYSTEM );
                         outboundSmsService.sendMessage( outboundSms, gatewayId );
                         
                         String sql = " INSERT INTO programstageinstance_outboundsms"

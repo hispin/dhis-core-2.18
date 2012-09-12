@@ -155,6 +155,7 @@ function sendSmsOnePatient()
 				showSuccessMessage( json.message );
 				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue('currentDate') + "</td>"
 					+ "<td>" + getFieldValue('programStageName') + "</td>"
+					+ "<td>" + getFieldValue('currentUsername') + "</td>"
 					+ "<td>" + getFieldValue('smsMessage') + "</td></tr>");
 				var noMessage = eval( getInnerHTML('noMessageDiv_' + programStageInstanceId)) + 1;
 			}
@@ -231,7 +232,8 @@ function addComment( field, programStageInstanceId )
 				var programStageName = jQuery("#box_" + programStageInstanceId).attr('programStageName');
 				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + "</td>"
 						+ "<td>" + programStageName + "</td>"
-						+ "<td>" + getFieldValue('currentUsername') + " - " + commentText + "</td></tr>");
+						+ "<td>" + getFieldValue('currentUsername') + "</td>"
+						+ "<td>" + commentText + "</td></tr>");
 				field.value="";
 				showSuccessMessage( i18n_comment_added );
 				field.style.backgroundColor = SUCCESS_COLOR;

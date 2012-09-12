@@ -36,6 +36,8 @@ public class OutboundSms
 {
     private int id;
 
+    private String sender;
+    
     private Set<String> recipients;
 
     private Date date;
@@ -93,6 +95,16 @@ public class OutboundSms
     public void setMessage( String message )
     {
         this.message = message;
+    }
+
+    public String getSender()
+    {
+        return sender;
+    }
+
+    public void setSender( String sender )
+    {
+        this.sender = sender;
     }
 
     public OutboundSmsStatus getStatus()
