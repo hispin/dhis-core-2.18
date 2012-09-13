@@ -10,7 +10,6 @@
 			}
 		});
 		
-		jQuery('#statusEvent').val('3');
 		jQuery("#searchObjectId [value=prg]").remove();
 		jQuery("#searchObjectId").prepend('<option value="-100">' + i18n_please_select_criteria + '</option>');
 		jQuery("#searchObjectId [value=]").attr("selected","selected");
@@ -56,6 +55,7 @@
 				<td>$i18n.getString('status')</td>
 				<td>
 					<select id="statusEvent" name="statusEvent" onchange="statusEventOnChange()">
+						<option value='0' selected>$i18n.getString("all")</option>
 						<option value='4'>$i18n.getString("overdue")</option>
 						<option value='2'>$i18n.getString("incomplete")</option>
 						<option value='1'>$i18n.getString("completed")</option>
@@ -66,8 +66,7 @@
 			<tr>
 				<td>$i18n.getString('show_events_since')</td>
 				<td>
-					<select id="showEventSince" name="showEventSince" disabled onchange="setDateRangeSince(this.value);">
-						<option value=''>[$i18n.getString("please_select")]</option>
+					<select id="showEventSince" name="showEventSince" onchange="setDateRange();">
 						<option value='-1'>$i18n.getString("one_day")</option>
 						<option value='-3'>$i18n.getString("three_days")</option>
 						<option value='-7' selected>$i18n.getString("one_week")</option>
@@ -79,8 +78,7 @@
 			<tr>
 				<td>$i18n.getString('show_events_up_to')</td>
 				<td>
-					<select id="showEventUpTo" name="showEventUpTo" onchange="setDateRangeUpTo(this.value);">
-						<option value=''>[$i18n.getString("please_select")]</option>
+					<select id="showEventUpTo" name="showEventUpTo" onchange="setDateRange();">
 						<option value='1'>$i18n.getString("one_day")</option>
 						<option value='3'>$i18n.getString("three_days")</option>
 						<option value='7' selected>$i18n.getString("one_week")</option>
@@ -101,6 +99,7 @@
 
 <div id='listPatientDiv'></div>
 <div id='contentDataRecord'></div>
+	
 #parse( "dhis-web-commons/loader/loader.vm" )
 <div class='hidden'>
 	<input type='text' id='startDueDate' name='startDueDate' >
@@ -126,10 +125,5 @@
 	var i18n_please_select_criteria = '[' + '$encoder.jsEscape( $i18n.getString( "please_select_criteria" ) , "'")' + ']';
 	var i18n_program_stage = '$encoder.jsEscape( $i18n.getString( "program_stage" ) , "'")';
 	
-	var date = new Date();
-	var d = date.getDate() + 7;
-	var m = date.getMonth();
-	var y= date.getFullYear();
-	jQuery("#startDueDate").val(jQuery.datepicker.formatDate( dateFormat, new Date() ));
-	jQuery("#endDueDate").val(jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d) ));
+	setDateRange();
 </script>

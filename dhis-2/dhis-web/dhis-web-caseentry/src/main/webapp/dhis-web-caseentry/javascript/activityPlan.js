@@ -29,8 +29,9 @@ function showActitityList()
 	$('#contentDataRecord').html('');
 	
 	var programId = getFieldValue('programIdAddPatient');
-	var searchTexts = "stat_" + programId + "_3_" 
-					+ getFieldValue('startDueDate')
+	var searchTexts = "stat_" + programId
+					+ "_" + getFieldValue("statusEvent")
+					+ "_" + getFieldValue('startDueDate')
 					+ "_" + getFieldValue('endDueDate')
 					+ "_" + getFieldValue('orgunitId');
 	
@@ -59,14 +60,13 @@ function eventFlowToggle( programInstanceId )
 			jQuery(this).removeClass("stage-object-selected");
 		});
 	
-	jQuery("#tb_" + programInstanceId + " .arrow-left").toggle();
-	jQuery("#tb_" + programInstanceId + " .arrow-right").toggle();
 	if( jQuery("#tb_" + programInstanceId + " .searched").length>0)
 	{	
 		var id = jQuery("#tb_" + programInstanceId + " .searched").attr('id').split('_')[1];
 		showById("arrow_" + id);
 		showById("td_" + id );
 	}
+	resize();
 }
 
 // --------------------------------------------------------------------
@@ -100,37 +100,75 @@ function statusEventOnChange()
 {
 	var statusEvent = getFieldValue("statusEvent");
 	
-	if( statusEvent == '3' ){
+	if( statusEvent == '0' ){
+		enable('showEventSince');
+		enable('showEventUpTo');
+		setDateRange();
+	}
+	else if( statusEvent == '3' ){
 		disable('showEventSince');
 		enable('showEventUpTo');
-		setDateRangeUpTo( getFieldValue("showEventUpTo") );
+		setDateRange();
 	}
 	else{
 		enable('showEventSince');
 		disable('showEventUpTo');
-		setDateRangeSince( getFieldValue("showEventSince") );
+		setDateRange();
 	}
 }
 
-function setDateRangeSince( days )
+function setDateRange()
 {
-	if(days == "")
-		return;
+	var statusEvent = getFieldValue("statusEvent");
 	var date = new Date();
 	var d = date.getDate();
 	var m = date.getMonth();
 	var y= date.getFullYear();
-	
+		
+	var startDateSince = "";
+	var endDateSince = "";
+	var startDateUpTo = "";
+	var endDateUpTo = "";
 	var startDate = "";
+	var endDate = "";
+		
+	// Get dateRangeSince
+	var days = getFieldValue('showEventSince');
 	if( days == 'ALL'){
-		startDate = jQuery.datepicker.formatDate( dateFormat, new Date(y-100, m, d) ) ;
+		startDateSince = jQuery.datepicker.formatDate( dateFormat, new Date(y-100, m, d) ) ;
 	}
 	else{
-		d = d + eval(days);
-		startDate = jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d) ) ;
+		startDateSince = jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d + eval(days)) ) ;
+	}
+	endDateSince = jQuery.datepicker.formatDate( dateFormat, new Date() );
+	
+	// getDateRangeUpTo
+	days = getFieldValue('showEventUpTo');
+	startDateUpTo = jQuery.datepicker.formatDate( dateFormat, new Date() );
+	endDateUpTo = "";
+	if( days == 'ALL'){
+		endDateUpTo = jQuery.datepicker.formatDate( dateFormat, new Date(y+100, m, d) ) ;
+	}
+	else{
+		endDateUpTo = jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d + eval(days)) ) ;
+	}
+
+	// check status to get date-range
+	if( statusEvent == "0")
+	{
+		startDate = startDateSince;
+		endDate = endDateUpTo;
+	
+	}else if (statusEvent=='3'){
+		startDate = startDateUpTo;
+		endDate = endDateUpTo;
+	}
+	else
+	{
+		startDate = startDateSince;
+		endDate = endDateSince;
 	}
 	
-	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
 	jQuery("#startDueDate").val(startDate);
 	jQuery("#endDueDate").val(endDate);
 }
@@ -157,4 +195,15 @@ function setDateRangeUpTo( days )
 	
 	jQuery("#startDueDate").val(startDate);
 	jQuery("#endDueDate").val(endDate);
+}
+
+
+function setDateRangeAll()
+{
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth();
+	var y= date.getFullYear();
+	
+	
 }
