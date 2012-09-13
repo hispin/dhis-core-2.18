@@ -265,15 +265,12 @@ function removeComment( programStageInstanceId, commentId )
 function eventFlowToggle( programInstanceId )
 {
 	jQuery("#tb_" + programInstanceId + " .stage-object").each( function(){
-			var programStageInstance = this.id.split('_')[1];
-			jQuery('#arrow_' + programStageInstance ).toggle();
-			jQuery('#td_' + programStageInstance ).toggle();
-			jQuery(this).removeClass("stage-object-selected");
-		});
-	
-	
-	jQuery(".arrow-left").css("display", "block");
-	jQuery(".arrow-right").css("display", "block");
+		var programStageInstance = this.id.split('_')[1];
+		jQuery('#arrow_' + programStageInstance ).toggle();
+		jQuery('#td_' + programStageInstance ).toggle();
+		jQuery(this).removeClass("stage-object-selected");
+	});
+		
 	if( jQuery("#tb_" + programInstanceId + " .searched").length>0)
 	{	
 		var id = jQuery("#tb_" + programInstanceId + " .searched").attr('id').split('_')[1];

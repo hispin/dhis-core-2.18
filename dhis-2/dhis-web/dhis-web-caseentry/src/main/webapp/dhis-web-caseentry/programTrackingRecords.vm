@@ -24,7 +24,7 @@
 #if( $patients && $patients.size()>0 )
 	<p>#parse( "/dhis-web-caseentry/colorHelp.vm" )</p>
 	
-	<table class="listTable mainPageTable" id="patientList">
+	<table class="listTable" id="patientList">
 		#set( $mark = false )                 
 		#foreach( $patient in $patients )
 			#set( $programInstance = '')
@@ -53,7 +53,7 @@
 						<table id='tb_$programInstance.id' class="stage-container">	
 							<tr>
 								<td>
-									<div #if($programInstance.programStageInstances.size()<4) class="arrow-left hidden"  #else class="arrow-left" #end onclick="moveLeft('flow_$programInstance.id')">&nbsp;</div>
+									<div class="arrow-left" onclick="moveLeft('flow_$programInstance.id')">&nbsp;</div>
 								</td>
 								<td>
 									<div id='flow_$!programInstance.id' class="stage-flow">
@@ -98,7 +98,7 @@
 								</td>
 								
 								<td>
-									<div #if($programInstance.programStageInstances.size()<4) class="arrow-right hidden" #else class="arrow-right" #end onclick="moveRight('flow_$programInstance.id')">&nbsp;</div>
+									<div class="arrow-right" onclick="moveRight('flow_$programInstance.id')">&nbsp;</div>
 								</td>
 							</tr>
 						</table>
@@ -128,8 +128,8 @@
 			hideById('td_' + programStageInstance );
 		});
 		
-		jQuery(".arrow-left").css("display", "none");
-		jQuery(".arrow-right").css("display", "none");
+		jQuery(".arrow-left").addClass("hidden");
+		jQuery(".arrow-right").addClass("hidden");
 		#foreach( $id in $programStageInstanceIds )
 			showById('arrow_$id');
 			showById('td_$id');
