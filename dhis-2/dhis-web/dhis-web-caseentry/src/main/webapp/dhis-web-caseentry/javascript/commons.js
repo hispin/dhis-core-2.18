@@ -236,6 +236,10 @@ function getSearchParams()
 		var endDueDate = getFieldValue('endDueDate');
 		params += '&searchTexts=stat_' + getFieldValue('programIdAddPatient') 
 				+ '_' + statusEvent + '_' + startDueDate + '_' + endDueDate;
+		if( statusEvent != '3' && statusEvent != '4' && statusEvent != '0' )
+		{
+			searchTexts	+= "_" + getFieldValue('orgunitId');
+		}
 	}
 	
 	var flag = false;
