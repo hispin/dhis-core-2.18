@@ -130,17 +130,18 @@
 			</tr>
 			<tr id="dynamicElementsTab">
 				<td>
-					<div id="dynamicElementSelect">
-					<span style="color:#555;">$i18n.getString( "select_category_combo_for_which_to_insert" )</span>
-					<select id="categoryComboSelect" style="width: 100%; margin-bottom: 10px;">
-						#foreach( $categoryCombo in $categoryCombos )
-						<option value="$categoryCombo.uid">$encoder.htmlEncode( $categoryCombo.name )</option>
-						#end
-					</select><br>
-					<button type="button" id="startButton">$i18n.getString( "start" )</button>
+					<div id="dynamicElementSelect" style="margin-bottom: 10px;">
+						<div style="color:#666; margin-top:5px; margin-bottom:5px;">$i18n.getString( "select_category_combo_for_which_to_insert" )</div>
+						<select id="categoryComboSelect" style="width: 100%; margin-bottom: 10px;">
+							#foreach( $categoryCombo in $categoryCombos )
+							<option value="$categoryCombo.uid">$encoder.htmlEncode( $categoryCombo.name )</option>
+							#end
+						</select><br>
+						<button type="button" id="startButton">$i18n.getString( "start" )</button>
 					</div>
 					<div id="dynamicElementInsert" style="margin-bottom: 10px; display:none;">
-						<select id="dynamicElementSelector" multiple="multiple" style="height: 150px; margin-bottom: 10px; width: 100%;"></select><br>
+						<div style="color:#666; margin-top:5px; margin-bottom:5px;">$i18n.getString( "insert_input_fields_into_the_form" )</div>
+						<select id="dynamicElementSelector" multiple="multiple" style="height: 177px; margin-bottom: 10px; width: 100%;"></select><br>
 						<button type="button" id="insertDynamicElementButton">$i18n.getString( "insert_data_element_drop_down" )</button>
 						<button type="button" id="doneButton">$i18n.getString( "done" )</button>
 					</div>
