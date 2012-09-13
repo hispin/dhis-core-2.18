@@ -18,7 +18,6 @@
 		disable('advancedSearchBtn');
 		setFieldValue('searchByProgramStage', 'true');
 		setFieldValue('hideLink', 'true');
-		showById('dueDateTR');
 	});	
 </script>
 
@@ -29,19 +28,86 @@
 	<input type='hidden' id='sendToList' name='sendToList'>
 	<input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='$programStageInstance.id'>
 	<input type='hidden' id='programStageName' name='programStageName'>
-	<div id='searchDiv'>
-		#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	
+	<input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
+	<input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.id' >
+	<input type="hidden" id='hideLink' name='hideLink' value='false'>
+	<input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
+	<div id='advanced-search' style='width:500px;'>
+		<table style="margin-bottom:8px">    
+			<tr>
+				<td>
+					<label>$i18n.getString( "registering_unit" )</label>
+				</td>
+				<td>
+					<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
+				</td>
+			</tr> 
+			<tr id='programAddPatientTR' class='hidden'>
+				<td>$i18n.getString('program')</td>
+				<td>
+					<select id='programIdAddPatient' name='programIdAddPatient' onchange='enableBtn();'>
+						#foreach($program in $programs)
+							<option value="$program.id" type='$program.type'>$program.name</option>
+						#end
+					</select>
+				</td>
+			</tr>
+			<tr id='programStageAddPatientTR'>
+				<td>$i18n.getString('status')</td>
+				<td>
+					<select id="statusEvent" name="statusEvent" onchange="statusEventOnChange()">
+						<option value='4'>$i18n.getString("overdue")</option>
+						<option value='2'>$i18n.getString("incomplete")</option>
+						<option value='1'>$i18n.getString("completed")</option>
+						<option value='3'>$i18n.getString("scheduled_in_future")</option> 
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>$i18n.getString('show_events_since')</td>
+				<td>
+					<select id="showEventSince" name="showEventSince" disabled onchange="setDateRangeSince(this.value);">
+						<option value=''>[$i18n.getString("please_select")]</option>
+						<option value='-1'>$i18n.getString("one_day")</option>
+						<option value='-3'>$i18n.getString("three_days")</option>
+						<option value='-7' selected>$i18n.getString("one_week")</option>
+						<option value='-30'>$i18n.getString("one_month")</option>
+						<option value='ALL'>$i18n.getString("all")</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>$i18n.getString('show_events_up_to')</td>
+				<td>
+					<select id="showEventUpTo" name="showEventUpTo" onchange="setDateRangeUpTo(this.value);">
+						<option value=''>[$i18n.getString("please_select")]</option>
+						<option value='1'>$i18n.getString("one_day")</option>
+						<option value='3'>$i18n.getString("three_days")</option>
+						<option value='7' selected>$i18n.getString("one_week")</option>
+						<option value='30'>$i18n.getString("one_month")</option>
+						<option value='ALL'>$i18n.getString("all")</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td valign='bottom'>
+					<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'show_activity_list' )" onclick="javascript:showActitityList();" >
+				</td>
+			</tr>
+		</table>
 	</div>
 </form>
 
 <div id='listPatientDiv'></div>
 <div id='contentDataRecord'></div>
 #parse( "dhis-web-commons/loader/loader.vm" )
-
 <div class='hidden'>
+	<input type='text' id='startDueDate' name='startDueDate' >
+	<input type='text' id='endDueDate' name='endDueDate' >
 	<input type='textbox' id='currentDate' name='currentDate'>
 	<script>
-		datePickerValid( 'currentDate', true );
+		datePicker( 'currentDate' );
 	</script>
 </div>
 
@@ -59,4 +125,11 @@
 	var i18n_comfirm_delete_event = '$encoder.jsEscape( $i18n.getString( "comfirm_delete_event" ) , "'")';
 	var i18n_please_select_criteria = '[' + '$encoder.jsEscape( $i18n.getString( "please_select_criteria" ) , "'")' + ']';
 	var i18n_program_stage = '$encoder.jsEscape( $i18n.getString( "program_stage" ) , "'")';
+	
+	var date = new Date();
+	var d = date.getDate() + 7;
+	var m = date.getMonth();
+	var y= date.getFullYear();
+	jQuery("#startDueDate").val(jQuery.datepicker.formatDate( dateFormat, new Date() ));
+	jQuery("#endDueDate").val(jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d) ));
 </script>

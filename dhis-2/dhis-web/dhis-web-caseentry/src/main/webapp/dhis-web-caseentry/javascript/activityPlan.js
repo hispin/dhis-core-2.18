@@ -21,22 +21,17 @@ function orgunitSelected( orgUnits, orgUnitNames )
 
 selection.setListenerFunction( orgunitSelected );
 
-function listAllPatient()
+function showActitityList()
 {
 	setFieldValue('listAll', "true");
 	hideById('listPatientDiv');
 	contentDiv = 'listPatientDiv';
 	$('#contentDataRecord').html('');
 	
-	var date = new Date();
-	var d = date.getDate() + 7;
-	var m = date.getMonth();
-	var y= date.getFullYear();
-	var startDate = jQuery( '#currentDate' ).val();
-	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d) ) ;
-	
 	var programId = getFieldValue('programIdAddPatient');
-	var searchTexts = "stat_" + programId + "_3_" + startDate + "_" + endDate 
+	var searchTexts = "stat_" + programId + "_3_" 
+					+ getFieldValue('startDueDate')
+					+ "_" + getFieldValue('endDueDate')
 					+ "_" + getFieldValue('orgunitId');
 	
 	showLoader();
@@ -53,24 +48,6 @@ function listAllPatient()
 			showById('listPatientDiv');
 			hideLoader();
 		});
-}
-
-function advancedSearch( params )
-{
-	setFieldValue('listAll', "false");
-	$('#contentDataRecord').html('');
-	params += "&programId=" + getFieldValue('programIdAddPatient');
-	$.ajax({
-		url: 'getActivityPlanRecords.action',
-		type:"POST",
-		data: params,
-		success: function( html ){
-			jQuery('#listPatientDiv').html(html);
-			showById('colorHelpLink');
-			showById('listPatientDiv');
-			hideLoader();
-		}
-	});
 }
 
 function eventFlowToggle( programInstanceId )
@@ -117,4 +94,67 @@ function loadDataEntry( programStageInstanceId )
 			width:1000,
 			height:500
 		});
+}
+
+function statusEventOnChange()
+{
+	var statusEvent = getFieldValue("statusEvent");
+	
+	if( statusEvent == '3' ){
+		disable('showEventSince');
+		enable('showEventUpTo');
+		setDateRangeUpTo( getFieldValue("showEventUpTo") );
+	}
+	else{
+		enable('showEventSince');
+		disable('showEventUpTo');
+		setDateRangeSince( getFieldValue("showEventSince") );
+	}
+}
+
+function setDateRangeSince( days )
+{
+	if(days == "")
+		return;
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth();
+	var y= date.getFullYear();
+	
+	var startDate = "";
+	if( days == 'ALL'){
+		startDate = jQuery.datepicker.formatDate( dateFormat, new Date(y-100, m, d) ) ;
+	}
+	else{
+		d = d + eval(days);
+		startDate = jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d) ) ;
+	}
+	
+	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
+	jQuery("#startDueDate").val(startDate);
+	jQuery("#endDueDate").val(endDate);
+}
+
+function setDateRangeUpTo( days )
+{
+	if(days == "")
+		return;
+		
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth();
+	var y= date.getFullYear();
+	
+	var startDate = jQuery.datepicker.formatDate( dateFormat, new Date() );
+	var endDate = "";
+	if( days == 'ALL'){
+		endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y+100, m, d) ) ;
+	}
+	else{
+		d = d + eval(days);
+		endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y, m, d) ) ;
+	}
+	
+	jQuery("#startDueDate").val(startDate);
+	jQuery("#endDueDate").val(endDate);
 }
