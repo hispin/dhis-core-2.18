@@ -8,6 +8,7 @@ import org.hisp.dhis.databrowser.DataBrowserGridStore;
 import org.hisp.dhis.databrowser.util.DataBrowserUtils;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -50,7 +51,7 @@ public class JDBCDataBrowserStore
     // Basic
     // -------------------------------------------------------------------------
 
-    public Grid getDataSetsBetweenPeriods( List<Integer> betweenPeriodIds, boolean isZeroAdded )
+    public Grid getDataSetsBetweenPeriods( List<Integer> betweenPeriodIds, PeriodType periodType, boolean isZeroAdded )
     {
         StringBuffer sqlsb = new StringBuffer();
 
@@ -58,8 +59,8 @@ public class JDBCDataBrowserStore
         sqlsb.append( "FROM datavalue dv " );
         sqlsb.append( "JOIN datasetmembers dsm ON (dv.dataelementid = dsm.dataelementid) " );
         sqlsb.append( "JOIN dataset d ON (d.datasetid = dsm.datasetid) " );
-        sqlsb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
         sqlsb.append( "WHERE dv.periodid IN " + splitListHelper( betweenPeriodIds ) + " " );
+        sqlsb.append( "AND d.periodtypeid=" + periodType.getId() + " " );
         sqlsb.append( "GROUP BY d.datasetid, d.name " );
         sqlsb.append( "ORDER BY counts_of_aggregated_values DESC)" );
 
@@ -202,7 +203,7 @@ public class JDBCDataBrowserStore
     // Advance - Set count
     // -------------------------------------------------------------------------
 
-    public Integer setCountDataElementsForDataSetBetweenPeriods( Grid grid, Integer dataSetId,
+    public Integer setCountDataElementsForDataSetBetweenPeriods( Grid grid, Integer dataSetId, PeriodType periodType,
         List<Integer> betweenPeriodIds, List<Integer> metaIds, boolean isZeroAdded )
     {
         // Here we uses a for loop to create one big sql statement using UNION.
@@ -222,8 +223,11 @@ public class JDBCDataBrowserStore
             sqlsb.append( "(SELECT de.dataelementid, de.name AS dataelement, COUNT(*) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startdate AS ColumnHeader " );
             sqlsb.append( "FROM dataelement de JOIN datavalue dv ON (de.dataelementid = dv.dataelementid) " );
             sqlsb.append( "JOIN datasetmembers dsm ON (de.dataelementid = dsm.dataelementid) " );
+            sqlsb.append( "JOIN dataset ds ON (dsm.datasetid = ds.datasetid) " );
             sqlsb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
-            sqlsb.append( "WHERE dsm.datasetid = '" + dataSetId + "' AND dv.periodid = '" + periodId + "' " );
+            sqlsb.append( "WHERE dsm.datasetid = '" + dataSetId + "' " );
+            sqlsb.append( "AND ds.periodtypeid = '" + periodType.getId() + "' " );
+            sqlsb.append( "AND dv.periodid = '" + periodId + "' " );
             sqlsb.append( "GROUP BY de.dataelementid, de.name, p.periodid, p.startDate)" );
 
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader" : " UNION " );
@@ -323,23 +327,15 @@ public class JDBCDataBrowserStore
     private String splitListHelper( List<Integer> list )
     {
         StringBuffer sb = new StringBuffer();
-        int count = 0;
 
         sb.append( "(" );
+
         for ( Integer i : list )
         {
-            sb.append( i );
-
-            count++;
-
-            if ( count < list.size() )
-            {
-                sb.append( "," );
-            }
+            sb.append( i ).append( "," );  
         }
-        sb.append( ")" );
 
-        return sb.toString();
+        return sb.substring( 0, sb.length() - ",".length() ).concat( ")" );
     }
 
     private boolean setUpQueryForDrillDownDescendants( StringBuffer sb, Integer orgUnitSelected,
