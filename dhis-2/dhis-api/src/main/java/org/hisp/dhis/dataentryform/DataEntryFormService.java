@@ -47,6 +47,7 @@ public interface DataEntryFormService
     final Pattern IDENTIFIER_PATTERN = Pattern.compile( "(\\d+)-(\\d+)-val" );
     final Pattern DATAELEMENT_TOTAL_PATTERN = Pattern.compile( "dataelementid=\"(.*?)\"" );
     final Pattern INDICATOR_PATTERN = Pattern.compile( "indicatorid=\"(.*?)\"" );
+    final Pattern DYNAMIC_ELEMENT_PATTERN = Pattern.compile( "categoryoptioncomboid=\"(.*?)\"" );
     final Pattern VALUE_TAG_PATTERN = Pattern.compile( "value=\"(.*?)\"", Pattern.DOTALL );
     final Pattern TITLE_TAG_PATTERN = Pattern.compile( "title=\"(.*?)\"", Pattern.DOTALL );
     

@@ -176,6 +176,7 @@ public class DefaultDataEntryFormService
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
             Matcher dataElementTotalMatcher = DATAELEMENT_TOTAL_PATTERN.matcher( inputHtml );
             Matcher indicatorMatcher = INDICATOR_PATTERN.matcher( inputHtml );
+            Matcher dynamicElementMatcher = DYNAMIC_ELEMENT_PATTERN.matcher( inputHtml );
             
             String displayValue = null;
             String displayTitle = null;
@@ -187,14 +188,14 @@ public class DefaultDataEntryFormService
 
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElementCategoryOptionCombo categegoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
-                String optionComboName = categegoryOptionCombo != null ? categegoryOptionCombo.getName() : "[ " + i18n.getString( "cate_option_combo_not_exist" ) + " ]";
+                String optionComboName = categegoryOptionCombo != null ? categegoryOptionCombo.getName() : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
 
                 StringBuilder title = dataElement != null ? 
                     new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
                     append( dataElement.getDisplayName() ).append( " - " ).append( optionComboId ).append( " - " ).
                     append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" ) : new StringBuilder();
 
-                displayValue = dataElement != null ? "value=\"[ " + dataElement.getDisplayName() + " " + optionComboName + " ]\"" : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
+                displayValue = dataElement != null ? "value=\"[ " + dataElement.getDisplayName() + " " + optionComboName + " ]\"" : "[ " + i18n.getString( "data_element_not_exist" ) + " ]";
                 displayTitle = dataElement != null ? title.toString() : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
             }
             else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
@@ -202,8 +203,8 @@ public class DefaultDataEntryFormService
                 int dataElementId = Integer.parseInt( dataElementTotalMatcher.group( 1 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                displayValue = dataElement != null ? "value=\"[ " + dataElement.getDisplayName() + " ]\"" : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
-                displayTitle = dataElement != null ? "title=\"" + dataElement.getDisplayName() + "\"" : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
+                displayValue = dataElement != null ? "value=\"[ " + dataElement.getDisplayName() + " ]\"" : "[ " + i18n.getString( "data_element_not_exist" ) + " ]";
+                displayTitle = dataElement != null ? "title=\"" + dataElement.getDisplayName() + "\"" : "[ " + i18n.getString( "dat_aelement_not_exist" ) + " ]";
             }
             else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
             {
@@ -212,14 +213,22 @@ public class DefaultDataEntryFormService
 
                 displayValue = indicator != null ? "value=\"[ " + indicator.getDisplayName() + " ]\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
                 displayTitle = indicator != null ? "title=\"" + indicator.getDisplayName() + "\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
-            }            
+            }
+            else if ( dynamicElementMatcher.find() && dynamicElementMatcher.groupCount() > 0 )
+            {
+                String categoryOptionComboUid = dynamicElementMatcher.group( 1 );
+                DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboUid );
+                
+                displayValue = categoryOptionCombo != null ? "value=\"[ " + categoryOptionCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
+                displayTitle = categoryOptionCombo != null ? "title=\"" + categoryOptionCombo.getDisplayName() + "\"" : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
+            }
 
             // -----------------------------------------------------------------
             // Insert name of data element operand as value and title
             // -----------------------------------------------------------------
 
             inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
-            inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : " " + displayTitle;
+            inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : inputHtml + " " + displayTitle;
 
             inputMatcher.appendReplacement( sb, inputHtml );
         }
