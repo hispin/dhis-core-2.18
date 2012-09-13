@@ -57,7 +57,7 @@ select orgunitgroupid from orgunitgroupmembers om
 where ou.organisationunitid=om.organisationunitid
 and om.orgunitgroupid=22755);
 
--- Facility overview --
+-- Facility overview
 
 select distinct ous.idlevel5 as internalid, ou.uid, ou.code, ou.name, ougs.type, ougs.ownership,
 ou2.name as province, ou3.name as county, ou4.name as district, ou.coordinates as longitide_latitude
@@ -70,6 +70,6 @@ left join _organisationunitgroupsetstructure ougs on ous.organisationunitid=ougs
 where ous.level=5
 order by province, county, district, ou.name;
 
--- Compare user roles --
+-- Compare user roles
 
-select authority from userroleauthorities where userroleid=49836 and authority not in (select authority from userroleauthorities where userroleid=83722);
+select authority from userroleauthorities where userroleid=33706 and authority not in (select authority from userroleauthorities where userroleid=21504);

@@ -22,15 +22,11 @@ $( document ).ready( function() {
 		dataElementSelector.height( dialog.height() - 97 );
 		totalSelector.height( dialog.height() - 97 );
 		indicatorSelector.height( dialog.height() - 97 );
-		dynamicElementSelector.height( dialog.height() - 97 );
+		dynamicElementSelector.height( dialog.height() - 120 );
 	});
 
 	$(":button").button();
 	$(":submit").button();
-
-	//$("#dataElementInsertButton").click(insertDataElement); //TODO remove?
-	//$("#totalInsertButton").click(insertTotal); //TODO remove?
-	//$("#indicatorInsertButton").click(insertIndicator); //TODO remove?
 
 	$("#selectionDialog").bind("dialogopen", function(event, ui) {
 		$("#insertDataElementsButton").button("disable");
@@ -403,7 +399,7 @@ function showDynamicElementInsert() {
 	clearListById( "dynamicElementSelector" );
 	
 	var optionCombos = $.getJSON( "../api/categoryCombos/" + categoryComboUid + ".json", function( json ) {
-		$.each( json.categoryOptionCombo, function( index, value ) {
+		$.each( json.categoryOptionCombos, function( index, value ) {
 			addOptionById( "dynamicElementSelector", value.id, value.name );
 		} );
 	} );	
