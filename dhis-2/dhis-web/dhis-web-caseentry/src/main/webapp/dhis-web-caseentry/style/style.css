@@ -337,7 +337,6 @@ div.event-flow-dashboard
 
 .stage-flow
 {
-	width:90%;
 	height:145px;
 	overflow-x:hidden;
 	overflow-y:hidden;
@@ -345,7 +344,6 @@ div.event-flow-dashboard
 
 .table-flow
 {
-	width:100%;
 	height:145px;
 	overflow-x:hidden;
 	overflow-y:hidden;

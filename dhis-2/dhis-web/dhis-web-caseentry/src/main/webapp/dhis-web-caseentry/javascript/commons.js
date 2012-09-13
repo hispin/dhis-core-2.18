@@ -238,7 +238,7 @@ function getSearchParams()
 				+ '_' + statusEvent + '_' + startDueDate + '_' + endDueDate;
 		if( statusEvent != '3' && statusEvent != '4' && statusEvent != '0' )
 		{
-			searchTexts	+= "_" + getFieldValue('orgunitId');
+			params += "_" + getFieldValue('orgunitId');
 		}
 	}
 	
@@ -853,14 +853,14 @@ function resize(){
 	}
 	
 	$('.stage-flow').each(function(){
-		var programInstanceId = this.id.split('_')[0];
-		if(jQuery(this).find(".table-flow td").outerWidth() > 0){
-			jQuery('#tb_' + programInstanceId ).find('.arrow-left').show();
-			jQuery('#tb_' + programInstanceId ).find('.arrow-right').show();
+		var programInstanceId = this.id.split('_')[1];
+		if(jQuery(this).find(".table-flow").outerWidth() > jQuery(this).width() ){
+			jQuery('#tb_' + programInstanceId ).find('.arrow-left').removeClass("hidden");
+			jQuery('#tb_' + programInstanceId ).find('.arrow-right').removeClass("hidden");
 		}
 		else{
-			jQuery('#tb_' + programInstanceId ).find('.arrow-left').hide();
-			jQuery('#tb_' + programInstanceId ).find('.arrow-right').hide();
+			jQuery('#tb_' + programInstanceId ).find('.arrow-left').addClass("hidden");
+			jQuery('#tb_' + programInstanceId ).find('.arrow-right').addClass("hidden");
 		}
 	});
 	
