@@ -462,7 +462,10 @@ function filterInSection($this)
     }
     else
     {
+        var $matched = $tbody.find('tr:not([colspan])').find('td:first-child(:contains("' + $this.val() + '")')
         var $not_matched = $tbody.find('tr:not([colspan])').find('td:first-child(:not(:contains("' + $this.val() + '"))')
+
+        $matched.parent().parent(). show();
         $not_matched.parent().parent(). hide();
     }
 }
