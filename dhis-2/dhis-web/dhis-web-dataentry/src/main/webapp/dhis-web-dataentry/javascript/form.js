@@ -414,58 +414,58 @@ function loadForm( dataSetId )
 
 function enableSectionFilter()
 {
-    var $sectionsHeaders = $(".formSection .cent h3");
+    var $sectionsHeaders = $( '.formSection .cent h3' );
 
-    if( $sectionsHeaders.size() > 1)
+    if ( $sectionsHeaders.size() > 1)
     {
-        $("#selectionBox").css("height", "123px");
+        $( '#selectionBox' ).css( 'height', '123px' );
 
-        $("#filterDataSetSection").append("<option value='all'>" + i18n_show_all_sections + "</option>");
+        $( '#filterDataSetSection' ).append( "<option value='all'>" + i18n_show_all_sections + "</option>" );
 
         $sectionsHeaders.each(function(idx, value) {
-            $("#filterDataSetSection").append("<option value='" + idx + "'>" + value.innerHTML + "</option>");
+            $( '#filterDataSetSection' ).append( "<option value='" + idx + "'>" + value.innerHTML + "</option>" );
         });
 
-        $("#filterDataSetSectionTr").show();
+        $( '#filterDataSetSectionTr' ).show();
     }
     else
     {
-        $("#selectionBox").css("height", "93px");
-        $("#filterDataSetSectionTr").hide();
-        $("#filterDataSetSection").children().remove();
+        $( '#selectionBox' ).css( 'height', '93px' );
+        $( '#filterDataSetSectionTr' ).hide();
+        $( '#filterDataSetSection' ).children().remove();
     }
 }
 
 function filterOnSection()
 {
-    var $filterDataSetSection = $("#filterDataSetSection");
+    var $filterDataSetSection = $( '#filterDataSetSection' );
     var value = $filterDataSetSection.val();
 
-    if(value == 'all')
+    if ( value == 'all' )
     {
         $(".formSection").show();
     }
     else
     {
-        $(".formSection").hide();
-        $($(".formSection")[value]).show();
+        $( '.formSection' ).hide();
+        $( $( '.formSection' )[value] ).show();
     }
 }
 
 function filterInSection($this)
 {
     var $tbody = $this.parent().parent().parent();
-    var $trTarget = $tbody.find("tr:not([colspan])");
+    var $trTarget = $tbody.find( 'tr:not([colspan])' );
 
-    if($this.val() == '')
+    if( $this.val() == '' )
     {
         $trTarget.show();
     }
     else
     {
-        var $trTargetChildren = $trTarget.find('td:first-child');
-        var $matched = $trTargetChildren.find(':contains("' + $this.val() + '")');
-        var $not_matched = $trTargetChildren.find(':not(:contains("' + $this.val() + '"))');
+        var $trTargetChildren = $trTarget.find( 'td:first-child' );
+        var $matched = $trTargetChildren.find( ':contains("' + $this.val() + '")' );
+        var $not_matched = $trTargetChildren.find( ':not(:contains("' + $this.val() + '"))' );
 
         $matched.parent().parent(). show();
         $not_matched.parent().parent(). hide();
