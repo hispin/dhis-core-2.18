@@ -465,8 +465,6 @@ function filterInSection($this)
         var $not_matched = $tbody.find('tr:not([colspan])').find('td:first-child(:not(:contains("' + $this.val() + '"))')
         $not_matched.parent().parent(). hide();
     }
-
-    console.log($this)
 }
 
 function getDataElementType( dataElementId )
