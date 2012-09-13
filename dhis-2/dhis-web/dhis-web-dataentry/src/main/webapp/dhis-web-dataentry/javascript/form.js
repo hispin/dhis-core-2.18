@@ -396,6 +396,7 @@ function loadForm( dataSetId )
 
         $( '#contentDiv' ).html( html );
 
+        enableSectionFilter();
         loadDataValues();
     }
     else
@@ -404,7 +405,50 @@ function loadForm( dataSetId )
 
         $( '#contentDiv' ).load( 'loadForm.action', {
             dataSetId : dataSetId
-        }, loadDataValues );
+        }, function() {
+            enableSectionFilter();
+            loadDataValues()
+        } );
+    }
+}
+
+function enableSectionFilter()
+{
+    var $sectionsHeaders = $(".formSection .cent h3");
+
+    if( $sectionsHeaders.size() > 1)
+    {
+        $("#selectionBox").css("height", "123px");
+
+        $("#filterDataSetSection").append("<option value='all'>All</option>")
+
+        $sectionsHeaders.each(function(idx, value) {
+            $("#filterDataSetSection").append("<option value='" + idx + "'>" + value.innerHTML + "</option>");
+        });
+
+        $("#filterDataSetSectionTr").show();
+    }
+    else
+    {
+        $("#selectionBox").css("height", "93px");
+        $("#filterDataSetSectionTr").hide();
+        $("#filterDataSetSection").children().remove()
+    }
+}
+
+function filterOnSection()
+{
+    var $filterDataSetSection = $("#filterDataSetSection");
+    var value = $filterDataSetSection.val();
+
+    if(value == 'all')
+    {
+        $(".formSection").show();
+    }
+    else
+    {
+        $(".formSection").hide();
+        $($(".formSection")[value]).show();
     }
 }
 
