@@ -295,26 +295,6 @@
 			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
 		</action>
 
-		<!-- Visit Plan -->
-
-		<action name="visitplan"
-			class="org.hisp.dhis.caseentry.action.visitplan.VisitPlanAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-caseentry/visitPlan.vm</param>
-			<param name="menu">/dhis-web-caseentry/activityPlanningMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/visitPlan.js</param>
-			<param name="requiredAuthorities">F_GENERATE_ACTIVITY_PLANS</param>
-		</action>
-
-		<action name="visitplanSortByAttribute"
-			class="org.hisp.dhis.caseentry.action.visitplan.SearchVisitPlanAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/loadVisitPlan.vm</param>
-			<param name="javascripts">javascript/visitPlan.js</param>
-			<param name="requiredAuthorities">F_GENERATE_ACTIVITY_PLANS</param>
-		</action>
-
 		<!-- Report -->
 
 		<action name="reportSelect"
