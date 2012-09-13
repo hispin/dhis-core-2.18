@@ -52,6 +52,7 @@ function listAllPatient()
 		{
 			showById('colorHelpLink');
 			showById('listPatientDiv');
+			resize();
 			hideLoader();
 		});
 }
@@ -69,6 +70,7 @@ function advancedSearch( params )
 			jQuery('#listPatientDiv').html(html);
 			showById('colorHelpLink');
 			showById('listPatientDiv');
+			resize();
 			hideLoader();
 		}
 	});

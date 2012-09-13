@@ -56,6 +56,7 @@ function showActitityList()
 		{
 			showById('colorHelpLink');
 			showById('listPatientDiv');
+			resize();
 			hideLoader();
 		});
 }
