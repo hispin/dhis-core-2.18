@@ -405,16 +405,16 @@ public class HibernatePatientStore
             {
                 sql += "pgi.programid as programid,";
                 patientGroupBy += ",pgi.programid ";
-                operator = " and ";
-
+                
                 sql += " MIN( psi.programstageinstanceid ) as programstageinstanceid,";
                 isSearchEvent = true;
                 patientWhere += patientOperator + "pgi.patientid=p.patientid and ";
                 patientWhere += "programid=" + id + " and ";
                 patientWhere += "psi.duedate>='" + keys[3] + "' and psi.duedate<='" + keys[4] + "' and ";
+                patientWhere += "pgi.completed = false ";
                 if ( keys.length == 6 )
                 {
-                    patientWhere += "psi.organisationunitid = " + keys[5];
+                    patientWhere += " and psi.organisationunitid = " + keys[5];
                 }
                 
                 int statusEvent = Integer.parseInt( keys[2] );
@@ -476,7 +476,7 @@ public class HibernatePatientStore
         {
             sql += "(select organisationunitid from patient where patientid=p.patientid and organisationunitid = "
                 + orgunit.getId() + " ) as orgunitid,";
-            otherWhere += operator + "orgunitid=" + orgunit.getId();
+            otherWhere += otherWhere + operator + "orgunitid=" + orgunit.getId();
         }
 
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Removing last comma
@@ -505,7 +505,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-
+        
         return sql;
     }
 
