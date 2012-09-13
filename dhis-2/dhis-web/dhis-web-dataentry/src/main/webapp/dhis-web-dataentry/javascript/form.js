@@ -420,7 +420,7 @@ function enableSectionFilter()
     {
         $("#selectionBox").css("height", "123px");
 
-        $("#filterDataSetSection").append("<option value='all'>All</option>")
+        $("#filterDataSetSection").append("<option value='all'>" + i18n_show_all_sections + "</option>");
 
         $sectionsHeaders.each(function(idx, value) {
             $("#filterDataSetSection").append("<option value='" + idx + "'>" + value.innerHTML + "</option>");
@@ -432,7 +432,7 @@ function enableSectionFilter()
     {
         $("#selectionBox").css("height", "93px");
         $("#filterDataSetSectionTr").hide();
-        $("#filterDataSetSection").children().remove()
+        $("#filterDataSetSection").children().remove();
     }
 }
 
