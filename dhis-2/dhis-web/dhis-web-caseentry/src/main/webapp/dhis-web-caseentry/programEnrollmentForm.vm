@@ -244,4 +244,5 @@
 	}else{
 		jQuery('#enrollBtn').attr( 'value',i18n_update );
 	}	
+	resize();
 </script>

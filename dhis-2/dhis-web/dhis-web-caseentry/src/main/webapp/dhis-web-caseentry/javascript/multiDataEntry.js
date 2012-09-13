@@ -34,6 +34,7 @@ function listAllPatient()
 		{
 			showById('colorHelpLink');
 			showById('listPatientDiv');
+			resize();
 			hideLoader();
 		});
 }
