@@ -271,6 +271,9 @@ function eventFlowToggle( programInstanceId )
 			jQuery(this).removeClass("stage-object-selected");
 		});
 	
+	
+	jQuery(".arrow-left").css("display", "block");
+	jQuery(".arrow-right").css("display", "block");
 	if( jQuery("#tb_" + programInstanceId + " .searched").length>0)
 	{	
 		var id = jQuery("#tb_" + programInstanceId + " .searched").attr('id').split('_')[1];

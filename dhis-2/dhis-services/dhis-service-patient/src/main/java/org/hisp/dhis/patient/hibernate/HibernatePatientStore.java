@@ -414,23 +414,23 @@ public class HibernatePatientStore
                 patientWhere += "psi.duedate>='" + keys[3] + "' and psi.duedate<='" + keys[4] + "' and ";
                 if ( keys.length == 6 )
                 {
-                    patientWhere += "psi.organisationunitid = " + keys[5] + " and ";
+                    patientWhere += "psi.organisationunitid = " + keys[5];
                 }
                 
                 int statusEvent = Integer.parseInt( keys[2] );
                 switch ( statusEvent )
                 {
                 case ProgramStageInstance.COMPLETED_STATUS:
-                    patientWhere += "psi.completed=true";
+                    patientWhere += " and psi.completed=true";
                     break;
                 case ProgramStageInstance.VISITED_STATUS:
-                    patientWhere += "psi.executiondate is not null and psi.completed=false";
+                    patientWhere += " and psi.executiondate is not null and psi.completed=false";
                     break;
                 case ProgramStageInstance.FUTURE_VISIT_STATUS:
-                    patientWhere += "psi.executiondate is null and psi.duedate >= now()";
+                    patientWhere += " and psi.executiondate is null and psi.duedate >= now()";
                     break;
                 case ProgramStageInstance.LATE_VISIT_STATUS:
-                    patientWhere += "psi.executiondate is null and psi.duedate < now()";
+                    patientWhere += " and psi.executiondate is null and psi.duedate < now()";
                     break;
                 default:
                     break;

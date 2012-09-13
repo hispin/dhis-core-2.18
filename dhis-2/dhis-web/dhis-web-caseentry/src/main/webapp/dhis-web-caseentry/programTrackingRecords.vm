@@ -136,5 +136,10 @@
 			jQuery("#box_$id").addClass("stage-object-selected searched");
 		#end
 	#end
+	
 	resize();
+	
+	$(window).bind('resize', function(e){ 
+		resize();
+	});
 </script>
