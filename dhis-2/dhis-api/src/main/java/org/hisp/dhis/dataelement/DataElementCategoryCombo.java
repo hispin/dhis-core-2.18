@@ -250,7 +250,7 @@ public class DataElementCategoryCombo
         this.categories = categories;
     }
 
-    @JsonProperty( value = "categoryOptionCombo" )
+    @JsonProperty( value = "categoryOptionCombos" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
     @JacksonXmlElementWrapper( localName = "categoryOptionCombos", namespace = Dxf2Namespace.NAMESPACE )
