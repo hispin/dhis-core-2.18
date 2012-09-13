@@ -231,31 +231,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
-	<!-- Visit Plan -->
-
-	<bean id="org.hisp.dhis.caseentry.action.visitplan.VisitPlanAction"
-		class="org.hisp.dhis.caseentry.action.visitplan.VisitPlanAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.action.visitplan.SearchVisitPlanAction"
-		class="org.hisp.dhis.caseentry.action.visitplan.SearchVisitPlanAction"
-		scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientAttributeValueService"
-			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
-		<property name="patientAttributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="activityPlanService"
-			ref="org.hisp.dhis.activityplan.ActivityPlanService" />
-	</bean>
-
 	<!-- Report -->
 
 	<bean id="org.hisp.dhis.caseentry.action.report.ReportSelectAction"
