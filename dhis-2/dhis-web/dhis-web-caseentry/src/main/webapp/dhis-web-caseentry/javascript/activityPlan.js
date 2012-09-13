@@ -34,7 +34,9 @@ function showActitityList()
 					+ "_" + getFieldValue('startDueDate')
 					+ "_" + getFieldValue('endDueDate');
 					
-	if( getFieldValue("statusEvent") != '3' && getFieldValue("statusEvent") != '0' )
+	if( getFieldValue("statusEvent") != '3' 
+		&& getFieldValue("statusEvent") != '4' 
+		&& getFieldValue("statusEvent") != '0' )
 	{
 		searchTexts	+= "_" + getFieldValue('orgunitId');
 	}
