@@ -850,7 +850,7 @@ function resize(){
 	
 	$('.stage-flow').each(function(){
 		var programInstanceId = this.id.split('_')[0];
-		if(jQuery(this).width() < jQuery(this).find(".table-flow").width() ){
+		if(jQuery(this).find(".table-flow td").outerWidth() > 0){
 			jQuery('#tb_' + programInstanceId ).find('.arrow-left').show();
 			jQuery('#tb_' + programInstanceId ).find('.arrow-right').show();
 		}

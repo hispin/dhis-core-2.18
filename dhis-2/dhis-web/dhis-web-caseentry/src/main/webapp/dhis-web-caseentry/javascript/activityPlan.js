@@ -27,20 +27,27 @@ function showActitityList()
 	hideById('listPatientDiv');
 	contentDiv = 'listPatientDiv';
 	$('#contentDataRecord').html('');
-	
+	var searchBySelectedOrgunit = false;
 	var programId = getFieldValue('programIdAddPatient');
 	var searchTexts = "stat_" + programId
 					+ "_" + getFieldValue("statusEvent")
 					+ "_" + getFieldValue('startDueDate')
-					+ "_" + getFieldValue('endDueDate')
-					+ "_" + getFieldValue('orgunitId');
-	
+					+ "_" + getFieldValue('endDueDate');
+					
+	if( getFieldValue("statusEvent") != '3' && getFieldValue("statusEvent") != '0' )
+	{
+		searchTexts	+= "_" + getFieldValue('orgunitId');
+	}
+	else
+	{
+		searchBySelectedOrgunit = true
+	}
 	showLoader();
 	jQuery('#listPatientDiv').load('getActivityPlanRecords.action',
 		{
 			programId:programId,
 			listAll:false,
-			searchBySelectedOrgunit: false,
+			searchBySelectedOrgunit: searchBySelectedOrgunit,
 			searchTexts: searchTexts
 		}, 
 		function()
