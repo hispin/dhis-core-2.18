@@ -27,13 +27,15 @@ package org.hisp.dhis.sms.outbound;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.sms.outbound.OutboundSmsStore;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 public class HibernateOutboundSmsStore
     implements OutboundSmsStore
@@ -48,7 +50,14 @@ public class HibernateOutboundSmsStore
     {
         this.sessionFactory = sessionFactory;
     }
+    
+    private JdbcTemplate jdbcTemplate;
 
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     @Override
     public int save( OutboundSms sms )
     {
@@ -78,5 +87,37 @@ public class HibernateOutboundSmsStore
     {
         Session session = sessionFactory.getCurrentSession();
         return (List<OutboundSms>) session.createCriteria( OutboundSms.class ).list();
+    }
+    
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<OutboundSms> get( OutboundSmsStatus status )
+    {
+        String sql = "select id from outbound_sms where status = 1";
+
+        try
+        {
+            List<OutboundSms> OutboundSmsList = jdbcTemplate.query( sql, new RowMapper<OutboundSms>()
+            {
+                public OutboundSms mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+                    return get(rs.getInt( 1 ));
+                }
+            } );
+            
+            return OutboundSmsList;
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+    @Override
+    public void update( OutboundSms sms )
+    {
+        sessionFactory.getCurrentSession().update( sms );
     }
 }

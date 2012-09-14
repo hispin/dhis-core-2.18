@@ -372,18 +372,24 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="tasks">
       <map>
         <entry key="sendMessageScheduled" value-ref="sendMessageScheduled" />
+        <entry key="scheduleMessage" value-ref="scheduleMessage" />
       </map>
     </property>
    </bean>
   
- 	<bean id="sendMessageScheduledTasks" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" >
+ 	<bean id="abstractScheduledMessageTask" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" >
  		<constructor-arg ref="org.hisp.dhis.program.ProgramStageInstanceService" />
  		<constructor-arg ref="org.hisp.dhis.setting.SystemSettingManager" />
  		<constructor-arg ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
  		<constructor-arg ref="jdbcTemplate" />
  	</bean>
  	
- 	<bean id="sendMessageScheduled" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" parent="sendMessageScheduledTasks">
+ 	<bean id="sendMessageScheduled" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" parent="abstractScheduledMessageTask">
+		<property name="sendingMessage" value="true"/>
+	</bean>  
+	
+	<bean id="scheduleMessage" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" parent="abstractScheduledMessageTask">
+		<property name="sendingMessage" value="false"/>
 	</bean>  
   	
     <!-- Startup -->
