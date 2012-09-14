@@ -59,7 +59,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 public class HibernateProgramStageInstanceStore
     extends HibernateGenericStore<ProgramStageInstance>
@@ -325,17 +324,6 @@ public class HibernateProgramStageInstanceStore
             
             schedulingProgramObjects.add(schedulingProgramObject);
         }
-
-        /*
-         * Collection<ProgramStageInstance> programStageInstances = new
-         * HashSet<ProgramStageInstance>();
-         * 
-         * try { programStageInstances = jdbcTemplate.query( sql, new
-         * RowMapper<ProgramStageInstance>() { public ProgramStageInstance
-         * mapRow( ResultSet rs, int rowNum ) throws SQLException { return
-         * get(rs.getInt( "programstageinstanceid" )); } } ); } catch (
-         * Exception ex ) { ex.printStackTrace(); }
-         */
 
         return schedulingProgramObjects;
     }
