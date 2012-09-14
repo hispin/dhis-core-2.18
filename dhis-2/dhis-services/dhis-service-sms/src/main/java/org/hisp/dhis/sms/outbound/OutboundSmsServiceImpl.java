@@ -118,6 +118,11 @@ public class OutboundSmsServiceImpl
         return outboundSmsStore.getAll();
     }
     
+    @Override
+    public int save(OutboundSms sms) {
+        return outboundSmsStore.save( sms );
+    }
+    
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
@@ -126,13 +131,13 @@ public class OutboundSmsServiceImpl
     {
         try
         {
-            sms.setStatus( OutboundSmsStatus.SENT );
             return transportService.sendMessage( sms, id );
         }
         catch ( SmsServiceException e )
         {
             log.debug( "Exception sending message " + sms, e );
             sms.setStatus( OutboundSmsStatus.ERROR );
+            this.save( sms );
             
             return "Exception sending message " + sms + e.getMessage();
         }

@@ -43,6 +43,8 @@ import org.hisp.dhis.sms.config.SMPPGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.sms.outbound.OutboundSmsStatus;
+import org.hisp.dhis.sms.outbound.OutboundSmsStore;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.smslib.AGateway;
 import org.smslib.GatewayException;
@@ -76,12 +78,17 @@ public class SmsLibService
 
     private final String SMPP_GATEWAY = "smpp_gw";
 
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private IInboundMessageNotification smppInboundMessageNotification;
+
+    private OutboundSmsStore outboundSmsStore;
 
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
-
 
     @Override
     public boolean isEnabled()
@@ -177,17 +184,22 @@ public class SmsLibService
                 // Make sure we delete tmp. group
                 removeGroup( recipient );
             }
+            sms.setStatus( OutboundSmsStatus.ERROR );
         }
 
         if ( sent )
         {
             message = "success";
+            sms.setStatus( OutboundSmsStatus.SENT );
         }
         else
         {
             log.warn( "Message not sent" );
             message = "message_not_sent";
+            sms.setStatus( OutboundSmsStatus.ERROR );
         }
+
+        this.save( sms );
 
         return message;
     }
@@ -282,7 +294,8 @@ public class SmsLibService
                     else if ( gatewayConfig instanceof SMPPGatewayConfig )
                     {
                         gatewayMap.put( SMPP_GATEWAY, gateway.getGatewayId() );
-                 //       Service.getInstance().setInboundMessageNotification( new InboundNotification() );
+                        // Service.getInstance().setInboundMessageNotification(
+                        // new InboundNotification() );
                     }
                     else
                     {
@@ -431,17 +444,27 @@ public class SmsLibService
             log.debug( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg );
         }
     }
-    
+
     public void setSmppInboundMessageNotification( IInboundMessageNotification smppInboundMessageNotification )
     {
         this.smppInboundMessageNotification = smppInboundMessageNotification;
     }
 
+    public void setOutboundSmsStore( OutboundSmsStore outboundSmsStore )
+    {
+        this.outboundSmsStore = outboundSmsStore;
+    }
 
     @Override
     public List<OutboundSms> getAllOutboundSms()
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public int save( OutboundSms sms )
+    {
+        return outboundSmsStore.save( sms );
     }
 }

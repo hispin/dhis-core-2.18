@@ -18,6 +18,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="smsLibService" class="org.hisp.dhis.sms.smslib.SmsLibService">
     <property name="smppInboundMessageNotification" ref="org.hisp.dhis.sms.incoming.SMPPInboundNotification" />
+	<property name="outboundSmsStore" ref="org.hisp.dhis.sms.outbound.OutboundSmsStore" />
   </bean>
 
   <bean id="org.hisp.dhis.sms.incoming.SMPPInboundNotification" class="org.hisp.dhis.sms.incoming.SMPPInboundNotification">

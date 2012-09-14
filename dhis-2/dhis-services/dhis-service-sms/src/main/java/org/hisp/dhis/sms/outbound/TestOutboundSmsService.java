@@ -104,4 +104,11 @@ public class TestOutboundSmsService
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public int save( OutboundSms sms )
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

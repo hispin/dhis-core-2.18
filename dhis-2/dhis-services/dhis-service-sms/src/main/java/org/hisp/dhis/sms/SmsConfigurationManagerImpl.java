@@ -109,7 +109,6 @@ public class SmsConfigurationManagerImpl
     public void updateSmsConfiguration( SmsConfiguration config )
     {
         systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_SMS_CONFIG, config );
-
         // Reinitialize components relying on sms config.
         initializeSmsConfigurables();
     }
