@@ -13,7 +13,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 			
 			jQuery( '#programId').append( '<option value="" psid="">[' + i18n_please_select + ']</option>' );
 			for ( i in json.programs ) {
-				jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" psid="' + json.programs[i].psid + '">' + json.programs[i].name + '</option>' );
+				jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" psid="' + json.programs[i].programStageId + '">' + json.programs[i].name + '</option>' );
 			}
 			
 			disableCriteriaDiv();
@@ -29,6 +29,9 @@ selection.setListenerFunction( organisationUnitSelected );
 
 function disableCriteriaDiv()
 {
+	jQuery('#selectDiv :input').each( function( idx, item ){
+		disable(this.id);
+	});
 	jQuery('#criteriaDiv :input').each( function( idx, item ){
 		disable(this.id);
 	});
@@ -38,6 +41,9 @@ function disableCriteriaDiv()
 
 function enableCriteriaDiv()
 {
+	jQuery('#selectDiv :input').each( function( idx, item ){
+		enable(this.id);
+	});
 	jQuery('#criteriaDiv :input').each( function( idx, item ){
 		enable(this.id);
 	});
