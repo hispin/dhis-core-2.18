@@ -443,7 +443,7 @@ function filterOnSection()
 
     if ( value == 'all' )
     {
-        $(".formSection").show();
+        $( '.formSection' ).show();
     }
     else
     {
