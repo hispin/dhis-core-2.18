@@ -14,12 +14,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
-	<bean id="org.hisp.dhis.activityplan.jdbc.JdbcActivityPlanStore"
-		class="org.hisp.dhis.activityplan.jdbc.JdbcActivityPlanStore">
-		<property name="jdbcTemplate" ref="jdbcTemplate" />
-		<property name="statementBuilder" ref="statementBuilder" />
-	</bean>
-
 	<bean id="org.hisp.dhis.relationship.RelationshipStore"
 		class="org.hisp.dhis.relationship.hibernate.HibernateRelationshipStore">
 		<property name="clazz" value="org.hisp.dhis.relationship.Relationship" />
@@ -149,18 +143,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
-
-	<bean id="org.hisp.dhis.activityplan.ActivityPlanService" class="org.hisp.dhis.activityplan.DefaultActivityPlanService">
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="activityPlanStore"
-			ref="org.hisp.dhis.activityplan.jdbc.JdbcActivityPlanStore" />
-	</bean>
-
+	
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionService"
 		class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationConditionService">
 		<property name="aggregationConditionStore"

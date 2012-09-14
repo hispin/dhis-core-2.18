@@ -40,7 +40,6 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.activityplan.ActivityPlanService;
 import org.hisp.dhis.api.mobile.ActivityReportingService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.PatientMobileSettingService;
@@ -89,7 +88,7 @@ public class ActivityReportingServiceImpl
 
     private ProgramStageInstanceService programStageInstanceService;
 
-    private ActivityPlanService activityPlanService;
+//    private ActivityPlanService activityPlanService;
 
     private PatientAttributeValueService patientAttValueService;
 
@@ -118,20 +117,20 @@ public class ActivityReportingServiceImpl
 
         this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( true ) );
 
-        Collection<org.hisp.dhis.activityplan.Activity> activities = activityPlanService
-            .getCurrentActivitiesByProvider( unit );
-
-        for ( org.hisp.dhis.activityplan.Activity activity : activities )
-        {
-            items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
-        }
-
-        if ( items.isEmpty() )
-        {
-            return null;
-        }
-
-        Collections.sort( items, activityComparator );
+//        Collection<org.hisp.dhis.activityplan.Activity> activities = activityPlanService
+//            .getCurrentActivitiesByProvider( unit );
+//
+//        for ( org.hisp.dhis.activityplan.Activity activity : activities )
+//        {
+//            items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
+//        }
+//
+//        if ( items.isEmpty() )
+//        {
+//            return null;
+//        }
+//
+//        Collections.sort( items, activityComparator );
 
         if ( DEBUG )
             log.debug( "Found " + items.size() + " current activities in " + (System.currentTimeMillis() - time)
@@ -149,16 +148,16 @@ public class ActivityReportingServiceImpl
 
         this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( true ) );
 
-        Collection<org.hisp.dhis.activityplan.Activity> activities = activityPlanService.getActivitiesByProvider( unit );
-
-        for ( org.hisp.dhis.activityplan.Activity activity : activities )
-        {
-            if ( activity.getDueDate() != null )
-            {
-                items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
-            }
-
-        }
+//        Collection<org.hisp.dhis.activityplan.Activity> activities = activityPlanService.getActivitiesByProvider( unit );
+//
+//        for ( org.hisp.dhis.activityplan.Activity activity : activities )
+//        {
+//            if ( activity.getDueDate() != null )
+//            {
+//                items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
+//            }
+//
+//        }
 
         if ( items.isEmpty() )
         {
@@ -502,10 +501,10 @@ public class ActivityReportingServiceImpl
         this.patientMobileSettingService = patientMobileSettingService;
     }
 
-    public void setActivityPlanService( org.hisp.dhis.activityplan.ActivityPlanService activityPlanService )
-    {
-        this.activityPlanService = activityPlanService;
-    }
+//    public void setActivityPlanService( org.hisp.dhis.activityplan.ActivityPlanService activityPlanService )
+//    {
+//        this.activityPlanService = activityPlanService;
+//    }
 
     public PatientMobileSetting getSetting()
     {
