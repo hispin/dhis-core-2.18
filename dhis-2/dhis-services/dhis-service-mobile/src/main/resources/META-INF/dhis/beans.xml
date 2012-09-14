@@ -23,7 +23,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
     <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="patientMobileSettingService" ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
-    <property name="activityPlanService" ref="org.hisp.dhis.activityplan.ActivityPlanService" />
     <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
   </bean>
 
