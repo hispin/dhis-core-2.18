@@ -36,6 +36,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
 public class MenuAction
     implements Action
@@ -70,6 +72,13 @@ public class MenuAction
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     private I18nFormat format;
@@ -143,6 +152,20 @@ public class MenuAction
     {
         return complete;
     }
+    
+    public boolean trackingAuthority;
+    
+    public boolean isTrackingAuthority()
+    {
+        return trackingAuthority;
+    }
+
+    public boolean aggregateAuthority;
+    
+    public boolean isAggregateAuthority()
+    {
+        return aggregateAuthority;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -151,6 +174,24 @@ public class MenuAction
     @Override
     public String execute()
     {
+        User user = currentUserService.getCurrentUser();
+        
+        trackingAuthority = false;
+        
+        aggregateAuthority = false;
+
+        for (String each: user.getUserCredentials().getAllAuthorities())
+        {
+            if ( each.equals( "M_dhis-web-maintenance-patient" ) )
+            {
+                trackingAuthority = true;
+            }
+            if ( each.equals( "M_dhis-web-dataentry" ))
+            {
+                aggregateAuthority = true;
+            }
+        }
+        
         if ( complete )
         {
             organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
