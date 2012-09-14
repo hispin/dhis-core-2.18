@@ -160,14 +160,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.program.nextvisit.NextVisitGenerator"
-		class="org.hisp.dhis.program.nextvisit.DefaultNextVisitGenerator">
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.relationship.RelationshipService" class="org.hisp.dhis.relationship.DefaultRelationshipService">
 		<property name="relationshipStore" ref="org.hisp.dhis.relationship.RelationshipStore" />
 	</bean>
