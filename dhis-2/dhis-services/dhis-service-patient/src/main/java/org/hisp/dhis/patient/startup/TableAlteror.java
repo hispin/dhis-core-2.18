@@ -120,7 +120,7 @@ public class TableAlteror
         updateProgramStageTabularReportTable();
         moveStoredByFormStageInstanceToDataValue();
         
-        executeSql( "ALTER TABLE patientattribute DROP COLUMN inheritable" );
+        executeSql( "ALTER TABLE patiesntattribute DROP COLUMN inheritable" );
         executeSql( "ALTER TABLE programstageinstance DROP COLUMN stageInProgram" );
         
         updateRelationshipIdentifiers();
@@ -128,6 +128,7 @@ public class TableAlteror
         
         executeSql( "UPDATE programstage SET reportDateDescription='Report date' WHERE reportDateDescription is null" );
         
+        executeSql( "CREATE INDEX programstageinstance_executiondate ON programstageinstance (executiondate)" );
     }
 
     // -------------------------------------------------------------------------
