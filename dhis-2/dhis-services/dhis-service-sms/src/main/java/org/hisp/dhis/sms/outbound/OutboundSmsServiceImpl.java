@@ -53,7 +53,6 @@ public class OutboundSmsServiceImpl
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private OutboundSmsStore outboundSmsStore;
 
     public void setOutboundSmsStore( OutboundSmsStore outboundSmsStore )
@@ -102,7 +101,14 @@ public class OutboundSmsServiceImpl
             throw new SmsServiceNotEnabledException();
         }
 
-        outboundSmsStore.save( sms );
+        if ( sms.getId() == 0 )
+        {
+            outboundSmsStore.save( sms );
+        }
+        else
+        {
+            outboundSmsStore.update( sms );
+        }
 
         if ( transportService != null )
         {
@@ -111,15 +117,27 @@ public class OutboundSmsServiceImpl
 
         return "outboundsms_saved";
     }
-    
+
     @Override
     public List<OutboundSms> getAllOutboundSms()
     {
         return outboundSmsStore.getAll();
     }
+
+    @Override
+    public List<OutboundSms> getOutboundSms( OutboundSmsStatus status )
+    {
+        return outboundSmsStore.get( status );
+    }
+
+    @Override
+    public void updateOutboundSms( OutboundSms sms)
+    {
+        outboundSmsStore.update( sms );
+    }
     
     @Override
-    public int save(OutboundSms sms) {
+    public int saveOutboundSms(OutboundSms sms) {
         return outboundSmsStore.save( sms );
     }
     
@@ -137,8 +155,7 @@ public class OutboundSmsServiceImpl
         {
             log.debug( "Exception sending message " + sms, e );
             sms.setStatus( OutboundSmsStatus.ERROR );
-            this.save( sms );
-            
+            this.saveOutboundSms( sms );
             return "Exception sending message " + sms + e.getMessage();
         }
     }

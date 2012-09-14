@@ -31,6 +31,7 @@ import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_TIME_FOR_SENDIN
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SEND_MESSAGE_GATEWAY;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIME_FOR_SENDING_MESSAGE;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SEND_MESSAGE_SCHEDULED_TASKS;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULE_MESSAGE_TASKS;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -142,8 +143,8 @@ public class ScheduleSendMessageTasksAction
                 String time = (String) systemSettingManager.getSystemSetting( KEY_TIME_FOR_SENDING_MESSAGE,
                     DEFAULT_TIME_FOR_SENDING_MESSAGE );
 
+                // Schedule for sending messages
                 String[] infor = time.split( ":" );
-
                 String hour = infor[0].trim();
                 String minute = infor[1].trim();
 
@@ -151,15 +152,14 @@ public class ScheduleSendMessageTasksAction
                 {
                     hour = "0";
                 }
-
                 if ( minute.trim().equals( "00" ) )
                 {
                     minute = "0";
                 }
-
                 String cron = "0 " + Integer.parseInt( minute ) + " " + Integer.parseInt( hour ) + " ? * *";
 
                 keyCronMap.put( KEY_SEND_MESSAGE_SCHEDULED_TASKS, cron );
+                keyCronMap.put( KEY_SCHEDULE_MESSAGE_TASKS, "0 0 0 * * ?" );
 
                 schedulingManager.scheduleTasks( keyCronMap );
             }

@@ -52,6 +52,10 @@ public interface OutboundSmsService
         throws SmsServiceException;
 
     List<OutboundSms> getAllOutboundSms();
+    
+    int saveOutboundSms( OutboundSms sms);
 
-    int save( OutboundSms sms );
+    void updateOutboundSms( OutboundSms sms);
+    
+    List<OutboundSms> getOutboundSms( OutboundSmsStatus status );
 }

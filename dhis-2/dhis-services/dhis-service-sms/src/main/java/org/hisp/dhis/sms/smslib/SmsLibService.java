@@ -199,7 +199,7 @@ public class SmsLibService
             sms.setStatus( OutboundSmsStatus.ERROR );
         }
 
-        this.save( sms );
+        this.saveOutboundSms( sms );
 
         return message;
     }
@@ -463,8 +463,20 @@ public class SmsLibService
     }
 
     @Override
-    public int save( OutboundSms sms )
+    public int saveOutboundSms( OutboundSms sms )
     {
         return outboundSmsStore.save( sms );
+    }
+
+    @Override
+    public void updateOutboundSms( OutboundSms sms )
+    {
+        outboundSmsStore.update( sms );
+    }
+
+    @Override
+    public List<OutboundSms> getOutboundSms( OutboundSmsStatus status )
+    {
+        return outboundSmsStore.get( status );
     }
 }

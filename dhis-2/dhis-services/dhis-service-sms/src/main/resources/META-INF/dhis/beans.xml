@@ -9,16 +9,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="outboundSmsStore" class="org.hisp.dhis.sms.outbound.HibernateOutboundSmsStore">
     <property name="sessionFactory" ref="sessionFactory" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
-  <bean id="org.hisp.dhis.sms.outbound.OutboundSmsService" class="org.hisp.dhis.sms.outbound.OutboundSmsServiceImpl" />
+  <bean id="org.hisp.dhis.sms.outbound.OutboundSmsService" class="org.hisp.dhis.sms.outbound.OutboundSmsServiceImpl">
+  	<property name="outboundSmsStore" ref="outboundSmsStore" />
+  </bean>
 
   <!-- Only for testing! OutboundSmsService stub just logging invocations, replacing the default one or use as the OutboundSmsTransportService.. -->
   <!-- <bean id="TestOutboundSmsService" class="org.hisp.dhis.sms.outbound.TestOutboundSmsService" /> -->
 
   <bean id="smsLibService" class="org.hisp.dhis.sms.smslib.SmsLibService">
     <property name="smppInboundMessageNotification" ref="org.hisp.dhis.sms.incoming.SMPPInboundNotification" />
-	<property name="outboundSmsStore" ref="org.hisp.dhis.sms.outbound.OutboundSmsStore" />
+	<property name="outboundSmsStore" ref="outboundSmsStore" />
   </bean>
 
   <bean id="org.hisp.dhis.sms.incoming.SMPPInboundNotification" class="org.hisp.dhis.sms.incoming.SMPPInboundNotification">

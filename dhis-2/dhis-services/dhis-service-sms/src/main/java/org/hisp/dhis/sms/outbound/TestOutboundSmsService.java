@@ -106,9 +106,23 @@ public class TestOutboundSmsService
     }
 
     @Override
-    public int save( OutboundSms sms )
+    public int saveOutboundSms( OutboundSms sms )
     {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    @Override
+    public void updateOutboundSms( OutboundSms sms )
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public List<OutboundSms> getOutboundSms( OutboundSmsStatus status )
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
