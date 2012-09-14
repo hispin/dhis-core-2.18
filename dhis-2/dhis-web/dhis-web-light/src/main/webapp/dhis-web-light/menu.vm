@@ -20,8 +20,12 @@
 
 <p>
 <ul>
-    <li><a href="selectOrganisationUnit.action">$i18n.getString( "agregate_reporting" )</a></li>
-    <li><a href="trackingMenu.action">$i18n.getString( "tracking" )</a></li>
+    #if( $aggregateAuthority == true )
+		<li><a href="selectOrganisationUnit.action">$i18n.getString( "agregate_reporting" )</a></li>
+	#end
+    #if( $trackingAuthority == true )
+		<li><a href="trackingMenu.action">$i18n.getString( "tracking" )</a></li>
+	#end	
     <li><a href="messages.action">$i18n.getString( "messages" ) #if($unreadMessageConversationCount > 0)($unreadMessageConversationCount)#end</a></li>
     <li><a href="reports.action">$i18n.getString( "reports" )</a></li>
     <li><a href="settings.action">$i18n.getString( "settings" )</a></li>
