@@ -155,7 +155,7 @@ public class SendScheduledMessageTask
                 for ( OutboundSms outboundSms : outboundSmsList )
                 {
                     outboundSms.setStatus( OutboundSmsStatus.SENT );
-                    outboundSmsService.sendMessage( outboundSms, gatewayId );
+                    outboundSmsService.sendMessage( outboundSms, gatewayId );                
                 }
             }
         }

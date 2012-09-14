@@ -90,10 +90,23 @@ public class HibernateOutboundSmsStore
     }
     
     @Override
-    @SuppressWarnings( "unchecked" )
     public List<OutboundSms> get( OutboundSmsStatus status )
     {
-        String sql = "select id from outbound_sms where status = 1";
+        int realStatus = 0;
+        
+        if(status.equals( OutboundSmsStatus.OUTBOUND )){
+            realStatus = OutboundSmsStatus.OUTBOUND.ordinal();
+        }
+        else if(status.equals( OutboundSmsStatus.SENT )){
+            realStatus = OutboundSmsStatus.SENT.ordinal();
+        }
+        else{
+            realStatus = OutboundSmsStatus.ERROR.ordinal();
+        }
+        
+        String sql = "select osm.id as outboundsmsid, message, ore.elt as phonenumber "
+        		+ "from outbound_sms osm inner join outbound_sms_recipients ore " 
+        		+ "on osm.id=ore.outbound_sms_id where status = " + realStatus ;
 
         try
         {
@@ -102,7 +115,9 @@ public class HibernateOutboundSmsStore
                 public OutboundSms mapRow( ResultSet rs, int rowNum )
                     throws SQLException
                 {
-                    return get(rs.getInt( 1 ));
+                    OutboundSms outboundSms = new OutboundSms( rs.getString( 2 ), rs.getString( 3 ) );
+                    outboundSms.setId(  rs.getInt( 1 ) );
+                    return outboundSms;
                 }
             } );
             

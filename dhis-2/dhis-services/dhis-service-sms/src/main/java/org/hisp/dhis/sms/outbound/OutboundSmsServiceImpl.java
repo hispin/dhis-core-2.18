@@ -100,16 +100,7 @@ public class OutboundSmsServiceImpl
         {
             throw new SmsServiceNotEnabledException();
         }
-
-        if ( sms.getId() == 0 )
-        {
-            outboundSmsStore.save( sms );
-        }
-        else
-        {
-            outboundSmsStore.update( sms );
-        }
-
+        
         if ( transportService != null )
         {
             return sendMessageInternal( sms, gatewayId );

@@ -199,7 +199,14 @@ public class SmsLibService
             sms.setStatus( OutboundSmsStatus.ERROR );
         }
 
-        this.saveOutboundSms( sms );
+        if ( sms.getId() == 0 )
+        {
+            outboundSmsStore.save( sms );
+        }
+        else
+        {
+            outboundSmsStore.update( sms );
+        }
 
         return message;
     }
