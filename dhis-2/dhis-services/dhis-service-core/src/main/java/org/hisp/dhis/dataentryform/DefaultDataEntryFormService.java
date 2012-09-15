@@ -37,7 +37,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -57,6 +60,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataEntryFormService
     implements DataEntryFormService
 {
+    private static final Log log = LogFactory.getLog( DefaultDataEntryFormService.class );
+    
     private static final String EMPTY_VALUE_TAG = "value=\"\"";
     private static final String EMPTY_TITLE_TAG = "title=\"\"";
     private static final String TAG_CLOSE = "/>";
@@ -176,7 +181,8 @@ public class DefaultDataEntryFormService
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
             Matcher dataElementTotalMatcher = DATAELEMENT_TOTAL_PATTERN.matcher( inputHtml );
             Matcher indicatorMatcher = INDICATOR_PATTERN.matcher( inputHtml );
-            Matcher dynamicElementMatcher = DYNAMIC_ELEMENT_PATTERN.matcher( inputHtml );
+            Matcher dynamicInputMatcher = DYNAMIC_INPUT_PATTERN.matcher( inputHtml );
+            Matcher dynamicSelectMatcher = DYNAMIC_SELECT_PATTERN.matcher( inputHtml );
             
             String displayValue = null;
             String displayTitle = null;
@@ -214,19 +220,33 @@ public class DefaultDataEntryFormService
                 displayValue = indicator != null ? "value=\"[ " + indicator.getDisplayName() + " ]\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
                 displayTitle = indicator != null ? "title=\"" + indicator.getDisplayName() + "\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
             }
-            else if ( dynamicElementMatcher.find() && dynamicElementMatcher.groupCount() > 0 )
+            else if ( dynamicInputMatcher.find() && dynamicInputMatcher.groupCount() > 0 )
             {
-                String categoryOptionComboUid = dynamicElementMatcher.group( 1 );
+                String categoryOptionComboUid = dynamicInputMatcher.group( 2 );
                 DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboUid );
                 
                 displayValue = categoryOptionCombo != null ? "value=\"[ " + categoryOptionCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
                 displayTitle = categoryOptionCombo != null ? "title=\"" + categoryOptionCombo.getDisplayName() + "\"" : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
+            }
+            else if ( dynamicSelectMatcher.find() && dynamicSelectMatcher.groupCount() > 0 )
+            {
+                String categoryComboUid = dynamicSelectMatcher.group( 2 );
+                DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboUid );
+                
+                displayValue = categoryCombo != null ? "value=\"[ " + categoryCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_combo_not_exist" );
+                displayTitle = categoryCombo != null ? "title=\"" + categoryCombo.getDisplayName() + "\"" : "[ " + i18n.getString( "cat_combo_not_exist" );
             }
 
             // -----------------------------------------------------------------
             // Insert name of data element operand as value and title
             // -----------------------------------------------------------------
 
+            if ( displayValue == null || displayTitle == null )
+            {
+                log.warn( "Ignoring invalid form markup: '" + inputHtml + "'" );
+                continue;
+            }
+            
             inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
             inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : inputHtml + " " + displayTitle;
 

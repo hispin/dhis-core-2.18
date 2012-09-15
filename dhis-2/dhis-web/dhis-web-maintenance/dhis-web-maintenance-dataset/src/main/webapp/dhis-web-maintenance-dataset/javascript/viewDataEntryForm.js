@@ -1,6 +1,7 @@
 
-var currentDynamicElementCode = "";
-var currentCategoryComboUid = "";
+var currentDynamicElementCode = null;
+var currentCategoryComboUid = null;
+var currentCategoryComboName = null;
 
 $( document ).ready( function() {
 	
@@ -368,9 +369,26 @@ function insertIndicator() {
 
 /**
  * A unique code is used to associate the data element drop down with the input
- * fields for each category option combo. The format for input field is:
+ * fields for each category option combo.  The format for select / drop down list 
+ * identifier is:
  * 
- * <input id="<unique code>-dynamic" categoryoptioncomboid="<category option combo uid>" />
+ * "<unique code>-dyncselect"
+ */
+function insertDropDownList() {
+	var oEditor = $("#designTextarea").ckeditorGet();
+	
+	if ( currentDynamicElementCode && currentCategoryComboUid ) {
+		var id = currentDynamicElementCode + "-" + currentCategoryComboUid + "-dynselect";
+		var template = '<input id="' + id + '" value="[ ' + currentCategoryComboName + ' ]" title="' + currentCategoryComboName + '" style="width:12em;" />';
+		oEditor.insertHtml( template );
+	}
+}
+
+/**
+ * A unique code is used to associate the data element drop down with the input
+ * fields for each category option combo. The format for input field identifier is:
+ * 
+ * "<unique code>-<category option combo uid>-dyninput"
  */
 function insertDynamicElement() {
 	var oEditor = $("#designTextarea").ckeditorGet();
@@ -379,26 +397,9 @@ function insertDynamicElement() {
 	if( $option.length !== 0 ) {
 		var categoryOptionComboUid = $option.val();
 		var categoryOptionComboName = $option.text();
-		var id = currentDynamicElementCode + "-dynamic";
-		var title = categoryOptionComboUid + " - " + categoryOptionComboName;
+		var id = currentDynamicElementCode + "-" + categoryOptionComboUid + "-dyninput";
 		
-		var template = '<input id="' + id + '" categoryoptioncomboid="' + categoryOptionComboUid + '" value="[ ' + categoryOptionComboName + ' ]" title="' + title + '" style="width:7em;text-align:center;" />';
-		oEditor.insertHtml( template );
-	}
-}
-
-/**
- * A unique code is used to associate the data element drop down with the input
- * fields for each category option combo.  The format for select / drop down list 
- * is:
- * 
- * <select id="<unique code>-categorycombo" />
- */
-function insertDropDownList() {
-	var oEditor = $("#designTextarea").ckeditorGet();
-	
-	if ( currentDynamicElementCode && currentCategoryComboUid ) {
-		var template = '<select id="' + currentCategoryComboUid + '-categorycombo" style="width:15em;"></select>';
+		var template = '<input id="' + id + '" value="[ ' + categoryOptionComboName + ' ]" title="' + categoryOptionComboName + '" style="width:7em;text-align:center;" />';
 		oEditor.insertHtml( template );
 	}
 }
@@ -412,10 +413,12 @@ function showDynamicElementInsert() {
 	$("#dynamicElementSelect").hide();
 	$("#dynamicElementInsert").show();
 	
-	var categoryComboUid = $("#categoryComboSelect").val();
+	var categoryComboUid = $("#categoryComboSelect option:selected").val();
+	var categoryComboName = $("#categoryComboSelect option:selected").text();
 
 	currentDynamicElementCode = getRandomCode();
 	currentCategoryComboUid = categoryComboUid;
+	currentCategoryComboName = categoryComboName;
 	
 	clearListById( "dynamicElementSelector" );
 	
