@@ -24,7 +24,7 @@
 #if( $patients && $patients.size()>0 )
 	<p>#parse( "/dhis-web-caseentry/colorHelp.vm" )</p>
 	
-	<table class="listTable" id="patientList">
+	<table id="patientList">
 		#set( $mark = false )                 
 		#foreach( $patient in $patients )
 			#set( $programInstance = '')
@@ -61,8 +61,8 @@
 										<tr>
 										#set( $flag = "false" )
 										#foreach( $programStageInstance in $programStageInstances )
-											<td id="arrow_$programStageInstance.id" name="arrow" width="5px" style='font-size:25px;'>&rarr;</td>
-											<td id="td_$programStageInstance.id" name="td">
+											<td id="arrow_$programStageInstance.id" style='font-size:25px;'>&rarr;</td>
+											<td>
 												#set($title="")
 												#set($index = 0)
 												#foreach( $comment in $programStageInstance.patientComments)
@@ -87,6 +87,7 @@
 													reportDate="$!format.formatDate( $!programStageInstance.executionDate )"
 													reportDateDes="$programStageInstance.programStage.reportDateDescription"
 													dueDate="$format.formatDate( $programStageInstance.dueDate )"
+													status='$programStageInstance.getEventStatus()'
 													class="stage-object" 
 													title="$title"
 													value="$programStageInstance.programStage.name&#13;&#10;$format.formatDate( $programStageInstance.dueDate )" 
@@ -125,27 +126,7 @@
 #end
 
 <script>
-	if(getFieldValue('statusEvent')!="0" ){
-		#if( $programStageInstanceIds 
-			&& $programStageInstanceIds.size() > 0 )
-			
-			jQuery("#patientList .stage-object").each( function(){
-				var programStageInstance = this.id.split('_')[1];
-				hideById('arrow_' + programStageInstance );
-				hideById('td_' + programStageInstance );
-			});
-			
-			jQuery(".arrow-left").css("display", "none");
-			jQuery(".arrow-right").css("display", "none");
-			#foreach( $id in $programStageInstanceIds )
-				showById('arrow_$id');
-				showById('td_$id');
-				jQuery("#ps_$id").addClass("stage-object-selected searched");
-			#end
-		#end
-	}
-	
-	resize();
+	reloadRecordList();
 	$(window).bind('resize', function(e){ 
 		resize();
 	});

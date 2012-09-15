@@ -1,27 +1,16 @@
 <script>
 	jQuery(document).ready(	function(){
-		showById('programAddPatientTR');
-		showById('programStageAddPatientTR');
-		showById('sendSmsToListBtn');
-		jQuery("#programIdAddPatient option").each(function(){
-			var item = jQuery(this);
-			if( item.attr('type')!=1 && item.val()!='' ){
-				item.remove();
-			}
+		validation( 'activityPlanForm', function(form){
+			showActitityList();
 		});
 		
-		jQuery("#searchObjectId [value=prg]").remove();
-		jQuery("#searchObjectId").prepend('<option value="-100">' + i18n_please_select_criteria + '</option>');
-		jQuery("#searchObjectId [value=]").attr("selected","selected");
-		hideById('addPatientBtn');
-		disable('advancedSearchBtn');
 		setFieldValue('searchByProgramStage', 'true');
 		setFieldValue('hideLink', 'true');
 	});	
 </script>
 
 <h3>$i18n.getString( "activity_plan" )</h3>
-<form>
+<form id='activityPlanForm' name='activityPlanForm'>
 	<input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
 	<input type='hidden' id='listAll' name='listAll'>
 	<input type='hidden' id='sendToList' name='sendToList'>
@@ -31,7 +20,7 @@
 	<input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.id' >
 	<input type="hidden" id='hideLink' name='hideLink' value='false'>
 	<input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
-	<div id='advanced-search' style='width:500px;'>
+	<div id='advanced-search' style='width:550px;'>
 		<table style="margin-bottom:8px">    
 			<tr>
 				<td>
@@ -41,17 +30,20 @@
 					<input type="text" id='orgunitName' readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'please_select_village' )]" #end >
 				</td>
 			</tr> 
-			<tr id='programAddPatientTR' class='hidden'>
+			<tr>
 				<td>$i18n.getString('program')</td>
 				<td>
-					<select id='programIdAddPatient' name='programIdAddPatient' onchange='enableBtn();'>
+					<select id='programIdAddPatient' name='programIdAddPatient' class="{validate:{required:true}}" >
+						<option value="">[$i18n.getString("please_select")]</option>
 						#foreach($program in $programs)
-							<option value="$program.id" type='$program.type'>$program.name</option>
+							#if($program.type=='1') 
+								<option value="$program.id" type='$program.type'>$program.name</option>
+							#end
 						#end
 					</select>
 				</td>
 			</tr>
-			<tr id='programStageAddPatientTR'>
+			<tr>
 				<td>$i18n.getString('status')</td>
 				<td>
 					<select id="statusEvent" name="statusEvent" onchange="statusEventOnChange()">
@@ -89,8 +81,8 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td valign='bottom'>
-					<input type="button" class='large-button' id='listPatientBtn' value="$i18n.getString( 'show_activity_list' )" onclick="javascript:showActitityList();" >
+				<td>
+					<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'show_activity_list' )">
 				</td>
 			</tr>
 		</table>
