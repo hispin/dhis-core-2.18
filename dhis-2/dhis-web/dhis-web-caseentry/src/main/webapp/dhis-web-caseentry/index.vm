@@ -3,7 +3,6 @@
 
 <ul class="introList">
 	#introListImgItem( "patient.action" "find_and_add_person" "patient" )
-	#introListImgItem( "showAddPatientFormFormMenu.action?addNewForm=true" "add_person" "add_patient" )
 	#introListImgItem( "multipledataEntrySelect.action" "multiple_individual_records" "dataentry" )
 	#introListImgItem( "singleEventSelect.action" "single_event_with_registration" "dataentry" )
     #introListImgItem( "anonymousRegistration.action" "anonymous_events" "dataentry" )

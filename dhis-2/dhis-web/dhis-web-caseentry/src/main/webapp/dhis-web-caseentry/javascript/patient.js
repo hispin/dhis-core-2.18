@@ -286,21 +286,9 @@ function addPatient()
 		var systemIdentifierId = json.message.split('_')[1];
 		jQuery('#advSearchBox0 [id="searchText"]').val( systemIdentifierId );
 		statusSearching = 1;
-		if( getFieldValue("addNewForm")=="true")
-		{
-			$("#patientForm :input").attr("disabled", false);
-			$("#patientForm :input").each(function(){
-				if( this.type!='button' || this.type!='submit' ){
-					this.value = "";
-				}
-			});
-			showSuccessMessage(i18n_add_person_successfully);
-		}
-		else
-		{
-			showPatientDashboardForm( patientId );
-			jQuery('#resultSearchDiv').dialog('close');
-		}
+		
+		showPatientDashboardForm( patientId );
+		jQuery('#resultSearchDiv').dialog('close');
       }
      });
     return false;
@@ -466,6 +454,7 @@ function loadProgramInstance( programInstanceId, completed )
 				hideById('newEncounterBtn_' + programInstanceId);
 			}
 			jQuery('#loaderDiv').hide();
+			resize();
 		});
 }
 

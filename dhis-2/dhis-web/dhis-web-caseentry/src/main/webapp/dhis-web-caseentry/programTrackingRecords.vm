@@ -17,19 +17,19 @@
 		<td class='text-column'>$i18n.getString( "total_result" ):</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
-		<td>$!total</td>
+		<td id='totalTd'>$!total</td>
 	</tr>
 </table>
 
 #if( $patients && $patients.size()>0 )
 	<p>#parse( "/dhis-web-caseentry/colorHelp.vm" )</p>
 	
-	<table class="listTable" id="patientList">
+	<table id="patientList">
 		#set( $mark = false )                 
 		#foreach( $patient in $patients )
 			#set( $programInstance = '')
 			#set( $programInstance = $programInstanceMap.get( $patient ) )
-				<tr #alternate( $mark )>
+				<tr #alternate( $mark ) id='event_$programInstance.id'>
 					<td>
 						#set( $value="")
 						#foreach( $identifierType in $programInstance.program.patientIdentifierTypes )
@@ -82,8 +82,10 @@
 													programStageInstanceId='$programStageInstance.id' 
 													programStageName='$programStageInstance.programStage.name' 
 													programStageId='$programStageInstance.programStage.id' 
-													status="$statusMap.get( $programStageInstance.id )" 
-													class='stage-object' 
+													programInstanceId='$programInstance.id'
+													dueDate='$format.formatDate( $programStageInstance.dueDate )'
+													status='$statusMap.get( $programStageInstance.id )'
+													class='stage-object'
 													value='$programStageInstance.programStage.name&#13;&#10;$format.formatDate( $programStageInstance.dueDate )' 
 													title="$title" onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'>
 												<script>
@@ -121,24 +123,7 @@
 #end
 
 <script>
-	#if( $programStageInstanceIds && $programStageInstanceIds.size() > 0 )
-		jQuery("#patientList .stage-object").each( function(){
-			var programStageInstance = this.id.split('_')[1];
-			hideById('arrow_' + programStageInstance );
-			hideById('td_' + programStageInstance );
-		});
-		
-		jQuery(".arrow-left").addClass("hidden");
-		jQuery(".arrow-right").addClass("hidden");
-		#foreach( $id in $programStageInstanceIds )
-			showById('arrow_$id');
-			showById('td_$id');
-			jQuery("#box_$id").addClass("stage-object-selected searched");
-		#end
-	#end
-	
-	resize();
-	
+	reloadRecordList();
 	$(window).bind('resize', function(e){ 
 		resize();
 	});
