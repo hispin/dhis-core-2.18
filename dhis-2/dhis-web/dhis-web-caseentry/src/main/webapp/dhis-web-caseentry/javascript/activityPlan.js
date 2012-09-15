@@ -15,7 +15,6 @@ function orgunitSelected( orgUnits, orgUnitNames )
 					jQuery( '#programIdAddPatient').append( '<option value="' + json.programs[i].id +'" type="' + json.programs[i].type + '">' + json.programs[i].name + '</option>' );
 				}
 			}
-			enableBtn();
 		});
 }
 
@@ -66,7 +65,7 @@ function eventFlowToggle( programInstanceId )
 	jQuery("#tb_" + programInstanceId + " .stage-object").each( function(){
 			var programStageInstance = this.id.split('_')[1];
 			jQuery('#arrow_' + programStageInstance ).toggle();
-			jQuery('#td_' + programStageInstance ).toggle();
+			jQuery('#ps_' + programStageInstance ).toggle();
 			jQuery(this).removeClass("stage-object-selected");
 		});
 	
@@ -74,7 +73,7 @@ function eventFlowToggle( programInstanceId )
 	{	
 		var id = jQuery("#tb_" + programInstanceId + " .searched").attr('id').split('_')[1];
 		showById("arrow_" + id);
-		showById("td_" + id );
+		showById("ps_" + id );
 	}
 	resize();
 }
@@ -207,13 +206,41 @@ function setDateRangeUpTo( days )
 	jQuery("#endDueDate").val(endDate);
 }
 
-
 function setDateRangeAll()
 {
 	var date = new Date();
 	var d = date.getDate();
 	var m = date.getMonth();
 	var y= date.getFullYear();
+}
+
+function reloadRecordList()
+{
+	var listAll = getFieldValue('listAll');
+	var startDate = getFieldValue('startDueDate');
+	var endDate = getFieldValue('endDueDate');
+	var status = getFieldValue('statusEvent');
 	
-	
+	jQuery("#patientList .stage-object").each( function(){
+		var id = this.id.split('_')[1];
+		var dueDate = jQuery(this).attr('dueDate');
+		var statusEvent = jQuery(this).attr('status');
+		var programInstanceId = jQuery(this).attr('programInstanceId');
+		if( dueDate >= startDate && dueDate <= endDate 
+			&& (( status!='0' && statusEvent == status ) || status=='0' ))
+		{
+			if( jQuery("#tb_" + programInstanceId + " .searched").length > 0 ){
+				jQuery("#ps_" + id ).addClass("stage-object-selected searched");
+				hideById("ps_" + id )
+				hideById('arrow_' + id );
+			}
+			jQuery("#ps_" + id ).addClass("stage-object-selected searched");
+		}
+		else
+		{
+			hideById('arrow_' + id );
+			hideById('ps_' + id );
+		}
+	});
+	resize();
 }

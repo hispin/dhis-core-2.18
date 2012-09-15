@@ -338,7 +338,7 @@ public class HibernateProgramStageInstanceStore
     {
         String selector = count ? "count(*) " : "* ";
 
-        String sql = "select " + selector + "from ( select psi.programstageinstanceid, psi.executiondate,";
+        String sql = "select " + selector + "from ( select DISTINCT psi.programstageinstanceid, psi.executiondate,";
         String where = "";
         String operator = "where ";
 
@@ -434,7 +434,7 @@ public class HibernateProgramStageInstanceStore
         sql += where; // filters
 
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
-
+        
         return sql;
     }
 }

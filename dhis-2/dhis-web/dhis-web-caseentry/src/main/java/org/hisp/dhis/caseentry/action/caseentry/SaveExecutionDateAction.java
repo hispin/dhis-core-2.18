@@ -173,7 +173,7 @@ public class SaveExecutionDateAction
                 }
                 else if ( type == Program.SINGLE_EVENT_WITHOUT_REGISTRATION )
                 {
-                    programInstance = programInstanceService.getProgramInstances( patient, program ).iterator().next();
+                    programInstance = programInstanceService.getProgramInstances( program ).iterator().next();
                 }
 
                 // Add a new program-stage-instance

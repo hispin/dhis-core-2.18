@@ -11,6 +11,7 @@
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
 		#end
 		
+		$('#executionDate').unbind("change");
 		$('#executionDate').change(function() {
 				saveExecutionDate( getFieldValue('programId'), getFieldValue('executionDate') );
 			});
