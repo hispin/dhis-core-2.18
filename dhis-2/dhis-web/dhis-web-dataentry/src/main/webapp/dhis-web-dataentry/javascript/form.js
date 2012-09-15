@@ -464,11 +464,20 @@ function filterInSection($this)
     else
     {
         var $trTargetChildren = $trTarget.find( 'td:first-child' );
-        var $matched = $trTargetChildren.find( ':contains("' + $this.val() + '")' );
-        var $not_matched = $trTargetChildren.find( ':not(:contains("' + $this.val() + '"))' );
 
-        $matched.parent().parent(). show();
-        $not_matched.parent().parent(). hide();
+        $trTargetChildren.each(function(idx, item) {
+            var text1 = $this.val().toUpperCase();
+            var text2 = $(item).find('span').html().toUpperCase();
+
+            if(text2.indexOf(text1) >= 0)
+            {
+                $(item).parent().show();
+            }
+            else
+            {
+                $(item).parent().hide();
+            }
+        });
     }
 
     refreshZebraStripes($tbody);
