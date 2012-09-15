@@ -470,6 +470,14 @@ function filterInSection($this)
         $matched.parent().parent(). show();
         $not_matched.parent().parent(). hide();
     }
+
+    refreshZebraStripes($tbody);
+}
+
+function refreshZebraStripes($tbody)
+{
+    $tbody.find( 'tr:not([colspan]):visible:even' ).find('td:first-child').removeClass('reg alt').addClass('alt');
+    $tbody.find( 'tr:not([colspan]):visible:odd' ).find('td:first-child').removeClass('reg alt').addClass('reg');
 }
 
 function getDataElementType( dataElementId )
