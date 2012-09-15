@@ -103,7 +103,7 @@
 				<col width="10px">
 				<col width="200px">
 				<col width="180px">
-				<col width="100px">
+				<col width="150px">
 				<col/>
 				<col width='60px'/>  
 				<tr>
@@ -134,25 +134,31 @@
 						</script> 
 					</td> 
 					<td>
-						<select id="stat_$programStageInstance.id" name="status_$programStageInstance.id" style='width:120px;' onchange="setEventStatus(this, $programStageInstance.id)">
-							<option value='5'>$i18n.getString("unknown")</option>
-							<option value='1'>$i18n.getString("completed")</option>
-							<option value='2'>$i18n.getString("incompleted")</option>
-							<option value='6'>$i18n.getString("skipped")</option>
+						#set($status = $statusMap.get( $programStageInstance.id ))
+						<select id="stat_$programStageInstance.id" name="status_$programStageInstance.id" style='width:150px;' onchange="setEventStatus(this, $programStageInstance.id)">
+							#if($status==4)
+								<option value='4' selected>$i18n.getString("overdue")</option>
+								<option value='6'>$i18n.getString("skipped")</option>
+							#elseif($status==3)
+								<option value='3' selected>$i18n.getString("scheduled_in_future")</option>
+								<option value='6'>$i18n.getString("skipped")</option>
+							#else
+								<option value='1'>$i18n.getString("completed")</option>
+								<option value='2'>$i18n.getString("incompleted")</option>
+							#end
 						</select>
 						<script>
-							var status = $statusMap.get( $programStageInstance.id ); 
-							setFieldValue("stat_$programStageInstance.id", status);
+							setFieldValue("stat_$programStageInstance.id", $status);
 						</script>
 					</td>
 					<td>
-						<input type='text' id='commentText' name='commentText' style="width:380px;" onkeypress="keypress(event,this,'$programStageInstance.id')">
+						<input type='text' id='commentText' name='commentText' style="width:355px;" onkeypress="keypress(event,this,'$programStageInstance.id')">
 						<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment(this,'$programStageInstance.id')">
 					</td>
 					<td>
 						<a href="javascript:setFieldValue('sendToList', false);showSendSmsForm('$programStageInstance.programStage.name',$programStageInstance.id)" title='$i18n.getString( "send_sms" )'><img src="images/sms.png" alt='$i18n.getString( "send_sms" )'></a>
-						#if($programStageInstance.programStage.irregular=='true')
-							<a href="javascript:removeEvent($programStageInstance.id)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+						#if($programStageInstance.programStage.irregular=='true' && ($status==3 || $status==4))
+							<a href="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
 						#end
 					</td>
 				</tr>

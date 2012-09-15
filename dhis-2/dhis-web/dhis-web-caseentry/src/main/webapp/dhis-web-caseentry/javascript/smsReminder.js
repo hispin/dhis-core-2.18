@@ -37,8 +37,7 @@ function listAllPatient()
 	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y2, m, d) );
 	
 	var programId = getFieldValue('programIdAddPatient');
-	var searchTexts = "stat_" + programId + "_4_" + startDate + "_" + endDate 
-					+ "_" + getFieldValue('orgunitId');
+	var searchTexts = "stat_" + programId + "_4_" + startDate + "_" + endDate;
 	
 	showLoader();
 	jQuery('#listPatientDiv').load('getSMSPatientRecords.action',
@@ -269,7 +268,7 @@ function eventFlowToggle( programInstanceId )
 	jQuery("#tb_" + programInstanceId + " .stage-object").each( function(){
 		var programStageInstance = this.id.split('_')[1];
 		jQuery('#arrow_' + programStageInstance ).toggle();
-		jQuery('#td_' + programStageInstance ).toggle();
+		jQuery('#box_' + programStageInstance ).toggle();
 		jQuery(this).removeClass("stage-object-selected");
 	});
 		
@@ -277,7 +276,7 @@ function eventFlowToggle( programInstanceId )
 	{	
 		var id = jQuery("#tb_" + programInstanceId + " .searched").attr('id').split('_')[1];
 		showById("arrow_" + id);
-		showById("td_" + id );
+		showById("box_" + id );
 	}
 	resize();
 }
@@ -315,7 +314,7 @@ function setEventStatus( field, programStageInstanceId )
 		} );
 }
 
-function removeEvent( programStageId )
+function removeEvent( programStageInstanceId, isEvent )
 {	
     var result = window.confirm( i18n_comfirm_delete_event );
     
@@ -324,13 +323,13 @@ function removeEvent( programStageId )
     	$.postJSON(
     	    "removeCurrentEncounter.action",
     	    {
-    	        "id": programStageId   
+    	        "id": programStageInstanceId   
     	    },
     	    function( json )
     	    { 
     	    	if ( json.response == "success" )
     	    	{
-					jQuery( "tr#tr" + programStageId ).remove();
+					jQuery( "tr#tr" + programStageInstanceId ).remove();
 	                
 					jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
 	                jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
@@ -338,7 +337,15 @@ function removeEvent( programStageId )
 					jQuery( "table.listTable tbody" ).trigger("update");
 					
 					hideById('smsManagementDiv');
-					
+					if(isEvent)
+					{
+						showById('searchDiv');
+						showById('listPatientDiv');
+					}
+					var programInstanceId = jQuery('#box_' + programStageInstanceId).attr('programInstanceId');
+					jQuery('#box_' + programStageInstanceId).remove();
+					jQuery('#arrow_' + programStageInstanceId).remove();
+					reloadOneRecord( programInstanceId );
 					showSuccessMessage( i18n_delete_success );
     	    	}
     	    	else if ( json.response == "error" )
@@ -382,3 +389,61 @@ function onClickBackBtn()
 	hideById('smsManagementDiv');
 	hideById('patientProgramTrackingDiv');	
 }
+
+function reloadRecordList()
+{
+	var listAll = getFieldValue('listAll');
+	var startDate = getFieldValue('startDueDate');
+	var endDate = getFieldValue('endDueDate');
+	var status = getFieldValue('statusEvent');
+	if( listAll )
+	{
+		var date = new Date();
+		var d = date.getDate() - 1;
+		var m = date.getMonth();
+		var y1 = date.getFullYear() - 100;
+		var y2 = date.getFullYear();
+		startDate = jQuery.datepicker.formatDate( dateFormat, new Date(y1, m, d) );
+		endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y2, m, d) );
+		status = 4;
+	}
+	
+	jQuery("#patientList .stage-object").each( function(){
+		var id = this.id.split('_')[1];
+		var dueDate = jQuery(this).attr('dueDate');
+		var statusEvent = jQuery(this).attr('status');
+		var programInstanceId = jQuery(this).attr('programInstanceId');
+		if( dueDate >= startDate && dueDate <= endDate && statusEvent == status )
+		{
+			if( jQuery("#tb_" + programInstanceId + " .searched").length > 0 ){
+				jQuery("#box_" + id ).addClass("stage-object-selected searched");
+				hideById("box_" + id )
+				hideById('arrow_' + id );
+			}
+			jQuery("#box_" + id ).addClass("stage-object-selected searched");
+		}
+		else
+		{
+			hideById('arrow_' + id );
+			hideById('box_' + id );
+		}
+	});
+	jQuery(".arrow-left").hide();
+	jQuery(".arrow-right").hide();
+}
+
+function reloadOneRecord( programInstanceId )
+{
+	if(jQuery("#tb_" + programInstanceId + " .searched").length == 0 ){
+		var total = eval(getInnerHTML('totalTd')) - 1;
+		setInnerHTML('totalTd', total)
+		hideById("event_" + programInstanceId );
+	}
+	else
+	{
+		var firstSearched = jQuery("#tb_" + programInstanceId + " .searched:first");
+		firstSearched.show();
+		showById('arrow_' + firstSearched.attr(programStageInstanceId) );
+	}
+}
+

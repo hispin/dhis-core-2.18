@@ -2,7 +2,6 @@
 <h2>$i18n.getString( "patient" )&nbsp;</h2>
 <ul>
 	<li><a href="patient.action">$i18n.getString( "find_and_add_person" )</a></li>
-	<li><a href="showAddPatientFormFormMenu.action?addNewForm=true">$i18n.getString( "add_person" )</a></li>
 </ul>
 
 <h2>$i18n.getString( "data_entry" )&nbsp;</h2>

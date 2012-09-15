@@ -41,18 +41,13 @@
 <form id="patientForm" name="patientForm" method="post" >
 <input type="hidden" id="representativeId" name="representativeId"/> 
 <input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
-<input type="hidden" id="addNewForm" name="addNewForm" value="$!addNewForm"/>
 <table>
 	#parse( "/dhis-web-caseentry/patientForm.vm" )
 	<tr>
 		<td></td>
 		<td>
 			<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
-			#if( $addNewForm == "true")
-				<input type="button" class="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='index.action'"/>
-			#else
-				<input type="button" class="button" value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();"/>
-			#end
+			<input type="button" class="button" value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();"/>
 		</td>
 	</tr>
 </table>

@@ -11,7 +11,7 @@
 	
 	<tbody id='commentTB'>
 		#set($index = 0)
-		#set( $mark = false )
+		#set($count = 0)
 		#foreach($programStageInstance in $programStageInstances)
 			#foreach( $comment in $programStageInstance.patientComments )
 				#if( $index < 5 )
@@ -21,9 +21,9 @@
 						<td>$comment.creator</td>
 						<td>$comment.commentText</td>
 						#set($index = $index + 1)
-						#set( $mark = !$mark)
 					</tr>
 				#end
+				#set($count = $count + 1)
 			#end
 		#end
 		#foreach($programStageInstance in $programStageInstances)
@@ -34,7 +34,6 @@
 						<td> $programStageInstance.programStage.name</td>
 						<td>$sms.sender</td>
 						<td>$sms.message</td>
-						#set( $mark = !$mark)
 					</tr>
 				#end
 			#end
@@ -47,9 +46,9 @@
 						<td>$programStageInstance.programStage.name</td>
 						<td>$comment.creator</td>
 						<td>$comment.commentText</td>
-						#set( $mark = !$mark)
 					</tr>
 				#end
+				#set($count = $count + 1)
 			#end
 		#end	
 		
@@ -61,15 +60,12 @@
 						<td>$programStageInstance.programStage.name</td>
 						<td>$sms.sender</td>
 						<td>$sms.message</td>
-						#set( $mark = !$mark)
 					</tr>
 				#end
 			#end
 		#end
 	</tbody>
 </table>
-
 <br>
-#set($count = $programStageInstance.patientComments.size() + $programStageInstance.outboundSms.size() )
 <input type='button' id="showCommentBtn" name="showCommentBtn" value='$i18n.getString("show_hide_more")' #if($count && $count<=5) class='hidden' #end onclick='commentDivToggle(false);'>
 <input type='button' id="hideCommentBtn" name="hideCommentBtn" value='$i18n.getString("show_hide_more")' class='hidden' onclick='commentDivToggle(true);'>

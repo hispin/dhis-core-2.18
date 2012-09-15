@@ -51,8 +51,13 @@
 	</tr>
 	<tr>
 		<td>
-			<br><input type='button' value='$i18n.getString("back")' onclick='onClickBackBtn();'>
+			<br>
+			<input type='button' value='$i18n.getString("back")' onclick='onClickBackBtn();'>
 			<input type='button' value='$i18n.getString("patient_dashboard")' onclick='javascript:showPatientProgramTracking( "$programStageInstance.programInstance.id" );'>
+			#set($status = $programStageInstance.getEventStatus())
+			#if( $programStageInstance.irregular!='true' && ($status==3 || $status==4) )
+				<input type="button" value="$i18n.getString('remove_this_event')" onclick="javascript:removeEvent($programStageInstance.id, true)" title='$i18n.getString( "remove_this_event" )'></a>
+			#end
 		</td>
 	</tr>
 </table>
@@ -66,10 +71,6 @@
 	
 	<div id="tab-1">
 		<table class='mainPageTable' id='progarmStageListDiv' name='progarmStageListDiv' >
-				<tr>
-					<th></th>       
-					<th>$i18n.getString( "operation" )</th>
-				</tr>
 			<tr>
 				<td>$i18n.getString( "reschedule_due_date" )</td>        
 				#set( $duedateId = "value_" + $programStageInstance.id + "_date" )        
@@ -86,14 +87,19 @@
 				<td>$i18n.getString( "status" )</td>
 				<td>
 					<select id="stat_$programStageInstance.id" name="status_$programStageInstance.id" onchange="setEventStatus(this, $programStageInstance.id)">
-						<option value='5'>$i18n.getString("unknown")</option>
-						<option value='1'>$i18n.getString("completed")</option>
-						<option value='2'>$i18n.getString("incompleted")</option>
-						<option value='6'>$i18n.getString("skipped")</option>
+						#if($status==4)
+							<option value='4' selected>$i18n.getString("overdue")</option>
+							<option value='6'>$i18n.getString("skipped")</option>
+						#elseif($status==3)
+							<option value='3' selected>$i18n.getString("scheduled_in_future")</option>
+							<option value='6'>$i18n.getString("skipped")</option>
+						#else
+							<option value='1'>$i18n.getString("completed")</option>
+							<option value='2'>$i18n.getString("incompleted")</option>
+						#end
 					</select>
 						<script>
-							var status = $programStageInstance.getEventStatus(); 
-							setFieldValue("stat_$programStageInstance.id", status);
+							setFieldValue("stat_$programStageInstance.id", $status);
 						</script>
 				</td>
 			</tr>
@@ -104,14 +110,6 @@
 					<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment(this,'$programStageInstance.id')">
 				</td>
 			</tr>
-			
-			#if($programStageInstance.irregular!='true')
-			<tr>
-				<td>
-					<input type="hidden" value="$i18n.getString('remove_this_event')" onclick="javascript:removeEvent($programStageInstance.id)" title='$i18n.getString( "remove_this_event" )'></a>
-				</td>
-			</tr>
-			#end
 		</table>
 	</div>
 	
@@ -177,7 +175,7 @@
 		</table>
 		<br>
 		#set($count = $comments.size() + $outboundSms.size() )
-		<input type='button' id="showCommentBtn" name="showCommentBtn" value='$i18n.getString("show_hide_more")' #if($count<=5) class='hidden' #end onclick='commentDivToggle(false);'>
+		<input type='button' id="showCommentBtn" name="showCommentBtn" value='$i18n.getString("show_hide_more")' #if($count && $count<=5) class='hidden' #end onclick='commentDivToggle(false);'>
 		<input type='button' id="hideCommentBtn" name="hideCommentBtn" value='$i18n.getString("show_hide_more")' class='hidden' onclick='commentDivToggle(true);'>
 	</div>
 	

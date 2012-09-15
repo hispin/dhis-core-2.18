@@ -94,19 +94,7 @@ public class ShowAddPatientFormAction
     {
         return healthWorkers;
     }
-
-    private Boolean addNewForm;
-
-    public Boolean getAddNewForm()
-    {
-        return addNewForm;
-    }
-
-    public void setAddNewForm( Boolean addNewForm )
-    {
-        this.addNewForm = addNewForm;
-    }
-
+    
     private Collection<PatientAttribute> noGroupAttributes = new HashSet<PatientAttribute>();
 
     public Collection<PatientAttribute> getNoGroupAttributes()

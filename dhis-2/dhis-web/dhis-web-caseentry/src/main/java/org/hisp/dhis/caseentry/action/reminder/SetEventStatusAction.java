@@ -99,8 +99,6 @@ public class SetEventStatusAction
         }
         else if ( ProgramStageInstance.SKIPPED_STATUS == status.intValue() )
         {
-            programStageInstance.setExecutionDate( new Date() );
-            programStageInstance.setCompleted( true );
             programStageInstance.setStatus( status );
         }
 
