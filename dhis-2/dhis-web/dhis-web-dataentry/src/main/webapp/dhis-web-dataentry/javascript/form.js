@@ -476,8 +476,8 @@ function filterInSection($this)
 
 function refreshZebraStripes($tbody)
 {
-    $tbody.find( 'tr:not([colspan]):visible:even' ).find('td:first-child').removeClass('reg alt').addClass('alt');
-    $tbody.find( 'tr:not([colspan]):visible:odd' ).find('td:first-child').removeClass('reg alt').addClass('reg');
+    $tbody.find( 'tr:not([colspan]):visible:even' ).find( 'td:first-child' ).removeClass( 'reg alt' ).addClass('alt' );
+    $tbody.find( 'tr:not([colspan]):visible:odd' ).find( 'td:first-child' ).removeClass( 'reg alt' ).addClass('reg' );
 }
 
 function getDataElementType( dataElementId )
