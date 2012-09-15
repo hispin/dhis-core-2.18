@@ -27,8 +27,6 @@ package org.hisp.dhis.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -266,9 +264,6 @@ public class DefaultDataEntryFormService
 
         int i = 1;
 
-        final String codeForInputFields = " name=\"entryfield\" ";
-        final String codeForSelectLists = " name=\"entryselect\" ";
-
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
@@ -305,25 +300,14 @@ public class DefaultDataEntryFormService
                     return i18n.getString( "category_option_combo_with_id" ) + ": " + optionComboId + " " + i18n.getString( "does_not_exist" );
                 }
 
+                String appendCode = "";
+
                 if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
                 {
                     inputHtml = inputHtml.replace( "input", "select" );
                     inputHtml = inputHtml.replaceAll( "value=\".*?\"", "" );
-                }
-
-                // -------------------------------------------------------------
-                // Insert title info
-                // -------------------------------------------------------------
-
-                StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getDisplayName() ).append( " " ).append( categoryOptionCombo.getDisplayName() ).append( "\"" );
-
-                inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, title ) : inputHtml + " " + title;
-
-                String appendCode = "";
-
-                if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) )
-                {
-                    appendCode += codeForSelectLists + "tabindex=\"" + i++ + "\">";
+                    
+                    appendCode += " name=\"entryselect\" tabindex=\"" + i++ + "\">";
 
                     appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
                     appendCode += "<option value=\"true\">" + i18n.getString( "yes" ) + "</option>";
@@ -332,7 +316,7 @@ public class DefaultDataEntryFormService
                 }
                 else
                 {
-                    appendCode += codeForInputFields + "tabindex=\"" + i++ + "\"" + TAG_CLOSE;
+                    appendCode += " name=\"entryfield\" tabindex=\"" + i++ + "\"" + TAG_CLOSE;
                 }
 
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
