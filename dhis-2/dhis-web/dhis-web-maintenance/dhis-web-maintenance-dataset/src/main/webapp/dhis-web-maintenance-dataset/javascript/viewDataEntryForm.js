@@ -1,6 +1,6 @@
 
 var currentDynamicElementCode = null;
-var currentCategoryComboUid = null;
+var currentCategoryComboId = null;
 var currentCategoryComboName = null;
 
 $( document ).ready( function() {
@@ -377,8 +377,8 @@ function insertIndicator() {
 function insertDropDownList() {
 	var oEditor = $("#designTextarea").ckeditorGet();
 	
-	if ( currentDynamicElementCode && currentCategoryComboUid ) {
-		var id = currentDynamicElementCode + "-" + currentCategoryComboUid + "-dynselect";
+	if ( currentDynamicElementCode && currentCategoryComboId ) {
+		var id = currentDynamicElementCode + "-" + currentCategoryComboId + "-dynselect";
 		var template = '<input id="' + id + '" value="[ ' + currentCategoryComboName + ' ]" title="' + currentCategoryComboName + '" style="width:12em;" />';
 		oEditor.insertHtml( template );
 	}
@@ -388,16 +388,16 @@ function insertDropDownList() {
  * A unique code is used to associate the data element drop down with the input
  * fields for each category option combo. The format for input field identifier is:
  * 
- * "<unique code>-<category option combo uid>-dyninput"
+ * "<unique code>-<category option combo id>-dyninput"
  */
 function insertDynamicElement() {
 	var oEditor = $("#designTextarea").ckeditorGet();
 	var $option = $("#dynamicElementSelector option:selected");
 	
 	if( $option.length !== 0 ) {
-		var categoryOptionComboUid = $option.val();
+		var categoryOptionComboId = $option.val();
 		var categoryOptionComboName = $option.text();
-		var id = currentDynamicElementCode + "-" + categoryOptionComboUid + "-dyninput";
+		var id = currentDynamicElementCode + "-" + categoryOptionComboId + "-dyninput";
 		
 		var template = '<input id="' + id + '" value="[ ' + categoryOptionComboName + ' ]" title="' + categoryOptionComboName + '" style="width:7em;text-align:center;" />';
 		oEditor.insertHtml( template );
@@ -413,16 +413,16 @@ function showDynamicElementInsert() {
 	$("#dynamicElementSelect").hide();
 	$("#dynamicElementInsert").show();
 	
-	var categoryComboUid = $("#categoryComboSelect option:selected").val();
+	var categoryComboId = $("#categoryComboSelect option:selected").val();
 	var categoryComboName = $("#categoryComboSelect option:selected").text();
 
 	currentDynamicElementCode = getRandomCode();
-	currentCategoryComboUid = categoryComboUid;
+	currentCategoryComboId = categoryComboId;
 	currentCategoryComboName = categoryComboName;
 	
 	clearListById( "dynamicElementSelector" );
 	
-	var optionCombos = $.getJSON( "../api/categoryCombos/" + categoryComboUid + ".json", function( json ) {
+	var optionCombos = $.getJSON( "../dhis-web-commons-ajax-json/getCategoryOptionCombos.action?categoryComboId=" + categoryComboId, function( json ) {
 		$.each( json.categoryOptionCombos, function( index, value ) {
 			addOptionById( "dynamicElementSelector", value.id, value.name );
 		} );
