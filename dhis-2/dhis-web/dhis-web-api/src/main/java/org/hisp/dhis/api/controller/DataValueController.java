@@ -99,7 +99,7 @@ public class DataValueController
             return;
         }
         
-        Period period = PeriodType.createPeriodExternalId( pe ); //TODO change to ISO
+        Period period = PeriodType.getPeriodFromIsoString( pe );
         
         if ( period == null )
         {

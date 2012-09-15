@@ -220,16 +220,16 @@ public class DefaultDataEntryFormService
             }
             else if ( dynamicInputMatcher.find() && dynamicInputMatcher.groupCount() > 0 )
             {
-                String categoryOptionComboUid = dynamicInputMatcher.group( 2 );
-                DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboUid );
+                int categoryOptionComboId = Integer.parseInt( dynamicInputMatcher.group( 2 ) );
+                DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
                 
                 displayValue = categoryOptionCombo != null ? "value=\"[ " + categoryOptionCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
                 displayTitle = categoryOptionCombo != null ? "title=\"" + categoryOptionCombo.getDisplayName() + "\"" : "[ " + i18n.getString( "cat_option_combo_not_exist" ) + " ]";
             }
             else if ( dynamicSelectMatcher.find() && dynamicSelectMatcher.groupCount() > 0 )
             {
-                String categoryComboUid = dynamicSelectMatcher.group( 2 );
-                DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboUid );
+                int categoryComboId = Integer.parseInt( dynamicSelectMatcher.group( 2 ) );
+                DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
                 
                 displayValue = categoryCombo != null ? "value=\"[ " + categoryCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_combo_not_exist" );
                 displayTitle = categoryCombo != null ? "title=\"" + categoryCombo.getDisplayName() + "\"" : "[ " + i18n.getString( "cat_combo_not_exist" );
@@ -270,6 +270,9 @@ public class DefaultDataEntryFormService
 
         Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
 
+        Set<DataElement> dataElementsNotInForm = new HashSet<DataElement>( dataSet.getDataElements() );
+        dataElementsNotInForm.removeAll( getDataElementsInDataEntryForm( dataSet ) );
+        
         while ( inputMatcher.find() )
         {
             // -----------------------------------------------------------------
@@ -279,6 +282,7 @@ public class DefaultDataEntryFormService
             String inputHtml = inputMatcher.group();
 
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
+            Matcher dynamicSelectMatcher = DYNAMIC_SELECT_PATTERN.matcher( inputHtml );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -324,6 +328,9 @@ public class DefaultDataEntryFormService
                 inputHtml += "<span id=\"" + categoryOptionCombo.getId() + "-optioncombo\" style=\"display:none\">" + categoryOptionCombo.getName() + "</span>";
 
                 inputMatcher.appendReplacement( sb, inputHtml );
+            }
+            else if ( dynamicSelectMatcher.find() && dynamicSelectMatcher.groupCount() > 0 )
+            {
             }
         }
 
