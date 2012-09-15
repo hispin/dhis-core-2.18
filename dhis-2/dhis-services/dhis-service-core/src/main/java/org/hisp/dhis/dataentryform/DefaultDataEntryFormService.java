@@ -332,11 +332,18 @@ public class DefaultDataEntryFormService
         return sb.toString();
     }
 
-    public Set<DataElement> getDataElementsInDataEntryForm( DataEntryForm form )
+    public Set<DataElement> getDataElementsInDataEntryForm( DataSet dataSet )
     {
+        if ( dataSet == null || dataSet.getDataEntryForm() == null )
+        {
+            return null;
+        }
+        
+        Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
+        
         Set<DataElement> dataElements = new HashSet<DataElement>();
         
-        Matcher inputMatcher = INPUT_PATTERN.matcher( form.getHtmlCode() );
+        Matcher inputMatcher = INPUT_PATTERN.matcher( dataSet.getDataEntryForm().getHtmlCode() );
         
         while ( inputMatcher.find() )
         {
@@ -350,12 +357,12 @@ public class DefaultDataEntryFormService
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                dataElement = dataElementService.getDataElement( dataElementId );
+                dataElement = dataElementMap.get( dataElementId );
             }
             else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
             {
                 int dataElementId = Integer.parseInt( dataElementTotalMatcher.group( 1 ) );
-                dataElement = dataElementService.getDataElement( dataElementId );
+                dataElement = dataElementMap.get( dataElementId );
             }
             
             if ( dataElement != null )

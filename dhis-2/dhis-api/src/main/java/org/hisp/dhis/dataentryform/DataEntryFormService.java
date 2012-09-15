@@ -143,7 +143,7 @@ public interface DataEntryFormService
      */
     String prepareDataEntryFormForEntry( String htmlCode, I18n i18n, DataSet dataSet );
     
-    Set<DataElement> getDataElementsInDataEntryForm( DataEntryForm form );
+    Set<DataElement> getDataElementsInDataEntryForm( DataSet dataSet );
     
     Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
     

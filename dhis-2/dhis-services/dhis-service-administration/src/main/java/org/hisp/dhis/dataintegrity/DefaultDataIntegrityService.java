@@ -250,7 +250,7 @@ public class DefaultDataIntegrityService
                 
                 if ( dataSet.hasDataEntryForm() )
                 {
-                    formElements.addAll( dataEntryFormService.getDataElementsInDataEntryForm( dataSet.getDataEntryForm() ) );
+                    formElements.addAll( dataEntryFormService.getDataElementsInDataEntryForm( dataSet ) );
                 }
                 else if ( dataSet.hasSections() )
                 {
