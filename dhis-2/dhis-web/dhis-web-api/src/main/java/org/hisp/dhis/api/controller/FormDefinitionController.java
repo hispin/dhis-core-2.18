@@ -31,9 +31,9 @@ package org.hisp.dhis.api.controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.metadata.ExportService;
@@ -60,8 +60,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class FormDefinitionController
 {
     public static final String RESOURCE_PATH = "/forms";
-
-    private static final Log log = LogFactory.getLog( FormDefinitionController.class );
 
     @Autowired
     private ExportService exportService;
