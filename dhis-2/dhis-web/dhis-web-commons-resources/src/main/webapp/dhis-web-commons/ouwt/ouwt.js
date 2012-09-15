@@ -97,7 +97,7 @@ function Selection()
 
             organisationUnits = JSON.parse( localStorage["organisationUnits"] );
 
-            if(sessionStorage["organisationUnits"] !== undefined)
+            if ( sessionStorage["organisationUnits"] !== undefined )
             {
                 $.extend(organisationUnits, JSON.parse( sessionStorage["organisationUnits"] ))
             }
@@ -118,7 +118,7 @@ function Selection()
                 return true;
             }
 
-            if(localRoots == null || localRoots.length == 0)
+            if ( localRoots == null || localRoots.length == 0 )
             {
                 return true;
             }
@@ -644,9 +644,9 @@ function Subtree()
 
     function getAndCreateChildren(parentTag, parent)
     {
-        if(parent.c !== undefined)
+        if ( parent.c !== undefined )
         {
-            if(organisationUnits[parent.c[0]] !== undefined)
+            if ( organisationUnits[parent.c[0]] !== undefined )
             {
                 createChildren( parentTag, parent );
             }
@@ -656,10 +656,12 @@ function Subtree()
                 function ( data, textStatus, jqXHR )
                     {
                         // load additional organisationUnits into sessionStorage
-                        if(sessionStorage["organisationUnits"] === undefined)
+                        if ( sessionStorage["organisationUnits"] === undefined )
                         {
                             sessionStorage["organisationUnits"] = JSON.stringify( data.organisationUnits );
-                        } else {
+                        } 
+                        else 
+                        {
                             units = JSON.parse( sessionStorage["organisationUnits"] );
                             $.extend(units, data.organisationUnits);
                             sessionStorage["organisationUnits"] = JSON.stringify( units );
@@ -682,7 +684,7 @@ function Subtree()
         {
             var ou = organisationUnits[item];
 
-            if(ou !== undefined)
+            if ( ou !== undefined )
             {
                 $childrenTag.append( createTreeElementTag( ou ) );
             }
