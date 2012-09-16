@@ -321,7 +321,7 @@ function addEventListeners()
 
         $( this ).change( function()
         {
-            saveVal( dataElementId, optionComboId );
+            saveVal( dataElementId, optionComboId, id );
         } );
 
         $( this ).dblclick( function()
@@ -362,7 +362,7 @@ function addEventListeners()
 
         $( this ).change( function()
         {
-            saveBoolean( dataElementId, optionComboId );
+            saveBoolean( dataElementId, optionComboId, id );
         } );
 
         $( this ).css( 'width', '100%' );
@@ -379,8 +379,7 @@ function addEventListeners()
 
         $( this ).change( function()
         {
-            var dataElementId = $( '#' + code + '-dynselect option:selected' ).val();
-            saveVal( dataElementId, optionComboId );
+            saveDynamicVal( code, optionComboId, id );
         } );
 
         $( this ).keyup( function( event )
@@ -484,7 +483,7 @@ function filterInSection($this)
     var $tbody = $this.parent().parent().parent();
     var $trTarget = $tbody.find( 'tr:not([colspan])' );
 
-    if( $this.val() == '' )
+    if ( $this.val() == '' )
     {
         $trTarget.show();
     }
@@ -495,9 +494,9 @@ function filterInSection($this)
         $trTargetChildren.each( function( idx, item ) 
         {
             var text1 = $this.val().toUpperCase();
-            var text2 = $(item).find('span').html().toUpperCase();
+            var text2 = $( item ).find( 'span' ).html().toUpperCase();
 
-            if( text2.indexOf( text1 ) >= 0 )
+            if ( text2.indexOf( text1 ) >= 0 )
             {
                 $( item ).parent().show();
             }
