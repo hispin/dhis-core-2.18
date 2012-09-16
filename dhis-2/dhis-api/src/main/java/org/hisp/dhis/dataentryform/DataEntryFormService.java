@@ -48,7 +48,7 @@ public interface DataEntryFormService
     final Pattern DATAELEMENT_TOTAL_PATTERN = Pattern.compile( "dataelementid=\"(.*?)\"" );
     final Pattern INDICATOR_PATTERN = Pattern.compile( "indicatorid=\"(.*?)\"" );
     final Pattern DYNAMIC_INPUT_PATTERN = Pattern.compile( "(.*?)-(.*?)-dyninput" );
-    final Pattern DYNAMIC_SELECT_PATTERN = Pattern.compile( "(.*?)-(.*?)-dynselect" );
+    final Pattern DYNAMIC_SELECT_PATTERN = Pattern.compile( "dynselect=\"(.*?)\"" );
     final Pattern VALUE_TAG_PATTERN = Pattern.compile( "value=\"(.*?)\"", Pattern.DOTALL );
     final Pattern TITLE_TAG_PATTERN = Pattern.compile( "title=\"(.*?)\"", Pattern.DOTALL );
     

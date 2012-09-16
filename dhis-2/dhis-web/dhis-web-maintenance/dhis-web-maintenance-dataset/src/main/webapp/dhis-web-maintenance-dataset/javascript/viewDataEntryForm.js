@@ -369,26 +369,26 @@ function insertIndicator() {
 
 /**
  * A unique code is used to associate the data element drop down with the input
- * fields for each category option combo.  The format for select / drop down list 
- * identifier is:
+ * fields for each category option combo.  The format for select / drop down list
+ * is:
  * 
- * "<unique code>-dyncselect"
+ * id="<unique code>-dynselect" dyncselect="<category combo id>"
  */
 function insertDropDownList() {
 	var oEditor = $("#designTextarea").ckeditorGet();
-	
 	if ( currentDynamicElementCode && currentCategoryComboId ) {
-		var id = currentDynamicElementCode + "-" + currentCategoryComboId + "-dynselect";
-		var template = '<input id="' + id + '" value="[ ' + currentCategoryComboName + ' ]" title="' + currentCategoryComboName + '" style="width:15em;" />';
+		var id = currentDynamicElementCode + "-dynselect";
+		var template = '<input id="' + id + '" dynselect="' + currentCategoryComboId + '" value="[ ' + currentCategoryComboName + ' ]" title="' + currentCategoryComboName + '" style="width:15em;" />';
 		oEditor.insertHtml( template );
 	}
 }
 
 /**
  * A unique code is used to associate the data element drop down with the input
- * fields for each category option combo. The format for input field identifier is:
+ * fields for each category option combo. The format for input field identifier 
+ * is:
  * 
- * "<unique code>-<category option combo id>-dyninput"
+ * id="<unique code>-<category option combo id>-dyninput"
  */
 function insertDynamicElement() {
 	var oEditor = $("#designTextarea").ckeditorGet();

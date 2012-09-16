@@ -230,7 +230,7 @@ public class DefaultDataEntryFormService
             }
             else if ( dynamicSelectMatcher.find() && dynamicSelectMatcher.groupCount() > 0 )
             {
-                int categoryComboId = Integer.parseInt( dynamicSelectMatcher.group( 2 ) );
+                int categoryComboId = Integer.parseInt( dynamicSelectMatcher.group( 1 ) );
                 DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
                 
                 displayValue = categoryCombo != null ? "value=\"[ " + categoryCombo.getDisplayName() + " ]\"" : "[ " + i18n.getString( "cat_combo_not_exist" );
@@ -283,6 +283,7 @@ public class DefaultDataEntryFormService
             String inputHtml = inputMatcher.group();
 
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
+            Matcher dynamicInputMather = DYNAMIC_INPUT_PATTERN.matcher( inputHtml );
             Matcher dynamicSelectMatcher = DYNAMIC_SELECT_PATTERN.matcher( inputHtml );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
@@ -327,6 +328,20 @@ public class DefaultDataEntryFormService
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
                 inputHtml += "<span id=\"" + dataElement.getId() + "-dataelement\" style=\"display:none\">" + dataElement.getFormNameFallback() + "</span>";
                 inputHtml += "<span id=\"" + categoryOptionCombo.getId() + "-optioncombo\" style=\"display:none\">" + categoryOptionCombo.getName() + "</span>";
+            }
+            else if ( dynamicInputMather.find() && dynamicInputMather.groupCount() > 0 )
+            {
+                int optionComboId = Integer.parseInt( dynamicInputMather.group( 2 ) );
+
+                DataElementCategoryOptionCombo categoryOptionCombo = categoryService
+                    .getDataElementCategoryOptionCombo( optionComboId );
+
+                if ( categoryOptionCombo == null )
+                {
+                    return i18n.getString( "category_option_combo_with_id" ) + ": " + optionComboId + " " + i18n.getString( "does_not_exist" );
+                }
+                
+                inputHtml = inputHtml.replace( TAG_CLOSE, " name=\"dyninput\" tabindex=\"" + i++ + "\"" + TAG_CLOSE );
             }
             else if ( dynamicSelectMatcher.find() && dynamicSelectMatcher.groupCount() > 0 )
             {
