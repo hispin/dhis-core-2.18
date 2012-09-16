@@ -168,6 +168,8 @@ public class DefaultDataEntryFormService
 
     public String prepareDataEntryFormForEdit( String htmlCode, I18n i18n )
     {
+        //TODO HTML encode names
+        
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
@@ -258,6 +260,8 @@ public class DefaultDataEntryFormService
 
     public String prepareDataEntryFormForEntry( String htmlCode, I18n i18n, DataSet dataSet )
     {
+        //TODO HTML encode names
+        
         // ---------------------------------------------------------------------
         // Inline javascript/html to add to HTML before output
         // ---------------------------------------------------------------------
@@ -270,9 +274,6 @@ public class DefaultDataEntryFormService
 
         Map<Integer, DataElement> dataElementMap = getDataElementMap( dataSet );
 
-        Set<DataElement> dataElementsNotInForm = new HashSet<DataElement>( dataSet.getDataElements() );
-        dataElementsNotInForm.removeAll( getDataElementsInDataEntryForm( dataSet ) );
-        
         while ( inputMatcher.find() )
         {
             // -----------------------------------------------------------------
@@ -326,12 +327,14 @@ public class DefaultDataEntryFormService
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
                 inputHtml += "<span id=\"" + dataElement.getId() + "-dataelement\" style=\"display:none\">" + dataElement.getFormNameFallback() + "</span>";
                 inputHtml += "<span id=\"" + categoryOptionCombo.getId() + "-optioncombo\" style=\"display:none\">" + categoryOptionCombo.getName() + "</span>";
-
-                inputMatcher.appendReplacement( sb, inputHtml );
             }
             else if ( dynamicSelectMatcher.find() && dynamicSelectMatcher.groupCount() > 0 )
             {
+                inputHtml = inputHtml.replace( "<input", "<select name=\"dynselect\"" );
+                inputHtml = inputHtml.replace( TAG_CLOSE, "</select>" );
             }
+
+            inputMatcher.appendReplacement( sb, inputHtml );
         }
 
         inputMatcher.appendTail( sb );

@@ -379,7 +379,7 @@ function insertDropDownList() {
 	
 	if ( currentDynamicElementCode && currentCategoryComboId ) {
 		var id = currentDynamicElementCode + "-" + currentCategoryComboId + "-dynselect";
-		var template = '<input id="' + id + '" value="[ ' + currentCategoryComboName + ' ]" title="' + currentCategoryComboName + '" style="width:12em;" />';
+		var template = '<input id="' + id + '" value="[ ' + currentCategoryComboName + ' ]" title="' + currentCategoryComboName + '" style="width:15em;" />';
 		oEditor.insertHtml( template );
 	}
 }
