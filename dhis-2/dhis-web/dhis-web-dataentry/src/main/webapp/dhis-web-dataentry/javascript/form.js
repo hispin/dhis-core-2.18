@@ -249,7 +249,7 @@ function uploadLocalData()
         var key = array[0];
         var value = dataValues[key];
 
-        if( value.value.length > 254 )
+        if ( value.value.length > 254 )
         {
             value.value = value.value.slice(0, 254);
         }
@@ -300,7 +300,6 @@ function addEventListeners()
 {
     var dataSetId = $( '#selectedDataSetId' ).val();
 	var formType = dataSets[dataSetId].type;
-	var optionMarkup = $( '#dynselect' ).html();
 
     $( '[name="entryfield"]' ).each( function( i )
     {
@@ -387,17 +386,27 @@ function addEventListeners()
             keyPress( event, this );
         } );
     } );
-    
-    $( '[name="dynselect"]' ).each( function( i ) // Custom only
-    {
-    	$( this ).append( optionMarkup );
-    } );
 }
 
 function clearPeriod()
 {
     clearListById( 'selectedPeriodId' );
     clearEntryForm();
+}
+
+function insertDynamicOptions()
+{
+	var optionMarkup = $( '#dynselect' ).html();
+	
+	if ( !isDefined( optionMarkup ) )
+	{
+		return;
+	}
+	
+    $( '[name="dynselect"]' ).each( function( i )
+    {
+    	$( this ).append( optionMarkup );
+    } );
 }
 
 function clearEntryForm()
@@ -423,16 +432,21 @@ function loadForm( dataSetId )
         $( '#contentDiv' ).html( html );
 
         enableSectionFilter();
+        insertDynamicOptions();
         loadDataValues();
     }
     else
     {
         log( 'Loading form remotely: ' + dataSetId );
 
-        $( '#contentDiv' ).load( 'loadForm.action', {
+        $( '#contentDiv' ).load( 'loadForm.action', 
+        {
             dataSetId : dataSetId
-        }, function() {
+        }, 
+        function() 
+        {
             enableSectionFilter();
+            insertDynamicOptions();
             loadDataValues()
         } );
     }
@@ -450,7 +464,7 @@ function enableSectionFilter()
 
         $sectionsHeaders.each(function(idx, value) {
             $( '#filterDataSetSection' ).append( "<option value='" + idx + "'>" + value.innerHTML + "</option>" );
-        });
+        } );
 
         $( '#filterDataSetSectionTr' ).show();
     }
