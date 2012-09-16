@@ -188,6 +188,13 @@ public class LoadFormAction
         return greyedFields;
     }
 
+    private List<DataElement> dataElementsNotInForm = new ArrayList<DataElement>();
+
+    public List<DataElement> getDataElementsNotInForm()
+    {
+        return dataElementsNotInForm;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -325,6 +332,10 @@ public class LoadFormAction
         {
             customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEntry( dataEntryForm.getHtmlCode(),
                 i18n, dataSet );
+
+            dataElementsNotInForm = new ArrayList<DataElement>( dataSet.getDataElements() );
+            dataElementsNotInForm.removeAll( dataEntryFormService.getDataElementsInDataEntryForm( dataSet ) );        
+            Collections.sort( dataElementsNotInForm, IdentifiableObjectNameComparator.INSTANCE );
         }
 
         List<DataElement> des = new ArrayList<DataElement>();
@@ -337,5 +348,6 @@ public class LoadFormAction
 
             orderedDataElements.put( categoryCombo, des );
         }
+
     }
 }

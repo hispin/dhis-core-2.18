@@ -308,6 +308,7 @@ function addEventListeners()
 {
     var dataSetId = $( '#selectedDataSetId' ).val();
 	var formType = dataSets[dataSetId].type;
+	var optionMarkup = $( '#dynselect' ).html();
 
     $( '[name="entryfield"]' ).each( function( i )
     {
@@ -373,6 +374,11 @@ function addEventListeners()
         } );
 
         $( this ).css( 'width', '100%' );
+    } );
+    
+    $( '[name="dynselect"]' ).each( function( i )
+    {
+    	$( this ).append( optionMarkup );
     } );
 }
 
