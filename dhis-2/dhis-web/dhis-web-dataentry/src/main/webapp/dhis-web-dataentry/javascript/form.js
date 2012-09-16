@@ -329,7 +329,7 @@ function addEventListeners()
             viewHist( dataElementId, optionComboId );
         } );
 
-        $( this ).keyup( function(event)
+        $( this ).keyup( function( event )
         {
             keyPress( event, this );
         } );
@@ -368,7 +368,28 @@ function addEventListeners()
         $( this ).css( 'width', '100%' );
     } );
     
-    $( '[name="dynselect"]' ).each( function( i )
+    $( '[name="dyninput"]' ).each( function( i ) // Custom only
+    {
+    	var id = $( this ).attr( 'id' );
+    	var code = id.split( '-' )[0];
+        var optionComboId = id.split( '-' )[1];
+        
+        $( this ).unbind( 'focus' );
+        $( this ).unbind( 'change' );
+
+        $( this ).change( function()
+        {
+            var dataElementId = $( '#' + code + '-dynselect option:selected' ).val();
+            saveVal( dataElementId, optionComboId );
+        } );
+
+        $( this ).keyup( function( event )
+        {
+            keyPress( event, this );
+        } );
+    } );
+    
+    $( '[name="dynselect"]' ).each( function( i ) // Custom only
     {
     	$( this ).append( optionMarkup );
     } );
@@ -471,25 +492,26 @@ function filterInSection($this)
     {
         var $trTargetChildren = $trTarget.find( 'td:first-child' );
 
-        $trTargetChildren.each(function(idx, item) {
+        $trTargetChildren.each( function( idx, item ) 
+        {
             var text1 = $this.val().toUpperCase();
             var text2 = $(item).find('span').html().toUpperCase();
 
-            if(text2.indexOf(text1) >= 0)
+            if( text2.indexOf( text1 ) >= 0 )
             {
-                $(item).parent().show();
+                $( item ).parent().show();
             }
             else
             {
-                $(item).parent().hide();
+                $( item ).parent().hide();
             }
-        });
+        } );
     }
 
-    refreshZebraStripes($tbody);
+    refreshZebraStripes( $tbody );
 }
 
-function refreshZebraStripes($tbody)
+function refreshZebraStripes( $tbody )
 {
     $tbody.find( 'tr:not([colspan]):visible:even' ).find( 'td:first-child' ).removeClass( 'reg alt' ).addClass('alt' );
     $tbody.find( 'tr:not([colspan]):visible:odd' ).find( 'td:first-child' ).removeClass( 'reg alt' ).addClass('reg' );
