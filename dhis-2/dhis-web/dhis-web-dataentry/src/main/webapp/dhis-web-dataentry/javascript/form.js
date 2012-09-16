@@ -117,14 +117,6 @@ $( document ).ready( function()
     } );
 
     dhis2.availability.startAvailabilityCheck();
-
-    $( '.filterInSection' ).parent().bind('resize', function(e)
-    {
-        var $a = $( '.filterInSection');
-        var $b = $a.parent();
-
-        $a.css('width', $b.width() );
-    });
 } );
 
 function ajax_login()
