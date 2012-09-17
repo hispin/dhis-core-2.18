@@ -27,6 +27,8 @@ function showProgramDetails( programId )
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );
 		setInnerHTML( 'durationInDaysField',  json.program.maxDay );
+		setInnerHTML( 'noAttributesField', json.program.noAttributes );
+		setInnerHTML( 'noIdentifierTypesField', json.program.noIdentifierTypes );
 		
 		showDetails();
 	});   

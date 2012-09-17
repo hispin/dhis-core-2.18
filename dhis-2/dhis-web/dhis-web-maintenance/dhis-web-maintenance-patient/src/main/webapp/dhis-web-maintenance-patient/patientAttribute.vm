@@ -59,7 +59,6 @@
                 <p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
                 <p><label class="bold">$i18n.getString( "mandatory" ):</label><br><span id="mandatoryField"></span></p>
                 <p><label class="bold">$i18n.getString( "value_type" ):</label><br><span id="valueTypeField"></span></p>
-				<p><label class="bold">$i18n.getString( "program" ):</label><br><span id="programField"></span></p>
 			</div>
 
 		</td>
