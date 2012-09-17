@@ -17,9 +17,9 @@ function showSectionDetails( sectionId )
 	});
 }
 
-function removePatientAttribute( programStageId, sectionId, name )
+function removeSection( programStageId, sectionId, name )
 {
-	var result = window.confirm( i18n_confirm_delete );
+	var result = window.confirm( i18n_confirm_delete + "\n" + name );
     if ( result )
     {
 		jQuery.getJSON( "removeProgramStageSection.action",

@@ -26,10 +26,10 @@
 					#set( $mark = false )
 					#foreach( $section in $programStage.programStageSections )
 						<tr id="tr${section.id}" #alternate( $mark )>			  
-							<td onclick="showProgramStageDetails( $section.id )">$encoder.htmlEncode( $section.name )</td>							
+							<td onclick="showSectionDetails( $section.id )">$encoder.htmlEncode( $section.name )</td>							
 							<td style="text-align:center"#alternate( $mark )>
 							  <a href="showUpdateProgramStageSectionForm.action?programStageId=$programStage.id&id=$section.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-							  <a href="javascript:removePatientAttribute( '$programStage.id', '$section.id', '$encoder.jsEncode( $section.name )', i18n_confirm_delete , 'removeProgramStage.action' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+							  <a href="javascript:removeSection( '$programStage.id', '$section.id', '$encoder.jsEncode( $section.name )', i18n_confirm_delete , 'removeProgramStage.action' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 							  <a href="javascript:showSectionDetails( $section.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
 							</td>
 						</tr>

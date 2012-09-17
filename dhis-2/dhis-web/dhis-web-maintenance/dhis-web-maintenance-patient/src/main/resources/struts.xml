@@ -346,14 +346,6 @@
 			<param name="javascripts">javascript/programStage.js</param>
 		</action>
 		
-		<action name="validateProgramStageSection"
-			class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageSectionAction">
-			<result name="success" type="velocity-json">
-				../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="error" type="velocity-json">
-				../dhis-web-commons/ajax/jsonResponseError.vm</result>
-		</action>
-		
 		<!-- Program stage section -->
 		
 		<action name="programStageSectionList"
@@ -430,6 +422,13 @@
 			<result name="success" type="redirect">programStageSectionList.action?id=${id}</result>
 		</action>
 		
+		<action name="validateProgramStageSection"
+			class="org.hisp.dhis.patient.action.programstage.ValidateProgramStageSectionAction">
+			<result name="success" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				../dhis-web-commons/ajax/jsonResponseError.vm</result>
+		</action>
 		
 		<!-- Data Entry Form -->
 

@@ -49,9 +49,8 @@
 				<p><label class="bold">$i18n.getString( "standard_interval_days" ):</label><br><span id="standardIntervalField"></span></p>
 				<p><label class="bold">$i18n.getString( "report_date_description" ):</label><br><span id="reportDateDescriptionField"></span></p>
 				<p><label class="bold">$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>		
-				<p><label class="bold">$i18n.getString( "days_after_due_date" ):</label><br><span id="daysAllowedSendMessageField"></span></p>	  		
+				<p><label class="bold">$i18n.getString( "days_before_due_date" ):</label><br><span id="daysAllowedSendMessageField"></span></p>
 				<p><label class="bold">$i18n.getString( "template_message" ):</label><br><span id="templateMessageField"></span></p>
-				
 			</div>
 		</td>
 	</tr>

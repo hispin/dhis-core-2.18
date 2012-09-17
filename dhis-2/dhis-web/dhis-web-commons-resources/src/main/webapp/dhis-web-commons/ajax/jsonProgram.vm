@@ -9,6 +9,8 @@
 	"dateOfEnrollmentDescription": "$!encoder.jsEncode( ${program.dateOfEnrollmentDescription} )",
 	"dateOfIncidentDescription": "$!encoder.jsEncode( ${program.dateOfIncidentDescription} )",
 	"programStageCount": "${program.programStages.size()}",
-	"maxDay": "$!program.maxDaysAllowedInputData"
+	"maxDay": "$!program.maxDaysAllowedInputData",
+	"noAttributes": "$!program.patientAttributes.size()",
+	"noIdentifierTypes": "$!program.patientIdentifierTypes.size()"
   }
 }
