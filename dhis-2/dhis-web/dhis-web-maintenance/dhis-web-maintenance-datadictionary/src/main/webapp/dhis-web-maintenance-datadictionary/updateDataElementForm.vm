@@ -81,7 +81,7 @@
 	<tr #if( $calculatedDataElement ) style="display:none" #end>
 		<td><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="valueType" name="valueType" style="min-width:246px;" onchange="changeValueType( this.value )">
+            <select id="valueType" style="min-width:246px; margin: 0;" onchange="changeValueType( this.value )">
 				<option value="int" #if( $dataElement.type == 'int' ) selected="selected" #end >$i18n.getString( "number" )</option>
 				<option value="string" #if( $dataElement.type == 'string' ) selected="selected" #end >$i18n.getString( "text" )</option>
 				<option value="trueOnly" #if( $dataElement.type == 'trueOnly' ) selected="selected" #end >$i18n.getString( "yes_only" )</option>
@@ -93,7 +93,7 @@
 	<tr id='numberTypeTR' #if( $dataElement.type != 'int' ) style="display:none" #end>
 		<td><label for="numberValueType">$i18n.getString( "number_value_type" )</label></td>
 		<td>
-			<select id="numberType" name="numberType" >
+            <select id="numberType" name="numberType" style="min-width:246px; margin: 0;">
 				<option value="number" #if( $dataElement.numberType == 'number' ) selected="selected" #end style="min-width:246px;">$i18n.getString( "number" )</option>
 				<option value="int" #if( $dataElement.numberType == 'int' ) selected="selected" #end>$i18n.getString( "int" )</option>
 				<option value="positiveNumber" #if( $dataElement.numberType == 'positiveNumber' ) selected="selected" #end>$i18n.getString( "positiveNumber" )</option>
@@ -113,30 +113,30 @@
  		</td>
  	</tr>
 	<tr>
-		<td><label for="zeroIsSignificant ">$i18n.getString( "store_zero_data_values" )</label></td>
+		<td><label for="aggregationOperatorSelect" id="lblOperator">$i18n.getString( "aggregation_operator" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="zeroIsSignificant" name="zeroIsSignificant" style="min-width:246px; margin: 0;">				
-				<option value="false"#if(!$dataElement.zeroIsSignificant) selected="selected" #end >$i18n.getString( "no" )</option>
-				<option value="true" #if($dataElement.zeroIsSignificant) selected="selected" #end >$i18n.getString( "yes" )</option>
-			</select>
-			<script>
-				if( '$dataElement.type' == 'int' ){
-					enable('zeroIsSignificant');
-				}else{
-					disable('zeroIsSignificant');
-				}
-			</script>
- 		</td>
- 	</tr>
-	<tr>
-		<td><label for="aggregationOperator" id="lblOperator">$i18n.getString( "aggregation_operator" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td>
-			<select id="aggregationOperator" name="aggregationOperator" style="min-width:246px; margin: 0;">
+			<select id="aggregationOperatorSelect" name="aggregationOperator" style="min-width:246px; margin: 0;">
 				<option value="sum" #if( $dataElement.aggregationOperator == 'sum' ) selected="selected" #end>$i18n.getString( "sum" )</option>
 				<option value="average" #if( $dataElement.aggregationOperator == 'average' ) selected="selected" #end>$i18n.getString( "average" )</option>
 			</select>
 		</td>
 	</tr>
+    <tr>
+   		<td><label for="zeroIsSignificant ">$i18n.getString( "store_zero_data_values" )</label></td>
+   		<td>
+   			<select id="zeroIsSignificant" name="zeroIsSignificant" style="min-width:246px; margin: 0;">
+   				<option value="false"#if(!$dataElement.zeroIsSignificant) selected="selected" #end >$i18n.getString( "no" )</option>
+   				<option value="true" #if($dataElement.zeroIsSignificant) selected="selected" #end >$i18n.getString( "yes" )</option>
+   			</select>
+   			<script>
+   				if( '$dataElement.type' == 'int' ){
+   					enable('zeroIsSignificant');
+   				}else{
+   					disable('zeroIsSignificant');
+   				}
+   			</script>
+        </td>
+    </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $dataElement.url )" style="width:240px"/></td>
