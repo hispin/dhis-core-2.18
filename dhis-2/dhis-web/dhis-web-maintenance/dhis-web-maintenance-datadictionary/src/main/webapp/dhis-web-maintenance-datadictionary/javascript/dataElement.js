@@ -1,3 +1,23 @@
+
+$(function() {
+    $('#aggregationOperatorSelect').change(updateZeroIsSignificant);
+    $('#aggregationOperatorSelect').change();
+});
+
+function updateZeroIsSignificant()
+{
+    var $this = $('#aggregationOperatorSelect');
+
+    if( $this.val() == 'sum' )
+    {
+       $( '#zeroIsSignificant' ).removeAttr( 'disabled' );
+    }
+    else if( $this.val() == 'average' )
+    {
+       $( '#zeroIsSignificant' ).attr( 'disabled', true );
+    }
+}
+
 function exportPDF( type )
 {	
 	var params = "type=" + type;
