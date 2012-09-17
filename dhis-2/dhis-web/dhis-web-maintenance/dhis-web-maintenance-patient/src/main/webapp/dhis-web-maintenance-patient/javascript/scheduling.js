@@ -18,10 +18,12 @@ function scheduleTasks()
 
 function executeTasks()
 {
-	$.post( 'scheduleTasks.action',{
+	$.post( 'executeSendMessage.action',{
 		execute:true,
 		schedule: false,
 		gateWayId: getFieldValue("gatewayId"),
 		timeSendingMessage: getFieldValue("timeSendingMessage")
+	}, function( json ){
+		setMessage(i18n_scheduling_is + " " + json.scheduleTasks.status);
 	});
 }

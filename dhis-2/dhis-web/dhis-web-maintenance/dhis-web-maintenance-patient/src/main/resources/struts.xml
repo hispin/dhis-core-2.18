@@ -943,6 +943,12 @@
 				/dhis-web-maintenance-patient/jsonResponseScheduleTasks.vm</result>
 	      <param name="requiredAuthorities">F_SCHEDULING_SEND_MESSAGE</param>
 	    </action>
+	    
+	    <action name="executeSendMessage" class="org.hisp.dhis.patient.action.schedule.ExecuteSendMessageAction">
+	      <result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	      <param name="requiredAuthorities">F_SCHEDULING_SEND_MESSAGE</param>
+	    </action>
 		
 	</package>
 </struts>

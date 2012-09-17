@@ -43,7 +43,6 @@ import org.hisp.dhis.system.scheduling.Scheduler;
  */
 public class DefaultProgramSchedulingManager implements ProgramSchedulingManager
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

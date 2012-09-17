@@ -57,7 +57,7 @@
 				<td><i>($i18n.getString("negative_numbers") = $i18n.getString( "days_before_due_date" ))</i></td>
 			</tr>
 		
-		<tr><td>&nbsp;</td></tr>
+			<tr><td>&nbsp;</td></tr>
 		
 			<tr>
 				<td>$i18n.getString( "params" )</td>

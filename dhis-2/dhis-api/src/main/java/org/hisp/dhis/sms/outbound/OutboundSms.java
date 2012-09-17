@@ -34,6 +34,8 @@ import java.util.Set;
 
 public class OutboundSms
 {
+    public static final String DHIS_SYSTEM_SENDER = "DHIS-System";
+
     private int id;
 
     private String sender;
