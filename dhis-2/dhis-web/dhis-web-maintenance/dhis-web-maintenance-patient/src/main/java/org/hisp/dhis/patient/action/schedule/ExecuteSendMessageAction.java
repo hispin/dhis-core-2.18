@@ -25,13 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.scheduling;
+package org.hisp.dhis.patient.action.schedule;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SEND_MESSAGE_GATEWAY;
 import static org.hisp.dhis.sms.outbound.OutboundSms.DHIS_SYSTEM_SENDER;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.SchedulingProgramObject;
@@ -39,17 +38,22 @@ import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
-import org.hisp.dhis.sms.outbound.OutboundSmsStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version SendScheduledMessageTask.java 12:57:53 PM Sep 10, 2012 $
+ * @version ExecuteSendMessageAction.java 9:14:46 AM Sep 17, 2012 $
  */
-public class SendScheduledMessageTask
-    implements Runnable
-{   
+public class ExecuteSendMessageAction
+    implements Action
+{
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -79,92 +83,48 @@ public class SendScheduledMessageTask
     }
 
     // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public SendScheduledMessageTask( SystemSettingManager systemSettingManager,
-        ProgramStageInstanceService programStageInstanceService, JdbcTemplate jdbcTemplate,
-        OutboundSmsService outboundSmsService )
-    {
-        this.systemSettingManager = systemSettingManager;
-        this.programStageInstanceService = programStageInstanceService;
-        this.jdbcTemplate = jdbcTemplate;
-        this.outboundSmsService = outboundSmsService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Params
-    // -------------------------------------------------------------------------
-
-    private Boolean sendingMessage;
-
-    public void setSendingMessage( Boolean sendingMessage )
-    {
-        this.sendingMessage = sendingMessage;
-    }
-
-    // -------------------------------------------------------------------------
-    // Runnable implementation
+    // Action implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public void run()
+    public String execute()
     {
         String gatewayId = (String) systemSettingManager.getSystemSetting( KEY_SEND_MESSAGE_GATEWAY );
 
         if ( gatewayId != null )
         {
-            if ( sendingMessage )
+            Collection<SchedulingProgramObject> schedulingProgramObjects = programStageInstanceService
+                .getSendMesssageEvents();
+
+            for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
             {
-                sendMessage( gatewayId );
-            }
-            else
-            {
-                scheduleMessage();
+                String message = schedulingProgramObject.getMessage();
+
+                String phoneNumber = schedulingProgramObject.getPhoneNumber();
+
+                if ( phoneNumber != null && !phoneNumber.isEmpty() )
+                {
+                    try
+                    {
+                        OutboundSms outboundSms = new OutboundSms( message, phoneNumber );
+                        outboundSms.setSender( DHIS_SYSTEM_SENDER );
+                        outboundSmsService.sendMessage( outboundSms, gatewayId );
+
+                        String sql = "INSERT INTO programstageinstance_outboundsms"
+                            + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
+                            + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + "," + ( System.currentTimeMillis() / 1000 ) + ") ";
+
+                        jdbcTemplate.execute( sql );
+                    }
+                    catch ( SmsServiceException e )
+                    {
+                        message = e.getMessage();
+                    }
+                }
             }
         }
-    }
-
-    private void scheduleMessage()
-    {
-        Collection<SchedulingProgramObject> schedulingProgramObjects = programStageInstanceService
-            .getSendMesssageEvents();
         
-        for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
-        {
-            String message = schedulingProgramObject.getMessage();
-
-            String phoneNumber = schedulingProgramObject.getPhoneNumber();
-
-            if ( phoneNumber != null && !phoneNumber.isEmpty() )
-            {
-                try
-                {
-                    OutboundSms outboundSms = new OutboundSms( message, phoneNumber );
-                    outboundSms.setSender( DHIS_SYSTEM_SENDER );
-                    outboundSmsService.saveOutboundSms( outboundSms );
-
-                    String sql = "INSERT INTO programstageinstance_outboundsms"
-                        + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
-                        + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + "," + ( System.currentTimeMillis() / 1000 ) + ") ";
-
-                    jdbcTemplate.execute( sql );
-                }
-                catch ( SmsServiceException e )
-                {
-                    message = e.getMessage();
-                }
-            }
-        }
+        return SUCCESS;
     }
-
-    private void sendMessage( String gatewayId )
-    {    
-        List<OutboundSms> outboundSmsList = outboundSmsService.getOutboundSms( OutboundSmsStatus.OUTBOUND );
-        for ( OutboundSms outboundSms : outboundSmsList )
-        {
-            outboundSms.setStatus( OutboundSmsStatus.SENT );
-            outboundSmsService.sendMessage( outboundSms, gatewayId );
-        }
-    }
+    
 }
