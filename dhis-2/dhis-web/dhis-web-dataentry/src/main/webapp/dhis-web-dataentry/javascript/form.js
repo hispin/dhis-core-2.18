@@ -455,6 +455,7 @@ function loadForm( dataSetId )
 function enableSectionFilter()
 {
     var $sectionsHeaders = $( '.formSection .cent h3' );
+    $( '#filterDataSetSection' ).children().remove();
 
     if ( $sectionsHeaders.size() > 1)
     {
@@ -472,7 +473,6 @@ function enableSectionFilter()
     {
         $( '#selectionBox' ).css( 'height', '93px' );
         $( '#filterDataSetSectionTr' ).hide();
-        $( '#filterDataSetSection' ).children().remove();
     }
 }
 
