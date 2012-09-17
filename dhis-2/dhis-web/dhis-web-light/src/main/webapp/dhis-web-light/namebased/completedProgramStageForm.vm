@@ -99,6 +99,7 @@
 					</select>
 				#end
 		#end
+				<input type="button" style="width:10%;color:black" value="Incomplete" onclick="window.location.href='showProgramStageForm.action?programId=$programId&programStageId=$programStageId&programStageInstanceId=$programStageInstanceId&patientId=$patientId&programInstanceId=$programInstanceId&orgUnitId=0'"/> 	
 	</p>
 </div>
 
