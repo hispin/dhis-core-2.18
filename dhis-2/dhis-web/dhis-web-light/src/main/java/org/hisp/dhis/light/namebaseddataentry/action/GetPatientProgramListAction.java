@@ -29,8 +29,10 @@ package org.hisp.dhis.light.namebaseddataentry.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.patient.Patient;
@@ -193,18 +195,18 @@ public class GetPatientProgramListAction
     
     //Use for add relationship
     
-    private List<Patient> relatedPeople;
+    private Map<String,Patient> relatedPeople;
 
-    public List<Patient> getRelatedPeople()
+    public Map<String, Patient> getRelatedPeople()
     {
         return relatedPeople;
     }
 
-    public void setRelatedPeople( List<Patient> relatedPeople )
+    public void setRelatedPeople( Map<String, Patient> relatedPeople )
     {
         this.relatedPeople = relatedPeople;
     }
-    
+
     private Collection<RelationshipType> relationshipTypes;
     
     public Collection<RelationshipType> getRelationshipTypes()
@@ -246,7 +248,7 @@ public class GetPatientProgramListAction
         throws Exception
     {
         programInstances.clear();
-        relatedPeople = new ArrayList<Patient>();
+        relatedPeople = new HashMap<String, Patient>();
 
         patient = patientService.getPatient( patientId );
         for ( ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ) )
@@ -264,12 +266,12 @@ public class GetPatientProgramListAction
         {
             if ( relationship.getPatientA().getId() != patient.getId() )
             {
-                relatedPeople.add( relationship.getPatientA() );
+                relatedPeople.put( relationship.getRelationshipType().getName(), relationship.getPatientA() );
             }
 
             if ( relationship.getPatientB().getId() != patient.getId() )
             {
-                relatedPeople.add( relationship.getPatientB() );
+                relatedPeople.put( relationship.getRelationshipType().getName(), relationship.getPatientB() );
             }
         }
         
