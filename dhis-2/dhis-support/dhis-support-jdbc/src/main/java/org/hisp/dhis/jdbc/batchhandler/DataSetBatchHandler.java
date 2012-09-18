@@ -101,6 +101,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "dataentryform" );
         statementBuilder.setColumn( "expirydays" );
         statementBuilder.setColumn( "skipaggregation" );
+        statementBuilder.setColumn( "fieldcombinationrequired" );
     }
 
     protected void setValues( DataSet dataSet )
@@ -116,5 +117,6 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.getDataEntryForm() != null ? dataSet.getDataEntryForm().getId() : null );
         statementBuilder.setValue( dataSet.getExpiryDays() );       
         statementBuilder.setValue( dataSet.isSkipAggregation() );
+        statementBuilder.setValue( dataSet.isFieldCombinationRequired() );
     }
 }
