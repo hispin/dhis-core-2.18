@@ -5,7 +5,7 @@ $customDataEntryFormCode
 </div>
 
 <select id="dynselect" class="hidden">
-<option value="">[ $i18n.getString( "select_data_element" ) ]</option>
+<option value="-1">[ $i18n.getString( "select_data_element" ) ]</option>
 #foreach( $element in $dataElementsNotInForm )
 <option value="${element.id}">$encoder.htmlEncode( ${element.displayName} )</option>
 #end

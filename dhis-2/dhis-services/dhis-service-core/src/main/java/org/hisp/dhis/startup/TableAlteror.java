@@ -377,6 +377,7 @@ public class TableAlteror
         
         // replace null with false for boolean fields
         
+        executeSql( "update dataset set fieldcombinationrequired = false where fieldcombinationrequired is null" );
         executeSql( "update chart set hidelegend = false where hidelegend is null" );
         executeSql( "update chart set regression = false where regression is null" );
         executeSql( "update chart set targetline = false where targetline is null" );

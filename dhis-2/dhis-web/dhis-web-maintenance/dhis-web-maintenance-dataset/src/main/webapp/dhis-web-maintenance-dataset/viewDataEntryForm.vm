@@ -138,6 +138,7 @@
 							#end
 						</select><br>
 						<button type="button" id="startButton">$i18n.getString( "start" )</button>
+						<div style="height:155px"></div>
 					</div>
 					<div id="dynamicElementInsert" style="margin-bottom: 10px; display:none;">
 						<div style="color:#666; margin-top:5px; margin-bottom:5px;">$i18n.getString( "insert_input_fields_into_the_form" )</div>

@@ -333,8 +333,7 @@ public class DefaultDataEntryFormService
             {
                 int optionComboId = Integer.parseInt( dynamicInputMather.group( 2 ) );
 
-                DataElementCategoryOptionCombo categoryOptionCombo = categoryService
-                    .getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( categoryOptionCombo == null )
                 {

@@ -61,13 +61,17 @@
 
     <property name="mobile" not-null="true" />
 	
-	<property name="allowFuturePeriods" />
-
     <property name="version" />
 
     <property name="expiryDays" />
 	
 	<property name="skipAggregation" />
+
+	<!-- Form properties -->
+
+	<property name="allowFuturePeriods" />
+
+	<property name="fieldCombinationRequired" />
 
   </class>
 </hibernate-mapping>

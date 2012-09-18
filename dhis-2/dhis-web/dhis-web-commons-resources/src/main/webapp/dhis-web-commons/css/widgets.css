@@ -495,17 +495,24 @@ div.inputCriteria
 
 div.paging 
 {
-	width:300px;float:right; margin-right:5em; text-align: center; height:16px; 
+	width:300px;
+	float:right; 
+	margin-right:5em; 
+	text-align: center; 
+	height:16px; 
 }
 
 div.paging span, div.paging a 
 {
-	padding: 0 5px;font-weight: bold; font-size: 11px;
+	font-family: LiberationSansBold, arial;
+	padding: 0 5px;
+	font-size: 11px;
 }
 
 div.paging a
 {
-	text-decoration: none; color: #FF9900;
+	text-decoration: none; 
+	color: #FF9900;
 }
 
 div.paging a:hover
@@ -525,7 +532,11 @@ div.paging span.seperator
 
 ul.pageSizeSelection 
 {
-	list-style:none; float:left; width: 300px; margin: 0; padding: 0;
+	list-style:none; 
+	float:left; 
+	width: 300px; 
+	margin: 0; 
+	padding: 0;
 }
 
 ul.pageSizeSelection span 
