@@ -611,6 +611,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	  <value>fr</value>
 	  <value>gu</value>
 	  <value>hi</value>
+	  <value>id</value>
 	  <value>it</value>
 	  <value>nl</value>
 	  <value>no</value>
