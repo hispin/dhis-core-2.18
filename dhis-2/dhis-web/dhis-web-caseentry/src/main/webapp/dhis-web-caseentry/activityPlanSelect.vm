@@ -47,11 +47,13 @@
 				<td>$i18n.getString('status')</td>
 				<td>
 					<select id="statusEvent" name="statusEvent" onchange="statusEventOnChange()">
-						<option value='0' selected>$i18n.getString("all")</option>
+						<option value='3_4' selected>$i18n.getString("overdue_scheduled")</option>
+						<option value='3'>$i18n.getString("scheduled_in_future")</option> 
 						<option value='4'>$i18n.getString("overdue")</option>
 						<option value='2'>$i18n.getString("incomplete")</option>
+						<option value='2_3_4'>$i18n.getString("scheduled_overdue_incomplete")</option>
 						<option value='1'>$i18n.getString("completed")</option>
-						<option value='3'>$i18n.getString("scheduled_in_future")</option> 
+						<option value='1_2_3_4'>$i18n.getString("all")</option>
 					</select>
 				</td>
 			</tr>
@@ -93,6 +95,7 @@
 <div id='contentDataRecord'></div>
 	
 #parse( "dhis-web-commons/loader/loader.vm" )
+	
 <div class='hidden'>
 	<input type='text' id='startDueDate' name='startDueDate' >
 	<input type='text' id='endDueDate' name='endDueDate' >
