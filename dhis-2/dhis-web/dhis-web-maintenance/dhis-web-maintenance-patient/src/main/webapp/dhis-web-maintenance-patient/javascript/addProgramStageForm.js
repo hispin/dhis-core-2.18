@@ -5,9 +5,12 @@ jQuery( document ).ready( function()
 	}, function(){
 		var selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );
 		selectedDataElementsValidator.empty();
-		
 		var compulsories = jQuery( "#compulsories" );
 		compulsories.empty();
+		var daysAllowedSendMessages = jQuery( "#daysAllowedSendMessages" );
+		daysAllowedSendMessages.empty();
+		var templateMessages = jQuery( "#templateMessages" );
+		templateMessages.empty();
 		
 		allowProvidedElsewhere = jQuery( "#allowProvidedElsewhere" );
 		allowProvidedElsewhere.empty();
@@ -23,6 +26,12 @@ jQuery( document ).ready( function()
 			var allowProvided = jQuery( item ).find( "input[name='allowProvided']:first");
 			checked = allowProvided.attr('checked') ? true : false;
 			allowProvidedElsewhere.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+		});
+		jQuery(".daysAllowedSendMessage").each( function( i, item ){ 
+			daysAllowedSendMessages.append( "<option value='" + item.value + "' selected='true'>" + item.value +"</option>" );
+		});
+		jQuery(".templateMessage").each( function( i, item ){ 
+			templateMessages.append( "<option value='" + item.value + "' selected='true'>" +item.value+"</option>" );
 		});
 	});
 	

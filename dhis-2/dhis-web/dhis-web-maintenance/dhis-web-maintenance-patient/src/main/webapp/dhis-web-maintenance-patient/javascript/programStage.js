@@ -130,7 +130,6 @@ function unSelectAllDataElements()
 //Move Table Row Up and Down
 //-----------------------------------------------------------------------------
 
-
 function moveUpDataElement()
 {
 	var selectedList = jQuery("#selectedList");
@@ -225,8 +224,49 @@ function repeatableOnChange()
 	}
 }
 
-function insertParams( paramValue )
+function insertParams( paramValue, rowId )
 {
 	var templateMessage = paramValue;
-	insertTextCommon('templateMessage', templateMessage);
+	insertTextCommon('templateMessage' + rowId, templateMessage);
+}
+
+// --------------------------------------------------------------------
+// 
+// --------------------------------------------------------------------
+
+function generateTemplateMessageForm()
+{
+	var rowId = jQuery('.daysAllowedSendMessage').length + 1;
+	
+	var contend = '<tr name="tr' + rowId + '">'
+				+ 	'<td colspan="2">' + i18n_reminder + ' ' + rowId + '<a href="javascript:removeTemplateMessageForm('+ rowId +')"> ( '+ i18n_remove_reminder + ' )</a></td>'
+				+ '</tr>'
+				+ '<tr name="tr' + rowId + '">'
+				+ 	'<td><label>' + i18n_days_before_after_due_date + '</label></td>'
+				+ 	'<td><input type="text" id="daysAllowedSendMessage' + rowId + '" name="daysAllowedSendMessage' + rowId + '" class="daysAllowedSendMessage {validate:{required:true,number:true}}"/></td>'
+				+ '</tr>'
+				+ '<tr name="tr' + rowId + '">'
+				+	'<td>' + i18n_params + '</td>'
+				+	'<td>'
+				+		'<select multiple size="4" id="params' + rowId +'" name="params" ondblclick="insertParams(this.value, ' + rowId + ');">'
+				+			'<option value="{patient-name}">' + i18n_patient_name + '</option>'
+				+			'<option value="{program-name}">' + i18n_program_name + '</option>'
+				+			'<option value="{program-stage-name}">' + i18n_program_stage_name + '</option>'
+				+			'<option value="{due-date}">' + i18n_due_date + '</option>'
+				+			'<option value="{days-since-due-date}">' + i18n_days_since_due_date + '</option>'
+				+			'<option value="{orgunit-name}">' + i18n_orgunit_name + '</option>'
+				+		'</select>'
+				+	'</td>'
+				+ '</tr>'
+				+ '<tr name="tr' + rowId + '">'
+				+	'<td><label>' + i18n_template_message + '</label></td>'
+				+	'<td><textarea id="templateMessage' + rowId + '" name="templateMessage' + rowId + '" style="width:320px" class="templateMessage {validate:{required:true}}"></textarea></td>'
+				+ '</tr>';
+
+	jQuery('#programStageMessage').append( contend );
+}
+
+function removeTemplateMessageForm( rowId )
+{
+	jQuery("[name=tr" + rowId + "]").remove();
 }

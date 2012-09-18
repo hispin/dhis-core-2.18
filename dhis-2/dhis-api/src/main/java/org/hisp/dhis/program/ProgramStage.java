@@ -31,6 +31,7 @@ import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.patient.PatientReminder;
 
 /**
  * @author Abyot Asalefew
@@ -39,9 +40,7 @@ public class ProgramStage
     extends BaseIdentifiableObject
 {
     public static final String TYPE_DEFAULT = "default";
-
     public static final String TYPE_SECTION = "section";
-
     public static final String TYPE_CUSTOM = "custom";
     
     public static final String TEMPLATE_MESSSAGE_PATIENT_NAME = "{patient-name}";
@@ -76,9 +75,7 @@ public class ProgramStage
 
     private String reportDateDescription;
     
-    private Integer daysAllowedSendMessage;
-    
-    private String templateMessage;
+    private Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -137,10 +134,20 @@ public class ProgramStage
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
+    
     public DataEntryForm getDataEntryForm()
     {
         return dataEntryForm;
+    }
+
+    public Set<PatientReminder> getPatientReminders()
+    {
+        return patientReminders;
+    }
+
+    public void setPatientReminders( Set<PatientReminder> patientReminders )
+    {
+        this.patientReminders = patientReminders;
     }
 
     public void setDataEntryForm( DataEntryForm dataEntryForm )
@@ -161,26 +168,6 @@ public class ProgramStage
     public void setProgramStageSections( Set<ProgramStageSection> programStageSections )
     {
         this.programStageSections = programStageSections;
-    }
-
-    public Integer getDaysAllowedSendMessage()
-    {
-        return daysAllowedSendMessage;
-    }
-
-    public void setDaysAllowedSendMessage( Integer daysAllowedSendMessage )
-    {
-        this.daysAllowedSendMessage = daysAllowedSendMessage;
-    }
-
-    public String getTemplateMessage()
-    {
-        return templateMessage;
-    }
-
-    public void setTemplateMessage( String templateMessage )
-    {
-        this.templateMessage = templateMessage;
     }
 
     public Integer getStandardInterval()
