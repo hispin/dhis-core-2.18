@@ -54,7 +54,7 @@
     #end
     #set( $count = $count + 1 )
     <tr>
-    <td id="${dataElement.id}-cell" #if( $mark == 1 )class="alt"#else class="reg"#end nowrap="nowrap"><span id="${dataElement.id}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span></td>
+    <td id="${dataElement.id}-cell" #if( $mark == 1 )class="alt"#else class="reg"#end><span id="${dataElement.id}-dataelement">${encoder.htmlEncode( $dataElement.getFormNameFallback() )}</span></td>
     #foreach( $optionCombo in $optionCombos )
     #set( $dataEntryId = "${dataElement.id}-${optionCombo.id}-val" )
     #set( $greyedField = false )
