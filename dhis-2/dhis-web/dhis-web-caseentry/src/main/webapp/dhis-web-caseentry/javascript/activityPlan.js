@@ -29,20 +29,11 @@ function showActitityList()
 	var searchBySelectedOrgunit = false;
 	var programId = getFieldValue('programIdAddPatient');
 	var searchTexts = "stat_" + programId
-					+ "_" + getFieldValue("statusEvent")
 					+ "_" + getFieldValue('startDueDate')
-					+ "_" + getFieldValue('endDueDate');
-					
-	if( getFieldValue("statusEvent") != '3' 
-		&& getFieldValue("statusEvent") != '4' 
-		&& getFieldValue("statusEvent") != '0' )
-	{
-		searchTexts	+= "_" + getFieldValue('orgunitId');
-	}
-	else
-	{
-		searchBySelectedOrgunit = true
-	}
+					+ "_" + getFieldValue('endDueDate')
+					+ "_" + getFieldValue('orgunitId')
+					+ "_" + getFieldValue('statusEvent');
+	
 	showLoader();
 	jQuery('#listPatientDiv').load('getActivityPlanRecords.action',
 		{
@@ -75,6 +66,12 @@ function eventFlowToggle( programInstanceId )
 		showById("arrow_" + id);
 		showById("ps_" + id );
 	}
+	
+	jQuery(".table-flow").each( function(){
+		var scheduledEvent = jQuery(this).find("[status='3']:first");
+		scheduledEvent.focus();
+	});
+	
 	resize();
 }
 
@@ -109,7 +106,9 @@ function statusEventOnChange()
 {
 	var statusEvent = getFieldValue("statusEvent");
 	
-	if( statusEvent == '0' ){
+	if( statusEvent == '1_2_3_4' 
+		|| statusEvent == '3_4' 
+		|| statusEvent == '2_3_4' ){
 		enable('showEventSince');
 		enable('showEventUpTo');
 		setDateRange();
@@ -163,7 +162,9 @@ function setDateRange()
 	}
 
 	// check status to get date-range
-	if( statusEvent == "0")
+	if( statusEvent == '1_2_3_4' 
+		|| statusEvent == '3_4' 
+		|| statusEvent == '2_3_4')
 	{
 		startDate = startDateSince;
 		endDate = endDateUpTo;
@@ -219,7 +220,7 @@ function reloadRecordList()
 	var listAll = getFieldValue('listAll');
 	var startDate = getFieldValue('startDueDate');
 	var endDate = getFieldValue('endDueDate');
-	var status = getFieldValue('statusEvent');
+	var arrStatus = getFieldValue('statusEvent').split('_');
 	
 	jQuery("#patientList .stage-object").each( function(){
 		var id = this.id.split('_')[1];
@@ -227,13 +228,8 @@ function reloadRecordList()
 		var statusEvent = jQuery(this).attr('status');
 		var programInstanceId = jQuery(this).attr('programInstanceId');
 		if( dueDate >= startDate && dueDate <= endDate 
-			&& (( status!='0' && statusEvent == status ) || status=='0' ))
+			&& jQuery.inArray(statusEvent, arrStatus) > -1)
 		{
-			if( jQuery("#tb_" + programInstanceId + " .searched").length > 0 ){
-				jQuery("#ps_" + id ).addClass("stage-object-selected searched");
-				hideById("ps_" + id )
-				hideById('arrow_' + id );
-			}
 			jQuery("#ps_" + id ).addClass("stage-object-selected searched");
 		}
 		else
@@ -242,5 +238,13 @@ function reloadRecordList()
 			hideById('ps_' + id );
 		}
 	});
+	
+	jQuery(".table-flow").each( function(){
+		var scheduledEvent = jQuery(this).find("[status='3']:first");
+		scheduledEvent.addClass("stage-scheduled");
+		scheduledEvent.css('border-color', MARKED_VISIT_COLOR);
+		scheduledEvent.focus();
+	});
+	
 	resize();
 }

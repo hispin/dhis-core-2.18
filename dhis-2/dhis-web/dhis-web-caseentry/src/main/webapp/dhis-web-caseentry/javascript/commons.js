@@ -7,6 +7,7 @@ var COLOR_LIGHT_RED = "#ff7676";
 var COLOR_LIGHT_YELLOW = "#ffff99";
 var COLOR_LIGHT_GREEN = "#ccffcc";
 var COLOR_LIGHT_LIGHTRED = "#ff99ff";
+var MARKED_VISIT_COLOR = '#000000';
 var SUCCESS_COLOR = '#ccffcc';
 var ERROR_COLOR = '#ccccff';
 var SAVING_COLOR = '#ffffcc';
@@ -235,7 +236,7 @@ function getSearchParams()
 		var startDueDate = getFieldValue('startDueDate');
 		var endDueDate = getFieldValue('endDueDate');
 		params += '&searchTexts=stat_' + getFieldValue('programIdAddPatient') 
-				+ '_' + statusEvent + '_' + startDueDate + '_' + endDueDate;
+			   + '_' + startDueDate + '_' + endDueDate + '_' + statusEvent;
 		if( statusEvent != '3' && statusEvent != '4' && statusEvent != '0' )
 		{
 			params += "_" + getFieldValue('orgunitId');

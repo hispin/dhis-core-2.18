@@ -388,6 +388,11 @@ input.stage-object-selected[type="button"]
     border: 5px solid;
 }
 
+input .stage-scheduled[type="button"]
+{
+    border: 5px solid;
+}
+
 input.patient-object[type="button"]
 {
 	width: 130px;
