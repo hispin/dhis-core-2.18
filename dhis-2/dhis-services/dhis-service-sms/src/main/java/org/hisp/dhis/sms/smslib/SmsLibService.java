@@ -72,7 +72,7 @@ public class SmsLibService
 
     private final String CLICKATELL_GATEWAY = "clickatell_gw";
 
-    private final String HTTP_GATEWAY = "http_gw";
+    private final String HTTP_GATEWAY = "generic_http_gw";
 
     private final String MODEM_GATEWAY = "modem_gw";
 
@@ -99,11 +99,10 @@ public class SmsLibService
     @Override
     public Map<String, String> getGatewayMap()
     {
-        if ( gatewayMap == null || gatewayMap.isEmpty() )
+        if( gatewayMap == null || gatewayMap.isEmpty())
         {
             reloadConfig();
         }
-
         return gatewayMap;
     }
 
