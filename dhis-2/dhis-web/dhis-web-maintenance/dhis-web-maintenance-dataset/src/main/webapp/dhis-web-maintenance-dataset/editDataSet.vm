@@ -76,15 +76,6 @@
         <td><input type="text" id="description" name="description" style="width:20em" value="$!encoder.htmlEncode( $dataSet.description )"/></td>
       </tr>
       <tr>
-      	<td><label>$i18n.getString( "allow_future_periods" )</label></td>
-      	<td>
-      	  <select id="allowFuturePeriods" name="allowFuturePeriods" style="min-width:20em; margin:0;">
-      	  	<option value="false">$i18n.getString( "no" )</option>
-      	  	<option value="true"#if( $dataSet.allowFuturePeriods == true ) selected="selected"#end>$i18n.getString( "yes" )</option>
-  	      </select>
-	    </td>
-      </tr>
-      <tr>
         <td><label>$i18n.getString( "expiry_days" )</label></td>
         <td><input type="text" id="expiryDays" name="expiryDays" style="width:20em" value="$!encoder.htmlEncode( $dataSet.expiryDays )"/></td>
       </tr>
@@ -104,6 +95,31 @@
       	  <select id="skipAggregation" name="skipAggregation" style="min-width:20em; margin:0;">
       	  	<option value="false">$i18n.getString( "no" )</option>
       	  	<option value="true"#if( $dataSet.skipAggregation == true ) selected="selected"#end>$i18n.getString( "yes" )</option>
+  	      </select>
+	    </td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+        <th colspan="2">$i18n.getString( "form_details" )</th>
+      </tr>
+    </thead>
+    <tobd
+      <tr>
+      	<td><label>$i18n.getString( "allow_future_periods" )</label></td>
+      	<td>
+      	  <select id="allowFuturePeriods" name="allowFuturePeriods" style="min-width:20em; margin:0;">
+      	  	<option value="false">$i18n.getString( "no" )</option>
+      	  	<option value="true"#if( $dataSet.allowFuturePeriods == true ) selected="selected"#end>$i18n.getString( "yes" )</option>
+  	      </select>
+	    </td>
+      </tr>
+      <tr>
+      	<td><label>$i18n.getString( "all_fields_for_data_element_required" )</label></td>
+      	<td>
+      	  <select id="fieldCombinationRequired" name="fieldCombinationRequired" style="min-width:20em; margin:0;">
+      	  	<option value="false">$i18n.getString( "no" )</option>
+      	  	<option value="true"#if( $dataSet.fieldCombinationRequired == true ) selected="selected"#end>$i18n.getString( "yes" )</option>
   	      </select>
 	    </td>
       </tr>

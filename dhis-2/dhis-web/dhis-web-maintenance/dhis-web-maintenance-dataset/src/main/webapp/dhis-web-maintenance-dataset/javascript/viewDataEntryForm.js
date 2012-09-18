@@ -399,7 +399,7 @@ function insertDynamicElement() {
 		var categoryOptionComboName = $option.text();
 		var id = currentDynamicElementCode + "-" + categoryOptionComboId + "-dyninput";
 		
-		var template = '<input id="' + id + '" value="[ ' + categoryOptionComboName + ' ]" title="' + categoryOptionComboName + '" style="width:7em;text-align:center;" />';
+		var template = '<input id="' + id + '" code="' + currentDynamicElementCode + '" value="[ ' + categoryOptionComboName + ' ]" title="' + categoryOptionComboName + '" style="width:7em;text-align:center;" />';
 		oEditor.insertHtml( template );
 	}
 }

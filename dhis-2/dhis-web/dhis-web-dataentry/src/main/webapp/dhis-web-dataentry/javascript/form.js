@@ -367,14 +367,27 @@ function addEventListeners()
         $( this ).css( 'width', '100%' );
     } );
     
-    $( '[name="dyninput"]' ).each( function( i ) // Custom only
+    $( '[name="dynselect"]' ).each( function( i )
+    {
+    	var id = $( this ).attr( 'id' );
+    	var code = id.split( '-' )[0];
+    	
+    	$( this ).unbind( 'change' );
+    	
+    	$( this ).change( function()
+    	{
+            dynamicSelectChanged( id, code );
+    	} );
+    } );
+    
+    $( '[name="dyninput"]' ).each( function( i )
     {
     	var id = $( this ).attr( 'id' );
     	var code = id.split( '-' )[0];
         var optionComboId = id.split( '-' )[1];
         
-        $( this ).unbind( 'focus' );
         $( this ).unbind( 'change' );
+        $( this ).unbind( 'keyup' );
 
         $( this ).change( function()
         {
@@ -392,21 +405,6 @@ function clearPeriod()
 {
     clearListById( 'selectedPeriodId' );
     clearEntryForm();
-}
-
-function insertDynamicOptions()
-{
-	var optionMarkup = $( '#dynselect' ).html();
-	
-	if ( !isDefined( optionMarkup ) )
-	{
-		return;
-	}
-	
-    $( '[name="dynselect"]' ).each( function( i )
-    {
-    	$( this ).append( optionMarkup );
-    } );
 }
 
 function clearEntryForm()
@@ -452,6 +450,72 @@ function loadForm( dataSetId )
     }
 }
 
+//------------------------------------------------------------------------------
+// Dynamic input
+//------------------------------------------------------------------------------
+
+function insertDynamicOptions()
+{
+	var optionMarkup = $( '#dynselect' ).html();
+	
+	if ( !isDefined( optionMarkup ) )
+	{
+		return; // Custom form only
+	}
+	
+    $( '[name="dynselect"]' ).each( function( i )
+    {
+    	$( this ).append( optionMarkup );
+    } );
+}
+
+function dynamicSelectChanged( id, code )
+{
+	var validSelection = $( '#' + id ).val() != -1;
+	var color = validSelection ? COLOR_WHITE : COLOR_GREY;
+	
+	$( 'input[code="' + code + '"]' ).prop( 'disabled', !validSelection );
+	$( 'input[code="' + code + '"]' ).css( 'background-color', color );
+}
+
+function getDynamicSelectElementId( dataElementId )
+{
+	// Search for element where data element is already selected
+	
+	var id = null;
+	
+	$( '[name="dynselect"]' ).each( function( i )
+	{
+		if ( $( this ).val() == dataElementId )
+		{
+			id = $( this ).attr( 'id' );
+			return false;
+		}
+	} );
+
+	if ( id != null )
+	{
+		return id;
+	}
+	
+	// Search for unselected element
+	
+	$( '[name="dynselect"]' ).each( function( i )
+	{
+		if ( $( this ).val() == -1 )
+		{
+			id = $( this ).attr( 'id' );
+			return false;
+		}
+	} );
+	
+	return id;
+}
+
+//------------------------------------------------------------------------------
+// Section filter
+//------------------------------------------------------------------------------
+
 function enableSectionFilter()
 {
     var $sectionsHeaders = $( '.formSection .cent h3' );
@@ -492,7 +556,7 @@ function filterOnSection()
     }
 }
 
-function filterInSection($this)
+function filterInSection( $this )
 {
     var $tbody = $this.parent().parent().parent();
     var $trTarget = $tbody.find( 'tr:not([colspan])' );
@@ -524,10 +588,14 @@ function filterInSection($this)
     refreshZebraStripes( $tbody );
 }
 
+//------------------------------------------------------------------------------
+// Supportive methods
+//------------------------------------------------------------------------------
+
 function refreshZebraStripes( $tbody )
 {
-    $tbody.find( 'tr:not([colspan]):visible:even' ).find( 'td:first-child' ).removeClass( 'reg alt' ).addClass('alt' );
-    $tbody.find( 'tr:not([colspan]):visible:odd' ).find( 'td:first-child' ).removeClass( 'reg alt' ).addClass('reg' );
+    $tbody.find( 'tr:not([colspan]):visible:even' ).find( 'td:first-child' ).removeClass( 'reg alt' ).addClass( 'alt' );
+    $tbody.find( 'tr:not([colspan]):visible:odd' ).find( 'td:first-child' ).removeClass( 'reg alt' ).addClass( 'reg' );
 }
 
 function getDataElementType( dataElementId )
@@ -679,7 +747,7 @@ function displayPeriodsInternal()
     var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
     periods = periodTypeFactory.reverse( periods );
     
-    if ( allowFuturePeriods == "false" )
+    if ( allowFuturePeriods == false )
     {
     	periods = periodTypeFactory.filterFuturePeriods( periods );
     }
@@ -711,7 +779,7 @@ function dataSetSelected()
     var periods = periodTypeFactory.get( periodType ).generatePeriods( currentPeriodOffset );
     periods = periodTypeFactory.reverse( periods );
     
-    if ( allowFuturePeriods == "false" )
+    if ( allowFuturePeriods == false )
     {
     	periods = periodTypeFactory.filterFuturePeriods( periods );
     }
@@ -798,15 +866,23 @@ function insertDataValues()
 
     $( '[name="entryfield"]' ).val( '' );
     $( '[name="entryselect"]' ).val( '' );
+    $( '[name="dyninput"]' ).val( '' );
+    $( '[name="dynselect"]' ).val( '' );
 
     $( '[name="entryfield"]' ).css( 'background-color', COLOR_WHITE );
     $( '[name="entryselect"]' ).css( 'background-color', COLOR_WHITE );
+    $( '[name="dyninput"]' ).css( 'background-color', COLOR_WHITE );
 
     $( '[name="min"]' ).html( '' );
     $( '[name="max"]' ).html( '' );
 
     $( '[name="entryfield"]' ).filter( ':disabled' ).css( 'background-color', COLOR_GREY );
+    
+    // Disable and grey dynamic fields to start with and enable later
 
+    $( '[name="dyninput"]' ).prop( 'disabled', true );    
+    $( '[name="dyninput"]' ).css( 'background-color', COLOR_GREY );
+    
     $.ajax( {
     	url: 'getDataValues.action',
     	data:
@@ -843,9 +919,49 @@ function insertDataValues()
 	        {
 	            var fieldId = '#' + value.id + '-val';
 
-	            if ( $( fieldId ) )
+	            if ( $( fieldId ).length > 0 ) // Insert for fixed input fields
 	            {
 	                $( fieldId ).val( value.val );
+	            }
+	            else // Insert for potential dynamic input fields
+	            {
+	                var dataElementId = value.id.split( '-' )[0];
+	                var optionComboId = value.id.split( '-' )[1];
+	                
+	                var selectElementId = '#' + getDynamicSelectElementId( dataElementId );
+	                
+	                if ( $( selectElementId ).length == 0 )
+	                {
+	                	log( 'Could not find dynamic select element for data element: ' + dataElementId );
+	                	return true;
+	                }
+
+                	var code = $( selectElementId ).attr( 'id' ).split( '-' )[0];
+        			
+        			if ( !isDefined( code ) )
+        			{
+        				log( 'Could not find code on select element: ' + selectElementId );
+        				return true;
+        			}
+
+    				var dynamicInputId = '#' + code + '-' + optionComboId + '-dyninput';
+    				
+        			if ( $( dynamicInputId ).length == 0 )
+    				{
+        				log( 'Could not find find dynamic input element for option combo: ' + optionComboId );
+        				return true;
+    				}
+
+        			// Set data element in select list
+        			    		    
+        			$( selectElementId ).val( dataElementId );
+
+        			// Enable input fields and set value
+        			
+        		    $( 'input[code="' + code + '"]' ).prop( 'disabled', false );    
+        		    $( 'input[code="' + code + '"]' ).css( 'background-color', COLOR_WHITE );
+        		    
+    				$( dynamicInputId ).val( value.val );
 	            }
 
 	            dataValueMap[value.id] = value.val;
@@ -998,6 +1114,11 @@ function validateCompleteDataSet()
 {
     var confirmed = confirm( i18n_confirm_complete );
 
+	if ( !validateCompulsoryCombinations() )
+	{
+		return false;
+	}
+	
     if ( confirmed )
     {
         var params = storageManager.getCurrentCompleteDataSetParams();
@@ -1067,9 +1188,9 @@ function undoCompleteDataSet()
         	dataType: 'json',
         	success: function(data)
 	        {
-                if( data.status == 2 )
+                if ( data.status == 2 )
                 {
-                    log( 'DataSet is locked' );
+                    log( 'Data set is locked' );
                     setHeaderMessage( i18n_unregister_complete_failed_dataset_is_locked );
                 }
                 else
@@ -1139,6 +1260,11 @@ function displayValidationDialog()
 
 function validate()
 {
+	if ( !validateCompulsoryCombinations() )
+	{
+		return false;
+	}
+	
     var periodId = $( '#selectedPeriodId' ).val();
     var dataSetId = $( '#selectedDataSetId' ).val();
 
@@ -1146,7 +1272,8 @@ function validate()
         periodId : periodId,
         dataSetId : dataSetId,
         organisationUnitId : currentOrganisationUnitId
-    }, function( response, status, xhr )
+    }, 
+    function( response, status, xhr )
     {
         if ( status == 'error' )
         {
@@ -1157,6 +1284,53 @@ function validate()
             displayValidationDialog();
         }
     } );
+}
+
+function validateCompulsoryCombinations()
+{
+	var validationRequired = dataSets[currentDataSetId].fieldCombinationRequired;
+	
+    if ( validationRequired )
+    {
+        var violations = false;
+		
+        $( '[name="entryfield"]' ).add( '[name="entryselect"]' ).each( function( i )
+        {
+            var id = $( this ).attr( 'id' );
+            var dataElementId = id.split( '-' )[0];		
+            var hasValue = $.trim( $( this ).val() ).length > 0;
+            
+            if ( hasValue )
+            {
+            	$selector = $( '[name="entryfield"][id^="' + dataElementId + '-"]' ).
+            		add( '[name="entryselect"][id^="' + dataElementId + '-"]' );
+				
+                $selector.each( function( i )
+                {
+                    if ( $.trim( $( this ).val() ).length == 0 )
+                    {
+                        violations = true;
+						
+                        $selector.css( 'background-color', COLOR_RED );
+						
+                        return false;
+                    }
+                } );
+            }
+        } );
+		
+        if ( violations )
+        {
+        	$( '#validationDiv' ).html( '<h3>' + i18n_validation_result + '</h3>' +
+                '<p class="bold">' + i18n_all_values_for_data_element_must_be_filled + '</p>' );
+				
+            displayValidationDialog();
+			
+            return false;
+		}
+    }
+	
+	return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -1186,7 +1360,8 @@ function viewHist( dataElementId, optionComboId )
         optionComboId : optionComboId,
         periodId : periodId,
         organisationUnitId : currentOrganisationUnitId
-    }, function( response, status, xhr )
+    }, 
+    function( response, status, xhr )
     {
         if ( status == 'error' )
         {
@@ -1359,7 +1534,8 @@ function StorageManager()
             localStorage[id] = html;
 
             log( 'Successfully stored form: ' + dataSetId );
-        } catch ( e )
+        } 
+        catch ( e )
         {
             log( 'Max local storage quota reached, ignored form: ' + dataSetId );
             return false;

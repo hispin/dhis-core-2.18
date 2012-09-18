@@ -120,11 +120,6 @@ public class DataSet
     private boolean mobile;
 
     /**
-     * Property indicating whether it should allow to enter data for future periods.
-     */
-    private boolean allowFuturePeriods;
-    
-    /**
      * Indicating custom data entry form.
      */
     private DataEntryForm dataEntryForm;
@@ -143,6 +138,20 @@ public class DataSet
      * Property indicating whether aggregation should be skipped.
      */
     private boolean skipAggregation;
+
+    // -------------------------------------------------------------------------
+    // Form properties
+    // -------------------------------------------------------------------------
+
+    /**
+     * Property indicating whether it should allow to enter data for future periods.
+     */
+    private boolean allowFuturePeriods;
+    
+    /**
+     * Property indicating that all fields for a data element must be filled.
+     */
+    private boolean fieldCombinationRequired;
     
     // -------------------------------------------------------------------------
     // Contructors
@@ -496,19 +505,6 @@ public class DataSet
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public boolean isAllowFuturePeriods()
-    {
-        return allowFuturePeriods;
-    }
-
-    public void setAllowFuturePeriods( boolean allowFuturePeriods )
-    {
-        this.allowFuturePeriods = allowFuturePeriods;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Integer getVersion()
     {
         return version;
@@ -543,6 +539,32 @@ public class DataSet
     public void setSkipAggregation( boolean skipAggregation )
     {
         this.skipAggregation = skipAggregation;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isAllowFuturePeriods()
+    {
+        return allowFuturePeriods;
+    }
+
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
+    {
+        this.allowFuturePeriods = allowFuturePeriods;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isFieldCombinationRequired()
+    {
+        return fieldCombinationRequired;
+    }
+
+    public void setFieldCombinationRequired( boolean fieldCombinationRequired )
+    {
+        this.fieldCombinationRequired = fieldCombinationRequired;
     }
 
     @Override

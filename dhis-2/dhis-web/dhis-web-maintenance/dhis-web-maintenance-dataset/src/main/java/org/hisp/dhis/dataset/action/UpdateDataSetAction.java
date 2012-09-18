@@ -125,13 +125,6 @@ public class UpdateDataSetAction
         this.description = description;
     }
 
-    private boolean allowFuturePeriods;
-
-    public void setAllowFuturePeriods( boolean allowFuturePeriods )
-    {
-        this.allowFuturePeriods = allowFuturePeriods;
-    }
-    
     private int expiryDays;
 
     public void setExpiryDays( int expiryDays )
@@ -158,6 +151,20 @@ public class UpdateDataSetAction
     public void setDataSetId( int dataSetId )
     {
         this.dataSetId = dataSetId;
+    }
+
+    private boolean allowFuturePeriods;
+
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
+    {
+        this.allowFuturePeriods = allowFuturePeriods;
+    }
+    
+    private boolean fieldCombinationRequired;
+    
+    public void setFieldCombinationRequired( boolean fieldCombinationRequired )
+    {
+        this.fieldCombinationRequired = fieldCombinationRequired;
     }
 
     private Collection<String> dataElementsSelectedList = new HashSet<String>();
@@ -219,11 +226,12 @@ public class UpdateDataSetAction
         dataSet.setName( name );
         dataSet.setShortName( shortName );
         dataSet.setDescription( description );
-        dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setCode( code );
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
         dataSet.updateDataElements( dataElements );
         dataSet.setIndicators( indicators );
+        dataSet.setAllowFuturePeriods( allowFuturePeriods );
+        dataSet.setFieldCombinationRequired( fieldCombinationRequired );
 
         dataSetService.updateDataSet( dataSet );
 

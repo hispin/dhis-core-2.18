@@ -117,13 +117,13 @@ function saveDynamicVal( code, optionComboId, fieldId )
 {
     var dataElementId = $( '#' + code + '-dynselect option:selected' ).val();
     
-    if ( isDefined( dataElementId ) && dataElementId != '' )
-    {    
-    	saveVal( dataElementId, optionComboId, fieldId );
+    if ( !isDefined( dataElementId ) || dataElementId == -1 )
+    {
+    	log( 'There is no select list in form or no option selected for code: ' + code );
     	return;
     }
     
-    log( 'There is no select list in form or no option selected for code: ' + code );
+    saveVal( dataElementId, optionComboId, fieldId );
 }
 
 function saveVal( dataElementId, optionComboId, fieldId )

@@ -114,13 +114,6 @@ public class AddDataSetAction
         this.description = description;
     }
 
-    private boolean allowFuturePeriods;
-
-    public void setAllowFuturePeriods( boolean allowFuturePeriods )
-    {
-        this.allowFuturePeriods = allowFuturePeriods;
-    }
-
     private int expiryDays;
 
     public void setExpiryDays( int expiryDays )
@@ -140,6 +133,20 @@ public class AddDataSetAction
     public void setFrequencySelect( String frequencySelect )
     {
         this.frequencySelect = frequencySelect;
+    }
+
+    private boolean allowFuturePeriods;
+
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
+    {
+        this.allowFuturePeriods = allowFuturePeriods;
+    }
+
+    private boolean fieldCombinationRequired;
+    
+    public void setFieldCombinationRequired( boolean fieldCombinationRequired )
+    {
+        this.fieldCombinationRequired = fieldCombinationRequired;
     }
 
     private Collection<String> dataElementsSelectedList = new HashSet<String>();
@@ -191,10 +198,11 @@ public class AddDataSetAction
         }
 
         dataSet.setDescription( description );
-        dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setVersion( 1 );
         dataSet.setMobile( false );
         dataSet.setIndicators( indicators );
+        dataSet.setAllowFuturePeriods( allowFuturePeriods );
+        dataSet.setFieldCombinationRequired( fieldCombinationRequired );
 
         dataSetService.addDataSet( dataSet );
 
