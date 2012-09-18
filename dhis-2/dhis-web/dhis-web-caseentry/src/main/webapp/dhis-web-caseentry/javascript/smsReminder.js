@@ -37,7 +37,9 @@ function listAllPatient()
 	var endDate = jQuery.datepicker.formatDate( dateFormat, new Date(y2, m, d) );
 	
 	var programId = getFieldValue('programIdAddPatient');
-	var searchTexts = "stat_" + programId + "_4_" + startDate + "_" + endDate;
+	var searchTexts = "stat_" + programId + "_" 
+				+ startDate + "_" + endDate + "_" 
+				+ getFieldValue('orgunitId') + "_4";
 	
 	showLoader();
 	jQuery('#listPatientDiv').load('getSMSPatientRecords.action',
