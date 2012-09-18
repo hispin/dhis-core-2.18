@@ -28,10 +28,13 @@ package org.hisp.dhis.patient.action.programstage;
  */
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.patient.PatientReminder;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -160,18 +163,18 @@ public class AddProgramStageAction
         this.reportDateDescription = reportDateDescription;
     }
 
-    private Integer daysAllowedSendMessage;
+    private List<Integer> daysAllowedSendMessages = new ArrayList<Integer>();
 
-    public void setDaysAllowedSendMessage( Integer daysAllowedSendMessage )
+    public void setDaysAllowedSendMessages( List<Integer> daysAllowedSendMessages )
     {
-        this.daysAllowedSendMessage = daysAllowedSendMessage;
+        this.daysAllowedSendMessages = daysAllowedSendMessages;
     }
 
-    private String templateMessage;
+    private List<String> templateMessages = new ArrayList<String>();
 
-    public void setTemplateMessage( String templateMessage )
+    public void setTemplateMessages( List<String> templateMessages )
     {
-        this.templateMessage = templateMessage;
+        this.templateMessages = templateMessages;
     }
 
     // -------------------------------------------------------------------------
@@ -182,6 +185,9 @@ public class AddProgramStageAction
         throws Exception
     {
 
+        minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
+        irregular = (irregular == null) ? false : irregular;
+        
         ProgramStage programStage = new ProgramStage();
 
         Program program = programService.getProgram( id );
@@ -192,15 +198,17 @@ public class AddProgramStageAction
         programStage.setProgram( program );
         programStage.setStandardInterval( standardInterval );
         programStage.setReportDateDescription( reportDateDescription );
-        programStage.setDaysAllowedSendMessage( daysAllowedSendMessage );
-        programStage.setTemplateMessage( templateMessage );
-
-        irregular = (irregular == null) ? false : irregular;
         programStage.setIrregular( irregular );
-
-        minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
-
+        
+        Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
+        for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
+        {
+            PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ), templateMessages.get( i ));
+            patientReminders.add( reminder );
+        }
+        programStage.setPatientReminders( patientReminders );
+        
         programStageService.saveProgramStage( programStage );
 
         for ( int i = 0; i < this.selectedDataElementsValidator.size(); i++ )
