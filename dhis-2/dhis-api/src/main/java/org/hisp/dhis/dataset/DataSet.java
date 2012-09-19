@@ -153,6 +153,11 @@ public class DataSet
      */
     private boolean fieldCombinationRequired;
     
+    /**
+     * Property indicating that all validation rules must pass before the form can be completed.
+     */
+    private boolean validCompleteOnly;
+    
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -565,6 +570,19 @@ public class DataSet
     public void setFieldCombinationRequired( boolean fieldCombinationRequired )
     {
         this.fieldCombinationRequired = fieldCombinationRequired;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isValidCompleteOnly()
+    {
+        return validCompleteOnly;
+    }
+
+    public void setValidCompleteOnly( boolean validCompleteOnly )
+    {
+        this.validCompleteOnly = validCompleteOnly;
     }
 
     @Override

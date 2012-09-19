@@ -57,16 +57,16 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" value='$!dataEntryForm.name' style="width:20em"></td>
+        <td><input type="text" id="nameField" name="nameField" value='$!dataEntryForm.name' style="width:30em"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" value="$dataSet.name" style="width:20em" disabled /></td>
+        <td><input type="text" value="$dataSet.name" style="width:30em" disabled /></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "style" )</label></td>
         <td>
-        <select id="style" name="style" style="width:20em">
+        <select id="style" name="style" style="width:30em">
           <option value="regular"#if( !$dataEntryForm.style || "regular" == $dataEntryForm.style ) selected=selected#end>$i18n.getString( "regular" )</option>
           <option value="comfortable"#if( "comfortable" == $dataEntryForm.style ) selected=selected#end>$i18n.getString( "comfortable" )</option>
           <option value="compact"#if( "compact" == $dataEntryForm.style ) selected=selected#end>$i18n.getString( "compact" )</option>

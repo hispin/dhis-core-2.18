@@ -231,13 +231,11 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="getOrganisationUnitByCode" class="org.hisp.dhis.ouwt.action.GetOrganisationUnitByCodeAction">
+    <action name="getOrganisationUnitsByName" class="org.hisp.dhis.ouwt.action.GetOrganisationUnitsByNameAction">
       <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+        /dhis-web-commons/ouwt/responseSearch.vm
       </result>
-      <result name="input" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseInput.vm
-      </result>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="loadOrganisationUnitTree" class="org.hisp.dhis.commons.action.NoAction">

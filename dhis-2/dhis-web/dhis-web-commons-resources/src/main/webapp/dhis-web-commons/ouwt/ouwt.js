@@ -424,7 +424,7 @@ function Selection()
         return 'orgUnit' + unitId;
     }
 
-    this.findByCode = function ()
+    this.findByName = function()
     {
         var name = $( '#searchField' ).val();
 

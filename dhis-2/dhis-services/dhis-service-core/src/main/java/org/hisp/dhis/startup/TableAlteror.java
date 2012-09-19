@@ -387,6 +387,7 @@ public class TableAlteror
         executeSql( "update indicatortype set indicatornumber = false where indicatornumber is null" );
         executeSql( "update dataset set mobile = false where mobile is null" );
         executeSql( "update dataset set allowfutureperiods = false where allowfutureperiods is null" );
+        executeSql( "update dataset set validcompleteonly = false where validcompleteonly is null" );
         executeSql( "update dataelement set zeroissignificant = false where zeroissignificant is null" );
         executeSql( "update organisationunit set haspatients = false where haspatients is null" );
         executeSql( "update dataset set expirydays = 0 where expirydays is null" );

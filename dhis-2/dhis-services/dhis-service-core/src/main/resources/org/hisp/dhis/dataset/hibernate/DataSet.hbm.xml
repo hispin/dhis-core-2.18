@@ -72,6 +72,8 @@
 	<property name="allowFuturePeriods" />
 
 	<property name="fieldCombinationRequired" />
+	
+	<property name="validCompleteOnly" />
 
   </class>
 </hibernate-mapping>

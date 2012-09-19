@@ -191,11 +191,8 @@
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.ouwt.action.GetOrganisationUnitByCodeAction" class="org.hisp.dhis.ouwt.action.GetOrganisationUnitByCodeAction"
+  <bean id="org.hisp.dhis.ouwt.action.GetOrganisationUnitsByNameAction" class="org.hisp.dhis.ouwt.action.GetOrganisationUnitsByNameAction"
     scope="prototype">
-    <property name="selectionManager">
-      <ref local="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-    </property>
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </property>

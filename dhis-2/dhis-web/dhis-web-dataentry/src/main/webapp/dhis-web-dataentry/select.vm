@@ -39,6 +39,7 @@ var i18n_unregister_complete_failed_dataset_is_locked = '$encoder.jsEscape( $i18
 var i18n_show_all_sections = '$encoder.jsEscape( $i18n.getString( "show_all_sections" ) , "'")';
 var i18n_all_values_for_data_element_must_be_filled = '$encoder.jsEscape( $i18n.getString( "all_values_for_data_element_must_be_filled" ) , "'")';
 var i18n_validation_result = '$encoder.jsEscape( $i18n.getString( "validation_result" ) , "'")';
+var i18n_successful_validation = '$encoder.jsEscape( $i18n.getString( "successful_validation" ) , "'")';
 </script>
 
 <h3>$i18n.getString( "data_entry" ) #openHelp( "dataEntry" )</h3>
@@ -50,7 +51,7 @@ var i18n_validation_result = '$encoder.jsEscape( $i18n.getString( "validation_re
 </div>
 
 <div id="actions">	
-    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="validate()" id="validationButton" style="width:150px;" disabled="disabled"/>
+    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="validate( false )" id="validationButton" style="width:150px;" disabled="disabled"/>
 </div>
 
 <div id="selectionBox" class="inputCriteria" style="width:504px;height:93px;">
@@ -90,9 +91,9 @@ var i18n_validation_result = '$encoder.jsEscape( $i18n.getString( "validation_re
 <div id="validationDiv" class="page"></div>
 
 <div id="completenessDiv" class="page inputCriteria" style="display:none;width:386px;height:29px;">
-<input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()" style="width:120px">
+<input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="registerCompleteDataSet()" style="width:120px">
 <input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'incomplete' )" onclick="undoCompleteDataSet()" style="width:120px">
-<input type="button" value="$i18n.getString( 'run_validation' )" onclick="validate()" style="width:120px">
+<input type="button" value="$i18n.getString( 'run_validation' )" onclick="validate( false )" style="width:120px">
 </div>
 
 <div id="infoDiv" class="page inputCriteria" style="display:none;width:386px;height:20px;">
