@@ -405,6 +405,14 @@
 				/dhis-web-spreadsheet-reporting/jsonDataElementGroupOrder.vm</result>
 		</action>
 		
+		<action name="getDataElementGroupOrdersByReport"
+			class="org.hisp.dhis.reportsheet.degroup.action.GetDataElementGroupOrdersByReportAction">
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonDataElementGroupOrders.vm</result>
+		</action>
+		
 		<action name="openSortDataElement"
 			class="org.hisp.dhis.reportsheet.degroup.action.GetDataElementGroupOrderAction">
 			<result name="success" type="velocity">/main.vm</result>

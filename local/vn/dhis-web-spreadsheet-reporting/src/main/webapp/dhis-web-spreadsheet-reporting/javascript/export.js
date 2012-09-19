@@ -90,13 +90,42 @@ function reportSelected( _periodType )
 
 			if ( currentReportTypeName == "P" ) {
 				hideById( "periodCol" );
-			}else {
+			} else {
 				showById( "periodCol" );
 			}
 		}
 	}
-
+	
+	displayOrderedGroup();
 	displayPeriodsInternal();
+}
+
+function displayOrderedGroup()
+{
+	if ( currentReportTypeName == "C" )
+	{
+		jQuery.post( "getDataElementGroupOrdersByReport.action",
+		{
+			exportReportId: getFieldValue( 'exportReport' ).split( '_' )[0]
+		},
+		function ( json )
+		{
+			clearListById( 'orderedGroups' );
+
+			jQuery.each( json.dataElementGroupOrders, function( i, item )
+			{
+				addOptionById( 'orderedGroups', item.id, item.name );
+			} );
+			
+			showById( 'orderedGroupLabelTR' );
+			showById( 'orderedGroupSelectTR' );
+			byId( 'exportReportDiv' ).style.height = '410px';
+		} );
+	} else {		
+		hideById( 'orderedGroupLabelTR' );
+		hideById( 'orderedGroupSelectTR' );
+		byId( 'exportReportDiv' ).style.height = '300px';
+	}
 }
 
 function displayPeriodsInternal()
@@ -179,6 +208,7 @@ function showExportDiv()
 function validateGenerateReport( isAdvanced )
 {
 	var exportReports = jQuery( 'select[id=exportReport]' ).children( 'option:selected' );
+	var orderedGroups = jQuery( 'select[id=orderedGroups]' ).children( 'option:selected' );
 
 	if ( exportReports.length == 0 )
 	{
@@ -199,6 +229,11 @@ function validateGenerateReport( isAdvanced )
 	jQuery.each( exportReports, function ( i, item )
 	{
 		url += 'exportReportIds=' + item.value.split( "_" )[0] + '&';
+	} );
+
+	jQuery.each( orderedGroups, function ( i, item )
+	{
+		url += 'orderedGroupIds=' + item.value + '&';
 	} );
 	
 	url = url.substring( 0, url.length - 1 );

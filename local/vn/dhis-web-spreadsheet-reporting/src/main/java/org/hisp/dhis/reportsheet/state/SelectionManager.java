@@ -26,6 +26,8 @@
  */
 package org.hisp.dhis.reportsheet.state;
 
+import java.util.List;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id$
@@ -59,5 +61,8 @@ public interface SelectionManager
     public String[] getListObject();
     
     public void setListObject( String[] objects );
+    
+    public List<Integer> getOrderedGroupList();
 
+    public void setOrderedGroupList( List<Integer> objects );
 }

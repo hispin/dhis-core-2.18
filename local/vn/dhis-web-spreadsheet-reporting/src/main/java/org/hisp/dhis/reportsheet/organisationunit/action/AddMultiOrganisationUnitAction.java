@@ -172,7 +172,7 @@ public class AddMultiOrganisationUnitAction
         // Create organization unit
         // ---------------------------------------------------------------------
 
-        String extraName = ( parent.getCode() == null ? String.valueOf( parent.getId() ) : parent.getCode() );
+        String extraName = (parent.getCode() == null ? String.valueOf( parent.getId() ) : parent.getCode());
 
         for ( String id : selectedList )
         {

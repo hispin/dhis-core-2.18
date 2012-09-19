@@ -28,17 +28,20 @@ package org.hisp.dhis.reportsheet.exporting.action;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
+import org.hisp.dhis.reportsheet.DataElementGroupOrderService;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportCategory;
 import org.hisp.dhis.reportsheet.exporting.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Tran Thanh Tri
@@ -49,6 +52,9 @@ import org.hisp.dhis.reportsheet.utils.ExcelUtils;
 public class GenerateReportCategoryAction
     extends AbstractGenerateExcelReportSupport
 {
+    @Autowired
+    private DataElementGroupOrderService dataElementGroupOrderService;
+
     @Override
     protected void executeGenerateOutputFile( ExportReport exportReport, Period period )
         throws Exception
@@ -60,7 +66,19 @@ public class GenerateReportCategoryAction
         this.installReadTemplateFile( exportReportInstance, period, organisationUnit );
 
         Collection<ExportItem> exportReportItems = null;
-        
+        List<DataElementGroupOrder> orderedGroups = null;
+
+        if ( !selectionManager.getOrderedGroupList().isEmpty() )
+        {
+            orderedGroups = dataElementGroupOrderService.getDataElementGroupOrders( selectionManager
+                .getOrderedGroupList() );
+        }
+
+        if ( orderedGroups == null || orderedGroups.isEmpty() )
+        {
+            orderedGroups = exportReportInstance.getDataElementOrders();
+        }
+
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
@@ -69,17 +87,18 @@ public class GenerateReportCategoryAction
 
             if ( isVerticalCategory( exportReportItems ) )
             {
-                this.generateVerticalOutPutFile( exportReportInstance, exportReportItems, organisationUnit, sheet );
+                this.generateVerticalOutPutFile( orderedGroups, exportReportItems, organisationUnit, sheet );
             }
             else
             {
                 this.generateHorizontalOutPutFile( exportReportInstance, exportReportItems, organisationUnit, sheet );
             }
         }
-        
+
         /**
          * Garbage
          */
+        orderedGroups = null;
         exportReportItems = null;
     }
 
@@ -87,7 +106,7 @@ public class GenerateReportCategoryAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    private void generateVerticalOutPutFile( ExportReportCategory exportReport,
+    private void generateVerticalOutPutFile( List<DataElementGroupOrder> orderedGroups,
         Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
         for ( ExportItem reportItem : exportReportItems )
@@ -95,26 +114,26 @@ public class GenerateReportCategoryAction
             int run = 0;
             int rowBegin = reportItem.getRow();
 
-            for ( DataElementGroupOrder dataElementGroup : exportReport.getDataElementOrders() )
+            for ( DataElementGroupOrder group : orderedGroups )
             {
                 int beginChapter = rowBegin;
 
                 if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                 {
-                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElementGroup.getName(),
-                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), group.getName(), ExcelUtils.TEXT,
+                        sheet, this.csText12BoldCenter );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_CODE ) )
                 {
-                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElementGroup.getCode(),
-                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), group.getCode(), ExcelUtils.TEXT,
+                        sheet, this.csText12BoldCenter );
                 }
 
                 run++;
                 rowBegin++;
                 int serial = 1;
 
-                for ( DataElement dataElement : dataElementGroup.getDataElements() )
+                for ( DataElement dataElement : group.getDataElements() )
                 {
                     if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                     {
@@ -142,7 +161,7 @@ public class GenerateReportCategoryAction
 
                         String expression = reportItem.getExpression();
                         expression = expression.replace( "*", String.valueOf( dataElement.getId() ) );
-                        
+
                         newReportItem.setPeriodType( reportItem.getPeriodType() );
                         newReportItem.setExpression( expression );
 

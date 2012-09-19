@@ -527,7 +527,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <value>kenya</value>
         <value>lesotho</value>
         <value>liberia</value>
-        <value>malawi</value>
+	<value>malawi</value>
+	<value>myanmar</value>
         <value>mali</value>
         <value>mozambique</value>
         <value>namibia</value>
@@ -613,6 +614,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	  <value>hi</value>
 	  <value>id</value>
 	  <value>it</value>
+	  <value>mm</value>
 	  <value>nl</value>
 	  <value>no</value>
 	  <value>ps</value>
