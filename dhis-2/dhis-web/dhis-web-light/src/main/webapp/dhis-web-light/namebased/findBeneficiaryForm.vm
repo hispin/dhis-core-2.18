@@ -23,7 +23,7 @@
 		<select name="organisationUnitId">
 			<option value="0">$i18n.getString( "all_orgunit" )</option>
 			#foreach($orgUnit in $organisationUnits)
-				<option value="$orgUnit.getId()">$orgUnit.getName()</option>
+				<option value="$orgUnit.getId()" #if($user.getOrganisationUnit().getName() == $orgUnit.getName()) selected="selected" #end>$orgUnit.getName()</option>
 			#end
 		</select>
 	</p>
