@@ -153,18 +153,11 @@ public class MenuAction
         return complete;
     }
     
-    public boolean trackingAuthority;
+    private User user;
     
-    public boolean isTrackingAuthority()
+    public User getUser()
     {
-        return trackingAuthority;
-    }
-
-    public boolean aggregateAuthority;
-    
-    public boolean isAggregateAuthority()
-    {
-        return aggregateAuthority;
+        return user;
     }
 
     // -------------------------------------------------------------------------
@@ -174,32 +167,7 @@ public class MenuAction
     @Override
     public String execute()
     {
-        User user = currentUserService.getCurrentUser();
-        
-        trackingAuthority = false;
-        
-        aggregateAuthority = false;
-
-        for (String each: user.getUserCredentials().getAllAuthorities())
-        {
-            if ( each.equals( "ALL" ))
-            {
-                trackingAuthority = true;
-                
-                aggregateAuthority = true;
-            }
-            else
-            {
-                if ( each.equals( "M_dhis-web-maintenance-patient" ) )
-                {
-                    trackingAuthority = true;
-                }
-                if ( each.equals( "M_dhis-web-dataentry" ))
-                {
-                    aggregateAuthority = true;
-                }
-            }
-        }
+        this.user = currentUserService.getCurrentUser();       
         
         if ( complete )
         {
