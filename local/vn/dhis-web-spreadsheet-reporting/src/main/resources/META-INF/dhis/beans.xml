@@ -243,6 +243,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
+		id="org.hisp.dhis.reportsheet.degroup.action.GetDataElementGroupOrdersByReportAction"
+		class="org.hisp.dhis.reportsheet.degroup.action.GetDataElementGroupOrdersByReportAction"
+		scope="prototype">
+		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
+	</bean>
+
+	<bean
 		id="org.hisp.dhis.reportsheet.degroup.action.UpdateSortedDataElementGroupOrderAction"
 		class="org.hisp.dhis.reportsheet.degroup.action.UpdateSortedDataElementGroupOrderAction"
 		scope="prototype">

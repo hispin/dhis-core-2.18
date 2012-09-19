@@ -21,6 +21,7 @@ htmlStyle.push( "</style>" );
 function validatePreviewReport( isAdvanced )
 {
 	var exportReports = jQuery( 'select[id=exportReport]' ).children( 'option:selected' );
+	var orderedGroups = jQuery( 'select[id=orderedGroups]' ).children( 'option:selected' );
 
 	if ( exportReports.length == 0 )
 	{
@@ -41,6 +42,11 @@ function validatePreviewReport( isAdvanced )
 	jQuery.each( exportReports, function ( i, item )
 	{
 		url += 'exportReportIds=' + item.value.split( "_" )[0] + '&';
+	} );
+
+	jQuery.each( orderedGroups, function ( i, item )
+	{
+		url += 'orderedGroupIds=' + item.value + '&';
 	} );
 	
 	url = url.substring( 0, url.length - 1 );

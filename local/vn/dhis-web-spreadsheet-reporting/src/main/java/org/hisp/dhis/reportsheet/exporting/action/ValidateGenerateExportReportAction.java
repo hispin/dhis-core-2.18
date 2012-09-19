@@ -28,6 +28,8 @@ package org.hisp.dhis.reportsheet.exporting.action;
  */
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportService;
@@ -76,6 +78,13 @@ public class ValidateGenerateExportReportAction
     public void setExportReportIds( String[] exportReportIds )
     {
         this.exportReportIds = exportReportIds;
+    }
+
+    private List<Integer> orderedGroupIds = new ArrayList<Integer>();
+
+    public void setOrderedGroupIds( List<Integer> orderedGroupIds )
+    {
+        this.orderedGroupIds = orderedGroupIds;
     }
 
     private String periodIndex;
@@ -150,7 +159,8 @@ public class ValidateGenerateExportReportAction
             selectionManager.setListObject( exportReportIds );
         }
 
+        selectionManager.setOrderedGroupList( orderedGroupIds );
+
         return SUCCESS;
     }
-
 }
