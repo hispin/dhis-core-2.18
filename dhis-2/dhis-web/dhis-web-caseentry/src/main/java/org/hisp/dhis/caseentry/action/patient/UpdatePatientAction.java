@@ -389,7 +389,7 @@ public class UpdatePatientAction
         this.id = id;
     }
 
-    public void setDead( boolean isDead )
+    public void setIsDead( boolean isDead )
     {
         this.isDead = isDead;
     }
