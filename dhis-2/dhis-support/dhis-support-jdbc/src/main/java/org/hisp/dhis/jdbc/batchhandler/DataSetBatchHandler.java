@@ -102,6 +102,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "expirydays" );
         statementBuilder.setColumn( "skipaggregation" );
         statementBuilder.setColumn( "fieldcombinationrequired" );
+        statementBuilder.setColumn( "validcompleteonly" );
     }
 
     protected void setValues( DataSet dataSet )
@@ -118,5 +119,6 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.getExpiryDays() );       
         statementBuilder.setValue( dataSet.isSkipAggregation() );
         statementBuilder.setValue( dataSet.isFieldCombinationRequired() );
+        statementBuilder.setValue( dataSet.isValidCompleteOnly() );
     }
 }
