@@ -122,7 +122,8 @@ div.thingy
 
 #hideLeftBar
 {
-  float: right;
+  position: absolute;
+  right: 2px;
   font-family: LiberationSansBold, arial;
   font-size: 9pt;
   cursor: pointer;
