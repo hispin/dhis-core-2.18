@@ -164,31 +164,50 @@ function saveGatewayConfig()
 	}
 	else if ( currentType == 'clickatell' )
 	{
-		lockScreen();
-		jQuery.postJSON( "saveClickatellConfig.action", {
-			gatewayType: getFieldValue( 'gatewayType' ),
-			name: getFieldValue( 'clickatellFields input[id=name]' ),
-			username: getFieldValue( 'clickatellFields input[id=username]' ),
-			password: getFieldValue( 'clickatellFields input[id=password]' ),
-			apiId: getFieldValue( 'clickatellFields input[id=apiId]' )
-		}, function ( json ) {
-			unLockScreen();
-			showMessage( json );
-		} );
+		var username = getFieldValue( 'clickatellFields input[id=username]' );
+		var password = getFieldValue( 'clickatellFields input[id=password]' );
+		if ( username == "" || password == "")
+		{	
+			showErrorMessage( i18n_required_data_error );
+		}
+		else
+		{
+			lockScreen();
+			jQuery.postJSON( "saveClickatellConfig.action", {
+				gatewayType: getFieldValue( 'gatewayType' ),
+				name: getFieldValue( 'clickatellFields input[id=name]' ),
+				username: getFieldValue( 'clickatellFields input[id=username]' ),
+				password: getFieldValue( 'clickatellFields input[id=password]' ),
+				apiId: getFieldValue( 'clickatellFields input[id=apiId]' )
+			}, function ( json ) {
+				unLockScreen();
+				showMessage( json );
+			} );
+		}
 	}
 	else
 	{
-		lockScreen();
-		jQuery.postJSON( "saveHTTPConfig.action", {
-			gatewayType: getFieldValue( 'gatewayType' ),
-			name: getFieldValue( 'genericHTTPFields input[id=name]' ),
-			username: getFieldValue( 'genericHTTPFields input[id=username]' ),
-			password: getFieldValue( 'genericHTTPFields input[id=password]' ),
-			urlTemplate: getFieldValue( 'genericHTTPFields input[id=urlTemplate]' )
-		}, function ( json ) {
-			unLockScreen();
-			showMessage( json );
-		} );
+		var username = getFieldValue( 'genericHTTPFields input[id=username]' );
+		var password = getFieldValue( 'genericHTTPFields input[id=password]' );
+		var URL = getFieldValue( 'genericHTTPFields input[id=urlTemplate]' );
+		if( username == "" || password == "" || URL == "" )
+		{	
+			showErrorMessage( i18n_required_data_error );
+		}
+		else
+		{
+			lockScreen();
+			jQuery.postJSON( "saveHTTPConfig.action", {
+				gatewayType: getFieldValue( 'gatewayType' ),
+				name: getFieldValue( 'genericHTTPFields input[id=name]' ),
+				username: getFieldValue( 'genericHTTPFields input[id=username]' ),
+				password: getFieldValue( 'genericHTTPFields input[id=password]' ),
+				urlTemplate: getFieldValue( 'genericHTTPFields input[id=urlTemplate]' )
+			}, function ( json ) {
+				unLockScreen();
+				showMessage( json );
+			} );
+		}
 	}
 }
 

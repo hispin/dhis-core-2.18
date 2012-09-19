@@ -169,7 +169,7 @@
 				<td><input type="password" name="password" id="password" style="width: 28em" value="$!params.get( 'password' )"/></td>
 			</tr>
 			<tr>
-				<td>$i18n.getString( "url_template" ):</td>
+				<td>$i18n.getString( "url_template" ) <em title="$i18n.getString( 'required' )" class="required">*</em>:</td>
 				<td><input type="text" name="urlTemplate" id="urlTemplate" style="width: 28em" value="$!encoder.htmlEncode( $!httpGateway.urlTemplate )"/></td>
 			</tr>
 		</tbody>

@@ -182,13 +182,22 @@ public class MenuAction
 
         for (String each: user.getUserCredentials().getAllAuthorities())
         {
-            if ( each.equals( "M_dhis-web-maintenance-patient" ) )
+            if ( each.equals( "ALL" ))
             {
                 trackingAuthority = true;
-            }
-            if ( each.equals( "M_dhis-web-dataentry" ))
-            {
+                
                 aggregateAuthority = true;
+            }
+            else
+            {
+                if ( each.equals( "M_dhis-web-maintenance-patient" ) )
+                {
+                    trackingAuthority = true;
+                }
+                if ( each.equals( "M_dhis-web-dataentry" ))
+                {
+                    aggregateAuthority = true;
+                }
             }
         }
         
