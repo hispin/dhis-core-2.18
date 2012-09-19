@@ -10,11 +10,10 @@
 			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
 		#end
-		
 		$('#executionDate').unbind("change");
 		$('#executionDate').change(function() {
-				saveExecutionDate( getFieldValue('programId'), getFieldValue('executionDate') );
-			});
+			saveExecutionDate( getFieldValue('programId'), getFieldValue('executionDate') );
+		});
 		
 		entryFormContainerOnReady();
 	});
@@ -28,7 +27,6 @@
 <input type='hidden' name='irregular' id='irregular' value='$!programStageInstance.programStage.irregular'>
 <input type='hidden' name='completed' id='completed' value='$!programStageInstance.completed'>
 <input type='hidden' name='programStageId' id='programStageId' value='$!programStageInstance.programStage.id'>
-
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	#if( $customDataEntryFormCode )
@@ -52,5 +50,11 @@
 
 <script>
 	var i18n_create_new_event = '$encoder.jsEscape( $i18n.getString( "create_new_event" ) , "'" )';
+	#if( $programStageInstance.programInstance.completed=="true")
+		jQuery("[id=entryFormContainer] :input").prop('disabled', true);
+		jQuery("[id=entryFormContainer] :input").datepicker("destroy");
+		jQuery("[id=executionDate]").prop('disabled', true);
+		jQuery("[id=executionDate]").datepicker("destroy");
+	#end
 </script>
 

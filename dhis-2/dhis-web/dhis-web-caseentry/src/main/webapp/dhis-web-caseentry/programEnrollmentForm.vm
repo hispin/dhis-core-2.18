@@ -196,8 +196,11 @@
 		#end
 		
 		#if( $programInstance.completed)
-			jQuery(":input").prop('disabled', true);
-			jQuery(":input").datepicker("destroy");
+			jQuery("[id=tab-2] :input").prop('disabled', true);
+			jQuery("[id=tab-3] :input").prop('disabled', true);
+			jQuery("[id=tab-4] :input").prop('disabled', true);
+			jQuery("[id=tab-5] :input").prop('disabled', true);
+			jQuery("[id=tab-3] :input").datepicker("destroy");
 		#else
 			datePickerInRangeValid( 'dateOfIncident' , 'enrollmentDate' );
 		#end

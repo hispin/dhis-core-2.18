@@ -66,30 +66,20 @@
 										<td>$attributeValue.value</td>
 									</tr>
 									#end
-									
-									#foreach( $rel in $relationship )
-										#if($rel.patientA.id==$patient.id)
-											<tr>
-												<td>$rel.relationshipType.bIsToA</td>
-												<td>$rel.patientB.getFullName()</td>
-											</tr>
-										#else
-											<tr>
-												<td>$rel.relationshipType.aIsToB</td>
-												<td>$rel.patientA.getFullName()</td>
-											</tr>
-										#end
-									#end
 								</table>
 							</div>
 						</div>
 					</td>
-					<td class="link-area" style="vertical-align:top">
-						<div class="link-area" style='height:160px;border:none;'>
+					<td>
+						<div class="link-area" style='height:150px;'>
 							<table width='100%'>
-								<tr><th>$i18n.getString("active_programs")</th></tr>
+								<tr><th>
+										$i18n.getString("active_programs")
+										<input type='button' value='$i18n.getString("enroll_program")' onclick='showProgramEnrollmentForm( "$patient.id" )'/>
+									</th>
+								</tr>
 							</table>
-							<div class="contentProviderTable">
+							<div class="contentProviderTable" style='height:100px;'>
 								<table width='100%' id='activeTB'>
 									#foreach( $programInstance in $activeProgramInstances )
 										#set($programStageInstanceId = '')
@@ -129,14 +119,12 @@
 								</table>
 							</div>
 						</div>
-						<br><input type='button' value='$i18n.getString("enroll_program")' onclick='showProgramEnrollmentForm( "$patient.id" )'/>
-					</td>
-					<td>
-						<div class="link-area">
+						
+						<div class="link-area" style='height:100px;'>
 							<table width='100%'>
 								<tr><th>$i18n.getString("completed_programs")</th></tr>
 							</table>
-							<div class="contentProviderTable">
+							<div class="contentProviderTable" style='height:50px;'>
 								<table id='completedTB' width='100%'>
 									#foreach($programInstance in $completedProgramInstances)
 										#set($programStageInstanceId = '')
@@ -156,12 +144,35 @@
 							</div>
 						</div>
 					</td>
+					<td>
+						<div class="link-area">
+							<table width='100%'>
+								<tr><th>$i18n.getString("relationships")</th></tr>
+							</table>
+							<div class="contentProviderTable">
+								<table width='100%'>
+									#foreach( $rel in $relationship )
+										#if($rel.patientA.id==$patient.id)
+											<tr>
+												<td>$rel.relationshipType.bIsToA</td>
+												<td>$rel.patientB.getFullName()</td>
+											</tr>
+										#else
+											<tr>
+												<td>$rel.relationshipType.aIsToB</td>
+												<td>$rel.patientA.getFullName()</td>
+											</tr>
+										#end
+									#end
+								</table>
+							</div>
+						</div>
+					</td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 </table>
 
-<p>&nbsp;</p>
 <div id='programEnrollmentDiv' class='hidden'></div>
 <div id='dataEntryFormDiv'></div>
