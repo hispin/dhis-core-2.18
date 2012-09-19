@@ -1110,69 +1110,44 @@ function getPreviousEntryField( field )
 // Data completeness
 // -----------------------------------------------------------------------------
 
-function validateCompleteDataSet()
+function registerCompleteDataSet()
 {
-    var confirmed = confirm( i18n_confirm_complete );
-
-	if ( !validateCompulsoryCombinations() )
+	var confirmed = confirm( i18n_confirm_complete );
+	
+	if ( !confirmed )
 	{
 		return false;
 	}
 	
-    if ( confirmed )
-    {
-        var params = storageManager.getCurrentCompleteDataSetParams();
-
-        $.ajax( { url: 'getValidationViolations.action',
-        	data: params,
-        	dataType: 'json',
-        	success: function( data )
+	validate( true, function() {	
+	    var params = storageManager.getCurrentCompleteDataSetParams();
+	
+		storageManager.saveCompleteDataSet( params );
+	
+	    $.ajax( {
+	    	url: 'registerCompleteDataSet.action',
+	    	data: params,
+	        dataType: 'json',
+	    	success: function(data)
 	        {
-	            registerCompleteDataSet( data );
+	            if ( data.status == 2 )
+	            {
+	                log( 'Data set is locked' );
+	                setHeaderMessage( i18n_register_complete_failed_dataset_is_locked );
+	            }
+	            else
+	            {
+	                disableCompleteButton();
+	
+	                storageManager.clearCompleteDataSet( params );
+	            }
 	        },
-	        error: function()
-	        {
-	            // no response from server, fake a positive result and save it
-	            registerCompleteDataSet( { 'response' : 'success' } );
-	        }
-    	} );
-    }
-}
-
-function registerCompleteDataSet( json )
-{
-    var params = storageManager.getCurrentCompleteDataSetParams();
-
-	storageManager.saveCompleteDataSet( params );
-
-    $.ajax( {
-    	url: 'registerCompleteDataSet.action',
-    	data: params,
-        dataType: 'json',
-    	success: function(data)
-        {
-            if( data.status == 2 )
-            {
-                log( 'DataSet is locked' );
-                setHeaderMessage( i18n_register_complete_failed_dataset_is_locked );
-            }
-            else
-            {
-                disableCompleteButton();
-
-                storageManager.clearCompleteDataSet( params );
-
-                if ( json.response == 'input' )
-                {
-                    validate();
-                }
-            }
-        },
-	    error: function()
-	    {
-	    	disableCompleteButton();
-	    }
-    } );
+		    error: function()
+		    {
+		    	disableCompleteButton();
+		    }
+	    } );
+	} );
 }
 
 function undoCompleteDataSet()
@@ -1248,8 +1223,10 @@ function displayUserDetails()
 // Validation
 // -----------------------------------------------------------------------------
 
-function displayValidationDialog()
+function displayValidationDialog( data )
 {
+	$( '#validationDiv' ).html( data );
+	
     $( '#validationDiv' ).dialog( {
         modal : true,
         title : 'Validation',
@@ -1258,39 +1235,76 @@ function displayValidationDialog()
     } );
 }
 
-function validate()
+/**
+ * Validates form. First looks for compulsory data element combinations and returns
+ * false if violated. Second looks for validation rules and returns false if
+ * violated and if completion is only allowed for valid forms. Returns true otherwise.
+ * 
+ * @param ignoreSuccessfulValidation whether the pop-up should not be skipped if
+ *        validation is successful.
+ */
+function validate( ignoreSuccessfulValidation, successCallback )
 {
-	if ( !validateCompulsoryCombinations() )
+	var compulsoryCombinationsValid = validateCompulsoryCombinations();
+	
+	// Check for compulsory combinations and return false if violated
+	
+	if ( !compulsoryCombinationsValid )
 	{
+    	var html = '<h3>' + i18n_validation_result + '</h3>' +
+        	'<p class="bold">' + i18n_all_values_for_data_element_must_be_filled + '</p>';
+		
+    	displayValidationDialog( html );
+	
 		return false;
 	}
-	
-    var periodId = $( '#selectedPeriodId' ).val();
-    var dataSetId = $( '#selectedDataSetId' ).val();
 
-    $( '#validationDiv' ).load( 'validate.action', {
-        periodId : periodId,
-        dataSetId : dataSetId,
-        organisationUnitId : currentOrganisationUnitId
-    }, 
+	// Check for validation rules and whether complete is only allowed if valid
+	
+	var successHtml = '<h3>' + i18n_validation_result + '</h3>' +
+		'<p class="bold">' + i18n_successful_validation + '</p>';
+
+	var validCompleteOnly = dataSets[currentDataSetId].validCompleteOnly;
+
+    var params = storageManager.getCurrentCompleteDataSetParams();
+    
+    $( '#validationDiv' ).load( 'validate.action', params, 
     function( response, status, xhr )
     {
-        if ( status == 'error' )
+    	var success = null;
+    	
+        if ( status == 'error' && !ignoreSuccessfulValidation )
         {
             window.alert( i18n_operation_not_available_offline );
+            success = true;  // Accept if offline
         }
         else
         {
-            displayValidationDialog();
+        	var hasViolations = isDefined( response ) && $.trim( response ).length > 0;
+        	var success = !( hasViolations && validCompleteOnly );
+        	
+        	if ( hasViolations )
+        	{
+        		displayValidationDialog( response );
+        	}
+        	else if ( !ignoreSuccessfulValidation )
+        	{
+        		displayValidationDialog( successHtml );
+        	}        	
+        }
+        
+        if ( success && $.isFunction( successCallback ) )
+        {
+        	successCallback.call();
         }
     } );
 }
 
 function validateCompulsoryCombinations()
 {
-	var validationRequired = dataSets[currentDataSetId].fieldCombinationRequired;
+	var fieldCombinationRequired = dataSets[currentDataSetId].fieldCombinationRequired;
 	
-    if ( validationRequired )
+    if ( fieldCombinationRequired )
     {
         var violations = false;
 		
@@ -1309,10 +1323,8 @@ function validateCompulsoryCombinations()
                 {
                     if ( $.trim( $( this ).val() ).length == 0 )
                     {
-                        violations = true;
-						
-                        $selector.css( 'background-color', COLOR_RED );
-						
+                        violations = true;						
+                        $selector.css( 'background-color', COLOR_RED );						
                         return false;
                     }
                 } );
@@ -1321,13 +1333,8 @@ function validateCompulsoryCombinations()
 		
         if ( violations )
         {
-        	$( '#validationDiv' ).html( '<h3>' + i18n_validation_result + '</h3>' +
-                '<p class="bold">' + i18n_all_values_for_data_element_must_be_filled + '</p>' );
-				
-            displayValidationDialog();
-			
             return false;
-		}
+        }
     }
 	
 	return true;

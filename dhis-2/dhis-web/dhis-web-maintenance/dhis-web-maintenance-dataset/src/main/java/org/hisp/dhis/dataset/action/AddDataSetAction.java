@@ -148,6 +148,13 @@ public class AddDataSetAction
     {
         this.fieldCombinationRequired = fieldCombinationRequired;
     }
+    
+    private boolean validCompleteOnly;
+
+    public void setValidCompleteOnly( boolean validCompleteOnly )
+    {
+        this.validCompleteOnly = validCompleteOnly;
+    }
 
     private Collection<String> dataElementsSelectedList = new HashSet<String>();
 
@@ -203,6 +210,7 @@ public class AddDataSetAction
         dataSet.setIndicators( indicators );
         dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setFieldCombinationRequired( fieldCombinationRequired );
+        dataSet.setValidCompleteOnly( validCompleteOnly );
 
         dataSetService.addDataSet( dataSet );
 

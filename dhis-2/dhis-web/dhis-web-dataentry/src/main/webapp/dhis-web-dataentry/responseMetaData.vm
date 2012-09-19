@@ -25,7 +25,7 @@ ${dataElement.id}#if( $velocityCount < $size ),#end
 #foreach( $dataSet in $dataSets )
 "${dataSet.id}":{"name":"$encoder.jsonEncode( ${dataSet.displayName} )","periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )",
 "version":"${dataSet.version}","type":"${dataSet.getDataSetType()}","expiryDays":"${dataSet.expiryDays}",
-"allowFuturePeriods":${dataSet.allowFuturePeriods},"fieldCombinationRequired":${dataSet.fieldCombinationRequired}
+"allowFuturePeriods":${dataSet.allowFuturePeriods},"fieldCombinationRequired":${dataSet.fieldCombinationRequired},"validCompleteOnly":${dataSet.validCompleteOnly}
 }#if( $velocityCount < $size ),#end
 #end },
 

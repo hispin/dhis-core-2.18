@@ -78,7 +78,7 @@
     </action>
 
     <action name="validate" class="org.hisp.dhis.de.action.ValidationAction">
-      <result name="success" type="velocity">/dhis-web-dataentry/validationResult.vm</result>
+      <result name="success" type="outputStreamResult"></result>
       <result name="input" type="velocity">/dhis-web-dataentry/validationResult.vm</result>
     </action>
 

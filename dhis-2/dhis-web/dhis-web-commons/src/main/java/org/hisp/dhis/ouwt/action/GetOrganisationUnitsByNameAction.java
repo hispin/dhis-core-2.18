@@ -27,32 +27,25 @@ package org.hisp.dhis.ouwt.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  */
-public class GetOrganisationUnitByCodeAction
+public class GetOrganisationUnitsByNameAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( GetOrganisationUnitByCodeAction.class );
+    private static final int MAX = 14;
     
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
-    // --------------------------------------------------------------------------
-
-    private OrganisationUnitSelectionManager selectionManager;
-    
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
+    // -------------------------------------------------------------------------
 
     private OrganisationUnitService organisationUnitService;
 
@@ -61,47 +54,38 @@ public class GetOrganisationUnitByCodeAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private String code;
+    private String term;
 
-    public void setCode( String code )
+    public void setTerm( String term )
     {
-        this.code = code;
+        this.term = term;
     }
 
-    private String message;
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
-    public String getMessage()
+    private List<OrganisationUnit> organisationUnits;
+
+    public List<OrganisationUnit> getOrganisationUnits()
     {
-        return message;
+        return organisationUnits;
     }
 
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Implementation Action
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
         throws Exception
     {
-        log.debug( "Searching organisation unit for code: " + code );
+        organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetweenByName( term, 0, MAX ) );
         
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnitByNameIgnoreCase( code );
-        
-        if ( unit != null )
-        {
-            log.debug( "Found organisation unit: " + unit );
-            
-            selectionManager.setSelectedOrganisationUnit( unit );
-            
-            message = String.valueOf( unit.getId() );
-            
-            return SUCCESS;
-        }
-        
-        return INPUT;
+        return SUCCESS;
     }
 }

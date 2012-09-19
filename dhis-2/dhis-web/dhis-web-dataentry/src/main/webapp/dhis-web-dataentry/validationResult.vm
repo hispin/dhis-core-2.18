@@ -1,22 +1,22 @@
-<h3>$encoder.htmlEncode( $i18n.getString( "validation_result" ) )</h3>
+<h3>$i18n.getString( "validation_result" )</h3>
 
 #if( $results.size() == 0 && $dataValues.size() == 0 )  
-    <p class="bold">$encoder.htmlEncode( $i18n.getString( "successful_validation" ) )</p>
+    <p class="bold">$i18n.getString( "successful_validation" )</p>
 #else
-    <p class="bold">$encoder.htmlEncode( $i18n.getString( "unsuccessful_validation" ) )</p>
+    <p class="bold">$i18n.getString( "unsuccessful_validation" )</p>
 #end
 
 #if( $results.size() > 0)
-    <p class="bold">$encoder.htmlEncode( $i18n.getString( "the_following_values_violate_rules" ) )</p>
+    <p class="bold">$i18n.getString( "the_following_values_violate_rules" )</p>
     <table class="listTable" width="100%">
         <tr>
-            <th style="width:110px">$encoder.htmlEncode( $i18n.getString( "validation_rule" ) )</th>                
-            <th>$encoder.htmlEncode( $i18n.getString( "expression" ) )</th>
-            <th>$encoder.htmlEncode( $i18n.getString( "description" ) )</th>
-            <th>$encoder.htmlEncode( $i18n.getString( "value" ) )</th>
-            <th>$encoder.htmlEncode( $i18n.getString( "operator" ) )</th>
-            <th>$encoder.htmlEncode( $i18n.getString( "value" ) )</th>
-            <th>$encoder.htmlEncode( $i18n.getString( "description" ) )</th>
+            <th style="width:110px">$i18n.getString( "validation_rule" )</th>                
+            <th>$i18n.getString( "expression" )</th>
+            <th>$i18n.getString( "description" )</th>
+            <th>$i18n.getString( "value" )</th>
+            <th>$i18n.getString( "operator" )</th>
+            <th>$i18n.getString( "value" )</th>
+            <th>$i18n.getString( "description" )</th>
         </tr>
         #set( $mark = false )   
         #foreach( $result in $results )

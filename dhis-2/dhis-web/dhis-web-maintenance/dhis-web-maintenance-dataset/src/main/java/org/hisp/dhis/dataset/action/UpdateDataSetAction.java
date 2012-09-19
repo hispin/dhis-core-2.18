@@ -167,6 +167,13 @@ public class UpdateDataSetAction
         this.fieldCombinationRequired = fieldCombinationRequired;
     }
 
+    private boolean validCompleteOnly;
+
+    public void setValidCompleteOnly( boolean validCompleteOnly )
+    {
+        this.validCompleteOnly = validCompleteOnly;
+    }
+
     private Collection<String> dataElementsSelectedList = new HashSet<String>();
 
     public void setDataElementsSelectedList( Collection<String> dataElementsSelectedList )
@@ -232,6 +239,7 @@ public class UpdateDataSetAction
         dataSet.setIndicators( indicators );
         dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setFieldCombinationRequired( fieldCombinationRequired );
+        dataSet.setValidCompleteOnly( validCompleteOnly );
 
         dataSetService.updateDataSet( dataSet );
 
