@@ -144,7 +144,6 @@ input.move-button
 {
 	width: 20px;
 	height: 60px;
-    white-space: normal;
 	border-color: #bbbbbb;
 	cursor: pointer;
 	border: 1px solid #aaa;
@@ -375,7 +374,6 @@ input.stage-object[type="button"]
 	opacity: 1.0;
 	border: 2px solid;
 	margin: 5px;
-	white-space:normal;
 }
 
 input.stage-object[type="button"]:hover
@@ -397,7 +395,6 @@ input.patient-object[type="button"]
 {
 	width: 130px;
 	height: 60px;
-    white-space: normal;
 	border-color: #bbbbbb;
 	background-color: #ddd;
 	cursor: pointer;
