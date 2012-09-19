@@ -93,7 +93,7 @@
 <p>
 	<ul>
 		#foreach( $relationshipType in $relationshipTypes )
-			<li><a href="showFindRelatedPatientForm.action?originalPatientId=$patient.id&relationshipTypeId=$relationshipType.id">Add $relationshipType.getName()</a></li>
+			<li><a href="showFindRelatedPatientForm.action?originalPatientId=$patient.id&relationshipTypeId=$relationshipType.id$orgUnitId=$patient.getOrganisationUnit().getId()">Add $relationshipType.getName()</a></li>
 		#end
 	</ul>
 </p>

@@ -42,6 +42,7 @@ public class GetBeneficiaryRegistrationOrganisationUnitAction
     implements Action
 {
     public static final String REDIRECT = "redirect";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

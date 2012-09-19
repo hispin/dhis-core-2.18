@@ -61,6 +61,18 @@ public class GetFindBeneficiaryFormAction
     // Input & Output
     // -------------------------------------------------------------------------
 
+    private Integer orgUnitId;
+    
+    public Integer getOrgUnitId()
+    {
+        return orgUnitId;
+    }
+
+    public void setOrgUnitId( Integer orgUnitId )
+    {
+        this.orgUnitId = orgUnitId;
+    }
+
     private Set<OrganisationUnit> organisationUnits;
 
     public Set<OrganisationUnit> getOrganisationUnits()

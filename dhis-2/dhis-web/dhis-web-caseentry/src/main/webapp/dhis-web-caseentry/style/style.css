@@ -208,7 +208,7 @@ div.link-area
   padding-right:1px;
   padding-left:1px;
   padding-bottom:0px;
-  height:200px;
+  height:252px;
   width:350px;
   overflow:hidden;
   position:relative;
@@ -216,8 +216,8 @@ div.link-area
 
 .contentProviderTable
 {
-  height: 150px;
-  width: 340px;
+  height: 202px;
+  width: 350px;
   overflow-y: auto;
   overflow-x:hidden;
 }
