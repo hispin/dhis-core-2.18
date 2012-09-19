@@ -444,8 +444,10 @@ function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
 					handleResponse (result);
 					
 					var selectedProgramStageInstance = jQuery( '#' + prefixId + getFieldValue('programStageInstanceId') );
-					jQuery(".stage-object-selected").css('border-color', COLOR_LIGHTRED);
-					jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
+					var box = jQuery(".stage-object-selected");
+					box.val( box.attr('psname') + "  " + executionDate );
+					box.css('border-color', COLOR_LIGHTRED);
+					box.css('background-color', COLOR_LIGHT_LIGHTRED);
 					disableCompletedButton(false);
 					enable('validationBtn');
 					setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
