@@ -71,7 +71,7 @@
 						</div>
 					</td>
 					<td>
-						<div class="link-area" style='height:150px;'>
+						<div class="link-area" style='height:190px;'>
 							<table width='100%'>
 								<tr><th>
 										$i18n.getString("active_programs")
@@ -79,7 +79,7 @@
 									</th>
 								</tr>
 							</table>
-							<div class="contentProviderTable" style='height:100px;'>
+							<div class="contentProviderTable" style='height:140px;'>
 								<table width='100%' id='activeTB'>
 									#foreach( $programInstance in $activeProgramInstances )
 										#set($programStageInstanceId = '')
@@ -111,7 +111,7 @@
 										<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
 											programStageInstanceId='$programStageInstanceId'>
 											<td id='td_$programInstance.id'>
-												<a href='javascript:loadProgramInstance("$programInstance.id", false)'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
+												<a href='javascript:loadProgramInstance($programInstance.id, false)'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
 											</td>
 										</tr>
 										#end
@@ -120,28 +120,25 @@
 							</div>
 						</div>
 						
-						<div class="link-area" style='height:100px;'>
+						<div class="link-area" style='height:60px;'>
 							<table width='100%'>
 								<tr><th>$i18n.getString("completed_programs")</th></tr>
-							</table>
-							<div class="contentProviderTable" style='height:50px;'>
-								<table id='completedTB' width='100%'>
-									#foreach($programInstance in $completedProgramInstances)
-										#set($programStageInstanceId = '')
-										#if($programInstance.program.type==2)
-											#foreach( $programStageInstance in $programInstance.programStageInstances)
-												#set($programStageInstanceId = $programStageInstance.id)
+								<tr>
+									<td>
+										<select id="completedList" name="completedList" onchange="javascript:loadProgramInstance(this.value, true);" style="width:100%">
+											#foreach($programInstance in $completedProgramInstances)
+												#set($programStageInstanceId = '')
+												#if($programInstance.program.type==2)
+													#foreach( $programStageInstance in $programInstance.programStageInstances)
+														#set($programStageInstanceId = $programStageInstance.id)
+													#end
+												#end
+												<option value="$programInstance.id" type='$programInstance.program.type'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</option>
 											#end
-										#end
-										<tr id='tr_$programInstance.id' type='$programInstance.program.type' onclick="javascript:loadProgramInstance('$programInstance.id', true);" style='cursor:pointer;'
-											programStageInstanceId='$programStageInstanceId'>
-											<td>
-												<a><span id='infor_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</span></a>
-											</td>
-										</tr>
-									#end
-								</table>					
-							</div>
+										</select>
+									</td>
+								</tr>
+							</table>
 						</div>
 					</td>
 					<td>
