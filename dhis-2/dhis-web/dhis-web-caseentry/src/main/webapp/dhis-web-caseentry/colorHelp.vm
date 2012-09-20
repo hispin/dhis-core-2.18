@@ -22,5 +22,9 @@
 			<td id='colorRedTD'><script>byId('colorRedTD').style.backgroundColor = COLOR_RED;</script></td>
 			<td>$i18n.getString('stages_open_but_no_data_entered')</td>
 		</tr>
+		<tr>
+			<td id='colorGreyTD'><script>byId('colorGreyTD').style.backgroundColor = COLOR_GREY;</script></td>
+			<td>$i18n.getString('stages_skipped')</td>
+		</tr>
 	</table>
 </div>
