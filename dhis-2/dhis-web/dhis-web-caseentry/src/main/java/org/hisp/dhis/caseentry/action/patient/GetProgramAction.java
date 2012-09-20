@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,105 +27,59 @@
 
 package org.hisp.dhis.caseentry.action.patient;
 
-import java.util.List;
-
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $GetPatientHistoryAction.java Mar 7, 2012 3:11:32 PM$
+ * @version GetProgramAction.java 6:28:06 PM Sep 20, 2012 $
  */
-public class GetPatientHistoryAction
+public class GetProgramAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
-    private PatientService patientService;
+    private ProgramService programService;
 
-    public void setPatientService( PatientService patientService )
+    public void setProgramService( ProgramService programService )
     {
-        this.patientService = patientService;
-    }
-
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
-    {
-        this.programInstanceService = programInstanceService;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
-    // Getters && Setters
+    // Getter && Setter
     // -------------------------------------------------------------------------
 
-    private Integer patientId;
+    private Integer id;
 
-    public void setPatientId( Integer patientId )
+    public void setId( Integer id )
     {
-        this.patientId = patientId;
+        this.id = id;
     }
 
-    private String type;
+    private Program program;
 
-    public void setType( String type )
+    public Program getProgram()
     {
-        this.type = type;
-    }
-
-    private List<Grid> grids;
-
-    public List<Grid> getGrids()
-    {
-        return grids;
-    }
-
-    private Patient patient;
-
-    public Patient getPatient()
-    {
-        return patient;
+        return program;
     }
 
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        patient = patientService.getPatient( patientId );
-
-        grids = programInstanceService.getProgramInstanceReport( patient, i18n, format );
-
-        if ( type == null )
-        {
-            return SUCCESS;
-        }
-
-        return type;
+        program = programService.getProgram( id );
+        
+        return SUCCESS;
     }
+
 }

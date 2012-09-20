@@ -115,6 +115,16 @@ public class SaveIdentifierAndAttributeAction
         this.patientIdentifierService = patientIdentifierService;
     }
 
+    public Integer getProgramId()
+    {
+        return programId;
+    }
+
+    public Integer getPatientId()
+    {
+        return patientId;
+    }
+
     public void setPatientId( Integer patientId )
     {
         this.patientId = patientId;
