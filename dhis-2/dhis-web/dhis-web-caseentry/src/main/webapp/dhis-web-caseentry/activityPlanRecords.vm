@@ -98,7 +98,7 @@
 													onclick="javascript:loadDataEntry( $programStageInstance.id );">
 												<script>	
 													var status = $statusMap.get( $programStageInstance.id ); 
-													setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
+													setEventColorStatus( $programStageInstance.id ,status);
 												</script>
 											</td>
 										#end

@@ -27,8 +27,8 @@
 								value="$programStageInstance.programStage.name&#13;&#10;$valueDate" 
 								onclick="javascript:loadDataEntry( $programStageInstance.id );">
 							<script>	
-								var status = $statusMap.get( $programStageInstance.id ); 
-								setEventColorStatus( 'ps_' + $programStageInstance.id ,status);
+								var status = $programStageInstance.getEventStatus();
+								setEventColorStatus( $programStageInstance.id ,status);
 							</script>
 						</td>
 						#end

@@ -3,10 +3,12 @@ var COLOR_RED = "#fb4754";
 var COLOR_GREEN = "#8ffe8f";
 var COLOR_YELLOW = "#f9f95a";
 var COLOR_LIGHTRED = "#fb6bfb";
+var COLOR_GREY = "#bbbbbb";
 var COLOR_LIGHT_RED = "#ff7676";
 var COLOR_LIGHT_YELLOW = "#ffff99";
 var COLOR_LIGHT_GREEN = "#ccffcc";
 var COLOR_LIGHT_LIGHTRED = "#ff99ff";
+var COLOR_LIGHT_GREY = "#ddd";
 var MARKED_VISIT_COLOR = '#000000';
 var SUCCESS_COLOR = '#ccffcc';
 var ERROR_COLOR = '#ccccff';
@@ -404,26 +406,43 @@ function exportPatientHistory( patientId, type )
 	window.location.href = url;
 }
 
-function setEventColorStatus( elementId, status )
+function setEventColorStatus( programStageInstanceId, status )
 {
-	status = eval(status);
+	var boxElement = jQuery('#ps_' + programStageInstanceId );
+	var dueDateElementId = 'value_' + programStageInstanceId + '_date';
+	var status = eval(status);
+	
 	switch(status)
 	{
 		case 1:
-			jQuery('#' + elementId ).css('border-color', COLOR_GREEN);
-			jQuery('#' + elementId ).css('background-color', COLOR_LIGHT_GREEN);
+			boxElement.css('border-color', COLOR_GREEN);
+			boxElement.css('background-color', COLOR_LIGHT_GREEN);
+			jQuery("#" + dueDateElementId ).datepicker("destroy");
+			disable( dueDateElementId );
 			return;
 		case 2:
-		  jQuery('#' + elementId ).css('border-color', COLOR_LIGHTRED);
-			jQuery('#' + elementId ).css('background-color', COLOR_LIGHT_LIGHTRED);
+			boxElement.css('border-color', COLOR_LIGHTRED);
+			boxElement.css('background-color', COLOR_LIGHT_LIGHTRED);
+			datePicker( dueDateElementId );
+			enable( dueDateElementId );
 			return;
 		case 3:
-			jQuery('#' + elementId ).css('border-color', COLOR_YELLOW);
-			jQuery('#' + elementId ).css('background-color', COLOR_LIGHT_YELLOW);
+			boxElement.css('border-color', COLOR_YELLOW);
+			boxElement.css('background-color', COLOR_LIGHT_YELLOW);
+			datePicker( dueDateElementId );
+			enable( dueDateElementId );
 			return;
 		case 4:
-			jQuery('#' + elementId ).css('border-color', COLOR_RED);
-			jQuery('#' + elementId ).css('background-color', COLOR_LIGHT_RED);
+			boxElement.css('border-color', COLOR_RED);
+			boxElement.css('background-color', COLOR_LIGHT_RED);
+			datePicker( dueDateElementId );
+			enable( dueDateElementId );
+			return;
+		case 5:
+			boxElement.css('border-color', COLOR_GREY);
+			boxElement.css('background-color', COLOR_LIGHT_GREY);
+			jQuery("#" + dueDateElementId ).datepicker("destroy");
+			disable( dueDateElementId );
 			return;
 		default:
 		  return;
@@ -605,7 +624,6 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 						+ '></td>'
 						+ '<td><img src="images/rightarrow.png"></td>')
 					.insertBefore(element.parent());
-					setEventColorStatus( elementId, 3 );
 					flag = true;
 				}
 			});
@@ -623,12 +641,12 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 					+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')" '
 					+ 'type="button" class="stage-object" '
 					+ '></td>');
-				setEventColorStatus( elementId, 3 );
 			}
 			if( jQuery('#tb_' + programInstanceId + " :input" ).length > 4 ){
 				jQuery('#tb_' + programInstanceId + ' .arrow-left').removeClass("hidden");
 				jQuery('#tb_' + programInstanceId + ' .arrow-right').removeClass("hidden");
 			}
+			setEventColorStatus( programStageInstanceId, 3 );
 			jQuery('#ps_' + programStageInstanceId ).focus();
 			jQuery('#createNewEncounterDiv_' + programInstanceId).dialog("close");
 			loadDataEntry( programStageInstanceId );
@@ -874,4 +892,63 @@ function resize(){
 		jQuery(this).find('td').attr("width", "10px");
 		jQuery(this).find('td:last').removeAttr("width");
 	});
+}
+
+function setEventStatus( field, programStageInstanceId )
+{	
+	field.style.backgroundColor = SAVING_COLOR;
+	jQuery.postUTF8( 'setEventStatus.action',
+		{
+			programStageInstanceId:programStageInstanceId,
+			status:field.value
+		}, function ( json )
+		{
+			jQuery('#ps_' + programStageInstanceId).attr('status',field.value);
+			setEventColorStatus( programStageInstanceId, field.value );
+			field.style.backgroundColor = SUCCESS_COLOR;
+		} );
+}
+
+
+function removeEvent( programStageInstanceId, isEvent )
+{	
+    var result = window.confirm( i18n_comfirm_delete_event );
+    
+    if ( result )
+    {
+    	$.postJSON(
+    	    "removeCurrentEncounter.action",
+    	    {
+    	        "id": programStageInstanceId   
+    	    },
+    	    function( json )
+    	    { 
+    	    	if ( json.response == "success" )
+    	    	{
+					jQuery( "tr#tr" + programStageInstanceId ).remove();
+	                
+					jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
+	                jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
+	                jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
+					jQuery( "table.listTable tbody" ).trigger("update");
+					
+					hideById('smsManagementDiv');
+					if(isEvent)
+					{
+						showById('searchDiv');
+						showById('listPatientDiv');
+					}
+					var programInstanceId = jQuery('#ps_' + programStageInstanceId).attr('programInstanceId');
+					jQuery('#ps_' + programStageInstanceId).remove();
+					jQuery('#arrow_' + programStageInstanceId).remove();
+					reloadOneRecord( programInstanceId );
+					showSuccessMessage( i18n_delete_success );
+    	    	}
+    	    	else if ( json.response == "error" )
+    	    	{ 
+					showWarningMessage( json.message );
+    	    	}
+    	    }
+    	);
+    }
 }

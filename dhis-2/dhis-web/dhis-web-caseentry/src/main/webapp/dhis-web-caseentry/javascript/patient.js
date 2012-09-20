@@ -813,3 +813,5 @@ function registerPatientLocation( patientId )
 			showSuccessMessage( i18n_save_success );
 		} );
 }
+
+function reloadOneRecord(){}
