@@ -129,7 +129,7 @@
 					#set( $duedateId = "value_" + $programStageInstance.id + "_date" )        
 					#set($status = $statusMap.get( $programStageInstance.id ))
 					<td>        
-						<input type="text" id="$duedateId" style='width:150px;' value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
+						<input type="text" id="$duedateId" style='width:150px;' value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programInstance.id, $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
 						<script type="text/javascript">
 							#if($status==1 || $status==5 )
 								disable('$duedateId');
@@ -141,10 +141,14 @@
 					<td>
 						<select id="stat_$programStageInstance.id" name="status_$programStageInstance.id" style='width:150px;' onchange="setEventStatus(this, $programStageInstance.id)">
 							#if($status==4)
-								<option value='4' selected>$i18n.getString("overdue")</option>
+								<option value='4'>$i18n.getString("overdue")</option>
 								<option value='5'>$i18n.getString("skipped")</option>
 							#elseif($status==3)
-								<option value='3' selected>$i18n.getString("scheduled_in_future")</option>
+								<option value='3'>$i18n.getString("scheduled_in_future")</option>
+								<option value='5'>$i18n.getString("skipped")</option>
+							#elseif($status==5)
+								<option value='4'>$i18n.getString("overdue")</option>
+								<option value='3'>$i18n.getString("scheduled_in_future")</option>
 								<option value='5'>$i18n.getString("skipped")</option>
 							#else
 								<option value='1'>$i18n.getString("completed")</option>
@@ -161,7 +165,7 @@
 					</td>
 					<td>
 						<a href="javascript:setFieldValue('sendToList', false);showSendSmsForm('$programStageInstance.programStage.name',$programStageInstance.id)" title='$i18n.getString( "send_sms" )'><img src="images/sms.png" alt='$i18n.getString( "send_sms" )'></a>
-						#if($programStageInstance.programStage.irregular=='true' && ($status==3 || $status==4 $status==5 ))
+						#if($programStageInstance.programStage.irregular=='true' && ($status==3 || $status==4 || $status==5 ))
 							<a href="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
 						#end
 					</td>

@@ -93,7 +93,12 @@ public class SetEventStatusAction
             programStageInstance.setStatus( null );
             break;
         case ProgramStageInstance.LATE_VISIT_STATUS:
-            programStageInstance.setStatus( status );
+            programStageInstance.setCompleted( false );
+            programStageInstance.setStatus( null );
+            break;
+        case ProgramStageInstance.FUTURE_VISIT_STATUS:
+            programStageInstance.setCompleted( false );
+            programStageInstance.setStatus( null );
             break;
         case ProgramStageInstance.SKIPPED_STATUS:
             programStageInstance.setStatus( status );
