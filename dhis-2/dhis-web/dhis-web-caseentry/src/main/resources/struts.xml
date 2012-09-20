@@ -328,6 +328,7 @@
 				/dhis-web-caseentry/responsePrograms.vm
 			</result>
 		</action>
+		
 		<!-- i18n -->
 
 		<action name="i18n" class="org.hisp.dhis.caseentry.action.NoAction">
@@ -617,6 +618,13 @@
 			class="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentAction">
 			<result name="success" type="velocity-xml">status.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
+		</action>
+		
+		<action name="getPatientIdentifierAndAttribute"
+			class="org.hisp.dhis.caseentry.action.patient.GetProgramAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/identifierAndAttributeForm.vm</param>
+			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
 		<!-- Relationship -->

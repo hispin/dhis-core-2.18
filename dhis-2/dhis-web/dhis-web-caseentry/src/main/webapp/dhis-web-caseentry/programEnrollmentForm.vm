@@ -41,8 +41,6 @@
 	<div id="tab-2">
 		<form id='programEnrollmentInforForm' name='programEnrollmentInforForm' action='#' method="POST" >
 			#if( ( $!noIden && $!noIden > 0) || ( $!noOtherGroup && $!noOtherGroup > 0) || ( $!noGroup && $!noGroup > 0 ) )
-				<input type='hidden' id='programId' name='programId' value='$programInstance.program.id'>
-				<input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id'>
 				<!-- IDENTIFIERS -->
 				<table id='enrollmentInforDiv' name='enrollmentInforDiv' class='mainPageTable' >
 					#if( $!noIden && $noIden > 0 )
@@ -223,7 +221,7 @@
 	
 	jQuery("#programEnrollmentInforForm").ready( function(){
 		validation( 'programEnrollmentInforForm', function(form){
-			saveIdentifierAndAttribute();
+			saveIdentifierAndAttribute(programInstance.patient.id,$programInstance.program.id,'programEnrollmentInforForm');
 		});	
 		
 		#if( $!programInstance )

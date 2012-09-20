@@ -656,6 +656,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.patient.GetProgramAction"
+		class="org.hisp.dhis.caseentry.action.patient.GetProgramAction"
+		scope="prototype">
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
 
 	<!-- Relationship -->
 

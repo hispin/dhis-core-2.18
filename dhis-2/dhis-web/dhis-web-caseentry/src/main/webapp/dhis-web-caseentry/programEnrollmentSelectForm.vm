@@ -10,7 +10,6 @@
 		validation( 'programEnrollmentSelectDiv', function(form){
 			form.submit();
 		});
-	
 		datePickerInRangeValid( 'dateOfIncidentField' , 'enrollmentDateField' );
 		setFieldValue("dateOfIncidentField", "");
 		var unSave = false;
@@ -52,6 +51,8 @@
 			<td></td>   
 			<td></td>                             
 		</tr>
+		
+		<tbody id='identifierAndAttributeDiv' name='identifierAndAttributeDiv'></tbody>
 		
 		<tr>
 			<td></td>

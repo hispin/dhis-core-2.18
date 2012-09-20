@@ -189,7 +189,7 @@
 	
 	jQuery("#programEnrollmentInforForm").ready( function(){
 		validation( 'programEnrollmentInforForm', function(form){
-			saveIdentifierAndAttribute();
+			saveIdentifierAndAttribute($!programInstance.patient.id,$!programInstance.program.id,'tab-3');
 		});
 		
 		disable("dateOfIncident");
