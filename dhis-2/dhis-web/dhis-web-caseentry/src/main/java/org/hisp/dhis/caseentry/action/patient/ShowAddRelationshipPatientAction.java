@@ -88,9 +88,9 @@ public class ShowAddRelationshipPatientAction
 
     private Patient patient;
 
-    private Map<Integer, String> identiferMap;
+    private Map<Integer, String> identiferMap = new HashMap<Integer, String>();
 
-    private Map<Integer, String> attributeMap;
+    private Map<Integer, String> attributeMap = new HashMap<Integer, String>();
 
     private Map<PatientAttributeGroup, Collection<PatientAttribute>> attributeGroupsMap = new HashMap<PatientAttributeGroup, Collection<PatientAttribute>>();
 
