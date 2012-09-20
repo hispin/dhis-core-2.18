@@ -441,7 +441,8 @@ function setEventColorStatus( programStageInstanceId, status )
 		case 5:
 			boxElement.css('border-color', COLOR_GREY);
 			boxElement.css('background-color', COLOR_LIGHT_GREY);
-			jQuery("#" + dueDateElementId ).datepicker("destroy");
+			disable( 'ps_' + programStageInstanceId );
+			jQuery( "#" + dueDateElementId ).datepicker("destroy");
 			disable( dueDateElementId );
 			return;
 		default:
@@ -790,9 +791,19 @@ function updateEnrollment( patientId, programId, programInstanceId, programName 
 // Save due-date
 //-----------------------------------------------------------------------------
 
-function saveDueDate( programStageInstanceId, programStageInstanceName )
+function saveDueDate( programInstanceId, programStageInstanceId, programStageInstanceName )
 {
 	var field = document.getElementById( 'value_' + programStageInstanceId + '_date' );
+	var flag = false;
+	jQuery('#flow_' + programInstanceId + ' .stage-object').each(function(){
+		var dueDate = jQuery(this).attr('dueDate');
+		var boxId = "ps_" + programStageInstanceId;
+		if( dueDate == field.value && this.id != boxId ){
+			showWarningMessage(i18n_the_date_is_scheduled);
+			flag = true;
+		}
+	})
+	if(flag) return;
 	
 	var dateOfIncident = new Date( byId('dateOfIncident').value );
 	var dueDate = new Date(field.value);
@@ -825,6 +836,7 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 			   data: params,
 			   dataType: "xml",
 			   success: function(result){
+					jQuery('#ps_' + programStageInstanceId ).attr('dueDate', dueDate );
 					handleResponse (result);
 			   },
 			   error: function(request,status,errorThrown) {
