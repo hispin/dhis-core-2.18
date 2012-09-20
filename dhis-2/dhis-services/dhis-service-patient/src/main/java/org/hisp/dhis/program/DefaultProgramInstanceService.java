@@ -328,11 +328,11 @@ public class DefaultProgramInstanceService
         // ---------------------------------------------------------------------
 
         grid.addRow();
-        grid.addValue( i18n.getString( "date_of_enrollment" ) );
+        grid.addValue( programInstance.getProgram().getDateOfEnrollmentDescription() );
         grid.addValue( format.formatDate( programInstance.getEnrollmentDate() ) );
-
+        
         grid.addRow();
-        grid.addValue( i18n.getString( "date_of_incident" ) );
+        grid.addValue( programInstance.getProgram().getDateOfIncidentDescription() );
         grid.addValue( format.formatDate( programInstance.getDateOfIncident() ) );
 
         getProgramStageInstancesReport( grid, programInstance, format, i18n );
@@ -372,7 +372,7 @@ public class DefaultProgramInstanceService
             grid.addValue( format.formatDate( programStageInstance.getDueDate() ) );
 
             grid.addRow();
-            grid.addValue( i18n.getString( "report_date" ) );
+            grid.addValue( programStageInstance.getProgramStage().getReportDateDescription() );
             grid.addValue( executionDateValue );
 
             // -----------------------------------------------------------------
