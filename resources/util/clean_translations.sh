@@ -14,9 +14,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 DIR=$1 #The directory should be the first argument
-
-# failsafe - fall back to current directory
-[ "$DIR" == "" ] && DIR="."
+#TODO Test the directories are writable
 
 # save and change IFS
 OLDIFS=$IFS
@@ -27,50 +25,52 @@ fileArray=($(find $DIR -type f -name "i18n_*_*.properties"))
 # restore it
 IFS=$OLDIFS
 
-# get length of an array
+# get length of the files to iterate over
 tLen=${#fileArray[@]}
 
 #Find the template file
 TEMPLATE=($(find $DIR -name 'i18n*.properties' -type f | grep -P "i18n_(module|global).properties"))
+TEMPLATE_OUT="$(mktemp)"
+grep -Ev '^#' $TEMPLATE | sed '/^\r/d' | grep -Ev '^$'| sort > $TEMPLATE_OUT
 
-grep -Ev '^#' $TEMPLATE | sed '/^\r/d' | grep -Ev '^$'| sort > tmpfile1
-declare -A array1
+declare -A template_array
 while IFS='=' read -r key val; do
         [[ $key = '#'* ]] && continue
-        array1["$key"]="$val"
-done < tmpfile1
+        template_array["$key"]="$val"
+done < $TEMPLATE_OUT
 
 for (( i=0; i<${tLen}; i++ ));
-	do
+        do
 
-	declare -A array2
-	PROP_FILE=${fileArray[$i]}
+        declare -A trans_array
+        TRANS_FILE=${fileArray[$i]}
+        TRANS_OUT="$(mktemp)"
+        #make a backup copy
+        cp $TRANS_FILE $TRANS_FILE.bak
+        grep -Ev '^#' $TRANS_FILE | sed '/^\r/d' | grep -Ev '^$'| sort > $TRANS_OUT
 
-	cp $PROP_FILE $PROP_FILE.bak
-	grep -Ev '^#' $PROP_FILE | sed '/^\r/d' | grep -Ev '^$'| sort > tmpfile2
-
-	while IFS='=' read -r key val; do
+        while IFS='=' read -r key val; do
         [[ $key = '#'* ]] && continue
-        array2["$key"]="$val"
-	done < tmpfile2
+        trans_array["$key"]="$val"
+        done < $TRANS_OUT
 
-	echo -n "" > $PROP_FILE
+        echo -n "" > $TRANS_FILE
 
-	for key in "${!array1[@]}"; do
+        for key in "${!template_array[@]}"; do
 
-	isNotSet array2[${key}]
-	if [ $? -ne 1  ];then
-		value2=${array2[$key]}
-		value1=${array1[$key]}
-		if [[ *"$value1"* != *"$value2"* ]];then
-			echo "$key=${array2[$key]}" >> ${PROP_FILE};
-		fi
-	fi
-	done
-
-rm tmpfile2
-unset array2
-echo ${#array2[@]}
+        isNotSet trans_array[${key}]
+        if [ $? -ne 1  ];then
+                translation=${trans_array[$key]}
+                template=${template_array[$key]}
+                if [[ *"$translation"* != *"$template"* ]];then
+                        echo "$key=$translation" >> ${TRANS_FILE};
+                fi
+        fi
+        done
+echo "Cleaned $TRANS_FILE"
+rm $TRANS_OUT
+unset trans_array
 done
 
-rm tmpfile1
+rm $TEMPLATE_OUT
+
