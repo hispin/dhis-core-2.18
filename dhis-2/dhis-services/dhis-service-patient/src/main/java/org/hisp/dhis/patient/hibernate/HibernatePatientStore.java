@@ -505,6 +505,7 @@ public class HibernatePatientStore
             sql = sql + subSQL + from + " left join programinstance pgi on " + " (pgi.patientid=p.patientid) "
                 + " left join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) ";
             orderBy = " ORDER BY duedate DESC ";
+            from = " ";
         }
 
         if ( hasIdentifier )
@@ -525,7 +526,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-        System.out.println( "\n\n === \n " + sql );
+System.out.println( "\n\n === \n " + sql );
         return sql;
     }
 

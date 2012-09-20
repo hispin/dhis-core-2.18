@@ -11,7 +11,7 @@
 		#end
 	});
 </script>
-<h3>$i18n.getString( "patient_management" ) #openHelp( "patient" )</h3>
+<h3 id='patientManagementLbl'>$i18n.getString( "patient_management" ) #openHelp( "patient" )</h3>
 
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
 <input type='hidden' id='isShowPatientList' name= 'isShowPatientList' >
