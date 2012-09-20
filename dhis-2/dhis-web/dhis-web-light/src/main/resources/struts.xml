@@ -25,6 +25,7 @@
       <result name="selectPeriod" type="redirect">
         /light/selectPeriod.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}
       </result>
+      <param name="requiredAuthorities">M_dhis-web-dataentry</param>
     </action>
 
     <action name="selectDataSet"
@@ -76,6 +77,7 @@
     <action name="trackingMenu" class="org.hisp.dhis.light.action.NoAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/trackingMenu.vm</param>
+      <param name="requiredAuthorities">M_dhis-web-maintenance-patient</param>
     </action>
     <action name="selectNamebasedOrganisationUnit"
         class="org.hisp.dhis.light.namebaseddataentry.action.GetNamebasedOrganisationUnitsAction">
