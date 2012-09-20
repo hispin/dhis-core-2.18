@@ -82,7 +82,7 @@
 												#if($!programStageInstance.executionDate)
 													#set($valueDate=$format.formatDate( $programStageInstance.executionDate ))
 												#end												
-												<input type='button' id='box_$programStageInstance.id' name='programStageBtn' 
+												<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' 
 													programStageInstanceId='$programStageInstance.id' 
 													programStageName='$programStageInstance.programStage.name' 
 													programStageId='$programStageInstance.programStage.id' 
@@ -95,7 +95,7 @@
 												<script>
 													var status = $statusMap.get( $programStageInstance.id ); 
 													var dueDate = "$format.formatDate($programStageInstance.dueDate)";
-													setEventColorStatus( 'box_' + $programStageInstance.id ,status, dueDate );
+													setEventColorStatus( $programStageInstance.id ,status, dueDate );
 												</script>
 											</td>
 										#end

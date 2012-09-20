@@ -56,9 +56,7 @@ public class ProgramStageInstance
 
     public static final int LATE_VISIT_STATUS = 4;
 
-    public static final int UNKNOWN_STATUS = 5;
-
-    public static final int SKIPPED_STATUS = 6;
+    public static final int SKIPPED_STATUS = 5;
 
     private int id;
 

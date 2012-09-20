@@ -58,7 +58,7 @@ function loadProgramStages()
 						+ 'dueDate="' + json.programStageInstances[i].dueDate + '"'
 						+ 'value="'+ programStageName + ' ' + json.programStageInstances[i].dueDate + '" '
 						+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')"></td>');
-					setEventColorStatus( elementId, status );
+					setEventColorStatus( programStageInstanceId, status );
 				}
 				
 				disableCompletedButton(true);

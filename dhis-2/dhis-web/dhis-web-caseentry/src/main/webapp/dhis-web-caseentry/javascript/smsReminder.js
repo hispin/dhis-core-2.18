@@ -231,7 +231,7 @@ function addComment( field, programStageInstanceId )
 				commentText: commentText 
 			}, function ( json )
 			{
-				var programStageName = jQuery("#box_" + programStageInstanceId).attr('programStageName');
+				var programStageName = jQuery("#ps_" + programStageInstanceId).attr('programStageName');
 				var date = new Date();
 				var currentTime = date.getHours() + ":" + date.getMinutes();
 				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue("currentDate") + " " + currentTime + "</td>"
@@ -270,7 +270,7 @@ function eventFlowToggle( programInstanceId )
 	jQuery("#tb_" + programInstanceId + " .stage-object").each( function(){
 		var programStageInstance = this.id.split('_')[1];
 		jQuery('#arrow_' + programStageInstance ).toggle();
-		jQuery('#box_' + programStageInstance ).toggle();
+		jQuery('#ps_' + programStageInstance ).toggle();
 		jQuery(this).removeClass("stage-object-selected");
 	});
 		
@@ -278,7 +278,7 @@ function eventFlowToggle( programInstanceId )
 	{	
 		var id = jQuery("#tb_" + programInstanceId + " .searched").attr('id').split('_')[1];
 		showById("arrow_" + id);
-		showById("box_" + id );
+		showById("ps_" + id );
 	}
 	resize();
 }
@@ -301,62 +301,6 @@ function showPatientProgramTracking(programInstanceId)
 			showById('patientProgramTrackingDiv');
 			hideLoader();
 		});
-}
-
-function setEventStatus( field, programStageInstanceId )
-{	
-	field.style.backgroundColor = SAVING_COLOR;
-	jQuery.postUTF8( 'setEventStatus.action',
-		{
-			programStageInstanceId:programStageInstanceId,
-			status:field.value
-		}, function ( json )
-		{
-			field.style.backgroundColor = SUCCESS_COLOR;
-		} );
-}
-
-function removeEvent( programStageInstanceId, isEvent )
-{	
-    var result = window.confirm( i18n_comfirm_delete_event );
-    
-    if ( result )
-    {
-    	$.postJSON(
-    	    "removeCurrentEncounter.action",
-    	    {
-    	        "id": programStageInstanceId   
-    	    },
-    	    function( json )
-    	    { 
-    	    	if ( json.response == "success" )
-    	    	{
-					jQuery( "tr#tr" + programStageInstanceId ).remove();
-	                
-					jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
-	                jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
-	                jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
-					jQuery( "table.listTable tbody" ).trigger("update");
-					
-					hideById('smsManagementDiv');
-					if(isEvent)
-					{
-						showById('searchDiv');
-						showById('listPatientDiv');
-					}
-					var programInstanceId = jQuery('#box_' + programStageInstanceId).attr('programInstanceId');
-					jQuery('#box_' + programStageInstanceId).remove();
-					jQuery('#arrow_' + programStageInstanceId).remove();
-					reloadOneRecord( programInstanceId );
-					showSuccessMessage( i18n_delete_success );
-    	    	}
-    	    	else if ( json.response == "error" )
-    	    	{ 
-					showWarningMessage( json.message );
-    	    	}
-    	    }
-    	);
-    }
 }
 
 function commentDivToggle(isHide)
@@ -418,16 +362,16 @@ function reloadRecordList()
 		if( dueDate >= startDate && dueDate <= endDate && statusEvent == status )
 		{
 			if( jQuery("#tb_" + programInstanceId + " .searched").length > 0 ){
-				jQuery("#box_" + id ).addClass("stage-object-selected searched");
-				hideById("box_" + id )
+				jQuery("#ps_" + id ).addClass("stage-object-selected searched");
+				hideById("ps_" + id )
 				hideById('arrow_' + id );
 			}
-			jQuery("#box_" + id ).addClass("stage-object-selected searched");
+			jQuery("#ps_" + id ).addClass("stage-object-selected searched");
 		}
 		else
 		{
 			hideById('arrow_' + id );
-			hideById('box_' + id );
+			hideById('ps_' + id );
 		}
 	});
 	jQuery(".arrow-left").hide();
