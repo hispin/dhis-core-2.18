@@ -346,7 +346,7 @@ function showProgramEnrollmentForm( patientId )
 			title: i18n_enroll_program,
 			maximize: true, 
 			closable: true,
-			modal:true,
+			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
 			width: 500,
 			height: 200
@@ -415,8 +415,9 @@ function saveEnrollment( patientId, programId )
 							+ "' type='" + type +"'"
 							+ " programStageInstanceId='" + programStageInstanceId + "'>"
 							+ " <td id='td_" + programInstanceId + "'>"
-							+ " <a href='javascript:loadActiveProgramStageRecords(" + programInstanceId + "," + programStageInstanceId + "')'>"
-							+ programName + "(" + enrollmentDate + ")</a></td>"
+							+ " <a href='javascript:loadActiveProgramStageRecords(" + programInstanceId + "," + programStageInstanceId + ")'>"
+							+ "<span id='infor_" + programInstanceId + "' class='selected bold'>" 
+							+ programName + "(" + enrollmentDate + ")</span></a></td>"
 							+ "</tr>";
 			
 			activedRow += "<tr id='tr2_" + programInstanceId +"'"+
@@ -548,8 +549,7 @@ function unenrollmentForm( programInstanceId )
 		data: "programInstanceId=" + programInstanceId,
 		success: function( json ) 
 		{
-			var completedRow = jQuery('#td_' + programInstanceId).html();
-			jQuery('#completedTB' ).prepend("<tr><td>" + completedRow + "</td></tr>");
+			jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
 			hideById('tr1_' + programInstanceId );
 			hideById('tr2_' + programInstanceId );
 			hideById('programEnrollmentDiv');
