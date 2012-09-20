@@ -43,7 +43,7 @@ function loadDataEntry( programStageInstanceId )
 			{
 				disableCompletedButton(true);
 			}
-			
+			resize();
 			hideLoader();
 			hideById('contentDiv'); 
 		} );

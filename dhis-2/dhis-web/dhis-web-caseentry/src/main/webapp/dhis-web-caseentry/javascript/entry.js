@@ -442,7 +442,6 @@ function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
 			   dataType: "xml",
 			   success: function( result ){
 					handleResponse (result);
-					
 					var selectedProgramStageInstance = jQuery( '#' + prefixId + getFieldValue('programStageInstanceId') );
 					var box = jQuery(".stage-object-selected");
 					box.val( box.attr('psname') + "  " + executionDate );
