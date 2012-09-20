@@ -800,17 +800,6 @@ function updateEnrollment( patientId, programId, programInstanceId, programName 
 function saveDueDate( programInstanceId, programStageInstanceId, programStageInstanceName )
 {
 	var field = document.getElementById( 'value_' + programStageInstanceId + '_date' );
-	var flag = false;
-	jQuery('#flow_' + programInstanceId + ' .stage-object').each(function(){
-		var dueDate = jQuery(this).attr('dueDate');
-		var boxId = "ps_" + programStageInstanceId;
-		if( dueDate == field.value && this.id != boxId ){
-			showWarningMessage(i18n_the_date_is_scheduled);
-			flag = true;
-		}
-	})
-	if(flag) return;
-	
 	var dateOfIncident = new Date( byId('dateOfIncident').value );
 	var dueDate = new Date(field.value);
 	
