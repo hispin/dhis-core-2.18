@@ -1,6 +1,10 @@
+#if($programs.size()==0)
+	$i18n.getString("no_program_available_for_enrollment");
+#else
 <script>
 	jQuery(document).ready(	function(){
 		datePickerInRangeValid( 'dateOfIncidentField' , 'enrollmentDateField' );
+		setFieldValue("dateOfIncidentField", "");
 		var unSave = false;
 	});	
 </script>
@@ -54,6 +58,7 @@
 	</table>
 </form>
 
+#end
 <script>
 	var i18n_enroll = '$encoder.jsEscape( $i18n.getString( "enroll" ) , "'")';
 	var i18n_program_stage = '$encoder.jsEscape( $i18n.getString( "program_stage" ) , "'")';

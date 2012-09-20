@@ -629,7 +629,10 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				jQuery('#tb_' + programInstanceId + ' .arrow-left').removeClass("hidden");
 				jQuery('#tb_' + programInstanceId + ' .arrow-right').removeClass("hidden");
 			}
-			setInnerHTML('createEventMessage_' + programInstanceId,i18n_create_event_success);
+			jQuery('#ps_' + programStageInstanceId ).focus();
+			jQuery('#createNewEncounterDiv_' + programInstanceId).dialog("close");
+			loadDataEntry( programStageInstanceId );
+			showSuccessMessage(i18n_create_event_success);
 		});
 }
 
