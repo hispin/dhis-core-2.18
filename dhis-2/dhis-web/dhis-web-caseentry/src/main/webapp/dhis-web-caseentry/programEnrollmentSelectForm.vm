@@ -1,8 +1,16 @@
 #if($programs.size()==0)
-	$i18n.getString("no_program_available_for_enrollment");
+	<table>
+		<tr>
+			<td>$i18n.getString("no_program_available_for_enrollment")</td>
+		</tr>
+	</table>
 #else
 <script>
-	jQuery(document).ready(	function(){
+	jQuery("#programEnrollmentSelectDiv").ready(function(){
+		validation( 'programEnrollmentSelectDiv', function(form){
+			form.submit();
+		});
+	
 		datePickerInRangeValid( 'dateOfIncidentField' , 'enrollmentDateField' );
 		setFieldValue("dateOfIncidentField", "");
 		var unSave = false;
@@ -18,7 +26,7 @@
 				<select id="programId" name="programId" onchange='programOnchange(this.value);'>
 					<option value="">[$i18n.getString( "select" )]</option>
 					#foreach( $program in $programs )
-					<option value="$program.id" type='$program.type' 
+					<option value="$program.id" programType='$program.type' 
 						displayIncidentDate='$!program.displayIncidentDate'
 						dateOfEnrollmentDescription='$!program.dateOfEnrollmentDescription'
 						dateOfIncidentDescription='$!program.dateOfIncidentDescription'>$encoder.htmlEncode( $program.name )</option>
