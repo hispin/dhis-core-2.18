@@ -605,6 +605,7 @@ function showRelationshipList( patientId )
 
 function onClickBackBtn()
 {
+	showById('patientManagementLbl');
 	showById('selectDiv');
 	showById('searchDiv');
 	showById('listPatientDiv');

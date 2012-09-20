@@ -46,6 +46,7 @@ function loadDataEntry( programStageInstanceId )
 			resize();
 			hideLoader();
 			hideById('contentDiv'); 
+			jQuery('#executionDate').focus();
 		} );
 }
 

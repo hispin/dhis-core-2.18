@@ -1,5 +1,5 @@
 <h4>
- <a href="javascript:onClickBackBtn();">$i18n.getString( 'back_to_registration' )</a>
+ <a href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
  &#8226; <a href="javascript:showProgramEnrollmentForm( '$patient.id' )">$i18n.getString( "program_management" )</a>
  &#8226; <a href="javascript:showUpdatePatientForm( '$patient.id', true )">$i18n.getString( "edit_profile" )</a>
  &#8226; <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );">$i18n.getString( "manage_relationship" )</a>
@@ -71,7 +71,7 @@
 						</div>
 					</td>
 					<td>
-						<div class="link-area" style='height:190px;'>
+						<div class="link-area" style='height:120px;'>
 							<table width='100%'>
 								<tr><th>
 										$i18n.getString("active_programs")
@@ -79,7 +79,7 @@
 									</th>
 								</tr>
 							</table>
-							<div class="contentProviderTable" style='height:140px;'>
+							<div class="contentProviderTable" style='height:76px;'>
 								<table width='100%' id='activeTB'>
 									#foreach( $programInstance in $activeProgramInstances )
 										#set($programStageInstanceId = '')
@@ -120,7 +120,7 @@
 							</div>
 						</div>
 						
-						<div class="link-area" style='height:60px;'>
+						<div class="link-area" style='height:50px;'>
 							<table width='100%'>
 								<tr><th>$i18n.getString("completed_programs")</th></tr>
 								<tr>
@@ -173,3 +173,7 @@
 
 <div id='programEnrollmentDiv' class='hidden'></div>
 <div id='dataEntryFormDiv'></div>
+
+<script>
+	hideById('patientManagementLbl');
+</script>
