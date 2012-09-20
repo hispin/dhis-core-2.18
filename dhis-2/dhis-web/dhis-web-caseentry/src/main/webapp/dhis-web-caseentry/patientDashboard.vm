@@ -153,14 +153,14 @@
 								<table width='100%'>
 									#foreach( $rel in $relationship )
 										#if($rel.patientA.id==$patient.id)
-											<tr>
-												<td>$rel.relationshipType.bIsToA</td>
-												<td>$rel.patientB.getFullName()</td>
+											<tr onclick="showPatientDashboardForm($rel.patientB.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.getFullName()'>
+												<td><a href='#'>$rel.relationshipType.bIsToA</a></td>
+												<td><a href='#'>$rel.patientB.getFullName()</a></td>
 											</tr>
 										#else
-											<tr>
-												<td>$rel.relationshipType.aIsToB</td>
-												<td>$rel.patientA.getFullName()</td>
+											<tr onclick="showPatientDashboardForm($rel.patientA.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.getFullName()'>
+												<td><a href='#'>$rel.relationshipType.aIsToB</a></td>
+												<td><a href='#'>$rel.patientA.getFullName()</a></td>
 											</tr>
 										#end
 									#end

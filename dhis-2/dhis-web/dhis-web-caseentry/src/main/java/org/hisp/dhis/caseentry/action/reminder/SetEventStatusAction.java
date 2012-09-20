@@ -27,8 +27,6 @@
 
 package org.hisp.dhis.caseentry.action.reminder;
 
-import java.util.Date;
-
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
