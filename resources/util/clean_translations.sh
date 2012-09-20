@@ -16,6 +16,7 @@ declare -A array1
 declare -A array2
 PROP_FILE=$2
 
+cp $2 $2.bak
 grep -Ev '^#' $1 | sed '/^\r/d' | grep -Ev '^$'| sort > tmpfile1
 grep -Ev '^#' $2 | sed '/^\r/d' | grep -Ev '^$'| sort > tmpfile2
 
