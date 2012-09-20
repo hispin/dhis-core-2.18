@@ -576,7 +576,7 @@ function doComplete( isCreateEvent )
 						hideById('programInstanceDiv');
 						hideById('entryFormContainer');
 						var completedRow = jQuery('#td_' + programInstanceId).html();
-						jQuery('#completedTB' ).prepend("<tr><td>" + completedRow + "</td></tr>");
+						jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
 						hideById('tr1_' + programInstanceId );
 						hideById('tr2_' + programInstanceId );
 					}
