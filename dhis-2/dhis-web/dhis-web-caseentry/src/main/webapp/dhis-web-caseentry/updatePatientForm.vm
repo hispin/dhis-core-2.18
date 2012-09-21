@@ -49,10 +49,14 @@
 			jQuery('#patientForm [id=age]').css("display","none");
 		}
 	});
-	
+	hideById('patientManagementLbl');
 </script>
 
-<h4>$i18n.getString( "update_patient" )</h4>
+<h3>
+	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
+	&#8226; <a href="javascript:showPatientDashboardForm($!patient.id);">$i18n.getString( 'patient_dashboard' )</a>
+	&#8226; $i18n.getString( "update_patient" )
+</h3>
 <p>
 <form id="patientForm" name="patientForm" action="updatePatient.action" method="post" >
 <input type="hidden" id="representativeId" name="representativeId" value='$!patient.representative.id' /> 
@@ -263,7 +267,6 @@
 		<td></td>
 		<td>
 			<input type="submit" class='button' value="$i18n.getString( 'update' )" >
-			<input type="button" id="backUpdatePatientBtn" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" />
 		</td>
 	</tr>
 </table>

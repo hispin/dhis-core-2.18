@@ -33,10 +33,13 @@
 		datePickerValid( 'patientForm [id=birthDate]' );
 		addEventForPatientForm( 'patientForm' );
 	});	
-	
+	hideById('patientManagementLbl');
 </script>
 
-<h4>$i18n.getString( "add_new_patient" )</h4>	
+<h3>
+	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
+	&#8226; $i18n.getString( "add_new_patient" )
+</h3>
 
 <form id="patientForm" name="patientForm" method="post" >
 <input type="hidden" id="representativeId" name="representativeId"/> 
@@ -47,7 +50,6 @@
 		<td></td>
 		<td>
 			<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
-			<input type="button" class="button" value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();"/>
 		</td>
 	</tr>
 </table>

@@ -628,6 +628,7 @@ function loadPatientList()
 	hideById('dataEntryFormDiv');
 	hideById('migrationPatientDiv');
 	
+	showById('patientManagementLbl');
 	showById('selectDiv');
 	showById('searchDiv');
 	
