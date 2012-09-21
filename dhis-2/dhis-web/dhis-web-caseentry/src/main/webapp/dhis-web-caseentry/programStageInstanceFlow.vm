@@ -14,7 +14,7 @@
 							#if($!programStageInstance.executionDate)
 								#set($valueDate=$format.formatDate( $programStageInstance.executionDate ))
 							#end
-							<span id="org_$!programStageInstance.id">&nbsp;$!programStageInstance.organisationUnit.name</span>
+							<span id="org_$!programStageInstance.id">&nbsp;$!programStageInstance.organisationUnit.name</span><br>
 							<input type="button" name="programStageBtn"
 								id="ps_$!programStageInstance.id"
 								psid="$programStageInstance.programStage.id"

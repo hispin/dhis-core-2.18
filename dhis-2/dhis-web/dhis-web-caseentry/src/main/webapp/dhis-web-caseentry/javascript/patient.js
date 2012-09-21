@@ -821,6 +821,7 @@ function registerPatientLocation( patientId )
 	$.getJSON( 'registerPatientLocation.action',{ patientId:patientId }
 		, function( json ) 
 		{
+			showPatientDashboardForm(patientId);
 			showSuccessMessage( i18n_save_success );
 		} );
 }
