@@ -62,7 +62,7 @@ div#header
   background: linear-gradient(to bottom,  #639167 0%,#405d43 96%,#67946c 98%,#3f5b41 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#639167', endColorstr='#3f5b41',GradientType=0 ); /* IE6-9 */
 
-  height: 46px;
+  height: 44px;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -72,7 +72,7 @@ div#header
 img#headerBanner
 {
   position: absolute;
-  top: 5px;
+  top: 4px;
   left: 59px;
 }
 
@@ -119,7 +119,7 @@ img#menuSeparator5
   font-size: 13px;
   color: #ffffff;
   text-align: center;
-  line-height: 45px;
+  line-height: 44px;
   cursor: pointer;
 }
 
@@ -150,8 +150,8 @@ div#menuLink4
 span#headerText
 {
   position: absolute;
-  top: 13px;
-  left: 253px;
+  top: 12px;
+  left: 240px;
   font-family: LiberationSansBold, arial;
   font-weight: lighter;
   color: white;
@@ -161,21 +161,21 @@ span#headerText
 div#menuDropDown1
 {
   position: absolute;
-  top: 46px;
+  top: 44px;
   left: 580px;
 }
 
 div#menuDropDown2
 {
   position: absolute;
-  top: 46px;
+  top: 44px;
   left: 680px;
 }
 
 div#menuDropDown3
 {
   position: absolute;
-  top: 46px;
+  top: 44px;
   left: 780px;
 }
 
@@ -235,7 +235,7 @@ div#menuDropDown3
   width: 235px;
   float: left;
   position: absolute;
-  top: 46px;
+  top: 44px;
   left: 0px;
   padding-top: 6px;
   border-right: 1px solid #3f5841;
@@ -364,7 +364,7 @@ div#menuDropDown3
 
 #mainPage 
 {
-  margin: 69px 10px 10px 270px;
+  margin: 65px 10px 10px 270px;
 }
 
 #popupPage 
