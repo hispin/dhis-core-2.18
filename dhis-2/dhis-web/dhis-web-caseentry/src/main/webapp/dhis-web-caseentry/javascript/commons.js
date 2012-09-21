@@ -857,11 +857,15 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 			{
 				box.css('border-color', COLOR_RED);
 				box.css('background-color', COLOR_LIGHT_RED);
+				jQuery('#stat_' + programStageInstanceId + " option[value=3]").remove();
+				jQuery('#stat_' + programStageInstanceId ).prepend("<option value='4' selected>" + i18n_overdue + "</option>");
 			}
 			else
 			{
 				box.css('border-color', COLOR_YELLOW);
 				box.css('background-color', COLOR_LIGHT_YELLOW);
+				jQuery('#stat_' + programStageInstanceId + " option[value=4]").remove();
+				jQuery('#stat_' + programStageInstanceId ).prepend("<option value='3' selected>" + i18n_scheduled_in_future + "</option>");
 			}
 			markValue( resultColor );                   
 		}
