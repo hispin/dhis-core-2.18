@@ -105,6 +105,8 @@
 	var i18n_enroll_program = '$encoder.jsEscape( $i18n.getString( "enroll_program" ) , "'")';
 	var i18n_comfirm_delete_event = '$encoder.jsEscape( $i18n.getString( "comfirm_delete_event" ) , "'")';
 	var i18n_the_date_is_scheduled = '$encoder.jsEscape( $i18n.getString( "the_date_is_scheduled" ) , "'")';
+	var i18n_overdue = '$encoder.jsEscape( $i18n.getString( "overdue" ) , "'")';
+	
 	var checkedDuplicate = false;
 	// -1: no search anything
 	//  0: show list all patient

@@ -834,7 +834,6 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 			   data: params,
 			   dataType: "xml",
 			   success: function(result){
-					jQuery('#ps_' + programStageInstanceId ).attr('dueDate', dueDate );
 					handleResponse (result);
 			   },
 			   error: function(request,status,errorThrown) {
@@ -850,6 +849,20 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
    
 		if ( code == 0 )
 		{
+			var box = jQuery('#ps_' + programStageInstanceId );
+			box.attr('dueDate', dueDate );
+			var boxName = box.attr('psname') + getInnerHTML('enterKey') + dueDate;
+			box.val( boxName );
+			if( dueDate < getCurrentDate() )
+			{
+				box.css('border-color', COLOR_RED);
+				box.css('background-color', COLOR_LIGHT_RED);
+			}
+			else
+			{
+				box.css('border-color', COLOR_YELLOW);
+				box.css('background-color', COLOR_LIGHT_YELLOW);
+			}
 			markValue( resultColor );                   
 		}
 		else
