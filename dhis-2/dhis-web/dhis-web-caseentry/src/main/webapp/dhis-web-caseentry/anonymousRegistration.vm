@@ -52,7 +52,7 @@
 					<input type="button" class='large-button' id='removeBtn' value='$i18n.getString( "remove_empty_events" )' onclick="removeEmptyEvents();">
 				</td>
 				<td>
-					<input type="button" class='large-button' id='advancedBtn' value='$i18n.getString( "advanced_search" )' onclick="jQuery('#advanced-search').toggle();">
+					<input type="button" class='large-button' id='advancedBtn' value='$i18n.getString( "search" )' onclick="jQuery('#advanced-search').toggle();">
 				</td>
 			</tr>
 		</table>
