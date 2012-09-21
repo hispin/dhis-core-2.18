@@ -615,7 +615,9 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				var dueDateInStage = element.attr('dueDate');
 				if( dueDate < dueDateInStage && !flag)
 				{	
-					jQuery('<td><input name="programStageBtn" '
+					jQuery('<td style="text-align:center">'
+						+ '<span id="org_' + programStageInstanceId + '">' + getFieldValue('orgunitName') + '</span>'
+						+ '<input name="programStageBtn" '
 						+ 'id="' + elementId + '" ' 
 						+ 'psid="' + programStageId + '" '
 						+ 'programType="' + programType + '" '
@@ -625,7 +627,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 						+ 'onclick="javascript:loadDataEntry(' + programStageInstanceId + ')" '
 						+ 'type="button" class="stage-object" '
 						+ '></td>'
-						+ '<td><img src="images/rightarrow.png"></td>')
+						+ '<td id="arrow_' + programStageInstanceId + '"><img src="images/rightarrow.png"></td>')
 					.insertBefore(element.parent());
 					flag = true;
 				}
@@ -968,8 +970,10 @@ function removeEvent( programStageInstanceId, isEvent )
 					var programInstanceId = jQuery('#ps_' + programStageInstanceId).attr('programInstanceId');
 					jQuery('#ps_' + programStageInstanceId).remove();
 					jQuery('#arrow_' + programStageInstanceId).remove();
+					jQuery('#org_' + programStageInstanceId).remove();
 					reloadOneRecord( programInstanceId );
 					showSuccessMessage( i18n_delete_success );
+					resize();
     	    	}
     	    	else if ( json.response == "error" )
     	    	{ 

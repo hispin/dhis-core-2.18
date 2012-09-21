@@ -8,7 +8,7 @@
 				<table class="table-flow">											
 					<tr id='programStageIdTR_$!programInstance.id'>
 						#foreach( $programStageInstance in $programInstance.programStageInstances )
-						<td style='font-size:25px;'>&rarr;</td>
+						<td id='arrow_$programStageInstance.id' style='font-size:25px;'>&rarr;</td>
 						<td style='text-align:center'>
 							#set($valueDate=$format.formatDate( $programStageInstance.dueDate ))
 							#if($!programStageInstance.executionDate)
@@ -65,7 +65,7 @@
 			<td>$i18n.getString( 'due_date' )</td>
 			<td><input id='dueDateNewEncounter_$programInstance.id' name='dueDateNewEncounter_$!programInstance.id' style='width:260px;'></td>
 			<script type="text/javascript">
-			   datePicker( 'dueDateNewEncounter_$programInstance.id', false );
+			   datePickerFuture( 'dueDateNewEncounter_$programInstance.id', false );
 			</script>
 		</tr>
 		<tr>

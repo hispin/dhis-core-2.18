@@ -930,6 +930,36 @@ function datePickerValid( id, today )
 	}
 }
 
+function datePickerFuture( id, today )
+{
+	jQuery("#" + id).datepicker(
+	{
+		dateFormat: dateFormat,
+		changeMonth: true,
+		changeYear: true,
+		monthNamesShort: monthNames,
+		dayNamesMin: dayNamesMin,
+		showOn: 'both',
+		buttonImage: '../images/calendar.png',
+		buttonImageOnly: true,
+		minDate: '+0d +0w',
+		constrainInput: true,
+        yearRange: '-100:+100'
+	});
+	jQuery( "#" + id ).attr("readonly", true );
+	
+	if ( today == undefined )
+	{
+		today = false;
+	}
+	
+	if( today )
+	{
+		s = jQuery("#" + id );
+		if( s.val()=='' ) s.val( getCurrentDate() );
+	}
+}
+
 /**
  * Create jQuery datepicker for start date and end date text with id
  * 
