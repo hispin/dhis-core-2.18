@@ -74,8 +74,8 @@
 					<input type="button" class='small-button' value='+' onclick='addAttributeOption();'>
 				</td>
 				<td id='searchBySelectedUnitTD'>
-					$i18n.getString('search_by_selected_unit')
-					<input type='checkbox' id='searchBySelectedOrgunit' name='searchBySelectedOrgunit' />
+					$i18n.getString('search_in_all_facilities')
+					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />
 				</td>
 				<td>
 					<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
