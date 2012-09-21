@@ -242,6 +242,8 @@
         class="org.hisp.dhis.light.beneficiaryregistration.action.SaveBeneficiaryAction">
       <result name="success" type="redirect">/light/showPatientProgramList.action?patientId=${patientId}</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
+	  <result name="redirect" type="redirect">/light/showAddNewRelationshipForm.action?originalPatientId=${originalPatientId}&amp;relatedPatientId=${patientId}&amp;relationshipTypeId=${relationshipTypeId}</result>
+      <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/registration/beneficiaryRegistrationForm.vm</param>
 	  <param name="requiredAuthorities">F_PATIENT_ADD</param>
     </action>

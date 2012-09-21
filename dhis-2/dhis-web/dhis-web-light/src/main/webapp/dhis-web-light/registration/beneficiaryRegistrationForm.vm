@@ -10,7 +10,16 @@
 
 <form action="saveBeneficiary.action" method="POST">
 <div class="header-box" align="center">
-<input type="hidden" name="orgUnitId" value="$orgUnitId"/>	
+<input type="hidden" name="orgUnitId" value="$orgUnitId"/>
+#if ($originalPatientId)
+	<input type="hidden" name="originalPatientId" value="$originalPatientId"/>	
+#end
+
+#if ($relationshipTypeId)
+	<input type="hidden" name="relationshipTypeId" value="$relationshipTypeId"/>
+#end
+
+	
 	<p style="text-align: left;">
 		<label>$i18n.getString( "full_name" )*</label>
 

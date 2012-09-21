@@ -110,6 +110,32 @@ public class RegisterBeneficiaryAction
     {
         this.patientAttributes = patientAttributes;
     }
+    
+    //Register person on-the-fly
+    
+    private Integer originalPatientId;
+    
+    public Integer getOriginalPatientId()
+    {
+        return originalPatientId;
+    }
+
+    public void setOriginalPatientId( Integer originalPatientId )
+    {
+        this.originalPatientId = originalPatientId;
+    }
+
+    private Integer relationshipTypeId;
+    
+    public Integer getRelationshipTypeId()
+    {
+        return relationshipTypeId;
+    }
+
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation

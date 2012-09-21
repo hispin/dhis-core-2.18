@@ -241,7 +241,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction">
+		class="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction" scope="prototype">
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />

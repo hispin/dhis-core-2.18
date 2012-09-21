@@ -271,6 +271,32 @@ public class SaveBeneficiaryAction
     {
         this.patientAttributes = patientAttributes;
     }
+    
+    //Register patient on-the-fly
+    
+    private Integer originalPatientId;
+    
+    public Integer getOriginalPatientId()
+    {
+        return originalPatientId;
+    }
+
+    public void setOriginalPatientId( Integer originalPatientId )
+    {
+        this.originalPatientId = originalPatientId;
+    }
+
+    private Integer relationshipTypeId;
+    
+    public Integer getRelationshipTypeId()
+    {
+        return relationshipTypeId;
+    }
+
+    public void setRelationshipTypeId( Integer relationshipTypeId )
+    {
+        this.relationshipTypeId = relationshipTypeId;
+    }
 
     @Override
     public String execute()
@@ -471,7 +497,10 @@ public class SaveBeneficiaryAction
         patient.setAttributes( patientAttributeSet );
         patientId = patientService.createPatient( patient, null, null, patientAttributeValues );
         validated = true;
-
+        
+        if (this.originalPatientId != null) {
+            return "redirect";
+        }
         return SUCCESS;
     }
 }
