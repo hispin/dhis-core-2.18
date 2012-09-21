@@ -75,7 +75,7 @@
 							<table width='100%'>
 								<tr><th>
 										$i18n.getString("active_programs")
-										<input type='button' value='$i18n.getString("enroll_program")' onclick='showProgramEnrollmentForm( "$patient.id" )'/>
+										<a href='javascript:showProgramEnrollmentForm( "$patient.id" )'><label class='bold'>&laquo; $i18n.getString("enroll_program") &raquo;</label></a>
 									</th>
 								</tr>
 							</table>
@@ -126,6 +126,7 @@
 								<tr>
 									<td>
 										<select id="completedList" name="completedList" onchange="javascript:loadProgramInstance(this.value, true);" style="width:100%">
+											<option value="">[$i18n.getString("please_select")]</option>
 											#foreach($programInstance in $completedProgramInstances)
 												#set($programStageInstanceId = '')
 												#if($programInstance.program.type==2)

@@ -442,6 +442,10 @@ function saveEnrollment( patientId, programId )
 
 function loadProgramInstance( programInstanceId, completed )
 {				
+	if( programInstanceId=='') {
+		hideById('programEnrollmentDiv');
+		return;
+	}
 	jQuery('#loaderDiv').show();
 	jQuery('#programEnrollmentDiv').load('enrollmentform.action',
 		{
@@ -823,6 +827,12 @@ function registerPatientLocation( patientId )
 		{
 			showSuccessMessage( i18n_save_success );
 		} );
+}
+
+// load visit schedule
+function getVisitSchedule( programInstanceId )
+{
+	$('#tab-3').load("getVisitSchedule.action", {programInstanceId:programInstanceId});
 }
 
 function reloadOneRecord(){}
