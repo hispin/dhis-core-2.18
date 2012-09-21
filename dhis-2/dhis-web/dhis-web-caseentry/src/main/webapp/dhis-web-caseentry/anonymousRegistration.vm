@@ -77,7 +77,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><span id="reportDateDescriptionField"></span>$i18n.getString('from_to')</td>
+				<td><span id="reportDateDescriptionField"></span> $i18n.getString('from_to')</td>
 				<td><input type="text" id='startDate' name='startDate' style='width:240px'></td>
 				<td><input type="text" id='endDate' name='endDate' style='width:240px'></td>
 				<td><input type="button" id='searchBtn' value='$i18n.getString( "search" )' onclick='setFieldValue("isShowEventList", false);validateSearchEvents( false )'></td>

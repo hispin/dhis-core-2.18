@@ -172,6 +172,7 @@ function sendSmsOnePatient()
 			else{
 				commentDivToggle(false);
 			}
+			jQuery('#sendSmsFormDiv').dialog('close');
 		}); 
 }
 
@@ -197,6 +198,7 @@ function sendSmsToList()
 			else {
 				showErrorMessage( json.message );
 			}
+			jQuery('#sendSmsFormDiv').dialog('close')
 		}
 	});
 }

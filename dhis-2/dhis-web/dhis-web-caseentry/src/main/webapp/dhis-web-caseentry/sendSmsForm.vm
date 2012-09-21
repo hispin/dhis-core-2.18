@@ -25,12 +25,15 @@
 				
 				<tr>
 					<td>$i18n.getString( "message" )</td>
-					<td><textarea id="smsMessage" name="smsMessage" style="width:260px;height:100px;" class="{validate:{required:true}}"></textarea></td>
+					<td><textarea id="smsMessage" name="smsMessage" style="width:260px;height:100px;" class="{validate:{required:true,maxlength:160}}"></textarea></td>
 				</tr>
 			
 				<tr>
 					<td></td>
-					<td><input type="submit" name="send" value="$i18n.getString( 'send_sms' )" onclick="jQuery('#sendSmsFormDiv').dialog('close')"/></td>
+					<td>
+						<input type="submit" value="$i18n.getString( 'send_sms' )"/>
+						<input type="button" value="$i18n.getString( 'cancel' )" onclick="jQuery('#sendSmsFormDiv').dialog('close')"/>
+					</td>
 				</tr>
 				
 			</tbody>
