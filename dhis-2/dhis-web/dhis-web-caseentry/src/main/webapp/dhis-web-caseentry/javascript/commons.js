@@ -291,7 +291,8 @@ function getSearchParams()
 		
 	params += '&listAll=false';
 	if( getFieldValue('searchByProgramStage') == "false"){
-		params += '&searchBySelectedOrgunit=' + byId('searchBySelectedOrgunit').checked;
+		var searchInAllFacility = byId('searchInAllFacility').checked;
+		params += '&searchBySelectedOrgunit=' + !searchInAllFacility;
 	}
 	else
 	{
