@@ -627,6 +627,13 @@
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
+		<action name="getVisitSchedule"
+			class="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/visitSchedule.vm</param>
+			<param name="requiredAuthorities">F_PROGRAM_ENROLLMENT</param>
+		</action>
+		
 		<!-- Relationship -->
 
 		<action name="getPartner"

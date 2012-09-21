@@ -650,12 +650,13 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				jQuery('#tb_' + programInstanceId + ' .arrow-right').removeClass("hidden");
 			}
 			
-			if( dueDateInStage< getCurrentDate() ){
+			if( dueDate < getCurrentDate() ){
 				setEventColorStatus( programStageInstanceId, 4 );
 			}
 			else{
 				setEventColorStatus( programStageInstanceId, 3 );
 			}
+			
 			jQuery('#ps_' + programStageInstanceId ).focus();
 			jQuery('#createNewEncounterDiv_' + programInstanceId).dialog("close");
 			loadDataEntry( programStageInstanceId );
