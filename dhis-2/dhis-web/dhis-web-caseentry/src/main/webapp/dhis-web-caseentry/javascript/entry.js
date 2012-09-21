@@ -189,13 +189,10 @@ function updateProvidingFacility( dataElementId, checkField )
     
 }
 
-function saveExecutionDate( programId, executionDateValue )
+function saveExecutionDate( programId, programStageInstanceId, field )
 {
-    var field = document.getElementById( 'executionDate' );
-	
-    field.style.backgroundColor = SAVING_COLOR;
-	
-    var executionDateSaver = new ExecutionDateSaver( programId, executionDateValue, SUCCESS_COLOR );
+	field.style.backgroundColor = SAVING_COLOR;
+    var executionDateSaver = new ExecutionDateSaver( programId, programStageInstanceId, field.value, SUCCESS_COLOR );
     executionDateSaver.save();
 	
     if( !jQuery("#entryForm").is(":visible") )
@@ -424,9 +421,10 @@ function FacilitySaver( dataElementId_, providedElsewhere_, resultColor_ )
     }
 }
 
-function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
+function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_, resultColor_ )
 {
     var programId = programId_;
+    var programStageInstanceId = programStageInstanceId_;
     var executionDate = executionDate_;
     var resultColor = resultColor_;
 
@@ -434,6 +432,7 @@ function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
     {
 		var params  = "executionDate=" + executionDate;
 			params += "&programId=" + programId;
+			params += "&programStageInstanceId=" + programStageInstanceId;
 			
 		$.ajax({
 			   type: "POST",
@@ -444,13 +443,17 @@ function ExecutionDateSaver( programId_, executionDate_, resultColor_ )
 					handleResponse (result);
 					var selectedProgramStageInstance = jQuery( '#' + prefixId + getFieldValue('programStageInstanceId') );
 					var box = jQuery(".stage-object-selected");
-					box.val( box.attr('psname') + "  " + executionDate );
+					var boxName = box.attr('psname') + getInnerHTML('enterKey') + executionDate;
+					box.val( boxName );
 					box.css('border-color', COLOR_LIGHTRED);
 					box.css('background-color', COLOR_LIGHT_LIGHTRED);
 					disableCompletedButton(false);
 					enable('validationBtn');
 					setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
 					
+					var fieldId = "value_" + programStageInstanceId + "_date";
+					jQuery("#" + fieldId).css('background-color', SUCCESS_COLOR);
+					jQuery('#executionDate').val(executionDate);
 			   },
 			   error: function(request,status,errorThrown) {
 					handleHttpError (request);

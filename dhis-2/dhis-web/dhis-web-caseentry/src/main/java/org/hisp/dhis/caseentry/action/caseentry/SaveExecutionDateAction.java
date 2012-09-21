@@ -111,6 +111,13 @@ public class SaveExecutionDateAction
         this.executionDate = executionDate;
     }
 
+    private Integer programStageInstanceId;
+    
+    public void setProgramStageInstanceId( Integer programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
+    }
+
     private Integer programId;
 
     public void setProgramId( Integer programId )
@@ -136,8 +143,10 @@ public class SaveExecutionDateAction
         
         if ( dateValue != null )
         {
-            // Get program-stage-instance of the patient
-            ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
+//            // Get program-stage-instance of the patient
+//            ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
+            
+            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
             // If the program-stage-instance of the patient not exists,
             // create a program-instance and program-stage-instance for

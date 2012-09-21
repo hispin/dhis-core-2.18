@@ -173,6 +173,5 @@
 			getEventMessages(getFieldValue('programInstanceId'));
 		}
 	});
-	
 	resize();
 </script>
