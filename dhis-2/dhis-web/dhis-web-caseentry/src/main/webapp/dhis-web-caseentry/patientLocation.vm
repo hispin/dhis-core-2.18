@@ -1,4 +1,12 @@
-<h4>$i18n.getString( "change_patient_location" )</h4>
+<script>
+	hideById('patientManagementLbl');
+</script>
+
+<h3>
+	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
+	&#8226; <a href="javascript:showPatientDashboardForm($patientId);">$i18n.getString( 'patient_dashboard' )</a>
+	&#8226; $i18n.getString( "change_patient_location" )
+</h3>
 
 <form method='post'>
 	<table>
@@ -10,7 +18,6 @@
 		<tr>
 			<td>
 				<input type="button" class='button' value="$i18n.getString('save')" onclick='registerPatientLocation( "$patientId" )'>
-				<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" >
 			</td>
 			<td></td>
 			<td></td>
