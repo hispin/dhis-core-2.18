@@ -96,16 +96,14 @@ function generateExpression( expression )
 
         var fieldId = '#' + dataElementId + '-' + categoryOptionComboId + '-val';
 
+        var value = '0';
+        
         if ( $( fieldId ).length )
         {
-            var value = $( fieldId ).val() ? $( fieldId ).val() : '0';
-
-            expression = expression.replace( match, value );
+            value = $( fieldId ).val() ? $( fieldId ).val() : '0';
         }
-        else // Return null if data element / category option combo not in form
-        {	
-            return null;
-        } 
+
+        expression = expression.replace( match, value );
         
         // TODO signed numbers
     }

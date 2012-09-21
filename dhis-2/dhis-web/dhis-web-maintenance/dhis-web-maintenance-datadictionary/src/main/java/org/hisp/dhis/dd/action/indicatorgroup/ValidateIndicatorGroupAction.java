@@ -96,7 +96,6 @@ public class ValidateIndicatorGroupAction
     {
         if ( name != null )
         {
-
             IndicatorGroup match = indicatorService.getIndicatorGroupByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
