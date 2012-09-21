@@ -27,6 +27,7 @@ function listAllPatient()
 	hideById('listPatientDiv');
 	contentDiv = 'listPatientDiv';
 	$('#contentDataRecord').html('');
+	hideById('advanced-search');
 	
 	var date = new Date();
 	var d = date.getDate() - 1;
@@ -51,6 +52,7 @@ function listAllPatient()
 		}, 
 		function()
 		{
+			setInnerHTML('searchInforLbl',i18n_list_all_patients);
 			showById('colorHelpLink');
 			showById('listPatientDiv');
 			resize();

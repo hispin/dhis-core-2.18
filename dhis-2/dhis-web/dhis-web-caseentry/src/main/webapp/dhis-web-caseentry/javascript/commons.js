@@ -282,8 +282,9 @@ function getSearchParams()
 			}
 		})
 		
+		var searchInAllFacility = byId('searchInAllFacility').checked;
 		if( getFieldValue('searchByProgramStage') == "true" 
-			&& byId('searchBySelectedOrgunit').checked){
+			&& !searchInAllFacility){
 			p += "_" + getFieldValue('orgunitId');
 		}
 		params += p;
