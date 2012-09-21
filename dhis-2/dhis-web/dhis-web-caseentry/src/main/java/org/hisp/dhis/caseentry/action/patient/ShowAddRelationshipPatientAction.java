@@ -30,9 +30,10 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
@@ -47,6 +48,7 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
@@ -74,6 +76,8 @@ public class ShowAddRelationshipPatientAction
 
     private ProgramService programService;
 
+    private OrganisationUnitSelectionManager selectionManager;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -93,6 +97,8 @@ public class ShowAddRelationshipPatientAction
     private Map<Integer, String> attributeMap = new HashMap<Integer, String>();
 
     private Map<PatientAttributeGroup, Collection<PatientAttribute>> attributeGroupsMap = new HashMap<PatientAttributeGroup, Collection<PatientAttribute>>();
+
+    private Collection<User> healthWorkers;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -166,6 +172,9 @@ public class ShowAddRelationshipPatientAction
             }
         }
 
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        healthWorkers = organisationUnit.getUsers();
+
         return SUCCESS;
     }
 
@@ -173,9 +182,19 @@ public class ShowAddRelationshipPatientAction
     // Getter/Setter
     // -------------------------------------------------------------------------
     
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    public Collection<User> getHealthWorkers()
+    {
+        return healthWorkers;
     }
 
     public Map<PatientAttributeGroup, Collection<PatientAttribute>> getAttributeGroupsMap()
@@ -192,7 +211,7 @@ public class ShowAddRelationshipPatientAction
     {
         return identifierTypes;
     }
-    
+
     public Collection<PatientAttribute> getNoGroupAttributes()
     {
         return noGroupAttributes;
