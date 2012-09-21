@@ -9,11 +9,12 @@
 					<tr id='programStageIdTR_$!programInstance.id'>
 						#foreach( $programStageInstance in $programInstance.programStageInstances )
 						<td style='font-size:25px;'>&rarr;</td>
-						<td>
+						<td style='text-align:center'>
 							#set($valueDate=$format.formatDate( $programStageInstance.dueDate ))
 							#if($!programStageInstance.executionDate)
 								#set($valueDate=$format.formatDate( $programStageInstance.executionDate ))
 							#end
+							<span id="org_$!programStageInstance.id">&nbsp;$!programStageInstance.organisationUnit.name</span>
 							<input type="button" name="programStageBtn"
 								id="ps_$!programStageInstance.id"
 								psid="$programStageInstance.programStage.id"

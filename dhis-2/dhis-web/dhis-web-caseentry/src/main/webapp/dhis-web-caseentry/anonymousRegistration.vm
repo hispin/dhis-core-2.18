@@ -116,13 +116,13 @@
 	</p>
 	<table>
 		<tr>
-		    <th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" ) </label></th>
+		    <th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" ) </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
             <th><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();"></th>
                 <script type="text/javascript">
                    datePickerValid( 'executionDate', false );
                 </script>  
-			<th><label for="dueDate">$i18n.getString( "due_date" ) </label></th>
-            <th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"></th>
+			<th><label for="dueDate">$i18n.getString( "due_date" ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
+            <th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
         </tr>
 	</table>
 	<div id='dataEntryFormDiv'></div>
