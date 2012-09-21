@@ -283,12 +283,8 @@ function addPatient()
       data: getParamsForDiv('patientForm'),
       success: function(json) {
 		var patientId = json.message.split('_')[0];
-		var systemIdentifierId = json.message.split('_')[1];
-		jQuery('#advSearchBox0 [id="searchText"]').val( systemIdentifierId );
-		statusSearching = 1;
-		
-		showPatientDashboardForm( patientId );
 		jQuery('#resultSearchDiv').dialog('close');
+		showPatientDashboardForm( patientId );
       }
      });
     return false;
