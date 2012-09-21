@@ -439,8 +439,7 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 			   url: "saveExecutionDate.action",
 			   data: params,
 			   dataType: "xml",
-			   success: function( result ){
-					handleResponse (result);
+			   success: function( result ){	
 					var selectedProgramStageInstance = jQuery( '#' + prefixId + getFieldValue('programStageInstanceId') );
 					var box = jQuery(".stage-object-selected");
 					var boxName = box.attr('psname') + getInnerHTML('enterKey') + executionDate;
@@ -454,6 +453,10 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 					var fieldId = "value_" + programStageInstanceId + "_date";
 					jQuery("#" + fieldId).css('background-color', SUCCESS_COLOR);
 					jQuery('#executionDate').val(executionDate);
+					
+					jQuery("#org_" + programStageInstanceId ).html(getFieldValue("orgunitName"));
+					
+					handleResponse (result);
 			   },
 			   error: function(request,status,errorThrown) {
 					handleHttpError (request);

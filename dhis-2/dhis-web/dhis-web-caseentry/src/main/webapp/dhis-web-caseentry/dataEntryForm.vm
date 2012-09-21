@@ -12,7 +12,7 @@
 		#end
 		$('#executionDate').unbind("change");
 		$('#executionDate').change(function() {
-			saveExecutionDate( getFieldValue('programId'), getFieldValue('executionDate') );
+			saveExecutionDate( getFieldValue('programId'), $programStageInstance.id, byId('executionDate') );
 		});
 		
 		entryFormContainerOnReady();

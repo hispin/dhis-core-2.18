@@ -21,14 +21,14 @@
 					<br>		
 					<table id='executionDateTB' name="executionDateTB" class='hidden'>
 						<tr>
-							<th class='text-column'><span id="reportDateDescriptionField">$i18n.getString( "report_date" ) </span></th>
+							<th class='text-column'><span id="reportDateDescriptionField">$i18n.getString( "report_date" ) </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 							<th><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >
 								<script type="text/javascript">
 								   datePickerValid( 'executionDate', false );
 								</script>
 							</th>
-							<th class='text-column'><label for="dueDate">$i18n.getString( "due_date" ) </label></th>
-							<th><input type="text" id="dueDate" name="dueDate" class='criteria' value="$!format.formatDate( $programStageInstance.dueDate )" readonly > </th>
+							<th class='text-column'><label for="dueDate">$i18n.getString( "due_date" ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
+							<th><input type="text" id="dueDate" name="dueDate" class='criteria' value="$!format.formatDate( $programStageInstance.dueDate )" readonly > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 						</tr>
 					</table>
 				</div>
