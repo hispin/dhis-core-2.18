@@ -78,7 +78,15 @@
            	<span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
      	#end
 		<input type="text" name="dateOfBirth" value="$!previousValues.get("dob")" />
-
+		
+		<label>$i18n.getString( "phone_number" )</label>
+		
+		#if( $validationMap.get( "phoneNumber" ) )
+           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "phoneNumber" ))</span>
+     	#end
+		<input type="text" name="phoneNumber" value="$!previousValues.get("phoneNumber")" />
+		
+		
 		#foreach($patientIdentifierType in $patientIdentifierTypes)
 			#if(! $patientIdentifierType.program)
 				#set($key = "IDT${patientIdentifierType.id}")

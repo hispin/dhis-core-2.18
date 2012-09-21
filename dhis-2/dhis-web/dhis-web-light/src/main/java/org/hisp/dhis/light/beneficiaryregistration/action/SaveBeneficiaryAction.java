@@ -271,11 +271,23 @@ public class SaveBeneficiaryAction
     {
         this.patientAttributes = patientAttributes;
     }
-    
-    //Register patient on-the-fly
-    
+
+    private String phoneNumber;
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
+
+    // Register patient on-the-fly
+
     private Integer originalPatientId;
-    
+
     public Integer getOriginalPatientId()
     {
         return originalPatientId;
@@ -287,7 +299,7 @@ public class SaveBeneficiaryAction
     }
 
     private Integer relationshipTypeId;
-    
+
     public Integer getRelationshipTypeId()
     {
         return relationshipTypeId;
@@ -373,6 +385,15 @@ public class SaveBeneficiaryAction
             {
                 validationMap.put( "dob", "is_invalid_date" );
             }
+        }
+
+        if ( phoneNumber.matches( "^(\\+)?\\d+$" ) )
+        {
+            patient.setPhoneNumber( phoneNumber );
+        }
+        else
+        {
+            validationMap.put( "phoneNumber", "invalid_phone_number" );
         }
 
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
@@ -490,6 +511,7 @@ public class SaveBeneficiaryAction
             this.previousValues.put( "gender", this.gender );
             this.previousValues.put( "dob", this.dateOfBirth );
             this.previousValues.put( "dobType", this.dobType );
+            this.previousValues.put( "phoneNumber", this.phoneNumber );
             return ERROR;
         }
 
@@ -497,8 +519,9 @@ public class SaveBeneficiaryAction
         patient.setAttributes( patientAttributeSet );
         patientId = patientService.createPatient( patient, null, null, patientAttributeValues );
         validated = true;
-        
-        if (this.originalPatientId != null) {
+
+        if ( this.originalPatientId != null )
+        {
             return "redirect";
         }
         return SUCCESS;
