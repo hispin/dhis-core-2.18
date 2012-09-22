@@ -615,7 +615,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				var dueDateInStage = element.attr('dueDate');
 				if( dueDate < dueDateInStage && !flag)
 				{	
-					jQuery('<td style="text-align:center">'
+					jQuery('<td>'
 						+ '<span id="org_' + programStageInstanceId + '">' + getFieldValue('orgunitName') + '</span>'
 						+ '<input name="programStageBtn" '
 						+ 'id="' + elementId + '" ' 
@@ -636,7 +636,9 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			if( !flag )
 			{
 				jQuery("#programStageIdTR_" + programInstanceId).append('<td><img src="images/rightarrow.png"></td>'
-					+ '<td><input name="programStageBtn" '
+					+ '<td>'
+					+ '<span id="org_' + programStageInstanceId + '">' + getFieldValue('orgunitName') + '</span>'
+					+ '<input name="programStageBtn" '
 					+ 'id="' + elementId + '" ' 
 					+ 'psid="' + programStageId + '" '
 					+ 'programType="' + programType + '" '
@@ -934,6 +936,12 @@ function setEventStatus( field, programStageInstanceId )
 		{
 			jQuery('#ps_' + programStageInstanceId).attr('status',field.value);
 			setEventColorStatus( programStageInstanceId, field.value );
+			if( status==1){
+				hideById('del_' + programStageInstanceId);
+			}
+			else{
+				showById('del_' + programStageInstanceId);
+			}
 			field.style.backgroundColor = SUCCESS_COLOR;
 		} );
 }
@@ -967,10 +975,18 @@ function removeEvent( programStageInstanceId, isEvent )
 						showById('searchDiv');
 						showById('listPatientDiv');
 					}
-					var programInstanceId = jQuery('#ps_' + programStageInstanceId).attr('programInstanceId');
+					var id = 'ps_'+programStageInstanceId;
+					var programInstanceId = jQuery('#' + id).attr('programInstanceId');
+					if(jQuery(".stage-object-selected").attr('id')== id)
+					{
+						hideById('entryForm');
+						hideById('executionDateTB');
+						hideById('inputCriteriaDiv');
+					}
 					jQuery('#ps_' + programStageInstanceId).remove();
 					jQuery('#arrow_' + programStageInstanceId).remove();
 					jQuery('#org_' + programStageInstanceId).remove();
+					
 					reloadOneRecord( programInstanceId );
 					showSuccessMessage( i18n_delete_success );
 					resize();
