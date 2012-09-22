@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.validation.ValidationRule;
 
 /**
  * Interface for ExpressionService. Defines service functionality for
@@ -200,6 +201,14 @@ public interface ExpressionService
      * @param 
      */
     void explodeAndSubstituteExpressions( Collection<Indicator> indicators, Integer days );
+    
+    /**
+     * Populates the explodedExpression property on the Expression objects of all
+     * ValidationRules in the given collection.
+     * 
+     * @param validationRules the collection of ValidationRules.
+     */
+    void explodeExpressions( Collection<ValidationRule> validationRules );
     
     /**
      * Replaces references to data element totals with references to all

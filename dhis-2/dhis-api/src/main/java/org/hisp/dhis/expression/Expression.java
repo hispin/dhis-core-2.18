@@ -111,6 +111,15 @@ public class Expression
     private Set<DataElementCategoryOptionCombo> optionCombosInExpression = new HashSet<DataElementCategoryOptionCombo>();
 
     // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+
+    /**
+     * Set on-the-fly with exploded data element totals.
+     */
+    private transient String explodedExpression;
+    
+    // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
@@ -292,5 +301,15 @@ public class Expression
     public void setNullIfBlank( boolean nullIfBlank )
     {
         this.nullIfBlank = nullIfBlank;
+    }
+
+    public String getExplodedExpression()
+    {
+        return explodedExpression;
+    }
+
+    public void setExplodedExpression( String explodedExpression )
+    {
+        this.explodedExpression = explodedExpression;
     }
 }
