@@ -27,8 +27,8 @@
 
 package org.hisp.dhis.program;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -88,9 +88,9 @@ public class Program
 
     private Boolean displayIncidentDate;
 
-    private Collection<PatientIdentifierType> patientIdentifierTypes;
+    private List<PatientIdentifierType> patientIdentifierTypes;
 
-    private Collection<PatientAttribute> patientAttributes;
+    private List<PatientAttribute> patientAttributes;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -253,22 +253,22 @@ public class Program
         this.patientValidationCriteria = patientValidationCriteria;
     }
 
-    public Collection<PatientIdentifierType> getPatientIdentifierTypes()
+    public List<PatientIdentifierType> getPatientIdentifierTypes()
     {
         return patientIdentifierTypes;
     }
 
-    public void setPatientIdentifierTypes( Collection<PatientIdentifierType> patientIdentifierTypes )
+    public void setPatientIdentifierTypes( List<PatientIdentifierType> patientIdentifierTypes )
     {
         this.patientIdentifierTypes = patientIdentifierTypes;
     }
 
-    public Collection<PatientAttribute> getPatientAttributes()
+    public List<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
     }
 
-    public void setPatientAttributes( Collection<PatientAttribute> patientAttributes )
+    public void setPatientAttributes( List<PatientAttribute> patientAttributes )
     {
         this.patientAttributes = patientAttributes;
     }

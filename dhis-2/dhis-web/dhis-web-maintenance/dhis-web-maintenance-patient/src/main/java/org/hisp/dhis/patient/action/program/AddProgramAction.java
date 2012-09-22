@@ -28,9 +28,7 @@
 package org.hisp.dhis.patient.action.program;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.patient.Patient;
@@ -192,8 +190,8 @@ public class AddProgramAction
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
         program.setDisplayIncidentDate( displayIncidentDate );
 
-        Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
-        Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
+        List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
+        List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
         int index = 0;
         for ( String selectedPropertyId : selectedPropertyIds )
         {

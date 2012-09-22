@@ -30,7 +30,7 @@
 <tr>
 	<td class='text-column'><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 	<td class="input-column">
-		<select id="gender" name="gender" class="{validate:{required:true}}">
+		<select id="gender" name="gender">
  			<option value="M">$i18n.getString( "male" )</option>
 			<option value="F" selected>$i18n.getString( "female" )</option>
 			<option value="T">$i18n.getString( "transgender" )</option>

@@ -83,7 +83,7 @@ public class ProgramEnrollmentAction
 
     private Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
-    private Collection<PatientIdentifierType> identifierTypes;
+    private List<PatientIdentifierType> identifierTypes;
 
     private Collection<PatientAttribute> noGroupAttributes = new HashSet<PatientAttribute>();
 

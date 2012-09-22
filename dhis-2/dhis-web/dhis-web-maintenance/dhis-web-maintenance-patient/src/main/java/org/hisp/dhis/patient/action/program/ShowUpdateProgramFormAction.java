@@ -28,11 +28,11 @@
 package org.hisp.dhis.patient.action.program;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
@@ -166,8 +166,8 @@ public class ShowUpdateProgramFormAction
 
         for ( Program program : programs )
         {
-            availableIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
-            availableAttributes.removeAll( program.getPatientAttributes() );
+            availableIdentifierTypes.removeAll( new HashSet<PatientIdentifierType>( program.getPatientIdentifierTypes() ) );
+            availableAttributes.removeAll(  new HashSet<PatientAttribute>( program.getPatientAttributes() ) );
         }
 
         return SUCCESS;
