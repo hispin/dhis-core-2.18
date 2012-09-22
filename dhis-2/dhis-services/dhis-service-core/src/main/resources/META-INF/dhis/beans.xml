@@ -364,8 +364,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="validationRuleGroupStore" ref="org.hisp.dhis.validation.ValidationRuleGroupStore" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
 	<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />

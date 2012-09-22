@@ -45,21 +45,6 @@ function validateRunValidation()
     return false;
 }
 
-function drillDownValidation( orgUnitId )
-{
-    setHeaderWaitMessage( i18n_analysing_please_wait );
-
-    var url = 'runValidationAction.action?organisationUnitId=' + orgUnitId + '&startDate=' + startDate + '&endDate='
-            + endDate + '&validationRuleGroupId=' + validationRuleGroupId + '&aggregate=' + aggregate;
-
-    $.get( url, function( data )
-    {
-        hideHeaderMessage();
-        $( "div#analysisResult" ).html( data );
-        setTableStyles();
-    } );
-}
-
 function displayValidationDetailsDialog()
 {
 	$( '#validationResultDetailsDiv' ).dialog( {
@@ -76,44 +61,6 @@ function viewValidationResultDetails( validationRuleId, sourceId, periodId )
 		validationRuleId: validationRuleId, sourceId: sourceId, periodId: periodId },
 		displayValidationDetailsDialog 
 	);
-}
-
-function aggregateChanged()
-{
-    var aggregate = getListValue( 'aggregate' );
-
-    if ( aggregate == 'true' )
-    {
-        $( 'span#info' ).html( i18n_aggregate_data_info );
-    } else
-    {
-        $( 'span#info' ).html( i18n_captured_data_info );
-    }
-}
-
-function showAggregateResults()
-{
-    $( 'div#validationResults' ).hide();
-    $( 'div#aggregateResults' ).show();
-    var button = document.getElementById( "resultTypeButton" );
-    button.onclick = function()
-    {
-        showValidationResults();
-    };
-    button.value = "See validation";
-}
-
-function showValidationResults()
-{
-    $( 'div#aggregateResults' ).hide();
-    $( 'div#validationResults' ).show();
-
-    var button = document.getElementById( "resultTypeButton" );
-    button.onclick = function()
-    {
-        showAggregateResults();
-    };
-    button.value = "See statistics";
 }
 
 function exportValidationResult( type )

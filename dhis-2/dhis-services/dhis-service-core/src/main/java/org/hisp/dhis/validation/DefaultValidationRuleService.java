@@ -38,27 +38,20 @@ import static org.hisp.dhis.system.util.MathUtils.getRounded;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.grid.ListGrid;
-import org.hisp.dhis.system.util.CompositeCounter;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,20 +99,6 @@ public class DefaultValidationRuleService
         this.periodService = periodService;
     }
 
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
@@ -143,106 +122,6 @@ public class DefaultValidationRuleService
 
     // -------------------------------------------------------------------------
     // ValidationRule business logic
-    // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
-    // Aggregate TODO remove
-    // -------------------------------------------------------------------------
-
-    public Grid getAggregateValidationResult( Collection<ValidationResult> results, List<Period> periods,
-        List<OrganisationUnit> sources )
-    {
-        int number = validationRuleStore.getCount();
-
-        Grid grid = new ListGrid();
-
-        CompositeCounter counter = new CompositeCounter();
-
-        for ( ValidationResult result : results )
-        {
-            counter.count( result.getPeriod(), result.getSource() );
-        }
-
-        grid.addRow();
-        grid.addValue( StringUtils.EMPTY );
-
-        for ( Period period : periods )
-        {
-            grid.addValue( period.getName() );
-        }
-
-        for ( OrganisationUnit source : sources )
-        {
-            grid.addRow();
-            grid.addValue( source.getName() );
-
-            for ( Period period : periods )
-            {
-                double percentage = (double) (100 * counter.getCount( period, source )) / number;
-
-                grid.addValue( String.valueOf( getRounded( percentage, DECIMALS ) ) );
-            }
-        }
-
-        return grid;
-    }
-
-    public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate,
-        Collection<OrganisationUnit> sources )
-    {
-        Map<Integer, Double> constantMap = constantService.getConstantMap();
-        
-        Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-
-        Collection<ValidationRule> validationRules = getAllValidationRules();
-        
-        Set<DataElement> dataElements = getDataElementsInValidationRules( validationRules );
-
-        Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
-
-        for ( OrganisationUnit source : sources )
-        {
-            for ( Period period : periods )
-            {
-                validationViolations.addAll( validateInternal( period, source, validationRules, dataElements, constantMap, true,
-                    validationViolations.size() ) );
-            }
-        }
-
-        return validationViolations;
-    }
-
-    public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate,
-        Collection<OrganisationUnit> sources, ValidationRuleGroup group )
-    {
-        Map<Integer, Double> constantMap = constantService.getConstantMap();
-        
-        Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-
-        Collection<DataSet> dataSets = dataSetService.getDataSetsBySources( sources );
-
-        Set<DataElement> dataElements = new HashSet<DataElement>( dataElementService.getDataElementsByDataSets( dataSets ) );
-
-        Collection<ValidationRule> validationRules = getValidationRulesByDataElements( dataElements );
-
-        validationRules.retainAll( group.getMembers() );
-
-        Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
-
-        for ( OrganisationUnit source : sources )
-        {
-            for ( Period period : periods )
-            {
-                validationViolations.addAll( validateInternal( period, source, validationRules, dataElements, constantMap, true,
-                    validationViolations.size() ) );
-            }
-        }
-
-        return validationViolations;
-    }
-
-    // -------------------------------------------------------------------------
-    // Regular
     // -------------------------------------------------------------------------
 
     public Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources )
