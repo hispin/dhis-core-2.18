@@ -56,7 +56,6 @@ public interface ExpressionService
     final String EXPRESSION_NOT_WELL_FORMED = "expression_not_well_formed";
     final String CONSTANT_DOES_NOT_EXIST = "constant_does_not_exist";
 
-
     final String DAYS_DESCRIPTION = "[Number of days]";
     final String NULL_REPLACEMENT = "0";
     final String SPACE = " ";
@@ -65,6 +64,7 @@ public interface ExpressionService
     final String OPERAND_EXPRESSION = "\\[\\d+?.*?\\]";
     final String DAYS_EXPRESSION = "[days]";
     final String CONSTANT_EXPRESSION = "\\[C(\\d+?)\\]";
+    final String COMPULSORY_PAIR_EXPRESSION = "[Compulsory]";
     
     /**
      * Adds a new Expression to the database.

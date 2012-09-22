@@ -234,6 +234,17 @@ public class MathUtils
     }
     
     /**
+     * Returns 0d if the given value is null, the original value otherwise.
+     * 
+     * @param value the value.
+     * @return a double.
+     */
+    public static double zeroIfNull( Double value )
+    {
+        return value == null ? 0d : value;
+    }
+    
+    /**
      * Returns a random int between 0 and 999.
      */
     public static int getRandom()
