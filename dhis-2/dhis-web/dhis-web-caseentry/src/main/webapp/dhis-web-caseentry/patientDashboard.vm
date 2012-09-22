@@ -92,16 +92,17 @@
 										#set($flag = 'false')
 										#foreach( $programStageInstance in $programInstance.programStageInstances )
 											#set( $status = $statusMap.get( $programStageInstance.id ) )
-											#if( $status!=1 && $flag=='false')
+											#if( $status!=1 && $status!=5 && $flag=='false')
 												<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
-													programStageInstanceId='$programStageInstanceId'>
+													programStageInstanceId='$programStageInstanceId' style='cursor:pointer;'
+													onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' >
 													<td id='td_$programInstance.id'>
-														<a href='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")'><span id='infor_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</span></a>
+														<a><span id='infor_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</span></a>
 													</td>
 												</tr>
-												<tr id='tr2_$programInstance.id' onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' style='cursor:pointer;'>
-													<td>
-														<a>&#8226; $programStageInstance.programStage.name ($format.formatDate($programStageInstance.dueDate))</a>
+												<tr>
+													<td id='tr2_$programInstance.id' onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' style='cursor:pointer;'>
+														<a>>> $programStageInstance.programStage.name ($format.formatDate($programStageInstance.dueDate))</a>
 													</td>
 												</tr>
 											#set($flag = 'true')
@@ -109,10 +110,14 @@
 										#end
 										#if($flag=='false')
 										<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
-											programStageInstanceId='$programStageInstanceId'>
+											programStageInstanceId='$programStageInstanceId' style='cursor:pointer;'
+											onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", false)' >
 											<td id='td_$programInstance.id'>
-												<a href='javascript:loadProgramInstance($programInstance.id, false)'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
+												<a><span id='infor_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</span></a>
 											</td>
+										</tr>
+										<tr style='cursor:pointer;'>
+											<td id='tr2_$programInstance.id'></td>
 										</tr>
 										#end
 									#end

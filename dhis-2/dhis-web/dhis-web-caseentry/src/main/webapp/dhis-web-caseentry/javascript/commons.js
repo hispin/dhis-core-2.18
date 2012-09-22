@@ -663,6 +663,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			
 			jQuery('#ps_' + programStageInstanceId ).focus();
 			jQuery('#createNewEncounterDiv_' + programInstanceId).dialog("close");
+			resetActiveEvent( programStageInstanceId );
 			loadDataEntry( programStageInstanceId );
 			showSuccessMessage(i18n_create_event_success);
 		});
@@ -758,7 +759,10 @@ function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInst
 				showById('programInstanceDiv');
 			}
 			activeProgramInstanceDiv( programInstanceId );
-			loadDataEntry( activeProgramStageInstanceId );
+			if( activeProgramStageInstanceId )
+			{
+				loadDataEntry( activeProgramStageInstanceId );
+			}
 			jQuery('#loaderDiv').hide();
 		});
 }
@@ -927,6 +931,7 @@ function resize(){
 
 function setEventStatus( field, programStageInstanceId )
 {	
+	var status = field.value;
 	field.style.backgroundColor = SAVING_COLOR;
 	jQuery.postUTF8( 'setEventStatus.action',
 		{
@@ -936,16 +941,66 @@ function setEventStatus( field, programStageInstanceId )
 		{
 			jQuery('#ps_' + programStageInstanceId).attr('status',field.value);
 			setEventColorStatus( programStageInstanceId, field.value );
+			resetActiveEvent( programStageInstanceId );
 			if( status==1){
 				hideById('del_' + programStageInstanceId);
 			}
 			else{
 				showById('del_' + programStageInstanceId);
+				if( status==5){
+					var id = 'ps_' + programStageInstanceId;
+					if( jQuery(".stage-object-selected").attr('id')==id )
+					{
+						hideById('entryForm');
+						hideById('executionDateTB');
+						hideById('inputCriteriaDiv');
+					}
+				}
 			}
 			field.style.backgroundColor = SUCCESS_COLOR;
 		} );
 }
 
+function resetActiveEvent( programStageInstanceId )
+{
+	var activeProgramInstance = jQuery(".selected");
+	if( activeProgramInstance.length > 0 )
+	{
+		var programInstanceId = activeProgramInstance.attr('id').split('_')[1];
+		var hasActiveEvent = false;
+		jQuery(".stage-object").each(function(){
+			var status = jQuery(this).attr('status');
+			if(status !=1 && status != 5 && !hasActiveEvent){
+				var value = jQuery(this).val();
+				var programStageInstanceId = jQuery(this).attr('id').split('_')[1];
+				
+				jQuery('#td_' + programInstanceId).attr("onClick", "javascript:loadActiveProgramStageRecords("+ programInstanceId +", "+ programStageInstanceId  +")")
+				jQuery('#tr2_' + programInstanceId).html("<a>>>" + value + "</a>");
+				jQuery('#tr2_' + programInstanceId).attr("onClick", "javascript:loadActiveProgramStageRecords("+ programInstanceId +", "+ programStageInstanceId + ")");
+				
+				var id = 'ps_' + programStageInstanceId;
+				enable('ps_' + programStageInstanceId );
+				if( jQuery(".stage-object-selected").attr('id')!=jQuery(this).attr('id') )
+				{
+					hideById('entryForm');
+					hideById('executionDateTB');
+					hideById('inputCriteriaDiv');
+				}
+				hasActiveEvent = true;
+			}
+		});
+		
+		if( !hasActiveEvent ){
+			jQuery('#td_' + programInstanceId).attr("onClick", "javascript:loadActiveProgramStageRecords("+ programInstanceId +", false)")
+			jQuery('#tr2_' + programInstanceId).html("");
+			jQuery('#tr2_' + programInstanceId).attr("onClick", "");
+			
+			hideById('entryForm');
+			hideById('executionDateTB');
+			hideById('inputCriteriaDiv');
+		}
+	}	
+}
 
 function removeEvent( programStageInstanceId, isEvent )
 {	
