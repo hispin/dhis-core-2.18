@@ -511,9 +511,10 @@ public class HibernatePatientStore
         if ( hasIdentifier )
         {
             sql += from + " left join patientidentifier pi on p.patientid=pi.patientid ";
+            from = " ";
         }
 
-        sql += patientWhere;
+        sql += from + patientWhere;
         if ( isSearchEvent )
         {
             sql += patientGroupBy;
