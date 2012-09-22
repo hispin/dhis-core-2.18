@@ -28,6 +28,7 @@ function loadDataEntry( programStageInstanceId )
 			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
 			var reportDateDes = jQuery("#ps_" + programStageInstanceId).attr("reportDateDes");
 			setInnerHTML('reportDateDescriptionField',reportDateDes);
+			showById('entryForm');
 			showById('executionDateTB');
 			showById('inputCriteriaDiv');
 			enable('validationBtn');

@@ -96,8 +96,8 @@
 			</td>
 			
 			<td>
-				#if($programStageInstance.programStage.irregular=='true' && ($status==3 || $status==4 || $status==5 ))
-					<a href="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+				#if($programStageInstance.programStage.irregular=='true' )
+					<a href="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" id='del_$programStageInstance.id' name='del_$programStageInstance.id' alt='$i18n.getString( "remove" )' #if($status==1) class='hidden' #end ></a>
 				#end
 			</td>
 		</tr>
