@@ -34,7 +34,8 @@
 				<option value="greater_than">$encoder.htmlEncode( $i18n.getString( "greater_than" ) )</option>
 				<option value="greater_than_or_equal_to">$encoder.htmlEncode( $i18n.getString( "greater_than_or_equal_to" ) )</option>
 				<option value="less_than">$encoder.htmlEncode( $i18n.getString( "less_than" ) )</option>
-				<option value="less_than_or_equal_to">$encoder.htmlEncode( $i18n.getString( "less_than_or_equal_to" ) )</option>			
+				<option value="less_than_or_equal_to">$encoder.htmlEncode( $i18n.getString( "less_than_or_equal_to" ) )</option>
+                <option value="compulsory_pair">$encoder.htmlEncode( $i18n.getString( "compulsory_pair" ) )</option>
 			</select>
 		</td>
 	</tr>

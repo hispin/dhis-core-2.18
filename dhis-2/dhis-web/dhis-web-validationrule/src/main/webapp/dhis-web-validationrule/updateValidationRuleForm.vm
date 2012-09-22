@@ -43,6 +43,7 @@
 				<option value="greater_than_or_equal_to" #if ( $validationRule.operator == 'greater_than_or_equal_to' )selected="selected"#end>$encoder.htmlEncode( $i18n.getString( "greater_than_or_equal_to" ) )</option>
 				<option value="less_than" #if ( $validationRule.operator == 'less_than' )selected="selected"#end>$encoder.htmlEncode( $i18n.getString( "less_than" ) )</option>
 				<option value="less_than_or_equal_to" #if ( $validationRule.operator == 'less_than_or_equal_to' )selected="selected"#end>$encoder.htmlEncode( $i18n.getString( "less_than_or_equal_to" ) )</option>
+                <option value="compulsory_pair" #if ( $validationRule.operator == 'compulsory_pair' )selected="selected"#end>$encoder.htmlEncode( $i18n.getString( "compulsory_pair" ) )</option>
 			</select>
 		</td>
 	</tr>

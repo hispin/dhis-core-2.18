@@ -33,7 +33,7 @@ import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
 import static org.hisp.dhis.i18n.I18nUtils.getObjectsByName;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
-import static org.hisp.dhis.system.util.MathUtils.getRounded;
+import static org.hisp.dhis.system.util.MathUtils.*;
 
 import java.util.Collection;
 import java.util.Date;
@@ -48,6 +48,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -256,20 +257,29 @@ public class DefaultValidationRuleService
                 if ( validationRule.getPeriodType() != null
                     && validationRule.getPeriodType().equals( period.getPeriodType() ) )
                 {
+                    Operator operator = validationRule.getOperator();
+                    
                     leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), valueMap, constantMap, null );
 
-                    if ( leftSide != null )
+                    if ( leftSide != null || Operator.compulsory_pair.equals( operator ) )
                     {
                         rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), valueMap, constantMap, null );
 
-                        if ( rightSide != null )
+                        if ( rightSide != null || Operator.compulsory_pair.equals( operator )  )
                         {
-                            violation = !expressionIsTrue( leftSide, validationRule.getOperator(), rightSide );
-
+                            if ( Operator.compulsory_pair.equals( operator ) )
+                            {
+                                violation = ( leftSide != null && rightSide == null ) || ( leftSide == null && rightSide != null );
+                            }
+                            else
+                            {
+                                violation = !expressionIsTrue( leftSide, operator, rightSide );
+                            }
+                            
                             if ( violation )
                             {
                                 validationViolations.add( new ValidationResult( period, unit, validationRule,
-                                    getRounded( leftSide, DECIMALS ), getRounded( rightSide, DECIMALS ) ) );
+                                    getRounded( zeroIfNull( leftSide ), DECIMALS ), getRounded( zeroIfNull( rightSide ), DECIMALS ) ) );
                             }
                         }
                     }
