@@ -6,6 +6,8 @@ function loadDataEntry( programStageInstanceId )
 {
 	setInnerHTML('dataEntryFormDiv', '');
 	showById('dataEntryFormDiv');
+	showById('executionDateTB');
+	showById('inputCriteriaDiv');
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
 	disable('validationBtn');
@@ -28,9 +30,6 @@ function loadDataEntry( programStageInstanceId )
 			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
 			var reportDateDes = jQuery("#ps_" + programStageInstanceId).attr("reportDateDes");
 			setInnerHTML('reportDateDescriptionField',reportDateDes);
-			showById('entryForm');
-			showById('executionDateTB');
-			showById('inputCriteriaDiv');
 			enable('validationBtn');
 			if( executionDate == '' )
 			{
@@ -47,7 +46,7 @@ function loadDataEntry( programStageInstanceId )
 			resize();
 			hideLoader();
 			hideById('contentDiv'); 
-			jQuery('#executionDate').focus();
+			jQuery('#dueDate').focus();
 		} );
 }
 
