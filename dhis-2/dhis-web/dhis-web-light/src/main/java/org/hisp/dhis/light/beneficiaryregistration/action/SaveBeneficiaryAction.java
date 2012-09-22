@@ -321,6 +321,14 @@ public class SaveBeneficiaryAction
 
         patientIdentifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
         patientAttributes = patientAttributeService.getAllPatientAttributes();
+        Collection<Program> programs = programService.getAllPrograms();
+        
+        for ( Program program : programs )
+        {
+            patientIdentifierTypes.removeAll( program.getPatientIdentifierTypes() );
+            patientAttributes.removeAll( program.getPatientAttributes() );
+        }
+        
         patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( orgUnitId ) );
 
         if ( this.patientFullName.trim().length() < 7 )
@@ -404,7 +412,7 @@ public class SaveBeneficiaryAction
         Collection<PatientIdentifierType> patientIdentifierTypes = patientIdentifierTypeService
             .getAllPatientIdentifierTypes();
         Collection<PatientAttribute> patientAttributes = patientAttributeService.getAllPatientAttributes();
-        Collection<Program> programs = programService.getAllPrograms();
+        
 
         for ( Program program : programs )
         {
