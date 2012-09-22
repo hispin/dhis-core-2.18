@@ -409,23 +409,21 @@ public class DefaultValidationRuleService
      * @return all validation rules which have data elements assigned to it
      *         which are members of the given data set.
      */
-    private Collection<ValidationRule> getRelevantValidationRules( Collection<DataElement> dataElements )
+    private Collection<ValidationRule> getRelevantValidationRules( Set<DataElement> dataElements )
     {
-        final Set<ValidationRule> relevantValidationRules = new HashSet<ValidationRule>();
-
+        Set<ValidationRule> relevantValidationRules = new HashSet<ValidationRule>();
+        
+        Set<DataElement> validationRuleElements = new HashSet<DataElement>();
+        
         for ( ValidationRule validationRule : getAllValidationRules() )
         {
-            for ( DataElement dataElement : dataElements )
+            validationRuleElements.clear();
+            validationRuleElements.addAll( validationRule.getLeftSide().getDataElementsInExpression() );
+            validationRuleElements.addAll( validationRule.getRightSide().getDataElementsInExpression() );
+            
+            if ( dataElements.containsAll( validationRuleElements ) )
             {
-                if ( validationRule.getPeriodType() != null && dataElement.getPeriodType() != null
-                    && validationRule.getPeriodType().equals( dataElement.getPeriodType() ) )
-                {
-                    if ( validationRule.getLeftSide().getDataElementsInExpression().contains( dataElement )
-                        || validationRule.getRightSide().getDataElementsInExpression().contains( dataElement ) )
-                    {
-                        relevantValidationRules.add( validationRule );
-                    }
-                }
+                relevantValidationRules.add( validationRule );
             }
         }
 
