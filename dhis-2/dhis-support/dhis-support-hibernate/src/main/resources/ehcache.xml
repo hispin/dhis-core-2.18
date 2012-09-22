@@ -48,7 +48,7 @@
 
   <cache name="org.hisp.dhis.expression.Expression" maxElementsInMemory="200" />
 
-  <cache name="org.hisp.dhis.validation.ValidationRule" maxElementsInMemory="200" />
+  <cache name="org.hisp.dhis.validation.ValidationRule" maxElementsInMemory="1000" />
 
   <cache name="org.hisp.dhis.validation.ValidationRuleGroup" maxElementsInMemory="50" />
 
