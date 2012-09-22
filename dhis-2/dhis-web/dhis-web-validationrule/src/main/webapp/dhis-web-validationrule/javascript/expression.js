@@ -1,19 +1,19 @@
 function showEditLeftSideExpressionForm()
 {
-    var description = byId( "leftSideDescription" ).value;
-    var expression = byId( "leftSideExpression" ).value;
-    var textualExpression = byId( "leftSideTextualExpression" ).value;
-    var periodTypeName = byId( "periodTypeName" ).value;
+    var description = $( "#leftSideDescription" ).val();
+    var expression = $( "#leftSideExpression" ).val();
+    var textualExpression = $( "#leftSideTextualExpression" ).val();
+    var periodTypeName = $( "#periodTypeName" ).val();
 
     showExpressionForm( "left", description, expression, textualExpression, periodTypeName );
 }
 
 function showEditRightSideExpressionForm()
 {
-    var description = byId( "rightSideDescription" ).value;
-    var expression = byId( "rightSideExpression" ).value;
-    var textualExpression = byId( "rightSideTextualExpression" ).value;
-    var periodTypeName = byId( "periodTypeName" ).value;
+    var description = $( "#rightSideDescription" ).val();
+    var expression = $( "#rightSideExpression" ).val();
+    var textualExpression = $( "#rightSideTextualExpression" ).val();
+    var periodTypeName = $( "#periodTypeName" ).val();
 
     showExpressionForm( "right", description, expression, textualExpression, periodTypeName );
 }
@@ -28,7 +28,7 @@ function showExpressionForm( side, description, expression, textualExpression, p
         periodTypeName : periodTypeName
     }, function( data )
     {
-        byId( 'dynamicContent' ).innerHTML = data;
+    	$( "#dynamicContent" ).html( data );
         showPopupWindowById( 'dynamicContent', 755, 450 );
     }, 'html' );
 }
@@ -42,9 +42,9 @@ function insertText( inputAreaName, inputText )
 
 function filterDataElements( dataSetName, filterName )
 {
-    var dataSet = byId( dataSetName );
+    var dataSet = $( "#" + dataSetName ).val();
     var dataSetId = dataSet.options[dataSet.selectedIndex].value;
-    var filter = byId( filterName ).value;
+    var filter = $( "#" + filterName ).val();
     var periodTypeName = getFieldValue( 'periodTypeName' );
 
     var url = "getFilteredDataElements.action";
@@ -69,13 +69,13 @@ function filterDataElements( dataSetName, filterName )
 
 function updateTextualExpression( expressionFieldName )
 {
-    var expression = document.getElementById( expressionFieldName ).value;
+    var expression = $( "#" + expressionFieldName ).val();
 
     jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', {
         expression : expression
     }, function( json )
     {
-        byId( "textualExpression" ).innerHTML = json.message;
+    	$( "#textualExpression" ).html( json.message );
     } );
 }
 
@@ -149,15 +149,15 @@ function saveExpression( side, description, expression, textualDescription )
 {
     if ( side == "left" )
     {
-        byId( "leftSideDescription" ).value = description;
-        byId( "leftSideExpression" ).value = expression;
-        byId( "leftSideTextualExpression" ).value = textualDescription;
+        $( "#leftSideDescription" ).val( description );
+        $( "#leftSideExpression" ).val( expression );
+        $( "#leftSideTextualExpression" ).val( textualDescription );
     } 
     else if ( side == "right" )
     {
-        byId( "rightSideDescription" ).value = description;
-        byId( "rightSideExpression" ).value = expression;
-        byId( "rightSideTextualExpression" ).value = textualDescription;
+    	$( "#rightSideDescription" ).val( description );
+    	$( "#rightSideExpression" ).val( expression );
+    	$( "#rightSideTextualExpression" ).val( textualDescription );
     }
 
     hideById( 'dynamicContent' );
@@ -171,15 +171,15 @@ function saveExpression( side, description, expression, textualDescription )
 function setNullExpression()
 {
     // set left-expression
-    var description = byId( "leftSideDescription" ).value;
-    byId( "leftSideExpression" ).value = '';
-    byId( "leftSideTextualExpression" ).value = '';
+    var description = $( "#leftSideDescription" ).val();
+    $( "#leftSideExpression" ).val( '' );
+    $( "#leftSideTextualExpression" ).val( '' );
     saveExpression( 'left', description, '', '' );
 
     // set right-expression
-    description = byId( "rightSideDescription" ).value;
-    byId( "rightSideExpression" ).value = '';
-    byId( "rightSideTextualExpression" ).value = '';
+    description = $( "#rightSideDescription" ).val();
+    $( "#rightSideExpression" ).val( '' );
+    $( "#rightSideTextualExpression" ).val( '' );
     saveExpression( 'right', description, '', '' );
 
     // Show periodType combo
