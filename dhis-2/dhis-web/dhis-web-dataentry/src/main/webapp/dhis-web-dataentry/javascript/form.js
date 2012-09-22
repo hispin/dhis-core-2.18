@@ -1235,14 +1235,6 @@ function displayValidationDialog( data )
     } );
 }
 
-/**
- * Validates form. First looks for compulsory data element combinations and returns
- * false if violated. Second looks for validation rules and returns false if
- * violated and if completion is only allowed for valid forms. Returns true otherwise.
- * 
- * @param ignoreSuccessfulValidation whether the pop-up should not be skipped if
- *        validation is successful.
- */
 function validate( ignoreSuccessfulValidation, successCallback )
 {
 	var compulsoryCombinationsValid = validateCompulsoryCombinations();
