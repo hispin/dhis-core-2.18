@@ -47,6 +47,8 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.relationship.RelationshipType;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
@@ -76,9 +78,13 @@ public class GetPatientAction
 
     private RelationshipService relationshipService;
 
+    private RelationshipTypeService relationshipTypeService;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+    private Collection<RelationshipType> relationshipTypes;
 
     private int id;
 
@@ -117,6 +123,12 @@ public class GetPatientAction
     public String execute()
         throws Exception
     {
+        relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
+
+        // -------------------------------------------------------------------------
+        // Get identifier-types && attributes
+        // -------------------------------------------------------------------------
+
         patient = patientService.getPatient( id );
 
         programs = programService.getAllPrograms();
@@ -243,14 +255,24 @@ public class GetPatientAction
         }
 
         healthWorkers = patient.getOrganisationUnit().getUsers();
-        
+
         return SUCCESS;
-        
+
     }
 
     // -----------------------------------------------------------------------------
     // Getter / Setter
     // -----------------------------------------------------------------------------
+
+    public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
+    {
+        this.relationshipTypeService = relationshipTypeService;
+    }
+
+    public Collection<RelationshipType> getRelationshipTypes()
+    {
+        return relationshipTypes;
+    }
 
     public Collection<User> getHealthWorkers()
     {

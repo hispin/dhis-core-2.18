@@ -100,6 +100,13 @@ public class AddPatientAttributeAction
         this.attrOptions = attrOptions;
     }
 
+    private Boolean inherit;
+    
+    public void setInherit( Boolean inherit )
+    {
+        this.inherit = inherit;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -115,6 +122,9 @@ public class AddPatientAttributeAction
         
         mandatory = (mandatory == null) ? false : true;
         patientAttribute.setMandatory( mandatory );
+        
+        inherit = (inherit == null) ? false : true;
+        patientAttribute.setInherit( inherit );
         
         patientAttributeService.savePatientAttribute( patientAttribute );
 

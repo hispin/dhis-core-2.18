@@ -32,6 +32,14 @@
 		<td></td>				
 	</tr>
 	
+	<tr>
+		<td><label for="inherit">$i18n.getString( "inherit" )</label></td>
+		<td>
+			<input type='checkbox' id="inherit" name="inherit" value='true' #if( $patientAttribute.inherit ) checked #end>
+		</td>		
+		<td></td>				
+	</tr>
+	
     <tr>
         <td>$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td>

@@ -33,6 +33,7 @@
 		datePickerValid( 'patientForm [id=birthDate]' );
 		addEventForPatientForm( 'patientForm' );
 	});	
+	hideById('patientForm [id=age]');
 	hideById('patientManagementLbl');
 </script>
 
