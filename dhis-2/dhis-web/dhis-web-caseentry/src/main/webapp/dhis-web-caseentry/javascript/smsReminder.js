@@ -140,26 +140,33 @@ function sendSMS()
 	else{
 		sendSmsToList();
 	}
-	
 }
 
-function sendSmsOnePatient()
+function sendSmsOnePatient( field, programStageInstanceId )
 {
+	setInnerHTML('smsError', '');
+	if(field.value==""){
+		jQuery('#smsError').css("color", "red");
+		setInnerHTML('smsError', i18n_this_field_is_required);
+		return;
+	}
+	
+	field.style.backgroundColor = SAVING_COLOR;
 	programStageInstanceId = getFieldValue( 'programStageInstanceId' );
 	jQuery.postUTF8( 'sendSMS.action',
 		{
 			programStageInstanceId: programStageInstanceId,
-			gatewayId: getFieldValue( 'gatewayId' ),
-			msg: getFieldValue( 'smsMessage' )
+			msg: field.value
 		}, function ( json )
 		{
 			if ( json.response == "success" ) {
-				showSuccessMessage( json.message );
+				jQuery('#smsError').css("color", "green");
+				setInnerHTML('smsError', json.message);
 				var currentTime = date.getHours() + ":" + date.getMinutes();
 				jQuery('#commentTB').prepend("<tr><td>" + getFieldValue('currentDate') + " " + currentTime + "</td>"
 					+ "<td>" + getFieldValue('programStageName') + "</td>"
 					+ "<td>" + getFieldValue('currentUsername') + "</td>"
-					+ "<td>" + getFieldValue('smsMessage') + "</td></tr>");
+					+ "<td>" + field.value + "</td></tr>");
 				var noMessage = eval( getInnerHTML('noMessageDiv_' + programStageInstanceId)) + 1;
 			}
 			else {
@@ -172,14 +179,13 @@ function sendSmsOnePatient()
 			else{
 				commentDivToggle(false);
 			}
-			jQuery('#sendSmsFormDiv').dialog('close');
-		}); 
+			field.style.backgroundColor = SUCCESS_COLOR;
+		});
 }
 
 function sendSmsToList()
 {
 	params = getSearchParams();
-	params += "&gatewayId=" + getFieldValue( 'gatewayId' );
 	params += "&msg=" + getFieldValue( 'smsMessage' );
 	params += "&programStageInstanceId=" + getFieldValue('programStageInstanceId');
 	$.ajax({
@@ -226,7 +232,7 @@ function keypress(event, field, programStageInstanceId )
 function addComment( field, programStageInstanceId )
 {
 	field.style.backgroundColor = SAVING_COLOR;
-	var commentText = getFieldValue( 'commentText' );
+	var commentText = field.value;
 	if( commentText != '')
 	{
 		jQuery.postUTF8( 'addPatientComment.action',

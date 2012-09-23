@@ -102,8 +102,8 @@
 			<table class='mainPageTable' id='progarmStageListDiv' name='progarmStageListDiv' >
 				<col width="10px">
 				<col width="200px">
-				<col width="180px">
-				<col width="150px">
+				<col width="200px">
+				<col width="160px">
 				<col/>
 				<col width='60px'/>  
 				<tr>
@@ -111,8 +111,8 @@
 					<th>$i18n.getString( "program_stage" )</th>                   
 					<th>$i18n.getString( "reschedule_due_date" )</th>       
 					<th>$i18n.getString( "status" )</th>
-					<th>$i18n.getString( "post_comment" )</th>
-					<th>$i18n.getString( "operation" )</th>
+					<th>$i18n.getString( "message" )</th>
+					<th>$i18n.getString( "remove" )</th>
 				</tr>
 				
 			#set( $rowCount = 0 )
@@ -160,11 +160,11 @@
 						</script>
 					</td>
 					<td>
-						<input type='text' id='commentText' name='commentText' style="width:355px;" onkeypress="keypress(event,this,'$programStageInstance.id')">
-						<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment(this,'$programStageInstance.id')">
+						<input type='text' id='message_$programStageInstance.id' name='message_$programStageInstance.id' style="width:300px;" class="{validate:{required:true,maxlength:160}}">
+						<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')">
+						<input type="button" value="&raquo;" class='tiny-button' title="$i18n.getString( 'send_sms' )" onclick="setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatient(byId('message_$programStageInstance.id'),'$programStageInstance.id');"/>
 					</td>
 					<td>
-						<a href="javascript:setFieldValue('sendToList', false);showSendSmsForm('$programStageInstance.programStage.name',$programStageInstance.id)" title='$i18n.getString( "send_sms" )'><img src="images/sms.png" alt='$i18n.getString( "send_sms" )'></a>
 						#if($programStageInstance.programStage.irregular=='true' && ($status==3 || $status==4 || $status==5 ))
 							<a href="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
 						#end

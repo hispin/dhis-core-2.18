@@ -90,14 +90,7 @@ public class SendSmsAction
     {
         this.programStageInstanceId = programStageInstanceId;
     }
-
-    private String gatewayId;
-
-    public void setGatewayId( String gatewayId )
-    {
-        this.gatewayId = gatewayId;
-    }
-
+    
     private String msg;
 
     public void setMsg( String msg )
@@ -131,7 +124,7 @@ public class SendSmsAction
             {
                 OutboundSms outboundSms = new OutboundSms( msg, phoneNumber );
                 outboundSms.setSender( currentUserService.getCurrentUsername() );
-                outboundSmsService.sendMessage( outboundSms, gatewayId );
+                outboundSmsService.sendMessage( outboundSms, null );
                 
                 List<OutboundSms> outboundSmsList = programStageInstance.getOutboundSms();
                 if( outboundSmsList == null)
