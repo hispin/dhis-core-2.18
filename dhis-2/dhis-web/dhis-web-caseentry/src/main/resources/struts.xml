@@ -149,7 +149,7 @@
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm
 			</result>
-			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
+			<param name="requiredAuthorities">F_PROGRAM_STAGE_INSTANCE_DELETE</param>
 		</action>
 
 		<action name="validateProgram"
