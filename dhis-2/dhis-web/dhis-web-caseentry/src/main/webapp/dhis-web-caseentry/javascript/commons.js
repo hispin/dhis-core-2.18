@@ -924,7 +924,8 @@ function resize(){
 	$('.stage-flow').css('width', w-width); 
 	$('.table-flow').css('width', w-width); 
 	$('.table-flow tr').each(function(){
-		jQuery(this).find('td').attr("width", "10px");
+		jQuery(this).find('td:visible').attr("width", "10px");
+		jQuery(this).find('td:hidden').removeAttr("width");
 		jQuery(this).find('td:last').removeAttr("width");
 	});
 }

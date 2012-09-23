@@ -52,6 +52,7 @@ function loadGeneratedReport()
 		jQuery( "[name=newEncounterBtn]" ).removeClass("show-new-event");
 		jQuery( "[status=3]" ).attr("disabled", true);
 		jQuery( "[status=4]" ).attr("disabled", true);
+		jQuery( "[status=5]" ).attr("disabled", true);
 		hideLoader();
 		hideById( 'message' );
 		showById( 'contentDiv' );

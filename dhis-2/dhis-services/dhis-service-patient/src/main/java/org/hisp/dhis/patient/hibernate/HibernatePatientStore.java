@@ -434,14 +434,14 @@ public class HibernatePatientStore
                         continue;
                     case ProgramStageInstance.FUTURE_VISIT_STATUS:
                         patientWhere += condition + operatorStatus + "("
-                            + " psi.executiondate is null and psi.duedate >= now() and p.organisationunitid=" + keys[4]
+                            + " psi.status is null and psi.executiondate is null and psi.duedate >= now() and p.organisationunitid=" + keys[4]
                             + ")";
                         operatorStatus = " OR ";
                         condition = "";
                         continue;
                     case ProgramStageInstance.LATE_VISIT_STATUS:
                         patientWhere += condition + operatorStatus + "("
-                            + " psi.executiondate is null and psi.duedate < now() and p.organisationunitid=" + keys[4]
+                            + " psi.status is null and psi.executiondate is null and psi.duedate < now() and p.organisationunitid=" + keys[4]
                             + ")";
                         operatorStatus = " OR ";
                         condition = "";
@@ -527,7 +527,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-System.out.println( "\n\n === \n " + sql );
+        
         return sql;
     }
 
