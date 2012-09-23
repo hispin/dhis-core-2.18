@@ -121,12 +121,12 @@ public class UpdatePatientAttributeAction
     {
         this.attrOptions = attrOptions;
     }
-    
-    private Integer programId;
 
-    public void setProgramId( Integer programId )
+    private Boolean inherit;
+
+    public void setInherit( Boolean inherit )
     {
-        this.programId = programId;
+        this.inherit = inherit;
     }
 
     // -------------------------------------------------------------------------
@@ -141,10 +141,13 @@ public class UpdatePatientAttributeAction
         patientAttribute.setName( name );
         patientAttribute.setDescription( description );
         patientAttribute.setValueType( valueType );
-        
+
         mandatory = (mandatory == null) ? false : true;
         patientAttribute.setMandatory( mandatory );
         
+        inherit = (inherit == null) ? false : true;
+        patientAttribute.setInherit( inherit );
+
         HttpServletRequest request = ServletActionContext.getRequest();
 
         Collection<PatientAttributeOption> attributeOptions = patientAttributeOptionService.get( patientAttribute );

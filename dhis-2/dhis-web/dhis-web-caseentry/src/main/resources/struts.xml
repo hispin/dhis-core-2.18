@@ -731,7 +731,7 @@
 		</action>
 
 		<action name="showAddRelationshipPatient"
-			class="org.hisp.dhis.caseentry.action.patient.ShowAddRelationshipPatientAction">
+			class="org.hisp.dhis.caseentry.action.patient.GetPatientAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/addRelationshipPatientForm.vm</param>
 			<param name="requiredAuthorities">F_PATIENT_ADD, F_RELATIONSHIP_ADD</param>

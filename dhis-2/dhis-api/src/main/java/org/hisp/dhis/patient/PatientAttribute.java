@@ -66,6 +66,8 @@ public class PatientAttribute
 
     private boolean mandatory;
 
+    private Boolean inherit;
+
     private Boolean groupBy;
 
     private PatientAttributeGroup patientAttributeGroup;
@@ -138,6 +140,16 @@ public class PatientAttribute
         if ( attributeOptions == null )
             attributeOptions = new HashSet<PatientAttributeOption>();
         attributeOptions.add( option );
+    }
+
+    public void setInherit( Boolean inherit )
+    {
+        this.inherit = inherit;
+    }
+
+    public Boolean getInherit()
+    {
+        return inherit;
     }
 
     public Boolean isGroupBy()

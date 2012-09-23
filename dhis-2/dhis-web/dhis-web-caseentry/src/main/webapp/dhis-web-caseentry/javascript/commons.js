@@ -723,10 +723,12 @@ function hideProgramInstanceDiv( programInstanceId )
 
 function showPatientDashboardForm( patientId )
 {
-	hideById('listPatientDiv');
-	hideById('editPatientDiv');
 	hideById('selectDiv');
 	hideById('searchDiv');
+	hideById('listPatientDiv');
+	hideById('editPatientDiv');
+	hideById('listRelationshipDiv');
+	hideById('addRelationshipDiv');
 	hideById('migrationPatientDiv');
 				
 	jQuery('#loaderDiv').show();

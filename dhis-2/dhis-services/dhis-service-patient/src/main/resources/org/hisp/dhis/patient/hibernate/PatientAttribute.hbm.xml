@@ -30,5 +30,7 @@
       <one-to-many class="org.hisp.dhis.patient.PatientAttributeOption" />
     </set>
 
+ 	<property name="inherit" column="inherit"/>
+    
   </class>
 </hibernate-mapping>
