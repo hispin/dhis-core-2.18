@@ -55,7 +55,6 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.system.util.MathUtils;
-import org.hisp.dhis.validation.ValidationRule;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -454,19 +453,7 @@ public class DefaultExpressionService
             }     
         }
     }
-    
-    public void explodeExpressions( Collection<ValidationRule> validationRules )
-    {
-        if ( validationRules != null && !validationRules.isEmpty() )
-        {
-            for ( ValidationRule rule : validationRules )
-            {
-                rule.getLeftSide().setExplodedExpression( explodeExpression( rule.getLeftSide().getExpression() ) );
-                rule.getRightSide().setExplodedExpression( explodeExpression( rule.getRightSide().getExpression() ) );
-            }
-        }
-    }
-    
+        
     private String explodeExpression( String expression, Map<Integer, Set<Integer>> dataElementMap )
     {
         StringBuffer buffer = null;
