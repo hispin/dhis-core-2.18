@@ -125,13 +125,6 @@ public class SendSmsToListAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String gatewayId;
-
-    public void setGatewayId( String gatewayId )
-    {
-        this.gatewayId = gatewayId;
-    }
-
     private String msg;
 
     public void setMsg( String msg )
@@ -169,7 +162,7 @@ public class SendSmsToListAction
             outboundSms.setRecipients( phoneNumberList );
             outboundSms.setSender( currentUserService.getCurrentUsername() );
 
-            outboundSmsService.sendMessage( outboundSms, gatewayId );
+            outboundSmsService.sendMessage( outboundSms, null );
 
             programStageInstanceService.updateProgramStageInstances( programStageInstanceIds, outboundSms );
 

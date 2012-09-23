@@ -65,7 +65,6 @@
 <div id="smsManagementForm">
 	<ul>
 		<li><a href="#tab-1">$i18n.getString("reschedule_and_set_status")</a></li>
-		<li><a href="#tab-3">$i18n.getString("send_sms")</a></li>
 		<li><a href="#tab-2">$i18n.getString("tracking_history")</a></li>
 	</ul>
 	
@@ -114,9 +113,20 @@
 			<tr>
 				<td>$i18n.getString( "post_comment" )</td>
 				<td>
-					<input type='text' id='commentText' name='commentText' onkeypress="keypress(event,this,'$programStageInstance.id')">
-					<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment(this,'$programStageInstance.id')">
+					<input type='text' id='commentText' name='commentText' onkeypress="keypress(event,this,'$programStageInstance.id');">
+					<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment( byId('commentText'),'$programStageInstance.id');">
 				</td>
+			</tr>
+			<tr>
+				<td>$i18n.getString( "message" )</td>
+				<td>
+					<textarea id="smsMessage" name="smsMessage" style="width:260px;height:100px;" class="{validate:{required:true,maxlength:160}}"></textarea>
+					<input type="button" value="$i18n.getString( 'send_sms' )" onclick="sendSmsOnePatient( byId('smsMessage'),'$programStageInstance.id' );"/>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td id="smsError" style="color:red;"></td>
 			</tr>
 		</table>
 	</div>
@@ -186,18 +196,15 @@
 		<input type='button' id="showCommentBtn" name="showCommentBtn" value='$i18n.getString("show_hide_more")' #if($count && $count<=5) class='hidden' #end onclick='commentDivToggle(false);'>
 		<input type='button' id="hideCommentBtn" name="hideCommentBtn" value='$i18n.getString("show_hide_more")' class='hidden' onclick='commentDivToggle(true);'>
 	</div>
-	
-	<div id="tab-3">
-		#parse( "/dhis-web-caseentry/sendSmsForm.vm" )
-	</div>
-	
 </div>
 
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
-		var i18n_color_quick_help = '$encoder.jsEscape( $i18n.getString( "color_quick_help" ) , "'")';
-		var i18n_comment_added = '$encoder.jsEscape( $i18n.getString( "comment_added" ) , "'")';
 		setFieldValue( "programStageInstanceId", "$!programStageInstance.id" );
 	});
+	
+	var i18n_color_quick_help = '$encoder.jsEscape( $i18n.getString( "color_quick_help" ) , "'")';
+	var i18n_comment_added = '$encoder.jsEscape( $i18n.getString( "comment_added" ) , "'")';
+	var i18n_this_field_is_required = '$encoder.jsEscape( $i18n.getString( "this_field_is_required" ) , "'")';
 	
 </script>

@@ -30,7 +30,6 @@ package org.hisp.dhis.caseentry.action.reminder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -38,9 +37,7 @@ import org.hisp.dhis.patientcomment.PatientComment;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,10 +63,7 @@ public class GetOutboundSmsListAction
     }
 
     private PatientAttributeValueService patientAttributeValueService;
-
-    @Autowired
-    private OutboundSmsTransportService transportService;
-
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -128,11 +122,6 @@ public class GetOutboundSmsListAction
     public List<OutboundSms> getOutboundSms()
     {
         return outboundSms;
-    }
-
-    public Map<String, String> getGatewayMap()
-    {
-        return transportService.getGatewayMap();
     }
 
     // -------------------------------------------------------------------------
