@@ -367,8 +367,8 @@ function reloadRecordList()
 		{
 			if( jQuery("#tb_" + programInstanceId + " .searched").length > 0 ){
 				jQuery("#ps_" + id ).addClass("stage-object-selected searched");
-				hideById("ps_" + id )
 				hideById('arrow_' + id );
+				hideById("ps_" + id );
 			}
 			jQuery("#ps_" + id ).addClass("stage-object-selected searched");
 		}
