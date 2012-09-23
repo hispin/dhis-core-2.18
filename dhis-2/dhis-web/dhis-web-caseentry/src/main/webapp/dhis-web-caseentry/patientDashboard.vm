@@ -1,9 +1,6 @@
 <h3>
  <a href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
  &#8226; $i18n.getString( 'patient_dashboard' )
- &#8226; <a href="javascript:showUpdatePatientForm( '$patient.id', true )">$i18n.getString( "edit_profile" )</a>
- &#8226; <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );">$i18n.getString( "manage_relationship" )</a>
- &#8226; <a href="javascript:getPatientLocation( '$patient.id' );">$i18n.getString( "change_patient_location" )</a>
 </h3>
 
 <table>
@@ -14,7 +11,12 @@
 					<td>
 						<div class="link-area">
 							<table width='100%'>
-								<tr><th>$i18n.getString("demographics")</th></tr>
+								<tr><th>
+									$i18n.getString("demographics")
+									<a href="javascript:showUpdatePatientForm( '$patient.id', true );"><label class='bold'>&laquo; $i18n.getString("edit_profile") &raquo;</label></a>
+									<a href="javascript:getPatientLocation( '$patient.id', true );"><label class='bold'>&laquo; $i18n.getString("change_location") &raquo;</label></a>
+							
+								</th></tr>
 							</table>
 							<div class="contentProviderTable">
 								<table width='100%'>
@@ -150,7 +152,10 @@
 					<td>
 						<div class="link-area">
 							<table width='100%'>
-								<tr><th>$i18n.getString("relationships")</th></tr>
+								<tr><th>
+									$i18n.getString("relationships")
+									<a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );"><label class='bold'>&laquo; $i18n.getString("management") &raquo;</label></a>
+									</th></tr>
 							</table>
 							<div class="contentProviderTable">
 								<table width='100%'>
