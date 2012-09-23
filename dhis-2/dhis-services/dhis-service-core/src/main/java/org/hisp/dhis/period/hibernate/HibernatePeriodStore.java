@@ -42,6 +42,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.RelativePeriods;
 
 /**
  * Implements the PeriodStore interface.
@@ -314,5 +315,14 @@ public class HibernatePeriodStore
         }
 
         return reloadedPeriodType;
+    }
+
+    // -------------------------------------------------------------------------
+    // RelativePeriods
+    // -------------------------------------------------------------------------
+
+    public void deleteRelativePeriods( RelativePeriods relativePeriods )
+    {
+        sessionFactory.getCurrentSession().delete( relativePeriods );
     }
 }

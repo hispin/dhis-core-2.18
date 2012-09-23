@@ -43,6 +43,9 @@ public interface ReportService
     final String REPORTTYPE_PDF = "pdf";
     final String REPORTTYPE_XLS = "xls";
 
+    final String PARAM_RELATIVE_PERIODS = "periods";
+    final String PARAM_ORG_UNITS = "org_units";
+    
     void renderReport( OutputStream out, String reportUid, Date reportingPeriod,
                        String organisationUnitUid, String type, I18nFormat format );
 

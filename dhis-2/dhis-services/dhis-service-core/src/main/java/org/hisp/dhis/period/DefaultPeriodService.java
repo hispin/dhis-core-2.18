@@ -309,4 +309,13 @@ public class DefaultPeriodService
     {
         return periodStore.reloadPeriodType( periodType );
     }
+
+    // -------------------------------------------------------------------------
+    // PeriodType
+    // -------------------------------------------------------------------------
+
+    public void deleteRelativePeriods( RelativePeriods relativePeriods )
+    {
+        periodStore.deleteRelativePeriods( relativePeriods );
+    }
 }

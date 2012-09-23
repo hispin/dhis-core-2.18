@@ -746,6 +746,14 @@ public class ReportTable
         return organisationUnitGroups != null && organisationUnitGroups.size() > 0;
     }
 
+    /**
+     * Indicates whether this report table has relative periods.
+     */
+    public boolean hasRelativePeriods()
+    {
+        return relatives != null && !relatives.getRelativePeriods().isEmpty();
+    }
+    
     public void removeAllDataElements()
     {
         dataElements.clear();

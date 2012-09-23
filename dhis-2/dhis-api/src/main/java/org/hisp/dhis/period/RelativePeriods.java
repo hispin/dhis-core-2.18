@@ -149,6 +149,8 @@ public class RelativePeriods
     
     private static final int MONTHS_IN_YEAR = 12;
 
+    private int id;
+    
     private boolean reportingMonth = false; // TODO rename to lastMonth
 
     private boolean reportingBimonth = false; // TODO rename to lastBimonth
@@ -698,6 +700,16 @@ public class RelativePeriods
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
 
     @JsonProperty( value = "lastMonth" )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )

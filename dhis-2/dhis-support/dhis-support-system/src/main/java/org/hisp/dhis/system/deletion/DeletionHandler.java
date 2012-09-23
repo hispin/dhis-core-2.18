@@ -70,6 +70,7 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
@@ -313,6 +314,15 @@ public abstract class DeletionHandler
         return null;
     }
 
+    public void deleteRelativePeriods( RelativePeriods relativePeriods )
+    {
+    }
+    
+    public String allowDeleteRelativePeriods( RelativePeriods relativePeriods )
+    {
+        return null;
+    }
+    
     public void deleteValidationRule( ValidationRule validationRule )
     {
     }

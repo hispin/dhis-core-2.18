@@ -1,6 +1,6 @@
 function addReport()
 {
-	if ( !hasText( "upload" ) )
+	if ( $( "#id" ).val().length == 0 && !hasText( "upload" ) )
 	{
 		setMessage( i18n_please_specify_file );
 		return false;
@@ -33,6 +33,12 @@ function addToDashboard( id )
     {
         $.get( "addReportToDashboard.action?id=" + id );
     }
+}
+
+function toggleDataSource()
+{
+	$( ".reportTableDataSource" ).toggle();
+	$( ".jdbcDataSource" ).toggle();
 }
 
 // -----------------------------------------------------------------------------

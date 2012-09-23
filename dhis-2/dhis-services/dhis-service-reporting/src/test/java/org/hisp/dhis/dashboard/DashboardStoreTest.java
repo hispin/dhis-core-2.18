@@ -36,6 +36,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
@@ -72,7 +73,7 @@ public class DashboardStoreTest
         userA = createUser( 'A' );
         userService.addUser( userA );
         
-        reportA = new Report( "ReportA", "DesignA", null );
+        reportA = new Report( "ReportA", "DesignA", new ReportTable() );
         reportService.saveReport( reportA );
         
         contentA = new DashboardContent();
