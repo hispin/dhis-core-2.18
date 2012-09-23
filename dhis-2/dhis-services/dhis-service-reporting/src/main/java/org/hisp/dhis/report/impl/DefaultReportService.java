@@ -27,6 +27,9 @@ package org.hisp.dhis.report.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.Collection;
@@ -45,6 +48,8 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -101,6 +106,13 @@ public class DefaultReportService
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
 
     // -------------------------------------------------------------------------
     // ReportService implementation
@@ -134,10 +146,17 @@ public class DefaultReportService
 
                 print = JasperFillManager.fillReport( jasperReport, params, grid );
             }
-            else // Assume SQL report and provide JDBC connection
+            else // Use JDBC data source
             {
                 Connection connection = statementManager.getHolder().getConnection();
 
+                if ( report.hasRelativePeriods() )
+                {
+                    Collection<Period> periods = periodService.reloadPeriods( report.getRelatives().getRelativePeriods() );
+                    String periodString = getCommaDelimitedString( getIdentifiers( Period.class, periods ) );
+                    params.put( PARAM_RELATIVE_PERIODS, periodString );
+                }
+                
                 try
                 {
                     print = JasperFillManager.fillReport( jasperReport, params, connection );
@@ -152,7 +171,7 @@ public class DefaultReportService
             {
                 JRExportUtils.export( type, out, print );
             }
-        } 
+        }
         catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to render report", ex );
@@ -166,7 +185,11 @@ public class DefaultReportService
 
     public void deleteReport( Report report )
     {
-        reportStore.delete( report );
+        if ( report != null )
+        {   
+            periodService.deleteRelativePeriods( report.getRelatives() );
+            reportStore.delete( report );
+        }
     }
 
     public Collection<Report> getAllReports()

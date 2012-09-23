@@ -39,6 +39,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="statementManager" ref="statementManager" />
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
   <!-- Chart -->

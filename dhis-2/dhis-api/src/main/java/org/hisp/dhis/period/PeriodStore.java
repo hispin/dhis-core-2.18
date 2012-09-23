@@ -237,4 +237,15 @@ public interface PeriodStore
      * @return the Period.
      */
     PeriodType reloadPeriodType( PeriodType periodType );
+
+    // -------------------------------------------------------------------------
+    // RelativePeriods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Deletes a RelativePeriods instance.
+     * 
+     * @param relativePeriods the RelativePeriods instance.
+     */
+    void deleteRelativePeriods( RelativePeriods relativePeriods );
 }

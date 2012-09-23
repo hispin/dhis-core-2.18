@@ -31,20 +31,20 @@ import java.io.File;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.commons.action.AbstractRelativePeriodsAction;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.StreamUtils;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: UploadDesignAction.java 5207 2008-05-22 12:16:36Z larshelg $
  */
 public class AddReportAction
-    implements Action
+    extends AbstractRelativePeriodsAction
 {
     private static final Log log = LogFactory.getLog( AddReportAction.class );
     
@@ -179,9 +179,12 @@ public class AddReportAction
 
         Report report = ( id == null ) ? new Report() : reportService.getReport( id );
         
+        ReportTable reportTable = reportTableService.getReportTable( reportTableId );
+        
         report.setName( name );
-        report.setReportTable( reportTableService.getReportTable( reportTableId ) );
+        report.setReportTable( reportTable );
         report.setUsingOrgUnitGroupSets( usingOrgUnitGroupSets );
+        report.setRelatives( getRelativePeriods() );
                 
         log.info( "Upload file name: " + fileName + ", content type: " + contentType );
 
