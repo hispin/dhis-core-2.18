@@ -80,7 +80,8 @@
         #if( $relatedPeople.size() > 0)
             #foreach( $key in $relatedPeople.keySet() )
 				#set ( $person = $relatedPeople.get($key))
-          		<li><a href="showPatientProgramList.action?patientId=$person.id">$!encoder.htmlEncode( $person.fullName ) ($key)</a></li>
+          		<li><a href="showPatientProgramList.action?patientId=$person.id">$!encoder.htmlEncode( $person.fullName ) ($key.getRelationshipType().getName())</a> -
+				<a href="deleteRelationship.action?currentPatientId=$patient.id&relationshipTypeId=$key.id">Remove</a></li>
           	#end
         #else
             <li>$i18n.getString("no_relationships")</li>

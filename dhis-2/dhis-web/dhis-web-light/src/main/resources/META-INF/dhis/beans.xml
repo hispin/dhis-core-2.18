@@ -485,4 +485,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction"
+		class="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="relationshipService"
+			ref="org.hisp.dhis.relationship.RelationshipService" />
+	</bean>
 </beans>
