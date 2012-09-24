@@ -416,6 +416,7 @@
 				../dhis-web-commons/ouwt/ouwt.js
 				,javascript/commons.js
 				,javascript/patient.js
+				,javascript/patientForm.js
 				,javascript/entry.js
 				,javascript/relationshipPatient.js
 			</param>
@@ -883,7 +884,12 @@
 			<param name="page">/dhis-web-caseentry/programTrackingSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/trackingMenu.vm</param>
 			<param name="stylesheets">style/style.css</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,javascript/smsReminder.js</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,
+				javascript/commons.js,
+				javascript/patient.js,
+				javascript/relationshipPatient.js,
+				javascript/smsReminder.js</param>
 			<param name="requiredAuthorities">F_SMS_REMINDER</param>
 		</action>
 
@@ -972,7 +978,11 @@
 			<param name="page">/dhis-web-caseentry/activityPlanSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/trackingMenu.vm</param>
 			<param name="stylesheets">style/style.css</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,javascript/activityPlan.js</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,
+				javascript/commons.js,
+				javascript/patient.js,
+				javascript/activityPlan.js</param>
 			<param name="requiredAuthorities">F_ACTIVITY_PLAN</param>
 		</action>
 

@@ -1,5 +1,5 @@
 <script>
-	hideById('patientManagementLbl');
+	hideById('mainLinkLbl');
 </script>
 
 <h3>

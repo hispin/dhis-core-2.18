@@ -1,147 +1,4 @@
 
-function organisationUnitSelected( orgUnits, orgUnitNames )
-{	
-	showById('selectDiv');
-	showById('searchDiv');
-	hideById('listPatientDiv');
-	hideById('editPatientDiv');
-	hideById('enrollmentDiv');
-	hideById('listRelationshipDiv');
-	hideById('addRelationshipDiv');
-	hideById('migrationPatientDiv');
-	hideById('patientDashboard');
-	enable('listPatientBtn');
-	enable('addPatientBtn');
-	enable('advancedSearchBtn');
-	setFieldValue("orgunitName", orgUnitNames[0]);
-}
-
-selection.setListenerFunction( organisationUnitSelected );
-
-// -----------------------------------------------------------------------------
-// List && Search patients
-// -----------------------------------------------------------------------------
-
-function listAllPatient()
-{
-	hideById('listPatientDiv');
-	hideById('editPatientDiv');
-	hideById('migrationPatientDiv');
-	
-	jQuery('#loaderDiv').show();
-	contentDiv = 'listPatientDiv';
-	jQuery('#listPatientDiv').load('searchRegistrationPatient.action',{
-			listAll:true
-		},
-		function(){
-			statusSearching = 0;
-			showById('listPatientDiv');
-			jQuery('#loaderDiv').hide();
-		});
-	hideLoader();
-}
-
-function advancedSearch( params )
-{
-	$.ajax({
-		url: 'searchRegistrationPatient.action',
-		type:"POST",
-		data: params,
-		success: function( html ){
-				statusSearching = 1;
-				setInnerHTML( 'listPatientDiv', html );
-				showById('listPatientDiv');
-				setFieldValue('listAll',false);
-				jQuery( "#loaderDiv" ).hide();
-			}
-		});
-}
-
-// -----------------------------------------------------------------------------
-// Remove patient
-// -----------------------------------------------------------------------------
-
-function removePatient( patientId, fullName )
-{
-	removeItem( patientId, fullName, i18n_confirm_delete, 'removePatient.action' );
-}
-
-// -----------------------------------------------------------------------------
-// Add Patient
-// -----------------------------------------------------------------------------
-
-function showAddPatientForm()
-{
-	hideById('listPatientDiv');
-	hideById('selectDiv');
-	hideById('searchDiv');
-	hideById('migrationPatientDiv');
-	
-	jQuery('#loaderDiv').show();
-	jQuery('#editPatientDiv').load('showAddPatientForm.action'
-		, function()
-		{
-			showById('editPatientDiv');
-			jQuery('#loaderDiv').hide();
-		});
-	
-}
-
-function validateAddPatient()
-{	
-	$("#patientForm :input").attr("disabled", true);
-	$.ajax({
-		type: "POST",
-		url: 'validatePatient.action',
-		data: getParamsForDiv('patientForm'),
-		success:addValidationCompleted
-    });	
-}
-
-function addValidationCompleted( data )
-{
-    var type = jQuery(data).find('message').attr('type');
-	var message = jQuery(data).find('message').text();
-	
-	if ( type == 'success' )
-	{
-		removeDisabledIdentifier( );
-		addPatient();
-	}
-	else
-	{
-		if ( type == 'error' )
-		{
-			showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + message );
-		}
-		else if ( type == 'input' )
-		{
-			showWarningMessage( message );
-		}
-		else if( type == 'duplicate' )
-		{
-			showListPatientDuplicate(data, false);
-		}
-			
-		$("#patientForm :input").attr("disabled", false);
-	}
-}
-
-function addPatient()
-{
-	$.ajax({
-      type: "POST",
-      url: 'addPatient.action',
-      data: getParamsForDiv('patientForm'),
-      success: function(json) {
-		var patientId = json.message.split('_')[0];
-		jQuery('#resultSearchDiv').dialog('close');
-		showPatientDashboardForm( patientId );
-      }
-     });
-    return false;
-}
-
 function addEventForPatientForm( divname )
 {
 	jQuery("#" + divname + " [id=checkDuplicateBtn]").click(function() {
@@ -154,17 +11,26 @@ function addEventForPatientForm( divname )
 }
 
 // -----------------------------------------------------------------------------
-// remove value of all the disabled identifier fields
-// an identifier field is disabled when its value is inherited from another person ( underAge is true ) 
-// we don't save inherited identifiers. Only save the representative id.
+// Show relationship with new patient
 // -----------------------------------------------------------------------------
 
-function removeDisabledIdentifier()
+function showRelationshipList( patientId )
 {
-	jQuery("input.idfield").each(function(){
-		if( jQuery(this).is(":disabled"))
-			jQuery(this).val("");
-	});
+	hideById('addRelationshipDiv');
+	hideById('patientDashboard');
+	hideById('selectDiv');
+	hideById('searchDiv');
+	hideById('listPatientDiv');
+
+	jQuery('#loaderDiv').show();
+	jQuery('#listRelationshipDiv').load('showRelationshipList.action',
+		{
+			id:patientId
+		}, function()
+		{
+			showById('listRelationshipDiv');
+			jQuery('#loaderDiv').hide();
+		});
 }
 
 // -----------------------------------------------------------------------------
@@ -178,7 +44,7 @@ function showUpdatePatientForm( patientId )
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('migrationPatientDiv');
-	setInnerHTML('patientDashboard','');
+	hideById('patientDashboard');
 	
 	jQuery('#loaderDiv').show();
 	jQuery('#editPatientDiv').load('showUpdatePatientForm.action',
@@ -257,6 +123,14 @@ function showRepresentativeInfo( patientId)
 			width: 400,
 			height: 300
 		});
+}
+
+function removeDisabledIdentifier()
+{
+	jQuery("input.idfield").each(function(){
+		if( jQuery(this).is(":disabled"))
+			jQuery(this).val("");
+	});
 }
 
 /**
@@ -575,6 +449,10 @@ function unenrollmentForm( programInstanceId )
 	
 }
 
+// ----------------------------------------------------------------
+// Identifiers && Attributes for selected program
+// ----------------------------------------------------------------
+
 function saveIdentifierAndAttribute( patientId, programId, paramsDiv)
 {
 	var params  = getParamsForDiv(paramsDiv);
@@ -589,80 +467,6 @@ function saveIdentifierAndAttribute( patientId, programId, paramsDiv)
 				showSuccessMessage( i18n_save_success );
 			}
 		});
-}
-
-//----------------------------------------------------
-// Show relationship with new patient
-//----------------------------------------------------
-
-function showRelationshipList( patientId )
-{
-	hideById('addRelationshipDiv');
-	setInnerHTML('patientDashboard','');
-	
-	if ( getFieldValue('isShowPatientList') == 'false' )
-	{
-		hideById('selectDiv');
-		hideById('searchDiv');
-		hideById('listPatientDiv');
-
-		jQuery('#loaderDiv').show();
-		jQuery('#listRelationshipDiv').load('showRelationshipList.action',
-			{
-				id:patientId
-			}, function()
-			{
-				showById('listRelationshipDiv');
-				jQuery('#loaderDiv').hide();
-			});
-	}
-	else
-	{
-		loadPatientList();
-	}
-}
-
-// ----------------------------------------------------------------
-// Click Back to main form
-// ----------------------------------------------------------------
-
-function onClickBackBtn()
-{
-	showById('patientManagementLbl');
-	showById('selectDiv');
-	showById('searchDiv');
-	showById('listPatientDiv');
-	
-	hideById('editPatientDiv');
-	hideById('enrollmentDiv');
-	hideById('listRelationshipDiv');
-	hideById('addRelationshipDiv');
-	hideById('migrationPatientDiv');
-	setInnerHTML('patientDashboard','');
-}
-
-function loadPatientList()
-{
-	hideById('editPatientDiv');
-	hideById('enrollmentDiv');
-	hideById('listRelationshipDiv');
-	hideById('addRelationshipDiv');
-	hideById('dataRecordingSelectDiv');
-	hideById('dataEntryFormDiv');
-	hideById('migrationPatientDiv');
-	
-	showById('patientManagementLbl');
-	showById('selectDiv');
-	showById('searchDiv');
-	
-	if( statusSearching == 0)
-	{
-		listAllPatient();
-	}
-	else if( statusSearching == 1 )
-	{
-		validateAdvancedSearch();
-	}
 }
 
 // ----------------------------------------------------------------
@@ -729,16 +533,10 @@ function registerPatientLocation( patientId )
 }
 
 // ----------------------------------------------------------------
-// Load visit schedule
+// List program-stage-instance of selected program
 // ----------------------------------------------------------------
 
 function getVisitSchedule( programInstanceId )
 {
 	$('#tab-3').load("getVisitSchedule.action", {programInstanceId:programInstanceId});
 }
-
-// ----------------------------------------------------------------
-// Cosmetic UI
-// ----------------------------------------------------------------
-
-function reloadOneRecord(){}

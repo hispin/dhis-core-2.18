@@ -34,7 +34,7 @@
 		addEventForPatientForm( 'patientForm' );
 	});	
 	hideById('patientForm [id=age]');
-	hideById('patientManagementLbl');
+	hideById('mainLinkLbl');
 </script>
 
 <h3>

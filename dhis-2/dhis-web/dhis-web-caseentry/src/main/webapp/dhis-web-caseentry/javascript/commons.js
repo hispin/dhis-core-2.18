@@ -452,7 +452,6 @@ function setEventColorStatus( programStageInstanceId, status )
 	}
 }
 
-
 // -----------------------------------------------------------------------------
 // check duplicate patient
 // -----------------------------------------------------------------------------
@@ -701,6 +700,31 @@ function getEventMessages( programInstanceId )
 // Dash board
 // ----------------------------------------------------------------
 
+function showPatientDashboardForm( patientId )
+{
+	hideById('selectDiv');
+	hideById('searchDiv');
+	hideById('listPatientDiv');
+	hideById('editPatientDiv');
+	hideById('listRelationshipDiv');
+	hideById('addRelationshipDiv');
+	hideById('migrationPatientDiv');
+	hideById('patientProgramTrackingDiv');
+	hideById('smsManagementDiv');
+	setInnerHTML('listEventDiv','');
+				
+	jQuery('#loaderDiv').show();
+	jQuery('#patientDashboard').load('patientDashboard.action',
+		{
+			patientId:patientId
+		}, function()
+		{	
+			setInnerHTML('mainFormLink', i18n_main_form_link);
+			showById('patientDashboard');
+			jQuery('#loaderDiv').hide();
+		});
+}
+
 function activeProgramInstanceDiv( programInstanceId )
 {
 	jQuery(".selected").each(function(){
@@ -719,27 +743,6 @@ function hideProgramInstanceDiv( programInstanceId )
 	hideById('pi_' + programInstanceId);
 	jQuery('#pi_' + programInstanceId).removeClass("link-area-active");
 	jQuery("#img_" + programInstanceId).attr('src','');
-}
-
-function showPatientDashboardForm( patientId )
-{
-	hideById('selectDiv');
-	hideById('searchDiv');
-	hideById('listPatientDiv');
-	hideById('editPatientDiv');
-	hideById('listRelationshipDiv');
-	hideById('addRelationshipDiv');
-	hideById('migrationPatientDiv');
-				
-	jQuery('#loaderDiv').show();
-	jQuery('#patientDashboard').load('patientDashboard.action',
-		{
-			patientId:patientId
-		}, function()
-		{	
-			showById('patientDashboard');
-			jQuery('#loaderDiv').hide();
-		});
 }
 
 function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInstanceId)
@@ -926,8 +929,7 @@ function resize(){
 	$('.stage-flow').css('width', w-width); 
 	$('.table-flow').css('width', w-width); 
 	$('.table-flow tr').each(function(){
-		jQuery(this).find('td:visible').attr("width", "10px");
-		jQuery(this).find('td:hidden').removeAttr("width");
+		jQuery(this).find('td').attr("width", "10px");
 		jQuery(this).find('td:last').removeAttr("width");
 	});
 }
@@ -1033,7 +1035,7 @@ function removeEvent( programStageInstanceId, isEvent )
 						showById('searchDiv');
 						showById('listPatientDiv');
 					}
-					var id = 'ps_'+programStageInstanceId;
+					var id = 'ps_' + programStageInstanceId;
 					var programInstanceId = jQuery('#' + id).attr('programInstanceId');
 					if(jQuery(".stage-object-selected").attr('id')== id)
 					{

@@ -2,35 +2,31 @@
 	<legend>$i18n.getString("program")</legend>
 	<table>
 		<tr>
-			<td class='text-column'><label for="enrollmentDate">$programInstance.program.dateOfEnrollmentDescription<em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
-			<td><input type="text" id="enrollmentDate" name="enrollmentDate" class="{validate:{required:true}}" value="$!format.formatDate( $programInstance.enrollmentDate )"></td>
+			<td class='text-column'>$programInstance.program.dateOfEnrollmentDescription:</td>
+			<td><input name="enrollmentDate" id="enrollmentDate" readonly value="$!format.formatDate( $programInstance.enrollmentDate )"></td>
 		</tr>
 		<tr>
-			<td class='text-column'><label for="dateOfIncident">$programInstance.program.dateOfIncidentDescription<em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
-			<td><input type="text" id="dateOfIncident" name="dateOfIncident"  class="{validate:{required:true}}" value="$!format.formatDate( $programInstance.dateOfIncident )"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>
-				<input type="button" class='button' value="$i18n.getString( 'update' )" onclick='updateEnrollment($programInstance.patient.id, $programInstance.program.id, $programInstance.id, "$programInstance.program.name")'/>
-				<input type="button" class='button' value="$i18n.getString( 'unenroll' )" onclick='unenrollmentForm($programInstance.id)'/>
-			</td>
-		<tr>
+			<td class='text-column'>$programInstance.program.dateOfIncidentDescription:</td>
+			<td><input name="dateOfIncident" id="dateOfIncident" readonly value="$!format.formatDate( $programInstance.dateOfIncident )"></td>
+		</tr>				
 	</table>
 </fieldset>
 <br>
-#set($programStageInstances = $programInstance.programStageInstances)
 #if( $programStageInstances.size() > 0 )
 	<table class='mainPageTable' id='progarmStageListDiv' name='progarmStageListDiv' >
-		<col id="noCol"/>
-		<col id="stageCol"/>    
-		<col id="entryCol"/>    
+		<col width="10px">
+		<col width="200px">
+		<col width="200px">
+		<col width="160px">
+		<col/>
+		<col width='60px'/>  
 		<tr>
 			<th>$i18n.getString( "nr" )</th>
 			<th>$i18n.getString( "program_stage" )</th>                   
-			<th>$i18n.getString( "reschedule" )</th> 
+			<th>$i18n.getString( "reschedule_due_date" )</th>       
 			<th>$i18n.getString( "status" )</th>
-			<th>$i18n.getString( "delete" )</th>
+			<th>$i18n.getString( "message" )</th>
+			<th>$i18n.getString( "remove" )</th>
 		</tr>
 		
 	#set( $rowCount = 0 )
@@ -41,38 +37,21 @@
 			##rowCount
 			<td>$rowCount</td>        
 			##stage name
-			<td class='textColumn'>
-				<span id="value[$programStageInstance.id].name" title="$!encoder.htmlEncode( $programStageInstance.programStage.description )">
-					$encoder.htmlEncode( $programStageInstance.programStage.name )            
-				</span>
-			</td>        
-				   
-			##entry
-			#set($status = $programStageInstance.getEventStatus())
-			<td class='input-column '>    
-				#set( $duedateId = "value_" + $programStageInstance.id + "_date" )        
-				#if($programStageInstance.executionDate)
-					<input type="text" id="$duedateId" name="entryfield" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programInstance.program.id, $programStageInstance.id, this );" />
-					<script type="text/javascript">
-						#if( $status==1 || $status==5 )
-							disable('$duedateId');
-						#else
-							datePickerValid( '$duedateId');
-						#end
-					</script> 
-
-				#else
-					<input type="text" id="$duedateId" name="entryfield" value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programInstance.id, $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
-					<script type="text/javascript">
-						#if( $status==1 || $status==5 )
-							disable('$duedateId');
-						#else
-							datePickerFuture( '$duedateId');
-						#end
-					</script> 
-				#end
+			<td>
+				$encoder.htmlEncode( $programStageInstance.programStage.name )						
+			</td>
+			#set( $duedateId = "value_" + $programStageInstance.id + "_date" )        
+			#set($status = $statusMap.get( $programStageInstance.id ))
+			<td>        
+				<input type="text" id="$duedateId" style='width:150px;' value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programInstance.id, $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
+				<script type="text/javascript">
+					#if($status==1 || $status==5 )
+						disable('$duedateId');
+					#else
+						datePicker( '$duedateId' );
+					#end
+				</script> 
 			</td> 
-			
 			<td>
 				<select id="stat_$programStageInstance.id" name="status_$programStageInstance.id" style='width:150px;' onchange="setEventStatus(this, $programStageInstance.id)">
 					#if($status==4)
@@ -91,13 +70,17 @@
 					#end
 				</select>
 				<script>
-					setFieldValue("stat_$programStageInstance.id", "$status");
+					setFieldValue("stat_$programStageInstance.id", $status);
 				</script>
 			</td>
-			
 			<td>
-				#if($programStageInstance.programStage.irregular=='true' )
-					<a href="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" id='del_$programStageInstance.id' name='del_$programStageInstance.id' alt='$i18n.getString( "remove" )' #if($status==1) class='hidden' #end ></a>
+				<input type='text' id='message_$programStageInstance.id' name='message_$programStageInstance.id' style="width:300px;" class="{validate:{required:true,maxlength:160}}">
+				<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')">
+				<input type="button" value="&raquo;" class='tiny-button' title="$i18n.getString( 'send_sms' )" onclick="setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatient(byId('message_$programStageInstance.id'),'$programStageInstance.id');"/>
+			</td>
+			<td>
+				#if($programStageInstance.programStage.irregular=='true' && ($status==3 || $status==4 || $status==5 ))
+					<a href="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
 				#end
 			</td>
 		</tr>

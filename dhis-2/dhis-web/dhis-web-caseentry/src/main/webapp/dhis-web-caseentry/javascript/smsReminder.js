@@ -1,7 +1,21 @@
 
 function orgunitSelected( orgUnits, orgUnitNames )
 {
-	hideById("listPatientDiv");
+	showById('mainLinkLbl');
+	showById('searchDiv');
+	hideById('listEventDiv');
+	hideById('listEventDiv');
+	hideById('patientDashboard');
+	hideById('patientProgramTrackingDiv');
+	hideById('smsManagementDiv');
+	hideById('sendSmsFormDiv');
+	hideById('editPatientDiv');
+	hideById('resultSearchDiv');
+	hideById('enrollmentDiv');
+	hideById('listRelationshipDiv');
+	hideById('addRelationshipDiv');
+	hideById('migrationPatientDiv');
+
 	clearListById('programIdAddPatient');
 	$('#contentDataRecord').html('');
 	setFieldValue('orgunitName', orgUnitNames[0]);
@@ -28,10 +42,11 @@ selection.setListenerFunction( orgunitSelected );
 function listAllPatient()
 {
 	setFieldValue('listAll', "true");
-	hideById('listPatientDiv');
-	contentDiv = 'listPatientDiv';
+	hideById('listEventDiv');
+	contentDiv = 'listEventDiv';
 	$('#contentDataRecord').html('');
 	hideById('advanced-search');
+	eventList = 1;
 	
 	var date = new Date();
 	var d = date.getDate() - 1;
@@ -47,7 +62,7 @@ function listAllPatient()
 				+ getFieldValue('orgunitId') + "_4";
 	
 	showLoader();
-	jQuery('#listPatientDiv').load('getSMSPatientRecords.action',
+	jQuery('#listEventDiv').load('getSMSPatientRecords.action',
 		{
 			programId:programId,
 			listAll:false,
@@ -58,7 +73,7 @@ function listAllPatient()
 		{
 			setInnerHTML('searchInforLbl',i18n_list_all_patients);
 			showById('colorHelpLink');
-			showById('listPatientDiv');
+			showById('listEventDiv');
 			resize();
 			hideLoader();
 		});
@@ -78,9 +93,10 @@ function advancedSearch( params )
 		type:"POST",
 		data: params,
 		success: function( html ){
-			jQuery('#listPatientDiv').html(html);
+			jQuery('#listEventDiv').html(html);
 			showById('colorHelpLink');
-			showById('listPatientDiv');
+			showById('listEventDiv');
+			eventList = 2;
 			resize();
 			hideLoader();
 		}
@@ -93,7 +109,7 @@ function advancedSearch( params )
 
 function showPatientProgramTracking(programInstanceId)
 {
-	hideById("listPatientDiv");
+	hideById("listEventDiv");
 	hideById("searchDiv");
 	setInnerHTML("smsManagementDiv", "");
 	showLoader();	
@@ -102,6 +118,7 @@ function showPatientProgramTracking(programInstanceId)
 			programInstanceId:programInstanceId
 		},function( )
 		{
+			hideById('mainLinkLbl');
 			showById('patientProgramTrackingDiv');
 			hideLoader();
 		});
@@ -116,8 +133,10 @@ function getOutboundSmsList( programStageInstanceId, isSendSMS )
 			programStageInstanceId: programStageInstanceId
 		}
 		, function(){
+			hideById('mainLinkLbl');
+			hideById('mainFormLink');
 			hideById('searchDiv');
-			hideById('listPatientDiv');
+			hideById('listEventDiv');
 			showById('smsManagementDiv');
 		});
 }
@@ -346,6 +365,60 @@ function removeComment( programStageInstanceId, commentId )
 }
 
 // --------------------------------------------------------------------
+// Dashboard
+// --------------------------------------------------------------------
+
+function loadDataEntry( programStageInstanceId )
+{
+	setInnerHTML('dataEntryFormDiv', '');
+	showById('dataEntryFormDiv');
+	showById('executionDateTB');
+	showById('inputCriteriaDiv');
+	setFieldValue( 'dueDate', '' );
+	setFieldValue( 'executionDate', '' );
+	disable('validationBtn');
+	disableCompletedButton(true);
+	disable('uncompleteBtn');
+	
+	jQuery(".stage-object-selected").removeClass('stage-object-selected');
+	var selectedProgramStageInstance = jQuery( '#' + prefixId + programStageInstanceId );
+	selectedProgramStageInstance.addClass('stage-object-selected');
+	setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
+	
+	showLoader();	
+	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
+		{ 
+			programStageInstanceId: programStageInstanceId
+		},function()
+		{
+			var executionDate = jQuery('#executionDate').val();
+			var completed = jQuery('#entryFormContainer input[id=completed]').val();
+			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
+			var reportDateDes = jQuery("#ps_" + programStageInstanceId).attr("reportDateDes");
+			setInnerHTML('reportDateDescriptionField',reportDateDes);
+			enable('validationBtn');
+			if( executionDate == '' )
+			{
+				disable('validationBtn');
+			}
+			else if( executionDate != '' && completed == 'false' )
+			{
+				disableCompletedButton(false);
+			}
+			else if( completed == 'true' )
+			{
+				disableCompletedButton(true);
+			}
+			resize();
+			hideLoader();
+			hideById('contentDiv'); 
+			jQuery('#dueDate').focus();
+		});
+}
+
+function entryFormContainerOnReady(){}
+
+// --------------------------------------------------------------------
 // Cosmetic UI
 // --------------------------------------------------------------------
 
@@ -387,8 +460,6 @@ function reloadRecordList()
 			hideById('ps_' + id );
 		}
 	});
-	jQuery(".arrow-left").hide();
-	jQuery(".arrow-right").hide();
 }
 
 function reloadOneRecord( programInstanceId )
@@ -412,8 +483,18 @@ function reloadOneRecord( programInstanceId )
 
 function onClickBackBtn()
 {
+	showById('mainLinkLbl');
 	showById('searchDiv');
-	showById('listPatientDiv');
+	showById('listEventDiv');
+	showById('migrationPatientDiv');
 	hideById('smsManagementDiv');
-	hideById('patientProgramTrackingDiv');	
+	hideById('patientDashboard');
+	hideById('patientProgramTrackingDiv');
+	
+	if( eventList == 1){
+		listAllPatient();
+	}
+	else if( eventList == 2){
+		validateAdvancedSearch();
+	}
 }
