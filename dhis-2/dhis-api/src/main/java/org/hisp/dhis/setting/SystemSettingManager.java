@@ -73,6 +73,7 @@ public interface SystemSettingManager
     final String KEY_SEND_MESSAGE_SCHEDULED_TASKS = "sendMessageScheduled";
     final String KEY_SCHEDULE_MESSAGE_TASKS = "scheduleMessage";
     final String KEY_SEND_MESSAGE_GATEWAY = "keySendMessageGateway";
+    final String PHONE_NUMBER_AREA_CODE = "phoneNumberAreaCode";
 
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;

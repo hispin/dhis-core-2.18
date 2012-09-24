@@ -160,6 +160,13 @@ public class SetGeneralSettingsAction
         this.completenessOffset = completenessOffset;
     }
 
+    private String phoneNumberAreaCode;
+    
+    public void setPhoneNumberAreaCode( String phoneNumberAreaCode )
+    {
+        this.phoneNumberAreaCode = phoneNumberAreaCode;
+    }
+
     private String message;
 
     public String getMessage()
@@ -181,11 +188,14 @@ public class SetGeneralSettingsAction
     public String execute()
     {
         systemSettingManager.saveSystemSetting( KEY_CACHE_STRATEGY, cacheStrategy );
-        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
-        systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
+        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART,
+            omitIndicatorsZeroNumeratorDataMart );
+        systemSettingManager
+            .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
-        
+        systemSettingManager.saveSystemSetting( PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );
+
         Configuration configuration = configurationService.getConfiguration();
 
         if ( feedbackRecipients != null )
@@ -195,9 +205,11 @@ public class SetGeneralSettingsAction
 
         if ( offlineOrganisationUnitLevel != null )
         {
-            configuration.setOfflineOrganisationUnitLevel( organisationUnitService.getOrganisationUnitLevel( offlineOrganisationUnitLevel ) );
+            configuration.setOfflineOrganisationUnitLevel( organisationUnitService
+                .getOrganisationUnitLevel( offlineOrganisationUnitLevel ) );
 
-            // if the level is changed, we need to make sure that the version is also changed.
+            // if the level is changed, we need to make sure that the version is
+            // also changed.
             organisationUnitService.updateVersion();
         }
 
