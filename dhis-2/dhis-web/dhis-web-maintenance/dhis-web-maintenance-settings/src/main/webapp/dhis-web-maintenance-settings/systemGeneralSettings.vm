@@ -6,7 +6,6 @@
 				infrastructuralDataElements: getFieldValue( 'infrastructuralDataElements' ),
 				infrastructuralPeriodType: getFieldValue( 'infrastructuralPeriodType' ),
 				feedbackRecipients: getFieldValue( 'feedbackRecipients' ),
-                completenessRecipients: getFieldValue( 'completenessRecipients' ),
                 offlineOrganisationUnitLevel: getFieldValue( 'offlineOrganisationUnitLevel' ),
 				omitIndicatorsZeroNumeratorDataMart: jQuery( '#omitIndicatorsZeroNumeratorDataMart' ).is( ':checked' ),
 				disableDataEntryWhenCompleted: jQuery( '#disableDataEntryWhenCompleted' ).is( ':checked' ),
@@ -63,18 +62,6 @@
 	<option value="-1">$i18n.getString( "no_feedback_recipients" )</option>
 	#foreach ( $group in $userGroups )
 	<option value="$group.id" #if( $group.id == $!feedbackRecipients.id )selected="selected"#end>$encoder.htmlEncode( $group.name )</option>
-	#end
-</select>
-</p>
-
-<!-- completeness_recipients -->
-<h4>$i18n.getString( "completeness_recipients" )</h4>
-
-<p>
-<select id="completenessRecipients" name="completenessRecipients" style="width:30em">
-	<option value="-1">$i18n.getString( "no_completeness_recipients" )</option>
-	#foreach ( $group in $userGroups )
-	<option value="$group.id" #if( $group.id == $!completenessRecipients.id )selected="selected"#end>$encoder.htmlEncode( $group.name )</option>
 	#end
 </select>
 </p>

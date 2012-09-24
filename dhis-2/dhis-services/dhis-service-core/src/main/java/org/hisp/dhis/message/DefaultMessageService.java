@@ -156,7 +156,7 @@ public class DefaultMessageService
 
     public int sendCompletenessMessage( CompleteDataSetRegistration registration )
     {
-        UserGroup userGroup = configurationService.getConfiguration().getCompletenessRecipients();
+        UserGroup userGroup = new UserGroup(); //TODO
 
         DataSet dataSet = registration.getDataSet();
         

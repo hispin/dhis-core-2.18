@@ -104,13 +104,6 @@ public class GetGeneralSettingsAction
         return feedbackRecipients;
     }
 
-    private UserGroup completenessRecipients;
-
-    public UserGroup getCompletenessRecipients()
-    {
-        return completenessRecipients;
-    }
-
     private OrganisationUnitLevel offlineOrganisationUnitLevel;
 
     public OrganisationUnitLevel getOfflineOrganisationUnitLevel()
@@ -174,8 +167,6 @@ public class GetGeneralSettingsAction
         configuration = configurationService.getConfiguration();
 
         feedbackRecipients = configurationService.getConfiguration().getFeedbackRecipients();
-
-        completenessRecipients = configurationService.getConfiguration().getCompletenessRecipients();
 
         offlineOrganisationUnitLevel = configurationService.getConfiguration().getOfflineOrganisationUnitLevel();
 
