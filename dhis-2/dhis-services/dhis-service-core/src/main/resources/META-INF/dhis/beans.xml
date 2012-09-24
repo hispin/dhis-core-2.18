@@ -604,7 +604,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	  <value>af</value>
 	  <value>ar</value>
 	  <value>am</value>
-	  <value>zh</value>
 	  <value>de</value>
 	  <value>en</value>
 	  <value>es</value>
@@ -623,6 +622,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	  <value>rw</value>
 	  <value>sw</value>
 	  <value>vi</value>
+	  <value>zh</value>
 	</list>
 	</property>
   </bean>
