@@ -82,7 +82,7 @@
 								</tr>
 							</table>
 							<div class="contentProviderTable" style='height:76px;'>
-								<table width='100%' id='activeTB'>
+								<table width='100%' id='activeTB' name='activeTB'>
 									#foreach( $programInstance in $activeProgramInstances )
 										#set($programStageInstanceId = '')
 										#if($programInstance.program.type==2)

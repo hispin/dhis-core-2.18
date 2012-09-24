@@ -1477,6 +1477,7 @@ function showPatientDashboardForm( patientId )
 		}, function()
 		{	
 			setInnerHTML('mainFormLink', i18n_main_form_link);
+			jQuery('#activeTB tr:first').click();
 			showById('patientDashboard');
 			jQuery('#loaderDiv').hide();
 		});
