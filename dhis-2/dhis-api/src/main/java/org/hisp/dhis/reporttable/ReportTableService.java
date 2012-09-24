@@ -142,6 +142,8 @@ public interface ReportTableService
      */
     Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid, boolean minimal );
     
+    ReportTable getReportTable( String uid, String mode );
+    
     Collection<ReportTable> getReportTablesBetween( int first, int max );
 
     Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max );
