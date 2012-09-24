@@ -1,6 +1,3 @@
-<script type="text/javascript" src="javascript/entry.js"></script>
-<script type="text/javascript" src="javascript/relationshipPatient.js"></script>
-
 <script>
 	jQuery(document).ready(	function(){
 		showById('programAddPatientTR');
@@ -29,7 +26,6 @@
 	<input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
 	<input type='hidden' id='listAll' name='listAll'>
 	<input type='hidden' id='sendToList' name='sendToList'>
-	<input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='$programStageInstance.id'>
 	<input type='hidden' id='programStageName' name='programStageName'>
 	<div id='searchDiv'>
 		#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	
@@ -38,7 +34,6 @@
 
 <div id='listEventDiv'></div>
 <div id='patientDashboard'></div> <!-- Patient dashboard -->
-<div id='patientProgramTrackingDiv'></div>
 <div id='smsManagementDiv'></div>
 <div id='sendSmsFormDiv'></div>
 <div id='editPatientDiv'></div> <!-- Add Patient Form -->

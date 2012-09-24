@@ -416,7 +416,6 @@
 				../dhis-web-commons/ouwt/ouwt.js
 				,javascript/commons.js
 				,javascript/patient.js
-				,javascript/patientForm.js
 				,javascript/entry.js
 				,javascript/relationshipPatient.js
 			</param>
@@ -887,8 +886,8 @@
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,
 				javascript/commons.js,
-				javascript/patient.js,
 				javascript/relationshipPatient.js,
+				javascript/entry.js,
 				javascript/smsReminder.js</param>
 			<param name="requiredAuthorities">F_SMS_REMINDER</param>
 		</action>
@@ -916,10 +915,9 @@
 
 		<action name="sendSMS"
 			class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction">
-			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm
-			</result>
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
