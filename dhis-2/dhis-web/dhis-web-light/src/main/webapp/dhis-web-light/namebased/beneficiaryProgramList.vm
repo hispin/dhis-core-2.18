@@ -35,8 +35,10 @@
 	<ul>
 		#if( $listOfCompletedProgram.size() != 0 )
 			#foreach( $programInstance in $listOfCompletedProgram )
-				$programInstance.program().name()
+				$programInstance.getProgram().getName()
 			#end
+		#else
+			<li>$i18n.getString("no_completed_programs")</li>
 		#end
 	</ul>
 </p>

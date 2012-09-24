@@ -258,7 +258,7 @@ public class GetPatientProgramListAction
         patient = patientService.getPatient( patientId );
         for ( ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ) )
         {
-            if ( !programInstance.getProgram().isSingleEvent() )
+            if ( !programInstance.getProgram().isSingleEvent() && !programInstance.isCompleted())
             {
                 programInstances.add( programInstance );
             }
