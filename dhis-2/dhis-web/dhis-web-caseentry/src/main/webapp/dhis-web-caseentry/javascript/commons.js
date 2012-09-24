@@ -892,7 +892,7 @@ function removeEvent( programStageInstanceId, isEvent )
 					jQuery('#ps_' + programStageInstanceId).remove();
 					jQuery('#arrow_' + programStageInstanceId).remove();
 					jQuery('#org_' + programStageInstanceId).remove();
-					
+					resetActiveEvent( programStageInstanceId );
 					reloadOneRecord( programInstanceId );
 					showSuccessMessage( i18n_delete_success );
 					resize();
