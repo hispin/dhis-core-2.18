@@ -340,7 +340,7 @@ function reloadOneRecord( programInstanceId )
 	{
 		var firstSearched = jQuery("#tb_" + programInstanceId + " .searched:first");
 		firstSearched.show();
-		showById('arrow_' + firstSearched.attr(programStageInstanceId) );
+		jQuery("#tb_" + programInstanceId + " [name^=arrow_]").show();
 	}
 }
 
