@@ -146,13 +146,6 @@ public class SetGeneralSettingsAction
         this.feedbackRecipients = feedbackRecipients;
     }
 
-    private Integer completenessRecipients;
-
-    public void setCompletenessRecipients( Integer completenessRecipients )
-    {
-        this.completenessRecipients = completenessRecipients;
-    }
-
     private Integer offlineOrganisationUnitLevel;
 
     public void setOfflineOrganisationUnitLevel( Integer offlineOrganisationUnitLevel )
@@ -198,11 +191,6 @@ public class SetGeneralSettingsAction
         if ( feedbackRecipients != null )
         {
             configuration.setFeedbackRecipients( userGroupService.getUserGroup( feedbackRecipients ) );
-        }
-
-        if ( completenessRecipients != null )
-        {
-            configuration.setCompletenessRecipients( userGroupService.getUserGroup( completenessRecipients ) );
         }
 
         if ( offlineOrganisationUnitLevel != null )

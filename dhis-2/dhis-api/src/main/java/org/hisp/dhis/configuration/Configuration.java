@@ -52,8 +52,6 @@ public class Configuration
     
     private UserGroup feedbackRecipients;
     
-    private UserGroup completenessRecipients;
-
     private OrganisationUnitLevel offlineOrganisationUnitLevel;
 
     private DataElementGroup infrastructuralDataElements;
@@ -95,16 +93,6 @@ public class Configuration
     public void setFeedbackRecipients( UserGroup feedbackRecipients )
     {
         this.feedbackRecipients = feedbackRecipients;
-    }
-
-    public UserGroup getCompletenessRecipients()
-    {
-        return completenessRecipients;
-    }
-
-    public void setCompletenessRecipients( UserGroup completenessRecipients )
-    {
-        this.completenessRecipients = completenessRecipients;
     }
 
     public void setOfflineOrganisationUnitLevel( OrganisationUnitLevel offlineOrganisationUnitLevel )
