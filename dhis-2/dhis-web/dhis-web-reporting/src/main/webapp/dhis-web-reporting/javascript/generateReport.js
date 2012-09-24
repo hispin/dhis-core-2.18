@@ -22,7 +22,7 @@ function validationError()
 
 function viewReport( type )
 {
-	var reportType = type != null && type != "" ? type : "pdf";
+	var reportType = isDefined( type ) && type != "" ? type : "pdf";
 
     if ( validationError() )
     {

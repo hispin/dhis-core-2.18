@@ -35,6 +35,7 @@ import org.hisp.dhis.commons.action.AbstractRelativePeriodsAction;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.StreamUtils;
@@ -137,6 +138,20 @@ public class AddReportAction
         this.currentDesign = currentDesign;
     }
 
+    private boolean paramReportingMonth;
+
+    public void setParamReportingMonth( boolean paramReportingMonth )
+    {
+        this.paramReportingMonth = paramReportingMonth;
+    }
+
+    private boolean paramOrganisationUnit;
+
+    public void setParamOrganisationUnit( boolean paramOrganisationUnit )
+    {
+        this.paramOrganisationUnit = paramOrganisationUnit;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -181,11 +196,14 @@ public class AddReportAction
         
         ReportTable reportTable = reportTableService.getReportTable( reportTableId );
         
+        ReportParams reportParams = new ReportParams( paramReportingMonth, false, false, false, paramOrganisationUnit );
+        
         report.setName( name );
         report.setReportTable( reportTable );
         report.setUsingOrgUnitGroupSets( usingOrgUnitGroupSets );
         report.setRelatives( getRelativePeriods() );
-                
+        report.setReportParams( reportParams );
+        
         log.info( "Upload file name: " + fileName + ", content type: " + contentType );
 
         // ---------------------------------------------------------------------

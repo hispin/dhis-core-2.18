@@ -38,6 +38,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -59,6 +60,8 @@ public class Report
 
     private RelativePeriods relatives;
 
+    private ReportParams reportParams;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -74,11 +77,12 @@ public class Report
         this.reportTable = reportTable;
     }
     
-    public Report( String name, String designContent, RelativePeriods relatives )
+    public Report( String name, String designContent, RelativePeriods relatives, ReportParams reportParams )
     {
         this.name = name;
         this.designContent = designContent;
         this.relatives = relatives;
+        this.reportParams = reportParams;
     }
 
     // -------------------------------------------------------------------------
@@ -207,6 +211,19 @@ public class Report
     public void setRelatives( RelativePeriods relatives )
     {
         this.relatives = relatives;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public ReportParams getReportParams()
+    {
+        return reportParams;
+    }
+
+    public void setReportParams( ReportParams reportParams )
+    {
+        this.reportParams = reportParams;
     }
 
     @Override
