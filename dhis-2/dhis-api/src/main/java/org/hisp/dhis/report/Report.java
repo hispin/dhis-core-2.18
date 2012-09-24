@@ -117,6 +117,14 @@ public class Report
         return relatives != null && !relatives.getRelativePeriods().isEmpty();
     }
     
+    /**
+     * Indicates whether this report has report parameters set.
+     */
+    public boolean hasReportParams()
+    {
+        return reportParams != null && reportParams.isSet();
+    }
+    
     // -------------------------------------------------------------------------
     // Equals and hashCode
     // -------------------------------------------------------------------------

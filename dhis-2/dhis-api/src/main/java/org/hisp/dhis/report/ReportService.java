@@ -27,11 +27,11 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.i18n.I18nFormat;
-
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.Date;
+
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -44,9 +44,26 @@ public interface ReportService
     final String REPORTTYPE_XLS = "xls";
 
     final String PARAM_RELATIVE_PERIODS = "periods";
-    final String PARAM_ORG_UNITS = "orgunits";
+    final String PARAM_ORG_UNITS = "organisationunits";
     
-    void renderReport( OutputStream out, String reportUid, Date reportingPeriod,
+    /**
+     * Renders a Jasper Report. 
+     * 
+     * Will make the following params available:
+     * 
+     * "periods" String of relative period ids)
+     * "organisationunits" String of selected organisation unit uids)
+     * "reporting_month_name" Name of the selected period
+     * "param_organisationunit_name" Name of the selected organisation unit
+     * 
+     * @param out the OutputStream to write the report to.
+     * @param reportUid the uid of the report to render.
+     * @param period the period to use as parameter.
+     * @param organisationUnitUid the uid of the org unit to use as parameter.
+     * @param type the type of the report, can be "xls" and "pdf".
+     * @param format the I18nFormat to use.
+     */
+    void renderReport( OutputStream out, String reportUid, Period period,
                        String organisationUnitUid, String type, I18nFormat format );
 
     /**
