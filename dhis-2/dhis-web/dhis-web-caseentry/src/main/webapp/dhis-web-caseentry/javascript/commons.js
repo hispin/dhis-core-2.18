@@ -1590,7 +1590,6 @@ function sendSmsOnePatient( field, programStageInstanceId )
 	}
 	
 	field.style.backgroundColor = SAVING_COLOR;
-	programStageInstanceId = getFieldValue( 'programStageInstanceId' );
 	jQuery.postUTF8( 'sendSMS.action',
 		{
 			programStageInstanceId: programStageInstanceId,
