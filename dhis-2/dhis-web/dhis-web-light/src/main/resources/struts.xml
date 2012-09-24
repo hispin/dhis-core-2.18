@@ -79,7 +79,6 @@
       <param name="page">/dhis-web-light/trackingMenu.vm</param>
       <param name="requiredAuthorities">M_dhis-web-maintenance-patient</param>
     </action>
-	
     <action name="selectNamebasedOrganisationUnit"
         class="org.hisp.dhis.light.namebaseddataentry.action.GetNamebasedOrganisationUnitsAction">
 		<result name="redirect" type="redirect">/light/selectActivityType.action?orgUnitId=${orgUnitId}</result>
@@ -130,7 +129,6 @@
       </result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/namebased/programStageForm.vm</param>
-	  <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <action name="showBeneficiaryDetail"
@@ -182,8 +180,14 @@
 
     <action name="addNewRelationship"
         class="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction">
-      <result name="redirect" type="redirect">showPatientProgramList.action?patientId=${originalPatientId}&amp;validated=true</result>
-	  <param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+      <result name="redirect" type="redirect">showPatientProgramList.action?patientId=${originalPatientId}&amp;validated=true
+      </result>
+    </action>
+    
+    <action name="deleteRelationship"
+    	class="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction">
+      <result name="redirect" type="redirect">showPatientProgramList.action?patientId=${currentPatientId}&amp;validated=true
+      </result>
     </action>
 
     <action name="showPatientProgramList"
@@ -208,7 +212,6 @@
         class="org.hisp.dhis.light.namebaseddataentry.action.SaveRepeatableEventAction">
       <result name="success" type="redirect">showPatientProgramStageList.action?patientId=${patientId}&amp;programInstanceId=${programInstanceId}&amp;programId=${programId}&amp;validated=false
       </result>
-	  <param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
     </action>
 	  
 	  <action name="showPatientLocationForm"
@@ -220,7 +223,6 @@
 	  <action name="registerPatientLocation"
         class="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction">
       <result name="success" type="redirect">showPatientProgramList.action?patientId=${patientId}</result>
-	   <param name="requiredAuthorities">F_PATIENT_UPDATE</param>
     </action>
 
     <!-- Beneficiary Registration -->
@@ -245,7 +247,6 @@
 	  <result name="redirect" type="redirect">/light/showAddNewRelationshipForm.action?originalPatientId=${originalPatientId}&amp;relatedPatientId=${patientId}&amp;relationshipTypeId=${relationshipTypeId}</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/registration/beneficiaryRegistrationForm.vm</param>
-	  <param name="requiredAuthorities">F_PATIENT_ADD</param>
     </action>
 
     <!-- Beneficiary Enrollment -->
@@ -285,7 +286,6 @@
       <result name="success" type="redirect">/light/showPatientProgramList.action?patientId=${patientId}</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/enrollment/programEnrollmentForm.vm</param>
-	  <param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
     </action>
 
     <!-- Single Event -->
@@ -315,7 +315,6 @@
       </result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/singleevent/singleEventForm.vm</param>
-	  <param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>
     </action>
 
     <!-- Reports -->

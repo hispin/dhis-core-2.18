@@ -195,7 +195,7 @@ public class GetPatientProgramListAction
     
     //Use for add relationship
     
-    private Map<String,Patient> relatedPeople;
+    /*private Map<String,Patient> relatedPeople;
 
     public Map<String, Patient> getRelatedPeople()
     {
@@ -203,6 +203,17 @@ public class GetPatientProgramListAction
     }
 
     public void setRelatedPeople( Map<String, Patient> relatedPeople )
+    {
+        this.relatedPeople = relatedPeople;
+    }*/
+    private Map<Relationship,Patient> relatedPeople;
+    
+    public Map<Relationship, Patient> getRelatedPeople()
+    {
+        return relatedPeople;
+    }
+
+    public void setRelatedPeople( Map<Relationship, Patient> relatedPeople )
     {
         this.relatedPeople = relatedPeople;
     }
@@ -248,7 +259,7 @@ public class GetPatientProgramListAction
         throws Exception
     {
         programInstances.clear();
-        relatedPeople = new HashMap<String, Patient>();
+        relatedPeople = new HashMap<Relationship, Patient>();
 
         patient = patientService.getPatient( patientId );
         for ( ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ) )
@@ -266,12 +277,14 @@ public class GetPatientProgramListAction
         {
             if ( relationship.getPatientA().getId() != patient.getId() )
             {
-                relatedPeople.put( relationship.getRelationshipType().getName(), relationship.getPatientA() );
+                //relatedPeople.put( relationship.getRelationshipType().getName(), relationship.getPatientA() );
+                relatedPeople.put( relationship, relationship.getPatientA());
             }
 
             if ( relationship.getPatientB().getId() != patient.getId() )
             {
-                relatedPeople.put( relationship.getRelationshipType().getName(), relationship.getPatientB() );
+                //relatedPeople.put( relationship.getRelationshipType().getName(), relationship.getPatientB() );
+                relatedPeople.put( relationship, relationship.getPatientB());
             }
         }
         
