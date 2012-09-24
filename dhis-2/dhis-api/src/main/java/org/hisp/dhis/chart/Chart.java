@@ -198,7 +198,7 @@ public class Chart
     {
         if ( DIMENSION_PERIOD.equals( filter ) )
         {
-            return format.formatPeriod( getRelativePeriods().get( 0 ) );
+            return format.formatPeriod( getAllPeriods().get( 0 ) );
         }
 
         return filter().getName();
