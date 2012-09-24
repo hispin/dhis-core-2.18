@@ -110,7 +110,14 @@
     <action name="removeMessageRedirect" class="org.hisp.dhis.dashboard.message.action.RemoveMessageAction">
       <result name="success" type="redirect">message.action?currentPage=${keyCurrentPage}</result>
     </action>
-	
+
+    <action name="getMessageRecipients" class="org.hisp.dhis.dashboard.message.action.GetMessageRecipientsAction">
+      <result name="success" type="velocity-json">/dhis-web-dashboard-integration/jsonMessageRecipients.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+
 	<action name="toggleFollowUp" class="org.hisp.dhis.dashboard.message.action.ToggleFollowUpAction">
 	  <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 	  <param name="onExceptionReturn">plainTextError</param>
