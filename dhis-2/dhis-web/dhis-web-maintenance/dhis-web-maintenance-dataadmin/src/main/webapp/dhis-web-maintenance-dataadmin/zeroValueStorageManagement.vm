@@ -26,10 +26,12 @@
 <h3>$i18n.getString( "zero_storage_management" ) #openHelp( "zeroValueStorage" )</h3>
 <br/>
 <form id="ZeroDataValueManagement" method="POST" action="updateZeroIsSignificantForDataElements.action" onsubmit="selectAllById( 'zeroDataValueElements' )">
-<table>
-    <col style="width: 450px"/>
-    <col/>
-    <col style="width: 450px"/>
+<table style="width: 100%;">
+    <colgroup>
+      <col style="width: 50%;"/>
+      <col/>
+      <col style="width: 50%;"/>
+    </colgroup>
 
 	<thead>
 		<tr>
