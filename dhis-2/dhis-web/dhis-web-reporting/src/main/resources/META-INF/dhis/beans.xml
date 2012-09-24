@@ -85,6 +85,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction"
     scope="prototype">
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
 

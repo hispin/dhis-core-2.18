@@ -142,16 +142,6 @@ public interface ReportTableService
      */
     Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid, boolean minimal );
     
-    /**
-     * If report table mode, this method will return the report table with the
-     * given identifier. If report mode, this method will return the report
-     * tables associated with the report.
-     *
-     * @param uid the uid.
-     * @param mode the mode.
-     */
-    ReportTable getReportTable( String uid, String mode );
-
     Collection<ReportTable> getReportTablesBetween( int first, int max );
 
     Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max );

@@ -47,9 +47,6 @@
         	<a class="jdbcDataSource" onclick="toggleDataSource()" style="cursor:pointer; display:none">Use report table data source</a>
         </td>
     </tr>
-    <tr class="reportTableDataSource">
-    	<th colspan="2">$i18n.getString( "report_table" )</th>
-    </tr>
 	<tr class="reportTableDataSource">
 		<td>$i18n.getString( "report_table" )</td>
 		<td>
@@ -66,6 +63,20 @@
 	</tr>
 	<tr class="jdbcDataSource" style="display:none">
         <td colspan="2">#parse( "/dhis-web-reporting/relativePeriodsInput.vm" )</td>
+    </tr>
+    <tr class="jdbcDataSource" style="display:none">
+        <td colspan="2" style="height:15px"></td>
+    </tr>
+    <tr class="jdbcDataSource" style="display:none">
+        <th colspan="2">$i18n.getString( "report_parameters" )</th>
+    </tr>
+    <tr class="jdbcDataSource" style="display:none">
+        <td colspan="2">
+            <label for="paramReportingMonth">$i18n.getString( "reporting_period" )</label>
+            <input type="checkbox" id="paramReportingMonth" name="paramReportingMonth" value="true"#if( $report.reportParams.isParamReportingMonth() ) checked#end>&nbsp;
+            <label for="paramOrganisationUnit">$i18n.getString( "organisation_unit" )</label>
+            <input type="checkbox" id="paramOrganisationUnit" name="paramOrganisationUnit" value="true"#if( $report.reportParams.isParamOrganisationUnit() ) checked#end>
+        <td>
     </tr>
     <tr>
         <td colspan="2" style="height:15px"></td>
