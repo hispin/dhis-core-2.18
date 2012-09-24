@@ -8,7 +8,11 @@
 	});
 </script>
 
-<h4>$programStageInstance.programStage.name</h4>
+<h3>
+ <a href="javascript:onClickBackBtn();">$i18n.getString( 'program_tracking' )</a>
+ &#8226; <a href="javascript:showPatientDashboardForm( $programStageInstance.programInstance.patient.id );">$i18n.getString( 'patient_dashboard' )</a>
+ &raquo; $programStageInstance.programStage.name
+</h3>
 
 <input type='hidden' id='currentUsername' name='currentUsername' value='$currentUsername'>
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programStageInstance.programInstance.id'>
@@ -52,8 +56,6 @@
 	<tr>
 		<td>
 			<br>
-			<input type='button' value='$i18n.getString("back")' onclick='onClickBackBtn();'>
-			<input type='button' value='$i18n.getString("patient_dashboard")' onclick='javascript:showPatientProgramTracking( "$programStageInstance.programInstance.id" );'>
 			#set($status = $programStageInstance.getEventStatus())
 			#if( $programStageInstance.irregular!='true' && ($status==3 || $status==4 || $status==5 ) )
 				<input type="button" value="$i18n.getString('remove_this_event')" onclick="javascript:removeEvent($programStageInstance.id, true)" title='$i18n.getString( "remove_this_event" )'></a>

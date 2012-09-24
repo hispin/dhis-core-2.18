@@ -1,5 +1,5 @@
 <h3>
- <a href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
+ <a href="javascript:onClickBackBtn();" id='mainFormLink' name='mainFormLink'>$i18n.getString( 'patient_management' )</a>
  &#8226; $i18n.getString( 'patient_dashboard' )
 </h3>
 
@@ -186,5 +186,5 @@
 <div id='dataEntryFormDiv'></div>
 
 <script>
-	hideById('patientManagementLbl');
+	hideById('mainLinkLbl');
 </script>

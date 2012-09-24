@@ -42,7 +42,7 @@
 						#if($value=="")
 							#set($value=$patient.getFullName())
 						#end
-						<input type='button' class='patient-object' value='$value' onclick='javascript:showPatientProgramTracking( "$programInstance.id" );' title='$i18n.getString( "patient_dashboard" )'>
+						<input type='button' class='patient-object' value='$value' onclick='javascript:showPatientDashboardForm( "$programInstance.patient.id" );' title='$i18n.getString( "patient_dashboard" )'>
 					</td>
 					<td class='bold' style='cursor:pointer;font-size:25px' onclick="eventFlowToggle($programInstance.id)">
 						<a>&raquo;</a>

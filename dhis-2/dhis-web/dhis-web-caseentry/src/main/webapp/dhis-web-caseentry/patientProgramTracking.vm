@@ -1,4 +1,9 @@
-<h4>$programInstance.program.name</h4>
+<h3>
+ <a href="javascript:onClickBackBtn();">$i18n.getString( 'program_tracking' )</a>
+ &#8226; <a href="javascript:showPatientDashboardForm( $programInstance.patient.id );">$i18n.getString( 'patient_dashboard' )</a>
+ &raquo; $!programInstance.program.name
+</h3>
+
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programInstance.id' />
 <input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id' />
 <input type='hidden' id='currentUsername' name='currentUsername' value='$currentUsername'>
