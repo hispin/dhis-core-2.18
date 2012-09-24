@@ -232,8 +232,8 @@ function loadDataEntry( programStageInstanceId )
 			}
 			resize();
 			hideLoader();
-			hideById('contentDiv'); 
-			jQuery('#dueDate').focus();
+			hideById('contentDiv');
+			$(window).scrollTop(200);
 		} );
 }
 
