@@ -156,38 +156,40 @@ public class DefaultMessageService
 
     public int sendCompletenessMessage( CompleteDataSetRegistration registration )
     {
-        UserGroup userGroup = new UserGroup(); //TODO
-
         DataSet dataSet = registration.getDataSet();
         
-        if ( userGroup != null && !userGroup.getMembers().isEmpty() && dataSet != null )
+        if ( dataSet == null || dataSet.getNotificationRecipients() == null || dataSet.getNotificationRecipients().getMembers().isEmpty() )
         {
-            User sender = currentUserService.getCurrentUser();
+            return 0;
+        }
+        
+        UserGroup userGroup = dataSet.getNotificationRecipients();
+        
+        User sender = currentUserService.getCurrentUser();
 
-            String text = new VelocityManager().render( registration, COMPLETE_TEMPLATE );
+        String text = new VelocityManager().render( registration, COMPLETE_TEMPLATE );
 
-            MessageConversation conversation = new MessageConversation( COMPLETE_SUBJECT, sender );
+        MessageConversation conversation = new MessageConversation( COMPLETE_SUBJECT, sender );
 
-            conversation.addMessage( new Message( text, null, sender ) );
-            
-            for ( User user : userGroup.getMembers() )
+        conversation.addMessage( new Message( text, null, sender ) );
+        
+        for ( User user : userGroup.getMembers() )
+        {
+            if ( user.getUserCredentials().getAllDataSets().contains( dataSet ) )
             {
-                if ( user.getUserCredentials().getAllDataSets().contains( dataSet ) )
-                {
-                    conversation.addUserMessage( new UserMessage( user ) );
-                }
-            }
-
-            if ( !conversation.getUserMessages().isEmpty() )
-            {
-                int id = saveMessageConversation( conversation );
-                
-                invokeMessageSenders( COMPLETE_SUBJECT, text, sender, conversation.getUsers() );
-                
-                return id;
+                conversation.addUserMessage( new UserMessage( user ) );
             }
         }
 
+        if ( !conversation.getUserMessages().isEmpty() )
+        {
+            int id = saveMessageConversation( conversation );
+            
+            invokeMessageSenders( COMPLETE_SUBJECT, text, sender, conversation.getUsers() );
+            
+            return id;
+        }
+            
         return 0;
     }
 

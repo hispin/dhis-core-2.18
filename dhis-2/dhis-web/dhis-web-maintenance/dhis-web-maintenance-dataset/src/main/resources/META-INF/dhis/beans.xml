@@ -163,13 +163,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.dataset.action.PeriodTypeListAction" class="org.hisp.dhis.dataset.action.PeriodTypeListAction"
-    scope="prototype">
-    <property name="periodService">
-      <ref bean="org.hisp.dhis.period.PeriodService" />
-    </property>
-  </bean>
-
   <bean id="org.hisp.dhis.dataset.action.SaveDataSetSortOrderAction" class="org.hisp.dhis.dataset.action.SaveDataSetSortOrderAction"
     scope="prototype">
     <property name="dataSetService">
@@ -184,6 +177,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="periodService">
       <ref bean="org.hisp.dhis.period.PeriodService" />
+    </property>
+    <property name="userGroupService">
+      <ref bean="org.hisp.dhis.user.UserGroupService" />
     </property>
   </bean>
 
@@ -200,6 +196,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="userService">
       <ref bean="org.hisp.dhis.user.UserService" />
+    </property>
+    <property name="userGroupService">
+      <ref bean="org.hisp.dhis.user.UserGroupService" />
     </property>
   </bean>
 
@@ -219,6 +218,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="indicatorService">
       <ref bean="org.hisp.dhis.indicator.IndicatorService" />
+    </property>
+    <property name="userGroupService">
+      <ref bean="org.hisp.dhis.user.UserGroupService" />
     </property>
   </bean>
 
