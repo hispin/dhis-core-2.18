@@ -193,19 +193,6 @@ public class GetPatientProgramListAction
         this.enrollmentProgramList = enrollmentProgramList;
     }
     
-    //Use for add relationship
-    
-    /*private Map<String,Patient> relatedPeople;
-
-    public Map<String, Patient> getRelatedPeople()
-    {
-        return relatedPeople;
-    }
-
-    public void setRelatedPeople( Map<String, Patient> relatedPeople )
-    {
-        this.relatedPeople = relatedPeople;
-    }*/
     private Map<Relationship,Patient> relatedPeople;
     
     public Map<Relationship, Patient> getRelatedPeople()
@@ -253,6 +240,13 @@ public class GetPatientProgramListAction
     {
         this.patientIdentifiers = patientIdentifiers;
     }
+    
+    private List<ProgramInstance> listOfCompletedProgram;
+    
+    public List<ProgramInstance> getListOfCompletedProgram()
+    {
+        return listOfCompletedProgram;
+    }
 
     @Override
     public String execute()
@@ -277,19 +271,31 @@ public class GetPatientProgramListAction
         {
             if ( relationship.getPatientA().getId() != patient.getId() )
             {
-                //relatedPeople.put( relationship.getRelationshipType().getName(), relationship.getPatientA() );
                 relatedPeople.put( relationship, relationship.getPatientA());
             }
 
             if ( relationship.getPatientB().getId() != patient.getId() )
             {
-                //relatedPeople.put( relationship.getRelationshipType().getName(), relationship.getPatientB() );
                 relatedPeople.put( relationship, relationship.getPatientB());
             }
         }
         
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
+        
         patientIdentifiers = patientIdentifierService.getPatientIdentifiers( patient );
+        
+        Collection<ProgramInstance> listOfProgramInstance = programInstanceService.getProgramInstances( patient );
+        
+        this.listOfCompletedProgram = new ArrayList<ProgramInstance>();
+        
+        for( ProgramInstance each: listOfProgramInstance )
+        {
+            if( each.isCompleted() )
+            {
+                this.listOfCompletedProgram.add( each );
+            }
+        }
+        
         return SUCCESS;
     }
 
