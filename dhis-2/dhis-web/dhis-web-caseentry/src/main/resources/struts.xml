@@ -531,15 +531,13 @@
 			class="org.hisp.dhis.caseentry.action.patient.GetPatientLocationAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/patientLocation.vm</param>
-			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+			<param name="requiredAuthorities">F_PATIENT_CHANGE_LOCATION</param>
 		</action>
 
 		<action name="registerPatientLocation"
 			class="org.hisp.dhis.caseentry.action.patient.RegisterPatientLocationAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm
-			</result>
-			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_PATIENT_CHANGE_LOCATION</param>
 		</action>
 
 		<!-- Patient-Program Enrollment -->
