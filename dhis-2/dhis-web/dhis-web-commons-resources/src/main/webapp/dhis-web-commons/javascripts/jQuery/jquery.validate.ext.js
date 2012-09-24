@@ -292,6 +292,11 @@ jQuery.validator.addMethod("time", function(value, element) {
     || /^([01][0-9])|(2[0123]):([0-5])([0-9])$/.test(value);
 }, "Please enter a valid time, between 00:00 and 23:59");
 
+
+jQuery.validator.addMethod("phone", function(value, element) {
+    return this.optional(element) || (/^(\+)\d+$/.test(value));
+}, "Please enter valid phone number");
+
 // TODO check if value starts with <, otherwise don't try stripping anything
 jQuery.validator.addMethod("strippedminlength",
     function(value, element, param) {

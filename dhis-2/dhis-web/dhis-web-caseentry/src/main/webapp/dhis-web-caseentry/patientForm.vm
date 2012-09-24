@@ -60,7 +60,7 @@
 <tr>
 	<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
 	<td class="input-column">
-		<input type="text" id="phoneNumber" name="phoneNumber" value="$!patient.phoneNumber" />
+		<input type="text" id="phoneNumber" name="phoneNumber" value="$!patient.phoneNumber" class="{validate:{phone:true}}"/>
 	</td>
 </tr>
 
