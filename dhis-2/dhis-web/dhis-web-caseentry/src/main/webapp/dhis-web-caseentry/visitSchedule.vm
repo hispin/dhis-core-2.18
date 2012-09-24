@@ -3,12 +3,19 @@
 	<table>
 		<tr>
 			<td class='text-column'>$programInstance.program.dateOfEnrollmentDescription:</td>
-			<td><input name="enrollmentDate" id="enrollmentDate" readonly value="$!format.formatDate( $programInstance.enrollmentDate )"></td>
+			<td><input name="enrollmentDate" id="enrollmentDate" readonly value="$!format.formatDate( $programInstance.enrollmentDate )" style="width:256px;"></td>
 		</tr>
 		<tr>
 			<td class='text-column'>$programInstance.program.dateOfIncidentDescription:</td>
-			<td><input name="dateOfIncident" id="dateOfIncident" readonly value="$!format.formatDate( $programInstance.dateOfIncident )"></td>
-		</tr>				
+			<td><input name="dateOfIncident" id="dateOfIncident" readonly value="$!format.formatDate( $programInstance.dateOfIncident )" style="width:256px;"></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="button" class='button' value="$i18n.getString( 'update' )" onclick='updateEnrollment($programInstance.patient.id, $programInstance.program.id, $programInstance.id, "$programInstance.program.name")'/>
+				<input type="button" class='button' value="$i18n.getString( 'unenroll' )" onclick='unenrollmentForm($programInstance.id)'/>
+			</td>
+		</tr>
 	</table>
 </fieldset>
 <br>

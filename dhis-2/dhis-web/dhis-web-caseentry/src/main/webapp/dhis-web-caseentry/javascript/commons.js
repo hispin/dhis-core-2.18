@@ -507,18 +507,6 @@ function showColorHelp()
 }
 
 // ----------------------------------------------------------------------------
-// Move stage-flow
-// ----------------------------------------------------------------------------
-
-function moveLeft( programInstanceFlowDiv ){
-	jQuery("#" + programInstanceFlowDiv).animate({scrollLeft: "-=200"}, 'fast');
-}
-
-function moveRight(programInstanceFlowDiv){
-	jQuery("#" + programInstanceFlowDiv).animate({scrollLeft: "+=200"}, 'fast');
-}
-
-// ----------------------------------------------------------------------------
 // Create New Event
 // ----------------------------------------------------------------------------
 
@@ -784,6 +772,14 @@ function resize(){
 	});
 }
 
+function moveLeft( programInstanceFlowDiv ){
+	jQuery("#" + programInstanceFlowDiv).animate({scrollLeft: "-=200"}, 'fast');
+}
+
+function moveRight(programInstanceFlowDiv){
+	jQuery("#" + programInstanceFlowDiv).animate({scrollLeft: "+=200"}, 'fast');
+}
+
 function setEventStatus( field, programStageInstanceId )
 {	
 	var status = field.value;
@@ -909,7 +905,6 @@ function removeEvent( programStageInstanceId, isEvent )
     	);
     }
 }
-
 
 // -----------------------------------------------------------------------------
 // Show relationship with new patient
@@ -1296,6 +1291,7 @@ function loadProgramInstance( programInstanceId, completed )
 			}
 			jQuery('#loaderDiv').hide();
 			resize();
+			$(window).scrollTop(200);
 		});
 }
 
