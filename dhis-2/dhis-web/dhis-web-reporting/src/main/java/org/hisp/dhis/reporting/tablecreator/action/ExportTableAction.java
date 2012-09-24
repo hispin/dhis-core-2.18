@@ -35,9 +35,10 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -174,7 +175,9 @@ public class ExportTableAction
         }
         else
         {
-            Date date = pe != null ? DateUtils.getMediumDate( pe ) : new Date();
+            Period period = PeriodType.getPeriodFromIsoString( pe );
+            
+            Date date = period != null ? period.getStartDate() : new Date();
             
             grid = reportTableService.getReportTableGrid( uid, format, date, ou );            
         }

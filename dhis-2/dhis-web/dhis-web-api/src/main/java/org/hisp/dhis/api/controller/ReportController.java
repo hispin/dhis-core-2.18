@@ -27,26 +27,24 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.system.util.CodecUtils;
-import org.hisp.dhis.system.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.Calendar;
-import java.util.Date;
-
-import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -93,7 +91,7 @@ public class ReportController
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void getReport( String uid, String organisationUnitUid, String period,
+    private void getReport( String uid, String organisationUnitUid, String isoPeriod,
         HttpServletResponse response, String type, String contentType, boolean attachment ) throws Exception
     {
         Report report = reportService.getReport( uid );
@@ -104,12 +102,12 @@ public class ReportController
             organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
         }
 
-        Date date = period != null ? DateUtils.getMediumDate( period ) : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
-
+        Period period = isoPeriod != null ? PeriodType.getPeriodFromIsoString( isoPeriod ) : new MonthlyPeriodType().createPeriod();
+        
         String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
         contextUtils.configureResponse( response, contentType, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, attachment );
 
-        reportService.renderReport( response.getOutputStream(), uid, date, organisationUnitUid, type,
+        reportService.renderReport( response.getOutputStream(), uid, period, organisationUnitUid, type,
             i18nManager.getI18nFormat() );
     }
 }

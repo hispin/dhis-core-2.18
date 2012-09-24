@@ -165,6 +165,7 @@ public class DefaultReportTableService
         {
             return reportService.getReport( uid ).getReportTable();
         }
+        
         return null;
     }
     
