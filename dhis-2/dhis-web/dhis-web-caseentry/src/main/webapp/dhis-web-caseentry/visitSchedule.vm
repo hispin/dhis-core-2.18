@@ -12,6 +12,7 @@
 	</table>
 </fieldset>
 <br>
+#set($programStageInstances = $programInstance.programStageInstances)
 #if( $programStageInstances.size() > 0 )
 	<table class='mainPageTable' id='progarmStageListDiv' name='progarmStageListDiv' >
 		<col width="10px">
@@ -41,7 +42,7 @@
 				$encoder.htmlEncode( $programStageInstance.programStage.name )						
 			</td>
 			#set( $duedateId = "value_" + $programStageInstance.id + "_date" )        
-			#set($status = $statusMap.get( $programStageInstance.id ))
+			#set($status = $programStageInstance.getEventStatus())
 			<td>        
 				<input type="text" id="$duedateId" style='width:150px;' value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programInstance.id, $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
 				<script type="text/javascript">
@@ -79,7 +80,7 @@
 				<input type="button" value="&raquo;" class='tiny-button' title="$i18n.getString( 'send_sms' )" onclick="setFieldValue( 'programStageInstanceId',$programStageInstance.id);sendSmsOnePatient(byId('message_$programStageInstance.id'),'$programStageInstance.id');"/>
 			</td>
 			<td>
-				#if($programStageInstance.programStage.irregular=='true' && ($status==3 || $status==4 || $status==5 ))
+				#if($programStageInstance.programStage.irregular=='true' && $status!=1 )
 					<a href="javascript:removeEvent($programStageInstance.id, false)" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
 				#end
 			</td>
