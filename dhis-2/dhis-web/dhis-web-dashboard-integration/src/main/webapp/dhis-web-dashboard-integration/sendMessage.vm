@@ -11,6 +11,7 @@ $(function() {
        placeholder: 'Select user and user groups',
        minimumInputLength: 2,
        multiple: true,
+       width: "545px",
        ajax: {
            url: 'getMessageRecipients.action',
            dataType: 'json',
@@ -41,26 +42,24 @@ $(function() {
 </tr>
 <td style="min-width:80px">$i18n.getString( "user_usergroups" )</td>
 <td>
-<p>
-<input type="hidden" name="additionalUsers" id="additionalUsers" style="width: 100%; padding: 4px; border: 1px solid grey;"/>
-</p>
+<input type="hidden" name="additionalUsers" id="additionalUsers" style="width: 545px; padding: 4px; border: 1px solid grey;"/>
 </td>
 </tr>
 
 <tr>
 <td>$i18n.getString( "subject" )</td>
-<td><input type="text" id="subject" name="subject" style="width:495px"></td>
+<td><input type="text" id="subject" name="subject" style="width: 535px; padding: 4px; border: 1px solid grey !important;"></td>
 </tr>
 
 <tr>
 <td>$i18n.getString( "text" )</td>
-<td><textarea id="text" name="text" style="width:495px;height:200px"></textarea></td>
+<td><textarea id="text" name="text" style="width:539px; height:200px; border: 1px solid grey !important;"></textarea></td>
 </tr>
 
 <tr>
 <td></td>
-<td><input type="submit" value="$i18n.getString( 'send' )" style="width:120px">
-<input type="button" value="$i18n.getString( 'discard' )"  style="width:120px" onclick="window.location.href='message.action'"></td>
+<td><input type="submit" value="$i18n.getString( 'send' )" style="width: 120px;">
+<input type="button" value="$i18n.getString( 'discard' )"  style="width: 120px;" onclick="window.location.href='message.action'"></td>
 </tr>
 
 </table>
