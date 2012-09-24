@@ -27,44 +27,26 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 import com.opensymphony.xwork2.Action;
-import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.util.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class SendMessageAction
+public class GetMessageRecipientsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private MessageService messageService;
-
-    public void setMessageService( MessageService messageService )
-    {
-        this.messageService = messageService;
-    }
-
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
 
     @Autowired
     private UserService userService;
@@ -73,71 +55,47 @@ public class SendMessageAction
     private UserGroupService userGroupService;
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private String additionalUsers;
+    private String filter;
 
-    public void setAdditionalUsers( String additionalUsers )
+    public void setFilter( String filter )
     {
-        this.additionalUsers = additionalUsers;
+        this.filter = filter;
     }
 
-    private String subject;
+    private Set<User> users = new HashSet<User>();
 
-    public void setSubject( String subject )
+    private Set<UserGroup> userGroups = new HashSet<UserGroup>();
+
+    public Set<User> getUsers()
     {
-        this.subject = subject;
+        return users;
     }
 
-    private String text;
-
-    public void setText( String text )
+    public Set<UserGroup> getUserGroups()
     {
-        this.text = text;
+        return userGroups;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action Implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
+    @Override
+    public String execute() throws Exception
     {
-        String metaData = MessageService.META_USER_AGENT +
-            ServletActionContext.getRequest().getHeader( ContextUtils.HEADER_USER_AGENT );
-
-        Set<User> users = new HashSet<User>();
-
-        for ( OrganisationUnit unit : selectionTreeManager.getReloadedSelectedOrganisationUnits() )
+        if ( filter == null || filter.isEmpty() )
         {
-            users.addAll( unit.getUsers() );
+            users = new HashSet<User>( userService.getAllUsers() );
+            userGroups = new HashSet<UserGroup>( userGroupService.getAllUserGroups() );
         }
-
-        String[] recipients = additionalUsers.split( "," );
-
-        for ( String recipient : recipients )
+        else
         {
-            if ( recipient.startsWith( "u:" ) )
-            {
-                User user = userService.getUser( recipient.substring( 2 ) );
-
-                if(user != null)
-                {
-                    users.add( user );
-                }
-            }
-            else if ( recipient.startsWith( "ug:" ) )
-            {
-                UserGroup userGroup = userGroupService.getUserGroup( recipient.substring( 3 ) );
-
-                if(userGroup != null)
-                {
-                    users.addAll( userGroup.getMembers() );
-                }
-            }
+            users = new HashSet<User>( userService.getUsersByName( filter ) );
+            userGroups = new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, Integer.MAX_VALUE ) );
         }
-
-        messageService.sendMessage( subject, text, metaData, users );
 
         return SUCCESS;
     }

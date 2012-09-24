@@ -28,11 +28,7 @@ package org.hisp.dhis.user;
  */
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -394,6 +390,23 @@ public class DefaultUserService
     public int getUserCountByName( String userName )
     {
         return userCredentialsStore.getUserCountByName( userName );
+    }
+
+    @Override
+    public Collection<User> getUsersByName( String name )
+    {
+        Collection<User> users = userStore.getAll();
+        Collection<User> result = new HashSet<User>();
+
+        for(User user : users)
+        {
+            if(user.getName().toUpperCase().contains( name.toUpperCase() ))
+            {
+                result.add( user );
+            }
+        }
+
+        return result;
     }
 
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )

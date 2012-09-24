@@ -133,6 +133,8 @@ public interface UserService
 
     int getUserCountByName( String name );
 
+    Collection<User> getUsersByName(String name);
+
     int getUsersWithoutOrganisationUnitCount();
 
     int getUsersWithoutOrganisationUnitCountByName( String name );
