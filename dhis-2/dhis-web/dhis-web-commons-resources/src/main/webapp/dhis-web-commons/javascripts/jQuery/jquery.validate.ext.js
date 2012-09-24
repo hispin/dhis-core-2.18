@@ -294,7 +294,7 @@ jQuery.validator.addMethod("time", function(value, element) {
 
 
 jQuery.validator.addMethod("phone", function(value, element) {
-    return this.optional(element) || (/^(\+)\d+$/.test(value));
+    return this.optional(element) || (/^(\+)?\d+$/.test(value));
 }, "Please enter valid phone number");
 
 // TODO check if value starts with <, otherwise don't try stripping anything

@@ -10,7 +10,8 @@
 				omitIndicatorsZeroNumeratorDataMart: jQuery( '#omitIndicatorsZeroNumeratorDataMart' ).is( ':checked' ),
 				disableDataEntryWhenCompleted: jQuery( '#disableDataEntryWhenCompleted' ).is( ':checked' ),
 				factorDeviation: getFieldValue( 'factorDeviation' ),
-				completenessOffset: getFieldValue( 'completenessOffset' )
+				completenessOffset: getFieldValue( 'completenessOffset' ),
+				phoneNumberAreaCode: getFieldValue( 'phoneNumberAreaCode' )
 			}, function( json ) {
 				if ( json.response == "success" )
 					setHeaderDelayMessage( json.message );
@@ -106,6 +107,14 @@
 
 <p>
 	<input type="text" id="completenessOffset" name="completenessOffset" value="$!completenessOffset"/>
+</p>
+
+
+<!-- area code -->
+<h4>$i18n.getString( "phone_number_area_code" )</h4>
+
+<p>
+	<input type="text" id="phoneNumberAreaCode" name="phoneNumberAreaCode" value="$!phoneNumberAreaCode"/>
 </p>
 
 <p><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></p>
