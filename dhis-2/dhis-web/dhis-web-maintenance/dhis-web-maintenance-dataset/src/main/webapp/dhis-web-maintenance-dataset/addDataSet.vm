@@ -88,7 +88,18 @@
             #end
           </select>
         </td>
-      </tr>   
+      </tr>
+      <tr>
+      	<td><label>$i18n.getString( "notification_recipients" )</label></td>
+      	<td>
+      	  <select id="notificationRecipients" name="notificationRecipients" style="min-width:20em; margin:0;">
+      	  	<option value="-1">[ $i18n.getString( "none" ) ]</option>
+      	  	#foreach( $group in $userGroups )
+      	  	  <option value="$group.id">$encoder.htmlEncode( $group.name )</option>
+	  	    #end
+  	      </select>
+	    </td>
+      </tr>
       <tr>
       	<td><label>$i18n.getString( "skip_aggregation" )</label></td>
       	<td>

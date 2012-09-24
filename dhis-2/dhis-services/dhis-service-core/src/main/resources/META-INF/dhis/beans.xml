@@ -337,6 +337,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" class="org.hisp.dhis.dataset.DefaultCompleteDataSetRegistrationService">
     <property name="completeDataSetRegistrationStore" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationStore" />
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataset.SectionService" class="org.hisp.dhis.dataset.DefaultSectionService">

@@ -113,7 +113,7 @@
 
 	<!-- Show add DataSet form -->
 
-    <action name="addDataSetForm" class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
+    <action name="addDataSetForm" class="org.hisp.dhis.dataset.action.EditDataSetFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addDataSet.vm</param>
       <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param>

@@ -49,6 +49,7 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.UserGroup;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -138,6 +139,11 @@ public class DataSet
      * Property indicating whether aggregation should be skipped.
      */
     private boolean skipAggregation;
+    
+    /**
+     * User group which will receive notifications when data set is marked complete.
+     */
+    private UserGroup notificationRecipients;
 
     // -------------------------------------------------------------------------
     // Form properties
@@ -544,6 +550,19 @@ public class DataSet
     public void setSkipAggregation( boolean skipAggregation )
     {
         this.skipAggregation = skipAggregation;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public UserGroup getNotificationRecipients()
+    {
+        return notificationRecipients;
+    }
+
+    public void setNotificationRecipients( UserGroup notificationRecipients )
+    {
+        this.notificationRecipients = notificationRecipients;
     }
 
     @JsonProperty

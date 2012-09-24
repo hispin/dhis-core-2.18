@@ -41,6 +41,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -93,6 +94,13 @@ public class UpdateDataSetAction
         this.sectionService = sectionService;
     }
 
+    private UserGroupService userGroupService;
+
+    public void setUserGroupService( UserGroupService userGroupService )
+    {
+        this.userGroupService = userGroupService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -130,6 +138,13 @@ public class UpdateDataSetAction
     public void setExpiryDays( int expiryDays )
     {
         this.expiryDays = expiryDays;
+    }
+
+    private int notificationRecipients;
+    
+    public void setNotificationRecipients( int notificationRecipients )
+    {
+        this.notificationRecipients = notificationRecipients;
     }
 
     private boolean skipAggregation;
@@ -223,7 +238,7 @@ public class UpdateDataSetAction
 
         dataSet.setExpiryDays( expiryDays );
         dataSet.setSkipAggregation( skipAggregation );
-
+        
         if ( !(equalsNullSafe( name, dataSet.getName() ) && periodType.equals( dataSet.getPeriodType() )
             && dataElements.equals( dataSet.getDataElements() ) && indicators.equals( dataSet.getIndicators() )) )
         {
@@ -240,6 +255,7 @@ public class UpdateDataSetAction
         dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setFieldCombinationRequired( fieldCombinationRequired );
         dataSet.setValidCompleteOnly( validCompleteOnly );
+        dataSet.setNotificationRecipients( userGroupService.getUserGroup( notificationRecipients ) );
 
         dataSetService.updateDataSet( dataSet );
 
