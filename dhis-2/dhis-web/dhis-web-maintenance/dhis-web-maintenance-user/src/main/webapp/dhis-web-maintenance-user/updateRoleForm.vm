@@ -36,11 +36,11 @@
 		<input type="hidden" id="id" name="id" value="$userAuthorityGroup.id"/>
   	</div>
 
-  	<table>
+  	<table style="width: 100%;">
 	  	<col style="width: 120px"/>
-	    <col style="width: 350px"/>
+	    <col style="width: 50%;"/>
 	    <col/>
-	    <col style="width: 350px"/>
+	    <col style="width: 50%;"/>
 
 		<tr>
 			<th colspan="4">$i18n.getString( "details" )</th>        

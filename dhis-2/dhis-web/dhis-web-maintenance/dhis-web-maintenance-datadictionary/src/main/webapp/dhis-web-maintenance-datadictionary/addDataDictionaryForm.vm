@@ -73,10 +73,12 @@
 	</tr>
 </table>
 
-<table>
-    <col style="width: 450px"/>
-    <col/>
-	<col style="width: 450px"/>
+<table style="width: 100%;">
+    <colgroup>
+      <col style="width: 50%;"/>
+      <col/>
+      <col style="width: 50%;"/>
+    </colgroup>
 
 	<tr>
 		<th>$i18n.getString( "available_data_elements" )</th>

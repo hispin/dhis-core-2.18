@@ -46,10 +46,12 @@
     </tr>
  </table>
  
-<table style="margin-top: 15px; margin-bottom: 15px;">
-    <col style="width: 450px"/>
-    <col/>
-    <col style="width: 450px"/>
+<table style="margin-top: 15px; margin-bottom: 15px; width: 100%;">
+    <colgroup>
+      <col style="width: 50%;"/>
+      <col/>
+      <col style="width: 50%;"/>
+    </colgroup>
 
 	<tr>
 		<th style="min-width:325px;">$i18n.getString( "available_data_sets" )</th>
