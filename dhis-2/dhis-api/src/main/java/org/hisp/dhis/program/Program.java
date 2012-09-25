@@ -87,6 +87,8 @@ public class Program
     private Boolean displayProvidedOtherFacility;
 
     private Boolean displayIncidentDate;
+    
+    private Boolean generatedByEnrollmentDate;
 
     private List<PatientIdentifierType> patientIdentifierTypes;
 
@@ -342,6 +344,16 @@ public class Program
         throws Exception
     {
         return Patient.class.getMethod( "get" + property ).invoke( patient );
+    }
+
+    public Boolean getGeneratedByEnrollmentDate()
+    {
+        return generatedByEnrollmentDate;
+    }
+
+    public void setGeneratedByEnrollmentDate( Boolean generatedByEnrollmentDate )
+    {
+        this.generatedByEnrollmentDate = generatedByEnrollmentDate;
     }
 
     public boolean isSingleEvent()

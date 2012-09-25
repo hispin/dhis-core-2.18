@@ -157,14 +157,21 @@ public class UpdateProgramAction
     {
         this.selectedPropertyIds = selectedPropertyIds;
     }
-    
+
     private List<Boolean> personDisplayNames = new ArrayList<Boolean>();
 
     public void setPersonDisplayNames( List<Boolean> personDisplayNames )
     {
         this.personDisplayNames = personDisplayNames;
     }
-    
+
+    private Boolean generateBydEnrollmentDate;
+
+    public void setGeneratedByEnrollmentDate( Boolean generateBydEnrollmentDate )
+    {
+        this.generateBydEnrollmentDate = generateBydEnrollmentDate;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -174,7 +181,8 @@ public class UpdateProgramAction
     {
         displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
         displayIncidentDate = (displayIncidentDate == null) ? false : displayIncidentDate;
-        
+        generateBydEnrollmentDate = (generateBydEnrollmentDate == null) ? false : generateBydEnrollmentDate;
+
         Program program = programService.getProgram( id );
         program.setName( name );
         program.setDescription( description );
@@ -184,35 +192,38 @@ public class UpdateProgramAction
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         program.setType( type );
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
-        program.setDisplayIncidentDate(displayIncidentDate);
+        program.setDisplayIncidentDate( displayIncidentDate );
+        program.setGeneratedByEnrollmentDate( generateBydEnrollmentDate );
 
         List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
         List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
         int index = 0;
-        for( String selectedPropertyId : selectedPropertyIds )
+        for ( String selectedPropertyId : selectedPropertyIds )
         {
             String[] ids = selectedPropertyId.split( "_" );
-            
-            if( ids[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ))
+
+            if ( ids[0].equals( Patient.PREFIX_IDENTIFIER_TYPE ) )
             {
-                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer.parseInt( ids[1] ));
-                
+                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( Integer
+                    .parseInt( ids[1] ) );
+
                 identifierType.setPersonDisplayName( personDisplayNames.get( index ) );
                 patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
-                
+
                 identifierTypes.add( identifierType );
             }
-            else if( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ))
+            else if ( ids[0].equals( Patient.PREFIX_PATIENT_ATTRIBUTE ) )
             {
-                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer.parseInt( ids[1] ));
+                PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
+                    .parseInt( ids[1] ) );
                 patientAttributes.add( patientAttribute );
             }
             index++;
         }
-        
+
         program.setPatientIdentifierTypes( identifierTypes );
         program.setPatientAttributes( patientAttributes );
-        
+
         programService.updateProgram( program );
 
         return SUCCESS;

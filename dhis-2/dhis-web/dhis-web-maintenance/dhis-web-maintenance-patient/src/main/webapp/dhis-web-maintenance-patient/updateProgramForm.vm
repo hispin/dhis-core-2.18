@@ -50,6 +50,12 @@
 		</tr>
 
 		<tr>
+			<td><label>$i18n.getString( "generated_by_enrollment_date" )</label></td>
+			<td><input style="margin: 0;"type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($program.generatedByEnrollmentDate=='true') checked #end></td>
+			<td></td>
+		</tr>
+		
+		<tr>
 			<td><label>$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="version" name="version" value="$program.version" class="{validate:{required:true,number:true}}"></td>
 			<td></td>

@@ -6,6 +6,7 @@
 	"type": "$!program.type",
 	"displayProvidedOtherFacility": "$!program.displayProvidedOtherFacility",
 	"displayIncidentDate": "$!program.displayIncidentDate",
+	"generatedByEnrollmentDate": "$!program.generatedByEnrollmentDate",
 	"dateOfEnrollmentDescription": "$!encoder.jsEncode( ${program.dateOfEnrollmentDescription} )",
 	"dateOfIncidentDescription": "$!encoder.jsEncode( ${program.dateOfIncidentDescription} )",
 	"programStageCount": "${program.programStages.size()}",
