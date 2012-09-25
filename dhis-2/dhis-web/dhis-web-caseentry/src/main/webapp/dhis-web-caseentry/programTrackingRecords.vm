@@ -91,7 +91,7 @@
 													status='$statusMap.get( $programStageInstance.id )'
 													class='stage-object'
 													value='$programStageInstance.programStage.name&#13;&#10;$valueDate' 
-													title="$title" onclick='javascript:getOutboundSmsList( $programStageInstance.id, false );'>
+													title="$title" onclick='javascript:programTrackingList( $programStageInstance.id, false );'>
 												<script>
 													var status = $statusMap.get( $programStageInstance.id ); 
 													var dueDate = "$format.formatDate($programStageInstance.dueDate)";

@@ -897,20 +897,13 @@
 			<param name="stylesheets">style/style.css</param>
 		</action>
 
-		<action name="getOutboundSmsList"
-			class="org.hisp.dhis.caseentry.action.reminder.GetOutboundSmsListAction">
+		<action name="programTrackingList"
+			class="org.hisp.dhis.caseentry.action.reminder.GetProgramTrackingListAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programTrackingList.vm</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
-
-		<action name="getGateway"
-			class="org.hisp.dhis.caseentry.action.reminder.GetGatewayAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/sendSmsForm.vm</param>
-			<param name="stylesheets">style/style.css</param>
-		</action>
-
+	
 		<action name="sendSMS"
 			class="org.hisp.dhis.caseentry.action.reminder.SendSmsAction">
 			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
