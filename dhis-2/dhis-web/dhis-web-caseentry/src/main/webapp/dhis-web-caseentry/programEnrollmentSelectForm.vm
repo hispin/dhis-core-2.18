@@ -8,7 +8,7 @@
 <script>
 	jQuery("#programEnrollmentSelectDiv").ready(function(){
 		validation( 'programEnrollmentSelectDiv', function(form){
-			form.submit();
+			saveEnrollment();
 		});
 		datePickerInRangeValid( 'dateOfIncidentField' , 'enrollmentDateField' );
 		setFieldValue("dateOfIncidentField", "");
@@ -16,7 +16,7 @@
 	});	
 </script>
 
-<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
+<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST' action='saveProgramEnrollment.action'>
 	<input type="hidden" id="patientId" name="patientId" value="$patient.id">
 	<table>
 		<tr>
@@ -57,7 +57,7 @@
 		<tr>
 			<td></td>
 			<td colspan='2'>
-				<input type="button" class='button' value="$i18n.getString( 'enroll' )" onclick='saveEnrollment()'/>
+				<input type="submit" class='button' value="$i18n.getString( 'enroll' )" />
 				<input type="button" class='button' value="$i18n.getString( 'cancel' )" onclick="jQuery('#enrollmentDiv').dialog('close')"/>
 			</td>
 		</tr>
