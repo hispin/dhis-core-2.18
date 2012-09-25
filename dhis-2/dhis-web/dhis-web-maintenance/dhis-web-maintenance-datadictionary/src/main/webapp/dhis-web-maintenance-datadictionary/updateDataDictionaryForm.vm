@@ -76,11 +76,11 @@
 	</tr>
 </table>
 
-<table style="width: 100%;">
+<table>
     <colgroup>
-      <col style="width: 50%;"/>
+      <col style="width: 500px;"/>
       <col/>
-      <col style="width: 50%;"/>
+      <col style="width: 500px;"/>
     </colgroup>
 
 	<tr>

@@ -35,11 +35,11 @@
     </tr>
 </table>
 
-<table style="margin-top: 15px; width: 100%;">
+<table style="margin-top: 15px;">
     <colgroup>
-      <col style="width: 50%;"/>
+      <col style="width: 500px;"/>
       <col/>
-      <col style="width: 50%;"/>
+      <col style="width: 500px;"/>
     </colgroup>
 
     <tr>
