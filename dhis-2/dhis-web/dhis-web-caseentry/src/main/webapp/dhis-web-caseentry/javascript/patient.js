@@ -222,13 +222,17 @@ function loadDataEntry( programStageInstanceId )
 			{
 				disable('validationBtn');
 			}
-			else if( executionDate != '' && completed == 'false' )
-			{
-				disableCompletedButton(false);
-			}
-			else if( completed == 'true' )
-			{
-				disableCompletedButton(true);
+			else if( executionDate != ''){
+				showById('inputCriteriaDiv');
+				if ( completed == 'false' )
+				{
+					disableCompletedButton(false);
+				}
+				else if( completed == 'true' )
+				{
+					showById('inputCriteriaDiv');
+					disableCompletedButton(true);
+				}
 			}
 			resize();
 			hideLoader();
