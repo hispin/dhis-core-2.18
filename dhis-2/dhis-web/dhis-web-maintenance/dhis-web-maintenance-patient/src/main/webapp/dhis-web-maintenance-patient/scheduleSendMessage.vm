@@ -7,18 +7,6 @@
 				<input type="text" id="timeSendingMessage" name="timeSendingMessage" value="$!timeSendingMessage" style="width:295px;"/>
 			</td>
 		</tr>
-
-		<tr>
-			<td>$i18n.getString( "gateway_type" )</td>
-			<td>
-				#set( $keys = $!gatewayMap.keySet() )
-				<select id="gatewayId" name="gatewayId" style="width:300px;">
-					#foreach( $key in $!keys )
-					<option value="$gatewayMap.get( $key )" >$i18n.getString( $key )</option>
-					#end
-				</select>
-			</td>
-		</tr>
 		
 		<tr>
 			<td></td>

@@ -27,10 +27,8 @@
 
 package org.hisp.dhis.patient.action.schedule;
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIME_FOR_SENDING_MESSAGE;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_TIME_FOR_SENDING_MESSAGE;
-
-import java.util.Map;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIME_FOR_SENDING_MESSAGE;
 
 import org.hisp.dhis.patient.scheduling.ProgramSchedulingManager;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -43,9 +41,9 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version GetGatewayAction.java 10:57:08 AM Aug 9, 2012 $
+ * @version GetScheduleParamsAction.java 10:57:08 AM Aug 9, 2012 $
  */
-public class GetGatewayAction
+public class GetScheduleParamsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -80,13 +78,6 @@ public class GetGatewayAction
         return timeSendingMessage;
     }
 
-    public Map<String, String> gatewayMap;
-
-    public Map<String, String> getGatewayMap()
-    {
-        return gatewayMap;
-    }
-
     private String status;
 
     public String getStatus()
@@ -111,8 +102,6 @@ public class GetGatewayAction
     {
         timeSendingMessage = (String)systemSettingManager.getSystemSetting( KEY_TIME_FOR_SENDING_MESSAGE, DEFAULT_TIME_FOR_SENDING_MESSAGE );
         
-        gatewayMap = transportService.getGatewayMap();
-
         status = schedulingManager.getTaskStatus();
         running = Scheduler.STATUS_RUNNING.equals( status );
 

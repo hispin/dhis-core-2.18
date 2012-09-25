@@ -379,7 +379,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
  	<bean id="abstractScheduledMessageTask" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" >
  		<constructor-arg ref="org.hisp.dhis.program.ProgramStageInstanceService" />
- 		<constructor-arg ref="org.hisp.dhis.setting.SystemSettingManager" />
  		<constructor-arg ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
  		<constructor-arg ref="jdbcTemplate" />
  	</bean>

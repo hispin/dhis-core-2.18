@@ -883,8 +883,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- Scheduling -->
 	
-	<bean id="org.hisp.dhis.patient.action.schedule.GetGatewayAction"
-		class="org.hisp.dhis.patient.action.schedule.GetGatewayAction"
+	<bean id="org.hisp.dhis.patient.action.schedule.GetScheduleParamsAction"
+		class="org.hisp.dhis.patient.action.schedule.GetScheduleParamsAction"
 		scope="prototype">
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 		<property name="schedulingManager" ref="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" />
