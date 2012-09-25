@@ -112,6 +112,7 @@ Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
     z-index: 9999;
     width:100%;
     margin-top:-1px;
+    font-size: 10pt; /* DHIS modification */
 
   -webkit-border-radius: 0 0 4px 4px;
   -moz-border-radius: 0 0 4px 4px;
@@ -317,20 +318,6 @@ Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
   display: list-item;
 }
 
-/*
-disabled look for already selected choices in the results dropdown
-.select2-results .select2-disabled.select2-highlighted {
-    color: #666;
-    background: #f4f4f4;
-    display: list-item;
-    cursor: default;
-}
-.select2-results .select2-disabled {
-  background: #f4f4f4;
-  display: list-item;
-  cursor: default;
-}
-*/
 .select2-results .select2-disabled {
     display: none;
 }
@@ -358,7 +345,6 @@ disabled look for already selected choices in the results dropdown
     background-image: none;
     border-left: 0;
 }
-
 
 /* multiselect */
 
@@ -474,7 +460,6 @@ disabled look for already selected choices in the results dropdown
 .select2-container-multi .select2-search-choice-close {
   left: 3px;
 }
-
 
 .select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close:hover {
   background-position: right -11px;

@@ -1,6 +1,3 @@
-<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/select2/select2.css" />
-<script type="text/javascript" src="../dhis-web-commons/select2/select2.min.js"></script>
-
 <script type="text/javascript">
 var i18n_enter_subject = '$encoder.jsEscape( $i18n.getString( "enter_subject" ), "'")';
 var i18n_enter_text = '$encoder.jsEscape( $i18n.getString( "enter_text" ), "'")';
