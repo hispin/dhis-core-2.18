@@ -27,6 +27,11 @@
 	</tr>
 
 	<tr>
+		<td><label>$i18n.getString( "auto_generate_event" )</label></td>
+		<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' checked /></td>
+	</tr>	
+	
+	<tr>
 		<td><label>$i18n.getString( "repeatable" )</label></td>
 		<td><input type="checkbox" id="irregular" name="irregular" value='true' onchange='repeatableOnChange();' /></td>
 	</tr>	
@@ -99,33 +104,6 @@
 
 <table>
 	<tbody id='programStageMessage'>
-		<tr name="tr1">
-			<td colspan='2'>
-				$i18n.getString( "reminder" ) 1
-				<span style="align:right"><a href='javascript:removeTemplateMessageForm(1)'> ( $i18n.getString("remove_reminder") )</a>
-			</td>
-		</tr>
-		<tr name="tr1">
-			<td><label>$i18n.getString( "days_before_after_due_date" )</label></td>
-			<td><input type="text" id="daysAllowedSendMessage1" name="daysAllowedSendMessage" class="daysAllowedSendMessage {validate:{required:true,number:true}}"/></td>
-		</tr>
-		<tr name="tr1">
-			<td>$i18n.getString( "params" )</td>
-			<td>
-				<select multiple size='4' ondblclick="insertParams(this.value, 1);">
-					<option value="{patient-name}">$i18n.getString("patient_name")</option>
-					<option value="{program-name}">$i18n.getString("program_name")</option>
-					<option value="{program-stage-name}">$i18n.getString("program_stage_name")</option>
-					<option value="{due-date}">$i18n.getString("due_date")</option>
-					<option value="{days-since-due-date}">$i18n.getString("days_since_due_date")</option>
-					<option value="{orgunit-name}">$i18n.getString("orgunit_name")</option>
-				</select>
-			</td>
-		</tr>
-		<tr name="tr1">
-			<td><label>$i18n.getString( "template_message" )</label></td>
-			<td><textarea id="templateMessage1" name="templateMessage1" style="width:320px" class="templateMessage {validate:{required:true}}"></textarea></td>
-		</tr>
 	</tbody>
 	<tr>
 		<td></td>

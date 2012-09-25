@@ -111,7 +111,7 @@ public class SaveProgramEnrollmentAction
     {
         this.programId = programId;
     }
-    
+
     private String enrollmentDate;
 
     public void setEnrollmentDate( String enrollmentDate )
@@ -127,14 +127,14 @@ public class SaveProgramEnrollmentAction
     }
 
     private ProgramInstance programInstance;
-    
+
     public ProgramInstance getProgramInstance()
     {
         return programInstance;
     }
 
     private ProgramStageInstance activeProgramStageInstance;
-    
+
     public ProgramStageInstance getActiveProgramStageInstance()
     {
         return activeProgramStageInstance;
@@ -181,20 +181,23 @@ public class SaveProgramEnrollmentAction
             boolean isFirstStage = false;
             for ( ProgramStage programStage : program.getProgramStages() )
             {
-                ProgramStageInstance programStageInstance = new ProgramStageInstance();
-                programStageInstance.setProgramInstance( programInstance );
-                programStageInstance.setProgramStage( programStage );
-                Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ),
-                    programStage.getMinDaysFromStart() );
-
-                programStageInstance.setDueDate( dueDate );
-
-                programStageInstanceService.addProgramStageInstance( programStageInstance );
-                
-                if( !isFirstStage )
+                if ( programStage.getAutoGenerateEvent() )
                 {
-                    activeProgramStageInstance = programStageInstance;
-                    isFirstStage = true;
+                    ProgramStageInstance programStageInstance = new ProgramStageInstance();
+                    programStageInstance.setProgramInstance( programInstance );
+                    programStageInstance.setProgramStage( programStage );
+                    Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ),
+                        programStage.getMinDaysFromStart() );
+
+                    programStageInstance.setDueDate( dueDate );
+
+                    programStageInstanceService.addProgramStageInstance( programStageInstance );
+
+                    if ( !isFirstStage )
+                    {
+                        activeProgramStageInstance = programStageInstance;
+                        isFirstStage = true;
+                    }
                 }
             }
         }
@@ -215,7 +218,7 @@ public class SaveProgramEnrollmentAction
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
             }
         }
-        
+
         return SUCCESS;
     }
 }

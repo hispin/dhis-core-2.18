@@ -177,6 +177,13 @@ public class AddProgramStageAction
         this.templateMessages = templateMessages;
     }
 
+    private Boolean autoGenerateEvent;
+
+    public void setAutoGenerateEvent( Boolean autoGenerateEvent )
+    {
+        this.autoGenerateEvent = autoGenerateEvent;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -184,12 +191,11 @@ public class AddProgramStageAction
     public String execute()
         throws Exception
     {
-
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         irregular = (irregular == null) ? false : irregular;
+        autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
         
         ProgramStage programStage = new ProgramStage();
-
         Program program = programService.getProgram( id );
 
         programStage.setName( name );
@@ -200,15 +206,17 @@ public class AddProgramStageAction
         programStage.setReportDateDescription( reportDateDescription );
         programStage.setIrregular( irregular );
         programStage.setMinDaysFromStart( minDaysFromStart );
+        programStage.setAutoGenerateEvent( autoGenerateEvent );
         
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
         {
-            PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ), templateMessages.get( i ));
+            PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
+                templateMessages.get( i ) );
             patientReminders.add( reminder );
         }
         programStage.setPatientReminders( patientReminders );
-        
+
         programStageService.saveProgramStage( programStage );
 
         for ( int i = 0; i < this.selectedDataElementsValidator.size(); i++ )
