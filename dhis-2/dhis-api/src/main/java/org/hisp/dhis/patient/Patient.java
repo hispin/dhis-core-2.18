@@ -418,11 +418,11 @@ public class Patient
 
         if ( age < 1 )
         {
-            return "( < 1 yr )";
+            return "< 1 yr";
         }
         else
         {
-            return "( " + age + " yr )";
+            return age + " yr";
         }
     }
 
