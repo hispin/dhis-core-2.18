@@ -3,6 +3,7 @@
 		
 		jQuery("#tabs").tabs();
 		hideById('addRepresentativeForm [id=underAgeDiv]');
+		hideById('addRepresentativeForm [id=age]');
 		addEventForPatientForm('addRepresentativeForm');
 		$('#addRepresentativeForm [id=dobType]').removeAttr('onchange');
 		$('#addRepresentativeForm [id=dobType]').attr('onchange', 'dobTypeOnChange( "addRepresentativeForm" );');
