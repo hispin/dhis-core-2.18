@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.patient.action.schedule;
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_SEND_MESSAGE_GATEWAY;
 import static org.hisp.dhis.sms.outbound.OutboundSms.DHIS_SYSTEM_SENDER;
 
 import java.util.Collection;
@@ -89,42 +88,39 @@ public class ExecuteSendMessageAction
     @Override
     public String execute()
     {
-        String gatewayId = (String) systemSettingManager.getSystemSetting( KEY_SEND_MESSAGE_GATEWAY );
 
-        if ( gatewayId != null )
+        Collection<SchedulingProgramObject> schedulingProgramObjects = programStageInstanceService
+            .getSendMesssageEvents();
+
+        for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
         {
-            Collection<SchedulingProgramObject> schedulingProgramObjects = programStageInstanceService
-                .getSendMesssageEvents();
+            String message = schedulingProgramObject.getMessage();
 
-            for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
+            String phoneNumber = schedulingProgramObject.getPhoneNumber();
+
+            if ( phoneNumber != null && !phoneNumber.isEmpty() )
             {
-                String message = schedulingProgramObject.getMessage();
-
-                String phoneNumber = schedulingProgramObject.getPhoneNumber();
-
-                if ( phoneNumber != null && !phoneNumber.isEmpty() )
+                try
                 {
-                    try
-                    {
-                        OutboundSms outboundSms = new OutboundSms( message, phoneNumber );
-                        outboundSms.setSender( DHIS_SYSTEM_SENDER );
-                        outboundSmsService.sendMessage( outboundSms, gatewayId );
+                    OutboundSms outboundSms = new OutboundSms( message, phoneNumber );
+                    outboundSms.setSender( DHIS_SYSTEM_SENDER );
+                    outboundSmsService.sendMessage( outboundSms, null );
 
-                        String sql = "INSERT INTO programstageinstance_outboundsms"
-                            + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
-                            + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + "," + ( System.currentTimeMillis() / 1000 ) + ") ";
+                    String sql = "INSERT INTO programstageinstance_outboundsms"
+                        + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
+                        + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + ","
+                        + (System.currentTimeMillis() / 1000) + ") ";
 
-                        jdbcTemplate.execute( sql );
-                    }
-                    catch ( SmsServiceException e )
-                    {
-                        message = e.getMessage();
-                    }
+                    jdbcTemplate.execute( sql );
+                }
+                catch ( SmsServiceException e )
+                {
+                    message = e.getMessage();
                 }
             }
         }
-        
+
         return SUCCESS;
     }
-    
+
 }

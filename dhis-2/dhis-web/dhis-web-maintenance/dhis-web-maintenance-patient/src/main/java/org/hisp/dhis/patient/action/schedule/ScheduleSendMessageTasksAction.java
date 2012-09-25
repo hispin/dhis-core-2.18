@@ -28,10 +28,9 @@
 package org.hisp.dhis.patient.action.schedule;
 
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_TIME_FOR_SENDING_MESSAGE;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_SEND_MESSAGE_GATEWAY;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIME_FOR_SENDING_MESSAGE;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_SEND_MESSAGE_SCHEDULED_TASKS;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULE_MESSAGE_TASKS;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_SEND_MESSAGE_SCHEDULED_TASKS;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIME_FOR_SENDING_MESSAGE;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,14 +84,7 @@ public class ScheduleSendMessageTasksAction
     {
         this.schedule = schedule;
     }
-
-    private String gateWayId;
-
-    public void setGateWayId( String gateWayId )
-    {
-        this.gateWayId = gateWayId;
-    }
-
+    
     private String timeSendingMessage;
 
     public void setTimeSendingMessage( String timeSendingMessage )
@@ -125,8 +117,7 @@ public class ScheduleSendMessageTasksAction
     public String execute()
     {
         systemSettingManager.saveSystemSetting( KEY_TIME_FOR_SENDING_MESSAGE, timeSendingMessage );
-        systemSettingManager.saveSystemSetting( KEY_SEND_MESSAGE_GATEWAY, gateWayId );
-
+        
         if ( execute )
         {
             schedulingManager.executeTasks();
