@@ -56,8 +56,5 @@
 		jQuery("[id=executionDate]").prop('disabled', true);
 		jQuery("[id=executionDate]").datepicker("destroy");
 	#end
-	#if( $programStageInstance.executionDate)
-		showById('inputCriteriaDiv');
-	#end
 </script>
 

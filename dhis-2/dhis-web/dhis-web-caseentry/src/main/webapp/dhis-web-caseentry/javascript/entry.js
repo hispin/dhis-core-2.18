@@ -453,8 +453,8 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 					var fieldId = "value_" + programStageInstanceId + "_date";
 					jQuery("#" + fieldId).css('background-color', SUCCESS_COLOR);
 					jQuery('#executionDate').val(executionDate);
-					
 					jQuery("#org_" + programStageInstanceId ).html(getFieldValue("orgunitName"));
+					showById('inputCriteriaDiv');
 					
 					handleResponse (result);
 			   },
