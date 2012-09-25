@@ -44,9 +44,9 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version GetOutboundSmsListAction.java 10:57:08 AM Aug 9, 2012 $
+ * @version GetProgramTrackingListAction.java 10:57:08 AM Aug 9, 2012 $
  */
-public class GetOutboundSmsListAction
+public class GetProgramTrackingListAction
     implements Action
 {
     // -------------------------------------------------------------------------
