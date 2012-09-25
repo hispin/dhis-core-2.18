@@ -60,7 +60,7 @@
 <tr>
 	<td class='text-column'><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
 	<td class="input-column">
-		<input type="text" id="phoneNumber" name="phoneNumber" value="$!phoneNumberAreaCode$!patient.phoneNumber" class="{validate:{phone:true}}"/>
+		<input type="text" id="phoneNumber" name="phoneNumber" #if( $!patient.phoneNumber ) value="$!patient.phoneNumber" #else value="$!phoneNumberAreaCode" #end class="{validate:{phone:true}}"/>
 	</td>
 </tr>
 
@@ -78,7 +78,7 @@
 
 <!-- UNDERAGE -->
 
-<tr>
+<tr id="underAgeDiv" name="underAgeDiv">
 	<td class='text-column'>$i18n.getString("has_guardian")</td>
 	<td>
 		<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($!patient.underAge == "true") checked="checked" #end/>
@@ -207,3 +207,14 @@
 		#end
 	#end
 #end
+
+
+<script>
+	#if($!patient.dobType && $!patient.dobType=='A') 
+		showById('age');
+		hideById('birthDate');
+	#else
+		hideById('age');
+		showById('birthDate');
+	#end
+</script>
