@@ -13,9 +13,8 @@
 							<table width='100%'>
 								<tr><th>
 									$i18n.getString("demographics")
-									<a href="javascript:showUpdatePatientForm( '$patient.id', true );"><label class='bold'>&laquo; $i18n.getString("edit_profile") &raquo;</label></a>
-									<a href="javascript:getPatientLocation( '$patient.id', true );"><label class='bold'>&laquo; $i18n.getString("change_location") &raquo;</label></a>
-							
+									<a href="javascript:showUpdatePatientForm( '$patient.id', true );"><label class='bold'>&laquo;$i18n.getString("edit_profile")&raquo;</label></a>
+									<a href="javascript:getPatientLocation( '$patient.id', true );"><label class='bold'> &laquo;$i18n.getString("change_location")&raquo;</label></a>
 								</th></tr>
 							</table>
 							<div class="contentProviderTable">
@@ -77,7 +76,7 @@
 							<table width='100%'>
 								<tr><th>
 										$i18n.getString("active_programs")
-										<a href='javascript:showProgramEnrollmentForm( "$patient.id" )'><label class='bold'>&laquo; $i18n.getString("enroll_program") &raquo;</label></a>
+										<a href='javascript:showProgramEnrollmentForm( "$patient.id" )'><label class='bold'>&laquo;$i18n.getString("enroll_program")&raquo;</label></a>
 									</th>
 								</tr>
 							</table>
@@ -154,7 +153,8 @@
 							<table width='100%'>
 								<tr><th>
 									$i18n.getString("relationships")
-									<a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );"><label class='bold'>&laquo; $i18n.getString("management") &raquo;</label></a>
+									<a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );"><label class='bold'>&laquo;$i18n.getString("management")&raquo;</label></a>
+									<a href="javascript:showAddRelationshipPatient( '$patient.id', false );"><label class='bold'> &laquo;$i18n.getString("add_new_patient")&raquo;</label></a>
 									</th></tr>
 							</table>
 							<div class="contentProviderTable">
