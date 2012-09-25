@@ -10,11 +10,11 @@ function format(item)
 {
     if(item.id.indexOf('u:') != -1)
     {
-        return '<img src="../icons/glyphicons_003_user.png" style="width: 16px; height: 16px; padding-right: 5px;"/>' + item.text;
+        return '<img src="../icons/glyphicons_003_user.png" style="width: 12px; height: 12px; padding-right: 5px;"/>' + item.text;
     }
     else if (item.id.indexOf('ug:') != -1)
     {
-        return '<img src="../icons/glyphicons_043_group.png" style="width: 16px; height: 16px; padding-right: 5px;"/>' + item.text;
+        return '<img src="../icons/glyphicons_043_group.png" style="width: 12px; height: 12px; padding-right: 5px;"/>' + item.text;
     }
     else
     {
