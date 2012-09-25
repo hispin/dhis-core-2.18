@@ -41,8 +41,6 @@ public class VelocityManager
     private static final String RESOURCE_LOADER_NAME = "class";
     private static final String VM_SUFFIX = ".vm";
     
-    private static final boolean RUNTIME_LOGGING = false;
-    
     private VelocityEngine velocity;
 
     public VelocityManager()
@@ -50,13 +48,9 @@ public class VelocityManager
         velocity = new VelocityEngine();
         velocity.setProperty( Velocity.RESOURCE_LOADER, RESOURCE_LOADER_NAME );
         velocity.setProperty( RESOURCE_LOADER_NAME + ".resource.loader.class", ClasspathResourceLoader.class.getName() );
-        
-        if ( RUNTIME_LOGGING )
-        {
-            velocity.setProperty( "runtime.log.logsystem.log4j.logger", "console" );
-            velocity.setProperty( "runtime.log", "" );
-        }
-        
+        velocity.setProperty( "runtime.log.logsystem.log4j.logger", "console" );
+        velocity.setProperty( "runtime.log", "" );
+                
         velocity.init();
     }
 
