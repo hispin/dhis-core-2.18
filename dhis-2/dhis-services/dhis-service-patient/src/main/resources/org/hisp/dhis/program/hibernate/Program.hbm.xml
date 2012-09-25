@@ -58,6 +58,8 @@
 		<many-to-many column="patientattributeid" class="org.hisp.dhis.patient.PatientAttribute" 
 			foreign-key="fk_program_patientAttributes_patientattributeid" />
 	</list>
-        
+    
+    <property name="generatedByEnrollmentDate" />
+    
   </class>
 </hibernate-mapping>

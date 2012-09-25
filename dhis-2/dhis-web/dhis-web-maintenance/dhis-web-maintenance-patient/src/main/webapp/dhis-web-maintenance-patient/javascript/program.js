@@ -23,6 +23,9 @@ function showProgramDetails( programId )
 		var displayIncidentDate = ( json.program.displayIncidentDate == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'displayIncidentDateField', displayIncidentDate );   	
 		
+		var generatedByEnrollmentDate = ( json.program.generatedByEnrollmentDate == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'generatedByEnrollmentDateField', generatedByEnrollmentDate );   	
+		
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );

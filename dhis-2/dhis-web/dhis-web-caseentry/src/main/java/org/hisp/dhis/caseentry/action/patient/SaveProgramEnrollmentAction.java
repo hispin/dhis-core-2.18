@@ -178,6 +178,11 @@ public class SaveProgramEnrollmentAction
             patient.getPrograms().add( program );
             patientService.updatePatient( patient );
 
+            Date dateCreatedEvent = format.parseDate( dateOfIncident );
+            if( program.getGeneratedByEnrollmentDate())
+            {
+                dateCreatedEvent = format.parseDate( enrollmentDate );
+            }
             boolean isFirstStage = false;
             for ( ProgramStage programStage : program.getProgramStages() )
             {
@@ -186,7 +191,7 @@ public class SaveProgramEnrollmentAction
                     ProgramStageInstance programStageInstance = new ProgramStageInstance();
                     programStageInstance.setProgramInstance( programInstance );
                     programStageInstance.setProgramStage( programStage );
-                    Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ),
+                    Date dueDate = DateUtils.getDateAfterAddition( dateCreatedEvent,
                         programStage.getMinDaysFromStart() );
 
                     programStageInstance.setDueDate( dueDate );
