@@ -29,8 +29,6 @@ package org.hisp.dhis.patient.action.patientidentifiertype;
 
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
