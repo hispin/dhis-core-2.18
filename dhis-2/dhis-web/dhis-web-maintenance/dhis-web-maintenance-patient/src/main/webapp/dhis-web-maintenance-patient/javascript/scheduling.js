@@ -24,6 +24,6 @@ function executeTasks()
 		gateWayId: getFieldValue("gatewayId"),
 		timeSendingMessage: getFieldValue("timeSendingMessage")
 	}, function( json ){
-		setMessage(i18n_scheduling_is + " " + json.scheduleTasks.status);
+		setMessage(i18n_execute_success);
 	});
 }

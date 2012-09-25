@@ -66,6 +66,8 @@ public class DefaultProgramValidationService
     private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
         + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
+    private final String regExpComparator = "(<|>|<=|>|>=|==|!=)+";
+
     private final String INVALID_CONDITION = "Invalid condition";
 
     private ProgramValidationStore validationStore;
@@ -187,41 +189,6 @@ public class DefaultProgramValidationService
         }
 
         return result;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private boolean runExpression( String expression, ProgramStageInstance programStageInstance )
-    {
-        StringBuffer description = new StringBuffer();
-
-        Pattern pattern = Pattern.compile( regExp );
-
-        Matcher matcher = pattern.matcher( expression );
-
-        while ( matcher.find() )
-        {
-            String match = matcher.group();
-
-            PatientDataValue dataValue = getPatientDataValue( match, programStageInstance );
-
-            if ( dataValue == null )
-            {
-                return true;
-            }
-
-            matcher.appendReplacement( description, dataValue.getValue() );
-        }
-
-        matcher.appendTail( description );
-
-        final JEP parser = new JEP();
-
-        parser.parseExpression( description.toString() );
-
-        return (parser.getValue() == 1.0);
     }
 
     public boolean runDateExpression( ProgramValidation programValidation, ProgramStageInstance programStageInstance,
@@ -372,6 +339,85 @@ public class DefaultProgramValidationService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
+    private String SUM_OPERATOR_IN_EXPRESSION = "+";
+
+    private String NOT_NULL_VALUE_IN_EXPRESSION = "{NOT-NULL-VALUE}";
+
+    private boolean runExpression( String expression, ProgramStageInstance programStageInstance )
+    {
+        String comparetor = "";
+        Pattern pattern = Pattern.compile( regExpComparator );
+        Matcher matcher = pattern.matcher( expression );
+        if ( matcher.find() )
+        {
+            comparetor = matcher.group();
+        }
+
+        String[] sides = expression.split( regExpComparator );
+        String leftSideValue = getOneSideExpressionValue( sides[0].trim(), programStageInstance );
+        String rightSideValue = getOneSideExpressionValue( sides[1].trim(), programStageInstance );
+
+        if ( expression.indexOf( SUM_OPERATOR_IN_EXPRESSION ) != -1 )
+        {
+            if ( leftSideValue == null || rightSideValue == null )
+            {
+                return true;
+            }
+
+            String result = leftSideValue + comparetor + rightSideValue;
+            final JEP parser = new JEP();
+            parser.parseExpression( result );
+            return (parser.getValue() == 1.0);
+        }
+        else
+        {
+            if ( rightSideValue.equals( NOT_NULL_VALUE_IN_EXPRESSION ) )
+            {
+                return leftSideValue == null ? false : true;
+            }
+            else if ( comparetor.equals( "==" ) && leftSideValue.equals( rightSideValue ) )
+            {
+                return true;
+            }
+            else if ( !comparetor.equals( "==" ) && !leftSideValue.equals( rightSideValue ) )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+    }
+
+    private String getOneSideExpressionValue( String expression, ProgramStageInstance programStageInstance )
+    {
+        StringBuffer description = new StringBuffer();
+
+        Pattern pattern = Pattern.compile( regExp );
+
+        Matcher matcher = pattern.matcher( expression );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+
+            PatientDataValue dataValue = getPatientDataValue( match, programStageInstance );
+
+            if ( dataValue == null )
+            {
+                return null;
+            }
+
+            matcher.appendReplacement( description, dataValue.getValue() );
+        }
+
+        matcher.appendTail( description );
+
+        return description.toString();
+    }
 
     private PatientDataValue getPatientDataValue( String match, ProgramStageInstance programStageInstance )
     {

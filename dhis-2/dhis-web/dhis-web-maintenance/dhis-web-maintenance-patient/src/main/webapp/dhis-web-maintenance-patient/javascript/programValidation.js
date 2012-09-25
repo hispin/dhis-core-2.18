@@ -1,4 +1,3 @@
-
 var COLOR_GREEN = '#b9ffb9';
 var COLOR_WHITE = '#ffffff'
 
@@ -66,7 +65,6 @@ function insertOperator( decriptionDiv, target, value )
 	getValidationDescription( decriptionDiv, target );
 }
 
-
 function getValidationDescription( decriptionDiv, sideDiv )
 {
 	$.postUTF8("getProgramValidationDescription.action",
@@ -94,34 +92,17 @@ function getLeftPrgramStageDataElements()
 	clearListById( 'leftSideDE' );
 	
 	var programStage = document.getElementById( 'leftStage' );
-	var psId = programStage.options[ programStage.selectedIndex ].value;
-	if( psId == '') return;
-  
-	$.ajax({
-		url: 'getAggPSDataElements.action?psId=' + psId,
-		dataType: "xml",
-		success: getLeftPrgramStageDataElementsCompleted
-	});  
-}
-
-function getLeftPrgramStageDataElementsCompleted( dataelementElement )
-{
-	var programstageDE = byId( 'leftSideDE' );
-	var programstageDEList = $(dataelementElement).find( 'dataelement' );
- 
-	$( programstageDEList ).each( function( i, item )
-        {
-            var id = $( item ).find("id").text();
-			var name = $( item ).find("name").text();
-			var type = $( item ).find("type").text(); 
-
-			var option = document.createElement("option");
-			option.value = id;
-			option.text = name;
-			option.title = name;
-			jQuery(option).attr({data:"{type:'"+type+"'}"});
-			programstageDE.add(option, null);  			
-        } );
+	var programStageId = programStage.options[ programStage.selectedIndex ].value;
+	if( programStageId == '') return;
+	
+	jQuery.getJSON( "getPatientDataElements.action", {
+		programStageId:programStageId
+	}, function(json){
+		for ( i in json.dataElements ) {
+			var id = '[DE:' + programStageId + '.' + json.dataElements[i].id + ']';
+			jQuery( '#leftSideDE').append( '<option value="' + id + '">' + json.dataElements[i].name + '</option>' );
+		}
+	});   
 }
 
 //------------------------------------------------------------------------------
@@ -133,34 +114,18 @@ function getRightPrgramStageDataElements()
 	clearListById( 'rightSideDE' );
   	
 	var programStage = document.getElementById( 'rightStage' );
-	var psId = programStage.options[ programStage.selectedIndex ].value;
-	if( psId == '') return;
+	var programStageId = programStage.options[ programStage.selectedIndex ].value;
+	if( programStageId == '') return;
   
-	$.ajax({
-		url: 'getAggPSDataElements.action?psId=' + psId,
-		dataType: "xml",
-		success: getRightPrgramStageDataElementsCompleted
-	});  
-}
-
-function getRightPrgramStageDataElementsCompleted( dataelementElement )
-{
-	var programstageDE = document.getElementById( 'rightSideDE' );
-	var programstageDEList = $(dataelementElement).find( 'dataelement' );
- 
-	$( programstageDEList ).each( function( i, item )
-    {
-		var id = $( item ).find("id").text();
-		var name = $( item ).find("name").text();
-		var type = $( item ).find("type").text(); 
-		
-		var option = document.createElement("option");
-		option.value = id;
-		option.text = name;
-		option.title = name;
-		jQuery(option).attr({data:"{type:'"+type+"'}"});
-		programstageDE.add(option, null); 
-	});
+	jQuery.getJSON( "getPatientDataElements.action", {
+		programStageId:programStageId
+	}, function(json){
+		for ( i in json.dataElements ) {
+			var id = '[DE:' + programStageId + '.' + json.dataElements[i].id + ']';
+			jQuery( '#rightSideDE').append( '<option value="' + id + '">' + json.dataElements[i].name + '</option>' );
+		}
+	}); 
+	
 }
 
 function getDateDataElements()
