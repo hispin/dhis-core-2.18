@@ -147,11 +147,11 @@
   </table>
   <br/>&nbsp;
 
-  <table id="dataElementSelectionArea" style="width: 100%;">
+  <table id="dataElementSelectionArea">
       <colgroup>
-        <col style="width: 50%;"/>
+        <col style="width: 500px;"/>
         <col/>
-        <col style="width: 50%;"/>
+        <col style="width: 500px;"/>
       </colgroup>
     <thead>
       <tr>
@@ -180,11 +180,11 @@
 
   <br/>
 
-  <table id="indicatorSelectionArea" style="width: 100%;">
+  <table id="indicatorSelectionArea">
       <colgroup>
-        <col style="width: 50%;"/>
+        <col style="width: 500px;"/>
         <col/>
-        <col style="width: 50%;"/>
+        <col style="width: 500px;"/>
       </colgroup>
 
     <thead>
