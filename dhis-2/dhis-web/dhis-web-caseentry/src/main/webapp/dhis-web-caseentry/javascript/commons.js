@@ -1183,12 +1183,12 @@ function programOnchange( programId )
 		if(type=='2'){
 			hideById('enrollmentDateTR');
 			hideById('dateOfIncidentTR');
-			disable('enrollmentDate');
-			disable('dateOfIncident');
+			disable('enrollmentDateField');
+			disable('dateOfIncidentField');
 		}
 		else{
-			showById( 'enrollmentDateTR');
-			enable('enrollmentDate');
+			showById('enrollmentDateTR');
+			enable('enrollmentDateField');
 			
 			var dateOfEnrollmentDescription = jQuery('#enrollmentDiv [name=programId] option:selected').attr('dateOfEnrollmentDescription');
 			var dateOfIncidentDescription = jQuery('#enrollmentDiv [name=programId] option:selected').attr('dateOfIncidentDescription');
@@ -1198,11 +1198,11 @@ function programOnchange( programId )
 			var displayIncidentDate = jQuery('#enrollmentDiv [name=programId] option:selected').attr('displayIncidentDate');
 			if( displayIncidentDate=='true'){
 				showById('dateOfIncidentTR');
-				enable('dateOfIncident');
+				enable('enrollmentDateField');
 			}
 			else{
 				hideById('dateOfIncidentTR');
-				disable('dateOfIncident');
+				disable('enrollmentDateField');
 			}
 		}
 		var programId = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected').val();
@@ -1215,7 +1215,7 @@ function programOnchange( programId )
 	}
 }
 
-function saveEnrollment( patientId, programId )
+function saveEnrollment()
 {
 	var patientId = jQuery('#enrollmentDiv [id=patientId]').val();
 	var programId = jQuery('#enrollmentDiv [id=programId] option:selected').val();
