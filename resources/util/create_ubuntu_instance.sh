@@ -1,4 +1,6 @@
-#Some variables. Change as you need to
+#!/bin/bash
+#A basic script to stand-up a basic DHIS2 instance on AWS.
+#Some variables. Change as needed.
 USERNAME=dhis
 PASSWORD=dhis
 DBNAME=dhis2
