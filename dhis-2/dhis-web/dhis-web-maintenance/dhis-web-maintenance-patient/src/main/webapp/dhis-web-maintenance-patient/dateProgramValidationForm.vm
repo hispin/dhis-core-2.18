@@ -38,7 +38,7 @@
 				
 				<script>
 					var dataElementId = '$dataElement.id';
-					var rightSide = '$!validationMap.get($dataElement.id).rightSide';
+					var rightSide = "$!validationMap.get($dataElement.id).rightSide";
 					parseRightSide( dataElementId, rightSide );
 				</script>
 				
