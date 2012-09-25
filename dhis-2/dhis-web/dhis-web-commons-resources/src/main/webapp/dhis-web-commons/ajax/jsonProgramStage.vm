@@ -10,6 +10,8 @@
 	"reportDateDescription": "$!encoder.jsonEncode( ${programStage.reportDateDescription} )",
 	"daysAllowedSendMessage": "$!programStage.daysAllowedSendMessage",
 	"templateMessage": "$!encoder.jsonEncode( ${programStage.templateMessage} )",
+	"irregular": "$!programStage.irregular",
+	"autoGenerateEvent": "$!programStage.autoGenerateEvent",
 	
 	#set( $size = ${programStageDataElements.size()} )
 	"dataElement": [

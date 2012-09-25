@@ -155,7 +155,7 @@ public class UpdateProgramStageAction
     {
         this.reportDateDescription = reportDateDescription;
     }
-    
+
     private List<Integer> daysAllowedSendMessages = new ArrayList<Integer>();
 
     public void setDaysAllowedSendMessages( List<Integer> daysAllowedSendMessages )
@@ -169,7 +169,14 @@ public class UpdateProgramStageAction
     {
         this.templateMessages = templateMessages;
     }
-    
+
+    private Boolean autoGenerateEvent;
+
+    public void setAutoGenerateEvent( Boolean autoGenerateEvent )
+    {
+        this.autoGenerateEvent = autoGenerateEvent;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -179,7 +186,8 @@ public class UpdateProgramStageAction
     {
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         irregular = (irregular == null) ? false : irregular;
-        
+        autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
+
         ProgramStage programStage = programStageService.getProgramStage( id );
 
         programStage.setName( name );
@@ -188,11 +196,13 @@ public class UpdateProgramStageAction
         programStage.setReportDateDescription( reportDateDescription );
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setIrregular( irregular );
-        
+        programStage.setAutoGenerateEvent( autoGenerateEvent );
+
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < this.daysAllowedSendMessages.size(); i++ )
         {
-            PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ), templateMessages.get( i ));
+            PatientReminder reminder = new PatientReminder( "", daysAllowedSendMessages.get( i ),
+                templateMessages.get( i ) );
             patientReminders.add( reminder );
         }
         programStage.setPatientReminders( patientReminders );

@@ -59,6 +59,10 @@ function showProgramStageDetails( programStageId )
 
 		var irregular = (json.programStage.irregular=='true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'irregularField', irregular );  
+		
+		var autoGenerateEvent = (json.programStage.autoGenerateEvent=='true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'autoGenerateEventField', autoGenerateEvent );  
+		
 		setInnerHTML( 'standardIntervalField', json.programStage.standardInterval );  
 		setInnerHTML( 'dataElementCountField', json.programStage.dataElementCount );   
 		setInnerHTML( 'reportDateDescriptionField', json.programStage.reportDateDescription );

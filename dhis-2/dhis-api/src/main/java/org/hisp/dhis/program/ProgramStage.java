@@ -77,6 +77,8 @@ public class ProgramStage
     
     private Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
     
+    private Boolean autoGenerateEvent = true;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -243,6 +245,16 @@ public class ProgramStage
     public void setReportDateDescription( String reportDateDescription )
     {
         this.reportDateDescription = reportDateDescription;
+    }
+    
+    public Boolean getAutoGenerateEvent()
+    {
+        return autoGenerateEvent;
+    }
+
+    public void setAutoGenerateEvent( Boolean autoGenerateEvent )
+    {
+        this.autoGenerateEvent = autoGenerateEvent;
     }
 
     public String getDataEntryType()
