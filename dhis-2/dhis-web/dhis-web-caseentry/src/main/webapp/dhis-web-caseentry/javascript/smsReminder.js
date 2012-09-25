@@ -106,10 +106,10 @@ function advancedSearch( params )
 // program tracking form
 // --------------------------------------------------------------------
 
-function getOutboundSmsList( programStageInstanceId, isSendSMS ) 
+function programTrackingList( programStageInstanceId, isSendSMS ) 
 {
 	setFieldValue('sendToList', "false");
-	$('#smsManagementDiv' ).load("getOutboundSmsList.action",
+	$('#smsManagementDiv' ).load("programTrackingList.action",
 		{
 			programStageInstanceId: programStageInstanceId
 		}
@@ -143,22 +143,6 @@ function eventFlowToggle( programInstanceId )
 // --------------------------------------------------------------------
 // Send SMS 
 // --------------------------------------------------------------------
-
-function showSendSmsForm(programStageName, programStageInstanceId)
-{
-	setFieldValue( 'programStageInstanceId', programStageInstanceId );
-	setFieldValue( 'programStageName', programStageName );
-	$('#sendSmsFormDiv' ).load("getGateway.action").dialog(
-		{
-			title:i18n_send_sms,
-			maximize:true, 
-			closable:true,
-			modal:true,
-			overlay:{background:'#000000', opacity:0.1},
-			width:400,
-			height:250
-		});
-}
 
 function sendSMS()
 {
@@ -204,7 +188,7 @@ function sendSmsToList()
 function showCommentList( programStageInstanceId, isSendSMS ) 
 {
 	setFieldValue('sendToList', "false");
-	$('#smsManagementDiv' ).load("getOutboundSmsList.action",
+	$('#smsManagementDiv' ).load("programTrackingList.action",
 		{
 			programStageInstanceId: programStageInstanceId
 		}
@@ -229,7 +213,6 @@ function keypress(event, field, programStageInstanceId )
 		addComment( field, programStageInstanceId );
 	}
 }
-
 
 // --------------------------------------------------------------------
 // Dashboard
