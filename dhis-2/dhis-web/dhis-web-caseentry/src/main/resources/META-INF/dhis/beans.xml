@@ -998,8 +998,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
 	</bean>
 
 	<!-- Comment -->

@@ -1,6 +1,6 @@
 
 #foreach ($identifierType in $program.patientIdentifierTypes) 
-	<tr #alternate( $mark )>
+	<tr>
 		<td class='text-column'><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
 		<td class="input-column">
 			<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" />
@@ -9,7 +9,7 @@
 #end
 				
 #foreach($attribute in $program.patientAttributes )
-	<tr #alternate( $mark )>
+	<tr>
 		<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 		<td class="input-column" >
 			#if( $attribute.valueType == "YES/NO" )

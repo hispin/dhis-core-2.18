@@ -1,6 +1,7 @@
 <h3>
  <a href="javascript:onClickBackBtn();" id='mainFormLink' name='mainFormLink'>$i18n.getString( 'patient_management' )</a>
  &#8226; $i18n.getString( 'patient_dashboard' )
+ &raquo; <a href="javascript:dashboardHistoryToggle();" >$i18n.getString( 'history' )</a>
 </h3>
 
 <table>
@@ -184,7 +185,26 @@
 
 <div id='programEnrollmentDiv' class='hidden'></div>
 <div id='dataEntryFormDiv'></div>
+<div id='dashboardHistoryDiv' class="dashboard-history" style="display:none;">
+	<table class='mainPageTable'>
+		<thead>
+		<tr>
+			<th>$i18n.getString("user_access")</th>
+			<th>$i18n.getString("date")</th>
+		</tr>
+		</thead>
+		#set( $mark = false )
+		#foreach( $patientAudit in $patientAudits )
+		<tr #alternate( $mark )>
+			<td>$patientAudit.patient.getFullName()</td>
+			<td>$format.formatDate($patientAudit.date)</td>
+		</tr>
+		#set( $mark = !$mark )
+		#end
+	</table>
+</div>
 
 <script>
 	hideById('mainLinkLbl');
+	var i18n_history = '$encoder.jsEscape( $i18n.getString( "history" ) , "'" )';
 </script>

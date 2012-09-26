@@ -1575,6 +1575,11 @@ function getEventMessages( programInstanceId )
 	$('#eventMessagesDiv').load("getEventMessages.action", {programInstanceId:programInstanceId});
 }
 
+function dashboardHistoryToggle()
+{
+	jQuery('#dashboardHistoryDiv').toggle();
+}
+
 // --------------------------------------------------------------------
 // Comment && Message
 // --------------------------------------------------------------------
