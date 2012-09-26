@@ -100,8 +100,8 @@ public class DefaultOrganisationUnitService
 
         if ( organisationUnit.getParent() == null && currentUserService.getCurrentUser() != null )
         {
-            // we are adding a new root node, add this node to the current user
-            // this makes sense in most cases, and makes sure that we don't have "zombie nodes"
+            // Adding a new root node, add this node to the current user
+            
             currentUserService.getCurrentUser().getOrganisationUnits().add( organisationUnit );
         }
 
