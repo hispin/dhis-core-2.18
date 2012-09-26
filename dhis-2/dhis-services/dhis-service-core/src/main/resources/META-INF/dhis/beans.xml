@@ -516,6 +516,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<value>cambodia</value>
 		<value>china</value>
         <value>columbia</value>
+        <value>ecuador</value>
         <value>ethiopia</value>
         <value>gambia</value>
         <value>ghana</value>
@@ -533,10 +534,13 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <value>mali</value>
         <value>mozambique</value>
         <value>namibia</value>
+          <value>nicaragua</value>
         <value>niger</value>
         <value>nigeria</value>
         <value>norway</value>
+          <value>paraguay</value>
         <value>philippines</value>
+          <value>peru</value>
         <value>rwanda</value>
         <value>senegal</value>
         <value>sierra_leone</value>
