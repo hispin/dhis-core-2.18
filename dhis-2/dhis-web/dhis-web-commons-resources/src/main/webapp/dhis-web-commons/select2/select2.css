@@ -301,7 +301,8 @@ Version: 3.2 Timestamp: Mon Sep 10 10:38:04 PDT 2012
 }
 
 .select2-results .select2-highlighted {
-  background: #3875d7;
+  /* background: #3875d7; */
+  background: #6C9BC0; /* DHIS modification */
   color: #fff;
 }
 .select2-results li em {
