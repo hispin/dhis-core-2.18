@@ -28,19 +28,19 @@
 package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAudit;
+import org.hisp.dhis.patient.PatientAuditService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
-import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 
@@ -66,7 +66,7 @@ public class PatientDashboardAction
 
     private ProgramInstanceService programInstanceService;
 
-    private ProgramStageInstanceService programStageInstanceService;
+    private PatientAuditService patientAuditService;
 
     // -------------------------------------------------------------------------
     // Input && Output
@@ -83,18 +83,18 @@ public class PatientDashboardAction
     private Collection<Relationship> relationship;
 
     private Collection<ProgramInstance> activeProgramInstances;
-    
-    private Collection<ProgramInstance> completedProgramInstances;
 
-    private Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
+    private Collection<ProgramInstance> completedProgramInstances;
+    
+    private Collection<PatientAudit> patientAudits;
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    public void setPatientAuditService( PatientAuditService patientAuditService )
     {
-        this.programStageInstanceService = programStageInstanceService;
+        this.patientAuditService = patientAuditService;
     }
 
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
@@ -105,6 +105,11 @@ public class PatientDashboardAction
     public Collection<ProgramInstance> getActiveProgramInstances()
     {
         return activeProgramInstances;
+    }
+
+    public Collection<PatientAudit> getPatientAudits()
+    {
+        return patientAudits;
     }
 
     public Collection<ProgramInstance> getCompletedProgramInstances()
@@ -152,11 +157,6 @@ public class PatientDashboardAction
         this.patientId = patientId;
     }
 
-    public Map<Integer, Integer> getStatusMap()
-    {
-        return statusMap;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -176,12 +176,12 @@ public class PatientDashboardAction
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient );
 
         activeProgramInstances = new HashSet<ProgramInstance>();
-        
+
         completedProgramInstances = new HashSet<ProgramInstance>();
-        
+
         for ( ProgramInstance programInstance : programInstances )
         {
-            if( programInstance.isCompleted() )
+            if ( programInstance.isCompleted() )
             {
                 completedProgramInstances.add( programInstance );
             }
@@ -189,8 +189,19 @@ public class PatientDashboardAction
             {
                 activeProgramInstances.add( programInstance );
             }
-            statusMap.putAll( programStageInstanceService.statusProgramStageInstances( programInstance
-                .getProgramStageInstances() ) );
+        }
+
+        patientAudits = patientAuditService.getPatientAudits( patient );
+       
+        long millisInDay = 60 * 60 * 24 * 1000;
+        long currentTime = new Date().getTime();
+        long dateOnly = (currentTime / millisInDay) * millisInDay;
+        Date date = new Date(dateOnly);        
+        PatientAudit patientAudit = patientAuditService.get( patient, date );
+        if ( patientAudit == null )
+        {
+            patientAudit = new PatientAudit( patient, date );
+            patientAuditService.savePatientAudit( patientAudit );
         }
 
         return SUCCESS;

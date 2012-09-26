@@ -9,7 +9,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore"
 		class="org.hisp.dhis.caseaggregation.jdbc.JdbcCaseAggregationConditionStore">
-		<property name="clazz" value="org.hisp.dhis.caseaggregation.CaseAggregationCondition" />
+		<property name="clazz"
+			value="org.hisp.dhis.caseaggregation.CaseAggregationCondition" />
 		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
@@ -44,7 +45,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="clazz" value="org.hisp.dhis.program.ProgramStage" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.program.ProgramStageSectionStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.program.ProgramStageSection" />
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -127,6 +128,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+
+	<bean id="org.hisp.dhis.patient.PatientAuditStore"
+		class="org.hisp.dhis.patient.hibernate.HibernatePatientAuditStore">
+		<property name="clazz" value="org.hisp.dhis.patient.PatientAudit" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 	<!-- Service definitions -->
 
 	<bean id="org.hisp.dhis.program.ProgramDataEntryService" class="org.hisp.dhis.program.DefaultProgramDataEntryService">
@@ -143,7 +151,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionService"
 		class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationConditionService">
 		<property name="aggregationConditionStore"
@@ -193,9 +201,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageSectionService" class="org.hisp.dhis.program.DefaultProgramStageSectionService">
-		<property name="programStageSectionStore" ref="org.hisp.dhis.program.ProgramStageSectionStore" />
+		<property name="programStageSectionStore"
+			ref="org.hisp.dhis.program.ProgramStageSectionStore" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.program.ProgramService" class="org.hisp.dhis.program.DefaultProgramService">
 		<property name="programStore" ref="org.hisp.dhis.program.ProgramStore" />
 	</bean>
@@ -274,7 +283,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="tabularReportStore"
 			ref="org.hisp.dhis.patientreport.PatientTabularReportStore" />
 	</bean>
-	
+
+	<bean id="org.hisp.dhis.patient.PatientAuditService" class="org.hisp.dhis.patient.DefaultPatientAuditService">
+		<property name="patientAuditStore" ref="org.hisp.dhis.patient.PatientAuditStore" />
+	</bean>
+
 	<!-- DeletionHandlers -->
 
 	<bean id="org.hisp.dhis.patient.PatientIdentifierDeletionHandler"
@@ -351,47 +364,53 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	</bean>
 
 	<!-- PatientComment -->
-	
+
 	<bean id="org.hisp.dhis.patientcomment.PatientCommentService"
 		class="org.hisp.dhis.patientcomment.DefaultPatientCommentService">
-		<property name="patientCommentStore" ref="org.hisp.dhis.patientcomment.PatientCommentStore" />
+		<property name="patientCommentStore"
+			ref="org.hisp.dhis.patientcomment.PatientCommentStore" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.patientcomment.PatientCommentStore"
-		class="org.hisp.dhis.hibernate.HibernateGenericStore">
+
+	<bean id="org.hisp.dhis.patientcomment.PatientCommentStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.patientcomment.PatientComment" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<!-- Scheduling -->
-	
-	<bean id="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager" class="org.hisp.dhis.patient.scheduling.DefaultProgramSchedulingManager"
-   	 init-method="scheduleTasks">
-    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
-    <property name="scheduler" ref="scheduler" />
-    <property name="tasks">
-      <map>
-        <entry key="scheduleMessage" value-ref="scheduleMessage" />
-        <entry key="sendMessageScheduled" value-ref="sendMessageScheduled" />
-      </map>
-    </property>
-   </bean>
-  
- 	<bean id="abstractScheduledMessageTask" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" >
- 		<constructor-arg ref="org.hisp.dhis.program.ProgramStageInstanceService" />
- 		<constructor-arg ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
- 		<constructor-arg ref="jdbcTemplate" />
- 	</bean>
- 	
- 	<bean id="sendMessageScheduled" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" parent="abstractScheduledMessageTask">
-		<property name="sendingMessage" value="true"/>
-	</bean>  
-	
-	<bean id="scheduleMessage" class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask" parent="abstractScheduledMessageTask">
-		<property name="sendingMessage" value="false"/>
-	</bean>  
-  	
-    <!-- Startup -->
+
+	<bean id="org.hisp.dhis.patient.scheduling.ProgramSchedulingManager"
+		class="org.hisp.dhis.patient.scheduling.DefaultProgramSchedulingManager"
+		init-method="scheduleTasks">
+		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+		<property name="scheduler" ref="scheduler" />
+		<property name="tasks">
+			<map>
+				<entry key="scheduleMessage" value-ref="scheduleMessage" />
+				<entry key="sendMessageScheduled" value-ref="sendMessageScheduled" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="abstractScheduledMessageTask"
+		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask">
+		<constructor-arg ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<constructor-arg ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+		<constructor-arg ref="jdbcTemplate" />
+	</bean>
+
+	<bean id="sendMessageScheduled"
+		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask"
+		parent="abstractScheduledMessageTask">
+		<property name="sendingMessage" value="true" />
+	</bean>
+
+	<bean id="scheduleMessage"
+		class="org.hisp.dhis.patient.scheduling.SendScheduledMessageTask"
+		parent="abstractScheduledMessageTask">
+		<property name="sendingMessage" value="false" />
+	</bean>
+
+	<!-- Startup -->
 
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror">
 		<property name="statementManager" ref="statementManager" />

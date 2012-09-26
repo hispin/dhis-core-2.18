@@ -402,3 +402,19 @@ input.patient-object[type="button"]
 	margin: 5px;
 	border-radius: 2px;
 }
+
+div.dashboard-history
+{
+	z-index:100; 
+	width:400px; 
+	height:200px; 
+	position:absolute; 
+	left:650px; 
+	top:95px; 
+	background-color:#ffffff;
+	border:4px solid #d0d0d0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	padding-bottom:1px;
+}
