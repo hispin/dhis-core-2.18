@@ -15,7 +15,9 @@
 								<tr><th>
 									$i18n.getString("demographics")
 									<a href="javascript:showUpdatePatientForm( '$patient.id', true );"><label class='bold'>&laquo;$i18n.getString("edit_profile")&raquo;</label></a>
+									#if( $auth.hasAccess( "dhis-web-caseentry", "getPatientLocation" ) )
 									<a href="javascript:getPatientLocation( '$patient.id', true );"><label class='bold'> &laquo;$i18n.getString("change_location")&raquo;</label></a>
+									#end
 								</th></tr>
 							</table>
 							<div class="contentProviderTable">
