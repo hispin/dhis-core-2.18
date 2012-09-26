@@ -67,6 +67,10 @@
 						<option value='-30'>$i18n.getString("one_month")</option>
 						<option value='ALL'>$i18n.getString("all")</option>
 					</select>
+					<input type='text' id='startDueDate' name='startDueDate' class='hidden'>
+				</td>
+				<td>
+					<input type='checkbox' id='useCalendar' name='useCalendar' onchange="displayCadendar();"> $i18n.getString('use_calendar')
 				</td>
 			</tr>
 			<tr>
@@ -79,6 +83,7 @@
 						<option value='30'>$i18n.getString("one_month")</option>
 						<option value='ALL'>$i18n.getString("all")</option>
 					</select>
+					<input type='text' id='endDueDate' name='endDueDate' class='hidden'>
 				</td>
 			</tr>
 			<tr>
@@ -97,8 +102,6 @@
 #parse( "dhis-web-commons/loader/loader.vm" )
 	
 <div class='hidden'>
-	<input type='text' id='startDueDate' name='startDueDate' >
-	<input type='text' id='endDueDate' name='endDueDate' >
 	<input type='textbox' id='currentDate' name='currentDate'>
 	<script>
 		datePicker( 'currentDate' );
