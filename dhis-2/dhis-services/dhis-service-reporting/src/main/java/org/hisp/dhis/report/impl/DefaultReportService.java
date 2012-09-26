@@ -27,7 +27,7 @@ package org.hisp.dhis.report.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.reporttable.ReportTable.PARAM_ORGANISATIONUNIT_COLUMN_NAME;
+import static org.hisp.dhis.reporttable.ReportTable.*;
 import static org.hisp.dhis.reporttable.ReportTable.REPORTING_MONTH_COLUMN_NAME;
 import static org.hisp.dhis.reporttable.ReportTable.PARAM_ORGANISATIONUNIT_LEVEL;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
@@ -73,6 +73,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultReportService
     implements ReportService
 {
+    public static final String ORGANISATIONUNIT_LEVEL_COLUMN_PREFIX = "idlevel";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -152,8 +154,11 @@ public class DefaultReportService
         
         if ( orgUnit != null )
         {
+            int level = organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
+            
             params.put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, orgUnit.getName() );
-            params.put( PARAM_ORGANISATIONUNIT_LEVEL, organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) );
+            params.put( PARAM_ORGANISATIONUNIT_LEVEL, level );
+            params.put( PARAM_ORGANISATIONUNIT_LEVEL_COLUMN, ORGANISATIONUNIT_LEVEL_COLUMN_PREFIX + level );
         }
         
         try
@@ -188,7 +193,7 @@ public class DefaultReportService
                 
                 if ( report.hasReportParams() && report.getReportParams().isParamOrganisationUnit() && orgUnit != null )
                 {
-                    params.put( PARAM_ORG_UNITS, orgUnit.getUid() );
+                    params.put( PARAM_ORG_UNITS, orgUnit.getId() );
                 }
                 
                 try
