@@ -29,6 +29,7 @@ package org.hisp.dhis.report.impl;
 
 import static org.hisp.dhis.reporttable.ReportTable.PARAM_ORGANISATIONUNIT_COLUMN_NAME;
 import static org.hisp.dhis.reporttable.ReportTable.REPORTING_MONTH_COLUMN_NAME;
+import static org.hisp.dhis.reporttable.ReportTable.PARAM_ORGANISATIONUNIT_LEVEL;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
@@ -152,6 +153,7 @@ public class DefaultReportService
         if ( orgUnit != null )
         {
             params.put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, orgUnit.getName() );
+            params.put( PARAM_ORGANISATIONUNIT_LEVEL, organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) );
         }
         
         try
