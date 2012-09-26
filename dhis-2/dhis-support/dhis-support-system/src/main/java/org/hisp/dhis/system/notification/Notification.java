@@ -29,12 +29,20 @@ package org.hisp.dhis.system.notification;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.scheduling.TaskCategory;
 
 /**
  * @author Lars Helge Overland
  */
+@JacksonXmlRootElement( localName = "notification", namespace = Dxf2Namespace.NAMESPACE )
 public class Notification
 {
     private String uid;
@@ -72,11 +80,20 @@ public class Notification
     // Get and set
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public NotificationLevel getLevel()
     {
         return level;
     }
 
+    public void setLevel( NotificationLevel level )
+    {
+        this.level = level;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getUid()
     {
         return uid;
@@ -87,11 +104,8 @@ public class Notification
         this.uid = uid;
     }
 
-    public void setLevel( NotificationLevel level )
-    {
-        this.level = level;
-    }
-
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public TaskCategory getCategory()
     {
         return category;
@@ -102,6 +116,8 @@ public class Notification
         this.category = category;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Date getTime()
     {
         return time;
@@ -112,6 +128,8 @@ public class Notification
         this.time = time;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getMessage()
     {
         return message;
@@ -122,6 +140,8 @@ public class Notification
         this.message = message;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isCompleted()
     {
         return completed;

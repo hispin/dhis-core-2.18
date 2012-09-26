@@ -28,12 +28,24 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.dxf2.metadata.ImportSummary;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.system.notification.Notification;
+import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.system.scheduling.Scheduler;
+import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -44,6 +56,15 @@ public class SystemController
 {
     public static final String RESOURCE_PATH = "/system";
 
+    @Autowired
+    private Scheduler scheduler;
+
+    @Autowired
+    private CurrentUserService currentUserService;
+
+    @Autowired
+    private Notifier notifier;
+
     //--------------------------------------------------------------------------
     // UID Generator
     //--------------------------------------------------------------------------
@@ -53,5 +74,41 @@ public class SystemController
     {
         response.setContentType( "text/plain" );
         response.getWriter().write( CodeGenerator.generateCode() );
+    }
+
+    @RequestMapping( value = "/tasks/{category}", method = RequestMethod.GET, produces = {"*/*", "application/json"} )
+    public void getTaskJson( HttpServletResponse response, @PathVariable( "category" ) String category ) throws IOException
+    {
+        List<Notification> notifications = new ArrayList<Notification>();
+
+        if ( category != null )
+        {
+            TaskCategory taskCategory = TaskCategory.valueOf( category.toUpperCase() );
+
+            TaskId taskId = new TaskId( taskCategory, currentUserService.getCurrentUser() );
+
+            notifications = notifier.getNotifications( taskId, taskCategory, null );
+        }
+
+        JacksonUtils.toJson( response.getOutputStream(), notifications );
+    }
+
+    @RequestMapping( value = "/taskSummaries/{category}", method = RequestMethod.GET, produces = {"*/*", "application/json"} )
+    public void getTaskSummaryJson( HttpServletResponse response, @PathVariable( "category" ) String category ) throws IOException
+    {
+        ImportSummary importSummary = new ImportSummary();
+
+        if ( category != null )
+        {
+            TaskCategory taskCategory = TaskCategory.valueOf( category.toUpperCase() );
+
+            TaskId taskId = new TaskId( taskCategory, currentUserService.getCurrentUser() );
+
+            importSummary = (ImportSummary) notifier.getTaskSummary( taskId, taskCategory );
+
+            notifier.clear( taskId, taskCategory );
+        }
+
+        JacksonUtils.toJson( response.getOutputStream(), importSummary );
     }
 }
