@@ -20,6 +20,27 @@ function orgunitSelected( orgUnits, orgUnitNames )
 
 selection.setListenerFunction( orgunitSelected );
 
+function displayCadendar()
+{
+	if( byId('useCalendar').checked )
+	{
+		hideById('showEventSince');
+		hideById('showEventUpTo');
+		showById('startDueDate');
+		showById('endDueDate');
+		datePickerInRangeValid( 'startDueDate' , 'endDueDate' );
+	}
+	else
+	{
+		showById('showEventSince');
+		showById('showEventUpTo');
+		hideById('startDueDate');
+		hideById('endDueDate');
+		jQuery('#startDueDate').datepicker("destroy");
+		jQuery('#endDueDate').datepicker("destroy");
+	}
+}
+
 function showActitityList()
 {
 	setFieldValue('listAll', "true");
@@ -104,24 +125,27 @@ function loadDataEntry( programStageInstanceId )
 
 function statusEventOnChange()
 {
-	var statusEvent = getFieldValue("statusEvent");
-	
-	if( statusEvent == '1_2_3_4' 
-		|| statusEvent == '3_4' 
-		|| statusEvent == '2_3_4' ){
-		enable('showEventSince');
-		enable('showEventUpTo');
-		setDateRange();
-	}
-	else if( statusEvent == '3' ){
-		disable('showEventSince');
-		enable('showEventUpTo');
-		setDateRange();
-	}
-	else{
-		enable('showEventSince');
-		disable('showEventUpTo');
-		setDateRange();
+	if( !byId('useCalendar').checked )
+	{
+		var statusEvent = getFieldValue("statusEvent");
+		
+		if( statusEvent == '1_2_3_4' 
+			|| statusEvent == '3_4' 
+			|| statusEvent == '2_3_4' ){
+			enable('showEventSince');
+			enable('showEventUpTo');
+			setDateRange();
+		}
+		else if( statusEvent == '3' ){
+			disable('showEventSince');
+			enable('showEventUpTo');
+			setDateRange();
+		}
+		else{
+			enable('showEventSince');
+			disable('showEventUpTo');
+			setDateRange();
+		}
 	}
 }
 
