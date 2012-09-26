@@ -32,6 +32,12 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="searchAllFacilities"
+			class="org.hisp.dhis.caseentry.action.NoAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_SEARCH_PATIENT_IN_ALL_FACILITIES</param>
+		</action>
+		
 		<action name="searchPatient"
 			class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction">
 			<result name="success" type="velocity">/content.vm</result>
@@ -546,14 +552,14 @@
 			class="org.hisp.dhis.caseentry.action.patient.ProgramEnrollmentSelectAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programEnrollmentSelectForm.vm</param>
-			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+			<param name="requiredAuthorities">F_PROGRAM_ENROLLMENT</param>
 		</action>
 
 		<action name="enrollmentform"
 			class="org.hisp.dhis.caseentry.action.patient.ProgramEnrollmentAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programEnrollmentForm.vm</param>
-			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+			<param name="requiredAuthorities">F_LOAD_PERSON_EVENTS_MANAGEMENT</param>
 		</action>
 
 		<action name="validatePatientProgramEnrollment"
