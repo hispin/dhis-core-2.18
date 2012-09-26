@@ -51,10 +51,13 @@ public interface ReportService
      * 
      * Will make the following params available:
      * 
-     * "periods" String of relative period ids)
-     * "organisationunits" String of selected organisation unit uids)
-     * "reporting_month_name" Name of the selected period
-     * "param_organisationunit_name" Name of the selected organisation unit
+     * "periods" String of relative period ids (String)
+     * "organisationunits" String of selected organisation unit ids (String)
+     * "reporting_month_name" Name of the selected period (String)
+     * "param_organisationunit_name" Name of the selected organisation unit (String)
+     * "organisationunit_level" Level of the selected organisation unit (int)
+     * "organisationunit_level_column" Name of the relevant level column in  (String)
+     *     table _orgunitstructure.
      * 
      * @param out the OutputStream to write the report to.
      * @param reportUid the uid of the report to render.
