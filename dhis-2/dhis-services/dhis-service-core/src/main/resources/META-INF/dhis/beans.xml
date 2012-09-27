@@ -534,17 +534,18 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <value>mali</value>
         <value>mozambique</value>
         <value>namibia</value>
-          <value>nicaragua</value>
+        <value>nicaragua</value>
         <value>niger</value>
         <value>nigeria</value>
         <value>norway</value>
-          <value>paraguay</value>
+        <value>paraguay</value>
         <value>philippines</value>
-          <value>peru</value>
+        <value>peru</value>
         <value>rwanda</value>
         <value>senegal</value>
         <value>sierra_leone</value>
         <value>sierra_leone_coat_of_arms</value>
+        <value>solomon_islands</value>
         <value>south_africa</value>
         <value>south_africa_department_of_health</value>
         <value>sri_lanka</value>
