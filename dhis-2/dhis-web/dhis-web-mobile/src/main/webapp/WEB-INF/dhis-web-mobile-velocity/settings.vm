@@ -1,0 +1,72 @@
+
+<script>
+    $(document).bind('pageinit',function(){
+        $.ajax({
+            url: '../api/currentUser.json',
+            async: false
+        }).success(function(data) {
+            $('#firstNameInput').val(data.firstName);
+            $('#surnameInput').val(data.surname);
+            $('#emailInput').val(data.email);
+            $('#phoneNumberInput').val(data.phoneNumber);
+            $('#job').val(data.jobTitle);
+        });
+
+        $('input:submit').bind('click', function() {
+            var settings = $('#settingsForm').serializeArray();
+
+            settings = _(settings).reduce(function(acc, field) {
+               acc[field.name] = field.value;
+               return acc;
+            }, {});
+
+            $.mobile.showPageLoadingMsg();
+
+            $.ajax({
+                url: '../api/currentUser/settings.json',
+                contentType: 'application/json',
+                data: JSON.stringify( settings ),
+                type: 'POST'
+            }).complete(function() {
+                $.mobile.hidePageLoadingMsg();
+                window.location.href = '../dhis-web-mobile';
+            });
+
+            return false;
+        })
+    });
+</script>
+
+<section data-role="page" id="settingsPage" data-theme="c">
+
+	<header data-role="header" data-theme="b">
+		<div align="center"><img src="../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <a href="../dhis-web-mobile" data-icon="back">Back</a>
+	</header>
+
+    <section data-role="content">
+       <form id="settingsForm" method="POST">
+           <label for="firstNameInput">First Name</label>
+           <input id="firstNameInput" name="firstName" type="text" placeholder="Enter first name.." />
+
+           <label for="surnameInput">Surname</label>
+           <input id="surnameInput" name="surname" type="text" placeholder="Enter surname.." />
+
+           <label for="emailInput">E-mail</label>
+           <input id="emailInput" name="email" type="text" placeholder="Enter e-mail.." />
+
+           <label for="phoneNumberInput">Phone Number</label>
+           <input id="phoneNumberInput" name="phoneNumber" type="text" placeholder="Enter phone number.." />
+
+           <label for="jobTitleInput">Job Title</label>
+           <input id="jobTitleInput" name="jobTitle" type="text" placeholder="Enter job title.." />
+
+           <input type="submit" value="Save settings" />
+       </form>
+   	</section>
+
+    <footer data-role="footer" data-theme="b">
+        <h1></h1>
+   	</footer>
+
+</section>

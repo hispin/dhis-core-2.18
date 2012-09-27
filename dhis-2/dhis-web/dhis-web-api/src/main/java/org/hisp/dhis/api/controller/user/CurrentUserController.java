@@ -208,6 +208,7 @@ public class CurrentUserController
         currentUser.setSurname( settings.getSurname() );
         currentUser.setEmail( settings.getEmail() );
         currentUser.setPhoneNumber( settings.getPhoneNumber() );
+        currentUser.setJobTitle( settings.getJobTitle() );
 
         userService.updateUser( currentUser );
     }
@@ -228,6 +229,7 @@ public class CurrentUserController
         currentUser.setSurname( settings.getSurname() );
         currentUser.setEmail( settings.getEmail() );
         currentUser.setPhoneNumber( settings.getPhoneNumber() );
+        currentUser.setJobTitle( settings.getJobTitle() );
 
         userService.updateUser( currentUser );
     }

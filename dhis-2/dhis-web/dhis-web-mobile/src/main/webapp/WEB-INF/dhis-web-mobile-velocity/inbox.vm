@@ -1,0 +1,16 @@
+
+<section data-role="page" id="inboxPage" data-theme="c">
+
+	<header data-role="header" data-theme="b">
+		<div align="center"><img src="../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <a href="../dhis-web-mobile" data-icon="back">Back</a>
+	</header>
+
+	<section data-role="content">
+	</section>
+
+    <footer data-role="footer" data-theme="b">
+        <h1></h1>
+   	</footer>
+
+</section>
