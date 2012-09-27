@@ -85,7 +85,7 @@ public class GetBeneficiaryDetailAction
     public String execute()
         throws Exception
     {
-        this.patient = patientService.getPatient( patientId );
+        this.patient = patientService.getPatient( patientId  );
         return SUCCESS;
     }
 

@@ -322,10 +322,4 @@ public class MySQLStatementBuilder
     {
         return  "concat( firstname, \" \",middleName , \" \" , lastname)";
     }
-
-    @Override
-    public String getPatientsByPhone()
-    {
-        return "phoneNumber";
-    }
 }

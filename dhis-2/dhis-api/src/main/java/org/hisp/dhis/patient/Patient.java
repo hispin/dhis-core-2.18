@@ -50,35 +50,23 @@ public class Patient
     private static final long serialVersionUID = 884114994005945275L;
 
     public static final String MALE = "M";
-
     public static final String FEMALE = "F";
 
     public static final char DOB_TYPE_VERIFIED = 'V';
-
     public static final char DOB_TYPE_DECLARED = 'D';
-
     public static final char DOB_TYPE_APPROXIATED = 'A';
 
     public static final char AGE_TYPE_YEAR = 'Y';
-
     public static final char AGE_TYPE_MONTH = 'M';
-
     public static final char AGE_TYPE_DAY = 'D';
-
+    
     public static String PREFIX_IDENTIFIER_TYPE = "iden";
-
-    public static String PREFIX_FIXED_ATTRIBUTE = "fixedAttr";
-
+    public static String PREFIX_FIXED_ATTRIBUTE = "fixedAttr";    
     public static String PREFIX_PATIENT_ATTRIBUTE = "attr";
-
     public static String PREFIX_PROGRAM = "prg";
-
     public static String PREFIX_PROGRAM_EVENT_BY_STATUS = "stat";
-
     public static String PREFIX_PROGRAM_STAGE = "prgst";
-
     public static String FIXED_ATTR_BIRTH_DATE = "birthDate";
-
     public static String FIXED_ATTR_AGE = "age";
 
     private Integer id;
@@ -114,7 +102,7 @@ public class Patient
     private boolean underAge;
 
     private Character dobType;
-
+    
     private User healthWorker;
 
     // -------------------------------------------------------------------------
@@ -161,7 +149,6 @@ public class Patient
         result = prime * result + ((gender == null) ? 0 : gender.hashCode());
         result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
         result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
-        result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
 
         return result;
     }
@@ -242,13 +229,6 @@ public class Patient
         else if ( !middleName.equals( other.middleName ) )
         {
             return false;
-        }
-        if ( phoneNumber == null )
-        {
-            if ( other.phoneNumber != null )
-            {
-                return false;
-            }
         }
 
         return true;

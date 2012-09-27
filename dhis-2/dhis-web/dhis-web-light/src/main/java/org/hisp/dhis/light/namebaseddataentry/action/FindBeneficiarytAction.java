@@ -105,6 +105,8 @@ public class FindBeneficiarytAction
         this.patientId = patientId;
     }
 
+    // Use in search related patient
+
     private Integer originalPatientId;
 
     public void setOriginalPatientId( Integer originalPatientId )
@@ -129,30 +131,6 @@ public class FindBeneficiarytAction
         this.relationshipTypeId = relationshipTypeId;
     }
 
-    private String phoneNumber;
-
-    public String getPhoneNumber()
-    {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber( String phoneNumber )
-    {
-        this.phoneNumber = phoneNumber;
-    }
-
-    private String keyPhone;
-
-    public String getKeyPhone()
-    {
-        return keyPhone;
-    }
-
-    public void setKeyPhone( String keyPhone )
-    {
-        this.keyPhone = keyPhone;
-    }
-
     @Override
     public String execute()
         throws Exception
@@ -174,10 +152,9 @@ public class FindBeneficiarytAction
         {
             Patient patient = patients.iterator().next();
             patientId = patient.getId();
-            phoneNumber = patient.getPhoneNumber();
             return REDIRECT;
         }
-
         return SUCCESS;
     }
+
 }
