@@ -52,6 +52,7 @@ function showActitityList()
 					+ "_" + getFieldValue('startDueDate')
 					+ "_" + getFieldValue('endDueDate')
 					+ "_" + getFieldValue('orgunitId')
+					+ "_false"
 					+ "_" + getFieldValue('statusEvent');
 	
 	showLoader();
@@ -78,6 +79,7 @@ function exportActitityList( type )
 					+ "_" + getFieldValue('startDueDate')
 					+ "_" + getFieldValue('endDueDate')
 					+ "_" + getFieldValue('orgunitId')
+					+ "_false"
 					+ "_" + getFieldValue('statusEvent');
 	var params = "searchTexts=" + searchTexts;
 		params += "&listAll=fase";
