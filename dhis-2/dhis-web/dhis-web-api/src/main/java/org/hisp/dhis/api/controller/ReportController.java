@@ -42,6 +42,7 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -85,6 +86,23 @@ public class ReportController
         HttpServletResponse response ) throws Exception
     {
         getReport( uid, organisationUnitUid, period, response, "xls", ContextUtils.CONTENT_TYPE_EXCEL, true );
+    }
+    
+    @RequestMapping( value = "/{uid}/design", method = RequestMethod.PUT )
+    public void updateReportDesign( @PathVariable( "uid" ) String uid, 
+        @RequestBody String designContent,
+        HttpServletResponse response ) throws Exception
+    {
+        Report report = reportService.getReport( uid );
+        
+        if ( report == null )
+        {
+            ContextUtils.notFoundResponse( response, "Report not found for identifier: " + uid );
+            return;
+        }
+        
+        report.setDesignContent( designContent );        
+        reportService.saveReport( report );
     }
 
     // -------------------------------------------------------------------------

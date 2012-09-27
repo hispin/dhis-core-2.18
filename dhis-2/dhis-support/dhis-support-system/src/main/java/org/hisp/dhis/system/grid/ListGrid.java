@@ -515,7 +515,8 @@ public class ListGrid
             {
                 addHeader( new GridHeader( rsmd.getColumnLabel( i ), false, false ) );
             }
-        } catch ( SQLException ex )
+        } 
+        catch ( SQLException ex )
         {
             throw new RuntimeException( ex );
         }
@@ -538,7 +539,8 @@ public class ListGrid
                     addValue( rs.getObject( i ) );
                 }
             }
-        } catch ( SQLException ex )
+        } 
+        catch ( SQLException ex )
         {
             throw new RuntimeException( ex );
         }
