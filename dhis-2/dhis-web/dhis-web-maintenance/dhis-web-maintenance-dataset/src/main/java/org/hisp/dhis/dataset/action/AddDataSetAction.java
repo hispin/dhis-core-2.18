@@ -171,6 +171,13 @@ public class AddDataSetAction
         this.validCompleteOnly = validCompleteOnly;
     }
 
+    private boolean skipOffline;
+
+    public void setSkipOffline( boolean skipOffline )
+    {
+        this.skipOffline = skipOffline;
+    }
+
     private Collection<String> dataElementsSelectedList = new HashSet<String>();
 
     public void setDataElementsSelectedList( Collection<String> dataElementsSelectedList )
@@ -227,6 +234,7 @@ public class AddDataSetAction
         dataSet.setAllowFuturePeriods( allowFuturePeriods );
         dataSet.setFieldCombinationRequired( fieldCombinationRequired );
         dataSet.setValidCompleteOnly( validCompleteOnly );
+        dataSet.setSkipOffline( skipOffline );
         
         dataSetService.addDataSet( dataSet );
 

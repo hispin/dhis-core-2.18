@@ -76,7 +76,9 @@
 
 	<property name="fieldCombinationRequired" />
 	
-	<property name="validCompleteOnly" />
+  <property name="validCompleteOnly" />
+
+  <property name="skipOffline" />
 
   </class>
 </hibernate-mapping>
