@@ -555,6 +555,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <value>togo</value>
         <value>uganda</value>
         <value>vietnam</value>
+        <value>vanuatu</value>
         <value>zambia</value>
         <value>zanzibar</value>
         <value>zimbabwe</value>
