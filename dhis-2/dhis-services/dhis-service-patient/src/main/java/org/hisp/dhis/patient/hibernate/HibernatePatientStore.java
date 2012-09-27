@@ -38,7 +38,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -538,7 +537,6 @@ public class HibernatePatientStore
         return sql;
     }
 
-    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max )
     {
@@ -572,7 +570,5 @@ public class HibernatePatientStore
             ex.printStackTrace();
         }
         return patients;
-
     }
-
 }

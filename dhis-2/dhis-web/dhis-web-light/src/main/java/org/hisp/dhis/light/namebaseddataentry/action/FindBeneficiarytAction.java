@@ -105,8 +105,6 @@ public class FindBeneficiarytAction
         this.patientId = patientId;
     }
 
-    // Use in search related patient
-
     private Integer originalPatientId;
 
     public void setOriginalPatientId( Integer originalPatientId )
@@ -181,31 +179,5 @@ public class FindBeneficiarytAction
         }
 
         return SUCCESS;
-
-        // if ( keyPhone != null )
-        // {
-        // int index = keyPhone.indexOf( ' ' );
-        //
-        // if ( index != -1 && index == keyPhone.lastIndexOf( ' ' ) )
-        // {
-        // String[] keys = keyPhone.split( " " );
-        // keyPhone = keys[0] + "  " + keys[1];
-        // }
-        // }
-        //
-        // patients = patientService.getPatientsByPhone( keyPhone,
-        // organisationUnitId );
-        //
-        //
-        // if ( patients.size() == 1 )
-        // {
-        // Patient patient = patients.iterator().next();
-        //
-        // phoneNumber = patient.getPhoneNumber();
-        // return REDIRECT;
-        // }
-        //
-        // return SUCCESS;
     }
-
 }
