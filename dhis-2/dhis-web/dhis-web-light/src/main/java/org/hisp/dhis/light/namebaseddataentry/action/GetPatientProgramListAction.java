@@ -156,6 +156,19 @@ public class GetPatientProgramListAction
     {
         this.patientId = patientId;
     }
+    
+    private String phoneNumber;
+    
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
 
     private Set<ProgramInstance> programInstances = new HashSet<ProgramInstance>();
 

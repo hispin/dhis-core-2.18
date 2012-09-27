@@ -86,6 +86,8 @@ public class ValidateAddRelationshipPatientAction
     private Integer age;
 
     private String gender;
+    
+    private String phoneNumber;
 
     private Integer id;
 
@@ -182,7 +184,7 @@ public class ValidateAddRelationshipPatientAction
 
             // Check duplication name, birthdate, gender
             patients = patientService.getPatients( firstName, middleName, lastName, format.parseDate( birthDate ),
-                gender );
+                gender, phoneNumber );
 
             if ( patients != null && patients.size() > 0 )
             {
@@ -359,6 +361,13 @@ public class ValidateAddRelationshipPatientAction
     public void setGender( String gender )
     {
         this.gender = gender;
+    }
+    
+    
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setUnderAge( boolean underAge )

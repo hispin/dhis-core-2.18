@@ -40,9 +40,13 @@ import org.smslib.http.BulkSmsHTTPGateway;
 import org.smslib.http.BulkSmsHTTPGateway.Regions;
 import org.smslib.http.ClickatellHTTPGateway;
 import org.smslib.modem.SerialModemGateway;
+
+//import org.smslib.smsserver.gateways.SMPPGateway;
+
 import org.smslib.smpp.BindAttributes;
 import org.smslib.smpp.BindAttributes.BindType;
 import org.smslib.smpp.jsmpp.JSMPPGateway;
+
 
 public class GateWayFactory
 {
@@ -160,4 +164,9 @@ public class GateWayFactory
         gateway.setInbound( false );
         return gateway;
     }
+    
+//    public AGateway createSMPPGateway( SMPPGateway c )
+//    {
+//        SMPPGateway gateway = new SMPPGateway( myGatewayId, myProps, myServer );
+//    }
 }

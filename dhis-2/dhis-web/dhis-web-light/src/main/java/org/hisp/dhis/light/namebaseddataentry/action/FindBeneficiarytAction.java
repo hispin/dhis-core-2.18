@@ -131,6 +131,30 @@ public class FindBeneficiarytAction
         this.relationshipTypeId = relationshipTypeId;
     }
 
+    private String phoneNumber;
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
+
+    private String keyPhone;
+
+    public String getKeyPhone()
+    {
+        return keyPhone;
+    }
+
+    public void setKeyPhone( String keyPhone )
+    {
+        this.keyPhone = keyPhone;
+    }
+
     @Override
     public String execute()
         throws Exception
@@ -152,9 +176,36 @@ public class FindBeneficiarytAction
         {
             Patient patient = patients.iterator().next();
             patientId = patient.getId();
+            phoneNumber = patient.getPhoneNumber();
             return REDIRECT;
         }
+
         return SUCCESS;
+
+        // if ( keyPhone != null )
+        // {
+        // int index = keyPhone.indexOf( ' ' );
+        //
+        // if ( index != -1 && index == keyPhone.lastIndexOf( ' ' ) )
+        // {
+        // String[] keys = keyPhone.split( " " );
+        // keyPhone = keys[0] + "  " + keys[1];
+        // }
+        // }
+        //
+        // patients = patientService.getPatientsByPhone( keyPhone,
+        // organisationUnitId );
+        //
+        //
+        // if ( patients.size() == 1 )
+        // {
+        // Patient patient = patients.iterator().next();
+        //
+        // phoneNumber = patient.getPhoneNumber();
+        // return REDIRECT;
+        // }
+        //
+        // return SUCCESS;
     }
 
 }
