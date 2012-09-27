@@ -133,8 +133,7 @@ public class HibernatePatientStore
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate,
-        String gender, String phoneNumber )
+    public Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate, String gender )
     {
         Criteria crit = getCriteria();
         Conjunction con = Restrictions.conjunction();
@@ -150,7 +149,6 @@ public class HibernatePatientStore
 
         con.add( Restrictions.eq( "gender", gender ) );
         con.add( Restrictions.eq( "birthDate", birthdate ) );
-        con.add( Restrictions.eq( "phoneNumber", phoneNumber ) );
 
         crit.add( con );
 
@@ -435,20 +433,16 @@ public class HibernatePatientStore
                         condition = "";
                         continue;
                     case ProgramStageInstance.FUTURE_VISIT_STATUS:
-                        patientWhere += condition
-                            + operatorStatus
-                            + "("
-                            + " psi.status is null and psi.executiondate is null and psi.duedate >= now() and p.organisationunitid="
-                            + keys[4] + ")";
+                        patientWhere += condition + operatorStatus + "("
+                            + " psi.status is null and psi.executiondate is null and psi.duedate >= now() and p.organisationunitid=" + keys[4]
+                            + ")";
                         operatorStatus = " OR ";
                         condition = "";
                         continue;
                     case ProgramStageInstance.LATE_VISIT_STATUS:
-                        patientWhere += condition
-                            + operatorStatus
-                            + "("
-                            + " psi.status is null and psi.executiondate is null and psi.duedate < now() and p.organisationunitid="
-                            + keys[4] + ")";
+                        patientWhere += condition + operatorStatus + "("
+                            + " psi.status is null and psi.executiondate is null and psi.duedate < now() and p.organisationunitid=" + keys[4]
+                            + ")";
                         operatorStatus = " OR ";
                         condition = "";
                         continue;
@@ -533,42 +527,8 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-
+        
         return sql;
     }
 
-    @Override
-    public Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max )
-    {
-
-        List<Patient> patients = new ArrayList<Patient>();
-
-        String sql = "select patientid from patient " + "where lower( " + statementBuilder.getPatientsByPhone() + ") "
-            + "like '%" + phoneNumber + "%'";
-
-        if ( min != null && max != null )
-        {
-            sql += statementBuilder.limitRecord( min, max );
-        }
-        try
-        {
-            patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
-            {
-
-                @Override
-                public Patient mapRow( ResultSet rs, int rowNum )
-                    throws SQLException
-                {
-
-                    return get( rs.getInt( 1 ) );
-                }
-
-            } );
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-        return patients;
-    }
 }

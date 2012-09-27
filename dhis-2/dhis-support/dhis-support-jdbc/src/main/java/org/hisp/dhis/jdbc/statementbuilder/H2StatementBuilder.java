@@ -326,10 +326,4 @@ public class H2StatementBuilder
     {
         return  "concat( firstname, \" \",middleName , \" \" , lastname)";
     }
-
-    @Override
-    public String getPatientsByPhone()
-    {
-        return "phoneNumber";
-    }
 }

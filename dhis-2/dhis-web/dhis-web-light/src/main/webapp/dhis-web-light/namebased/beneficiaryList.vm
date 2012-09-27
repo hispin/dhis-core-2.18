@@ -4,11 +4,8 @@
 <ul>
 #foreach( $patient in $patients )
 	<li><a href="showPatientProgramList.action?patientId=$patient.getId()">$!encoder.htmlEncode( ${patient.getFullName()} )</a></li>
-	
 #end
 </ul>
-
-
 </p>
 <p><strong>Total found: $patients.size()</strong></p>
 <div id="footer">
