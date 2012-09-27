@@ -115,7 +115,7 @@ public class DefaultPatientService
 
     @Override
     public int createPatient( Patient patient, Integer representativeId, Integer relationshipTypeId,
-                              List<PatientAttributeValue> patientAttributeValues )
+        List<PatientAttributeValue> patientAttributeValues )
     {
         int patientid = savePatient( patient );
 
@@ -183,9 +183,9 @@ public class DefaultPatientService
 
     @Override
     public Collection<Patient> getPatients( String firstName, String middleName, String lastName, Date birthdate,
-                                            String gender )
+        String gender, String phoneNumber )
     {
-        return patientStore.get( firstName, middleName, lastName, birthdate, gender );
+        return patientStore.get( firstName, middleName, lastName, birthdate, gender, phoneNumber);
     }
 
     @Override
@@ -242,13 +242,17 @@ public class DefaultPatientService
     }
 
     @Override
-    public Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId )
+    public Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId)
     {
         Set<Patient> patients = new HashSet<Patient>();
         patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, Integer.MAX_VALUE ) );
         patients.addAll( getPatientsByNames( searchText, 0, Integer.MAX_VALUE ) );
+        patients.addAll( getPatientsByPhone( searchText, 0, Integer.MAX_VALUE ) );
+        
+       
 
-        // if an orgunit has been selected, filter out every patient that has a different ou
+        // if an orgunit has been selected, filter out every patient that has a
+        // different ou
         if ( orgUnitId != 0 )
         {
             Set<Patient> toRemoveList = new HashSet<Patient>();
@@ -275,7 +279,7 @@ public class DefaultPatientService
 
     @Override
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, PatientAttribute patientAttribute,
-                                            Integer min, Integer max )
+        Integer min, Integer max )
     {
         List<Patient> patientList = new ArrayList<Patient>( patientStore.getByOrgUnit( organisationUnit, min, max ) );
 
@@ -291,7 +295,7 @@ public class DefaultPatientService
 
     @Override
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, Integer min,
-                                            Integer max )
+        Integer max )
     {
         Collection<Patient> patients = new ArrayList<Patient>();
 
@@ -402,8 +406,8 @@ public class DefaultPatientService
 
     @Override
     public void updatePatient( Patient patient, Integer representativeId, Integer relationshipTypeId,
-                               List<PatientAttributeValue> valuesForSave, List<PatientAttributeValue> valuesForUpdate,
-                               Collection<PatientAttributeValue> valuesForDelete )
+        List<PatientAttributeValue> valuesForSave, List<PatientAttributeValue> valuesForUpdate,
+        Collection<PatientAttributeValue> valuesForDelete )
     {
 
         patientStore.update( patient );
@@ -496,7 +500,8 @@ public class DefaultPatientService
             }
 
             return value;
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             ex.printStackTrace();
         }
@@ -514,7 +519,8 @@ public class DefaultPatientService
         patientStore.removeErollmentPrograms( program );
     }
 
-    public Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    public Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
+        Integer max )
     {
         return patientStore.search( searchKeys, orgunit, min, max );
     }
@@ -523,16 +529,34 @@ public class DefaultPatientService
     {
         return patientStore.countSearch( searchKeys, orgunit );
     }
-    
-    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+
+    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
+        Integer max )
     {
         return patientStore.getPatientPhoneNumbers( searchKeys, orgunit, min, max );
     }
-    
-    public Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+
+    public Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit,
+        Integer min, Integer max )
     {
         return patientStore.getProgramStageInstances( searchKeys, orgunit, min, max );
     }
-    
+
+ 
+    @Override
+    public Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max)
+    {
+      
+        return patientStore.getByPhoneNumber( phoneNumber, min, max );
+      
+    }
+
+   
+
+   
+
+
+
+   
 
 }

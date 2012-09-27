@@ -163,4 +163,7 @@ public interface StatementBuilder
     String getAddDate( String dateField, int days );
     
     String getPatientFullName();
+    String getPatientsByPhone();
+   
+  
 }

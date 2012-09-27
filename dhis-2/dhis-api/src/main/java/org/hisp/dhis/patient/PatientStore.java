@@ -46,32 +46,38 @@ public interface PatientStore
 
     Collection<Patient> getByGender( String gender );
 
+    Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max);
+
     Collection<Patient> getByBirthDate( Date birthDate );
 
     Collection<Patient> getByNames( String name, Integer min, Integer max );
-    
-    Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate, String gender );    
-    
+
+    Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate, String gender, String phoneNumber);
+
     Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, Integer min, Integer max );
-    
-    Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min, Integer max );
-    
+
+    Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, Integer min,
+        Integer max );
+
     Collection<Patient> getRepresentatives( Patient patient );
-    
-    int countListPatientByOrgunit(OrganisationUnit organisationUnit);
-    
+
+    int countListPatientByOrgunit( OrganisationUnit organisationUnit );
+
     int countGetPatientsByName( String name );
-    
+
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
 
     void removeErollmentPrograms( Program program );
-    
+
     Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
-    
+
     int countSearch( List<String> searchKeys, OrganisationUnit orgunit );
-    
-    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
+
+    Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
+        Integer max );
 
     Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
         Integer max );
+
+  
 }

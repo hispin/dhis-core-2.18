@@ -91,6 +91,8 @@ public class ValidatePatientAction
 
     private String gender;
 
+    private String phoneNumber;
+
     private Integer id;
 
     private boolean checkedDuplicate;
@@ -136,14 +138,14 @@ public class ValidatePatientAction
         {
             Patient patient = new Patient();
             patient.setBirthDateFromAge( age.intValue(), ageType );
-            
-            if( patient.getIntegerValueOfAge() > 100 )
+
+            if ( patient.getIntegerValueOfAge() > 100 )
             {
                 message = i18n.getString( "age_of_patient_must_be_less_or_equals_to_100" );
                 return INPUT;
             }
         }
-        
+
         if ( dobType != null && (dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED) )
         {
             birthDate = birthDate.trim();
@@ -189,8 +191,8 @@ public class ValidatePatientAction
         if ( !checkedDuplicate )
         {
             patients = patientService.getPatients( firstName, middleName, lastName, format.parseDate( birthDate ),
-                gender );
-            
+                gender, phoneNumber );
+
             if ( patients != null && patients.size() > 0 )
             {
                 message = i18n.getString( "patient_duplicate" );
@@ -212,7 +214,7 @@ public class ValidatePatientAction
                         }
                     }
                 }
-                
+
                 if ( flagDuplicate )
                 {
                     return PATIENT_DUPLICATE;
@@ -265,11 +267,11 @@ public class ValidatePatientAction
                 if ( !underAge || (underAge && !idType.isRelated()) )
                 {
                     value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + idType.getId() );
-                    
+
                     if ( StringUtils.isNotBlank( value ) )
                     {
                         PatientIdentifier identifier = patientIdentifierService.get( idType, value );
-                        
+
                         if ( identifier != null
                             && (id == null || identifier.getPatient().getId().intValue() != id.intValue()) )
                         {
@@ -323,6 +325,11 @@ public class ValidatePatientAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setPatientService( PatientService patientService )

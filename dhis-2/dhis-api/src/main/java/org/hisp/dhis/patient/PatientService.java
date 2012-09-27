@@ -64,7 +64,7 @@ public interface PatientService
      * @param gender
      * @return Patient List
      */
-    Collection<Patient> getPatients( String firstName, String middleName, String lastName, Date birthdate, String gender );
+    Collection<Patient> getPatients( String firstName, String middleName, String lastName, Date birthdate, String gender, String phoneNumber );
     
     /**
      * Search Patient base on gender
@@ -76,10 +76,12 @@ public interface PatientService
 
     /**
      * Search Patient base on birthDate
+     * @param maxValue 
      * 
      * @param birthdate
      * @return Patient List
      */
+    
     Collection<Patient> getPatientsByBirthDate( Date birthDate );
 
     /**
@@ -105,7 +107,7 @@ public interface PatientService
      * @param orgUnitId
      * @return Patient List
      */
-    Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId );
+    Collection<Patient> getPatientsForMobile( String searchText, int orgUnitId);
     
     /**
      * Search Patient base on organization unit with result limited
@@ -113,6 +115,7 @@ public interface PatientService
      * @param organisationUnit organisationUnit
      * @return Patient List
      */
+    
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, Integer min, Integer max );
     
     /**
@@ -210,5 +213,13 @@ public interface PatientService
     Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
 
     Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max );
+
+    Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max);
+
+
+
+   
+
+   
 
 }

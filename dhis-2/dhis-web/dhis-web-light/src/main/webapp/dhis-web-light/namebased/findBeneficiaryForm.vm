@@ -16,7 +16,7 @@
 		#if( $validationMap.get( "keyword" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "fullName" ))</span>
      	#end
-		<input type="text" name="keyword" value="$!previousValues.get("fullName")" />
+		<input type="text" name="keyword" value="$!previousValues.get("fullName")" />	
 	</p>
 		<p style="text-align: left;">
 		<label>$i18n.getString( "select_orgunit" )</label>
