@@ -546,17 +546,6 @@ public class DefaultPatientService
     @Override
     public Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max)
     {
-      
-        return patientStore.getByPhoneNumber( phoneNumber, min, max );
-      
+        return patientStore.getByPhoneNumber( phoneNumber, min, max ); 
     }
-
-   
-
-   
-
-
-
-   
-
 }
