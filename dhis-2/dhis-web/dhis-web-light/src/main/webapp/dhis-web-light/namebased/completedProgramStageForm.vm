@@ -11,7 +11,7 @@
 </div>	
 #end
 
-<form action="saveProgramStageForm.action" method="POST">
+<form action="showProgramStageForm.action" method="POST">
 
 <input type="hidden" value=$programStageInstanceId name="programStageInstanceId"/>
 <input type="hidden" value=$programStageId name="programStageId"/>
@@ -99,10 +99,15 @@
 					</select>
 				#end
 		#end
-				<input type="button" style="width:10%;color:black" value="Incomplete" onclick="window.location.href='showProgramStageForm.action?programId=$programId&programStageId=$programStageId&programStageInstanceId=$programStageInstanceId&patientId=$patientId&programInstanceId=$programInstanceId&orgUnitId=0'"/> 	
+				
 	</p>
 </div>
 
+<div class="header-box" align="center">
+	<p>
+		<input type="submit" style="width: 100%;" value="Incomplete" /> 	
+	</p>
+</div>
 </form>
 
 <div id="footer">
