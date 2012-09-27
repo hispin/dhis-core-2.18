@@ -525,7 +525,8 @@ public class HibernatePatientStore
             String subSQL = " ,MIN( psi.programstageinstanceid ) as programstageinstanceid, min(pgs.name) as programstagename, min(psi.duedate) as duedate ";
             sql = sql + subSQL + from + " inner join programinstance pgi on " + " (pgi.patientid=p.patientid) "
                 + " inner join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) "
-                + " inner join programstage pgs on (pgs.programstageid=psi.programstageid)";
+                + " inner join programstage pgs on (pgs.programstageid=psi.programstageid) "
+                + " inner join patientattributevalue pav on p.patientid=pav.patientid ";
             orderBy = " ORDER BY duedate DESC ";
             from = " ";
         }
