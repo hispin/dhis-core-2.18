@@ -47,8 +47,7 @@
 					<td class='bold' style='cursor:pointer;font-size:25px' onclick="eventFlowToggle($programInstance.id)">
 						<a>&raquo;</a>
 					</td>
-					#if($!programStageInstanceMap.get($programInstance))
-						#set($programStageInstances = $programStageInstanceMap.get($programInstance) )
+					#set( $programStageInstances = $programInstance.programStageInstances )
 					<td>
 						<table id='tb_$programInstance.id' class="stage-container">	
 							<tr>
@@ -71,12 +70,6 @@
 														#set( $index = $index + 1 )
 													#end
 												#end
-												#foreach( $sms in $programStageInstance.outboundSms)
-													#if( $index < 5)
-														#set( $title= $title + "$format.formatDate( $sms.date ) - $sms.message &#13;&#10;")
-														#set( $index = $index + 1)
-													#end
-												#end
 												
 												#set($valueDate=$format.formatDate( $programStageInstance.dueDate ))
 												#if($!programStageInstance.executionDate)
@@ -88,12 +81,12 @@
 													programStageId='$programStageInstance.programStage.id' 
 													programInstanceId='$programInstance.id'
 													dueDate='$format.formatDate( $programStageInstance.dueDate )'
-													status='$statusMap.get( $programStageInstance.id )'
+													status='$programStageInstance.getEventStatus()'
 													class='stage-object'
 													value='$programStageInstance.programStage.name&#13;&#10;$valueDate' 
 													title="$title" onclick='javascript:programTrackingList( $programStageInstance.id, false );'>
 												<script>
-													var status = $statusMap.get( $programStageInstance.id ); 
+													var status = $programStageInstance.getEventStatus(); 
 													var dueDate = "$format.formatDate($programStageInstance.dueDate)";
 													setEventColorStatus( $programStageInstance.id ,status, dueDate );
 												</script>
@@ -109,7 +102,6 @@
 							</tr>
 						</table>
 					</td>
-					#end
 				</tr>
 			#if( $mark )
 				#set( $mark = false )

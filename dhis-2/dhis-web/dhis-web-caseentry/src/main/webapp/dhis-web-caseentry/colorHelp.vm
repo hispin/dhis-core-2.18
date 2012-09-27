@@ -24,7 +24,7 @@
 		</tr>
 		<tr>
 			<td id='colorGreyTD'><script>byId('colorGreyTD').style.backgroundColor = COLOR_GREY;</script></td>
-			<td>$i18n.getString('stages_skipped')</td>
+			<td>$i18n.getString('stage_skipped')</td>
 		</tr>
 	</table>
 </div>

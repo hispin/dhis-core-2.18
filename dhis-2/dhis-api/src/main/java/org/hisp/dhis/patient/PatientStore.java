@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 
@@ -74,4 +75,7 @@ public interface PatientStore
 
     Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
         Integer max );
+    
+    Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit );
+
 }

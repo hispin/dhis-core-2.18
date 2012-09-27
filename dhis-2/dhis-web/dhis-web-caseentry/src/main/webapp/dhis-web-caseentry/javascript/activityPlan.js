@@ -47,7 +47,6 @@ function showActitityList()
 	hideById('listPatientDiv');
 	contentDiv = 'listPatientDiv';
 	$('#contentDataRecord').html('');
-	var searchBySelectedOrgunit = false;
 	var programId = getFieldValue('programIdAddPatient');
 	var searchTexts = "stat_" + programId
 					+ "_" + getFieldValue('startDueDate')
@@ -60,7 +59,7 @@ function showActitityList()
 		{
 			programId:programId,
 			listAll:false,
-			searchBySelectedOrgunit: searchBySelectedOrgunit,
+			searchBySelectedOrgunit: false,
 			searchTexts: searchTexts
 		}, 
 		function()
@@ -71,6 +70,25 @@ function showActitityList()
 			hideLoader();
 		});
 }
+
+function exportActitityList( type )
+{
+	var programId = getFieldValue('programIdAddPatient');
+	var searchTexts = "stat_" + programId
+					+ "_" + getFieldValue('startDueDate')
+					+ "_" + getFieldValue('endDueDate')
+					+ "_" + getFieldValue('orgunitId')
+					+ "_" + getFieldValue('statusEvent');
+	var params = "searchTexts=" + searchTexts;
+		params += "&listAll=fase";
+		params += "&type=" + type;
+		params += "&programId=" + getFieldValue('programIdAddPatient');
+		params += "&searchBySelectedOrgunit=false";
+	
+	var url = "exportActitityList.action?" + params;
+	window.location.href = url;
+}
+
 
 function eventFlowToggle( programInstanceId )
 {

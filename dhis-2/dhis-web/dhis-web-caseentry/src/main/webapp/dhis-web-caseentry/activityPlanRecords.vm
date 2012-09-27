@@ -47,8 +47,7 @@
 					<td class='bold' name="toggleFlowBtn" style='cursor:pointer;font-size:25px' onclick="eventFlowToggle($programInstance.id)">
 						<a>&raquo;</a>
 					</td>
-					#if($!programStageInstanceMap.get($programInstance))
-						#set($programStageInstances = $programStageInstanceMap.get($programInstance) )
+					#set( $programStageInstances = $programInstance.programStageInstances )
 					<td>
 						<table id='tb_$programInstance.id'>	
 							<tr>
@@ -71,18 +70,11 @@
 														#set( $index = $index + 1 )
 													#end
 												#end
-												#foreach( $sms in $programStageInstance.outboundSms)
-													#if( $index < 5)
-														#set( $title= $title + "$format.formatDate( $sms.date ) - $sms.message &#13;&#10;")
-														#set( $index = $index + 1)
-													#end
-												#end
-												
 												#set($valueDate=$format.formatDate( $programStageInstance.dueDate ))
 												#if($!programStageInstance.executionDate)
 													#set($valueDate=$format.formatDate( $programStageInstance.executionDate ))
 												#end
-												<input type="button" name="programStageBtn"
+												 <input type="button" name="programStageBtn"
 													id="ps_$!programStageInstance.id"
 													psid="$programStageInstance.programStage.id"
 													psname="$programStageInstance.programStage.name"
@@ -97,10 +89,10 @@
 													value="$programStageInstance.programStage.name&#13;&#10;$valueDate" 
 													onclick="javascript:loadDataEntry( $programStageInstance.id );">
 												<script>	
-													var status = $statusMap.get( $programStageInstance.id ); 
+													var status = $programStageInstance.getEventStatus();
 													setEventColorStatus( $programStageInstance.id ,status);
 												</script>
-											</td>
+											</td> 
 										#end
 										</tr>
 									</table></div>
@@ -112,8 +104,7 @@
 							</tr>
 						</table>
 					</td>
-					#end
-				</tr>
+					</tr>
 			#if( $mark )
 				#set( $mark = false )
 			#else

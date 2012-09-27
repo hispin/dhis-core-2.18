@@ -7,7 +7,7 @@
 		"programStageId": "$programStageInstance.programStage.id",
 		"programStageName": "$programStageInstance.programStage.name",
 		"dueDate": "$format.formatDate( $programStageInstance.dueDate )",
-		"status": "$statusMap.get( $programStageInstance.id )"
+		"status": "$programStageInstance.getEventStatus()"
 	  }#if( $velocityCount < $size ),#end
 	#end]
 }

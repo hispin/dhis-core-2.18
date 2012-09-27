@@ -95,7 +95,7 @@
 										
 										#set($flag = 'false')
 										#foreach( $programStageInstance in $programInstance.programStageInstances )
-											#set( $status = $statusMap.get( $programStageInstance.id ) )
+											#set( $status = $programStageInstance.getEventStatus() )
 											#if( $status!=1 && $status!=5 && $flag=='false')
 												<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
 													programStageInstanceId='$programStageInstanceId' style='cursor:pointer;'
