@@ -137,6 +137,7 @@ public class HibernatePatientStore
     @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Patient> get( String firstName, String middleName, String lastName, Date birthdate, String gender )
+
     {
         Criteria crit = getCriteria();
         Conjunction con = Restrictions.conjunction();
@@ -152,7 +153,6 @@ public class HibernatePatientStore
 
         con.add( Restrictions.eq( "gender", gender ) );
         con.add( Restrictions.eq( "birthDate", birthdate ) );
-
         crit.add( con );
 
         crit.addOrder( Order.asc( "firstName" ) );
@@ -326,7 +326,7 @@ public class HibernatePatientStore
 
         return jdbcTemplate.queryForInt( sql );
     }
-    
+
     @Override
     public Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit )
     {
@@ -339,7 +339,7 @@ public class HibernatePatientStore
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
         GridUtils.addRows( grid, rowSet );
-        
+
         return grid;
     }
 
@@ -558,4 +558,42 @@ public class HibernatePatientStore
         
         return sql;
     }
+    @Override
+    public Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max )
+    {
+
+        List<Patient> patients = new ArrayList<Patient>();
+
+        String sql = "select patientid from patient " + "where lower( " + statementBuilder.getPatientsByPhone() + ") "
+            + "like '%" + phoneNumber + "%'";
+
+        if ( min != null && max != null )
+        {
+            sql += statementBuilder.limitRecord( min, max );
+        }
+        try
+        {
+            patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
+            {
+
+                @Override
+                public Patient mapRow( ResultSet rs, int rowNum )
+                    throws SQLException
+                {
+
+                    return get( rs.getInt( 1 ) );
+                }
+
+            } );
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        return patients;
+
+    }
+
+
+
 }

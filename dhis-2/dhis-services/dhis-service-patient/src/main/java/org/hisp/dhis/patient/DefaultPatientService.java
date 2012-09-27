@@ -256,6 +256,7 @@ public class DefaultPatientService
         Set<Patient> patients = new HashSet<Patient>();
         patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, Integer.MAX_VALUE ) );
         patients.addAll( getPatientsByNames( searchText, 0, Integer.MAX_VALUE ) );
+        patients.addAll( getPatientsByPhone( searchText, 0, Integer.MAX_VALUE ) );
 
         // if an orgunit has been selected, filter out every patient that has a
         // different ou
@@ -548,8 +549,15 @@ public class DefaultPatientService
         return patientStore.getProgramStageInstances( searchKeys, orgunit, min, max );
     }
 
+    @Override
+    public Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max )
+    {
+        return patientStore.getByPhoneNumber( phoneNumber, min, max );
+    }
+
     public Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, I18n i18n )
     {
+
         String startDate = "";
         String endDate = "";
         for ( String searchKey : searchKeys )
@@ -568,7 +576,7 @@ public class DefaultPatientService
         {
             grid.setSubtitle( i18n.getString( "from" ) + " " + startDate + " " + i18n.getString( "to" ) + endDate );
         }
-        
+
         grid.addHeader( new GridHeader( "patientid", true, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "first_name" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "middle_name" ), false, true ) );
@@ -581,6 +589,7 @@ public class DefaultPatientService
         grid.addHeader( new GridHeader( i18n.getString( "due_date" ), false, true ) );
 
         return patientStore.getPatientEventReport( grid, searchKeys, orgunit );
+
     }
 
 }
