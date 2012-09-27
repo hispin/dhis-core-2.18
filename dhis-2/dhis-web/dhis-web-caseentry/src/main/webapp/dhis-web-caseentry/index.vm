@@ -2,13 +2,32 @@
 <h3>$i18n.getString( "dhis-web-caseentry" )</h3>
 
 <ul class="introList">
-	#introListImgItem( "patient.action" "find_and_add_person" "patient" )
-	#introListImgItem( "multipledataEntrySelect.action" "multiple_individual_records" "dataentry" )
-	#introListImgItem( "singleEventSelect.action" "single_event_with_registration" "dataentry" )
-    #introListImgItem( "anonymousRegistration.action" "anonymous_events" "dataentry" )
-	#introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
-	#introListImgItem( "app/index.html" "tabular_report" "summaryreport" )
-    #introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )
-	#introListImgItem( "activityPlanSelect.action" "activity_plan" "attribute" )
-	#introListImgItem( "smsReminderSelect.action" "program_tracking" "attribute" )
+	#if( $auth.hasAccess( "dhis-web-caseentry", "patient" ) )
+		#introListImgItem( "patient.action" "find_and_add_person" "patient" )
+	#end
+	
+	#if( $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) )
+		#introListImgItem( "activityPlanSelect.action" "activity_planning" "dhis-web-mapping" )
+	#end
+	#if( $auth.hasAccess( "dhis-web-caseentry", "smsReminderSelect" ) )
+		#introListImgItem( "smsReminderSelect.action" "program_tracking" "summaryreport" )
+	#end
+		
+	#if( $auth.hasAccess( "dhis-web-caseentry", "multipledataEntrySelect" ) )
+		#introListImgItem( "multipledataEntrySelect.action" "multiple_individual_records" "dhis-web-maintenance-dataset" )
+		#introListImgItem( "singleEventSelect.action" "single_event_with_registration" "dhis-web-maintenance-dataset" )
+		#introListImgItem( "anonymousRegistration.action" "anonymous_events" "dhis-web-maintenance-dataset" )
+	#end
+	
+	#if( $auth.hasAccess( "dhis-web-caseentry", "reportSelect" ) )
+		#introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
+	#end
+	
+	#if( $auth.hasAccess( "dhis-web-caseentry", "generateTabularReport" ) )
+		#introListImgItem( "app/index.html" "tabular_report" "summaryreport" )
+	#end
+	
+	#if( $auth.hasAccess( "dhis-web-caseentry", "caseAggregationForm" ) )
+		#introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )
+	#end
 </ul>
