@@ -76,12 +76,6 @@ public class CurrentUserController
     @Autowired
     private InterpretationService interpretationService;
 
-    @Autowired
-    private ResourceBundleManager resourceBundleManager;
-
-    @Autowired
-    private LocaleManager localeManager;
-
     @RequestMapping
     public String getCurrentUser( @RequestParam Map<String, String> parameters,
       Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
