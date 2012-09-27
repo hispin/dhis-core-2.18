@@ -34,13 +34,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller(value = "mIndexController")
-@RequestMapping( value = "/dhis-web-mobile" )
-public class IndexController
+@Controller
+public class MobileController
 {
     @RequestMapping
     public String index( Model model )
     {
-        return "index";
+        model.addAttribute( "page", "index.vm" );
+
+        return "base";
+    }
+
+    @RequestMapping( value = "/inbox" )
+    public String inbox( Model model )
+    {
+        model.addAttribute( "page", "inbox.vm" );
+
+        return "base";
+    }
+
+    @RequestMapping( value = "/settings" )
+    public String settings( Model model )
+    {
+        model.addAttribute( "page", "settings.vm" );
+
+        return "base";
     }
 }

@@ -47,6 +47,8 @@ public class Settings
 
     private String phoneNumber;
 
+    private String jobTitle;
+
     public Settings()
     {
     }
@@ -97,5 +99,17 @@ public class Settings
     public void setPhoneNumber( String phoneNumber )
     {
         this.phoneNumber = phoneNumber;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    public String getJobTitle()
+    {
+        return jobTitle;
+    }
+
+    public void setJobTitle( String jobTitle )
+    {
+        this.jobTitle = jobTitle;
     }
 }

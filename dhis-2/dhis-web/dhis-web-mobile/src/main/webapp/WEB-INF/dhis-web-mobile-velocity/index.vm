@@ -1,41 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>DHIS2</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="./dhis-web-mobile-resources/css/jquery.mobile.min.css?v=1.1.1" />
-	<script src="./dhis-web-commons/javascripts/jQuery/jquery.min.js?v=1.7.1"></script>
 
-    <script>
-    $(document).bind('mobileinit',function(){
-       $.mobile.selectmenu.prototype.options.nativeMenu = false;
+<script>
+    $(document).bind('pagebeforecreate',function(){
+        $.ajax({
+            url: '../api/currentUser/dashboard.json',
+            async: false
+        }).success(function(data) {
+            $('#inbox a').append("<span class='ui-li-count'>" +
+                    ( data.unreadMessageConversation + data.unreadInterpretations ) + "</span>")
+        }).error(function() {
+            $('#inbox a').append("<span class='ui-li-count'>Offline</span>")
+        });
     });
-    </script>
-
-	<script src="./dhis-web-mobile-resources/js/jquery.mobile.min.js?v=1.1.1"></script>
-</head>
-<body>
+</script>
 
 <section data-role="page" id="mainPage" data-theme="c">
 
-	<header data-role="header">
-		<h1>DHIS 2</h1>
+	<header data-role="header" data-theme="b">
+		<div align="center"><img src="../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
 	</header>
 
 	<section data-role="content">
         <ul data-role="listview" data-inset="true">
-            <li id="dataEntry"><a href="#selectOrganisationUnitPage">Data Entry</a></li>
-            <li id="messageConversations"><a href="#messageConversationsPage">Messages <span class="ui-li-count">10</span></a></li>
-            <li id="interpretations"><a href="#interpretationsPage">Interpretations <span class="ui-li-count">3</span></a></li>
-            <li id="settings"><a href="#settingsPage">Settings</a></li>
+            <li id="inbox"><a href="dhis-web-mobile/inbox">Inbox</a></li>
+            <li id="settings"><a href="dhis-web-mobile/settings">Settings</a></li>
         </ul>
 	</section>
 
-    <footer data-role="footer">
+    <footer data-role="footer" data-theme="b">
         <h1></h1>
    	</footer>
 
 </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
 
 <section data-role="page" id="selectOrganisationUnitPage" data-theme="c">
 
@@ -346,7 +357,4 @@
    	</footer>
 
 </section>
-
-
-</body>
-</html>
+-->
