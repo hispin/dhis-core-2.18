@@ -103,6 +103,7 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "skipaggregation" );
         statementBuilder.setColumn( "fieldcombinationrequired" );
         statementBuilder.setColumn( "validcompleteonly" );
+        statementBuilder.setColumn( "skipoffline" );
     }
 
     protected void setValues( DataSet dataSet )
@@ -120,5 +121,6 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.isSkipAggregation() );
         statementBuilder.setValue( dataSet.isFieldCombinationRequired() );
         statementBuilder.setValue( dataSet.isValidCompleteOnly() );
+        statementBuilder.setValue( dataSet.isSkipOffline() );
     }
 }

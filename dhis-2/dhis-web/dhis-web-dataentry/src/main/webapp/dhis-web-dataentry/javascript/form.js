@@ -1433,7 +1433,7 @@ function downloadRemoteForms()
     {
         var remoteVersion = dataSets[dataSetId].version;
 
-        if ( !storageManager.formExists( dataSetId ) )
+        if ( !storageManager.formExists( dataSetId ) && !dataSets[dataSetId].skipOffline )
         {
             storageManager.downloadForm( dataSetId, remoteVersion );
         }

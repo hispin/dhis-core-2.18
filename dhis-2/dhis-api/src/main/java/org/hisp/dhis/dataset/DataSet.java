@@ -163,7 +163,12 @@ public class DataSet
      * Property indicating that all validation rules must pass before the form can be completed.
      */
     private boolean validCompleteOnly;
-    
+
+    /**
+     * Property indicating whether offline storage is enabled for this dataSet or not
+     */
+    private boolean skipOffline;
+
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -604,6 +609,19 @@ public class DataSet
         this.validCompleteOnly = validCompleteOnly;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isSkipOffline()
+    {
+        return skipOffline;
+    }
+
+    public void setSkipOffline( boolean skipOffline )
+    {
+        this.skipOffline = skipOffline;
+    }
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -619,6 +637,11 @@ public class DataSet
             dataEntryForm = dataSet.getDataEntryForm() == null ? dataEntryForm : dataSet.getDataEntryForm();
             version = dataSet.getVersion() == null ? version : dataSet.getVersion();
             expiryDays = dataSet.getExpiryDays();
+            skipAggregation = dataSet.isSkipAggregation();
+            allowFuturePeriods = dataSet.isAllowFuturePeriods();
+            fieldCombinationRequired = dataSet.isFieldCombinationRequired();
+            validCompleteOnly = dataSet.isValidCompleteOnly();
+            skipOffline = dataSet.isSkipOffline();
 
             removeAllDataElements();
 
