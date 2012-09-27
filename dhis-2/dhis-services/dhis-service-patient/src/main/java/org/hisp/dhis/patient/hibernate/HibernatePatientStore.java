@@ -564,8 +564,7 @@ public class HibernatePatientStore
 
         List<Patient> patients = new ArrayList<Patient>();
 
-        String sql = "select patientid from patient " + "where lower( " + statementBuilder.getPatientsByPhone() + ") "
-            + "like '%" + phoneNumber + "%'";
+        String sql = "select patientid from patient where phoneNumber like '%" + phoneNumber + "%'";
 
         if ( min != null && max != null )
         {

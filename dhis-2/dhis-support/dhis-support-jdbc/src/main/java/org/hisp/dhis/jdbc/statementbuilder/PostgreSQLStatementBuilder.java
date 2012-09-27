@@ -322,7 +322,4 @@ public class PostgreSQLStatementBuilder
         return  "firstname || ' ' || middleName || ' ' || lastname";
     }
     
-    public String getPatientsByPhone(){
-        return "phoneNumber";
-    }
 }
