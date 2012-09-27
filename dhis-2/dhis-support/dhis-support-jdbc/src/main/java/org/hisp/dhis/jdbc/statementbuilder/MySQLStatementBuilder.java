@@ -322,7 +322,5 @@ public class MySQLStatementBuilder
     {
         return  "concat( firstname, \" \",middleName , \" \" , lastname)";
     }
-    public String getPatientsByPhone(){
-        return "phoneNumber";
-    }
+    
 }
