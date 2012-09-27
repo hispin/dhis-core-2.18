@@ -516,7 +516,7 @@ public class HibernatePatientStore
         {
             sql += "(select organisationunitid from patient where patientid=p.patientid and organisationunitid = "
                 + orgunit.getId() + " ) as orgunitid,";
-            otherWhere += otherWhere + operator + "orgunitid=" + orgunit.getId();
+            otherWhere += operator + "orgunitid=" + orgunit.getId();
         }
 
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Removing last comma
@@ -528,7 +528,7 @@ public class HibernatePatientStore
             sql = sql + subSQL + from + " inner join programinstance pgi on " + " (pgi.patientid=p.patientid) "
                 + " inner join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) "
                 + " inner join programstage pgs on (pgs.programstageid=psi.programstageid) ";
-            if( isPriorityEvent )
+            if ( isPriorityEvent )
             {
                 sql += " inner join patientattributevalue pav on p.patientid=pav.patientid ";
             }
@@ -558,41 +558,20 @@ public class HibernatePatientStore
         
         return sql;
     }
+
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max )
     {
-
-        List<Patient> patients = new ArrayList<Patient>();
-
-        String sql = "select patientid from patient where phoneNumber like '%" + phoneNumber + "%'";
-
+        String hql = "select p from Patient p where p.phoneNumber like '%" + phoneNumber + "%'";
+        Query query = getQuery( hql );
+        
         if ( min != null && max != null )
         {
-            sql += statementBuilder.limitRecord( min, max );
+            query.setFirstResult( min ).setMaxResults( max );
         }
-        try
-        {
-            patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
-            {
 
-                @Override
-                public Patient mapRow( ResultSet rs, int rowNum )
-                    throws SQLException
-                {
-
-                    return get( rs.getInt( 1 ) );
-                }
-
-            } );
-        }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-        return patients;
-
+        return query.list();
     }
-
-
-
+    
 }
