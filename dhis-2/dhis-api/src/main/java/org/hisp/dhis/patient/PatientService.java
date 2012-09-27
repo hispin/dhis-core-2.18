@@ -215,4 +215,6 @@ public interface PatientService
     
     Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, I18n i18n );
 
+    Collection<Patient> getPatientsByPhone( String phoneNumber, Integer min, Integer max );
+
 }
