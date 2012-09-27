@@ -44,12 +44,10 @@
 						<input type='button' class='patient-object' value="$value"
 							onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
 					</td>
-					#if($!programStageInstanceMap.get($programInstance))
-						#set($programStageInstances = $programStageInstanceMap.get($programInstance) )
-						<td>
-							#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
-						</td>
-					#end
+					#set( $programStageInstances = $programInstance.programStageInstances )
+					<td>
+						#parse( "/dhis-web-caseentry/programStageInstanceFlow.vm" )
+					</td>
 				</tr>
 			#if( $mark )
 				#set( $mark = false )

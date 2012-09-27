@@ -29,12 +29,13 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.Patient;
@@ -43,9 +44,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.comparator.ProgramStageInstanceDueDateComparator;
 
 public class GetDataRecordsAction
     extends ActionPagingSupport<Patient>
@@ -82,11 +80,11 @@ public class GetDataRecordsAction
         this.programInstanceService = programInstanceService;
     }
 
-    private ProgramStageInstanceService programStageInstanceService;
+    private I18n i18n;
 
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    public void setI18n( I18n i18n )
     {
-        this.programStageInstanceService = programStageInstanceService;
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -121,32 +119,18 @@ public class GetDataRecordsAction
         this.searchTexts = searchTexts;
     }
 
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     private Integer total;
 
     public Integer getTotal()
     {
         return total;
-    }
-
-    private Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
-
-    public Collection<ProgramInstance> getProgramInstances()
-    {
-        return programInstances;
-    }
-
-    private Map<ProgramInstance, List<ProgramStageInstance>> programStageInstanceMap = new HashMap<ProgramInstance, List<ProgramStageInstance>>();
-
-    public Map<ProgramInstance, List<ProgramStageInstance>> getProgramStageInstanceMap()
-    {
-        return programStageInstanceMap;
-    }
-
-    private Map<Integer, Integer> statusMap = new HashMap<Integer, Integer>();
-
-    public Map<Integer, Integer> getStatusMap()
-    {
-        return statusMap;
     }
 
     private Map<Patient, ProgramInstance> programInstanceMap = new HashMap<Patient, ProgramInstance>();
@@ -163,18 +147,18 @@ public class GetDataRecordsAction
         return patients;
     }
 
-    private Collection<Integer> programStageInstanceIds;
-
-    public Collection<Integer> getProgramStageInstanceIds()
-    {
-        return programStageInstanceIds;
-    }
-
     private Program program;
 
     public Program getProgram()
     {
         return program;
+    }
+
+    private Grid grid;
+
+    public Grid getGrid()
+    {
+        return grid;
     }
 
     // -------------------------------------------------------------------------
@@ -191,68 +175,52 @@ public class GetDataRecordsAction
         // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
-
-        // List all patients
-        if ( listAll )
+        if ( type == null ) // Tabular report
         {
-            if ( program == null )
+            // List all patients
+            if ( listAll )
             {
-                total = patientService.countGetPatientsByOrgUnit( orgunit );
+                total = (program == null) ? patientService.countGetPatientsByOrgUnit( orgunit ) : patientService
+                    .countGetPatientsByOrgUnitProgram( orgunit, program );
+
+                this.paging = createPaging( total );
+
+                patients = new ArrayList<Patient>( patientService.getPatients( orgunit, program, paging.getStartPos(),
+                    paging.getPageSize() ) );
+
             }
-            else
+            // search patients
+            else if ( searchTexts.size() > 0 )
             {
-                total = patientService.countGetPatientsByOrgUnitProgram( orgunit, program );
+                orgunit = (searchBySelectedOrgunit) ? orgunit : null;
+
+                total = patientService.countSearchPatients( searchTexts, orgunit );
+                this.paging = createPaging( total );
+                patients = patientService.searchPatients( searchTexts, orgunit, paging.getStartPos(),
+                    paging.getPageSize() );
             }
-            
-            this.paging = createPaging( total );
 
-            patients = new ArrayList<Patient>( patientService.getPatients( orgunit, program, paging.getStartPos(),
-                paging.getPageSize() ) );
-
-        }
-        // search patients
-        else if ( searchTexts.size() > 0 )
-        {
-            orgunit = (searchBySelectedOrgunit) ? orgunit : null;
-
-            total = patientService.countSearchPatients( searchTexts, orgunit );
-            this.paging = createPaging( total );
-            patients = patientService.searchPatients( searchTexts, orgunit, paging.getStartPos(), paging.getPageSize() );
-
-            programStageInstanceIds = patientService.getProgramStageInstances( searchTexts, orgunit,
-                paging.getStartPos(), paging.getPageSize() );
-        }
-
-        Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
-
-        for ( Patient patient : patients )
-        {
-            Collection<ProgramInstance> _programInstances = programInstanceService.getProgramInstances( patient,
-                program, false );
-
-            if ( _programInstances == null || _programInstances.size() == 0 )
+            for ( Patient patient : patients )
             {
-                programInstanceMap.put( patient, null );
-            }
-            else
-            {
-                for ( ProgramInstance programInstance : _programInstances )
+                Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient,
+                    program, false );
+
+                if ( programInstances == null || programInstances.size() == 0 )
                 {
-                    programInstanceMap.put( patient, programInstance );
-                    programInstances.add( programInstance );
-
-                    List<ProgramStageInstance> programStageInstanceList = new ArrayList<ProgramStageInstance>(
-                        programInstance.getProgramStageInstances() );
-                    Collections.sort( programStageInstanceList, new ProgramStageInstanceDueDateComparator() );
-
-                    programStageInstanceMap.put( programInstance, programStageInstanceList );
-                    programStageInstances.addAll( programStageInstanceList );
+                    programInstanceMap.put( patient, null );
+                }
+                else
+                {
+                    programInstanceMap.put( patient, programInstances.iterator().next() );
                 }
             }
         }
-
-        statusMap = programStageInstanceService.statusProgramStageInstances( programStageInstances );
-
-        return SUCCESS;
+        else
+        // Download as Excel
+        {
+            grid = patientService.getScheduledEventsReport( searchTexts, orgunit, i18n );
+        }
+        
+        return type == null ? SUCCESS : type;
     }
 }

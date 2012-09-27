@@ -90,6 +90,7 @@
 				<td></td>
 				<td>
 					<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'show_activity_list' )">
+					<input type="button" class='large-button' value="$i18n.getString( 'export_xls' )" onclick='exportActitityList("xls");'>
 				</td>
 			</tr>
 		</table>

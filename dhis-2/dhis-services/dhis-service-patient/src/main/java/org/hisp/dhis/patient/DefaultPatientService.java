@@ -27,7 +27,18 @@
 
 package org.hisp.dhis.patient;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
@@ -37,10 +48,8 @@ import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.lang.reflect.Type;
-import java.util.*;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -115,7 +124,7 @@ public class DefaultPatientService
 
     @Override
     public int createPatient( Patient patient, Integer representativeId, Integer relationshipTypeId,
-                              List<PatientAttributeValue> patientAttributeValues )
+        List<PatientAttributeValue> patientAttributeValues )
     {
         int patientid = savePatient( patient );
 
@@ -183,7 +192,7 @@ public class DefaultPatientService
 
     @Override
     public Collection<Patient> getPatients( String firstName, String middleName, String lastName, Date birthdate,
-                                            String gender )
+        String gender )
     {
         return patientStore.get( firstName, middleName, lastName, birthdate, gender );
     }
@@ -248,7 +257,8 @@ public class DefaultPatientService
         patients.addAll( patientIdentifierService.getPatientsByIdentifier( searchText, 0, Integer.MAX_VALUE ) );
         patients.addAll( getPatientsByNames( searchText, 0, Integer.MAX_VALUE ) );
 
-        // if an orgunit has been selected, filter out every patient that has a different ou
+        // if an orgunit has been selected, filter out every patient that has a
+        // different ou
         if ( orgUnitId != 0 )
         {
             Set<Patient> toRemoveList = new HashSet<Patient>();
@@ -275,7 +285,7 @@ public class DefaultPatientService
 
     @Override
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, PatientAttribute patientAttribute,
-                                            Integer min, Integer max )
+        Integer min, Integer max )
     {
         List<Patient> patientList = new ArrayList<Patient>( patientStore.getByOrgUnit( organisationUnit, min, max ) );
 
@@ -291,7 +301,7 @@ public class DefaultPatientService
 
     @Override
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, Integer min,
-                                            Integer max )
+        Integer max )
     {
         Collection<Patient> patients = new ArrayList<Patient>();
 
@@ -402,8 +412,8 @@ public class DefaultPatientService
 
     @Override
     public void updatePatient( Patient patient, Integer representativeId, Integer relationshipTypeId,
-                               List<PatientAttributeValue> valuesForSave, List<PatientAttributeValue> valuesForUpdate,
-                               Collection<PatientAttributeValue> valuesForDelete )
+        List<PatientAttributeValue> valuesForSave, List<PatientAttributeValue> valuesForUpdate,
+        Collection<PatientAttributeValue> valuesForDelete )
     {
 
         patientStore.update( patient );
@@ -496,7 +506,8 @@ public class DefaultPatientService
             }
 
             return value;
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             ex.printStackTrace();
         }
@@ -514,7 +525,8 @@ public class DefaultPatientService
         patientStore.removeErollmentPrograms( program );
     }
 
-    public Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+    public Collection<Patient> searchPatients( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
+        Integer max )
     {
         return patientStore.search( searchKeys, orgunit, min, max );
     }
@@ -523,16 +535,52 @@ public class DefaultPatientService
     {
         return patientStore.countSearch( searchKeys, orgunit );
     }
-    
-    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+
+    public Collection<String> getPatientPhoneNumbers( List<String> searchKeys, OrganisationUnit orgunit, Integer min,
+        Integer max )
     {
         return patientStore.getPatientPhoneNumbers( searchKeys, orgunit, min, max );
     }
-    
-    public Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
+
+    public Collection<Integer> getProgramStageInstances( List<String> searchKeys, OrganisationUnit orgunit,
+        Integer min, Integer max )
     {
         return patientStore.getProgramStageInstances( searchKeys, orgunit, min, max );
     }
-    
+
+    public Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, I18n i18n )
+    {
+        String startDate = "";
+        String endDate = "";
+        for ( String searchKey : searchKeys )
+        {
+            String[] keys = searchKey.split( "_" );
+            if ( keys[0].equals( Patient.PREFIX_PROGRAM_EVENT_BY_STATUS ) )
+            {
+                startDate = keys[2];
+                endDate = keys[3];
+            }
+        }
+
+        Grid grid = new ListGrid();
+        grid.setTitle( i18n.getString( "activity_plan" ) );
+        if ( !startDate.isEmpty() && !endDate.isEmpty() )
+        {
+            grid.setSubtitle( i18n.getString( "from" ) + " " + startDate + " " + i18n.getString( "to" ) + endDate );
+        }
+        
+        grid.addHeader( new GridHeader( "patientid", true, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "first_name" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "middle_name" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "last_name" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "gender" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "phone_number" ), false, true ) );
+        grid.addHeader( new GridHeader( "orgunitid", true, true ) );
+        grid.addHeader( new GridHeader( "programstageinstanceid", true, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "program_stage" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "due_date" ), false, true ) );
+
+        return patientStore.getPatientEventReport( grid, searchKeys, orgunit );
+    }
 
 }

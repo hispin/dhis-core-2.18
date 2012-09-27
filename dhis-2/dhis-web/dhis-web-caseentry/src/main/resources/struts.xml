@@ -987,6 +987,12 @@
 			<param name="page">/dhis-web-caseentry/activityPlanRecords.vm</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>
+		
+		<action name="exportActitityList"
+			class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
+			<result name="xls" type="gridXlsResult" />
+			<result name="pdf" type="gridPdfResult" />
+		</action>
 
 	</package>
 </struts>
