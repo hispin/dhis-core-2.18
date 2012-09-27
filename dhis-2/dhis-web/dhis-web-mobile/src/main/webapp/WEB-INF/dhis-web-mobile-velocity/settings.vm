@@ -41,7 +41,7 @@
 
 	<header data-role="header" data-theme="b">
 		<div align="center"><img src="../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
-        <a href="../dhis-web-mobile" data-icon="back">Back</a>
+        <a href="index" data-icon="back">Back</a>
 	</header>
 
     <section data-role="content">

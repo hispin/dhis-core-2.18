@@ -21,8 +21,8 @@
 
 	<section data-role="content">
         <ul data-role="listview" data-inset="true">
-            <li id="inbox"><a href="dhis-web-mobile/inbox">Inbox</a></li>
-            <li id="settings"><a href="dhis-web-mobile/settings">Settings</a></li>
+            <li id="inbox"><a href="inbox">Inbox</a></li>
+            <li id="settings"><a href="settings">Settings</a></li>
         </ul>
 	</section>
 

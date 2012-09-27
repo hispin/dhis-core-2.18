@@ -37,7 +37,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MobileController
 {
-    @RequestMapping
+    @RequestMapping( value = "/dhis-web-mobile" )
+    public String base()
+    {
+        return "redirect:dhis-web-mobile/index";
+    }
+
+    @RequestMapping( value = "/index" )
     public String index( Model model )
     {
         model.addAttribute( "page", "index.vm" );
