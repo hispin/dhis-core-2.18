@@ -362,6 +362,7 @@ public class HibernatePatientStore
         String orderBy = "";
         boolean hasIdentifier = false;
         boolean isSearchEvent = false;
+        boolean isPriorityEvent = false;
 
         for ( String searchKey : searchKeys )
         {
@@ -423,6 +424,7 @@ public class HibernatePatientStore
             else if ( keys[0].equals( Patient.PREFIX_PROGRAM_EVENT_BY_STATUS ) )
             {
                 isSearchEvent = true;
+                isPriorityEvent = Boolean.parseBoolean( keys[5] );
                 patientWhere += patientOperator + "pgi.patientid=p.patientid and ";
                 patientWhere += "pgi.programid=" + id + " and ";
                 patientWhere += "psi.duedate>='" + keys[2] + "' and psi.duedate<='" + keys[3] + "' and ";
@@ -431,7 +433,7 @@ public class HibernatePatientStore
                 String operatorStatus = "";
                 String condition = " and ( ";
 
-                for ( int index = 5; index < keys.length; index++ )
+                for ( int index = 6; index < keys.length; index++ )
                 {
                     int statusEvent = Integer.parseInt( keys[index] );
                     switch ( statusEvent )
@@ -525,8 +527,11 @@ public class HibernatePatientStore
             String subSQL = " ,MIN( psi.programstageinstanceid ) as programstageinstanceid, min(pgs.name) as programstagename, min(psi.duedate) as duedate ";
             sql = sql + subSQL + from + " inner join programinstance pgi on " + " (pgi.patientid=p.patientid) "
                 + " inner join programstageinstance psi on " + " (psi.programinstanceid=pgi.programinstanceid) "
-                + " inner join programstage pgs on (pgs.programstageid=psi.programstageid) "
-                + " inner join patientattributevalue pav on p.patientid=pav.patientid ";
+                + " inner join programstage pgs on (pgs.programstageid=psi.programstageid) ";
+            if( isPriorityEvent )
+            {
+                sql += " inner join patientattributevalue pav on p.patientid=pav.patientid ";
+            }
             orderBy = " ORDER BY duedate DESC ";
             from = " ";
         }
@@ -550,7 +555,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-
+        
         return sql;
     }
 }
