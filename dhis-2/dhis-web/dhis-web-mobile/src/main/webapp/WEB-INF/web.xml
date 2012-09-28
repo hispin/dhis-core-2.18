@@ -72,15 +72,25 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
 
+  <servlet>
+    <servlet-name>mobileServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath*:/META-INF/dhis/mobile.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
   <!-- Mobile -->
 
   <servlet-mapping>
-    <servlet-name>webapiServlet</servlet-name>
+    <servlet-name>mobileServlet</servlet-name>
     <url-pattern>/dhis-web-mobile</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>webapiServlet</servlet-name>
+    <servlet-name>mobileServlet</servlet-name>
     <url-pattern>/dhis-web-mobile/*</url-pattern>
   </servlet-mapping>
 
