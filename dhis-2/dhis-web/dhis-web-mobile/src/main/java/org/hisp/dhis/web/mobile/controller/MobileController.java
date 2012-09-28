@@ -40,7 +40,13 @@ public class MobileController
     @RequestMapping( value = "/dhis-web-mobile" )
     public String base()
     {
-        return "redirect:dhis-web-mobile/index";
+        return "redirect:/dhis-web-mobile/index";
+    }
+
+    @RequestMapping( value = "/" )
+    public String baseWithSlash()
+    {
+        return "redirect:/dhis-web-mobile/index";
     }
 
     @RequestMapping( value = "/index" )
