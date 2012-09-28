@@ -43,9 +43,9 @@ input.filterButton
 	display: block;
 }
 
-.imgButton
+input.small-button
 {
-	cursor:pointer;
+	width:25px;
 }
 
 fieldset
