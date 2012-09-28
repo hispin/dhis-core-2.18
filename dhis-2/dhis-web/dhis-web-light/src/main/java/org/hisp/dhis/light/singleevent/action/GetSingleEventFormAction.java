@@ -165,8 +165,6 @@ public class GetSingleEventFormAction
     public String execute()
         throws Exception
     {
-        System.out.println("searching Result: " + searchResult );
-        
         if( SessionUtils.getSessionVar( "prevDataValues" ) != null )
         {
             this.prevDataValues = (Map<String, String>) SessionUtils.getSessionVar( "prevDataValues" );

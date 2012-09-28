@@ -128,13 +128,6 @@ public class FindSingleEventOptionSetAction
     public String execute()
         throws Exception
     {
-/*        this.test = (Map<String, String>) SessionUtils.getSessionVar( "test" );
-        System.out.println( "size: " + this.test.size() );
-        System.out.println( "Key word: " + this.keyword );
-        System.out.println( "ID: " + this.dataElementIdForSearching );
-        System.out.println( "program ID: " + this.programId);
-        System.out.println( "patient ID: " + this.patientId);
-        System.out.println( "org ID: " + this.organisationUnitId);*/
         DataElement dataElement = dataElementService.getDataElement( this.dataElementIdForSearching );
         
         OptionSet optionSet = dataElement.getOptionSet();
