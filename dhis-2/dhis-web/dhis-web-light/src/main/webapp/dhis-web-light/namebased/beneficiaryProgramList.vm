@@ -30,7 +30,7 @@
         #end
 	</ul>
 </p>
-<h2>Completed Programs</h2>
+<h2>$i18n.getString("complete_programs")</h2>
 <p>
 	<ul>
 		#if( $listOfCompletedProgram.size() != 0 )

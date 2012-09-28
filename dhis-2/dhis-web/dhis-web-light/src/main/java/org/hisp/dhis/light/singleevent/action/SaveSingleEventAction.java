@@ -422,9 +422,6 @@ public class SaveSingleEventAction
             
             if( dataElement.getOptionSet() != null && dataElement.getOptionSet().getOptions().size() > 15)
             {
-                System.out.println("truoc: "+parameterMap.get( "preDE"+dataElement.getId() ));
-                System.out.println("sau: "+parameterMap.get( "DE"+dataElement.getId() ));
-                
                 this.keyword = parameterMap.get( "DE"+dataElement.getId() ).trim();
                 
                 dataElementIdForSearching = dataElement.getId();
