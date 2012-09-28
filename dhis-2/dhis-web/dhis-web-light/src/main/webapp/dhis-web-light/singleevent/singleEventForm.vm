@@ -35,14 +35,21 @@
 				<input type="text" name="$key" value="$!prevDataValues.get($key)" />
 			#end	
 		#elseif ($dataElement.getOptionSet())
-			#set( $options = $dataElement.getOptionSet().getOptions() )
-			<select type="text" name="$key" />
-				<option selected > $i18n.getString("select_option") </option>
-			#foreach ($option in $options)
-				<option value="$option" #if($prevDataValues.get($key) == $option) selected #end> $option </option>
+				#set( $options = $dataElement.getOptionSet().getOptions() )
+				
+				#if( $options.size() > 15 )
+					<input type="hidden" name="pre$key" style="height:20px" value="$!prevDataValues.get($key)"/>
+					<input type="text" name="$key" style="height:20px" value="$!prevDataValues.get($key)"/>
+					<input type="submit" style="width:100%" value="$i18n.getString('search')"/>
+				#else
+					<select type="text" name="$key" />
+						<option selected > $i18n.getString("select_option") </option>	
+					#foreach ($option in $options)
+						<option value="$option" #if($prevDataValues.get($key) == $option) selected #end> $option </option>
+					#end
+					</select>
+				#end
 			#end
-			</select>
-		#end
 	#end
 		<input type="hidden" name="organisationUnitId" value="$organisationUnitId" />
 		<input type="hidden" name="programId" value="$programId" />

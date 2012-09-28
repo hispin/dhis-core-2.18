@@ -393,6 +393,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
 
+	
+	<bean id="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction" class="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	</bean>
 	<!-- Dashboard -->
 
 	<bean id="org.hisp.dhis.light.dashboard.action.ProvideContentAction"
@@ -492,4 +496,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
+
 </beans>

@@ -31,10 +31,14 @@ import com.opensymphony.xwork2.Action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.util.SessionUtils;
 
 public class GetSingleEventFormAction
     implements Action
@@ -136,10 +140,42 @@ public class GetSingleEventFormAction
         }
     };
 
+    private Map<String, String> prevDataValues = new HashMap<String, String>();
+
+    public Map<String, String> getPrevDataValues()
+    {
+        return prevDataValues;
+    }
+    
+    private String searchResult;
+    
+    public void setSearchResult( String searchResult )
+    {
+        this.searchResult = searchResult;
+    }
+    
+    private int dataElementIdForSearching;
+    
+    public void setDataElementIdForSearching( int dataElementIdForSearching )
+    {
+        this.dataElementIdForSearching = dataElementIdForSearching;
+    }
+    
     @Override
     public String execute()
         throws Exception
     {
+        System.out.println("searching Result: " + searchResult );
+        
+        if( SessionUtils.getSessionVar( "prevDataValues" ) != null )
+        {
+            this.prevDataValues = (Map<String, String>) SessionUtils.getSessionVar( "prevDataValues" );
+        }
+        if( searchResult != null)
+        {
+            this.prevDataValues.put( "DE"+this.dataElementIdForSearching, searchResult );
+        }
+        
         Program program = programService.getProgram( programId );
         eventName = program.getName();
         ProgramStage programStage = program.getProgramStages().iterator().next();
