@@ -45,18 +45,18 @@
 	</tr>
 	<tr>
 		<td>
-			<img src="../images/plus.png" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "leftStageDescription", "leftSide", "+" );' class="imgButton" />
+			<input type='button' value="+" title="$i18n.getString( 'plus' )" onclick='insertOperator( "leftStageDescription", "leftSide", "+" );' class="small-button" >
 			&nbsp;&nbsp;&nbsp;
-			<img src="../images/less.png" alt="$i18n.getString( 'less' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<" );' class="imgButton" />
-			<img src="../images/less_or_equal.png" alt="$i18n.getString( 'less_or_equal' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<=" );' class="imgButton" />
-			<img src="../images/greater.png" alt="$i18n.getString( 'greater' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">" );' class="imgButton" />
-			<img src="../images/greater_or_equal.png" alt="$i18n.getString( 'greater_or_equal' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">=" );' class="imgButton" />
-			<img src="../images/equal.png" alt="$i18n.getString( 'equal' )" onclick='insertOperator( "leftStageDescription", "leftSide", "==" );' class="imgButton" />
-			<img src="../images/diff.png" alt="$i18n.getString( 'diff' )" onclick='insertOperator( "leftStageDescription", "leftSide", "!=" );' class="imgButton"/>
+			<input type='button' value="<" title="$i18n.getString( 'less_then' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<" );' class="small-button" />
+			<input type='button' value="<=" title="$i18n.getString( 'less_then_or_equal_to' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<=" );' class="small-button" />
+			<input type='button' value=">" title="$i18n.getString( 'greater_then' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">" );' class="small-button" />
+			<input type='button' value=">=" title="$i18n.getString( 'greater_then_or_equal_to' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">=" );' class="small-button" />
+			<input type='button' value="=" title="$i18n.getString( 'equals_to' )" onclick='insertOperator( "leftStageDescription", "leftSide", "==" );' class="small-button" />
+			<input type='button' value="!=" title="$i18n.getString( 'diff_from' )" onclick='insertOperator( "leftStageDescription", "leftSide", "!=" );' class="small-button"/>
 			&nbsp;&nbsp;&nbsp;
-			<img src="../images/not_null.png" alt="$i18n.getString( 'not_null' )" onclick='insertOperator( "leftStageDescription", "leftSide", "=={NOT-NULL-VALUE}" );' style="cursor:pointer;">
+			<input type='button' value="!=NULL" title="$i18n.getString( 'not_null' )" onclick='insertOperator( "leftStageDescription", "leftSide", "=={NOT-NULL-VALUE}" );' style="width:50px;"/>
 			&nbsp;&nbsp;&nbsp;
-			<img src="../images/clear.png" alt="$i18n.getString( 'clear' )" align='right'  onclick="clearValidation( 'leftSide', 'leftStageDescription' )" />
+			<input type='button' value="X" title="$i18n.getString( 'clear' )" align='right'  onclick="clearValidation( 'leftSide', 'leftStageDescription' )" class="small-button" />
 		</td>
 	</tr>
 	<tr>

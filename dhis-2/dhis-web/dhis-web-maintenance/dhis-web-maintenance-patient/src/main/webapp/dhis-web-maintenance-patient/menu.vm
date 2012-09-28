@@ -13,8 +13,9 @@
 	<li><a href="validationCriteria.action">$i18n.getString( "validation_criteria" )</a></li>
 </ul>
 
+#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
 <h2>$i18n.getString( "scheduling" )</h2>
 <ul>
 	<li><a href="viewScheduleTasks.action">$i18n.getString( "schedule_sending_message" )</a></li>
 </ul>
-
+#end

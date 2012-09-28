@@ -934,7 +934,7 @@
 	      <param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 	      <param name="javascripts">javascript/scheduling.js</param>
 		  <param name="schedule">true</param>
-	      <param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
+	      <param name="requiredAuthorities">F_SCHEDULING_SEND_MESSAGE</param>
 	    </action>
 	    
 		<action name="scheduleTasks" class="org.hisp.dhis.patient.action.schedule.ScheduleSendMessageTasksAction">
