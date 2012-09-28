@@ -21,7 +21,7 @@
 	});	
 </script>
 
-<h3 id='mainLinkLbl'>$i18n.getString( "program_tracking" )</h3>
+<h3 id='mainLinkLbl'>$i18n.getString( "program_tracking" ) #openHelp('program_tracking')</h3>
 <form>
 	<input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
 	<input type='hidden' id='listAll' name='listAll'>

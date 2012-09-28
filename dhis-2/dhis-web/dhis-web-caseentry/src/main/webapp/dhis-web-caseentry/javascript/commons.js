@@ -1522,6 +1522,7 @@ function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInst
 			{
 				loadDataEntry( activeProgramStageInstanceId );
 			}
+			jQuery('#completedList').val('');
 			jQuery('#loaderDiv').hide();
 		});
 }

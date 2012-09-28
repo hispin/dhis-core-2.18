@@ -94,6 +94,11 @@
 	</td>
 </tr>
 
+<tr>
+	<td></td>
+	<td><input type="button" class='button' id='checkDuplicateBtn' name='checkDuplicateBtn' value="$i18n.getString('check_duplicate')" /></td>
+</tr>
+
 <tr id='deathDateTR' #if($!patient.isDead) #else class="hidden" #end>
 	<td class='text-column'><label for="deathDate">$i18n.getString("death_date")</label></td>
 	<td class="input-column">
