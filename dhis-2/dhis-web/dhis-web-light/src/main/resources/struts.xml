@@ -303,7 +303,7 @@
     </action>
 
     <action name="showSingleEventForm"
-        class="org.hisp.dhis.light.singleevent.action.GetSingleEventFormAction">
+	class="org.hisp.dhis.light.singleevent.action.GetSingleEventFormAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/singleevent/singleEventForm.vm</param>
     </action>
@@ -314,7 +314,16 @@
         /light/selectSingleEventBeneficiary.action?programId=${programId}&amp;organisationUnitId=${organisationUnitId}&amp;validated=true
       </result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
+      <result name="redirect" type="redirect">findSingleEventOptionSet.action?keyword=${keyword}&amp;dataElementIdForSearching=${dataElementIdForSearching}&amp;organisationUnitId=${organisationUnitId}&amp;patientId=${patientId}&amp;programId=${programId}</result>
       <param name="page">/dhis-web-light/singleevent/singleEventForm.vm</param>
+    </action>
+    
+    <action name="findSingleEventOptionSet"
+    	class="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction">
+    	<!--<result name="success" type="redirect">showSingleEventForm.action?organisationUnitId=559&amp;patientId=1149378&amp;programId=1149486</result>
+    	-->
+    	<result name="success" type="velocity">/dhis-web-light/main.vm</result>
+    	<param name="page">/dhis-web-light/singleevent/singleEventOptionSetFindForm.vm</param>
     </action>
 
     <!-- Reports -->
@@ -424,5 +433,6 @@
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/anonymous/anonymousProgramForm.vm</param>
     </action>
+    
   </package>
 </struts>
