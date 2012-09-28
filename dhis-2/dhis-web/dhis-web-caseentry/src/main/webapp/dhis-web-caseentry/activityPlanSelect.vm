@@ -9,7 +9,7 @@
 	});	
 </script>
 
-<h3>$i18n.getString( "activity_plan" )</h3>
+<h3>$i18n.getString( "activity_plan" ) #openHelp('visit_schedule')</h3>
 <form id='activityPlanForm' name='activityPlanForm'>
 	<input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
 	<input type='hidden' id='listAll' name='listAll'>
