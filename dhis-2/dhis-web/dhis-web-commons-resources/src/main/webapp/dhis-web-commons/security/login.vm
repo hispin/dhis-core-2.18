@@ -28,7 +28,7 @@
         #end
 	    </div>
         <div id="loginField">
-            <div id="bannerArea"><a href="http://dhis2.org"><img alt="" src="logo_banner.png"></a></div>
+            <div id="bannerArea"><a href="http://dhis2.org"><img alt="" src="logo_front.png"></a></div>
             
             <form id="loginForm" action="../../dhis-web-commons-security/login.action" method="post">
                 <table>
