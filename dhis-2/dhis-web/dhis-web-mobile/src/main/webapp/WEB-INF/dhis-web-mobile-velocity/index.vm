@@ -5,10 +5,11 @@
             url: '../api/currentUser/dashboard.json',
             async: false
         }).success(function(data) {
-            $('#inbox a').append("<span class='ui-li-count'>" +
-                    ( data.unreadMessageConversation + data.unreadInterpretations ) + "</span>")
+            $('#messages a').append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
+            $('#interpretations a').append("<span class='ui-li-count'>" + data.unreadInterpretations + "</span>");
         }).error(function() {
-            $('#inbox a').append("<span class='ui-li-count'>Offline</span>")
+            $('#messages a').append("<span class='ui-li-count'>Offline</span>")
+            $('#interpretations a').append("<span class='ui-li-count'>Offline</span>")
         });
     });
 </script>
@@ -16,12 +17,13 @@
 <section data-role="page" id="mainPage" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-		<div align="center"><img src="../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
 	</header>
 
 	<section data-role="content">
         <ul data-role="listview" data-inset="true">
-            <li id="inbox"><a href="inbox">Inbox</a></li>
+            <li id="messages"><a href="messages">Messages</a></li>
+            <li id="interpretations"><a href="interpretations">Interpretations</a></li>
             <li id="settings"><a href="settings">Settings</a></li>
         </ul>
 	</section>

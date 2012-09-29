@@ -1,0 +1,35 @@
+
+<script>
+    $(document).bind('pagebeforecreate',function(){
+        $.ajax({
+            url: '../api/currentUser/inbox.json',
+            async: false
+        }).success(function(data) {
+            console.log(data);
+
+            $.each(data.messageConversations, function(i, item) {
+                $('#messageList').append('<li><a href="messages/' + item.id + '">' + item.name + '</a></li>');
+            });
+        }).error(function() {
+        });
+    });
+</script>
+
+<section data-role="page" id="messagesPage" data-theme="c">
+
+	<header data-role="header" data-theme="b">
+		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <a href="index" data-icon="back">Back</a>
+	</header>
+
+	<section data-role="content">
+        <ul id="messageList" data-role="listview" data-inset="true">
+            <li data-role="list-divider">Messages</li>
+        </ul>
+	</section>
+
+    <footer data-role="footer" data-theme="b">
+        <h1></h1>
+   	</footer>
+
+</section>

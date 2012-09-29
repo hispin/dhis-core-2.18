@@ -27,9 +27,13 @@ package org.hisp.dhis.web.mobile.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -50,24 +54,37 @@ public class MobileController
     }
 
     @RequestMapping( value = "/index" )
-    public String index( Model model )
+    public String index( Model model, HttpServletRequest request )
     {
+        model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
         model.addAttribute( "page", "index.vm" );
 
         return "base";
     }
 
-    @RequestMapping( value = "/inbox" )
-    public String inbox( Model model )
+    @RequestMapping( value = "/messages" )
+    public String messages( Model model, HttpServletRequest request )
     {
-        model.addAttribute( "page", "inbox.vm" );
+        model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
+        model.addAttribute( "page", "messages.vm" );
+
+        return "base";
+    }
+
+    @RequestMapping( value = "/messages/{uid}" )
+    public String message( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    {
+        model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
+        model.addAttribute( "page", "message.vm" );
+        model.addAttribute( "messageId", uid );
 
         return "base";
     }
 
     @RequestMapping( value = "/settings" )
-    public String settings( Model model )
+    public String settings( Model model, HttpServletRequest request )
     {
+        model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
         model.addAttribute( "page", "settings.vm" );
 
         return "base";

@@ -1,0 +1,17 @@
+
+<section data-role="page" id="messagePage" data-theme="c">
+
+	<header data-role="header" data-theme="b">
+		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <a href="../messages" data-icon="back">Back</a>
+	</header>
+
+	<section data-role="content">
+        <h1>Reading message $messageId.</h1>
+	</section>
+
+    <footer data-role="footer" data-theme="b">
+        <h1></h1>
+   	</footer>
+
+</section>
