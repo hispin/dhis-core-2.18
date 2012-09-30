@@ -1,8 +1,51 @@
 
+var currentPage = 0;
+var pageLock = false;
+
 $( document ).ready( function() {
 	$( ".commentArea" ).autogrow();
+	
+	$( document ).scroll( function() {
+		isNextPage();
+	} );
+	
 	$( "#interpretationFeed" ).load( "getInterpretations.action" );
 } );
+
+function isNextPage()
+{
+	var fromTop = $( document ).scrollTop();
+	var height = $( document ).height();	
+	var threshold = 0.7;
+	var loaded = parseFloat( parseFloat( fromTop ) / parseFloat( height ) );
+	
+	if ( loaded >= threshold )
+	{
+		loadNextPage();
+	}
+}
+
+function loadNextPage()
+{
+	if ( pageLock == true )
+	{
+		return false;
+	}
+	
+	pageLock = true;
+	currentPage++;
+	
+	$.get( "getInterpretations.action", { page: currentPage }, function( data ) {
+		$( "#interpretationFeed" ).append( data );
+		
+		if ( !isDefined ( data ) || $.trim( data ).length == 0 )
+		{
+			$( document ).off( "scroll" );
+		}
+		
+		pageLock = false;
+	} );
+}
 
 function showUserInfo( id )
 {

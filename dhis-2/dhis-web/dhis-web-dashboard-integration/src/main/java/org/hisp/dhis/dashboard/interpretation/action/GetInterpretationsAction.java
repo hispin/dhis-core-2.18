@@ -40,6 +40,8 @@ import com.opensymphony.xwork2.Action;
 public class GetInterpretationsAction
     implements Action
 {
+    private static final int PAGE_SIZE = 6;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -52,6 +54,17 @@ public class GetInterpretationsAction
     }
 
     // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer page;
+
+    public void setPage( Integer page )
+    {
+        this.page = page;
+    }
+
+    // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
@@ -61,16 +74,18 @@ public class GetInterpretationsAction
     {
         return interpretations;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
+        int first = page != null ? ( page * PAGE_SIZE ) : 0;
+        
         interpretationService.updateCurrentUserLastChecked();
         
-        interpretations = interpretationService.getInterpretations( 0, 20 );
+        interpretations = interpretationService.getInterpretations( first, PAGE_SIZE );
         
         return SUCCESS;
     }
