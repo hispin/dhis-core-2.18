@@ -16,6 +16,29 @@
             console.log('error fetching message')
         });
     });
+
+    jQuery(document).bind('pageinit', function() {
+       $('#reply-form input:submit').bind('click', function() {
+            var msg = jQuery('#reply-text').val();
+
+           if(msg.length == 0) {
+               return false;
+           }
+
+           $.ajax({
+               url         : '$baseUrl/../api/messageConversations/${messageId}',
+               type        : 'post',
+               contentType : 'text/plain',
+               data        : msg
+           }).success(function () {
+               location.reload(true);
+           }).error(function () {
+               console.log("failed to send message");
+           });
+
+           return false;
+       });
+    });
 </script>
 
 <script id="message-template" type="text/template">
@@ -28,6 +51,14 @@
             <p style="white-space: normal !important"><%= message.name %></p>
             <p class="ui-li-aside"><strong><%= d %></strong></p>
         </li>
+        <% if( idx == 0 ) { %>
+        <li>
+        <form id='reply-form'>
+            <textarea id='reply-text'></textarea>
+            <input type="submit" value="Reply" />
+        </form>
+        </li>
+        <% } %>
         <% }); %>
     </ul>
 </script>
