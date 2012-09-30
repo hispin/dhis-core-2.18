@@ -9,7 +9,7 @@
             $('#surnameInput').val(data.surname);
             $('#emailInput').val(data.email);
             $('#phoneNumberInput').val(data.phoneNumber);
-            $('#job').val(data.jobTitle);
+            $('#jobTitleInput').val(data.jobTitle);
         });
 
         $('input:submit').bind('click', function() {
