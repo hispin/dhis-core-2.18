@@ -1,16 +1,17 @@
 
 <script>
-    $(document).bind('pagebeforecreate',function(){
-        $.ajax({
+    jQuery(document).bind('pagebeforecreate',function(){
+        jQuery.ajax({
             url: '../api/currentUser/inbox.json',
             async: false
         }).success(function(data) {
             console.log(data);
 
-            $.each(data.messageConversations, function(i, item) {
-                $('#messageList').append('<li><a href="messages/' + item.id + '">' + item.name + '</a></li>');
+            jQuery.each(data.messageConversations, function(i, item) {
+                jQuery('#messageList').append('<li><a href="messages/' + item.id + '">' + item.name + '</a></li>');
             });
         }).error(function() {
+            console.log("error fetching inbox");
         });
     });
 </script>

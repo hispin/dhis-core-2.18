@@ -312,7 +312,6 @@ public class MessageConversation
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "messages", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "message", namespace = Dxf2Namespace.NAMESPACE )
