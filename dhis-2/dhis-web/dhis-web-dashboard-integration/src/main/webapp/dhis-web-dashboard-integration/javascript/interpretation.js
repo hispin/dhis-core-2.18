@@ -1,6 +1,7 @@
 
 $( document ).ready( function() {
-	$( '.commentArea' ).autogrow();
+	$( ".commentArea" ).autogrow();
+	$( "#interpretationFeed" ).load( "getInterpretations.action" );
 } );
 
 function showUserInfo( id )

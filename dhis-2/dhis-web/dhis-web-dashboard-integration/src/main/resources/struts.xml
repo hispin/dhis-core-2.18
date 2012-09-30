@@ -125,12 +125,16 @@
 
     <!-- Interpretation -->
 	
-	<action name="interpretation" class="org.hisp.dhis.dashboard.interpretation.action.GetInterpretationsAction">
+	<action name="interpretation" class="org.hisp.dhis.dashboard.action.NoAction">
 	  <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dashboard-integration/interpretation.vm</param>
       <param name="menu">/dhis-web-dashboard-integration/menu.vm</param>
 	  <param name="javascripts">javascript/interpretation.js</param>
 	  <param name="stylesheets">style/dashboard.css</param>
+    </action>
+
+    <action name="getInterpretations" class="org.hisp.dhis.dashboard.interpretation.action.GetInterpretationsAction">
+      <result name="success" type="velocity">/dhis-web-dashboard-integration/interpretationFeed.vm</result>
     </action>
 
   </package>

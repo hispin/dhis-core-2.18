@@ -1,0 +1,55 @@
+#foreach( $ip in $interpretations )
+<div class="interpretation">
+
+    <div class="interpretationName">
+        <span class="bold" style="cursor:pointer" onclick="showUserInfo( '${ip.user.id}' )">${ip.user.name}</span>&nbsp;
+        <span class="grey">${format.formatDate( $ip.created )}</span>
+    </div>
+    <div class="interpretationText">
+        ${ip.text}
+    </div>
+    <div class="interpretationChart">
+    #if( $ip.chartInterpretation )  
+        <img style="cursor:pointer" 
+             src="../api/charts/${ip.chart.uid}/data?date=${format.formatDate( $ip.created )}&width=530&height=300" 
+             onclick="javascript:window.location.href='../dhis-web-visualizer/app/index.html?id=${ip.chart.uid}&date=${format.formatDate( $ip.created )}'"
+             title="$i18n.getString( 'click_to_view_in_data_visualizer' )">
+    #elseif( $ip.mapViewInterpretation )
+        <a class="bold" 
+           title="$i18n.getString( 'click_to_view_in_gis' )" 
+           href="../dhis-web-mapping/mapping/index.html?id=${ip.mapView.uid}">$encoder.htmlEncode( $ip.mapView.name )</a>
+    #elseif( $ip.reportTableInterpretation )
+        #if( $ip.organisationUnit )#set( $ou = "&ou=" + $ip.organisationUnit.uid )#else#set( $ou = "" )#end
+        <a class="bold" 
+           title="$i18n.getString( 'click_to_view_report_table' )" 
+           href="../dhis-web-reporting/exportTable.action?uid=${ip.reportTable.uid}&pe=${format.formatDate( $ip.created )}${ou}">
+            $encoder.htmlEncode( $ip.reportTable.name )</a>
+    #elseif( $ip.dataSetReportInterpretation )
+        <a class="bold"
+           title="$i18n.getString( 'click_to_view_data_set_report' )"
+           href="../dhis-web-reporting/showDataSetReportForm.action?ds=${ip.dataSet.uid}&pe=${ip.period.isoDate}&ou=${ip.organisationUnit.uid}">
+           $encoder.htmlEncode( $ip.dataSet.name )</a>
+    #end
+    </div>
+    
+    #set( $comments = $ip.comments )
+    <div class="interpretationCommentArea">
+        <div id="comments${ip.uid}">
+        #foreach( $comment in $comments )
+        <div>
+            <div class="interpretationName">
+                <span class="bold pointer" onclick="showUserInfo( '${comment.user.id}' )">${comment.user.name}</span>&nbsp;
+                <span class="grey">${format.formatDate( $comment.created )}</span>
+            </div>
+        </div>
+        <div class="interpretationText">
+            ${comment.text}
+        </div>
+        #end
+        </div>
+        <textarea id="commentArea${ip.uid}" class="commentArea" placeholder="$i18n.getString( 'add_a_comment' )..."></textarea>
+        <input type="button" class="commentButton" value="Post comment" onclick="postComment( '${ip.uid}' )">
+    </div>
+    
+</div>
+#end
