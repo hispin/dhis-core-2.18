@@ -443,12 +443,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			<list>
 				<list>
 					<ref local="org.hisp.dhis.patient.PatientDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
+					<ref local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
+					<ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
 
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
@@ -457,8 +455,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 					<ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
 
-					<ref
-						local="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler" />
+					<ref local="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler" />
 				</list>
 			</list>
 		</property>
