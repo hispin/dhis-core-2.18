@@ -17,25 +17,7 @@ function showSectionDetails( sectionId )
 	});
 }
 
-function removeSection( programStageId, sectionId, name )
+function removeSection( id, name )
 {
-	var result = window.confirm( i18n_confirm_delete + "\n" + name );
-    if ( result )
-    {
-		jQuery.getJSON( "removeProgramStageSection.action",
-			{
-				programStageId:programStageId,
-				id:sectionId
-			}, 
-			function( json ) 
-			{   
-				jQuery( "tr#tr" + sectionId ).remove();
-				jQuery( "table.listTable tbody tr" ).removeClass( "listRow listAlternateRow" );
-				jQuery( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );
-				jQuery( "table.listTable tbody tr:even" ).addClass( "listRow" );
-				jQuery( "table.listTable tbody" ).trigger("update");
-				
-				showSuccessMessage( i18n_delete_success );
-			});
-	}
+	removeItem( id, name, i18n_confirm_delete, 'removeProgramStageSection.action' );
 }
