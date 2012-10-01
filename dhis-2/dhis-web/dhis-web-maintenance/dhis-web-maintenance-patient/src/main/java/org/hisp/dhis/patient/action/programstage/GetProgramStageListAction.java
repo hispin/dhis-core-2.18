@@ -28,13 +28,11 @@
 package org.hisp.dhis.patient.action.programstage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.comparator.ProgramStageOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -101,8 +99,6 @@ public class GetProgramStageListAction
         program = programService.getProgram( id );
 
         associations = new ArrayList<ProgramStage>( program.getProgramStages() );
-
-        Collections.sort( associations, new ProgramStageOrderComparator() );
 
         return SUCCESS;
     }

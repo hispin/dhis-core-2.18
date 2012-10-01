@@ -73,8 +73,8 @@ public class SendScheduledMessageTask
     // Constructors
     // -------------------------------------------------------------------------
 
-    public SendScheduledMessageTask( ProgramStageInstanceService programStageInstanceService, JdbcTemplate jdbcTemplate,
-        OutboundSmsService outboundSmsService )
+    public SendScheduledMessageTask( ProgramStageInstanceService programStageInstanceService,
+        JdbcTemplate jdbcTemplate, OutboundSmsService outboundSmsService )
     {
         this.programStageInstanceService = programStageInstanceService;
         this.jdbcTemplate = jdbcTemplate;
@@ -122,27 +122,22 @@ public class SendScheduledMessageTask
         {
             String message = schedulingProgramObject.getMessage();
 
-            String phoneNumber = schedulingProgramObject.getPhoneNumber();
-
-            if ( phoneNumber != null && !phoneNumber.isEmpty() )
+            try
             {
-                try
-                {
-                    OutboundSms outboundSms = new OutboundSms( message, phoneNumber );
-                    outboundSms.setSender( DHIS_SYSTEM_SENDER );
-                    outboundSmsService.saveOutboundSms( outboundSms );
+                OutboundSms outboundSms = new OutboundSms( message, schedulingProgramObject.getPhoneNumber() );
+                outboundSms.setSender( DHIS_SYSTEM_SENDER );
+                outboundSmsService.saveOutboundSms( outboundSms );
 
-                    String sql = "INSERT INTO programstageinstance_outboundsms"
-                        + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
-                        + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + ","
-                        + (System.currentTimeMillis() / 1000) + ") ";
+                String sql = "INSERT INTO programstageinstance_outboundsms"
+                    + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
+                    + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + ","
+                    + (System.currentTimeMillis() / 1000) + ") ";
 
-                    jdbcTemplate.execute( sql );
-                }
-                catch ( SmsServiceException e )
-                {
-                    message = e.getMessage();
-                }
+                jdbcTemplate.execute( sql );
+            }
+            catch ( SmsServiceException e )
+            {
+                message = e.getMessage();
             }
         }
     }
@@ -150,6 +145,7 @@ public class SendScheduledMessageTask
     private void sendMessage()
     {
         List<OutboundSms> outboundSmsList = outboundSmsService.getOutboundSms( OutboundSmsStatus.OUTBOUND );
+
         for ( OutboundSms outboundSms : outboundSmsList )
         {
             outboundSms.setStatus( OutboundSmsStatus.SENT );
