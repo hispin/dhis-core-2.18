@@ -136,18 +136,56 @@
         displaySelected();
     }
 
-    function newMessagePage()
-    {
-        $('#new-message-form input:submit').bind('click', function () {
-            var subject = jQuery('#new-message-subject').val();
-            var text = jQuery('#new-message-text').val();
+    function sendMessage() {
+        var subject = jQuery('#new-message-subject').val();
+        var text = jQuery('#new-message-text').val();
 
-            console.log(subject);
-            console.log(text);
+        var message = {};
+        message.subject = subject;
+        message.text = text;
+        message.organisationUnits = [];
+        message.users = [];
+        message.userGroups = [];
 
-            return false;
+        $.mobile.showPageLoadingMsg();
+
+        _(_(selected).keys()).each(function(key) {
+            if( key.indexOf('ou:') != -1 )
+            {
+                message.organisationUnits.push( { "id": key.substring(3) } );
+            }
+            else if( key.indexOf('u:') != -1 )
+            {
+                message.users.push( { "id": key.substring(2) } );
+            }
+            else if( key.indexOf('ug:') != -1 )
+            {
+                message.userGroups.push( { "id": key.substring(3) } );
+            }
         });
 
+        $.ajax({
+           url: "$baseUrl/../api/messageConversations",
+           type: 'POST',
+           contentType: 'application/json',
+           data: JSON.stringify(message),
+           async: false
+        }).success(function() {
+            $.mobile.hidePageLoadingMsg();
+            window.location.href = '../messages';
+        }).error(function() {
+            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to send message, please try again later", true );
+            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
+            console.log("failed to send message");
+        });
+
+        return false;
+    }
+
+    function newMessagePage()
+    {
+        $('#new-message-form input:submit').unbind('click');
+        $('#new-message-form input:submit').bind('click', sendMessage );
         updateRecipientCounter();
     }
 
@@ -170,7 +208,7 @@
 
 	<header data-role="header" data-theme="b">
 		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
-        <a href="messages" data-icon="delete" class="ui-btn-right">Discard</a>
+        <a href="../messages" data-icon="delete" class="ui-btn-right">Discard</a>
     </header>
 
 	<section data-role='content'>
@@ -185,7 +223,7 @@
                 </form>
 
             </li>
-            <li data-icon="gear"><a href="#manage-recipients-page" data-icon="plus">Manage recipients</a> <span id="message-recipient-counter" class='ui-li-count'>0</span></li>
+            <li data-icon="gear"><a href="#manage-recipients-page">Manage recipients</a> <span id="message-recipient-counter" class='ui-li-count'>0</span></li>
         </ul>
 
 	</section>
