@@ -10,17 +10,67 @@
         $('#selection-list').append('<li id="user-list" data-role="list-divider">Users</li>')
         $('#selection-list').append('<li id="user-group-list" data-role="list-divider">Users Groups</li>')
 
-        // TODO use selected object to populate selected-list
-        $('<li>None selected.</li>').insertAfter('#organisation-unit-list');
-        $('<li>None selected.</li>').insertAfter('#user-list');
-        $('<li>None selected.</li>').insertAfter('#user-group-list');
+        var ou_count = 0;
+        var u_count = 0;
+        var ug_count = 0;
+
+        _( _(selected).keys() ).each(function(item) {
+            if( item.indexOf( 'ou:') != -1 )
+            {
+                ou_count++;
+                $('<li data-icon="delete"><a href="#">' + selected[item] + '</a> <span id="message-recipient-counter" class="ui-li-count">Tap to remove</span></li>').insertAfter('#organisation-unit-list');
+            }
+            else if( item.indexOf( 'u:') != -1 )
+            {
+                u_count++;
+                $('<li data-icon="delete"><a href="#">' + selected[item] + '</a> <span id="message-recipient-counter" class="ui-li-count">Tap to remove</span></li>').insertAfter('#user-list');
+            }
+            else if( item.indexOf( 'ug:') != -1 )
+            {
+                ug_count++;
+                $('<li data-icon="delete"><a href="#">' + selected[item] + '</a> <span id="message-recipient-counter" class="ui-li-count">Tap to remove</span></li>').insertAfter('#user-group-list');
+            }
+        });
+
+        if( ou_count == 0)
+        {
+            $('<li>None selected.</li>').insertAfter('#organisation-unit-list');
+        }
+
+        if( u_count == 0)
+        {
+            $('<li>None selected.</li>').insertAfter('#user-list');
+        }
+
+        if( ug_count == 0)
+        {
+            $('<li>None selected.</li>').insertAfter('#user-group-list');
+        }
 
         $('#selection-list').listview('refresh');
     }
 
     function updateRecipientCounter()
     {
-        $('#message-recipient-counter').html(selected.length);
+        $('#message-recipient-counter').html( _(selected).keys().length );
+    }
+
+    function addRecipient(e)
+    {
+        var prefix = $(e).data('prefix');
+        var id = $(e).data('id');
+
+        if( prefix === undefined || id === undefined )
+        {
+            return;
+        }
+
+        selected[prefix + ':' + id] = $(e).find('a').html();
+    }
+
+    function removeRecipient(e)
+    {
+        console.log(e);
     }
 
     function manageRecipientsPage()
@@ -58,7 +108,7 @@
                     $('#selection-list').append('<li id="organisation-unit-list" data-role="list-divider">Organisation Units</li>')
 
                     _(data.organisationUnits).each(function(organisationUnit) {
-                        $('#selection-list').append('<li data-id="' + organisationUnit.id + '">' + organisationUnit.name + '</li>');
+                        $('#selection-list').append('<li onclick="addRecipient(this);" data-prefix="ou" data-icon="plus" data-id="' + organisationUnit.id + '"><a href="#">' + organisationUnit.name + '</a></li>');
                     });
                 }
 
@@ -67,7 +117,7 @@
                     $('#selection-list').append('<li id="user-list" data-role="list-divider">Users</li>')
 
                     _(data.users).each(function(user) {
-                        $('#selection-list').append('<li data-id="' + user.id + '">' + user.name + '</li>');
+                        $('#selection-list').append('<li onclick="addRecipient(this);" data-prefix="u" data-icon="plus" data-id="' + user.id + '"><a href="#">' + user.name + '</a></li>');
                     });
                 }
 
@@ -76,7 +126,7 @@
                     $('#selection-list').append('<li id="user-group-list" data-role="list-divider">Users Groups</li>')
 
                     _(data.userGroups).each(function(userGroup) {
-                        $('#selection-list').append('<li data-id="' + userGroup.id + '">' + userGroup.name + '</li>');
+                        $('#selection-list').append('<li onclick="addRecipient(this);" data-prefix="ug" data-icon="plus" data-id="' + userGroup.id + '"><a href="#">' + userGroup.name + '</a></li>');
                     });
                 }
 
