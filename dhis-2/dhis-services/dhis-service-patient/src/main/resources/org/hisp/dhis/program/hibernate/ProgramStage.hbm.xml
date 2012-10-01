@@ -22,7 +22,7 @@
 
 	<property name="irregular" column="irregular" />
 
-    <set name="programStageDataElements" order-by="sort_order" >
+    <set name="programStageDataElements" order-by="sort_order" cascade="all">
       <key column="programstageid" />
       <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
     </set>
