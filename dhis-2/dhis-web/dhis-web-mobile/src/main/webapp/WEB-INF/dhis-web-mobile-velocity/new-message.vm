@@ -1,17 +1,110 @@
 <script>
     var selected = {};
 
-    jQuery(document).bind('pageinit', function() {
-       $('#new-message-form input:submit').bind('click', function() {
-           var subject = jQuery('#new-message-subject').val();
-           var text = jQuery('#new-message-text').val();
+    function displaySelected()
+    {
+        $('#selection-list').append('<li id="organisation-unit-list" data-role="list-divider">Organisation Units</li>')
+        $('#selection-list').append('<li>None selected.</li>');
 
-           console.log(subject);
-           console.log(text);
+        $('#selection-list').append('<li id="user-list" data-role="list-divider">Users</li>')
+        $('#selection-list').append('<li>None selected.</li>');
 
-           return false;
-       });
+        $('#selection-list').append('<li id="user-group-list" data-role="list-divider">Users Groups</li>')
+        $('#selection-list').append('<li>None selected.</li>');
+
+        $('#selection-list').listview('refresh');
+    }
+
+    function updateRecipientCounter()
+    {
+        $('#message-recipient-counter').html(selected.length);
+    }
+
+    function manageRecipientsPage()
+    {
+        var fn1 = $('form[role="search"] input:text').data('events')['keyup'][1];
+        $('form[role="search"] input:text').unbind('keyup');
+
+        $('form[role="search"] input:text').bind('keyup', function () {
+            var search = $('form[role="search"] input:text').val();
+
+            $('#selection-list').children().remove();
+
+            if( search.length == 0)
+            {
+                displaySelected();
+                return;
+            }
+            else if ( search.length < 3 )
+            {
+                return;
+            }
+
+            $.ajax({
+                url  : '$baseUrl/../api/currentUser/recipients',
+                type : 'get',
+                async: false,
+                dataType: 'json',
+                data : {
+                    'filter' : search
+                }
+            }).success(function ( data ) {
+                if( data.users && data.users.length > 0 )
+                {
+                    $('#selection-list').append('<li id="user-list" data-role="list-divider">Users</li>')
+
+                    _(data.users).each(function(user) {
+                        $('#selection-list').append('<li data-id="' + user.id + '">' + user.name + '</li>');
+                    });
+                }
+
+                if( data.userGroups && data.userGroups.length > 0 )
+                {
+                    $('#selection-list').append('<li id="user-group-list" data-role="list-divider">Users Groups</li>')
+
+                    _(data.userGroups).each(function(userGroup) {
+                        $('#selection-list').append('<li data-id="' + userGroup.id + '">' + userGroup.name + '</li>');
+                    });
+                }
+
+                $('#selection-list').listview('refresh');
+
+            });
+
+            $('form[role="search"] input:text').bind('keyup', fn1);
+        });
+
+        displaySelected();
+    }
+
+    function newMessagePage()
+    {
+        $('#new-message-form input:submit').bind('click', function () {
+            var subject = jQuery('#new-message-subject').val();
+            var text = jQuery('#new-message-text').val();
+
+            console.log(subject);
+            console.log(text);
+
+            return false;
+        });
+
+        updateRecipientCounter();
+    }
+
+    jQuery(document).bind('pagechange', function (event, data) {
+        var pageId = data.toPage.attr('id');
+
+        if( pageId == 'manage-recipients-page')
+        {
+            manageRecipientsPage();
+        }
+        else if( pageId == 'new-message-page')
+        {
+            newMessagePage();
+        }
     });
+
 </script>
 
 <section data-role="page" id="new-message-page" data-theme="c">
@@ -27,13 +120,13 @@
                 <form id="new-message-form">
                     <label for='new-message-subject'>Subject</label>
                     <input type="text" id='new-message-subject' />
-                    <label for='new-message-body'>Text</label>
-                    <textarea id='new-message-body'></textarea>
+                    <label for='new-message-text'>Text</label>
+                    <textarea id='new-message-text'></textarea>
                     <input type="submit" value="Send message" />
                 </form>
 
             </li>
-            <li data-icon="gear"><a href="#manage-recipients-page" data-icon="plus">Manage recipients</a> <span class='ui-li-count'>1</a></li>
+            <li data-icon="gear"><a href="#manage-recipients-page" data-icon="plus">Manage recipients</a> <span id="message-recipient-counter" class='ui-li-count'>0</span></li>
         </ul>
 
 	</section>
@@ -52,15 +145,7 @@
     </header>
 
 	<section data-role="content">
-        <ul data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Search for recipients..">
-            <li data-role="list-divider">Organisation Units</li>
-            <li>Not implemented.</li>
-
-            <li data-role="list-divider">Users</li>
-            <li>Not implemented.</li>
-
-            <li data-role="list-divider">User groups</li>
-            <li>Not implemented.</li>
+        <ul id="selection-list" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Enter 3 or more characters to search">
         </ul>
 	</section>
 

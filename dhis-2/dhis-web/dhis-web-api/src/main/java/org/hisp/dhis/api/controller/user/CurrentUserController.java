@@ -32,17 +32,15 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.WebUtils;
 import org.hisp.dhis.api.webdomain.user.Dashboard;
 import org.hisp.dhis.api.webdomain.user.Inbox;
+import org.hisp.dhis.api.webdomain.user.Recipients;
 import org.hisp.dhis.api.webdomain.user.Settings;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +51,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -71,6 +73,9 @@ public class CurrentUserController
     private UserService userService;
 
     @Autowired
+    private UserGroupService userGroupService;
+
+    @Autowired
     private MessageService messageService;
 
     @Autowired
@@ -78,7 +83,7 @@ public class CurrentUserController
 
     @RequestMapping
     public String getCurrentUser( @RequestParam Map<String, String> parameters,
-      Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+                                  Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         User currentUser = currentUserService.getCurrentUser();
@@ -102,7 +107,7 @@ public class CurrentUserController
 
     @RequestMapping( value = "/inbox" )
     public String getInbox( @RequestParam Map<String, String> parameters,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+                            Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         User currentUser = currentUserService.getCurrentUser();
@@ -130,7 +135,7 @@ public class CurrentUserController
 
     @RequestMapping( value = "/dashboard" )
     public String getDashboard( @RequestParam Map<String, String> parameters,
-        Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+                                Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         User currentUser = currentUserService.getCurrentUser();
@@ -158,7 +163,7 @@ public class CurrentUserController
 
     @RequestMapping( value = "/settings" )
     public String getSettings( @RequestParam Map<String, String> parameters,
-       Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+                               Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
         User currentUser = currentUserService.getCurrentUser();
@@ -187,7 +192,7 @@ public class CurrentUserController
     }
 
     @RequestMapping( value = "/settings", method = RequestMethod.POST, consumes = "application/xml" )
-    public void postSettingsXml(HttpServletResponse response, HttpServletRequest request) throws Exception
+    public void postSettingsXml( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         Settings settings = JacksonUtils.fromXml( request.getInputStream(), Settings.class );
         User currentUser = currentUserService.getCurrentUser();
@@ -208,7 +213,7 @@ public class CurrentUserController
     }
 
     @RequestMapping( value = "/settings", method = RequestMethod.POST, consumes = "application/json" )
-    public void postSettingsJson(HttpServletResponse response, HttpServletRequest request) throws Exception
+    public void postSettingsJson( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
         Settings settings = JacksonUtils.fromJson( request.getInputStream(), Settings.class );
         User currentUser = currentUserService.getCurrentUser();
@@ -226,5 +231,32 @@ public class CurrentUserController
         currentUser.setJobTitle( settings.getJobTitle() );
 
         userService.updateUser( currentUser );
+    }
+
+    @RequestMapping( value = "/recipients", produces = "application/json" )
+    public void recipientsJson( HttpServletResponse response, @RequestParam( value = "filter", required = false ) String filter ) throws IOException
+    {
+        User currentUser = currentUserService.getCurrentUser();
+
+        if ( currentUser == null )
+        {
+            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
+            return;
+        }
+
+        Recipients recipients = new Recipients();
+
+        if ( filter == null || filter.isEmpty() )
+        {
+            recipients.setUsers( new HashSet<User>( userService.getAllUsers() ) );
+            recipients.setUserGroups( new HashSet<UserGroup>( userGroupService.getAllUserGroups() ) );
+        }
+        else
+        {
+            recipients.setUsers( new HashSet<User>( userService.getUsersByName( filter ) ) );
+            recipients.setUserGroups( new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, Integer.MAX_VALUE ) ) );
+        }
+
+        JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
 }
