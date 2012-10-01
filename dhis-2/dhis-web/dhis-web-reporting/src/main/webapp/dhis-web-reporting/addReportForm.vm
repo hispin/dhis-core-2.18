@@ -28,6 +28,8 @@
 		<td>
 		#if( $report )
 			<input type="button" value="$i18n.getString( 'get_current_design' )" onclick="window.location.href='getReportDesign.action?id=${report.id}'">
+		#else
+		    <input type="button" value="$i18n.getString( 'get_report_template' )" onclick="window.location.href='getReportTemplate.action'">
 		#end
 		</td>
 	</tr>
