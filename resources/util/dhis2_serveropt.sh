@@ -5,22 +5,29 @@ sudo apt-get -y update
 sudo apt-get -y upgrade
 #Upgrade system as an option
 #Install postgres
-sudo apt-get -y install postgresql tomcat7-user libtcnative-1 makepasswd
+sudo apt-get -y install postgresql tomcat7-user libtcnative-1 makepasswd bc ufw
 
 #KERNEL STUFF
 #Make some changes to the kernel params
-#TODO This needs to be based on free memory.
+#TODO Ask the user if they want to do this.
+MEMTOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+MEMFREE=$(grep MemFree /proc/meminfo | awk '{print $2}')
+SHMAX=$(bc -l <<< "scale = 0;($MEMTOTAL*1024/12)")
+RMEM_MAX=$(bc -l <<< "scale = 0;$SHMAX/128")
+
+
 sudo sh -c "echo '
-kernel.shmmax = 1073741824
-net.core.rmem_max = 8388608
-net.core.wmem_max = 8388608' >> /etc/sysctl.conf" 
+kernel.shmmax = $SHMAX
+net.core.rmem_max = $RMEM_MAX
+net.core.wmem_max = $RMEM_MAX' >> /etc/sysctl.conf" 
 sudo sysctl -p
 
 #POSTGRES STUFF
 #Backup the Postgres configuration file
 sudo cp /etc/postgresql/9.1/main/postgresql.conf /etc/postgresql/9.1/main/postgresql.conf.bak
 
-#TODO This needs to be based on memory allocated to Postgres
+#Basic Postgres Optimization 
+#TODO.Need to ask for user input here whether they really want to do this.
 sudo sh -c "sudo -u postgres echo -e \"data_directory = '/var/lib/postgresql/9.1/main'\n         
 hba_file = '/etc/postgresql/9.1/main/pg_hba.conf'\n       
 ident_file = '/etc/postgresql/9.1/main/pg_ident.conf'\n  
@@ -29,7 +36,7 @@ port = 5432\n
 max_connections = 100\n                  
 unix_socket_directory = '/var/run/postgresql'\n         
 ssl = true\n                             
-shared_buffers = 512MB\n                  
+shared_buffers = $(bc -l <<< "scale = 0;($MEMTOTAL/24576)MB")\n                  
 log_line_prefix = '%t '\n                 
 datestyle = 'iso, mdy'\n
 lc_messages = 'en_US.UTF-8'\n                     
@@ -37,7 +44,7 @@ lc_monetary = 'en_US.UTF-8'\n
 lc_numeric = 'en_US.UTF-8'\n                     
 lc_time = 'en_US.UTF-8'\n                        
 default_text_search_config = 'pg_catalog.english'\n
-effective_cache_size = 3500MB\n
+effective_cache_size = $(bc -l <<< "scale = 0;($MEMTOTAL*0.3/1024)")MB\n
 checkpoint_segments = 32\n
 checkpoint_completion_target = 0.8\n
 wal_buffers = 4MB\n
