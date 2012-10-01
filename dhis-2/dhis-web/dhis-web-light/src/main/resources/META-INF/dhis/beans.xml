@@ -174,6 +174,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
 	</bean>
 
 	<bean
@@ -206,6 +208,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		
 	</bean>
 
 	<bean

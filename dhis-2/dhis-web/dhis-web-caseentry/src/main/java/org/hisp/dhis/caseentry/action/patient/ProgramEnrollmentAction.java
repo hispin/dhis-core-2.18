@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.PatientAttribute;
