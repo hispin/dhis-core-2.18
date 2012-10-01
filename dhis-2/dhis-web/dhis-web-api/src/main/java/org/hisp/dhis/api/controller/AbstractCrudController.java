@@ -153,7 +153,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
     @PreAuthorize( "hasRole('ALL')" )
-    public void postJsonObject( HttpServletResponse response, InputStream input ) throws Exception
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
