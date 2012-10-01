@@ -200,7 +200,6 @@ public class AddProgramStageAction
 
         programStage.setName( name );
         programStage.setDescription( description );
-        programStage.setStageInProgram( program.getProgramStages().size() + 1 );
         programStage.setProgram( program );
         programStage.setStandardInterval( standardInterval );
         programStage.setReportDateDescription( reportDateDescription );

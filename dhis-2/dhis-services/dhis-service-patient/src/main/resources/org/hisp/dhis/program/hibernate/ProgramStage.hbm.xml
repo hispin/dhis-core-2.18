@@ -15,9 +15,7 @@
 	&identifiableProperties;
 
     <property name="description" />
-
-    <property name="stageInProgram" column="stageinprogram" not-null="true" />
-
+	
     <property name="minDaysFromStart" column="mindaysfromstart" not-null="true" />
 
     <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_programstage_program" />

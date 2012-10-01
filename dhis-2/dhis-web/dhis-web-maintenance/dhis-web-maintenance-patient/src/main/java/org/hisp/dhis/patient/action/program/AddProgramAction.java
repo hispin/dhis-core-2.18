@@ -239,7 +239,6 @@ public class AddProgramAction
 
             programStage.setName( SINGLE_EVENT + " " + name );
             programStage.setDescription( description );
-            programStage.setStageInProgram( program.getProgramStages().size() + 1 );
             programStage.setProgram( program );
             programStage.setMinDaysFromStart( 0 );
             programStage.setReportDateDescription( REPORT_DATE_DESCRIPTION );
