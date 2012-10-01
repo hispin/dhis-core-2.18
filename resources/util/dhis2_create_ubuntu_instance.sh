@@ -54,7 +54,7 @@ sudo sh -c "sudo -u $USERNAME wget -O $BASE/tomcat/webapps/$USERNAME.war http://
 #Create a hibernate.properties file
 sudo -u $USERNAME sh -c "echo 'hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 hibernate.connection.driver_class = org.postgresql.Driver
-hibernate.connection.url = jdbc:postgresql://DB_HOSTNAME:$DB_PORT/$DBNAME
+hibernate.connection.url = jdbc:postgresql://$DB_HOSTNAME:$DB_PORT/$DBNAME
 hibernate.connection.username = $USERNAME
 hibernate.connection.password = $PASSWORD
 hibernate.hbm2ddl.auto = update' >  $BASE/dhis_home/hibernate.properties"
@@ -64,7 +64,8 @@ sudo -u $USERNAME chmod 600 $BASE/dhis_home/hibernate.properties
 #Create the JAVA_OPTS
 #TODO calculate this based on the free memory
 sudo sh -c "sudo -u $USERNAME echo -e \"export JAVA_OPTS='-Xmx1024m -Xms512m -XX:MaxPermSize=500m -XX:PermSize=400m'
-export DHIS2_HOME='$BASE/dhis_home'\" > $BASE/tomcat/bin/setenv.sh"
+export DHIS2_HOME='$BASE/dhis_home'
+export CATALINA_PID=$BASE/tomcat/work/test-tomcat.pid\" > $BASE/tomcat/bin/setenv.sh"
 
 #Start Tomcat
 sudo -u $USERNAME $BASE/tomcat/bin/startup.sh ;
