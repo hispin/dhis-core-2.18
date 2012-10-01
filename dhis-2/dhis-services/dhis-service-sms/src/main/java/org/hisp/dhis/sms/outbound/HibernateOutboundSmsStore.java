@@ -104,10 +104,9 @@ public class HibernateOutboundSmsStore
             realStatus = OutboundSmsStatus.ERROR.ordinal();
         }
         
-        String sql = "select osm.id as outboundsmsid, message, ore.elt as phonenumber "
+        String sql = "select osm.id as outboundsmsid, message, ore.elt as phonenumber, date "
         		+ "from outbound_sms osm inner join outbound_sms_recipients ore " 
         		+ "on osm.id=ore.outbound_sms_id where status = " + realStatus ;
-        
         try
         {
             List<OutboundSms> OutboundSmsList = jdbcTemplate.query( sql, new RowMapper<OutboundSms>()
@@ -117,9 +116,10 @@ public class HibernateOutboundSmsStore
                 {
                     OutboundSms outboundSms = new OutboundSms( rs.getString( 2 ), rs.getString( 3 ) );
                     outboundSms.setId(  rs.getInt( 1 ) );
+                    outboundSms.setDate( rs.getDate( 4 ) );
                     return outboundSms;
                 }
-            } );
+            });
             
             return OutboundSmsList;
         }

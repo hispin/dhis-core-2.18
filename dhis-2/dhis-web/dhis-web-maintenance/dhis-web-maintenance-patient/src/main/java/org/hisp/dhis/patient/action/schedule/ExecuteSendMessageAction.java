@@ -80,15 +80,15 @@ public class ExecuteSendMessageAction
     @Override
     public String execute()
     {
-
         Collection<SchedulingProgramObject> schedulingProgramObjects = programStageInstanceService
             .getSendMesssageEvents();
 
         for ( SchedulingProgramObject schedulingProgramObject : schedulingProgramObjects )
         {
             String message = schedulingProgramObject.getMessage();
+
             String phoneNumber = schedulingProgramObject.getPhoneNumber();
-            
+
             try
             {
                 OutboundSms outboundSms = new OutboundSms( message, phoneNumber );
