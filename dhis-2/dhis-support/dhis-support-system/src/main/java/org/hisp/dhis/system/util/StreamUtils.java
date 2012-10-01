@@ -78,7 +78,7 @@ public class StreamUtils
         return classLoader.getResourceAsStream( name );
     }
 
-    public static void streamcopy(BufferedInputStream in, BufferedOutputStream out)
+    public static void streamcopy( BufferedInputStream in, BufferedOutputStream out )
     {
         int b = 0;
 

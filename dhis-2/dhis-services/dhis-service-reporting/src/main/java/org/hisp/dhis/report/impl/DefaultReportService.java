@@ -27,9 +27,6 @@ package org.hisp.dhis.report.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.reporttable.ReportTable.*;
-import static org.hisp.dhis.reporttable.ReportTable.REPORTING_MONTH_COLUMN_NAME;
-import static org.hisp.dhis.reporttable.ReportTable.PARAM_ORGANISATIONUNIT_LEVEL;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
@@ -145,7 +142,7 @@ public class DefaultReportService
         
         if ( period != null )
         {
-            params.put( REPORTING_MONTH_COLUMN_NAME, format.formatPeriod( period ) );
+            params.put( PARAM_PERIOD_NAME, format.formatPeriod( period ) );
             
             reportDate = period.getStartDate();
         }
@@ -193,7 +190,7 @@ public class DefaultReportService
                 
                 if ( report.hasReportParams() && report.getReportParams().isParamOrganisationUnit() && orgUnit != null )
                 {
-                    params.put( PARAM_ORG_UNITS, orgUnit.getId() );
+                    params.put( PARAM_ORG_UNITS, String.valueOf( orgUnit.getId() ) );
                 }
                 
                 try

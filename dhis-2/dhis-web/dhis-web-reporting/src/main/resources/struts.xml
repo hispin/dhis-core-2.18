@@ -125,6 +125,10 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	
+	<action name="getReportTemplate" class="org.hisp.dhis.reporting.reportviewer.action.GetReportTemplateAction">
+	  <result name="success" type="outputStreamResult" />
+	</action>
+	
     <!-- ReportTable -->
 
     <action name="displayManageTableForm" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction">
