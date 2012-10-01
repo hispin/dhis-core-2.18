@@ -1,12 +1,17 @@
 <h2>$encoder.htmlEncode( $programStage.name )</h2>
 
 #set( $typeViolationsSize = $typeViolations.size() )
+#set( $programViolationsSize = $programValidations.size() )
 
-#if( $typeViolationsSize > 0 )
+#if( $typeViolationsSize > 0 || $programViolationsSize > 0)
 <div class="header-box" align="center">
 	<h3 style="text-align: left; background-color: #990000; color: white;">$i18n.getString("warnings_and_errors")</h3>
 	<p style="text-align: left;">
-		$typeViolationsSize $i18n.getString("type_violation_errors"). <br />
+		#if ($typeViolationsSize > 0)$typeViolationsSize $i18n.getString("type_violation_errors"). <br /> #end
+		#foreach($programValidation in $programValidations)
+			$programValidation.description. <br/>
+		#end
+		#if ($programViolationsSize > 0 && $typeViolationsSize == 0) <a href="showPatientProgramList.action?patientId=${patientId}">$i18n.getString("save_any_way")</a> #end	
 	</p>
 </div>	
 #end
