@@ -248,7 +248,7 @@ public class GenerateDataSetReportAction
         String dataSetType = selectedDataSet.getDataSetType();
 
         registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, selectedPeriod, selectedOrgunit );
-            
+        
         if ( TYPE_CUSTOM.equals( dataSetType ) )
         {
             if ( type != null )
