@@ -331,6 +331,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler">
 		<property name="programStageDEService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="programStageSectionService"
+			ref="org.hisp.dhis.program.ProgramStageSectionService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler"
@@ -361,6 +363,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler"
 		class="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.program.ProgramStageSectionDeletionHandler"
+		class="org.hisp.dhis.program.ProgramStageSectionDeletionHandler">
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
 
 	<!-- PatientComment -->
@@ -449,6 +456,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 					<ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
 
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
+					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" />
@@ -491,6 +499,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.program.ProgramService.delete*(..) )"
+				method="intercept" />
+			<aop:before
+				pointcut="execution( * org.hisp.dhis.program.ProgramStageSectionService.delete*(..) )"
 				method="intercept" />
 			<aop:before
 				pointcut="execution( * org.hisp.dhis.program.ProgramInstanceService.delete*(..) )"
