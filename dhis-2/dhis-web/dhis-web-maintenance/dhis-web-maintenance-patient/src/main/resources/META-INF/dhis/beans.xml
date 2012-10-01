@@ -895,7 +895,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
  	<bean id="org.hisp.dhis.patient.action.schedule.ExecuteSendMessageAction"
 		class="org.hisp.dhis.patient.action.schedule.ExecuteSendMessageAction"
 		scope="prototype">
-		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
