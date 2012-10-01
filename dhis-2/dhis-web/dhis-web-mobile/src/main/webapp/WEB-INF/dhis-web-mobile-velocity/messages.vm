@@ -5,8 +5,6 @@
             url: '../api/currentUser/inbox.json',
             async: false
         }).success(function(data) {
-            console.log(data);
-
             jQuery.each(data.messageConversations, function(i, item) {
                 jQuery('#messageList').append('<li><a href="messages/' + item.id + '">' + item.name + '</a></li>');
             });

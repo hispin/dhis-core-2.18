@@ -173,15 +173,11 @@ public class MessageConversationController
 
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
-        System.err.println( message );
-
-        /*
         int id = messageService.sendMessage( message.getSubject(), message.getText(), metaData, message.getUsers() );
         MessageConversation m = messageService.getMessageConversation( id );
 
         response.setStatus( HttpServletResponse.SC_CREATED );
         response.setHeader( "Location", MessageConversationController.RESOURCE_PATH + "/" + m.getUid() );
-        */
     }
 
     //--------------------------------------------------------------------------
