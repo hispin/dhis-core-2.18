@@ -29,12 +29,15 @@ package org.hisp.dhis.reporting.dataset.action;
 
 import static org.hisp.dhis.dataset.DataSet.TYPE_CUSTOM;
 import static org.hisp.dhis.dataset.DataSet.TYPE_SECTION;
-import static org.hisp.dhis.util.SessionUtils.KEY_DATASET_REPORT_GRID;
-import static org.hisp.dhis.util.SessionUtils.getSessionVar;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
@@ -48,7 +51,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.util.SessionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -111,6 +114,9 @@ public class GenerateDataSetReportAction
     {
         this.i18n = i18n;
     }
+    
+    @Autowired
+    private ContextUtils contextUtils;
 
     // -------------------------------------------------------------------------
     // Input
@@ -147,13 +153,6 @@ public class GenerateDataSetReportAction
     public void setSelectedUnitOnly( boolean selectedUnitOnly )
     {
         this.selectedUnitOnly = selectedUnitOnly;
-    }
-
-    private boolean useLast;
-
-    public void setUseLast( boolean useLast )
-    {
-        this.useLast = useLast;
     }
     
     private String type;
@@ -221,10 +220,21 @@ public class GenerateDataSetReportAction
     // -------------------------------------------------------------------------
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public String execute()
         throws Exception
     {
+        // ---------------------------------------------------------------------
+        // Configure response
+        // ---------------------------------------------------------------------
+
+        HttpServletResponse response = ServletActionContext.getResponse();
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_HTML, CacheStrategy.RESPECT_SYSTEM_SETTING, null, false );
+
+        // ---------------------------------------------------------------------
+        // Assemble report
+        // ---------------------------------------------------------------------
+
         selectedDataSet = dataSetService.getDataSet( ds );
 
         if ( pe != null )
@@ -241,7 +251,7 @@ public class GenerateDataSetReportAction
             
         if ( TYPE_CUSTOM.equals( dataSetType ) )
         {
-            if ( useLast )
+            if ( type != null )
             {
                 grid = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
             }
@@ -252,19 +262,13 @@ public class GenerateDataSetReportAction
         }
         else if ( TYPE_SECTION.equals( dataSetType ) )
         {
-            grids = useLast ? (List<Grid>) getSessionVar( KEY_DATASET_REPORT_GRID ) :
-                dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
-            
-            SessionUtils.setSessionVar( SessionUtils.KEY_DATASET_REPORT_GRID, grids );
+            grids = dataSetReportService.getSectionDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
         }
         else
         {
-            grid = useLast ? (Grid) getSessionVar( KEY_DATASET_REPORT_GRID ) :
-                dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
-            
-            SessionUtils.setSessionVar( SessionUtils.KEY_DATASET_REPORT_GRID, grid );
+            grid = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
         }
         
-        return useLast ? type : dataSetType;
+        return type != null ? type : dataSetType;
     }
 }

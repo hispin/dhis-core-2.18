@@ -105,7 +105,8 @@ function validateDataSetReport()
 	
     var currentParams = { ds: dataSetReport.dataSet, pe: dataSetReport.period, selectedUnitOnly: dataSetReport.selectedUnitOnly, ou: dataSetReport.orgUnit };
     
-    $( '#content' ).load( 'generateDataSetReport.action', currentParams, function() {
+    $.get( 'generateDataSetReport.action', currentParams, function( data ) {
+    	$( '#content' ).html( data );
     	hideLoader();
     	showContent();
     	setTableStyles();
@@ -116,8 +117,8 @@ function exportDataSetReport( type )
 {
 	var dataSetReport = getDataSetReport();
 	
-	var url = "generateDataSetReport.action?useLast=true" + 
-		"&ds=" + dataSetReport.dataSet +
+	var url = "generateDataSetReport.action" + 
+		"?ds=" + dataSetReport.dataSet +
 	    "&pe=" + dataSetReport.period +
 	    "&selectedUnitOnly=" + dataSetReport.selectedUnitOnly +
 	    "&ou=" + dataSetReport.orgUnit +
