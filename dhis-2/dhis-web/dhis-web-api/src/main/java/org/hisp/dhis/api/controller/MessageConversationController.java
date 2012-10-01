@@ -165,6 +165,12 @@ public class MessageConversationController
             message.getUsers().addAll( userGroup.getMembers() );
         }
 
+        if ( message.getUsers().isEmpty() )
+        {
+            ContextUtils.conflictResponse( response, "No recipients selected." );
+            return;
+        }
+
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
         System.err.println( message );
