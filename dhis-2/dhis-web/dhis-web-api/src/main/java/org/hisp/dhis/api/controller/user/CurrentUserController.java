@@ -40,6 +40,7 @@ import org.hisp.dhis.interpretation.InterpretationService;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,10 +53,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -80,6 +78,9 @@ public class CurrentUserController
 
     @Autowired
     private InterpretationService interpretationService;
+
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     @RequestMapping
     public String getCurrentUser( @RequestParam Map<String, String> parameters,
@@ -245,6 +246,7 @@ public class CurrentUserController
         }
 
         Recipients recipients = new Recipients();
+        recipients.setOrganisationUnits( getOrganisationUnitsForUser( currentUser, filter ) );
 
         if ( filter == null || filter.isEmpty() )
         {
@@ -258,5 +260,34 @@ public class CurrentUserController
         }
 
         JacksonUtils.toJson( response.getOutputStream(), recipients );
+    }
+
+    private Set<OrganisationUnit> getOrganisationUnitsForUser( User user, String filter )
+    {
+        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+
+        for ( OrganisationUnit organisationUnit : user.getOrganisationUnits() )
+        {
+            organisationUnits.add( organisationUnit );
+            organisationUnits.addAll( organisationUnitService.getLeafOrganisationUnits( organisationUnit.getId() ) );
+        }
+
+        if ( filter != null )
+        {
+            Iterator<OrganisationUnit> iterator = organisationUnits.iterator();
+            filter = filter.toUpperCase();
+
+            while ( iterator.hasNext() )
+            {
+                OrganisationUnit organisationUnit = iterator.next();
+
+                if ( !organisationUnit.getName().toUpperCase().contains( filter ) )
+                {
+                    iterator.remove();
+                }
+            }
+        }
+
+        return organisationUnits;
     }
 }

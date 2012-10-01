@@ -3,14 +3,17 @@
 
     function displaySelected()
     {
+        $('#selection-list').children().remove();
+        $('form[role="search"] input:text').val('');
+
         $('#selection-list').append('<li id="organisation-unit-list" data-role="list-divider">Organisation Units</li>')
-        $('#selection-list').append('<li>None selected.</li>');
-
         $('#selection-list').append('<li id="user-list" data-role="list-divider">Users</li>')
-        $('#selection-list').append('<li>None selected.</li>');
-
         $('#selection-list').append('<li id="user-group-list" data-role="list-divider">Users Groups</li>')
-        $('#selection-list').append('<li>None selected.</li>');
+
+        // TODO use selected object to populate selected-list
+        $('<li>None selected.</li>').insertAfter('#organisation-unit-list');
+        $('<li>None selected.</li>').insertAfter('#user-list');
+        $('<li>None selected.</li>').insertAfter('#user-group-list');
 
         $('#selection-list').listview('refresh');
     }
@@ -28,14 +31,15 @@
         $('form[role="search"] input:text').bind('keyup', function () {
             var search = $('form[role="search"] input:text').val();
 
-            $('#selection-list').children().remove();
-
             if( search.length == 0)
             {
                 displaySelected();
                 return;
             }
-            else if ( search.length < 3 )
+
+            $('#selection-list').children().remove();
+
+            if ( search.length < 3 )
             {
                 return;
             }
@@ -49,6 +53,15 @@
                     'filter' : search
                 }
             }).success(function ( data ) {
+                if( data.organisationUnits && data.organisationUnits.length > 0)
+                {
+                    $('#selection-list').append('<li id="organisation-unit-list" data-role="list-divider">Organisation Units</li>')
+
+                    _(data.organisationUnits).each(function(organisationUnit) {
+                        $('#selection-list').append('<li data-id="' + organisationUnit.id + '">' + organisationUnit.name + '</li>');
+                    });
+                }
+
                 if( data.users && data.users.length > 0 )
                 {
                     $('#selection-list').append('<li id="user-list" data-role="list-divider">Users</li>')
