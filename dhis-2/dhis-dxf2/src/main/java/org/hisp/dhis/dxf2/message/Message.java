@@ -36,7 +36,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -51,7 +53,11 @@ public class Message
 
     private String text;
 
+    private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+
     private Set<User> users = new HashSet<User>();
+
+    private Set<UserGroup> userGroups = new HashSet<UserGroup>();
 
     public Message()
     {
@@ -91,7 +97,20 @@ public class Message
 
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
+    public Set<OrganisationUnit> getOrganisationUnits()
+    {
+        return organisationUnits;
+    }
+
+    public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
+    {
+        this.organisationUnits = organisationUnits;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JacksonXmlElementWrapper( localName = "users", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "user", namespace = Dxf2Namespace.NAMESPACE )
     public Set<User> getUsers()
@@ -102,5 +121,31 @@ public class Message
     public void setUsers( Set<User> users )
     {
         this.users = users;
+    }
+
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JacksonXmlElementWrapper( localName = "userGroups", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "userGroup", namespace = Dxf2Namespace.NAMESPACE )
+    public Set<UserGroup> getUserGroups()
+    {
+        return userGroups;
+    }
+
+    public void setUserGroups( Set<UserGroup> userGroups )
+    {
+        this.userGroups = userGroups;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Message{" +
+            "subject='" + subject + '\'' +
+            ", text='" + text + '\'' +
+            ", organisationUnits=" + organisationUnits +
+            ", users=" + users +
+            ", userGroups=" + userGroups +
+            '}';
     }
 }

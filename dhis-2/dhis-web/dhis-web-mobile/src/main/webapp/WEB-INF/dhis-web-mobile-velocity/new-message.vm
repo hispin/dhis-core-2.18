@@ -14,7 +14,8 @@
         var u_count = 0;
         var ug_count = 0;
 
-        _( _(selected).keys() ).each(function(item) {
+        _( _(selected).keys() ).each(function(item)
+        {
             if( item.indexOf( 'ou:') != -1 )
             {
                 ou_count++;
@@ -57,8 +58,8 @@
 
     function addRecipient(e)
     {
-        var prefix = $(e).data('prefix');
-        var id = $(e).data('id');
+        var prefix = $(e).jqmData('prefix');
+        var id = $(e).jqmData('id');
 
         if( prefix === undefined || id === undefined )
         {
@@ -66,11 +67,6 @@
         }
 
         selected[prefix + ':' + id] = $(e).find('a').html();
-    }
-
-    function removeRecipient(e)
-    {
-        console.log(e);
     }
 
     function manageRecipientsPage()
