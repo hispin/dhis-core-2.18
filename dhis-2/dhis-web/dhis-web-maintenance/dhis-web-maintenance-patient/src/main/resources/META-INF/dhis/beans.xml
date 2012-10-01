@@ -309,7 +309,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<bean id="org.hisp.dhis.patient.action.programstage.RemoveProgramStageSectionAction"
 		class="org.hisp.dhis.patient.action.programstage.RemoveProgramStageSectionAction" scope="prototype">
-		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService" />
 	</bean>
 	
