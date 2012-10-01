@@ -134,7 +134,7 @@ public class TableAlteror
         
         executeSql( "UPDATE program SET generatedByEnrollmentDate=false WHERE generatedByEnrollmentDate is null" );
        
-        executeSql( "ALTER TABLE programstage DROP COLUMN stageInProgram" );
+        executeSql( "ALTER TABLE programstage DROP COLUMN stageinprogram" );
     }
 
     // -------------------------------------------------------------------------

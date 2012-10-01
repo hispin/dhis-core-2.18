@@ -22,7 +22,7 @@
 
     <property name="dateOfIncidentDescription" type="text" not-null="true" />
 
-    <set name="programStages" order-by="stageinprogram" cascade="all">
+    <set name="programStages" order-by="mindaysfromstart" cascade="all">
       <key column="programid" />
       <one-to-many class="org.hisp.dhis.program.ProgramStage" />
     </set>
