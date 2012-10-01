@@ -1,0 +1,16 @@
+
+<section data-role="page" id="interpretations-page" data-theme="c">
+
+	<header data-role="header" data-theme="b">
+		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <a href="index" data-icon="back">Back</a>
+	</header>
+
+	<section data-role="content">
+	</section>
+
+    <footer data-role="footer" data-theme="b">
+        <h1></h1>
+   	</footer>
+
+</section>

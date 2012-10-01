@@ -5,8 +5,13 @@
             url: '../api/currentUser/dashboard.json',
             async: false
         }).success(function(data) {
-            $('#messages a').append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
-            $('#interpretations a').append("<span class='ui-li-count'>" + data.unreadInterpretations + "</span>");
+            if( data.unreadMessageConversation > 0 ) {
+                $('#messages a').append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
+            }
+
+            if( data.unreadInterpretations > 0 ) {
+                $('#interpretations a').append("<span class='ui-li-count'>" + data.unreadInterpretations + "</span>");
+            }
         }).error(function() {
             $('#messages a').append("<span class='ui-li-count'>Offline</span>")
             $('#interpretations a').append("<span class='ui-li-count'>Offline</span>")
@@ -14,7 +19,7 @@
     });
 </script>
 
-<section data-role="page" id="mainPage" data-theme="c">
+<section data-role="page" id="index-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
 		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
