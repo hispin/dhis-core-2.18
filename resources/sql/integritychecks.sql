@@ -91,9 +91,9 @@ where de.aggregationtype = 'average';
 drop index aggregateddatavalue_index;
 drop index aggregatedindicatorvalue_index;
 drop index aggregateddatasetcompleteness_index;
-create index aggregateddatavalue_index on aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid);
-create index aggregatedindicatorvalue_index on aggregatedindicatorvalue (indicatorid, periodid, organisationunitid);
-create index aggregateddatasetcompleteness_index on aggregateddatasetcompleteness  (datasetid, periodid, organisationunitid);
+create index aggregateddatavalue_index on aggregateddatavalue (dataelementid, periodid, organisationunitid, categoryoptioncomboid, value);
+create index aggregatedindicatorvalue_index on aggregatedindicatorvalue (indicatorid, periodid, organisationunitid, value);
+create index aggregateddatasetcompleteness_index on aggregateddatasetcompleteness  (datasetid, periodid, organisationunitid, value);
 
 -- Get category option combos without category options
 

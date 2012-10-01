@@ -282,7 +282,7 @@ public class DefaultDataSetReportService
                     value = valueMap.get( dataElement.getId() + SEPARATOR + optionCombo.getId() );
                 }
 
-                grid.addValue( format.formatValue( value ) );
+                grid.addValue( value );
 
             }
         }
@@ -301,7 +301,7 @@ public class DefaultDataSetReportService
             
             Double value = indicatorValueMap.get( String.valueOf( indicator.getId() ) );
             
-            grid.addValue( format.formatValue( value ) );
+            grid.addValue( value );
             
             for ( int i = 0; i < orderedOptionCombos.size() - 1; i++ )
             {
