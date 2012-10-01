@@ -177,14 +177,14 @@ public class JdbcDataMartManager
     @Override
     public void createDataValueIndex()
     {
-        executeSilently( "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid)" );
+        executeSilently( "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, periodid, organisationunitid, categoryoptioncomboid, value)" );
         executeSilently( "CREATE INDEX aggregateddatavalue_period_index ON aggregateddatavalue (periodid, organisationunitid)" );
     }
 
     @Override
     public void createIndicatorValueIndex()
     {
-        executeSilently( "CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid)" );
+        executeSilently( "CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid, value)" );
     }
 
     @Override
@@ -264,14 +264,14 @@ public class JdbcDataMartManager
     @Override
     public void createOrgUnitDataValueIndex()
     {
-        executeSilently( "CREATE INDEX aggregatedorgunitdatavalue_index ON aggregatedorgunitdatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid, organisationunitgroupid)" );
+        executeSilently( "CREATE INDEX aggregatedorgunitdatavalue_index ON aggregatedorgunitdatavalue (dataelementid, periodid, organisationunitid, organisationunitgroupid, categoryoptioncomboid, value)" );
         executeSilently( "CREATE INDEX aggregatedorgunitdatavalue_period_index ON aggregatedorgunitdatavalue (periodid, organisationunitid, organisationunitgroupid)" );
     }
 
     @Override
     public void createOrgUnitIndicatorValueIndex()
     {
-        executeSilently( "CREATE INDEX aggregatedorgunitindicatorvalue_index ON aggregatedorgunitindicatorvalue (indicatorid, periodid, organisationunitid, organisationunitgroupid)" );        
+        executeSilently( "CREATE INDEX aggregatedorgunitindicatorvalue_index ON aggregatedorgunitindicatorvalue (indicatorid, periodid, organisationunitid, organisationunitgroupid, value)" );        
     }
 
     @Override
