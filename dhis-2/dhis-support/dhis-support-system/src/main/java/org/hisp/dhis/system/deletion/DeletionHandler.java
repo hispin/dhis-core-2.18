@@ -76,6 +76,7 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -591,6 +592,15 @@ public abstract class DeletionHandler
 
     public void deleteProgramStage( ProgramStage programStage )
     {
+    }
+    
+    public void deleteProgramStageSection( ProgramStageSection programStageSection )
+    {
+    }
+    
+    public String allowDeleteProgramStageSection( ProgramStageSection programStageSection )
+    {
+        return null;
     }
 
     public String allowDeleteProgramStageInstance( ProgramStageInstance programStageInstance )

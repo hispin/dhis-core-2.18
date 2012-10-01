@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,52 +28,40 @@
 package org.hisp.dhis.program;
 
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $Id: ProgramStageInstanceDeletionHandler.java Nov 30, 2011 10:20:41
- *          AM $
+ * @version ProgramStageSectionDeletionHandler.java 3:14:59 PM Oct 1, 2012 $
  */
-public class ProgramStageInstanceDeletionHandler
+public class ProgramStageSectionDeletionHandler
     extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private JdbcTemplate jdbcTemplate;
+    private ProgramStageService programStageService;
 
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    public void setProgramStageService( ProgramStageService programStageService )
     {
-        this.jdbcTemplate = jdbcTemplate;
+        this.programStageService = programStageService;
     }
 
     // -------------------------------------------------------------------------
-    // Implementation methods
+    // DeletionHandler implementation
     // -------------------------------------------------------------------------
 
     @Override
     public String getClassName()
     {
-        return ProgramStageInstance.class.getSimpleName();
+        return ProgramStageSection.class.getSimpleName();
     }
 
     @Override
-    public String allowDeleteProgramStage( ProgramStage programStage )
+    public void deleteProgramStage( ProgramStage programStage )
     {
-        String sql = "SELECT COUNT(*) " + "FROM programstageinstance " + "WHERE programstageid=" + programStage.getId();
-
-        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
-    }
-    
-    @Override
-    public void deleteProgramInstance( ProgramInstance programInstance )
-    {
-        String sql = "DELETE FROM programstageinstance " +
-        		"WHERE programinstanceid = " + programInstance.getId();
-
-        jdbcTemplate.execute( sql );
+        programStage.getProgramStageSections().clear();
+        programStageService.updateProgramStage( programStage );
     }
 }

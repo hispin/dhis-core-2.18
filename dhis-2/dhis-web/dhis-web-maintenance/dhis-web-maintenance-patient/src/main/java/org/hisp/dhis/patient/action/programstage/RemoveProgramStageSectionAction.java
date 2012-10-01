@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.patient.action.programstage;
 
-import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageSection;
 import org.hisp.dhis.program.ProgramStageSectionService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -86,13 +85,9 @@ public class RemoveProgramStageSectionAction
     public String execute()
         throws Exception
     {
-        ProgramStage programStage = programStageService.getProgramStage( programStageId );
-
         ProgramStageSection section = programStageSectionService.getProgramStageSection( id );
 
-        programStage.getProgramStageSections().remove( section );
-
-        programStageService.updateProgramStage( programStage );
+        programStageSectionService.deleteProgramStageSection( section );
 
         return SUCCESS;
     }
