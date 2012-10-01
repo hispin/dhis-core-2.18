@@ -71,12 +71,30 @@ public class MobileController
         return "base";
     }
 
+    @RequestMapping( value = "/messages/new-message" )
+    public String newMessage( Model model, HttpServletRequest request )
+    {
+        model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
+        model.addAttribute( "page", "new-message.vm" );
+
+        return "base";
+    }
+
     @RequestMapping( value = "/messages/{uid}" )
     public String message( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
     {
         model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
         model.addAttribute( "page", "message.vm" );
         model.addAttribute( "messageId", uid );
+
+        return "base";
+    }
+
+    @RequestMapping( value = "/interpretations" )
+    public String interpretations( Model model, HttpServletRequest request )
+    {
+        model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
+        model.addAttribute( "page", "interpretations.vm" );
 
         return "base";
     }

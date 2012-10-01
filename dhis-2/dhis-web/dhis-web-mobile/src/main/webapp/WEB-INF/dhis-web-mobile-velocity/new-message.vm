@@ -1,0 +1,71 @@
+<script>
+    var selected = {};
+
+    jQuery(document).bind('pageinit', function() {
+       $('#new-message-form input:submit').bind('click', function() {
+           var subject = jQuery('#new-message-subject').val();
+           var text = jQuery('#new-message-text').val();
+
+           console.log(subject);
+           console.log(text);
+
+           return false;
+       });
+    });
+</script>
+
+<section data-role="page" id="new-message-page" data-theme="c">
+
+	<header data-role="header" data-theme="b">
+		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <a href="messages" data-icon="delete" class="ui-btn-right">Discard</a>
+    </header>
+
+	<section data-role='content'>
+        <ul data-role="listview" data-inset="true">
+            <li>
+                <form id="new-message-form">
+                    <label for='new-message-subject'>Subject</label>
+                    <input type="text" id='new-message-subject' />
+                    <label for='new-message-body'>Text</label>
+                    <textarea id='new-message-body'></textarea>
+                    <input type="submit" value="Send message" />
+                </form>
+
+            </li>
+            <li data-icon="gear"><a href="#manage-recipients-page" data-icon="plus">Manage recipients</a> <span class='ui-li-count'>1</a></li>
+        </ul>
+
+	</section>
+
+    <footer data-role="footer" data-theme="b">
+        <h1></h1>
+   	</footer>
+
+</section>
+
+<section data-role="page" id="manage-recipients-page" data-theme="c">
+
+	<header data-role="header" data-theme="b">
+		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <a href="#new-message-page" data-icon="delete" class="ui-btn-right">Finish</a>
+    </header>
+
+	<section data-role="content">
+        <ul data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Search for recipients..">
+            <li data-role="list-divider">Organisation Units</li>
+            <li>Not implemented.</li>
+
+            <li data-role="list-divider">Users</li>
+            <li>Not implemented.</li>
+
+            <li data-role="list-divider">User groups</li>
+            <li>Not implemented.</li>
+        </ul>
+	</section>
+
+    <footer data-role="footer" data-theme="b">
+        <h1></h1>
+   	</footer>
+
+</section>

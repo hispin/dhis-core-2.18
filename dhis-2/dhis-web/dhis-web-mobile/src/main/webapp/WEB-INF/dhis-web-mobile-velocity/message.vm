@@ -1,18 +1,18 @@
 
 <script>
-    jQuery(document).bind('pagebeforecreate',function(){
+    jQuery(document).bind('pagebeforecreate', function () {
         jQuery.ajax({
-            url: '$baseUrl/../api/messageConversations/${messageId}.json',
-            async: false
-        }).success(function(data) {
+            url   : '$baseUrl/../api/messageConversations/${messageId}.json',
+            async : false
+        }).success(function ( data ) {
             var tmpl = jQuery('#message-template').html();
 
             jQuery('section[data-role="content"]').html(
-                _.template( tmpl, data )
+                _.template(tmpl, data)
             );
 
             console.log(data);
-        }).error(function() {
+        }).error(function () {
             console.log('error fetching message')
         });
     });
@@ -25,14 +25,19 @@
                return false;
            }
 
+           $.mobile.showPageLoadingMsg();
+
            $.ajax({
                url         : '$baseUrl/../api/messageConversations/${messageId}',
                type        : 'post',
                contentType : 'text/plain',
                data        : msg
            }).success(function () {
+               $.mobile.hidePageLoadingMsg();
                location.reload(true);
            }).error(function () {
+               $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to send reply, please try again later", true );
+               setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
                console.log("failed to send message");
            });
 
@@ -63,7 +68,7 @@
     </ul>
 </script>
 
-<section data-role="page" id="messagePage" data-theme="c">
+<section data-role="page" id="message-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
 		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>

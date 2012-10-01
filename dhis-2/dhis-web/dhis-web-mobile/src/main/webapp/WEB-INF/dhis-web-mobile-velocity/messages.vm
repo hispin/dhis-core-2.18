@@ -16,12 +16,13 @@
     });
 </script>
 
-<section data-role="page" id="messagesPage" data-theme="c">
+<section data-role="page" id="messages-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
 		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
         <a href="index" data-icon="back">Back</a>
-	</header>
+        <a href="messages/new-message" data-icon="plus">New</a>
+    </header>
 
 	<section data-role="content">
         <ul id="messageList" data-role="listview" data-inset="true">

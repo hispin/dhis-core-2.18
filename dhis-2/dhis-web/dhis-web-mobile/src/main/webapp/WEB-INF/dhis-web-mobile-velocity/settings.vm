@@ -13,7 +13,7 @@
         });
 
         $('input:submit').bind('click', function() {
-            var settings = $('#settingsForm').serializeArray();
+            var settings = $('#settings-form').serializeArray();
 
             settings = _(settings).reduce(function(acc, field) {
                acc[field.name] = field.value;
@@ -37,7 +37,7 @@
     });
 </script>
 
-<section data-role="page" id="settingsPage" data-theme="c">
+<section data-role="page" id="settings-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
 		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
@@ -45,7 +45,7 @@
 	</header>
 
     <section data-role="content">
-       <form id="settingsForm" method="POST">
+       <form id="settings-form" method="POST">
            <label for="firstNameInput">First Name</label>
            <input id="firstNameInput" name="firstName" type="text" placeholder="Enter first name.." />
 
