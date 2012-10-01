@@ -202,7 +202,7 @@ public class JDBCDataSetCompletenessStore
     {
         try
         {
-            final String sql = "CREATE INDEX aggregateddatasetcompleteness_index ON aggregateddatasetcompleteness (datasetid, periodid, organisationunitid)";        
+            final String sql = "CREATE INDEX aggregateddatasetcompleteness_index ON aggregateddatasetcompleteness (datasetid, periodid, organisationunitid, value)";        
             statementManager.getHolder().executeUpdate( sql, true );
         }
         catch ( Exception ex )
