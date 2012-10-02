@@ -47,6 +47,7 @@ import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientStore;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -342,7 +343,7 @@ public class HibernatePatientStore
 
         return grid;
     }
-
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

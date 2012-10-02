@@ -555,9 +555,9 @@ public class DefaultPatientService
         return patientStore.getByPhoneNumber( phoneNumber, min, max );
     }
 
+    @Override
     public Grid getScheduledEventsReport( List<String> searchKeys, OrganisationUnit orgunit, I18n i18n )
     {
-
         String startDate = "";
         String endDate = "";
         for ( String searchKey : searchKeys )

@@ -325,6 +325,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="org.hisp.dhis.patient.PatientDeletionHandler" class="org.hisp.dhis.patient.PatientDeletionHandler">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"
