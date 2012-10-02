@@ -71,6 +71,11 @@
 
     function manageRecipientsPage()
     {
+        var clearSearch = $('form[role="search"]').find('a[data-icon="delete"]').data('events')['click'][0];
+        $('form[role="search"]').find('a[data-icon="delete"]').unbind('click');
+        $('form[role="search"]').find('a[data-icon="delete"]').bind('click', displaySelected );
+        $('form[role="search"]').find('a[data-icon="delete"]').bind('click', clearSearch );
+
         var fn1 = $('form[role="search"] input:text').data('events')['keyup'][1];
         $('form[role="search"] input:text').unbind('keyup');
 
