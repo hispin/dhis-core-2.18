@@ -84,7 +84,7 @@ function searchObjectOnChange( this_ )
 {	
 	var container = jQuery(this_).parent().parent().attr('id');
 	var attributeId = jQuery('#' + container + ' [id=searchObjectId]').val(); 
-	var element = jQuery('#' + container + ' [id=searchText]');
+	var element = jQuery('#' + container + ' [name=searchText]');
 	var valueType = jQuery('#' + container+ ' [id=searchObjectId] option:selected').attr('valueType');
 	
 	jQuery('#searchText_' + container).removeAttr('readonly', false);
@@ -141,7 +141,7 @@ function getGenderSelector()
 
 function getAgeTextBox( container )
 {
-	var ageField = '<select id="dateOperator" style="width:40px;" name="dateOperator" ><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option><option value=">"> > </option><option value=">="> >= </option></select>';
+	var ageField = '<select id="dateOperator" style="width:30px;" name="dateOperator" ><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option><option value=">"> > </option><option value=">="> >= </option></select>';
 	ageField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:200px;">';
 	return ageField;
 }
