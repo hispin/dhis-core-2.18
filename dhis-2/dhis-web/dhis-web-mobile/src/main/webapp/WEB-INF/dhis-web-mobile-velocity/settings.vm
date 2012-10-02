@@ -12,7 +12,7 @@
             $('#jobTitleInput').val(data.jobTitle);
         });
 
-        $('input:submit').bind('click', function() {
+        $('input:submit').bind('click', function(e) {
             var settings = $('#settings-form').serializeArray();
 
             settings = _(settings).reduce(function(acc, field) {
@@ -32,7 +32,7 @@
                 window.location.href = '../dhis-web-mobile';
             });
 
-            return false;
+            e.preventDefault();
         })
     });
 </script>
