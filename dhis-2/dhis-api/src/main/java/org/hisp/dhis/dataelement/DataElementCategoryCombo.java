@@ -64,7 +64,8 @@ public class DataElementCategoryCombo
     private List<DataElementCategory> categories = new ArrayList<DataElementCategory>();
 
     /**
-     * A set of category option combos.
+     * A set of category option combos. Use getSortedOptionCombos() to get a
+     * sorted list of category option combos.
      */
     private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
 
@@ -143,7 +144,7 @@ public class DataElementCategoryCombo
         while ( generator.hasNext() )
         {
             DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
-            optionCombo.setCategoryOptions( generator.getNext() );
+            optionCombo.setCategoryOptions( new HashSet<DataElementCategoryOption>( generator.getNext() ) );
             optionCombo.setCategoryCombo( this );
             list.add( optionCombo );
         }

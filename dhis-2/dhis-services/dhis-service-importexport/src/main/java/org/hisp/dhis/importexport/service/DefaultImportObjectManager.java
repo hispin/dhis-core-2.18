@@ -27,6 +27,11 @@ package org.hisp.dhis.importexport.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
@@ -143,11 +148,6 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -418,7 +418,7 @@ public class DefaultImportObjectManager
 
             object.setCategoryCombo( categoryService.getDataElementCategoryCombo( categoryComboId ) );
 
-            List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+            Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
 
             for ( DataElementCategoryOption categoryOption : object.getCategoryOptions() )
             {

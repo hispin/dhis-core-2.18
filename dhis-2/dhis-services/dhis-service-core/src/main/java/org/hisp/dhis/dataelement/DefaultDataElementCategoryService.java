@@ -371,7 +371,7 @@ public class DefaultDataElementCategoryService
         DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
 
         categoryOptionCombo.setCategoryCombo( categoryCombo );
-        categoryOptionCombo.setCategoryOptions( new ArrayList<DataElementCategoryOption>( categoryOptions ) );
+        categoryOptionCombo.setCategoryOptions( new HashSet<DataElementCategoryOption>( categoryOptions ) );
 
         addDataElementCategoryOptionCombo( categoryOptionCombo );
 
