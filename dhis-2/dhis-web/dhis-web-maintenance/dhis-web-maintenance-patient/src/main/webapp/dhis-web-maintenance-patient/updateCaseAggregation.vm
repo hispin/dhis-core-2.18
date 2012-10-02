@@ -1,3 +1,10 @@
+<script>
+	var i18n_run_success = '$encoder.jsEscape( $i18n.getString( "run_success" ) , "'" )';
+	var i18n_run_fail = '$encoder.jsEscape( $i18n.getString( "run_fail" ) , "'" )';
+	var i18n_show_all_items = '$encoder.jsEscape( $i18n.getString( "show_all_item" ) , "'" )';
+	var i18n_all = '[' + '$encoder.jsEscape( $i18n.getString( "all" ) , "'" )' + ']';
+</script>
+
 <script type="text/javascript" src="javascript/updateCaseAggregationForm.js"></script>
 
 <h3>$i18n.getString( "edit_case_aggregation_condition" )</h3>
@@ -35,7 +42,7 @@
 		<td><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<input id="aggregationDataElementInput" name="aggregationDataElementInput" value='$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name' style='width:290px'>
-			<button type='button' id='dataElementsButton' disabled>&nbsp;</button>
+			<button type='button' id='dataElementsButton' name='dataElementsButton' disabled>&nbsp;</button>
 			<input id="aggregationDataElementId" name="aggregationDataElementId" value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id" class="{validate:{required:true}} hidden" >
 		</td>				
 	</tr>
@@ -92,9 +99,4 @@
 		var selectedValue = "$caseAggregation.aggregationDataElement.id" + "." + "$caseAggregation.optionCombo.id";
 		jQuery("#aggregationDataElementId").val( selectedValue );
 	#end	
-	
-	var i18n_run_success = '$encoder.jsEscape( $i18n.getString( "run_success" ) , "'" )';
-	var i18n_run_fail = '$encoder.jsEscape( $i18n.getString( "run_fail" ) , "'" )';
-	var i18n_show_all_items = '$encoder.jsEscape( $i18n.getString( "show_all_item" ) , "'" )';
-	var i18n_all = '[' + '$encoder.jsEscape( $i18n.getString( "all" ) , "'" )' + ']';
-</script>
+</script>	
