@@ -14,9 +14,9 @@
 							<table width='100%'>
 								<tr><th>
 									$i18n.getString("demographics")
-									<a href="javascript:showUpdatePatientForm( '$patient.id', true );"><label class='bold'>&laquo;$i18n.getString("edit_profile")&raquo;</label></a>
+									<a href="javascript:showUpdatePatientForm( '$patient.id', true );"><span class='bold'>&laquo;$i18n.getString("edit_profile")&raquo;</span></a>
 									#if( $auth.hasAccess( "dhis-web-caseentry", "getPatientLocation" ) )
-									<a href="javascript:getPatientLocation( '$patient.id', true );"><label class='bold'> &laquo;$i18n.getString("change_location")&raquo;</label></a>
+									<a href="javascript:getPatientLocation( '$patient.id', true );"><span class='bold'> &laquo;$i18n.getString("change_location")&raquo;</span></a>
 									#end
 								</th></tr>
 							</table>
@@ -25,6 +25,10 @@
 									<tr>
 										<td>$i18n.getString("full_name")</td>
 										<td>$!patient.getFullName()</td>
+									</tr>
+									<tr>
+										<td>$i18n.getString("location")</td>
+										<td>$!patient.organisationUnit.name</td>
 									</tr>
 									<tr>
 										<td>$i18n.getString("gender")</td>
@@ -67,7 +71,19 @@
 									#foreach( $attributeValue in $attributeValues )
 									<tr>
 										<td>$attributeValue.patientAttribute.name</td>
-										<td>$attributeValue.value</td>
+										<td>
+											#if($attributeValue.patientAttribute.valueType=='YES/NO')
+												#if($attributeValue.value=='true')
+													$i18n.getString("yes")
+												#else
+													$i18n.getString("no")
+												#end
+											#elseif($attributeValue.patientAttribute.valueType=='DATE')
+												$format.formatDate( $attributeValue.value )
+											#else
+												$attributeValue.value
+											#end	
+										</td>
 									</tr>
 									#end
 								</table>
@@ -79,7 +95,7 @@
 							<table width='100%'>
 								<tr><th>
 										$i18n.getString("active_programs")
-										<a href='javascript:showProgramEnrollmentForm( "$patient.id" )'><label class='bold'>&laquo;$i18n.getString("enroll_program")&raquo;</label></a>
+										<a href='javascript:showProgramEnrollmentForm( "$patient.id" )'><span class='bold'>&laquo;$i18n.getString("enroll_program")&raquo;</span></a>
 									</th>
 								</tr>
 							</table>
@@ -156,8 +172,8 @@
 							<table width='100%'>
 								<tr><th>
 									$i18n.getString("relationships")
-									<a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );"><label class='bold'>&laquo;$i18n.getString("management")&raquo;</label></a>
-									<a href="javascript:showAddRelationshipPatient( '$patient.id', false );"><label class='bold'> &laquo;$i18n.getString("add_new_patient")&raquo;</label></a>
+									<a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );"><span class='bold'>&laquo;$i18n.getString("management")&raquo;</span></a>
+									<a href="javascript:showAddRelationshipPatient( '$patient.id', false );"><span class='bold'> &laquo;$i18n.getString("add_new_patient")&raquo;</span></a>
 									</th></tr>
 							</table>
 							<div class="contentProviderTable">
