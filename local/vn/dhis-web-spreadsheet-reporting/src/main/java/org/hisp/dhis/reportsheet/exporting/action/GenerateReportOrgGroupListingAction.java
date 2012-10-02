@@ -69,6 +69,17 @@ public class GenerateReportOrgGroupListingAction
     private OrganisationUnitService organisationUnitService;
 
     // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
+    private boolean showSubItem;
+
+    public void setShowSubItem( boolean showSubItem )
+    {
+        this.showSubItem = showSubItem;
+    }
+
+    // -------------------------------------------------------------------------
     // Override
     // -------------------------------------------------------------------------
 
@@ -95,7 +106,14 @@ public class GenerateReportOrgGroupListingAction
 
             exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
 
-            generateOutPutFile( exportReportInstance, exportReportItems, sheet );
+            if ( showSubItem )
+            {
+                generateOutPutFile1( exportReportInstance, exportReportItems, sheet );
+            }
+            else
+            {
+                generateOutPutFile2( exportReportInstance, exportReportItems, sheet );
+            }
         }
 
         /**
@@ -157,7 +175,7 @@ public class GenerateReportOrgGroupListingAction
         organisationUnitsAtLevel = null;
     }
 
-    private void generateOutPutFile( ExportReportOrganizationGroupListing exportReport,
+    private void generateOutPutFile1( ExportReportOrganizationGroupListing exportReport,
         Collection<ExportItem> exportReportItems, Sheet sheet )
     {
         List<OrganisationUnit> organisationUnits = null;
@@ -172,20 +190,18 @@ public class GenerateReportOrgGroupListingAction
 
             String totalFormula = PREFIX_FORMULA_SUM;
 
-            for ( OrganisationUnitGroup organisationUnitGroup : exportReport.getOrganisationUnitGroups() )
+            for ( OrganisationUnitGroup unitGroup : exportReport.getOrganisationUnitGroups() )
             {
                 int beginChapter = rowBegin;
 
-                organisationUnits = childrenGroupMap.get( organisationUnitGroup.getId() );
+                organisationUnits = childrenGroupMap.get( unitGroup.getId() );
 
-                if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION )
-                    && (!organisationUnits.isEmpty()) )
+                if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION ) )
                 {
-                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), organisationUnitGroup.getName(),
-                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), unitGroup.getName(), ExcelUtils.TEXT,
+                        sheet, this.csText12BoldCenter );
                 }
-                else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL )
-                    && (!organisationUnits.isEmpty()) )
+                else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo++],
                         ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
@@ -255,6 +271,13 @@ public class GenerateReportOrgGroupListingAction
                             this.csFormula );
                     }
                 }
+                else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT )
+                    || reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR )
+                    || reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
+                {
+                    ExcelUtils.writeValueByPOI( rowBegin - 1, reportItem.getColumn(), null, ExcelUtils.NUMBER, sheet,
+                        this.csText10Bold );
+                }
 
                 next = run;
             }
@@ -276,4 +299,73 @@ public class GenerateReportOrgGroupListingAction
 
         organisationUnits = null;
     }
+
+    private void generateOutPutFile2( ExportReportOrganizationGroupListing exportReport,
+        Collection<ExportItem> exportReportItems, Sheet sheet )
+    {
+        List<OrganisationUnit> organisationUnits = null;
+
+        for ( ExportItem reportItem : exportReportItems )
+        {
+            int chapperNo = 0;
+            int firstRow = reportItem.getRow();
+            int rowBegin = firstRow + 1;
+            double value = 0;
+            double totalValue = 0;
+
+            for ( OrganisationUnitGroup unitGroup : exportReport.getOrganisationUnitGroups() )
+            {
+                organisationUnits = childrenGroupMap.get( unitGroup.getId() );
+
+                if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION ) )
+                {
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), unitGroup.getName(), ExcelUtils.TEXT,
+                        sheet, this.csText12BoldCenter );
+                }
+                else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
+                {
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo++],
+                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                }
+                else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
+                {
+                    for ( OrganisationUnit o : organisationUnits )
+                    {
+                        value += this.getDataValue( reportItem, o );
+                    }
+
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), value + "", ExcelUtils.NUMBER, sheet,
+                        this.csNumber );
+                }
+                else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )
+                {
+                    for ( OrganisationUnit o : organisationUnits )
+                    {
+                        value += this.getIndicatorValue( reportItem, o );
+                    }
+
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), value + "", ExcelUtils.NUMBER, sheet,
+                        this.csNumber );
+                }
+                else
+                // FORMULA_EXCEL
+                {
+                    ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils.generateExcelFormula(
+                        reportItem.getExpression(), rowBegin, rowBegin ), sheet, this.csFormula );
+                }
+
+                rowBegin++;
+                totalValue += value;
+            }
+
+            if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
+            {
+                ExcelUtils.writeValueByPOI( firstRow, reportItem.getColumn(), totalValue + "", ExcelUtils.NUMBER,
+                    sheet, this.csNumber );
+            }
+        }
+
+        organisationUnits = null;
+    }
+
 }

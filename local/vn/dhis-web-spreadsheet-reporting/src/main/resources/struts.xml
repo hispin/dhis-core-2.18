@@ -759,7 +759,7 @@
 			<result name="NORMAL" type="redirect">
 				generateReportNormal.action</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
-				generateReportOrgGroupListing.action</result>
+				generateReportOrgGroupListing.action?showSubItem=${showSubItem}</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
 				generateReportPeriodColumnListing.action</result>
 			<result name="MULTI" type="redirect">
@@ -926,7 +926,7 @@
 			<result name="NORMAL" type="redirect">
 				generatePreviewNormal.action</result>
 			<result name="ORGANIZATION_GROUP_LISTING" type="redirect">
-				generatePreviewOrgGroupListing.action</result>
+				generatePreviewOrgGroupListing.action?showSubItem=${showSubItem}</result>
 			<result name="PERIOD_COLUMN_LISTING" type="redirect">
 				generatePreviewPeriodColumnListing.action</result>
 			<result name="MULTI" type="redirect">
