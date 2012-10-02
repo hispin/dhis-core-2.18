@@ -5,7 +5,7 @@
 <h3>
 	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
 	&#8226; <a href="javascript:showPatientDashboardForm($patientId);">$i18n.getString( 'patient_dashboard' )</a>
-	&#8226; $i18n.getString( "change_patient_location" )
+	&#8226; $i18n.getString( "change_location" )
 </h3>
 
 <form method='post'>

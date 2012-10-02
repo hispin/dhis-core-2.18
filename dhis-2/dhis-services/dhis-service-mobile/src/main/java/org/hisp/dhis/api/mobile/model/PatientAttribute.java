@@ -42,6 +42,10 @@ public class PatientAttribute
 
     private String value;
 
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public PatientAttribute( String name, String value )
     {
         this.name = name;
@@ -51,6 +55,10 @@ public class PatientAttribute
     public PatientAttribute()
     {
     }
+
+    // -------------------------------------------------------------------------
+    // Gettes && Setters
+    // -------------------------------------------------------------------------
 
     @XmlAttribute
     public String getName()
