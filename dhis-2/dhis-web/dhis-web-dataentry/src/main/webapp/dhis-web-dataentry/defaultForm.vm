@@ -24,7 +24,7 @@
 
   #set( $count = 0 )               
   #set( $dataElements = $orderedDataElements.get( $categoryCombo )  )
-  #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryCombo.id )  )
+  #set( $optionCombos = $orderedCategoryOptionCombos.get( $categoryCombo.id )  )
   #set( $mark = 0 )
   #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.id}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
   #end
