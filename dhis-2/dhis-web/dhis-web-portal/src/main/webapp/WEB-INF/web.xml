@@ -48,7 +48,7 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>OpenSessionInViewFilter</filter-name>
-    <url-pattern>/dhis-web-mobile/*</url-pattern>
+    <url-pattern>/mobile/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
@@ -90,12 +90,12 @@
 
   <servlet-mapping>
     <servlet-name>mobileServlet</servlet-name>
-    <url-pattern>/dhis-web-mobile</url-pattern>
+    <url-pattern>/mobile</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>mobileServlet</servlet-name>
-    <url-pattern>/dhis-web-mobile/*</url-pattern>
+    <url-pattern>/mobile/*</url-pattern>
   </servlet-mapping>
 
   <!-- Web API -->

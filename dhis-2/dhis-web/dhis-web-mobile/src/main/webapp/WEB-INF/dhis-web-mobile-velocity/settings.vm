@@ -29,7 +29,7 @@
                 type: 'POST'
             }).complete(function() {
                 $.mobile.hidePageLoadingMsg();
-                window.location.href = '../dhis-web-mobile';
+                window.location.href = '../mobile';
             });
 
             e.preventDefault();

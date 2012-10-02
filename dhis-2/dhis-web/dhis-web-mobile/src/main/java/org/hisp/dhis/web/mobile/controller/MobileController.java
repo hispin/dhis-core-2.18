@@ -41,16 +41,16 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class MobileController
 {
-    @RequestMapping( value = "/dhis-web-mobile" )
+    @RequestMapping( value = "/mobile" )
     public String base()
     {
-        return "redirect:/dhis-web-mobile/index";
+        return "redirect:/mobile/index";
     }
 
     @RequestMapping( value = "/" )
     public String baseWithSlash()
     {
-        return "redirect:/dhis-web-mobile/index";
+        return "redirect:/mobile/index";
     }
 
     @RequestMapping( value = "/index" )
