@@ -39,18 +39,13 @@
 			<list-index column="sort_order" />
 			<element type="text" column="fixedAttribute" />
 		</list>
-    
-		<list name="programStageDataElements"
-			table="patienttabularreport_programstagedataelements">
-			<key column="patienttabularreportid" />
-			<list-index column="sort_order" base="0" />
-			<many-to-many class="org.hisp.dhis.program.ProgramStageDataElement"
-				foreign-key="patienttabularreport_programstagedataelementid" >
-				  <column name="programstageid" />
-       			  <column name="dataelementid" />
-			</many-to-many>
-		</list>
 		
+	    <list name="programStageDataElements" table="patienttabularreport_programstagedataelements">
+			<key column="programstagesectionid" />
+		    <list-index column="tabular_sort_order" base="1" />
+		    <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement"/>
+        </list>
+    
 	 	<set name="organisationUnits" table="patienttabularreport_organisationUnits">
 	      <cache usage="read-write" />
 	      <key column="patienttabularreportid" foreign-key="fk_patienttabularreport_organisationUnitid" />
