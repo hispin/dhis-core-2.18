@@ -106,8 +106,6 @@ public class UpdateDataElementCategoryComboAction
 
         dataElementCategoryService.updateDataElementCategoryCombo( dataElementCategoryCombo );       
 
-        dataElementCategoryService.generateOptionCombos( dataElementCategoryCombo );
-        
         return SUCCESS;
     }
 }
