@@ -88,44 +88,49 @@ function reportSelected( _periodType )
 			currentPeriodTypeName = value.split( '_' )[1] == "" ? "Monthly" : value.split( '_' )[1];
 			currentReportTypeName = value.split( '_' )[2];
 
-			if ( currentReportTypeName == "P" ) {
+			if ( currentReportTypeName == "P" )
+			{
 				hideById( "periodCol" );
+			}
+			else if ( currentReportTypeName == "C" )
+			{
+				jQuery.post( "getDataElementGroupOrdersByReport.action",
+				{
+					exportReportId: getFieldValue( 'exportReport' ).split( '_' )[0]
+				},
+				function ( json )
+				{
+					clearListById( 'orderedGroups' );
+
+					jQuery.each( json.dataElementGroupOrders, function( i, item )
+					{
+						addOptionById( 'orderedGroups', item.id, item.name );
+					} );
+					
+					hideById( 'showSubItemTR' );
+					showById( 'orderedGroupLabelTR' );
+					showById( 'orderedGroupSelectTR' );
+					byId( 'exportReportDiv' ).style.height = '410px';
+				} );
+			}
+			else if ( currentReportTypeName == "O" )
+			{
+				showById( "showSubItemTR" );
+				showById( "periodCol" );
+				hideById( 'orderedGroupLabelTR' );
+				hideById( 'orderedGroupSelectTR' );
+				byId( 'exportReportDiv' ).style.height = '320px';
 			} else {
 				showById( "periodCol" );
+				hideById( 'showSubItemTR' );
+				hideById( 'orderedGroupLabelTR' );
+				hideById( 'orderedGroupSelectTR' );
+				byId( 'exportReportDiv' ).style.height = '300px';
 			}
 		}
 	}
-	
-	displayOrderedGroup();
+
 	displayPeriodsInternal();
-}
-
-function displayOrderedGroup()
-{
-	if ( currentReportTypeName == "C" )
-	{
-		jQuery.post( "getDataElementGroupOrdersByReport.action",
-		{
-			exportReportId: getFieldValue( 'exportReport' ).split( '_' )[0]
-		},
-		function ( json )
-		{
-			clearListById( 'orderedGroups' );
-
-			jQuery.each( json.dataElementGroupOrders, function( i, item )
-			{
-				addOptionById( 'orderedGroups', item.id, item.name );
-			} );
-			
-			showById( 'orderedGroupLabelTR' );
-			showById( 'orderedGroupSelectTR' );
-			byId( 'exportReportDiv' ).style.height = '410px';
-		} );
-	} else {		
-		hideById( 'orderedGroupLabelTR' );
-		hideById( 'orderedGroupSelectTR' );
-		byId( 'exportReportDiv' ).style.height = '300px';
-	}
 }
 
 function displayPeriodsInternal()
@@ -265,7 +270,11 @@ function validateGenerateReport( isAdvanced )
 
 function generateExportReport() {
 		
-	jQuery.postJSON( 'generateExportReport.action', {}, function ( json ) {
+	jQuery.postJSON( 'generateExportReport.action',
+	{
+		showSubItem: !isChecked( 'showSubItem' )	
+	},
+	function ( json ) {
 		if ( json.response == "success" ) {
 			window.location = "downloadFile.action";		
 			unLockScreen();

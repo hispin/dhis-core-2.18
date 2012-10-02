@@ -78,12 +78,12 @@ function validatePreviewReport( isAdvanced )
 
 function previewExportReport()
 {
-	jQuery.post( "previewExportReport.action", {}, previewExportReportReceived );
+	jQuery.get( "previewExportReport.action", { showSubItem: !isChecked( 'showSubItem' ) }, previewExportReportReceived );
 }
 
 function previewAdvandReport() 
 {	
-	jQuery.post( "previewAdvancedExportReport.action", { organisationGroupId: byId( "availableOrgunitGroups" ).value }, previewExportReportReceived );
+	jQuery.get( "previewAdvancedExportReport.action", { organisationGroupId: getFieldValue( 'availableOrgunitGroups' ) }, previewExportReportReceived );
 }
 
 function previewExportReportReceived( parentElement ) 
