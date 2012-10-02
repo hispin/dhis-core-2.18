@@ -14,7 +14,7 @@
     <filter-class>org.hisp.dhis.servlet.filter.HttpRedirectFilter</filter-class>
     <init-param>
       <param-name>redirectPath</param-name>
-      <param-value>dhis-web-mobile/index</param-value>
+      <param-value>mobile/index</param-value>
     </init-param>
   </filter>
   <filter>
@@ -44,7 +44,7 @@
   </filter-mapping>
   <filter-mapping>
     <filter-name>OpenSessionInViewFilter</filter-name>
-    <url-pattern>/dhis-web-mobile/*</url-pattern>
+    <url-pattern>/mobile/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
@@ -86,12 +86,12 @@
 
   <servlet-mapping>
     <servlet-name>mobileServlet</servlet-name>
-    <url-pattern>/dhis-web-mobile</url-pattern>
+    <url-pattern>/mobile</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>mobileServlet</servlet-name>
-    <url-pattern>/dhis-web-mobile/*</url-pattern>
+    <url-pattern>/mobile/*</url-pattern>
   </servlet-mapping>
 
   <!-- Web API -->

@@ -6,7 +6,7 @@
   <include file="dhis-web-commons.xml" />
 
   <package name="dhis-web-mobile" extends="dhis-web-commons"
-      namespace="/dhis-web-mobile">
+      namespace="/mobile">
   </package>
 
 </struts>
