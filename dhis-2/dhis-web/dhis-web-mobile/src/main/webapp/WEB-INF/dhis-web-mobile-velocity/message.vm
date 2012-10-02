@@ -18,11 +18,12 @@
     });
 
     jQuery(document).bind('pageinit', function() {
-       $('#reply-form input:submit').bind('click', function() {
+       $('#reply-form input:submit').bind('click', function(e) {
             var msg = jQuery('#reply-text').val();
 
            if(msg.length == 0) {
-               return false;
+               e.preventDefault();
+               return;
            }
 
            $.mobile.showPageLoadingMsg();
@@ -41,7 +42,7 @@
                console.log("failed to send message");
            });
 
-           return false;
+           e.preventDefault();
        });
     });
 </script>

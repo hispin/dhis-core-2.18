@@ -71,15 +71,18 @@
 
     function manageRecipientsPage()
     {
-        var clearSearch = $('form[role="search"]').find('a[data-icon="delete"]').data('events')['click'][0];
-        $('form[role="search"]').find('a[data-icon="delete"]').unbind('click');
-        $('form[role="search"]').find('a[data-icon="delete"]').bind('click', displaySelected );
-        $('form[role="search"]').find('a[data-icon="delete"]').bind('click', clearSearch );
+        var searchField = $('form[role="search"] input:text');
+        var clearSearchButton = $('form[role="search"]').find('a[data-icon="delete"]');
 
-        var fn1 = $('form[role="search"] input:text').data('events')['keyup'][1];
-        $('form[role="search"] input:text').unbind('keyup');
+        var clearSearchFn = clearSearchButton.data('events')['click'][0];
+        clearSearchButton.unbind('click');
+        clearSearchButton.bind('click', displaySelected );
+        clearSearchButton.bind('click', clearSearchFn );
 
-        $('form[role="search"] input:text').bind('keyup', function () {
+        var fn1 = searchField.data('events')['keyup'][1];
+        searchField.unbind('keyup');
+
+        searchField.bind('keyup', function () {
             var search = $('form[role="search"] input:text').val();
 
             if( search.length == 0)
@@ -141,7 +144,7 @@
         displaySelected();
     }
 
-    function sendMessage() {
+    function sendMessage(e) {
         var subject = jQuery('#new-message-subject').val();
         var text = jQuery('#new-message-text').val();
 
@@ -184,7 +187,7 @@
             console.log("failed to send message");
         });
 
-        return false;
+        e.preventDefault();
     }
 
     function newMessagePage()
