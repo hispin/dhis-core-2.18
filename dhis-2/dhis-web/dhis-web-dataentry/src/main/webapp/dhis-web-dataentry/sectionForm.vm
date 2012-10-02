@@ -43,7 +43,7 @@
 
     #set( $count = 0 )
     #set( $mark = 0 )
-    #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryComboId )  )
+    #set( $optionCombos = $orderedCategoryOptionCombos.get( $categoryComboId )  )
     #foreach( $optionCombo in $optionCombos )<span id="${optionCombo.id}-optioncombo" class="hidden">${encoder.htmlEncode( $optionCombo.name )}</span>
     #end
     #foreach( $dataElement in $section.dataElements )
