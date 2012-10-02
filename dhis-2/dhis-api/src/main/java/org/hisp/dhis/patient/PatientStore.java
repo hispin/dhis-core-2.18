@@ -81,5 +81,5 @@ public interface PatientStore
     Grid getPatientEventReport( Grid grid, List<String> searchKeys, OrganisationUnit orgunit );
     
     Collection<Patient> getByPhoneNumber( String phoneNumber, Integer min, Integer max);
-
+    
 }
