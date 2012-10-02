@@ -36,7 +36,7 @@ port = 5432\n
 max_connections = 100\n                  
 unix_socket_directory = '/var/run/postgresql'\n         
 ssl = true\n                             
-shared_buffers = $(bc -l <<< "scale = 0;($MEMTOTAL/24576)MB")\n                  
+shared_buffers = $(bc -l <<< "scale = 0;($MEMTOTAL/24576)")MB\n                  
 log_line_prefix = '%t '\n                 
 datestyle = 'iso, mdy'\n
 lc_messages = 'en_US.UTF-8'\n                     
