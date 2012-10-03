@@ -52,7 +52,7 @@
 				<p><label class="bold">$i18n.getString( "type" ):</label><br><span id="typeField"></span></p>				
 				<p><label class="bold">$i18n.getString( "display_provided_other_facility_column" ):</label><br><span id="displayProvidedOtherFacilityField"></span></p>
 				<p><label class="bold">$i18n.getString( "display_date_of_incident" ):</label><br><span id="displayIncidentDateField"></span></p>
-				<p><label class="bold">$i18n.getString( "generated_by_enrollment_date" ):</label><br><span id="generatedByEnrollmentDateField"></span></p>
+				<p><label class="bold">$i18n.getString( "events_generated_by_enrollment_date" ):</label><br><span id="generatedByEnrollmentDateField"></span></p>
 				<p><label class="bold">$i18n.getString( "date_of_enrollment_description" ):</label><br><span id="dateOfEnrollmentDescriptionField"></span></p>				
 				<p><label class="bold">$i18n.getString( "date_of_incident_description" ):</label><br><span id="dateOfIncidentDescriptionField"></span></p>				
 				<p><label class="bold">$i18n.getString( "number_of_attributes" ):</label><br><span id="noAttributesField"></span></p>
