@@ -78,12 +78,22 @@
 
 <!-- UNDERAGE -->
 
-<tr id="underAgeDiv" name="underAgeDiv">
-	<td class='text-column'>$i18n.getString("has_guardian")</td>
-	<td>
-		<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($!patient.underAge == "true") checked="checked" #end/>
-	</td>
-</tr>
+#if($!patient.underAge)
+	#set( $representative = $!patient.representative ) 
+	<tr>
+		<td class='text-column'>$i18n.getString("guardian")</td>
+		<td> 
+			$!patient.representative.getFullName() <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' class='img-button'>
+		</td>
+	</tr>
+#else
+	<tr id="underAgeDiv" name="underAgeDiv">
+		<td class='text-column'>$i18n.getString("has_guardian")</td>
+		<td>
+			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($!patient.underAge == "true") checked="checked" #end/>
+		</td>
+	</tr>
+#end
 
 <!-- DEAD -->
 
@@ -107,16 +117,6 @@
 </tr>
 
 <tr><td>&nbsp;</td></tr>
-
-#if($!patient.underAge)
-	#set( $representative = $!patient.representative ) 
-	<tr>
-		<td class='text-column'>$i18n.getString("representative")</td>
-		<td> 
-			$!patient.representative.getFullName() <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' class='img-button'>
-		</td>
-	</tr>
-#end
 
 #if( $identifierTypes.size() > 0)
 	<!--IDENTIFIERS -->
