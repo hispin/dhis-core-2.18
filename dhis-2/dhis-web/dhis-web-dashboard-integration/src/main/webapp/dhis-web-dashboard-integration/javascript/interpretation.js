@@ -15,11 +15,14 @@ $( document ).ready( function() {
 function isNextPage()
 {
 	var fromTop = $( document ).scrollTop();
-	var height = $( document ).height();	
-	var threshold = 0.7;
-	var loaded = parseFloat( parseFloat( fromTop ) / parseFloat( height ) );
+	var docHeight = $( document ).height();
+	var windowHeight = $( window ).height();
+	var threshold = parseInt( 350 );
+	var remaining = parseInt( docHeight - ( fromTop + windowHeight ) );
 	
-	if ( loaded >= threshold )
+	log("--");log(fromTop);log(docHeight);log(windowHeight);log(remaining);	
+	
+	if ( remaining < threshold )
 	{
 		loadNextPage();
 	}
