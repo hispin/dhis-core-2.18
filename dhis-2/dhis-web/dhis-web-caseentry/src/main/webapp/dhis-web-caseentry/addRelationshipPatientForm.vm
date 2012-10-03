@@ -27,7 +27,7 @@
 		jQuery('#patientForm [id=healthWorkerId]').val("");
 		jQuery('#patientForm [id^="iden"]').val("");
 		hideById('patientForm [id=age]');
-		hideById('patientForm [id=underAgeDiv]');
+
 		datePickerValid( 'patientForm [id=birthDate]' );
 		addEventForPatientForm('patientForm');
 	});		

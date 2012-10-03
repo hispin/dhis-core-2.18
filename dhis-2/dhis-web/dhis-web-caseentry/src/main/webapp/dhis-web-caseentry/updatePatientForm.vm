@@ -10,10 +10,6 @@
 
 <script>
 	jQuery(document).ready(	function(){
-
-		datePickerValid( 'patientForm [id=deathDate]' );
-		addEventForPatientForm('patientForm');
-		
 		jQuery("#patientForm").validate({
 			 meta:"validate"
 			,errorElement:"span"
@@ -38,6 +34,8 @@
 		});
 		
 		checkedDuplicate = false;
+		datePickerValid( 'patientForm [id=deathDate]' );
+		addEventForPatientForm('patientForm');
 		if("$!patient.dobType" == 'A'){ 
 			var i18n_please_select_relationshipType = '$encoder.jsEscape( $i18n.getString( "please_verify_birthday" ) , "'")';
 			jQuery('#patientForm [id=birthDate]').css("display","none");

@@ -109,7 +109,7 @@
 				#if($value=="")
 					#set($value=$patient.getFullName())
 				#end
-				<td onclick="javascript:showPatientDashboardForm( '$patient.id' )">
+				<td style="cursor:pointer;" onclick="javascript:showPatientDashboardForm( '$patient.id' )">
 					$value
 				</td>
 				
