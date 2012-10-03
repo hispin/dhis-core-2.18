@@ -20,12 +20,7 @@
 			<tr>
 				<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 				<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $programStage.description )" class="{validate:{required:true,minlength:4}}"/></td>
-			</tr>  
-			
-			<tr>
-				<td><label>$i18n.getString( "report_date_description" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-				<td><input type="text" id="reportDateDescription" name="reportDateDescription" value='$!programStage.reportDateDescription' class="{validate:{required:true}}" /></td>
-			</tr>
+			</tr> 
 			
 			<tr>
 				<td><label>$i18n.getString( "scheduled_days_from_start" )</label></td>
@@ -35,21 +30,30 @@
 			<tr>
 				<td><label>$i18n.getString( "auto_generate_event" )</label></td>
 				<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' #if( $programStage.autoGenerateEvent && $programStage.autoGenerateEvent=='true' ) checked #end /></td>
-			</tr>	
-	
-			#if($programStage.program.type!=3)
-			<tr>
-				<td><label>$i18n.getString( "repeatable" )</label></td>
-				<td><input type="checkbox" id="irregular" name="irregular" value='true' #if( $programStage.irregular && $programStage.irregular=='true' ) checked #end onchange='repeatableOnChange();' /></td>
-			</tr>	
-			#end
-
-			<tr>
-				<td><label>$i18n.getString( "standard_interval_days" )</label></td>
-				<td><input type="text" id="standardInterval" name="standardInterval" value='$!programStage.standardInterval' class="{validate:{required:true,number:true}}" #if($programStage.irregular!='true' ) disabled #end /></td>
 			</tr>
 			
+			<tr><th colspan="2">$i18n.getString( "form_details" )</th></tr>
+	
+			<tr>
+				<td><label>$i18n.getString( "report_date_description" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+				<td><input type="text" id="reportDateDescription" name="reportDateDescription" value='$!programStage.reportDateDescription' class="{validate:{required:true}}" /></td>
+			</tr>
+			
+			#if($programStage.program.type!=3)
+				<tr><th colspan="2">$i18n.getString( "repeatable_program_stage_details" )</th></tr>
+		
+				<tr>
+					<td><label>$i18n.getString( "repeatable" )</label></td>
+					<td><input type="checkbox" id="irregular" name="irregular" value='true' #if( $programStage.irregular && $programStage.irregular=='true' ) checked #end onchange='repeatableOnChange();' /></td>
+				</tr>	
+
+				<tr>
+					<td><label>$i18n.getString( "standard_interval_days" )</label></td>
+					<td><input type="text" id="standardInterval" name="standardInterval" value='$!programStage.standardInterval' class="{validate:{required:true,number:true}}" #if($programStage.irregular!='true' ) disabled #end /></td>
+				</tr>
+			#end
 		</tbody>
+		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 	</table>
 
 	<table id="programStageMembersArea">
@@ -118,7 +122,7 @@
 			#set($index = 0)
 			#foreach($reminder in $programStage.patientReminders)
 				#set($index = $index + 1)
-				<tr name="tr$index">
+				<tr name="tr$index" class="listAlternateRow" >
 					<td colspan='2'>
 						$i18n.getString( "reminder" ) $index
 						<span style="align:right"><a href='javascript:removeTemplateMessageForm($index)'> ( $i18n.getString("remove_reminder") )</a>

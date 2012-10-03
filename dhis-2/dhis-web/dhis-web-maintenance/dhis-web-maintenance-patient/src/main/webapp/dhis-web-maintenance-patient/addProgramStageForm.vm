@@ -22,24 +22,28 @@
 	</tr>
 	
 	<tr>
+		<td><label>$i18n.getString( "scheduled_days_from_start" )</label></td>
+		<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" class="{validate:{number:true,min:0}}"/></td>
+	</tr>
+	
+	<tr>
+		<td><label>$i18n.getString( "auto_generate_event" )</label></td>
+		<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' checked /></td>
+	</tr>
+	
+	<tr><th colspan="2">$i18n.getString( "form_details" )</th></tr>
+	
+	<tr>
 		<td><label>$i18n.getString( "report_date_description" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="reportDateDescription" name="reportDateDescription" class="{validate:{required:true}}" /></td>
 	</tr>
 	
-	<tr>
-		<td><label>$i18n.getString( "scheduled_days_from_start" )</label></td>
-		<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" class="{validate:{number:true,min:0}}"/></td>
-	</tr>
-
-	<tr>
-		<td><label>$i18n.getString( "auto_generate_event" )</label></td>
-		<td><input type="checkbox" id="autoGenerateEvent" name="autoGenerateEvent" value='true' checked /></td>
-	</tr>	
+	<tr><th colspan="2">$i18n.getString( "repeatable_program_stage_details" )</th></tr>
 	
 	<tr>
 		<td><label>$i18n.getString( "repeatable" )</label></td>
 		<td><input type="checkbox" id="irregular" name="irregular" value='true' onchange='repeatableOnChange();' /></td>
-	</tr>	
+	</tr>
 	
 	<tr>
 		<td><label>$i18n.getString( "standard_interval_days" )</label></td>

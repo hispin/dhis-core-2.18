@@ -235,14 +235,14 @@ function insertParams( paramValue, rowId )
 }
 
 // --------------------------------------------------------------------
-// 
+// Generate template message form
 // --------------------------------------------------------------------
 
 function generateTemplateMessageForm()
 {
 	var rowId = jQuery('.daysAllowedSendMessage').length + 1;
 	
-	var contend = '<tr name="tr' + rowId + '">'
+	var contend = '<tr name="tr' + rowId + '" class="listAlternateRow" >'
 				+ 	'<td colspan="2">' + i18n_reminder + ' ' + rowId + '<a href="javascript:removeTemplateMessageForm('+ rowId +')"> ( '+ i18n_remove_reminder + ' )</a></td>'
 				+ '</tr>'
 				+ '<tr name="tr' + rowId + '">'

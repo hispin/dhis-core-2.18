@@ -55,8 +55,11 @@ function programOnChange()
 		disable('dateOfEnrollmentDescription');
 		disable("displayIncidentDate");
 		disable("dateOfIncidentDescription");
+		jQuery("[name=displayed]").attr("disabled", true);
+		jQuery("[name=displayed]").removeAttr("checked");
 	}
 	else{
+		jQuery("[name=displayed]").prop("disabled", false);
 		enable('dateOfEnrollmentDescription');
 		enable("displayIncidentDate");
 		if(byId('displayIncidentDate').checked){
@@ -88,6 +91,11 @@ function selectProperties()
 			jQuery( item ).remove();
 		}
 	});
+	
+	if(getFieldValue('type') == "3")
+	{
+		jQuery("[name=displayed]").attr("disabled", true);
+	}
 }
 
 
