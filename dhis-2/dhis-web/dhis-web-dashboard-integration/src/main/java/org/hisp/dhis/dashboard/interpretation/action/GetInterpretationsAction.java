@@ -40,7 +40,7 @@ import com.opensymphony.xwork2.Action;
 public class GetInterpretationsAction
     implements Action
 {
-    private static final int PAGE_SIZE = 6;
+    private static final int PAGE_SIZE = 5;
     
     // -------------------------------------------------------------------------
     // Dependencies
