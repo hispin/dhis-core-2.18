@@ -88,10 +88,12 @@ function addRelationshipPatientCompleted( messageElement )
 function addRelationshipPatient()
 {
 	jQuery('#loaderDiv').show();
+	var params = getParamsForDiv('addRelationshipDiv');
+		params += "&relationshipFromA=" + jQuery('#patientForm option:selected').attr("relationshipFromA");
 	$.ajax({
 		type: "POST",
 		url: 'addRelationshipPatient.action',
-		data: getParamsForDiv('addRelationshipDiv'),
+		data: params,
 		success: function( json ) {
 			hideById('addRelationshipDiv');
 			showById('selectDiv');
