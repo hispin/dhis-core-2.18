@@ -20,8 +20,6 @@ function isNextPage()
 	var threshold = parseInt( 350 );
 	var remaining = parseInt( docHeight - ( fromTop + windowHeight ) );
 	
-	log("--");log(fromTop);log(docHeight);log(windowHeight);log(remaining);	
-	
 	if ( remaining < threshold )
 	{
 		loadNextPage();

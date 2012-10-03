@@ -13,7 +13,7 @@
 <div id="wrap">
 
 <div id="header">
-	<a href="login.action" tabindex="-1"><img src="logo_front.png" alt="DHIS2" width="47" height="20"></a>
+	<a href="login.action" tabindex="-1"><img src="logo_mobile.png" width="88" height="24" alt="DHIS 2"></a>
 </div>
 
 <div id="content" align="center" style="text-align: left;">
