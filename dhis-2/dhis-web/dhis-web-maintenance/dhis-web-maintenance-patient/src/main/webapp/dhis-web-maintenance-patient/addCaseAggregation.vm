@@ -64,7 +64,7 @@
 			<select id="programId" name="programId" onChange="getParams();">
 				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $program in $programs )
-					<option value="$program.id" title='$program.name' type='$program.type'>$encoder.htmlEncode( $program.name )</option>
+					<option value="$program.id" title='$program.name' programType='$program.type'>$encoder.htmlEncode( $program.name )</option>
 				#end
 			</select>
 		</td>
@@ -75,7 +75,7 @@
 			<label for="programStage">$i18n.getString( "program_stage" )</label>
 		</td>
 		<td>
-			<select id="programStageId" name="programStageId" onChange="getPatientDataElements();" ondblclick="insertProgramStage(this);"></select>
+			<select id="programStageId" name="programStageId" onChange="getPatientDataElements();"></select>
 		</td>
 	</tr>
 	
