@@ -108,7 +108,7 @@
       </ul>
       </div>
 	  
-      <span id="headerText" onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer">
+      <span id="headerText" onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer" title="$i18n.getString( 'go_to_home_page' )">
         #if ( $applicationTitle )
           $encoder.htmlEncode( $applicationTitle )
         #else
