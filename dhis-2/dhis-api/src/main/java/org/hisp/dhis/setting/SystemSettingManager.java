@@ -55,7 +55,6 @@ public interface SystemSettingManager
     final String KEY_MAX_NUMBER_OF_ATTEMPTS = "maxAttempts";
     final String KEY_TIMEFRAME_MINUTES = "lockoutTimeframe";
     final String KEY_GOOGLE_MAPS_API_KEY = "googleMapsAPIKey";
-    final String KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED = "dataEntryFormCompleted";
     final String KEY_FACTOR_OF_DEVIATION = "factorDeviation";
     final String KEY_COMPLETENESS_OFFSET = "completenessOffset";
     final String KEY_PATIENT_EXCEL_TEMPLATE_FILE_NAME = "patientExcelTemplateFileName";
