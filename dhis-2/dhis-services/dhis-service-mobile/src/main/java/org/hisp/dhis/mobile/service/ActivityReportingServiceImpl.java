@@ -142,7 +142,7 @@ public class ActivityReportingServiceImpl
     @Override
     public ActivityPlan getAllActivityPlan( OrganisationUnit unit, String localeString )
     {
-        long time = System.currentTimeMillis();
+//        long time = System.currentTimeMillis();
 
         List<Activity> items = new ArrayList<Activity>();
 
@@ -210,8 +210,7 @@ public class ActivityReportingServiceImpl
                     {
                         ProgramStageInstance programStageInstance = programStageInstances.get( i );
 
-                        expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(),
-                            programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
+                        expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(), 0 ) );
 
                         if ( programStageInstance.getDueDate().getTime() <= time
                             && expiredDate.getTimeInMillis() > time )
@@ -295,8 +294,7 @@ public class ActivityReportingServiceImpl
         activity.setDueDate( instance.getDueDate() );
         activity.setTask( getTask( instance ) );
         activity.setLate( late );
-        activity.setExpireDate( DateUtils.getDateAfterAddition( instance.getDueDate(), instance.getProgramInstance()
-            .getProgram().getMaxDaysAllowedInputData() ) );
+        activity.setExpireDate( DateUtils.getDateAfterAddition( instance.getDueDate(), 0) );
 
         return activity;
     }
