@@ -47,6 +47,15 @@ public interface StatementBuilder
     String encode( String value );
     
     /**
+     * Returns statement for vacuum and analyze operations for a table. Returns
+     * null if such statement is not relevant.
+     * 
+     * @param table the table to vacuum.
+     * @return vacuum and analyze operations for a table.
+     */
+    String getVacuum( String table );
+    
+    /**
      * Returns the name of a double column type.
      * @return the name of a double column type.
      */
