@@ -119,22 +119,27 @@ public class TableAlteror
         updateMultiOrgunitTabularReportTable();
         updateProgramStageTabularReportTable();
         moveStoredByFormStageInstanceToDataValue();
-        
+
         executeSql( "ALTER TABLE patientattribute DROP COLUMN inheritable" );
         executeSql( "ALTER TABLE programstageinstance DROP COLUMN stageInProgram" );
-        
+
         updateRelationshipIdentifiers();
         updateRelationshipAttributes();
-        
+
         executeSql( "UPDATE programstage SET reportDateDescription='Report date' WHERE reportDateDescription is null" );
-        
+
         executeSql( "CREATE INDEX programstageinstance_executiondate ON programstageinstance (executiondate)" );
-        
+
         executeSql( "UPDATE programstage SET autoGenerateEvent=true WHERE autoGenerateEvent is null" );
-        
+
         executeSql( "UPDATE program SET generatedByEnrollmentDate=false WHERE generatedByEnrollmentDate is null" );
-       
+
         executeSql( "ALTER TABLE programstage DROP COLUMN stageinprogram" );
+
+        executeSql( "CREATE INDEX index_patientdatavalue ON patientdatavalue( programstageinstanceid, dataelementid, value, timestamp )" );
+
+        executeSql( "CREATE INDEX index_programinstance ON programinstance( programinstanceid )" );
+
     }
 
     // -------------------------------------------------------------------------
@@ -331,7 +336,8 @@ public class TableAlteror
 
             while ( resultSet.next() )
             {
-                executeSql( "INSERT into program_patientIdentifierTypes( programid, patientidentifiertypeid) values (" + resultSet.getString( 1 ) + "," + resultSet.getString( 2 ) + ")");
+                executeSql( "INSERT into program_patientIdentifierTypes( programid, patientidentifiertypeid) values ("
+                    + resultSet.getString( 1 ) + "," + resultSet.getString( 2 ) + ")" );
             }
 
             executeSql( "ALTER TABLE patientidentifiertype DROP COLUMN programid" );
@@ -343,9 +349,9 @@ public class TableAlteror
         finally
         {
             holder.close();
-        } 
+        }
     }
-    
+
     private void updateRelationshipAttributes()
     {
         StatementHolder holder = statementManager.getHolder();
@@ -359,7 +365,8 @@ public class TableAlteror
 
             while ( resultSet.next() )
             {
-                executeSql( "INSERT into program_patientAttributes( programid, patientattributeid) values (" + resultSet.getString( 1 ) + "," + resultSet.getString( 2 ) + ")");
+                executeSql( "INSERT into program_patientAttributes( programid, patientattributeid) values ("
+                    + resultSet.getString( 1 ) + "," + resultSet.getString( 2 ) + ")" );
             }
 
             executeSql( "ALTER TABLE patientattribute DROP COLUMN programid" );
@@ -371,9 +378,9 @@ public class TableAlteror
         finally
         {
             holder.close();
-        } 
+        }
     }
-    
+
     private int executeSql( String sql )
     {
         try

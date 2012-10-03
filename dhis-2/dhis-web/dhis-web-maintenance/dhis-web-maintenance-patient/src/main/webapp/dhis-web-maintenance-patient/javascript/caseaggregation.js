@@ -105,6 +105,10 @@ function getParams()
 		disable('programStageProperty');
 	}
 	
+	if(jQuery("#programStageId").attr("programType")==3){
+		jQuery("[name=multiProgram]").remove();
+	}
+	
 	jQuery.getJSON( 'getParamsByProgram.action',{ programId:programId }
 		,function( json ) 
 		{
@@ -179,6 +183,7 @@ function getPatientDataElements()
 			{ 
 				dataElements.append( "<option value='" + json.dataElements[i].id + "' title='" + json.dataElements[i].name + "' suggested='" + json.dataElements[i].optionset + "'>" + json.dataElements[i].name + "</option>" );
 			}
+			
 		});
 }
 
