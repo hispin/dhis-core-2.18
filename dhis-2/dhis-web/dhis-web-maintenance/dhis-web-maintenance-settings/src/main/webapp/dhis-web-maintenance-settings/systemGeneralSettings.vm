@@ -8,7 +8,6 @@
 				feedbackRecipients: getFieldValue( 'feedbackRecipients' ),
                 offlineOrganisationUnitLevel: getFieldValue( 'offlineOrganisationUnitLevel' ),
 				omitIndicatorsZeroNumeratorDataMart: jQuery( '#omitIndicatorsZeroNumeratorDataMart' ).is( ':checked' ),
-				disableDataEntryWhenCompleted: jQuery( '#disableDataEntryWhenCompleted' ).is( ':checked' ),
 				factorDeviation: getFieldValue( 'factorDeviation' ),
 				completenessOffset: getFieldValue( 'completenessOffset' ),
 				phoneNumberAreaCode: getFieldValue( 'phoneNumberAreaCode' )
@@ -86,13 +85,6 @@
 
 <p>
 	<input type="checkbox" id="omitIndicatorsZeroNumeratorDataMart" name="omitIndicatorsZeroNumeratorDataMart" #if( $omitIndicatorsZeroNumeratorDataMart )checked="checked"#end/>
-</p>
-
-<!-- disable_dataentry_when_dataset_completed -->
-<h4>$i18n.getString( "disable_dataentry_when_dataset_completed" )</h4>
-
-<p>
-	<input type="checkbox" id="disableDataEntryWhenCompleted" name="disableDataEntryWhenCompleted" #if( $dataEntryFormCompleted )checked="checked"#end/>
 </p>
 
 <!-- data_analysis_factor -->

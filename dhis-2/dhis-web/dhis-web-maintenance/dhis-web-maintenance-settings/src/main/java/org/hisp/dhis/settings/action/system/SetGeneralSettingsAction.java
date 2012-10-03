@@ -125,13 +125,6 @@ public class SetGeneralSettingsAction
         this.omitIndicatorsZeroNumeratorDataMart = omitIndicatorsZeroNumeratorDataMart;
     }
 
-    private boolean disableDataEntryWhenCompleted;
-
-    public void setDisableDataEntryWhenCompleted( boolean disableDataEntryWhenCompleted )
-    {
-        this.disableDataEntryWhenCompleted = disableDataEntryWhenCompleted;
-    }
-
     private Double factorDeviation;
 
     public void setFactorDeviation( Double factorDeviation )
@@ -190,8 +183,6 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_CACHE_STRATEGY, cacheStrategy );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART,
             omitIndicatorsZeroNumeratorDataMart );
-        systemSettingManager
-            .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
         systemSettingManager.saveSystemSetting( PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );

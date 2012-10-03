@@ -173,8 +173,9 @@ public class GetGeneralSettingsAction
         if ( offlineOrganisationUnitLevel == null )
         {
             // default to highest level
-            // TODO what do we do if the orgunit level hierarchy hasn't been created yet?
+            // TODO what if the org unit level hierarchy hasn't been created yet?
             int size = organisationUnitService.getOrganisationUnitLevels().size();
+            
             offlineOrganisationUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( size );
         }
 
