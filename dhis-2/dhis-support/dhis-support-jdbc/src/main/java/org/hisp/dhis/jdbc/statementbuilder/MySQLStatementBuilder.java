@@ -44,6 +44,11 @@ public class MySQLStatementBuilder
         return "DECIMAL";
     }
 
+    public String getVacuum( String table )
+    {
+        return null;
+    }
+    
     public String getPeriodIdentifierStatement( Period period )
     {
         return

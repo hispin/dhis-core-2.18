@@ -43,6 +43,11 @@ public class H2StatementBuilder
     {
         return "DOUBLE";
     }
+
+    public String getVacuum( String table )
+    {
+        return null;
+    }
     
     public String getPeriodIdentifierStatement( Period period )
     {

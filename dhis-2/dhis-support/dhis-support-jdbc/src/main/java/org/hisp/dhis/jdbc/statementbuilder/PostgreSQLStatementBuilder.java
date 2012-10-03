@@ -43,6 +43,11 @@ public class PostgreSQLStatementBuilder
     {
         return "DOUBLE PRECISION";
     }
+
+    public String getVacuum( String table )
+    {
+        return "vacuum analyze " + table + ";";
+    }
     
     public String getPeriodIdentifierStatement( Period period )
     {
@@ -321,5 +326,4 @@ public class PostgreSQLStatementBuilder
     {
         return  "firstname || ' ' || middleName || ' ' || lastname";
     }
-    
 }
