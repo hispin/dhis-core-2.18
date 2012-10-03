@@ -98,3 +98,19 @@ function toggleFollowUp( id, followUp )
 		$( "#" + imageId ).attr( "src", imageSrc );
 	} );
 }
+
+function formatItem( item )
+{
+    if ( item.id && item.id.indexOf("u:") != -1 )
+    {
+        return '<img src="../icons/glyphicons_003_user.png" style="width: 12px; height: 12px; padding-right: 5px;"/>' + item.text;
+    }
+    else if ( item.id && item.id.indexOf('ug:') != -1 )
+    {
+        return '<img src="../icons/glyphicons_043_group.png" style="width: 12px; height: 12px; padding-right: 5px;"/>' + item.text;
+    }
+    else
+    {
+        return item.text;
+    }
+}
