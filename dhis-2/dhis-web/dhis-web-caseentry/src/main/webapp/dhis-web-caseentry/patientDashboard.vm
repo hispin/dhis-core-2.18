@@ -207,14 +207,14 @@
 	<table class='mainPageTable'>
 		<thead>
 		<tr>
-			<th>$i18n.getString("user_access")</th>
+			<th>$i18n.getString("visitor")</th>
 			<th>$i18n.getString("date")</th>
 		</tr>
 		</thead>
 		#set( $mark = false )
 		#foreach( $patientAudit in $patientAudits )
 		<tr #alternate( $mark )>
-			<td>$patientAudit.patient.getFullName()</td>
+			<td>$patientAudit.visitor</td>
 			<td>$format.formatDate($patientAudit.date)</td>
 		</tr>
 		#set( $mark = !$mark )

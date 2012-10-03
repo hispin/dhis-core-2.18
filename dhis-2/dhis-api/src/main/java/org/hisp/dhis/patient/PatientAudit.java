@@ -39,6 +39,8 @@ public class PatientAudit
     private int id;
 
     private Patient patient;
+    
+    private String visitor;
 
     private Date date;
 
@@ -51,11 +53,11 @@ public class PatientAudit
 
     }
 
-    public PatientAudit( Patient patient, Date date )
+    public PatientAudit( Patient patient, Date date, String visitor )
     {
-        super();
         this.patient = patient;
         this.date = date;
+        this.visitor = visitor;
     }
 
     // -------------------------------------------------------------------------
@@ -90,6 +92,16 @@ public class PatientAudit
     public void setDate( Date date )
     {
         this.date = date;
+    }
+
+    public String getVisitor()
+    {
+        return visitor;
+    }
+
+    public void setVisitor( String visitor )
+    {
+        this.visitor = visitor;
     }
 
 }

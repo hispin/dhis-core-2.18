@@ -49,6 +49,6 @@ public interface PatientAuditService
 
     Collection<PatientAudit> getPatientAudits( Patient patient );
 
-    PatientAudit get( Patient patient, Date date );
+    PatientAudit getPatientAudit( String visitor, Date date );
 
 }

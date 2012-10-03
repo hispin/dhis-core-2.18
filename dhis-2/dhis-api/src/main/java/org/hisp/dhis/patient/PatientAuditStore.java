@@ -41,5 +41,5 @@ public interface PatientAuditStore extends GenericStore<PatientAudit>
 {
     Collection<PatientAudit> get( Patient patient );
 
-    PatientAudit get( Patient patient, Date date );
+    PatientAudit get( String visitor, Date date );
 }

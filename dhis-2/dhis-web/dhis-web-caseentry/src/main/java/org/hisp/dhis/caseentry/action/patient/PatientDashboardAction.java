@@ -43,6 +43,7 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -68,6 +69,8 @@ public class PatientDashboardAction
 
     private PatientAuditService patientAuditService;
 
+    private CurrentUserService currentUserService;
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -85,7 +88,7 @@ public class PatientDashboardAction
     private Collection<ProgramInstance> activeProgramInstances;
 
     private Collection<ProgramInstance> completedProgramInstances;
-    
+
     private Collection<PatientAudit> patientAudits;
 
     // -------------------------------------------------------------------------
@@ -100,6 +103,11 @@ public class PatientDashboardAction
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
+    }
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     public Collection<ProgramInstance> getActiveProgramInstances()
@@ -192,15 +200,16 @@ public class PatientDashboardAction
         }
 
         patientAudits = patientAuditService.getPatientAudits( patient );
-       
+
         long millisInDay = 60 * 60 * 24 * 1000;
         long currentTime = new Date().getTime();
         long dateOnly = (currentTime / millisInDay) * millisInDay;
-        Date date = new Date(dateOnly);        
-        PatientAudit patientAudit = patientAuditService.get( patient, date );
+        Date date = new Date( dateOnly );
+        String visitor = currentUserService.getCurrentUsername();
+        PatientAudit patientAudit = patientAuditService.getPatientAudit( visitor, date );
         if ( patientAudit == null )
         {
-            patientAudit = new PatientAudit( patient, date );
+            patientAudit = new PatientAudit( patient, date, visitor );
             patientAuditService.savePatientAudit( patientAudit );
         }
 
