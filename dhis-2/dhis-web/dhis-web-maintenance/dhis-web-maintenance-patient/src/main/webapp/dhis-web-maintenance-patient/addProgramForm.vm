@@ -64,12 +64,6 @@
 			<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input style="width: 330px;" type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:2}}"></td>
 			<td></td>
-		</tr>	
-		
-		<tr>
-			<td><label>$i18n.getString( "duration_in_days" )</label></td>
-			<td><input style="width: 330px;" type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" class="{validate:{number:true}}"></td>
-			<td></td>
 		</tr>
 	<tbody>
 </table>

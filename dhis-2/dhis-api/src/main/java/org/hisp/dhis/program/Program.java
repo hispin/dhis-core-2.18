@@ -79,9 +79,7 @@ public class Program
     private Set<ProgramStage> programStages = new HashSet<ProgramStage>();
 
     private Set<ValidationCriteria> patientValidationCriteria = new HashSet<ValidationCriteria>();
-
-    private Integer maxDaysAllowedInputData;
-
+    
     private Integer type;
 
     private Boolean displayProvidedOtherFacility;
@@ -214,17 +212,7 @@ public class Program
     {
         this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
     }
-
-    public Integer getMaxDaysAllowedInputData()
-    {
-        return maxDaysAllowedInputData;
-    }
-
-    public void setMaxDaysAllowedInputData( Integer maxDaysAllowedInputData )
-    {
-        this.maxDaysAllowedInputData = maxDaysAllowedInputData;
-    }
-
+    
     public String getDateOfIncidentDescription()
     {
         return dateOfIncidentDescription;
