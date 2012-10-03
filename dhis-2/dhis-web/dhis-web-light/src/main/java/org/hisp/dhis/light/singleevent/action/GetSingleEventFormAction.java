@@ -32,12 +32,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.util.SessionUtils;
 
 public class GetSingleEventFormAction
@@ -52,6 +63,34 @@ public class GetSingleEventFormAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    private PatientDataValueService patientDataValueService;
+
+    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
+    {
+        this.patientDataValueService = patientDataValueService;
+    }
+
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
+    private PatientService patientService;
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
     }
 
     // -------------------------------------------------------------------------
@@ -146,39 +185,102 @@ public class GetSingleEventFormAction
     {
         return prevDataValues;
     }
-    
+
     private String searchResult;
-    
+
     public void setSearchResult( String searchResult )
     {
         this.searchResult = searchResult;
     }
-    
+
     private int dataElementIdForSearching;
-    
+
     public void setDataElementIdForSearching( int dataElementIdForSearching )
     {
         this.dataElementIdForSearching = dataElementIdForSearching;
     }
-    
+
+    private String isEditing;
+
+    public String getIsEditing()
+    {
+        return isEditing;
+    }
+
+    public void setIsEditing( String isEditing )
+    {
+        this.isEditing = isEditing;
+    }
+
+    private int programStageInstanceId;
+
+    public int getProgramStageInstanceId()
+    {
+        return programStageInstanceId;
+    }
+
+    public void setProgramStageInstanceId( int programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
-        if( SessionUtils.getSessionVar( "prevDataValues" ) != null )
-        {
-            this.prevDataValues = (Map<String, String>) SessionUtils.getSessionVar( "prevDataValues" );
-        }
-        if( searchResult != null)
-        {
-            this.prevDataValues.put( "DE"+this.dataElementIdForSearching, searchResult );
-        }
-        
+
         Program program = programService.getProgram( programId );
         eventName = program.getName();
         ProgramStage programStage = program.getProgramStages().iterator().next();
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
         Collections.sort( programStageDataElements, OrderBySortOrder );
+
+        if ( SessionUtils.getSessionVar( "prevDataValues" ) != null )
+        {
+            this.prevDataValues = (Map<String, String>) SessionUtils.getSessionVar( "prevDataValues" );
+        }
+        if ( searchResult != null )
+        {
+            this.prevDataValues.put( "DE" + this.dataElementIdForSearching, searchResult );
+            System.out.println("ko co null");
+        }
+        else
+        {
+            // For editing if user finished the form
+            Patient patient = patientService.getPatient( this.patientId );
+
+            if ( programInstanceService.getProgramInstances( patient, program ) != null )
+            {
+                List<ProgramInstance> proInstanceList = (List<ProgramInstance>) programInstanceService
+                    .getProgramInstances( patient, program );
+
+                ProgramInstance proInstance = null;
+
+                if ( proInstanceList.size() != 0 )
+                {
+                    proInstance = proInstanceList.iterator().next();
+                }
+
+                ProgramStageInstance proStageInstance = programStageInstanceService.getProgramStageInstance(
+                    proInstance, programStage );
+                
+                this.programStageInstanceId = proStageInstance.getId();
+
+                for ( ProgramStageDataElement each : programStageDataElements )
+                {
+                    DataElement dataElement = each.getDataElement();
+
+                    PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( proStageInstance,
+                        dataElement );
+
+                    if ( patientDataValue != null )
+                    {
+                        this.prevDataValues.put( "DE" + dataElement.getId(), patientDataValue.getValue() );
+                    }
+                }
+            }
+        }
+
         return SUCCESS;
     }
 

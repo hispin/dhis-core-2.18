@@ -314,7 +314,7 @@
         /light/selectSingleEventBeneficiary.action?programId=${programId}&amp;organisationUnitId=${organisationUnitId}&amp;validated=true
       </result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
-      <result name="redirect" type="redirect">findSingleEventOptionSet.action?keyword=${keyword}&amp;dataElementIdForSearching=${dataElementIdForSearching}&amp;organisationUnitId=${organisationUnitId}&amp;patientId=${patientId}&amp;programId=${programId}</result>
+      <result name="redirect" type="redirect">findSingleEventOptionSet.action?keyword=${keyword}&amp;dataElementIdForSearching=${dataElementIdForSearching}&amp;organisationUnitId=${organisationUnitId}&amp;patientId=${patientId}&amp;programId=${programId}&amp;programStageInstanceId=${programStageInstanceId}&amp;isEditing=${isEditing}</result>
       <param name="page">/dhis-web-light/singleevent/singleEventForm.vm</param>
     </action>
     

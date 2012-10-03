@@ -123,6 +123,30 @@ public class FindSingleEventOptionSetAction
     {
         return this.organisationUnitId;
     }
+    
+    private String isEditing;
+
+    public String getIsEditing()
+    {
+        return isEditing;
+    }
+
+    public void setIsEditing( String isEditing )
+    {
+        this.isEditing = isEditing;
+    }
+    
+    private int programStageInstanceId;
+
+    public int getProgramStageInstanceId()
+    {
+        return programStageInstanceId;
+    }
+
+    public void setProgramStageInstanceId( int programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
+    }
 
     @Override
     public String execute()

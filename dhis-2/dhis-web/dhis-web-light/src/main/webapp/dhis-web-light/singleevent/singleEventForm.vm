@@ -3,7 +3,6 @@
 <form method="post" action="saveSingleEvent.action">
 	<div class="header-box" align="center">
 		<p style="text-align: left;">
-		
 	#foreach( $programStageDataElement in $programStageDataElements)
 		#set($dataElement = $programStageDataElement.getDataElement())
 		#set( $key = "DE${dataElement.id}" )
@@ -54,6 +53,8 @@
 		<input type="hidden" name="organisationUnitId" value="$organisationUnitId" />
 		<input type="hidden" name="programId" value="$programId" />
 		<input type="hidden" name="patientId" value="$patientId" />
+		<input type="hidden" name="isEditing" value="$isEditing" />
+		<input type="hidden" name="programStageInstanceId" value="$programStageInstanceId" />	
 		<input type="submit" value=$i18n.getString("Submit") />
 	    </p>
 	</div>

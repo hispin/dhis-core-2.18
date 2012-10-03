@@ -70,7 +70,7 @@ public class SaveSingleEventAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    
     private ProgramInstanceService programInstanceService;
 
     public void setProgramInstanceService( ProgramInstanceService programInstanceService )
@@ -289,12 +289,35 @@ public class SaveSingleEventAction
         return dataElementIdForSearching;
     }
     
+    private String isEditing;
 
+    public String getIsEditing()
+    {
+        return isEditing;
+    }
+
+    public void setIsEditing( String isEditing )
+    {
+        this.isEditing = isEditing;
+    }
+    
+    private int programStageInstanceId;
+
+    public int getProgramStageInstanceId()
+    {
+        return programStageInstanceId;
+    }
+
+    public void setProgramStageInstanceId( int programStageInstanceId )
+    {
+        this.programStageInstanceId = programStageInstanceId;
+    }
 
     @Override
     public String execute()
         throws Exception
     {
+
         Program program = programService.getProgram( programId );
         eventName = program.getName();
 
@@ -308,7 +331,7 @@ public class SaveSingleEventAction
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
             ServletActionContext.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
-        
+
         typeViolations.clear();
 
         prevDataValues.clear();
@@ -371,42 +394,84 @@ public class SaveSingleEventAction
             return REDIRECT;
         }
         
-        ProgramInstance programInstance = new ProgramInstance();
-        programInstance.setEnrollmentDate( new Date() );
-        programInstance.setDateOfIncident( new Date() );
-        programInstance.setProgram( program );
-        programInstance.setPatient( patient );
-        programInstance.setCompleted( false );
-        programInstanceService.addProgramInstance( programInstance );
-
-        ProgramStageInstance programStageInstance = new ProgramStageInstance();
-        programStageInstance.setOrganisationUnit( organisationUnit );
-        programStageInstance.setProgramInstance( programInstance );
-        programStageInstance.setProgramStage( programStage );
-        programStageInstance.setDueDate( new Date() );
-        programStageInstance.setExecutionDate( new Date() );
-        programStageInstance.setCompleted( false );
-        programStageInstanceService.addProgramStageInstance( programStageInstance );
-
-        for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
+        if( this.isEditing.equals( "true" ) )
         {
-            DataElement dataElement = programStageDataElement.getDataElement();
+            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( this.programStageInstanceId );
+            
+            for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
+            {
+                DataElement dataElement = programStageDataElement.getDataElement();
+                
+                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, dataElement );
+                
+                String id = "DE" + dataElement.getId();
+                
+                String value = parameterMap.get( id );
+                
+                if ( patientDataValue == null && value != null )
+                {
 
-            PatientDataValue patientDataValue = new PatientDataValue();
+                    patientDataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
+                    
+                    patientDataValue.setProvidedElsewhere( false );
 
-            patientDataValue.setDataElement( dataElement );
-
-            String id = "DE" + dataElement.getId();
-
-            patientDataValue.setValue( parameterMap.get( id ) );
-
-            patientDataValue.setProgramStageInstance( programStageInstance );
-
-            patientDataValue.setProvidedElsewhere( false );
-
-            patientDataValue.setTimestamp( new Date() );
-
-            patientDataValueService.savePatientDataValue( patientDataValue );
+                    patientDataValueService.savePatientDataValue( patientDataValue );
+                }
+                if( patientDataValue != null && value == null )
+                {
+                    patientDataValueService.deletePatientDataValue( patientDataValue );
+                }
+                else if( patientDataValue != null && value != null )
+                {
+                    patientDataValue.setValue( value );
+                    
+                    patientDataValue.setTimestamp( new Date() );
+                    
+                    patientDataValue.setProvidedElsewhere( false );
+                    
+                    patientDataValueService.updatePatientDataValue( patientDataValue );
+                }
+            }
+        }
+        else
+        {
+            ProgramInstance programInstance = new ProgramInstance();
+            programInstance.setEnrollmentDate( new Date() );
+            programInstance.setDateOfIncident( new Date() );
+            programInstance.setProgram( program );
+            programInstance.setPatient( patient );
+            programInstance.setCompleted( true );
+            programInstanceService.addProgramInstance( programInstance );
+    
+            ProgramStageInstance programStageInstance = new ProgramStageInstance();
+            programStageInstance.setOrganisationUnit( organisationUnit );
+            programStageInstance.setProgramInstance( programInstance );
+            programStageInstance.setProgramStage( programStage );
+            programStageInstance.setDueDate( new Date() );
+            programStageInstance.setExecutionDate( new Date() );
+            programStageInstance.setCompleted( true );
+            programStageInstanceService.addProgramStageInstance( programStageInstance );
+    
+            for ( ProgramStageDataElement programStageDataElement : programStageDataElements )
+            {
+                DataElement dataElement = programStageDataElement.getDataElement();
+    
+                PatientDataValue patientDataValue = new PatientDataValue();
+    
+                patientDataValue.setDataElement( dataElement );
+    
+                String id = "DE" + dataElement.getId();
+    
+                patientDataValue.setValue( parameterMap.get( id ) );
+    
+                patientDataValue.setProgramStageInstance( programStageInstance );
+    
+                patientDataValue.setProvidedElsewhere( false );
+    
+                patientDataValue.setTimestamp( new Date() );
+    
+                patientDataValueService.savePatientDataValue( patientDataValue );
+            }
         }
         SessionUtils.removeSessionVar( "prevDataValues" );
 

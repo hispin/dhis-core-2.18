@@ -176,6 +176,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
+
 	</bean>
 
 	<bean
@@ -198,7 +199,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction" scope="prototype">
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientProgramListAction"
+		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
@@ -208,7 +210,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		
 	</bean>
 
 	<bean
@@ -244,14 +245,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction"
-		class="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction" scope="prototype">
+		class="org.hisp.dhis.light.namebaseddataentry.action.AddNewRalationshipAction"
+		scope="prototype">
 		<property name="relationshipTypeService"
 			ref="org.hisp.dhis.relationship.RelationshipTypeService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.RegisterPatientLocationAction">
@@ -259,15 +261,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
-	
+
 	<bean
 		id="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.GetPatientLocationFormAction">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="currentUserService"
-			ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
-	
+
 	<!-- Beneficiary Registration -->
 
 	<bean
@@ -281,8 +282,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.light.beneficiaryregistration.action.RegisterBeneficiaryAction"
 		class="org.hisp.dhis.light.beneficiaryregistration.action.RegisterBeneficiaryAction"
 		scope="prototype">
-		<property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
@@ -293,10 +296,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="patientIdentifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="patientAttributeOptionService" ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
-		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="patientIdentifierTypeService"
+			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="patientAttributeOptionService"
+			ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+		<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
@@ -385,6 +392,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.singleevent.action.GetSingleEventFormAction"
 		scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="patientDataValueService"
+			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.light.singleevent.action.SaveSingleEventAction"
@@ -401,11 +414,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
 
-	
-	<bean id="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction" class="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction">
+
+	<bean
+		id="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction"
+		class="org.hisp.dhis.light.singleevent.action.FindSingleEventOptionSetAction">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 	<!-- Dashboard -->
@@ -495,13 +511,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		<property name="programStageDataElementService" ref="org.hisp.dhis.program.ProgramStageDataElementService" />
+		<property name="patientDataValueService"
+			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="programStageDataElementService"
+			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction"
+
+	<bean
+		id="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction"
 		class="org.hisp.dhis.light.namebaseddataentry.action.DeleteRelationshipAction">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="relationshipService"
