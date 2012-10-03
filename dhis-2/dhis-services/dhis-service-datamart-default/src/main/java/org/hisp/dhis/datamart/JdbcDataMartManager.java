@@ -330,28 +330,39 @@ public class JdbcDataMartManager
     public void copyAggregatedDataValuesFromTemp()
     {
         executeSilently( "insert into aggregateddatavalue select * from aggregateddatavalue_temp" );
+        
+        executeSilently( statementBuilder.getVacuum( "aggregateddatavalue" ) );
     }
 
     public void copyAggregatedIndicatorValuesFromTemp()
     {
         executeSilently( "insert into aggregatedindicatorvalue select * from aggregatedindicatorvalue_temp" );
+        
+        executeSilently( statementBuilder.getVacuum( "aggregatedindicatorvalue" ) );
     }
 
     public void copyAggregatedOrgUnitDataValuesFromTemp()
     {
         executeSilently( "insert into aggregatedorgunitdatavalue select * from aggregatedorgunitdatavalue_temp" );
+        
+        executeSilently( statementBuilder.getVacuum( "aggregatedorgunitdatavalue" ) );
     }
 
     public void copyAggregatedOrgUnitIndicatorValuesFromTemp()
     {
         executeSilently( "insert into aggregatedorgunitindicatorvalue select * from aggregatedorgunitindicatorvalue_temp" );
+        
+        executeSilently( statementBuilder.getVacuum( "aggregatedorgunitindicatorvalue" ) );
     }
 
     private void executeSilently( String sql )
     {
         try
         {
-            statementManager.getHolder().executeUpdate( sql, true );
+            if ( sql != null )
+            {
+                statementManager.getHolder().executeUpdate( sql, true );
+            }
         }
         catch ( Exception ex )
         {
