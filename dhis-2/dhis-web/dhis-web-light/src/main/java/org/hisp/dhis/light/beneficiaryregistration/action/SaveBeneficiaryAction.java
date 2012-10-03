@@ -452,8 +452,8 @@ public class SaveBeneficiaryAction
                         PatientIdentifier patientIdentifier = new PatientIdentifier();
                         patientIdentifier.setIdentifierType( patientIdentifierType );
                         patientIdentifier.setPatient( patient );
-                        patientIdentifierSet.add( patientIdentifier );
                         patientIdentifier.setIdentifier( value.trim() );
+                        patientIdentifierSet.add( patientIdentifier );
                     }
 
                     this.previousValues.put( key, value );
