@@ -348,31 +348,30 @@ div.event-flow-dashboard
 	overflow-y:hidden;
 }
 
-.arrow-right {
-	width: 0; 
-	height: 0; 
-	border-top: 30px solid transparent;
-	border-bottom: 30px solid transparent;
-	border-left: 30px solid #d0d0d0;
-	cursor:pointer;
-}
-
 .arrow-left {
-	width: 0; 
-	height: 0; 
-	border-top: 30px solid transparent;
-	border-bottom: 30px solid transparent; 
-	border-right:30px solid #d0d0d0; 
+	width:0; 
+	height:0; 
+	border-top:45px solid transparent;
+	border-bottom:45px solid transparent; 
+	border-right:30px solid #d0d0d0;
 	cursor:pointer;
 }
 
-span.orgunit-object
+.arrow-right {
+	width:0; 
+	height:0; 
+	border-top:45px solid transparent;
+	border-bottom:45px solid transparent;
+	border-left:30px solid #d0d0d0;
+	cursor:pointer;
+}
+
+div.orgunit-object
 {
-	width: 120px;
-	border-left:1px solid #d0d0d0; 
-	border-top:1px solid #d0d0d0; 
-	border-right:1px solid #d0d0d0; 
-	border-bottom:1px solid #d0d0d0;
+	border-bottom: 5px double #D0D0D0;
+    height: 15px;
+    margin-left: 5px;
+    width: 120px;
 }
 
 input.stage-object[type="button"]
