@@ -48,6 +48,9 @@ import java.util.Set;
 public class SendMessageAction
     implements Action
 {
+    private static final String PREFIX_USER = "u:";
+    private static final String PREFIX_USERGROUP = "ug:";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -117,20 +120,20 @@ public class SendMessageAction
 
         for ( String recipient : recipients )
         {
-            if ( recipient.startsWith( "u:" ) )
+            if ( recipient.startsWith( PREFIX_USER ) )
             {
                 User user = userService.getUser( recipient.substring( 2 ) );
 
-                if(user != null)
+                if ( user != null )
                 {
                     users.add( user );
                 }
             }
-            else if ( recipient.startsWith( "ug:" ) )
+            else if ( recipient.startsWith( PREFIX_USERGROUP ) )
             {
                 UserGroup userGroup = userGroupService.getUserGroup( recipient.substring( 3 ) );
 
-                if(userGroup != null)
+                if ( userGroup != null )
                 {
                     users.addAll( userGroup.getMembers() );
                 }
