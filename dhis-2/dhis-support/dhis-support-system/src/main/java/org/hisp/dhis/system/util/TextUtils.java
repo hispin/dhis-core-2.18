@@ -33,13 +33,43 @@ import java.util.regex.Pattern;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class TextUtils
 {
     public static final TextUtils INSTANCE = new TextUtils();
     
     private static final Pattern LINK_PATTERN = Pattern.compile( "((http://|https://|www\\.).+?)($| )" );
+    
+    /**
+     * Performs the htmlNewline(String) and htmlLinks(String) methods against
+     * the given text.
+     * 
+     * @param text the text to substitute.
+     * @return the substituted text.
+     */
+    public static String htmlify( String text )
+    {
+        text = htmlNewline( text );
+        text = htmlLinks( text );
+        return text;
+    }
+    
+    /**
+     * Replaces common newline characters like \n, \r, \r\n to the HTML line
+     * break tag <br>.
+     * 
+     * @param text the text to substitute.
+     * @return the substituted text.
+     */
+    public static String htmlNewline( String text )
+    {
+        if ( text == null || text.trim().isEmpty() )
+        {
+            return null;
+        }
+        
+        return text.replaceAll( "(\n|\r|\r\n)", "<br>" );
+    }
     
     /**
      * Substitutes links in the given text with valid HTML mark-up. For instance, 
@@ -74,7 +104,7 @@ public class TextUtils
         
         return matcher.appendTail( buffer ).toString();
     }
-        
+    
     /**
      * Gets the sub string of the given string. If the beginIndex is larger than
      * the length of the string, the empty string is returned. If the beginIndex +

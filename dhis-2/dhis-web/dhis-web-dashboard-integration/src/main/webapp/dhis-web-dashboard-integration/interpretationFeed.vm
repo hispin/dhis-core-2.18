@@ -6,7 +6,7 @@
         <span class="grey">${format.formatDate( $ip.created )}</span>
     </div>
     <div class="interpretationText">
-        ${ip.text}
+        $!dhisTextUtils.htmlify( ${ip.text} )
     </div>
     <div class="interpretationChart">
     #if( $ip.chartInterpretation )  
