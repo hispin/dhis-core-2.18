@@ -38,7 +38,7 @@
 		
 		<tr>
 			<td><label>$i18n.getString( "events_generated_by_enrollment_date" )</label></td>
-			<td><input style="margin: 0;"type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($program.generatedByEnrollmentDate=='true') checked #end></td>
+			<td><input style="margin: 0;"type="checkbox" id="generatedByEnrollmentDate" name="generatedByEnrollmentDate" value='true' #if($program.generatedByEnrollmentDate=='true') checked #end #if( $program.type=='3' ) disabled #end ></td>
 			<td></td>
 		</tr>
 		
@@ -98,7 +98,7 @@
 	
 		<tr>
 			<td>
-				<select size="15" style="width: 330px;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();">
+				<select size="15" style="width: 330px;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();" #if( $program.type=='3' ) disabled #end>
 					#foreach( $identifier in $availableIdentifierTypes )
 						<option value="iden_$identifier.id">$identifier.name</option>
 					#end
@@ -121,7 +121,7 @@
 								<th>$i18n.getString( "identifiers_and_attributes" )</th>
 								<th width="20px">$i18n.getString( "displayed_in_list" )</th>
 						</thead>
-						<tbody id="selectedList">
+						<tbody id="selectedList" #if($program.type==3) style="display:none;" #end>
 							#foreach( $identifier in $program.patientIdentifierTypes )
 								<tr ondblclick="unSelectProperties( this )" id="iden_$identifier.id">
 									<td onmousedown="select(event, this)">$encoder.htmlEncode( $identifier.name )</td>
