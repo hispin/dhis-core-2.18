@@ -22,6 +22,8 @@
 				}
 		});
 		jQuery('#patientForm [id=fullName]').val("");
+		hideById('underAgeDiv');
+		hideById('representativeFormDiv');
 		jQuery('#patientForm [inherit=false]').val("");
 		jQuery('#patientForm [inherit=]').val("");
 		jQuery('#patientForm [id=healthWorkerId]').val("");
@@ -52,7 +54,8 @@
 			<select name="relationshipTypeId" id="relationshipTypeId" class="{validate:{required:true}}" >
 				<option value="">[$i18n.getString( "please_select" )]</option>        
 				#foreach ($relationship in $relationshipTypes)
-					<option value="$relationship.id">${relationship.aIsToB} - ${relationship.bIsToA}</option>
+					<option value="$relationship.id" relationshipFromA='true'>${relationship.aIsToB} $i18n.getString("of") $patient.getFullName() (${relationship.bIsToA})</option>
+					<option value="$relationship.id" relationshipFromA='false'>${relationship.bIsToA} $i18n.getString("of") $patient.getFullName() (${relationship.aIsToB})</option>
 				#end
 			</select>
 		</td>

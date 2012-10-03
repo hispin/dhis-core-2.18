@@ -80,7 +80,7 @@
 
 #if($!patient.underAge)
 	#set( $representative = $!patient.representative ) 
-	<tr>
+	<tr id="representativeFormDiv" name="representativeFormDiv">
 		<td class='text-column'>$i18n.getString("guardian")</td>
 		<td> 
 			$!patient.representative.getFullName() <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' class='img-button'>
