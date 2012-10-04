@@ -123,7 +123,7 @@
 				<td>$i18n.getString( "message" )</td>
 				<td>
 					<textarea id="smsMessage" name="smsMessage" style="width:260px;height:100px;" class="{validate:{required:true,maxlength:160}}"></textarea>
-					<input type="button" value="$i18n.getString( 'send_sms' )" onclick="sendSmsOnePatient( byId('smsMessage'),'$programStageInstance.id' );"/>
+					<input type="button" value="&raquo;" class='tiny-button' onclick="sendSmsOnePatient( byId('smsMessage'),'$programStageInstance.id' );"/>
 				</td>
 			</tr>
 			<tr>
@@ -184,7 +184,7 @@
 				#foreach( $sms in $outboundSms )
 					#if( $index >= 5 )
 						<tr id="tr${sms.id}" class='hidden' >
-							<td>$format.formatDateTime($!sms.date)</td>
+							<td>$format.formatDateTime($sms.date)</td>
 							<td>$programStageInstance.programStage.name</td>
 							<td>$sms.sender</td>
 							<td>$sms.message</td>

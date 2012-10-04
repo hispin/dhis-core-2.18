@@ -246,9 +246,7 @@ public class HibernatePatientStore
     public Collection<Patient> search( List<String> searchKeys, OrganisationUnit orgunit, Integer min, Integer max )
     {
         String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
-
         Collection<Patient> patients = new HashSet<Patient>();
-
         try
         {
             patients = jdbcTemplate.query( sql, new RowMapper<Patient>()
@@ -258,7 +256,7 @@ public class HibernatePatientStore
                 {
                     return get( rs.getInt( 1 ) );
                 }
-            } );
+            });
         }
         catch ( Exception ex )
         {
@@ -273,7 +271,6 @@ public class HibernatePatientStore
     {
         String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
         Collection<String> phoneNumbers = new HashSet<String>();
-
         try
         {
             phoneNumbers = jdbcTemplate.query( sql, new RowMapper<String>()
@@ -284,7 +281,7 @@ public class HibernatePatientStore
                     String phoneNumber = rs.getString( "phonenumber" );
                     return (phoneNumber == null || phoneNumber.isEmpty()) ? "0" : phoneNumber;
                 }
-            } );
+            });
         }
         catch ( Exception ex )
         {
@@ -298,9 +295,7 @@ public class HibernatePatientStore
         Integer min, Integer max )
     {
         String sql = searchPatientSql( false, searchKeys, orgunit, min, max );
-
         Collection<Integer> programStageInstanceIds = new HashSet<Integer>();
-
         try
         {
             programStageInstanceIds = jdbcTemplate.query( sql, new RowMapper<Integer>()
@@ -310,7 +305,7 @@ public class HibernatePatientStore
                 {
                     return rs.getInt( "programstageinstanceid" );
                 }
-            } );
+            });
         }
         catch ( Exception ex )
         {
@@ -323,7 +318,6 @@ public class HibernatePatientStore
     public int countSearch( List<String> searchKeys, OrganisationUnit orgunit )
     {
         String sql = searchPatientSql( true, searchKeys, orgunit, null, null );
-
         return jdbcTemplate.queryForInt( sql );
     }
 
@@ -455,7 +449,7 @@ public class HibernatePatientStore
                         patientWhere += condition
                             + operatorStatus
                             + "("
-                            + " psi.status is null and psi.executiondate is null and psi.duedate >= now() and p.organisationunitid="
+                            + " psi.status is null and psi.executiondate is null and (DATE(now()) - DATE(psi.duedate) <= 0) and p.organisationunitid="
                             + keys[4] + ")";
                         operatorStatus = " OR ";
                         condition = "";
@@ -464,7 +458,7 @@ public class HibernatePatientStore
                         patientWhere += condition
                             + operatorStatus
                             + "("
-                            + " psi.status is null and psi.executiondate is null and psi.duedate < now() and p.organisationunitid="
+                            + " psi.status is null and psi.executiondate is null and (DATE(now()) - DATE(psi.duedate) > 0) and p.organisationunitid="
                             + keys[4] + ")";
                         operatorStatus = " OR ";
                         condition = "";

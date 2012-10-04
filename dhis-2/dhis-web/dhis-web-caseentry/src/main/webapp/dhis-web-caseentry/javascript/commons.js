@@ -204,16 +204,14 @@ function getSearchParams()
 	var params = "";
 	var programIds = "";
 	var programStageId = jQuery('#programStageAddPatient').val();
-	if( getFieldValue('searchByProgramStage') == "true" && programStageId!=''){
+	if( getFieldValue('searchByProgramStage') == "true" ){
 		var statusEvent = jQuery('#programStageAddPatientTR [id=statusEvent]').val();
 		var startDueDate = getFieldValue('startDueDate');
 		var endDueDate = getFieldValue('endDueDate');
 		params += '&searchTexts=stat_' + getFieldValue('programIdAddPatient') 
-			   + '_' + startDueDate + '_' + endDueDate + '_false_' + statusEvent;
-		if( statusEvent != '3' && statusEvent != '4' && statusEvent != '0' )
-		{
-			params += "_" + getFieldValue('orgunitId');
-		}
+			   + '_' + startDueDate + '_' + endDueDate
+			   + "_" + getFieldValue('orgunitId')
+			   + '_false_' + statusEvent;
 	}
 	
 	var flag = false;
@@ -251,11 +249,10 @@ function getSearchParams()
 					p = "";
 				}
 			}
-		})
+		});
 		
 		var searchInAllFacility = byId('searchInAllFacility').checked;
-		if( getFieldValue('searchByProgramStage') == "true" 
-			&& !searchInAllFacility){
+		if( getFieldValue('searchByProgramStage') == "false" && !searchInAllFacility ){
 			p += "_" + getFieldValue('orgunitId');
 		}
 		params += p;
@@ -1603,7 +1600,6 @@ function sendSmsOnePatient( field, programStageInstanceId )
 		}, function ( json )
 		{
 			if ( json.response == "success" ) {
-				field.value="";
 				jQuery('#smsError').css("color", "green");
 				setInnerHTML('smsError', json.message);
 				var date = new Date();
@@ -1612,6 +1608,7 @@ function sendSmsOnePatient( field, programStageInstanceId )
 					+ "<td>" + getFieldValue('programStageName') + "</td>"
 					+ "<td>" + getFieldValue('currentUsername') + "</td>"
 					+ "<td>" + field.value + "</td></tr>");
+				field.value="";
 				field.style.backgroundColor = SUCCESS_COLOR;
 			}
 			else {

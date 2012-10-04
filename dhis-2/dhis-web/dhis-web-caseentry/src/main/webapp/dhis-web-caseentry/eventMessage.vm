@@ -31,7 +31,7 @@
 				#if( $index < 5 )
 					<tr id="tr${sms.id}">
 						<td>$format.formatDateTime($!sms.date)</td>
-						<td> $programStageInstance.programStage.name</td>
+						<td>$programStageInstance.programStage.name</td>
 						<td>$sms.sender</td>
 						<td>$sms.message</td>
 					</tr>

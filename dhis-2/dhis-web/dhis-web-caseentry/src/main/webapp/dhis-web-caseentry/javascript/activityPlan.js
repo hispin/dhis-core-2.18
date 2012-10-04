@@ -261,7 +261,6 @@ function setDateRangeAll()
 
 function reloadRecordList()
 {
-	var listAll = getFieldValue('listAll');
 	var startDate = getFieldValue('startDueDate');
 	var endDate = getFieldValue('endDueDate');
 	var arrStatus = getFieldValue('statusEvent').split('_');
