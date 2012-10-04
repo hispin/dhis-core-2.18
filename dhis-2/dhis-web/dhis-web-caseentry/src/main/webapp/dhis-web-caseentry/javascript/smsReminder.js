@@ -147,6 +147,19 @@ function eventFlowToggle( programInstanceId )
 // Send SMS 
 // --------------------------------------------------------------------
 
+function showSendSmsForm()
+{
+	jQuery('#sendSmsToListForm').dialog({
+			title: i18n_send_message,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 350,
+			height: 200
+		});
+}
+
 function sendSMS()
 {
 	var sendToList = getFieldValue('sendToList');
