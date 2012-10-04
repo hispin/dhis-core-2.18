@@ -72,6 +72,12 @@ public class DataElementCategoryOptionCombo
     private Set<DataElementCategoryOption> categoryOptions = new HashSet<DataElementCategoryOption>();
 
     // -------------------------------------------------------------------------
+    // Transient properties
+    // -------------------------------------------------------------------------
+
+    private transient String name;
+    
+    // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
@@ -265,6 +271,11 @@ public class DataElementCategoryOptionCombo
     @Override
     public String getName()
     {
+        if ( name != null )
+        {
+            return name;
+        }
+        
         StringBuilder name = new StringBuilder();
 
         if ( categoryOptions != null && categoryOptions.size() > 0 )
@@ -287,7 +298,7 @@ public class DataElementCategoryOptionCombo
     @Override
     public void setName( String name )
     {
-        // throw new UnsupportedOperationException( "Cannot set name on DataElementCategoryOptionCombo: " + name );
+        this.name = name;
     }
 
     @Override
