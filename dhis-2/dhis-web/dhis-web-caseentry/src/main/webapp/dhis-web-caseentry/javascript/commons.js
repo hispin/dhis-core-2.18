@@ -698,7 +698,7 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 		{
 			var box = jQuery('#ps_' + programStageInstanceId );
 			box.attr('dueDate', dueDate );
-			var boxName = box.attr('psname') + getInnerHTML('enterKey') + dueDate;
+			var boxName = box.attr('psname') + "\n" + dueDate;
 			box.val( boxName );
 			if( dueDate < getCurrentDate() )
 			{

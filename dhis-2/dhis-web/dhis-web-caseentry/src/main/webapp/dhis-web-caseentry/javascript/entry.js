@@ -442,7 +442,7 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 			   success: function( result ){	
 					var selectedProgramStageInstance = jQuery( '#' + prefixId + getFieldValue('programStageInstanceId') );
 					var box = jQuery(".stage-object-selected");
-					var boxName = box.attr('psname') + getInnerHTML('enterKey') + executionDate;
+					var boxName = box.attr('psname') + "\n" + executionDate;
 					box.val( boxName );
 					box.css('border-color', COLOR_LIGHTRED);
 					box.css('background-color', COLOR_LIGHT_LIGHTRED);
