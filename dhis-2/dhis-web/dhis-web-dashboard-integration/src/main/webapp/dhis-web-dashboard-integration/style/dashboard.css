@@ -219,7 +219,7 @@ div#selectionTree
 
 #interpretationFeed
 {
-  width: 550px;
+  width: 600px;
   border-top: 1px solid #ccc;
 }
 
@@ -230,11 +230,21 @@ div#selectionTree
   margin-bottom: 9px;
 }
 
+.interpretationContainer
+{
+  width: 590px;
+  border-bottom: 1px solid #ccc;
+  padding: 22px 10px 20px 10px;
+}
+
 .interpretation
 {
-  width: 550px;
-  border-bottom: 1px solid #ccc;
-  padding: 22px 10px 16px 10px;
+  margin-left: 50px;
+}
+
+.interpretationSymbol
+{
+  float: left;
 }
 
 .interpretationName
@@ -263,7 +273,7 @@ div#selectionTree
 .commentArea
 {
   height: 18px;
-  width: 370px;
+  width: 360px;
   border: 1px solid #ccc;
   resize: none;
   overflow: auto;
