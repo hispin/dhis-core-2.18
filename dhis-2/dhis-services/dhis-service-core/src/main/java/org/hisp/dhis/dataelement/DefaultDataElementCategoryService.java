@@ -419,7 +419,7 @@ public class DefaultDataElementCategoryService
                 operands.add( operand );
             }
 
-            for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
+            for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getSortedOptionCombos() )
             {
                 DataElementOperand operand = new DataElementOperand();
                 operand.updateProperties( dataElement, categoryOptionCombo );
