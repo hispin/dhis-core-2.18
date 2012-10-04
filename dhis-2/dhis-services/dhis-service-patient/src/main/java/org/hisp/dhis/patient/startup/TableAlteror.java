@@ -181,8 +181,8 @@ public class TableAlteror
 
     private void updateCaseAggregationCondition()
     {
-        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
-            + "[0-9]+" + "\\]";
+        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([0-9]+" + SEPARATOR_ID
+            + "[0-9]+" + "\\])";
 
         try
         {
@@ -202,8 +202,8 @@ public class TableAlteror
                 // ---------------------------------------------------------------------
 
                 Pattern pattern = Pattern.compile( regExp );
-
-                Matcher matcher = pattern.matcher( resultSet.getString( 2 ) );
+                String expression = resultSet.getString( 2 ).replaceAll( "'", "''" );
+                Matcher matcher = pattern.matcher( expression );
 
                 while ( matcher.find() )
                 {
@@ -222,19 +222,15 @@ public class TableAlteror
                     if ( rsProgramId.next() )
                     {
                         int programId = rsProgramId.getInt( 1 );
-
                         String aggregationExpression = "[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT
-                            + programId + "." + programStageId + "." + ids[1] + "]";
-
+                            + programId + SEPARATOR_ID + programStageId + SEPARATOR_ID + ids[1] + "]";
                         matcher.appendReplacement( formular, aggregationExpression );
                     }
                 }
 
                 matcher.appendTail( formular );
-
                 executeSql( "UPDATE caseaggregationcondition SET aggregationExpression='" + formular.toString()
                     + "'  WHERE caseaggregationconditionid=" + resultSet.getInt( 1 ) );
-
             }
         }
         catch ( Exception e )

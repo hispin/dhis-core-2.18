@@ -86,6 +86,9 @@ function advancedSearch( params )
 {
 	setFieldValue('listAll', "false");
 	$('#contentDataRecord').html('');
+	$('#listEventDiv').html('');
+	hideById('listEventDiv');
+	showLoader();
 	params += "&programId=" + getFieldValue('programIdAddPatient');
 	$.ajax({
 		url: 'getSMSPatientRecords.action',
@@ -277,8 +280,8 @@ function reloadRecordList()
 	var listAll = getFieldValue('listAll');
 	var startDate = getFieldValue('startDueDate');
 	var endDate = getFieldValue('endDueDate');
-	var status = getFieldValue('statusEvent');
-	if( listAll )
+	var statusEvent = getFieldValue('statusEvent');
+	if( listAll == 'true' )
 	{
 		var date = new Date();
 		var d = date.getDate() - 1;
@@ -293,7 +296,7 @@ function reloadRecordList()
 	jQuery("#patientList .stage-object").each( function(){
 		var id = this.id.split('_')[1];
 		var dueDate = jQuery(this).attr('dueDate');
-		var statusEvent = jQuery(this).attr('status');
+		var status = jQuery(this).attr('status');
 		var programInstanceId = jQuery(this).attr('programInstanceId');
 		if( dueDate >= startDate && dueDate <= endDate && statusEvent == status )
 		{
