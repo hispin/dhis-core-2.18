@@ -55,6 +55,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
   
+  <bean id="org.hisp.dhis.dashboard.action.SearchAction" class="org.hisp.dhis.dashboard.action.SearchAction"
+    scope="prototype">
+  </bean>
+  
   <!-- Message -->
 
   <bean id="org.hisp.dhis.dashboard.message.action.GetMessagesAction" class="org.hisp.dhis.dashboard.message.action.GetMessagesAction"

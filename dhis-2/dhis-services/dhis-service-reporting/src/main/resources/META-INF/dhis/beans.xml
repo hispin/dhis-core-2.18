@@ -155,6 +155,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.dashboard.DashboardService" class="org.hisp.dhis.dashboard.impl.DefaultDashboardService">
     <property name="dashboardContentStore" ref="org.hisp.dhis.dashboard.DashboardContentStore" />
+    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
+    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
+    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
   </bean>
 
   <!-- Dashboard Content providers -->
