@@ -1458,6 +1458,8 @@ function showPatientDashboardForm( patientId )
 	hideById('addRelationshipDiv');
 	hideById('migrationPatientDiv');
 	hideById('smsManagementDiv');
+	hideById('dataEntryFormDiv');
+	
 	setInnerHTML('listEventDiv','');
 				
 	jQuery('#loaderDiv').show();

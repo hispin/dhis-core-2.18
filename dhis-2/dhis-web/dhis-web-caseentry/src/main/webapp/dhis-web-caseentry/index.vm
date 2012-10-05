@@ -14,9 +14,9 @@
 	#end
 		
 	#if( $auth.hasAccess( "dhis-web-caseentry", "multipledataEntrySelect" ) )
-		#introListImgItem( "multipledataEntrySelect.action" "multiple_individual_records" "dhis-web-maintenance-dataset" )
-		#introListImgItem( "singleEventSelect.action" "single_event_with_registration" "dhis-web-maintenance-dataset" )
-		#introListImgItem( "anonymousRegistration.action" "anonymous_events" "dhis-web-maintenance-dataset" )
+		#introListImgItem( "multipledataEntrySelect.action" "multiple_individual_records" "attribute" )
+		#introListImgItem( "singleEventSelect.action" "single_event_with_registration" "attribute" )
+		#introListImgItem( "anonymousRegistration.action" "anonymous_events" "attribute" )
 	#end
 	
 	#if( $auth.hasAccess( "dhis-web-caseentry", "reportSelect" ) )
