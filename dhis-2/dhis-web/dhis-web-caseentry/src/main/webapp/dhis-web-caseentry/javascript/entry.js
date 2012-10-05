@@ -444,7 +444,7 @@ function toggleContentForReportDate(show)
     }
 }
 
-function doComplete( isCreateEvent )
+function doComplete()
 {
     var flag = false;
     jQuery("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect']").each(function(){
@@ -494,24 +494,13 @@ function doComplete( isCreateEvent )
 					var selectedProgram = jQuery('.stage-object-selected');
 					if( selectedProgram.attr('programType')=='2' || json.response == 'programcompleted' )
 					{
-						selectedProgram.remove();
-						hideById('programInstanceDiv');
-						if( !isCreateEvent ){
-							hideById('entryFormContainer');
-						}
 						var completedRow = jQuery('#td_' + programInstanceId).html();
 						jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
-						hideById('tr1_' + programInstanceId );
-						hideById('tr2_' + programInstanceId );
 					}
 					
 					selection.enable();
 					hideLoader();
 					hideById('contentDiv');
-					if( isCreateEvent )
-					{
-						showAddEventForm();
-					}
 				});
 		}
     }
