@@ -78,10 +78,7 @@
 				#if($value=="")
 					#set($value=$patient.getFullName())
 				#end
-				<td onclick="javascript:showPatientDashboardForm( '$patient.id' )">
-					$value
-				</td>
-					
+				<td>$value</td>
 				<td>			
 					$i18n.getString( $patient.gender )
 				</td>
@@ -95,7 +92,7 @@
 				<td>$!mapPatientOrgunit.get($patient.id)</td>
 				#end
 				<td>
-					<a href="javascript:showById('backBtnFromEntry');setInnerHTML('addNewDiv','');unSave = false;showSelectedDataRecoding('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
+					<a href="javascript:setInnerHTML('addNewDiv','');unSave = false;showSelectedDataRecoding('$patient.id', getFieldValue('programIdAddPatient'));" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
 					<a href="javascript:showPatientHistory( '$patient.id' )" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
                 </td>               				
 			</tr>

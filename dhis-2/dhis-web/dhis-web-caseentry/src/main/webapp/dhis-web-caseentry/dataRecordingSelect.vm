@@ -1,3 +1,8 @@
+<h3>
+ <a href="javascript:backMainPage();">$i18n.getString( 'single_event_with_registration' )</a>
+ &raquo; <span id='singleProgramName' name='singleProgramName'></span>
+</h3>
+
 <form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
 <div class="actions" style='margin-top:30px;' #if($program.type!=1) style='display:none;' #end>
 	<input type="button" class='stage-object' id="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript: registerIrregularEncounter( getFieldValue('executionDate') );" disabled="disabled" >
@@ -21,29 +26,6 @@
 		</table>
 	</tr>
 </table>
-		
-<div id='inputCriteria' class="page inputCriteria" style="width:490px;height:29px;">	
-	<input type='hidden' id='programStageId' name='programStageId'>
-	<table>
-	   <tr id='programIdTR'>
-			<td class='text-column'><label for="programId">$i18n.getString( "program" )</label></td>
-			<td>
-				<select id="programId" name="programId" class="criteria" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
-					<option value="0">[$i18n.getString( "select" )]</option>
-					#foreach( $program in $programs )
-						<option value="$program.id" type="$program.type" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
-					#end
-				</select>
-			</td>
-		</tr>
-	</table>
-</div>
+<input type='hidden' id='programStageId' name='programStageId'>
 
 </form>
-
-<script>
-	jQuery('#dataRecordingSelectForm').ready(function(){ 
-		byId('programId').selectedIndex = 1;
-		loadProgramStages();
-	});
-</script>
