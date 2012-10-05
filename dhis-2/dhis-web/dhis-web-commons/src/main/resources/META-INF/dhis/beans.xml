@@ -8,15 +8,10 @@
   <!-- Web Portal -->
 
   <bean id="org.hisp.dhis.webportal.module.ModuleManager" class="org.hisp.dhis.webportal.module.DefaultModuleManager">
-    <property name="moduleComparator">
-      <ref local="org.hisp.dhis.webportal.module.ConfigurableModuleComparator" />
-    </property>
-    <property name="defaultActionName">
-      <value>index</value>
-    </property>
-    <property name="maintenanceModuleIdentifier">
-      <value>maintenance</value>
-    </property>
+    <property name="actionAccessResolver" ref="org.hisp.dhis.security.ActionAccessResolver" />
+    <property name="moduleComparator" ref="org.hisp.dhis.webportal.module.ConfigurableModuleComparator" />
+    <property name="defaultActionName" value="index" />
+    <property name="maintenanceModuleIdentifier" value="maintenance" />
   </bean>
 
   <bean id="org.hisp.dhis.webportal.module.ConfigurableModuleComparator" class="org.hisp.dhis.webportal.module.ConfigurableModuleComparator">
