@@ -363,7 +363,7 @@ public class HibernatePatientStore
             String[] keys = searchKey.split( "_" );
             String id = keys[1];
             String value = "";
-            if ( keys.length == 3 )
+            if ( keys.length >= 3 )
             {
                 value = keys[2];
             }
@@ -549,7 +549,7 @@ public class HibernatePatientStore
         {
             sql += statementBuilder.limitRecord( min, max );
         }
-        
+ System.out.println("\n\n ==== \n " + sql );       
         return sql;
     }
 
