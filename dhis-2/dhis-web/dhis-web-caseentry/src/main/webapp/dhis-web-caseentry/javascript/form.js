@@ -29,11 +29,6 @@ function loadDataEntry( programStageInstanceId )
 	disableCompletedButton(true);
 	disable('uncompleteBtn');
 	
-	jQuery(".stage-object-selected").removeClass('stage-object-selected');
-	var selectedProgramStageInstance = jQuery( '#' + prefixId + programStageInstanceId );
-	selectedProgramStageInstance.addClass('stage-object-selected');
-	setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
-	
 	showLoader();	
 	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
 		{ 
@@ -57,7 +52,6 @@ function loadDataEntry( programStageInstanceId )
 			{
 				disableCompletedButton(true);
 			}
-			
 			hideLoader();
 			hideById('contentDiv'); 
 		} );
@@ -164,5 +158,22 @@ function advancedSearch( params )
 				setFieldValue('listAll',false);
 				jQuery( "#loaderDiv" ).hide();
 			}
+		});
+}
+
+//--------------------------------------------------------------------------------------------
+// Load program-stages by the selected program
+//--------------------------------------------------------------------------------------------
+
+function loadProgramStages( programId )
+{
+	jQuery.getJSON( "loadProgramStageInstances.action",
+		{
+			programId: programId
+		},  
+		function( json ) 
+		{   
+			jQuery("#selectForm [id=programStageId]").attr('psid', json.programStageInstances[0].programStageId);	
+			loadDataEntry( json.programStageInstances[0].id );
 		});
 }
