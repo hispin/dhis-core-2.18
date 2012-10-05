@@ -11,10 +11,18 @@
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
-	<tr>
-		<td><label for="username">$i18n.getString( "user_name" )</label></td>
-		<td><input type="text" id="username" name="username" value="$encoder.htmlEncode( $userCredentials.username )" style="width:20em" disabled="disabled"></td>
-	</tr>
+    <tr>
+        <td><label for="username">$i18n.getString( "user_name" )</label></td>
+        <td><input type="text" id="username" name="username" value="$encoder.htmlEncode( $userCredentials.username )" style="width:20em" disabled="disabled"></td>
+    </tr>
+    <tr>
+        <td><label for="firstName">$i18n.getString( "first_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em"></td>
+    </tr>
+    <tr>
+        <td><label for="surname">$i18n.getString( "last_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em"></td>
+    </tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "old_password" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="password" id="oldPassword" name="oldPassword" style="width:20em"></td>
@@ -26,14 +34,6 @@
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_new_password" )</label></td>
 		<td><input type="password" id="retypePassword" name="retypePassword" style="width:20em"></td>
-	</tr>
-	<tr>
-		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em"></td>
-	</tr>
-	<tr>
-		<td><label for="firstName">$i18n.getString( "first_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em"></td>
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
