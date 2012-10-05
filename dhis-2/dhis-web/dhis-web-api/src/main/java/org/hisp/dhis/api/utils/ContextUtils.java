@@ -77,11 +77,17 @@ public class ContextUtils
     public enum CacheStrategy
     {
         NO_CACHE,
+        CACHE_1_HOUR,
         CACHE_6AM_TOMORROW,
         CACHE_TWO_WEEKS,
         RESPECT_SYSTEM_SETTING
     }
 
+    public void configureResponse( HttpServletResponse response, String contentType, CacheStrategy cacheStrategy )
+    {
+        configureResponse( response, contentType, cacheStrategy, null, false );
+    }
+    
     public void configureResponse( HttpServletResponse response, String contentType, CacheStrategy cacheStrategy,
                                    String filename, boolean attachment )
     {
@@ -106,6 +112,14 @@ public class ContextUtils
 
             response.setHeader( HEADER_CACHE_CONTROL, "max-age=1" );
             response.setHeader( HEADER_EXPIRES, DateUtils.getExpiredHttpDateString() );
+        }
+        else if ( cacheStrategy.equals( CacheStrategy.CACHE_1_HOUR ) )
+        {
+            Calendar cal = Calendar.getInstance();
+            cal.add( Calendar.HOUR_OF_DAY, 1 );
+            
+            response.setHeader( HEADER_CACHE_CONTROL, "public, max-age=3600" );
+            response.setHeader( HEADER_EXPIRES, DateUtils.getHttpDateString( cal.getTime() ) );            
         }
         else if ( cacheStrategy.equals( CacheStrategy.CACHE_6AM_TOMORROW ) )
         {

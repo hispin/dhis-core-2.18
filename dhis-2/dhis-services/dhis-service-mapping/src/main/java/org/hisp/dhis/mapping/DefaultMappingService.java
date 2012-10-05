@@ -603,6 +603,11 @@ public class DefaultMappingService
     {
         return mapViewStore.getByUser( user );
     }
+    
+    public Collection<MapView> getMapViewsBetweenByName( String name, int first, int max )
+    {
+        return mapViewStore.getBetweenByName( name, first, max );
+    }
 
     // -------------------------------------------------------------------------
     // MapLayer

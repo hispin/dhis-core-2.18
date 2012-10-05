@@ -159,6 +159,8 @@ public interface MappingService
     Collection<MapView> getMapViewsByFeatureType( String featureType );
     
     Collection<MapView> getMapViewsByUser( User user );
+    
+    Collection<MapView> getMapViewsBetweenByName( String name, int first, int max );
 
     // -------------------------------------------------------------------------
     // MapLayer

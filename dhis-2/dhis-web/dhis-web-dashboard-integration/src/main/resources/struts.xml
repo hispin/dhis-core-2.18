@@ -48,6 +48,11 @@
       <result name="success" type="redirect">index.action</result>
     </action>
     
+    <action name="search" class="org.hisp.dhis.dashboard.action.SearchAction">
+      <result name="success" type="velocity">/dhis-web-dashboard-integration/hits.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
     <!-- Message -->
 
     <action name="message" class="org.hisp.dhis.dashboard.message.action.GetMessagesAction">

@@ -5,71 +5,72 @@
 
 .contentProviderTable
 {
-  width:295px;
+  width: 295px;
 }
 
 .contentProviderTable td
 {
-  padding-top:3px;
-  padding-bottom:3px;
-  border-bottom:1px solid #cad5e5;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #cad5e5;
 }
 
 #contentDiv
 {
-  position:relative;
-  top: 38px;
+  position: relative;
+  top: 44px;
 }
 
 .removeIcon
 {
-   padding:2px 2px 1px 2px;
+   padding: 2px 2px 1px 2px;
 }
 
 .linkArea
 {
-  border:1px solid #d0d0d0;
-  padding:1px;
-  height:196px;
-  width:295px;
-  overflow:hidden;
-  margin-bottom:15px;
+  border: 1px solid #d0d0d0;
+  padding: 1px;
+  height: 196px;
+  width: 295px;
+  overflow: hidden;
+  margin-bottom: 15px;
 }
 
 .linkArea div
 {
-  position:absolute;
+  position: absolute;
 }
 
 .chartArea
 {
-  border:1px solid #d0d0d0;
-  padding:1px;
-  height:310px;
-  width:310px;
-  overflow:hidden;
-  margin-bottom:15px;
+  border: 1px solid #d0d0d0;
+  padding: 1px;
+  height: 310px;
+  width: 310px;
+  overflow: hidden;
+  margin-bottom: 15px;
 }
 
 .chartArea div
 {
-  position:absolute;
+  position: absolute;
 }
 
 .buttonArea
 {
-  margin-bottom:2px;
+  margin-bottom: 2px;
 }
 
 .labelText
 {
-  color:#888;
-  padding:3px;
+  color: #888;
+  padding: 3px;
 }
 
 #subMenu
 {
-  position:absolute;
+  position: absolute;
+  margin-top: 6px;
 }
 
 #subMenu ul
@@ -100,6 +101,51 @@
 {
   text-decoration: none;
   background-color: #f8f8f8;
+}
+
+#searchDiv
+{
+  position: absolute;
+  left: 260px;
+  height: 25px;
+  width: 330px;
+  border: 1px solid #ccc;
+  padding: 2px 6px 0 6px;
+}
+
+#searchField
+{
+  width: 300px;
+  border: 0;
+  outline: none;
+  width: 100%;
+  vertical-align: top;
+  font-size: 10pt;
+}
+
+#hitDiv
+{
+  position: absolute;
+  margin-top: 29px;
+  left: 260px;
+  width: 342px;
+  border-right: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  border-left: 1px solid #bbb;
+  background-color: #fff;
+  display: none;
+  overflow: hidden;
+  z-index: 20;
+}
+
+#hitDiv ul
+{
+  list-style-type: none;
+}
+
+#hitDiv li
+{
+  padding: 5px 5px 5px 10px;
 }
 
 #shareForm
@@ -161,42 +207,42 @@
 
 .plainList
 {
-  border-collapse:collapse;
+  border-collapse: collapse;
 }
 
 .plainList td
 {
-  border-bottom:1px solid #c0c0c0;
-  cursor:pointer;
+  border-bottom: 1px solid #c0c0c0;
+  cursor: pointer;
 }
 
 .unread td
 {
-  background-color:#ebf0f6;
+  background-color: #ebf0f6;
 }
 
 .messageDiv
 {
-  width:50%;
-  border-bottom:1px solid #cccccc; 
-  margin-bottom:15px;
-  padding-bottom:15px;
+  width: 50%;
+  border-bottom: 1px solid #cccccc; 
+  margin-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 .messageBottomDiv
 {
-  width:50%;
-  border-top:1px solid #cccccc; 
-  margin-top:20px;
-  padding-top:15px;
-  margin-bottom:20px;
-  padding-bottom:15px;
+  width: 50%;
+  border-top: 1px solid #cccccc; 
+  margin-top: 20px;
+  padding-top: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
 }
 
 .replyArea
 {
-  width:495px;
-  height:80px;
+  width: 495px;
+  height: 80px;
   border: 1px solid #ccc;
   resize: none;
   overflow: auto;
@@ -205,7 +251,7 @@
 
 div#selectionTree 
 {
-  height:200px;
+  height: 200px;
 }
 
 .grey
@@ -292,4 +338,3 @@ div#selectionTree
 {
   cursor:pointer;
 }
-
