@@ -1270,10 +1270,11 @@ function loadProgramInstance( programInstanceId, completed )
 		}, function()
 		{
 			showById('programEnrollmentDiv');
-			var type = jQuery('#tr_'+programInstanceId).attr('programType');
+			var type = jQuery('#tb_' + programInstanceId).attr('programType');
 			if(type=='2'){
+				hideById('colorHelpLink');
 				hideById('programInstanceDiv');
-				var programStageInstanceId = jQuery('#tr_'+programInstanceId).attr('programStageInstanceId');
+				var programStageInstanceId = jQuery('.stage-object').attr('id').split('_')[1];
 				loadDataEntry( programStageInstanceId );
 			}
 			else{

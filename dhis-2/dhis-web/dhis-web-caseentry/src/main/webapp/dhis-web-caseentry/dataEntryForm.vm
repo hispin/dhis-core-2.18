@@ -31,7 +31,7 @@
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	#if( $customDataEntryFormCode )
 		#parse( "/dhis-web-caseentry/customDataEntryForm.vm" )
-	#elseif( $sections.size() > 0 )
+	#elseif( $sections && $sections.size() > 0 )
 		#parse( "/dhis-web-caseentry/sectionDataEntryForm.vm" )
 	#else
 		#parse( "/dhis-web-caseentry/defaultDataEntryForm.vm" )

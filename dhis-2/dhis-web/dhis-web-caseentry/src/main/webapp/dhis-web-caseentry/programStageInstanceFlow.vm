@@ -1,4 +1,4 @@
-<table id='tb_$!programInstance.id' class="stage-container">
+<table id='tb_$!programInstance.id' class="stage-container" programType='$!programInstance.program.type'>
 	<tr>
 		<td>
 			<div class="arrow-left" onclick="moveLeft('flow_$!programInstance.id')">&nbsp;</div>
