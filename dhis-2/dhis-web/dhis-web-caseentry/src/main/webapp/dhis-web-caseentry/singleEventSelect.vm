@@ -27,8 +27,9 @@
 <p><input type="button" class='button' value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick='backMainPage();' style='display:none;'></p>
 <span id='message'></span>
 
-<div class='hidden'>
+<div class='hidden' id='selectForm' name='selectForm'>
 	<input id='executionDateNewEvent' name='executionDateNewEvent'>
+	<input type='hidden' class='stage-object-selected stage-object' id='programStageId' name='programStageId'>
 </div>
 
 #parse( "dhis-web-commons/loader/loader.vm" )

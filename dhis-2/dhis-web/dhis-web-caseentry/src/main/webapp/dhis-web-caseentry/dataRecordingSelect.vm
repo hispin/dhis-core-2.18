@@ -4,9 +4,7 @@
 </h3>
 
 <form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
-<div class="actions" style='margin-top:30px;' #if($program.type!=1) style='display:none;' #end>
-	<input type="button" class='stage-object' id="newEncounterBtn" value="$i18n.getString('create_new_event')" onClick="javascript: registerIrregularEncounter( getFieldValue('executionDate') );" disabled="disabled" >
-</div>
+
 <table class="mainPageTable" id='patientInfoDiv'> 
 	<tr>
 		<td valign="top">
@@ -26,6 +24,4 @@
 		</table>
 	</tr>
 </table>
-<input type='hidden' id='programStageId' name='programStageId'>
-
 </form>

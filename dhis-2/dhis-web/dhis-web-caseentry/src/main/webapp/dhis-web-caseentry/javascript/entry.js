@@ -1,18 +1,3 @@
-//--------------------------------------------------------------------------------------------
-// Load program-stages by the selected program
-//--------------------------------------------------------------------------------------------
-
-function loadProgramStages( programId )
-{
-	jQuery.getJSON( "loadProgramStageInstances.action",
-		{
-			programId: programId
-		},  
-		function( json ) 
-		{    
-			loadDataEntry( json.programStageInstances[0].id );
-		});
-}
 
 //------------------------------------------------------------------------------
 // Save value
