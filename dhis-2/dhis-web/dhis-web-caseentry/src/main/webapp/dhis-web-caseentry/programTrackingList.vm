@@ -7,60 +7,42 @@
 
 <input type='hidden' id='currentUsername' name='currentUsername' value='$currentUsername'>
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programStageInstance.programInstance.id'>
-<table class="mainPageTable">
+#set($status = $programStageInstance.getEventStatus())
+<table>
+	<tr>            
+		<td class="bold">$i18n.getString( "full_name" ):</td>
+		<td>$programStageInstance.programInstance.patient.getFullName()<td>
+	</tr>
+	<tr>            
+		<td class="bold">$i18n.getString( "gender" ):</td>
+		<td>$programStageInstance.programInstance.patient.gender<td>
+	</tr>
 	<tr>
+		<td class="bold">$i18n.getString( "date_of_birth" ):</td>
+		<td>$format.formatDate( $programStageInstance.programInstance.patient.birthDate )<td>
+	</tr>
+	<tr>
+		<td class="bold">$i18n.getString( "age" ):</td>
+		<td>$programStageInstance.programInstance.patient.getAge()<td>
+	</tr>
+	<tr>
+		<td class="bold">$i18n.getString("phone_number")</td>
 		<td>
-			<table>
-				<tr>            
-					<td class="bold">$i18n.getString( "full_name" ):</td>
-					<td>$programStageInstance.programInstance.patient.getFullName()<td>
-				</tr>
-				<tr>            
-					<td class="bold">$i18n.getString( "gender" ):</td>
-					<td>$programStageInstance.programInstance.patient.gender<td>
-				</tr>
-				<tr>
-					<td class="bold">$i18n.getString( "date_of_birth" ):</td>
-					<td>$format.formatDate( $programStageInstance.programInstance.patient.birthDate )<td>
-				</tr>
-				<tr>
-					<td class="bold">$i18n.getString( "age" ):</td>
-					<td>$programStageInstance.programInstance.patient.getAge()<td>
-				</tr>
-				<tr>
-					<td class="bold">$i18n.getString("phone_number")</td>
-					<td>
-						#if($!programStageInstance.programInstance.patient.phoneNumber && $!programStageInstance.programInstance.patient.phoneNumber!='')
-							$!programStageInstance.programInstance.patient.phoneNumber
-						#else
-							[$i18n.getString('none')]
-						#end
-					</td>
-				</tr>
-				<tr>
-					<td class="bold">$i18n.getString("health_worker")</td>
-					<td>
-						#if($!programStageInstance.programInstance.patient.healthWorker )
-							$!programStageInstance.programInstance.patient.healthWorker.name
-						#else
-							[$i18n.getString('none')]
-						#end
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<br>
-						#set($status = $programStageInstance.getEventStatus())
-						#if( $programStageInstance.irregular!='true' && ($status==3 || $status==4 || $status==5 ) )
-							<input type="button" value="$i18n.getString('remove_this_event')" onclick="javascript:removeEvent($programStageInstance.id, true)" title='$i18n.getString( "remove_this_event" )'></a>
-						#end
-					</td>
-				</tr>
-			</table>
+			#if($!programStageInstance.programInstance.patient.phoneNumber && $!programStageInstance.programInstance.patient.phoneNumber!='')
+				$!programStageInstance.programInstance.patient.phoneNumber
+			#else
+				[$i18n.getString('none')]
+			#end
 		</td>
-		
-		<td align='right'>
-			
+	</tr>
+	<tr>
+		<td class="bold">$i18n.getString("health_worker")</td>
+		<td>
+			#if($!programStageInstance.programInstance.patient.healthWorker )
+				$!programStageInstance.programInstance.patient.healthWorker.name
+			#else
+				[$i18n.getString('none')]
+			#end
 		</td>
 	</tr>
 </table>
@@ -135,6 +117,14 @@
 							<td></td>
 							<td id="smsError" style="color:red;"></td>
 						</tr>
+						#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) )
+						<tr>
+							<td></td>
+							<td>
+								<input type="button" value="$i18n.getString('remove_this_event')" onclick="javascript:removeEvent($programStageInstance.id, true)" title='$i18n.getString( "remove_this_event" )' #if( $status==1 ) class='hidden' #end></a>
+							</td>
+						</tr>
+						#end
 					</table>
 				</div>
 			</div>
