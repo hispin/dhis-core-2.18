@@ -22,7 +22,6 @@
 								psid="$programStageInstance.programStage.id"
 								psname="$programStageInstance.programStage.name"
 								status="$programStageInstance.getEventStatus()"
-								orgunit="$!programStageInstance.organisationUnit.name"
 								programType='$programInstance.program.type'
 								reportDate="$!format.formatDate( $!programStageInstance.executionDate )"
 								reportDateDes="$programStageInstance.programStage.reportDateDescription"

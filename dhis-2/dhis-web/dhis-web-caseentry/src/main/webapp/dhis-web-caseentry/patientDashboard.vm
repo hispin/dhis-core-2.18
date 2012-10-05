@@ -150,7 +150,7 @@
 								<tr><th>$i18n.getString("completed_programs")</th></tr>
 								<tr>
 									<td>
-										<select id="completedList" name="completedList" onchange="javascript:loadProgramInstance(this.value, true);" style="width:100%">
+										<select id="completedList" name="completedList" onchange="javascript:loadActiveProgramStageRecords(this.value);" style="width:100%">
 											<option value="">[$i18n.getString("please_select")]</option>
 											#foreach($programInstance in $completedProgramInstances)
 												#set($programStageInstanceId = '')
