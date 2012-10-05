@@ -68,12 +68,9 @@
 
 <script>
 	unSave = false;
-	var i18n_sms_message_management = '$encoder.jsEscape( $i18n.getString( "sms_message_management" ) , "'")';
-	var i18n_send_sms = '$encoder.jsEscape( $i18n.getString( "send_sms" ) , "'")';
 	var i18n_please_select = '[' + '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'")' + ']';
 	var i18n_specify_search_criteria = '$encoder.jsEscape( $i18n.getString( "specify_search_criteria" ) , "'")';
 	var i18n_color_quick_help = '$encoder.jsEscape( $i18n.getString( "color_quick_help" ) , "'")';
-	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'")';
 	var i18n_please_select_program_stage = '[' + '$encoder.jsEscape( $i18n.getString( "please_select_program_stage" ) , "'")' + ']';
 	var i18n_comment_added = '$encoder.jsEscape( $i18n.getString( "comment_added" ) , "'")';
 	var i18n_update = '$encoder.jsEscape( $i18n.getString( "update" ) , "'")';

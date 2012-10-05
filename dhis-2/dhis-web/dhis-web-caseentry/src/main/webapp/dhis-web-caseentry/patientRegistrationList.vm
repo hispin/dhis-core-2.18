@@ -162,8 +162,7 @@
 	jQuery(document).ready(function(){	
 		tableSorter( 'patientList' );
 	});
-	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';
-	
+	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';	
 	var i18n_id = '$encoder.jsEscape( $i18n.getString( "id" ), "'")';
 	var i18n_full_name = '$encoder.jsEscape( $i18n.getString( "full_name" ), "'")';
 	var i18n_gender = '$encoder.jsEscape( $i18n.getString( "gender" ), "'")';

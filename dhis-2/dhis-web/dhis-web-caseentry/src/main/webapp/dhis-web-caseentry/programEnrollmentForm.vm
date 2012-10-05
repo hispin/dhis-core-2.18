@@ -114,7 +114,7 @@
 		#parse("/dhis-web-caseentry/visitSchedule.vm")
 	</div>
 	
-	<!-- Comments and SMS messages -->
+	<!-- Comments and messages -->
 	<div id='tab-4'>
 		<div id='eventMessagesDiv'></div>
 	</div>
