@@ -1,4 +1,5 @@
 <input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
+<input type='hidden' id='searchByProgramStage' name='searchByProgramStage' value="false">
 <input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.id' >
 <input type="hidden" id='hideLink' name='hideLink' value='false'>
 <input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
@@ -85,7 +86,7 @@
 					<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
 				</td>
 				<td>
-					<input type="button" id='sendSmsToListBtn' value="$i18n.getString('send_sms_to_list')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" class='hidden'>
+					<input type="button" id='sendSmsToListBtn' value="$i18n.getString('send_message_to_list')" onclick="setFieldValue('sendToList', true);showSendSmsForm();" class='hidden'>
 				</td>
 			</tr>
 		</tbody>
