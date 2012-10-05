@@ -3,6 +3,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 {	
 	showById('selectDiv');
 	showById('searchDiv');
+	showById('mainLinkLbl');
 	hideById('listPatientDiv');
 	hideById('editPatientDiv');
 	hideById('enrollmentDiv');

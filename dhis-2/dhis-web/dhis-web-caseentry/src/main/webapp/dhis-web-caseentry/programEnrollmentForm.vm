@@ -3,6 +3,7 @@
 #if( $programInstance || $hasDataEntry=='true')
 <input type='hidden' id='programInstanceId' name='programInstanceId' value='$programInstance.id' />
 <input type='hidden' id='patientId' name='patientId' value='$programInstance.patient.id' />
+<input type='hidden' id='hasDataEntry' name='hasDataEntry' value='$hasDataEntry' />
 <div id="tabs">
 	<ul>
 		<li><a href="#tab-1">$i18n.getString("data_entry_screen")</a></li>
@@ -144,10 +145,15 @@
 		$('#tabs').tabs();
 		
 		#if( $programInstance.program.type!='1' )
-			$("#tabs").tabs("remove", 4);
 			$("#tabs").tabs("remove", 3);
 			$("#tabs").tabs("remove", 2);
 			$("#tabs").tabs("remove", 1);
+			#if( $hasDataEntry == 'true' )
+				$( "#tabs" ).tabs( "option", "selected", 0 );
+			#else
+				$( "#tabs" ).tabs( "option", "disabled", [0] );
+				$( "#tabs" ).tabs("remove", 0);
+			#end
 		#else
 			#if( ( $noIden && $noIden > 0) || ( $noOtherGroup && $noOtherGroup > 0) || ( $noGroup && $noGroup > 0 ))
 				$( "#tabs" ).tabs( "option", "selected", 1 );
@@ -176,5 +182,9 @@
 			getEventMessages(getFieldValue('programInstanceId'));
 		}
 	});
+	
+	if( jQuery('#tabs li').length == 1){
+		programReports(getFieldValue('programInstanceId'));
+	}
 	resize();
 </script>
