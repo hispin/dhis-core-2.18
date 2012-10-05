@@ -21,7 +21,7 @@
 <br>
 #set($programStageInstances = $programInstance.programStageInstances)
 #if( $programStageInstances.size() > 0 )
-	<table class='mainPageTable' id='progarmStageListDiv' name='progarmStageListDiv' >
+	<table class='mainPageTable listTable' id='progarmStageListDiv' name='progarmStageListDiv' >
 		<col width="10px">
 		<col width="200px">
 		<col width="200px">
@@ -38,7 +38,7 @@
 			<th>$i18n.getString( "remove" )</th>
 			#end
 		</tr>
-		
+		<tbody>
 	#set( $rowCount = 0 )
 	#set( $mark = false )
 	#foreach( $programStageInstance in $programStageInstances )
@@ -96,6 +96,7 @@
 		</tr>
 		#set( $mark = !$mark  )
 	#end
+	</tbody>
 	</table>
 #end
 

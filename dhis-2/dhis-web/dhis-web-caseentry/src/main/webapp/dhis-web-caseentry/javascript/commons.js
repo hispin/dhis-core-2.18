@@ -874,14 +874,14 @@ function removeEvent( programStageInstanceId, isEvent )
 						showById('searchDiv');
 						showById('listPatientDiv');
 					}
-					var id = 'ps_' + programStageInstanceId;
-					var programInstanceId = jQuery('#' + id).attr('programInstanceId');
 					if(jQuery(".stage-object-selected").attr('id')== id)
 					{
 						hideById('entryForm');
 						hideById('executionDateTB');
 						hideById('inputCriteriaDiv');
 					}
+					var id = 'ps_' + programStageInstanceId;
+					var programInstanceId = jQuery('#' + id).attr('pi');
 					jQuery('#ps_' + programStageInstanceId).remove();
 					jQuery('#arrow_' + programStageInstanceId).remove();
 					jQuery('#org_' + programStageInstanceId).remove();
@@ -910,6 +910,7 @@ function showRelationshipList( patientId )
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('listPatientDiv');
+	hideById('entryForm');
 
 	jQuery('#loaderDiv').show();
 	jQuery('#listRelationshipDiv').load('showRelationshipList.action',
