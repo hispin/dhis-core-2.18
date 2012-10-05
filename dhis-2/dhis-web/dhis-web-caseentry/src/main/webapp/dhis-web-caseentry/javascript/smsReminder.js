@@ -160,17 +160,6 @@ function showSendSmsForm()
 		});
 }
 
-function sendSMS()
-{
-	var sendToList = getFieldValue('sendToList');
-	if( sendToList == 'false'){	
-		sendSmsOnePatient()
-	}
-	else{
-		sendSmsToList();
-	}
-}
-
 function sendSmsToList()
 {
 	params = getSearchParams();
@@ -200,27 +189,6 @@ function sendSmsToList()
 // --------------------------------------------------------------------
 // Post Comments
 // --------------------------------------------------------------------
-
-function showCommentList( programStageInstanceId, isSendSMS ) 
-{
-	setFieldValue('sendToList', "false");
-	$('#smsManagementDiv' ).load("programTrackingList.action",
-		{
-			programStageInstanceId: programStageInstanceId
-		}
-		, function(){
-			hideById('smsManagementForm');
-		}).dialog(
-		{
-			title:i18n_sms_message_management,
-			maximize:true, 
-			closable:true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width:800,
-			height:500
-		});
-}
 
 function keypress(event, field, programStageInstanceId )
 {
