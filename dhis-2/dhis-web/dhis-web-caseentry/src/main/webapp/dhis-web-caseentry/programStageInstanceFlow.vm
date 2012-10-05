@@ -17,6 +17,8 @@
 							<div class="orgunit-object" id="org_$!programStageInstance.id">&nbsp;$!programStageInstance.organisationUnit.name</div>
 							<input type="button" name="programStageBtn"
 								id="ps_$!programStageInstance.id"
+								name="ps_$!programStageInstance.id"
+								pi="$programInstance.id"
 								psid="$programStageInstance.programStage.id"
 								psname="$programStageInstance.programStage.name"
 								status="$programStageInstance.getEventStatus()"

@@ -571,8 +571,9 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				if( dueDate < dueDateInStage && !flag)
 				{	
 					jQuery('<td>'
-						+ '<span id="org_' + programStageInstanceId + '">' + getFieldValue('orgunitName') + '</span><br>'
+						+ '<div class="orgunit-object" id="org_' + programStageInstanceId + '"></div>'
 						+ '<input name="programStageBtn" '
+						+ 'pi="' + programInstanceId + '" ' 
 						+ 'id="' + elementId + '" ' 
 						+ 'psid="' + programStageId + '" '
 						+ 'programType="' + programType + '" '
@@ -592,7 +593,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			{
 				jQuery("#programStageIdTR_" + programInstanceId).append('<td><img src="images/rightarrow.png"></td>'
 					+ '<td>'
-					+ '<span id="org_' + programStageInstanceId + '">' + getFieldValue('orgunitName') + '</span><br>'
+					+ '<div class="orgunit-object" id="org_' + programStageInstanceId + '"></div>'
 					+ '<input name="programStageBtn" '
 					+ 'id="' + elementId + '" ' 
 					+ 'psid="' + programStageId + '" '
@@ -618,7 +619,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			
 			jQuery('#ps_' + programStageInstanceId ).focus();
 			jQuery('#createNewEncounterDiv_' + programInstanceId).dialog("close");
-			resetActiveEvent( programStageInstanceId );
+			resetActiveEvent(programInstanceId);
 			loadDataEntry( programStageInstanceId );
 			showSuccessMessage(i18n_create_event_success);
 		});
@@ -787,9 +788,10 @@ function setEventStatus( field, programStageInstanceId )
 			status:field.value
 		}, function ( json )
 		{
-			jQuery('#ps_' + programStageInstanceId).attr('status',field.value);
+			var eventBox = jQuery('#ps_' + programStageInstanceId);
+			eventBox.attr('status',field.value);
 			setEventColorStatus( programStageInstanceId, field.value );
-			resetActiveEvent( programStageInstanceId );
+			resetActiveEvent( eventBox.attr("pi") );
 			if( status==1){
 				hideById('del_' + programStageInstanceId);
 			}
@@ -809,51 +811,45 @@ function setEventStatus( field, programStageInstanceId )
 		} );
 }
 
-function resetActiveEvent( programStageInstanceId )
+function resetActiveEvent( programInstanceId )
 {
-	var activeProgramInstance = jQuery(".selected");
-	if( activeProgramInstance.length > 0 )
-	{
-		var programInstanceId = activeProgramInstance.attr('id').split('_')[1];
-		var hasActiveEvent = false;
-		jQuery(".stage-object").each(function(){
-			var status = jQuery(this).attr('status');
-			if(status !=1 && status != 5 && !hasActiveEvent){
-				var value = jQuery(this).val();
-				var programStageInstanceId = jQuery(this).attr('id').split('_')[1];
-				
-				jQuery('#td_' + programInstanceId).attr("onClick", "javascript:loadActiveProgramStageRecords("+ programInstanceId +", "+ programStageInstanceId  +")")
-				jQuery('#tr2_' + programInstanceId).html("<a>>>" + value + "</a>");
-				jQuery('#tr2_' + programInstanceId).attr("onClick", "javascript:loadActiveProgramStageRecords("+ programInstanceId +", "+ programStageInstanceId + ")");
-				
-				var id = 'ps_' + programStageInstanceId;
-				enable('ps_' + programStageInstanceId );
-				if( jQuery(".stage-object-selected").attr('id')!=jQuery(this).attr('id') )
-				{
-					hideById('entryForm');
-					hideById('executionDateTB');
-					hideById('inputCriteriaDiv');
-				}
-				hasActiveEvent = true;
-			}
-		});
-		
-		if( !hasActiveEvent ){
-			jQuery('#td_' + programInstanceId).attr("onClick", "javascript:loadActiveProgramStageRecords("+ programInstanceId +", false)")
-			jQuery('#tr2_' + programInstanceId).html("");
-			jQuery('#tr2_' + programInstanceId).attr("onClick", "");
+	var hasActiveEvent = false;
+	jQuery(".stage-object").each(function(){
+		var status = jQuery(this).attr('status');
+		if(status !=1 && status != 5 && !hasActiveEvent){
+			var value = jQuery(this).val();
+			var programStageInstanceId = jQuery(this).attr('id').split('_')[1];
 			
-			hideById('entryForm');
-			hideById('executionDateTB');
-			hideById('inputCriteriaDiv');
+			jQuery('#td_' + programInstanceId).attr("onClick", "javascript:loadActiveProgramStageRecords("+ programInstanceId +", "+ programStageInstanceId  +")")
+			jQuery('#tr2_' + programInstanceId).html("<a>>>" + value + "</a>");
+			jQuery('#tr2_' + programInstanceId).attr("onClick", "javascript:loadActiveProgramStageRecords("+ programInstanceId +", "+ programStageInstanceId + ")");
+			
+			var id = 'ps_' + programStageInstanceId;
+			enable('ps_' + programStageInstanceId );
+			if( jQuery(".stage-object-selected").attr('id')!=jQuery(this).attr('id') )
+			{
+				hideById('entryForm');
+				hideById('executionDateTB');
+				hideById('inputCriteriaDiv');
+			}
+			hasActiveEvent = true;
 		}
-	}	
+	});
+	
+	if( !hasActiveEvent ){
+		jQuery('#td_' + programInstanceId).attr("onClick", "javascript:loadActiveProgramStageRecords("+ programInstanceId +", false)")
+		jQuery('#tr2_' + programInstanceId).html("");
+		jQuery('#tr2_' + programInstanceId).attr("onClick", "");
+		
+		hideById('entryForm');
+		hideById('executionDateTB');
+		hideById('inputCriteriaDiv');
+	}
 }
 
 function removeEvent( programStageInstanceId, isEvent )
 {	
     var result = window.confirm( i18n_comfirm_delete_event );
-    
     if ( result )
     {
     	$.postJSON(
@@ -889,7 +885,7 @@ function removeEvent( programStageInstanceId, isEvent )
 					jQuery('#ps_' + programStageInstanceId).remove();
 					jQuery('#arrow_' + programStageInstanceId).remove();
 					jQuery('#org_' + programStageInstanceId).remove();
-					resetActiveEvent( programStageInstanceId );
+					resetActiveEvent( programInstanceId );
 					reloadOneRecord( programInstanceId );
 					showSuccessMessage( i18n_delete_success );
 					resize();
