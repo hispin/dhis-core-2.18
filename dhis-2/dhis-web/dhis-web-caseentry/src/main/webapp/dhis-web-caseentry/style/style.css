@@ -426,3 +426,28 @@ div.dashboard-history
 	padding-left:1px;
 	padding-bottom:1px;
 }
+
+
+
+
+
+div.event-tracking-area
+{
+  border:1px solid #d0d0d0;
+  padding-top:1px;
+  padding-right:1px;
+  padding-left:1px;
+  padding-bottom:0px;
+  height: 270px;
+  width: 450px;
+  overflow:hidden;
+  position:relative;
+}
+
+.content-event-tracking-area
+{
+  height: 270px;
+  width: 450px;
+  overflow-y: auto;
+  overflow-x:hidden;
+}
