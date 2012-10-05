@@ -61,40 +61,46 @@
       <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png" 
         onclick="window.location.href='../dhis-web-commons-about/modules.action'" style="cursor:pointer" title="$i18n.getString( 'go_to_system_overview' )">
       
+      #if( $maintenanceModules.size() > 0 )
       <img id="menuSeparator1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
+      #end
       <img id="menuSeparator2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
       <img id="menuSeparator3" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
       <img id="menuSeparator4" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
       <img id="menuSeparator5" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
 
+      #if( $maintenanceModules.size() > 0 )
       <div id="menuLink1" class="menuLink">$i18n.getString( "maintenance" )</div>
+      #end
+      #if( $serviceModules.size() > 0 )
       <div id="menuLink2" class="menuLink">$i18n.getString( "services" )</div>
+      #end
       <div id="menuLink3" class="menuLink">$i18n.getString( "help" )</div>
       <div id="menuLink4" class="menuLink">$i18n.getString( "log_out" )</div>
 
+      #if( $maintenanceModules.size() > 0 )
       <div id="menuDropDown1" class="menuDropDownArea" >
       <ul class="menuDropDownBox">
       #foreach( $module in $maintenanceModules )
-      #if( $auth.hasAccess( $module.name, "index" ) )
         <li>
           <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
         </li>
       #end
-      #end
       </ul>      
       </div>
+      #end
 
+      #if( $serviceModules.size() > 0 )
       <div id="menuDropDown2" class="menuDropDownArea">
       <ul class="menuDropDownBox">
       #foreach( $module in $serviceModules )
-      #if( $auth.hasAccess( $module.name, "index" ) )
         <li>
           <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
         </li>
       #end
-      #end
       </ul>      
       </div>
+      #end
 	  
       <div id="menuDropDown3" class="menuDropDownArea">
       <ul class="menuDropDownBox">
