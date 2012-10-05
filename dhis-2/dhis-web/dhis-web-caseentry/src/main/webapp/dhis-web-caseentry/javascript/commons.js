@@ -1461,6 +1461,8 @@ function hideProgramInstanceDiv( programInstanceId )
 
 function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInstanceId)
 {
+	if( programInstanceId == "") return;
+	
 	jQuery('#loaderDiv').show();
 	jQuery('#programEnrollmentDiv').load('enrollmentform.action',
 		{
@@ -1468,17 +1470,21 @@ function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInst
 		}, function()
 		{
 			showById('programEnrollmentDiv');
+			var hasDataEntry = getFieldValue('hasDataEntry');
 			var type = jQuery('#tb_'+programInstanceId).attr('programType');
 			if(type=='2'){
 				hideById('colorHelpLink');
 				hideById('programInstanceDiv');
-				var programStageInstanceId = jQuery('.stage-object').attr('id').split('_')[1];
-				loadDataEntry( programStageInstanceId );
+				if( hasDataEntry=='true' || hasDataEntry==undefined ){
+					var programStageInstanceId = jQuery('.stage-object').attr('id').split('_')[1];
+					loadDataEntry( programStageInstanceId );
+				}
 			}
 			else{
 				showById('programInstanceDiv');
 				activeProgramInstanceDiv( programInstanceId );
-				if( activeProgramStageInstanceId != undefined )
+				if( activeProgramStageInstanceId != undefined 
+					&& ( hasDataEntry=='true' || hasDataEntry==undefined ))
 				{
 					loadDataEntry( activeProgramStageInstanceId );
 				}
