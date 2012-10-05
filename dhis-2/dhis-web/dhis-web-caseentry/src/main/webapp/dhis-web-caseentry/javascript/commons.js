@@ -1248,45 +1248,8 @@ function saveEnrollment()
 			jQuery('#activeTB' ).prepend(activedRow);
 			jQuery('#enrollmentDiv').dialog("close");
 			saveIdentifierAndAttribute( patientId, programId,'identifierAndAttributeDiv' );
-			loadProgramInstance( programInstanceId, false );
+			loadActiveProgramStageRecords( programInstanceId );
 			showSuccessMessage(i18n_enrol_success);
-		});
-}
-
-// ----------------------------------------------------------------
-// Load program instance
-// ----------------------------------------------------------------
-
-function loadProgramInstance( programInstanceId, completed )
-{				
-	if( programInstanceId=='') {
-		hideById('programEnrollmentDiv');
-		return;
-	}
-	jQuery('#loaderDiv').show();
-	jQuery('#programEnrollmentDiv').load('enrollmentform.action',
-		{
-			programInstanceId:programInstanceId
-		}, function()
-		{
-			showById('programEnrollmentDiv');
-			var type = jQuery('#tb_' + programInstanceId).attr('programType');
-			if(type=='2'){
-				hideById('colorHelpLink');
-				hideById('programInstanceDiv');
-				var programStageInstanceId = jQuery('.stage-object').attr('id').split('_')[1];
-				loadDataEntry( programStageInstanceId );
-			}
-			else{
-				showById('programInstanceDiv');
-			}
-			activeProgramInstanceDiv( programInstanceId );
-			if( completed ){
-				hideById('newEncounterBtn_' + programInstanceId);
-			}
-			jQuery('#loaderDiv').hide();
-			resize();
-			$(window).scrollTop(200);
 		});
 }
 
@@ -1505,21 +1468,26 @@ function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInst
 		}, function()
 		{
 			showById('programEnrollmentDiv');
-			var type = jQuery('#tr_'+programInstanceId).attr('programType');
+			var type = jQuery('#tb_'+programInstanceId).attr('programType');
 			if(type=='2'){
+				hideById('colorHelpLink');
 				hideById('programInstanceDiv');
-				var programStageInstanceId = jQuery('#tr_'+programInstanceId).attr('programStageInstanceId');
-				loadDataEntryloadDataEntry( programStageInstanceId );
+				var programStageInstanceId = jQuery('.stage-object').attr('id').split('_')[1];
+				loadDataEntry( programStageInstanceId );
 			}
 			else{
 				showById('programInstanceDiv');
+				activeProgramInstanceDiv( programInstanceId );
+				if( activeProgramStageInstanceId != undefined )
+				{
+					loadDataEntry( activeProgramStageInstanceId );
+				}
 			}
-			activeProgramInstanceDiv( programInstanceId );
-			if( activeProgramStageInstanceId )
+			
+			if( activeProgramStageInstanceId != undefined )
 			{
-				loadDataEntry( activeProgramStageInstanceId );
+				jQuery('#completedList').val('');
 			}
-			jQuery('#completedList').val('');
 			jQuery('#loaderDiv').hide();
 		});
 }

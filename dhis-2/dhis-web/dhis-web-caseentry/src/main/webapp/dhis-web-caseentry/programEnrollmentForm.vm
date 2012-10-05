@@ -144,21 +144,24 @@
 		$('#tabs').tabs();
 		
 		#if( $programInstance.program.type!='1' )
+			$("#tabs").tabs("remove", 4);
+			$("#tabs").tabs("remove", 3);
 			$("#tabs").tabs("remove", 2);
-		#end
-		
-		#if( ( $noIden && $noIden > 0) || ( $noOtherGroup && $noOtherGroup > 0) || ( $noGroup && $noGroup > 0 ))
-			$( "#tabs" ).tabs( "option", "selected", 1 );
-		#else
-			$( "#tabs" ).tabs( "option", "selected", 2 );
 			$("#tabs").tabs("remove", 1);
-		#end
-		
-		#if( $hasDataEntry == 'true' )
-			$( "#tabs" ).tabs( "option", "selected", 0 );
 		#else
-			$( "#tabs" ).tabs( "option", "disabled", [0] );
-			$("#tabs").tabs("remove", 0);
+			#if( ( $noIden && $noIden > 0) || ( $noOtherGroup && $noOtherGroup > 0) || ( $noGroup && $noGroup > 0 ))
+				$( "#tabs" ).tabs( "option", "selected", 1 );
+			#else
+				$( "#tabs" ).tabs( "option", "selected", 2 );
+				$("#tabs").tabs("remove", 1);
+			#end
+			
+			#if( $hasDataEntry == 'true' )
+				$( "#tabs" ).tabs( "option", "selected", 0 );
+			#else
+				$( "#tabs" ).tabs( "option", "disabled", [0] );
+				$("#tabs").tabs("remove", 0);
+			#end
 		#end
 	#end
 	
