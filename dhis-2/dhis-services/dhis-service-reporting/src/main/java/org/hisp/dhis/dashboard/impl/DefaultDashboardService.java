@@ -56,8 +56,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDashboardService
     implements DashboardService
 {
-    private static final int MAX_PER_OBJECT = 6;
-    private static final int MAX_OBJECTS = 18;
+    private static final int MAX_PER_OBJECT = 5;
+    private static final int MAX_OBJECTS = 15;
     
     // -------------------------------------------------------------------------
     // Dependencies
