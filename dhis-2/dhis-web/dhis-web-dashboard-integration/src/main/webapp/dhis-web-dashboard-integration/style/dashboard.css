@@ -108,14 +108,14 @@
   position: absolute;
   left: 260px;
   height: 25px;
-  width: 330px;
+  width: 350px;
   border: 1px solid #ccc;
   padding: 2px 6px 0 6px;
 }
 
 #searchField
 {
-  width: 300px;
+  width: 320px;
   border: 0;
   outline: none;
   width: 100%;
@@ -128,7 +128,7 @@
   position: absolute;
   margin-top: 29px;
   left: 260px;
-  width: 342px;
+  width: 362px;
   border-right: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
   border-left: 1px solid #bbb;
@@ -143,9 +143,17 @@
   list-style-type: none;
 }
 
-#hitDiv li
+#hitDiv a
 {
-  padding: 5px 5px 5px 10px;
+  display: block;
+  width: 100%;
+  padding: 7px 6px 7px 12px;
+}
+
+#hitDiv a:hover
+{
+  text-decoration: none;
+  background-color: #eee;
 }
 
 #shareForm
