@@ -113,4 +113,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="interpretationService" ref="org.hisp.dhis.interpretation.InterpretationService" />
   </bean>
 
+  <!-- Profile -->
+
+  <bean id="org.hisp.dhis.dashboard.profile.action.GetUserAction" class="org.hisp.dhis.dashboard.profile.action.GetUserAction"
+    scope="prototype">
+  </bean>
+
 </beans>

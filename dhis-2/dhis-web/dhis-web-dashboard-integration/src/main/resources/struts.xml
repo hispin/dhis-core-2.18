@@ -142,5 +142,14 @@
       <result name="success" type="velocity">/dhis-web-dashboard-integration/interpretationFeed.vm</result>
     </action>
 
+    <!-- Profile -->
+    
+    <action name="profile" class="org.hisp.dhis.dashboard.profile.action.GetUserAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-dashboard-integration/profile.vm</param>
+      <param name="menu">/dhis-web-dashboard-integration/menu.vm</param>
+      <param name="stylesheets">style/dashboard.css</param>
+    </action>
+
   </package>
 </struts>

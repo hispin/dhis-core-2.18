@@ -106,7 +106,7 @@
 #searchDiv
 {
   position: absolute;
-  left: 260px;
+  left: 330px;
   height: 25px;
   width: 350px;
   border: 1px solid #ccc;
@@ -127,7 +127,7 @@
 {
   position: absolute;
   margin-top: 29px;
-  left: 260px;
+  left: 330px;
   width: 362px;
   border-right: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
@@ -346,3 +346,41 @@ div#selectionTree
 {
   cursor:pointer;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Profile                                                                    */
+/*----------------------------------------------------------------------------*/
+
+.userRow
+{
+  display: block;
+  margin: 6px 0;
+}
+
+.userLabel
+{
+  display: inline-block;
+  color: #777;
+  font-size: 11pt;
+  width: 110px;
+  text-align: right;
+  padding-right: 20px;
+}
+
+.userInfo
+{
+  display: inline-block;
+  display: inline;
+  font-size: 11pt;
+}
+
+
+
+
+
+
+
+
+
+
+
