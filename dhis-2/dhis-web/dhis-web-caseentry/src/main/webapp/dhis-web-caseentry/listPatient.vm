@@ -33,7 +33,7 @@
 			<col/>       
 		  #end
           <col width="60"/>
-          <col width="90"/>
+          <col width="110"/>
           <col width="60"/>
 		  #if($mapPatientOrgunit.size()!=0)
 		  <col/>
