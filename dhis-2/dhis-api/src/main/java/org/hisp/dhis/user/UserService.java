@@ -93,7 +93,9 @@ public interface UserService
      */
     Collection<User> getAllUsers();
 
-    Collection<User> getAllUsersBetween(int first, int max);
+    Collection<User> getAllUsersBetween( int first, int max );
+    
+    Collection<User> getAllUsersBetweenByName( String name, int first, int max );
 
     Collection<User> getUsersByLastUpdated(Date lastUpdated);
 
@@ -132,8 +134,6 @@ public interface UserService
     int getUserCount();
 
     int getUserCountByName( String name );
-
-    Collection<User> getUsersByName(String name);
 
     int getUsersWithoutOrganisationUnitCount();
 

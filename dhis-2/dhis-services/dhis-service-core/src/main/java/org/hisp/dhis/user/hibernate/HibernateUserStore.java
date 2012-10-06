@@ -33,6 +33,7 @@ import java.util.Iterator;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
@@ -53,6 +54,18 @@ public class HibernateUserStore
     public Collection<User> getBetween( int first, int max )
     {
         Criteria criteria = getCriteria();
+        criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        return criteria.list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public Collection<User> getBetweenByName( String name, int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.or( Restrictions.ilike( "surname", "%" + name + "%" ), Restrictions.ilike( "firstName", "%" + name + "%" ) ) );
         criteria.addOrder( Order.asc( "surname" ) ).addOrder( Order.asc( "firstName" ) );
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
