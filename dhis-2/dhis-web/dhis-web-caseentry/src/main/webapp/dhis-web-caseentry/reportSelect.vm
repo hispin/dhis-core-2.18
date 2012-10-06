@@ -15,7 +15,7 @@
 <table>	
     <tr>
 	  <td><label>$i18n.getString( "orgunit_boundary" )</label></td>
-	  <td><input type="text" readonly="readonly" id='orgunitname' name='orgunitname' #if($!orgunit) value="$!orgunit.name" #else value="[$i18n.getString( 'select' )]" #end ></td>
+	  <td><input type="text" readonly="readonly" id='orgunitname' name='orgunitname' #if($!orgunit) value="$!orgunit.name" #else value="[$i18n.getString( 'please_select' )]" #end ></td>
     </tr>
     
     <tr>
