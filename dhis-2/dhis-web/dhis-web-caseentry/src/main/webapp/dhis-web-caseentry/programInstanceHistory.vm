@@ -11,30 +11,16 @@
 		#set( $mark = false )
 		#set( $flag = 0 )
 		#foreach( $row in $grid.getVisibleRows() )
-		<tr #alternate($mark)>
-			#set( $nameCol='false' )
-			#if($flag>1) #set( $flag = 0 ) #end
-			#foreach( $col in $row )
-				#set( $index = ( $velocityCount - 1 ) )
-				#if($col=='')
-					<td>&nbsp;</td>
-					#set( $flag = 1 )
-				#elseif( $flag > 0 )
+			<tr #alternate($mark)>
+				#foreach( $col in $row )
+					#set( $index = ( $velocityCount - 1 ) )
 					#if( $grid.getVisibleHeaders().get( $index ).meta )
-						<th>$!encoder.htmlEncode( $col )</th>
-					#else 
-						<th>$!col</th>
-					#end
-					#set( $flag = $flag + 1 )
-				#else
-					#if( $grid.getVisibleHeaders().get( $index ).meta )
-						<td>$!encoder.htmlEncode( $col )</td>
+						<td >$!encoder.htmlEncode( $col )</td>
 					#else 
 						<td>$!col</td>
 					#end
 				#end
-			#end
-		</tr>
+			</tr>
 		#end
 		#set( $mark = !$mark)
 	</tbody>
