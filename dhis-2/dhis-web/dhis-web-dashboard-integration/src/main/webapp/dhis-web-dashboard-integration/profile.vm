@@ -1,0 +1,14 @@
+
+<h3>$encoder.htmlEncode( $user.firstName ) $encoder.htmlEncode( $user.surname  )</h3>
+
+<div class="userRow"><div class="userLabel">Introduction</div><div class="userInfo">$encoder.htmlEncode( $user.introduction )</div></div>
+<div class="userRow"><div class="userLabel">Works as</div><div class="userInfo">$encoder.htmlEncode( $user.jobTitle )</div></div>
+<div class="userRow"><div class="userLabel">Employed at</div><div class="userInfo">$encoder.htmlEncode( $user.employer )</div></div>
+<div class="userRow"><div class="userLabel">Education</div><div class="userInfo">$encoder.htmlEncode( $user.jobTitle )</div></div>
+<div class="userRow"><div class="userLabel">Interested in</div><div class="userInfo">$encoder.htmlEncode( $user.jobTitle )</div></div>
+<div class="userRow"><div class="userLabel">Speaks</div><div class="userInfo">$encoder.htmlEncode( $user.languages )</div></div>
+<div class="userRow"><div class="userLabel">Birthday</div><div class="userInfo">$format.formatDate( $user.birthday )</div></div>
+<div class="userRow"><div class="userLabel">Gender</div><div class="userInfo">$encoder.htmlEncode( $user.gender )</div></div>
+<div class="userRow"><div class="userLabel">Nationality</div><div class="userInfo">$encoder.htmlEncode( $user.nationality )</div></div>
+<div class="userRow"><div class="userLabel">Email</div><div class="userInfo">$encoder.htmlEncode( $user.email )</div></div>
+<div class="userRow"><div class="userLabel">Phone number</div><div class="userInfo">$encoder.htmlEncode( $user.birthday )</div></div>
