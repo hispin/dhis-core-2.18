@@ -183,9 +183,9 @@ public class DefaultProgramInstanceService
         return programInstanceStore.count( program, organisationUnit );
     }
 
-    public int countProgramInstances( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    public int countProgramInstances( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
-        return programInstanceStore.count( program, organisationUnit, startDate, endDate );
+        return programInstanceStore.count( program, orgunitIds, startDate, endDate );
     }
 
     public List<Grid> getProgramInstanceReport( Patient patient, I18n i18n, I18nFormat format )

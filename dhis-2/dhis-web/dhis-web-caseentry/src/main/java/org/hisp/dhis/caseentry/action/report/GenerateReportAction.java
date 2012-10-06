@@ -185,8 +185,8 @@ public class GenerateReportAction
         }
         else if ( facilityLB.equals( "childrenOnly" ) )
         {
-            orgunitIds = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class,
-                organisationUnit.getChildren() ) );
+            orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
+                organisationUnit.getId() ) );
         }
         else
         {
@@ -201,7 +201,7 @@ public class GenerateReportAction
             // Program instances for the selected program
             // ---------------------------------------------------------------------
 
-            total = programInstanceService.countProgramInstances( program, organisationUnit, sDate, eDate );
+            total = programInstanceService.countProgramInstances( program, orgunitIds, sDate, eDate );
 
             this.paging = createPaging( total );
 
