@@ -3,6 +3,7 @@
 {
 #set( $noHeader = $grid.getHeaders().size() )
 #set( $metaData = $noHeader - $valueTypes.size() )
+"message": "$!message",
 "total": "$total",
 "columns":[
   #set($index = 0)

@@ -742,42 +742,48 @@ Ext.onReady( function() {
 					params: this.getParams(),
 					success: function(r) {
 						var json = Ext.JSON.decode(r.responseText);
-						TR.state.total = json.total;
-						TR.value.columns = json.columns;
-						TR.value.values = json.items;
-						
-						// Get fields
-						var fields = [];
-						fields[0] = 'id';
-						var record = new Array();
-						for( var index=1; index < TR.value.columns.length; index++ )
-						{
-							fields[index] = 'col' + index;
-							record.push('');
+						if(json.message!=""){
+							//TR.util.notification.warning(json.message);
+							TR.util.notification.error(TR.i18n.error, json.message);
 						}
-						TR.value.fields = fields;
-						TR.value.values.unshift(record);
-						
-						// Set data for grid
-						TR.store.getDataTableStore();
-						TR.datatable.getDataTable();
-						if ( json.items.length > 1 )
-						{
-							TR.datatable.setPagingToolbarStatus();
-							Ext.getCmp('btnClean').enable();
-							Ext.getCmp('btnSortBy').enable();
-						}
-						else
-						{
-							Ext.getCmp('currentPage').setValue('');
-							Ext.getCmp('currentPage').disable();
-							Ext.getCmp('firstPageBtn').disable();
-							Ext.getCmp('previousPageBtn').disable();
-							Ext.getCmp('nextPageBtn').disable();
-							Ext.getCmp('lastPageBtn').disable();
-				
-							Ext.getCmp('btnClean').disable();
-							Ext.getCmp('btnSortBy').disable();
+						else{
+							TR.state.total = json.total;
+							TR.value.columns = json.columns;
+							TR.value.values = json.items;
+							
+							// Get fields
+							var fields = [];
+							fields[0] = 'id';
+							var record = new Array();
+							for( var index=1; index < TR.value.columns.length; index++ )
+							{
+								fields[index] = 'col' + index;
+								record.push('');
+							}
+							TR.value.fields = fields;
+							TR.value.values.unshift(record);
+							
+							// Set data for grid
+							TR.store.getDataTableStore();
+							TR.datatable.getDataTable();
+							if ( json.items.length > 1 )
+							{
+								TR.datatable.setPagingToolbarStatus();
+								Ext.getCmp('btnClean').enable();
+								Ext.getCmp('btnSortBy').enable();
+							}
+							else
+							{
+								Ext.getCmp('currentPage').setValue('');
+								Ext.getCmp('currentPage').disable();
+								Ext.getCmp('firstPageBtn').disable();
+								Ext.getCmp('previousPageBtn').disable();
+								Ext.getCmp('nextPageBtn').disable();
+								Ext.getCmp('lastPageBtn').disable();
+					
+								Ext.getCmp('btnClean').disable();
+								Ext.getCmp('btnSortBy').disable();
+							}
 						}
 						TR.util.mask.hideMask();
 					}
