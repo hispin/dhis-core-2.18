@@ -3,9 +3,10 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 {
 	hideById('dataEntryInfor');
 	hideById('listDiv');
+	showById('mainLinkLbl');
 	
 	jQuery.getJSON( "anonymousPrograms.action",{}, 
-		function( json ) 
+		function( json )
 		{   
 			clearListById('searchObjectId');
 			clearListById('compulsoryDE');
@@ -301,10 +302,11 @@ function showUpdateEvent( programStageInstanceId )
 	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
 		{ 
 			programStageInstanceId: programStageInstanceId
-		},function( )
+		},function()
 		{
-			var programName  = jQuery('#programId option:selected').text();
-				programName += ' - ' + i18n_report_date + ' : ' + jQuery('#incidentDate').val();
+			jQuery('#inputCriteriaDiv').remove();
+			hideById('mainLinkLbl');
+			var programName = jQuery('#programId option:selected').text();
 			var programStageId = jQuery('#programId option:selected').attr('psid');
 			jQuery('.stage-object-selected').attr('psid',programStageId);
 			setInnerHTML('programName', programName );
@@ -315,7 +317,6 @@ function showUpdateEvent( programStageInstanceId )
 			else{
 				disableCompletedButton( false );
 			}
-				
 			hideById('loaderDiv');
 			showById('dataEntryInfor');
 			showById('entryFormContainer');
@@ -324,7 +325,8 @@ function showUpdateEvent( programStageInstanceId )
 
 function backEventList()
 {
-	hideById('dataEntryInfor'); 
+	hideById('dataEntryInfor');
+	showById('mainLinkLbl');
 	showById('selectDiv');
 	showById('searchDiv');
 	showById('listDiv');
