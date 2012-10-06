@@ -1338,17 +1338,17 @@
                     <Property name="label" typeID="Pjava.lang.String" value="VOk"/>
                     <Property name="type" typeID="Pint" value="V4"/>
                 </Component>
-                <Component componentID="176" typeID="C#SplashScreenDismissCommand">
-                    <Property name="label" typeID="Pjava.lang.String" value="VDismiss"/>
-                    <Property name="type" typeID="Pint" value="V4"/>
-                    <Property name="priority" typeID="Pint" value="V0"/>
-                    <Property name="ordinary" typeID="Pboolean" value="Vfalse"/>
-                </Component>
                 <Component componentID="662" typeID="Cjavax.microedition.lcdui.Command">
                     <Property name="instanceName" typeID="Pjava.lang.String" value="VvitaminadoseBackCmd"/>
                     <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
                     <Property name="label" typeID="Pjava.lang.String" value="VBack"/>
                     <Property name="type" typeID="Pint" value="V2"/>
+                </Component>
+                <Component componentID="176" typeID="C#SplashScreenDismissCommand">
+                    <Property name="label" typeID="Pjava.lang.String" value="VDismiss"/>
+                    <Property name="type" typeID="Pint" value="V4"/>
+                    <Property name="priority" typeID="Pint" value="V0"/>
+                    <Property name="ordinary" typeID="Pboolean" value="Vfalse"/>
                 </Component>
                 <Component componentID="745" typeID="Cjavax.microedition.lcdui.Command">
                     <Property name="instanceName" typeID="Pjava.lang.String" value="VCsectiondeliveriesokcmd"/>
@@ -1446,17 +1446,17 @@
                     <Property name="label" typeID="Pjava.lang.String" value="VBack"/>
                     <Property name="type" typeID="Pint" value="V2"/>
                 </Component>
-                <Component componentID="227" typeID="Cjavax.microedition.lcdui.Command">
-                    <Property name="instanceName" typeID="Pjava.lang.String" value="VloadExitCmd"/>
-                    <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                    <Property name="label" typeID="Pjava.lang.String" value="VExit"/>
-                    <Property name="type" typeID="Pint" value="V7"/>
-                </Component>
                 <Component componentID="709" typeID="Cjavax.microedition.lcdui.Command">
                     <Property name="instanceName" typeID="Pjava.lang.String" value="VmenstrualhygieneprogrammeCmd"/>
                     <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
                     <Property name="label" typeID="Pjava.lang.String" value="VNext"/>
                     <Property name="type" typeID="Pint" value="V4"/>
+                </Component>
+                <Component componentID="227" typeID="Cjavax.microedition.lcdui.Command">
+                    <Property name="instanceName" typeID="Pjava.lang.String" value="VloadExitCmd"/>
+                    <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                    <Property name="label" typeID="Pjava.lang.String" value="VExit"/>
+                    <Property name="type" typeID="Pint" value="V7"/>
                 </Component>
                 <Component componentID="225" typeID="Cjavax.microedition.lcdui.Command">
                     <Property name="instanceName" typeID="Pjava.lang.String" value="VloadCmd"/>
@@ -1789,26 +1789,26 @@
         </Component>
     </Document>
     <FlowScene version="1">
-        <Node componentID="794" descriptorID="componentNode794" x="1073" y="2280"/>
-        <Node componentID="823" descriptorID="componentNode823" x="823" y="1875"/>
-        <Node componentID="826" descriptorID="componentNode826" x="983" y="2620"/>
-        <Node componentID="824" descriptorID="componentNode824" x="1120" y="2074"/>
-        <Node componentID="1009" descriptorID="componentNode1009" x="829" y="2440"/>
-        <Node componentID="724" descriptorID="componentNode724" x="598" y="-64"/>
-        <Node componentID="784" descriptorID="componentNode784" x="1072" y="1532"/>
-        <Node componentID="848" descriptorID="componentNode848" x="344" y="2277"/>
         <Node componentID="825" descriptorID="componentNode825" x="728" y="2186"/>
-        <Node componentID="233" descriptorID="componentNode233" x="-120" y="350"/>
-        <Node componentID="167" descriptorID="componentNode167" x="106" y="193"/>
-        <Node componentID="789" descriptorID="componentNode789" x="730" y="1630"/>
-        <Node componentID="178" descriptorID="componentNode178" x="790" y="162"/>
-        <Node componentID="2" descriptorID="componentNode2" x="90" y="39"/>
-        <Node componentID="1002" descriptorID="componentNode1002" x="707" y="1977"/>
-        <Node componentID="847" descriptorID="componentNode847" x="612" y="2733"/>
         <Node componentID="774" descriptorID="componentNode774" x="1043" y="1298"/>
-        <Node componentID="775" descriptorID="componentNode775" x="822" y="1402"/>
-        <Node componentID="822" descriptorID="componentNode822" x="1102" y="1724"/>
         <Node componentID="202" descriptorID="componentNode202" x="438" y="-160"/>
+        <Node componentID="2" descriptorID="componentNode2" x="90" y="39"/>
+        <Node componentID="724" descriptorID="componentNode724" x="598" y="-64"/>
+        <Node componentID="822" descriptorID="componentNode822" x="1102" y="1724"/>
+        <Node componentID="1009" descriptorID="componentNode1009" x="829" y="2440"/>
+        <Node componentID="784" descriptorID="componentNode784" x="1072" y="1532"/>
+        <Node componentID="178" descriptorID="componentNode178" x="790" y="162"/>
+        <Node componentID="824" descriptorID="componentNode824" x="1120" y="2074"/>
+        <Node componentID="794" descriptorID="componentNode794" x="1073" y="2280"/>
+        <Node componentID="826" descriptorID="componentNode826" x="983" y="2620"/>
+        <Node componentID="823" descriptorID="componentNode823" x="823" y="1875"/>
+        <Node componentID="789" descriptorID="componentNode789" x="730" y="1630"/>
+        <Node componentID="775" descriptorID="componentNode775" x="822" y="1402"/>
+        <Node componentID="847" descriptorID="componentNode847" x="612" y="2733"/>
+        <Node componentID="167" descriptorID="componentNode167" x="106" y="193"/>
+        <Node componentID="233" descriptorID="componentNode233" x="-120" y="350"/>
+        <Node componentID="1002" descriptorID="componentNode1002" x="707" y="1977"/>
+        <Node componentID="848" descriptorID="componentNode848" x="344" y="2277"/>
         <Node componentID="219" descriptorID="componentNode219" x="311" y="79"/>
     </FlowScene>
 </VisualDesign>

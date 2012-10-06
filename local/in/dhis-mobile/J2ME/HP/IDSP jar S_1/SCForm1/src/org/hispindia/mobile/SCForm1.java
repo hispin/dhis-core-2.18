@@ -16,7 +16,7 @@ import javax.wireless.messaging.MessageConnection;
 import javax.wireless.messaging.TextMessage;
 import org.netbeans.microedition.lcdui.SplashScreen;
 
-public class SCForm1 extends MIDlet implements CommandListener {
+public class SCForm1 extends MIDlet implements CommandListener, ItemStateListener {
 
     private boolean midletPaused = false;
     private boolean editingLastReport = false;
@@ -1737,6 +1737,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Fever.addCommand(getFeverOk());
             Fever.setCommandListener(this);//GEN-END:|654-getter|1|654-postInit
             // write post-init user code here
+            if ( Fever instanceof Form )
+            {
+            ((Form) Fever).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|654-getter|2|
         return Fever;
     }
@@ -2131,6 +2135,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             MalecasesGT5yrs.addCommand(getMalecases5yrsOkCmd());
             MalecasesGT5yrs.setCommandListener(this);//GEN-END:|711-getter|1|711-postInit
             // write post-init user code here
+			if ( MalecasesGT5yrs instanceof Form )
+            {
+            ((Form) MalecasesGT5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|711-getter|2|
         return MalecasesGT5yrs;
     }
@@ -2250,6 +2258,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             FemalecasesGT5yrs.addCommand(getFemalecases5yrsOkCmd());
             FemalecasesGT5yrs.setCommandListener(this);//GEN-END:|722-getter|1|722-postInit
             // write post-init user code here
+			if ( FemalecasesGT5yrs instanceof Form )
+            {
+            ((Form) FemalecasesGT5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|722-getter|2|
         return FemalecasesGT5yrs;
     }
@@ -2337,6 +2349,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Maledeaths5yrs.addCommand(getMaledeaths5yrsOkCmd());
             Maledeaths5yrs.setCommandListener(this);//GEN-END:|732-getter|1|732-postInit
             // write post-init user code here
+			if ( Maledeaths5yrs instanceof Form )
+            {
+            ((Form) Maledeaths5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|732-getter|2|
         return Maledeaths5yrs;
     }
@@ -2424,6 +2440,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             MaleDeathsGT5yrs.addCommand(getMaledeaths5yrsOkCmd1());
             MaleDeathsGT5yrs.setCommandListener(this);//GEN-END:|741-getter|1|741-postInit
             // write post-init user code here
+			if ( MaleDeathsGT5yrs instanceof Form )
+            {
+            ((Form) MaleDeathsGT5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|741-getter|2|
         return MaleDeathsGT5yrs;
     }
@@ -2511,6 +2531,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             FemaledeathsLT5yrs.addCommand(getFemaledeathsLT5yrsOkCmd());
             FemaledeathsLT5yrs.setCommandListener(this);//GEN-END:|755-getter|1|755-postInit
             // write post-init user code here
+			if ( FemaledeathsLT5yrs instanceof Form )
+            {
+            ((Form) FemaledeathsLT5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|755-getter|2|
         return FemaledeathsLT5yrs;
     }
@@ -2598,6 +2622,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Fevermorethan7days.addCommand(getFevermorethan7daysOkCmd());
             Fevermorethan7days.setCommandListener(this);//GEN-END:|764-getter|1|764-postInit
             // write post-init user code here
+            if ( Fevermorethan7days instanceof Form )
+            {
+            ((Form) Fevermorethan7days).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|764-getter|2|
         return Fevermorethan7days;
     }
@@ -2753,6 +2781,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Coughwithorwithoutfever.addCommand(getCoughwithorwithoutfeverOkCmd());
             Coughwithorwithoutfever.setCommandListener(this);//GEN-END:|777-getter|1|777-postInit
             // write post-init user code here
+            if ( Coughwithorwithoutfever instanceof Form )
+            {
+            ((Form) Coughwithorwithoutfever).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|777-getter|2|
         return Coughwithorwithoutfever;
     }
@@ -2767,7 +2799,7 @@ public class SCForm1 extends MIDlet implements CommandListener {
     public StringItem getStringItem4() {
         if (stringItem4 == null) {//GEN-END:|782-getter|0|782-preInit
             // write pre-init user code here
-            stringItem4 = new StringItem("Less than 3 weeks", null);//GEN-LINE:|782-getter|1|782-postInit
+            stringItem4 = new StringItem("Less than 2 weeks", null);//GEN-LINE:|782-getter|1|782-postInit
             // write post-init user code here
         }//GEN-BEGIN:|782-getter|2|
         return stringItem4;
@@ -3118,6 +3150,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Morethan3weeks.addCommand(getMorethan3weeksOkCmd());
             Morethan3weeks.setCommandListener(this);//GEN-END:|793-getter|1|793-postInit
             // write post-init user code here
+            if ( Morethan3weeks instanceof Form )
+            {
+            ((Form) Morethan3weeks).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|793-getter|2|
         return Morethan3weeks;
     }
@@ -3388,6 +3424,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             FemalecasesLT5yrs.addCommand(getFemalecasesLT5yrsOkCmd());
             FemalecasesLT5yrs.setCommandListener(this);//GEN-END:|838-getter|1|838-postInit
             // write post-init user code here
+            if ( FemalecasesLT5yrs instanceof Form )
+            {
+            ((Form) FemalecasesLT5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|838-getter|2|
         return FemalecasesLT5yrs;
     }
@@ -3475,6 +3515,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             FemaledeathsGT5yrs.addCommand(getFemaledeathsGT5yrsOkCmd());
             FemaledeathsGT5yrs.setCommandListener(this);//GEN-END:|847-getter|1|847-postInit
             // write post-init user code here
+            if ( FemaledeathsGT5yrs instanceof Form )
+            {
+            ((Form) FemaledeathsGT5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|847-getter|2|
         return FemaledeathsGT5yrs;
     }
@@ -3627,6 +3671,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Loosewaterystoolsoflessthan2weeksduration.addCommand(getLoosewaterystoolsokCmd());
             Loosewaterystoolsoflessthan2weeksduration.setCommandListener(this);//GEN-END:|867-getter|1|867-postInit
             // write post-init user code here
+            if ( Loosewaterystoolsoflessthan2weeksduration instanceof Form )
+            {
+            ((Form) Loosewaterystoolsoflessthan2weeksduration).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|867-getter|2|
         return Loosewaterystoolsoflessthan2weeksduration;
     }
@@ -3646,6 +3694,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Femalecaseslessthan5yrs.addCommand(getFemalecasesLT5yrsokcmd());
             Femalecaseslessthan5yrs.setCommandListener(this);//GEN-END:|872-getter|1|872-postInit
             // write post-init user code here
+			if ( Femalecaseslessthan5yrs instanceof Form )
+            {
+            ((Form) Femalecaseslessthan5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|872-getter|2|
         return Femalecaseslessthan5yrs;
     }
@@ -3665,6 +3717,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Malecasesmorethan5yrs.addCommand(getMalecasesmorethan5yrsokcmd());
             Malecasesmorethan5yrs.setCommandListener(this);//GEN-END:|877-getter|1|877-postInit
             // write post-init user code here
+			if ( Malecasesmorethan5yrs instanceof Form )
+            {
+            ((Form) Malecasesmorethan5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|877-getter|2|
         return Malecasesmorethan5yrs;
     }
@@ -3684,6 +3740,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Femalecasesmorethan5yrs.addCommand(getFemalecasesmorethan5yrsokcmd());
             Femalecasesmorethan5yrs.setCommandListener(this);//GEN-END:|882-getter|1|882-postInit
             // write post-init user code here
+			if ( Femalecasesmorethan5yrs instanceof Form )
+            {
+            ((Form) Femalecasesmorethan5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|882-getter|2|
         return Femalecasesmorethan5yrs;
     }
@@ -3703,6 +3763,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Maledeathslessthan5yrs.addCommand(getMaledeathslessthan5yrsokcmd());
             Maledeathslessthan5yrs.setCommandListener(this);//GEN-END:|887-getter|1|887-postInit
             // write post-init user code here
+			if ( Maledeathslessthan5yrs instanceof Form )
+            {
+            ((Form) Maledeathslessthan5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|887-getter|2|
         return Maledeathslessthan5yrs;
     }
@@ -3722,6 +3786,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Femaledeathslessthan5yrs.addCommand(getFemaledeathslessthan5yrsokcmd());
             Femaledeathslessthan5yrs.setCommandListener(this);//GEN-END:|892-getter|1|892-postInit
             // write post-init user code here
+			if ( Femaledeathslessthan5yrs instanceof Form )
+            {
+            ((Form) Femaledeathslessthan5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|892-getter|2|
         return Femaledeathslessthan5yrs;
     }
@@ -3741,6 +3809,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Maledeathsmorethan5yrs.addCommand(getMaledeathsmorethan5yrsokcmd());
             Maledeathsmorethan5yrs.setCommandListener(this);//GEN-END:|897-getter|1|897-postInit
             // write post-init user code here
+			if ( Maledeathsmorethan5yrs instanceof Form )
+            {
+            ((Form) Maledeathsmorethan5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|897-getter|2|
         return Maledeathsmorethan5yrs;
     }
@@ -3760,6 +3832,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Femaledeathsmorethan5yrs.addCommand(getFemaledeathsmorethan5yrsokcmd());
             Femaledeathsmorethan5yrs.setCommandListener(this);//GEN-END:|902-getter|1|902-postInit
             // write post-init user code here
+			if ( Femaledeathsmorethan5yrs instanceof Form )
+            {
+            ((Form) Femaledeathsmorethan5yrs).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|902-getter|2|
         return Femaledeathsmorethan5yrs;
     }
@@ -3780,6 +3856,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Jaundicecasesoflessthan4weeksduration.addCommand(getJaundicecasesoflessthan4weeksdurationokcmd());
             Jaundicecasesoflessthan4weeksduration.setCommandListener(this);//GEN-END:|909-getter|1|909-postInit
             // write post-init user code here
+            if ( Jaundicecasesoflessthan4weeksduration instanceof Form )
+            {
+            ((Form) Jaundicecasesoflessthan4weeksduration).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|909-getter|2|
         return Jaundicecasesoflessthan4weeksduration;
     }
@@ -3799,6 +3879,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             AFPcaseslessthan15yrsofage.addCommand(getAFPcaseslessthan15yrsofageokcmd());
             AFPcaseslessthan15yrsofage.setCommandListener(this);//GEN-END:|914-getter|1|914-postInit
             // write post-init user code here
+            if ( AFPcaseslessthan15yrsofage instanceof Form )
+            {
+            ((Form) AFPcaseslessthan15yrsofage).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|914-getter|2|
         return AFPcaseslessthan15yrsofage;
     }
@@ -3819,6 +3903,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Unusualsymptomsleadingtodeath.addCommand(getUnusualsymptomsleadingtodeathokcmd());
             Unusualsymptomsleadingtodeath.setCommandListener(this);//GEN-END:|919-getter|1|919-postInit
             // write post-init user code here
+            if ( Unusualsymptomsleadingtodeath instanceof Form )
+            {
+            ((Form) Unusualsymptomsleadingtodeath).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|919-getter|2|
         return Unusualsymptomsleadingtodeath;
     }
@@ -5335,7 +5423,7 @@ public class SCForm1 extends MIDlet implements CommandListener {
     public StringItem getStringItem12() {
         if (stringItem12 == null) {//GEN-END:|1030-getter|0|1030-preInit
             // write pre-init user code here
-            stringItem12 = new StringItem("More than 3 weeks", null);//GEN-LINE:|1030-getter|1|1030-postInit
+            stringItem12 = new StringItem("More than 2 weeks", null);//GEN-LINE:|1030-getter|1|1030-postInit
             // write post-init user code here
         }//GEN-BEGIN:|1030-getter|2|
         return stringItem12;
@@ -6135,6 +6223,147 @@ private void saveDataToRMS(final String monthStr, final String freqString) {
     private boolean isEvenYear(int Year){
         return Year%4==0?true:false;
     }    
+	
+
+	
+    /*
+     * Author: Thai Chuong Oct. 6th 2012
+     */
+    private boolean valueValidation(TextField myTextField, String[] mylist){
+        for (int i = 0; i < mylist.length; i++)
+        {
+            if (myTextField.getString().equalsIgnoreCase( mylist[i] ))
+                return false;
+        }
+        return true;
+        
+    }
+    
+    private void Validation (Item item, TextField myTextField){
+        if (item == myTextField)
+        {
+            String[] list = {"00"};
+            if(!valueValidation(myTextField, list) || (myTextField.getString().length() > 1 && Integer.parseInt(myTextField.getString()) == 0))
+            {
+                myTextField.setString( "0" );
+                Alert myAlert = new Alert("Wrong data","not allow!",null,AlertType.INFO);
+                myAlert.setTimeout(1500);
+                Display.getDisplay(this).setCurrent(myAlert,getDisplay().getCurrent());
+            }
+        }
+    }
+        
+    /*
+     * Author: Thai Chuong Oct. 6th 2012
+     */
+	public void itemStateChanged( Item item )
+    {   
+        Validation(item, textField);
+        Validation(item, textField1);
+        Validation(item, textField2);
+        Validation(item, textField3);
+        Validation(item, textField4); 
+        Validation(item, textField5);
+        Validation(item, textField6);
+        Validation(item, textField7);
+        Validation(item, textField8);
+        Validation(item, textField9);
+        Validation(item, textField10);
+        Validation(item, textField11);
+        Validation(item, textField12);
+        Validation(item, textField13);
+        Validation(item, textField14);
+        Validation(item, textField15);
+        Validation(item, textField16);
+        Validation(item, textField17);
+        Validation(item, textField18);
+        Validation(item, textField19);
+        Validation(item, textField20);
+        Validation(item, textField21);
+        Validation(item, textField22);
+        Validation(item, textField23);
+        Validation(item, textField24);
+        Validation(item, textField25);
+        Validation(item, textField26);
+        Validation(item, textField27);
+        Validation(item, textField28);
+        Validation(item, textField29);
+        Validation(item, textField30);
+        Validation(item, textField31);
+        Validation(item, textField32);
+        Validation(item, textField33);
+        Validation(item, textField34);
+        Validation(item, textField35);
+        Validation(item, textField36);
+        Validation(item, textField37);
+        Validation(item, textField38);
+        Validation(item, textField39);
+        Validation(item, textField40);
+        Validation(item, textField41);
+        Validation(item, textField42);
+        Validation(item, textField43);
+        Validation(item, textField44);
+        Validation(item, textField45);
+        Validation(item, textField46);
+        Validation(item, textField47);
+        Validation(item, textField48);
+        Validation(item, textField49);
+        Validation(item, textField50);
+        Validation(item, textField51);
+        Validation(item, textField52);
+        Validation(item, textField53);
+        Validation(item, textField54);
+        Validation(item, textField55);
+        Validation(item, textField56);
+        Validation(item, textField57);
+        Validation(item, textField58);
+        Validation(item, textField59);
+        Validation(item, textField60);
+        Validation(item, textField61);
+        Validation(item, textField61);
+        Validation(item, textField63);
+        Validation(item, textField64);
+        Validation(item, textField65);
+        Validation(item, textField66);
+        Validation(item, textField67);
+        Validation(item, textField68);
+        Validation(item, textField69);
+        Validation(item, textField70);
+        Validation(item, textField71);
+        Validation(item, textField72);
+        Validation(item, textField73);
+        Validation(item, textField74);
+        Validation(item, textField75);
+        Validation(item, textField76);
+        Validation(item, textField77);
+        Validation(item, textField78);
+        Validation(item, textField79);
+        Validation(item, textField80);
+        Validation(item, textField81);
+        Validation(item, textField82);
+        Validation(item, textField83);
+        Validation(item, textField84);
+        Validation(item, textField85);
+        Validation(item, textField86);
+        Validation(item, textField87);
+        Validation(item, textField88);
+        Validation(item, textField89);
+        Validation(item, textField90);
+        Validation(item, textField91);
+        Validation(item, textField92);
+        Validation(item, textField93);
+        Validation(item, textField94);
+        Validation(item, textField95);
+        Validation(item, textField96);
+        Validation(item, textField97);
+        Validation(item, textField98);
+        Validation(item, textField99);
+        Validation(item, textField100);
+        Validation(item, textField101);
+        Validation(item, textField102);
+        Validation(item, textField103);
+
+    }
 }
                     
                 

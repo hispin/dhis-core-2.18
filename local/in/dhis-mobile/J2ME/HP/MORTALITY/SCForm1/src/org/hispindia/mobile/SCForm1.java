@@ -16,7 +16,7 @@ import javax.wireless.messaging.MessageConnection;
 import javax.wireless.messaging.TextMessage;
 import org.netbeans.microedition.lcdui.SplashScreen;
 
-public class SCForm1 extends MIDlet implements CommandListener {
+public class SCForm1 extends MIDlet implements CommandListener, ItemStateListener {
 
     private boolean midletPaused = false;
     private boolean editingLastReport = false;
@@ -1209,6 +1209,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Mortalitydetails_infants.addCommand(getMortalitydatails_infantsCmd());
             Mortalitydetails_infants.setCommandListener(this);//GEN-END:|525-getter|1|525-postInit
             // write post-init user code here
+            if ( Mortalitydetails_infants instanceof Form )
+            {
+                ((Form) Mortalitydetails_infants).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|525-getter|2|
         return Mortalitydetails_infants;
     }
@@ -1229,6 +1233,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Infantdeathsupto4weeksbycause.addCommand(getInfantdeathsupto4weeksbycauseCmd());
             Infantdeathsupto4weeksbycause.setCommandListener(this);//GEN-END:|530-getter|1|530-postInit
             // write post-init user code here
+            if ( Infantdeathsupto4weeksbycause instanceof Form )
+            {
+                ((Form) Infantdeathsupto4weeksbycause).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|530-getter|2|
         return Infantdeathsupto4weeksbycause;
     }
@@ -1249,6 +1257,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             Infantchilddeathsupto5yearsbycause.addCommand(getInfantchilddeathsupto5yearsbycauseCmd());
             Infantchilddeathsupto5yearsbycause.setCommandListener(this);//GEN-END:|535-getter|1|535-postInit
             // write post-init user code here
+            if ( Infantchilddeathsupto5yearsbycause instanceof Form )
+            {
+                ((Form) Infantchilddeathsupto5yearsbycause).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|535-getter|2|
         return Infantchilddeathsupto5yearsbycause;
     }
@@ -1269,6 +1281,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             AdolescentAdultdeathsbycause.addCommand(getAdolescentAdultdeathsbycauseCmd());
             AdolescentAdultdeathsbycause.setCommandListener(this);//GEN-END:|540-getter|1|540-postInit
             // write post-init user code here
+            if ( AdolescentAdultdeathsbycause instanceof Form )
+            {
+                ((Form) AdolescentAdultdeathsbycause).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|540-getter|2|
         return AdolescentAdultdeathsbycause;
     }
@@ -1288,6 +1304,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             MaternalDeaths.addCommand(getMaternalDeathsCmd());
             MaternalDeaths.setCommandListener(this);//GEN-END:|545-getter|1|545-postInit
             // write post-init user code here
+            if ( MaternalDeaths instanceof Form )
+            {
+                ((Form) MaternalDeaths).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|545-getter|2|
         return MaternalDeaths;
     }
@@ -2073,6 +2093,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             AdolescentAdultdeathsbycause1.addCommand(getAdolescentAdultdeathsbycauseCmd01());
             AdolescentAdultdeathsbycause1.setCommandListener(this);//GEN-END:|603-getter|1|603-postInit
             // write post-init user code here
+            if ( AdolescentAdultdeathsbycause1 instanceof Form )
+            {
+                ((Form) AdolescentAdultdeathsbycause1).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|603-getter|2|
         return AdolescentAdultdeathsbycause1;
     }
@@ -2331,6 +2355,10 @@ public class SCForm1 extends MIDlet implements CommandListener {
             AdolescentAdultdeathsbycause2.addCommand(getAdolescentAdultdeathsbycauseCmd02());
             AdolescentAdultdeathsbycause2.setCommandListener(this);//GEN-END:|604-getter|1|604-postInit
             // write post-init user code here
+            if ( AdolescentAdultdeathsbycause2 instanceof Form )
+            {
+                ((Form) AdolescentAdultdeathsbycause2).setItemStateListener( (ItemStateListener) this );
+            }
         }//GEN-BEGIN:|604-getter|2|
         return AdolescentAdultdeathsbycause2;
     }
@@ -3314,6 +3342,108 @@ private void saveDataToRMS(final String monthStr, final String freqString) {
         }
             return true;
     }
+    
+    /*
+     * Author: Thai Chuong Oct. 6th 2012
+     */
+    private boolean valueValidation(TextField myTextField, String[] mylist){
+        for (int i = 0; i < mylist.length; i++)
+        {
+            if (myTextField.getString().equalsIgnoreCase( mylist[i] ))
+                return false;
+        }
+        return true;
+        
+    }
+    
+    private void Validation (Item item, TextField myTextField){
+        if (item == myTextField)
+        {
+            String[] list = {"00"};
+            if(!valueValidation(myTextField, list) || (myTextField.getString().length() > 1 && Integer.parseInt(myTextField.getString()) == 0))
+            {
+                myTextField.setString( "" );
+                Alert myAlert = new Alert("Wrong data","not allow!",null,AlertType.INFO);
+                myAlert.setTimeout(1500);
+                Display.getDisplay(this).setCurrent(myAlert,getDisplay().getCurrent());
+            }
+        }
+    }
+        
+    /*
+     * Author: Thai Chuong Oct. 6th 2012
+     */
+	public void itemStateChanged( Item item )
+    {   
+        Validation(item, textField);
+        Validation(item, textField1);
+        Validation(item, textField2);
+        Validation(item, textField3);
+        Validation(item, textField4); 
+        Validation(item, textField5);
+        Validation(item, textField6);
+        Validation(item, textField7);
+        Validation(item, textField8);
+        Validation(item, textField9);
+        Validation(item, textField10);
+        Validation(item, textField11);
+        Validation(item, textField12);
+        Validation(item, textField13);
+        Validation(item, textField14);
+        Validation(item, textField15);
+        Validation(item, textField16);
+        Validation(item, textField17);
+        Validation(item, textField18);
+        Validation(item, textField19);
+        Validation(item, textField20);
+        Validation(item, textField21);
+        Validation(item, textField22);
+        Validation(item, textField23);
+        Validation(item, textField24);
+        Validation(item, textField25);
+        Validation(item, textField26);
+        Validation(item, textField27);
+        Validation(item, textField28);
+        Validation(item, textField29);
+        Validation(item, textField30);
+        Validation(item, textField31);
+        Validation(item, textField32);
+        Validation(item, textField33);
+        Validation(item, textField34);
+        Validation(item, textField35);
+        Validation(item, textField36);
+        Validation(item, textField37);
+        Validation(item, textField38);
+        Validation(item, textField39);
+        Validation(item, textField40);
+        Validation(item, textField41);
+        Validation(item, textField42);
+        Validation(item, textField43);
+        Validation(item, textField44);
+        Validation(item, textField45);
+        Validation(item, textField46);
+        Validation(item, textField47);
+        Validation(item, textField48);
+        Validation(item, textField49);
+        Validation(item, textField50);
+        Validation(item, textField51);
+        Validation(item, textField52);
+        Validation(item, textField53);
+        Validation(item, textField54);
+        Validation(item, textField55);
+        Validation(item, textField56);
+        Validation(item, textField57);
+        Validation(item, textField58);
+        Validation(item, textField59);
+        Validation(item, textField60);
+        Validation(item, textField61);
+        Validation(item, textField61);
+        Validation(item, textField63);
+        Validation(item, textField64);
+        Validation(item, textField65);
+
+    }
+
     
 }
                     
