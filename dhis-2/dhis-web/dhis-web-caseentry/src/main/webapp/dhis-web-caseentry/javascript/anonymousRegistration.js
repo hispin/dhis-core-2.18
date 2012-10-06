@@ -11,9 +11,9 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 			clearListById('compulsoryDE');
 			clearListById('programId');
 			
-			jQuery( '#programId').append( '<option value="" psid="">[' + i18n_please_select + ']</option>' );
+			jQuery( '#programId').append( '<option value="" psid="" reportDateDes="' + i18n_report_date + '">[' + i18n_please_select + ']</option>' );
 			for ( i in json.programs ) {
-				jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" psid="' + json.programs[i].programStageId + '">' + json.programs[i].name + '</option>' );
+				jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" psid="' + json.programs[i].programStageId + '" reportDateDes="' + json.programs[i].reportDateDescription + '">' + json.programs[i].name + '</option>' );
 			}
 			
 			disableCriteriaDiv();

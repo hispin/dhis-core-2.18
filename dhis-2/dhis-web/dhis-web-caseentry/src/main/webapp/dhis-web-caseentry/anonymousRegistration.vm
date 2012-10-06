@@ -34,7 +34,7 @@
 				</td>		
 				<td>
 					<select type="text" id="programId" name="programId" onchange='getDataElements();' class='stage-object-selected'>
-						<option value="" psid="">[$i18n.getString("please_select")]</option>
+						<option value="" psid="" reportDateDes="$i18n.getString('report_date')">[$i18n.getString("please_select")]</option>
 						#foreach( $program in $programs )
 							#foreach( $programStage in $program.programStages )
 								<option value='$program.id' psid='$programStage.id' reportDateDes="$programStage.reportDateDescription">$program.name</option>
@@ -77,29 +77,25 @@
 				</td>
 			</tr>
 			<tr>
-				<td><span id="reportDateDescriptionField"></span> $i18n.getString('from_to')</td>
-				<td><input type="text" id='startDate' name='startDate' style='width:240px'></td>
-				<td><input type="text" id='endDate' name='endDate' style='width:240px'></td>
+				<td><span id="reportDateDescriptionField">$i18n.getString('report_date')</span> $i18n.getString('from_to')</td>
+				<td>
+					<input type="text" id='startDate' name='startDate' style='width:105px'>
+					<input type="text" id='endDate' name='endDate' style='width:105px'>
+				</td>
 				<td><input type="button" id='searchBtn' value='$i18n.getString( "search" )' onclick='setFieldValue("isShowEventList", false);validateSearchEvents( false )'></td>
 			</tr>
-			<tr>
-				<td valign="top">$i18n.getString('data_elements')</td>
-				<td colspan='2'>
-					<table id='advancedSearchTB'>	
-						<tbody>
-							<tr id='advSearchBox0'>	
-								<td id='searchingAttributeIdTD' style="width:298px">
-									<select id="searchObjectId" name="searchObjectId" style='margin-right:18px;' onchange='dataElementOnChange(this);'></select>
-								</td>		
-								<td>
-									<input type="text" id="searchText" name="searchText" value="$!searchText">
-									<input type="button" id='addSearchOptionBtn' name='addSearchOptionBtn' class='small-button' value='+' onclick='addAttributeOption()'>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
+			
+			<tbody id='advancedSearchTB'>
+				<tr id='advSearchBox0'>	
+					<td id='searchingAttributeIdTD'>
+						<select id="searchObjectId" name="searchObjectId" onchange='dataElementOnChange(this);'></select>
+					</td>		
+					<td>
+						<input type="text" id="searchText" name="searchText" value="$!searchText">
+						<input type="button" id='addSearchOptionBtn' name='addSearchOptionBtn' class='small-button' value='+' onclick='addAttributeOption()'>
+					</td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
 </div>
@@ -160,6 +156,8 @@
 	var i18n_no_compulsary_data_elements = '$encoder.jsEscape( $i18n.getString( "no_compulsary_data_elements" ) , "'")';
 	var i18n_remove_empty_events_success = '$encoder.jsEscape( $i18n.getString( "remove_empty_events_success" ) , "'")';
 	var i18n_confirm_remove_empty_events = '$encoder.jsEscape( $i18n.getString( "confirm_remove_empty_events" ) , "'")';
+	var i18n_report_date = '$encoder.jsEscape( $i18n.getString( "report_date" ) , "'")';
+	
 	isAjax = true;
 	contentDiv = '';
 	var unSave = false;

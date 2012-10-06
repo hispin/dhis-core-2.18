@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.exception.SQLGrammarException;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -262,6 +263,13 @@ public class GenerateTabularReportAction
         return mapSuggestedValues;
     }
 
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -301,7 +309,8 @@ public class GenerateTabularReportAction
                 }
                 else
                 {
-                    organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( orgunitId ));
+                    organisationUnits.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
+                        orgunitId ) );
                 }
             }
         }
@@ -321,27 +330,33 @@ public class GenerateTabularReportAction
         // ---------------------------------------------------------------------
         // Generate tabular report
         // ---------------------------------------------------------------------
-
-        if ( type == null ) // Tabular report
+        try
         {
-            totalRecords = programStageInstanceService.getTabularReportCount( programStage, columns, organisationUnits,
-                level, startValue, endValue );
+            if ( type == null ) // Tabular report
+            {
+                totalRecords = programStageInstanceService.getTabularReportCount( programStage, columns,
+                    organisationUnits, level, startValue, endValue );
 
-            total = getNumberOfPages( totalRecords );
+                total = getNumberOfPages( totalRecords );
 
-            this.paging = createPaging( totalRecords );
-            // total = paging.getTotal(); //TODO
+                this.paging = createPaging( totalRecords );
+                // total = paging.getTotal(); //TODO
 
-            grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
-                startValue, endValue, !orderByOrgunitAsc, paging.getStartPos(), paging.getPageSize() );
+                grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
+                    startValue, endValue, !orderByOrgunitAsc, paging.getStartPos(), paging.getPageSize() );
+            }
+            else
+            // Download as Excel
+            {
+                grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
+                    startValue, endValue, !orderByOrgunitAsc, null, null );
+            }
         }
-        else
-        // Download as Excel
+        catch ( SQLGrammarException ex )
         {
-            grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
-                startValue, endValue, !orderByOrgunitAsc, null, null );
+            message = i18n.getString("failed_to_get_events");
         }
-        
+
         return type == null ? SUCCESS : type;
     }
 
@@ -364,26 +379,26 @@ public class GenerateTabularReportAction
         for ( String searchValue : searchingValues )
         {
             String[] values = searchValue.split( "_" );
-            
+
             if ( values != null && values.length >= 3 )
             {
                 String prefix = values[0];
-    
+
                 TabularReportColumn column = new TabularReportColumn();
                 column.setPrefix( prefix );
                 column.setIdentifier( values[1] );
                 column.setHidden( Boolean.parseBoolean( values[2] ) );
                 column.setQuery( values.length == 4 ? TextUtils.lower( values[3] ) : null );
-    
+
                 if ( PREFIX_FIXED_ATTRIBUTE.equals( prefix ) )
                 {
                     column.setName( values[1] );
                 }
                 else if ( PREFIX_IDENTIFIER_TYPE.equals( prefix ) )
                 {
-                    PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( column
-                        .getIdentifierAsInt() );
-    
+                    PatientIdentifierType identifierType = patientIdentifierTypeService
+                        .getPatientIdentifierType( column.getIdentifierAsInt() );
+
                     column.setName( identifierType.getName() );
                 }
                 else if ( PREFIX_PATIENT_ATTRIBUTE.equals( prefix ) )
@@ -391,10 +406,10 @@ public class GenerateTabularReportAction
                     int objectId = Integer.parseInt( values[1] );
                     PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
                     patientAttributes.add( attribute );
-    
+
                     valueTypes.add( attribute.getValueType() );
                     mapSuggestedValues.put( index, getSuggestedAttributeValues( attribute ) );
-    
+
                     column.setName( attribute.getName() );
                 }
                 else if ( PREFIX_DATA_ELEMENT.equals( prefix ) )
@@ -402,16 +417,17 @@ public class GenerateTabularReportAction
                     int objectId = Integer.parseInt( values[1] );
                     DataElement dataElement = dataElementService.getDataElement( objectId );
                     dataElements.add( dataElement );
-    
-                    String valueType = dataElement.getOptionSet() != null ? VALUE_TYPE_OPTION_SET : dataElement.getType();
+
+                    String valueType = dataElement.getOptionSet() != null ? VALUE_TYPE_OPTION_SET : dataElement
+                        .getType();
                     valueTypes.add( valueType );
                     mapSuggestedValues.put( index, getSuggestedDataElementValues( dataElement ) );
-    
+
                     column.setName( dataElement.getName() );
                 }
-    
+
                 columns.add( column );
-    
+
                 index++;
             }
         }
