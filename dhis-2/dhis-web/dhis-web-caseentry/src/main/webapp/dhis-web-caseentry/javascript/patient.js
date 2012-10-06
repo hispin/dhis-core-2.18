@@ -28,6 +28,7 @@ function listAllPatient()
 	hideById('listPatientDiv');
 	hideById('editPatientDiv');
 	hideById('migrationPatientDiv');
+	hideById('advanced-search');
 	
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listPatientDiv';

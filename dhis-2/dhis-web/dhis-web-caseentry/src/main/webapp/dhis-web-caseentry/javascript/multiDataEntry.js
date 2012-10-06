@@ -22,6 +22,8 @@ selection.setListenerFunction( multiDataEntryOrgunitSelected );
 function listAllPatient()
 {
 	hideById('listPatientDiv');
+	hideById('advanced-search');
+	
 	contentDiv = 'listPatientDiv';
 	$('#contentDataRecord').html('');
 	showLoader();

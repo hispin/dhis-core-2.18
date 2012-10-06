@@ -42,6 +42,8 @@ function listAllPatient()
 {
 	setFieldValue('listAll', "true");
 	hideById('listEventDiv');
+	hideById('advanced-search');
+	
 	contentDiv = 'listEventDiv';
 	$('#contentDataRecord').html('');
 	hideById('advanced-search');
