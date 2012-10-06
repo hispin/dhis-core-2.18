@@ -38,6 +38,15 @@ var validationRules = {
             "required" : true
         }
     },
+	"profile" : {
+		"email" : {
+            "email" : true,
+            "rangelength" : [ 0, 160 ]
+        },
+		"phoneNumber" : {
+            "rangelength" : [ 0, 80 ]
+        }
+	},
     "role" : {
         "name" : {
             "required" : true,
