@@ -858,12 +858,26 @@
       <param name="page">/dhis-web-commons/useraccount/updateUserAccountForm.vm</param>
     </action>
 
+    <action name="showUpdateUserProfileForm" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-commons/useraccount/updateUserProfileForm.vm</param>
+    </action>
+
     <action name="updateUserAccount" class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">
       <result name="success" type="velocity-xml">
         /dhis-web-commons/useraccount/updateUserSuccess.vm
       </result>
       <result name="input" type="velocity-xml">
         /dhis-web-commons/useraccount/updateUserInput.vm
+      </result>
+    </action>
+
+    <action name="updateUserProfile" class="org.hisp.dhis.useraccount.action.UpdateUserProfileAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
+      </result>
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
       </result>
     </action>
 
