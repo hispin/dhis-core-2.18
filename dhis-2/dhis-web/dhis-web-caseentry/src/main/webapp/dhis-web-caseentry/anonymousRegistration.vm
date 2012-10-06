@@ -42,22 +42,23 @@
 					</select>
 					<input type='hidden' class='stage-object-selected hidden'>
 				</td>
-				<td>
+				<td>	
 					<input type="button" class='large-button' id='listBtn' value="$i18n.getString( 'list_all_events' )" onclick='validateSearchEvents( true );'>
-				</td>
-				<td>
+				
 					<input type="button" class='large-button' id='addBtn' value='$i18n.getString( "add_new" )' onclick="setFieldValue('isShowEventList', true);showAddEventForm();">
-				</td>
-				<td>
+				
 					<input type="button" class='large-button' id='removeBtn' value='$i18n.getString( "remove_empty_events" )' onclick="removeEmptyEvents();">
-				</td>
-				<td>
+				
 					<input type="button" class='large-button' id='advancedBtn' value='$i18n.getString( "search" )' onclick="jQuery('#advanced-search').toggle();">
 				</td>
 			</tr>
 		</table>
 		
 		<table id='advanced-search' class='hidden'>
+			<col/>
+			<col/>
+			<col/>
+			<col width="180"/>
 			<tr>
 				<td>$i18n.getString('use_data_from_level')</td>
 				<td>
