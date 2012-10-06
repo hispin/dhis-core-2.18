@@ -27,8 +27,14 @@ package org.hisp.dhis.dashboard.message.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
 
 import com.opensymphony.xwork2.Action;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
@@ -44,6 +50,8 @@ import java.util.Set;
 public class GetMessageRecipientsAction
     implements Action
 {
+    private static final int MAX_PER_OBJECT = 15;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -53,6 +61,9 @@ public class GetMessageRecipientsAction
 
     @Autowired
     private UserGroupService userGroupService;
+
+    @Autowired
+    private ContextUtils contextUtils;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -67,12 +78,12 @@ public class GetMessageRecipientsAction
 
     private Set<User> users = new HashSet<User>();
 
-    private Set<UserGroup> userGroups = new HashSet<UserGroup>();
-
     public Set<User> getUsers()
     {
         return users;
     }
+
+    private Set<UserGroup> userGroups = new HashSet<UserGroup>();
 
     public Set<UserGroup> getUserGroups()
     {
@@ -86,17 +97,17 @@ public class GetMessageRecipientsAction
     @Override
     public String execute() throws Exception
     {
-        if ( filter == null || filter.isEmpty() )
+        filter = StringUtils.trimToNull( filter );
+            
+        if ( filter != null )
         {
-            users = new HashSet<User>( userService.getAllUsers() );
-            userGroups = new HashSet<UserGroup>( userGroupService.getAllUserGroups() );
-        }
-        else
-        {
-            users = new HashSet<User>( userService.getUsersByName( filter ) );
-            userGroups = new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, Integer.MAX_VALUE ) );
+            users = new HashSet<User>( userService.getAllUsersBetweenByName( filter, 0, MAX_PER_OBJECT ) );
+            
+            userGroups = new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, MAX_PER_OBJECT ) );
         }
 
+        contextUtils.configureResponse( ServletActionContext.getResponse(), CONTENT_TYPE_JSON, CacheStrategy.CACHE_1_HOUR );
+        
         return SUCCESS;
     }
 }

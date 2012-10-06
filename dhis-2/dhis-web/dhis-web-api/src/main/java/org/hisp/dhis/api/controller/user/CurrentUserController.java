@@ -255,7 +255,7 @@ public class CurrentUserController
         }
         else
         {
-            recipients.setUsers( new HashSet<User>( userService.getUsersByName( filter ) ) );
+            recipients.setUsers( new HashSet<User>( userService.getAllUsersBetweenByName( filter, 0, Integer.MAX_VALUE ) ) );
             recipients.setUserGroups( new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, Integer.MAX_VALUE ) ) );
         }
 
