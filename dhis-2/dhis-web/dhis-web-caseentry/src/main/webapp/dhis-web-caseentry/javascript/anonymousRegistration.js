@@ -77,6 +77,8 @@ function getDataElements()
 		}, 
 		function( json ) 
 		{   
+			jQuery('.stage-object-selected').attr('psid', jQuery('#programId option:selected').attr("psid"));
+	
 			clearListById('searchObjectId');
 			clearListById('compulsoryDE');
 			
@@ -238,14 +240,14 @@ function searchEvents( listAll )
 		url: 'searchProgramStageInstances.action',
 		data: params,
 		success: function( html ){
-			hideById('loaderDiv');
 			hideById('dataEntryInfor');
 			setInnerHTML( 'listDiv', html );
 			
 			var searchInfor = (listAll) ? i18n_list_all_events : i18n_search_events_by_dataelements;
 			setInnerHTML( 'searchInforTD', searchInfor);
-				
+			
 			showById('listDiv');
+			hideById('loaderDiv');
 		}
     });
 }

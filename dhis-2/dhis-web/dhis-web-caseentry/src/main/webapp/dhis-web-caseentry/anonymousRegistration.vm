@@ -32,7 +32,7 @@
 				  $i18n.getString("program") <em title="$i18n.getString( "required" )" class="required">*</em></label>
 				</td>		
 				<td>
-					<select type="text" id="programId" name="programId" onchange='getDataElements();' class='stage-object-selected'>
+					<select type="text" id="programId" name="programId" onchange='getDataElements();'>
 						<option value="" psid="" reportDateDes="$i18n.getString('report_date')">[$i18n.getString("please_select")]</option>
 						#foreach( $program in $programs )
 							#foreach( $programStage in $program.programStages )
@@ -40,6 +40,7 @@
 							#end
 						#end
 					</select>
+					<input type='hidden' class='stage-object-selected hidden'>
 				</td>
 				<td>
 					<input type="button" class='large-button' id='listBtn' value="$i18n.getString( 'list_all_events' )" onclick='validateSearchEvents( true );'>
