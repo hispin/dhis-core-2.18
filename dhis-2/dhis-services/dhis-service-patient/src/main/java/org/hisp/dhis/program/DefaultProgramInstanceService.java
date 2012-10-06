@@ -330,11 +330,14 @@ public class DefaultProgramInstanceService
         grid.addRow();
         grid.addValue( programInstance.getProgram().getDateOfEnrollmentDescription() );
         grid.addValue( format.formatDate( programInstance.getEnrollmentDate() ) );
-        
-        grid.addRow();
-        grid.addValue( programInstance.getProgram().getDateOfIncidentDescription() );
-        grid.addValue( format.formatDate( programInstance.getDateOfIncident() ) );
 
+        if ( programInstance.getProgram().getDisplayIncidentDate() )
+        {
+            grid.addRow();
+            grid.addValue( programInstance.getProgram().getDateOfIncidentDescription() );
+            grid.addValue( format.formatDate( programInstance.getDateOfIncident() ) );
+        }
+        
         getProgramStageInstancesReport( grid, programInstance, format, i18n );
 
         return grid;
@@ -356,8 +359,8 @@ public class DefaultProgramInstanceService
             grid.addValue( "" );
 
             grid.addRow();
-            grid.addValue( ">> " + i18n.getString( "program_stage" ) );
-            grid.addValue( programStageInstance.getProgramStage().getName() );
+            grid.addValue( ">> " + programStageInstance.getProgramStage().getName() );
+            grid.addValue( "" );
 
             // -----------------------------------------------------------------
             // due-date && report-date
