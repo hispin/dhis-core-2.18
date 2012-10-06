@@ -198,6 +198,7 @@ function searchEvents( listAll )
 			var input = jQuery( item );
 			params += '&searchingValues=de_' + input.val() + '_false_';
 		});
+		hideById('advanced-search');
 	}
 	else{
 		params += '&startDate=' + getFieldValue('startDate');

@@ -80,6 +80,7 @@ function showSearchForm()
 isAjax = true;
 function listAllPatient()
 {
+	hideById('advanced-search');
 	showLoader();
 	jQuery('#contentDiv').load( 'listAllPatients.action',{
 			listAll:false,
