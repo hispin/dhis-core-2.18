@@ -7,7 +7,7 @@
 	#end
 	
 	#if( $auth.hasAccess( "dhis-web-caseentry", "activityPlanSelect" ) )
-		#introListImgItem( "activityPlanSelect.action" "activity_planning" "dhis-web-mapping" )
+		#introListImgItem( "activityPlanSelect.action" "activity_planning" "visitplan" )
 	#end
 	#if( $auth.hasAccess( "dhis-web-caseentry", "smsReminderSelect" ) )
 		#introListImgItem( "smsReminderSelect.action" "program_tracking" "summaryreport" )
