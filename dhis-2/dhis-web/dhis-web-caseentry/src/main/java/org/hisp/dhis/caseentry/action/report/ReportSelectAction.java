@@ -87,7 +87,7 @@ public class ReportSelectAction
     {
         orgunit = selectionManager.getSelectedOrganisationUnit();
         
-        programs = programService.getPrograms( orgunit );
+        programs = programService.getAllPrograms();
         
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION ) );
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
