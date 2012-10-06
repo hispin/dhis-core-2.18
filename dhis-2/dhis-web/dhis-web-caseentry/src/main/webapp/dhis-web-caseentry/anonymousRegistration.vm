@@ -3,7 +3,6 @@
 		datePickerInRange( 'startDate' , 'endDate' );		
 		disableCriteriaDiv();
 		
-		var standardInterval = 3;
 		var date = new Date();
 		var d = date.getDate();
 		var m = date.getMonth() - 3;
@@ -13,7 +12,7 @@
 	});
 </script>
 				
-<h3>$i18n.getString( "anonymous_events" ) #openHelp('single_event_without_registration')</h3>
+<h3 id='mainLinkLbl'>$i18n.getString( "anonymous_events" ) #openHelp('single_event_without_registration')</h3>
 <input type='hidden' id='orgunitId' name='orgunitId' value='$orgunit.id'>
 <input type='hidden' id='programStageInstanceId' name='programStageInstanceId'>
 <input type='hidden' id='programStageId' name='programStageId' class='stage-object-selected'>
@@ -103,13 +102,10 @@
 <div id='listDiv'></div>
 
 <div id='dataEntryInfor' class='hidden'>
-	<h4 id='programName' name='programName'></h4>
-	<p>
-		<input type="button" id='backBtn' value="$i18n.getString( 'back' )" onclick="javascript:backEventList();" style='width:150px;'>
-		<input type="button" onclick="doComplete()" value="$i18n.getString('complete')" id="completeBtn" style='width:150px;'>
-		<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBtn" style='width:150px;' >
-		<input type="button" onclick="completedAndAddNewEvent()" value="$i18n.getString('complete_and_add_new_event')" id="completeAndAddNewBtn" style='width:150px;'>
-	</p>
+	<h3>
+		<a href="javascript:backEventList();">$i18n.getString( "anonymous_events" )</a>
+		&raquo; <span id='programName' name='programName'></span>
+	</h3>
 	<table>
 		<tr>
 		    <th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" ) </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
@@ -122,6 +118,12 @@
         </tr>
 	</table>
 	<div id='dataEntryFormDiv'></div>
+	
+	<div class="page inputCriteria" style="width:490px;height:29px;">	
+		<input type="button" onclick="doComplete()" value="$i18n.getString('complete')" id="completeBtn">
+		<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBtn" >
+		<input type="button" onclick="completedAndAddNewEvent()" value="$i18n.getString('complete_and_add_new_event')" id="completeAndAddNewBtn">
+	</div>
 </div>
 
 #parse( "dhis-web-commons/loader/loader.vm" )

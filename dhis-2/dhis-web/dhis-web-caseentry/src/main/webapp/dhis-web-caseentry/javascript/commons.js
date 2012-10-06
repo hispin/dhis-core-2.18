@@ -629,13 +629,11 @@ function disableCompletedButton( disabled )
 {
 	if(disabled){
 		disable('completeBtn');
-		disable('completeAndAddNewBtn');
 		enable('uncompleteBtn');
 		enable('uncompleteAndAddNewBtn');
 	}
 	else{
 		enable('completeBtn');
-		enable('completeAndAddNewBtn');
 		disable('uncompleteBtn');
 		disable('uncompleteAndAddNewBtn');
 	}

@@ -2,13 +2,15 @@
 	<colgroup>
 		<col id="deCol">
 		<col id="entryCol">
+		#if( $!programStageInstance.programStage.program.displayProvidedOtherFacility=='true')
 		<col width="18%" />
+		#end
 	</colgroup>
 
 	<tr>
 		<th>$i18n.getString( "data_element" )</th>                   
 		<th>$i18n.getString( "entry" )</th>
-		#if( $!programStageInstance.programStage.program.isRegistration() == 'true')
+		#if( $!programStageInstance.programStage.program.displayProvidedOtherFacility=='true')
 		<th>$i18n.getString( "provided_elsewhere" )</th>
 		#end
 	</tr>
@@ -88,7 +90,7 @@
 				/>
 			#end
 		</td> 
-		#if( $!programStageInstance.programStage.program.isRegistration() == 'true' )
+		#if( $!programStageInstance.programStage.program.displayProvidedOtherFacility=='true' )
 		<td style='width:20px;' align='center'>
 			#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
 			#if( $programStageDataElement.allowProvidedElsewhere == 'true')

@@ -444,7 +444,7 @@ function toggleContentForReportDate(show)
     }
 }
 
-function doComplete()
+function doComplete( isCreateEvent )
 {
     var flag = false;
     jQuery("#dataEntryFormDiv input[name='entryfield'],select[name='entryselect']").each(function(){
@@ -498,9 +498,12 @@ function doComplete()
 						jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
 					}
 					
-					selection.enable();
 					hideLoader();
 					hideById('contentDiv');
+					
+					if( isCreateEvent ){
+						showAddEventForm();
+					}
 				});
 		}
     }
