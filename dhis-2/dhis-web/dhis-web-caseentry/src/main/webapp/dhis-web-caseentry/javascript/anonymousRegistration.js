@@ -168,7 +168,7 @@ function validateSearchEvents( listAll )
 	var flag = true;
 	if( !listAll )
 	{
-		jQuery( '#advancedSearchTB tbody tr' ).each( function( i, row ){
+		jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
 			jQuery( this ).find(':input').each( function( idx, item ){
 				var input = jQuery( item );
 				if( input.attr('type') != 'button' && idx==0 && input.val()=='' ){
@@ -204,7 +204,7 @@ function searchEvents( listAll )
 		params += '&endDate=' + getFieldValue('endDate');
 		var value = '';
 		var searchingValue = '';
-		jQuery( '#advancedSearchTB tbody tr' ).each( function(){
+		jQuery( '#advancedSearchTB tr' ).each( function(){
 			jQuery( this ).find(':input').each( function( idx, item ){
 				var input = jQuery( item );
 				if( input.attr('type') != 'button' ){
@@ -212,7 +212,7 @@ function searchEvents( listAll )
 						searchingValue = 'de_' + input.val() + '_false_';
 					}
 					else if( input.val()!='' ){
-						value += input.val().toLowerCase();
+						value += jQuery.trim(input.val()).toLowerCase();
 					}
 				}
 			});
