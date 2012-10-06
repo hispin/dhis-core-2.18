@@ -152,16 +152,18 @@ public class HibernateProgramInstanceStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    public int count( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate )
+    public int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
         Number rs = (Number) getCriteria( Restrictions.eq( "program", program ), 
             Restrictions.isNull( "endDate" ),
             Restrictions.ge( "enrollmentDate", startDate ), 
             Restrictions.le( "enrollmentDate", endDate ) )
             .createAlias( "patient", "patient" )
-            .add(Restrictions.eq( "patient.organisationUnit", organisationUnit ) )
+            .createAlias( "patient.organisationUnit", "organisationUnit" )
+            .add(Restrictions.in( "organisationUnit.id", orgunitIds ) )
             .setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
     }
+
 }

@@ -292,8 +292,8 @@ public class GenerateTabularReportAction
             for ( Integer orgunitId : orgunitIds )
             {
                 OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
-                organisationUnits = new HashSet<Integer>( ConversionUtils.getIdentifiers( OrganisationUnit.class,
-                    selectedOrgunit.getChildren() ) );
+                orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
+                    selectedOrgunit.getId() ) );
             }
         }
         else

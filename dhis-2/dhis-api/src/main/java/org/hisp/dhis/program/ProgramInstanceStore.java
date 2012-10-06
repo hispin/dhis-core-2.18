@@ -71,5 +71,5 @@ public interface ProgramInstanceStore
 
     int count( Program program, OrganisationUnit organisationUnit );
     
-    int count( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
+    int count( Program program, Collection<Integer> orgunitIds, Date startDate, Date endDate );
 }
