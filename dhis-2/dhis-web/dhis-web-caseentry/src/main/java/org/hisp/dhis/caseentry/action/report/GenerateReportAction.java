@@ -160,6 +160,13 @@ public class GenerateReportAction
         return program;
     }
 
+    private int total;
+
+    public int getTotal()
+    {
+        return total;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -193,14 +200,15 @@ public class GenerateReportAction
         else
         {
             orgunitIds.add( organisationUnit.getId() );
-            orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnit.getId() ) );
+            orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
+                organisationUnit.getId() ) );
         }
 
         // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
 
-        int total = programInstanceService.countProgramInstances( program, organisationUnit, sDate, eDate );
+        total = programInstanceService.countProgramInstances( program, organisationUnit, sDate, eDate );
 
         this.paging = createPaging( total );
 
