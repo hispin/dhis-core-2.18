@@ -294,11 +294,11 @@ public class GenerateTabularReportAction
                 OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
                 orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
                     selectedOrgunit.getId() ) );
+                orgunitIds.remove( orgunitId );
             }
         }
         else
         {
-            organisationUnits.addAll( orgunitIds );
             for ( Integer orgunitId : orgunitIds )
             {
                 OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );

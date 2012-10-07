@@ -331,13 +331,14 @@ public class DefaultProgramInstanceService
         grid.addValue( programInstance.getProgram().getDateOfEnrollmentDescription() );
         grid.addValue( format.formatDate( programInstance.getEnrollmentDate() ) );
 
-        if ( programInstance.getProgram().getDisplayIncidentDate() )
+        if ( programInstance.getProgram().getDisplayIncidentDate() != null
+            && programInstance.getProgram().getDisplayIncidentDate() )
         {
             grid.addRow();
             grid.addValue( programInstance.getProgram().getDateOfIncidentDescription() );
             grid.addValue( format.formatDate( programInstance.getDateOfIncident() ) );
         }
-        
+
         getProgramStageInstancesReport( grid, programInstance, format, i18n );
 
         return grid;
@@ -366,17 +367,16 @@ public class DefaultProgramInstanceService
             // due-date && report-date
             // -----------------------------------------------------------------
 
-            Date executionDate = programStageInstance.getExecutionDate();
-            String executionDateValue = (executionDate != null) ? format.formatDate( programStageInstance
-                .getExecutionDate() ) : "[" + i18n.getString( "none" ) + "]";
-
             grid.addRow();
             grid.addValue( i18n.getString( "due_date" ) );
             grid.addValue( format.formatDate( programStageInstance.getDueDate() ) );
 
-            grid.addRow();
-            grid.addValue( programStageInstance.getProgramStage().getReportDateDescription() );
-            grid.addValue( executionDateValue );
+            if ( programStageInstance.getExecutionDate() != null )
+            {
+                grid.addRow();
+                grid.addValue( programStageInstance.getProgramStage().getReportDateDescription() );
+                grid.addValue( format.formatDate( programStageInstance.getExecutionDate() ) );
+            }
 
             // -----------------------------------------------------------------
             // Values
