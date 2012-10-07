@@ -7,6 +7,7 @@
 
 <ul>
 	<li><a href="index.action">$i18n.getString( "dashboard" )&nbsp;</a></li>
+	<li><a href="profile.action?id=${currentUser.uid}">$i18n.getString( "profile" )&nbsp;</a></li>
 	<li><a href="message.action">$i18n.getString( "messages" )&nbsp;</a></li>
 	<li><a href="interpretation.action">$i18n.getString( "interpretations" )&nbsp;</a></li>
 </ul>
