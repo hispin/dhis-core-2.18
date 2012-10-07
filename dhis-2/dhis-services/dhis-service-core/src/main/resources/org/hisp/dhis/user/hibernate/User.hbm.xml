@@ -30,7 +30,7 @@
 
 	<property name="introduction" type="text" />
 
-	<property name="gender" length="5" />
+	<property name="gender" length="50" />
 
 	<property name="birthday" type="date" />
 
