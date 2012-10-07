@@ -318,6 +318,23 @@ public class GenerateTabularReportAction
         // ---------------------------------------------------------------------
         // Get program-stage, start-date, end-date
         // ---------------------------------------------------------------------
+        
+        if( level==0 )
+        {
+            level = organisationUnitService.getMaxOfOrganisationUnitLevels();
+            for ( Integer orgunitId : orgunitIds )
+            {
+                int orgLevel = organisationUnitService.getLevelOfOrganisationUnit( orgunitId );
+                if(level > orgLevel)
+                {
+                    level = orgLevel;
+                }
+            }
+        }
+        
+        // ---------------------------------------------------------------------
+        // Get program-stage, start-date, end-date
+        // ---------------------------------------------------------------------
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
@@ -326,7 +343,7 @@ public class GenerateTabularReportAction
         Date startValue = format.parseDate( startDate );
         Date endValue = format.parseDate( endDate );
         List<TabularReportColumn> columns = getTableColumns();
-
+        
         // ---------------------------------------------------------------------
         // Generate tabular report
         // ---------------------------------------------------------------------

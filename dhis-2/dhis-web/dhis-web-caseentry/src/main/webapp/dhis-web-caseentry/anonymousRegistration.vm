@@ -60,14 +60,6 @@
 			<col/>
 			<col width="180"/>
 			<tr>
-				<td>$i18n.getString('use_data_from_level')</td>
-				<td>
-					<input type="radio" id='facilityLB1' name="facilityLB" value="selected" checked> $i18n.getString('selected')
-					<input type="radio" id='facilityLB2' name="facilityLB" value="childrenOnly"> $i18n.getString('children_only')
-					<input type="radio" id='facilityLB3' name="facilityLB" value="all"> $i18n.getString('all')
-				</td>
-			</tr>
-			<tr>
 				<td>$i18n.getString('show_hierachy_from_level')</td>
 				<td>
 					<select id="level" name="level">
