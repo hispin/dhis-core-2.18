@@ -1,6 +1,7 @@
 
 #if ( $keyFlag )
-<img src="../dhis-web-commons/flags/${keyFlagImage}" style="margin-top: 16px; margin-left: 16px; border: 1px solid #D0D0D0; border-radius: 2px;">
+<img src="../dhis-web-commons/flags/${keyFlagImage}" onclick="window.location.href='../${startModule}/index.action'"
+    style="margin-top: 16px; margin-left: 16px; border: 1px solid #D0D0D0; border-radius: 2px; cursor: pointer;" title="$i18n.getString( 'go_to_home_page' )">
 #end
 
 <h2>$i18n.getString( "dashboard" )&nbsp;</h2>
