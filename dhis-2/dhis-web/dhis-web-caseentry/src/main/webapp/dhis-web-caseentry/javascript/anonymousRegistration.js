@@ -194,6 +194,7 @@ function searchEvents( listAll )
 	if(listAll){	
 		params += '&startDate=';
 		params += '&endDate=';
+		params += '&level=0';
 		jQuery( '#compulsoryDE option' ).each( function( i, item ){
 			var input = jQuery( item );
 			params += '&searchingValues=de_' + input.val() + '_false_';
@@ -203,6 +204,7 @@ function searchEvents( listAll )
 	else{
 		params += '&startDate=' + getFieldValue('startDate');
 		params += '&endDate=' + getFieldValue('endDate');
+		params += '&level=' + $('select[id=level]').val();
 		var value = '';
 		var searchingValue = '';
 		jQuery( '#advancedSearchTB tr' ).each( function(){
@@ -227,8 +229,7 @@ function searchEvents( listAll )
 		})
 	}
 	
-	params += '&facilityLB=' + $('input[name=facilityLB]:checked').val();
-	params += '&level=' + $('select[id=level]').val();
+	params += '&facilityLB=selected';
 	params += '&orgunitIds=' + getFieldValue('orgunitId');
 	params += '&programStageId=' + jQuery('#programId option:selected').attr('psid');
 	params += '&orderByOrgunitAsc=false';
