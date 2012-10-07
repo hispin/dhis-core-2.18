@@ -187,10 +187,10 @@ public class GenerateReportAction
         {
             orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
                 organisationUnit.getId() ) );
+            orgunitIds.remove( organisationUnit.getId() );
         }
         else
         {
-            orgunitIds.add( organisationUnit.getId() );
             orgunitIds.addAll( organisationUnitService.getOrganisationUnitHierarchy().getChildren(
                 organisationUnit.getId() ) );
         }
