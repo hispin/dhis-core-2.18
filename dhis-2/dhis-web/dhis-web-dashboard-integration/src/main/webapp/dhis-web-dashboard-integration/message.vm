@@ -1,11 +1,14 @@
 
 <h3>$i18n.getString( "messages" ) #openHelp( "dashboard_messages" )</h3>
 
-<div style="margin-bottom:15px">
-#if( $auth.hasAccess( "dhis-web-dashboard-integration", "sendMessage" ) )
-<input type="button" style="width:130px" value="$i18n.getString( 'write_message' )" onclick="window.location.href='showSendMessage.action'"><br>
-#end
-<input type="button" style="width:130px" value="$i18n.getString( 'write_feedback' )" onclick="window.location.href='showSendFeedback.action'"></div>
+<div class="horizontalMenu" style="padding: 8px 0 36px 0;">
+    <ul>
+    	#if( $auth.hasAccess( "dhis-web-dashboard-integration", "sendMessage" ) )
+        <li><span class="greyButtonLink"><a href="showSendMessage.action">$i18n.getString( 'write_message' )</a></span></li>
+        #end
+        <li><span class="greyButtonLink"><a href="showSendFeedback.action">$i18n.getString( "write_feedback" )</a></span></li>
+    </ul>
+</div>
 
 <table style="width:90%" class="plainList">
 	<tr>

@@ -67,24 +67,24 @@
   padding: 3px;
 }
 
-#subMenu
+#dashboardMenu
 {  
   position: absolute; 
   margin-top: 6px;
 }
 
-#subMenu ul
+.horizontalMenu ul
 {
   list-style-type: none;
   margin: 0;
 }
 
-#subMenu li
+.horizontalMenu li
 {
   float: left;
 }
 
-#subMenu a
+.greyButtonLink a
 {
   padding: 6px 12px;
   height: 25px;
@@ -97,7 +97,7 @@
   background-color: #f3f3f3;
 }
 
-#subMenu a:hover
+.horizontalMenu a:hover
 {
   text-decoration: none;
   background-color: #f8f8f8;
