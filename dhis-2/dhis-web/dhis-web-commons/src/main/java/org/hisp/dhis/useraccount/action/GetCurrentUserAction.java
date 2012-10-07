@@ -30,7 +30,6 @@ package org.hisp.dhis.useraccount.action;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,8 +48,6 @@ public class GetCurrentUserAction
 
     private CurrentUserService currentUserService;
 
-    private UserService userService;
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -66,11 +63,6 @@ public class GetCurrentUserAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
-    }
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
     }
 
     public UserCredentials getUserCredentials()
@@ -97,7 +89,7 @@ public class GetCurrentUserAction
     {
         User user = currentUserService.getCurrentUser();
 
-        userCredentials = userService.getUserCredentials( user );
+        userCredentials = user.getUserCredentials();
 
         return SUCCESS;
     }

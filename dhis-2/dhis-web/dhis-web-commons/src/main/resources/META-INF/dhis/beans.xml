@@ -571,9 +571,6 @@
     <property name="currentUserService">
       <ref bean="org.hisp.dhis.user.CurrentUserService" />
     </property>
-    <property name="userService">
-      <ref bean="org.hisp.dhis.user.UserService" />
-    </property>
   </bean>
 
   <bean id="org.hisp.dhis.useraccount.action.UpdateUserAccountAction" class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction"
