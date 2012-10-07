@@ -60,16 +60,6 @@
 			<col/>
 			<col width="180"/>
 			<tr>
-				<td>$i18n.getString('show_hierachy_from_level')</td>
-				<td>
-					<select id="level" name="level">
-					#foreach( $level in $levels )
-						<option value="${level.level}">$level.name</option>
-					#end
-					</select>
-				</td>
-			</tr>
-			<tr>
 				<td><span id="reportDateDescriptionField">$i18n.getString('report_date')</span> $i18n.getString('from_to')</td>
 				<td>
 					<input type="text" id='startDate' name='startDate' style='width:105px'>

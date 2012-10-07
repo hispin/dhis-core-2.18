@@ -1459,8 +1459,8 @@ function hideProgramInstanceDiv( programInstanceId )
 
 function loadActiveProgramStageRecords(programInstanceId, activeProgramStageInstanceId)
 {
+	hideById('programEnrollmentDiv');
 	if( programInstanceId == "") return;
-	
 	jQuery('#loaderDiv').show();
 	jQuery('#programEnrollmentDiv').load('enrollmentform.action',
 		{
