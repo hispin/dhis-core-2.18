@@ -42,7 +42,7 @@ function loadDataEntry( programStageInstanceId )
 			hideById('inputCriteriaDiv');
 			
 			var programStageInstance = jQuery("#ps_" + programStageInstanceId);
-			var header = "<h4>" + i18n_records_for + " " + programStageInstance.attr("orgunit")
+			var header = "<h4>" + i18n_records_for + " " + getInnerHTML( 'org_' + programStageInstanceId )
 					+ " " + i18n_at + " " + programStageInstance.attr("psname")
 					+ " " + i18n_on_date + " " + programStageInstance.attr("reportDate") + "</h4><hr>";
 			setInnerHTML('patientInforTB', header );
