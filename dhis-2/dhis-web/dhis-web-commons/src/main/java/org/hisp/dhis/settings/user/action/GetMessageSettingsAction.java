@@ -1,7 +1,7 @@
-package org.hisp.dhis.settings.action.user;
+package org.hisp.dhis.settings.user.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,15 +30,15 @@ package org.hisp.dhis.settings.action.user;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
+ * @version $Id$
  */
-public class SetMessageSettingsAction
+public class GetMessageSettingsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -53,35 +53,21 @@ public class SetMessageSettingsAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Output
     // -------------------------------------------------------------------------
 
     private Boolean messageEmailNotification;
 
-    public void setMessageEmailNotification( Boolean messageEmailNotification )
+    public Boolean getMessageEmailNotification()
     {
-        this.messageEmailNotification = messageEmailNotification;
+        return messageEmailNotification;
     }
 
     private Boolean messageSmsNotification;
 
-    public void setMessageSmsNotification( Boolean messageSmsNotification )
+    public Boolean getMessageSmsNotification()
     {
-        this.messageSmsNotification = messageSmsNotification;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
+        return messageSmsNotification;
     }
 
     // -------------------------------------------------------------------------
@@ -91,11 +77,13 @@ public class SetMessageSettingsAction
     public String execute()
         throws Exception
     {
-        userSettingService.saveUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, messageEmailNotification );
+        // ---------------------------------------------------------------------
+        // Get Message-email-notification
+        // ---------------------------------------------------------------------
 
-        userSettingService.saveUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, messageSmsNotification );
+        messageEmailNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
 
-        message = i18n.getString( "settings_updated" );
+        messageSmsNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, false );
 
         return SUCCESS;
     }

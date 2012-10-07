@@ -887,6 +887,40 @@
       <param name="menu">/dhis-web-commons/about/menu.vm</param>
     </action>
 
-  </package>
+	<!-- User settings -->
+	
+	<action name="userSettings" class="org.hisp.dhis.commons.action.NoAction">
+	  <result name="success" type="velocity">/main.vm</result>
+	  <param name="page">/dhis-web-commons/settings/index.vm</param>
+	  <param name="menu">/dhis-web-commons/settings/settingsMenu.vm</param>
+	</action>
+	
+		<!-- General settings -->
+    <action name="userGeneralSettings" class="org.hisp.dhis.settings.user.action.GetGeneralSettingsAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-commons/settings/userGeneralSettings.vm</param>
+      <param name="menu">/dhis-web-commons/settings/settingsMenu.vm</param>
+    </action>
 
+    <action name="setUserGeneralSettings" class="org.hisp.dhis.settings.user.action.SetGeneralSettingsAction">
+      <result name="success" type="velocity-json">
+		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
+    </action>
+		
+		<!-- Message notification settings -->
+
+    <action name="userMessageSettings" class="org.hisp.dhis.settings.user.action.GetMessageSettingsAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-commons/settings/userMessageSettings.vm</param>
+      <param name="menu">/dhis-web-commons/settings/settingsMenu.vm</param>
+    </action>
+
+    <action name="setUserMessageSettings" class="org.hisp.dhis.settings.user.action.SetMessageSettingsAction">
+      <result name="success" type="velocity-json">
+		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
+  </package>
 </struts>

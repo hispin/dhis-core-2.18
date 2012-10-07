@@ -25,11 +25,16 @@ function pageInit()
 	var currentPath = '../dhis-web-commons-about/';
 	var backURL = '?backUrl=' + window.location;
 
+	$( "#menuDropDownUserSettings" ).click( function()
+		{
+			window.location.href = currentPath + 'userSettings.action' + backURL;
+		});
+	
 	$( "#menuDropDownHelpCenter" ).click( function()
 		{
 			window.location.href = currentPath + 'help.action' + backURL;
 		});
-				
+
 	$( "#menuDropDownChangeLog" ).click( function()
 		{
 			window.location.href = currentPath + 'displayChangeLog.action' + backURL;
