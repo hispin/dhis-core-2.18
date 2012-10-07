@@ -564,6 +564,8 @@
     <property name="styleManager" ref="org.hisp.dhis.setting.StyleManager" />
   </bean>
 
+  <!-- User Account -->
+  
   <bean id="org.hisp.dhis.useraccount.action.GetCurrentUserAction" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction"
     scope="prototype">
     <property name="currentUserService">
@@ -586,6 +588,58 @@
 
   <bean id="org.hisp.dhis.useraccount.action.UpdateUserProfileAction" class="org.hisp.dhis.useraccount.action.UpdateUserProfileAction"
     scope="prototype"/>
+
+  <!-- User settings -->
+
+  <bean id="org.hisp.dhis.settings.user.action.GetGeneralSettingsAction"
+      class="org.hisp.dhis.settings.user.action.GetGeneralSettingsAction"
+      scope="prototype">
+    <property name="resourceBundleManager">
+      <ref bean="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" />
+    </property>
+    <property name="i18nService">
+      <ref bean="org.hisp.dhis.i18n.I18nService" />
+    </property>
+    <property name="localeManager">
+      <ref bean="org.hisp.dhis.i18n.locale.LocaleManager" />
+    </property>
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
+    </property>
+    <property name="styleManager">
+      <ref bean="org.hisp.dhis.setting.StyleManager" />
+    </property>
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.user.action.SetGeneralSettingsAction"
+      class="org.hisp.dhis.settings.user.action.SetGeneralSettingsAction"
+      scope="prototype">
+    <property name="localeManager">
+      <ref bean="org.hisp.dhis.i18n.locale.LocaleManager" />
+    </property>
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
+    </property>
+    <property name="styleManager">
+      <ref bean="org.hisp.dhis.setting.StyleManager" />
+    </property>
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.user.action.GetMessageSettingsAction"
+      class="org.hisp.dhis.settings.user.action.GetMessageSettingsAction"
+      scope="prototype">
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
+    </property>
+  </bean>
+
+  <bean id="org.hisp.dhis.settings.user.action.SetMessageSettingsAction"
+      class="org.hisp.dhis.settings.user.action.SetMessageSettingsAction"
+      scope="prototype">
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
+    </property>
+  </bean>
 
   <bean id="org.hisp.dhis.commons.action.GetPingAction" class="org.hisp.dhis.commons.action.GetPingAction">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />

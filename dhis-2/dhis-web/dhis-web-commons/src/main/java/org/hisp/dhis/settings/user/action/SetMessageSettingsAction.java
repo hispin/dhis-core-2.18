@@ -1,7 +1,7 @@
-package org.hisp.dhis.settings.action.user;
+package org.hisp.dhis.settings.user.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,42 +27,23 @@ package org.hisp.dhis.settings.action.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.user.UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM;
-import static org.hisp.dhis.user.UserSettingService.KEY_DB_LOCALE;
+import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
+import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 
-import java.util.Locale;
-
-import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.setting.StyleManager;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id$
  */
-public class SetGeneralSettingsAction
+public class SetMessageSettingsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private LocaleManager localeManager;
-
-    public void setLocaleManager( LocaleManager localeManager )
-    {
-        this.localeManager = localeManager;
-    }
-
-    private StyleManager styleManager;
-
-    public void setStyleManager( StyleManager styleManager )
-    {
-        this.styleManager = styleManager;
-    }
 
     private UserSettingService userSettingService;
 
@@ -75,32 +56,32 @@ public class SetGeneralSettingsAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Boolean autoSave;
+    private Boolean messageEmailNotification;
 
-    public void setAutoSave( Boolean autoSave )
+    public void setMessageEmailNotification( Boolean messageEmailNotification )
     {
-        this.autoSave = autoSave;
+        this.messageEmailNotification = messageEmailNotification;
     }
 
-    private String currentLocale;
+    private Boolean messageSmsNotification;
 
-    public void setCurrentLocale( String locale )
+    public void setMessageSmsNotification( Boolean messageSmsNotification )
     {
-        this.currentLocale = locale;
+        this.messageSmsNotification = messageSmsNotification;
     }
 
-    private String currentLocaleDb;
+    private String message;
 
-    public void setCurrentLocaleDb( String currentLocaleDb )
+    public String getMessage()
     {
-        this.currentLocaleDb = currentLocaleDb;
+        return message;
     }
 
-    private String currentStyle;
+    private I18n i18n;
 
-    public void setCurrentStyle( String style )
+    public void setI18n( I18n i18n )
     {
-        this.currentStyle = style;
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -110,48 +91,12 @@ public class SetGeneralSettingsAction
     public String execute()
         throws Exception
     {
-        localeManager.setCurrentLocale( getRespectiveLocale( currentLocale ) );
+        userSettingService.saveUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, messageEmailNotification );
 
-        userSettingService.saveUserSetting( KEY_DB_LOCALE, getRespectiveLocale( StringUtils.trimToNull( currentLocaleDb ) ) );
+        userSettingService.saveUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, messageSmsNotification );
 
-        styleManager.setUserStyle( currentStyle );
-
-        userSettingService.saveUserSetting( AUTO_SAVE_DATA_ENTRY_FORM, autoSave );
+        message = i18n.getString( "settings_updated" );
 
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Locale getRespectiveLocale( String locale )
-    {
-        if ( locale == null )
-        {
-            return null;
-        }
-        
-        String[] tokens = locale.split( "_" );
-        Locale newLocale = null;
-
-        switch ( tokens.length )
-        {
-        case 1:
-            newLocale = new Locale( tokens[0] );
-            break;
-
-        case 2:
-            newLocale = new Locale( tokens[0], tokens[1] );
-            break;
-
-        case 3:
-            newLocale = new Locale( tokens[0], tokens[1], tokens[2] );
-            break;
-
-        default:
-        }
-
-        return newLocale;
     }
 }

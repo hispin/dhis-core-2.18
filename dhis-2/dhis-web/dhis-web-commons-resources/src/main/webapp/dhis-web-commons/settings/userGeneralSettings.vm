@@ -10,7 +10,7 @@
 				autoSave: jQuery( '#autoSave' ).is(':checked' )
 			}, function ( json ) {
 				if ( json.response == "success" )
-					window.location.reload();
+					setHeaderDelayMessage( json.message );
 			});
 		});
 	});

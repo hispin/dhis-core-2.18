@@ -104,6 +104,7 @@
 	  
       <div id="menuDropDown3" class="menuDropDownArea">
       <ul class="menuDropDownBox">
+        <li><a id="menuDropDownUserSettings">$i18n.getString( "settings" )&nbsp;</a></li>
         <li><a id="menuDropDownHelpCenter">$i18n.getString( "help_center" )&nbsp;</a></li>
         <li><a id="menuDropDownChangeLog">$i18n.getString( "change_log" )&nbsp;</a></li>
         <li><a id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</a></li>
@@ -123,8 +124,8 @@
       </span>
       
       <span id="showLeftBar">
-        <a href="javascript:leftBar.showAnimated()" title="$i18n.getString( "show_menu" )">
-          <img src="../images/show_menu.png" width="16" height="16" alt="$i18n.getString( "show_menu" )"></a>
+        <a href="javascript:leftBar.showAnimated()" title="$i18n.getString( 'show_menu' )">
+          <img src="../images/show_menu.png" width="16" height="16" alt="$i18n.getString( 'show_menu' )"/></a>
       </span>
     </div>
 
@@ -135,10 +136,10 @@
     #else
     <div id="leftBar">    
       <div id="hideLeftBar">
-        <a href="index.action" title="$i18n.getString( "show_main_menu" )" id="showMainMenuLink">
-          <img src="../images/home_small.png" width="16" height="16" title="$i18n.getString( "show_main_menu" )"></a>
-        <a href="javascript:leftBar.hideAnimated()" title="$i18n.getString( "hide_menu" )" id="hideMainMenuLink">
-          <img src="../images/hide_menu.png" width="16" height="16" title="$i18n.getString( "hide_menu" )"></a>
+        <a href="index.action" title="$i18n.getString( 'show_main_menu' )" id="showMainMenuLink">
+          <img src="../images/home_small.png" width="16" height="16" title="$i18n.getString( 'show_main_menu' )"/></a>
+        <a href="javascript:leftBar.hideAnimated()" title="$i18n.getString( 'hide_menu' )" id="hideMainMenuLink">
+          <img src="../images/hide_menu.png" width="16" height="16" title="$i18n.getString( 'hide_menu' )"/></a>
       </div>
       
       <div id="leftBarContents">
@@ -164,7 +165,7 @@
     
     <div id="rightBar">
       <span id="hideRightBar"><a href="javascript:hideHelpContent()" title="$i18n.getString( 'close' )">
-        <img id="hideRightBarImg" src="../images/hide.png" alt="$i18n.getString( 'close' )"></a>
+        <img id="hideRightBarImg" src="../images/hide.png" alt="$i18n.getString( 'close' )"/></a>
       </span>
       <div id="rightBarContents"/>
     </div>
