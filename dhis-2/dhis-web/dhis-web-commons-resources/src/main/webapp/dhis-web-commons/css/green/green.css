@@ -238,8 +238,8 @@ div#menuDropDown3
   top: 44px;
   left: 0px;
   padding-top: 6px;
-  border-right: 1px solid #3f5841;
-  border-bottom: 1px solid #3f5841;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
   filter: alpha(opacity=90);
   opacity: 0.90;
   border-bottom-right-radius: 5px;
