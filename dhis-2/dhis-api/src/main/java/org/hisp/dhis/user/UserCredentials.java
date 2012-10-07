@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
@@ -82,6 +83,15 @@ public class UserCredentials
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns a concatenated String of the display names of all user authority
+     * groups for this user credentials.
+     */
+    public String getUserAuthorityGroupsName()
+    {
+        return IdentifiableObjectUtils.join( userAuthorityGroups );
+    }
+    
     /**
      * Returns a set of the aggregated authorities for all user authority groups
      * of this user credentials.

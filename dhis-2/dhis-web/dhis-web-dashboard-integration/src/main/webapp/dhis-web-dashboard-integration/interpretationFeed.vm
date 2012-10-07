@@ -13,7 +13,7 @@
     </div>
     <div class="interpretation">
 	    <div class="interpretationName">
-	        <span class="bold" style="cursor:pointer" onclick="showUserInfo( '${ip.user.id}' )">${ip.user.name}</span>&nbsp;
+	        <a class="bold userLink" href="profile.action?id=${ip.user.uid}">${encoder.htmlEncode( $ip.user.name )}</a>&nbsp;
 	        <span class="grey">${format.formatDate( $ip.created )}</span>
 	    </div>
 	    <div class="interpretationText">
