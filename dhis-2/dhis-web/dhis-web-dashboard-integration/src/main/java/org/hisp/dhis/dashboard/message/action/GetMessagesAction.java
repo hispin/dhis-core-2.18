@@ -51,6 +51,24 @@ public class GetMessagesAction
     }
 
     // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private boolean followUp;
+
+    public void setFollowUp( boolean followUp )
+    {
+        this.followUp = followUp;
+    }
+
+    private boolean unread;
+
+    public void setUnread( boolean unread )
+    {
+        this.unread = unread;
+    }
+
+    // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
@@ -69,7 +87,7 @@ public class GetMessagesAction
     {
         this.paging = createPaging( messageService.getMessageConversationCount() );
         
-        conversations = messageService.getMessageConversations( paging.getStartPos(), paging.getPageSize() );
+        conversations = messageService.getMessageConversations( followUp, unread, paging.getStartPos(), paging.getPageSize() );
         
         return SUCCESS;
     }

@@ -1,12 +1,16 @@
 
 <h3>$i18n.getString( "messages" ) #openHelp( "dashboard_messages" )</h3>
 
-<div class="horizontalMenu" style="padding: 8px 0 36px 0;">
+<div class="horizontalMenu" style="padding: 8px 0 40px 0;">
     <ul>
     	#if( $auth.hasAccess( "dhis-web-dashboard-integration", "sendMessage" ) )
-        <li><span class="greyButtonLink"><a href="showSendMessage.action">$i18n.getString( 'write_message' )</a></span></li>
+        <li><a class="blueButtonLink" href="showSendMessage.action">$i18n.getString( 'write_message' )</a></li>
         #end
-        <li><span class="greyButtonLink"><a href="showSendFeedback.action">$i18n.getString( "write_feedback" )</a></span></li>
+        <li><a class="blueButtonLink" href="showSendFeedback.action">$i18n.getString( "write_feedback" )</a></li>
+        <li><span style="padding-left:12px"></span></li>
+        <li><a class="greyButtonLink" href="message.action">$i18n.getString( "inbox" )</a></li>
+        <li><a class="greyButtonLink" href="message.action?followUp=true">$i18n.getString( "follow_up" )</a></li>
+        <li><a class="greyButtonLink" href="message.action?unread=true">$i18n.getString( "unread" )</a></li>
     </ul>
 </div>
 
