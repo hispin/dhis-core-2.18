@@ -35,24 +35,24 @@ jQuery(function() {
 <table>
 
 <tr>
-<td style="min-width:80px" rowspan="2">$i18n.getString( "recipients" )</td>
+<td style="width:80px" rowspan="2">$i18n.getString( "recipients" )</td>
 <td>
 #organisationUnitSelectionTree( true true false )
 </td>
 </tr>
 <td>
-<input type="hidden" name="additionalUsers" id="additionalUsers" style="width: 545px; padding: 4px; border: 1px solid grey;"/>
+<input type="hidden" name="additionalUsers" id="additionalUsers" style="width:545px; padding:4px; border:1px solid grey;"/>
 </td>
 </tr>
 
 <tr>
 <td>$i18n.getString( "subject" )</td>
-<td><input type="text" id="subject" name="subject" style="width: 535px; padding: 4px; border: 1px solid grey !important;"></td>
+<td><input type="text" id="subject" name="subject" style="width:615px; padding:4px; border:1px solid grey !important;"></td>
 </tr>
 
 <tr>
 <td>$i18n.getString( "text" )</td>
-<td><textarea id="text" name="text" style="width:539px; height:200px; border: 1px solid grey !important;"></textarea></td>
+<td><textarea id="text" name="text" style="width:619px; height:220px; border:1px solid grey !important;"></textarea></td>
 </tr>
 
 <tr>
