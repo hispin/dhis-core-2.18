@@ -34,10 +34,9 @@ import org.hisp.dhis.api.webdomain.form.Section;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.datavalue.DataValue;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -160,5 +159,33 @@ public class FormUtils
         }
 
         return null;
+    }
+
+    public static void fillWithDataValues( Form form, Collection<DataValue> dataValues )
+    {
+        Map<String, Field> cacheMap = buildCacheMap( form );
+
+        for ( DataValue dataValue : dataValues )
+        {
+            DataElement dataElement = dataValue.getDataElement();
+            DataElementCategoryOptionCombo categoryOptionCombo = dataValue.getOptionCombo();
+
+            cacheMap.get( dataElement.getUid() + "-" + categoryOptionCombo.getUid() ).setValue( dataValue.getValue() );
+        }
+    }
+
+    private static Map<String, Field> buildCacheMap( Form form )
+    {
+        Map<String, Field> cacheMap = new HashMap<String, Field>();
+
+        for ( Section section : form.getSections() )
+        {
+            for ( Field field : section.getFields() )
+            {
+                cacheMap.put( field.getDataElement() + "-" + field.getCategoryOptionCombo(), field );
+            }
+        }
+
+        return cacheMap;
     }
 }
