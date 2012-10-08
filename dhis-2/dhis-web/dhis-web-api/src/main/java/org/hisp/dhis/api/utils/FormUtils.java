@@ -85,7 +85,6 @@ public class FormUtils
                 field.setDataElement( dataElement.getUid() );
                 field.setCategoryOptionCombo( dataElement.getCategoryCombo().getSortedOptionCombos().get( 0 ).getUid() );
                 field.setType( inputTypeFromDataElement( dataElement ) );
-                field.setValue( "" );
 
                 fields.add( field );
             }
@@ -99,7 +98,6 @@ public class FormUtils
                     field.setDataElement( dataElement.getUid() );
                     field.setCategoryOptionCombo( categoryOptionCombo.getUid() );
                     field.setType( inputTypeFromDataElement( dataElement ) );
-                    field.setValue( "" );
 
                     fields.add( field );
                 }
