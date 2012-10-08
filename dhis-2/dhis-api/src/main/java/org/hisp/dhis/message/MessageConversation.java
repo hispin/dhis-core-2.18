@@ -78,6 +78,8 @@ public class MessageConversation
 
     private transient String lastSenderFirstname;
 
+    private transient int messageCount;
+    
     public MessageConversation()
     {
     }
@@ -376,6 +378,16 @@ public class MessageConversation
     public void setLastSenderFirstname( String lastSenderFirstname )
     {
         this.lastSenderFirstname = lastSenderFirstname;
+    }
+
+    public int getMessageCount()
+    {
+        return messageCount;
+    }
+
+    public void setMessageCount( int messageCount )
+    {
+        this.messageCount = messageCount;
     }
 
     @Override

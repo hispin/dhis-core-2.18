@@ -84,7 +84,7 @@
   float: left;
 }
 
-.greyButtonLink a
+.greyButtonLink
 {
   padding: 6px 12px;
   height: 25px;
@@ -93,17 +93,18 @@
   margin-right: 4px;
   font-family: LiberationSansBold, arial;
   font-size: 13px;
-  color: #606060;
   background-color: #f3f3f3;
+  color: #606060 !important;
+  text-decoration: none !important;
 }
 
-.greyButtonLink a:hover
+.greyButtonLink:hover
 {
   text-decoration: none;
   background-color: #f8f8f8;
 }
 
-.blueButtonLink a
+.blueButtonLink
 {
   padding: 6px 12px;
   height: 25px;
@@ -112,11 +113,12 @@
   margin-right: 4px;
   font-family: LiberationSansBold, arial;
   font-size: 13px;
-  color: #fff;
   background-color: #4685dd;
+  color: #fff !important;
+  text-decoration: none !important;
 }
 
-.blueButtonLink a:hover
+.blueButtonLink:hover
 {
   text-decoration: none;
   background-color: #3f7fd3;
