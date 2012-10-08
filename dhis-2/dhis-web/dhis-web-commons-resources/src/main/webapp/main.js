@@ -27,7 +27,7 @@ function pageInit()
 
 	$( "#menuDropDownUserSettings" ).click( function()
 		{
-			window.location.href = currentPath + 'userSettings.action' + backURL;
+			window.location.href = currentPath + 'userGeneralSettings.action' + backURL;
 		});
 	
 	$( "#menuDropDownHelpCenter" ).click( function()
