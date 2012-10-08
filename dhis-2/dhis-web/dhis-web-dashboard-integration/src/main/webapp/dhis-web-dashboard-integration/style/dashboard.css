@@ -97,10 +97,29 @@
   background-color: #f3f3f3;
 }
 
-.horizontalMenu a:hover
+.greyButtonLink a:hover
 {
   text-decoration: none;
   background-color: #f8f8f8;
+}
+
+.blueButtonLink a
+{
+  padding: 6px 12px;
+  height: 25px;
+  border: 1px solid #2f73d8;
+  border-radius: 3px;
+  margin-right: 4px;
+  font-family: LiberationSansBold, arial;
+  font-size: 13px;
+  color: #fff;
+  background-color: #4685dd;
+}
+
+.blueButtonLink a:hover
+{
+  text-decoration: none;
+  background-color: #3f7fd3;
 }
 
 #searchDiv
@@ -358,10 +377,19 @@ div#selectionTree
 
 #userHeader
 {
+  display: inline-block;
   margin-left: 36px;
   font-size: 14pt;
   color: #303030;
   padding: 3px 0 15px 0;
+}
+
+#userProfileLink
+{
+  position: relative; 
+  top: -3px; 
+  display: inline-block; 
+  margin-left: 200px;
 }
 
 #userCover
