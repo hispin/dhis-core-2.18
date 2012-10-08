@@ -407,7 +407,12 @@ div#menuDropDown3
 
 .bold, .bold td
 {
-  font-family: LiberationSansBold, arial;
+  font-family: LiberationSansBold, arial, sans-serif;
+}
+
+.normal
+{
+  font-family: LiberationSansRegular, arial, sans-serif;
 }
 
 /*----------------------------------------------------------------------------*/
