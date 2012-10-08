@@ -889,12 +889,6 @@
 
 	<!-- User settings -->
 	
-	<action name="userSettings" class="org.hisp.dhis.commons.action.NoAction">
-	  <result name="success" type="velocity">/main.vm</result>
-	  <param name="page">/dhis-web-commons/settings/index.vm</param>
-	  <param name="menu">/dhis-web-commons/settings/settingsMenu.vm</param>
-	</action>
-	
 		<!-- General settings -->
     <action name="userGeneralSettings" class="org.hisp.dhis.settings.user.action.GetGeneralSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
