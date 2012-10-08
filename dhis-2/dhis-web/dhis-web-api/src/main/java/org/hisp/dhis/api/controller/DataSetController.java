@@ -27,9 +27,19 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.FormUtils;
+import org.hisp.dhis.api.webdomain.form.Form;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -40,4 +50,48 @@ public class DataSetController
     extends AbstractCrudController<DataSet>
 {
     public static final String RESOURCE_PATH = "/dataSets";
+
+    @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = {"application/json", "text/*"} )
+    public void getFormJson( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        DataSet dataSet = getEntity( uid );
+
+        if ( dataSet == null )
+        {
+            ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
+            return;
+        }
+
+        Form form = FormUtils.fromDataSet( dataSet );
+
+        JacksonUtils.toJson( response.getOutputStream(), form );
+    }
+
+    @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = {"application/xml", "text/xml"} )
+    public void getFormXml( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+        DataSet dataSet = getEntity( uid );
+
+        if ( dataSet == null )
+        {
+            ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
+            return;
+        }
+
+        Form form = FormUtils.fromDataSet( dataSet );
+
+        JacksonUtils.toXml( response.getOutputStream(), form );
+    }
+
+    @RequestMapping( value = "/{uid}/form", method = RequestMethod.POST, consumes = "application/json" )
+    public void postFormJson( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response )
+    {
+        System.err.println( "postFormJson" );
+    }
+
+    @RequestMapping( value = "/{uid}/form", method = RequestMethod.POST, consumes = {"application/xml", "text/xml"} )
+    public void postFormXml( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response )
+    {
+        System.err.println( "postFormXml" );
+    }
 }
