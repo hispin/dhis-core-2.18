@@ -66,7 +66,8 @@ public class HibernateMessageConversationStore
         SqlHelper sh = new SqlHelper();
         
         String sql = 
-            "select mc.messageconversationid, mc.uid, mc.subject, mc.lastmessage, ui.surname, ui.firstname, um.isread, um.isfollowup " +
+            "select mc.messageconversationid, mc.uid, mc.subject, mc.lastmessage, ui.surname, ui.firstname, um.isread, um.isfollowup, (" +
+                "select count(messageconversationid) from messageconversation_messages mcm where mcm.messageconversationid=mc.messageconversationid) as messagecount " +
             "from messageconversation mc " +
             "left join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid " +
             "left join usermessage um on mu.usermessageid=um.usermessageid " +
@@ -108,6 +109,7 @@ public class HibernateMessageConversationStore
                 conversation.setLastSenderFirstname( resultSet.getString( 6 ) );                
                 conversation.setRead( resultSet.getBoolean( 7 ) );
                 conversation.setFollowUp( resultSet.getBoolean( 8 ) );
+                conversation.setMessageCount( resultSet.getInt( 9 ) );
                 
                 return conversation;
             }            
