@@ -65,9 +65,6 @@ public class DataSetController
     // -------------------------------------------------------------------------
 
     @Autowired
-    private PeriodService periodService;
-
-    @Autowired
     private DataValueService dataValueService;
 
     // -------------------------------------------------------------------------
