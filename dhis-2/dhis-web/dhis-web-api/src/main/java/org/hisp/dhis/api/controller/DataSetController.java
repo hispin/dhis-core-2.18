@@ -31,15 +31,24 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.FormUtils;
 import org.hisp.dhis.api.webdomain.form.Form;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -51,8 +60,23 @@ public class DataSetController
 {
     public static final String RESOURCE_PATH = "/dataSets";
 
-    @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = {"application/json", "text/*"} )
-    public void getFormJson( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    // -------------------------------------------------------------------------
+    // Controller
+    // -------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = "application/json" )
+    public void getFormJson( @PathVariable( "uid" ) String uid, @RequestParam( value = "orgUnit", required = false ) String orgUnit,
+        @RequestParam( value = "period", required = false ) String period, HttpServletResponse response ) throws IOException
     {
         DataSet dataSet = getEntity( uid );
 
@@ -63,12 +87,23 @@ public class DataSetController
         }
 
         Form form = FormUtils.fromDataSet( dataSet );
+
+        if ( orgUnit != null && !orgUnit.isEmpty() && period != null && !period.isEmpty() )
+        {
+            OrganisationUnit ou = manager.get( OrganisationUnit.class, orgUnit );
+            Period p = PeriodType.getPeriodFromIsoString( period );
+
+            Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSet.getDataElements() );
+
+            FormUtils.fillWithDataValues(form, dataValues);
+        }
 
         JacksonUtils.toJson( response.getOutputStream(), form );
     }
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = {"application/xml", "text/xml"} )
-    public void getFormXml( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response ) throws IOException
+    public void getFormXml( @PathVariable( "uid" ) String uid, @RequestParam( value = "orgUnit", required = false ) String orgUnit,
+        @RequestParam( value = "period", required = false ) String period, HttpServletResponse response ) throws IOException
     {
         DataSet dataSet = getEntity( uid );
 
@@ -79,6 +114,16 @@ public class DataSetController
         }
 
         Form form = FormUtils.fromDataSet( dataSet );
+
+        if ( orgUnit != null && !orgUnit.isEmpty() && period != null && !period.isEmpty() )
+        {
+            OrganisationUnit ou = manager.get( OrganisationUnit.class, orgUnit );
+            Period p = PeriodType.getPeriodFromIsoString( period );
+
+            Collection<DataValue> dataValues = dataValueService.getDataValues( ou, p, dataSet.getDataElements() );
+
+            FormUtils.fillWithDataValues(form, dataValues);
+        }
 
         JacksonUtils.toXml( response.getOutputStream(), form );
     }
@@ -86,12 +131,10 @@ public class DataSetController
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.POST, consumes = "application/json" )
     public void postFormJson( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response )
     {
-        System.err.println( "postFormJson" );
     }
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.POST, consumes = {"application/xml", "text/xml"} )
     public void postFormXml( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response )
     {
-        System.err.println( "postFormXml" );
     }
 }

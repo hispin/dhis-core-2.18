@@ -88,4 +88,14 @@ public class Form
     {
         this.sections = sections;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Form{" +
+            "name='" + name + '\'' +
+            ", period='" + period + '\'' +
+            ", sections=" + sections +
+            '}';
+    }
 }
