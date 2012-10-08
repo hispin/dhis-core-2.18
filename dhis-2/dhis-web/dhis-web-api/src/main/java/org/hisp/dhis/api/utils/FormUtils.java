@@ -27,8 +27,8 @@ package org.hisp.dhis.api.utils;
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import org.hisp.dhis.api.webdomain.form.Form;
 import org.hisp.dhis.api.webdomain.form.Field;
+import org.hisp.dhis.api.webdomain.form.Form;
 import org.hisp.dhis.api.webdomain.form.InputType;
 import org.hisp.dhis.api.webdomain.form.Section;
 import org.hisp.dhis.dataelement.DataElement;
@@ -78,7 +78,7 @@ public class FormUtils
 
         for ( DataElement dataElement : dataElements )
         {
-            if ( dataElement.getCategoryCombo().getName().equalsIgnoreCase( "default" ) )
+            if ( dataElement.getCategoryCombo().isDefault() )
             {
                 Field field = new Field();
 
@@ -112,9 +112,9 @@ public class FormUtils
 
     private static InputType inputTypeFromDataElement( DataElement dataElement )
     {
-        if ( dataElement.getType().equalsIgnoreCase( "string" ) )
+        if ( DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() ) )
         {
-            if ( dataElement.getTextType().equalsIgnoreCase( "text" ) )
+            if ( DataElement.VALUE_TYPE_TEXT.equals( dataElement.getTextType() ) )
             {
                 return InputType.TEXT;
             }
@@ -125,26 +125,26 @@ public class FormUtils
             }
             */
         }
-        else if ( dataElement.getType().equalsIgnoreCase( "int" ) )
+        else if ( DataElement.VALUE_TYPE_INT.equals( dataElement.getType() ) )
         {
-            if ( dataElement.getNumberType().equalsIgnoreCase( "number" ) )
+            if ( DataElement.VALUE_TYPE_NUMBER.equals( dataElement.getNumberType() ) )
             {
                 return InputType.NUMBER;
             }
-            else if ( dataElement.getNumberType().equalsIgnoreCase( "int" ) )
+            else if ( DataElement.VALUE_TYPE_INT.equals( dataElement.getNumberType() ) )
             {
                 return InputType.INTEGER;
             }
-            else if ( dataElement.getNumberType().equalsIgnoreCase( "positiveNumber" ) )
+            else if ( DataElement.VALUE_TYPE_POSITIVE_INT.equals( dataElement.getNumberType() ) )
             {
                 return InputType.INTEGER_POSITIVE;
             }
-            else if ( dataElement.getNumberType().equalsIgnoreCase( "negativeNumber" ) )
+            else if ( DataElement.VALUE_TYPE_NEGATIVE_INT.equals( dataElement.getNumberType() ) )
             {
                 return InputType.INTEGER_NEGATIVE;
             }
         }
-        else if ( dataElement.getType().equalsIgnoreCase( "bool" ) )
+        else if ( DataElement.VALUE_TYPE_BOOL.equals( dataElement.getType() ) )
         {
             return InputType.BOOLEAN;
         }
@@ -154,7 +154,7 @@ public class FormUtils
             return InputType.TRUE_ONLY;
         }
         */
-        else if ( dataElement.getType().equalsIgnoreCase( "date" ) )
+        else if ( DataElement.VALUE_TYPE_DATE.equals( dataElement.getType() ) )
         {
             return InputType.DATE;
         }
