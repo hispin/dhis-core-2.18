@@ -2,6 +2,8 @@
 <h3>$i18n.getString( "change_log" )</h3>
 
 <dl>
+  <dt>$i18n.getString( "release" ) 2.9:</dt>
+  <dd><a href="https://blueprints.launchpad.net/dhis2/+milestone/2.9" target="_blank">Launchpad $i18n.getString( "online_release_page" )</a></dd>
   <dt>$i18n.getString( "release" ) 2.8:</dt>
   <dd><a href="https://blueprints.launchpad.net/dhis2/+milestone/2.8" target="_blank">Launchpad $i18n.getString( "online_release_page" )</a></dd>
   <dt>$i18n.getString( "release" ) 2.7:</dt>
