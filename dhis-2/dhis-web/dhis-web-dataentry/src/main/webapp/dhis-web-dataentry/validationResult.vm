@@ -1,10 +1,6 @@
-<h3>$i18n.getString( "validation_result" )</h3>
+<h3>$i18n.getString( "validation_result" ) &nbsp;<img src="../images/warning_small.png"></h3>
 
-#if( $results.size() == 0 && $dataValues.size() == 0 )  
-    <p class="bold">$i18n.getString( "successful_validation" )</p>
-#else
-    <p class="bold">$i18n.getString( "unsuccessful_validation" )</p>
-#end
+<p class="bold">$i18n.getString( "unsuccessful_validation" )</p>
 
 #if( $results.size() > 0)
     <p class="bold">$i18n.getString( "the_following_values_violate_rules" )</p>

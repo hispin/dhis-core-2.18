@@ -1223,15 +1223,17 @@ function displayUserDetails()
 // Validation
 // -----------------------------------------------------------------------------
 
-function displayValidationDialog( data )
+function displayValidationDialog( data, height )
 {
+	height = isDefined( height ) ? height : 500;
+	
 	$( '#validationDiv' ).html( data );
 	
     $( '#validationDiv' ).dialog( {
-        modal : true,
-        title : 'Validation',
-        width : 800,
-        height : 400
+        modal: true,
+        title: 'Validation',
+        width: 870,
+        height: height
     } );
 }
 
@@ -1243,17 +1245,17 @@ function validate( ignoreSuccessfulValidation, successCallback )
 	
 	if ( !compulsoryCombinationsValid )
 	{
-    	var html = '<h3>' + i18n_validation_result + '</h3>' +
+    	var html = '<h3>' + i18n_validation_result + ' &nbsp;<img src="../images/warning_small.png"></h3>' +
         	'<p class="bold">' + i18n_all_values_for_data_element_must_be_filled + '</p>';
 		
-    	displayValidationDialog( html );
+    	displayValidationDialog( html, 300 );
 	
 		return false;
 	}
 
 	// Check for validation rules and whether complete is only allowed if valid
 	
-	var successHtml = '<h3>' + i18n_validation_result + '</h3>' +
+	var successHtml = '<h3>' + i18n_validation_result + ' &nbsp;<img src="../images/success_small.png"></h3>' +
 		'<p class="bold">' + i18n_successful_validation + '</p>';
 
 	var validCompleteOnly = dataSets[currentDataSetId].validCompleteOnly;
@@ -1277,11 +1279,11 @@ function validate( ignoreSuccessfulValidation, successCallback )
         	
         	if ( hasViolations )
         	{
-        		displayValidationDialog( response );
+        		displayValidationDialog( response, 500 );
         	}
         	else if ( !ignoreSuccessfulValidation )
         	{
-        		displayValidationDialog( successHtml );
+        		displayValidationDialog( successHtml, 200 );
         	}        	
         }
         
