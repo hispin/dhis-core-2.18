@@ -1169,6 +1169,8 @@ function programOnchange( programId )
 	if( programId==0){
 		hideById('enrollmentDateTR');
 		hideById('dateOfIncidentTR');
+		disable('enrollmentDateField');
+		disable('dateOfIncidentField');
 	}
 	else{
 		var type = jQuery('#enrollmentDiv [name=programId] option:selected').attr('programType')
@@ -1190,11 +1192,11 @@ function programOnchange( programId )
 			var displayIncidentDate = jQuery('#enrollmentDiv [name=programId] option:selected').attr('displayIncidentDate');
 			if( displayIncidentDate=='true'){
 				showById('dateOfIncidentTR');
-				enable('enrollmentDateField');
+				enable('dateOfIncidentField');
 			}
 			else{
 				hideById('dateOfIncidentTR');
-				disable('enrollmentDateField');
+				disable('dateOfIncidentField');
 			}
 		}
 		var programId = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected').val();
