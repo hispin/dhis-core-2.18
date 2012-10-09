@@ -24,6 +24,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
     <property name="patientMobileSettingService" ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
     <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
+	<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
   </bean>
 
   <bean id="org.hisp.dhis.mobile.api.IProgramService" class="org.hisp.dhis.mobile.service.DefaultProgramService">
