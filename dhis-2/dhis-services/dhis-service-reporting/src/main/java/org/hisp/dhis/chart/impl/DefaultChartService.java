@@ -107,11 +107,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultChartService
     implements ChartService
 {
-    private static final Font titleFont = new Font( "Tahoma", Font.BOLD, 15 );
+    private static final Font titleFont = new Font( Font.SANS_SERIF, Font.BOLD, 15 );
 
-    private static final Font subTitleFont = new Font( "Tahoma", Font.PLAIN, 12 );
+    private static final Font subTitleFont = new Font( Font.SANS_SERIF, Font.PLAIN, 12 );
 
-    private static final Font labelFont = new Font( "Tahoma", Font.PLAIN, 10 );
+    private static final Font labelFont = new Font( Font.SANS_SERIF, Font.PLAIN, 10 );
 
     private static final String TREND_PREFIX = "Trend - ";
 
