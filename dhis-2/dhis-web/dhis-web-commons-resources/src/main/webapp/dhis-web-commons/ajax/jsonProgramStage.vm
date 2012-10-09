@@ -3,13 +3,19 @@
     "id": "${programStage.id}",
 	"name": "$!encoder.jsonEncode( ${programStage.name} )",
 	"description": "$!encoder.jsonEncode( ${programStage.description} )",
-	"stageInProgram": "${programStage.stageInProgram}",
 	"minDaysFromStart": "${programStage.minDaysFromStart}",
 	"dataElementCount": "${programStageDataElements.size()}",
 	"standardInterval": "$!programStage.standardInterval",
 	"reportDateDescription": "$!encoder.jsonEncode( ${programStage.reportDateDescription} )",
-	"daysAllowedSendMessage": "$!programStage.daysAllowedSendMessage",
-	"templateMessage": "$!encoder.jsonEncode( ${programStage.templateMessage} )",
+	"patientReminders":[
+	#foreach($patientReminder in $programStage.patientReminders)
+	  {
+		"daysAllowedSendMessage": "$!patientReminder.daysAllowedSendMessage",
+		"templateMessage": "$!encoder.jsonEncode( ${patientReminder.templateMessage} )"
+	  }#if( $velocityCount < $programStage.patientReminders.size() ),#end
+	#end 
+	],
+	
 	"irregular": "$!programStage.irregular",
 	"autoGenerateEvent": "$!programStage.autoGenerateEvent",
 	

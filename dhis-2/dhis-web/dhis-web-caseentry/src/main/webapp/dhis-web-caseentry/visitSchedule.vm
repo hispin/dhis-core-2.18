@@ -13,7 +13,7 @@
 			<td></td>
 			<td>
 				<input type="button" class='button' value="$i18n.getString( 'update' )" onclick='updateEnrollment($programInstance.patient.id, $programInstance.program.id, $programInstance.id, "$programInstance.program.name")'/>
-				<input type="button" class='button' value="$i18n.getString( 'unenroll' )" onclick='unenrollmentForm($programInstance.id)'/>
+				<input type="button" class='button' value="$i18n.getString( 'complete' )" onclick='unenrollmentForm($programInstance.id)'/>
 			</td>
 		</tr>
 	</table>

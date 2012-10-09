@@ -44,7 +44,6 @@
 				#end
 			#end
 		#end
-	
 	#else
 		<tr height='5em'>
 			<th>$i18n.getString('program_stage')</th>
