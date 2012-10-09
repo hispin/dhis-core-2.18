@@ -212,6 +212,10 @@ public class DefaultProgramInstanceService
         // ---------------------------------------------------------------------
 
         attrGrid.addRow();
+        attrGrid.addValue( i18n.getString( "gender" ) );
+        attrGrid.addValue( i18n.getString( patient.getGender() ));
+        
+        attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "date_of_birth" ) );
         attrGrid.addValue( format.formatDate( patient.getBirthDate() ) );
 
