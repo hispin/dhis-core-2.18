@@ -120,11 +120,13 @@
 														<a><span id='infor_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</span></a>
 													</td>
 												</tr>
+												#if($programInstance.program.type==1)
 												<tr>
 													<td id='tr2_$programInstance.id' onclick='javascript:loadActiveProgramStageRecords("$programInstance.id", "$programStageInstance.id")' style='cursor:pointer;'>
 														<a>>> $programStageInstance.programStage.name ($format.formatDate($programStageInstance.dueDate))</a>
 													</td>
 												</tr>
+												#end
 											#set($flag = 'true')
 											#end
 										#end
@@ -136,10 +138,22 @@
 												<a><span id='infor_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</span></a>
 											</td>
 										</tr>
+										#end
+									#end
+									#foreach($program in $singlePrograms)
+										<tr id='tr_$program.id' name='tr_$program.id' style='cursor:pointer;'
+											onclick='javascript:saveSingleEnrollment("$patient.id","$program.id")' >
+											<td>
+												<a><span id='infor_$program.id'></span></a>
+												<script>
+													var infor = "$program.name" + " (" + getCurrentDate() + ")";
+													setInnerHTML("infor_$program.id", infor);
+												</script>
+											</td>
+										</tr>
 										<tr style='cursor:pointer;'>
 											<td id='tr2_$programInstance.id'></td>
 										</tr>
-										#end
 									#end
 								</table>
 							</div>

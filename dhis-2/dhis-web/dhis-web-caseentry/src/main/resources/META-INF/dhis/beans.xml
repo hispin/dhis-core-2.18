@@ -996,6 +996,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientAuditService" ref="org.hisp.dhis.patient.PatientAuditService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
 
 	<!-- Comment -->
