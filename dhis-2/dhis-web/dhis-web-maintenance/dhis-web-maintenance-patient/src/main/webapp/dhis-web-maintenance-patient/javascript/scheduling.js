@@ -6,12 +6,16 @@ function scheduleTasks()
 		gateWayId: getFieldValue("gatewayId"),
 		timeSendingMessage: getFieldValue("timeSendingMessage")
 	}, function( json ){
-		setMessage(i18n_scheduling_is + " " + json.scheduleTasks.status);
+		var status = json.scheduleTasks.status;
+		if( status=='not_started' ){
+			status = i18n_not_started;
+		}
+		setMessage(i18n_scheduling_is + " " + status);
 		if( json.scheduleTasks.running=="true" ){
-			setFieldValue('scheduledBtn', i18n_stop );
+			setFieldValue('scheduledBtn', i18n_stop);
 		}
 		else{
-			setFieldValue('scheduledBtn', i18n_start );
+			setFieldValue('scheduledBtn', i18n_start);
 		}
 	});
 }
