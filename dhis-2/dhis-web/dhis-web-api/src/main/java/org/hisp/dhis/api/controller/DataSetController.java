@@ -72,8 +72,8 @@ public class DataSetController
     // -------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = "application/json" )
-    public void getFormJson( @PathVariable( "uid" ) String uid, @RequestParam( value = "orgUnit", required = false ) String orgUnit,
-        @RequestParam( value = "period", required = false ) String period, HttpServletResponse response ) throws IOException
+    public void getFormJson( @PathVariable( "uid" ) String uid, @RequestParam( value = "ou", required = false ) String orgUnit,
+        @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response ) throws IOException
     {
         DataSet dataSet = getEntity( uid );
 
@@ -99,8 +99,8 @@ public class DataSetController
     }
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = {"application/xml", "text/xml"} )
-    public void getFormXml( @PathVariable( "uid" ) String uid, @RequestParam( value = "orgUnit", required = false ) String orgUnit,
-        @RequestParam( value = "period", required = false ) String period, HttpServletResponse response ) throws IOException
+    public void getFormXml( @PathVariable( "uid" ) String uid, @RequestParam( value = "ou", required = false ) String orgUnit,
+        @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response ) throws IOException
     {
         DataSet dataSet = getEntity( uid );
 
