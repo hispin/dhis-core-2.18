@@ -55,8 +55,6 @@ import com.opensymphony.xwork2.Action;
 public class AddMultiOrganisationUnitAction
     implements Action
 {
-    private static final String SEPERATE = " - ";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -172,8 +170,6 @@ public class AddMultiOrganisationUnitAction
         // Create organization unit
         // ---------------------------------------------------------------------
 
-        String extraName = (parent.getCode() == null ? String.valueOf( parent.getId() ) : parent.getCode());
-
         for ( String id : selectedList )
         {
             OrganisationUnitPrototype unitPrototype = organisationUnitPrototypeService
@@ -181,8 +177,7 @@ public class AddMultiOrganisationUnitAction
 
             if ( unitPrototype != null )
             {
-                OrganisationUnit organisationUnit = new OrganisationUnit( unitPrototype.getDisplayName() + SEPERATE
-                    + extraName, unitPrototype.getDisplayShortName(), null, date, null, active, null );
+                OrganisationUnit organisationUnit = new OrganisationUnit( unitPrototype.getDisplayName(), unitPrototype.getDisplayShortName(), null, date, null, active, null );
 
                 organisationUnit.setParent( parent );
 

@@ -356,6 +356,7 @@ public class GenerateReportOrgGroupListingAction
 
                 rowBegin++;
                 totalValue += value;
+                value = 0;
             }
 
             if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
