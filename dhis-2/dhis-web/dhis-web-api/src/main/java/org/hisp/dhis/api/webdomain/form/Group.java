@@ -40,26 +40,26 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @JacksonXmlRootElement( localName = "section", namespace = Dxf2Namespace.NAMESPACE )
-public class Section
+public class Group
 {
-    private String name;
+    private String label;
 
     private List<Field> fields = new ArrayList<Field>();
 
-    public Section()
+    public Group()
     {
     }
 
     @JsonProperty
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getName()
+    public String getLabel()
     {
-        return name;
+        return label;
     }
 
-    public void setName( String name )
+    public void setLabel( String label )
     {
-        this.name = name;
+        this.label = label;
     }
 
     @JsonProperty

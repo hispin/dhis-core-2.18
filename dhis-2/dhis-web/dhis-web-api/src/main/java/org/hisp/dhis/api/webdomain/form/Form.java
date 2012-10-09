@@ -42,11 +42,11 @@ import java.util.List;
 @JacksonXmlRootElement( localName = "form", namespace = Dxf2Namespace.NAMESPACE )
 public class Form
 {
-    private String name;
+    private String label;
 
     private String period;
 
-    private List<Section> sections = new ArrayList<Section>();
+    private List<Group> groups = new ArrayList<Group>();
 
     public Form()
     {
@@ -54,14 +54,14 @@ public class Form
 
     @JsonProperty
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getName()
+    public String getLabel()
     {
-        return name;
+        return label;
     }
 
-    public void setName( String name )
+    public void setLabel( String label )
     {
-        this.name = name;
+        this.label = label;
     }
 
     @JsonProperty
@@ -77,25 +77,25 @@ public class Form
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "sections", namespace = Dxf2Namespace.NAMESPACE )
-    @JacksonXmlProperty( localName = "section", namespace = Dxf2Namespace.NAMESPACE )
-    public List<Section> getSections()
+    @JacksonXmlElementWrapper( localName = "groups", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "group", namespace = Dxf2Namespace.NAMESPACE )
+    public List<Group> getGroups()
     {
-        return sections;
+        return groups;
     }
 
-    public void setSections( List<Section> sections )
+    public void setGroups( List<Group> groups )
     {
-        this.sections = sections;
+        this.groups = groups;
     }
 
     @Override
     public String toString()
     {
         return "Form{" +
-            "name='" + name + '\'' +
+            "name='" + label + '\'' +
             ", period='" + period + '\'' +
-            ", sections=" + sections +
+            ", groups=" + groups +
             '}';
     }
 }

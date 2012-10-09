@@ -38,7 +38,7 @@ import org.hisp.dhis.common.Dxf2Namespace;
 @JacksonXmlRootElement( localName = "field", namespace = Dxf2Namespace.NAMESPACE )
 public class Field
 {
-    private String name;
+    private String label;
 
     private String dataElement;
 
@@ -54,14 +54,14 @@ public class Field
 
     @JsonProperty
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getName()
+    public String getLabel()
     {
-        return name;
+        return label;
     }
 
-    public void setName( String name )
+    public void setLabel( String label )
     {
-        this.name = name;
+        this.label = label;
     }
 
     @JsonProperty
