@@ -116,35 +116,9 @@ public class ProgramEnrollmentSelectAction
         patient = patientService.getPatient( id );
 
         // Get all programs
-        programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
-
-        // Get single-event programs by the selected orgunit
-        Collection<Program> singleProgramsByOrgunit = programService.getPrograms(
-            Program.SINGLE_EVENT_WITH_REGISTRATION, orgunit );
-        programs.addAll( singleProgramsByOrgunit );
-
+        programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );        
         // Except anonymous program
         programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
-
-        // Get single-event if patient no have any single event
-        // OR have un-completed single-event
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, false );
-
-        for ( ProgramInstance programInstance : programInstances )
-        {
-            programs.remove( programInstance.getProgram() );
-        }
-
-        // Remove single-event with registation programs which patient completed
-        Collection<ProgramInstance> completedProgramInstances = programInstanceService.getProgramInstances( patient, true );
-
-        for ( ProgramInstance programInstance : completedProgramInstances )
-        {
-            if ( programInstance.getProgram().isSingleEvent() )
-            {
-                programs.remove( programInstance.getProgram() );
-            }
-        }
 
         return SUCCESS;
     }

@@ -1253,6 +1253,43 @@ function saveEnrollment()
 		});
 }
 
+function saveSingleEnrollment(patientId, programId)
+{
+	jQuery.postJSON( "saveProgramEnrollment.action",
+		{
+			patientId: patientId,
+			programId: programId,
+			dateOfIncident: getCurrentDate(),
+			enrollmentDate: getCurrentDate()
+		}, 
+		function( json ) 
+		{    
+			var programInstanceId = json.programInstanceId;
+			var programStageInstanceId = json.activeProgramStageInstanceId;
+			var programStageName = json.activeProgramStageName;
+			var programInfor = getInnerHTML('infor_' + programId);
+			var dueDate = json.dueDate;
+			var type = jQuery('#enrollmentDiv [id=programId] option:selected').attr('programType');
+			
+			var activedRow = "<tr id='tr1_" + programInstanceId 
+							+ "' type='" + type +"'"
+							+ " programStageInstanceId='" + programStageInstanceId + "'>"
+							+ " <td id='td_" + programInstanceId + "'>"
+							+ " <a href='javascript:loadActiveProgramStageRecords(" + programInstanceId + "," + programStageInstanceId + ")'>"
+							+ "<span id='infor_" + programInstanceId + "' class='selected bold'>" 
+							+ programInfor + "</span></a></td>"
+							+ "</tr>";
+			
+			jQuery('#tr_' + programId ).remove();
+			
+			jQuery('#activeTB' ).append(activedRow);
+			jQuery('#enrollmentDiv').dialog("close");
+			saveIdentifierAndAttribute( patientId, programId,'identifierAndAttributeDiv' );
+			loadActiveProgramStageRecords( programInstanceId );
+			showSuccessMessage(i18n_enrol_success);
+		});
+}
+
 // ----------------------------------------------------------------
 // Program enrollmment && unenrollment
 // ----------------------------------------------------------------
