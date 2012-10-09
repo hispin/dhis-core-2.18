@@ -54,7 +54,6 @@ function showProgramStageDetails( programStageId )
 	jQuery.getJSON( 'getProgramStage.action', { id: programStageId }, function ( json ) {
 		setInnerHTML( 'nameField', json.programStage.name );	
 		setInnerHTML( 'descriptionField', json.programStage.description );
-		setInnerHTML( 'stageInProgramField', json.programStage.stageInProgram );   
 		setInnerHTML( 'scheduledDaysFromStartField', json.programStage.minDaysFromStart ); 
 
 		var irregular = (json.programStage.irregular=='true') ? i18n_yes : i18n_no;
@@ -66,8 +65,17 @@ function showProgramStageDetails( programStageId )
 		setInnerHTML( 'standardIntervalField', json.programStage.standardInterval );  
 		setInnerHTML( 'dataElementCountField', json.programStage.dataElementCount );   
 		setInnerHTML( 'reportDateDescriptionField', json.programStage.reportDateDescription );
-		setInnerHTML( 'daysAllowedSendMessageField', json.programStage.daysAllowedSendMessage );
-		setInnerHTML( 'templateMessageField', json.programStage.templateMessage );
+		
+		var templateMessage = "";
+		for(var i in json.programStage.patientReminders){
+			var index = eval(i) + 1;
+			templateMessage += "<p class='bold'>" + i18n_template_reminder_message + " " + index + "</p>";
+			templateMessage += "<p class='bold'>" + i18n_days_before_after_due_date + ":</p>" ;
+			templateMessage	+= "<p>" + json.programStage.patientReminders[i].templateMessage + "</p>";
+			templateMessage	+= "<p class='bold'>" + i18n_message + ":</p>";
+			templateMessage	+= "<p>" + json.programStage.patientReminders[i].daysAllowedSendMessage + "</p>";
+		}
+		setInnerHTML('templateMessageField', templateMessage);
 		
 		showDetails();
 	});
