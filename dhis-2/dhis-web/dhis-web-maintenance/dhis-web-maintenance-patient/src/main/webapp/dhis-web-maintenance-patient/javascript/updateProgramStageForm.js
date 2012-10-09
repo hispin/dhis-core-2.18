@@ -1,8 +1,24 @@
+var duplicate = false;
 jQuery( document ).ready( function()
 {
 	validation( 'updateProgramStageForm', function( form ){ 
-		form.submit() ;
+		if( duplicate==true) 
+			return false;
+		else
+			form.submit();
 	}, function(){
+		duplicate = false;
+		var COLOR_RED = '#ff8a8a';
+		jQuery(".daysAllowedSendMessage").each( function( i, a ){ 
+			jQuery(".daysAllowedSendMessage").each( function(j, b){ 
+				if( i!=j && a.value==b.value){
+					jQuery( a ).css( 'background-color', COLOR_RED );
+					jQuery( b ).css( 'background-color', COLOR_RED );
+					duplicate = true;
+				}
+			});
+		});
+		
 		var selectedDataElementsValidator = jQuery( "#selectedDataElementsValidator" );
 		selectedDataElementsValidator.empty();
 		var compulsories = jQuery( "#compulsories" );
