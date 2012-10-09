@@ -30,10 +30,11 @@ package org.hisp.dhis.api.utils;
 import org.hisp.dhis.api.webdomain.form.Field;
 import org.hisp.dhis.api.webdomain.form.Form;
 import org.hisp.dhis.api.webdomain.form.InputType;
-import org.hisp.dhis.api.webdomain.form.Section;
+import org.hisp.dhis.api.webdomain.form.Group;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 
 import java.util.*;
@@ -46,26 +47,26 @@ public class FormUtils
     public static Form fromDataSet( DataSet dataSet )
     {
         Form form = new Form();
-        form.setName( dataSet.getName() );
+        form.setLabel( dataSet.getName() );
         form.setPeriod( dataSet.getPeriodType().getIsoFormat() );
 
         if ( dataSet.getSections().size() > 0 )
         {
-            for ( org.hisp.dhis.dataset.Section section : dataSet.getSections() )
+            for ( Section section : dataSet.getSections() )
             {
-                Section s = new Section();
-                s.setName( section.getName() );
+                Group s = new Group();
+                s.setLabel( section.getName() );
                 s.setFields( inputsFromDataElements( section.getDataElements() ) );
-                form.getSections().add( s );
+                form.getGroups().add( s );
             }
         }
         else
         {
-            Section s = new Section();
-            s.setName( "default" );
+            Group s = new Group();
+            s.setLabel( "default" );
             s.setFields( inputsFromDataElements( dataSet.getDataElements() ) );
 
-            form.getSections().add( s );
+            form.getGroups().add( s );
         }
 
         return form;
@@ -81,7 +82,7 @@ public class FormUtils
             {
                 Field field = new Field();
 
-                field.setName( dataElement.getName() );
+                field.setLabel( dataElement.getName() );
                 field.setDataElement( dataElement.getUid() );
                 field.setCategoryOptionCombo( dataElement.getCategoryCombo().getSortedOptionCombos().get( 0 ).getUid() );
                 field.setType( inputTypeFromDataElement( dataElement ) );
@@ -94,7 +95,7 @@ public class FormUtils
                 {
                     Field field = new Field();
 
-                    field.setName( dataElement.getName() + " " + categoryOptionCombo.getName() );
+                    field.setLabel( dataElement.getName() + " " + categoryOptionCombo.getName() );
                     field.setDataElement( dataElement.getUid() );
                     field.setCategoryOptionCombo( categoryOptionCombo.getUid() );
                     field.setType( inputTypeFromDataElement( dataElement ) );
@@ -176,9 +177,9 @@ public class FormUtils
     {
         Map<String, Field> cacheMap = new HashMap<String, Field>();
 
-        for ( Section section : form.getSections() )
+        for ( Group group : form.getGroups() )
         {
-            for ( Field field : section.getFields() )
+            for ( Field field : group.getFields() )
             {
                 cacheMap.put( field.getDataElement() + "-" + field.getCategoryOptionCombo(), field );
             }
