@@ -33,7 +33,8 @@ import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
 import static org.hisp.dhis.i18n.I18nUtils.getObjectsByName;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
-import static org.hisp.dhis.system.util.MathUtils.*;
+import static org.hisp.dhis.system.util.MathUtils.getRounded;
+import static org.hisp.dhis.system.util.MathUtils.zeroIfNull;
 
 import java.util.Collection;
 import java.util.Date;
@@ -45,6 +46,7 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -91,6 +93,13 @@ public class DefaultValidationRuleService
     public void setExpressionService( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
+    }
+    
+    private DataEntryFormService dataEntryFormService;
+
+    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
+    {
+        this.dataEntryFormService = dataEntryFormService;
     }
 
     private PeriodService periodService;
@@ -206,7 +215,16 @@ public class DefaultValidationRuleService
     {
         Map<Integer, Double> constantMap = constantService.getConstantMap();
         
-        Collection<ValidationRule> relevantRules = getRelevantValidationRules( dataSet.getDataElements() );
+        Collection<ValidationRule> relevantRules = null;
+        
+        if ( DataSet.TYPE_CUSTOM.equals( dataSet.getDataSetType() ) )
+        {
+            relevantRules = getRelevantValidationRules( dataSet );
+        }
+        else
+        {
+            relevantRules = getRelevantValidationRules( dataSet.getDataElements() );
+        }
         
         Set<DataElement> dataElements = getDataElementsInValidationRules( relevantRules );
         
@@ -316,6 +334,29 @@ public class DefaultValidationRuleService
             }
         }
 
+        return relevantValidationRules;
+    }
+    
+    public Collection<ValidationRule> getRelevantValidationRules( DataSet dataSet )
+    {
+        Set<ValidationRule> relevantValidationRules = new HashSet<ValidationRule>();
+        
+        Set<DataElementOperand> operands = dataEntryFormService.getOperandsInDataEntryForm( dataSet );
+        
+        Set<DataElementOperand> validationRuleOperands = new HashSet<DataElementOperand>();
+        
+        for ( ValidationRule validationRule : getAllValidationRules() )
+        {
+            validationRuleOperands.clear();
+            validationRuleOperands.addAll( expressionService.getOperandsInExpression( validationRule.getLeftSide().getExpression() ) );
+            validationRuleOperands.addAll( expressionService.getOperandsInExpression( validationRule.getRightSide().getExpression() ) );
+            
+            if ( operands.containsAll( validationRuleOperands ) )
+            {
+                relevantValidationRules.add( validationRule );
+            }
+        }
+        
         return relevantValidationRules;
     }
 

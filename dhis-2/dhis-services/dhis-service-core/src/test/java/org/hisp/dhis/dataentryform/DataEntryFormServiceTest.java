@@ -34,11 +34,13 @@ import static junit.framework.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -243,12 +245,28 @@ public class DataEntryFormServiceTest
 
         assertEquals( dataSets.size(), 2 );
     }
+
+    @Test
+    public void testGetOperands()
+    {
+        String html = "<table><tr><td><input id=\"1434-11-val\" style=\"width:4em;text-align:center\" /></td></tr></table>";
+        DataEntryForm dataEntryForm = new DataEntryForm( "FormA", html );
+        DataSet dataSet = createDataSet( 'A', new MonthlyPeriodType() );
+        dataSet.setDataEntryForm( dataEntryForm );
+        
+        Set<DataElementOperand> operands = dataEntryFormService.getOperandsInDataEntryForm( dataSet );
+        
+        DataElementOperand operand = new DataElementOperand( 1434, 11 );
+        
+        assertEquals( 1, operands.size() );
+        assertTrue( operands.contains( operand ) );
+    }
     
     @Test
     public void testPrepareForSave()
     {
-        String html = "<table><tr><td><input id=\"value[1434].value:value[11].value\" style=\"width:4em;text-align:center\" title=\"[ 1434 - Expected Births - 11 - (default) - int ]\" value=\"[ Expected Births - (default) ]\" /></td></tr></table>";
-        String expected = "<table><tr><td><input id=\"value[1434].value:value[11].value\" style=\"width:4em;text-align:center\" title=\"\" value=\"\" /></td></tr></table>";
+        String html = "<table><tr><td><input id=\"1434-11-val\" style=\"width:4em;text-align:center\" title=\"[ 1434 - Expected Births - 11 - (default) - int ]\" value=\"[ Expected Births - (default) ]\" /></td></tr></table>";
+        String expected = "<table><tr><td><input id=\"1434-11-val\" style=\"width:4em;text-align:center\" title=\"\" value=\"\" /></td></tr></table>";
         String actual = dataEntryFormService.prepareDataEntryFormForSave( html );
         
         assertEquals( expected, actual );

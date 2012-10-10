@@ -41,6 +41,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
@@ -396,6 +397,37 @@ public class DefaultDataEntryFormService
         }
         
         return dataElements;
+    }
+
+    public Set<DataElementOperand> getOperandsInDataEntryForm( DataSet dataSet )
+    {
+        if ( dataSet == null || dataSet.getDataEntryForm() == null )
+        {
+            return null;
+        }
+        
+        Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
+        
+        Matcher inputMatcher = INPUT_PATTERN.matcher( dataSet.getDataEntryForm().getHtmlCode() );
+        
+        while ( inputMatcher.find() )
+        {
+            String inputHtml = inputMatcher.group();
+            
+            Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
+            
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
+            {
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                int categoryOptionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );                
+
+                DataElementOperand operand = new DataElementOperand( dataElementId, categoryOptionComboId );
+                
+                operands.add( operand );
+            }
+        }
+        
+        return operands;
     }
     
     public Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )

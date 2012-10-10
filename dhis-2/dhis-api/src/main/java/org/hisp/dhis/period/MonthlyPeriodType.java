@@ -172,24 +172,24 @@ public class MonthlyPeriodType
     @Override
     public Period createPeriod( String isoDate )
     {
-        Date date = null;
         try
         {
-            date = new SimpleDateFormat( ISO_FORMAT ).parse( isoDate );
+            Date date = new SimpleDateFormat( ISO_FORMAT ).parse( isoDate );
             return createPeriod( date );
         }
-        catch ( ParseException ex1 )
+        catch ( ParseException ex )
         {
-            // if at first you don't succeed ... try again
-            try
-            {
-                date = new SimpleDateFormat( ALTERNATIVE_ISO_FORMAT ).parse( isoDate );
-                return createPeriod( date );
-            }
-            catch ( ParseException ex2 )
-            {
-                throw new RuntimeException( ex2 );
-            }       
+            // Ignore and try alternative format
+        }
+        
+        try
+        {
+            Date date = new SimpleDateFormat( ALTERNATIVE_ISO_FORMAT ).parse( isoDate );
+            return createPeriod( date );
+        }
+        catch ( ParseException ex )
+        {
+            throw new RuntimeException( ex );
         }
     }
 
