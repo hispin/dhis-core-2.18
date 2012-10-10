@@ -22,13 +22,13 @@
 <section data-role="page" id="index-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+		<h1><div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div></h1>
 	</header>
 
 	<section data-role="content">
         <ul data-role="listview" data-inset="true">
+            <li id="data-entry"><a href="data-entry">Data Entry</a></li>
             <li id="messages"><a href="messages">Messages</a></li>
-            <li id="interpretations"><a href="interpretations">Interpretations</a></li>
             <li id="settings"><a href="settings">Settings</a></li>
         </ul>
 	</section>

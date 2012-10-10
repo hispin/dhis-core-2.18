@@ -93,7 +93,7 @@ public class Form
     public String toString()
     {
         return "Form{" +
-            "name='" + label + '\'' +
+            "label='" + label + '\'' +
             ", period='" + period + '\'' +
             ", groups=" + groups +
             '}';

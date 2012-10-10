@@ -107,4 +107,14 @@ public class MobileController
 
         return "base";
     }
+
+
+    @RequestMapping( value = "/data-entry" )
+    public String dataEntry( Model model, HttpServletRequest request )
+    {
+        model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
+        model.addAttribute( "page", "data-entry.vm" );
+
+        return "base";
+    }
 }
