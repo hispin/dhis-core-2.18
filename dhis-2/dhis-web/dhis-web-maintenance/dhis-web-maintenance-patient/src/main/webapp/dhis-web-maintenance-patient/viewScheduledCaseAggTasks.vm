@@ -6,7 +6,7 @@
 
 <input id="isRunning" type="hidden" value="${running}">
 
-<form id="schedulingForm" action="scheduleCaseAggTasks.action" method="get">
+<form id="schedulingForm" action="scheduleCaseAggTasks.action" method="post">
 <input type='hidden' id='schedule' name='schedule' value='true'/>
 	
 <table style="width:300px">
