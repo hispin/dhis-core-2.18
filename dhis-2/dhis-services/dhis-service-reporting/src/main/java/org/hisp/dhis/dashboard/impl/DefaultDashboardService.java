@@ -119,8 +119,6 @@ public class DefaultDashboardService
 
     public List<IdentifiableObject> search( String query )
     {
-        //TODO users
-        
         List<IdentifiableObject> objects = new ArrayList<IdentifiableObject>();
         
         int remaining = 0;
@@ -140,14 +138,14 @@ public class DefaultDashboardService
         
         if ( remaining > 0 )
         {
-            objects.addAll( reportTableService.getReportTablesBetweenByName( query, 0, Math.min( remaining, MAX_OBJECTS ) ) );
+            objects.addAll( reportTableService.getReportTablesBetweenByName( query, 0, Math.min( remaining, MAX_PER_OBJECT ) ) );
         }
 
         remaining = MAX_OBJECTS - objects.size();
         
         if ( remaining > 0 )
         {
-            objects.addAll( documentService.getDocumentsBetweenByName( query, 0, Math.min( remaining, MAX_OBJECTS ) ) );
+            objects.addAll( documentService.getDocumentsBetweenByName( query, 0, Math.min( remaining, MAX_PER_OBJECT ) ) );
         }
         
         return objects;
