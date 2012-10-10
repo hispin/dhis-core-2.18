@@ -141,6 +141,8 @@ public class TableAlteror
         executeSql( "CREATE INDEX index_programinstance ON programinstance( programinstanceid )" );
         
         executeSql( "ALTER TABLE program DROP COLUMN maxDaysAllowedInputData");
+        
+        executeSql( "ALTER TABLE programstage_dataelements DROP CONSTRAINT \"fkaf0e5fc634ee4761\" ");
     }
 
     // -------------------------------------------------------------------------
