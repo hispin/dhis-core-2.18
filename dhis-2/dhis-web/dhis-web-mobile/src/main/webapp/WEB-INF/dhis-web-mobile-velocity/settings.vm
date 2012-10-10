@@ -2,7 +2,8 @@
 <script>
     $(document).bind('pageinit',function(){
         $.ajax({
-            url: '../api/currentUser.json',
+            url: '../api/currentUser',
+            dataType: 'json',
             async: false
         }).success(function(data) {
             $('#firstNameInput').val(data.firstName);

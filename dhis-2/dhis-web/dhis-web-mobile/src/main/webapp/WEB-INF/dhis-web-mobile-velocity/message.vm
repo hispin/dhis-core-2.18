@@ -3,6 +3,7 @@
     jQuery(document).bind('pagebeforecreate', function () {
         jQuery.ajax({
             url   : '$baseUrl/../api/messageConversations/${messageId}.json',
+            dataType: 'json',
             async : false
         }).success(function ( data ) {
             var tmpl = jQuery('#message-template').html();
