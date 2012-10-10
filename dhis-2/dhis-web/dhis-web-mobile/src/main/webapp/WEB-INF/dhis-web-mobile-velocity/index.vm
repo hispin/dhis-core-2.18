@@ -2,7 +2,8 @@
 <script>
     $(document).bind('pagebeforecreate',function(){
         $.ajax({
-            url: '../api/currentUser/dashboard.json',
+            url: '../api/currentUser/dashboard',
+            dataType: 'json',
             async: false
         }).success(function(data) {
             if( data.unreadMessageConversation > 0 ) {

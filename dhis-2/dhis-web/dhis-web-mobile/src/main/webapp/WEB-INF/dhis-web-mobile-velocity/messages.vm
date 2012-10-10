@@ -2,7 +2,8 @@
 <script>
     jQuery(document).bind('pagebeforecreate',function(){
         jQuery.ajax({
-            url: '../api/currentUser/inbox.json',
+            url: '../api/currentUser/inbox',
+            dataType: 'json',
             async: false
         }).success(function(data) {
             jQuery.each(data.messageConversations, function(i, item) {
