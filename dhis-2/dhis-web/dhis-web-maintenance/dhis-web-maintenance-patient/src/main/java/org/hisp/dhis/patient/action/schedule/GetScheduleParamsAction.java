@@ -32,9 +32,7 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIME_FOR_SENDING_ME
 
 import org.hisp.dhis.patient.scheduling.ProgramSchedulingManager;
 import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.system.scheduling.Scheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -56,10 +54,7 @@ public class GetScheduleParamsAction
     {
         this.systemSettingManager = systemSettingManager;
     }
-
-    @Autowired
-    private OutboundSmsTransportService transportService;
-
+    
     private ProgramSchedulingManager schedulingManager;
 
     public void setSchedulingManager( ProgramSchedulingManager schedulingManager )

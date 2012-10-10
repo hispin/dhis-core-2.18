@@ -365,7 +365,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
-	
+
 	<bean id="org.hisp.dhis.program.ProgramStageSectionDeletionHandler"
 		class="org.hisp.dhis.program.ProgramStageSectionDeletionHandler">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
@@ -418,6 +418,46 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="sendingMessage" value="false" />
 	</bean>
 
+	<bean id="org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager"
+		class="org.hisp.dhis.patient.scheduling.DefaultCaseAggregateConditionSchedulingManager"
+		init-method="scheduleTasks">
+		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+		<property name="scheduler" ref="scheduler" />
+		<property name="tasks">
+			<map>
+				<entry key="aggregateLast12MonthsTask" value-ref="aggregateLast12MonthsTask" />
+				<entry key="aggregateLast6MonthsTask" value-ref="aggregateLast6MonthsTask" />
+				<entry key="aggregateFrom6To12MonthsTask" value-ref="aggregateFrom6To12MonthsTask" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="abstractRunCaseAggregateConditionTask"
+		class="org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask">
+		<constructor-arg
+			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		<constructor-arg ref="org.hisp.dhis.datavalue.DataValueService" />
+		<constructor-arg
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<constructor-arg ref="org.hisp.dhis.setting.SystemSettingManager" />
+	</bean>
+
+	<bean id="aggregateLast12MonthsTask" class="org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask"
+		parent="abstractRunCaseAggregateConditionTask">
+		<property name="last6Months" value="true" />
+		<property name="last6To12Months" value="true" />
+	</bean>
+
+	<bean id="aggregateLast6MonthsTask" class="org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask"
+		parent="abstractRunCaseAggregateConditionTask">
+		<property name="last6Months" value="true" />
+	</bean>
+
+	<bean id="aggregateFrom6To12MonthsTask" class="org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask"
+		parent="abstractRunCaseAggregateConditionTask">
+		<property name="last6To12Months" value="true" />
+	</bean>
+
 	<!-- Startup -->
 
 	<bean id="org.hisp.dhis.patient.startup.TableAlteror" class="org.hisp.dhis.patient.startup.TableAlteror">
@@ -451,10 +491,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			<list>
 				<list>
 					<ref local="org.hisp.dhis.patient.PatientDeletionHandler" />
-					<ref local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" />
 					<ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler" />
 					<ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler" />
-					<ref local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.patientdatavalue.PatientDataValueDeletionHandler" />
 
 					<ref local="org.hisp.dhis.program.ProgramDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramStageSectionDeletionHandler" />
@@ -464,7 +506,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 					<ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler" />
 					<ref local="org.hisp.dhis.program.ProgramDataEntryFormDeletionHandler" />
 
-					<ref local="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler" />
+					<ref
+						local="org.hisp.dhis.caseaggregation.CaseAggregationConditionDeletionHandler" />
 				</list>
 			</list>
 		</property>

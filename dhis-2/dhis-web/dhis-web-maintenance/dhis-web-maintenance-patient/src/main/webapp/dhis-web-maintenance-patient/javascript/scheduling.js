@@ -1,3 +1,8 @@
+
+// -----------------------------------------------------------------------
+// Schedule Messages
+// -----------------------------------------------------------------------
+
 function scheduleTasks()
 {
 	$.post( 'scheduleTasks.action',{
@@ -30,4 +35,24 @@ function executeTasks()
 	}, function( json ){
 		setMessage(i18n_execute_success);
 	});
+}
+
+// -----------------------------------------------------------------------
+// Schedule Aggregate Query Builder
+// -----------------------------------------------------------------------
+
+function submitSchedulingForm()
+{
+	$( '.scheduling' ).removeAttr( 'disabled' );
+	$( '#schedulingForm' ).submit();
+}
+
+function executeAggCondTasks()
+{
+	var ok = confirm( i18n_execute_tasks_confirmation );
+	
+	if ( ok )
+	{
+		$.get( 'scheduleCaseAggTasks.action?execute=true' );
+	}
 }

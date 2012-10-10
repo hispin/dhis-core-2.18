@@ -17,5 +17,6 @@
 <h2>$i18n.getString( "scheduling" )</h2>
 <ul>
 	<li><a href="viewScheduleTasks.action">$i18n.getString( "schedule_message" )</a></li>
+	<li><a href="viewScheduledCaseAggCondTasks.action">$i18n.getString( "schedule_aggregation_query_builder" )</a></li>
 </ul>
 #end
