@@ -215,7 +215,7 @@
 <section data-role="page" id="new-message-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="../messages" data-icon="delete" class="ui-btn-right">Discard</a>
     </header>
 
@@ -245,7 +245,7 @@
 <section data-role="page" id="manage-recipients-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="#new-message-page" data-icon="delete" class="ui-btn-right">Finish</a>
     </header>
 
