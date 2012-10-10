@@ -10,7 +10,6 @@
             $('#surnameInput').val(data.surname);
             $('#emailInput').val(data.email);
             $('#phoneNumberInput').val(data.phoneNumber);
-            $('#jobTitleInput').val(data.jobTitle);
         });
 
         $('input:submit').bind('click', function(e) {
@@ -58,9 +57,6 @@
 
            <label for="phoneNumberInput">Phone Number</label>
            <input id="phoneNumberInput" name="phoneNumber" type="text" placeholder="Enter phone number.." />
-
-           <label for="jobTitleInput">Job Title</label>
-           <input id="jobTitleInput" name="jobTitle" type="text" placeholder="Enter job title.." />
 
            <input type="submit" value="Save settings" />
        </form>
