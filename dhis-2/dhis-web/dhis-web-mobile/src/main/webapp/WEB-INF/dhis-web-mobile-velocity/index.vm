@@ -22,7 +22,7 @@
 <section data-role="page" id="index-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-		<h1><div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div></h1>
+        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
 	</header>
 
 	<section data-role="content">

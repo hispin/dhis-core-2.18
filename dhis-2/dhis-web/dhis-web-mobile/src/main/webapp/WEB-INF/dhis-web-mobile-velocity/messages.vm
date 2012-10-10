@@ -17,7 +17,7 @@
 <section data-role="page" id="messages-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
-		<div align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></div>
+        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="index" data-icon="back">Back</a>
         <a href="messages/new-message" data-icon="plus">New</a>
     </header>
