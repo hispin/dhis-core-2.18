@@ -45,6 +45,7 @@ import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -70,6 +71,13 @@ public class DefaultDashboardService
         this.dashboardContentStore = dashboardContentStore;
     }
     
+    private UserService userService;
+    
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
     private ChartService chartService;
 
     public void setChartService( ChartService chartService )
@@ -117,10 +125,17 @@ public class DefaultDashboardService
         
         int remaining = 0;
         
+        objects.addAll( userService.getAllUsersBetweenByName( query, 0, MAX_PER_OBJECT ) );
         objects.addAll( chartService.getChartsBetweenByName( query, 0, MAX_PER_OBJECT ) );
-        objects.addAll( mappingService.getMapViewsBetweenByName( query, 0, MAX_PER_OBJECT ) );
-        objects.addAll( reportService.getReportsBetweenByName( query, 0, MAX_PER_OBJECT ) );
+        objects.addAll( mappingService.getMapViewsBetweenByName( query, 0, MAX_PER_OBJECT ) );        
 
+        remaining = MAX_OBJECTS - objects.size();
+        
+        if ( remaining > 0 )
+        {
+            objects.addAll( reportService.getReportsBetweenByName( query, 0, MAX_PER_OBJECT ) );
+        }
+        
         remaining = MAX_OBJECTS - objects.size();
         
         if ( remaining > 0 )
