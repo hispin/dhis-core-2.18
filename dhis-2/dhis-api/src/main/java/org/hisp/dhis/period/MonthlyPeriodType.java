@@ -52,6 +52,8 @@ public class MonthlyPeriodType
 
     private static final String ISO_FORMAT = "yyyyMM";
 
+    private static final String ALTERNATIVE_ISO_FORMAT = "yyyy-MM";
+
     /**
      * The name of the MonthlyPeriodType, which is "Monthly".
      */
@@ -170,14 +172,24 @@ public class MonthlyPeriodType
     @Override
     public Period createPeriod( String isoDate )
     {
+        Date date = null;
         try
         {
-            Date date = new SimpleDateFormat( ISO_FORMAT ).parse( isoDate );
+            date = new SimpleDateFormat( ISO_FORMAT ).parse( isoDate );
             return createPeriod( date );
         }
-        catch ( ParseException ex )
+        catch ( ParseException ex1 )
         {
-            throw new RuntimeException( ex );
+            // if at first you don't succeed ... try again
+            try
+            {
+                date = new SimpleDateFormat( ALTERNATIVE_ISO_FORMAT ).parse( isoDate );
+                return createPeriod( date );
+            }
+            catch ( ParseException ex2 )
+            {
+                throw new RuntimeException( ex2 );
+            }       
         }
     }
 
