@@ -71,9 +71,9 @@ function showProgramStageDetails( programStageId )
 			var index = eval(i) + 1;
 			templateMessage += "<p class='bold'>" + i18n_template_reminder_message + " " + index + "</p>";
 			templateMessage += "<p class='bold'>" + i18n_days_before_after_due_date + ":</p>" ;
-			templateMessage	+= "<p>" + json.programStage.patientReminders[i].templateMessage + "</p>";
-			templateMessage	+= "<p class='bold'>" + i18n_message + ":</p>";
 			templateMessage	+= "<p>" + json.programStage.patientReminders[i].daysAllowedSendMessage + "</p>";
+			templateMessage	+= "<p class='bold'>" + i18n_message + ":</p>";
+			templateMessage	+= "<p>" + json.programStage.patientReminders[i].templateMessage + "</p>";
 		}
 		setInnerHTML('templateMessageField', templateMessage);
 		
