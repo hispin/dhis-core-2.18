@@ -33,6 +33,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.annotation.Scanned;
@@ -292,5 +294,18 @@ public class Expression
     public void setNullIfBlank( boolean nullIfBlank )
     {
         this.nullIfBlank = nullIfBlank;
+    }
+    
+    public void mergeWith( Expression other )
+    {
+        Validate.notNull( other );
+        
+        expression = other.getExpression() == null ? expression : other.getExpression();
+        description = other.getDescription() == null ? description : other.getDescription();
+        nullIfBlank = other.isNullIfBlank();
+        dataElementsInExpression = other.getDataElementsInExpression() == null ?
+            dataElementsInExpression : new HashSet<DataElement>( other.getDataElementsInExpression() );
+        optionCombosInExpression = other.getOptionCombosInExpression() == null ? 
+            optionCombosInExpression : new HashSet<DataElementCategoryOptionCombo>( other.getOptionCombosInExpression() );        
     }
 }
