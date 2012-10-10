@@ -16,7 +16,7 @@ import javax.wireless.messaging.MessageConnection;
 import javax.wireless.messaging.TextMessage;
 import org.netbeans.microedition.lcdui.SplashScreen;
 
-public class SCForm1 extends MIDlet implements CommandListener, ItemStateListener {
+public class SCForm1 extends MIDlet implements CommandListener, ItemStateListener{
 
     private boolean midletPaused = false;
     private boolean editingLastReport = false;
@@ -4604,11 +4604,14 @@ public class SCForm1 extends MIDlet implements CommandListener, ItemStateListene
         
     }
     
+    
+    
     private void Validation (Item item, TextField myTextField){
         if (item == myTextField)
         {
+            System.out.println("Value:" + myTextField.getString());
             String[] list = {"00"};
-            if(!valueValidation(myTextField, list) || (myTextField.getString().length() > 1 && Integer.parseInt(myTextField.getString()) == 0))
+            if(!valueValidation(myTextField, list) || (myTextField.getString().length() > 0 && !isIntNumber(myTextField.getString())))
             {
                 myTextField.setString( "" );
                 Alert myAlert = new Alert("Wrong data","not allow!",null,AlertType.INFO);
@@ -4710,4 +4713,5 @@ public class SCForm1 extends MIDlet implements CommandListener, ItemStateListene
         Validation(item, textAWWpresent);
 
     }
+      
 }

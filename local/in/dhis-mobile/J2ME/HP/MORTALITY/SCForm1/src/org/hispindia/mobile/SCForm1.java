@@ -3360,7 +3360,7 @@ private void saveDataToRMS(final String monthStr, final String freqString) {
         if (item == myTextField)
         {
             String[] list = {"00"};
-            if(!valueValidation(myTextField, list) || (myTextField.getString().length() > 1 && Integer.parseInt(myTextField.getString()) == 0))
+            if(!valueValidation(myTextField, list) || (myTextField.getString().length() > 0 && !isIntNumber(myTextField.getString())))
             {
                 myTextField.setString( "" );
                 Alert myAlert = new Alert("Wrong data","not allow!",null,AlertType.INFO);
