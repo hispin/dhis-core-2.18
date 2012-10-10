@@ -260,9 +260,17 @@ public class ValidationRule
             description = validationRule.getDescription() == null ? description : validationRule.getDescription();
             type = validationRule.getType() == null ? type : validationRule.getType();
             operator = validationRule.getOperator() == null ? operator : validationRule.getOperator();
-            leftSide = validationRule.getLeftSide() == null ? leftSide : validationRule.getLeftSide();
-            rightSide = validationRule.getRightSide() == null ? rightSide : validationRule.getRightSide();
             periodType = validationRule.getPeriodType() == null ? periodType : validationRule.getPeriodType();
+
+            if ( leftSide != null && validationRule.getLeftSide() != null )
+            {
+                leftSide.mergeWith( validationRule.getLeftSide() );
+            }
+            
+            if ( rightSide != null && validationRule.getRightSide() != null )
+            {
+                rightSide.mergeWith( validationRule.getRightSide() );
+            }
 
             groups.clear();
         }
