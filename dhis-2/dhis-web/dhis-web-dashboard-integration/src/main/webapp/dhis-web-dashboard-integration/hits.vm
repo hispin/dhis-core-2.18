@@ -2,7 +2,9 @@
 #if( $objects.size() > 0 )
 #foreach( $o in $objects )
 #if( $o )
-#if( "Chart" == $o.getClass().getSimpleName() )
+#if( "User" == $o.getClass().getSimpleName() )
+<li><a href="profile.action?id=${o.uid}"><img src="../images/user_small.png">&nbsp; $encoder.htmlEncode( $o.name )</a></li>
+#elseif( "Chart" == $o.getClass().getSimpleName() )
 <li><a href="../dhis-web-visualizer/app/index.html?id=${o.uid}"><img src="../images/chart_small.png">&nbsp; $encoder.htmlEncode( $o.name )</a></li>
 #elseif( "MapView" == $o.getClass().getSimpleName() )
 <li><a href="../dhis-web-mapping/mapping/index.html?id=${o.uid}"><img src="../images/map_small.png">&nbsp; $encoder.htmlEncode( $o.name )</a></li>
@@ -16,6 +18,6 @@
 #end
 #end
 #else
-<li>$i18n.getString( "no_hits" )</li>
+<li style="padding-left:12px">$i18n.getString( "no_hits" )</li>
 #end
 </ul>
