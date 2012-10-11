@@ -219,7 +219,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
-        
+
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         if ( patientIds == null )
@@ -831,7 +831,7 @@ public class DefaultCaseAggregationConditionService
 
         if ( propertyName.equals( PROPERTY_AGE ) )
         {
-            sql += "DATE('" + startDate + "') - DATE(birthdate) ";
+            sql += "DATE('" + endDate + "') - DATE(birthdate) ";
         }
         else
         {

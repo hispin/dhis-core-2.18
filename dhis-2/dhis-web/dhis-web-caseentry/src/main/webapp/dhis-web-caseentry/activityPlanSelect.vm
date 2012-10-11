@@ -1,7 +1,12 @@
 <script>
 	jQuery(document).ready(	function(){
 		validation( 'activityPlanForm', function(form){
-			showActitityList();
+			if(getFieldValue('export')=='false'){
+				showActitityList();
+			}
+			else{
+				exportActitityList('xls');
+			}
 		});
 		
 		setFieldValue('searchByProgramStage', 'true');
@@ -20,8 +25,9 @@
 	<input type='hidden' id='orgunitId' name='orgunitId' value='$organisationUnit.id' >
 	<input type="hidden" id='hideLink' name='hideLink' value='false'>
 	<input type='hidden' id='isSearchByProgram' name='isSearchByProgram' value='false' >
+	<input type='hidden' id='export' name= 'export'>
 	<div id='advanced-search' style='width:550px;'>
-		<table style="margin-bottom:8px">    
+		<table style="margin-bottom:8px;width:550px;">    
 			<tr>
 				<td>
 					<label>$i18n.getString( "registering_unit" )</label>
@@ -68,8 +74,7 @@
 						<option value='ALL'>$i18n.getString("all")</option>
 					</select>
 					<input type='text' id='startDueDate' name='startDueDate' class='hidden'>
-				</td>
-				<td>
+					&nbsp;
 					<input type='checkbox' id='useCalendar' name='useCalendar' onchange="displayCadendar();"> $i18n.getString('use_calendar')
 				</td>
 			</tr>
@@ -89,8 +94,8 @@
 			<tr>
 				<td></td>
 				<td>
-					<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'show_activity_list' )">
-					<input type="button" class='large-button' value="$i18n.getString( 'export_xls' )" onclick='exportActitityList("xls");'>
+					<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'show_activity_list' )" onclick="setFieldValue('export', false);">
+					<input type="submit" class='large-button' value="$i18n.getString( 'export_xls' )" onclick="setFieldValue('export', false);">
 				</td>
 			</tr>
 		</table>
