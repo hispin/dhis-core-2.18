@@ -47,6 +47,7 @@ import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.user.User;
 
 import com.opensymphony.xwork2.Action;
 
@@ -117,6 +118,8 @@ public class ShowEventWithRegistrationFormAction
 
     private ProgramStage programStage;
 
+    private Collection<User> healthWorkers;
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -132,19 +135,20 @@ public class ShowEventWithRegistrationFormAction
             patientAttributes.removeAll( program.getPatientAttributes() );
         }
 
-        for( PatientAttribute patientAttribute : patientAttributes )
+        for ( PatientAttribute patientAttribute : patientAttributes )
         {
             PatientAttributeGroup attributeGroup = patientAttribute.getPatientAttributeGroup();
-            if( attributeGroup!=null){
-                if( attributeGroupsMap.containsKey( attributeGroup ) )
+            if ( attributeGroup != null )
+            {
+                if ( attributeGroupsMap.containsKey( attributeGroup ) )
                 {
                     Collection<PatientAttribute> attributes = attributeGroupsMap.get( attributeGroup );
-                    attributes.add(patientAttribute);
+                    attributes.add( patientAttribute );
                 }
                 else
                 {
-                    Collection<PatientAttribute> attributes = new HashSet<PatientAttribute>(); 
-                    attributes.add(patientAttribute);
+                    Collection<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+                    attributes.add( patientAttribute );
                     attributeGroupsMap.put( attributeGroup, attributes );
                 }
             }
@@ -153,7 +157,7 @@ public class ShowEventWithRegistrationFormAction
                 noGroupAttributes.add( patientAttribute );
             }
         }
-        
+
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         // Get data entry form
@@ -162,24 +166,23 @@ public class ShowEventWithRegistrationFormAction
 
         programStage = program.getProgramStages().iterator().next();
 
-        DataEntryForm dataEntryForm = programStage.getDataEntryForm();
-
-        if ( dataEntryForm != null )
-        {
-            customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEdit( dataEntryForm.getHtmlCode() );
-        }
-        else
-        {
-            programStageDataElements = new ArrayList<ProgramStageDataElement>(
-                programStage.getProgramStageDataElements() );
-        }
-
+        programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
+        
+        // Get health workers
+        
+        healthWorkers = organisationUnit.getUsers();
+       
         return SUCCESS;
     }
 
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
+
+    public Collection<User> getHealthWorkers()
+    {
+        return healthWorkers;
+    }
 
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
