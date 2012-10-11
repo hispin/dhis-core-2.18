@@ -53,8 +53,8 @@
 		</tr>
 		#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
 			<tr id='searchBySelectedUnitTD'>
-				<td align='right'>$i18n.getString('search_in_all_facilities')&nbsp;&nbsp;&nbsp;</td>
 				<td>
+					$i18n.getString('search_in_all_facilities') 
 					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />
 				</td>
 			</tr>
