@@ -6,7 +6,11 @@
 </style>
 
 <div id="userHeader">$!encoder.htmlEncode( $user.firstName ) $!encoder.htmlEncode( $user.surname  )</div>
+#if( $user.id == $currentUser.id )
 <div id="userProfileLink"><a class="blueButtonLink" href="../dhis-web-commons-about/showUpdateUserProfileForm.action">$i18n.getString( "edit_profile" )</a></div>
+#else
+<div id="userProfileLink"><a class="blueButtonLink" href="showSendMessage.action?id=${user.uid}">$i18n.getString( "send_message" )</a></div>
+#end
 
 <div id="userCover"><img src="images/profile_cover.jpg" style="border: none; border-bottom-right-radius: 5px;"></div>
 
