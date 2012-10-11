@@ -524,14 +524,14 @@ function showCreateNewEvent( programInstanceId, programStageId )
 		
 	if( programStageId != undefined )
 	{
-		jQuery('#repeatableProgramStageId').val(programStageId);
+		jQuery('#repeatableProgramStage_' + programInstanceId).val(programStageId);
 	}
 	setSuggestedDueDate( programInstanceId );
 }
 
 function setSuggestedDueDate( programInstanceId )
 {
-	var standardInterval =  jQuery('#repeatableProgramStageId option:selected').attr('standardInterval');
+	var standardInterval =  jQuery('#repeatableProgramStage_' + programInstanceId + ' option:selected').attr('standardInterval');
 	var date = new Date();
 	var d = date.getDate() + eval(standardInterval);
 	var m = date.getMonth();
