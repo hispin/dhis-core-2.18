@@ -850,11 +850,13 @@
     <action name="showUpdateUserAccountForm" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/useraccount/updateUserAccountForm.vm</param>
+      <param name="menu">/dhis-web-commons/about/menuDashboard.vm</param>
     </action>
 
     <action name="showUpdateUserProfileForm" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/useraccount/updateUserProfileForm.vm</param>
+      <param name="menu">/dhis-web-commons/about/menuDashboard.vm</param>
     </action>
 
     <action name="updateUserAccount" class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">
