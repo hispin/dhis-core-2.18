@@ -434,12 +434,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="abstractRunCaseAggregateConditionTask"
 		class="org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask">
-		<constructor-arg
-			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		<constructor-arg ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		<constructor-arg ref="org.hisp.dhis.datavalue.DataValueService" />
-		<constructor-arg
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<constructor-arg ref="org.hisp.dhis.setting.SystemSettingManager" />
+		<constructor-arg ref="jdbcTemplate" />
+		<constructor-arg ref="org.hisp.dhis.dataelement.DataElementService" />
+		<constructor-arg ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
 	<bean id="aggregateLast12MonthsTask" class="org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask"
