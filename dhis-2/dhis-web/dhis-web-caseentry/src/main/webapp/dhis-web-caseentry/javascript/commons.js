@@ -180,7 +180,9 @@ function validateAdvancedSearch()
 	var flag = true;
 	var dateOperator = '';
 	
-	if (getFieldValue('searchByProgramStage') == "false"){
+	if (getFieldValue('searchByProgramStage') == "false" 
+		|| ( getFieldValue('searchByProgramStage') == "true"  
+			&& jQuery( '#advancedSearchTB tr' ).length > 1) ){
 		jQuery("#searchDiv :input").each( function( i, item )
 		{
 			var elementName = $(this).attr('name');
