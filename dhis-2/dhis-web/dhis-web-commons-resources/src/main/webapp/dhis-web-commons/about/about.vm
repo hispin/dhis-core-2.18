@@ -21,5 +21,3 @@
   <dt>$i18n.getString( "server_date" ):</dt><dd>$format.formatDateTime( $serverDate )</dd>
   #end
 </dl>
-<br/>
-<div><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='$!backUrl'" style="width:140px"/></div>
