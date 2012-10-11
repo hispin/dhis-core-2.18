@@ -75,7 +75,7 @@
 		<tr>
 			<td></td>
 			<td>
-				<input type='button' value='$i18n.getString("create")' onclick='registerIrregularEncounter( "$!programInstance.id",getFieldValue("repeatableProgramStageId"), jQuery("#repeatableProgramStageId option:selected").text(),getFieldValue("dueDateNewEncounter_$programInstance.id" ) );' />
+				<input type='button' value='$i18n.getString("create")' onclick='registerIrregularEncounter( "$!programInstance.id",getFieldValue("repeatableProgramStage_$!programInstance.id"), jQuery("#repeatableProgramStage_$!programInstance.id option:selected").text(),getFieldValue("dueDateNewEncounter_$programInstance.id" ) );' />
 				<input type='button' value='$i18n.getString("cancel")' onclick="closeDueDateDiv('$!programInstance.id');" />
 			</td>
 		</tr>
