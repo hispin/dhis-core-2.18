@@ -83,7 +83,7 @@
                 _.template( tmpl, data )
             );
 
-            jQuery('#data-entry-page').trigger('create')
+            jQuery('#data-entry-page').trigger('pagecreate')
             jQuery('#data-entry-list').listview('refresh');
         }).error(function () {
             console.log('error fetching form')
