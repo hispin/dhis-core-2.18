@@ -35,6 +35,6 @@ function updateUser()
 		, function( xmlObject ) 
 		{
 			xmlObject = xmlObject.getElementsByTagName( 'message' )[0];
-			setMessage( xmlObject.firstChild.nodeValue );
+			setHeaderDelayMessage( xmlObject.firstChild.nodeValue );
 		} );
 }
