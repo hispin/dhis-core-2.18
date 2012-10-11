@@ -551,7 +551,6 @@ function closeDueDateDiv( programInstanceId )
 
 function registerIrregularEncounter( programInstanceId, programStageId, programStageName, dueDate )
 {
-	setInnerHTML('createEventMessage_' + programInstanceId, '');
 	jQuery.postJSON( "registerIrregularEncounter.action",
 		{ 
 			programInstanceId:programInstanceId,
