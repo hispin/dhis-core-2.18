@@ -15,6 +15,8 @@
     }
 
     function loadOrganisationUnitsPage() {
+        $.mobile.showPageLoadingMsg();
+
         jQuery.ajax({
             url   : '$baseUrl/../api/currentUser/organisationUnits',
             dataType: 'json',
@@ -30,7 +32,10 @@
 
             jQuery('#organisation-unit-list').listview()
             jQuery('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
+
+            $.mobile.hidePageLoadingMsg();
         }).error(function () {
+            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to get organisationUnits", true );
             console.log('error fetching orgUnits')
         });
     }
@@ -41,6 +46,8 @@
             $.mobile.changePage('#organisation-units-page');
             return;
         }
+
+        $.mobile.showPageLoadingMsg();
 
         jQuery.ajax({
             url   : '$baseUrl/../api/currentUser/organisationUnits/' + Selected.orgUnit + '/dataSets',
@@ -54,7 +61,9 @@
 
             jQuery('#data-set-list').listview()
             jQuery('#data-set-list li a').bind('click', selectDataSet);
+            $.mobile.hidePageLoadingMsg();
         }).error(function () {
+            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to get dataSets", true );
             console.log('error fetching dataSets')
         });
     }
@@ -71,6 +80,8 @@
             return;
         }
 
+        $.mobile.showPageLoadingMsg();
+
         jQuery.ajax({
             url   : '$baseUrl/../api/dataSets/' + Selected.dataSet + '/form',
             dataType: 'json'
@@ -85,7 +96,9 @@
 
             jQuery('#data-entry-page').trigger('pagecreate')
             jQuery('#data-entry-list').listview('refresh');
+            $.mobile.hidePageLoadingMsg();
         }).error(function () {
+            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to get form", true );
             console.log('error fetching form')
         });
     }
@@ -130,7 +143,26 @@
             <% _( group.fields ).each( function(field, idx) { %>
                 <li>
                     <label for='<%= field.dataElement %>-<%= field.categoryOptionCombo %>'><%= field.label %></label>
-                    <input type="text" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' />
+
+                    <% if( field.type == 'TEXT' ) { %>
+                        <input type="text" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                    <% } else if( field.type == 'DATE' ) { %>
+                        <input type="date" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                    <% } else if( field.type == 'BOOLEAN' ) { %>
+                        <select type="" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255">
+                            <option value="">None selected</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    <% } else if( field.type == 'INTEGER' ) { %>
+                        <input type="number" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                    <% } else if( field.type == 'INTEGER_POSITIVE' ) { %>
+                        <input type="number" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                    <% } else if( field.type == 'INTEGER_NEGATIVE' ) { %>
+                        <input type="number" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                    <% } else if( field.type == 'NUMBER' ) { %>
+                        <input type="number" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                    <% } %>
                 </li>
             <% }); %>
 
