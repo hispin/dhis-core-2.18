@@ -1,17 +1,26 @@
 
 <script>
-    function selectOrganisationUnit(e, data) {
+    var Selected = {};
+
+    function selectOrganisationUnit( e ) {
         var $this = $(this);
-        console.log($this.data('id'));
+        Selected.orgUnit = $this.data('id');
+        console.log(Selected);
+    }
+
+    function selectDataSet( e ) {
+        var $this = $(this);
+        Selected.dataSet = $this.data('id');
+        console.log(Selected);
     }
 
     function loadOrganisationUnitsPage() {
         jQuery.ajax({
             url   : '$baseUrl/../api/currentUser/organisationUnits',
+            dataType: 'json',
             data: {
               'withChildren': true
-            },
-            dataType: 'json'
+            }
         }).success(function ( data ) {
             var tmpl = jQuery('#organisation-units-template').html();
 
@@ -19,20 +28,66 @@
                 _.template( tmpl, { 'organisationUnits': data } )
             );
 
-            console.log(data);
             jQuery('#organisation-unit-list').listview()
+            jQuery('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
         }).error(function () {
             console.log('error fetching orgUnits')
         });
-
-    }
-
-    function loadDataEntryPage() {
-
     }
 
     function loadDataSetsPage() {
+        if(Selected.orgUnit === undefined)
+        {
+            $.mobile.changePage('#organisation-units-page');
+            return;
+        }
 
+        jQuery.ajax({
+            url   : '$baseUrl/../api/currentUser/organisationUnits/' + Selected.orgUnit + '/dataSets',
+            dataType: 'json'
+        }).success(function ( data ) {
+            var tmpl = jQuery('#data-sets-template').html();
+
+            jQuery('#data-sets-page section[data-role="content"]').html(
+                _.template( tmpl, { 'dataSets': data } )
+            );
+
+            jQuery('#data-set-list').listview()
+            jQuery('#data-set-list li a').bind('click', selectDataSet);
+        }).error(function () {
+            console.log('error fetching dataSets')
+        });
+    }
+
+    function loadDataEntryPage() {
+        if(Selected.dataSet === undefined)
+        {
+            if(Selected.orgUnit === undefined) {
+                $.mobile.changePage('#organisation-units-page');
+            } else {
+                $.mobile.changePage('#data-sets-page');
+            }
+
+            return;
+        }
+
+        jQuery.ajax({
+            url   : '$baseUrl/../api/dataSets/' + Selected.dataSet + '/form',
+            dataType: 'json'
+        }).success(function ( data ) {
+            console.log(data);
+
+            var tmpl = jQuery('#data-entry-template').html();
+
+            jQuery('#data-entry-page section[data-role="content"]').html(
+                _.template( tmpl, data )
+            );
+
+            jQuery('#data-entry-page').trigger('create')
+            jQuery('#data-entry-list').listview('refresh');
+        }).error(function () {
+            console.log('error fetching form')
+        });
     }
 
     jQuery(document).bind('pagechange', function (event, data) {
@@ -46,10 +101,6 @@
         } else if( pageId == 'data-entry-page' ) {
             loadDataEntryPage();
         }
-    });
-
-    jQuery(document).bind('pageinit', function() {
-        $('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
     });
 </script>
 
@@ -67,6 +118,25 @@
         <li><a href="#data-entry-page" data-id="<%= dataSet.id %>"><%= dataSet.name %></a></li>
         <% }); %>
     </ul>
+</script>
+
+<script id="data-entry-template" type="text/template">
+    <h1><%= label %></h1>
+    <form id='data-entry-form'>
+    <ul id="data-entry-list" data-role="listview" data-inset="true">
+        <% _( groups ).each( function(group, idx) { %>
+            <li data-role="list-divider"><%= group.label %></li>
+
+            <% _( group.fields ).each( function(field, idx) { %>
+                <li>
+                    <label for='<%= field.dataElement %>-<%= field.categoryOptionCombo %>'><%= field.label %></label>
+                    <input type="text" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' />
+                </li>
+            <% }); %>
+
+        <% }); %>
+    </ul>
+    </form>
 </script>
 
 <section data-role="page" id="organisation-units-page" data-theme="c">
