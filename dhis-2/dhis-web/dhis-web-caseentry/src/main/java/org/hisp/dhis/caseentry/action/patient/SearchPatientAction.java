@@ -171,14 +171,17 @@ public class SearchPatientAction
             patients = patientService.searchPatients( searchTexts, organisationUnit, paging.getStartPos(),
                 paging.getPageSize() );
 
-            for ( Patient patient : patients )
+            if ( !searchBySelectedOrgunit )
             {
-                mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+                for ( Patient patient : patients )
+                {
+                    mapPatientOrgunit.put( patient.getId(), getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+                }
             }
 
             if ( programIds != null )
             {
-                for( Integer programId : programIds )
+                for ( Integer programId : programIds )
                 {
                     Program progam = programService.getProgram( programId );
                     identifierTypes.addAll( progam.getPatientIdentifierTypes() );

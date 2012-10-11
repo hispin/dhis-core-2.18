@@ -38,6 +38,7 @@
 		  #if($mapPatientOrgunit.size()!=0)
 		  <col/>
 		  #end
+		  <col/>
 		  <col width="80"/>
           <tr>
 			<th>#</th>
@@ -51,7 +52,8 @@
 			#end       
             <th>$i18n.getString( "gender" )</th>
             <th>$i18n.getString( "date_of_birth" )</th>
-            <th>$i18n.getString( "age" )</th>   
+            <th>$i18n.getString( "age" )</th> 
+			<th class="{sorter: false}">$i18n.getString( "phone_number" )</th>  
 			#if($mapPatientOrgunit.size()!=0)
 			<th>$i18n.getString( "hierachy_orgunit" )</th>
 			#end			
@@ -87,7 +89,8 @@
 				</td>
 				<td>            
                     $encoder.htmlEncode( $patient.getAge() )
-                </td>	
+                </td>
+				<td>$!patient.phoneNumber</td>				
 				#if($mapPatientOrgunit.size()!=0)
 				<td>$!mapPatientOrgunit.get($patient.id)</td>
 				#end

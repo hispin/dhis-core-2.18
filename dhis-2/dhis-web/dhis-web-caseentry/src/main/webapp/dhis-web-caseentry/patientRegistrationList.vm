@@ -61,16 +61,13 @@
 				#if( $identifierTypes.size()==0 )
 					<th>$i18n.getString( "full_name" )</th>          
 				#end
-				
 				<th>$i18n.getString( "gender" )</th>
 				<th>$i18n.getString( "date_of_birth" )</th> 
 				<th class="{sorter: false}">$i18n.getString( "age" )</th>
 				<th class="{sorter: false}">$i18n.getString( "phone_number" )</th>
-				
 				#if($mapPatientOrgunit.size()!=0)
 					<th>$i18n.getString( "hierachy_orgunit" )</th>
 				#end
-				
 				<th style="text-align:center" class="{sorter: false}">$i18n.getString( "operations" )</th>
 			  </tr>
           </thead>
