@@ -35,9 +35,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $Id$
- * @modifier Dang Duy Hieu
- * @since 2010-05-04
  */
 public class GetCurrentUserAction
     implements Action
@@ -54,8 +51,6 @@ public class GetCurrentUserAction
 
     private UserCredentials userCredentials;
 
-    private String backUrl;
-
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -68,16 +63,6 @@ public class GetCurrentUserAction
     public UserCredentials getUserCredentials()
     {
         return userCredentials;
-    }
-
-    public String getBackUrl()
-    {
-        return backUrl;
-    }
-
-    public void setBackUrl( String backUrl )
-    {
-        this.backUrl = backUrl;
     }
 
     // -------------------------------------------------------------------------

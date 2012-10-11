@@ -1,8 +1,6 @@
 <script type="text/javascript" src="../dhis-web-commons/javascripts/useraccount/updateUserAccountForm.js"></script>
 
-<h3>$i18n.getString( "update_user" )
-<a href="showUpdateUserProfileForm.action" title="$i18n.getString( 'edit_profile' )"><img src="../icons/profile_edit.png" alt="$i18n.getString( 'edit_profile' )"/></a>
-</h3>
+<h3>$i18n.getString( "user_account" )</h3>
 
 <form id="updateUserinforForm" action="updateUserAccount.action" method="post" onsubmit='return false;'>
 <div>
@@ -47,8 +45,7 @@
     </tr>
 	<tr>
 		<td></td>
-		<td valign="top"><input type="submit" value="$i18n.getString( 'save' )" style="width:10em">
-		<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='$!backUrl'" style="width:120px"/></td>
+		<td valign="top"><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"></td>
 	</tr>
 </table>
 </form>
