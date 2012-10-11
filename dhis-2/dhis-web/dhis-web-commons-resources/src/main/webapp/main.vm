@@ -13,8 +13,6 @@
 
     <script type="text/javascript">
       var dateFormat = 'yy-mm-dd';
-      var maintenanceModulesNo = ${maintenanceModules.size()};
-      var serviceModulesNo = ${serviceModules.size()};
     </script>
 
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
@@ -76,15 +74,13 @@
       <div id="menuLink2" class="menuLink">$i18n.getString( "services" )</div>
       #end
       <div id="menuLink3" class="menuLink">$i18n.getString( "help" )</div>
-      <div id="menuLink4" class="menuLink">$i18n.getString( "log_out" )</div>
+      <div id="menuLink4" class="menuLink">$i18n.getString( "profile" )</div>
 
       #if( $maintenanceModules.size() > 0 )
       <div id="menuDropDown1" class="menuDropDownArea" >
       <ul class="menuDropDownBox">
       #foreach( $module in $maintenanceModules )
-        <li>
-          <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
-        </li>
+        <li><a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a></li>
       #end
       </ul>      
       </div>
@@ -94,26 +90,31 @@
       <div id="menuDropDown2" class="menuDropDownArea">
       <ul class="menuDropDownBox">
       #foreach( $module in $serviceModules )
-        <li>
-          <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
-        </li>
+        <li><a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a></li>
       #end
       </ul>      
       </div>
       #end
 	  
       <div id="menuDropDown3" class="menuDropDownArea">
-      <ul class="menuDropDownBox">
-        <li><a id="menuDropDownUserSettings">$i18n.getString( "settings" )&nbsp;</a></li>
+      <ul class="menuDropDownBox">        
         <li><a id="menuDropDownHelpCenter">$i18n.getString( "help_center" )&nbsp;</a></li>
         <li><a id="menuDropDownChangeLog">$i18n.getString( "change_log" )&nbsp;</a></li>
-        <li><a id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</a></li>
-        <li><a id="menuDropDownUserAccount">$i18n.getString( "user_account" )&nbsp;</a></li>
+        <li><a id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</a></li>        
         <li><a id="menuDropDownModuleOverview">$i18n.getString( "system_overview" )&nbsp;</a></li>
         <li><a id="menuDropDownWebApi">$i18n.getString( "web_api" )&nbsp;</a></li>
         <li><a id="menuDropDownAboutDHIS2">$i18n.getString( "about_dhis2" )&nbsp;</a></li>
       </ul>
       </div>
+	  
+	  <div id="menuDropDown4" class="menuDropDownArea">
+	  <ul class="menuDropDownBox">
+  	    <li><a style="width:159px; padding-left:20px;" href="../dhis-web-commons-about/userGeneralSettings.action">$i18n.getString( "settings" )&nbsp;</a></li>
+        <li><a style="width:159px; padding-left:20px;" href="../dhis-web-commons-about/showUpdateUserProfileForm.action">$i18n.getString( "profile" )&nbsp;</a></li>
+  	    <li><a style="width:159px; padding-left:20px;" href="../dhis-web-commons-about/showUpdateUserAccountForm.action">$i18n.getString( "account" )&nbsp;</a></li>
+        <li><a style="width:159px; padding-left:20px;" href="../dhis-web-commons-security/logout.action">$i18n.getString( "log_out" )&nbsp;</a></li>
+      </ul>
+	  </div>
 	  
       <span id="headerText" onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer" title="$i18n.getString( 'view_home_page' )">
         #if ( $applicationTitle )
