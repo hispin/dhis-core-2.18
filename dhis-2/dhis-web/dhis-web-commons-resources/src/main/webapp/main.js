@@ -30,11 +30,6 @@ function pageInit()
 			window.location.href = currentPath + "help.action" + backURL;
 		});
 
-	$( "#menuDropDownChangeLog" ).click( function()
-		{
-			window.location.href = currentPath + "displayChangeLog.action" + backURL;
-		} );
-		
 	$( "#menuDropDownSupportiveSoftware" ).click( function()
 		{
 			window.location.href= currentPath + "displaySupportiveSoftware.action" + backURL;
@@ -43,11 +38,6 @@ function pageInit()
 	$( "#menuDropDownModuleOverview" ).click( function()
 		{
 			window.location.href = currentPath + "modules.action" + backURL;
-		} );
-		
-	$( "#menuDropDownWebApi" ).click( function()
-		{
-			window.location.href = "../api";
 		} );
 		
 	$( "#menuDropDownAboutDHIS2" ).click( function()

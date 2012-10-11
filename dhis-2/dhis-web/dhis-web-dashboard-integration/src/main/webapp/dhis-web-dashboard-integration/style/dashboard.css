@@ -108,12 +108,12 @@
 {
   padding: 6px 12px;
   height: 25px;
-  border: 1px solid #2f73d8;
+  border: 1px solid #3F79B4;
   border-radius: 3px;
   margin-right: 4px;
   font-family: LiberationSansBold, arial;
   font-size: 13px;
-  background-color: #4685dd;
+  background-color: #427DB8;
   color: #fff !important;
   text-decoration: none !important;
 }
@@ -121,7 +121,7 @@
 .blueButtonLink:hover
 {
   text-decoration: none;
-  background-color: #3f7fd3;
+  background-color: #3674B3;
 }
 
 #searchDiv

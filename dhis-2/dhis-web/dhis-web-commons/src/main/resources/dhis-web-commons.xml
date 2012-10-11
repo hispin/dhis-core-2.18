@@ -841,12 +841,6 @@
       <result name="success" type="outputStreamResult"></result>
     </action>
 
-    <action name="displayChangeLog" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-commons/about/changeLog.vm</param>
-      <param name="menu">/dhis-web-commons/about/menu.vm</param>
-    </action>
-
     <action name="displaySupportiveSoftware" class="org.hisp.dhis.commons.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/about/software.vm</param>
