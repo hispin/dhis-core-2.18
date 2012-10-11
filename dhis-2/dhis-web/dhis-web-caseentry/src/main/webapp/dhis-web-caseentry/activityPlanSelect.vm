@@ -95,7 +95,7 @@
 				<td></td>
 				<td>
 					<input type="submit" class='large-button' id='listPatientBtn' value="$i18n.getString( 'show_activity_list' )" onclick="setFieldValue('export', false);">
-					<input type="submit" class='large-button' value="$i18n.getString( 'export_xls' )" onclick="setFieldValue('export', false);">
+					<input type="submit" class='large-button' value="$i18n.getString( 'export_xls' )" onclick="setFieldValue('export', true);">
 				</td>
 			</tr>
 		</table>

@@ -831,7 +831,7 @@ public class DefaultCaseAggregationConditionService
 
         if ( propertyName.equals( PROPERTY_AGE ) )
         {
-            sql += "DATE('" + endDate + "') - DATE(birthdate) ";
+            sql += "DATE('" + startDate + "') - DATE(birthdate) ";
         }
         else
         {
