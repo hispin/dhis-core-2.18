@@ -98,11 +98,11 @@
 	  
       <div id="menuDropDown3" class="menuDropDownArea">
       <ul class="menuDropDownBox">        
-        <li><a id="menuDropDownHelpCenter">$i18n.getString( "help_center" )&nbsp;</a></li>
-        <li><a id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</a></li>        
-        <li><a id="menuDropDownModuleOverview">$i18n.getString( "system_overview" )&nbsp;</a></li>
+        <li><a href="../dhis-web-commons-about/help.action">$i18n.getString( "help_center" )&nbsp;</a></li>
+        <li><a href="../dhis-web-commons-about/software.action">$i18n.getString( "supportive_software" )&nbsp;</a></li>        
+        <li><a href="../dhis-web-commons-about/modules.action">$i18n.getString( "system_overview" )&nbsp;</a></li>
         <li><a href="../api">$i18n.getString( "web_api" )&nbsp;</a></li>
-        <li><a id="menuDropDownAboutDHIS2">$i18n.getString( "about_dhis2" )&nbsp;</a></li>
+        <li><a href="../dhis-web-commons-about/about.action">$i18n.getString( "about_dhis2" )&nbsp;</a></li>
       </ul>
       </div>
 	  

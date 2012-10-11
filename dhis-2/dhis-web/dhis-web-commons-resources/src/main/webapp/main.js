@@ -19,32 +19,7 @@ function pageInit()
     {
         $( this ).attr( "src", "../images/hide.png" );
     } );
-        
-    // Set dynamic back URLs for about page links
-        
-	var currentPath = '../dhis-web-commons-about/';
-	var backURL = '?backUrl=' + window.location;
-
-	$( "#menuDropDownHelpCenter" ).click( function()
-		{
-			window.location.href = currentPath + "help.action" + backURL;
-		});
-
-	$( "#menuDropDownSupportiveSoftware" ).click( function()
-		{
-			window.location.href= currentPath + "displaySupportiveSoftware.action" + backURL;
-		} );
-	
-	$( "#menuDropDownModuleOverview" ).click( function()
-		{
-			window.location.href = currentPath + "modules.action" + backURL;
-		} );
-		
-	$( "#menuDropDownAboutDHIS2" ).click( function()
-		{
-			window.location.href = currentPath + "about.action" + backURL;
-		} );
-	
+    
 	// Set show and hide drop down events on top menu
 	
 	$( "#menuLink1" ).hover( function() 
