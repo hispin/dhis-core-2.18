@@ -42,6 +42,8 @@ import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -49,6 +51,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * @author Chau Thu Tran
@@ -58,6 +62,8 @@ import org.hisp.dhis.setting.SystemSettingManager;
 public class CaseAggregateConditionTask
     implements Runnable
 {
+    public static final String STORED_BY_DHIS_SYSTEM = "DHIS-System";
+
     private OrganisationUnitService organisationUnitService;
 
     private CaseAggregationConditionService aggregationConditionService;
@@ -66,6 +72,12 @@ public class CaseAggregateConditionTask
 
     private SystemSettingManager systemSettingManager;
 
+    private JdbcTemplate jdbcTemplate;
+
+    private DataElementService dataElementService;
+
+    private DataElementCategoryService categoryService;
+    
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
@@ -97,12 +109,16 @@ public class CaseAggregateConditionTask
 
     public CaseAggregateConditionTask( OrganisationUnitService organisationUnitService,
         CaseAggregationConditionService aggregationConditionService, DataValueService dataValueService,
-        SystemSettingManager systemSettingManager )
+        SystemSettingManager systemSettingManager, JdbcTemplate jdbcTemplate, DataElementService dataElementService,
+        DataElementCategoryService categoryService )
     {
         this.organisationUnitService = organisationUnitService;
         this.aggregationConditionService = aggregationConditionService;
         this.dataValueService = dataValueService;
         this.systemSettingManager = systemSettingManager;
+        this.jdbcTemplate = jdbcTemplate;
+        this.dataElementService = dataElementService;
+        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -137,9 +153,24 @@ public class CaseAggregateConditionTask
         {
             for ( CaseAggregationCondition aggCondition : aggConditions )
             {
-                DataElementCategoryOptionCombo optionCombo = aggCondition.getOptionCombo();
+                // -------------------------------------------------------------
+                // Get agg-dataelement and option-combo
+                // -------------------------------------------------------------
 
-                DataElement dElement = aggCondition.getAggregationDataElement();
+                String sql = "select aggregationdataelementid, optioncomboid from caseaggregationcondition where caseaggregationconditionid="
+                    + aggCondition.getId();
+                SqlRowSet rs = jdbcTemplate.queryForRowSet( sql );
+                rs.next();
+                int dataelementId = rs.getInt( "aggregationdataelementid" );
+                int optionComboId = rs.getInt( "optioncomboid" );
+
+                // -------------------------------------------------------------
+                // Get agg-dataelement and option-combo
+                // -------------------------------------------------------------
+
+                DataElement dElement = dataElementService.getDataElement( dataelementId );
+                DataElementCategoryOptionCombo optionCombo = categoryService
+                    .getDataElementCategoryOptionCombo( optionComboId );
 
                 for ( Period period : periods )
                 {
@@ -152,7 +183,7 @@ public class CaseAggregateConditionTask
                         // -----------------------------------------
                         // Add dataValue
                         // -----------------------------------------
-
+                        
                         if ( dataValue == null )
                         {
                             dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, "", new Date(),
@@ -166,10 +197,14 @@ public class CaseAggregateConditionTask
                         {
                             dataValue.setValue( "" + resultValue );
                             dataValue.setTimestamp( new Date() );
-                            dataValueService.updateDataValue( dataValue );
+                            sql = "UPDATE datavalue" + " SET value='" + resultValue + "',lastupdated='" + new Date() + "' where dataelementId="
+                                + dataelementId + " and periodid=" + period.getId() + " and sourceid="
+                                + orgUnit.getId() + " and categoryoptioncomboid=" + optionComboId + " and storedby='"
+                                + STORED_BY_DHIS_SYSTEM + "'";
+                            jdbcTemplate.execute( sql );
                         }
-
                     }
+
                     // -----------------------------------------
                     // Delete dataValue
                     // -----------------------------------------
