@@ -11,6 +11,7 @@
 		});
 		
 		jQuery("#searchObjectId [value=prg]").remove();
+		jQuery("#searchObjectId [value=prg]").remove();
 		jQuery("#searchObjectId").prepend('<option value="-100">' + i18n_please_select_criteria + '</option>');
 		jQuery("#searchObjectId [value=]").attr("selected","selected");
 		hideById('addPatientBtn');

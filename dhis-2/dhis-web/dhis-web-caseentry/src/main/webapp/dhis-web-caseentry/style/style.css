@@ -29,19 +29,9 @@ input[type="text"]
     width: 260px;
 }
 
-input.search-field[type="text"] 
-{
-    width: 185px;
-}
-
 select 
 {
     width: 265px;
-}
-
-select.search-field
-{
-    width: 190px;
 }
 
 textarea 
@@ -54,16 +44,6 @@ textarea
 	text-align:right;
 	padding-bottom:10px;
 	width:100%;
-}
-
-.search-input
-{
-    width:180px;
-}
-
-.search-select 
-{
-    width: 185px;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,7 +102,7 @@ table.information, td.information
   padding-left: 20px;
   margin-bottom: 15px;
   border-radius: 3px;
-  width:840px;
+  width:940px;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -51,6 +51,16 @@
 				<input type='textbox' class='search-field' id='endDueDate' name='endDueDate' style='width:105px;'>
 			</td>
 		</tr>
+		#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
+			<tr id='searchBySelectedUnitTD'>
+				<td align='right'>$i18n.getString('search_in_all_facilities')&nbsp;&nbsp;&nbsp;</td>
+				<td>
+					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />
+				</td>
+			</tr>
+		#else
+			<input type='checkbox' class='hidden' id='searchInAllFacility' name='searchInAllFacility' />
+		#end
 		<tbody id='advancedSearchTB'>
 			<tr id='advSearchBox0'>	       
 				<td id='searchingAttributeIdTD'>
@@ -74,14 +84,6 @@
 				<td>
 					<input type="button" class='small-button' value='+' onclick='addAttributeOption();'>
 				</td>
-				#if( $auth.hasAccess( "dhis-web-caseentry", "searchAllFacilities" ) )
-				<td id='searchBySelectedUnitTD'>
-					$i18n.getString('search_in_all_facilities')
-					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />
-				</td>
-				#else
-					<input type='hidden' id='searchInAllFacility' name='searchInAllFacility' />
-				#end
 				<td>
 					<input type="button" class='large-button' value='$i18n.getString( "search" )' onclick='validateAdvancedSearch();' id='searchPatientBtn'>
 				</td>
