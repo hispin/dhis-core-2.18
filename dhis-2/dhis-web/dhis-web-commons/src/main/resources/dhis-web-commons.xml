@@ -860,11 +860,11 @@
     </action>
 
     <action name="updateUserAccount" class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">
-      <result name="success" type="velocity-xml">
-        /dhis-web-commons/useraccount/updateUserSuccess.vm
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm
       </result>
-      <result name="input" type="velocity-xml">
-        /dhis-web-commons/useraccount/updateUserInput.vm
+      <result name="error" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseError.vm
       </result>
     </action>
 
