@@ -1,6 +1,7 @@
 <h3>
  <a href="javascript:backMainPage();">$i18n.getString( 'single_event_with_registration' )</a>
- &raquo; <span id='singleProgramName' name='singleProgramName'></span>
+ &#8226; <span id='singleProgramName' name='singleProgramName'></span>
+ &raquo; $i18n.getString( "edit" )
 </h3>
 
 <form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
