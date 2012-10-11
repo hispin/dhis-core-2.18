@@ -56,8 +56,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
   
   <bean id="org.hisp.dhis.dashboard.action.SearchAction" class="org.hisp.dhis.dashboard.action.SearchAction"
-    scope="prototype">
-  </bean>
+    scope="prototype"/>
   
   <!-- Message -->
 
@@ -66,10 +65,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
 
+  <bean id="org.hisp.dhis.dashboard.message.action.GetMessageOptionsAction" class="org.hisp.dhis.dashboard.message.action.GetMessageOptionsAction"
+    scope="prototype"/>
+
   <bean id="org.hisp.dhis.dashboard.message.action.SendMessageAction" class="org.hisp.dhis.dashboard.message.action.SendMessageAction"
     scope="prototype">
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
   </bean>
 
   <bean id="org.hisp.dhis.dashboard.message.action.SendFeedbackAction" class="org.hisp.dhis.dashboard.message.action.SendFeedbackAction"
@@ -116,7 +116,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Profile -->
 
   <bean id="org.hisp.dhis.dashboard.profile.action.GetUserAction" class="org.hisp.dhis.dashboard.profile.action.GetUserAction"
-    scope="prototype">
-  </bean>
+    scope="prototype"/>
 
 </beans>

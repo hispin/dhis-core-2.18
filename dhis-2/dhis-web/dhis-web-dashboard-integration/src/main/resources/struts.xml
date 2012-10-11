@@ -77,7 +77,7 @@
       <param name="onExceptionReturn">plainTextError</param>
 	</action>
 
-    <action name="showSendMessage" class="org.hisp.dhis.dashboard.action.NoAction">
+    <action name="showSendMessage" class="org.hisp.dhis.dashboard.message.action.GetMessageOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dashboard-integration/sendMessage.vm</param>
       <param name="menu">/dhis-web-commons/about/menuDashboard.vm</param>

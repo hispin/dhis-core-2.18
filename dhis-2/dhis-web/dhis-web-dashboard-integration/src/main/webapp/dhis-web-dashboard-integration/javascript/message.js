@@ -21,7 +21,7 @@ function validateMessage()
 	var subject = $( "#subject" ).val();
 	var text = $( "#text" ).val();
 
-    if( $('#selectionTree').find('.selected').length == 0 && $('#additionalUsers').val().length == 0 )
+    if( $( "#selectionTree" ).find( ".selected" ).length == 0 && $( "#recipients" ).val().length == 0 )
     {
         setHeaderMessage( i18n_select_one_or_more_recipients );
         return false;
