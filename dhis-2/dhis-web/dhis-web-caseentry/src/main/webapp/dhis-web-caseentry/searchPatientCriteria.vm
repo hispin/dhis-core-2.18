@@ -55,9 +55,10 @@
 			<tr id='searchBySelectedUnitTD'>
 				<td>
 					$i18n.getString('search_in_all_facilities') 
-					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />
+					<input type='checkbox' id='searchInAllFacility' name='searchInAllFacility' />&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>
+			<tr><td colspan='2'><hr></td></tr>
 		#else
 			<input type='checkbox' class='hidden' id='searchInAllFacility' name='searchInAllFacility' />
 		#end
