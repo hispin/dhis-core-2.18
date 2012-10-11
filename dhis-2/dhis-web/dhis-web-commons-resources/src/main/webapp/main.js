@@ -19,7 +19,25 @@ function pageInit()
     {
         $( this ).attr( "src", "../images/hide.png" );
     } );
+
+	// Set links on top menu items
     
+    $( "#menuLink1" ).click( function() {
+    	window.location.href = "../dhis-web-commons-about/modules.action";
+    } );
+
+    $( "#menuLink2" ).click( function() {
+    	window.location.href = "../dhis-web-commons-about/modules.action";
+    } );
+
+    $( "#menuLink3" ).click( function() {
+    	window.location.href = "../dhis-web-commons-about/help.action";
+    } );
+
+    $( "#menuLink4" ).click( function() {
+    	window.location.href = "../dhis-web-dashboard-integration/profile.action";
+    } );
+	
 	// Set show and hide drop down events on top menu
 	
 	$( "#menuLink1" ).hover( function() 

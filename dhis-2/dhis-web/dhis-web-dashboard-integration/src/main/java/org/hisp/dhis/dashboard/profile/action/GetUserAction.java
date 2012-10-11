@@ -27,6 +27,7 @@ package org.hisp.dhis.dashboard.profile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class GetUserAction
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CurrentUserService currentUserService;    
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -74,7 +78,14 @@ public class GetUserAction
 
     public String execute()
     {
-        user = userService.getUser( id );
+        if ( id != null )
+        {
+            user = userService.getUser( id );
+        }
+        else
+        {
+            user = currentUserService.getCurrentUser();
+        }
         
         return SUCCESS;
     }
