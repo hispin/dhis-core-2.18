@@ -48,7 +48,7 @@ public class FormUtils
     {
         Form form = new Form();
         form.setLabel( dataSet.getName() );
-        form.setPeriod( dataSet.getPeriodType().getIsoFormat() );
+        form.setPeriodType( dataSet.getPeriodType().getName() );
 
         if ( dataSet.getSections().size() > 0 )
         {

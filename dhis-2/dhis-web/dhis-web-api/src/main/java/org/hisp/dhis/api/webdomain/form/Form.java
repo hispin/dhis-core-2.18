@@ -44,7 +44,7 @@ public class Form
 {
     private String label;
 
-    private String period;
+    private String periodType;
 
     private List<Group> groups = new ArrayList<Group>();
 
@@ -66,14 +66,14 @@ public class Form
 
     @JsonProperty
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getPeriod()
+    public String getPeriodType()
     {
-        return period;
+        return periodType;
     }
 
-    public void setPeriod( String period )
+    public void setPeriodType( String periodType )
     {
-        this.period = period;
+        this.periodType = periodType;
     }
 
     @JsonProperty
@@ -94,7 +94,7 @@ public class Form
     {
         return "Form{" +
             "label='" + label + '\'' +
-            ", period='" + period + '\'' +
+            ", period='" + periodType + '\'' +
             ", groups=" + groups +
             '}';
     }
