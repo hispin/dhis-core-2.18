@@ -9,11 +9,10 @@
 		<td width='33%'>
 			<div class="link-area">
 				<table width='100%'>
-					<tr><th>$i18n.getString("demographics")</th></tr>
-					<tr><th>
-						<a href="javascript:showUpdatePatientForm( '$patient.id', true );"><span class='bold'>&laquo;$i18n.getString("edit_profile")&raquo;</span></a>
+					<tr><th>$i18n.getString("demographics")
+						&#8226; <a href="javascript:showUpdatePatientForm( '$patient.id', true );"><span class='bold'>$i18n.getString("edit_profile")</span></a>
 						#if( $auth.hasAccess( "dhis-web-caseentry", "getPatientLocation" ) )
-						<a href="javascript:getPatientLocation( '$patient.id', true );"><span class='bold'> &laquo;$i18n.getString("change_location")&raquo;</span></a>
+						&#8226; <a href="javascript:getPatientLocation( '$patient.id', true );"><span class='bold'>$i18n.getString("change_location")</span></a>
 						#end
 					</th></tr>
 				</table>
@@ -90,9 +89,8 @@
 		<td width='33%'>
 			<div class="link-area" style='height:120px;'>
 				<table width='100%'>
-					<tr><th>$i18n.getString("active_programs")</th></tr>
-					<tr><th>
-							<a href='javascript:showProgramEnrollmentForm( "$patient.id" )'><span class='bold'>&laquo;$i18n.getString("enroll_program")&raquo;</span></a>
+					<tr><th>$i18n.getString("active_programs")
+						&#8226; <a href='javascript:showProgramEnrollmentForm( "$patient.id" )'><span class='bold'>$i18n.getString("enroll_program")</span></a>
 					</th></tr>
 				</table>
 				<div class="contentProviderTable" style='height:76px;'>
@@ -180,10 +178,9 @@
 		<td width='33%'>
 			<div class="link-area">
 				<table width='100%'>
-					<tr><th>$i18n.getString("relationships")</th></tr>
-					<tr><th>
-						<a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );"><span class='bold'>&laquo;$i18n.getString("management")&raquo;</span></a>
-						<a href="javascript:showAddRelationshipPatient( '$patient.id', false );"><span class='bold'> &laquo;$i18n.getString("add_new_patient")&raquo;</span></a>
+					<tr><th>$i18n.getString("relationships")
+						&#8226; <a href="javascript:setFieldValue( 'isShowPatientList', 'false' ); showRelationshipList( '$patient.id' );"><span class='bold'>$i18n.getString("management")</span></a>
+						&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id', false );"><span class='bold'>$i18n.getString("add_new_patient")</span></a>
 					</th></tr>
 				</table>
 				<div class="contentProviderTable">

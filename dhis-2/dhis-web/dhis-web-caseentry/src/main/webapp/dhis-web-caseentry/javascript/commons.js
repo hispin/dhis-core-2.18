@@ -122,7 +122,7 @@ function searchObjectOnChange( this_ )
 
 function getTrueFalseBox()
 {
-	var trueFalseBox  = '<select id="searchText" name="searchText">';
+	var trueFalseBox  = '<select class="search-field" id="searchText" name="searchText">';
 	trueFalseBox += '<option value="true">' + i18n_yes + '</option>';
 	trueFalseBox += '<option value="false">' + i18n_no + '</option>';
 	trueFalseBox += '</select>';
@@ -131,7 +131,7 @@ function getTrueFalseBox()
 	
 function getGenderSelector()
 {
-	var genderSelector = '<select id="searchText" name="searchText">';
+	var genderSelector = '<select class="search-field" id="searchText" name="searchText">';
 		genderSelector += '<option value="M">' + i18n_male + '</option>';
 		genderSelector += '<option value="F">' + i18n_female + '</option>';
 		genderSelector += '<option value="T">' + i18n_transgender + '</option>';
@@ -141,15 +141,15 @@ function getGenderSelector()
 
 function getAgeTextBox( container )
 {
-	var ageField = '<select id="dateOperator" style="width:30px;" name="dateOperator" ><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option><option value=">"> > </option><option value=">="> >= </option></select>';
-	ageField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:230px;">';
+	var ageField = '<select id="dateOperator" style="width:40px;" name="dateOperator" ><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option><option value=">"> > </option><option value=">="> >= </option></select>';
+	ageField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:145px;">';
 	return ageField;
 }
 
 function getDateField( container )
 {
-	var dateField = '<select id="dateOperator" name="dateOperator" style="width:30px"><option value=">"> > </option><option value=">="> >= </option><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option></select>';
-	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" maxlength="30" style="width:210px;" onkeyup="searchPatientsOnKeyUp( event );">';
+	var dateField = '<select id="dateOperator" name="dateOperator" style="width:40px"><option value=">"> > </option><option value=">="> >= </option><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option></select>';
+	dateField += '<input type="text" id="searchText_' + container + '" name="searchText" maxlength="30" style="width:125px;" onkeyup="searchPatientsOnKeyUp( event );">';
 	return dateField;
 }
 

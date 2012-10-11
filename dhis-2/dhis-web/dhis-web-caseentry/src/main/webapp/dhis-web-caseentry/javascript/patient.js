@@ -14,6 +14,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	enable('listPatientBtn');
 	enable('addPatientBtn');
 	enable('advancedSearchBtn');
+	enable('searchObjectId');
 	setFieldValue("orgunitName", orgUnitNames[0]);
 }
 
