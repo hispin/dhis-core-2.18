@@ -2,13 +2,15 @@
 	hideById('mainLinkLbl');
 </script>
 
-<h3>
+<h5>
 	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
 	&#8226; <a href="javascript:showPatientDashboardForm($!patient.id);">$i18n.getString( 'patient_dashboard' )</a>
 	&#8226; $i18n.getString( "relationship_management" )
+</h5>
+<h3>	
 	&raquo; <a href="javascript:showAddRelationship('$patient.id')" >$i18n.getString( 'seach_available_patient' )</a>
 	&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id',false )" >$i18n.getString( 'add_new_patient' )</a>
-</h5>
+</h3>
 
 <input type="hidden" id="id" name="id" value="$patient.id">
 <table class="mainPageTable information">                           
