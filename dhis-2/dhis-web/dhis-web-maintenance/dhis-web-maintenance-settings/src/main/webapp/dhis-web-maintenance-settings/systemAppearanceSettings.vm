@@ -3,6 +3,7 @@
 		jQuery("input[type=button]").click(function() {
 			jQuery.postUTF8( 'setSystemAppearanceSettings.action', {
 				applicationTitle: getFieldValue( 'applicationTitle' ),
+                applicationIntro: getFieldValue( 'applicationIntro' ),
 				currentStyle: getFieldValue( 'currentStyle' ),
 				flag: getFieldValue( 'flag' ),
 				startModule: getFieldValue( 'startModule' )
@@ -18,7 +19,11 @@
 
 <h4>$i18n.getString( "application_title" )</h4>
 
-<p><input type="text" id="applicationTitle" name="applicationTitle" style="width:30em" maxlength="40" value="$!applicationTitle"/></p>
+<p><input type="text" id="applicationTitle" name="applicationTitle" style="width:30em" maxlength="40" value="$!{applicationTitle}"/></p>
+
+<h4>$i18n.getString( "application_introduction" )</h4>
+
+<p><input type="text" id="applicationIntro" name="applicationIntro" style="width:30em" maxlength="80" value="$!{applicationIntro}"/></p>
 
 <h4>$i18n.getString( "style" )</h4>
 
