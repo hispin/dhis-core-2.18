@@ -94,7 +94,7 @@ public class Form
     {
         return "Form{" +
             "label='" + label + '\'' +
-            ", period='" + periodType + '\'' +
+            ", periodType='" + periodType + '\'' +
             ", groups=" + groups +
             '}';
     }
