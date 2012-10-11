@@ -309,6 +309,7 @@ function showUpdateEvent( programStageInstanceId )
 		{
 			jQuery('#inputCriteriaDiv').remove();
 			hideById('mainLinkLbl');
+			showById('actionDiv');
 			var programName = jQuery('#programId option:selected').text();
 			var programStageId = jQuery('#programId option:selected').attr('psid');
 			jQuery('.stage-object-selected').attr('psid',programStageId);
@@ -343,7 +344,10 @@ function showAddEventForm()
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('listDiv');
+	hideById('mainLinkLbl');
+	hideById('actionDiv');
 	showById('dataEntryInfor');
+	setInnerHTML('programName', jQuery('#programId option:selected').text());
 }
 
 function addNewEvent()
@@ -358,7 +362,7 @@ function addNewEvent()
 			if(json.response=='success')
 			{
 				setFieldValue('programStageInstanceId',json.message);
-				showUpdateEvent( json.message )
+				showUpdateEvent( json.message );
 			}
 			else
 			{

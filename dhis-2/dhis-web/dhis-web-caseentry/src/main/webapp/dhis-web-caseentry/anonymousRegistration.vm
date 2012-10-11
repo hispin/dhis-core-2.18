@@ -42,14 +42,11 @@
 					</select>
 					<input type='hidden' class='stage-object-selected hidden'>
 				</td>
-				<td>	
+				<td>
 					<input type="button" class='large-button' id='listBtn' value="$i18n.getString( 'list_all_events' )" onclick='validateSearchEvents( true );'>
-				
 					<input type="button" class='large-button' id='addBtn' value='$i18n.getString( "add_new" )' onclick="setFieldValue('isShowEventList', true);showAddEventForm();">
-				
-					<input type="button" class='large-button' id='removeBtn' value='$i18n.getString( "remove_empty_events" )' onclick="removeEmptyEvents();">
-				
 					<input type="button" class='large-button' id='advancedBtn' value='$i18n.getString( "search" )' onclick="jQuery('#advanced-search').toggle();">
+					<input type="button" id='removeBtn' value='$i18n.getString( "remove_empty_events" )' onclick="removeEmptyEvents();">
 				</td>
 			</tr>
 		</table>
@@ -65,8 +62,8 @@
 					<input type="text" id='startDate' name='startDate' style='width:105px'>
 					<input type="text" id='endDate' name='endDate' style='width:105px'>
 				</td>
-				<td><input type="button" id='searchBtn' value='$i18n.getString( "search" )' onclick='setFieldValue("isShowEventList", false);validateSearchEvents( false )'></td>
 			</tr>
+			<tr><td colspan='2'><hr></td></td>
 			
 			<tbody id='advancedSearchTB'>
 				<tr id='advSearchBox0'>	
@@ -74,8 +71,13 @@
 						<select id="searchObjectId" name="searchObjectId" onchange='dataElementOnChange(this);'></select>
 					</td>		
 					<td>
-						<input type="text" id="searchText" name="searchText" value="$!searchText">
-						<input type="button" id='addSearchOptionBtn' name='addSearchOptionBtn' class='small-button' value='+' onclick='addAttributeOption()'>
+						<input type="text" id="searchText" name="searchText" value="$!searchText" style='margin-right:25px;'>
+					</td>
+					<td>
+						<input type="button" class='tiny-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value='+' onclick='addAttributeOption()'>
+					</td>
+					<td>
+						<input type="button" class='large-button' id='searchBtn' value='$i18n.getString( "search" )' onclick='setFieldValue("isShowEventList", false);validateSearchEvents( false )'>
 					</td>
 				</tr>
 			</tbody>
@@ -87,23 +89,21 @@
 
 <div id='dataEntryInfor' class='hidden'>
 	<h3>
-		<a href="javascript:backEventList();">$i18n.getString( "anonymous_events" )</a>
+		<a href="javascript:backEventList();">$i18n.getString( "anonymous_events" ) </a>
 		&raquo; <span id='programName' name='programName'></span>
 	</h3>
-	<table>
+	<table style="width:480px;">
 		<tr>
-		    <th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" ) </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-            <th><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();"></th>
-                <script type="text/javascript">
-                   datePickerValid( 'executionDate', false );
-                </script>  
-			<th><label for="dueDate">$i18n.getString( "due_date" ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
-            <th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-        </tr>
+			<th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" )</span> </th>
+			<th><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();"></th>
+				<script type="text/javascript">
+				   datePickerValid( 'executionDate', false );
+				</script> 
+		</tr>
 	</table>
 	<div id='dataEntryFormDiv'></div>
 	
-	<div class="page inputCriteria" style="width:490px;height:29px;">	
+	<div id='actionDiv' class="page inputCriteria" style="width:455px;height:29px;">	
 		<input type="button" onclick="doComplete()" value="$i18n.getString('complete')" id="completeBtn">
 		<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBtn" >
 		<input type="button" onclick="completedAndAddNewEvent()" value="$i18n.getString('complete_and_add_new_event')" id="completeAndAddNewBtn">
