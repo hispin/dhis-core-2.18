@@ -27,8 +27,6 @@ package org.hisp.dhis.setting;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -48,6 +46,7 @@ public interface SystemSettingManager
     
     final String KEY_SYSTEM_IDENTIFIER = "keySystemIdentifier";
     final String KEY_APPLICATION_TITLE = "applicationTitle";
+    final String KEY_APPLICATION_INTRO = "applicationIntro";
     final String KEY_FLAG = "keyFlag";
     final String KEY_FLAG_IMAGE = "keyFlagImage";
     final String KEY_START_MODULE = "startModule";

@@ -25,6 +25,9 @@
         #end
         #if ( $applicationTitle )
             <span id="titleArea">$encoder.htmlEncode( $applicationTitle )</span>
+        #end        
+        #if ( $applicationIntro )
+            <span id="introArea">$encoder.htmlEncode( $applicationIntro )</span>
         #end
         </div>
         <div id="loginField">

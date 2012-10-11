@@ -31,6 +31,7 @@ import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_COMPLETENESS_OF
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_FACTOR_OF_DEVIATION;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_START_MODULE;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_TITLE;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_INTRO;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
@@ -87,6 +88,7 @@ public class SystemSettingInterceptor
         map.put( KEY_SYSTEM_IDENTIFIER, systemSettingManager.getSystemIdentifier() ); //TODO remove
         map.put( KEY_CACHE_STRATEGY, systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY ) );
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
+        map.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO ) );
         map.put( KEY_FLAG, systemSettingManager.getSystemSetting( KEY_FLAG ) );
         map.put( KEY_FLAG_IMAGE, systemSettingManager.getFlagImage() );
         map.put( KEY_START_MODULE, systemSettingManager.getSystemSetting( KEY_START_MODULE, DEFAULT_START_MODULE ) );
