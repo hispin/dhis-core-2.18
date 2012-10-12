@@ -13,10 +13,15 @@
 	<li><a href="validationCriteria.action">$i18n.getString( "validation_criteria" )</a></li>
 </ul>
 
-#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
+#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) 
+	|| $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
 <h2>$i18n.getString( "scheduling" )</h2>
 <ul>
-	<li><a href="viewScheduleTasks.action">$i18n.getString( "schedule_message" )</a></li>
-	<li><a href="viewScheduledCaseAggCondTasks.action">$i18n.getString( "schedule_aggregation_query_builder" )</a></li>
+	#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
+		<li><a href="viewScheduleTasks.action">$i18n.getString( "schedule_message" )</a></li>
+	#end
+	#if($auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
+		<li><a href="viewScheduledCaseAggCondTasks.action">$i18n.getString( "schedule_aggregation_query_builder" )</a></li>
+	#end
 </ul>
 #end
