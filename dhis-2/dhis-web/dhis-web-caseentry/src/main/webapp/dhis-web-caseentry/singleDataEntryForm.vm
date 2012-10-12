@@ -67,14 +67,14 @@
 					datePicker($programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
 				</script> 
 			#elseif($hasOptionSet=='true')
-				<input name="entryfield" options='$hasOptionSet' id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" class="{validate:{$validate}}" />
+				<input name="entryfield" options='$hasOptionSet' id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" class="option {validate:{$validate}}" />
 			#else
 				<input name="entryfield" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" class="{validate:{$validate}}" />
 			#end
 			#if( $programStage.program.displayProvidedOtherFacility=='true' )
 				#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
 				#if( $programStageDataElement.allowProvidedElsewhere == 'true')
-					<input class='provided-elsewhere' name="$id" id="$id" type="checkbox" />
+					<input class='provided-elsewhere' name="$id" id="$id" type="checkbox" title="$i18n.getString('provided_elsewhere') ?"/>
 				#end
 			#end
 		</td>

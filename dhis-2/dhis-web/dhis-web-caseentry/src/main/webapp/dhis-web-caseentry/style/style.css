@@ -34,6 +34,11 @@ input[type="text"]
     width: 260px;
 }
 
+input.option
+{
+    width: 235px;
+}
+
 select 
 {
     width: 265px;
