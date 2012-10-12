@@ -27,19 +27,14 @@
 
 package org.hisp.dhis.patient.action.schedule;
 
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
@@ -76,13 +71,6 @@ public class ScheduleCaseAggregateConditionAction
         this.schedulingManager = schedulingManager;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -94,19 +82,7 @@ public class ScheduleCaseAggregateConditionAction
         this.execute = execute;
     }
 
-    private boolean schedule;
-
-    public void setSchedule( boolean schedule )
-    {
-        this.schedule = schedule;
-    }
-
     private Set<String> scheduledPeriodTypes = new HashSet<String>();
-
-    public Set<String> getScheduledPeriodTypes()
-    {
-        return scheduledPeriodTypes;
-    }
 
     public void setScheduledPeriodTypes( Set<String> scheduledPeriodTypes )
     {
@@ -115,22 +91,12 @@ public class ScheduleCaseAggregateConditionAction
 
     private Integer orgUnitGroupSetAggLevel;
 
-    public Integer getOrgUnitGroupSetAggLevel()
-    {
-        return orgUnitGroupSetAggLevel;
-    }
-
     public void setOrgUnitGroupSetAggLevel( Integer orgUnitGroupSetAggLevel )
     {
         this.orgUnitGroupSetAggLevel = orgUnitGroupSetAggLevel;
     }
 
     private String aggQueryBuilderStrategy;
-
-    public String getAggQueryBuilderStrategy()
-    {
-        return aggQueryBuilderStrategy;
-    }
 
     public void setAggQueryBuilderStrategy( String aggQueryBuilderStrategy )
     {
@@ -154,19 +120,11 @@ public class ScheduleCaseAggregateConditionAction
     {
         return running;
     }
-
-    private List<OrganisationUnitLevel> levels;
-
-    public List<OrganisationUnitLevel> getLevels()
-    {
-        return levels;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     @Override
     public String execute()
         throws Exception
@@ -175,13 +133,13 @@ public class ScheduleCaseAggregateConditionAction
         {
             schedulingManager.executeTasks();
         }
-        else if ( schedule )
+        else
         {
             systemSettingManager.saveSystemSetting( KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES,
                 (HashSet<String>) scheduledPeriodTypes );
-            systemSettingManager.saveSystemSetting(
-                KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL, orgUnitGroupSetAggLevel );
-            
+            systemSettingManager.saveSystemSetting( KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL,
+                orgUnitGroupSetAggLevel );
+
             if ( Scheduler.STATUS_RUNNING.equals( schedulingManager.getTaskStatus() ) )
             {
                 schedulingManager.stopTasks();
@@ -192,33 +150,26 @@ public class ScheduleCaseAggregateConditionAction
 
                 if ( STRATEGY_LAST_12_DAILY.equals( aggQueryBuilderStrategy ) )
                 {
-                    keyCronMap.put( CaseAggregateConditionSchedulingManager.TASK_AGGREGATE_QUERY_BUILDER_LAST_12_MONTHS, Scheduler.CRON_DAILY_0AM );
+                    keyCronMap.put(
+                        CaseAggregateConditionSchedulingManager.TASK_AGGREGATE_QUERY_BUILDER_LAST_12_MONTHS,
+                        Scheduler.CRON_DAILY_0AM );
                 }
                 else if ( STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY.equals( aggQueryBuilderStrategy ) )
                 {
                     keyCronMap.put( CaseAggregateConditionSchedulingManager.TASK_AGGREGATE_QUERY_BUILDER_LAST_6_MONTS,
                         Scheduler.CRON_DAILY_0AM_EXCEPT_SUNDAY );
-                    keyCronMap.put( CaseAggregateConditionSchedulingManager.TASK_AGGREGATE_QUERY_BUILDER_FROM_6_TO_12_MONTS,
+                    keyCronMap.put(
+                        CaseAggregateConditionSchedulingManager.TASK_AGGREGATE_QUERY_BUILDER_FROM_6_TO_12_MONTS,
                         Scheduler.CRON_WEEKLY_SUNDAY_0AM );
                 }
 
                 schedulingManager.scheduleTasks( keyCronMap );
             }
         }
-        else
-        {
-            scheduledPeriodTypes = (Set<String>) systemSettingManager.getSystemSetting(
-                KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
-            orgUnitGroupSetAggLevel = (Integer) systemSettingManager.getSystemSetting(
-                KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
-            aggQueryBuilderStrategy = schedulingManager.getScheduledTasks().containsKey(
-                CaseAggregateConditionSchedulingManager.TASK_AGGREGATE_QUERY_BUILDER_LAST_12_MONTHS ) ? STRATEGY_LAST_12_DAILY
-                : STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY;
-        }
-
+        
         status = schedulingManager.getTaskStatus();
+
         running = Scheduler.STATUS_RUNNING.equals( status );
-        levels = organisationUnitService.getOrganisationUnitLevels();
 
         return SUCCESS;
     }

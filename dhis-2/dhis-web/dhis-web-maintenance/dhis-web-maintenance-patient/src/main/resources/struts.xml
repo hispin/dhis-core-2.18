@@ -1024,22 +1024,20 @@
 		</action>
 
 		<action name="viewScheduledCaseAggCondTasks"
-			class="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction">
+			class="org.hisp.dhis.patient.action.schedule.GetScheduleAggQueryBuilderParamsAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/viewScheduledCaseAggTasks.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/scheduling.js</param>
-			<param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
+			<param name="requiredAuthorities">F_SCHEDULING_CASE_AGGREGATE_QUERY_BUILDER</param>
 		</action>
 
 		<action name="scheduleCaseAggTasks"
 			class="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/viewScheduledCaseAggTasks.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
-			<param name="javascripts">javascript/scheduling.js</param>
-			<param name="schedule">true</param>
-			<param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-patient/jsonResponseScheduleTasks.vm
+			</result>
+			<param name="requiredAuthorities">F_SCHEDULING_CASE_AGGREGATE_QUERY_BUILDER</param>
 		</action>
 
 	</package>
