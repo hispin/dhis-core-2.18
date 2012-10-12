@@ -179,6 +179,8 @@ public class ScheduleCaseAggregateConditionAction
         {
             systemSettingManager.saveSystemSetting( KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES,
                 (HashSet<String>) scheduledPeriodTypes );
+            systemSettingManager.saveSystemSetting(
+                KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL, orgUnitGroupSetAggLevel );
             
             if ( Scheduler.STATUS_RUNNING.equals( schedulingManager.getTaskStatus() ) )
             {
