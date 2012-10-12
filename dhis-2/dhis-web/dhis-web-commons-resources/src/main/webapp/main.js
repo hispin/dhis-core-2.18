@@ -168,32 +168,27 @@ function LeftBar()
 {    
     this.showAnimated = function()
     {
-        setMenuVisible();        
-        setMainPageNormal( '270px' ); // Delegated to dom.js for each style
-        $( 'div#leftBar' ).show( 'fast' );
-        $( 'span#showLeftBar' ).hide( 'fast' );
+        setMenuVisible();
+        $( '#mainPage' ).removeAttr( 'style' );
+        $( '#leftBar' ).show( 'fast' );
+        $( '#showLeftBar' ).hide( 'fast' );
     };
     
     this.hideAnimated = function()
     {
         setMenuHidden();
-        setMainPageFullscreen( '20px' );
-        $( 'div#leftBar' ).hide( 'fast' );
-        $( 'span#showLeftBar' ).show( 'fast' );
+        $( '#mainPage' ).attr( 'style', 'margin-left:20px' );
+        $( '#leftBar' ).hide( 'fast' );
+        $( '#showLeftBar' ).show( 'fast' );
     };
     
     this.hide = function()
     {
         setMenuHidden();
-        setMainPageFullscreen( '20px' );
+        $( '#mainPage' ).attr( 'style', 'margin-left:20px' );
         document.getElementById( 'leftBar' ).style.display = 'none';
         document.getElementById( 'showLeftBar' ).style.display = 'block';
     };
-
-	function setMainPageFullscreen()
-	{
-		document.getElementById( 'mainPage' ).style.marginLeft = '20px';
-	}
 
     function setMenuVisible()
     {
@@ -207,6 +202,6 @@ function LeftBar()
     
     this.openHelpForm = function( id )
     {
-		window.open ("../dhis-web-commons/help/viewDynamicHelp.action?id=" + id,"Help", 'width=800,height=600,scrollbars=yes');
-    };
+		window.open( "../dhis-web-commons/help/viewDynamicHelp.action?id=" + id, "Help", "width=800,height=600,scrollbars=yes" );
+    }
 }

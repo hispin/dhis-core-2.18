@@ -45,7 +45,6 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.select.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.availability.js"></script>
-    <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>		
     <script type="text/javascript" src="../main.js"></script>  
     <script type="text/javascript" src="../request.js"></script>
     #foreach( $javascript in $javascripts )
@@ -150,7 +149,7 @@
         
     <div id="headerMessage" class="bold"></div>
         
-    <div class="page" id="mainPage">
+    <div class="page" id="mainPage"> <!-- Do not set style attr -->
       #if( !$page )
         <p>$i18n.getString( "no_page_specified" )</p>
       #else
