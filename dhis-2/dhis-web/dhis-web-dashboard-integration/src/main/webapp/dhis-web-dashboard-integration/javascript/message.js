@@ -1,9 +1,7 @@
 
-var selectedOrganisationUnits = [];
-
-function selectOrganisationUnit__( units )
+function submitMessage()
 {
-	selectedOrganisationUnits = units;
+	$( "#messageForm" ).submit();
 }
 
 function removeMessage( id )
@@ -21,19 +19,22 @@ function validateMessage()
 	var subject = $( "#subject" ).val();
 	var text = $( "#text" ).val();
 
-    if( $( "#selectionTree" ).find( ".selected" ).length == 0 && $( "#recipients" ).val().length == 0 )
-    {
-        setHeaderMessage( i18n_select_one_or_more_recipients );
-        return false;
-    }
+	if ( isDefined( selectionTreeSelection ) && $( "#recipients" ).length )
+	{
+	    if ( !( selectionTreeSelection.isSelected() || $( "#recipients" ).val().length ) )
+	    {
+	        setHeaderMessage( i18n_select_one_or_more_recipients );
+	        return false;
+	    }
+	}
 
-	if ( subject == null || subject.trim() == '' )
+	if ( subject == null || subject.trim().length == 0 )
 	{
 		setHeaderMessage( i18n_enter_subject );
 		return false;
 	}
 	
-	if ( text == null || text.trim() == '' )
+	if ( text == null || text.trim().length == 0 )
 	{
 		setHeaderMessage( i18n_enter_text );
 		return false;
