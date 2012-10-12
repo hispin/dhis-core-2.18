@@ -85,9 +85,14 @@
 	</table>
 
 	<table>
+		<colgroup>
+			<col style="width: 550px;"/>
+			<col/>
+			<col style="width: 500px;"/>
+		</colgroup>
 		<thead>
 		  <tr>        
-			<th style="width:200px;">$i18n.getString( "available_identifiers_and_attributes" )</th>
+			<th>$i18n.getString( "available_identifiers_and_attributes" )</th>
 			<th></th>
 			<th>$i18n.getString( "select_identifiers_and_attributes" )							
 				<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
@@ -98,7 +103,7 @@
 	
 		<tr>
 			<td>
-				<select size="15" style="width:300px;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();" #if( $program.type=='3' ) disabled #end>
+				<select size="15" style="width:100%;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();" #if( $program.type=='3' ) disabled #end>
 					#foreach( $identifier in $availableIdentifierTypes )
 						<option value="iden_$identifier.id">$identifier.name</option>
 					#end
@@ -116,6 +121,10 @@
 			<td>
 				<div class="dataElementDiv">
 					<table>
+						<colgroup>
+							<col/>
+							<col style="width:20px;"/>
+						</colgroup>
 						<thead>
 							<tr>
 								<th style="width:180px;">$i18n.getString( "identifiers_and_attributes" )</th>
