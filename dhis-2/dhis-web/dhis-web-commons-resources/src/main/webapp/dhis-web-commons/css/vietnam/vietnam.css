@@ -442,6 +442,11 @@ div#menuDropDown4
   border-radius: 3px;
 }
 
+.introItem:hover
+{
+  background-color: #a4d2a3;
+}
+
 .introItemHeader
 {
   font-family: LiberationSansBold, arial;
