@@ -112,7 +112,7 @@
             <tr>
             	<td>
 					<input type="button" value="$i18n.getString( 'assign_relationship' )" onclick="javascript:validateAddRelationship()" />
-					<input type="button" value="$i18n.getString( 'back_to_relationship' )" onclick="showRelationshipList($patient.id)" />
+					<input type="button" value="$i18n.getString( 'cancel' )" onclick="showRelationshipList($patient.id)" />
 				</td>
             </tr>            
         </table>

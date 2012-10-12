@@ -51,6 +51,7 @@
 		<td></td>
 		<td>
 			<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
+			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="loadPatientList();" />
 		</td>
 	</tr>
 </table>

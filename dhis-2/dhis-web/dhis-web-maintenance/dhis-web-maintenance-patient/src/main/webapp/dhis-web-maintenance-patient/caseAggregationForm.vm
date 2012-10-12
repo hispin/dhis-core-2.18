@@ -16,7 +16,7 @@
         
         <tr>
 			<td>
-				<input type='text' id='txtSearchValue' name='txtSearchValue' onKeyUp="filterDE(event, this.value, 'dataElements');" style='width:270px'/>
+				<input type='text' id='txtSearchValue' name='txtSearchValue' onKeyUp="filterDE(event, this.value, 'dataElements');" style='width:265px;'/>
 				<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchValue', '');" style='width:50px'>			</td>
             <td rowspan="4">
 				<select name="suggestedDEValues" size="10" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" >
