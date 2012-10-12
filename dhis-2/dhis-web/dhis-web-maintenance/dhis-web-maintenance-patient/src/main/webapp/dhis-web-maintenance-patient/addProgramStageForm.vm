@@ -57,7 +57,7 @@
 <table id="programStageMembersArea">    
     <thead>
       <tr>        
-        <th>$i18n.getString( "available_data_elements" )</th>
+        <th style='width:300px;'>$i18n.getString( "available_data_elements" )</th>
         <th></th>
         <th>$i18n.getString( "selected_data_elements" )							
 			<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="hidden" ></select>
@@ -70,7 +70,7 @@
     <tbody>
       <tr>
         <td>
-            <select size="15" id="availableList" name='availableList' multiple="multiple" ondblclick="selectDataElements()">
+            <select style='width:300px;' size="15" id="availableList" name='availableList' multiple="multiple" ondblclick="selectDataElements()">
             </select>
         </td>
         

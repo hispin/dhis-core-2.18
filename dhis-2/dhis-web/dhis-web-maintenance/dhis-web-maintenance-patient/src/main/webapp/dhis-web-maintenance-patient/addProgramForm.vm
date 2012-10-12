@@ -81,7 +81,7 @@
 <table id="programStageMembersArea">    
 	<thead>
 	  <tr>        
-		<th>$i18n.getString( "available_identifiers_and_attributes" )</th>
+		<th style="width:200px;">$i18n.getString( "available_identifiers_and_attributes" )</th>
 		<th></th>
 		<th>$i18n.getString( "select_identifiers_and_attributes" )							
 			<select style='display:none;' multiple id="selectedPropertyIds" name="selectedPropertyIds" ></select>
@@ -91,7 +91,7 @@
 	</thead>
 	<tr>
 		<td>
-			<select size="15" style="width: 330px;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();">
+			<select size="15" style="width:300px;" multiple id="availablePropertyIds" name="availablePropertyIds" ondblclick="selectProperties();">
 				#foreach( $identifier in $availableIdentifierTypes )
 					<option value="iden_$identifier.id">$identifier.name</option>
 				#end
@@ -111,8 +111,8 @@
 				<table>
 					<thead>
 						<tr>
-							<th>$i18n.getString( "identifiers_and_attributes" )</th>
-							<th width="20px">$i18n.getString( "displayed_in_list" )</th>
+							<th style="width:180px;">$i18n.getString( "identifiers_and_attributes" )</th>
+							<th style="width:20px;">$i18n.getString( "displayed_in_list" )</th>
 					</thead>
 					<tbody id="selectedList"></tbody>
 				</table>
@@ -124,7 +124,7 @@
 		</td>  
 	</tr>
 	<tr>
-		<td>
+		<td colspan='3'>
 			<input type="submit" value="$i18n.getString( 'add' )" >
 			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'" >
 		</td>
