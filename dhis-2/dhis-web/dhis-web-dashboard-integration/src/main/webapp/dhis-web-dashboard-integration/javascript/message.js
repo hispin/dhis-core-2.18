@@ -43,26 +43,9 @@ function validateMessage()
 	return true;
 }
 
-function showSenderInfo( messageId, senderId )
+function toggleMetaData( id )
 {
-	var metaData = $( "#metaData" + messageId ).html();
-	
-	$.getJSON( "../dhis-web-commons-ajax-json/getUser.action", { id:senderId }, function( json ) {
-		$( "#senderName" ).html( json.user.firstName + " " + json.user.surname );
-		$( "#senderEmail" ).html( json.user.email );
-		$( "#senderUsername" ).html( json.user.username );
-		$( "#senderPhoneNumber" ).html( json.user.phoneNumber );
-		$( "#senderOrganisationUnits" ).html( joinNameableObjects( json.user.organisationUnits ) );
-		$( "#senderUserRoles" ).html( joinNameableObjects( json.user.roles ) );		
-		$( "#messageMetaData" ).html( metaData );	
-				
-		$( "#senderInfo" ).dialog( {
-	        modal : true,
-	        width : 350,
-	        height : 350,
-	        title : "Sender"
-	    } );
-	} );
+	$( "#metaData" + id ).toggle();
 }
 
 function sendReply()

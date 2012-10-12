@@ -254,8 +254,21 @@
 {
   width: 700px;
   border-bottom: 1px solid #cccccc;
-  padding-left: 40px;
-  padding-top: 14px;
+  padding-left: 38px;
+  padding-top: 16px;
+  padding-bottom: 22px;
+}
+
+.messageText
+{
+  padding: 8px 0;
+}
+
+.messageTopDiv
+{
+  width: 700px;
+  border-bottom: 1px solid #cccccc;
+  padding-top: 10px;
   padding-bottom: 35px;
 }
 
@@ -269,20 +282,32 @@
   padding-bottom: 15px;
 }
 
+.messageMetaData
+{
+  display: none;
+  color: #666;
+  padding-top: 10px;
+}
+
 .messageSymbol
 {
-  margin-top: 6px;
+  margin-top: 8px;
   float: left;
 }
 
 .replyArea
 {
-  width: 495px;
+  width: 530px;
   height: 80px;
   border: 1px solid #ccc;
   resize: none;
   overflow: auto;
-  padding: 4px 0px 0px 6px;
+  padding: 5px 6px;
+}
+
+.replyDiv
+{
+  margin-top: 15px;
 }
 
 div#selectionTree 
