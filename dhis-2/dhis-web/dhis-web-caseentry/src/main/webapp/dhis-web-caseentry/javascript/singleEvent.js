@@ -34,14 +34,6 @@ function showAddPatientForm()
 		{
 			setInnerHTML('singleProgramName',jQuery('#programIdAddPatient option:selected').text());	unSave = true;
 			showById('addNewDiv');
-			showById('entryForm');
-			hideById('newEncounterBtn');
-			jQuery("#entryForm :input").each(function()
-			{
-				$( this ).attr('onchange','');
-				$( this ).attr('onblur','');
-				$( this ).attr('onkeypress','');
-			});
 			jQuery('#loaderDiv').hide();
 		});
 }
@@ -134,7 +126,10 @@ function addData( programId, patientId )
 				jQuery('#entryForm :input').each(function()
 				{
 					var type=$( this ).attr('type');
-					if(type!='button'){
+					if(type=='checkbox'){
+						this.checked = false;
+					}
+					else if(type!='button'){
 						$( this ).val('');
 					}
 				});

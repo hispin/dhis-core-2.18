@@ -20,7 +20,7 @@
 		</tr>
 		<tr>
 			<td class="bold">$i18n.getString( "date_of_birth" ):</td>
-			<td>$format.formatDate( $patient.birthDate ) $patient.getAge()<td>
+			<td>$format.formatDate( $patient.birthDate ) ($patient.getAge())<td>
 		</tr>
 		</table>
 	</tr>
