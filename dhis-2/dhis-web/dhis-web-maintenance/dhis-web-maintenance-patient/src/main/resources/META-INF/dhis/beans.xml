@@ -930,14 +930,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction"
-		class="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction"
+	<bean id="org.hisp.dhis.patient.action.schedule.GetScheduleAggQueryBuilderParamsAction"
+		class="org.hisp.dhis.patient.action.schedule.GetScheduleAggQueryBuilderParamsAction"
 		scope="prototype">
 		<property name="systemSettingManager"
 			ref="org.hisp.dhis.setting.SystemSettingManager" />
 		<property name="schedulingManager" ref="org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction"
+		class="org.hisp.dhis.patient.action.schedule.ScheduleCaseAggregateConditionAction"
+		scope="prototype">
+		<property name="systemSettingManager"
+			ref="org.hisp.dhis.setting.SystemSettingManager" />
+		<property name="schedulingManager" ref="org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager" />
 	</bean>
 
 </beans>
