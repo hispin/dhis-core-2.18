@@ -14,7 +14,9 @@
     </ul>
 </div>
 
-<table style="width:90%" class="plainList">
+<div style="width:100%">
+<div style="padding-right:15px">
+<table class="plainList" style="width:100%">
 	<tr>
 		<th></th>
 		<th>$i18n.getString( "sender" )</th>
@@ -38,6 +40,9 @@
 	</tr>
 	#end
 </table>
+</div>
+</div>
+
 <div style="margin-top:15px; width:90%">
 #parse( "/dhis-web-commons/paging/paging.vm" )
 </div>
