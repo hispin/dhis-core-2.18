@@ -19,7 +19,8 @@ jQuery(function() {
 	#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
 		#introListImgItem( "viewScheduleTasks.action" "schedule_message" "scheduling" )
 	#end
-	
-	#introListImgItem( "viewScheduledCaseAggCondTasks.action" "schedule_aggregation_query_builder" "scheduling" )
+	#if($auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
+		#introListImgItem( "viewScheduledCaseAggCondTasks.action" "schedule_aggregation_query_builder" "scheduling" )
+	#end
 	
 </ul>
