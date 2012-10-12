@@ -177,22 +177,21 @@ public class CaseAggregateConditionTask
                     Double resultValue = aggregationConditionService.parseConditition( aggCondition, orgUnit, period );
 
                     DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
-
+                    
                     if ( resultValue != null && resultValue != 0.0 )
                     {
-                        // -----------------------------------------
+                        // -----------------------------------------------------
                         // Add dataValue
-                        // -----------------------------------------
-                        
+                        // -----------------------------------------------------
                         if ( dataValue == null )
                         {
                             dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, "", new Date(),
                                 null, optionCombo );
                             dataValueService.addDataValue( dataValue );
                         }
-                        // -----------------------------------------
+                        // -----------------------------------------------------
                         // Update dataValue
-                        // -----------------------------------------
+                        // -----------------------------------------------------
                         else
                         {
                             dataValue.setValue( "" + resultValue );
@@ -205,18 +204,16 @@ public class CaseAggregateConditionTask
                         }
                     }
 
-                    // -----------------------------------------
+                    // ---------------------------------------------------------
                     // Delete dataValue
-                    // -----------------------------------------
+                    // ---------------------------------------------------------
                     else if ( dataValue != null )
                     {
                         dataValueService.deleteDataValue( dataValue );
                     }
-
                 }
             }
         }
-
     }
 
     // -------------------------------------------------------------------------
