@@ -20,8 +20,8 @@
 <li>
     #if( ! $lockedPeriods.contains( $period ) && ! $periodCompletedMap.get($period) )
         <a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.htmlEncode( ${period.name} )</a>
-    #else
-        $!encoder.htmlEncode( ${period.name} )
+    #elseif( $periodCompletedMap.get($period) )
+        <a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.htmlEncode( ${period.name} )</a>
     #end
 
 	#if( $periodCompletedMap.get($period) )<img src="../dhis-web-light/images/checkmark.jpg" />#end

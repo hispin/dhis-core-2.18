@@ -67,6 +67,8 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.program.ProgramStageSectionService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -101,6 +103,13 @@ public class ActivityReportingServiceImpl
     private PatientMobileSettingService patientMobileSettingService;
 
     private PatientIdentifierService patientIdentifierService;
+    
+    private ProgramStageSectionService programStageSectionService;
+    
+    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
+    {
+        this.programStageSectionService = programStageSectionService;
+    }
 
     // -------------------------------------------------------------------------
     // MobileDataSetService
@@ -238,7 +247,7 @@ public class ActivityReportingServiceImpl
     // -------------------------------------------------------------------------
 
     @Override
-    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue )
+    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue, Integer programStageSectionId )
         throws NotAllowedException
     {
 
@@ -251,10 +260,22 @@ public class ActivityReportingServiceImpl
 
         programStageInstance.getProgramStage();
         Collection<org.hisp.dhis.dataelement.DataElement> dataElements = new ArrayList<org.hisp.dhis.dataelement.DataElement>();
-
-        for ( ProgramStageDataElement de : programStageInstance.getProgramStage().getProgramStageDataElements() )
+        
+        ProgramStageSection programStageSection = programStageSectionService.getProgramStageSection( programStageSectionId );
+        
+        if ( programStageSectionId != null && programStageSectionId != 0 )
         {
-            dataElements.add( de.getDataElement() );
+            for ( ProgramStageDataElement de : programStageSection.getProgramStageDataElements() )
+            {
+                dataElements.add( de.getDataElement() );
+            }
+        }
+        else
+        {
+            for ( ProgramStageDataElement de : programStageInstance.getProgramStage().getProgramStageDataElements() )
+            {
+                dataElements.add( de.getDataElement() );
+            }
         }
 
         programStageInstance.getProgramStage().getProgramStageDataElements();
@@ -266,7 +287,7 @@ public class ActivityReportingServiceImpl
         }
 
         if ( dataElements.size() != dataElementIds.size() )
-        {
+        {;
             throw NotAllowedException.INVALID_PROGRAM_STAGE;
         }
 
@@ -281,8 +302,12 @@ public class ActivityReportingServiceImpl
         }
 
         // Set ProgramStageInstance to completed
-        programStageInstance.setCompleted( true );
-        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        if ( programStageSectionId == 0 )
+        {
+            programStageInstance.setCompleted( true );
+            programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        }
+            
         // Everything is fine, hence save
         saveDataValues( activityValue, programStageInstance, dataElementMap );
 
@@ -441,7 +466,6 @@ public class ActivityReportingServiceImpl
 
             dataElement = dataElementMap.get( dv.getId() );
             PatientDataValue dataValue = dataValueService.getPatientDataValue( programStageInstance, dataElement );
-
             if ( dataValue == null )
             {
                 if ( value != null )

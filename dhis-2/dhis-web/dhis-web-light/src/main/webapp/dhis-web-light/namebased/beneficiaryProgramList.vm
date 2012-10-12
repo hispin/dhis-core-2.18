@@ -21,7 +21,7 @@
 
           			#if($nextStage)
           				<li>
-          					<a href="showProgramStageForm.action?programId=$programInstance.getProgram().getId()&programStageId=$nextStage.getProgramStage().getId()&programStageInstanceId=$nextStage.getId()&patientId=$patient.getId()&programInstanceId=$programInstance.getId()&orgUnitId=0"> - Next: $nextStage.getProgramStage().getName()</a>
+          					<a href="showProgramStageSection.action?programId=$programInstance.getProgram().getId()&programStageId=$nextStage.getProgramStage().getId()&programStageInstanceId=$nextStage.getId()&patientId=$patient.getId()&programInstanceId=$programInstance.getId()&orgUnitId=0"> - Next: $nextStage.getProgramStage().getName()</a>
           				</li>
           			#end
           		#end
