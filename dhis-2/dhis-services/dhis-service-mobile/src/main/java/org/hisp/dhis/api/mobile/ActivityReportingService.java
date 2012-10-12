@@ -44,7 +44,7 @@ public interface ActivityReportingService
     public ActivityPlan getActivitiesByIdentifier( String keyword )
         throws NotAllowedException;
 
-    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue )
+    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue, Integer programStageSectionId )
         throws NotAllowedException;
 
 }

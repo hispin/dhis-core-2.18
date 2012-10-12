@@ -103,7 +103,15 @@
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/namebased/selectActivity.vm</param>
     </action>
-
+    
+    <action name="showProgramStageSection"
+		class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageSectionAction">
+	  <result name="redirect" type="redirect">showProgramStageForm.action?programStageSectionId=0&amp;programId=${programId}&amp;programStageId=${programStageInstance.getProgramStage().getId()}&amp;programStageInstanceId=${programStageInstance.getId()}&amp;patientId=${patient.getId()}&amp;programInstanceId=${programStageInstance.getProgramInstance().getId()}&amp;orgUnitId=0</result>
+	  <result name="redirectCompletedForm" type="redirect">showCompletedProgramStageForm.action?programStageSectionId=0&amp;programId=${programId}&amp;programStageId=${programStageInstance.getProgramStage().getId()}&amp;programStageInstanceId=${programStageInstance.getId()}&amp;patientId=${patient.getId()}&amp;programInstanceId=${programStageInstance.getProgramInstance().getId()}&amp;orgUnitId=0</result>
+	  <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+	  <param name="page">/dhis-web-light/namebased/selectProgramStageSection.vm</param>		
+	</action>
+	
     <action name="showProgramStageForm"
         class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
@@ -114,6 +122,11 @@
         class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/namebased/completedProgramStageForm.vm</param>
+    </action>
+    
+    <action name="markCompleteProgramStageHasSection"
+        class="org.hisp.dhis.light.namebaseddataentry.action.MarkCompleteProgramStageAction">
+      <result name="success" type="redirect">showPatientProgramList.action?patientId=${patientId}</result>
     </action>
 
     <action name="saveProgramStageForm"

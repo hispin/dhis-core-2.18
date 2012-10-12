@@ -240,7 +240,6 @@ public class GetSingleEventFormAction
         if ( searchResult != null )
         {
             this.prevDataValues.put( "DE" + this.dataElementIdForSearching, searchResult );
-            System.out.println("ko co null");
         }
         else
         {

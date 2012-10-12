@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +36,7 @@ import java.util.Map;
 import org.hisp.dhis.api.mobile.model.Activity;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
 import org.hisp.dhis.api.mobile.model.DataElement;
-import org.hisp.dhis.api.mobile.model.ProgramStage;
+
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -43,14 +44,19 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.program.ProgramStageSectionService;
 
 import com.opensymphony.xwork2.Action;
 
 public class GetProgramStageFormAction
     implements Action
 {
-
+    private static final String REDIRECT = "redirect";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -103,6 +109,12 @@ public class GetProgramStageFormAction
         this.patientService = patientService;
     }
     
+    private ProgramStageSectionService programStageSectionService;
+    
+    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
+    {
+        this.programStageSectionService = programStageSectionService;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -247,7 +259,33 @@ public class GetProgramStageFormAction
     {
         this.patient = patient;
     }
+    
+    private Integer programStageSectionId;
 
+    public void setProgramStageSectionId( Integer programStageSectionId )
+    {
+        this.programStageSectionId = programStageSectionId;
+    }
+
+    public Integer getProgramStageSectionId()
+    {
+        return programStageSectionId;
+    }
+
+    private List<ProgramStageSection> listOfProgramStageSections;
+    
+    public List<ProgramStageSection> getListOfProgramStageSections()
+    {
+        return listOfProgramStageSections;
+    }
+    
+    public ProgramStageSection programStageSection;
+
+    public ProgramStageSection getProgramStageSection()
+    {
+        return programStageSection;
+    }
+    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -269,7 +307,19 @@ public class GetProgramStageFormAction
         prevDataValues.clear();
         programStage = util.getProgramStage( programId, programStageId );
         patient = patientService.getPatient( patientId );
-        dataElements = programStage.getDataElements();
+        
+        if( programStageSectionId != null && programStageSectionId != 0 )
+        {
+            this.programStageSection = programStageSectionService.getProgramStageSection( this.programStageSectionId );
+            
+            List<ProgramStageDataElement> listOfProgramStageDataElement = programStageSection.getProgramStageDataElements();
+            
+            dataElements = util.transformDataElementsToMobileModel( listOfProgramStageDataElement );
+        }
+        else
+        {
+            dataElements = util.transformDataElementsToMobileModel( programStageId );
+        }
         program = programStageInstanceService.getProgramStageInstance( programStageInstanceId ).getProgramInstance().getProgram();
         Collection<PatientDataValue> patientDataValues = patientDataValueService
             .getPatientDataValues( programStageInstanceService.getProgramStageInstance( programStageInstanceId ) );

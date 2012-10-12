@@ -45,7 +45,7 @@ import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.DataElement;
 import org.hisp.dhis.api.mobile.model.DataValue;
-import org.hisp.dhis.api.mobile.model.ProgramStage;
+//import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
@@ -57,10 +57,13 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.ProgramStageSection;
+import org.hisp.dhis.program.ProgramStageSectionService;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationService;
@@ -198,6 +201,13 @@ public class SaveProgramStageFormAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+    
+    private ProgramStageSectionService programStageSectionService;
+    
+    public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
+    {
+        this.programStageSectionService = programStageSectionService;
     }
 
     // -------------------------------------------------------------------------
@@ -378,6 +388,25 @@ public class SaveProgramStageFormAction
     {
         this.rightsideFormulaMap = rightsideFormulaMap;
     }
+    
+    private Integer programStageSectionId;
+
+    public void setProgramStageSectionId( Integer programStageSectionId )
+    {
+        this.programStageSectionId = programStageSectionId;
+    }
+
+    public Integer getProgramStageSectionId()
+    {
+        return programStageSectionId;
+    }
+    
+    public ProgramStageSection programStageSection;
+
+    public ProgramStageSection getProgramStageSection()
+    {
+        return programStageSection;
+    }
 
     private I18n i18n;
 
@@ -401,7 +430,18 @@ public class SaveProgramStageFormAction
         org.hisp.dhis.program.ProgramStage dhisProgramStage = programStageService.getProgramStage( programStageId );
 
         patient = patientService.getPatient( patientId );
-        dataElements = programStage.getDataElements();
+        if( programStageSectionId != null && programStageSectionId != 0 )
+        {
+            this.programStageSection = programStageSectionService.getProgramStageSection( this.programStageSectionId );
+            
+            List<ProgramStageDataElement> listOfProgramStageDataElement = programStageSection.getProgramStageDataElements();
+            
+            dataElements = util.transformDataElementsToMobileModel( listOfProgramStageDataElement );
+        }
+        else
+        {
+            dataElements = util.transformDataElementsToMobileModel( programStageId );
+        }
 
         int defaultCategoryOptionId = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId();
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
@@ -469,7 +509,7 @@ public class SaveProgramStageFormAction
 
         try
         {
-            activityReportingService.saveActivityReport( organisationUnit, activityValue );
+            activityReportingService.saveActivityReport( organisationUnit, activityValue, programStageSectionId );
         }
         catch ( NotAllowedException e )
         {
@@ -520,7 +560,7 @@ public class SaveProgramStageFormAction
                 }
             }
         }
-
+        
         if ( !programValidations.isEmpty() )
         {
             leftsideFormulaMap = new HashMap<Integer, String>( programValidations.size() );
