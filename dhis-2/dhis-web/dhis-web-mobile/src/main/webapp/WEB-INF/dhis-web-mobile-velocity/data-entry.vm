@@ -1,17 +1,28 @@
+<script type="text/javascript" src="../dhis-web-commons/i18nJavaScript.action"></script>
+<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.glob.js"></script>
+<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.date.js"></script>
+<script type="text/javascript" src="../dhis-web-commons/javascripts/date.js"></script>
+<script type="text/javascript" src="../../dhis-web-commons/javascripts/periodType.js"></script>
 
 <script>
     var Selected = {};
+    var periodTypeFactory = new PeriodType();
+    var periodType;
+    var periodOffset = 0;
 
     function selectOrganisationUnit( e ) {
         var $this = $(this);
         Selected.orgUnit = $this.data('id');
-        console.log(Selected);
     }
 
     function selectDataSet( e ) {
         var $this = $(this);
         Selected.dataSet = $this.data('id');
-        console.log(Selected);
+    }
+
+    function selectPeriod( e ) {
+        var $this = $(this);
+        Selected.period = $this.data('id');
     }
 
     function loadOrganisationUnitsPage() {
@@ -59,7 +70,7 @@
                 _.template( tmpl, { 'dataSets': data } )
             );
 
-            jQuery('#data-set-list').listview()
+            jQuery('#data-set-list').listview();
             jQuery('#data-set-list li a').bind('click', selectDataSet);
             $.mobile.hidePageLoadingMsg();
         }).error(function () {
@@ -68,7 +79,32 @@
         });
     }
 
-    function loadDataEntryPage() {
+    function refreshPeriods() {
+        var tmpl = jQuery('#period-template').html();
+
+        var periods = periodTypeFactory.get(periodType).generatePeriods(periodOffset);
+        periods = periodTypeFactory.filterFuturePeriodsExceptCurrent(periods)
+        periods = periodTypeFactory.reverse(periods);
+        jQuery('#period-page section[data-role="content"]').html(
+                _.template(tmpl, { 'periods' : periods })
+        );
+        jQuery('#period-page').trigger('pagecreate')
+        jQuery('#period-list').listview('refresh');
+
+        jQuery('#previous_year').bind('click', function() {
+            periodOffset--;
+            refreshPeriods();
+        });
+
+        jQuery('#next_year').bind('click', function() {
+            periodOffset++;
+            refreshPeriods();
+        });
+
+        jQuery('#period-list li a').bind('click', selectPeriod);
+    }
+
+    function loadPeriodPage() {
         if(Selected.dataSet === undefined)
         {
             if(Selected.orgUnit === undefined) {
@@ -79,6 +115,42 @@
 
             return;
         }
+
+        $.mobile.showPageLoadingMsg();
+
+        jQuery.ajax({
+            url   : '$baseUrl/../api/dataSets/' + Selected.dataSet + '/form',
+            dataType: 'json'
+        }).success(function ( data ) {
+            periodType = data.periodType;
+            refreshPeriods();
+            $.mobile.hidePageLoadingMsg();
+        }).error(function () {
+            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to get form", true );
+            console.log('error fetching form')
+        });
+    }
+
+    function loadDataEntryPage() {
+        if(Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit === undefined )
+        {
+            $.mobile.changePage('#organisation-units-page');
+            return;
+        }
+
+        if(Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit !== undefined )
+        {
+            $.mobile.changePage('#data-sets-page');
+            return;
+        }
+
+        if(Selected.period === undefined && Selected.dataSet !== undefined && Selected.orgUnit !== undefined )
+        {
+            $.mobile.changePage('#periods-page');
+            return;
+        }
+
+        console.log(Selected);
 
         $.mobile.showPageLoadingMsg();
 
@@ -111,6 +183,8 @@
             loadOrganisationUnitsPage();
         } else if( pageId == 'data-sets-page' ) {
             loadDataSetsPage();
+        } else if( pageId == 'period-page' ) {
+            loadPeriodPage();
         } else if( pageId == 'data-entry-page' ) {
             loadDataEntryPage();
         }
@@ -128,7 +202,19 @@
 <script id="data-sets-template" type="text/template">
     <ul id="data-set-list" data-role="listview" data-inset="true">
         <% _( dataSets ).each( function(dataSet, idx) { %>
-        <li><a href="#data-entry-page" data-id="<%= dataSet.id %>"><%= dataSet.name %></a></li>
+        <li><a href="#period-page" data-id="<%= dataSet.id %>"><%= dataSet.name %></a></li>
+        <% }); %>
+    </ul>
+</script>
+
+<script id="period-template" type="text/template">
+    <div data-role="controlgroup" data-type="horizontal">
+        <button id="previous_year" data-icon="arrow-l">Previous Year</button>
+        <button id="next_year" data-icon="arrow-r" data-iconpos="right">Next Year</button>
+    </div>
+    <ul id="period-list" data-role="listview" data-inset="true">
+        <% _( periods ).each( function(period, idx) { %>
+        <li><a href="#data-entry-page" data-id="<%= period.id %>"><%= period.name %></a></li>
         <% }); %>
     </ul>
 </script>
@@ -203,11 +289,27 @@
 
 </section>
 
-<section data-role="page" id="data-entry-page" data-theme="c">
+<section data-role="page" id="period-page" data-theme="c">
 
 	<header data-role="header" data-theme="b">
         <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
         <a href="#data-sets-page" data-icon="back">Back</a>
+	</header>
+
+	<section data-role="content">
+	</section>
+
+    <footer data-role="footer" data-theme="b">
+        <h1></h1>
+   	</footer>
+
+</section>
+
+<section data-role="page" id="data-entry-page" data-theme="c">
+
+	<header data-role="header" data-theme="b">
+        <h1 align="center"><img src="$baseUrl/../dhis-web-commons/css/light_blue/logo_banner.png" /></h1>
+        <a href="#period-page" data-icon="back">Back</a>
 	</header>
 
 	<section data-role="content">
