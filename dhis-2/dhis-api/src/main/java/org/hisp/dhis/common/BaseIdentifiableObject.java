@@ -194,20 +194,9 @@ public class BaseIdentifiableObject
         this.displayName = displayName;
     }
 
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o ) return true;
-        if ( o == null || getClass() != o.getClass() ) return false;
-
-        BaseIdentifiableObject that = (BaseIdentifiableObject) o;
-
-        if ( code != null ? !code.equals( that.code ) : that.code != null ) return false;
-        if ( name != null ? !name.equals( that.name ) : that.name != null ) return false;
-        if ( uid != null ? !uid.equals( that.uid ) : that.uid != null ) return false;
-
-        return true;
-    }
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
 
     @Override
     public int hashCode()
@@ -218,6 +207,36 @@ public class BaseIdentifiableObject
         result = 31 * result + (lastUpdated != null ? lastUpdated.hashCode() : 0);
 
         return result;
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+        
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        BaseIdentifiableObject that = (BaseIdentifiableObject) o;
+
+        if ( uid != null ? !uid.equals( that.uid ) : that.uid != null )
+        {
+            return false;
+        }
+
+        if ( code != null ? !code.equals( that.code ) : that.code != null )
+        {
+            return false;
+        }
+        
+        if ( name != null ? !name.equals( that.name ) : that.name != null )
+        {
+            return false;
+        }
+        
+        return true;
     }
 
     // -------------------------------------------------------------------------
@@ -299,8 +318,8 @@ public class BaseIdentifiableObject
     @Override
     public String toString()
     {
-        return "{" + "id=" + id + ", uid='" + uid + '\'' + ", code='" +
-            code + '\'' + ", name='" + name + '\'' + ", lastUpdated=" + lastUpdated + "}";
+        return "{" + "id=" + getId() + ", uid='" + getUid() + '\'' + ", code='" +
+            getCode() + '\'' + ", name='" + getName() + '\'' + ", lastUpdated=" + getLastUpdated() + "}";
     }
 
     @Override
