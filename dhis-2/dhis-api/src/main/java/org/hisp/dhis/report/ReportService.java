@@ -30,6 +30,8 @@ package org.hisp.dhis.report;
 import java.io.OutputStream;
 import java.util.Collection;
 
+import net.sf.jasperreports.engine.JasperPrint;
+
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.Period;
 
@@ -70,7 +72,7 @@ public interface ReportService
      * @param type the type of the report, can be "xls" and "pdf".
      * @param format the I18nFormat to use.
      */
-    void renderReport( OutputStream out, String reportUid, Period period,
+    JasperPrint renderReport( OutputStream out, String reportUid, Period period,
                        String organisationUnitUid, String type, I18nFormat format );
 
     /**

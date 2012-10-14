@@ -27,7 +27,11 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
@@ -74,18 +78,29 @@ public class ReportController
     public void getReportAsPdf( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "ou", required = false ) String organisationUnitUid,
         @RequestParam( value = "pe", required = false ) String period,
-        HttpServletResponse response ) throws Exception
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        getReport( uid, organisationUnitUid, period, response, "pdf", ContextUtils.CONTENT_TYPE_PDF, false );
+        getReport( request, response, uid, organisationUnitUid, period, "pdf", ContextUtils.CONTENT_TYPE_PDF, false );
     }
 
     @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
     public void getReportAsXls( @PathVariable( "uid" ) String uid,
         @RequestParam( value = "ou", required = false ) String organisationUnitUid,
         @RequestParam( value = "pe", required = false ) String period,
-        HttpServletResponse response ) throws Exception
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        getReport( uid, organisationUnitUid, period, response, "xls", ContextUtils.CONTENT_TYPE_EXCEL, true );
+        getReport( request, response, uid, organisationUnitUid, period, "xls", ContextUtils.CONTENT_TYPE_EXCEL, true );
+    }
+
+    @RequestMapping( value = "/{uid}/data.html", method = RequestMethod.GET )
+    public void getReportAsHtml( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+        @RequestParam( value = "pe", required = false ) String period,
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        JasperPrint print = getReport( request, response, uid, organisationUnitUid, period, "html", ContextUtils.CONTENT_TYPE_HTML, false );
+        
+        request.getSession().setAttribute( ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, print );
     }
     
     @RequestMapping( value = "/{uid}/design", method = RequestMethod.PUT )
@@ -105,12 +120,24 @@ public class ReportController
         reportService.saveReport( report );
     }
 
+    /**
+     * This methods wraps the Jasper image servlet to avoid having a separate
+     * servlet mapping around. Note that the path to images are relative to the
+     * reports path in this controller.
+     */
+    @RequestMapping( value = "/jasperReports/img", method = RequestMethod.GET )
+    public void getJasperImage( @RequestParam String image, 
+        HttpServletRequest request, HttpServletResponse response ) throws Exception
+    {
+        new ImageServlet().service( request, response );
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void getReport( String uid, String organisationUnitUid, String isoPeriod,
-        HttpServletResponse response, String type, String contentType, boolean attachment ) throws Exception
+    private JasperPrint getReport( HttpServletRequest request, HttpServletResponse response, String uid, String organisationUnitUid, String isoPeriod,
+        String type, String contentType, boolean attachment ) throws Exception
     {
         Report report = reportService.getReport( uid );
 
@@ -125,7 +152,9 @@ public class ReportController
         String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
         contextUtils.configureResponse( response, contentType, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, attachment );
 
-        reportService.renderReport( response.getOutputStream(), uid, period, organisationUnitUid, type,
+        JasperPrint print = reportService.renderReport( response.getOutputStream(), uid, period, organisationUnitUid, type,
             i18nManager.getI18nFormat() );
+        
+        return print;
     }
 }
