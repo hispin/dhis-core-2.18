@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
 
 /**
@@ -44,13 +45,28 @@ import org.junit.Test;
  * @version $Id$
  */
 public class UserGroupServiceTest
-    extends UserGroupTest
+    extends DhisSpringTest
 {
+    private UserGroupService userGroupService;
+    
+    private User user1;
+    private User user2;    
+    private User user3;
+    
     @Override
     public void setUpTest()
         throws Exception
     {
-        setUpUserGroupTest();
+        userService = (UserService) getBean( UserService.ID );
+        userGroupService = (UserGroupService) getBean( UserGroupService.ID );
+
+        user1 = createUser( 'A' );
+        user2 = createUser( 'B' );
+        user3 = createUser( 'C' );
+        
+        userService.addUser( user1 );
+        userService.addUser( user2 );
+        userService.addUser( user3 );
     }
 
     // -------------------------------------------------------------------------
