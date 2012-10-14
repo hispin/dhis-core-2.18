@@ -109,9 +109,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Interpretations -->
   
   <bean id="org.hisp.dhis.dashboard.interpretation.action.GetInterpretationsAction" class="org.hisp.dhis.dashboard.interpretation.action.GetInterpretationsAction"
-	scope="prototype">
-	<property name="interpretationService" ref="org.hisp.dhis.interpretation.InterpretationService" />
-  </bean>
+	scope="prototype"/>
 
   <!-- Profile -->
 

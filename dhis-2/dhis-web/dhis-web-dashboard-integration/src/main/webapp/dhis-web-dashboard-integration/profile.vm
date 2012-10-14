@@ -1,3 +1,9 @@
+<script type="text/javascript">
+jQuery( document ).ready( function() {   
+    jQuery( "#profileInterpretationFeed" ).load( "getInterpretations.action?userId=${user.uid}" );
+} );
+</script>
+
 <style type="text/css">
 #mainPage
 {
@@ -18,8 +24,8 @@
 <div class="userRow"><div class="userLabel">$i18n.getString( "introduction" )</div><div class="userValue">$!encoder.htmlEncode( $user.introduction )</div></div>
 <div class="userRow"><div class="userLabel">$i18n.getString( "works_as" )</div><div class="userValue">$!encoder.htmlEncode( $user.jobTitle )</div></div>
 <div class="userRow"><div class="userLabel">$i18n.getString( "employed_at" )</div><div class="userValue">$!encoder.htmlEncode( $user.employer )</div></div>
-<div class="userRow"><div class="userLabel">$i18n.getString( "education" )</div><div class="userValue">$!encoder.htmlEncode( $user.jobTitle )</div></div>
-<div class="userRow"><div class="userLabel">$i18n.getString( "interested_in" )</div><div class="userValue">$!encoder.htmlEncode( $user.jobTitle )</div></div>
+<div class="userRow"><div class="userLabel">$i18n.getString( "education" )</div><div class="userValue">$!encoder.htmlEncode( $user.education )</div></div>
+<div class="userRow"><div class="userLabel">$i18n.getString( "interested_in" )</div><div class="userValue">$!encoder.htmlEncode( $user.interests )</div></div>
 <div class="userRow"><div class="userLabel">$i18n.getString( "speaks" )</div><div class="userValue">$!encoder.htmlEncode( $user.languages )</div></div>
 <div class="userRow"><div class="userLabel">$i18n.getString( "birthday" )</div><div class="userValue">$!format.formatDate( $user.birthday )</div></div>
 <div class="userRow"><div class="userLabel">$i18n.getString( "gender" )</div><div class="userValue">#if( $user.gender )$i18n.getString( $user.gender )#end</div></div>
@@ -29,3 +35,5 @@
 <div class="userRow"><div class="userLabel">$i18n.getString( "org_units" )</div><div class="userValue">$!encoder.htmlEncode( $user.getOrganisationUnitsName() )</div></div>
 <div class="userRow"><div class="userLabel">$i18n.getString( "user_roles" )</div><div class="userValue">$!encoder.htmlEncode( $user.getOrganisationUnitsName() )</div></div>
 </div>
+
+<div id="profileInterpretationFeed"></div>

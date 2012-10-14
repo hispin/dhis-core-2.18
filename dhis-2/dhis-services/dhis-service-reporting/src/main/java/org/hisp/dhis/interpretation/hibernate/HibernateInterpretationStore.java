@@ -1,4 +1,4 @@
-package org.hisp.dhis.mock;
+package org.hisp.dhis.interpretation.hibernate;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,43 +27,31 @@ package org.hisp.dhis.mock;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.CurrentUserService;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.interpretation.Interpretation;
+import org.hisp.dhis.interpretation.InterpretationStore;
 import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
  */
-public class MockCurrentUserService
-    implements CurrentUserService
+public class HibernateInterpretationStore
+    extends HibernateIdentifiableObjectStore<Interpretation> implements InterpretationStore
 {
-    private User currentUser;
-    
-    public MockCurrentUserService( User currentUser )
+    @SuppressWarnings("unchecked")
+    public List<Interpretation> getInterpretations( User user, int first, int max )
     {
-        this.currentUser = currentUser;
-    }
-    
-    @Override
-    public String getCurrentUsername()
-    {
-        return currentUser.getUsername();
-    }
-
-    @Override
-    public User getCurrentUser()
-    {
-        return currentUser;
-    }
-
-    @Override
-    public boolean currentUserIsSuper()
-    {
-        return true;
-    }
-
-    @Override
-    public void clearCurrentUser()
-    {
-        currentUser = null;
+        String hql = "select distinct i from Interpretation i left join i.comments c " +
+            "where i.user = :user or c.user = :user order by i.lastUpdated desc";
+        
+        Query query = getQuery( hql );
+        query.setEntity( "user", user );
+        query.setMaxResults( first );
+        query.setMaxResults( max );
+        
+        return query.list();
     }
 }

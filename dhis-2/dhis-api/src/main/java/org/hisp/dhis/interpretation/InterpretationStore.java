@@ -1,4 +1,4 @@
-package org.hisp.dhis.mock;
+package org.hisp.dhis.interpretation;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,43 +27,16 @@ package org.hisp.dhis.mock;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.CurrentUserService;
+import java.util.List;
+
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
  */
-public class MockCurrentUserService
-    implements CurrentUserService
+public interface InterpretationStore
+    extends GenericIdentifiableObjectStore<Interpretation>
 {
-    private User currentUser;
-    
-    public MockCurrentUserService( User currentUser )
-    {
-        this.currentUser = currentUser;
-    }
-    
-    @Override
-    public String getCurrentUsername()
-    {
-        return currentUser.getUsername();
-    }
-
-    @Override
-    public User getCurrentUser()
-    {
-        return currentUser;
-    }
-
-    @Override
-    public boolean currentUserIsSuper()
-    {
-        return true;
-    }
-
-    @Override
-    public void clearCurrentUser()
-    {
-        currentUser = null;
-    }
+    List<Interpretation> getInterpretations( User user, int first, int max );
 }

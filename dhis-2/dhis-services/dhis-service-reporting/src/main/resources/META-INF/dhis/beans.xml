@@ -261,7 +261,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
-  <bean id="org.hisp.dhis.interpretation.InterpretationStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.interpretation.InterpretationStore" class="org.hisp.dhis.interpretation.hibernate.HibernateInterpretationStore">
 	<property name="clazz" value="org.hisp.dhis.interpretation.Interpretation" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />

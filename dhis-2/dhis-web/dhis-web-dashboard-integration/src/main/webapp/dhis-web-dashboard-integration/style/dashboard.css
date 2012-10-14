@@ -437,6 +437,7 @@ div#selectionTree
 #userInfo
 {
   margin-left: 36px;
+  margin-bottom: 25px;
 }  
 
 .userRow
@@ -453,11 +454,19 @@ div#selectionTree
   width: 110px;
   text-align: right;
   padding-right: 20px;
+  vertical-align: top;
 }
 
 .userValue
 {
   display: inline-block;
-  display: inline;
   font-size: 11pt;
+  max-width: 510px;
+}
+
+#profileInterpretationFeed
+{
+  width: 610px;
+  border-top: 1px solid #ccc;
+  margin-left: 38px;
 }
