@@ -129,7 +129,7 @@ public class DefaultReportService
     // ReportService implementation
     // -------------------------------------------------------------------------
 
-    public void renderReport( OutputStream out, String reportUid, Period period,
+    public JasperPrint renderReport( OutputStream out, String reportUid, Period period,
         String organisationUnitUid, String type, I18nFormat format )
     {
         Report report = getReport( reportUid );
@@ -157,12 +157,12 @@ public class DefaultReportService
             params.put( PARAM_ORGANISATIONUNIT_LEVEL, level );
             params.put( PARAM_ORGANISATIONUNIT_LEVEL_COLUMN, ORGANISATIONUNIT_LEVEL_COLUMN_PREFIX + level );
         }
-        
+
+        JasperPrint print = null;
+
         try
         {
             JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
-
-            JasperPrint print = null;
 
             if ( report.hasReportTable() ) // Use JR data source
             {
@@ -212,6 +212,8 @@ public class DefaultReportService
         {
             throw new RuntimeException( "Failed to render report", ex );
         }
+        
+        return print;
     }
 
     public int saveReport( Report report )

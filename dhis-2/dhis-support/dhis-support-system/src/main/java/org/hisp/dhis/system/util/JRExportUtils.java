@@ -35,6 +35,8 @@ import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRHtmlExporter;
+import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
@@ -48,11 +50,13 @@ public class JRExportUtils
 {
     public static final String TYPE_XLS = "xls";
     public static final String TYPE_PDF = "pdf";
+    public static final String TYPE_HTML = "html";
     
     private static final Map<String, JRExportProvider> exporters = new HashMap<String, JRExportProvider>() {    
     {
         put( TYPE_XLS, new JRXlsExportProvider() );
         put( TYPE_PDF, new JRPdfExportProvider() );
+        put( TYPE_HTML, new JRHtmlExportProvider() );
     } };
     
     public static void export( String type, OutputStream out, JasperPrint jasperPrint )
@@ -95,6 +99,17 @@ public class JRExportUtils
         public JRAbstractExporter provide()
         {
             return new JRPdfExporter();
+        }
+    }
+    
+    private static class JRHtmlExportProvider implements JRExportProvider
+    {
+        public JRAbstractExporter provide()
+        {
+            JRHtmlExporter exporter = new JRHtmlExporter();
+            exporter.setParameter( JRHtmlExporterParameter.IMAGES_URI, "../jasperReports/img?image=" );
+            
+            return exporter;
         }
     }
 }
