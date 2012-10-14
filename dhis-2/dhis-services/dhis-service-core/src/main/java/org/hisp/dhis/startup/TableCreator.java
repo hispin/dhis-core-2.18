@@ -74,6 +74,7 @@ public class TableCreator
         
         createSilently( "CREATE INDEX datamart_crosstab ON datavalue (dataelementid, categoryoptioncomboid, periodid)", "datamart_crosstab" );
         createSilently( "CREATE INDEX messageconversation_lastmessage ON messageconversation (lastmessage)", "messageconversation_lastmessage" );
+        createSilently( "CREATE INDEX interpretation_lastupdated ON interpretation (lastupdated)", "interpretation_lastupdated" );
         
         final String sqlDataValueArchive = 
             "CREATE TABLE datavaluearchive ( " +
