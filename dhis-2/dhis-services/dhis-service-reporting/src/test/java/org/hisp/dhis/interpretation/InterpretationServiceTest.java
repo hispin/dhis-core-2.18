@@ -61,6 +61,7 @@ public class InterpretationServiceTest
     private InterpretationService interpretationService;
     
     private User userA;
+    private User userB;
     
     private Chart chartA;
     
@@ -72,7 +73,9 @@ public class InterpretationServiceTest
     public void beforeTest()
     {
         userA = createUser( 'A' );
+        userB = createUser( 'B' );
         userService.addUser( userA );
+        userService.addUser( userB );
         
         setDependency( interpretationService, "currentUserService", new MockCurrentUserService( userA ), CurrentUserService.class );
         
@@ -139,6 +142,40 @@ public class InterpretationServiceTest
         assertTrue( interpretations.contains( interpretationA ) );
         assertTrue( interpretations.contains( interpretationB ) );
         assertTrue( interpretations.contains( interpretationC ) );
+    }
+
+    @Test
+    public void testGetLastByUserA()
+    {
+        interpretationService.saveInterpretation( interpretationA );
+        interpretationService.saveInterpretation( interpretationB );
+        interpretationService.saveInterpretation( interpretationC );
+        
+        List<Interpretation> interpretations = interpretationService.getInterpretations( userA, 0, 50 );
+        
+        assertEquals( 3, interpretations.size() );
+        
+        assertTrue( interpretations.contains( interpretationA ) );
+        assertTrue( interpretations.contains( interpretationB ) );
+        assertTrue( interpretations.contains( interpretationC ) );
+    }
+
+    @Test
+    public void testGetLastByUserB()
+    {
+        interpretationA.addComment( new InterpretationComment( "Comment", userB ) );
+        interpretationB.addComment( new InterpretationComment( "Comment", userB ) );
+        
+        interpretationService.saveInterpretation( interpretationA );
+        interpretationService.saveInterpretation( interpretationB );
+        interpretationService.saveInterpretation( interpretationC );
+        
+        List<Interpretation> interpretations = interpretationService.getInterpretations( userB, 0, 50 );
+        
+        assertEquals( 2, interpretations.size() );
+        
+        assertTrue( interpretations.contains( interpretationA ) );
+        assertTrue( interpretations.contains( interpretationB ) );
     }
     
     @Test

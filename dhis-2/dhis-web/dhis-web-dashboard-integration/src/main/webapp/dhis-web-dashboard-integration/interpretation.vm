@@ -6,10 +6,7 @@
 	<a href="../dhis-web-reporting/displayManageTableForm.action">$i18n.getString( "report_table" )</a>
 </div>
 
-<div id="interpretationFeed">
-</div>
-
-<div id="userInfo" class="page" style="display:none"></div>
+<div id="interpretationFeed"></div>
 
 <script type="text/javascript">
 var currentUser = {

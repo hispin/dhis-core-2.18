@@ -31,10 +31,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.CodeGenerator;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationComment;
 import org.hisp.dhis.interpretation.InterpretationService;
+import org.hisp.dhis.interpretation.InterpretationStore;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -52,9 +52,9 @@ public class DefaultInterpretationService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<Interpretation> interpretationStore;
+    private InterpretationStore interpretationStore;
 
-    public void setInterpretationStore( GenericIdentifiableObjectStore<Interpretation> interpretationStore )
+    public void setInterpretationStore( InterpretationStore interpretationStore )
     {
         this.interpretationStore = interpretationStore;
     }
@@ -124,6 +124,11 @@ public class DefaultInterpretationService
     public List<Interpretation> getInterpretations( int first, int max )
     {
         return interpretationStore.getBetweenOrderderByLastUpdated( first, max );
+    }
+    
+    public List<Interpretation> getInterpretations( User user, int first, int max )
+    {
+        return interpretationStore.getInterpretations( user, first, max );
     }
     
     public void addInterpretationComment( String uid, String text )

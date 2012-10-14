@@ -64,6 +64,13 @@ public class InterpretationComment
         this.created = new Date();
     }
 
+    public InterpretationComment( String text, User user )
+    {
+        this.text = text;
+        this.user = user;
+        this.created = new Date();
+    }
+
     @JsonProperty
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
