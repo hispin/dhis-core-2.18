@@ -69,31 +69,29 @@
 	<tr>
 		<td>
 			<input type='button' value="+" title="$i18n.getString( 'plus' )" onclick='insertOperator( "leftStageDescription", "leftSide", "+" );' class="small-button" >
-			&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;
 			<input type='button' value="<" title="$i18n.getString( 'less_then' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<" );' class="small-button" />
 			<input type='button' value="<=" title="$i18n.getString( 'less_then_or_equal_to' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<=" );' class="small-button" />
 			<input type='button' value=">" title="$i18n.getString( 'greater_then' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">" );' class="small-button" />
 			<input type='button' value=">=" title="$i18n.getString( 'greater_then_or_equal_to' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">=" );' class="small-button" />
 			<input type='button' value="=" title="$i18n.getString( 'equals_to' )" onclick='insertOperator( "leftStageDescription", "leftSide", "==" );' class="small-button" />
 			<input type='button' value="!=" title="$i18n.getString( 'diff_from' )" onclick='insertOperator( "leftStageDescription", "leftSide", "!=" );' class="small-button"/>
-			&nbsp;&nbsp;&nbsp;
-			<input type='button' value="!=NULL" title="$i18n.getString( 'not_null' )" onclick='insertOperator( "leftStageDescription", "leftSide", "=={NOT-NULL-VALUE}" );' style="width:50px;"/>
-			&nbsp;&nbsp;&nbsp;
-			<input type='button' value="X" title="$i18n.getString( 'clear' )" align='right'  onclick="clearValidation( 'leftSide', 'leftStageDescription' )" class="small-button" />
+			<input type='button' value="!=NULL" title="$i18n.getString( 'not_null' )" onclick='insertOperator( "leftStageDescription", "leftSide", "=={NOT-NULL-VALUE}" );' class="nornal-button" />
+			&nbsp;&nbsp;
+			<input type='button' value="$i18n.getString( 'clear' )" title="$i18n.getString( 'clear' )" align='right'  onclick="clearValidation( 'leftSide', 'leftStageDescription' )" style="width:45px;" />
 		</td>
 		<td>
 			<input type='button' value="+" title="$i18n.getString( 'plus' )" onclick='insertOperator( "rightStageDescription", "rightSide", "+" );' class="small-button" />
-			&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;
 			<input type='button' value="<" title="$i18n.getString( 'less_then' )" onclick='insertOperator( "rightStageDescription", "rightSide", "<" );' class="small-button" />
 			<input type='button' value="<=" title="$i18n.getString( 'less_then_or_equal_to' )" onclick='insertOperator( "rightStageDescription", "rightSide", "<=" );' class="small-button" />
 			<input type='button' value=">" title=="$i18n.getString( 'greater_then' )" onclick='insertOperator( "rightStageDescription", "rightSide", ">" );' class="small-button" />
 			<input type='button' value=">=" title=="$i18n.getString( 'greater_then_or_equal_to' )" onclick='insertOperator( "rightStageDescription", "rightSide", ">=" );' class="small-button" >
 			<input type='button' value="=" title=="$i18n.getString( 'equals_to' )" onclick='insertOperator( "rightStageDescription", "rightSide", "==" );' class="small-button" />
 			<input type='button' value="!=" title=="$i18n.getString( 'diff_from' )" onclick='insertOperator( "rightStageDescription", "rightSide", "!=" );' class="small-button" />
-			&nbsp;&nbsp;&nbsp;
-			<input type='button' value="!=NULL" title="$i18n.getString( 'not_null' )" onclick='insertOperator( "leftStageDescription", "rightSide", "=={NOT-NULL-VALUE}" );' style="width:50px;" />
-			&nbsp;&nbsp;&nbsp;
-			<input type='button' value="X" title="$i18n.getString( 'clear' )" onclick="clearValidation( 'rightSide', 'rightStageDescription' )" class="small-button" />
+			<input type='button' value="!=NULL" title="$i18n.getString( 'not_null' )" onclick='insertOperator( "leftStageDescription", "rightSide", "=={NOT-NULL-VALUE}" );' class="nornal-button" />
+			&nbsp;&nbsp;
+			<input type='button' value="$i18n.getString( 'clear' )" title="$i18n.getString( 'clear' )" onclick="clearValidation( 'rightSide', 'rightStageDescription' )" style="width:45px;" />
 		</td>
 	</tr>
 	<tr>
