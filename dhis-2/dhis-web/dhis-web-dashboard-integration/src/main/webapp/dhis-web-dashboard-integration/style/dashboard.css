@@ -238,6 +238,7 @@
 .plainList
 {
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 .plainList td
