@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "edit_program_validation" )</h3>
+<h3>$i18n.getString( "edit_program_validation_rule" )</h3>
 
 <form id='programValidationForm' name='programValidationForm' method='post' action='updateProgramValidation.action'>
 
@@ -7,7 +7,7 @@
 	
 	<thead>
       <tr>
-        <th colspan="2">$i18n.getString( "program_validation_details" )</th>
+        <th colspan="2">$i18n.getString( "program_validation_rule_details" )</th>
       </tr>
     </thead>
     <tbody>
