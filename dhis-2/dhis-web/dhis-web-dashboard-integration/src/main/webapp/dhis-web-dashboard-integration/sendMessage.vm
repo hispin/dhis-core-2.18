@@ -8,7 +8,7 @@ jQuery(function() {
 #if( !${recipient} )
     $('#recipients').select2({
        placeholder: i18n_select_users_and_user_groups,
-       minimumInputLength: 2,
+       minimumInputLength: 1,
        multiple: true,
        width: "545px",
        ajax: {
@@ -55,12 +55,12 @@ jQuery(function() {
 
 <tr>
 <td>$i18n.getString( "subject" )</td>
-<td><input type="text" id="subject" name="subject" style="width:615px; padding:4px; border:1px solid grey !important;"></td>
+<td><input type="text" id="subject" name="subject" style="width:619px;"></td>
 </tr>
 
 <tr>
 <td>$i18n.getString( "text" )</td>
-<td><textarea id="text" name="text" style="width:619px; height:220px; border:1px solid grey !important;"></textarea></td>
+<td><textarea id="text" name="text" style="width:619px; height:220px;"></textarea></td>
 </tr>
 
 <tr>
