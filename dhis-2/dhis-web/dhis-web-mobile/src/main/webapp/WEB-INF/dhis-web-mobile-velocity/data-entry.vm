@@ -2,7 +2,7 @@
 <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.glob.js"></script>
 <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.date.js"></script>
 <script type="text/javascript" src="../dhis-web-commons/javascripts/date.js"></script>
-<script type="text/javascript" src="../../dhis-web-commons/javascripts/periodType.js"></script>
+<script type="text/javascript" src="../dhis-web-commons/javascripts/periodType.js"></script>
 
 <script>
     var Selected = {};
@@ -28,7 +28,7 @@
     function loadOrganisationUnitsPage() {
         $.mobile.showPageLoadingMsg();
 
-        var organisationUnits = JSON.parse( localStorage['organisationUnits'] );
+        var organisationUnits = fm.organisationUnits();
 
         var tmpl = jQuery('#organisation-units-template').html();
 
@@ -51,8 +51,7 @@
 
         $.mobile.showPageLoadingMsg();
 
-        var organisationUnits = JSON.parse( localStorage['organisationUnits'] );
-        var organisationUnit = organisationUnits[Selected.orgUnit];
+        var organisationUnit = fm.organisationUnit(Selected.orgUnit);
 
         var tmpl = jQuery('#data-sets-template').html();
 
@@ -104,7 +103,7 @@
 
         $.mobile.showPageLoadingMsg();
 
-        var form = JSON.parse( localStorage['form_' + Selected.dataSet] );
+        var form = fm.form(Selected.dataSet);
         periodType = form.periodType;
         refreshPeriods();
 
@@ -134,7 +133,7 @@
 
         $.mobile.showPageLoadingMsg();
 
-        var form = JSON.parse( localStorage['form_' + Selected.dataSet] );
+        var form = fm.form(Selected.dataSet);
 
         var tmpl = jQuery('#data-entry-template').html();
 

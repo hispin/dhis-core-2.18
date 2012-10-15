@@ -31,9 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hisp.dhis.api.webdomain.form.Form;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -41,7 +39,7 @@ import java.util.Set;
 public class Forms
 {
     // maps ou.uid => org unit.
-    private Map<String, FormOrganisationUnit> organisationUnits = new HashMap<String, FormOrganisationUnit>(  );
+    private Map<String, FormOrganisationUnit> organisationUnits = new HashMap<String, FormOrganisationUnit>();
 
     // maps dataSet.uid => form instance
     private Map<String, Form> forms = new HashMap<String, Form>();
