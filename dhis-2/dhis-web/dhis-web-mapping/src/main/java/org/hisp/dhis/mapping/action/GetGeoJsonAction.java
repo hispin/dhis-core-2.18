@@ -97,13 +97,7 @@ public class GetGeoJsonAction
 
         if ( parent == null )
         {
-            try
-            {                
-                parent = organisationUnitService.getOrganisationUnit( Integer.parseInt( parentId ) );
-            }
-            catch ( NumberFormatException e )
-            {
-            }
+            parent = organisationUnitService.getOrganisationUnit( Integer.parseInt( parentId ) );
         }
 
         level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent.getId() ) : level;
