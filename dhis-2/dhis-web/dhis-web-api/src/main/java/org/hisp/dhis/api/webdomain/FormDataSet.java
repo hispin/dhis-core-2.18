@@ -1,6 +1,6 @@
-package org.hisp.dhis.api.webdomain.form;
+package org.hisp.dhis.api.webdomain;
 
-/*
+/**
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
@@ -30,22 +30,30 @@ package org.hisp.dhis.api.webdomain.form;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
+ * We could have gotten this information from the form instance, but
+ * in the interest of performance, we duplicate some information here.
+ *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class Field
+public class FormDataSet
 {
+    private String id;
+
     private String label;
 
-    private String dataElement;
-
-    private String categoryOptionCombo;
-
-    private String value;
-
-    private InputType type;
-
-    public Field()
+    public FormDataSet()
     {
+    }
+
+    @JsonProperty
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId( String id )
+    {
+        this.id = id;
     }
 
     @JsonProperty
@@ -57,49 +65,5 @@ public class Field
     public void setLabel( String label )
     {
         this.label = label;
-    }
-
-    @JsonProperty
-    public String getDataElement()
-    {
-        return dataElement;
-    }
-
-    public void setDataElement( String dataElement )
-    {
-        this.dataElement = dataElement;
-    }
-
-    @JsonProperty
-    public String getCategoryOptionCombo()
-    {
-        return categoryOptionCombo;
-    }
-
-    public void setCategoryOptionCombo( String categoryOptionCombo )
-    {
-        this.categoryOptionCombo = categoryOptionCombo;
-    }
-
-    @JsonProperty
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
-    @JsonProperty
-    public InputType getType()
-    {
-        return type;
-    }
-
-    public void setType( InputType type )
-    {
-        this.type = type;
     }
 }

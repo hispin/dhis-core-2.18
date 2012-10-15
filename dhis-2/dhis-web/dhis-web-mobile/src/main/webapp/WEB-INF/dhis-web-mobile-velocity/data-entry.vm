@@ -28,27 +28,18 @@
     function loadOrganisationUnitsPage() {
         $.mobile.showPageLoadingMsg();
 
-        jQuery.ajax({
-            url   : '$baseUrl/../api/currentUser/organisationUnits',
-            dataType: 'json',
-            data: {
-              'withChildren': true
-            }
-        }).success(function ( data ) {
-            var tmpl = jQuery('#organisation-units-template').html();
+        var organisationUnits = JSON.parse( localStorage['organisationUnits'] );
 
-            jQuery('#organisation-units-page section[data-role="content"]').html(
-                _.template( tmpl, { 'organisationUnits': data } )
-            );
+        var tmpl = jQuery('#organisation-units-template').html();
 
-            jQuery('#organisation-unit-list').listview()
-            jQuery('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
+        jQuery('#organisation-units-page section[data-role="content"]').html(
+            _.template( tmpl, { 'organisationUnits': organisationUnits } )
+        );
 
-            $.mobile.hidePageLoadingMsg();
-        }).error(function () {
-            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to get organisationUnits", true );
-            console.log('error fetching orgUnits')
-        });
+        jQuery('#organisation-unit-list').listview()
+        jQuery('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
+
+        $.mobile.hidePageLoadingMsg();
     }
 
     function loadDataSetsPage() {
@@ -60,23 +51,18 @@
 
         $.mobile.showPageLoadingMsg();
 
-        jQuery.ajax({
-            url   : '$baseUrl/../api/currentUser/organisationUnits/' + Selected.orgUnit + '/dataSets',
-            dataType: 'json'
-        }).success(function ( data ) {
-            var tmpl = jQuery('#data-sets-template').html();
+        var organisationUnits = JSON.parse( localStorage['organisationUnits'] );
+        var organisationUnit = organisationUnits[Selected.orgUnit];
 
-            jQuery('#data-sets-page section[data-role="content"]').html(
-                _.template( tmpl, { 'dataSets': data } )
-            );
+        var tmpl = jQuery('#data-sets-template').html();
 
-            jQuery('#data-set-list').listview();
-            jQuery('#data-set-list li a').bind('click', selectDataSet);
-            $.mobile.hidePageLoadingMsg();
-        }).error(function () {
-            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to get dataSets", true );
-            console.log('error fetching dataSets')
-        });
+        jQuery('#data-sets-page section[data-role="content"]').html(
+            _.template( tmpl, { 'dataSets': organisationUnit.dataSets } )
+        );
+
+        jQuery('#data-set-list').listview();
+        jQuery('#data-set-list li a').bind('click', selectDataSet);
+        $.mobile.hidePageLoadingMsg();
     }
 
     function refreshPeriods() {
@@ -118,17 +104,11 @@
 
         $.mobile.showPageLoadingMsg();
 
-        jQuery.ajax({
-            url   : '$baseUrl/../api/dataSets/' + Selected.dataSet + '/form',
-            dataType: 'json'
-        }).success(function ( data ) {
-            periodType = data.periodType;
-            refreshPeriods();
-            $.mobile.hidePageLoadingMsg();
-        }).error(function () {
-            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to get form", true );
-            console.log('error fetching form')
-        });
+        var form = JSON.parse( localStorage['form_' + Selected.dataSet] );
+        periodType = form.periodType;
+        refreshPeriods();
+
+        $.mobile.hidePageLoadingMsg();
     }
 
     function loadDataEntryPage() {
@@ -154,25 +134,17 @@
 
         $.mobile.showPageLoadingMsg();
 
-        jQuery.ajax({
-            url   : '$baseUrl/../api/dataSets/' + Selected.dataSet + '/form',
-            dataType: 'json'
-        }).success(function ( data ) {
-            console.log(data);
+        var form = JSON.parse( localStorage['form_' + Selected.dataSet] );
 
-            var tmpl = jQuery('#data-entry-template').html();
+        var tmpl = jQuery('#data-entry-template').html();
 
-            jQuery('#data-entry-page section[data-role="content"]').html(
-                _.template( tmpl, data )
-            );
+        jQuery('#data-entry-page section[data-role="content"]').html(
+            _.template( tmpl, form )
+        );
 
-            jQuery('#data-entry-page').trigger('pagecreate')
-            jQuery('#data-entry-list').listview('refresh');
-            $.mobile.hidePageLoadingMsg();
-        }).error(function () {
-            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to get form", true );
-            console.log('error fetching form')
-        });
+        jQuery('#data-entry-page').trigger('pagecreate')
+        jQuery('#data-entry-list').listview('refresh');
+        $.mobile.hidePageLoadingMsg();
     }
 
     jQuery(document).bind('pagechange', function (event, data) {
@@ -194,7 +166,7 @@
 <script id="organisation-units-template" type="text/template">
     <ul id="organisation-unit-list" data-role="listview" data-inset="true">
         <% _( organisationUnits ).each( function(organisationUnit, idx) { %>
-        <li><a href="#data-sets-page" data-id="<%= organisationUnit.id %>"><%= organisationUnit.name %></a></li>
+        <li><a href="#data-sets-page" data-id="<%= organisationUnit.id %>"><%= organisationUnit.label %></a></li>
         <% }); %>
     </ul>
 </script>
@@ -202,7 +174,7 @@
 <script id="data-sets-template" type="text/template">
     <ul id="data-set-list" data-role="listview" data-inset="true">
         <% _( dataSets ).each( function(dataSet, idx) { %>
-        <li><a href="#period-page" data-id="<%= dataSet.id %>"><%= dataSet.name %></a></li>
+        <li><a href="#period-page" data-id="<%= dataSet.id %>"><%= dataSet.label %></a></li>
         <% }); %>
     </ul>
 </script>
@@ -253,6 +225,8 @@
             <% }); %>
 
         <% }); %>
+
+        <li><input type="button" id="send_button" value="Send" /></li>
     </ul>
     </form>
 </script>
