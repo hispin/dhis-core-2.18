@@ -602,7 +602,7 @@ G.util = {
                     coordinates: doc[i].c
                 },
                 properties: {
-                    id: doc[i].i,
+                    id: doc[i].iid,
                     name: doc[i].n,
                     value: doc[i].v,
                     hcwc: doc[i].h
