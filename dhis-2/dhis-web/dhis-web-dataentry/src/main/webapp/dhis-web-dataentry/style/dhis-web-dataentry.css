@@ -45,3 +45,11 @@ input[type=text],textarea
   padding-right: 2px;
   padding-left: 2px;
 }
+
+.sectionFilter
+{
+  padding: 5px;
+  border: solid 1px #f0f0f0; 
+  outline: 0;
+  color: #333;
+}
