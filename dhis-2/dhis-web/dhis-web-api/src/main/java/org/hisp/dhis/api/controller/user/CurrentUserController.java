@@ -29,11 +29,14 @@ package org.hisp.dhis.api.controller.user;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.FormUtils;
+import org.hisp.dhis.api.webdomain.FormDataSet;
+import org.hisp.dhis.api.webdomain.FormOrganisationUnit;
+import org.hisp.dhis.api.webdomain.Forms;
 import org.hisp.dhis.api.webdomain.user.Dashboard;
 import org.hisp.dhis.api.webdomain.user.Inbox;
 import org.hisp.dhis.api.webdomain.user.Recipients;
 import org.hisp.dhis.api.webdomain.user.Settings;
-import org.hisp.dhis.common.view.BasicView;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.interpretation.Interpretation;
@@ -45,7 +48,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,7 +55,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -213,9 +218,8 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
 
-    @RequestMapping( value = "/organisationUnits", produces = {"application/json", "text/*"} )
-    public void getOrganisationUnitsJson( HttpServletResponse response,
-        @RequestParam( value = "withChildren", required = false ) boolean withChildren ) throws IOException
+    @RequestMapping( value = "/forms", produces = {"application/json", "text/*"} )
+    public void getForms( HttpServletResponse response ) throws IOException
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -225,43 +229,55 @@ public class CurrentUserController
             return;
         }
 
-        Collection<OrganisationUnit> organisationUnits = currentUser.getOrganisationUnits();
+        Forms forms = new Forms();
 
-        if ( withChildren )
+        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+        Set<DataSet> userDataSets = currentUser.getUserCredentials().getAllDataSets();
+
+        for ( OrganisationUnit ou : currentUser.getOrganisationUnits() )
         {
-            for ( OrganisationUnit ou : organisationUnits )
+            Set<DataSet> dataSets = new HashSet<DataSet>( CollectionUtils.intersection( ou.getDataSets(), userDataSets ) );
+
+            if ( dataSets.size() > 0 )
             {
-                organisationUnits.addAll( ou.getChildren() );
+                organisationUnits.add( ou );
+            }
+
+            for ( OrganisationUnit child : ou.getChildren() )
+            {
+                Set<DataSet> childDataSets = new HashSet<DataSet>( CollectionUtils.intersection( child.getDataSets(), userDataSets ) );
+
+                if ( childDataSets.size() > 0 )
+                {
+                    organisationUnits.add( ou );
+                }
             }
         }
 
-        JacksonUtils.toJsonWithView( response.getOutputStream(), organisationUnits, BasicView.class );
-    }
-
-    @RequestMapping( value = "/organisationUnits/{uid}/dataSets", produces = {"application/json", "text/*"} )
-    public void getDataSetsJson( HttpServletResponse response,
-        @PathVariable( value = "uid" ) String uid ) throws IOException
-    {
-        User currentUser = currentUserService.getCurrentUser();
-
-        if ( currentUser == null )
+        for ( OrganisationUnit organisationUnit : organisationUnits )
         {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
+            FormOrganisationUnit ou = new FormOrganisationUnit();
+            ou.setId( organisationUnit.getUid() );
+            ou.setLabel( organisationUnit.getName() );
+
+            Set<DataSet> dataSets = new HashSet<DataSet>( CollectionUtils.intersection( organisationUnit.getDataSets(), userDataSets ) );
+
+            for ( DataSet dataSet : dataSets )
+            {
+                String uid = dataSet.getUid();
+
+                FormDataSet ds = new FormDataSet();
+                ds.setId( uid );
+                ds.setLabel( dataSet.getName() );
+
+                forms.getForms().put( uid, FormUtils.fromDataSet( dataSet ) );
+                ou.getDataSets().add( ds );
+            }
+
+            forms.getOrganisationUnits().put( ou.getId(), ou );
         }
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( uid );
-
-        if ( organisationUnit == null )
-        {
-            ContextUtils.notFoundResponse( response, "Organisation Unit UID is invalid." );
-            return;
-        }
-
-        Set<DataSet> dataSets = new HashSet<DataSet>( CollectionUtils.intersection( organisationUnit.getDataSets(),
-            currentUser.getUserCredentials().getAllDataSets() ) );
-
-        JacksonUtils.toJsonWithView( response.getOutputStream(), dataSets, BasicView.class );
+        JacksonUtils.toJson( response.getOutputStream(), forms );
     }
 
     private Set<OrganisationUnit> getOrganisationUnitsForUser( User user, String filter )

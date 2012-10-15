@@ -9,13 +9,25 @@
             if( data.unreadMessageConversation > 0 ) {
                 $('#messages a').append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
             }
-
-            if( data.unreadInterpretations > 0 ) {
-                $('#interpretations a').append("<span class='ui-li-count'>" + data.unreadInterpretations + "</span>");
-            }
         }).error(function() {
             $('#messages a').append("<span class='ui-li-count'>Offline</span>")
-            $('#interpretations a').append("<span class='ui-li-count'>Offline</span>")
+        });
+
+        $.mobile.showPageLoadingMsg();
+
+        $.ajax({
+            url: '../api/currentUser/forms',
+            dataType: 'json'
+        }).success(function(data) {
+            localStorage['organisationUnits'] = JSON.stringify(data.organisationUnits);
+
+            _.each(data.forms, function(v, k) {
+                localStorage['form_' + k] = JSON.stringify(v);
+            });
+
+            $.mobile.hidePageLoadingMsg();
+        }).error(function() {
+            // offline ? reuse meta-data already present
         });
     });
 </script>

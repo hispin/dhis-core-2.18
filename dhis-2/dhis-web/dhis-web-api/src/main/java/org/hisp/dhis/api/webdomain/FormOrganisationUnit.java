@@ -1,6 +1,6 @@
-package org.hisp.dhis.api.webdomain.form;
+package org.hisp.dhis.api.webdomain;
 
-/*
+/**
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
@@ -29,23 +29,36 @@ package org.hisp.dhis.api.webdomain.form;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
+ * Simplified organisation unit class, to be used where all you need
+ * is a label + dataSets.
+ *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class Field
+public class FormOrganisationUnit
 {
+    private String id;
+
     private String label;
 
-    private String dataElement;
+    private Set<FormDataSet> dataSets = new HashSet<FormDataSet>();
 
-    private String categoryOptionCombo;
-
-    private String value;
-
-    private InputType type;
-
-    public Field()
+    public FormOrganisationUnit()
     {
+    }
+
+    @JsonProperty
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId( String id )
+    {
+        this.id = id;
     }
 
     @JsonProperty
@@ -60,46 +73,13 @@ public class Field
     }
 
     @JsonProperty
-    public String getDataElement()
+    public Set<FormDataSet> getDataSets()
     {
-        return dataElement;
+        return dataSets;
     }
 
-    public void setDataElement( String dataElement )
+    public void setDataSets( Set<FormDataSet> dataSets )
     {
-        this.dataElement = dataElement;
-    }
-
-    @JsonProperty
-    public String getCategoryOptionCombo()
-    {
-        return categoryOptionCombo;
-    }
-
-    public void setCategoryOptionCombo( String categoryOptionCombo )
-    {
-        this.categoryOptionCombo = categoryOptionCombo;
-    }
-
-    @JsonProperty
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
-    @JsonProperty
-    public InputType getType()
-    {
-        return type;
-    }
-
-    public void setType( InputType type )
-    {
-        this.type = type;
+        this.dataSets = dataSets;
     }
 }

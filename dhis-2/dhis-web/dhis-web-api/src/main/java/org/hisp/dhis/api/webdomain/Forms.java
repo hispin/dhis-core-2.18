@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.webdomain.form;
+package org.hisp.dhis.api.webdomain;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -28,78 +28,47 @@ package org.hisp.dhis.api.webdomain.form;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hisp.dhis.api.webdomain.form.Form;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class Field
+public class Forms
 {
-    private String label;
+    // maps ou.uid => org unit.
+    private Map<String, FormOrganisationUnit> organisationUnits = new HashMap<String, FormOrganisationUnit>(  );
 
-    private String dataElement;
+    // maps dataSet.uid => form instance
+    private Map<String, Form> forms = new HashMap<String, Form>();
 
-    private String categoryOptionCombo;
-
-    private String value;
-
-    private InputType type;
-
-    public Field()
+    public Forms()
     {
     }
 
     @JsonProperty
-    public String getLabel()
+    public Map<String, FormOrganisationUnit> getOrganisationUnits()
     {
-        return label;
+        return organisationUnits;
     }
 
-    public void setLabel( String label )
+    public void setOrganisationUnits( Map<String, FormOrganisationUnit> organisationUnits )
     {
-        this.label = label;
-    }
-
-    @JsonProperty
-    public String getDataElement()
-    {
-        return dataElement;
-    }
-
-    public void setDataElement( String dataElement )
-    {
-        this.dataElement = dataElement;
+        this.organisationUnits = organisationUnits;
     }
 
     @JsonProperty
-    public String getCategoryOptionCombo()
+    public Map<String, Form> getForms()
     {
-        return categoryOptionCombo;
+        return forms;
     }
 
-    public void setCategoryOptionCombo( String categoryOptionCombo )
+    public void setForms( Map<String, Form> forms )
     {
-        this.categoryOptionCombo = categoryOptionCombo;
-    }
-
-    @JsonProperty
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
-    @JsonProperty
-    public InputType getType()
-    {
-        return type;
-    }
-
-    public void setType( InputType type )
-    {
-        this.type = type;
+        this.forms = forms;
     }
 }
