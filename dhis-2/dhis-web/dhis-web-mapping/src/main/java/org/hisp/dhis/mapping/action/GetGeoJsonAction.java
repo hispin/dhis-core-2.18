@@ -61,11 +61,11 @@ public class GetGeoJsonAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer parentId;
+    private String parentId;
 
-    public void setParentId( Integer id )
+    public void setParentId( String parentId )
     {
-        this.parentId = id;
+        this.parentId = parentId;
     }
 
     private Integer level;
@@ -94,6 +94,17 @@ public class GetGeoJsonAction
         throws Exception
     {
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
+
+        if ( parent == null )
+        {
+            try
+            {                
+                parent = organisationUnitService.getOrganisationUnit( Integer.parseInt( parentId ) );
+            }
+            catch ( NumberFormatException e )
+            {
+            }
+        }
 
         level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent.getId() ) : level;
 
