@@ -103,9 +103,10 @@
 	</table>
 	<div id='dataEntryFormDiv'></div>
 	
-	<div id='actionDiv' class="page inputCriteria" style="width:455px;height:29px;">	
+	<div id='actionDiv' class="page inputCriteria" style="width:600px;height:29px;">	
 		<input type="button" onclick="doComplete()" value="$i18n.getString('complete')" id="completeBtn">
 		<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBtn" >
+		<input type="button" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();">
 		<input type="button" onclick="completedAndAddNewEvent()" value="$i18n.getString('complete_and_add_new_event')" id="completeAndAddNewBtn">
 	</div>
 </div>

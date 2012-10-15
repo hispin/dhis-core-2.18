@@ -13,8 +13,8 @@
 		  <tr>
 		  	<td></td>
 			<td colspan="3" style="text-align:right">
-				<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortPatientAttributeGroup.action'" style="width:75px"><br>
 				<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddPatientAttributeGroupForm.action'" style="width:75px">
+				<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortPatientAttributeGroup.action'" style="width:75px"><br>
 			</td>
 		  </tr>
           <tr>

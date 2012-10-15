@@ -17,10 +17,10 @@ jQuery(function() {
 	#introListImgItem( "validationCriteria.action" "validation_criteria" "validationrule" )
 	
 	#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
-		#introListImgItem( "viewScheduleTasks.action" "schedule_message" "scheduling" )
+		#introListImgItem( "viewScheduleTasks.action" "scheduling_message" "scheduling" )
 	#end
 	#if($auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
-		#introListImgItem( "viewScheduledCaseAggCondTasks.action" "schedule_aggregation_query_builder" "scheduling" )
+		#introListImgItem( "viewScheduledCaseAggCondTasks.action" "scheduling_aggregation_query_builder" "scheduling" )
 	#end
 	
 </ul>
