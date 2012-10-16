@@ -28,6 +28,8 @@ package org.hisp.dhis.settings.user.action;
  */
 
 import static org.hisp.dhis.user.UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM;
+import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
+import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -123,48 +125,6 @@ public class GetGeneralSettingsAction
         return currentLocaleDb;
     }
 
-    private List<String> sortOrders;
-
-    public List<String> getSortOrders()
-    {
-        return sortOrders;
-    }
-
-    private String currentSortOrder;
-
-    public String getCurrentSortOrder()
-    {
-        return currentSortOrder;
-    }
-
-    private List<Integer> chartsInDashboardOptions;
-
-    public List<Integer> getChartsInDashboardOptions()
-    {
-        return chartsInDashboardOptions;
-    }
-
-    private List<String> displayProperties;
-
-    public List<String> getDisplayProperties()
-    {
-        return displayProperties;
-    }
-
-    private String currentDisplayProperty;
-
-    public String getCurrentDisplayProperty()
-    {
-        return currentDisplayProperty;
-    }
-
-    private Boolean autoSave;
-
-    public Boolean getAutoSave()
-    {
-        return autoSave;
-    }
-
     private String currentStyle;
 
     public String getCurrentStyle()
@@ -177,6 +137,27 @@ public class GetGeneralSettingsAction
     public SortedMap<String, String> getStyles()
     {
         return styles;
+    }
+
+    private Boolean autoSave;
+
+    public Boolean getAutoSave()
+    {
+        return autoSave;
+    }
+
+    private Boolean messageEmailNotification;
+
+    public Boolean getMessageEmailNotification()
+    {
+        return messageEmailNotification;
+    }
+
+    private Boolean messageSmsNotification;
+
+    public Boolean getMessageSmsNotification()
+    {
+        return messageSmsNotification;
     }
 
     // -------------------------------------------------------------------------
@@ -231,6 +212,10 @@ public class GetGeneralSettingsAction
         styles = styleManager.getStyles();
 
         currentStyle = styleManager.getCurrentStyle();
+
+        messageEmailNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
+
+        messageSmsNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, false );
 
         return SUCCESS;
     }
