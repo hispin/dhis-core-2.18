@@ -438,9 +438,8 @@ div#selectionTree
 #userInfo
 {
   margin-left: 36px;
-  height: 304px;
   overflow: hidden;
-  margin-bottom: 6px;
+  margin-bottom: 14px;
 }
 
 #userInfoLink
