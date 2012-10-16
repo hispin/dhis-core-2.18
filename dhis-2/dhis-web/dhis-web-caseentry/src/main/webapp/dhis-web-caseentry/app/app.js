@@ -375,8 +375,7 @@ Ext.onReady( function() {
                 return text.replace(/[^a-zA-Z 0-9(){}<>_!+;:?*&%#-]+/g,'');
             }
         },
-        getValueFormula: function( value )
-		{
+        getValueFormula: function( value ){
 			if( value.indexOf('"') != value.lastIndexOf('"') )
 			{
 				value = value.replace(/"/g,"'");
@@ -406,7 +405,6 @@ Ext.onReady( function() {
 					value = "="+ value;
 				}
 			}
-			
 			return value;
 		},
         crud: {
@@ -837,6 +835,7 @@ Ext.onReady( function() {
 			var grid = TR.datatable.datatable;
 			
 			var filters = grid.filters.getFilterData();
+			var value = "";
 			for( var i=0; i<filters.length; i++ )
 			{
 				var filter = filters[i];
@@ -847,10 +846,9 @@ Ext.onReady( function() {
 				else if( filter.data.comparison == 'gt' )
 					compare = '>' ;
 					
-				var value = compare + "'"+ filter.data.value + "'";
-				
-				var record = grid.getView().getRecord( grid.getView().getNode(0) );
-				record.set(filter.field, value.toLowerCase());
+				value = compare + "'"+ filter.data.value + "'";
+				//var record = grid.getView().getRecord( grid.getView().getNode(0) );
+				//record.set(filter.field, value.toLowerCase());
 			}
 		},
 		getParams: function() {
@@ -875,23 +873,29 @@ Ext.onReady( function() {
 			if( !TR.state.paramChanged() )
 			{
 				var cols = TR.datatable.datatable.columns;
-				for( var i=0; i<cols.length; i++ )
+				for( var k in cols )
 				{
-					var col = cols[i];
+					var col = cols[k];
 					if( col.name && col.name.indexOf('meta_')!=-1 )
 					{
-						var param = TR.state.getFilterValueByColumn(col.name);
-						p.searchingValues.push(param);
+						var params = TR.state.getFilterValueByColumn(col.name);
+						for(var i in params){
+							p.searchingValues.push(params[i]);
+						}
 					}
 				}
 				var colNames = new Array();
 				TR.cmp.params.patientProperty.selected.store.each( function(r) {
-					var param = TR.state.getFilterValueByColumn(r.data.id);
-					p.searchingValues.push(param);
+					var params = TR.state.getFilterValueByColumn(r.data.id);
+					for(var i in params){
+						p.searchingValues.push(params[i]);
+					}
 				});
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
-					var param = TR.state.getFilterValueByColumn(r.data.id);
-					p.searchingValues.push(param);
+					var params = TR.state.getFilterValueByColumn(r.data.id);
+					for(var i in params){
+						p.searchingValues.push(params[i]);
+					}
 				});
 			}
 			else
@@ -963,30 +967,49 @@ Ext.onReady( function() {
 			var grid = TR.datatable.datatable;
 			var cols = grid.columns;
 			var editor = grid.getStore().getAt(0);
-			var p = "";
+			var params = [];
 			for( var i=0; i<cols.length; i++ )
 			{
 				var col = cols[i];
+				var p = "";
 				if( col.name && col.name == colname )
 				{
-					var value = '';
-					if(editor.data[col.dataIndex]!=undefined){
-						value = editor.data[col.dataIndex].toLowerCase();
-					}
-					var hidden = (col.hidden==undefined)? false : col.hidden;
-					if( value!=null && value!= '')
+					var filters = grid.filters.getFilterData();
+					var value = "";
+					for( var i=0; i<filters.length; i++ )
 					{
-						value = TR.util.getValueFormula(value);
-						p = colname + '_' + hidden + "_" + value ;
+						var filter = filters[i];
+						if(col.dataIndex == filter.field)
+						{
+							var compare = '=';
+							if( filter.data.comparison == 'lt')
+								compare = '<' ;
+							else if( filter.data.comparison == 'gt' )
+								compare = '>' ;
+							value = compare + "'"+ filter.data.value + "'";
+							var hidden = (col.hidden==undefined)? false : col.hidden;
+							if( value!=null && value!= ''){	
+								var value = TR.util.getValueFormula(value);
+								p = colname + '_' + hidden + "_" + value;
+							}
+							params.push(p);
+						}
 					}
-					else 
+					
+					//if(editor.data[col.dataIndex]!=undefined){
+					//	value = editor.data[col.dataIndex].toLowerCase();
+					//}
+					
+					if (value=='')
 					{
 						p = colname + '_' + col.hidden + "_";
+						params.push(p);
 					}
-					return p;
+					return params;
 				}
 			}		
-			return colname + "_false_";
+			params.push(colname + "_false_");
+			return params
 		},
 		paramChanged: function() {
 			if( TR.store.datatable && TR.store.datatable.data.length > 0 )
@@ -1892,7 +1915,6 @@ Ext.onReady( function() {
 												TR.cmp.params.organisationunit.panel = this;
 											},
 											expand: function() {
-												alert(TR.cmp.params.organisationunit.panel.getHeight() - TR.conf.layout.west_fill_accordion_organisationunit);
 												TR.cmp.params.organisationunit.treepanel.setHeight(TR.cmp.params.organisationunit.panel.getHeight() - TR.conf.layout.west_fill_accordion_organisationunit);
 											}
 										}
