@@ -15,6 +15,8 @@
     </id>
     &identifiableProperties;
 
+    <property name="image" />
+
     <set name="members" table="orgunitgroupmembers">
       <cache usage="read-write" />
       <key column="orgunitgroupid" foreign-key="fk_orgunitgroupmembers_orgunitgroupid" />
