@@ -47,7 +47,7 @@ a:visited
   color:#3b73b8;
 }
 
-input[type=text],textarea
+input[type=text],input[type=password],textarea
 {
   border: 1px solid #aaa;
   padding: 4px 1px;

@@ -107,10 +107,11 @@
 	  
 	  <div id="menuDropDown4" class="menuDropDownArea">
 	  <ul class="menuDropDownBox">
-  	    <li><a style="width:159px; padding-left:20px;" href="../dhis-web-commons-about/userGeneralSettings.action">$i18n.getString( "settings" )&nbsp;</a></li>
-        <li><a style="width:159px; padding-left:20px;" href="../dhis-web-commons-about/showUpdateUserProfileForm.action">$i18n.getString( "profile" )&nbsp;</a></li>
-  	    <li><a style="width:159px; padding-left:20px;" href="../dhis-web-commons-about/showUpdateUserAccountForm.action">$i18n.getString( "account" )&nbsp;</a></li>
-        <li><a style="width:159px; padding-left:20px;" href="../dhis-web-commons-security/logout.action">$i18n.getString( "log_out" )&nbsp;</a></li>
+  	    <li><a href="../dhis-web-commons-about/userGeneralSettings.action">$i18n.getString( "general_settings" )&nbsp;</a></li>
+        <li><a href="../dhis-web-commons-about/userMessageSettings.action">$i18n.getString( "message_settings" )&nbsp;</a></li>
+        <li><a href="../dhis-web-commons-about/showUpdateUserProfileForm.action">$i18n.getString( "profile" )&nbsp;</a></li>
+  	    <li><a href="../dhis-web-commons-about/showUpdateUserAccountForm.action">$i18n.getString( "account" )&nbsp;</a></li>
+        <li><a href="../dhis-web-commons-security/logout.action">$i18n.getString( "log_out" )&nbsp;</a></li>
       </ul>
 	  </div>
 	  
