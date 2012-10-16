@@ -148,6 +148,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dashboard-integration/profile.vm</param>
       <param name="menu">/dhis-web-commons/about/menuDashboard.vm</param>
+      <param name="javascripts">javascript/profile.js</param>
       <param name="stylesheets">style/dashboard.css</param>
     </action>
 
