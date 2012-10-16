@@ -57,6 +57,8 @@ public class OrganisationUnitGroup
      */
     private static final long serialVersionUID = -1131637847640209166L;
 
+    private String image;
+    
     @Scanned
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
 
@@ -161,21 +163,23 @@ public class OrganisationUnitGroup
         return name.equals( other.getName() );
     }
 
-/*
-    @Override
-    public String toString()
-    {
-        return "OrganisationUnitGroup{" +
-            "members=" + members +
-            ", groupSet=" + groupSet.getName() +
-            "} " + super.toString();
-    }
-*/
-
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public String getImage()
+    {
+        return image;
+    }
+
+    public void setImage( String image )
+    {
+        this.image = image;
+    }    
+    
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
