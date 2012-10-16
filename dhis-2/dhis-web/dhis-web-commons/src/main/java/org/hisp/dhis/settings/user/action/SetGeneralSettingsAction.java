@@ -29,6 +29,8 @@ package org.hisp.dhis.settings.user.action;
 
 import static org.hisp.dhis.user.UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM;
 import static org.hisp.dhis.user.UserSettingService.KEY_DB_LOCALE;
+import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
+import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 
 import java.util.Locale;
 
@@ -104,6 +106,20 @@ public class SetGeneralSettingsAction
         this.currentStyle = style;
     }
 
+    private Boolean messageEmailNotification;
+
+    public void setMessageEmailNotification( Boolean messageEmailNotification )
+    {
+        this.messageEmailNotification = messageEmailNotification;
+    }
+
+    private Boolean messageSmsNotification;
+
+    public void setMessageSmsNotification( Boolean messageSmsNotification )
+    {
+        this.messageSmsNotification = messageSmsNotification;
+    }
+
     private String message;
 
     public String getMessage()
@@ -133,7 +149,11 @@ public class SetGeneralSettingsAction
         styleManager.setUserStyle( currentStyle );
 
         userSettingService.saveUserSetting( AUTO_SAVE_DATA_ENTRY_FORM, autoSave );
-        
+
+        userSettingService.saveUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, messageEmailNotification );
+
+        userSettingService.saveUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, messageSmsNotification );
+
         message = i18n.getString( "settings_updated" );
 
         return SUCCESS;

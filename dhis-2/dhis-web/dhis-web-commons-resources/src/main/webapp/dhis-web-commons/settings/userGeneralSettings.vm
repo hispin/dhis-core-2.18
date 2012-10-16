@@ -1,13 +1,13 @@
-#if( $availableLocales )
-<script type="text/javascript">
-	
+<script type="text/javascript">	
 	jQuery(document).ready(function() {
 		jQuery("input[type=button]").click(function() {
-			jQuery.postJSON( 'setUserGeneralSettings.action', {
+			jQuery.postJSON( 'setUserSettings.action', {
 				currentLocale: getFieldValue( 'currentLocale' ),
 				currentLocaleDb: getFieldValue( 'currentLocaleDb' ),
 				currentStyle: getFieldValue( 'currentStyle' ),
-				autoSave: jQuery( '#autoSave' ).is(':checked' )
+				autoSave: jQuery( '#autoSave' ).is(':checked' ),
+                messageEmailNotification: jQuery( '#messageEmailNotification' ).is(':checked' ),
+                messageSmsNotification: jQuery( '#messageSmsNotification' ).is(':checked' )
 			}, function ( json ) {
 				if ( json.response == "success" )
 					setHeaderDelayMessage( json.message );
@@ -16,36 +16,52 @@
 	});
 </script>
 
-<h3>$i18n.getString("user_general_settings") #openHelp( "userGeneralSettings" )</h3>
+<h3>$i18n.getString( "settings" ) #openHelp( "userGeneralSettings" )</h3>
 
-<h4>$i18n.getString( "language" )</h4>
+<div class="settingLabel">$i18n.getString( "language" )</div>
 
-<select id="currentLocale" name="currentLocale" style="min-width:250px">
+<div class="setting">
+<select id="currentLocale" name="currentLocale">
 #foreach( $locale in $availableLocales )
 	<option value="$locale.toString()" #if( $locale == $currentLocale )selected="selected"#end>$locale.getDisplayName()</option>
 #end
 </select>
+</div>
 
-<h4>$i18n.getString( "db_language" )</h4>
+<div class="settingLabel">$i18n.getString( "db_language" )</div>
 
-<select id="currentLocaleDb" name="currentLocaleDb" style="min-width:250px">
+<div class="setting">
+<select id="currentLocaleDb" name="currentLocaleDb">
 	<option value="">[$i18n.getString( "use_db_locale_no_translation" )]</option>
 #foreach( $locale in $availableLocalesDb )
 	<option value="$locale.toString()" #if( $locale == $currentLocaleDb )selected="selected"#end>$locale.getDisplayName()</option>
 #end
 </select>
+</div>
 
-<h4>$i18n.getString( "style" )</h4>
+<div class="settingLabel">$i18n.getString( "interface_style" )</div>
 
-<select id="currentStyle" name="currentStyle" style="min-width:250px">
+<div class="setting">
+<select id="currentStyle" name="currentStyle">
 #foreach( $style in $styles.entrySet() )
 	<option value="$style.value" #if( $style.value == $currentStyle )selected="selected"#end>$i18n.getString( $style.key )</option>
 #end
 </select>
+</div>
 
-<h4>$i18n.getString( "auto_save_data_entry_form" )</h4>
-<input type="checkbox" id="autoSave" name="autoSave" #if( $autoSave ) checked="checked"#end/>
+<div class="setting">
+	<input type="checkbox" id="autoSave" name="autoSave" #if( $autoSave ) checked="checked"#end/>
+	<label for="autoSave">$i18n.getString( "auto_save_data_entry_forms" )</label>
+</div>
 
-<p><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></p>
+<div class="setting">
+	<input type="checkbox" id="messageEmailNotification" name="messageEmailNotification" #if( $messageEmailNotification ) checked="checked"#end/>
+	<label for="messageEmailNotification">$i18n.getString( "enable_message_email_notifications" )</label>
+</div>
 
-#end
+<div class="setting">
+	<input type="checkbox" id="messageSmsNotification" name="messageSmsNotification" #if( $messageSmsNotification ) checked="checked"#end/>
+	<label for="messageSmsNotification">$i18n.getString( "enable_message_sms_notifications" )</label>
+</div>
+
+<div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>
