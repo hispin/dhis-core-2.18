@@ -207,13 +207,21 @@ public class HibernateProgramStageInstanceStore
         for ( int i = level; i <= maxLevel; i++ )
         {
             String name = orgUnitLevelMap.containsKey( i ) ? orgUnitLevelMap.get( i ).getName() : "Level " + i;
-
             grid.addHeader( new GridHeader( name, false, true ) );
         }
 
+        Collection<String> deKeys = new HashSet<String>();
         for ( TabularReportColumn column : columns )
         {
-            grid.addHeader( new GridHeader( column.getName(), column.isHidden(), true ) );
+            if ( !column.isMeta() )
+            {
+                String deKey = "element_" + column.getIdentifier();
+                if ( !deKeys.contains( deKey ) )
+                {
+                    grid.addHeader( new GridHeader( column.getName(), column.isHidden(), true ) );
+                    deKeys.add( deKey );
+                }
+            }
         }
 
         // ---------------------------------------------------------------------
@@ -398,7 +406,7 @@ public class HibernateProgramStageInstanceStore
                         + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
                     deKeys.add( deKey );
                 }
-                
+
                 if ( column.hasQuery() )
                 {
                     where += operator + "element_" + column.getIdentifier() + " " + column.getQuery() + " ";
@@ -414,7 +422,7 @@ public class HibernateProgramStageInstanceStore
                         + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
                     deKeys.add( deKey );
                 }
-                
+
                 if ( column.hasQuery() )
                 {
                     where += operator + "lower(element_" + column.getIdentifier() + ") " + column.getQuery() + " ";
@@ -460,7 +468,7 @@ public class HibernateProgramStageInstanceStore
         sql += where; // filters
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
         sql += (min != null && max != null) ? statementBuilder.limitRecord( min, max ) : "";
-        
+
         return sql;
     }
 }
