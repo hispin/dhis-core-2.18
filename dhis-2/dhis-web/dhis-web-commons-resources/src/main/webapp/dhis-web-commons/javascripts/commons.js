@@ -1688,7 +1688,7 @@ function pagingList( currentPage, pageSize )
 	}
 	else
 	{		
-		jQuery.postUTF8( link , data, function(html){
+		jQuery.postUTF8( link, data, function( html ) {
 			setInnerHTML( contentDiv, html );
 		});
 	}
