@@ -37,5 +37,5 @@ jQuery( document ).ready( function() {
 </div>
 <div id="userInfoLink"><a class="bold" href="javascript:showFullProfile()">$i18n.getString( "view_full_profile" )</a></div>
 
-<div id="profileInterpretationHeader" class="bold">$i18n.getString( "last_interpretations" )</div>
+<div id="profileInterpretationHeader" class="bold">$i18n.getString( "latest_interpretations" )</div>
 <div id="profileInterpretationFeed"></div>
