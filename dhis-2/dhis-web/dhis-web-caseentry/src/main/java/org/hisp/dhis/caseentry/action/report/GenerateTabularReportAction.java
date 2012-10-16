@@ -433,6 +433,10 @@ public class GenerateTabularReportAction
                 {
                     int objectId = Integer.parseInt( values[1] );
                     DataElement dataElement = dataElementService.getDataElement( objectId );
+                    if(dataElement.getType().equals( DataElement.VALUE_TYPE_INT ))
+                    {
+                        column.setPrefix( PREFIX_NUMBER_DATA_ELEMENT );
+                    }
                     dataElements.add( dataElement );
 
                     String valueType = dataElement.getOptionSet() != null ? VALUE_TYPE_OPTION_SET : dataElement
