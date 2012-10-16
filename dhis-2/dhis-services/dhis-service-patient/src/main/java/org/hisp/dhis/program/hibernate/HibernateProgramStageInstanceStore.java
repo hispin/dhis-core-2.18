@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -339,6 +340,7 @@ public class HibernateProgramStageInstanceStore
         Collection<Integer> orgUnits, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
         Integer min, Integer max )
     {
+        Set<String> deKeys = new HashSet<String>();
         String selector = count ? "count(*) " : "* ";
 
         String sql = "select " + selector + "from ( select DISTINCT psi.programstageinstanceid, psi.executiondate,";
@@ -387,10 +389,16 @@ public class HibernateProgramStageInstanceStore
             }
             if ( column.isNumberDataElement() )
             {
-                sql += "(select cast( value as "
-                    + statementBuilder.getDoubleColumnType()
-                    + " ) from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
-                    + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
+                String deKey = "element_" + column.getIdentifier();
+                if ( !deKeys.contains( deKey ) )
+                {
+                    sql += "(select cast( value as "
+                        + statementBuilder.getDoubleColumnType()
+                        + " ) from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
+                        + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
+                    deKeys.add( deKey );
+                }
+                
                 if ( column.hasQuery() )
                 {
                     where += operator + "element_" + column.getIdentifier() + " " + column.getQuery() + " ";
@@ -399,9 +407,14 @@ public class HibernateProgramStageInstanceStore
             }
             else if ( column.isDataElement() )
             {
-                sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
-                    + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
-
+                String deKey = "element_" + column.getIdentifier();
+                if ( !deKeys.contains( deKey ) )
+                {
+                    sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
+                        + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
+                    deKeys.add( deKey );
+                }
+                
                 if ( column.hasQuery() )
                 {
                     where += operator + "lower(element_" + column.getIdentifier() + ") " + column.getQuery() + " ";
