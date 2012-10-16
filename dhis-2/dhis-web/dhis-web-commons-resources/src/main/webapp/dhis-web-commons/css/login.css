@@ -24,6 +24,12 @@ a:hover
   color: #fff;
 }
 
+input[type=text],input[type=password]
+{
+  border: 1px solid #aaa;
+  padding: 3px 1px;
+}
+
 #flagArea
 {
   position: absolute;
