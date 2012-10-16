@@ -31,13 +31,13 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_SUM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_PROPERTY;
-import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROGRAM_STAGE_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OPERATOR_AND;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
@@ -52,6 +52,7 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -122,9 +123,15 @@ public class DefaultCaseAggregationConditionService
 
     private ProgramStageInstanceService programStageInstanceService;
 
+    private StatementBuilder statementBuilder;
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
 
     public void setAggregationConditionStore( CaseAggregationConditionStore aggregationConditionStore )
     {
@@ -639,9 +646,17 @@ public class DefaultCaseAggregationConditionService
                     {
                         condition = getConditionForDataElement( programId, programStageId, operator, dataElementId,
                             orgunitId, startDate, endDate );
+                        DataElement dataElement = dataElementService.getDataElement( dataElementId );
                         if ( !expression[i].contains( "+" ) )
                         {
-                            condition += " AND pd.value ";
+                            if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
+                            {
+                                condition += " AND cast( pd.value as " + statementBuilder.getDoubleColumnType() + ") ";
+                            }
+                            else
+                            {
+                                condition += " AND pd.value ";
+                            }
                         }
                         else
                         {
@@ -809,7 +824,8 @@ public class DefaultCaseAggregationConditionService
         {
             sql = "SELECT psi.programstageinstanceid ";
             from = "FROM programstageinstance psi inner join programinstance pi "
-                + "on psi.programinstanceid=pi.programinstanceid " + "inner join patient p on p.patientid=pi.patientid ";
+                + "on psi.programinstanceid=pi.programinstanceid "
+                + "inner join patient p on p.patientid=pi.patientid ";
             where = "WHERE p.organisationunitid=" + orgunitId + "  AND p.registrationdate>= '" + startDate + "' "
                 + "AND p.registrationdate <= '" + endDate + "'";
         }

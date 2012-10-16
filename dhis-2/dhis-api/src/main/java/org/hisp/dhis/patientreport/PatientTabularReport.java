@@ -63,6 +63,8 @@ public class PatientTabularReport
 
     public static String PREFIX_DATA_ELEMENT = "de";
 
+    public static String PREFIX_NUMBER_DATA_ELEMENT = "numberDe";
+    
     public static String VALUE_TYPE_OPTION_SET = "optionSet";
 
     

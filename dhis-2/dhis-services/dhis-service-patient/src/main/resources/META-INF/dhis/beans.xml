@@ -166,6 +166,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="statementBuilder" ref="statementBuilder" />
 	</bean>
 
 	<bean id="org.hisp.dhis.relationship.RelationshipService" class="org.hisp.dhis.relationship.DefaultRelationshipService">

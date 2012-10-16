@@ -385,6 +385,18 @@ public class HibernateProgramStageInstanceStore
                     operator = "and ";
                 }
             }
+            if ( column.isNumberDataElement() )
+            {
+                sql += "(select cast( value as "
+                    + statementBuilder.getDoubleColumnType()
+                    + " ) from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
+                    + column.getIdentifier() + ") as element_" + column.getIdentifier() + ",";
+                if ( column.hasQuery() )
+                {
+                    where += operator + "element_" + column.getIdentifier() + " " + column.getQuery() + " ";
+                    operator = "and ";
+                }
+            }
             else if ( column.isDataElement() )
             {
                 sql += "(select value from patientdatavalue where programstageinstanceid=psi.programstageinstanceid and dataelementid="
@@ -431,13 +443,11 @@ public class HibernateProgramStageInstanceStore
 
         sql += "psi.executiondate ";
         sql += descOrder ? "desc " : "";
-        sql += (min != null && max != null) ? statementBuilder.limitRecord( min, max ) : "";
         sql += ") as tabular ";// TODO page size
-
         sql += where; // filters
-
         sql = sql.substring( 0, sql.length() - 1 ) + " "; // Remove last comma
-
+        sql += (min != null && max != null) ? statementBuilder.limitRecord( min, max ) : "";
+        
         return sql;
     }
 }
