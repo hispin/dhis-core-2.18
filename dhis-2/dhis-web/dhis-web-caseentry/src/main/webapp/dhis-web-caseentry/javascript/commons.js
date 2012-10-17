@@ -885,9 +885,7 @@ function removeEvent( programStageInstanceId, isEvent )
 					jQuery('#arrow_' + programStageInstanceId).remove();
 					jQuery('#org_' + programStageInstanceId).remove();
 					resetActiveEvent( programInstanceId );
-					reloadOneRecord( programInstanceId );
 					showSuccessMessage( i18n_delete_success );
-					resize();
     	    	}
     	    	else if ( json.response == "error" )
     	    	{ 
@@ -1239,12 +1237,12 @@ function saveEnrollment()
 							+ " <td id='td_" + programInstanceId + "'>"
 							+ " <a href='javascript:loadActiveProgramStageRecords(" + programInstanceId + "," + programStageInstanceId + ")'>"
 							+ "<span id='infor_" + programInstanceId + "' class='selected bold'>" 
-							+ programName + "(" + enrollmentDate + ")</span></a></td>"
+							+ programName + " (" + enrollmentDate + ")</span></a></td>"
 							+ "</tr>";
 			
 			activedRow += "<tr id='tr2_" + programInstanceId +"'"+
 						+ " onclick='javascript:loadActiveProgramStageRecords(" + programInstanceId + "," + programStageInstanceId + ")' style='cursor:pointer;'>"
-						+ "<td colspan='2'><a>&#8226; " + programStageName + "(" + dueDate + ")</a></td></tr>";
+						+ "<td colspan='2'><a>&#8226; " + programStageName + " (" + dueDate + ")</a></td></tr>";
 
 			jQuery('#activeTB' ).prepend(activedRow);
 			jQuery('#enrollmentDiv').dialog("close");
@@ -1342,10 +1340,18 @@ function unenrollmentForm( programInstanceId )
 		data: "programInstanceId=" + programInstanceId,
 		success: function( json ) 
 		{
-			jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
-			hideById('tr1_' + programInstanceId );
-			hideById('tr2_' + programInstanceId );
-			setInnerHTML('programEnrollmentDiv','');
+			var completed  = "<tr onclick='javascript:loadActiveProgramStageRecords(" + programInstanceId + ");' >";
+				completed += "<td><a><span id='infor_" + programInstanceId + "'>" + jQuery('#tr1_' + programInstanceId + " span" ).html() + "</span></a></td></tr>";
+			jQuery('#completedTB' ).prepend( completed );
+			jQuery('#tr1_' + programInstanceId ).remove();
+			jQuery('#tr2_' + programInstanceId ).remove();
+			
+			jQuery("[id=tab-2] :input").prop('disabled', true);
+			jQuery("[id=tab-3] :input").prop('disabled', true);
+			jQuery("[id=tab-4] :input").prop('disabled', true);
+			jQuery("[id=tab-5] :input").prop('disabled', true);
+			jQuery("[id=tab-3] :input").datepicker("destroy");
+			
 			showSuccessMessage( i18n_unenrol_success );
 		}
     });

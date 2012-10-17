@@ -18,14 +18,14 @@
 		</tr>
 	</table>
 </fieldset>
-
+<br>
 #set($programStageInstances = $programInstance.programStageInstances)
 #if( $programStageInstances.size() > 0 )
 	<table class='mainPageTable listTable' id='progarmStageListDiv' name='progarmStageListDiv' >
 		<colgroup>
 			<col width="10px">
 			<col width="200px">
-			<col width="200px">
+			<col width="150px">
 			<col width="100px">
 			<col>
 			<col width="60px">  
@@ -34,7 +34,7 @@
 		<tr>
 			<th>$i18n.getString( "nr" )</th>
 			<th>$i18n.getString( "program_stage" )</th>                   
-			<th>$i18n.getString( "reschedule_due_date" )</th>       
+			<th>$i18n.getString( "due_date" )</th>       
 			<th>$i18n.getString( "status" )</th>
 			<th colspan='2'>$i18n.getString( "message" )</th>
 			#if( $auth.hasAccess( "dhis-web-caseentry", "removeCurrentEncounter" ) )
@@ -87,7 +87,7 @@
 				</script>
 			</td>
 			<td>
-				<input type='text' id='message_$programStageInstance.id' name='message_$programStageInstance.id' class="{validate:{required:true,maxlength:160}}">
+				<input type='text' id='message_$programStageInstance.id' name='message_$programStageInstance.id' class="{validate:{required:true,maxlength:160}}" style="width:100%">
 			</td>
 			<td>
 				<input type='button' value="+" class='tiny-button' title='$i18n.getString("post_comment")' onclick="addComment(byId('message_$programStageInstance.id'),'$programStageInstance.id')">
