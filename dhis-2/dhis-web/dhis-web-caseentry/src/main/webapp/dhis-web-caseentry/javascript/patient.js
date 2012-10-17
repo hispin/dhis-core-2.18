@@ -243,9 +243,3 @@ function loadDataEntry( programStageInstanceId )
 			$(window).scrollTop(200);
 		} );
 }
-
-// ----------------------------------------------------------------
-// Cosmetic UI
-// ----------------------------------------------------------------
-
-function reloadOneRecord(){}

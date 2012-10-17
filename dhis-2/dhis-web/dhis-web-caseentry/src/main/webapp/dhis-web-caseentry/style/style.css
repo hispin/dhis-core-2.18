@@ -242,10 +242,14 @@ div.link-area
 
 .contentProviderTable
 {
-  height: 100px;
-  width: 100%;
+  height: 140px;
   overflow-y: auto;
   overflow-x:hidden;
+}
+
+.contentProviderTable table
+{
+	width:100%;
 }
 
 .contentProviderTable td
@@ -253,6 +257,7 @@ div.link-area
   padding-top:3px;
   padding-bottom:3px;
   border-bottom:1px solid #cad5e5;
+  cursor:pointer;
 }
 
 div.event-dashboard
@@ -395,9 +400,7 @@ div.event-flow-dashboard
 
 div.orgunit-object
 {
-	border-bottom: 5px double #D0D0D0;
-    height: 15px;
-    margin-left: 5px;
+	margin-left: 5px;
     width: 120px;
 }
 

@@ -91,7 +91,7 @@
 			&#8226; <a href='javascript:showProgramEnrollmentForm( "$patient.id" )'>$i18n.getString("enroll")</a>
 		</p>
 		<div class="contentProviderTable">
-			<table width="100%" id='activeTB' name='activeTB'>
+			<table id='activeTB' name='activeTB'>
 				#foreach( $programInstance in $activeProgramInstances )
 					#set($programStageInstanceId = '')
 					#if($programInstance.program.type==2)
@@ -157,7 +157,7 @@
 			&#8226; <a href='javascript:showProgramEnrollmentForm( "$patient.id" )'>$i18n.getString("enroll")</a>
 		</p>
 		<div class="contentProviderTable">
-			<table width="100%" id='completedTB' name='completedTB'>
+			<table id='completedTB' name='completedTB'>
 				#foreach($programInstance in $completedProgramInstances)
 					#set($programStageInstanceId = '')
 					#if($programInstance.program.type==2)
@@ -165,10 +165,9 @@
 							#set($programStageInstanceId = $programStageInstance.id)
 						#end
 					#end
-					<tr id='tr1_$programInstance.id' type='$programInstance.program.type'
-						onclick='javascript:loadActiveProgramStageRecords($programInstance.id);' >
+					<tr onclick='javascript:loadActiveProgramStageRecords($programInstance.id);' >
 						<td>
-							<a>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</a>
+							<a><span id='infor_$programInstance.id'>$programInstance.program.name ($format.formatDate($programInstance.enrollmentDate))</span></a>
 						</td>
 					</tr>
 				#end
@@ -183,7 +182,7 @@
 			&#8226; <a href="javascript:showAddRelationshipPatient( '$patient.id', false );">$i18n.getString("add_new_patient")</a>
 		</p>
 		<div class="contentProviderTable">
-			<table width="100%">
+			<table>
 				#foreach( $rel in $relationship )
 					#if($rel.patientA.id==$patient.id)
 						<tr onclick="showPatientDashboardForm($rel.patientB.id)" title='$i18n.getString( "move_to_dashboard_of" ) $rel.patientB.getFullName()'>
