@@ -50,6 +50,7 @@
   <xsl:include href="userCredentials.xsl" />
   <xsl:include href="messageConversations.xsl" />
   <xsl:include href="messageConversation.xsl" />
+  <xsl:include href="interpretation.xsl" />
   <xsl:include href="dataValueSets.xsl" />
   <xsl:include href="optionSets.xsl" />
 

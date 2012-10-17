@@ -87,6 +87,11 @@ public class Pager
         }
     }
 
+    public String toString()
+    {
+        return "[Page: " + page + " total: " + total + " size: " + pageSize + " offset: " + getOffset() + "]";
+    }
+    
     @JsonProperty
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getPage()
