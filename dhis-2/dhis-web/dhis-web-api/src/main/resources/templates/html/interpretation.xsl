@@ -20,7 +20,11 @@
         </tr>
         <tr>
           <td>Text</td>
-          <td> <xsl:value-of select="@text" /> </td>
+          <td> <xsl:value-of select="d:text" /> </td>
+        </tr>
+        <tr>
+          <td>Created</td>
+          <td> <xsl:value-of select="d:created" /> </td>
         </tr>
       </table>
     </div>
