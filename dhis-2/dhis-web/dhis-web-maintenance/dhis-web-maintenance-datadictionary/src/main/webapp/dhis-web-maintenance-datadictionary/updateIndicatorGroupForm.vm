@@ -31,22 +31,21 @@
 
 <h3>$i18n.getString( "edit_indicator_group" )</h3>
 
-<form id="updateIndicatorGroupForm" action="updateIndicatorGroup.action" method="post" >
+<form id="updateIndicatorGroupForm" action="updateIndicatorGroup.action" method="post" class="inputForm">
 
 <div>
 	<input type="hidden" id="id" name="id" value="$indicatorGroup.id"/>
 </div>
 
 <table>
-    <col width="200px" />
-   	<col width="275px" />
+    <col width="120px" />
 
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )" style="width:240px;"/></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )"></td>
 	</tr>
 </table>
 
