@@ -2,7 +2,7 @@
 
 <h3>$i18n.getString( "user_account" )</h3>
 
-<form id="updateUserinforForm" action="updateUserAccount.action" method="post" onsubmit='return false;'>
+<form id="updateUserinforForm" action="updateUserAccount.action" method="post" onsubmit='return false;' class="inputForm">
 <div>
 	<input type="hidden" id="id" name="id" value="$userCredentials.id"/>
 </div>
@@ -13,35 +13,35 @@
 	</tr>
     <tr>
         <td><label for="username">$i18n.getString( "user_name" )</label></td>
-        <td><input type="text" id="username" name="username" value="$!encoder.htmlEncode( $!userCredentials.username )" style="width:25em" disabled="disabled"></td>
+        <td><input type="text" id="username" name="username" value="$!encoder.htmlEncode( $!userCredentials.username )" disabled="disabled"></td>
     </tr>
     <tr>
         <td><label for="firstName">$i18n.getString( "first_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="firstName" name="firstName" value="$!encoder.htmlEncode( $!userCredentials.user.firstName )" style="width:25em"></td>
+        <td><input type="text" id="firstName" name="firstName" value="$!encoder.htmlEncode( $!userCredentials.user.firstName )"></td>
     </tr>
     <tr>
         <td><label for="surname">$i18n.getString( "last_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="surname" name="surname" value="$!encoder.htmlEncode( $!userCredentials.user.surname )" style="width:25em"></td>
+        <td><input type="text" id="surname" name="surname" value="$!encoder.htmlEncode( $!userCredentials.user.surname )"></td>
     </tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "old_password" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="password" id="oldPassword" name="oldPassword" style="width:25em"></td>
+		<td><input type="password" id="oldPassword" name="oldPassword"></td>
 	</tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "new_password" )</label></td>
-		<td><input type="password" id="rawPassword" name="rawPassword" style="width:25em"></td>
+		<td><input type="password" id="rawPassword" name="rawPassword"></td>
 	</tr>
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_new_password" )</label></td>
-		<td><input type="password" id="retypePassword" name="retypePassword" style="width:25em"></td>
+		<td><input type="password" id="retypePassword" name="retypePassword"></td>
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $!userCredentials.user.email )" style="width:25em"/></td>
+		<td><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $!userCredentials.user.email )"></td>
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $!userCredentials.user.phoneNumber )" style="width:25em"/></td>
+        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $!userCredentials.user.phoneNumber )"></td>
     </tr>
 	<tr>
 		<td></td>
