@@ -105,7 +105,6 @@ public class InterpretationController
             metaData.setPager( pager );
 
             entityList = new ArrayList<Interpretation>( interpretationService.getInterpretations( pager.getOffset(), pager.getPageSize() ) );
-
         }
         else
         {

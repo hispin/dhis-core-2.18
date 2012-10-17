@@ -105,7 +105,7 @@ public class WebUtils
     @SuppressWarnings( "unchecked" )
     public static void generateLinks( Object object )
     {
-        if(IdentifiableObject.class.isAssignableFrom( object.getClass() ))
+        if ( IdentifiableObject.class.isAssignableFrom( object.getClass() ) )
         {
             IdentifiableObject identifiableObject = (IdentifiableObject) object;
             identifiableObject.setHref( ContextUtils.getPathWithUid( identifiableObject ) );

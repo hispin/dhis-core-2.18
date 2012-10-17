@@ -176,7 +176,8 @@ public class ContextUtils
             PrintWriter writer = response.getWriter();
             writer.println( message );
             writer.flush();
-        } catch ( IOException ex )
+        } 
+        catch ( IOException ex )
         {
             // Ignore
         }
