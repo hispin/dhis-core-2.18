@@ -6,7 +6,7 @@
 
 <h3>$i18n.getString( "organisation_unit_level_management" ) #openHelp( "ou_level" )</h3>
 
-<form method="post" id="saveOrganisationUnitLevelsForm" action="saveOrganisationUnitLevels.action">
+<form method="post" id="saveOrganisationUnitLevelsForm" action="saveOrganisationUnitLevels.action" class="inputForm">
 
 <table>
 	<tr>
@@ -16,7 +16,7 @@
 	#foreach ( $level in $levels )
     <tr>
         <td style="text-align: center">$level.level</td>
-        <td><input type="text" id="level${level.level}" name="level${level.level}" style="width:20em" value="$!level.name" class="uniqueFields {validate:{required:true,alphanumeric:false,unique:'uniqueFields'}}"/></td>
+        <td><input type="text" id="level${level.level}" name="level${level.level}" value="$!level.name" class="uniqueFields {validate:{required:true,alphanumeric:false,unique:'uniqueFields'}}"/></td>
     </tr>
     #end
     <tr>

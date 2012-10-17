@@ -18,15 +18,15 @@ jQuery( document ).ready( function()
 
 <h3>$i18n.getString( "crease_new_org_unit_group" ) #openHelp( "ou_groups_edit" )</h3>
 
-<form name="addOrganisationUnitGroupForm" id="addOrganisationUnitGroupForm" action="addOrganisationUnitGroup.action" method="POST">
+<form name="addOrganisationUnitGroupForm" id="addOrganisationUnitGroupForm" action="addOrganisationUnitGroup.action" method="post" class="inputForm">
 
 <table>
     <tr>
         <th colspan="2">$i18n.getString( "details" )</th>
     </tr>
     <tr>
-        <td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:240px;"/></td>
+        <td style="width:120px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="name" name="name"></td>
     </tr>
 </table>
 
