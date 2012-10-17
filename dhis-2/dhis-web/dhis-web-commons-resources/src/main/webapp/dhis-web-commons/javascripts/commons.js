@@ -1185,7 +1185,10 @@ function validation2(formId, submitHandler, kwargs)
 		errorElement:"span",
 		beforeValidateHandler: beforeValidateHandler,
 		submitHandler: submitHandler,
-		rules: rules
+		rules: rules,
+		errorPlacement: function(error, element) {
+			element.parent("td").append("<br>").append(error);
+		}
 	});
 
 	$("#" + formId + " input").each(function(n) {

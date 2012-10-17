@@ -418,16 +418,7 @@ div.growlUI h2
 
 span.error 
 {
-	background: url('../../images/invalid.png') no-repeat;
-	padding-left: 16px;
-	margin-left: .3em;
-}
-
-span.valid 
-{
-	background: url('../../images/valid.png') no-repeat;	
-	padding-left: 16px;
-	margin-left: .3em;
+	color: red;
 }
 
 #cluetip-inner
