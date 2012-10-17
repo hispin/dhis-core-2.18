@@ -198,6 +198,23 @@ div.provided-elsewhere
 // Dashboard
 // -------------------------------------------------------------- */
 
+div.dashboard-area {
+  list-style: none inside;
+  margin: 50px 50px;
+  margin: 0;
+  padding: 0;
+}
+
+p.header{
+  background-color:#CBDDEB;
+  background-repeat:repeat-x;
+  border:1px solid #C8DBEA;
+  color:#39547D;
+  padding:6px;
+  margin:0px;
+  font-family: LiberationSansBold,arial;
+}
+
 td.link-area
 {
   border:1px solid #d0d0d0;
@@ -206,22 +223,21 @@ td.link-area
   padding-left:1px;
   padding-bottom:0px;
   height:120px;
-  width:100%;
+  width:33%;
   overflow:hidden;
-  position:relative;
 }
 
 div.link-area
 {
+  display:inline-block;
   border:1px solid #d0d0d0;
   padding-top:1px;
   padding-right:1px;
   padding-left:1px;
   padding-bottom:0px;
   height:172px;
-  width:100%;
+  width:32%;
   overflow:hidden;
-  position:relative;
 }
 
 .contentProviderTable

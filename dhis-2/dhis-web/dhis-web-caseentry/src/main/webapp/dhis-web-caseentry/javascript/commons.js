@@ -1590,6 +1590,12 @@ function dashboardHistoryToggle(evt)
 	jQuery('#dashboardHistoryDiv').toggle();
 }
 
+function viewPersonProgram ( displayedDiv, hidedDiv )
+{
+	showById(displayedDiv);
+	hideById(hidedDiv);
+}
+
 // --------------------------------------------------------------------
 // Comment && Message
 // --------------------------------------------------------------------
