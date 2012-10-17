@@ -17,7 +17,7 @@
 
 <h3>$i18n.getString( "edit_org_unit_group" ) #openHelp( "ou_groups_edit" )</h3>
 
-<form id="updateOrganisationUnitGroupForm" action="updateOrganisationUnitGroup.action" method="post">
+<form id="updateOrganisationUnitGroupForm" action="updateOrganisationUnitGroup.action" method="post" class="inputForm">
 <input type="hidden" name="id" id="id" style="width:300px" value="$!organisationUnitGroup.id"/>
 	
 <table>
@@ -25,8 +25,8 @@
         <th colspan="2">$i18n.getString( "details" )</th>
     </tr>
     <tr>
-        <td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:240px;" value="$!organisationUnitGroup.name"/></td>
+        <td style="width:120px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="name" name="name" value="$!organisationUnitGroup.name"/></td>
     </tr>
 </table>
 

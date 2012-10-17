@@ -10,15 +10,18 @@ function indicatorTypeChanged()
 {
     var type = byId( 'indicatorTypeId' ).options[byId( 'indicatorTypeId' ).selectedIndex].getAttribute( 'number' );
     byId( 'denominatorButton' ).disabled = eval( type );
+    
     if ( eval( type ) )
     {
         setFieldValue( 'denominator', '1' );
-    } else
+    } 
+    else
     {
         if ( getFieldValue( 'denominatorFormula' ) == undefined )
         {
             setFieldValue( 'denominator', '' );
-        } else
+        } 
+        else
         {
             setFieldValue( 'denominator', getFieldValue( 'denominatorFormula' ) );
         }

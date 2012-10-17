@@ -4,24 +4,24 @@
 
 <h3>$i18n.getString( 'create_new_report' )</h3>
 
-<form id="reportForm" action="addReport.action" method="post" enctype="multipart/form-data">
+<form id="reportForm" action="addReport.action" method="post" enctype="multipart/form-data" class="inputForm">
 
 <input type="hidden" id="id" name="id" value="$!report.id" />
 <input type="hidden" id="currentDesign" name="currentDesign" value="$!report.design" />
 
 <table>
-	<col width="220"/>
-	<col/>
+	<col width="120"/>
+	<col width="400"/>
     <tr>
         <th colspan="2">$i18n.getString( "details" )</th>
     </tr>
     <tr>
         <td><label for="name">$i18n.getString( "name" )</label></td>
-        <td><input type="text" id="name" name="name" style="width:290px" value="$!report.name"></td>
+        <td><input type="text" id="name" name="name" value="$!report.name"></td>
     </tr>
 	<tr>
 		<td><label for="upload">$i18n.getString( "jasper_design" )</label></td>
-		<td><input type="file" id="upload" name="upload" size="35" /></td>
+		<td><input type="file" id="upload" name="upload" size="30" /></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -36,7 +36,7 @@
     <tr>
         <td><label for="usingOrgUnitGroupSets">$i18n.getString( "include_organisation_unit_group_sets" )</label></td>
         <td>
-            <select id="usingOrgUnitGroupSets" name="usingOrgUnitGroupSets" style="width:290px">
+            <select id="usingOrgUnitGroupSets" name="usingOrgUnitGroupSets">
             <option value="false"#if ( $report && $report.usingOrgUnitGroupSets )selected="selected"#end>$i18n.getString( "no" )</option>
             <option value="true"#if ( $report && $report.usingOrgUnitGroupSets )selected="selected"#end>$i18n.getString( "yes" )</option>           
             </select>
@@ -52,7 +52,7 @@
 	<tr class="reportTableDataSource">
 		<td>$i18n.getString( "report_table" )</td>
 		<td>
-			<select id="reportTableId" name="reportTableId" style="width:260px">
+			<select id="reportTableId" name="reportTableId">
 			<option value="0">[ $i18n.getString( "none" ) ]</option>
 			#foreach( $table in $reportTables )
 				<option value="$table.id"#if( $!report.reportTable.id == $table.id ) selected="selected"#end>$table.name</option>

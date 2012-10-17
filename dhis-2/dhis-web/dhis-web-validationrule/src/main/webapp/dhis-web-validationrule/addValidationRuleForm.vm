@@ -1,22 +1,22 @@
 <h3>$encoder.htmlEncode( $i18n.getString( "create_new_validation_rule" ) )</h3>
 
-<form id="addValidationRuleForm" action="addValidationRule.action" method="post" onsubmit="enable('periodTypeName');">
+<form id="addValidationRuleForm" action="addValidationRule.action" method="post" onsubmit="enable('periodTypeName');" class="inputForm">
 <table>
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
 		<td><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em"></td>
+		<td><input type="text" id="name" name="name"></td>
 	</tr>
 	<tr>
 		<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) )</label></td>
-		<td><textarea name="description" style="width:20em; height:6em"></textarea></td>
+		<td><textarea name="description"></textarea></td>
 	</tr>
 	<tr>
 		<td><label for="periodType">$encoder.htmlEncode( $i18n.getString( "period_type" ) )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em" >
+			<select type="text" id="periodTypeName" name="periodTypeName">
 				#foreach ( $periodType in $periodTypes )
 				 <option value="$periodType.name" #if( $periodType.name.equals( ${monthlyPeriodTypeName} ) ) selected #end>$i18n.getString($periodType.name)</option>
 				#end						
@@ -27,7 +27,7 @@
 	<tr>
 		<td><label for="operatorId">$encoder.htmlEncode( $i18n.getString( "operator" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="operator" name="operator" style="width:20em">
+			<select id="operator" name="operator">
 				<option value="">[ $i18n.getString( "select_operator" ) ]</option>
 				<option value="equal_to">$encoder.htmlEncode( $i18n.getString( "equal_to" ) )</option>
 				<option value="not_equal_to">$encoder.htmlEncode( $i18n.getString( "not_equal_to" ) )</option>

@@ -224,7 +224,7 @@ function DataDictionary()
 
                     if ( numberOfPages > 1 )
                     {
-                        html += 'Page: <select onchange="dataDictionary.reloadOperands( this.value )">';
+                        html += 'Page: <select onchange="dataDictionary.reloadOperands( this.value )" style="width:60px">';
 
                         for ( var i = 1; i <= numberOfPages; i++ )
                         {
