@@ -76,7 +76,7 @@ function loadDataEntry( programStageInstanceId )
 			closable:true,
 			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
-			width:1000,
+			width:850,
 			height:500
 		});
 }

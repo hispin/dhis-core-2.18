@@ -1,54 +1,39 @@
 <div id='patientInforTB'>
-	<table> 
+	<table>
 		#if( $patient )
-		<tr>            
-			<td>
-				<span class='bold'>$i18n.getString( "full_name" ):</span>
-			</td>
-			<td>
-				$encoder.htmlEncode( $patient.getFullName() )
-			</td>
-			<td class='bold text-column' style="vertical-align:top">$i18n.getString('program'): </td>
-			<td style="vertical-align:right">$program.name</td>
-		</tr>
-		<tr>
-			<td>
-				<span class='bold'>$i18n.getString( "gender" ):</span>
-			</td>
-			<td>
-				$i18n.getString( "$patient.gender" )
-			</td>
-			<td class='bold text-column' style="vertical-align:top">$i18n.getString('program_stage'): </td>
-			<td style="vertical-align:right">$programStageInstance.programStage.name</td>
-		</tr>
-		<tr>
-			<td>
-				<span class='bold'>$i18n.getString( "date_of_birth" ):</span>
-			</td>
-			<td>
-				$format.formatDate( $patient.birthDate )
-			</td>
-		<tr>
-			<td>
-				<span class='bold'>$i18n.getString( "age" ):</span>
-			</td>
-			<td>
-				$encoder.htmlEncode( $patient.getAge() )
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
+			<tr>            
+				<td>
+					<span class='bold'>$i18n.getString( "full_name" ):</span>
+				</td>
+				<td>
+					$encoder.htmlEncode( $patient.getFullName() ) ( $i18n.getString( "$patient.gender" ) )
+				</td>
+				<td class='bold text-column' style="vertical-align:top">$i18n.getString('program'): </td>
+				<td style="vertical-align:right">$program.name</td>
+			</tr>
+			<tr>
+				<td>
+					<span class='bold'>$i18n.getString( "date_of_birth" ):</span>
+				</td>
+				<td>
+					$format.formatDate( $patient.birthDate ) ( $encoder.htmlEncode( $patient.getAge() ) )
+				</td>
+				<td class='bold text-column' style="vertical-align:top">$i18n.getString('program_stage'): </td>
+				<td style="vertical-align:right">$programStageInstance.programStage.name</td>
+			</tr>
+			<tr><td>&nbsp;</td></tr>
 		#end
 		
 		#if( $programStageInstance )
-		<tr>
-			<th><label for="executionDate">$programStageInstance.programStage.reportDateDescription &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
-			<th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, $programStageInstance.id, byId('executionDate') )" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-				<script type="text/javascript">
-				   datePickerValid( 'executionDate', false );
-				</script>  
-			<th><label for="dueDate"> $i18n.getString( "due_date" ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
-			<th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-		</tr>
+			<tr>
+				<th><label for="executionDate">$programStageInstance.programStage.reportDateDescription &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
+				<th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, $programStageInstance.id, byId('executionDate') )" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+					<script type="text/javascript">
+					   datePickerValid( 'executionDate', false );
+					</script>  
+				<th><label for="dueDate"> $i18n.getString( "due_date" ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
+				<th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+			</tr>
 		#end
 	</table>
 </div>
