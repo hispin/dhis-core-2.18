@@ -26,13 +26,13 @@
 		
 		#if( $programStageInstance )
 			<tr>
-				<th><label for="executionDate">$programStageInstance.programStage.reportDateDescription &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
+				<th><label for="executionDate">$programStageInstance.programStage.reportDateDescription &nbsp;&nbsp;&nbsp;</label></th>
 				<th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, $programStageInstance.id, byId('executionDate') )" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 					<script type="text/javascript">
 					   datePickerValid( 'executionDate', false );
 					</script>  
-				<th><label for="dueDate"> $i18n.getString( "due_date" ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></th>
-				<th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+				<th><label for="dueDate"> $i18n.getString( "due_date" ) &nbsp;&nbsp;&nbsp;</label></th>
+				<th><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled">&nbsp;&nbsp;&nbsp;</th>
 			</tr>
 		#end
 	</table>
