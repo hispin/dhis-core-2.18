@@ -1701,9 +1701,8 @@ function removeComment( programStageInstanceId, commentId )
 
 function commentDivToggle(isHide)
 {
-	var index = 1;
 	jQuery("#commentTB tr").removeClass("hidden");
-	jQuery("#commentTB tr").each( function(){
+	jQuery("#commentTB tr").each( function(index, item){
 		if(isHide && index > 5){
 			jQuery(this).addClass("hidden");
 		}
