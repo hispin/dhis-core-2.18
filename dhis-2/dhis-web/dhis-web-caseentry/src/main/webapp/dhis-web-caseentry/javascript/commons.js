@@ -784,12 +784,12 @@ function setEventStatus( field, programStageInstanceId )
 	jQuery.postUTF8( 'setEventStatus.action',
 		{
 			programStageInstanceId:programStageInstanceId,
-			status:field.value
+			status:status
 		}, function ( json )
 		{
 			var eventBox = jQuery('#ps_' + programStageInstanceId);
-			eventBox.attr('status',field.value);
-			setEventColorStatus( programStageInstanceId, field.value );
+			eventBox.attr('status',status);
+			setEventColorStatus( programStageInstanceId, status );
 			resetActiveEvent( eventBox.attr("pi") );
 			if( status==1){
 				hideById('del_' + programStageInstanceId);
