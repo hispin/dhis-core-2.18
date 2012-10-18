@@ -27,7 +27,7 @@
         <ul data-role="listview" data-inset="true">
             <li id="data-entry"><a href="data-entry">Aggregate Reporting</a></li>
             <li id="messages"><a href="messages">Messages</a></li>
-            <li id="settings"><a href="settings">Settings</a></li>
+            <li id="settings"><a href="settings">User Account</a></li>
         </ul>
 	</section>
 
