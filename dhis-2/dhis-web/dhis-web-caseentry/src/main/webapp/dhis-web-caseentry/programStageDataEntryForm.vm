@@ -27,7 +27,7 @@
 		#if( $programStageInstance )
 			<tr>
 				<th><label for="executionDate">$programStageInstance.programStage.reportDateDescription &nbsp;&nbsp;&nbsp;</label></th>
-				<th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.programInstance.progam.id, $programStageInstance.id, byId('executionDate') )" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+				<th><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.programInstance.program.id, $programStageInstance.id, byId('executionDate') )" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 					<script type="text/javascript">
 					   datePickerValid( 'executionDate', false );
 					</script>  
