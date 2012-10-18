@@ -1,19 +1,24 @@
 
 <script>
     $(document).bind('pagebeforecreate',function(){
+        $.mobile.showPageLoadingMsg();
+
         $.ajax({
             url: '../api/currentUser/dashboard',
             dataType: 'json',
-            async: false
         }).success(function(data) {
             if( data.unreadMessageConversation > 0 ) {
                 $('#messages a').append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
             }
+
+            fm.initialize();
+            fm.uploadDataValueSets();
         }).error(function() {
             $('#messages a').append("<span class='ui-li-count'>Offline</span>")
+        }).complete(function() {
+            $('section[data-role="content"] ul').listview('refresh');
+            $.mobile.hidePageLoadingMsg();
         });
-
-        fm.initialize();
     });
 </script>
 

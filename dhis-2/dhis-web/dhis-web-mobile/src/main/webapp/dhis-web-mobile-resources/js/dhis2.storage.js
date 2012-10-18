@@ -77,6 +77,59 @@ dhis2.storage.FormManager.prototype.form = function ( id ) {
     return this.forms()[id]
 };
 
+dhis2.storage.FormManager.prototype.dataValueSets = function() {
+    var dataValueSets = localStorage['dataValueSets'];
+
+    if(dataValueSets !== undefined )
+    {
+        dataValueSets = JSON.parse( dataValueSets );
+    } else {
+        dataValueSets = [];
+    }
+
+    return dataValueSets;
+};
+
+dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) {
+    var dataValueSets = this.dataValueSets();
+
+    $.ajax({
+        url: '../api/dataValueSets2',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(dataValueSet),
+        async: false
+    }).success(function() {
+        // nop, successfully uploaded
+    }).error(function() {
+        // add to local dataValueSets
+        dataValueSets.push(dataValueSet);
+        localStorage['dataValueSets'] = JSON.stringify(dataValueSets);
+    });
+};
+
+dhis2.storage.FormManager.prototype.uploadDataValueSets = function() {
+    var dataValueSets = this.dataValueSets();
+
+    _.each(dataValueSets, function( dataValueSet, idx ) {
+        $.ajax({
+            url: '../api/dataValueSets',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(dataValueSet),
+            async: false
+        }).success(function() {
+            delete dataValueSets[idx];
+        }).error(function() {
+        });
+    });
+
+    // filter out undefined dataValues (successfully uploaded);
+    dataValueSets = _.filter(dataValueSets, function(dv) { return dv !== undefined; });
+
+    localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
+};
+
 // global storage manager instance
 (function () {
     window.fm = new dhis2.storage.FormManager();
