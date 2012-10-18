@@ -253,7 +253,7 @@ public class GenerateDataSetReportAction
         {
             if ( type != null )
             {
-                grid = dataSetReportService.getDefaultDataSetReport( selectedDataSet, selectedPeriod, selectedOrgunit, selectedUnitOnly, format, i18n );
+                grids = dataSetReportService.getCustomDataSetReportAsGrid( selectedDataSet, selectedOrgunit, selectedPeriod, selectedUnitOnly, format );
             }
             else
             {
