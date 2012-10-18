@@ -10,10 +10,6 @@
 			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
 		#end
-		$('#executionDate').unbind("change");
-		$('#executionDate').change(function() {
-			saveExecutionDate( getFieldValue('programId'), $programStageInstance.id, byId('executionDate') );
-		});
 		
 		entryFormContainerOnReady();
 	});

@@ -142,10 +142,7 @@ public class SaveExecutionDateAction
         Date dateValue = format.parseDate( executionDate );
         
         if ( dateValue != null )
-        {
-//            // Get program-stage-instance of the patient
-//            ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
-            
+        {           
             ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
 
             // If the program-stage-instance of the patient not exists,

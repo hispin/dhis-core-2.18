@@ -14,7 +14,7 @@
 				
 <h3 id='mainLinkLbl'>$i18n.getString( "anonymous_events" ) #openHelp('single_event_without_registration')</h3>
 <input type='hidden' id='orgunitId' name='orgunitId' value='$orgunit.id'>
-<input type='hidden' id='programStageInstanceId' name='programStageInstanceId'>
+<input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='0'>
 <input type='hidden' id='programStageId' name='programStageId' class='stage-object-selected'>
 <input type='hidden' id='isShowEventList' name='isShowEventList'>
 

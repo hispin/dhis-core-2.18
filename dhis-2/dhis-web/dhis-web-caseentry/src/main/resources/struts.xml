@@ -89,11 +89,11 @@
 
 		<action name="saveExecutionDate"
 			class="org.hisp.dhis.caseentry.action.caseentry.SaveExecutionDateAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseInput.vm
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_PATIENT_DATAVALUE_ADD,F_PATIENT_DATAVALUE_UPDATE,F_PATIENT_DATAVALUE_DELETE</param>

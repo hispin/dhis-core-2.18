@@ -347,25 +347,35 @@ function showAddEventForm()
 	hideById('mainLinkLbl');
 	hideById('actionDiv');
 	showById('dataEntryInfor');
+	setFieldValue('programStageInstanceId','0');
 	setInnerHTML('programName', jQuery('#programId option:selected').text());
 }
 
 function addNewEvent()
 {
-	jQuery.postJSON( "createAnonymousEncounter.action",
+	var programStageInstanceId = getFieldValue('programStageInstanceId');
+	var programId = jQuery('#programId option:selected').val();
+	var executionDate = getFieldValue('executionDate');
+	jQuery("#executionDate").css('background-color', SAVING_COLOR);
+	jQuery.postJSON( "saveExecutionDate.action",
 		{
-			programId: jQuery('#programId option:selected').val(),
-			executionDate: getFieldValue('executionDate')
+			programStageInstanceId:programStageInstanceId,
+			programId:programId,
+			executionDate:executionDate
 		}, 
 		function( json ) 
 		{    
 			if(json.response=='success')
 			{
+				jQuery("#executionDate").css('background-color', SUCCESS_COLOR);
 				setFieldValue('programStageInstanceId',json.message);
-				showUpdateEvent( json.message );
+				if(programStageInstanceId != json.message){
+					showUpdateEvent( json.message );
+				}
 			}
 			else
 			{
+				jQuery("#executionDate").css('background-color', ERROR_COLOR);
 				showWarningMessage( json.message );
 			}
 		});
