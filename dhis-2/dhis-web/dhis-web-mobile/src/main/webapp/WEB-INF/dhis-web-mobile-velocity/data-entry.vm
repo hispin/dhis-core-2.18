@@ -129,12 +129,9 @@
             return;
         }
 
-        console.log(Selected);
-
         $.mobile.showPageLoadingMsg();
 
         function renderFormTemplate(form) {
-
             var tmpl = jQuery('#data-entry-template').html();
 
             jQuery('#data-entry-page section[data-role="content"]').html(
@@ -154,13 +151,11 @@
             },
             dataType: 'json'
         }).success(function(form) {
-            console.log("rendering fresh form");
-            console.log(form);
             renderFormTemplate(form);
-            $.mobile.hidePageLoadingMsg();
         }).error(function() {
             var form = fm.form(Selected.dataSet);
             renderFormTemplate(form);
+        }).complete(function() {
             $.mobile.hidePageLoadingMsg();
         });
     }
@@ -192,19 +187,10 @@
 
         dataValueSet.dataValues = dataValues;
 
-        console.log(dataValueSet);
+        fm.saveDataValueSet( dataValueSet );
+        $.mobile.hidePageLoadingMsg();
 
-        $.ajax({
-            url: '../api/dataValueSets',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(dataValueSet)
-        }).success(function() {
-            $.mobile.hidePageLoadingMsg();
-        }).error(function() {
-            console.log("error when saving datavalues")
-            $.mobile.hidePageLoadingMsg();
-        });
+        console.log(dataValueSet);
     }
 
     jQuery(document).bind('pagechange', function (event, data) {
