@@ -560,7 +560,7 @@ public class GridUtils
      */
     public static String getValue( TagNode cell )
     {
-        return cell.getFirstChild() != null ? cell.getFirstChild().getText().trim().replaceAll( "&nbsp;", "" ) : "";
+        return cell.getFirstChild() != null ? cell.getFirstChild().getText().trim().replaceAll( "&nbsp;", EMPTY ) : EMPTY;
     }
     
     // -------------------------------------------------------------------------
