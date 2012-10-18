@@ -204,6 +204,12 @@ function loadDataEntry( programStageInstanceId )
 	disableCompletedButton(true);
 	disable('uncompleteBtn');
 	
+	$('#executionDate').unbind("change");
+	$('#executionDate').change(function() {
+		saveExecutionDate( getFieldValue('programId'), programStageInstanceId, byId('executionDate') );
+	});
+		
+		
 	jQuery(".stage-object-selected").removeClass('stage-object-selected');
 	var selectedProgramStageInstance = jQuery( '#' + prefixId + programStageInstanceId );
 	selectedProgramStageInstance.addClass('stage-object-selected');
