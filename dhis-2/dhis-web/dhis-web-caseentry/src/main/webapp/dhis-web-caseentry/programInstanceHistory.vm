@@ -1,8 +1,12 @@
-<table class="listTable">
+<table class="contentProviderTable" width="100%;">
+	<colgroup>
+		<col width="40%">
+		<col width="60%">
+	</colgroup>
 	<thead>
 		<tr>
 		#foreach( $header in $grid.getVisibleHeaders() )
-			<th #if( $header.meta )style="text-align:left"#end>$!encoder.htmlEncode( $header.name )</th>
+			<th>$!encoder.htmlEncode( $header.name )</th>
 		#end
 		</tr>
 	</thead>
@@ -15,7 +19,7 @@
 				#foreach( $col in $row )
 					#set( $index = ( $velocityCount - 1 ) )
 					#if( $grid.getVisibleHeaders().get( $index ).meta )
-						<td >$!encoder.htmlEncode( $col )</td>
+						<td>$!encoder.htmlEncode( $col )</td>
 					#else 
 						<td>$!col</td>
 					#end

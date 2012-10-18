@@ -12,7 +12,7 @@
 						<colgroup>
 							<col id="deCol">
 							<col id="entryCol">
-							#if( $programStage.program.isRegistration() == 'true')
+							#if( $programStage.program.displayProvidedOtherFacility=='true')
 							<col width="18%" />
 							#end
 						</colgroup>
@@ -20,7 +20,7 @@
 						<tr>
 							<th>$i18n.getString( "data_element" )</th>                   
 							<th>$i18n.getString( "entry" )</th>
-							#if( $programStage.program.isRegistration() == 'true')
+							#if( $programStage.program.displayProvidedOtherFacility=='true')
 							<th>$i18n.getString( "provided_elsewhere" )</th>
 							#end
 						</tr>
@@ -78,7 +78,7 @@
 										onkeypress="return keyPress(event, this)" tabindex="$tabIndex"/>
 								#end
 							</td> 
-							#if( $programStage.program.isRegistration() == 'true' )
+							#if( $programStage.program.displayProvidedOtherFacility=='true' )
 							<td style='width:20px;' align='center'>
 								#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
 								#if( $programStageDataElement.allowProvidedElsewhere == 'true')
