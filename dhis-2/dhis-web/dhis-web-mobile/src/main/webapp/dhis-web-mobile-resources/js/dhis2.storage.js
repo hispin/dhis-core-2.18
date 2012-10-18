@@ -94,7 +94,7 @@ dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) 
     var dataValueSets = this.dataValueSets();
 
     $.ajax({
-        url: '../api/dataValueSets2',
+        url: '../api/dataValueSets',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(dataValueSet),
