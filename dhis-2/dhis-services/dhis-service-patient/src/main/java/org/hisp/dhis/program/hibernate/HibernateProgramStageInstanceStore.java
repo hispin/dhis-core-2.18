@@ -375,9 +375,13 @@ public class HibernateProgramStageInstanceStore
             }
             else if ( column.isIdentifierType() )
             {
-                sql += "(select identifier from patientidentifier where patientid=p.patientid and patientidentifiertypeid="
-                    + column.getIdentifier() + ") as identifier_" + column.getIdentifier() + ",";
-
+                String deKey = "identifier_" + column.getIdentifier();
+                if ( !deKeys.contains( deKey ) )
+                {
+                    sql += "(select identifier from patientidentifier where patientid=p.patientid and patientidentifiertypeid="
+                        + column.getIdentifier() + ") as identifier_" + column.getIdentifier() + ",";
+                }
+                
                 if ( column.hasQuery() )
                 {
                     where += operator + "lower(identifier_" + column.getIdentifier() + ") " + column.getQuery() + " ";
@@ -386,8 +390,12 @@ public class HibernateProgramStageInstanceStore
             }
             else if ( column.isDynamicAttribute() )
             {
-                sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid="
-                    + column.getIdentifier() + ") as attribute_" + column.getIdentifier() + ",";
+                String deKey = "attribute_" + column.getIdentifier();
+                if ( !deKeys.contains( deKey ) )
+                {
+                    sql += "(select value from patientattributevalue where patientid=p.patientid and patientattributeid="
+                        + column.getIdentifier() + ") as attribute_" + column.getIdentifier() + ",";
+                }
 
                 if ( column.hasQuery() )
                 {
