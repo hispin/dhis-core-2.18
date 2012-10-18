@@ -46,6 +46,7 @@ import org.apache.commons.mail.SimpleEmail;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * @author Lars Helge Overland
@@ -83,6 +84,10 @@ public class EmailMessageSender
     // MessageSender implementation
     // -------------------------------------------------------------------------
 
+    /**
+     * Note this methods is invoked asynchronously.
+     */
+    @Async
     @Override
     public void sendMessage( String subject, String text, User sender, Set<User> users )
     {        
