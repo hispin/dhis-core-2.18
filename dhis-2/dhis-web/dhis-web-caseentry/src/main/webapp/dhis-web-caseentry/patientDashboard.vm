@@ -199,9 +199,8 @@
 			</table>
 		</div>
 	</div>
-
 </div>
-
+<br>
 <div id='programEnrollmentDiv' class='hidden'></div>
 <div id='dataEntryFormDiv'></div>
 <div id='dashboardHistoryDiv' class="dashboard-history" style="display:none;">
