@@ -141,9 +141,7 @@ public class TableAlteror
         executeSql( "CREATE INDEX index_programinstance ON programinstance( programinstanceid )" );
         
         executeSql( "ALTER TABLE program DROP COLUMN maxDaysAllowedInputData");
-        
-        executeSql( "ALTER TABLE programstage_dataelements DROP CONSTRAINT \"fkaf0e5fc634ee4761\" ");
-        
+                
         executeSql( "ALTER TABLE period modify periodid int AUTO_INCREMENT");
         executeSql( "CREATE SEQUENCE period_periodid_seq");
         executeSql( "ALTER TABLE period ALTER COLUMN periodid SET DEFAULT NEXTVAL('period_periodid_seq')");
