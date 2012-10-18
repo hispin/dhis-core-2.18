@@ -53,9 +53,9 @@ public class HibernatePatientAuditStore
     }
 
     @Override
-    public PatientAudit get( String visitor, Date date )
+    public PatientAudit get( Patient patient, String visitor, Date date )
     {
-        return (PatientAudit) getCriteria( Restrictions.eq( "visitor", visitor ), Restrictions.eq( "date", date ) )
-            .uniqueResult();
+        return (PatientAudit) getCriteria( Restrictions.eq( "patient", patient ),
+            Restrictions.eq( "visitor", visitor ), Restrictions.eq( "date", date ) ).uniqueResult();
     }
 }

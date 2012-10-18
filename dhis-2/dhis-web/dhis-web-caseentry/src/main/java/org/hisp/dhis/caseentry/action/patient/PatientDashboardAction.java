@@ -239,13 +239,13 @@ public class PatientDashboardAction
         // ---------------------------------------------------------------------
 
         patientAudits = patientAuditService.getPatientAudits( patient );
-
+        
         long millisInDay = 60 * 60 * 24 * 1000;
         long currentTime = new Date().getTime();
         long dateOnly = (currentTime / millisInDay) * millisInDay;
         Date date = new Date( dateOnly );
         String visitor = currentUserService.getCurrentUsername();
-        PatientAudit patientAudit = patientAuditService.getPatientAudit( visitor, date );
+        PatientAudit patientAudit = patientAuditService.getPatientAudit( patient, visitor, date );
         if ( patientAudit == null )
         {
             patientAudit = new PatientAudit( patient, date, visitor );
