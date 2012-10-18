@@ -91,7 +91,6 @@
 				</div>
 				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "short_name" ):</label><br/><span id="shortNameField"></span></p>
-				<p><label>$i18n.getString( "alternative_name" ):</label><br/><span id="alternativeNameField"></span></p>
 				<p><label>$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "active" ):</label><br/><span id="activeField"></span></p>
 				<p><label>$i18n.getString( "domain_type" ):</label><br/><span id="domainTypeField"></span></p>

@@ -223,29 +223,6 @@ public class DataElementServiceTest
     }
 
     @Test
-    public void testGetDataElementByAlternativeName()
-        throws Exception
-    {
-        DataElement dataElementA = createDataElement( 'A' );
-        DataElement dataElementB = createDataElement( 'B' );
-        int idA = dataElementService.addDataElement( dataElementA );
-        int idB = dataElementService.addDataElement( dataElementB );
-
-        dataElementA = dataElementService.getDataElementByAlternativeName( "DataElementAlternativeA" );
-        assertNotNull( dataElementA );
-        assertEquals( idA, dataElementA.getId() );
-        assertEquals( "DataElementA", dataElementA.getName() );
-
-        dataElementB = dataElementService.getDataElementByAlternativeName( "DataElementAlternativeB" );
-        assertNotNull( dataElementB );
-        assertEquals( idB, dataElementB.getId() );
-        assertEquals( "DataElementB", dataElementB.getName() );
-
-        DataElement dataElementC = dataElementService.getDataElementByAlternativeName( "DataElementAlternativeC" );
-        assertNull( dataElementC );
-    }
-
-    @Test
     public void testGetDataElementByShortName()
         throws Exception
     {

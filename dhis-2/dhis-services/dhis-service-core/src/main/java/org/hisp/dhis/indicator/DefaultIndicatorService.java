@@ -153,11 +153,6 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorStore.getByShortName( shortName ) );
     }
 
-    public Indicator getIndicatorByAlternativeName( String alternativeName )
-    {
-        return i18n( i18nService, indicatorStore.getByAlternativeName( alternativeName ) );
-    }
-
     public Indicator getIndicatorByCode( String code )
     {
         return i18n( i18nService, indicatorStore.getByCode( code ) );

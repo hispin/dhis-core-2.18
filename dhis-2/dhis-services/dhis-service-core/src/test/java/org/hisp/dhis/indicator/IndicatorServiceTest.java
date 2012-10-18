@@ -66,7 +66,6 @@ public class IndicatorServiceTest
     private void assertEq( char uniqueCharacter, Indicator indicator )
     {
         assertEquals( "Indicator" + uniqueCharacter, indicator.getName() );
-        assertEquals( "IndicatorAlternative" + uniqueCharacter, indicator.getAlternativeName() );
         assertEquals( "IndicatorShort" + uniqueCharacter, indicator.getShortName() );
         assertEquals( "IndicatorCode" + uniqueCharacter, indicator.getCode() );
         assertEquals( "IndicatorDescription" + uniqueCharacter, indicator.getDescription() );
@@ -445,31 +444,6 @@ public class IndicatorServiceTest
         Indicator indicatorC = indicatorService.getIndicatorByName( "IndicatorC" );
         assertNull( indicatorC );
     }    
-
-    @Test
-    public void testGetIndicatorByAlternativeName()
-        throws Exception
-    {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
-
-        indicatorService.addIndicatorType( type );
-        
-        Indicator indicatorA = createIndicator( 'A', type );
-        Indicator indicatorB = createIndicator( 'B', type );
-
-        int idA = indicatorService.addIndicator( indicatorA );
-        int idB = indicatorService.addIndicator( indicatorB );
-        
-        assertNotNull( indicatorService.getIndicator( idA ) );
-        assertNotNull( indicatorService.getIndicator( idB ) );
-        
-        indicatorA = indicatorService.getIndicatorByAlternativeName( "IndicatorAlternativeA" );
-        assertNotNull( indicatorA );
-        assertEq( 'A', indicatorA );
-        
-        Indicator indicatorC = indicatorService.getIndicatorByAlternativeName( "IndicatorAlternativeC" );
-        assertNull( indicatorC );
-    }
 
     @Test
     public void testGetIndicatorByShortName()

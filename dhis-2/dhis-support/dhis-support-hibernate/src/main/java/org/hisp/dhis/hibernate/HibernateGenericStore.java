@@ -239,12 +239,6 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    public final T getByAlternativeName( String alternativeName )
-    {
-        return getObject( Restrictions.eq( "alternativeName", alternativeName ) );
-    }
-
-    @Override
     public final T getByShortName( String shortName )
     {
         return getObject( Restrictions.eq( "shortName", shortName ) );

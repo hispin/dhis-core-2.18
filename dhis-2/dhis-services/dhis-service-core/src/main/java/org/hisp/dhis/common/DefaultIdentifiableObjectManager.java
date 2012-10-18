@@ -352,13 +352,6 @@ public class DefaultIdentifiableObjectManager
                     map.put( object.getShortName(), object );
                 }
             }
-            else if ( property == NameableProperty.ALTERNATIVE_NAME )
-            {
-                if ( object.getAlternativeName() != null )
-                {
-                    map.put( object.getAlternativeName(), object );
-                }
-            }
         }
 
         return map;

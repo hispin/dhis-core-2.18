@@ -82,13 +82,6 @@ public class ValidateIndicatorAction
         this.shortName = shortName;
     }
 
-    private String alternativeName;
-
-    public void setAlternativeName( String alternativeName )
-    {
-        this.alternativeName = alternativeName;
-    }   
-
     private String code;
 
     public void setCode( String code )
@@ -132,18 +125,6 @@ public class ValidateIndicatorAction
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "short_name_in_use" );
-
-                return ERROR;
-            }
-        }
-
-        if ( alternativeName != null && !alternativeName.trim().isEmpty() )
-        {
-            Indicator match = indicatorService.getIndicatorByAlternativeName( alternativeName );
-
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "alternative_name_in_use" );
 
                 return ERROR;
             }

@@ -197,11 +197,6 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.searchDataElementsByName( key ) );
     }
 
-    public DataElement getDataElementByAlternativeName( String alternativeName )
-    {
-        return i18n( i18nService, dataElementStore.getByAlternativeName( alternativeName ) );
-    }
-
     public DataElement getDataElementByShortName( String shortName )
     {
         return i18n( i18nService, dataElementStore.getByShortName( shortName ) );

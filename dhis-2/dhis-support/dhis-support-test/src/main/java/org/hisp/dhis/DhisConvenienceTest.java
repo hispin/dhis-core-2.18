@@ -365,7 +365,6 @@ public abstract class DhisConvenienceTest
 
         dataElement.setUid( BASE_UID + uniqueCharacter );
         dataElement.setName( "DataElement" + uniqueCharacter );
-        dataElement.setAlternativeName( "DataElementAlternative" + uniqueCharacter );
         dataElement.setShortName( "DataElementShort" + uniqueCharacter );
         dataElement.setCode( "DataElementCode" + uniqueCharacter );
         dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
@@ -530,7 +529,6 @@ public abstract class DhisConvenienceTest
 
         indicator.setUid( BASE_UID + uniqueCharacter );
         indicator.setName( "Indicator" + uniqueCharacter );
-        indicator.setAlternativeName( "IndicatorAlternative" + uniqueCharacter );
         indicator.setShortName( "IndicatorShort" + uniqueCharacter );
         indicator.setCode( "IndicatorCode" + uniqueCharacter );
         indicator.setDescription( "IndicatorDescription" + uniqueCharacter );

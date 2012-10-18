@@ -108,15 +108,6 @@ public interface DataElementService
     DataElement getDataElementByName( String name );
 
     /**
-     * Returns a DataElement with a given alternative name.
-     *
-     * @param alternativeName the alternative name of the DataElement to return.
-     * @return the DataElement with the given alternative name, or null if no
-     *         match.
-     */
-    DataElement getDataElementByAlternativeName( String alternativeName );
-
-    /**
      * Returns List of DataElements with a given key.
      *
      * @param key the name of the DataElement to return.

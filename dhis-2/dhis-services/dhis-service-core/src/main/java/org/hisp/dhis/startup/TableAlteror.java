@@ -121,6 +121,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicator DROP COLUMN denominatoraggregationtype" );
         executeSql( "ALTER TABLE dataset DROP COLUMN locked" );
         executeSql( "ALTER TABLE configuration DROP COLUMN completenessrecipientsid" );
+        executeSql( "ALTER TABLE dataelement DROP COLUMN alternativename" );
+        executeSql( "ALTER TABLE indicator DROP COLUMN alternativename" );
         
         executeSql( "DROP INDEX crosstab" );
         

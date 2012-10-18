@@ -81,9 +81,6 @@ function showDataElementDetails( dataElementId )
 		setInnerHTML( 'nameField', json.dataElement.name );
 		setInnerHTML( 'shortNameField', json.dataElement.shortName );
 
-		var alternativeName = json.dataElement.alternativeName;
-		setInnerHTML( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
-
 		var description = json.dataElement.description;
 		setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
 

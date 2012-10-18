@@ -13,7 +13,6 @@
 
 	    checkValueIsExist( "name", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
 	    checkValueIsExist( "shortName", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
-	    checkValueIsExist( "alternativeName", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
 	    checkValueIsExist( "code", "validateIndicator.action", { id : getFieldValue( 'id' ) } );
 	} );
 </script>
@@ -37,10 +36,6 @@
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $indicator.shortName )"></td>
-	</tr>
-	<tr>
-		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $indicator.alternativeName )"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>

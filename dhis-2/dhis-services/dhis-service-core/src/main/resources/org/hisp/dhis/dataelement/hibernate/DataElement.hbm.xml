@@ -15,8 +15,6 @@
     </id>
     &identifiableProperties;
 
-    <property name="alternativeName" column="alternativename" not-null="false" unique="true" length="230" />
-
     <property name="shortName" column="shortname" not-null="true" unique="true" length="50" />
 
     <property name="description" type="text" />

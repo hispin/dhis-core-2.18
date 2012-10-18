@@ -101,7 +101,6 @@ public class ExcelUtils
         throws RowsExceededException, WriteException
     {
         sheet.addCell( new Label( column++, row, element.getName(), format ) );
-        sheet.addCell( new Label( column++, row, element.getAlternativeName(), format ) );
         sheet.addCell( new Label( column++, row, element.getShortName(), format ) );
         sheet.addCell( new Label( column++, row, element.getCode(), format ) );
         sheet.addCell( new Label( column++, row, element.getDescription(), format ) );
@@ -134,7 +133,6 @@ public class ExcelUtils
         throws RowsExceededException, WriteException
     {
         sheet.addCell( new Label( column++, row, indicator.getName(), format ) );
-        sheet.addCell( new Label( column++, row, indicator.getAlternativeName(), format ) );
         sheet.addCell( new Label( column++, row, indicator.getShortName(), format ) );
         sheet.addCell( new Label( column++, row, indicator.getCode(), format ) );
         sheet.addCell( new Label( column++, row, indicator.getDescription(), format ) );

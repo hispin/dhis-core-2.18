@@ -17,7 +17,6 @@
 
 	    checkValueIsExist( "name", "validateDataElement.action" );
 	    checkValueIsExist( "shortName", "validateDataElement.action" );
-	    checkValueIsExist( "alternativeName", "validateDataElement.action" );
 	    checkValueIsExist( "code", "validateDataElement.action" );
 	} );
 
@@ -41,10 +40,6 @@
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="shortName" name="shortName" /></td>
-	</tr>
-	<tr>
-		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" /></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
