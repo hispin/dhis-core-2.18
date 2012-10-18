@@ -40,6 +40,7 @@ import org.hisp.dhis.sms.MessageSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
+import org.springframework.scheduling.annotation.Async;
 
 public class SmsMessageSender
     implements MessageSender
@@ -68,6 +69,10 @@ public class SmsMessageSender
     // MessageSender implementation
     // -------------------------------------------------------------------------
 
+    /**
+     * Note this methods is invoked asynchronously.
+     */
+    @Async
     @SuppressWarnings( "unchecked" )
     public String sendMessage( String subject, String text, User sender, boolean isPhone, Set<?> recipients,
         String gatewayId )
