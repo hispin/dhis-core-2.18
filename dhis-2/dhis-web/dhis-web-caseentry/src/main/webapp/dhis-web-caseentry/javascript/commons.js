@@ -1703,7 +1703,7 @@ function commentDivToggle(isHide)
 {
 	jQuery("#commentTB tr").removeClass("hidden");
 	jQuery("#commentTB tr").each( function(index, item){
-		if(isHide && index > 5){
+		if(isHide && index > 4){
 			jQuery(this).addClass("hidden");
 		}
 		else if(!isHide){		
@@ -1712,7 +1712,12 @@ function commentDivToggle(isHide)
 		index++;
 	});
 	
-	if( isHide ){
+	if(jQuery("#commentTB tr").length <= 5 )
+	{
+		hideById('showCommentBtn');
+		hideById('hideCommentBtn');
+	}
+	else if( isHide ){
 		showById('showCommentBtn');
 		hideById('hideCommentBtn');
 	}
