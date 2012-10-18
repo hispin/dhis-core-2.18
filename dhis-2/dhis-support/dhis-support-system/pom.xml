@@ -144,6 +144,10 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.htmlparser</groupId>
+      <artifactId>htmlparser</artifactId>
+    </dependency>
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>

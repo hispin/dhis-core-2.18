@@ -62,6 +62,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.FilterUtils;
 
@@ -71,7 +72,7 @@ import org.hisp.dhis.system.util.FilterUtils;
  */
 public class DefaultDataSetReportService
     implements DataSetReportService
-{
+{   
     private static final String NULL_REPLACEMENT = "";
     private static final String DEFAULT_HEADER = "Value";
     private static final String TOTAL_HEADER = "Total";
@@ -108,6 +109,21 @@ public class DefaultDataSetReportService
         Map<String, Double> indicatorValueMap = dataSetReportStore.getAggregatedIndicatorValues( dataSet, period, unit );
         
         return prepareReportContent( dataSet.getDataEntryForm(), valueMap, indicatorValueMap, format );
+    }
+    
+    public List<Grid> getCustomDataSetReportAsGrid( DataSet dataSet, OrganisationUnit unit, Period period,
+        boolean selectedUnitOnly, I18nFormat format )
+    {
+        String html = getCustomDataSetReport( dataSet, unit, period, selectedUnitOnly, format );
+        
+        try
+        {
+            return GridUtils.fromHtml( html );
+        }
+        catch ( Exception ex )
+        {
+            throw new RuntimeException( "Failed to render custom data set report as grid", ex );
+        }
     }
 
     public List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit,

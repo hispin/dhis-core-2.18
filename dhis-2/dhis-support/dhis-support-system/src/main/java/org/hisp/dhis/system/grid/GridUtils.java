@@ -43,6 +43,7 @@ import static org.hisp.dhis.system.util.PDFUtils.resetPaddings;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.VelocityContext;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -71,6 +74,14 @@ import org.hisp.dhis.system.util.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.system.velocity.VelocityManager;
+import org.htmlparser.Node;
+import org.htmlparser.NodeFilter;
+import org.htmlparser.Parser;
+import org.htmlparser.filters.OrFilter;
+import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.nodes.TagNode;
+import org.htmlparser.tags.TableRow;
+import org.htmlparser.tags.TableTag;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.lowagie.text.Document;
@@ -81,9 +92,13 @@ import com.lowagie.text.pdf.PdfPTable;
  */
 public class GridUtils
 {
+    private static final Log log = LogFactory.getLog( GridUtils.class );
+    
     private static final String EMPTY = "";
     
     private static final String XLS_SHEET_PREFIX = "Sheet ";
+    
+    private static final NodeFilter HTML_ROW_FILTER = new OrFilter( new TagNameFilter( "td" ), new TagNameFilter( "th" ) );    
     
     private static final WritableCellFormat XLS_FORMAT_TTTLE = new WritableCellFormat( new WritableFont(
         WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
@@ -426,6 +441,126 @@ public class GridUtils
                 grid.addValue( rs.getObject( i ) );
             }
         }
+    }
+    
+    /**
+     * Creates a list of Grids based on the given HTML string. This works only
+     * for table-based HTML documents.
+     * 
+     * @param html the HTML string.
+     * @return a list of Grids.
+     */
+    public static List<Grid> fromHtml( String html )
+        throws Exception
+    {
+        if ( html == null || html.trim().isEmpty() )
+        {
+            return null;
+        }
+        
+        List<Grid> grids = new ArrayList<Grid>();
+        
+        Parser parser = Parser.createParser( html, "UTF-8" );
+        
+        Node[] tables = parser.extractAllNodesThatMatch( new TagNameFilter( "table" ) ).toNodeArray();
+        
+        for ( Node t : tables )
+        {
+            Grid grid = new ListGrid();
+
+            TableTag table = (TableTag) t;
+            
+            TableRow[] rows = table.getRows();
+            
+            Integer firstColumnCount = null;
+            
+            for ( TableRow row : rows )
+            {   
+                if ( getColumnCount( row ) == 0 ) // Ignore if no cells
+                {
+                    log.warn( "Ignoring row with no columns" );
+                    continue;
+                }
+                
+                Node[] cells = row.getChildren().extractAllNodesThatMatch( HTML_ROW_FILTER ).toNodeArray();
+                
+                if ( firstColumnCount == null ) // First row becomes header
+                {
+                    firstColumnCount = getColumnCount( row );
+                    
+                    for ( Node c : cells )
+                    {                        
+                        TagNode cell = (TagNode) c;
+                        
+                        grid.addHeader( new GridHeader( getValue( cell ), false, false ) );
+
+                        Integer colSpan = MathUtils.parseInt( cell.getAttribute( "colspan" ) );
+                        
+                        if ( colSpan != null && colSpan > 1 )
+                        {
+                            grid.addEmptyHeaders( ( colSpan - 1 ) );
+                        }
+                    }
+                }
+                else // Rest becomes rows
+                {                
+                    if ( firstColumnCount != getColumnCount( row ) ) // Ignore
+                    {
+                        log.warn( "Ignoring row which has " + row.getColumnCount() + " columns since table has " + firstColumnCount + " columns" );
+                        continue;
+                    }
+                    
+                    grid.addRow();
+                    
+                    for ( Node c : cells )
+                    {
+                        // TODO row span
+                        
+                        TagNode cell = (TagNode) c;
+                        
+                        grid.addValue( getValue( cell ) );
+    
+                        Integer colSpan = MathUtils.parseInt( cell.getAttribute( "colspan" ) );
+                        
+                        if ( colSpan != null && colSpan > 1 )
+                        {
+                            grid.addEmptyValues( ( colSpan - 1 ) );
+                        }
+                    }
+                }
+            }
+            
+            grids.add( grid );
+        }
+        
+        return grids;
+    }
+    
+    /**
+     * Returns the number of columns/cells in the given row, including cell spacing.
+     */
+    private static int getColumnCount( TableRow row )
+    {
+        Node[] cells = row.getChildren().extractAllNodesThatMatch( HTML_ROW_FILTER ).toNodeArray();
+        
+        int cols = 0;
+        
+        for ( Node cell : cells )
+        {
+            Integer colSpan = MathUtils.parseInt( ((TagNode) cell).getAttribute( "colspan" ) );
+            
+            cols += colSpan != null ? colSpan : 1;
+        }
+        
+        return cols;
+    }
+    
+    /**
+     * Retrieves the value of a table cell.
+     */
+    public static String getValue( TagNode cell )
+    {
+        return cell.getFirstChild() != null ? cell.getFirstChild().getText().trim().replaceAll( "&nbsp;", "" ) : "";
     }
     
     // -------------------------------------------------------------------------

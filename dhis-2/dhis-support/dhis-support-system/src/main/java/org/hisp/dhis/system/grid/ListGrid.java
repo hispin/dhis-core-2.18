@@ -160,6 +160,18 @@ public class ListGrid
 
         return this;
     }
+    
+    public Grid addEmptyHeaders( int number )
+    {
+        for ( int i = 0; i < number; i++ )
+        {
+            headers.add( new GridHeader( "", false, false ) );
+        }
+        
+        updateColumnIndexMap();
+        
+        return this;
+    }
 
     @JsonProperty
     @JsonView( { DetailedView.class } )
@@ -219,6 +231,16 @@ public class ListGrid
     {
         grid.get( currentRowWriteIndex ).add( value );
 
+        return this;
+    }
+    
+    public Grid addEmptyValues( int number )
+    {
+        for ( int i = 0; i < number; i++ )
+        {
+            addValue( "" );
+        }
+        
         return this;
     }
 

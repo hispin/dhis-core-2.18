@@ -82,6 +82,13 @@ public interface Grid
      * Adds a header value.
      */
     Grid addHeader( GridHeader header );
+    
+    /**
+     * Adds a number of empty values to the Grid.
+     * 
+     * @param number the number of columns to add.
+     */
+    Grid addEmptyHeaders( int number );
         
     /**
      * Returns the current height / number of rows in the grid.
@@ -109,6 +116,13 @@ public interface Grid
      * @param value the value to add.
      */
     Grid addValue( Object value );
+    
+    /**
+     * Adds a number of empty values to the Grid at the current row.
+     * 
+     * @param number the number of values to add.
+     */
+    Grid addEmptyValues( int number );
 
     /**
      * Returns the row with the given index.

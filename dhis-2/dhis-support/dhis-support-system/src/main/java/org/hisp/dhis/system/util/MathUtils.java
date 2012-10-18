@@ -347,7 +347,7 @@ public class MathUtils
      */
     public static Double parseDouble( String value )
     {
-        if ( value == null )
+        if ( value == null || value.trim().isEmpty() )
         {
             return null;
         }
@@ -355,6 +355,30 @@ public class MathUtils
         try
         {
             return Double.parseDouble( value );
+        }
+        catch ( NumberFormatException ex )
+        {
+            return null;
+        }
+    }
+    
+    /**
+     * Parses an integer silently. Returns the Integer value of the given string.
+     * Returns null if the input string is null, empty or if it cannot be parsed.
+     * 
+     * @param string the string.
+     * @return an Integer.
+     */
+    public static Integer parseInt( String string )
+    {
+        if ( string == null || string.trim().isEmpty() )
+        {
+            return null;
+        }
+        
+        try
+        {
+            return Integer.parseInt( string );
         }
         catch ( NumberFormatException ex )
         {
