@@ -2,8 +2,13 @@
 	<tr>
 		<th colspan='2'>$programStage.program.name</th>
 	</tr>
+	#set( $mark = true )
+	<!-- Identifiers/Attributes belong to the selected single program -->
+	#set($program = $programStage.program)
+	#parse( "/dhis-web-caseentry/identifierAndAttributeForm.vm" )
+	
+	<!-- Data elements -->
 #set( $dataElementRowCount = 0 )
-#set( $mark = true )
 #set( $tabIndex = 1 )
 #foreach( $programStageDataElement in $programStageDataElements )
 	#set( $dataElementRowCount = $dataElementRowCount + 1 )    
