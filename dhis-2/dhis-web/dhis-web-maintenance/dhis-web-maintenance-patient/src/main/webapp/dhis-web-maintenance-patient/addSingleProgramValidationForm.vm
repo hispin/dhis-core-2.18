@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "add_single_program_rule_validation" )</h3>
+<h3>$i18n.getString( "add_single_program_validation_rule" )</h3>
 
 <form id='programValidationForm' name='programValidationForm' method='post' action='addProgramValidation.action'>
 
