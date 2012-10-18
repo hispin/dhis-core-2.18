@@ -128,10 +128,10 @@
 {
   position: absolute;
   left: 330px;
-  height: 25px;
+  height: 24px;
   width: 350px;
   border: 1px solid #ccc;
-  padding: 2px 6px 0 6px;
+  padding: 3px 6px 0 6px;
 }
 
 #searchField
