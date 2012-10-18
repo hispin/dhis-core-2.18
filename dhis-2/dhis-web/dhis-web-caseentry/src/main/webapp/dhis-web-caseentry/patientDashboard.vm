@@ -206,12 +206,10 @@
 <div id='dataEntryFormDiv'></div>
 <div id='dashboardHistoryDiv' class="dashboard-history" style="display:none;">
 	<table width="100%">
-		<thead>
 		<tr>
 			<th>$i18n.getString("visitor")</th>
 			<th>$i18n.getString("date")</th>
 		</tr>
-		</thead>
 		#set( $mark = false )
 		#foreach( $patientAudit in $patientAudits )
 		<tr #alternate( $mark )>
