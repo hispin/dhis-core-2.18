@@ -141,7 +141,7 @@ function getGenderSelector()
 
 function getAgeTextBox( container )
 {
-	var ageField = '<select id="dateOperator" style="width:40px;" name="dateOperator" ><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option><option value=">"> > </option><option value=">="> >= </option></select>';
+	var ageField = '<select id="dateOperator" name="dateOperator" style="width:40px"><option value=">"> > </option><option value=">="> >= </option><option value="="> = </option><option value="<"> < </option><option value="<="> <= </option></select>';
 	ageField += '<input type="text" id="searchText_' + container + '" name="searchText" style="width:220px;">';
 	return ageField;
 }
