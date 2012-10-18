@@ -143,32 +143,34 @@ public class ContextUtils
         }
     }
 
-    public static void conflictResponse( HttpServletResponse response, String message )
-    {
-        response.setStatus( HttpServletResponse.SC_CONFLICT );
-        printResponse( response, message );
-    }
-
     public static void okResponse( HttpServletResponse response, String message )
     {
-        response.setStatus( HttpServletResponse.SC_OK );
-        printResponse( response, message );
+        setResponse( response, HttpServletResponse.SC_OK, message );
     }
 
     public static void createdResponse( HttpServletResponse response, String message )
     {
-        response.setStatus( HttpServletResponse.SC_CREATED );
-        printResponse( response, message );
+        setResponse( response, HttpServletResponse.SC_CREATED, message );
     }
 
     public static void notFoundResponse( HttpServletResponse response, String message )
     {
-        response.setStatus( HttpServletResponse.SC_NOT_FOUND );
-        printResponse( response, message );
+        setResponse( response, HttpServletResponse.SC_NOT_FOUND, message );
     }
 
-    private static void printResponse( HttpServletResponse response, String message )
+    public static void conflictResponse( HttpServletResponse response, String message )
     {
+        setResponse( response, HttpServletResponse.SC_CONFLICT, message );
+    }
+
+    public static void errorResponse( HttpServletResponse response, String message )
+    {
+        setResponse( response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, message );
+    }
+    
+    private static void setResponse( HttpServletResponse response, int statusCode, String message )
+    {
+        response.setStatus( statusCode );
         response.setContentType( CONTENT_TYPE_TEXT );
 
         try
