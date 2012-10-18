@@ -19,17 +19,17 @@
             if( item.indexOf( 'ou:') != -1 )
             {
                 ou_count++;
-                $('<li data-icon="delete"><a href="#">' + selected[item] + '</a> <span id="message-recipient-counter" class="ui-li-count">Tap to remove</span></li>').insertAfter('#organisation-unit-list');
+                $('<li onclick="removeRecipient(this);" data-icon="delete" data-key="' + item + '"><a href="#">' + selected[item] + '</a></li>').insertAfter('#organisation-unit-list');
             }
             else if( item.indexOf( 'u:') != -1 )
             {
                 u_count++;
-                $('<li data-icon="delete"><a href="#">' + selected[item] + '</a> <span id="message-recipient-counter" class="ui-li-count">Tap to remove</span></li>').insertAfter('#user-list');
+                $('<li onclick="removeRecipient(this);" data-icon="delete" data-key="' + item + '"><a href="#">' + selected[item] + '</a></li>').insertAfter('#user-list');
             }
             else if( item.indexOf( 'ug:') != -1 )
             {
                 ug_count++;
-                $('<li data-icon="delete"><a href="#">' + selected[item] + '</a> <span id="message-recipient-counter" class="ui-li-count">Tap to remove</span></li>').insertAfter('#user-group-list');
+                $('<li onclick="removeRecipient(this);" data-icon="delete" data-key="' + item + '"><a href="#">' + selected[item] + '</a></li>').insertAfter('#user-group-list');
             }
         });
 
@@ -67,6 +67,16 @@
         }
 
         selected[prefix + ':' + id] = $(e).find('a').html();
+
+        $.mobile.changePage('#manage-recipients-page');
+    }
+
+    function removeRecipient(e)
+    {
+        var key = $(e).jqmData('key');
+        delete selected[key];
+
+        displaySelected();
     }
 
     function manageRecipientsPage()
