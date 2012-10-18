@@ -41,7 +41,7 @@
 		</list>
 		
 	    <list name="programStageDataElements" table="patienttabularreport_programstagedataelements">
-			<key column="programstagesectionid" />
+			<key column="patienttabularreportid" />
 		    <list-index column="tabular_sort_order" base="1" />
 		    <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement"/>
         </list>
