@@ -52,7 +52,7 @@
     <td style="width:20em; padding-left:2em; vertical-align:top">
         <div id="detailsArea" style="display:none;">
             <div style="float:right;">
-                <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
+                <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/hide.png" alt="$i18n.getString( 'hide_details' )"></a>
             </div>              
             <p><label class="bold">$i18n.getString( "a_is_to_b" ):</label><br><span id="aIsToBField"></span></p>
             <p><label class="bold">$i18n.getString( "b_is_to_a" ):</label><br><span id="bIsToAField"></span></p>
