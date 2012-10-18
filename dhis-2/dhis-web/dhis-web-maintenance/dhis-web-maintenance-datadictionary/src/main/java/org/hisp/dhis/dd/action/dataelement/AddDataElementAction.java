@@ -250,7 +250,6 @@ public class AddDataElementAction
         OptionSet optionSet = optionService.getOptionSet( selectedOptionSetId );
 
         dataElement.setName( name );
-        dataElement.setAlternativeName( alternativeName );
         dataElement.setShortName( shortName );
         dataElement.setCode( code );
         dataElement.setDescription( description );

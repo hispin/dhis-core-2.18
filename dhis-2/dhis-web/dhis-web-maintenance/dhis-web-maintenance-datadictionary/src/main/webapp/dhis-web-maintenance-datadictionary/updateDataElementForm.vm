@@ -16,7 +16,6 @@
 
 		checkValueIsExist( "name", "validateDataElement.action", {id:getFieldValue('id')});
 		checkValueIsExist( "shortName", "validateDataElement.action", {id:getFieldValue('id')});
-		checkValueIsExist( "alternativeName", "validateDataElement.action", {id:getFieldValue('id')});
 		checkValueIsExist( "code", "validateDataElement.action", {id:getFieldValue('id')});
 
 		updateAggreationOperation( getFieldValue('valueType') );
@@ -43,10 +42,6 @@
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" )</label></td>
 		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $dataElement.shortName )"></td>
-	</tr>
-	<tr>
-		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $dataElement.alternativeName )"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>

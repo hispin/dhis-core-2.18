@@ -35,14 +35,6 @@ public interface GenericNameableObjectStore<T>
     extends GenericIdentifiableObjectStore<T>
 {
     /**
-     * Retrieves the object with the given alternative name.
-     *
-     * @param name the alternative name.
-     * @return the object with the given alternative name.
-     */
-    T getByAlternativeName( String alternativeName );
-
-    /**
      * Retrieves the object with the given short name.
      *
      * @param name the short name.

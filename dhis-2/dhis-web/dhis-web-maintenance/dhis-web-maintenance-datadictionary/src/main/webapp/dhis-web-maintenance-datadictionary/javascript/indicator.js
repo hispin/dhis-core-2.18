@@ -54,9 +54,6 @@ function showIndicatorDetails( indicatorId )
 
 		setInnerHTML( 'shortNameField', json.indicator.shortName );
 
-		var alternativeName = json.indicator.alternativeName;
-		setInnerHTML( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
-
 		var description = json.indicator.description;
 		setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
 

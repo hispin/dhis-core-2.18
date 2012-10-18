@@ -58,7 +58,6 @@ public class IndicatorConverter
     private static final String FIELD_ID = "id";
     private static final String FIELD_UID = "uid";
     private static final String FIELD_NAME = "name";
-    private static final String FIELD_ALTERNATIVE_NAME = "alternativeName";
     private static final String FIELD_SHORT_NAME = "shortName";
     private static final String FIELD_CODE = "code";
     private static final String FIELD_DESCRIPTION = "description";
@@ -143,7 +142,6 @@ public class IndicatorConverter
                 writer.writeElement( FIELD_ID, String.valueOf( indicator.getId() ) );
                 writer.writeElement( FIELD_UID,  indicator.getUid() );
                 writer.writeElement( FIELD_NAME, indicator.getName() );
-                writer.writeElement( FIELD_ALTERNATIVE_NAME, indicator.getAlternativeName() );
                 writer.writeElement( FIELD_SHORT_NAME, indicator.getShortName() );
                 writer.writeElement( FIELD_CODE, indicator.getCode() );
                 writer.writeElement( FIELD_DESCRIPTION, indicator.getDescription() );
@@ -180,7 +178,6 @@ public class IndicatorConverter
             }
 
             indicator.setName( values.get( FIELD_NAME ) );
-            indicator.setAlternativeName( values.get( FIELD_ALTERNATIVE_NAME ) );
             indicator.setShortName( values.get( FIELD_SHORT_NAME ) );
 
             if ( params.minorVersionGreaterOrEqual(  "1.2" ) ) 

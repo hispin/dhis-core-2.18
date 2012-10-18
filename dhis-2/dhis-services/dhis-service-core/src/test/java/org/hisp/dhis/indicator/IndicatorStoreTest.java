@@ -73,7 +73,6 @@ public class IndicatorStoreTest
     private void assertEq( char uniqueCharacter, Indicator indicator )
     {
         assertEquals( "Indicator" + uniqueCharacter, indicator.getName() );
-        assertEquals( "IndicatorAlternative" + uniqueCharacter, indicator.getAlternativeName() );
         assertEquals( "IndicatorShort" + uniqueCharacter, indicator.getShortName() );
         assertEquals( "IndicatorCode" + uniqueCharacter, indicator.getCode() );
         assertEquals( "IndicatorDescription" + uniqueCharacter, indicator.getDescription() );
@@ -321,31 +320,6 @@ public class IndicatorStoreTest
         Indicator indicatorC = indicatorStore.getByName( "IndicatorC" );
         assertNull( indicatorC );
     }    
-
-    @Test
-    public void testGetIndicatorByAlternativeName()
-        throws Exception
-    {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
-
-        indicatorTypeStore.save( type );
-        
-        Indicator indicatorA = createIndicator( 'A', type );
-        Indicator indicatorB = createIndicator( 'B', type );
-
-        int idA = indicatorStore.save( indicatorA );
-        int idB = indicatorStore.save( indicatorB );
-        
-        assertNotNull( indicatorStore.get( idA ) );
-        assertNotNull( indicatorStore.get( idB ) );
-        
-        indicatorA = indicatorStore.getByAlternativeName( "IndicatorAlternativeA" );
-        assertNotNull( indicatorA );
-        assertEq( 'A', indicatorA );
-        
-        Indicator indicatorC = indicatorStore.getByAlternativeName( "IndicatorAlternativeC" );
-        assertNull( indicatorC );
-    }
 
     @Test
     public void testGetIndicatorByShortName()

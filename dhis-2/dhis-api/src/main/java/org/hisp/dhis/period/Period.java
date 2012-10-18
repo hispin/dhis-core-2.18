@@ -146,7 +146,6 @@ public class Period
     public Period copyTransientProperties( Period other )
     {
         this.name = other.getName();
-        this.alternativeName = other.getAlternativeName();
         this.shortName = other.getShortName();
         this.code = other.getCode();
 

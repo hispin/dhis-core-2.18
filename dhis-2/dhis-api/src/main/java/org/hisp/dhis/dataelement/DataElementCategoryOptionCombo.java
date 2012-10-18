@@ -314,20 +314,6 @@ public class DataElementCategoryOptionCombo
         // throw new UnsupportedOperationException( "Cannot set shortName on DataElementCategoryOptionCombo: " + shortName );
     }
 
-    @Override
-    @JsonIgnore
-    public String getAlternativeName()
-    {
-        return getName();
-    }
-
-    @Override
-    public void setAlternativeName( String alternativeName )
-    {
-        // throw new UnsupportedOperationException( "Cannot set alternativeName on DataElementCategoryOptionCombo: "
-        //    + alternativeName );
-    }
-
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )

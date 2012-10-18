@@ -76,7 +76,6 @@
 				</div>				
 				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "short_name" ):</label><br/><span id="shortNameField"></span></p>
-				<p><label>$i18n.getString( "alternative_name" ):</label><br/><span id="alternativeNameField"></span></p>
 				<p><label>$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "annualized" ):</label><br/><span id="annualizedField"></span></p>
                 <p><label>$i18n.getString( "indicator_type" ):</label><br/><span id="indicatorTypeNameField"></span></p>

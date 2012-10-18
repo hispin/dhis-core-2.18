@@ -390,11 +390,6 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "short_name" ) ) );
         table.addCell( getTextCell( element.getShortName() ) );
 
-        if ( nullIfEmpty( element.getAlternativeName() ) != null )
-        {
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ) ) );
-            table.addCell( getTextCell( element.getAlternativeName() ) );
-        }
         if ( nullIfEmpty( element.getCode() ) != null )
         {
             table.addCell( getItalicCell( i18n.getString( "code" ) ) );
@@ -456,11 +451,6 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "short_name" ) ) );
         table.addCell( getTextCell( indicator.getShortName() ) );
 
-        if ( nullIfEmpty( indicator.getAlternativeName() ) != null )
-        {
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ) ) );
-            table.addCell( getTextCell( indicator.getAlternativeName() ) );
-        }
         if ( nullIfEmpty( indicator.getCode() ) != null )
         {
             table.addCell( getItalicCell( i18n.getString( "code" ) ) );

@@ -98,15 +98,13 @@ public class ImportAnalyserTest
         List<EntityPropertyValue> violations = analysis.getUniqueConstraintViolations();
         
         assertNotNull( violations );
-        assertEquals( 11, violations.size() );
+        assertEquals( 9, violations.size() );
         
         assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "name", "DataElementA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "alternativename", "DataElementAlternativeA" ) ) );
         assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "shortname", "DataElementShortA" ) ) );
         assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "code", "DataElementCodeA" ) ) );
         
         assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "name", "IndicatorA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "alternativename", "IndicatorAlternativeA" ) ) );
         assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "shortname", "IndicatorShortA" ) ) );
         assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "code", "IndicatorCodeA" ) ) );
         

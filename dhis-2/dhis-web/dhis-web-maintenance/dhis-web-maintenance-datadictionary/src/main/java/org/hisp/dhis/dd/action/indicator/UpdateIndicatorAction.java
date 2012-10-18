@@ -89,13 +89,6 @@ public class UpdateIndicatorAction
         this.shortName = shortName;
     }
 
-    private String alternativeName;
-
-    public void setAlternativeName( String alternativeName )
-    {
-        this.alternativeName = alternativeName;
-    }
-
     private String code;
 
     public void setCode( String code )
@@ -190,11 +183,6 @@ public class UpdateIndicatorAction
 
         IndicatorType indicatorType = indicatorService.getIndicatorType( indicatorTypeId );
 
-        if ( alternativeName != null && alternativeName.trim().length() == 0 )
-        {
-            alternativeName = null;
-        }
-
         if ( code != null && code.trim().length() == 0 )
         {
             code = null;
@@ -206,7 +194,6 @@ public class UpdateIndicatorAction
         }
 
         indicator.setName( name );
-        indicator.setAlternativeName( alternativeName );
         indicator.setShortName( shortName );
         indicator.setCode( code );
         indicator.setDescription( description );

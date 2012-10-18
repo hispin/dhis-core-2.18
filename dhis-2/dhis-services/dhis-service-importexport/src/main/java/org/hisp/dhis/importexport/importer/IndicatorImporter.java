@@ -72,7 +72,6 @@ public class IndicatorImporter
     protected void importMatching( Indicator object, Indicator match )
     {
         match.setName( object.getName() );
-        match.setAlternativeName( object.getAlternativeName() );
         match.setShortName( object.getShortName() );
         match.setCode( object.getCode() );
         match.setDescription( object.getDescription() );
@@ -93,10 +92,6 @@ public class IndicatorImporter
         
         if ( match == null )
         {
-            match = indicatorService.getIndicatorByAlternativeName( object.getAlternativeName() );
-        }
-        if ( match == null )
-        {
             match = indicatorService.getIndicatorByShortName( object.getShortName() );
         }
         if ( match == null )
@@ -111,10 +106,6 @@ public class IndicatorImporter
     protected boolean isIdentical( Indicator object, Indicator existing )
     {
         if ( !object.getName().equals( existing.getName() ) )
-        {
-            return false;
-        }
-        if ( !isSimiliar( object.getAlternativeName(), existing.getAlternativeName() ) || ( isNotNull( object.getAlternativeName(), existing.getAlternativeName() ) && !object.getAlternativeName().equals( existing.getAlternativeName() ) ) )
         {
             return false;
         }

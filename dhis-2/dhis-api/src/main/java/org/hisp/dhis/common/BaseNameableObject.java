@@ -50,11 +50,6 @@ public class BaseNameableObject
     private static final long serialVersionUID = 714136796552146362L;
 
     /**
-     * An alternative name of this Object. Optional but unique.
-     */
-    protected String alternativeName;
-
-    /**
      * An short name representing this Object. Optional but unique.
      */
     protected String shortName;
@@ -82,11 +77,10 @@ public class BaseNameableObject
     {
     }
 
-    public BaseNameableObject( int id, String uid, String name, String alternativeName, String shortName,
+    public BaseNameableObject( int id, String uid, String name, String shortName,
                                String code, String description )
     {
         super( id, uid, name );
-        this.alternativeName = alternativeName;
         this.shortName = shortName;
         this.code = code;
         this.description = description;
@@ -114,16 +108,6 @@ public class BaseNameableObject
         result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
-    }
-
-    public String getAlternativeName()
-    {
-        return alternativeName;
-    }
-
-    public void setAlternativeName( String alternativeName )
-    {
-        this.alternativeName = alternativeName;
     }
 
     @JsonProperty
