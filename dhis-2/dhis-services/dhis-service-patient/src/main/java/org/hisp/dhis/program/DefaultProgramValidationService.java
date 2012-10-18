@@ -66,7 +66,7 @@ public class DefaultProgramValidationService
     private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
         + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
-    private final String regExpComparator = "(<|>|<=|>|>=|==|!=)+";
+    private final String regExpComparator = "(<=|>=|==|!=|<|>|>)+";
 
     private final String INVALID_CONDITION = "Invalid condition";
 
@@ -358,13 +358,13 @@ public class DefaultProgramValidationService
         String leftSideValue = getOneSideExpressionValue( sides[0].trim(), programStageInstance );
         String rightSideValue = getOneSideExpressionValue( sides[1].trim(), programStageInstance );
 
+        if ( leftSideValue == null || rightSideValue == null )
+        {
+            return true;
+        }
+        
         if ( expression.indexOf( SUM_OPERATOR_IN_EXPRESSION ) != -1 )
         {
-            if ( leftSideValue == null || rightSideValue == null )
-            {
-                return true;
-            }
-
             String result = leftSideValue + comparetor + rightSideValue;
             final JEP parser = new JEP();
             parser.parseExpression( result );
@@ -378,9 +378,27 @@ public class DefaultProgramValidationService
             }
             else if ( comparetor.equals( "==" ) && leftSideValue.equals( rightSideValue ) )
             {
+                return true; 
+            }
+            else if ( comparetor.equals( "<" ) && leftSideValue.compareTo( rightSideValue )<0 )
+            {
                 return true;
             }
-            else if ( !comparetor.equals( "==" ) && !leftSideValue.equals( rightSideValue ) )
+            else if ( comparetor.equals( "<=" ) && 
+                (  leftSideValue.equals( rightSideValue ) || leftSideValue.compareTo( rightSideValue )<0 ))
+            {
+                return true;
+            }
+            else if ( comparetor.equals( ">" ) && leftSideValue.compareTo( rightSideValue )>0 )
+            {
+                return true;
+            }
+            else if ( comparetor.equals( ">=" ) &&                 
+                ( leftSideValue.equals( rightSideValue ) || leftSideValue.compareTo( rightSideValue )>0 ))
+            {
+                return true;
+            }
+            else if ( comparetor.equals( "!=" ) && !leftSideValue.equals( rightSideValue ) )
             {
                 return true;
             }

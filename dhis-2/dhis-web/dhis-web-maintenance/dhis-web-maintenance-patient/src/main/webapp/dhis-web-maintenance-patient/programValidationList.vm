@@ -10,9 +10,9 @@
 			  <tr>
 				<td></td>
 				<td>
-					<input type="button" value="$i18n.getString( "create_new_single_validation" )" onclick="window.location.href='showAddSingleProgramValidationForm.action?id=$program.id'" style="width:200px">
-					<input type="button" value="$i18n.getString( "create_new_multi_validation" )" onclick="window.location.href='showAddMultiProgramValidationForm.action?id=$program.id'" style="width:200px">
-					<input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:200px">
+					<input type="button" value="$i18n.getString( "add_single_rule" )" onclick="window.location.href='showAddSingleProgramValidationForm.action?id=$program.id'" style="width:100px">
+					<input type="button" value="$i18n.getString( "add_multi_rule" )" onclick="window.location.href='showAddMultiProgramValidationForm.action?id=$program.id'" style="width:100px">
+					<input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:100px">
 				</td>
 			  </tr>
 			  <tr>            
