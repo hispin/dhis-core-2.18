@@ -277,7 +277,7 @@ public class DefaultProgramDataEntryService
                         inputHTML += jQueryCalendar;
                     }
 
-                    if ( !programStageInstance.isCompleted() && allowProvidedElsewhere )
+                    if ( allowProvidedElsewhere )
                     {
                         // Add ProvidedByOtherFacility checkbox
                         inputHTML = addProvidedElsewherCheckbox( inputHTML, patientDataValue, programStage );
