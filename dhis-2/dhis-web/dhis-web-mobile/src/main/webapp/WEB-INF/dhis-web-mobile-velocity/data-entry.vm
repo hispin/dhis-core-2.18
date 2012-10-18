@@ -133,17 +133,78 @@
 
         $.mobile.showPageLoadingMsg();
 
-        var form = fm.form(Selected.dataSet);
+        function renderFormTemplate(form) {
 
-        var tmpl = jQuery('#data-entry-template').html();
+            var tmpl = jQuery('#data-entry-template').html();
 
-        jQuery('#data-entry-page section[data-role="content"]').html(
-            _.template( tmpl, form )
-        );
+            jQuery('#data-entry-page section[data-role="content"]').html(
+                _.template( tmpl, form )
+            );
 
-        jQuery('#data-entry-page').trigger('pagecreate')
-        jQuery('#data-entry-list').listview('refresh');
-        $.mobile.hidePageLoadingMsg();
+            jQuery('#data-entry-page').trigger('pagecreate')
+            jQuery('#data-entry-list').listview('refresh');
+            jQuery('#send_button').bind('click', saveValues);
+        }
+
+        $.ajax({
+            url: '../api/dataSets/' + Selected.dataSet + '/form',
+            data: {
+                ou: Selected.orgUnit,
+                pe: Selected.period
+            },
+            dataType: 'json'
+        }).success(function(form) {
+            console.log("rendering fresh form");
+            console.log(form);
+            renderFormTemplate(form);
+            $.mobile.hidePageLoadingMsg();
+        }).error(function() {
+            var form = fm.form(Selected.dataSet);
+            renderFormTemplate(form);
+            $.mobile.hidePageLoadingMsg();
+        });
+    }
+
+    function saveValues() {
+        $.mobile.showPageLoadingMsg();
+
+        var fields = $('#data-entry-form :input[name]');
+
+        var dataValueSet = {
+          dataSet: Selected.dataSet,
+          orgUnit: Selected.orgUnit,
+          period: Selected.period.toString()
+        };
+
+        var dataValues = [];
+
+        _.each(fields, function(field) {
+           var field = $(field);
+
+           var dataValue = {
+            dataElement: field.data('dataelement'),
+            categoryOptionCombo: field.data('categoryoptioncombo'),
+            value: field.val()
+           };
+
+           dataValues.push(dataValue);
+        });
+
+        dataValueSet.dataValues = dataValues;
+
+        console.log(dataValueSet);
+
+        $.ajax({
+            url: '../api/dataValueSets',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(dataValueSet)
+        }).success(function() {
+            $.mobile.hidePageLoadingMsg();
+        }).error(function() {
+            console.log("error when saving datavalues")
+            $.mobile.hidePageLoadingMsg();
+        });
     }
 
     jQuery(document).bind('pagechange', function (event, data) {
@@ -185,7 +246,7 @@
     </div>
     <ul id="period-list" data-role="listview" data-inset="true">
         <% _( periods ).each( function(period, idx) { %>
-        <li><a href="#data-entry-page" data-id="<%= period.id %>"><%= period.name %></a></li>
+        <li><a href="#data-entry-page" data-id="<%= period.iso %>"><%= period.name %></a></li>
         <% }); %>
     </ul>
 </script>
@@ -198,27 +259,29 @@
             <li data-role="list-divider"><%= group.label %></li>
 
             <% _( group.fields ).each( function(field, idx) { %>
+            <% var fieldId = _.uniqueId('field'); %>
+            <% var value = field.value === undefined ? '' : field.value; %>
                 <li>
-                    <label for='<%= field.dataElement %>-<%= field.categoryOptionCombo %>'><%= field.label %></label>
+                    <label for='<%= fieldId %>'><%= field.label %></label>
 
                     <% if( field.type == 'TEXT' ) { %>
-                        <input type="text" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                        <input type="text" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'DATE' ) { %>
-                        <input type="date" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                        <input type="date" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'BOOLEAN' ) { %>
-                        <select type="" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255">
-                            <option value="">None selected</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
+                        <select type="" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255">
+                            <option value="">[ None selected ]</option>
+                            <option value="true" <% if( value == "true" ) { %> selected="selected" <% } %>>Yes</option>
+                            <option value="false" <% if( value == "false" ) { %> selected="selected" <% } %>>No</option>
                         </select>
                     <% } else if( field.type == 'INTEGER' ) { %>
-                        <input type="number" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                        <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'INTEGER_POSITIVE' ) { %>
-                        <input type="number" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                        <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'INTEGER_NEGATIVE' ) { %>
-                        <input type="number" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                        <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } else if( field.type == 'NUMBER' ) { %>
-                        <input type="number" id='<%= field.dataElement %>-<%= field.categoryOptionCombo %>' maxlength="255" />
+                        <input type="number" id='<%= fieldId %>' name='<%= fieldId %>' data-dataElement='<%= field.dataElement %>' data-categoryOptionCombo='<%= field.categoryOptionCombo %>' maxlength="255" value="<%= value %>" />
                     <% } %>
                 </li>
             <% }); %>

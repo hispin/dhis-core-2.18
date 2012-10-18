@@ -46,19 +46,19 @@
 
     <section data-role="content">
        <form id="settings-form" method="POST">
-           <label for="firstNameInput">First Name</label>
+           <label for="firstNameInput">First Name:</label>
            <input id="firstNameInput" name="firstName" type="text" placeholder="Enter first name.." />
 
-           <label for="surnameInput">Surname</label>
+           <label for="surnameInput">Surname:</label>
            <input id="surnameInput" name="surname" type="text" placeholder="Enter surname.." />
 
-           <label for="emailInput">E-mail</label>
+           <label for="emailInput">E-mail:</label>
            <input id="emailInput" name="email" type="text" placeholder="Enter e-mail.." />
 
-           <label for="phoneNumberInput">Phone Number</label>
+           <label for="phoneNumberInput">Phone Number:</label>
            <input id="phoneNumberInput" name="phoneNumber" type="text" placeholder="Enter phone number.." />
 
-           <input type="submit" value="Save settings" />
+           <input type="submit" value="Save" />
        </form>
    	</section>
 
