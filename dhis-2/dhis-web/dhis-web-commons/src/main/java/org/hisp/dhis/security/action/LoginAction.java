@@ -74,11 +74,14 @@ public class LoginAction
     public String execute()
     {
         Device device = deviceResolver.resolveDevice( ServletActionContext.getRequest() );
-        
+
+        ServletActionContext.getResponse().addHeader( "Login-Page", "true" );
+
         if ( device.isMobile() )
         {
             return "mobile";
         }
+
         return "standard";
     }
 }
