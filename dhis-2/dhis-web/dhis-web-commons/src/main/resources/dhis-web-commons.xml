@@ -115,6 +115,16 @@
     </action>
 
   </package>
+  
+  <!-- Public -->
+
+  <package name="dhis-web-commons-public" extends="dhis-web-commons" namespace="/dhis-web-commons/public">
+  
+    <action name="account" class="org.hisp.dhis.commons.action.NoAction">
+      <result name="success" type="velocity">/dhis-web-commons/useraccount/account.vm</result>
+    </action>
+  
+  </package>
 
   <!-- Organisation Unit Selection Tree -->
   
@@ -896,6 +906,6 @@
 		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 	  <param name="onExceptionReturn">plainTextError</param>
     </action>
-		
+	
   </package>
 </struts>
