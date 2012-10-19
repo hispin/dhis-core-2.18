@@ -41,10 +41,21 @@ dhis2.storage.FormManager.prototype.initialize = function ( args ) {
     }).success(function ( data ) {
         localStorage['organisationUnits'] = JSON.stringify(data.organisationUnits);
         localStorage['forms'] = JSON.stringify(data.forms);
+
+        if(args.success) {
+            args.success.call(data);
+        }
     }).error(function () {
         // offline ? reuse meta-data already present
         console.log("unable to load meta-data");
+
+        if(args.error) {
+            args.error.call();
+        }
     }).complete(function() {
+        if(args.complete) {
+            args.complete.call();
+        }
     });
 };
 
@@ -108,7 +119,7 @@ dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) 
     });
 };
 
-dhis2.storage.FormManager.prototype.uploadDataValueSets = function() {
+dhis2.storage.FormManager.prototype.uploadDataValueSets = function( args ) {
     var dataValueSets = this.dataValueSets();
 
     _.each(dataValueSets, function( dataValueSet, idx ) {
@@ -120,6 +131,10 @@ dhis2.storage.FormManager.prototype.uploadDataValueSets = function() {
             async: false
         }).success(function() {
             delete dataValueSets[idx];
+
+            if( args.success ) {
+                args.success.call();
+            }
         }).error(function() {
         });
     });
@@ -128,6 +143,10 @@ dhis2.storage.FormManager.prototype.uploadDataValueSets = function() {
     dataValueSets = _.filter(dataValueSets, function(dv) { return dv !== undefined; });
 
     localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
+
+    if( args.done) {
+        args.done.call();
+    }
 };
 
 // global storage manager instance

@@ -189,13 +189,10 @@
 
         fm.saveDataValueSet( dataValueSet );
         $.mobile.hidePageLoadingMsg();
-
-        console.log(dataValueSet);
     }
 
     jQuery(document).bind('pagechange', function (event, data) {
         var pageId = data.toPage.attr('id');
-        console.log(pageId);
 
         if( pageId == 'organisation-units-page' ) {
             loadOrganisationUnitsPage();

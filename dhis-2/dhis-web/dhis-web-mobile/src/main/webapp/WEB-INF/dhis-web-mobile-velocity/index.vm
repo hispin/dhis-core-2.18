@@ -14,19 +14,28 @@
 
         $.ajax({
             url: '../api/currentUser/dashboard',
-            dataType: 'json',
+            dataType: 'json'
         }).success(function(data) {
             if( data.unreadMessageConversation > 0 ) {
                 $('#messages a').append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
             }
 
-            fm.initialize();
-            fm.uploadDataValueSets();
+            fm.initialize({
+                success: function() {
+                    fm.uploadDataValueSets({
+                        success: function() {
+                        },
+                        done: function() {
+                            $.mobile.hidePageLoadingMsg();
+                        }
+                    });
+                }
+            });
         }).error(function() {
             $('#messages a').append("<span class='ui-li-count'>Offline</span>")
+            $.mobile.hidePageLoadingMsg();
         }).complete(function() {
             $('section[data-role="content"] ul').listview('refresh');
-            $.mobile.hidePageLoadingMsg();
         });
     });
 </script>
