@@ -1,15 +1,15 @@
 
 <script>
-    $(document).bind('pagebeforecreate',function(){
-        $.ajax({
-            url: '../mobile',
-            async: false
-        }).complete(function(e) {
-            if( e.getResponseHeader('Login-Page') ) {
-                document.location = '../mobile';
-            }
-        });
+    $.ajax({
+        url: '../mobile',
+        async: false
+    }).complete(function(e) {
+        if( e.getResponseHeader('Login-Page') ) {
+            document.location = '../mobile';
+        }
+    });
 
+    $(document).bind('pagebeforecreate',function(){
         $.mobile.showPageLoadingMsg();
 
         $.ajax({
