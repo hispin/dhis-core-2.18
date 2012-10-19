@@ -166,7 +166,7 @@ public class AccountController
         }
 
         // ---------------------------------------------------------------------
-        // Create and save user
+        // Create and save user, return 201
         // ---------------------------------------------------------------------
         
         User user = new User();
@@ -196,6 +196,11 @@ public class AccountController
     @RequestMapping( value = "/username/{username}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String validateUserName( @PathVariable( "username" ) String username )
     {
+        if ( StringUtils.trimToNull( username ) == null )
+        {
+            return "Username must be specified";
+        }
+        
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
         
         return credentials == null ? TRUE : "Username is already taken";
