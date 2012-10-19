@@ -5,9 +5,7 @@
             url: '../mobile',
             async: false
         }).complete(function(e) {
-            var loginPage = e.getResponseHeader('Login-Page');
-
-            if( loginPage ) {
+            if( e.getResponseHeader('Login-Page') ) {
                 document.location = '../mobile';
             }
         });
