@@ -275,7 +275,7 @@ function getSearchParams()
 }
 
 // ----------------------------------------------------------------------------
-// Show patients
+// Show death field in person re form
 // ----------------------------------------------------------------------------
 
 function isDeathOnChange()
