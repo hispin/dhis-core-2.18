@@ -1,6 +1,17 @@
 
 <script>
     $(document).bind('pagebeforecreate',function(){
+        $.ajax({
+            url: '../mobile',
+            async: false
+        }).complete(function(e) {
+            var loginPage = e.getResponseHeader('Login-Page');
+
+            if( loginPage ) {
+                document.location = '../mobile';
+            }
+        });
+
         $.mobile.showPageLoadingMsg();
 
         $.ajax({
