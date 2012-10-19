@@ -8,7 +8,7 @@
 <script>
 	jQuery("#programEnrollmentSelectDiv").ready(function(){
 		validation( 'programEnrollmentSelectDiv', function(form){
-			saveEnrollment();
+			validateProgramEnrollment();
 		});
 		datePickerInRangeValid( 'dateOfIncidentField' , 'enrollmentDateField' );
 		setFieldValue("dateOfIncidentField", "");
