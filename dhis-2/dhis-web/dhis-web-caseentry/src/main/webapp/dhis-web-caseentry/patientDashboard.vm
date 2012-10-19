@@ -94,7 +94,7 @@
 			<table id='activeTB' name='activeTB'>
 				#foreach( $programInstance in $activeProgramInstances )
 					#set($programStageInstanceId = '')
-					#if($programInstance.program.type==2)
+					#if($programInstance.program.type==1)
 						#foreach( $programStageInstance in $programInstance.programStageInstances)
 							#set($programStageInstanceId = $programStageInstance.id)
 						#end

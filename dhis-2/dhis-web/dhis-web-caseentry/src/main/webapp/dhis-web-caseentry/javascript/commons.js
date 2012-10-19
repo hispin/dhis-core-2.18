@@ -1304,7 +1304,7 @@ function validateProgramEnrollment()
 			hideById('message');
 			var type = json.response;
 			if ( type == 'success' ){
-				saveProgramEnrollment();
+				saveEnrollment();
 			}
 			else if ( type == 'error' ){
 				setMessage( i18n_program_enrollment_failed + ':' + '\n' + message );
@@ -1315,21 +1315,6 @@ function validateProgramEnrollment()
 			jQuery('#loaderDiv').hide();
       }
     });
-}
-
-function saveProgramEnrollment()
-{
-	$.ajax({
-		type: "POST",
-		url: 'saveProgramEnrollment.action',
-		data: getParamsForDiv('programEnrollmentSelectDiv'),
-		success: function( html ) {
-				setInnerHTML('programEnrollmentDiv', html );
-				jQuery('#enrollBtn').attr('value',i18n_update);
-				showSuccessMessage( i18n_enrol_success );
-			}
-		});
-    return false;
 }
 
 function unenrollmentForm( programInstanceId )
