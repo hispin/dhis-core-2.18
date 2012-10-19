@@ -30,6 +30,7 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
@@ -48,6 +49,7 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.validation.ValidationCriteria;
 
 import com.opensymphony.xwork2.Action;
 
@@ -232,7 +234,18 @@ public class PatientDashboardAction
 
         singlePrograms = programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, orgunit );
 
-        singlePrograms.removeAll( patient.getPrograms() );
+        singlePrograms.removeAll( patient.getPrograms() );       
+        Iterator<Program> iter = singlePrograms.iterator();
+        while( iter.hasNext() )
+        {
+            Program program = iter.next();
+            ValidationCriteria criteria = program.isValid( patient );
+
+            if( criteria!= null)
+            {
+                iter.remove();
+            }
+        }
 
         // ---------------------------------------------------------------------
         // Patient-Audit
