@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>DHIS 2</title>
+    <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="../css/account.css">
+</head>
+<body>
+
+<div id="accountHeader"></div>
+
+<div id="accountContainer">
+
+<div id="bannerArea"><a href="http://dhis2.org"><img src="../security/logo_front.png" style="border:none"></a></div>
+
+<div id="accountInput">
+
+<h3>Create a new account</h3>
+
+<form action="../../api/account" method="post">
+<table>
+    <tr>
+        <td><label for="firstName">$i18n.getString( "name" )</label></td>
+        <td><input type="text" id="firstName" name="firstName" style="width:11.7em; margin-right:7px;" placeholder="First">
+            <input type="text" id="surname" name="surname" style="width:11.7em" placeholder="Last"></td>
+    </tr>
+    <tr>
+        <td style="width:140px"><label for="username">$i18n.getString( "user_name" )</label></td>
+        <td><input type="text" id="username" name="username" autocomplete="off"></td>
+    </tr>
+    <tr>
+        <td><label for="password">$i18n.getString( "password" )</label></td>
+        <td><input type="password" id="password" name="password" autocomplete="off"></td>
+    </tr>
+    <tr>
+        <td><label for="retypePassword">$i18n.getString( "confirm_password" )</label></td>
+        <td><input type="password" id="retypePassword" name="retypePassword" autocomplete="off"></td>
+    </tr>
+    <tr>
+        <td><label for="email">$i18n.getString( "email" )</label></td>
+        <td><input type="text" id="email" name="email"></td>
+    </tr>
+    <tr>
+        <td><label for="phoneNumber">$i18n.getString( "mobile_phone" )</label></td>
+        <td style="padding-bottom: 5px"><input type="text" id="phoneNumber" name="phoneNumber"></td>
+    </tr>
+    <tr>
+    	<td><label>Prove you are not a robot</label></td>
+    	<td style="padding-bottom: 5px">
+		<script type="text/javascript" src="https://www.google.com/recaptcha/api/challenge?k=6LcM6tcSAAAAANwYsFp--0SYtcnze_WdYn8XwMMk"></script>
+		<noscript>
+		  <iframe src="https://www.google.com/recaptcha/api/noscript?k=6LcM6tcSAAAAANwYsFp--0SYtcnze_WdYn8XwMMk"
+		    height="300" width="500" frameborder="0"></iframe><br>
+		  <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+		  <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+		</noscript>
+		</td>
+	</tr>
+    <tr>
+    	<td></td>
+    	<td><input type="submit" value="Create" style="width:10em"></td>
+    </tr>
+</table>
+
+</form>
+
+</div>
+
+</div>
+
+</body>
+</html>
