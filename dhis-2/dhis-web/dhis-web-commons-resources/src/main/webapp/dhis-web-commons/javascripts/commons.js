@@ -1163,9 +1163,9 @@ function insertTextCommon( inputAreaName, inputText )
 // -----------------------------------------------------------------------------
 
 /**
- * Create validator for fileds in form *
+ * Create validator for fileds in form
  * 
- * this should replace validation() at some point, but theres just to much code
+ * This should replace validation() at some point, but theres just to much code
  * depending on the old version for now.
  * 
  * See http://bassistance.de/jquery-plugins/jquery-plugin-validation/ for more
@@ -1174,27 +1174,31 @@ function insertTextCommon( inputAreaName, inputText )
  * @param formId form to validate
  * @param submitHandler the submitHandler to use
  * @param kwargs A dictionary of optional arguments, currently supported are:
- *            beforeValidateHandler rules
+ *        beforeValidateHandler, rules
  */
-function validation2(formId, submitHandler, kwargs)
+function validation2( formId, submitHandler, kwargs )
 {
 	var beforeValidateHandler = kwargs["beforeValidateHandler"];
 	var rules = kwargs["rules"];
-	var validator = jQuery("#" + formId ).validate({
-		meta:"validate",
-		errorElement:"span",
+	var validator = jQuery( "#" + formId ).validate( {
+		meta: "validate",
+		errorElement: "span",
 		beforeValidateHandler: beforeValidateHandler,
 		submitHandler: submitHandler,
 		rules: rules,
 		errorPlacement: function(error, element) {
-			element.parent("td").append("<br>").append(error);
+			element.parent( "td" ).append( "<br>" ).append( error );
 		}
-	});
+	} );
 
-	$("#" + formId + " input").each(function(n) {
-		try {
-			$(this).attr("maxlength", rules[this.id].rangelength[1]);
-		} catch(e) {}
+	$( "#" + formId + " input" ).each( function( n )
+	{
+		try
+		{
+			$( this ).attr( "maxlength", rules[this.id].rangelength[1] );
+		}
+		catch( e )
+		{}
 	});
 
 	var nameField = jQuery('#' + formId + ' :input')[0];

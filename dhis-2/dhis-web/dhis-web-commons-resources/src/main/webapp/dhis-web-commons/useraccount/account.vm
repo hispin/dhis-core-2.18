@@ -3,6 +3,8 @@
 <head>
     <title>DHIS 2</title>
     <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
+    <script type="text/javascript" src="../javascripts/jQuery/jquery.validate.js"></script>
+    <script type="text/javascript" src="../javascripts/useraccount/account.js"></script>
     <link type="text/css" rel="stylesheet" href="../css/account.css">
 </head>
 <body>
@@ -17,7 +19,8 @@
 
 <h3>Create a new account</h3>
 
-<form action="../../api/account" method="post">
+<form id="accountForm" action="../../api/account" method="post">
+
 <table>
     <tr>
         <td><label for="firstName">$i18n.getString( "name" )</label></td>

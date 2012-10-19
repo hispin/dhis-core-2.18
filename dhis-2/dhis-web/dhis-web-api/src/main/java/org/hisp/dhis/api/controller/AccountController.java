@@ -41,7 +41,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,6 +61,7 @@ public class AccountController
     private static final String TRUE = "true";
     private static final String FALSE = "false";
     private static final String SPLIT = "\n";
+    private static final int MAX_LENGTH = 80;
     
     @Autowired
     private RestTemplate restTemplate;
@@ -99,10 +99,10 @@ public class AccountController
         // Validate input, return 400 if invalid
         // ---------------------------------------------------------------------
         
-        if ( username == null )
+        if ( username == null || username.trim().length() > MAX_LENGTH )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "User name must be specified";
+            return "User name is not specified or invalid";
         }
         
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
@@ -113,23 +113,29 @@ public class AccountController
             return "User name is alread taken";
         }
         
-        if ( firstName == null )
+        if ( firstName == null || firstName.trim().length() > MAX_LENGTH )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "First name must be specified";
+            return "First name is not specified or invalid";
         }
 
-        if ( surname == null )
+        if ( surname == null || surname.trim().length() > MAX_LENGTH )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Last name must be specified";
+            return "Last name is not specified or invalid";
         }
 
-        if ( password == null )
+        if ( password == null || password.trim().length() > MAX_LENGTH )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "Password must be specified";
+            return "Password is not specified or invalid";
         }
+        
+        if ( password.trim().equals( username.trim() ) )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return "Password cannot be equal to username";
+        }            
 
         if ( recapChallenge == null )
         {
@@ -193,17 +199,15 @@ public class AccountController
         return "Account created";
     }
     
-    @RequestMapping( value = "/username/{username}", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String validateUserName( @PathVariable( "username" ) String username )
+    @RequestMapping( value = "/username", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
+    public @ResponseBody Boolean validateUserName( @RequestParam String username )
     {
         if ( StringUtils.trimToNull( username ) == null )
         {
-            return "Username must be specified";
+            return Boolean.FALSE;
         }
         
-        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
-        
-        return credentials == null ? TRUE : "Username is already taken";
+        return userService.getUserCredentialsByUsername( username ) == null;
     }
     
     @RequestMapping( value = "/recaptcha", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
