@@ -1,43 +1,42 @@
 
 <script>
-    $.ajax({
-        url: '../mobile',
-        async: false
-    }).complete(function(e) {
-        if( e.getResponseHeader('Login-Page') ) {
-            document.location = '../mobile';
-        }
-    });
+    redirectToLoginIfRequired();
 
-    $(document).bind('pagebeforecreate',function(){
-        $.mobile.showPageLoadingMsg();
+    function redirectToLoginIfRequired() {
+        return $.ajax({
+            url: '../mobile',
+            async: false
+        }).complete(function(e) {
+            if( e.getResponseHeader('Login-Page') ) {
+                document.location = '../mobile';
+            }
+        });
+    }
 
-        $.ajax({
+    function getDashboard() {
+        return $.ajax({
             url: '../api/currentUser/dashboard',
             dataType: 'json'
         }).success(function(data) {
             if( data.unreadMessageConversation > 0 ) {
                 $('#messages a').append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
             }
-
-            fm.initialize({
-                success: function() {
-                    fm.uploadDataValueSets({
-                        success: function() {
-                        },
-                        done: function() {
-                            $.mobile.hidePageLoadingMsg();
-                        }
-                    });
-                }
-            });
         }).error(function() {
             $('#messages a').append("<span class='ui-li-count'>Offline</span>")
             $.mobile.hidePageLoadingMsg();
-        }).complete(function() {
-            $('section[data-role="content"] ul').listview('refresh');
         });
-    });
+    }
+
+    $(document).bind('pagebeforecreate',function(){
+        $.mobile.showPageLoadingMsg();
+
+        getDashboard().then(
+                fm.getMetaData().then(
+                        fm.uploadDataValueSets()).always(function() {
+            $('section[data-role="content"] ul').listview('refresh');
+            $.mobile.hidePageLoadingMsg();
+        }));
+    })
 </script>
 
 <section data-role="page" id="index-page" data-theme="c">
