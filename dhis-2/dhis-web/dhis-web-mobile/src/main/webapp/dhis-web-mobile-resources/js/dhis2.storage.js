@@ -43,11 +43,11 @@ dhis2.storage.FormManager.prototype.initialize = function ( args ) {
         localStorage['forms'] = JSON.stringify(data.forms);
 
         if(args.success) {
-            args.success.call(data);
+            args.success.call(null, data);
         }
     }).error(function () {
         // offline ? reuse meta-data already present
-        console.log("unable to load meta-data");
+            console.log("unable to load meta-data");
 
         if(args.error) {
             args.error.call();
