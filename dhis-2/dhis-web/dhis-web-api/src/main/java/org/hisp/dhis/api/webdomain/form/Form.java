@@ -43,6 +43,8 @@ public class Form
 
     private List<Group> groups = new ArrayList<Group>();
 
+    private boolean allowFuturePeriods;
+
     public Form()
     {
     }
@@ -80,6 +82,17 @@ public class Form
         this.groups = groups;
     }
 
+    @JsonProperty
+    public boolean isAllowFuturePeriods()
+    {
+        return allowFuturePeriods;
+    }
+
+    public void setAllowFuturePeriods( boolean allowFuturePeriods )
+    {
+        this.allowFuturePeriods = allowFuturePeriods;
+    }
+
     @Override
     public String toString()
     {
@@ -87,6 +100,7 @@ public class Form
             "label='" + label + '\'' +
             ", periodType='" + periodType + '\'' +
             ", groups=" + groups +
+            ", allowFuturePeriods=" + allowFuturePeriods +
             '}';
     }
 }

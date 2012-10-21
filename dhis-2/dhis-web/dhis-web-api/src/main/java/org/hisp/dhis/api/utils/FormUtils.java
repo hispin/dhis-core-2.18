@@ -49,6 +49,7 @@ public class FormUtils
         Form form = new Form();
         form.setLabel( dataSet.getName() );
         form.setPeriodType( dataSet.getPeriodType().getName() );
+        form.setAllowFuturePeriods( dataSet.isAllowFuturePeriods() );
 
         if ( dataSet.getSections().size() > 0 )
         {

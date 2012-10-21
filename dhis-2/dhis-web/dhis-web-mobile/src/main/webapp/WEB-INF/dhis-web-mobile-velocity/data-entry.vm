@@ -9,6 +9,7 @@
     var periodTypeFactory = new PeriodType();
     var periodType;
     var periodOffset = 0;
+    var allowFuturePeriods = false;
 
     function selectOrganisationUnit( e ) {
         var $this = $(this);
@@ -67,27 +68,48 @@
         var tmpl = $('#period-template').html();
 
         var periods = periodTypeFactory.get( periodType ).generatePeriods( periodOffset );
-        periods = periodTypeFactory.filterFuturePeriodsExceptCurrent( periods );
+
+        if( !allowFuturePeriods ) {
+            periods = periodTypeFactory.filterFuturePeriods( periods );
+            $('#next_year').button('disable');
+        }
+
         periods = periodTypeFactory.reverse( periods );
 
-        $('#period-page section[data-role="content"]').html(
-                _.template(tmpl, { 'periods' : periods })
+        $( '#period-page section[data-role="content"]' ).html(
+            _.template(tmpl, { 'periods' : periods })
         );
 
-        $('#period-page').trigger( 'pagecreate' );
-        $('#period-list').listview( 'refresh' );
+        $( '#period-page' ).trigger( 'pagecreate' );
+        $( '#period-list' ).listview( 'refresh' );
 
-        $('#previous_year').bind( 'click', function() {
+        if( !allowFuturePeriods ) {
+            $('#next_year').button('disable');
+        }
+
+        $( '#previous_year' ).bind( 'click', function() {
             periodOffset--;
             refreshPeriods();
+
+            if( periodOffset < 0) {
+                $('#next_year').button('enable');
+            } else {
+                $('#next_year').button('disable');
+            }
         });
 
-        $('#next_year').bind( 'click', function() {
+        $( '#next_year' ).bind( 'click', function() {
             periodOffset++;
             refreshPeriods();
+
+            if( !allowFuturePeriods && periodOffset == 0) {
+                $('#next_year').button('disable');
+            } else {
+                $('#next_year').button('enable');
+            }
         });
 
-        $('#period-list li a').bind( 'click', selectPeriod );
+        $( '#period-list li a' ).bind( 'click', selectPeriod );
     }
 
     function loadPeriodPage() {
@@ -106,6 +128,7 @@
 
         var form = fm.form( Selected.dataSet );
         periodType = form.periodType;
+        allowFuturePeriods = form.allowFuturePeriods;
         refreshPeriods();
 
         $.mobile.hidePageLoadingMsg();
