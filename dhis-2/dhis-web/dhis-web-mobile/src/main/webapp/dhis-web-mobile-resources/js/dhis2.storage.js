@@ -89,12 +89,11 @@ dhis2.storage.FormManager.prototype.dataValueSets = function() {
 dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) {
     var dataValueSets = this.dataValueSets();
 
-    $.ajax({
+    return $.ajax({
         url: '../api/dataValueSets',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(dataValueSet),
-        async: false
     }).success(function() {
         // nop, successfully uploaded
     }).error(function() {

@@ -187,8 +187,10 @@
 
         dataValueSet.dataValues = dataValues;
 
-        fm.saveDataValueSet( dataValueSet );
-        $.mobile.hidePageLoadingMsg();
+        fm.saveDataValueSet( dataValueSet ).then(function() {
+            $.mobile.hidePageLoadingMsg();
+            $.mobile.changePage('index');
+        });
     }
 
     jQuery(document).bind('pagechange', function (event, data) {
