@@ -188,7 +188,7 @@
 
         dataValueSet.dataValues = dataValues;
 
-        fm.saveDataValueSet( dataValueSet ).then(function() {
+        fm.saveDataValueSet( dataValueSet ).always(function() {
             $.mobile.hidePageLoadingMsg();
             $.mobile.changePage('index');
         });
