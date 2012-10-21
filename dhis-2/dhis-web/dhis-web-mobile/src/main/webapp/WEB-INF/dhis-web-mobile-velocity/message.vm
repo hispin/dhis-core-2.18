@@ -1,5 +1,33 @@
 
 <script>
+    function bindSubmitHandler() {
+        $('#reply-form input:submit').bind('click', function ( e ) {
+            var msg = jQuery('#reply-text').val();
+
+            if ( msg.length == 0 ) {
+                e.preventDefault();
+                return;
+            }
+
+            $.mobile.showPageLoadingMsg();
+
+            $.ajax({
+                url         : '$baseUrl/../api/messageConversations/${messageId}',
+                type        : 'post',
+                contentType : 'text/plain',
+                data        : msg
+            }).success(function () {
+                $.mobile.hidePageLoadingMsg();
+                location.reload(true);
+            }).error(function () {
+                $.mobile.showPageLoadingMsg($.mobile.pageLoadErrorMessageTheme, "Unable to send reply, please try again later", true);
+                setTimeout($.mobile.hidePageLoadingMsg, 1500);
+            });
+
+            e.preventDefault();
+        });
+    }
+
     $(document).bind('pageinit', function() {
         $.ajax({
             url   : '$baseUrl/../api/messageConversations/${messageId}.json',
@@ -12,36 +40,11 @@
             );
 
             $('section[data-role="content"]').trigger('create');
+            bindSubmitHandler();
         }).error(function () {
             $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to load message, please try again later", true );
             setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
         });
-
-       $('#reply-form input:submit').bind('click', function(e) {
-            var msg = jQuery('#reply-text').val();
-
-           if(msg.length == 0) {
-               e.preventDefault();
-               return;
-           }
-
-           $.mobile.showPageLoadingMsg();
-
-           $.ajax({
-               url         : '$baseUrl/../api/messageConversations/${messageId}',
-               type        : 'post',
-               contentType : 'text/plain',
-               data        : msg
-           }).success(function () {
-               $.mobile.hidePageLoadingMsg();
-               location.reload(true);
-           }).error(function () {
-               $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to send reply, please try again later", true );
-               setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
-           });
-
-           e.preventDefault();
-       });
     });
 </script>
 
