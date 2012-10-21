@@ -29,73 +29,74 @@
         $.mobile.showPageLoadingMsg();
 
         var organisationUnits = fm.organisationUnits();
+        var tmpl = $( '#organisation-units-template' ).html();
 
-        var tmpl = jQuery('#organisation-units-template').html();
-
-        jQuery('#organisation-units-page section[data-role="content"]').html(
+        $('#organisation-units-page section[data-role="content"]').html(
             _.template( tmpl, { 'organisationUnits': organisationUnits } )
         );
 
-        jQuery('#organisation-unit-list').listview()
-        jQuery('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
+        $('#organisation-unit-list').listview();
+        $('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
 
         $.mobile.hidePageLoadingMsg();
     }
 
     function loadDataSetsPage() {
-        if(Selected.orgUnit === undefined)
+        if( Selected.orgUnit === undefined )
         {
-            $.mobile.changePage('#organisation-units-page');
+            $.mobile.changePage( '#organisation-units-page' );
             return;
         }
 
         $.mobile.showPageLoadingMsg();
 
-        var organisationUnit = fm.organisationUnit(Selected.orgUnit);
+        var organisationUnit = fm.organisationUnit( Selected.orgUnit );
+        var tmpl = $( '#data-sets-template' ).html();
 
-        var tmpl = jQuery('#data-sets-template').html();
-
-        jQuery('#data-sets-page section[data-role="content"]').html(
+        $('#data-sets-page section[data-role="content"]').html(
             _.template( tmpl, { 'dataSets': organisationUnit.dataSets } )
         );
 
-        jQuery('#data-set-list').listview();
-        jQuery('#data-set-list li a').bind('click', selectDataSet);
+        $('#data-set-list').listview();
+        $('#data-set-list li a').bind( 'click', selectDataSet );
+
         $.mobile.hidePageLoadingMsg();
     }
 
     function refreshPeriods() {
-        var tmpl = jQuery('#period-template').html();
+        var tmpl = $('#period-template').html();
 
-        var periods = periodTypeFactory.get(periodType).generatePeriods(periodOffset);
-        periods = periodTypeFactory.filterFuturePeriodsExceptCurrent(periods)
-        periods = periodTypeFactory.reverse(periods);
-        jQuery('#period-page section[data-role="content"]').html(
+        var periods = periodTypeFactory.get( periodType ).generatePeriods( periodOffset );
+        periods = periodTypeFactory.filterFuturePeriodsExceptCurrent( periods );
+        periods = periodTypeFactory.reverse( periods );
+
+        $('#period-page section[data-role="content"]').html(
                 _.template(tmpl, { 'periods' : periods })
         );
-        jQuery('#period-page').trigger('pagecreate')
-        jQuery('#period-list').listview('refresh');
 
-        jQuery('#previous_year').bind('click', function() {
+        $('#period-page').trigger( 'pagecreate' );
+        $('#period-list').listview( 'refresh' );
+
+        $('#previous_year').bind( 'click', function() {
             periodOffset--;
             refreshPeriods();
         });
 
-        jQuery('#next_year').bind('click', function() {
+        $('#next_year').bind( 'click', function() {
             periodOffset++;
             refreshPeriods();
         });
 
-        jQuery('#period-list li a').bind('click', selectPeriod);
+        $('#period-list li a').bind( 'click', selectPeriod );
     }
 
     function loadPeriodPage() {
-        if(Selected.dataSet === undefined)
+        if( Selected.dataSet === undefined )
         {
-            if(Selected.orgUnit === undefined) {
-                $.mobile.changePage('#organisation-units-page');
+            if( Selected.orgUnit === undefined ) {
+                $.mobile.changePage( '#organisation-units-page' );
             } else {
-                $.mobile.changePage('#data-sets-page');
+                $.mobile.changePage( '#data-sets-page' );
             }
 
             return;
@@ -103,7 +104,7 @@
 
         $.mobile.showPageLoadingMsg();
 
-        var form = fm.form(Selected.dataSet);
+        var form = fm.form( Selected.dataSet );
         periodType = form.periodType;
         refreshPeriods();
 
@@ -111,36 +112,36 @@
     }
 
     function loadDataEntryPage() {
-        if(Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit === undefined )
+        if( Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit === undefined )
         {
-            $.mobile.changePage('#organisation-units-page');
+            $.mobile.changePage( '#organisation-units-page' );
             return;
         }
 
-        if(Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit !== undefined )
+        if( Selected.period === undefined && Selected.dataSet === undefined && Selected.orgUnit !== undefined )
         {
-            $.mobile.changePage('#data-sets-page');
+            $.mobile.changePage( '#data-sets-page' );
             return;
         }
 
-        if(Selected.period === undefined && Selected.dataSet !== undefined && Selected.orgUnit !== undefined )
+        if( Selected.period === undefined && Selected.dataSet !== undefined && Selected.orgUnit !== undefined )
         {
-            $.mobile.changePage('#periods-page');
+            $.mobile.changePage( '#periods-page' );
             return;
         }
 
         $.mobile.showPageLoadingMsg();
 
         function renderFormTemplate(form) {
-            var tmpl = jQuery('#data-entry-template').html();
+            var tmpl = $( '#data-entry-template' ).html();
 
-            jQuery('#data-entry-page section[data-role="content"]').html(
+            $( '#data-entry-page section[data-role="content"]' ).html(
                 _.template( tmpl, form )
             );
 
-            jQuery('#data-entry-page').trigger('pagecreate')
-            jQuery('#data-entry-list').listview('refresh');
-            jQuery('#send_button').bind('click', saveValues);
+            $( '#data-entry-page' ).trigger( 'pagecreate' );
+            $( '#data-entry-list' ).listview( 'refresh' );
+            $( '#send_button' ).bind( 'click', saveValues );
         }
 
         $.ajax({
@@ -193,7 +194,7 @@
         });
     }
 
-    jQuery(document).bind('pagechange', function (event, data) {
+    $(document).bind( 'pagechange', function (event, data) {
         var pageId = data.toPage.attr('id');
 
         if( pageId == 'organisation-units-page' ) {
