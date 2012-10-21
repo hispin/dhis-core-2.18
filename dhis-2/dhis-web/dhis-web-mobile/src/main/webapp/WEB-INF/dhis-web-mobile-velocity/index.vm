@@ -30,12 +30,9 @@
     $(document).bind('pagebeforecreate',function(){
         $.mobile.showPageLoadingMsg();
 
-        getDashboard().then(
-                fm.getMetaData().then(
-                        fm.uploadDataValueSets()).always(function() {
+        getDashboard().always(function() {
             $('section[data-role="content"] ul').listview('refresh');
-            $.mobile.hidePageLoadingMsg();
-        }));
+        }).then( fm.getMetaData().then( fm.uploadDataValueSets()).always( $.mobile.hidePageLoadingMsg ));
     })
 </script>
 
