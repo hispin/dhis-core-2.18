@@ -315,11 +315,6 @@
 	  <interceptor-ref name="cacheStack"/>
     </action>
 
-    <action name="messagesJavaScript" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="velocity-javascript">/dhis-web-commons/i18n/messages.vm</result>
-	  <interceptor-ref name="cacheStack"/>
-    </action>
-
   </package>
 
   <!-- Common actions XML -->

@@ -564,23 +564,3 @@ function getInt(str,i,minlength,maxlength) {
     }
     return null;
 }
-
-function validatorFormat( text )
-{
-    return $.validator.format( text );
-}
-
-// --------------------------------------------------------------------------
-// Set Message for validatior
-// --------------------------------------------------------------------------
-jQuery(document).ready( function(){
-	if ( typeof validationMessage != "undefined" )
-	{
-		jQuery.validator.setMessages( validationMessage );
-	}
-	
-	jQuery.validator.setDefaults({
-		debug: false,
-		success: "valid"
-	});
-});
