@@ -1216,8 +1216,8 @@ function validation2( formId, submitHandler, kwargs )
  * 
  * @return Validation rules for a given form
  */
-function getValidationRules(form) {
-	if( form !== undefined ) {
+function getValidationRules( form ) {
+	if ( form !== undefined ) {
 		return validationRules[form];
 	}
 	
@@ -1328,6 +1328,17 @@ function listValidator( validatorId, selectedListId )
 		item.selected = 'selected';
 		memberValidator.append( '<option value="' + item.value + '" selected="selected">' + item.value + '</option>');
 	});
+}
+
+/**
+ * Formats validation messages. Used by messages.vm.
+ * 
+ * @param text the text to format.
+ * @returns the formatted text.
+ */
+function validatorFormat( text )
+{
+    return $.validator.format( text );
 }
 
 // -----------------------------------------------------------------------------
