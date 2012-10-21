@@ -1,24 +1,22 @@
 
 <script>
-    jQuery(document).bind('pagebeforecreate', function () {
-        jQuery.ajax({
+    $(document).bind('pageinit', function() {
+        $.ajax({
             url   : '$baseUrl/../api/messageConversations/${messageId}.json',
-            dataType: 'json',
-            async : false
+            dataType: 'json'
         }).success(function ( data ) {
             var tmpl = jQuery('#message-template').html();
 
-            jQuery('section[data-role="content"]').html(
+            $('section[data-role="content"]').html(
                 _.template(tmpl, data)
             );
 
-            console.log(data);
+            $('section[data-role="content"]').trigger('create');
         }).error(function () {
-            console.log('error fetching message')
+            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to load message, please try again later", true );
+            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
         });
-    });
 
-    jQuery(document).bind('pageinit', function() {
        $('#reply-form input:submit').bind('click', function(e) {
             var msg = jQuery('#reply-text').val();
 
@@ -40,7 +38,6 @@
            }).error(function () {
                $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to send reply, please try again later", true );
                setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
-               console.log("failed to send message");
            });
 
            e.preventDefault();

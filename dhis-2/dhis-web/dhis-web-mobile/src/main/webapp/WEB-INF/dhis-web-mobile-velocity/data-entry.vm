@@ -182,7 +182,7 @@
             value: field.val()
            };
 
-           dataValues.push(dataValue);
+           dataValues.push( dataValue );
         });
 
         dataValueSet.dataValues = dataValues;
