@@ -22,7 +22,6 @@
                 $( '#messages a' ).append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
             }
         }).error(function() {
-            // $('#messages a').append("<span class='ui-li-count'>Offline</span>");
             $( '#messages').addClass('ui-disabled');
             $( '#settings').addClass('ui-disabled');
             $.mobile.hidePageLoadingMsg();
