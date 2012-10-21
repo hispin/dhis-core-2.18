@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!--  <html manifest="../dhis-web-mobile-resources/manifest.appcache">  -->
-<html>
+<html manifest="../dhis-web-mobile-resources/manifest.appcache">
+<!--  <html> -->
 <head>
 	<title>DHIS2</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
