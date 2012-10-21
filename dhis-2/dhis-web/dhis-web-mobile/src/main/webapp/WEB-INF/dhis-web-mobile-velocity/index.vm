@@ -19,10 +19,12 @@
             dataType: 'json'
         }).success(function(data) {
             if( data.unreadMessageConversation > 0 ) {
-                $('#messages a').append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
+                $( '#messages a' ).append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
             }
         }).error(function() {
-            $('#messages a').append("<span class='ui-li-count'>Offline</span>");
+            // $('#messages a').append("<span class='ui-li-count'>Offline</span>");
+            $( '#messages').addClass('ui-disabled');
+            $( '#settings').addClass('ui-disabled');
             $.mobile.hidePageLoadingMsg();
         });
     }
