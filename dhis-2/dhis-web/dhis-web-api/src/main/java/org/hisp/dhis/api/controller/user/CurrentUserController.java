@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller.user;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.api.utils.FormUtils;
 import org.hisp.dhis.api.webdomain.FormDataSet;
 import org.hisp.dhis.api.webdomain.FormOrganisationUnit;
@@ -73,6 +73,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CurrentUserController
 {
     public static final String RESOURCE_PATH = "/currentUser";
+    private static final int MAX_OBJECTS = 50;
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -91,6 +92,9 @@ public class CurrentUserController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+    
+    @Autowired
+    private ContextUtils contextUtils;
 
     @RequestMapping( produces = {"application/json", "text/*"} )
     public void getCurrentUser( HttpServletResponse response ) throws Exception
@@ -208,6 +212,8 @@ public class CurrentUserController
     {
         User currentUser = currentUserService.getCurrentUser();
 
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.CACHE_1_HOUR );
+        
         if ( currentUser == null )
         {
             ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
@@ -215,10 +221,10 @@ public class CurrentUserController
         }
 
         Recipients recipients = new Recipients();
-        recipients.setOrganisationUnits( getOrganisationUnitsForUser( currentUser, filter ) );
+        recipients.setOrganisationUnits( new HashSet<OrganisationUnit>( organisationUnitService.getOrganisationUnitsBetweenByName( filter, 0, MAX_OBJECTS ) ) );
 
-        recipients.setUsers( new HashSet<User>( userService.getAllUsersBetweenByName( filter, 0, Integer.MAX_VALUE ) ) );
-        recipients.setUserGroups( new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, Integer.MAX_VALUE ) ) );
+        recipients.setUsers( new HashSet<User>( userService.getAllUsersBetweenByName( filter, 0, MAX_OBJECTS ) ) );
+        recipients.setUserGroups( new HashSet<UserGroup>( userGroupService.getUserGroupsBetweenByName( filter, 0, MAX_OBJECTS ) ) );
 
         JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
@@ -284,34 +290,5 @@ public class CurrentUserController
         }
 
         JacksonUtils.toJson( response.getOutputStream(), forms );
-    }
-
-    private Set<OrganisationUnit> getOrganisationUnitsForUser( User user, String filter )
-    {
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-
-        for ( OrganisationUnit organisationUnit : user.getOrganisationUnits() )
-        {
-            organisationUnits.add( organisationUnit );
-            organisationUnits.addAll( organisationUnitService.getLeafOrganisationUnits( organisationUnit.getId() ) );
-        }
-
-        if ( filter != null )
-        {
-            Iterator<OrganisationUnit> iterator = organisationUnits.iterator();
-            filter = filter.toUpperCase();
-
-            while ( iterator.hasNext() )
-            {
-                OrganisationUnit organisationUnit = iterator.next();
-
-                if ( !organisationUnit.getName().toUpperCase().contains( filter ) )
-                {
-                    iterator.remove();
-                }
-            }
-        }
-
-        return organisationUnits;
     }
 }
