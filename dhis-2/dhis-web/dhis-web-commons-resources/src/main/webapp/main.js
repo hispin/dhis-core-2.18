@@ -95,11 +95,6 @@ function pageInit()
 	{
 		$.validator.setMessages( validationMessage );
 	}
-	
-	$.validator.setDefaults( {
-		debug: false,
-		success: "valid"
-	} );
 }
 
 function setTableStyles()
