@@ -1596,8 +1596,7 @@ function sendSmsOnePatient( field, programStageInstanceId )
 	setInnerHTML('smsError', '');
 	if(field.value==""){
 		field.style.backgroundColor = ERROR_COLOR;
-		jQuery('#smsError').css("color", "red");
-		setInnerHTML('smsError', i18n_this_field_is_required);
+		jQuery('#' + field.id).attr("placeholder", i18n_this_field_is_required);
 		return;
 	}
 	
@@ -1642,6 +1641,7 @@ function addComment( field, programStageInstanceId )
 	var commentText = field.value;
 	if( commentText == ''){
 		field.style.backgroundColor = ERROR_COLOR;
+		jQuery('#' + field.id).attr("placeholder", i18n_this_field_is_required);
 		return;
 	}
 	
@@ -1662,7 +1662,7 @@ function addComment( field, programStageInstanceId )
 			showSuccessMessage( i18n_comment_added );
 			field.style.backgroundColor = SUCCESS_COLOR;
 			
-			if( jQuery("#commentTB tr.hidden").length > 0 ){
+			if( jQuery("#commentTB tr").length > 5 ){
 				commentDivToggle(true);
 			}
 			else{

@@ -189,14 +189,22 @@ function sendSmsToList()
 }
 
 // --------------------------------------------------------------------
-// Post Comments
+// Post Comments/Send Message
 // --------------------------------------------------------------------
 
-function keypress(event, field, programStageInstanceId )
+function keypressOnComent(event, field, programStageInstanceId )
 {
 	var key = getKeyCode( event );
 	if ( key==13 ){ // Enter
 		addComment( field, programStageInstanceId );
+	}
+}
+
+function keypressOnMessage(event, field, programStageInstanceId )
+{
+	var key = getKeyCode( event );
+	if ( key==13 ){ // Enter
+		sendSmsOnePatient( field, programStageInstanceId );
 	}
 }
 
