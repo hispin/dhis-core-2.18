@@ -20,6 +20,8 @@
 </table>
 
 #if( $programInstances && $programInstances.size() > 0 )
+<p>#parse( "/dhis-web-caseentry/colorHelp.vm" )</p>
+
 <table class="mainPageTable">
 <tr>
     <td style="vertical-align:top">    

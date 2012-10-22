@@ -501,7 +501,7 @@ function showColorHelp()
 		closable: true,
 		modal:false,
 		width: 380,
-		height: 250
+		height: 270
 	}).show('fast');
 }
 
