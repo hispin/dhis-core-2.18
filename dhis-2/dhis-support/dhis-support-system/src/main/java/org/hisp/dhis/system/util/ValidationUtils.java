@@ -42,6 +42,9 @@ import org.apache.commons.validator.UrlValidator;
 public class ValidationUtils
 {
     private static Pattern POINT_PATTERN = Pattern.compile( "\\[(.+),\\s?(.+)\\]" );
+    private static Pattern DIGIT_PATTERN = Pattern.compile( ".*\\d.*" );
+    private static Pattern UPPERCASE_PATTERN = Pattern.compile( ".*[A-Z].*" );
+    
     private static int LONG_MAX = 180;
     private static int LONG_MIN = -180;
     private static int LAT_MAX = 90;
@@ -93,14 +96,27 @@ public class ValidationUtils
     }
     
     /**
-     * Validates whether a password is valid.
+     * Validates whether a password is valid. A password must:
+     * 
+     * <ul>
+     * <li>Be between 8 and 80 characters long</li>
+     * <li>Include at least one digit</li>
+     * <li>Include at least one uppercase letter</li>
+     * </ul>
      * 
      * @param password the password.
      * @return true if the password is valid, false otherwise.
      */
     public static boolean passwordIsValid( String password )
     {
-        return password != null && password.length() >= 5 && password.length() < 50;
+        if ( password == null || password.trim().length() < 8 || password.trim().length() > 80 )
+        {
+            return false;
+        }
+        System.out.println("digit " + DIGIT_PATTERN.matcher( password ).matches());
+        System.out.println("upper " + UPPERCASE_PATTERN.matcher( password ).matches());
+        
+        return DIGIT_PATTERN.matcher( password ).matches() && UPPERCASE_PATTERN.matcher( password ).matches();
     }
     
     /**
