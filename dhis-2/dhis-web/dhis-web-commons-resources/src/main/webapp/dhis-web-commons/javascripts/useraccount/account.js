@@ -17,6 +17,7 @@ var validationRules = {
 			required: true,
 			rangelength: [ 8, 80 ],
 			password: true,
+			notequalto : "#username",
 		},
 		retypePassword: {
 			required: true,

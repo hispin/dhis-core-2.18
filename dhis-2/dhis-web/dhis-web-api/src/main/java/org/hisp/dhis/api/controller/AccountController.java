@@ -34,6 +34,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
@@ -125,7 +126,7 @@ public class AccountController
             return "Last name is not specified or invalid";
         }
 
-        if ( password == null || password.trim().length() > MAX_LENGTH )
+        if ( password == null || !ValidationUtils.passwordIsValid( password ) )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Password is not specified or invalid";
@@ -135,7 +136,13 @@ public class AccountController
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Password cannot be equal to username";
-        }            
+        }
+        
+        if ( email == null || !ValidationUtils.emailIsValid( email ) )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return "Email is not specified or invalid";
+        }
 
         if ( recapChallenge == null )
         {
