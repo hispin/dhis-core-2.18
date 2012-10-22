@@ -787,16 +787,19 @@ function setEventStatus( field, programStageInstanceId )
 			status:status
 		}, function ( json )
 		{
+			enable('ps_' + programStageInstanceId);
 			var eventBox = jQuery('#ps_' + programStageInstanceId);
 			eventBox.attr('status',status);
 			setEventColorStatus( programStageInstanceId, status );
 			resetActiveEvent( eventBox.attr("pi") );
+			
 			if( status==1 || status==2 ){
 				hideById('del_' + programStageInstanceId);
 			}
 			else{
 				showById('del_' + programStageInstanceId);
 				if( status==5){
+					disable('ps_' + programStageInstanceId);
 					var id = 'ps_' + programStageInstanceId;
 					if( jQuery(".stage-object-selected").attr('id')==id )
 					{
