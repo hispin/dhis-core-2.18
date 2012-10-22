@@ -1336,17 +1336,6 @@ function listValidator( validatorId, selectedListId )
 	});
 }
 
-/**
- * Formats validation messages. Used by messages.vm.
- * 
- * @param text the text to format.
- * @returns the formatted text.
- */
-function validatorFormat( text )
-{
-    return $.validator.format( text );
-}
-
 // -----------------------------------------------------------------------------
 // Message
 // -----------------------------------------------------------------------------

@@ -4,7 +4,9 @@
     <title>DHIS 2</title>
     <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
     <script type="text/javascript" src="../javascripts/jQuery/jquery.validate.js"></script>
+    <script type="text/javascript" src="../javascripts/jQuery/jquery.validate.ext.js"></script>
     <script type="text/javascript" src="../javascripts/useraccount/account.js"></script>
+    <script type="text/javascript" src="../i18nJavaScript.action"></script>
     <script type="text/javascript" src="https://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
     <link type="text/css" rel="stylesheet" href="../css/account.css">
 </head>
@@ -20,16 +22,16 @@
 
 <h3>$i18n.getString( "create_new_account" )</h3>
 
-<form id="accountForm" action="../../api/account" method="post">
+<form id="accountForm">
 
 <table>
     <tr>
-        <td><label for="firstName">$i18n.getString( "name" )</label></td>
+        <td style="width:140px"><label for="firstName">$i18n.getString( "name" )</label></td>
         <td><input type="text" id="firstName" name="firstName" style="width:11.7em; margin-right:7px;" placeholder="First">
             <input type="text" id="surname" name="surname" style="width:11.7em" placeholder="Last"></td>
     </tr>
     <tr>
-        <td style="width:140px"><label for="username">$i18n.getString( "user_name" )</label></td>
+        <td><label for="username">$i18n.getString( "user_name" )</label></td>
         <td><input type="text" id="username" name="username" autocomplete="off"></td>
     </tr>
     <tr>
