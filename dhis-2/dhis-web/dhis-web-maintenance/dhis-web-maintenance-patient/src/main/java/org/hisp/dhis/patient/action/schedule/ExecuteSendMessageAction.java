@@ -99,7 +99,7 @@ public class ExecuteSendMessageAction
                     + "( programstageinstanceid, outboundsmsid, sort_order) VALUES " + "("
                     + schedulingProgramObject.getProgramStageInstanceId() + ", " + outboundSms.getId() + ","
                     + (System.currentTimeMillis() / 1000) + ") ";
-
+                
                 jdbcTemplate.execute( sql );
             }
             catch ( SmsServiceException e )
