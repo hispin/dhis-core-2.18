@@ -113,8 +113,6 @@ public class ValidationUtils
         {
             return false;
         }
-        System.out.println("digit " + DIGIT_PATTERN.matcher( password ).matches());
-        System.out.println("upper " + UPPERCASE_PATTERN.matcher( password ).matches());
         
         return DIGIT_PATTERN.matcher( password ).matches() && UPPERCASE_PATTERN.matcher( password ).matches();
     }
