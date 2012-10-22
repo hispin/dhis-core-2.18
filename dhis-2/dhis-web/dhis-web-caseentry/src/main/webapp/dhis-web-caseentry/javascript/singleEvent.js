@@ -284,7 +284,6 @@ function backMainPage()
 
 function validateAllowEnrollment( patientId, programId  )
 {	
-	jQuery('#loaderDiv').show();
 	jQuery.getJSON( "validatePatientProgramEnrollment.action",
 		{
 			patientId: patientId,
@@ -292,6 +291,7 @@ function validateAllowEnrollment( patientId, programId  )
 		}, 
 		function( json ) 
 		{    
+			jQuery('#loaderDiv').hide();
 			hideById('message');
 			var type = json.response;
 			if ( type == 'success' ){
@@ -300,6 +300,5 @@ function validateAllowEnrollment( patientId, programId  )
 			else if ( type == 'input' ){
 				setMessage( json.message );
 			}
-			jQuery('#loaderDiv').hide();
 		});
 }
