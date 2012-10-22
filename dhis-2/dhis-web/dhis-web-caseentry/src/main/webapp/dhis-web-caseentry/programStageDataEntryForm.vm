@@ -49,7 +49,6 @@
 
 <script type="text/javascript">
 	jQuery('#patientForm').ready(	function(){
-		showById('inputCriteriaDiv');
 		enable('validationBtn');
 		#if($programStageInstance.completed=='true') 
 			disable('completeBtn');
