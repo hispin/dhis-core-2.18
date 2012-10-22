@@ -34,8 +34,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +79,9 @@ public class AccountController
     @Autowired
     private AuthenticationManager authenticationManager;
     
+    @Autowired
+    private ConfigurationService configurationService;
+    
     @RequestMapping( method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String createAccount( 
         @RequestParam String username,
@@ -90,6 +95,14 @@ public class AccountController
         HttpServletRequest request,
         HttpServletResponse response )
     {
+        UserAuthorityGroup userRole = configurationService.getConfiguration().getSelfRegistrationRole();
+        
+        if ( userRole == null )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return "User self registration is not allowed";
+        }
+        
         // ---------------------------------------------------------------------
         // Trim input
         // ---------------------------------------------------------------------
@@ -201,15 +214,18 @@ public class AccountController
         credentials.setUsername( username );
         credentials.setPassword( password );
         credentials.setUser( user );
+        credentials.getUserAuthorityGroups().add( userRole );
         
         user.setUserCredentials( credentials );
-        
-        // TODO user role and org unit
+                
+        // TODO org unit
         
         userService.addUser( user );
         userService.addUserCredentials( credentials );
         
         log.info( "Created user successfully with username: " + username );
+        
+        authenticate( user );
         
         response.setStatus( HttpServletResponse.SC_CREATED );
         return "Account created";
@@ -246,7 +262,6 @@ public class AccountController
         return result != null ? result.split( SPLIT ) : null;
     }
     
-    @SuppressWarnings("unused")
     private void authenticate( User user )
     {
         String uname = user.getUserCredentials().getUsername();
