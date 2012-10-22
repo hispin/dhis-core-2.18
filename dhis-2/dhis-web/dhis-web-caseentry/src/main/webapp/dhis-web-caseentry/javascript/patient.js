@@ -197,7 +197,6 @@ function loadDataEntry( programStageInstanceId )
 	setInnerHTML('dataEntryFormDiv', '');
 	showById('dataEntryFormDiv');
 	showById('executionDateTB');
-	showById('inputCriteriaDiv');
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
 	disable('validationBtn');
@@ -232,14 +231,12 @@ function loadDataEntry( programStageInstanceId )
 				disable('validationBtn');
 			}
 			else if( executionDate != ''){
-				showById('inputCriteriaDiv');
 				if ( completed == 'false' )
 				{
 					disableCompletedButton(false);
 				}
 				else if( completed == 'true' )
 				{
-					showById('inputCriteriaDiv');
 					disableCompletedButton(true);
 				}
 			}

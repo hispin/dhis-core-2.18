@@ -34,7 +34,7 @@
 	#end
 </div>
 
-<div id='inputCriteriaDiv' class="page inputCriteria hidden" style="width:490px;height:29px;">	
+<div id='inputCriteriaDiv' class="page inputCriteria #if($programStageInstance.executionDate) #else hidden #end " style="width:490px;height:29px;">	
 	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled">
 	<input type="button" id="uncompleteBtn" value="$i18n.getString('incomplete')" onclick="doUnComplete()" disabled="disabled">
 	<input type="button" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" disabled="disabled">
