@@ -108,7 +108,7 @@ function eventFlowToggle( programInstanceId )
 		showById("ps_" + id );
 	}
 	
-	jQuery(".table-flow").each( function(){
+	jQuery("#tb_" + programInstanceId + " .table-flow").each( function(){
 		var scheduledEvent = jQuery(this).find("[status='3']:first");
 		scheduledEvent.focus();
 	});
