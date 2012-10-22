@@ -27,13 +27,19 @@ package org.hisp.dhis.web.mobile.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -116,5 +122,13 @@ public class MobileController
         model.addAttribute( "page", "data-entry.vm" );
 
         return "base";
+    }
+
+    @RequestMapping( value = "/app-cache" )
+    public void appCache( HttpServletResponse response ) throws IOException
+    {
+        response.setContentType( "text/cache-manifest" );
+        InputStream inputStream = new ClassPathResource( "dhis-mobile-manifest.appcache" ).getInputStream();
+        IOUtils.copy( inputStream, response.getOutputStream() );
     }
 }

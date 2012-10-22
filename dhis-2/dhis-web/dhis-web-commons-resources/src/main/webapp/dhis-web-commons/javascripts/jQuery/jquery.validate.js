@@ -262,7 +262,7 @@ $.extend($.validator, {
 		$.extend( $.validator.defaults, settings );
 	},
 
-	/* -- Custom code by mortenoh -- */
+	/* -- Custom code by    mortenoh -- */
 	setMessages : function( messages ) {
 		this.messages = messages;
 	},

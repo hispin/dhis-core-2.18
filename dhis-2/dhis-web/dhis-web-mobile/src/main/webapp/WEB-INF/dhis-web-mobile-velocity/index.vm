@@ -33,7 +33,7 @@
 
         getDashboard().always(function() {
             $('section[data-role="content"] ul').listview('refresh');
-        }).then( fm.getMetaData().then( fm.uploadDataValueSets()).always( $.mobile.hidePageLoadingMsg ));
+        }).then( fm.getMetaData().then( fm.uploadDataValueSets() ).always( $.mobile.hidePageLoadingMsg ));
     })
 </script>
 
