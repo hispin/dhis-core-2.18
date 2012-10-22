@@ -32,6 +32,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="incomingSmsService"
 			ref="org.hisp.dhis.sms.incoming.IncomingSmsService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.mobile.action.DeleteSentSMSAction"
+		class="org.hisp.dhis.mobile.action.DeleteSentSMSAction"
+		scope="prototype">
+		<property name="outboundSmsService"
+			ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
+	</bean>
 
 	<bean id="org.hisp.dhis.mobile.action.incoming.UpdateReceiveSMSAction"
 		class="org.hisp.dhis.mobile.action.incoming.UpdateReceiveSMSAction"
@@ -54,6 +61,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="outboundSmsService"
 			ref="org.hisp.dhis.sms.outbound.OutboundSmsService"></property>
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService"></property>
 	</bean>
 
 	<!-- Patient Mobile Settings -->

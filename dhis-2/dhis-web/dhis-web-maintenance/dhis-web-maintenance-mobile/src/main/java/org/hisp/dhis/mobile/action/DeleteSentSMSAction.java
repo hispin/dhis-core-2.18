@@ -1,5 +1,3 @@
-package org.hisp.dhis.sms.outbound;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -27,37 +25,66 @@ package org.hisp.dhis.sms.outbound;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+package org.hisp.dhis.mobile.action;
 
-import org.hisp.dhis.sms.SmsServiceException;
-import org.hisp.dhis.sms.config.SmsConfigurable;
+import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.sms.outbound.OutboundSmsService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * OutboundSmsService provides support for sending SMSes.
+ * @author Nguyen Kim Lai
+ *
+ * @version $ DeleteSentSMSAction.java Oct 16, 2012 $
  */
-public interface OutboundSmsService
-    extends SmsConfigurable
+public class DeleteSentSMSAction implements Action
 {
-    String ID = OutboundSmsService.class.getName();
-
-    boolean isEnabled();
-
-    /**
-     * Send an SMS message.
-     * 
-     * @param sms the message to be sent
-     * @throws SmsServiceException if unable to sent Message
-     */
-    String sendMessage( OutboundSms sms, String gatewayId )
-        throws SmsServiceException;
-
-    List<OutboundSms> getAllOutboundSms();
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
     
-    int saveOutboundSms( OutboundSms sms);
+    private OutboundSmsService outboundSmsService;
+    
+    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
+    {
+        this.outboundSmsService = outboundSmsService;
+    }    
+    
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+    
+    private Integer[] ids;
 
-    void updateOutboundSms( OutboundSms sms);
+    public void setIds( Integer[] ids )
+    {
+        this.ids = ids;
+    }
     
-    void deleteById( Integer outboundSmsId );
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
     
-    List<OutboundSms> getOutboundSms( OutboundSmsStatus status );
+    @Override
+    public String execute()
+        throws Exception
+    {
+        if ( ids != null && ids.length > 0 )
+        {
+            for ( Integer each : ids )
+            {
+                outboundSmsService.deleteById( each );
+            }
+        }
+        if ( id != null )
+        {
+            outboundSmsService.deleteById( id );
+        }
+        return SUCCESS;
+
+    }
+
 }

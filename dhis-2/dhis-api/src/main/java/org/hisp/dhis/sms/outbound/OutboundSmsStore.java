@@ -39,5 +39,7 @@ public interface OutboundSmsStore
 
     OutboundSms get( int id );
     
-    List<OutboundSms> get( OutboundSmsStatus status );    
+    List<OutboundSms> get( OutboundSmsStatus status );
+    
+    void delete( OutboundSms sms );
 }

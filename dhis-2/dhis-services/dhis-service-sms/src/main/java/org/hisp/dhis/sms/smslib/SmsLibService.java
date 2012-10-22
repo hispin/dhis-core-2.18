@@ -485,4 +485,12 @@ public class SmsLibService
     {
         return outboundSmsStore.get( status );
     }
+
+    @Override
+    public void deleteById( Integer outboundSmsId )
+    {
+        OutboundSms sms = outboundSmsStore.get( outboundSmsId );
+        
+        outboundSmsStore.delete( sms );   
+    }
 }
