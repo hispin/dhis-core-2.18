@@ -53,4 +53,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
+  <bean id="org.hisp.dhis.settings.action.system.GetAccessSettingsAction"
+      class="org.hisp.dhis.settings.action.system.GetAccessSettingsAction"
+      scope="prototype"/>
+
+  <bean id="org.hisp.dhis.settings.action.system.SetAccessSettingsAction"
+      class="org.hisp.dhis.settings.action.system.SetAccessSettingsAction"
+      scope="prototype"/>
+
 </beans>

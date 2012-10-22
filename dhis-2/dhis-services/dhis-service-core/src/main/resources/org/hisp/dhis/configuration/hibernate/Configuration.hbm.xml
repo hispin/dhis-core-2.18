@@ -22,5 +22,8 @@
     <many-to-one name="infrastructuralPeriodType" class="org.hisp.dhis.period.PeriodType"
         column="infrastructuralperiodtypeid" foreign-key="fk_configuration_infrastructural_periodtype" />
 
+    <many-to-one name="selfRegistrationRole" class="org.hisp.dhis.user.UserAuthorityGroup"
+        column="selfregistrationrole" foreign-key="fk_configuration_selfregistrationrole" unique="true" />
+
   </class>
 </hibernate-mapping>

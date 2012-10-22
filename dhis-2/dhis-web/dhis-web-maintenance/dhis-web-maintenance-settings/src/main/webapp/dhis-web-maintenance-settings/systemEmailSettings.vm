@@ -6,8 +6,9 @@
 				smtpUsername: getFieldValue( 'smtpUsername' ),
 				smtpPassword: getFieldValue( 'smtpPassword' )
 			}, function( json ) {
-				if ( json.response == "success" )
+				if ( json.response == "success" ) {
 					setHeaderDelayMessage( json.message );
+				}
 			});
 		}, {
 			"rules" : getValidationRules( "emailSettings" )
@@ -33,6 +34,6 @@
 
 <div class="setting"><input type="password" id="smtpPassword" name="smtpPassword" value="$!smtpPassword" style="width:20em" autocomplete="off"/></div>
 
-<div class="settingLabel"><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/></div>
+<div class="setting"><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/></div>
 
 </form>

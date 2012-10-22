@@ -27,82 +27,47 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.SortedMap;
 
-import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.setting.StyleManager;
-import org.hisp.dhis.system.util.Filter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.webportal.module.Module;
-import org.hisp.dhis.webportal.module.ModuleManager;
-import org.hisp.dhis.webportal.module.StartableModuleFilter;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.configuration.Configuration;
+import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetAppearanceSettingsAction
+public class GetAccessSettingsAction
     implements Action
 {
-    private static final Filter<Module> startableFilter = new StartableModuleFilter();
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
-    private ModuleManager moduleManager;
-
-    public void setModuleManager( ModuleManager moduleManager )
-    {
-        this.moduleManager = moduleManager;
-    }
-
-    private StyleManager styleManager;
-
-    public void setStyleManager( StyleManager styleManager )
-    {
-        this.styleManager = styleManager;
-    }
+    @Autowired
+    private ConfigurationService configurationService;
+    
+    @Autowired
+    private UserService userService;
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<String> flags;
+    private Configuration configuration;
 
-    public List<String> getFlags()
+    public Configuration getConfiguration()
     {
-        return flags;
+        return configuration;
     }
+    
+    private List<UserAuthorityGroup> userRoles = new ArrayList<UserAuthorityGroup>();
 
-    private List<Module> modules;
-
-    public List<Module> getModules()
+    public List<UserAuthorityGroup> getUserRoles()
     {
-        return modules;
-    }
-
-    private SortedMap<String, String> styles;
-
-    public SortedMap<String, String> getStyles()
-    {
-        return styles;
-    }
-
-    private String currentStyle;
-
-    public String getCurrentStyle()
-    {
-        return currentStyle;
+        return userRoles;
     }
 
     // -------------------------------------------------------------------------
@@ -111,16 +76,12 @@ public class GetAppearanceSettingsAction
 
     public String execute()
     {
-        styles = styleManager.getStyles();
+        configuration = configurationService.getConfiguration();
         
-        currentStyle = styleManager.getSystemStyle();
+        userRoles = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
         
-        flags = systemSettingManager.getFlags();
-
-        modules = moduleManager.getMenuModules();
-
-        FilterUtils.filter( modules, startableFilter );
-
-        return SUCCESS;
+        Collections.sort( userRoles, IdentifiableObjectNameComparator.INSTANCE );
+        
+        return SUCCESS;        
     }
 }
