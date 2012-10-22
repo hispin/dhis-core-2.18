@@ -39,6 +39,11 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -69,6 +74,9 @@ public class AccountController
     
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
     
     @RequestMapping( method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String createAccount( 
@@ -237,5 +245,19 @@ public class AccountController
         log.info( "Recaptcha result: " + result );
         
         return result != null ? result.split( SPLIT ) : null;
+    }
+    
+    @SuppressWarnings("unused")
+    private void authenticate( User user )
+    {
+        String uname = user.getUserCredentials().getUsername();
+        String passwd = user.getUserCredentials().getPassword();
+        
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken( uname, passwd );
+        token.setDetails( user );
+        
+        Authentication auth = authenticationManager.authenticate( token );
+        
+        SecurityContextHolder.getContext().setAuthentication( auth );
     }
 }
