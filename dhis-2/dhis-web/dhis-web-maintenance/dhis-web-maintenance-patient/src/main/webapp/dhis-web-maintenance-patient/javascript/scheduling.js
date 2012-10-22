@@ -30,12 +30,8 @@ function executeTasks()
 	setWaitMessage( i18n_executing );	
 	if ( ok )
 	{		
-		$.post( 'executeSendMessage.action',{
-			execute:true,
-			schedule: false,
-			gateWayId: getFieldValue("gatewayId"),
-			timeSendingMessage: getFieldValue("timeSendingMessage")
-		}, function( json ){
+		$.post( 'executeSendMessage.action',{}
+		, function( json ){
 			setMessage(i18n_execute_success);
 		});
 	}
