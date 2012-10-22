@@ -367,6 +367,7 @@ function ExecutionDateSaver( programId_, programStageInstanceId_, executionDate_
 					setFieldValue( 'programStageId', selectedProgramStageInstance.attr('psid') );
 					
 					var fieldId = "value_" + programStageInstanceId + "_date";
+					jQuery("#" + fieldId).val(executionDate);
 					jQuery("#" + fieldId).css('background-color', SUCCESS_COLOR);
 					jQuery('#executionDate').val(executionDate);
 					jQuery("#org_" + programStageInstanceId ).html(getFieldValue("orgunitName"));

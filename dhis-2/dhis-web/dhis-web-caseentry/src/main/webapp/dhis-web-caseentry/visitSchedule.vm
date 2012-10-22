@@ -58,7 +58,7 @@
 			<td>        
 				<input type="text" id="$duedateId" style='width:80%;' value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programInstance.id, $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
 				<script type="text/javascript">
-					#if($status==1 || $status==5 )
+					#if($status==1 || $status==2 || $status==5 )
 						disable('$duedateId');
 					#else
 						datePicker( '$duedateId' );

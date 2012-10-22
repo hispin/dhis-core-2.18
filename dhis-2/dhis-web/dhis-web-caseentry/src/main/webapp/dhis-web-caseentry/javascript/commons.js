@@ -791,7 +791,7 @@ function setEventStatus( field, programStageInstanceId )
 			eventBox.attr('status',status);
 			setEventColorStatus( programStageInstanceId, status );
 			resetActiveEvent( eventBox.attr("pi") );
-			if( status==1){
+			if( status==1 || status==2 ){
 				hideById('del_' + programStageInstanceId);
 			}
 			else{
