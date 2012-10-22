@@ -12,7 +12,6 @@
 #set( $tabIndex = 1 )
 #foreach( $programStageDataElement in $programStageDataElements )
 	#set( $dataElementRowCount = $dataElementRowCount + 1 )    
-	#set( $mark = !$mark )
 	#set( $patientDataValue = false )
 	#set( $key = $programStageDataElement.dataElement.id )
 	#set( $patientDataValue = $patientDataValueMap.get( $key ) )    
@@ -84,6 +83,7 @@
 			#end
 		</td>
 	</tr>
+	#set( $mark = !$mark )
 	#set( $tabIndex = $tabIndex + 1 )
 #end	
 </tbody>
