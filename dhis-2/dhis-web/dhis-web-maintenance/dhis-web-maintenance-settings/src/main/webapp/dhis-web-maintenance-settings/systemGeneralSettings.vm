@@ -12,8 +12,9 @@
 				completenessOffset: getFieldValue( 'completenessOffset' ),
 				phoneNumberAreaCode: getFieldValue( 'phoneNumberAreaCode' )
 			}, function( json ) {
-				if ( json.response == "success" )
+				if ( json.response == "success" ) {
 					setHeaderDelayMessage( json.message );
+				}
 			});
 		});
 	});

@@ -8,8 +8,9 @@
 				flag: getFieldValue( 'flag' ),
 				startModule: getFieldValue( 'startModule' )
 			}, function( json ) {
-				if ( json.response == "success" )
+				if ( json.response == "success" ) {
 					setHeaderDelayMessage( json.message );
+				}
 			});
 		});
 	});

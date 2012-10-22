@@ -14,8 +14,7 @@
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
     </action>
     
-    <!-- System settings -->
-		<!-- General settings -->
+    <!-- General settings -->
 
     <action name="systemGeneralSettings" class="org.hisp.dhis.settings.action.system.GetGeneralSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -30,7 +29,7 @@
 	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 	
-		<!-- Appearance settings -->
+	<!-- Appearance settings -->
 
     <action name="systemAppearanceSettings" class="org.hisp.dhis.settings.action.system.GetAppearanceSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -45,7 +44,7 @@
 	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 	
-		<!-- Email settings -->
+	<!-- Email settings -->
 
     <action name="systemEmailSettings" class="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -59,6 +58,21 @@
 		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 	  <param name="onExceptionReturn">plainTextError</param>
     </action>
+    
+    <!-- Access settings -->
 
+    <action name="systemAccessSettings" class="org.hisp.dhis.settings.action.system.GetAccessSettingsAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-settings/systemAccessSettings.vm</param>
+      <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
+      <param name="requiredAuthorities">F_SYSTEM_SETTING</param>
+    </action>
+
+    <action name="setSystemAccessSettings" class="org.hisp.dhis.settings.action.system.SetAccessSettingsAction">
+      <result name="success" type="velocity-json">
+        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
   </package>
 </struts>

@@ -27,82 +27,54 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-import java.util.SortedMap;
-
-import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.setting.StyleManager;
-import org.hisp.dhis.system.util.Filter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.webportal.module.Module;
-import org.hisp.dhis.webportal.module.ModuleManager;
-import org.hisp.dhis.webportal.module.StartableModuleFilter;
+import org.hisp.dhis.configuration.Configuration;
+import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetAppearanceSettingsAction
+public class SetAccessSettingsAction
     implements Action
 {
-    private static final Filter<Module> startableFilter = new StartableModuleFilter();
+    @Autowired
+    private ConfigurationService configurationService;
+    
+    @Autowired
+    private UserService userService;
 
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Input
     // -------------------------------------------------------------------------
 
-    private SystemSettingManager systemSettingManager;
+    private Integer selfRegistrationRole;
 
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    public void setSelfRegistrationRole( Integer selfRegistrationRole )
     {
-        this.systemSettingManager = systemSettingManager;
-    }
-
-    private ModuleManager moduleManager;
-
-    public void setModuleManager( ModuleManager moduleManager )
-    {
-        this.moduleManager = moduleManager;
-    }
-
-    private StyleManager styleManager;
-
-    public void setStyleManager( StyleManager styleManager )
-    {
-        this.styleManager = styleManager;
+        this.selfRegistrationRole = selfRegistrationRole;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<String> flags;
+    private String message;
 
-    public List<String> getFlags()
+    public String getMessage()
     {
-        return flags;
+        return message;
     }
 
-    private List<Module> modules;
+    private I18n i18n;
 
-    public List<Module> getModules()
+    public void setI18n( I18n i18n )
     {
-        return modules;
-    }
-
-    private SortedMap<String, String> styles;
-
-    public SortedMap<String, String> getStyles()
-    {
-        return styles;
-    }
-
-    private String currentStyle;
-
-    public String getCurrentStyle()
-    {
-        return currentStyle;
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -111,15 +83,13 @@ public class GetAppearanceSettingsAction
 
     public String execute()
     {
-        styles = styleManager.getStyles();
+        UserAuthorityGroup group = userService.getUserAuthorityGroup( selfRegistrationRole );
         
-        currentStyle = styleManager.getSystemStyle();
-        
-        flags = systemSettingManager.getFlags();
+        Configuration config = configurationService.getConfiguration();
+        config.setSelfRegistrationRole( group );
+        configurationService.setConfiguration( config );
 
-        modules = moduleManager.getMenuModules();
-
-        FilterUtils.filter( modules, startableFilter );
+        message = i18n.getString( "settings_updated" );
 
         return SUCCESS;
     }

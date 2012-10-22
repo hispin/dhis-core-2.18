@@ -11,5 +11,6 @@ jQuery(function() {
     #introListImgItem( "systemGeneralSettings.action" "system_general_settings" "systemsettings" )
     #introListImgItem( "systemAppearanceSettings.action" "system_appearance_settings" "systemsettings" )
     #introListImgItem( "systemEmailSettings.action" "system_email_settings" "systemsettings" )
+    #introListImgItem( "systemAccessSettings.action" "system_access_settings" "systemsettings" )
 </ul>
     
