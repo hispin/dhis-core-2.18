@@ -217,12 +217,16 @@ function loadDataEntry( programStageInstanceId )
 	setInnerHTML('dataEntryFormDiv', '');
 	showById('dataEntryFormDiv');
 	showById('executionDateTB');
-	showById('inputCriteriaDiv');
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
 	disable('validationBtn');
 	disableCompletedButton(true);
 	disable('uncompleteBtn');
+	
+	$('#executionDate').unbind("change");
+	$('#executionDate').change(function() {
+		saveExecutionDate( getFieldValue('programId'), programStageInstanceId, byId('executionDate') );
+	});
 	
 	jQuery(".stage-object-selected").removeClass('stage-object-selected');
 	var selectedProgramStageInstance = jQuery( '#' + prefixId + programStageInstanceId );
