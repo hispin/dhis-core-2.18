@@ -564,3 +564,16 @@ function getInt(str,i,minlength,maxlength) {
     }
     return null;
 }
+
+function validatorFormat( text ) // Custom code
+{
+    return $.validator.format( text );
+}
+
+jQuery( document ).ready( function() { // Custom code
+	
+	if ( typeof( validationMessage ) !== "undefined"  ) // From messages.vm
+	{
+		$.validator.setMessages( validationMessage );
+	}
+} );

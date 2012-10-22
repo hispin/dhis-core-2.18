@@ -170,7 +170,7 @@ public class AccountController
             log.info( "Recaptcha failed with code: " + ( results.length > 0 ? results[1] : "" ) );
 
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return "The characters you entered did not match the word verification, please try again";
+            return "The characters you entered did not match the word verification, try again";
         }
 
         // ---------------------------------------------------------------------

@@ -2,25 +2,30 @@ var validationRules = {
 	rules: {
 		firstName: {
 			required: true,
-			rangelength: [ 1, 80 ]
+			rangelength: [ 2, 80 ]
 		},
 		surname: {
 			required: true,
-			rangelength: [ 1, 80 ]
+			rangelength: [ 2, 80 ]
 		},
 		username: {
 			required: true,
-			rangelength: [ 1, 80 ],
+			rangelength: [ 4, 80 ],
 			remote: "../../api/account/username"
 		},
 		password: {
 			required: true,
-			rangelength: [ 1, 80 ]
+			rangelength: [ 8, 80 ],
+			password: true,
+		},
+		retypePassword: {
+			required: true,
+			equalTo: "#password",
 		},
 		email: {
 			required: true,
 			email: true,
-			rangelength: [ 1, 80 ]
+			rangelength: [ 4, 80 ]
 		}
 	}
 };
@@ -31,8 +36,6 @@ $( document ).ready( function() {
 		callback: Recaptcha.focus_response_field
 	} );
 	
-	$( "#recaptchaValidationField" ).hide();
-	
 	$( "#accountForm" ).validate( {
 		rules: validationRules.rules,
 		submitHandler: accountSubmitHandler,
@@ -40,20 +43,22 @@ $( document ).ready( function() {
 			element.parent( "td" ).append( "<br>" ).append( error );
 		}
 	} );
-	
-	$.extend( jQuery.validator.messages, {
-	    required: "This field is required",
-	    rangelength: "Please enter a value between 1 and 80 characters long",
-	    email: "Please enter a valid email address"
-	} );
 } );
 
 function accountSubmitHandler()
 {
+	if ( $.trim( $( "#recaptcha_challenge_field" ).val() ).length == 0 ||
+		$.trim( $( "#recaptcha_response_field" ).val() ).length == 0 )
+	{
+		$( "#messageSpan" ).show().text( "Please enter a value for the word verification above" );
+		
+		return false;
+	}
+	
 	$.ajax( {
 		url: "../../api/account",
 		data: $( "#accountForm" ).serialize(),
-		type: "POST",
+		type: "post",
 		success: function( data ) {
 			alert("Account created");
 		},
