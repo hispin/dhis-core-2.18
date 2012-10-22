@@ -155,7 +155,7 @@ function advancedSearch( params )
 				statusSearching = 1;
 				setInnerHTML( 'contentDiv', html );
 				showById('contentDiv');
-				setInnerHTML('searchInforTD', i18n_advanced_search_patients );
+				setInnerHTML('searchInforTD', i18n_search_patients );
 				setFieldValue('listAll',false);
 				jQuery( "#loaderDiv" ).hide();
 			}

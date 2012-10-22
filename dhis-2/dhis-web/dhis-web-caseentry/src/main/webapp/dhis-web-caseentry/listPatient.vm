@@ -95,7 +95,7 @@
 				<td>$!mapPatientOrgunit.get($patient.id)</td>
 				#end
 				<td>
-					<a href="javascript:setInnerHTML('addNewDiv','');unSave = false;showSelectedDataRecoding('$patient.id', getFieldValue('programIdAddPatient'));" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
+					<a href="javascript:setInnerHTML('addNewDiv','');unSave = false;validateAllowEnrollment('$patient.id', getFieldValue('programIdAddPatient'));" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
 					<a href="javascript:showPatientHistory( '$patient.id' )" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
                 </td>               				
 			</tr>
@@ -126,5 +126,5 @@
 <script>
 	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';
 	var i18n_list_all_patients = '$encoder.jsEscape( $i18n.getString( "list_all_patients" ) , "'" )';
-	var i18n_advanced_search_patients = '$encoder.jsEscape( $i18n.getString( "advanced_search_patients" ) , "'" )';
+	var i18n_search_patients = '$encoder.jsEscape( $i18n.getString( "search_patients" ) , "'" )';
 </script>
