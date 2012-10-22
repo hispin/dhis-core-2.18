@@ -10,7 +10,8 @@ var validationRules = {
 		},
 		username: {
 			required: true,
-			rangelength: [ 1, 80 ]
+			rangelength: [ 1, 80 ],
+			remote: "../../api/account/username"
 		},
 		password: {
 			required: true,
@@ -26,18 +27,12 @@ var validationRules = {
 			email: true,
 			rangelength: [ 1, 80 ]
 		}
-	},
-	messages: {
-		username: {
-			remote: "Username is already taken"
-		}
 	}
 };
 
 $( document ).ready( function() {
 	jQuery( "#accountForm" ).validate( {
 		rules: validationRules.rules,
-		messages: validationRules.messages,
 		errorPlacement: function( error, element ) {
 			element.parent( "td" ).append( "<br>" ).append( error );
 		}

@@ -200,14 +200,14 @@ public class AccountController
     }
     
     @RequestMapping( value = "/username", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_JSON )
-    public @ResponseBody Boolean validateUserName( @RequestParam String username )
+    public @ResponseBody String validateUserName( @RequestParam String username )
     {
-        if ( StringUtils.trimToNull( username ) == null )
-        {
-            return Boolean.FALSE;
-        }
+        boolean valid = username != null && userService.getUserCredentialsByUsername( username ) == null;
         
-        return userService.getUserCredentialsByUsername( username ) == null;
+        // Custom code required because of our hacked jQuery validation
+        
+        return valid ? "{ \"response\": \"success\", \"message\": \"\" }" :
+            "{ \"response\": \"error\", \"message\": \"Username is already taken\" }";
     }
     
     @RequestMapping( value = "/recaptcha", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
@@ -249,5 +249,5 @@ public class AccountController
         log.info( "Recaptcha result: " + result );
         
         return result != null ? result.split( SPLIT ) : null;
-    }    
+    }
 }
