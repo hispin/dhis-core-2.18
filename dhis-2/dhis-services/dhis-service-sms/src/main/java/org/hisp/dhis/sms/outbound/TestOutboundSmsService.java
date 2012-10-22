@@ -125,4 +125,11 @@ public class TestOutboundSmsService
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public void deleteById( Integer outboundSmsId )
+    {
+        // TODO Auto-generated method stub
+        
+    }
 }

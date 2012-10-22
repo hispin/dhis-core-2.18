@@ -131,7 +131,13 @@ public class OutboundSmsServiceImpl
     public int saveOutboundSms(OutboundSms sms) {
         return outboundSmsStore.save( sms );
     }
-    
+
+    @Override
+    public void deleteById( Integer outboundSmsId )
+    {
+        OutboundSms sms = outboundSmsStore.get( outboundSmsId );
+        outboundSmsStore.delete( sms );
+    }
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
@@ -150,5 +156,6 @@ public class OutboundSmsServiceImpl
             return "Exception sending message " + sms + e.getMessage();
         }
     }
+
 
 }

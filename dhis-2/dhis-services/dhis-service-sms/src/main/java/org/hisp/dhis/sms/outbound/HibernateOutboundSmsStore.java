@@ -36,7 +36,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class HibernateOutboundSmsStore
     implements OutboundSmsStore
 {
@@ -134,5 +136,11 @@ public class HibernateOutboundSmsStore
     public void update( OutboundSms sms )
     {
         sessionFactory.getCurrentSession().update( sms );
+    }
+
+    @Override
+    public void delete( OutboundSms sms )
+    {
+        sessionFactory.getCurrentSession().delete( sms );
     }
 }
