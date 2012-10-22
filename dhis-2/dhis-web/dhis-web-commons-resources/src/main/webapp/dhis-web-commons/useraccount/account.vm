@@ -17,7 +17,7 @@
 
 <div id="accountInput">
 
-<h3>Create a new account</h3>
+<h3>$i18n.getString( "create_new_account" )</h3>
 
 <form id="accountForm" action="../../api/account" method="post">
 
@@ -48,7 +48,7 @@
         <td style="padding-bottom: 5px"><input type="text" id="phoneNumber" name="phoneNumber"></td>
     </tr>
     <tr>
-    	<td><label>Prove you are not a robot</label></td>
+    	<td><label>$i18n.getString( "prove_you_are_not_a_robot" )</label></td>
     	<td style="padding-bottom: 5px">
 		<script type="text/javascript" src="https://www.google.com/recaptcha/api/challenge?k=6LcM6tcSAAAAANwYsFp--0SYtcnze_WdYn8XwMMk"></script>
 		<noscript>
@@ -61,7 +61,7 @@
 	</tr>
     <tr>
     	<td></td>
-    	<td><input type="submit" value="Create" style="width:10em"></td>
+    	<td><input type="submit" value="$i18n.getString( 'create' )" style="width:10em"></td>
     </tr>
 </table>
 

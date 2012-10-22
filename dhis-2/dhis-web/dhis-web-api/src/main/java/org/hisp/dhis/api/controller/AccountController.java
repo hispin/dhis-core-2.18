@@ -56,7 +56,7 @@ public class AccountController
 {
     private static final Log log = LogFactory.getLog( AccountController.class );
     
-    private static final String RECAPTCHA_VERIFY_URL = "http://www.google.com/recaptcha/api/verify";
+    private static final String RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/verify";
     private static final String KEY = "6LcM6tcSAAAAAFnHo1f3lLstk3rZv3EVinNROfRq";
     private static final String TRUE = "true";
     private static final String FALSE = "false";
