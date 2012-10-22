@@ -57,9 +57,9 @@ public class AccountController
     private static final Log log = LogFactory.getLog( AccountController.class );
     
     private static final String RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/verify";
+    protected static final String PUB_KEY = "6LcM6tcSAAAAANwYsFp--0SYtcnze_WdYn8XwMMk";
     private static final String KEY = "6LcM6tcSAAAAAFnHo1f3lLstk3rZv3EVinNROfRq";
     private static final String TRUE = "true";
-    private static final String FALSE = "false";
     private static final String SPLIT = "\n";
     private static final int MAX_LENGTH = 80;
     
@@ -166,9 +166,11 @@ public class AccountController
         // ---------------------------------------------------------------------
         
         if ( !TRUE.equalsIgnoreCase( results[0] ) )
-        {
+        {            
+            log.info( "Recaptcha failed with code: " + ( results.length > 0 ? results[1] : "" ) );
+
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            return results.length > 0 ? results[1] : FALSE;
+            return "The characters you entered did not match the word verification, please try again";
         }
 
         // ---------------------------------------------------------------------
@@ -210,27 +212,6 @@ public class AccountController
             "{ \"response\": \"error\", \"message\": \"Username is already taken\" }";
     }
     
-    @RequestMapping( value = "/recaptcha", method = RequestMethod.GET, produces = ContextUtils.CONTENT_TYPE_TEXT )
-    public @ResponseBody String validateRecaptcha( 
-        @RequestParam( value = "recaptcha_challenge_field" ) String recapChallenge,
-        @RequestParam( value = "recaptcha_response_field" ) String recapResponse,
-        HttpServletRequest request )
-    {
-        if ( StringUtils.trimToNull( recapChallenge ) == null || StringUtils.trimToNull( recapResponse ) == null )
-        {
-            return FALSE;
-        }
-        
-        String[] results = checkRecaptcha( KEY, request.getRemoteAddr(), recapChallenge, recapResponse );
-        
-        if ( results == null || results.length == 0 )
-        {
-            return FALSE;
-        }
-        
-        return TRUE.equalsIgnoreCase( results[0] ) ? results[0] : ( results.length > 0 ? results[1] : FALSE );
-    }
-
     // ---------------------------------------------------------------------
     // Supportive methods
     // ---------------------------------------------------------------------
