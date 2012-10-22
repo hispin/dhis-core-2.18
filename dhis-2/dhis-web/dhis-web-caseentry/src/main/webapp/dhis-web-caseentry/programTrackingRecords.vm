@@ -24,7 +24,7 @@
 #if( $patients && $patients.size()>0 )
 	<p>#parse( "/dhis-web-caseentry/colorHelp.vm" )</p>
 	
-	<table id="patientList">
+	<table id="patientList" class="listTable">
 		#set( $mark = false )                 
 		#foreach( $patient in $patients )
 			#set( $programInstance = '')
