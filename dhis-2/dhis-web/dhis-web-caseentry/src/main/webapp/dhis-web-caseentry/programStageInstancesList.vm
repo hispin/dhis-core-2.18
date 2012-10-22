@@ -24,9 +24,11 @@
 				<thead>
 					<tr>
 						<th>#</th>
+						#set($noCols = $grid.getHeaders().size() )
+						#set($metaData = $noCols - $valueTypes.size() - 1)
 						#set($index = 0)
 						#foreach( $col in $grid.getHeaders() )
-							#if( $index > 0 )
+							#if( $index==1 || $index > $metaData )
 								<th>$col.name</th>
 							#end
 							#set($index = $index + 1)
@@ -36,7 +38,6 @@
 				</thead>
 		
 				<tbody id="list">
-					#set($noCols = $grid.getHeaders().size())
 					#foreach( $row in $grid.getRows() )
 						#set($index = 0)
 						<tr id="row"  #alternate( $mark )>
@@ -48,7 +49,7 @@
 							#foreach( $col in $row )
 								#if( $index == 0 )
 									#set($psid = $col)
-								#elseif( $index < $noCols ) 
+								#elseif( $index==1 || $index > $metaData )
 									<td>$!col</td>
 								#end
 								#set($index = $index + 1)
