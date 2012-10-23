@@ -12,6 +12,8 @@
 
   <!-- Hibernate entities -->
 
+  <cache name="org.hisp.dhis.configuration.Configuration" maxElementsInMemory="1" />
+
   <cache name="org.hisp.dhis.dataelement.DataElement" maxElementsInMemory="4000" />
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryCombo" maxElementsInMemory="100" />

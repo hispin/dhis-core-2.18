@@ -32,8 +32,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.configuration.Configuration;
-import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,22 +45,12 @@ public class GetAccessSettingsAction
     implements Action
 {
     @Autowired
-    private ConfigurationService configurationService;
-    
-    @Autowired
     private UserService userService;
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private Configuration configuration;
-
-    public Configuration getConfiguration()
-    {
-        return configuration;
-    }
-    
     private List<UserAuthorityGroup> userRoles = new ArrayList<UserAuthorityGroup>();
 
     public List<UserAuthorityGroup> getUserRoles()
@@ -76,8 +64,6 @@ public class GetAccessSettingsAction
 
     public String execute()
     {
-        configuration = configurationService.getConfiguration();
-        
         userRoles = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
         
         Collections.sort( userRoles, IdentifiableObjectNameComparator.INSTANCE );

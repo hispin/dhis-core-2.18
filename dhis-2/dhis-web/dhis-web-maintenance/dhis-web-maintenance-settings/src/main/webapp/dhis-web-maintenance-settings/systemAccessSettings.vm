@@ -12,7 +12,7 @@ jQuery( document ).ready( function() {
 } );    
 </script>
 
-#set( $curRole = $configuration.selfRegistrationRole )
+#set( $curRole = $keyConfig.selfRegistrationRole )
 
 <h3>$i18n.getString( "access_settings" )</h3>
 
