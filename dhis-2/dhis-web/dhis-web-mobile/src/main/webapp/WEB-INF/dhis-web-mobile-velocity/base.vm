@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html manifest="app-cache">
-<!--  <html> -->
+<!--  <html manifest="app-cache"> -->
+<html>
 
 <head>
 	<title>DHIS2</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+
 	<link rel="stylesheet" href="$baseUrl/../dhis-web-mobile-resources/css/jquery.mobile.min.css?v=1.1.1" />
+
     <script src="$baseUrl/../dhis-web-commons/javascripts/jQuery/jquery.min.js?v=1.7.1"></script>
     <script src="$baseUrl/../dhis-web-mobile-resources/js/underscore.min.js?v=1.3.3"></script>
     <script src="$baseUrl/../dhis-web-mobile-resources/js/jquery.mobile.min.js?v=1.1.1"></script>

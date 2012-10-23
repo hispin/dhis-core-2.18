@@ -30,7 +30,7 @@
 
     $(document).bind('pageinit', function() {
         $.ajax({
-            url   : '$baseUrl/../api/messageConversations/${messageId}.json',
+            url   : '$baseUrl/../api/messageConversations/${messageId}?markRead=true',
             dataType: 'json'
         }).success(function ( data ) {
             var tmpl = jQuery('#message-template').html();
