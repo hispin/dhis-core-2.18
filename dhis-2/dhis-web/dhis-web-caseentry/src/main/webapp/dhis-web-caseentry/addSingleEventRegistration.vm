@@ -36,7 +36,7 @@
 	
 </script>
 <h3>
-	<a href="javascript:backMainPage();">$i18n.getString( "single_event_with_registration" )</a>
+	<a href="javascript:backMainPage();">$i18n.getString( "single_event_with_registration_management" )</a>
 	&#8226; <span id='singleProgramName' name='singleProgramName'></span>
 	&raquo; $i18n.getString( "add_new_patient" )
 </h3>	

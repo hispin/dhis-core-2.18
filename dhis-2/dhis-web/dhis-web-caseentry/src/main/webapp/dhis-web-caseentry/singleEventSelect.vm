@@ -13,7 +13,7 @@
 	});
 </script>
 
-<h3 id='mainLinkLbl'>$i18n.getString( "single_event_with_registration" ) #openHelp('single_event_with_registration')</h3>
+<h3 id='mainLinkLbl'>$i18n.getString( "single_event_with_registration_management" ) #openHelp('single_event_with_registration')</h3>
 
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='true'>
 <input type='hidden' id='listAll' name='listAll'>
