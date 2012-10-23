@@ -107,7 +107,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         postProcessEntity( entity );
-        
+        postProcessEntity( entity, parameters );
+
         model.addAttribute( "model", entity );
         model.addAttribute( "viewClass", options.getViewClass( "detailed" ) );
 
@@ -133,7 +134,8 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         }
 
         postProcessEntity( entity );
-        
+        postProcessEntity( entity, parameters );
+
         model.addAttribute( "model", entity );
         model.addAttribute( "viewClass", "detailed" );
 
@@ -201,7 +203,11 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     public void postProcessEntity( T entity ) throws Exception
     {
     }
-    
+
+    public void postProcessEntity( T entity, Map<String, String> parameters ) throws Exception
+    {
+    }
+
     //--------------------------------------------------------------------------
     // Helpers
     //--------------------------------------------------------------------------
