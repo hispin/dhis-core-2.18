@@ -5645,20 +5645,20 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
         <para>Basic information</para>
         <itemizedlist>
           <listitem>
-            <para><emphasis role="italic">Name</emphasis>: Name of person attribute.</para>
+            <para><emphasis role="italic">Name</emphasis> - Name of person attribute.</para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Description</emphasis>: Description of person attribute.</para>
+            <para><emphasis role="italic">Description</emphasis> - Description of person attribute.</para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Mandatory</emphasis>: Entering value for this attribute is required or not.</para>
+            <para><emphasis role="italic">Mandatory</emphasis> - Entering value for this attribute is required or not.</para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Inherit</emphasis>: When to registry a new person for relationship with an available person, all inherrit person attribute values of the person will be pre-filled in the registration form.
+            <para><emphasis role="italic">Inherit</emphasis> - When to registry a new person for relationship with an available person, all inherit person attribute values of the person will be pre-filled in the registration form.
  </para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Value Type</emphasis>: Data type of value inputed.</para>
+            <para><emphasis role="italic">Value Type</emphasis> - Data type of value inputed. In addition to supporting basic data such as <emphasis role="italic">Number</emphasis>, <emphasis role="italic">Text</emphasis>, <emphasis role="italic">Yes/No</emphasis>, <emphasis role="italic">Date</emphasis>, the system support a value type as <emphasis role="italic">Predefined value</emphasis> for defining attribute values. Users only can select on value in the defined list for each person registered. E.g code values which record the information on access to HIV prevention services can be pre-defined, include <emphasis role="italic">T</emphasis>, <emphasis role="italic">TR</emphasis>, <emphasis role="italic">TRR</emphasis>, <emphasis role="italic">TRRD</emphasis>, <emphasis role="italic">TRRDm</emphasis>, <emphasis role="italic">TRRDmDb</emphasis> as <emphasis role="italic">PMTCT Code</emphasis> attribute.</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -5677,22 +5677,22 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
         <para>Basic information -</para>
         <itemizedlist>
           <listitem>
-            <para><emphasis role="italic">Name</emphasis>: Name of identifier type.</para>
+            <para><emphasis role="italic">Name</emphasis> - Name of identifier type.</para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Description</emphasis>: Description of identifier type.</para>
+            <para><emphasis role="italic">Description</emphasis> - Description of identifier type.</para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Mandatory</emphasis>: Entering value for the identifier is required or not.</para>
+            <para><emphasis role="italic">Mandatory</emphasis> - Entering value for the identifier is required or not.</para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Related</emphasis>: Representative re-uses the  identifier of  person.</para>
+            <para><emphasis role="italic">Related</emphasis> - Representative re-uses the  identifier of  person.</para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Number of characters</emphasis>: Maximum number of characters for value inputed. </para>
+            <para><emphasis role="italic">Number of characters</emphasis> -  Maximum number of characters for value inputed. </para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Type</emphasis>: Data type of value inputted.</para>
+            <para><emphasis role="italic">Type</emphasis> - Data type of value inputted, includes <emphasis role="italic">Text</emphasis>, <emphasis role="italic">Number</emphasis> and <emphasis role="italic">Letter Only</emphasis>.</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -5704,31 +5704,30 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
       </section>
       <section id="program">
         <title>Program and Program stage</title>
-        <para>The section provides a mechanism for defining programs and  program stages corresponding. </para>
+        <para>The section provides a mechanism for defining health programmes and action for each stage  of the programme. </para>
         <section>
           <title>Program</title>
-          <para>Program section provides a mechanism for defining a health programme.</para>
           <para>To access the program maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Program</emphasis> option.</para>
           <para>To define a new program, click the <emphasis role="italic">Add new</emphasis> button on the main page. Fill all fields with read asterisk, and then click the <emphasis role="italic">Add</emphasis> button.</para>
           <para>Basic information -</para>
           <itemizedlist>
             <listitem>
-              <para><emphasis role="italic">Name</emphasis>: The name of the program</para>
+              <para><emphasis role="italic">Name</emphasis> - The name of the program</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Description</emphasis>: Descriptions, meanings, explanation, etc. of/about the program.</para>
+              <para><emphasis role="italic">Description</emphasis> - Descriptions, meanings, explanation, etc. of/about the program.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Type</emphasis>: There are three type of program: multi events with registration, single event with registration and single event without registration.</para>
+              <para><emphasis role="italic">Type</emphasis> - There are three types of program: multi events with registration, single event with registration and single event without registration.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Events generated by enrollment date</emphasis>: Check on it for auto-generating due dates of events from program-stages of this program    based on the enrollment date. If not check it, the due dates are generated based on incident date.</para>
+              <para><emphasis role="italic">Events generated by enrollment date</emphasis> - Check on it for auto-generating due dates of events from program-stages of this program    based on the enrollment date. If it is not checked, the due dates are generated based on incident date.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Show provided elsewhere</emphasis>: Set show/hide status of provided elsewhere column in data entry form.</para>
+              <para><emphasis role="italic">Show provided elsewhere</emphasis> - Set show/hide provided elsewhere column in data entry form.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Show incident date</emphasis>: Set show/hide incident date field when a person enroll in this program.</para>
+              <para><emphasis role="italic">Show incident date</emphasis> - Set show/hide incident date field when a person enroll in this program.</para>
             </listitem>
             <listitem>
               <para><emphasis role="italic">Description of incident date</emphasis>: The date when the person got the disease or he/she has just been committed to an equivalent program for being followed-up. E.g. In the Immunization program for child under 1yr old, the incident date is the birthday; in the maternal program, the incident date is the date of last menstrual period (LMP).</para>
@@ -5738,26 +5737,26 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
 For example: the date in which a person enrolls to the system.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Identifiers / attributes <emphasis role="italic">section</emphasis></emphasis>: Select identifier-types and person attributes which belong to the program. Check  <emphasis role="italic">Displayed in list</emphasis> checkboxes of identiders to display its value in person list instead of person&apos;s full-name.</para>
+              <para><emphasis role="italic">Identifiers / attributes <emphasis role="italic">section</emphasis></emphasis>: Select identifier-types and person attributes which belong to the program. Check  <emphasis role="italic">Displayed in list</emphasis> checkboxes of identifier types to display its value in person list instead of person&apos;s full-name.</para>
             </listitem>
           </itemizedlist>
           <para>To assign a program for organisation units, click<emphasis role="italic"> Assign program to organisation units</emphasis> icon, the first icon under Operations, corresponding to the program you would like and select organisation units where provide the program.</para>
           <para>To create validation rules for programs, click <emphasis role="italic">Program validation rule management</emphasis> icon, the second icon under Operations, corresponding to the program you would like. There are two types of  validation rules -  </para>
           <itemizedlist>
             <listitem>
-              <para><emphasis role="italic">Single validation rule</emphasis> is used for defining validation for only one condition. E.g Weight must be greater then zero, or the date of admission is before the date of  discharge. To define a validation, click <emphasis role="italic">Create new single validation rule</emphasis> button and enter values for the fields in form.</para>
+              <para><emphasis role="italic">Single validation rule</emphasis> is used for defining validation for only one condition. E.g Weight must be greater then zero, or the date of admission is before the date of  discharge. To define a validation, click <emphasis role="italic">Add single rule</emphasis> button and enter values for the fields in form.</para>
               <orderedlist>
                 <listitem>
                   <para>Enter <emphasis role="italic">description</emphasis> of program validation rule. </para>
                 </listitem>
                 <listitem>
-                  <para><emphasis role="italic"><emphasis role="italic">In</emphasis> Validation</emphasis> section, select an program stage to load data elements belong to the selected stage the field below. </para>
+                  <para><emphasis role="italic"><emphasis role="italic">In</emphasis> Validation</emphasis> section, select an program stage in list to load data elements belong to the selected stage the field below. </para>
                 </listitem>
                 <listitem>
-                  <para>Double-click on a data element, a formula text of the selected data element is  created and shown into the condition area. </para>
+                  <para>Double-click on a data element in list, a formula text of the selected data element is  created and displayed into the condition area. </para>
                 </listitem>
                 <listitem>
-                  <para>Click the comparing operations  (+, &lt;, &lt;=, &gt;, &gt;=, =, !=, !=NULL ) below to set operation for the formula. </para>
+                  <para>Click the comparing operations  (+, &lt;, &lt;=, &gt;, &gt;=, =, !=, !=NULL ) below to set operation for the formula.</para>
                 </listitem>
                 <listitem>
                   <para>Click <emphasis role="italic">Add</emphasis> button to add the new validation rule.</para>
@@ -5772,7 +5771,7 @@ For example: the date in which a person enrolls to the system.</para>
               </screenshot>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Multiple validation rule </emphasis>is used for defining validation for two conditions. E.g in PMTCT program, if the blood test result of a pregnant is HIV positive, the pregnant must test WHO Stage/CD4. To define a validation, click <emphasis role="italic">Create new multi validation rule</emphasis> button. The form is have two part - left side and right side. Fill values for the fields in each part is the same <emphasis role="italic">Single validation rule</emphasis> function.</para>
+              <para><emphasis role="italic">Multiple validation rule </emphasis>is used for defining validation for two conditions. E.g in PMTCT program, if the blood test result of a pregnant is HIV positive, the pregnant must test WHO Stage/CD4. To define a validation, click <emphasis role="italic">Add multi rule</emphasis> button. The form is have two part - left side and right side. Fill values for the fields in each part is the same <emphasis role="italic">Single validation rule</emphasis> function.</para>
               <screenshot>
                 <mediaobject>
                   <imageobject>
@@ -5782,36 +5781,38 @@ For example: the date in which a person enrolls to the system.</para>
               </screenshot>
             </listitem>
           </itemizedlist>
-          <para>Besides, validation rules for DATE date elements are created for a program automatically. It&apos;s used for defining formulas related the DATE data elements of each program stage. To define this validation rule, click <emphasis role="italic">Edit</emphasis> icon of <emphasis role="italic">Validation for date date elements</emphasis>. Select a program stage, the DATE data elements will be shown with corresponding conditions as follows -</para>
-          <itemizedlist>
-            <listitem>
-              <para>Before current date</para>
-            </listitem>
-            <listitem>
-              <para>After current date</para>
-            </listitem>
-            <listitem>
-              <para>Before or equals to current date</para>
-            </listitem>
-            <listitem>
-              <para>After or equals to current date</para>
-            </listitem>
-            <listitem>
-              <para>Before due-date</para>
-            </listitem>
-            <listitem>
-              <para>After due-date</para>
-            </listitem>
-            <listitem>
-              <para>Before or equals to due-date</para>
-            </listitem>
-            <listitem>
-              <para>After or equals to due-date</para>
-            </listitem>
-            <listitem>
-              <para>In range due date</para>
-            </listitem>
-          </itemizedlist>
+          <note>
+            <para>Validation rules for DATE date elements are created for a program automatically. It&apos;s used for defining formulas related the DATE data elements of each program stage. To define this validation rule, click <emphasis role="italic">Edit</emphasis> icon of <emphasis role="italic">Validation for date date elements</emphasis>. Select a program stage, the DATE data elements will be shown with corresponding conditions as follows -</para>
+            <itemizedlist>
+              <listitem>
+                <para>Before current date</para>
+              </listitem>
+              <listitem>
+                <para>After current date</para>
+              </listitem>
+              <listitem>
+                <para>Before or equals to current date</para>
+              </listitem>
+              <listitem>
+                <para>After or equals to current date</para>
+              </listitem>
+              <listitem>
+                <para>Before due-date</para>
+              </listitem>
+              <listitem>
+                <para>After due-date</para>
+              </listitem>
+              <listitem>
+                <para>Before or equals to due-date</para>
+              </listitem>
+              <listitem>
+                <para>After or equals to due-date</para>
+              </listitem>
+              <listitem>
+                <para>In range due date</para>
+              </listitem>
+            </itemizedlist>
+          </note>
           <screenshot>
             <mediaobject>
               <imageobject>
@@ -5826,35 +5827,35 @@ For example: the date in which a person enrolls to the system.</para>
           <para>Basic information -</para>
           <itemizedlist>
             <listitem>
-              <para><emphasis role="italic">Name</emphasis>: Name of the program stage</para>
+              <para><emphasis role="italic">Name</emphasis> - Name of the program stage</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Description</emphasis>: The description of the program stage</para>
+              <para><emphasis role="italic">Description</emphasis> - The description of the program stage</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Description of report date</emphasis>: The description for report date which is displayed in case entry form.</para>
+              <para><emphasis role="italic">Description of report date</emphasis> - The description for report date which is displayed in case entry form.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Auto-generate event:</emphasis> Un-check this to prevent for creating an event of this program stage  automatically when a person enroll into the program.</para>
+              <para><emphasis role="italic">Auto-generate event</emphasis> - Un-check this to prevent for creating an event of this program stage  automatically when a person enroll into the program.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Scheduled days from start</emphasis>: The minimum number of days to wait for starting the program stage.</para>
+              <para><emphasis role="italic">Scheduled days from start</emphasis> - The minimum number of days to wait for starting the program stage.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Repeatable</emphasis>: specify the program stage as repeatable or not.</para>
+              <para><emphasis role="italic">Repeatable</emphasis> - specify the program stage as repeatable or not.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Standard interval days</emphasis>: Specify the number of days to repeat the repeatable program stage.</para>
+              <para><emphasis role="italic">Standard interval days</emphasis> - Specify the number of days to repeat the repeatable program stage.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Data elements <emphasis role="italic">section</emphasis></emphasis>: Select person data elements which belong to the program stage</para>
+              <para><emphasis role="italic">Data elements <emphasis role="italic">section</emphasis></emphasis> - Select person data elements which belong to the program stage</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Template reminder message<emphasis role="italic"> section</emphasis></emphasis>: Define  template reminder messages which are used for sending messages for person automatically. There are two params -</para>
-              <para><emphasis role="italic">1) Days before/after due date</emphasis>:  Enter a positive number of days if  sending process happens after due-date of events which are generated from this program stage. Enter a negative number of days if  sending process happens before due-date of events.</para>
-              <para><emphasis role="italic">2) Parameters</emphasis>: Provide parameters  which are used for generating a message for each person. The parameters include person&apos;s first name, program&apos;s name, program stage&apos;s name, due date of event, interval between current date and due date and organisation unit&apos;s name. </para>
+              <para><emphasis role="italic">Template reminder message<emphasis role="italic"> section</emphasis></emphasis> - Define  template reminder messages which are used for sending messages for person automatically. There are two params -</para>
+              <para><emphasis role="italic">1) Days before/after due date</emphasis> -  Enter a positive number of days if  sending process happens after due-date of events which are generated from this program stage. Enter a negative number of days if  sending process happens before due-date of events.</para>
+              <para><emphasis role="italic">2) Parameters</emphasis> - Provide parameters  which are used for generating a message for each person. The parameters include person&apos;s first name, program&apos;s name, program stage&apos;s name, due date of event, interval between current date and due date and organisation unit&apos;s name. </para>
               <para>Double-click on an option to insert it into template message field below.</para>
-              <para><emphasis role="italic">3) Message</emphasis>: Content of template message. E.g Dear {patient-name}, please come to your appointment at {due-date}.</para>
+              <para><emphasis role="italic">3) Message</emphasis> - Content of template message. E.g Dear {patient-name}, please come to your appointment at {due-date}.</para>
               <note>
                 <para>Click <emphasis role="italic">Add more... </emphasis>button to add more template reminder messages.</para>
               </note>
@@ -5863,13 +5864,15 @@ For example: the date in which a person enrolls to the system.</para>
           <para>A program stage has  three types of  data entry form - </para>
           <orderedlist>
             <listitem>
-              <para><emphasis role="italic">Custom data entry form</emphasis>: Define a data entry form as HTML page. Click<emphasis role="italic"> fifth icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the program stage you would like to define custom data entry form. The system supports to define a custom entry form with multi stages. So this form can be re-used in other stages of the same program.</para>
+              <para><emphasis role="italic">Custom data entry form</emphasis> - Define a data entry form as HTML page. Click<emphasis role="italic"> Design data entry form <emphasis role="italic">icon, the fifth icon</emphasis></emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the program stage you would like to define custom data entry form. The system supports to define a custom entry form with multi stages. So this form can be re-used in other stages of the same program.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Section data entry form</emphasis>: Group some data elements which belong to the program stage as sections and display data elements by each section. Click<emphasis role="italic"> forth icon</emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the program stage you would like to define section data entry form.</para>
+              <para><emphasis role="italic">Section data entry form</emphasis> - Group some data elements which belong to the program stage as sections and display data elements by each section. Click <emphasis role="italic">Section management</emphasis> icon, the <emphasis role="italic">
+                  <emphasis role="italic">forth icon</emphasis>
+                </emphasis> under <emphasis role="italic">Operations</emphasis>, corresponding to the program stage you would like to define section data entry form.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Default data entry form</emphasis>: List all data elements which belong to the program stage</para>
+              <para><emphasis role="italic">Default data entry form</emphasis> - List all data elements which belong to the program stage.</para>
             </listitem>
           </orderedlist>
           <para>To search program stages by scheduled days, click <emphasis role="italic">Sort by scheduled</emphasis> days button.</para>
@@ -6031,14 +6034,14 @@ For example: the date in which a person enrolls to the system.</para>
         <title>Scheduling message</title>
         <para>This function is used for scheduling auto-send messages on the time defined. When the schedule is started, messages for each person are generated based on templates defined in each stage at midnight. On the time, the scheduled messages are sent.</para>
         <para>Click <emphasis role="italic">Execute</emphasis> button to generate and send each message for each  person at the time the button clicked.</para>
-        <para>Reminder messasges can be automatically scheduled to run on regular intervals. Click <emphasis role="italic">Start</emphasis> button will enable the scheduled job to run the task. Messages are generated based on templates defined in each stages at mid-night and sent at a pre-determined time  or can be run immediately by pressing <emphasis role="italic">Execute now</emphasis> button.</para>
+        <para>Reminder messages can be automatically scheduled to run on regular intervals. Click <emphasis role="italic">Start</emphasis> button will enable the scheduled job to run the task. Messages are generated based on templates defined in each stages at mid-night and sent at a pre-determined time  or can be run immediately by pressing <emphasis role="italic">Execute now</emphasis> button.</para>
       </section>
-      <section>
-        <title id="scheduling_aggregation_query_builder">Scheduling Aggregation Query Builder</title>
+      <section id="scheduling_aggregation_query_builder">
+        <title>Scheduling Aggregation Query Builder</title>
         <para>The aggregation query builder jobs can be automatically scheduled to run on regular intervals. Simply select the aggregation period types, organisation unit group set aggregation level, and strategy to configure how the scheduled job should run. Click <emphasis role="italic">Start</emphasis> button will enable the scheduled job to run at mid-night or can be run immediately by pressing <emphasis role="italic">Execute now</emphasis> button.<screenshot>
             <mediaobject>
               <imageobject>
-                <imagedata fileref="resources/images/patients_programs/scheduling_aggregation_query_builder.png" width="70%"/>
+                <imagedata width="70%" fileref="resources/images/patients_programs/scheduling_aggregation_query_builder.png"/>
               </imageobject>
             </mediaobject>
           </screenshot></para>
@@ -6132,7 +6135,7 @@ For example: the date in which a person enrolls to the system.</para>
                 <para><emphasis role="italic">Search existing person</emphasis> tab is used for searching  available persons and users can select one person in the result list to set relationship. The criteria to search is based on  identifier, attribute and name of persons.</para>
               </listitem>
               <listitem>
-                <para><emphasis role="italic">Add new person</emphasis> tab is used for  registering a new person for relationship. The  form shown is the similar register form. When adding a person in this form, you need to select one user-defined relationship type in the list. Finally, click <emphasis role="italic">Add</emphasis> button.</para>
+                <para><emphasis role="italic">Add new person</emphasis> tab is used for  registering a new person for relationship. When adding a person in this form, you need to select one user-defined relationship type in the list. Finally, click <emphasis role="italic">Add</emphasis> button.</para>
               </listitem>
             </itemizedlist>
             <screenshot>
@@ -6171,14 +6174,18 @@ For example: the date in which a person enrolls to the system.</para>
               <para><emphasis role="italic">Reschedule and set status</emphasis> tab provides function for re-scheduling, setting status and sending messages/comments or deleting for each events.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Comments and messages</emphasis> tab displays a message/comment list of the program</para>
+              <para><emphasis role="italic">Comments and messages</emphasis> tab displays a comment/message list of the program</para>
             </listitem>
             <listitem>
               <para><emphasis role="italic">Program report </emphasis>tab is summary report for the program</para>
             </listitem>
           </orderedlist>
-          <para>The <emphasis role="italic">Completed programs</emphasis> section consists of completed program list. Select a program to show detail information below.</para>
-          <para>The <emphasis role="italic">Relationship</emphasis> section consists of relationships of the person. Click on a person in list to open his/her dashboard.</para>
+          <para>The <emphasis role="italic">Active programs</emphasis> section consists of active programs of the person. Click on a program to show detail information below. Besides, there are two link in this tab - </para>
+          <para>1) To display completed program list of the person, click   <emphasis role="italic">Completed programs</emphasis> link. Select a program to show detail information below.</para>
+          <para>2) To enroll the person into a program, click <emphasis role="italic">Enroll</emphasis> link.</para>
+          <para>The <emphasis role="italic">Relationship</emphasis> section consists of relationships of the person. Click on a person in list to open his/her dashboard. Besides, there are two link in this tab - </para>
+          <para>1) To open Relationship management section, click <emphasis role="italic">Management</emphasis> link.</para>
+          <para>2) To register new person for relationship, click <emphasis role="italic">Register new person</emphasis> link.</para>
           <para>Besides, the system audits user&apos;s information who accessed on the dashboard. Click on the <emphasis role="italic">History</emphasis> link in the header to  display this information.</para>
         </section>
         <section>
@@ -6186,7 +6193,7 @@ For example: the date in which a person enrolls to the system.</para>
           <para>After the  registration, the person needs to be enrolled in any available program. To enroll:</para>
           <orderedlist>
             <listitem>
-              <para>Click on <emphasis role="italic">Enroll into program</emphasis> link from Dashboard of person to open the Enrollment form.</para>
+              <para>Click on <emphasis role="italic">Enroll</emphasis> link from Dashboard of the person to open the Enrollment form.</para>
             </listitem>
             <listitem>
               <para>Select a program from the list  ( i.e., Death,  Child Health Program... )</para>
@@ -6200,17 +6207,19 @@ For example: the date in which a person enrolls to the system.</para>
             </listitem>
             <listitem>
               <para>After the selection of program, you need to provide two dates:</para>
-              <para>1) <emphasis role="italic">Date of enrollment:</emphasis> The date when person enrolls into the selected program.</para>
-              <para>2) <emphasis role="italic">Date of incident</emphasis>: The date when the person got the disease or he/she has just been committed to an equivalent program for being followed-up.</para>
-              <para>Besides, if the selected program has any identifier-types and person-attributes, they are displayed below. Users can enter  values for them at this time.</para>
+              <para>1) <emphasis role="italic">Date of enrollment ( the second field ):</emphasis> The date when person enrolls into the selected program.</para>
+              <para>2) <emphasis role="italic">Date of incident ( the third field )</emphasis>: The date when the person got the disease or he/she has just been committed to an equivalent program for being followed-up.</para>
+              <note>
+                <para>If the selected program has any identifier-types and person-attributes, they are displayed below. Users can enter  values for them at this time.</para>
+              </note>
               <warning>
-                <para>The <emphasis role="italic">date of incident</emphasis> are very important to generate the activity plan for  each person. Health provider  needs to ensure  recording and reporting date of incidence with each case of multi events with registration. However,  the date is ignored with single event programs. </para>
-                <para>In addition, when to define a program, you can set <emphasis role="italic">Generated by enrollment date</emphasis> property as true to generate the activity plan based on the enrollment date, not incident date. </para>
+                <para>The <emphasis role="italic">date of incident</emphasis> are  important to generate the activity plan for  each person. Health provider  needs to ensure  recording and reporting date of incidence with each case of multi events with registration. However, when to define a program, if it can be set <emphasis role="italic">Generated by enrollment date</emphasis> property as true, the activity plan is generated based on the enrollment date, not incident date. </para>
+                <para>Besides,  the date is ignored with single event programs. </para>
               </warning>
             </listitem>
             <listitem>
               <para>Click  the <emphasis role="italic">Enroll</emphasis> button to complete the enrollment process.</para>
-              <para>The system will automatically calculate  due-date for each event of program and will show it in the <emphasis role="italic">Schedule and set status</emphasis> tab below. In  health programme, a person  registered and enrolled, needs to be checked from time to time by health providers.
+              <para>The system will automatically calculate  due-date for each event of program and will show it in the <emphasis role="italic">Re-schedule and set status</emphasis> tab below. In  health programme, a person  registered and enrolled, needs to be checked from time to time by health providers.
 The case update  is designed in the same manner so that services which are received by the persons can be updated from time to time  when they visit the facility  or  whenever the health providers need to <emphasis role="italic">track</emphasis>.</para>
               <para>The system will automatically calculate  due-date for each the program stage  and will show same the below enrollment. In  health program, a person  registered and enrolled, needs to be checked from time to time by health providers.
 The case update  is designed in the same manner so that services which are received by the persons can be updated from time to time  when they visit the facility  or  whenever the health providers need to track.</para>
@@ -6382,7 +6391,7 @@ The plan (expected visits for the upcoming period) will typically be a mix of re
           <para>To update an event -</para>
           <orderedlist>
             <listitem>
-              <para>Click <emphasis role="italic">Advanced search</emphasis> button. Then enter criterion for searching events. The list events are displayed below.</para>
+              <para>Click <emphasis role="italic">Search</emphasis> button. Then enter criterion for searching events. The list events are displayed below.</para>
             </listitem>
             <listitem>
               <para>Click on <emphasis role="italic">Data entry</emphasis> icon - the first icon, to update value for the event.</para>
@@ -6394,15 +6403,15 @@ The plan (expected visits for the upcoming period) will typically be a mix of re
         <title>Reports</title>
         <para>The sub module provides two functions for individual reports -<itemizedlist>
             <listitem>
-              <para><emphasis role="italic">Program summary</emphasis> - view the summary report to get an overview of the services provided for a program.</para>
+              <para><emphasis role="italic">Program summary</emphasis> - View the summary report to get an overview of the services provided for a program.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Tabular report</emphasis>  - an interactive reporting tool for tracker-data using tabular presentation with dynamic filters for each person attribute and data element. </para>
+              <para><emphasis role="italic">Tabular report</emphasis>  - An interactive reporting tool for tracker-data using tabular presentation with dynamic filters for each person attribute and data element. </para>
             </listitem>
           </itemizedlist></para>
         <section id="program_summary_report">
           <title>Program summary</title>
-          <para><emphasis role="bold">Program summary</emphasis> provides a tool for   generating summary list of individual information with  color shown on program stages to identify status of receiving services in each stage.</para>
+          <para>The function provides a tool for   generating summary list of individual information with  color shown on program stages to identify status of receiving services in each stage.</para>
           <para>To access the program summary report, choose  <emphasis role="italic">Services</emphasis> -&gt; <emphasis role="italic">Individual Records</emphasis> &gt;  <emphasis role="italic">Program summary</emphasis>.</para>
           <para>Select a <emphasis role="italic">organisation unit</emphasis>  which provides services on the left menu. Then on the main page, select <emphasis role="italic">Program</emphasis>, <emphasis role="italic">Start date</emphasis>, <emphasis role="italic">End date </emphasis>to get period. After, select Use data from level(s). There are three levels <emphasis role="italic">Selected</emphasis>, <emphasis role="italic">Children Only</emphasis> and <emphasis role="italic">All</emphasis>. Finally, click <emphasis role="italic">Generate</emphasis> button. </para>
           <para>The result is get based on the date of enrollment of each person who registered the selected organisation unit and enrolled in the selected program in the interval from start-date and end-date what health provider entered.</para>
