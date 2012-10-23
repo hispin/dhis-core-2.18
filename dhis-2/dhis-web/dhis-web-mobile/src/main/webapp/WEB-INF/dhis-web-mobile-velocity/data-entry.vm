@@ -1,5 +1,5 @@
 <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
-<script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
+<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
 <script type="text/javascript" src="../dhis-web-commons/i18nJavaScript.action"></script>
 <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.glob.js"></script>
 <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.date.js"></script>
