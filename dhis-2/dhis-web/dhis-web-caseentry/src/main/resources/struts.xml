@@ -242,7 +242,7 @@
 		<action name="viewProgramStageRecords"
 			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
 			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
+			<param name="page">/dhis-web-caseentry/reportDataEntryForm.vm</param>
 			<param name="javascripts">javascript/entry.js,../dhis-web-commons/javascripts/date.js</param>
 			<param name="stylesheets">style/style.css</param>
 		</action>

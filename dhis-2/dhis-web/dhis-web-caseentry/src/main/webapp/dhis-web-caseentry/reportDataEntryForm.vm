@@ -1,0 +1,5 @@
+<h3>$i18n.getString('records_for') $organisationUnit.name $i18n.getString('at') $programStage.name $i18n.getString('on') $format.formatDate($programStageInstance.executionDate)</h3>
+<hr>
+<form id='dataEntryFormDiv' name='dataEntryFormDiv' >
+	#parse( "dhis-web-caseentry/dataEntryForm.vm" )
+</form>
