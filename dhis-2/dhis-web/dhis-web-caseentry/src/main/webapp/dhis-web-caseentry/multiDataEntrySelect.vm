@@ -14,7 +14,7 @@
 	});	
 </script>
 
-<h3>$i18n.getString( "multiple_individual_records" ) #openHelp('multiple_individual_records')</h3>
+<h3>$i18n.getString( "multiple_individual_records_management" ) #openHelp('multiple_individual_records')</h3>
 <form>
 	<input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
 	<input type='hidden' id='listAll' name='listAll'>
