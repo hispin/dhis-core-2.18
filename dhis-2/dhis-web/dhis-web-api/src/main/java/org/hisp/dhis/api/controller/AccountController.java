@@ -27,6 +27,9 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,6 +47,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
@@ -227,7 +232,7 @@ public class AccountController
         
         log.info( "Created user successfully with username: " + username );
         
-        authenticate( user );
+        authenticate( user, userRole );
         
         response.setStatus( HttpServletResponse.SC_CREATED );
         return "Account created";
@@ -264,16 +269,28 @@ public class AccountController
         return result != null ? result.split( SPLIT ) : null;
     }
     
-    private void authenticate( User user )
+    private void authenticate( User user, UserAuthorityGroup userRole )
     {
         String uname = user.getUserCredentials().getUsername();
         String passwd = user.getUserCredentials().getPassword();
         
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken( uname, passwd );
-        token.setDetails( user );
+        UsernamePasswordAuthenticationToken token = 
+            new UsernamePasswordAuthenticationToken( uname, passwd, getAuthorities( userRole ) );
         
         Authentication auth = authenticationManager.authenticate( token );
         
         SecurityContextHolder.getContext().setAuthentication( auth );
+    }
+    
+    private Collection<GrantedAuthority> getAuthorities( UserAuthorityGroup userRole )
+    {
+        Collection<GrantedAuthority> auths = new HashSet<GrantedAuthority>();
+        
+        for ( String auth : userRole.getAuthorities() )
+        {
+            auths.add( new SimpleGrantedAuthority( auth ) );
+        }
+        
+        return auths;
     }
 }
