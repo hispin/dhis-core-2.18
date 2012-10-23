@@ -1,4 +1,4 @@
-package org.hisp.dhis.wp.action;
+package org.hisp.dhis.about.action;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,17 +27,44 @@ package org.hisp.dhis.wp.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
+
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class NoAction
+public class RedirectAction
     implements Action
 {
-    public String execute()
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+
+    private String redirectUrl;
+    
+    public String getRedirectUrl()
     {
-        return SUCCESS;
+        return redirectUrl;
     }
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+        String startModule = (String) systemSettingManager.getSystemSetting( KEY_START_MODULE );
+        
+        if ( startModule != null )
+        {
+            redirectUrl = "../" + startModule + "/index.action";
+        }
+        else
+        {
+            redirectUrl = "../dhis-web-dashboard-integration/index.action";
+        }
+        
+        return SUCCESS;
+    }  
 }

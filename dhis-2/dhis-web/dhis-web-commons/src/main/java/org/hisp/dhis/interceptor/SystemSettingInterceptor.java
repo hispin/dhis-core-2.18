@@ -53,7 +53,6 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class SystemSettingInterceptor
     implements Interceptor
