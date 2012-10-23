@@ -5,6 +5,15 @@
     </p>
 </div>
 
+#if( $validated == true )
+<div class="header-box" align="center">
+    <h3 style="text-align: left; background-color: #719953; border-color: #719953; color: white;">$i18n.getString( "saved_section" )</h3>
+    <p style="text-align: left;">
+        $sectionName
+    </p>
+</div>
+#end
+
 <h2>$i18n.getString( "sections" )</h2>
 <div>
 	<ul>
@@ -25,6 +34,12 @@
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
+	#if($orgUnitId == 0)
+		<li><a href="showPatientProgramStageList.action?patientId=$patientId&programInstanceId=$programInstanceId&programId=$programId&validated=false">$!encoder.htmlEncode( ${program.getName()} )</a></li>
+	#else
+		<li><a href="selectActivity.action?organisationUnitId=$orgUnitId&patientId=$patientId&current=$current"> $i18n.getString("activity_list")</a></li>
+	#end
+	<li><a href="showPatientProgramList.action?patientId=$patientId">$!encoder.htmlEncode( ${patient.getFullName()} )</a></li>
 	<li><a href="index.action">$i18n.getString("home")</a></li>
 </ul>
 </div>

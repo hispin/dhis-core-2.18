@@ -33,11 +33,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -79,6 +82,13 @@ public class GetProgramStageSectionAction implements Action
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
+    }
+    
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
@@ -196,11 +206,47 @@ public class GetProgramStageSectionAction implements Action
     {
         return programStageInstance;
     }
+    
+    private Program program;
+
+    public Program getProgram()
+    {
+        return this.program;
+    }
+    
+    private boolean validated;
+
+    public boolean isValidated()
+    {
+        return validated;
+    }
+
+    public void setValidated( boolean validated )
+    {
+        this.validated = validated;
+    }
+    
+    public String sectionName;
+
+    public String getSectionName()
+    {
+        return sectionName;
+    }
+    
+    public Integer programStageSectionId;
+    
+    public void setProgramStageSectionId( Integer programStageSectionId )
+    {
+        this.programStageSectionId = programStageSectionId;
+    }
 
     @Override
     public String execute()
         throws Exception
     {   
+        
+        program = programService.getProgram( programId );
+        
         programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
         
         patient = patientService.getPatient( patientId );
@@ -208,6 +254,19 @@ public class GetProgramStageSectionAction implements Action
         programStage = util.getProgramStage( programId, programStageId );
         
         this.listOfProgramStageSections = new ArrayList<ProgramStageSection>(programStage.getProgramStageSections());
+        
+        if ( programStageSectionId != null && programStageSectionId != 0)
+        {
+            for ( ProgramStageSection each: this.listOfProgramStageSections )
+            {
+                if ( each.getId() == programStageSectionId )
+                {
+                    sectionName = each.getName();
+
+                    break;
+                }
+            }
+        }
         
         if( this.listOfProgramStageSections.size() == 0 && programStageInstance.isCompleted() == false)
         {
@@ -217,8 +276,7 @@ public class GetProgramStageSectionAction implements Action
         {
             return REDIRECT_COMPLETED_FORM;
         }
-             
-        //this.listOfProgramStageDataElement = listOfProgramStageSections.get( 0 ).getProgramStageDataElements();
+
         return SUCCESS;
     }
 
