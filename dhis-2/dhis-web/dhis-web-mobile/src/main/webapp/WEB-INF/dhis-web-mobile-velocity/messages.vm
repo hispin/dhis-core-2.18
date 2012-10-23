@@ -1,16 +1,25 @@
 
 <script>
-    jQuery(document).bind('pagebeforecreate',function(){
-        jQuery.ajax({
+    $(document).bind('pagebeforecreate',function(){
+        $.ajax({
             url: '../api/currentUser/inbox',
             dataType: 'json',
             async: false
         }).success(function(data) {
-            jQuery.each(data.messageConversations, function(i, item) {
-                jQuery('#messageList').append('<li><a href="messages/' + item.id + '">' + item.name + '</a></li>');
-            });
+            if( data['messageConversations'] !== undefined ) {
+                $.each(data.messageConversations, function(i, item) {
+                    if(item.read) {
+                        $('#messageList').append('<li><a href="messages/' + item.id + '">' + item.name + '</a></li>');
+                    } else {
+                        $('#messageList').append('<li><a href="messages/' + item.id + '">' + item.name + '<span class="ui-li-count">Unread</span></a></li>');
+                    }
+                });
+            } else {
+                $('#messageList').append('<li>No messages</li>');
+            }
         }).error(function() {
-            console.log("error fetching inbox");
+            $.mobile.showPageLoadingMsg($.mobile.pageLoadErrorMessageTheme, "Unable to get inbox, please try again later", true);
+            setTimeout($.mobile.hidePageLoadingMsg, 1500);
         });
     });
 </script>
@@ -24,7 +33,7 @@
     </header>
 
 	<section data-role="content">
-        <ul id="messageList" data-role="listview" data-inset="true">
+        <ul id="messageList" data-role="listview" data-inset="true" data-count-theme="b">
             <li data-role="list-divider">Messages</li>
         </ul>
 	</section>

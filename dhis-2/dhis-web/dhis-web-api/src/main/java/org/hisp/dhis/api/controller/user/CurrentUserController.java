@@ -122,8 +122,8 @@ public class CurrentUserController
         }
 
         Inbox inbox = new Inbox();
-        inbox.setMessageConversations( new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, Integer.MAX_VALUE ) ) );
-        inbox.setInterpretations( new ArrayList<Interpretation>( interpretationService.getInterpretations( 0, Integer.MAX_VALUE ) ) );
+        inbox.setMessageConversations( new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, MAX_OBJECTS ) ) );
+        inbox.setInterpretations( new ArrayList<Interpretation>( interpretationService.getInterpretations( 0, MAX_OBJECTS ) ) );
 
         JacksonUtils.toJson( response.getOutputStream(), inbox );
     }
