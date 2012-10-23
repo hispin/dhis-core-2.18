@@ -45,6 +45,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
@@ -88,6 +89,8 @@ public class MetaData
     private List<UserGroup> userGroups = new ArrayList<UserGroup>();
 
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
+
+    private List<Interpretation> interpretations = new ArrayList<Interpretation>(  );
 
     private List<OptionSet> optionSets = new ArrayList<OptionSet>();
 
@@ -214,6 +217,19 @@ public class MetaData
     public void setMessageConversations( List<MessageConversation> messageConversations )
     {
         this.messageConversations = messageConversations;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "interpretations", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "interpretation", namespace = Dxf2Namespace.NAMESPACE )
+    public List<Interpretation> getInterpretations()
+    {
+        return interpretations;
+    }
+
+    public void setInterpretations( List<Interpretation> interpretations )
+    {
+        this.interpretations = interpretations;
     }
 
     @JsonProperty

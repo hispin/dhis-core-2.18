@@ -30,6 +30,7 @@ package org.hisp.dhis.interpretation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.chart.Chart;
@@ -156,6 +157,12 @@ public class Interpretation
     // Get and set methods
     // -------------------------------------------------------------------------
 
+    @Override
+    public String getName()
+    {
+        return uid;
+    }
+
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
@@ -281,9 +288,9 @@ public class Interpretation
     }
 
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "comments", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "comment", namespace = Dxf2Namespace.NAMESPACE )
     public List<InterpretationComment> getComments()
     {
         return comments;
