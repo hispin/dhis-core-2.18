@@ -15,11 +15,12 @@
                 });
             });
         </script>
+        <link type="text/css" rel="stylesheet" href="../css/widgets.css">
         <link type="text/css" rel="stylesheet" href="../css/login.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div id="headerArea">       
+        <div>       
         #if ( $keyFlag )
             <img id="flagArea" src="../flags/${keyFlagImage}">
         #end
@@ -30,6 +31,11 @@
             <span id="introArea">$encoder.htmlEncode( $applicationIntro )</span>
         #end
         </div>
+        #if ( $keyConfig.selfRegistrationAllowed() )
+        <div id="accountArea">
+        	<span id="accountIntro">Do you want access?</span> <a class="greenButtonLink" href="account.action">Create an account</a>
+        </div>
+        #end
         <div id="loginField">
             <div id="bannerArea"><a href="http://dhis2.org"><img src="logo_front.png" style="border:none"></a></div>
             
