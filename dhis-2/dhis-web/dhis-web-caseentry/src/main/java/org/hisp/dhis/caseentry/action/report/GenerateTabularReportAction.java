@@ -157,13 +157,6 @@ public class GenerateTabularReportAction
         return values;
     }
 
-    private Integer currentPage;
-
-    public void setCurrentPage( Integer currentPage )
-    {
-        this.currentPage = currentPage;
-    }
-
     private List<String> searchingValues = new ArrayList<String>();
 
     public void setSearchingValues( List<String> searchingValues )
@@ -371,7 +364,7 @@ public class GenerateTabularReportAction
                 // total = paging.getTotal(); //TODO
 
                 grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
-                    startValue, endValue, !orderByOrgunitAsc, getStartPos(), getEndPos() );
+                    startValue, endValue, !orderByOrgunitAsc, getStartPos(), paging.getPageSize() );
             }
             else
             // Download as Excel
@@ -408,18 +401,7 @@ public class GenerateTabularReportAction
         startPos = (startPos > total) ? total : startPos;
         return startPos;
     }
-
-    public int getEndPos()
-    {
-        if ( currentPage == null )
-        {
-            return paging.getEndPos();
-        }
-        int endPos = getStartPos() + paging.getPageSize();
-        endPos = (endPos > total) ? total : endPos;
-        return endPos;
-    }
-
+    
     private List<TabularReportColumn> getTableColumns()
     {
         List<TabularReportColumn> columns = new ArrayList<TabularReportColumn>();
