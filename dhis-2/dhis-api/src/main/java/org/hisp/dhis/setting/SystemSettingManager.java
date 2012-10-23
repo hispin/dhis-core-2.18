@@ -44,7 +44,6 @@ public interface SystemSettingManager
 {
     final String ID = SystemSettingManager.class.getName();
     
-    final String KEY_SYSTEM_IDENTIFIER = "keySystemIdentifier";
     final String KEY_APPLICATION_TITLE = "applicationTitle";
     final String KEY_APPLICATION_INTRO = "applicationIntro";
     final String KEY_FLAG = "keyFlag";
@@ -105,9 +104,7 @@ public interface SystemSettingManager
     void deleteSystemSetting( String name );
     
     List<String> getFlags();
-    
-    String getSystemIdentifier();
-    
+        
     String getFlagImage();
     
     String getEmailHostName();

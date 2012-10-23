@@ -39,7 +39,6 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_FLAG_IMAGE;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_SYSTEM_IDENTIFIER;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CONFIGURATION;
 
@@ -94,7 +93,6 @@ public class SystemSettingInterceptor
     {
         Map<String, Object> map = new HashMap<String, Object>();
         
-        map.put( KEY_SYSTEM_IDENTIFIER, systemSettingManager.getSystemIdentifier() ); //TODO remove
         map.put( KEY_CACHE_STRATEGY, systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY ) );
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
         map.put( KEY_APPLICATION_INTRO, systemSettingManager.getSystemSetting( KEY_APPLICATION_INTRO ) );
