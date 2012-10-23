@@ -183,7 +183,7 @@ public class DefaultReportService
 
                 if ( report.hasRelativePeriods() )
                 {
-                    Collection<Period> periods = periodService.reloadPeriods( report.getRelatives().getRelativePeriods() );
+                    Collection<Period> periods = periodService.reloadPeriods( report.getRelatives().getRelativePeriods( reportDate, null, false ) );
                     String periodString = getCommaDelimitedString( getIdentifiers( Period.class, periods ) );
                     params.put( PARAM_RELATIVE_PERIODS, periodString );
                 }
