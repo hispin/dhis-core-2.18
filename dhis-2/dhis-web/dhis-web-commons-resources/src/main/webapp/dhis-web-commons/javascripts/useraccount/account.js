@@ -47,13 +47,15 @@ $( document ).ready( function() {
 } );
 
 function accountSubmitHandler()
-{
+{	
 	if ( $.trim( $( "#recaptcha_challenge_field" ).val() ).length == 0 ||
 		$.trim( $( "#recaptcha_response_field" ).val() ).length == 0 )
 	{
 		$( "#messageSpan" ).show().text( "Please enter a value for the word verification above" );		
 		return false;
 	}
+	
+	$( "#submitButton" ).attr( "disabled", "disabled" );
 	
 	$.ajax( {
 		url: "../../api/account",
@@ -63,8 +65,9 @@ function accountSubmitHandler()
 			window.location.href = "../../dhis-web-commons-about/redirect.action";
 		},
 		error: function( jqXHR, textStatus, errorThrown ) {
-			$( "#messageSpan" ).show().text( jqXHR.responseText );
+			$( "#messageSpan" ).show().text( jqXHR.responseText );			
 			Recaptcha.reload();
+			$( "#submitButton" ).removeAttr( "disabled" );
 		}
 	} );
 }
