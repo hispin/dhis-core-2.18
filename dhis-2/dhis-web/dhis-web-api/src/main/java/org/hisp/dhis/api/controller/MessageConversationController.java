@@ -35,13 +35,11 @@ import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +48,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -72,6 +71,21 @@ public class MessageConversationController
 
     @Autowired
     private UserGroupService userGroupService;
+
+    @Autowired
+    private CurrentUserService currentUserService;
+
+    @Override
+    public void postProcessEntity( MessageConversation entity, Map<String, String> parameters ) throws Exception
+    {
+        Boolean markRead = Boolean.getBoolean( parameters.get( "markRead" ) );
+
+        if( markRead  )
+        {
+            entity.markRead( currentUserService.getCurrentUser() );
+            manager.update( entity );
+        }
+    }
 
     @Override
     protected List<MessageConversation> getEntityList( WebMetaData metaData, WebOptions options )
