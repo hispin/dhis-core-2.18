@@ -157,6 +157,13 @@ public class GenerateTabularReportAction
         return values;
     }
 
+    private Integer currentPage;
+
+    public void setCurrentPage( Integer currentPage )
+    {
+        this.currentPage = currentPage;
+    }
+
     private List<String> searchingValues = new ArrayList<String>();
 
     public void setSearchingValues( List<String> searchingValues )
@@ -322,20 +329,20 @@ public class GenerateTabularReportAction
         // ---------------------------------------------------------------------
         // Get program-stage, start-date, end-date
         // ---------------------------------------------------------------------
-        
-        if( level==0 )
+
+        if ( level == 0 )
         {
             level = organisationUnitService.getMaxOfOrganisationUnitLevels();
             for ( Integer orgunitId : orgunitIds )
             {
                 int orgLevel = organisationUnitService.getLevelOfOrganisationUnit( orgunitId );
-                if(level > orgLevel)
+                if ( level > orgLevel )
                 {
                     level = orgLevel;
                 }
             }
         }
-        
+
         // ---------------------------------------------------------------------
         // Get program-stage, start-date, end-date
         // ---------------------------------------------------------------------
@@ -347,7 +354,7 @@ public class GenerateTabularReportAction
         Date startValue = format.parseDate( startDate );
         Date endValue = format.parseDate( endDate );
         List<TabularReportColumn> columns = getTableColumns();
-        
+
         // ---------------------------------------------------------------------
         // Generate tabular report
         // ---------------------------------------------------------------------
@@ -364,7 +371,7 @@ public class GenerateTabularReportAction
                 // total = paging.getTotal(); //TODO
 
                 grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
-                    startValue, endValue, !orderByOrgunitAsc, paging.getStartPos(), paging.getPageSize() );
+                    startValue, endValue, !orderByOrgunitAsc, getStartPos(), getEndPos() );
             }
             else
             // Download as Excel
@@ -375,7 +382,7 @@ public class GenerateTabularReportAction
         }
         catch ( SQLGrammarException ex )
         {
-            message = i18n.getString("failed_to_get_events");
+            message = i18n.getString( "failed_to_get_events" );
         }
 
         return type == null ? SUCCESS : type;
@@ -389,6 +396,28 @@ public class GenerateTabularReportAction
     {
         int pageSize = this.getDefaultPageSize();
         return (totalRecord % pageSize == 0) ? (totalRecord / pageSize) : (totalRecord / pageSize + 1);
+    }
+
+    public int getStartPos()
+    {
+        if ( currentPage == null )
+        {
+            return paging.getStartPos();
+        }
+        int startPos = currentPage <= 0 ? 0 : (currentPage - 1) * paging.getPageSize();
+        startPos = (startPos > total) ? total : startPos;
+        return startPos;
+    }
+
+    public int getEndPos()
+    {
+        if ( currentPage == null )
+        {
+            return paging.getEndPos();
+        }
+        int endPos = getStartPos() + paging.getPageSize();
+        endPos = (endPos > total) ? total : endPos;
+        return endPos;
     }
 
     private List<TabularReportColumn> getTableColumns()
@@ -437,7 +466,7 @@ public class GenerateTabularReportAction
                 {
                     int objectId = Integer.parseInt( values[1] );
                     DataElement dataElement = dataElementService.getDataElement( objectId );
-                    if(dataElement.getType().equals( DataElement.VALUE_TYPE_INT ))
+                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
                     {
                         column.setPrefix( PREFIX_NUMBER_DATA_ELEMENT );
                     }

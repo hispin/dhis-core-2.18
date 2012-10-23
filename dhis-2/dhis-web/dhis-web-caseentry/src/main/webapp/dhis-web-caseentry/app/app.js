@@ -1561,7 +1561,7 @@ Ext.onReady( function() {
 		paging: function( currentPage )
 		{
 			TR.state.currentPage = currentPage;
-			TR.exe.execute();
+			TR.state.filterReport();
 			Ext.getCmp('currentPage').setValue( currentPage );	
 			TR.datatable.setPagingToolbarStatus();
 		},
