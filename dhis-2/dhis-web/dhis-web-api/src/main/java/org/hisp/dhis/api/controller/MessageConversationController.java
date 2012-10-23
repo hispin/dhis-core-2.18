@@ -78,7 +78,7 @@ public class MessageConversationController
     @Override
     public void postProcessEntity( MessageConversation entity, Map<String, String> parameters ) throws Exception
     {
-        Boolean markRead = Boolean.getBoolean( parameters.get( "markRead" ) );
+        Boolean markRead = Boolean.parseBoolean( parameters.get( "markRead" ) );
 
         if( markRead  )
         {
