@@ -78,9 +78,11 @@ import java.util.Map;
 public class SaveProgramStageFormAction
     implements Action
 {
-    private static final String SUCCESS_AND_BACK_TO_PROGRAMSTAGE = "success_back_to_programstage";
+    private static final String SUCCESS_AND_BACK_TO_PROGRAMSTAGE = "success_back_to_programStage";
 
     private static final String REGISTER_NEXT_DUEDATE = "register_next_duedate";
+    
+    private static final String SUCCESS_AND_BACK_TO_PROGRAMSTAGE_SECTION = "success_back_to_programStageSection";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -407,6 +409,18 @@ public class SaveProgramStageFormAction
     {
         return programStageSection;
     }
+    
+    private Boolean validated;
+
+    public void setValidated( Boolean validated )
+    {
+        this.validated = validated;
+    }
+
+    public Boolean getValidated()
+    {
+        return validated;
+    }
 
     private I18n i18n;
 
@@ -534,7 +548,14 @@ public class SaveProgramStageFormAction
         {
             return REGISTER_NEXT_DUEDATE;
         }
-
+        
+        validated = true;
+        
+        if ( programStageSectionId != null && programStageSectionId != 0 )
+        {
+            return SUCCESS_AND_BACK_TO_PROGRAMSTAGE_SECTION;
+        }
+        
         if ( orgUnitId != 0 )
         {
             return SUCCESS;

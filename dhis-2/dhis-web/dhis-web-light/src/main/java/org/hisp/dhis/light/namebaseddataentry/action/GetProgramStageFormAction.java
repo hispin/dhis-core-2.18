@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;

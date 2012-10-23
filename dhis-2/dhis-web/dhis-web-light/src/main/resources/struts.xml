@@ -134,8 +134,11 @@
       <result name="success" type="redirect">
         /light/selectBeneficiary.action?organisationUnitId=${orgUnitId}&amp;current=${current}&amp;validated=true
       </result>
-      <result name="success_back_to_programstage" type="redirect">
+      <result name="success_back_to_programStage" type="redirect">
         /light/showPatientProgramList.action?patientId=${patientId}
+      </result>
+      <result name="success_back_to_programStageSection" type="redirect">
+        /light/showProgramStageSection.action?programId=${programId}&amp;programStageId=${programStageId}&amp;programStageInstanceId=${programStageInstanceId}&amp;patientId=${patientId}&amp;programInstanceId=${programInstanceId}&amp;validated=${validated}&amp;programStageSectionId=${programStageSectionId}&amp;orgUnitId=0
       </result>
       <result name="register_next_duedate" type="redirect">
         showRepeatableEventRegistrationForm.action?programInstanceId=${programInstanceId}&amp;programStageId=${programStageId}&amp;currentProgramStageInstanceId=${programStageInstanceId}
