@@ -185,7 +185,7 @@ public class SetGeneralSettingsAction
             omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
-        systemSettingManager.saveSystemSetting( PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );
+        systemSettingManager.saveSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );
 
         Configuration configuration = configurationService.getConfiguration();
 

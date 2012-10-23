@@ -250,6 +250,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.configuration.ConfigurationStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="clazz" value="org.hisp.dhis.configuration.Configuration" />
+    <property name="cacheable" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.constant.ConstantStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">

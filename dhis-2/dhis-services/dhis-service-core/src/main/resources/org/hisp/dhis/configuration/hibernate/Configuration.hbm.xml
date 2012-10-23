@@ -6,6 +6,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.configuration.Configuration" table="configuration">
 
+    <cache usage="read-write" />
+
     <id name="id" column="configurationid">
       <generator class="native" />
     </id>
