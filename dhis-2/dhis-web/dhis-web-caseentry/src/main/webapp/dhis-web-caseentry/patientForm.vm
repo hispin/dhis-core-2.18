@@ -153,7 +153,7 @@
 						<option value="false" #if($value=='false') selected #end>$i18n.getString( "no" )</option>
 					</select>                
 				#elseif( $attribute.valueType == "DATE" )
-					<input type="text" id="attr$attribute.id" name="attr$attribute.id"  inherit="$!attribute.inherit" value='$value' class=' #validate( "default"  $attribute.mandatory )'/>
+					<input type="text" id="attr$attribute.id" name="attr$attribute.id" inherit="$!attribute.inherit" value='$value' class=' #validate( "default"  $attribute.mandatory )'/>
 					<script type="text/javascript">
 						datePickerValid( 'attr$attribute.id' );
 					</script>                    

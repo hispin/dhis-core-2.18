@@ -30,7 +30,7 @@
 	<tr>
 		<td>
 			<select id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();">
-				<option value=''>[$i18n.getString( "please_select" )]</option>
+				<option value=''>[$i18n.getString( "please_select_program_stage" )]</option>
 				#foreach($stage in $validation.program.programStages)
 				<option value='$stage.id'>$stage.name</option>
 				#end

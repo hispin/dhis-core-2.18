@@ -42,7 +42,7 @@
 	<tr>
 		<td>
 			<select id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();" style='width:320px'>
-				<option value=''>[$i18n.getString( "please_select" )]</option>
+				<option value=''>[$i18n.getString( "please_select_program_stage" )]</option>
 				#foreach($stage in $program.programStages)
 				<option value='$stage.id'>$stage.name</option>
 				#end
@@ -50,7 +50,7 @@
 		</td>
 		<td>
 			<select id='rightStage' name='rightStage' onchange="getRightPrgramStageDataElements();" style='width:320px'>
-				<option value=''>[$i18n.getString( "please_select" )]</option>
+				<option value=''>[$i18n.getString( "please_select_program_stage" )]</option>
 				#foreach($stage in $program.programStages)
 				<option value='$stage.id'>$stage.name</option>
 					#end

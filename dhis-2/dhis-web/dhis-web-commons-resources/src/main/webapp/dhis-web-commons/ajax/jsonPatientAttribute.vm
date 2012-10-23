@@ -4,7 +4,7 @@
 	"name": "$!encoder.jsonEncode( ${patientAttribute.name} )",
 	"description": "$!encoder.jsonEncode( ${patientAttribute.description} )",
 	"mandatory":  "$!{patientAttribute.mandatory}",
-	"valueType": "$!encoder.jsonEncode( ${patientAttribute.valueType} )",
-	"inherit": "$!encoder.jsonEncode( ${patientAttribute.inherit} )"
+	"valueType": "$!patientAttribute.valueType",
+	"inherit": "$!patientAttribute.inherit"
   }
 }
