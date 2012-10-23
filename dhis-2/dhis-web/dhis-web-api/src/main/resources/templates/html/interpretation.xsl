@@ -27,6 +27,29 @@
           <td> <xsl:value-of select="d:created" /> </td>
         </tr>
       </table>
+
+      <xsl:apply-templates select="d:user|d:comments" mode="short" />
     </div>
   </xsl:template>
+
+  <xsl:template match="d:comments" mode="short">
+    <xsl:if test="count(child::*) > 0">
+      <h3>Comments</h3>
+      <xsl:apply-templates select="child::*" mode="short"/>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="d:comment" mode="short">
+    <table class="comments">
+      <tr>
+        <td>Created</td>
+        <td> <xsl:value-of select="d:created" /> </td>
+      </tr>
+      <tr>
+        <td>Text</td>
+        <td> <xsl:value-of select="d:text" /> </td>
+      </tr>
+    </table>
+  </xsl:template>
+
 </xsl:stylesheet>

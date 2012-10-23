@@ -18,7 +18,7 @@
       d:documents|d:indicatorGroups|d:indicatorGroupSets|d:organisationUnitGroups|
       d:organisationUnitGroupSets|d:indicatorTypes|d:attributeTypes|d:reports|d:constants|
       d:sqlViews|d:validationRules|d:validationRuleGroups|d:users|d:userGroups|d:userAuthorityGroups|
-      d:reportTables|d:mapLegends|d:mapLegendSets|d:mapLayers|d:optionSets">
+      d:reportTables|d:mapLegends|d:mapLegendSets|d:mapLayers|d:optionSets|d:interpretations">
 
     <h3>
       <xsl:value-of select="local-name()" />
