@@ -95,9 +95,9 @@ public class AccountController
         HttpServletRequest request,
         HttpServletResponse response )
     {
-        UserAuthorityGroup userRole = configurationService.getConfiguration().getSelfRegistrationRole();
+        boolean allowed = configurationService.getConfiguration().selfRegistrationAllowed();
         
-        if ( userRole == null )
+        if ( !allowed )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "User self registration is not allowed";

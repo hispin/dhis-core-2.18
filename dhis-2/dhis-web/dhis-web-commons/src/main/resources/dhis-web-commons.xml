@@ -114,8 +114,9 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="account" class="org.hisp.dhis.commons.action.NoAction">
+    <action name="account" class="org.hisp.dhis.useraccount.action.IsSelfRegistrationAllowedAction">
       <result name="success" type="velocity">/dhis-web-commons/useraccount/account.vm</result>
+      <result name="error" type="redirect">login.action</result>
     </action>
   
   </package>

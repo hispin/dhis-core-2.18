@@ -84,46 +84,6 @@
   float: left;
 }
 
-.greyButtonLink
-{
-  padding: 6px 12px;
-  height: 25px;
-  border: 1px solid #aaa;
-  border-radius: 3px;
-  margin-right: 4px;
-  font-family: LiberationSansBold, arial;
-  font-size: 13px;
-  background-color: #f3f3f3;
-  color: #606060 !important;
-  text-decoration: none !important;
-}
-
-.greyButtonLink:hover
-{
-  text-decoration: none;
-  background-color: #f8f8f8;
-}
-
-.blueButtonLink
-{
-  padding: 6px 12px;
-  height: 25px;
-  border: 1px solid #3D77B3;
-  border-radius: 3px;
-  margin-right: 4px;
-  font-family: LiberationSansBold, arial;
-  font-size: 13px;
-  background-color: #427DB8;
-  color: #fff !important;
-  text-decoration: none !important;
-}
-
-.blueButtonLink:hover
-{
-  text-decoration: none;
-  background-color: #3674B3;
-}
-
 #searchDiv
 {
   position: absolute;

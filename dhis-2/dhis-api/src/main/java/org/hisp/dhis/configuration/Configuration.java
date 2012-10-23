@@ -74,6 +74,11 @@ public class Configuration
         return infrastructuralPeriodType != null ? infrastructuralPeriodType : DEFAULT_INFRASTRUCTURAL_PERIODTYPE;
     }
     
+    public boolean selfRegistrationAllowed()
+    {
+        return selfRegistrationRole != null && selfRegistrationRole instanceof UserAuthorityGroup;
+    }
+    
     // -------------------------------------------------------------------------
     // Set and get methods
     // -------------------------------------------------------------------------

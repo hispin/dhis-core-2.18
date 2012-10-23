@@ -59,18 +59,33 @@ input[type=text],input[type=password]
   color: #bfd9f2;
 }
 
+#bannerArea
+{
+  margin-bottom: 35px;
+  border: none;
+}
+
+#accountArea
+{
+  position: absolute;
+  right: 10px;
+  padding: 18px 30px 18px 0;
+  font-size: 17px;
+}
+
+#accountIntro
+{
+  position: relative;
+  top: 1px;
+  padding-right: 15px
+}
+
 #loginField
 {
   position: relative;
   margin: 130px auto 0 auto;
   width: 350px;
   text-align: center;
-}
-
-#bannerArea
-{
-  margin-bottom: 35px;
-  border: none;
 }
 
 #loginField td
@@ -102,7 +117,28 @@ input[type=text],input[type=password]
   text-align: center;
 }
 
-.button {
+.greenButtonLink
+{
+  padding: 6px 12px;
+  height: 27px;
+  border: 1px solid #67A767;
+  border-radius: 3px;
+  margin-right: 4px;
+  font-family: LiberationSansBold, arial;
+  font-size: 13px;
+  background-color: #1A9B20;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.greenButtonLink:hover
+{
+  text-decoration: none;
+  background-color: #1DA223;
+}
+
+.button 
+{
   font-family: LiberationSansBold, arial;
   background: -webkit-linear-gradient(top, #f1f1f1, #d1d1d1);
   background: -moz-linear-gradient(top, #f1f1f1, #d1d1d1);
@@ -114,7 +150,8 @@ input[type=text],input[type=password]
   color: #222;
 }
 
-.button:hover {
+.button:hover 
+{
   background: -webkit-linear-gradient(top, #fafafa, #dadada);
   background: -moz-linear-gradient(top, #fafafa, #dadada);
   background: -ms-linear-gradient(top, #fafafa, #dadada);

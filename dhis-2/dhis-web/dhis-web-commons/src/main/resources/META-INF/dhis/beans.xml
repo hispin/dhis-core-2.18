@@ -586,6 +586,9 @@
 
   <bean id="org.hisp.dhis.useraccount.action.UpdateUserProfileAction" class="org.hisp.dhis.useraccount.action.UpdateUserProfileAction"
     scope="prototype"/>
+    
+  <bean id="org.hisp.dhis.useraccount.action.IsSelfRegistrationAllowedAction" class="org.hisp.dhis.useraccount.action.IsSelfRegistrationAllowedAction"
+    scope="prototype"/>
 
   <!-- User settings -->
 
