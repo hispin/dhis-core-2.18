@@ -33,7 +33,9 @@ var validationRules = {
 
 $( document ).ready( function() {
 	
-	Recaptcha.create( "6LcM6tcSAAAAANwYsFp--0SYtcnze_WdYn8XwMMk", "recaptchaDiv" );
+	Recaptcha.create( "6LcM6tcSAAAAANwYsFp--0SYtcnze_WdYn8XwMMk", "recaptchaDiv", {
+		theme: "white"
+	} );
 	
 	$( "#accountForm" ).validate( {
 		rules: validationRules.rules,

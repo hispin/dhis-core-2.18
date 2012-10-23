@@ -204,6 +204,8 @@ public class AccountController
         // Create and save user, return 201
         // ---------------------------------------------------------------------
         
+        UserAuthorityGroup userRole = configurationService.getConfiguration().getSelfRegistrationRole();
+        
         User user = new User();
         user.setFirstName( firstName );
         user.setSurname( surname );
