@@ -32,7 +32,6 @@ function loadGeneratedReport()
 
 function loadDataEntry( programStageInstanceId ) 
 {
-	jQuery('#patientInforTB').val('');
 	jQuery('#viewRecordsDiv' )
 		.load( 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId
 		,function(){
@@ -40,12 +39,6 @@ function loadDataEntry( programStageInstanceId )
 			jQuery("#viewRecordsDiv :input" ).datepicker("destroy");
 			jQuery(".ui-combobox" ).hide();
 			hideById('inputCriteriaDiv');
-			
-			var programStageInstance = jQuery("#ps_" + programStageInstanceId);
-			var header = "<h4>" + i18n_records_for + " " + getInnerHTML( 'org_' + programStageInstanceId )
-					+ " " + i18n_at + " " + programStageInstance.attr("psname")
-					+ " " + i18n_on_date + " " + programStageInstance.attr("reportDate") + "</h4><hr>";
-			setInnerHTML('patientInforTB', header );
 		})
 		.dialog({
 			title: i18n_reports,
