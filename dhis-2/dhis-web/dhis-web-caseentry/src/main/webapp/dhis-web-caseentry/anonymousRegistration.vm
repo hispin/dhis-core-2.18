@@ -89,7 +89,7 @@
 
 <div id='dataEntryInfor' class='hidden'>
 	<h3>
-		<a href="javascript:backEventList();">$i18n.getString( "anonymous_events" ) </a>
+		<a href="javascript:backEventList();">$i18n.getString( "anonymous_events_management" ) </a>
 		&raquo; <span id='programName' name='programName'></span>
 	</h3>
 	<table style="width:480px;">
