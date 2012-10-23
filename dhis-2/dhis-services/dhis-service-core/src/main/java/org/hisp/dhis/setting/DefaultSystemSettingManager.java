@@ -126,11 +126,6 @@ public class DefaultSystemSettingManager
         return flags;
     }
 
-    public String getSystemIdentifier()
-    {
-        return (String) getSystemSetting( KEY_SYSTEM_IDENTIFIER );
-    }
-
     public String getFlagImage()
     {
         String flag = (String) getSystemSetting( KEY_FLAG );
