@@ -83,7 +83,12 @@ public class SetAccessSettingsAction
 
     public String execute()
     {
-        UserAuthorityGroup group = userService.getUserAuthorityGroup( selfRegistrationRole );
+        UserAuthorityGroup group = null;
+        
+        if ( selfRegistrationRole != null )
+        {
+            group = userService.getUserAuthorityGroup( selfRegistrationRole );
+        }
         
         Configuration config = configurationService.getConfiguration();
         config.setSelfRegistrationRole( group );
