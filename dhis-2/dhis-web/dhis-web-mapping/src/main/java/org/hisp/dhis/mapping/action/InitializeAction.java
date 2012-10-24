@@ -98,13 +98,6 @@ public class InitializeAction
         return mapView;
     }
 
-    private List<MapLayer> baseLayers;
-
-    public List<MapLayer> getBaseLayers()
-    {
-        return baseLayers;
-    }
-
     private List<MapLayer> overlays;
 
     public List<MapLayer> getOverlays()
@@ -112,11 +105,11 @@ public class InitializeAction
         return overlays;
     }
 
-    private DataElementGroup infrastructuralDataElements;
+    private DataElementGroup infrastructuralDataElementGroup;
 
-    public DataElementGroup getInfrastructuralDataElements()
+    public DataElementGroup getInfrastructuralDataElementGroup()
     {
-        return infrastructuralDataElements;
+        return infrastructuralDataElementGroup;
     }
 
     private PeriodType infrastructuralPeriodType;
@@ -126,11 +119,11 @@ public class InitializeAction
         return infrastructuralPeriodType;
     }
 
-    private OrganisationUnit rootNode;
+    private Collection<OrganisationUnit> rootNodes;
 
-    public OrganisationUnit getRootNode()
+    public Collection<OrganisationUnit> getRootNodes()
     {
-        return rootNode;
+        return rootNodes;
     }
 
     // -------------------------------------------------------------------------
@@ -145,23 +138,15 @@ public class InitializeAction
             mapView = mappingService.getMapView( id );
         }
 
-        baseLayers = new ArrayList<MapLayer>(
-            mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_BASELAYER ) );
-
-        Collections.sort( baseLayers, new MapLayerNameComparator() );
-
         overlays = new ArrayList<MapLayer>( mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_OVERLAY ) );
 
         Collections.sort( overlays, new MapLayerNameComparator() );
 
-        infrastructuralDataElements = configurationService.getConfiguration().getInfrastructuralDataElements();
+        infrastructuralDataElementGroup = configurationService.getConfiguration().getInfrastructuralDataElements();
 
         infrastructuralPeriodType = configurationService.getConfiguration().getInfrastructuralPeriodTypeDefaultIfNull();
 
-        Collection<OrganisationUnit> rootUnits = new ArrayList<OrganisationUnit>(
-            organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
-        
-        rootNode = rootUnits.size() > 0 ? rootUnits.iterator().next() : new OrganisationUnit();
+        rootNodes = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
 
         return SUCCESS;
     }

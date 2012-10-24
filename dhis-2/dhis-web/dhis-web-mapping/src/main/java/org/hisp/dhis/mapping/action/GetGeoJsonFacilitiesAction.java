@@ -68,11 +68,11 @@ public class GetGeoJsonFacilitiesAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer parentId;
+    private String parentId;
 
-    public void setParentId( Integer id )
+    public void setParentId( String parentId )
     {
-        this.parentId = id;
+        this.parentId = parentId;
     }
 
     private Integer level;
