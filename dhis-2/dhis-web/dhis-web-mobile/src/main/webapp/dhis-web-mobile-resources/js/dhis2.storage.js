@@ -99,6 +99,11 @@ dhis2.storage.getUniqueKey = function( dataValueSet ) {
     return dataValueSet.orgUnit + '-' + dataValueSet.dataSet + '-' + dataValueSet.period;
 };
 
+dhis2.storage.FormManager.prototype.getDataValueSetValues = function( dataValueSet ) {
+    var dataValueSets = this.dataValueSets();
+    return dataValueSets[ dhis2.storage.getUniqueKey( dataValueSet )];
+};
+
 dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) {
     var dataValueSets = this.dataValueSets();
 
