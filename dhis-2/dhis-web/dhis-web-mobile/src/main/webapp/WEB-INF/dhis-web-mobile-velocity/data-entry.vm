@@ -222,14 +222,17 @@
     $(document).bind( 'pagechange', function (event, data) {
         var pageId = data.toPage.attr('id');
 
-        if( pageId == 'organisation-units-page' ) {
-            loadOrganisationUnitsPage();
-        } else if( pageId == 'data-sets-page' ) {
-            loadDataSetsPage();
-        } else if( pageId == 'period-page' ) {
-            loadPeriodPage();
-        } else if( pageId == 'data-entry-page' ) {
-            loadDataEntryPage();
+        var pageLoaders = {
+            'organisation-units-page': loadOrganisationUnitsPage,
+            'data-sets-page': loadDataSetsPage,
+            'period-page': loadPeriodPage,
+            'data-entry-page': loadDataEntryPage
+        };
+
+        if( pageLoaders[pageId] ) {
+            pageLoaders[pageId].call();
+        } else {
+            $.mobile.showPageLoadingMsg($.mobile.pageLoadErrorMessageTheme, "Tried changing to invalid page.", true);
         }
     });
 </script>
