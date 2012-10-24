@@ -7,7 +7,6 @@
 	#else
 	
 	#end
-
 <form action="findBeneficiary.action" method="POST">
 <div class="header-box" align="center">
 <input type="hidden" name="orgUnitId" value="$orgUnitId"/>	

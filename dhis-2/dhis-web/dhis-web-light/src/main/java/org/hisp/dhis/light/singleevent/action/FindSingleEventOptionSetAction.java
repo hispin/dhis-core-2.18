@@ -69,6 +69,11 @@ public class FindSingleEventOptionSetAction
         this.keyword = keyword;
     }
 
+    public String getKeyword()
+    {
+        return keyword;
+    }
+
     private int dataElementIdForSearching;
 
     public void setDataElementIdForSearching( int dataElementIdForSearching )
