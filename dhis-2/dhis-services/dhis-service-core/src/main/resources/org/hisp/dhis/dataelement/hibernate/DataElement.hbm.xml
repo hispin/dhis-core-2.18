@@ -72,5 +72,8 @@
     <many-to-one name="optionSet" class="org.hisp.dhis.option.OptionSet" column="optionsetid"
         foreign-key="fk_dataelement_optionsetid" />
 
+	<many-to-one name="legendSet" class="org.hisp.dhis.mapping.MapLegendSet" column="legendsetid"
+		foreign-key="fk_dataelement_legendset" />
+
   </class>
 </hibernate-mapping>
