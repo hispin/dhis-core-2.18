@@ -306,7 +306,7 @@ public class ChartPluginController
                 aggregatedOrgUnitDataValueService.getAggregatedDataValueTotals( getIdentifiers( DataElement.class, dataElements ), 
                     getIdentifiers( Period.class, periods ), firstOrgUnit.getId(), getIdentifiers( OrganisationUnitGroup.class, organisationUnitGroups ) ) :
                 aggregatedDataValueService.getAggregatedDataValueTotals( getIdentifiers( DataElement.class, dataElements ), 
-                    getIdentifiers( Period.class, periods ),  getIdentifiers( OrganisationUnit.class, organisationUnits ) );
+                    getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
             for ( AggregatedDataValue value : dataValues )
             {

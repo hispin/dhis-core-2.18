@@ -12,7 +12,7 @@
 		<!-- Default -->
 
 		<action name="index" class="org.hisp.dhis.mapping.action.NoAction">
-			<result name="success" type="redirect">mapping/index.html
+			<result name="success" type="redirect">app/index.html
 			</result>
 		</action>
 
