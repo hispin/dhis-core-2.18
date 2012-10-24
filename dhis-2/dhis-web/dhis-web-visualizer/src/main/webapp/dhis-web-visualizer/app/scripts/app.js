@@ -3415,8 +3415,16 @@ Ext.onReady( function() {
 														periodOffset: 0,
 														listeners: {
 															select: function() {
-																var pt = new PeriodType();
-																var periods = pt.reverse( pt.filterFuturePeriods( pt.get(this.getValue()).generatePeriods(this.periodOffset) ) );
+																
+																var pt = new PeriodType(),
+																	periodType = this.getValue();
+																
+																var periods = pt.get(periodType).generatePeriods({
+																	offset: this.periodOffset,
+																	filterFuturePeriods: true,
+																	reversePeriods: true
+																});
+																
 																DV.store.fixedperiod.available.setIndex(periods);
 																DV.store.fixedperiod.available.loadData(periods);
 																DV.util.multiselect.filterAvailable(DV.cmp.dimension.fixedperiod.available, DV.cmp.dimension.fixedperiod.selected);
