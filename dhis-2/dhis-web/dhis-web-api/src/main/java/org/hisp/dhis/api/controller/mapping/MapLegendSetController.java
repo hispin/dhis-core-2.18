@@ -111,4 +111,29 @@ public class MapLegendSetController
         
         mappingService.updateMapLegendSet( legendSet );
     }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('ALL')" )
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    {
+        MapLegendSet legendSet = mappingService.getMapLegendSet( uid );
+        
+        if ( legendSet == null )
+        {
+            ContextUtils.notFoundResponse( response, "Map legend set does not exist: " + uid );
+            return;
+        }
+
+        Iterator<MapLegend> legends = legendSet.getMapLegends().iterator();
+
+        while ( legends.hasNext() )
+        {
+            MapLegend legend = legends.next();            
+            legends.remove();            
+            mappingService.deleteMapLegend( legend );
+        }
+        
+        mappingService.deleteMapLegendSet( legendSet );
+    }
 }
