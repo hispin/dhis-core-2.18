@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller.mapping;
  */
 
 import java.io.InputStream;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,10 +40,13 @@ import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -72,5 +76,39 @@ public class MapLegendSetController
         mappingService.addMapLegendSet( legendSet );
         
         ContextUtils.createdResponse( response, "Map legend set created", RESOURCE_PATH + "/" + legendSet.getUid() );
-    }    
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('ALL')" )
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        MapLegendSet legendSet = mappingService.getMapLegendSet( uid );
+        
+        if ( legendSet == null )
+        {
+            ContextUtils.notFoundResponse( response, "Map legend set does not exist: " + uid );
+            return;
+        }
+
+        Iterator<MapLegend> legends = legendSet.getMapLegends().iterator();
+
+        while ( legends.hasNext() )
+        {
+            MapLegend legend = legends.next();            
+            legends.remove();            
+            mappingService.deleteMapLegend( legend );
+        }
+
+        MapLegendSet newLegendSet = JacksonUtils.fromJson( input, MapLegendSet.class );
+        
+        for ( MapLegend legend : newLegendSet.getMapLegends() )
+        {
+            mappingService.addMapLegend( legend );
+        }
+        
+        legendSet.mergeWith( newLegendSet );
+        
+        mappingService.updateMapLegendSet( legendSet );
+    }
 }
