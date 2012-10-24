@@ -28,6 +28,7 @@
 package org.hisp.dhis.caseentry.action.caseaggregation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,11 +60,11 @@ public class CaseAggregationResultAction
     implements Action
 {
     private String ADD_STATUS = "add";
-    
+
     private String UPDATE_STATUS = "update";
-    
+
     private String DELETE_STATUS = "delete";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -210,8 +211,9 @@ public class CaseAggregationResultAction
         // ---------------------------------------------------------------------
 
         DataSet selectedDataSet = dataSetService.getDataSet( dataSetId );
-
-        List<DataElement> dataElementList = new ArrayList<DataElement>( selectedDataSet.getDataElements() );
+        
+        Collection<CaseAggregationCondition> aggregationConditions = aggregationConditionService
+            .getAllCaseAggregationCondition();
 
         // ---------------------------------------------------------------------
         // Get selected periods list
@@ -233,70 +235,59 @@ public class CaseAggregationResultAction
 
         for ( OrganisationUnit orgUnit : orgunits )
         {
-            for ( DataElement dElement : dataElementList )
+            for ( CaseAggregationCondition condition : aggregationConditions )
             {
-                List<DataElementCategoryOptionCombo> deCOCList = new ArrayList<DataElementCategoryOptionCombo>(
-                    dElement.getCategoryCombo().getOptionCombos() );
-
-                for ( DataElementCategoryOptionCombo optionCombo : deCOCList )
+                DataElement dElement = condition.getAggregationDataElement();
+                DataElementCategoryOptionCombo optionCombo = condition.getOptionCombo();
+                
+                for ( Period period : periods )
                 {
-                    CaseAggregationCondition condition = aggregationConditionService.getCaseAggregationCondition(
-                        dElement, optionCombo );
+                    Double resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
 
-                    if ( condition != null )
+                    DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
+
+                    String key = orgUnit.getId() + "-" + format.formatPeriod( period );
+                    String keyStatus = key + "-" + dElement.getId();
+
+                    if ( resultValue != null && resultValue != 0.0 )
                     {
-                        for ( Period period : periods )
+                        if ( dataValue == null )
                         {
-                            Double resultValue = aggregationConditionService.parseConditition( condition, orgUnit,
-                                period );
+                            dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, "", new Date(),
+                                null, optionCombo );
 
-                            DataValue dataValue = dataValueService
-                                .getDataValue( orgUnit, dElement, period, optionCombo );
-
-                            String key = orgUnit.getId() + "-" + format.formatPeriod( period );
-                            String keyStatus = key + "-" + dElement.getId();
-
-                            if ( resultValue != null && resultValue != 0.0 )
-                            {
-                                if ( dataValue == null )
-                                {
-                                    dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, "",
-                                        new Date(), null, optionCombo );
-
-                                    mapStatusValues.put( keyStatus, i18n.getString( ADD_STATUS ) );
-                                }
-                                else
-                                {
-                                    dataValue.setValue( "" + resultValue );
-                                    dataValue.setTimestamp( new Date() );
-
-                                    mapStatusValues.put( keyStatus, i18n.getString( UPDATE_STATUS ) );
-                                }
-
-                                mapCaseAggCondition.put( dataValue, condition );
-
-                            }
-                            else if ( dataValue != null )
-                            {
-                                mapStatusValues.put( keyStatus, i18n.getString( DELETE_STATUS ) );
-                            }
-                            
-                            if ( dataValue != null )
-                            {
-                                Set<DataValue> dataValues = null;
-                                if ( mapDataValues.containsKey( key ) )
-                                {
-                                    dataValues = mapDataValues.get( key );
-                                }
-                                else
-                                {
-                                    dataValues = new HashSet<DataValue>();
-                                }
-
-                                dataValues.add( dataValue );
-                                mapDataValues.put( key, dataValues );
-                            }
+                            mapStatusValues.put( keyStatus, i18n.getString( ADD_STATUS ) );
                         }
+                        else
+                        {
+                            dataValue.setValue( "" + resultValue );
+                            dataValue.setTimestamp( new Date() );
+
+                            mapStatusValues.put( keyStatus, i18n.getString( UPDATE_STATUS ) );
+                        }
+
+                        mapCaseAggCondition.put( dataValue, condition );
+
+                    }
+                    else if ( dataValue != null )
+                    {
+                        mapStatusValues.put( keyStatus, i18n.getString( DELETE_STATUS ) );
+                    }
+
+                    if ( dataValue != null )
+                    {
+                        Set<DataValue> dataValues = null;
+                        if ( mapDataValues.containsKey( key ) )
+                        {
+                            dataValues = mapDataValues.get( key );
+                        }
+                        else
+                        {
+                            dataValues = new HashSet<DataValue>();
+                        }
+
+                        dataValues.add( dataValue );
+                        mapDataValues.put( key, dataValues );
                     }
                 }
             }

@@ -28,7 +28,6 @@
 package org.hisp.dhis.patient.action.caseaggregation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
