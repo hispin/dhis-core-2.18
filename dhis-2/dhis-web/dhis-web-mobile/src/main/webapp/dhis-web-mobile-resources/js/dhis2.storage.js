@@ -93,13 +93,11 @@ dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) 
         url: '../api/dataValueSets',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify(dataValueSet),
-    }).success(function() {
-        // nop, successfully uploaded
+        data: JSON.stringify( dataValueSet )
     }).error(function() {
         // add to local dataValueSets
-        dataValueSets.push(dataValueSet);
-        localStorage['dataValueSets'] = JSON.stringify(dataValueSets);
+        dataValueSets.push( dataValueSet );
+        localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
     });
 };
 
