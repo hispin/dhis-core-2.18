@@ -246,7 +246,7 @@ public class GetSingleEventFormAction
             // For editing if user finished the form
             Patient patient = patientService.getPatient( this.patientId );
 
-            if ( programInstanceService.getProgramInstances( patient, program ) != null )
+            if ( programInstanceService.getProgramInstances( patient, program ).size() != 0 )
             {
                 List<ProgramInstance> proInstanceList = (List<ProgramInstance>) programInstanceService
                     .getProgramInstances( patient, program );
@@ -260,7 +260,7 @@ public class GetSingleEventFormAction
 
                 ProgramStageInstance proStageInstance = programStageInstanceService.getProgramStageInstance(
                     proInstance, programStage );
-                
+
                 this.programStageInstanceId = proStageInstance.getId();
 
                 for ( ProgramStageDataElement each : programStageDataElements )
