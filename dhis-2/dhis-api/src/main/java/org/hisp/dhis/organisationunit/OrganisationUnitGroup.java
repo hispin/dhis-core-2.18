@@ -57,7 +57,7 @@ public class OrganisationUnitGroup
      */
     private static final long serialVersionUID = -1131637847640209166L;
 
-    private String image;
+    private String symbol;
     
     @Scanned
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
@@ -170,15 +170,16 @@ public class OrganisationUnitGroup
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getImage()
+    public String getSymbol()
     {
-        return image;
+        return symbol;
     }
 
-    public void setImage( String image )
+    public void setSymbol( String symbol )
     {
-        this.image = image;
-    }    
+        this.symbol = symbol;
+    }
+
     
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )

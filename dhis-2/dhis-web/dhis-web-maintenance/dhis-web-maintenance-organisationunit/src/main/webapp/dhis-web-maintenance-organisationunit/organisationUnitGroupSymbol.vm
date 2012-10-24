@@ -1,0 +1,40 @@
+
+<style type="text/css">
+.symbolTable img
+{
+  padding: 12px;
+  cursor: pointer;
+}
+
+.symbolTable img:hover
+{
+  background-color: #ececec;
+}
+</style>
+
+<div id="symbolDiv" style="display:none" class="page">
+
+#set( $base = "../images/orgunitgroup/" )
+
+<table class="symbolTable">
+    <tr>
+        <td><img src="${base}01.png" onclick="selectSymbol( '01.png' )"></td>
+        <td><img src="${base}02.png" onclick="selectSymbol( '02.png' )"></td>
+        <td><img src="${base}03.png" onclick="selectSymbol( '03.png' )"></td>
+        <td><img src="${base}04.png" onclick="selectSymbol( '04.png' )"></td>
+    </tr>
+    <tr>
+        <td><img src="${base}05.png" onclick="selectSymbol( '05.png' )"></td>
+        <td><img src="${base}06.png" onclick="selectSymbol( '06.png' )"></td>
+        <td><img src="${base}07.png" onclick="selectSymbol( '07.png' )"></td>
+        <td><img src="${base}08.png" onclick="selectSymbol( '08.png' )"></td>
+    </tr>
+    <tr>
+        <td><img src="${base}09.png" onclick="selectSymbol( '09.png' )"></td>
+        <td><img src="${base}10.png" onclick="selectSymbol( '10.png' )"></td>
+        <td><img src="${base}11.png" onclick="selectSymbol( '11.png' )"></td>
+        <td><img src="${base}12.png" onclick="selectSymbol( '12.png' )"></td>
+    </tr>
+</table>
+
+</div>
