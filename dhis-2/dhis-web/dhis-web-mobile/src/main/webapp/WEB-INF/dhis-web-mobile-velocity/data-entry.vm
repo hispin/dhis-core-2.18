@@ -215,7 +215,7 @@
 
         fm.saveDataValueSet( dataValueSet ).always(function() {
             $.mobile.hidePageLoadingMsg();
-            $.mobile.changePage('index');
+            location.href = 'index';
         });
     }
 
