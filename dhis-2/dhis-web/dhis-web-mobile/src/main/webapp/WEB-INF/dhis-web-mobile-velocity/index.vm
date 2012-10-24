@@ -1,13 +1,24 @@
 
 <script>
-    redirectToLoginIfRequired();
+    var onlineStatus = true;
+    var loggedInStatus = true;
 
-    function redirectToLoginIfRequired() {
+    checkOnlineStatus();
+
+    function checkOnlineStatus() {
         return $.ajax({
             url: '../mobile',
             async: false
-        }).complete(function(e) {
-            if( e.getResponseHeader('Login-Page') ) {
+        }).error(function() {
+           onlineStatus = false;
+           loggedInStatus = false;
+           $('body').trigger('dhis2.offline');
+        }).success(function(data, status, e) {
+            onlineStatus = true;
+            loggedInStatus = !e.getResponseHeader('Login-Page');
+            $('body').trigger('dhis2.online');
+        }).complete(function() {
+            if( onlineStatus && !loggedInStatus ) {
                 document.location = '../mobile';
             }
         });
@@ -22,8 +33,6 @@
                 $( '#messages a' ).append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
             }
         }).error(function() {
-            $( '#messages').addClass('ui-disabled');
-            $( '#settings').addClass('ui-disabled');
             $.mobile.hidePageLoadingMsg();
         });
     }
@@ -33,8 +42,70 @@
 
         getDashboard().always(function() {
             $('section[data-role="content"] ul').listview('refresh');
-        }).then( fm.getMetaData().then( fm.uploadDataValueSets() ).always( $.mobile.hidePageLoadingMsg ));
-    })
+        }).then( fm.getMetaData().then( fm.uploadDataValueSets() ).always( function() {
+            $.mobile.hidePageLoadingMsg();
+            renderOfflineStatus();
+        }));
+
+        $('body').bind('dhis2.online', function() {
+            if( loggedInStatus ) {
+                $( '#messages').removeClass('ui-disabled');
+                $( '#settings').removeClass('ui-disabled');
+
+                renderOfflineStatus();
+
+                getDashboard().always(function() {
+                    $('section[data-role="content"] ul').listview('refresh');
+                });
+            }
+        });
+
+        $('body').bind('dhis2.offline', function() {
+            $( '#messages').addClass('ui-disabled');
+            $( '#settings').addClass('ui-disabled');
+            renderOfflineStatus();
+        });
+
+        onlineTimer();
+    });
+
+    function onlineTimer() {
+        setTimeout(function () {
+            checkOnlineStatus();
+            onlineTimer();
+        }, 5000);
+    }
+
+    function renderOfflineStatus() {
+        var dataValueSets = fm.dataValueSets();
+
+        var tmpl = jQuery('#offline-status-template').html();
+
+        $('#offline-status').html(
+            _.template(tmpl, {
+                'online': onlineStatus,
+                'dataValueSets': dataValueSets
+            })
+        );
+
+        $('section[data-role="content"] ul').listview('refresh');
+    }
+</script>
+
+<script id="offline-status-template"  type="text/template">
+    <h3></h3>
+
+    <% if( dataValueSets.length == 0 ) { %>
+        <p>No data is stored locally.</p>
+    <% } else { %>
+        <p>You have <%= dataValueSets.length %> forms stored locally</p>
+    <% } %>
+
+    <% if( online ) { %>
+        <p class="ui-li-aside">Status: <strong>Online</strong></p>
+    <% } else { %>
+        <p class="ui-li-aside">Status: <strong>Offline</strong></p>
+    <% } %>
 </script>
 
 <section data-role="page" id="index-page" data-theme="c">
@@ -48,6 +119,7 @@
             <li id="data-entry"><a href="data-entry">Aggregate Reporting</a></li>
             <li id="messages"><a href="messages">Messages</a></li>
             <li id="settings"><a href="settings">User Account</a></li>
+            <li id="offline-status"></li>
         </ul>
 	</section>
 
