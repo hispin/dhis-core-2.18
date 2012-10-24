@@ -157,11 +157,14 @@
 
         $.mobile.showPageLoadingMsg();
 
-        function renderFormTemplate(form) {
+        function renderFormTemplate(form, valueMap) {
             var tmpl = $( '#data-entry-template' ).html();
 
             $( '#data-entry-page section[data-role="content"]' ).html(
-                _.template( tmpl, form )
+                _.template( tmpl, {
+                    'form': form,
+                    'valueMap': valueMap
+                })
             );
 
             $( '#data-entry-page' ).trigger( 'pagecreate' );
@@ -169,21 +172,41 @@
             $( '#send_button' ).bind( 'click', saveValues );
         }
 
-        $.ajax({
-            url: '../api/dataSets/' + Selected.dataSet + '/form',
-            data: {
-                ou: Selected.orgUnit,
-                pe: Selected.period
-            },
-            dataType: 'json'
-        }).success(function(form) {
-            renderFormTemplate(form);
-        }).error(function() {
+        var dvs = {
+            dataSet: Selected.dataSet,
+            orgUnit: Selected.orgUnit,
+            period: Selected.period
+        };
+
+        var storedValues = fm.getDataValueSetValues(dvs);
+
+        if( storedValues ) {
+            var valueMap = {};
+
+            _.each(storedValues.dataValues, function(val, idx) {
+                valueMap[val.dataElement + '-' + val.categoryOptionCombo] = val.value;
+            });
+
             var form = fm.form(Selected.dataSet);
-            renderFormTemplate(form);
-        }).complete(function() {
+            renderFormTemplate(form, valueMap);
             $.mobile.hidePageLoadingMsg();
-        });
+        } else {
+            $.ajax({
+                url: '../api/dataSets/' + Selected.dataSet + '/form',
+                data: {
+                    ou: Selected.orgUnit,
+                    pe: Selected.period
+                },
+                dataType: 'json'
+            }).success(function(form) {
+                renderFormTemplate(form);
+            }).error(function() {
+                var form = fm.form(Selected.dataSet);
+                renderFormTemplate(form);
+            }).complete(function() {
+                $.mobile.hidePageLoadingMsg();
+            });
+        }
     }
 
     function saveValues() {
@@ -266,15 +289,23 @@
 </script>
 
 <script id="data-entry-template" type="text/template">
-    <h1><%= label %></h1>
+    <h1><%= form.label %></h1>
     <form id='data-entry-form'>
     <ul id="data-entry-list" data-role="listview" data-inset="true">
-        <% _( groups ).each( function(group, idx) { %>
+        <% _( form.groups ).each( function(group, idx) { %>
             <li data-role="list-divider"><%= group.label %></li>
 
             <% _( group.fields ).each( function(field, idx) { %>
             <% var fieldId = _.uniqueId('field'); %>
-            <% var value = field.value === undefined ? '' : field.value; %>
+            <%
+                var value;
+
+                if( valueMap ) {
+                    value = valueMap[field.dataElement + '-' + field.categoryOptionCombo];
+                } else {
+                    value = field.value === undefined ? '' : field.value;
+                }
+            %>
                 <li>
                     <label for='<%= fieldId %>'><%= field.label %></label>
 
