@@ -15,7 +15,7 @@
     </id>
     &identifiableProperties;
 
-    <property name="image" />
+    <property name="symbol" />
 
     <set name="members" table="orgunitgroupmembers">
       <cache usage="read-write" />

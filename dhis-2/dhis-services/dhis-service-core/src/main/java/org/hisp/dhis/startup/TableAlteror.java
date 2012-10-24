@@ -123,6 +123,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE configuration DROP COLUMN completenessrecipientsid" );
         executeSql( "ALTER TABLE dataelement DROP COLUMN alternativename" );
         executeSql( "ALTER TABLE indicator DROP COLUMN alternativename" );
+        executeSql( "ALTER TABLE orgunitgroup DROP COLUMN image" );
         
         executeSql( "DROP INDEX crosstab" );
         
