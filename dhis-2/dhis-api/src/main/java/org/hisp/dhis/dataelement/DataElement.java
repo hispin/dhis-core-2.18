@@ -27,12 +27,13 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import static org.hisp.dhis.dataset.DataSet.NO_EXPIRY;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
@@ -41,16 +42,17 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.hisp.dhis.dataset.DataSet.NO_EXPIRY;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * A DataElement is a definition (meta-information about) of the entities that
@@ -189,7 +191,12 @@ public class DataElement
      * The option set for this data element.
      */
     private OptionSet optionSet;
-
+    
+    /**
+     * The legend set for this data element.
+     */
+    private MapLegendSet legendSet;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -638,6 +645,20 @@ public class DataElement
     {
         this.optionSet = optionSet;
     }
+
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public MapLegendSet getLegendSet() 
+    {
+		return legendSet;
+	}
+
+	public void setLegendSet( MapLegendSet legendSet ) 
+	{
+		this.legendSet = legendSet;
+	}
 
     @Override
     public void mergeWith( IdentifiableObject other )

@@ -38,6 +38,7 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.mapping.MapLegendSet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -87,6 +88,11 @@ public class Indicator
      */
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
+    /**
+     * The legend set for this indicator.
+     */
+    private MapLegendSet legendSet;
+    
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -355,7 +361,21 @@ public class Indicator
         this.attributeValues = attributeValues;
     }
 
-    @Override
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public MapLegendSet getLegendSet() 
+    {
+		return legendSet;
+	}
+
+	public void setLegendSet( MapLegendSet legendSet ) 
+	{
+		this.legendSet = legendSet;
+	}
+
+	@Override
     public void mergeWith( IdentifiableObject other )
     {
         super.mergeWith( other );
