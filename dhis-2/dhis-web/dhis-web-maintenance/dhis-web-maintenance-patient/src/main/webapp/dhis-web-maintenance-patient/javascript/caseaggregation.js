@@ -112,6 +112,12 @@ function getParams()
 	clearListById('caseProperty');
 	var programId = getFieldValue( 'programId' );
 	if( programId == ''){
+		var caseProperty = jQuery( '#caseProperty' );
+		caseProperty.append( '<option suggested="" title="' + i18n_total_of_patient_registration + '" value="[PT:count]">'+ i18n_total_of_patient_registration +'</option>' );
+		caseProperty.append( '<option suggested="F, M" title="' + i18n_gender + '" value="[CP:gender]">'+ i18n_gender +'</option>' );
+		caseProperty.append( '<option suggested="" title="' + i18n_dob_type + '" value="[CP:dobType]">'+ i18n_dob_type +'</option>' );
+		caseProperty.append( '<option suggested="" title="' + i18n_age_days + '" value="[CP:age]">'+ i18n_age_days +'</option>' );
+		
 		disable('programProperty');
 		disable('programStageProperty');
 	}
