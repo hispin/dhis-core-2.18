@@ -100,7 +100,9 @@ public class SqlViewController
         }
         else
         {
-            ContextUtils.createdResponse( response, "SQL view created" );
+            String location = RESOURCE_PATH + "/" + sqlView.getUid();
+            
+            ContextUtils.createdResponse( response, "SQL view created", location );
         }
     }
 }

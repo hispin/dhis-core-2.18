@@ -131,8 +131,7 @@ public class InterpretationController
         
         interpretationService.saveInterpretation( interpretation );
 
-        response.setStatus( HttpServletResponse.SC_CREATED );
-        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
+        ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
     @RequestMapping( value = "/map/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -152,8 +151,7 @@ public class InterpretationController
         
         interpretationService.saveInterpretation( interpretation );
 
-        response.setStatus( HttpServletResponse.SC_CREATED );
-        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
+        ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
     @RequestMapping( value = "/reportTable/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -187,8 +185,7 @@ public class InterpretationController
         
         interpretationService.saveInterpretation( interpretation );
 
-        response.setStatus( HttpServletResponse.SC_CREATED );
-        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
+        ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
     @RequestMapping( value = "/dataSetReport/{uid}", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -226,8 +223,7 @@ public class InterpretationController
         
         interpretationService.saveInterpretation( interpretation );
 
-        response.setStatus( HttpServletResponse.SC_CREATED );
-        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
+        ContextUtils.createdResponse( response, "Interpretation created", InterpretationController.RESOURCE_PATH + "/" + interpretation.getUid() );
     }
 
     @RequestMapping( value = "/{uid}/comment", method = RequestMethod.POST, consumes = { "text/html", "text/plain" } )
@@ -237,7 +233,6 @@ public class InterpretationController
     {
         interpretationService.addInterpretationComment( uid, text );
 
-        response.setStatus( HttpServletResponse.SC_CREATED );
-        response.setHeader( "Location", InterpretationController.RESOURCE_PATH + "/" + uid );
+        ContextUtils.createdResponse( response, "Commented created", InterpretationController.RESOURCE_PATH + "/" + uid );
     }
 }
