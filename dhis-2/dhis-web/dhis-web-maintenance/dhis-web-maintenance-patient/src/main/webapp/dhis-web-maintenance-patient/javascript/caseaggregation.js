@@ -66,8 +66,21 @@ function autoCompletedField()
 			}
 		}).addClass( "ui-widget" );
 
+	input.data( "autocomplete" )._renderItem = function( ul, item ) {
+		return $( "<li></li>" )
+			.data( "item.autocomplete", item )
+			.append( "<a>" + item.label + "</a>" )
+			.appendTo( ul );
+	};
+	
+	var wrapper = this.wrapper = $( "<span style='width:200px'>" )
+			.addClass( "ui-combobox" )
+			.insertAfter( input );
+	
 	var button = $( "#dataElementsButton" )
+		.attr( "tabIndex", -1 )
 		.attr( "title", i18n_show_all_items )
+		.appendTo( wrapper )
 		.button({
 			icons: {
 				primary: "ui-icon-triangle-1-s"
