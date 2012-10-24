@@ -90,6 +90,8 @@ public interface MappingService
 
     void addOrUpdateMapLegend( String name, Double startValue, Double endValue, String color, String image );
 
+    int addMapLegend( MapLegend mapLegend );
+    
     void deleteMapLegend( MapLegend legend );
 
     MapLegend getMapLegend( int id );
