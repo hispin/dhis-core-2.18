@@ -45,9 +45,6 @@
 						<option suggested="F, M" title="Gender" value="[CP:gender]">$i18n.getString( 'gender' )</option>
 						<option suggested="V, D, A" title="DOB type" value="[CP:dobType]">$i18n.getString( 'dob_type' )</option>
 						<option suggested="" title="Age (days)" value="[CP:age]">$i18n.getString( "age_days" )</option>
-						#foreach($patientAttribute in $patientAttributes)
-							<option suggested="$patientAttribute.attributeOptions" title="$patientAttribute.name" value="[CA:$patientAttribute.id]">$patientAttribute.name</option>
-						#end
 					</select>
 				</td>
 				<td>
@@ -130,3 +127,10 @@
 		</td>
 	</tr>
 </table>
+
+<script type="text/javascript">
+	var i18n_total_of_patient_registration = '$encoder.jsEscape( $i18n.getString( "total_of_patient_registration" ) , "'") ';
+	var i18n_gender = '$encoder.jsEscape( $i18n.getString( "gender" ) , "'") ';
+	var i18n_dob_type = '$encoder.jsEscape( $i18n.getString( "dob_type" ) , "'") ';
+	var i18n_age_days = '$encoder.jsEscape( $i18n.getString( "age_days" ) , "'") ';
+</script>
