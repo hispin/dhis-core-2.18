@@ -27,10 +27,21 @@ package org.hisp.dhis.api.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.InputStream;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MappingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -41,4 +52,19 @@ public class MapLegendSetController
     extends AbstractCrudController<MapLegendSet>
 {
     public static final String RESOURCE_PATH = "/mapLegendSets";
+
+    @Autowired
+    private MappingService mappingService;
+    
+    @Override
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @PreAuthorize( "hasRole('F_GIS_ADMIN')" )
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        MapLegendSet legendSet = JacksonUtils.fromJson( input, MapLegendSet.class );
+        
+        mappingService.addMapLegendSet( legendSet );
+        
+        ContextUtils.createdResponse( response, "Mal legend set created", RESOURCE_PATH + "/" + legendSet.getUid() );
+    }    
 }

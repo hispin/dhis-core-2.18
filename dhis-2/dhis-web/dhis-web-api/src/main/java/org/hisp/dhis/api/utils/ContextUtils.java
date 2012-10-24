@@ -70,7 +70,8 @@ public class ContextUtils
     public static final String HEADER_EXPIRES = "Expires";
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
-
+    public static final String HEADER_LOCATION = "Location";
+    
     @Autowired
     private SystemSettingManager systemSettingManager;
 
@@ -147,12 +148,17 @@ public class ContextUtils
     {
         setResponse( response, HttpServletResponse.SC_OK, message );
     }
-
-    public static void createdResponse( HttpServletResponse response, String message )
+    
+    public static void createdResponse( HttpServletResponse response, String message, String location )
     {
+        if ( location != null )
+        {
+            response.addHeader( HEADER_LOCATION, location );
+        }
+        
         setResponse( response, HttpServletResponse.SC_CREATED, message );
     }
-
+    
     public static void notFoundResponse( HttpServletResponse response, String message )
     {
         setResponse( response, HttpServletResponse.SC_NOT_FOUND, message );

@@ -39,7 +39,6 @@ import org.hisp.dhis.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -188,10 +187,10 @@ public class MessageConversationController
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
         int id = messageService.sendMessage( message.getSubject(), message.getText(), metaData, message.getUsers() );
-        MessageConversation m = messageService.getMessageConversation( id );
+        
+        MessageConversation conversation = messageService.getMessageConversation( id );
 
-        response.setStatus( HttpServletResponse.SC_CREATED );
-        response.setHeader( "Location", MessageConversationController.RESOURCE_PATH + "/" + m.getUid() );
+        ContextUtils.createdResponse( response, "Message conversation created", MessageConversationController.RESOURCE_PATH + "/" + conversation.getUid() );
     }
 
     //--------------------------------------------------------------------------
@@ -204,17 +203,17 @@ public class MessageConversationController
     {
         String metaData = MessageService.META_USER_AGENT + request.getHeader( ContextUtils.HEADER_USER_AGENT );
 
-        MessageConversation messageConversation = messageService.getMessageConversation( uid );
+        MessageConversation conversation = messageService.getMessageConversation( uid );
 
-        if ( messageConversation == null )
+        if ( conversation == null )
         {
             ContextUtils.conflictResponse( response, "Message conversation does not exist: " + uid );
             return;
         }
 
-        messageService.sendReply( messageConversation, body, metaData );
+        messageService.sendReply( conversation, body, metaData );
 
-        response.setStatus( HttpServletResponse.SC_CREATED );
+        ContextUtils.createdResponse( response, "Message conversation created", MessageConversationController.RESOURCE_PATH + "/" + conversation.getUid() );
     }
 
     //--------------------------------------------------------------------------
@@ -229,6 +228,6 @@ public class MessageConversationController
 
         messageService.sendFeedback( subject, body, metaData );
 
-        response.setStatus( HttpServletResponse.SC_CREATED );
+        ContextUtils.createdResponse( response, "Feedback created", null );
     }
 }
