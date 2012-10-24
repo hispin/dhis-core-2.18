@@ -94,7 +94,7 @@
         $('#offline-status').html(
             _.template(tmpl, {
                 'online': onlineStatus,
-                'dataValueSets': dataValueSets
+                'dvsSize': _.size( dataValueSets )
             })
         );
 
@@ -105,13 +105,13 @@
 <script id="offline-status-template"  type="text/template">
     <h3></h3>
 
-    <% if( dataValueSets.length == 0 ) { %>
+    <% if( dvsSize == 0 ) { %>
         <p>No data is stored locally.</p>
     <% } else { %>
-        <% if( dataValueSets.length == 1 ) { %>
-            <p>You have <strong><%= dataValueSets.length %></strong> form stored locally</p>
+        <% if( dvsSize == 1 ) { %>
+            <p>You have <strong><%= dvsSize %></strong> form stored locally</p>
         <% } else { %>
-            <p>You have <strong><%= dataValueSets.length %></strong> forms stored locally</p>
+            <p>You have <strong><%= dvsSize %></strong> forms stored locally</p>
         <% } %>
     <% } %>
 

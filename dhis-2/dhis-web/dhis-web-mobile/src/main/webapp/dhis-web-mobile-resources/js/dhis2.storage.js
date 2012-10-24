@@ -80,25 +80,10 @@ dhis2.storage.FormManager.prototype.dataValueSets = function() {
     {
         dataValueSets = JSON.parse( dataValueSets );
     } else {
-        dataValueSets = [];
+        dataValueSets = {};
     }
 
     return dataValueSets;
-};
-
-dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) {
-    var dataValueSets = this.dataValueSets();
-
-    return $.ajax({
-        url: '../api/dataValueSets',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify( dataValueSet )
-    }).error(function() {
-        // add to local dataValueSets
-        dataValueSets.push( dataValueSet );
-        localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
-    });
 };
 
 dhis2.storage.makeUploadDataValueSetRequest = function( dataValueSet ) {
@@ -110,20 +95,37 @@ dhis2.storage.makeUploadDataValueSetRequest = function( dataValueSet ) {
     });
 };
 
+dhis2.storage.getUniqueKey = function( dataValueSet ) {
+    return dataValueSet.orgUnit + '-' + dataValueSet.dataSet + '-' + dataValueSet.period;
+};
+
+dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) {
+    var dataValueSets = this.dataValueSets();
+
+    return dhis2.storage.makeUploadDataValueSetRequest( dataValueSet ).error(function() {
+        // add to local dataValueSets
+
+        // dataValueSets.push( dataValueSet );
+        dataValueSets[dhis2.storage.getUniqueKey(dataValueSet)] = dataValueSet;
+
+        localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
+    });
+};
+
 dhis2.storage.FormManager.prototype.uploadDataValueSets = function() {
     var dataValueSets = this.dataValueSets();
     var deferreds = [];
 
-    _.each(dataValueSets, function( dataValueSet, idx ) {
-        deferreds.push(dhis2.storage.makeUploadDataValueSetRequest( dataValueSet).success(function() {
-                delete dataValueSets[idx];
+    _.each(dataValueSets, function( value, key ) {
+        deferreds.push(dhis2.storage.makeUploadDataValueSetRequest( value ).success(function() {
+                delete dataValueSets[key];
             })
         );
     });
 
     return $.when.apply( null, deferreds ).always(function() {
         // filter out undefined dataValues (successfully uploaded);
-        dataValueSets = _.filter(dataValueSets, function(dv) { return dv !== undefined; });
+        // dataValueSets = _.filter(dataValueSets, function(dv) { return dv !== undefined; });
         localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
     });
 };
