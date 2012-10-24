@@ -52,6 +52,8 @@ import java.util.Set;
 public class MapLegendSet
     extends BaseIdentifiableObject
 {
+    //TODO remove type, move indicator/data element to respective objects
+    
     private String type;
 
     private String symbolizer;

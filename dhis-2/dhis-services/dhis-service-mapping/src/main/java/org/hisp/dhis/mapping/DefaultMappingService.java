@@ -299,6 +299,11 @@ public class DefaultMappingService
         }
     }
 
+    public int addMapLegend( MapLegend mapLegend )
+    {
+        return mapLegendStore.save( mapLegend );
+    }
+    
     public void deleteMapLegend( MapLegend mapLegend )
     {
         mapLegendStore.delete( mapLegend );

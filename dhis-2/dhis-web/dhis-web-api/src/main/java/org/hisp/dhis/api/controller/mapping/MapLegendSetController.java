@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,13 +59,18 @@ public class MapLegendSetController
     
     @Override
     @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
-    @PreAuthorize( "hasRole('F_GIS_ADMIN')" )
+    @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         MapLegendSet legendSet = JacksonUtils.fromJson( input, MapLegendSet.class );
         
+        for ( MapLegend legend : legendSet.getMapLegends() )
+        {
+            mappingService.addMapLegend( legend );
+        }
+        
         mappingService.addMapLegendSet( legendSet );
         
-        ContextUtils.createdResponse( response, "Mal legend set created", RESOURCE_PATH + "/" + legendSet.getUid() );
+        ContextUtils.createdResponse( response, "Map legend set created", RESOURCE_PATH + "/" + legendSet.getUid() );
     }    
 }
