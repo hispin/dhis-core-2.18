@@ -29,10 +29,6 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-aggregationengine-default</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-mapping</artifactId>
-    </dependency>
     
     <!-- Other -->
     
