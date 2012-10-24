@@ -40,7 +40,15 @@
 			</tr>
 			<tr>
 				<td>
-					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )"></select>
+					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this, false);" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
+						<option suggested="" title="Total of patient registration" value="[PT:count]">$i18n.getString( 'total_of_patient_registration' )</option>
+						<option suggested="F, M" title="Gender" value="[CP:gender]">$i18n.getString( 'gender' )</option>
+						<option suggested="V, D, A" title="DOB type" value="[CP:dobType]">$i18n.getString( 'dob_type' )</option>
+						<option suggested="" title="Age (days)" value="[CP:age]">$i18n.getString( "age_days" )</option>
+						#foreach($patientAttribute in $patientAttributes)
+							<option suggested="$patientAttribute.attributeOptions" title="$patientAttribute.name" value="[CA:$patientAttribute.id]">$patientAttribute.name</option>
+						#end
+					</select>
 				</td>
 				<td>
 					<select multiple size="10" id='caSuggestedValues' ondblclick="insertSingleValue('caSuggestedValues');"></select>
