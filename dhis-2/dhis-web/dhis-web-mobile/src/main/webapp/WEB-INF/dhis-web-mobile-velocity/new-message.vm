@@ -118,29 +118,67 @@
                     'filter' : search
                 }
             }).success(function ( data ) {
-                if( data.organisationUnits && data.organisationUnits.length > 0)
+                var organisationUnits = data.organisationUnits;
+                var users = data.users;
+                var userGroups = data.userGroups;
+
+                // filter away already selected recipients
+                _( selected ).each(function( val, key ) {
+                    if( key.indexOf( 'ou:') != -1 )
+                    {
+                        var id = key.substring(3);
+
+                        _( organisationUnits ).each(function(n, idx) {
+                            if( n.id == id ) {
+                                dhis2.array.remove( organisationUnits, idx, idx );
+                            }
+                        });
+                    }
+                    else if( key.indexOf( 'u:') != -1 )
+                    {
+                        var id = key.substring(2);
+
+                        _( users ).each(function(n, idx) {
+                            if( n.id == id ) {
+                                dhis2.array.remove( users, idx, idx );
+                            }
+                        });
+                    }
+                    else if( key.indexOf( 'ug:') != -1 )
+                    {
+                        var id = key.substring(3);
+
+                        _( userGroups ).each(function(n, idx) {
+                            if( n.id == id ) {
+                                dhis2.array.remove( userGroups, idx, idx );
+                            }
+                        });
+                    }
+                });
+
+                if( organisationUnits && organisationUnits.length > 0)
                 {
                     $('#selection-list').append('<li id="organisation-unit-list" data-role="list-divider">Organisation Units</li>')
 
-                    _(data.organisationUnits).each(function(organisationUnit) {
+                    _(organisationUnits).each(function(organisationUnit) {
                         $('#selection-list').append('<li onclick="addRecipient(this);" data-prefix="ou" data-icon="plus" data-id="' + organisationUnit.id + '"><a href="#">' + organisationUnit.name + '</a></li>');
                     });
                 }
 
-                if( data.users && data.users.length > 0 )
+                if( users && users.length > 0 )
                 {
                     $('#selection-list').append('<li id="user-list" data-role="list-divider">Users</li>')
 
-                    _(data.users).each(function(user) {
+                    _(users).each(function(user) {
                         $('#selection-list').append('<li onclick="addRecipient(this);" data-prefix="u" data-icon="plus" data-id="' + user.id + '"><a href="#">' + user.name + '</a></li>');
                     });
                 }
 
-                if( data.userGroups && data.userGroups.length > 0 )
+                if( userGroups && userGroups.length > 0 )
                 {
                     $('#selection-list').append('<li id="user-group-list" data-role="list-divider">Users Groups</li>')
 
-                    _(data.userGroups).each(function(userGroup) {
+                    _(userGroups).each(function(userGroup) {
                         $('#selection-list').append('<li onclick="addRecipient(this);" data-prefix="ug" data-icon="plus" data-id="' + userGroup.id + '"><a href="#">' + userGroup.name + '</a></li>');
                     });
                 }
