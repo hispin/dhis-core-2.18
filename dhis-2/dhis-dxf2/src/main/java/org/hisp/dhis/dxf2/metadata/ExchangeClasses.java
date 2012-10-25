@@ -114,7 +114,8 @@ final public class ExchangeClasses
         exportClasses.put( ValidationRule.class, "validationRules" );
         exportClasses.put( ValidationRuleGroup.class, "validationRuleGroups" );
 
-        exportClasses.put( MapView.class, "maps" );
+        exportClasses.put( org.hisp.dhis.mapping.Map.class, "maps" );
+        exportClasses.put( MapView.class, "mapViews" );
         exportClasses.put( MapLegend.class, "mapLegends" );
         exportClasses.put( MapLegendSet.class, "mapLegendSets" );
         exportClasses.put( MapLayer.class, "mapLayers" );

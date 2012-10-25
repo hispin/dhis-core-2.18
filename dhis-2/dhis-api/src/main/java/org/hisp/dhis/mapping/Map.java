@@ -31,11 +31,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.annotation.Scanned;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.user.User;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Lars Helge Overland
  */
+@JacksonXmlRootElement( localName = "map", namespace = Dxf2Namespace.NAMESPACE )
 public class Map
     extends BaseIdentifiableObject
 {
@@ -46,7 +58,8 @@ public class Map
     private String latitude;
 
     private Integer zoom;
-    
+
+    @Scanned
     private Set<MapView> views = new HashSet<MapView>();
 
     // -------------------------------------------------------------------------
@@ -70,6 +83,10 @@ public class Map
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public User getUser()
     {
         return user;
@@ -80,6 +97,9 @@ public class Map
         this.user = user;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getLongitude()
     {
         return longitude;
@@ -90,6 +110,9 @@ public class Map
         this.longitude = longitude;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getLatitude()
     {
         return latitude;
@@ -100,6 +123,9 @@ public class Map
         this.latitude = latitude;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Integer getZoom()
     {
         return zoom;
@@ -110,6 +136,10 @@ public class Map
         this.zoom = zoom;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "views", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "mapView", namespace = Dxf2Namespace.NAMESPACE )
     public Set<MapView> getViews()
     {
         return views;

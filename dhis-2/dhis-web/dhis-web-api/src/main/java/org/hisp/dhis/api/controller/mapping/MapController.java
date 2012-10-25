@@ -27,26 +27,31 @@ package org.hisp.dhis.api.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.mapgeneration.MapGenerationService;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-
-import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -70,6 +75,30 @@ public class MapController
 
     @Autowired
     private ContextUtils contextUtils;
+
+    //--------------------------------------------------------------------------
+    // CRUD
+    //--------------------------------------------------------------------------
+
+    @RequestMapping( method = RequestMethod.POST, consumes = "application/json" )
+    @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
+    public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
+    {
+        Map map = JacksonUtils.fromJson( input, Map.class );
+        
+        for ( MapView mapView : map.getViews() )
+        {
+            mappingService.addMapView( mapView );
+        }
+        
+        mappingService.addMap( map );
+        
+        ContextUtils.createdResponse( response, "Map created", RESOURCE_PATH + "/" + map.getUid() );
+    }
+
+    //--------------------------------------------------------------------------
+    // Data
+    //--------------------------------------------------------------------------
 
     @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
     public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception
@@ -99,9 +128,9 @@ public class MapController
         renderMapViewPng( mapView, response );
     }
 
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Supportive methods
-    //-------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     private void renderMapViewPng( MapView mapView, HttpServletResponse response )
         throws Exception
