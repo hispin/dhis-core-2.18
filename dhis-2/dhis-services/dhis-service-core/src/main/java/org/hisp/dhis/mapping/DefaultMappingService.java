@@ -440,7 +440,7 @@ public class DefaultMappingService
 
         MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
 
-        addMapView( new MapView( name, user, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
+        addMapView( new MapView( MapView.LAYER_THEMATIC1, name, user, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
             periodType, period, parent, level, mapLegendType, method, classes, colorLow, colorHigh,
             mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom, 1 ) );
     }

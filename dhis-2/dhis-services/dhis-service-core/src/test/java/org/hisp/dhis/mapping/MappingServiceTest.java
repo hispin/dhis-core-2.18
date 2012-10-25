@@ -32,6 +32,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hisp.dhis.mapping.MappingService.*;
+import static org.hisp.dhis.mapping.MapView.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -265,7 +266,7 @@ public class MappingServiceTest
     @Test
     public void testAddGetMapView()
     {
-        MapView mapView = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
+        MapView mapView = new MapView( LAYER_THEMATIC1, "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1, 1 );
@@ -282,7 +283,7 @@ public class MappingServiceTest
     @Test
     public void testGetDeleteMapViewByName()
     {
-        MapView mapView = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
+        MapView mapView = new MapView( LAYER_THEMATIC1, "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1, 1 );
@@ -299,12 +300,12 @@ public class MappingServiceTest
     @Test
     public void testGetAllMapViews()
     {
-        MapView mapView1 = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
+        MapView mapView1 = new MapView( LAYER_THEMATIC1, "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1, 1 );
 
-        MapView mapView2 = new MapView( "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
+        MapView mapView2 = new MapView( LAYER_THEMATIC1, "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
             mapLegendSet, 5, 20, "2", "2", 1, 1 );
@@ -320,17 +321,17 @@ public class MappingServiceTest
     // TODO
     public void testGetMapViewsByFeatureType()
     {
-        MapView mapView1 = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
+        MapView mapView1 = new MapView( LAYER_THEMATIC1, "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1, 1 );
 
-        MapView mapView2 = new MapView( "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
+        MapView mapView2 = new MapView( LAYER_THEMATIC1, "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
             mapLegendSet, 5, 20, "2", "2", 1, 1 );
 
-        MapView mapView3 = new MapView( "MapViewC", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
+        MapView mapView3 = new MapView( LAYER_THEMATIC1, "MapViewC", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
             mapLegendSet, 5, 20, "3", "3", 1, 1 );

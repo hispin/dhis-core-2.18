@@ -145,6 +145,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendtype TO legendtype" );
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendsetid TO legendsetid" );
         
+        executeSql( "UPDATE mapview SET layer = 'thematic1' WHERE layer IS NULL" );
+        
         executeSql( "DELETE FROM systemsetting WHERE name = 'longitude'" );
         executeSql( "DELETE FROM systemsetting WHERE name = 'latitude'" );
         
