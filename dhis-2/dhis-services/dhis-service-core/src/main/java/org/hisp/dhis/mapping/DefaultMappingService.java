@@ -441,8 +441,8 @@ public class DefaultMappingService
         MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
 
         addMapView( new MapView( name, user, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
-            periodType, period, parent, level, mapLegendType, method, classes, bounds, colorLow, colorHigh,
-            mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom ) );
+            periodType, period, parent, level, mapLegendType, method, classes, colorLow, colorHigh,
+            mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom, 1 ) );
     }
 
     public void updateMapView( MapView mapView )
@@ -502,7 +502,7 @@ public class DefaultMappingService
         mapView.setParentOrganisationUnit( unit );
         mapView.setOrganisationUnitLevel( new OrganisationUnitLevel( level, "" ) );
         mapView.setName( indicator.getName() );
-        mapView.setMapValueType( MappingService.MAP_VALUE_TYPE_INDICATOR );
+        mapView.setValueType( MappingService.MAP_VALUE_TYPE_INDICATOR );
 
         return mapView;
     }

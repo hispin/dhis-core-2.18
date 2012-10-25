@@ -47,6 +47,7 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -63,7 +64,7 @@ public class MapView
 
     private User user;
 
-    private String mapValueType;
+    private String valueType;
 
     private IndicatorGroup indicatorGroup;
 
@@ -81,19 +82,17 @@ public class MapView
 
     private OrganisationUnitLevel organisationUnitLevel;
     
-    private String mapLegendType;
+    private String legendType;
 
     private Integer method;
 
     private Integer classes;
 
-    private String bounds;
-
     private String colorLow;
 
     private String colorHigh;
 
-    private MapLegendSet mapLegendSet;
+    private MapLegendSet legendSet;
 
     private Integer radiusLow;
 
@@ -104,20 +103,24 @@ public class MapView
     private String latitude;
 
     private Integer zoom;
+    
+    private Integer opacity;
+    
+    private OrganisationUnitGroupSet organisationUnitGroupSet;
 
     public MapView()
     {
     }
 
-    public MapView( String name, User user, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
+    public MapView( String name, User user, String valueType, IndicatorGroup indicatorGroup, Indicator indicator,
                     DataElementGroup dataElementGroup, DataElement dataElement, PeriodType periodType,
                     Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
-                    String mapLegendType, Integer method, Integer classes, String bounds, String colorLow, String colorHigh,
-                    MapLegendSet mapLegendSet, Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
+                    String legendType, Integer method, Integer classes, String colorLow, String colorHigh,
+                    MapLegendSet legendSet, Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom, int opacity )
     {
         this.name = name;
         this.user = user;
-        this.mapValueType = mapValueType;
+        this.valueType = valueType;
         this.indicatorGroup = indicatorGroup;
         this.indicator = indicator;
         this.dataElementGroup = dataElementGroup;
@@ -126,18 +129,18 @@ public class MapView
         this.period = period;
         this.parentOrganisationUnit = parentOrganisationUnit;
         this.organisationUnitLevel = organisationUnitLevel;
-        this.mapLegendType = mapLegendType;
+        this.legendType = legendType;
         this.method = method;
         this.classes = classes;
-        this.bounds = bounds;
         this.colorLow = colorLow;
         this.colorHigh = colorHigh;
-        this.mapLegendSet = mapLegendSet;
+        this.legendSet = legendSet;
         this.radiusLow = radiusLow;
         this.radiusHigh = radiusHigh;
         this.longitude = longitude;
         this.latitude = latitude;
         this.zoom = zoom;
+        this.opacity = opacity;
     }
 
     // -------------------------------------------------------------------------
@@ -177,7 +180,7 @@ public class MapView
     public String toString()
     {
         return "[Name: " + name + ", indicator: " + indicator + ", org unit: " +
-            parentOrganisationUnit + ", period: " + period + ", value type: " + mapValueType + "]";
+            parentOrganisationUnit + ", period: " + period + ", value type: " + valueType + "]";
     }
 
     // -------------------------------------------------------------------------
@@ -201,14 +204,14 @@ public class MapView
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getMapValueType()
+    public String getValueType()
     {
-        return mapValueType;
+        return valueType;
     }
 
-    public void setMapValueType( String mapValueType )
+    public void setValueType( String valueType )
     {
-        this.mapValueType = mapValueType;
+        this.valueType = valueType;
     }
 
     @JsonProperty
@@ -328,14 +331,14 @@ public class MapView
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getMapLegendType()
+    public String getLegendType()
     {
-        return mapLegendType;
+        return legendType;
     }
 
-    public void setMapLegendType( String mapLegendType )
+    public void setLegendType( String legendType )
     {
-        this.mapLegendType = mapLegendType;
+        this.legendType = legendType;
     }
 
     @JsonProperty
@@ -362,19 +365,6 @@ public class MapView
     public void setClasses( Integer classes )
     {
         this.classes = classes;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getBounds()
-    {
-        return bounds;
-    }
-
-    public void setBounds( String bounds )
-    {
-        this.bounds = bounds;
     }
 
     @JsonProperty
@@ -407,14 +397,14 @@ public class MapView
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public MapLegendSet getMapLegendSet()
+    public MapLegendSet getLegendSet()
     {
-        return mapLegendSet;
+        return legendSet;
     }
 
-    public void setMapLegendSet( MapLegendSet mapLegendSet )
+    public void setLegendSet( MapLegendSet legendSet )
     {
-        this.mapLegendSet = mapLegendSet;
+        this.legendSet = legendSet;
     }
 
     @JsonProperty
@@ -482,6 +472,33 @@ public class MapView
         this.zoom = zoom;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public Integer getOpacity()
+    {
+        return opacity;
+    }
+
+    public void setOpacity( Integer opacity )
+    {
+        this.opacity = opacity;
+    }
+
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public OrganisationUnitGroupSet getOrganisationUnitGroupSet()
+    {
+        return organisationUnitGroupSet;
+    }
+
+    public void setOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
+    {
+        this.organisationUnitGroupSet = organisationUnitGroupSet;
+    }
+
     @Override
     public void mergeWith( IdentifiableObject other )
     {
@@ -492,7 +509,7 @@ public class MapView
             MapView mapView = (MapView) other;
 
             user = mapView.getUser() == null ? user : mapView.getUser();
-            mapValueType = mapView.getMapValueType() == null ? mapValueType : mapView.getMapValueType();
+            valueType = mapView.getValueType() == null ? valueType : mapView.getValueType();
             indicatorGroup = mapView.getIndicatorGroup() == null ? indicatorGroup : mapView.getIndicatorGroup();
             indicator = mapView.getIndicator() == null ? indicator : mapView.getIndicator();
             dataElementGroup = mapView.getDataElementGroup() == null ? dataElementGroup : mapView.getDataElementGroup();
@@ -501,13 +518,12 @@ public class MapView
             period = mapView.getPeriod() == null ? period : mapView.getPeriod();
             parentOrganisationUnit = mapView.getParentOrganisationUnit() == null ? parentOrganisationUnit : mapView.getParentOrganisationUnit();
             organisationUnitLevel = mapView.getOrganisationUnitLevel() == null ? organisationUnitLevel : mapView.getOrganisationUnitLevel();
-            mapLegendType = mapView.getMapLegendType() == null ? mapLegendType : mapView.getMapLegendType();
+            legendType = mapView.getLegendType() == null ? legendType : mapView.getLegendType();
             method = mapView.getMethod() == null ? method : mapView.getMethod();
             classes = mapView.getClasses() == null ? classes : mapView.getClasses();
-            bounds = mapView.getBounds() == null ? bounds : mapView.getBounds();
             colorLow = mapView.getColorLow() == null ? colorLow : mapView.getColorLow();
             colorHigh = mapView.getColorHigh() == null ? colorHigh : mapView.getColorHigh();
-            mapLegendSet = mapView.getMapLegendSet() == null ? mapLegendSet : mapView.getMapLegendSet();
+            legendSet = mapView.getLegendSet() == null ? legendSet : mapView.getLegendSet();
             radiusLow = mapView.getRadiusLow() == null ? radiusLow : mapView.getRadiusLow();
             radiusHigh = mapView.getRadiusHigh() == null ? radiusHigh : mapView.getRadiusHigh();
             longitude = mapView.getLongitude() == null ? longitude : mapView.getLongitude();

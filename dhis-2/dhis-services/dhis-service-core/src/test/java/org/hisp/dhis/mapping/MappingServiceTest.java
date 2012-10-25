@@ -267,8 +267,8 @@ public class MappingServiceTest
     {
         MapView mapView = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
-            mapLegendSet, 5, 20, "1", "1", 1 );
+            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
+            mapLegendSet, 5, 20, "1", "1", 1, 1 );
 
         int idA = mappingService.addMapView( mapView );
 
@@ -284,8 +284,8 @@ public class MappingServiceTest
     {
         MapView mapView = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
-            mapLegendSet, 5, 20, "1", "1", 1 );
+            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
+            mapLegendSet, 5, 20, "1", "1", 1, 1 );
 
         int id = mappingService.addMapView( mapView );
 
@@ -301,13 +301,13 @@ public class MappingServiceTest
     {
         MapView mapView1 = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
-            mapLegendSet, 5, 20, "1", "1", 1 );
+            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
+            mapLegendSet, 5, 20, "1", "1", 1, 1 );
 
         MapView mapView2 = new MapView( "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
-            mapLegendSet, 5, 20, "2", "2", 1 );
+            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
+            mapLegendSet, 5, 20, "2", "2", 1, 1 );
 
         mappingService.addMapView( mapView1 );
         mappingService.addMapView( mapView2 );
@@ -322,18 +322,18 @@ public class MappingServiceTest
     {
         MapView mapView1 = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
-            mapLegendSet, 5, 20, "1", "1", 1 );
+            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
+            mapLegendSet, 5, 20, "1", "1", 1, 1 );
 
         MapView mapView2 = new MapView( "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
-            mapLegendSet, 5, 20, "2", "2", 1 );
+            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
+            mapLegendSet, 5, 20, "2", "2", 1, 1 );
 
         MapView mapView3 = new MapView( "MapViewC", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
             indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
-            mapLegendSet, 5, 20, "3", "3", 1 );
+            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
+            mapLegendSet, 5, 20, "3", "3", 1, 1 );
 
         mappingService.addMapView( mapView1 );
         mappingService.addMapView( mapView2 );
