@@ -60,7 +60,10 @@ public interface MappingService
 
     final String MAP_LAYER_TYPE_BASELAYER = "baselayer";
     final String MAP_LAYER_TYPE_OVERLAY = "overlay";
-
+    
+    final String MAPLEGENDSET_TYPE_AUTOMATIC = "automatic";
+    final String MAPLEGENDSET_TYPE_PREDEFINED = "predefined";
+    
     // -------------------------------------------------------------------------
     // IndicatorMapValue
     // -------------------------------------------------------------------------

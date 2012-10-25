@@ -441,7 +441,7 @@ public class DefaultMappingService
         MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
 
         addMapView( new MapView( name, user, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
-            periodType, period, parent, level, method, classes, bounds, colorLow, colorHigh,
+            periodType, period, parent, level, mapLegendType, method, classes, bounds, colorLow, colorHigh,
             mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom ) );
     }
 
