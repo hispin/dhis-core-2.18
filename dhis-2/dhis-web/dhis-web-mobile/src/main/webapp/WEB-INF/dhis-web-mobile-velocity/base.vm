@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html manifest="app-cache">
-<!--  <html> -->
+<!-- <html> -->
 
 <head>
 	<title>DHIS2</title>
@@ -10,6 +10,8 @@
 	<link rel="stylesheet" href="$baseUrl/../dhis-web-mobile-resources/css/jquery.mobile.min.css?v=1.2.0" />
 
     <script src="$baseUrl/../dhis-web-commons/javascripts/jQuery/jquery.min.js?v=1.7.1"></script>
+    <script src="$baseUrl/../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
+    <script src="$baseUrl/../dhis-web-commons/javascripts/dhis2/dhis2.array.js"></script>
     <script src="$baseUrl/../dhis-web-mobile-resources/js/underscore.min.js?v=1.3.3"></script>
     <script src="$baseUrl/../dhis-web-mobile-resources/js/jquery.mobile.min.js?v=1.2.0"></script>
     <script src="$baseUrl/../dhis-web-mobile-resources/js/dhis2.storage.js"></script>

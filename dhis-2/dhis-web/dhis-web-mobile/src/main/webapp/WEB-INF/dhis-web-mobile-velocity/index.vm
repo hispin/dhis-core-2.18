@@ -106,12 +106,12 @@
     <h3></h3>
 
     <% if( dvsSize == 0 ) { %>
-        <p>No data is stored locally.</p>
+        <p>No data is stored.</p>
     <% } else { %>
         <% if( dvsSize == 1 ) { %>
-            <p>You have <strong><%= dvsSize %></strong> form stored locally</p>
+            <p>You have <strong><%= dvsSize %></strong> form stored.</p>
         <% } else { %>
-            <p>You have <strong><%= dvsSize %></strong> forms stored locally</p>
+            <p>You have <strong><%= dvsSize %></strong> forms stored.</p>
         <% } %>
     <% } %>
 
