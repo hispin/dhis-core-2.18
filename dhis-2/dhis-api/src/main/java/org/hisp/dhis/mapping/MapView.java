@@ -60,8 +60,16 @@ import org.hisp.dhis.user.User;
 public class MapView
     extends BaseIdentifiableObject
 {
+    public static final String LAYER_BOUNDARY = "boundary";
+    public static final String LAYER_THEMATIC1 = "thematic1";
+    public static final String LAYER_THEMATIC2 = "thematic2";
+    public static final String LAYER_FACILITY = "facility";
+    public static final String LAYER_SYMBOL = "symbol";
+        
     private static final long serialVersionUID = 1866358818802275436L;
 
+    private String layer;
+    
     private User user;
 
     private String valueType;
@@ -112,12 +120,13 @@ public class MapView
     {
     }
 
-    public MapView( String name, User user, String valueType, IndicatorGroup indicatorGroup, Indicator indicator,
+    public MapView( String layer, String name, User user, String valueType, IndicatorGroup indicatorGroup, Indicator indicator,
                     DataElementGroup dataElementGroup, DataElement dataElement, PeriodType periodType,
                     Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
                     String legendType, Integer method, Integer classes, String colorLow, String colorHigh,
                     MapLegendSet legendSet, Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom, int opacity )
     {
+        this.layer = layer;
         this.name = name;
         this.user = user;
         this.valueType = valueType;
@@ -186,6 +195,19 @@ public class MapView
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public String getLayer()
+    {
+        return layer;
+    }
+
+    public void setLayer( String layer )
+    {
+        this.layer = layer;
+    }
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
