@@ -46,6 +46,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.interpretation.Interpretation;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
@@ -136,7 +137,9 @@ public class MetaData
 
     private List<ReportTable> reportTables = new ArrayList<ReportTable>();
 
-    private List<MapView> maps = new ArrayList<MapView>();
+    private List<Map> maps = new ArrayList<Map>();
+    
+    private List<MapView> mapViews = new ArrayList<MapView>();
 
     private List<MapLegend> mapLegends = new ArrayList<MapLegend>();
 
@@ -586,14 +589,27 @@ public class MetaData
     @JsonProperty
     @JacksonXmlElementWrapper( localName = "maps", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "map", namespace = Dxf2Namespace.NAMESPACE )
-    public List<MapView> getMaps()
+    public List<Map> getMaps()
     {
         return maps;
     }
 
-    public void setMaps( List<MapView> maps )
+    public void setMaps( List<Map> maps )
     {
         this.maps = maps;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "mapViews", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "mapView", namespace = Dxf2Namespace.NAMESPACE )
+    public List<MapView> getMapViews()
+    {
+        return mapViews;
+    }
+
+    public void setMapViews( List<MapView> mapViews )
+    {
+        this.mapViews = mapViews;
     }
 
     @JsonProperty
