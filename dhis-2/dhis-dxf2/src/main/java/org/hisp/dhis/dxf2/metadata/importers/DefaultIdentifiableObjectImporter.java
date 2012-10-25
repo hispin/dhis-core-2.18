@@ -92,7 +92,7 @@ public class DefaultIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     private SessionFactory sessionFactory;
 
     @Autowired( required = false )
-    private List<ObjectHandler> objectHandlers;
+    private List<ObjectHandler<T>> objectHandlers;
 
     //-------------------------------------------------------------------------------------------------------
     // Constructor
