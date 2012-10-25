@@ -40,6 +40,8 @@
     <many-to-one name="organisationUnitLevel" class="org.hisp.dhis.organisationunit.OrganisationUnitLevel"
       column="organisationunitlevelid" foreign-key="fk_mapview_organisationunitlevelid" />
 
+    <property name="mapLegendType" />
+
     <property name="method" />
 
     <property name="classes" />
