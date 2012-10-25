@@ -27,12 +27,6 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -51,7 +45,13 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.user.User;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Jan Henrik Overland
@@ -70,8 +70,6 @@ public class MapView
 
     private String layer;
     
-    private User user;
-
     private String valueType;
 
     private IndicatorGroup indicatorGroup;
@@ -106,12 +104,6 @@ public class MapView
 
     private Integer radiusHigh;
 
-    private String longitude;
-
-    private String latitude;
-
-    private Integer zoom;
-    
     private Integer opacity;
     
     private OrganisationUnitGroupSet organisationUnitGroupSet;
@@ -120,15 +112,14 @@ public class MapView
     {
     }
 
-    public MapView( String layer, String name, User user, String valueType, IndicatorGroup indicatorGroup, Indicator indicator,
+    public MapView( String layer, String name, String valueType, IndicatorGroup indicatorGroup, Indicator indicator,
                     DataElementGroup dataElementGroup, DataElement dataElement, PeriodType periodType,
                     Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
                     String legendType, Integer method, Integer classes, String colorLow, String colorHigh,
-                    MapLegendSet legendSet, Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom, int opacity )
+                    MapLegendSet legendSet, Integer radiusLow, Integer radiusHigh, int opacity )
     {
         this.layer = layer;
         this.name = name;
-        this.user = user;
         this.valueType = valueType;
         this.indicatorGroup = indicatorGroup;
         this.indicator = indicator;
@@ -146,9 +137,6 @@ public class MapView
         this.legendSet = legendSet;
         this.radiusLow = radiusLow;
         this.radiusHigh = radiusHigh;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.zoom = zoom;
         this.opacity = opacity;
     }
 
@@ -207,20 +195,6 @@ public class MapView
     public void setLayer( String layer )
     {
         this.layer = layer;
-    }
-
-    @JsonProperty
-    @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser( User user )
-    {
-        this.user = user;
     }
 
     @JsonProperty
@@ -458,45 +432,6 @@ public class MapView
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getLongitude()
-    {
-        return longitude;
-    }
-
-    public void setLongitude( String longitude )
-    {
-        this.longitude = longitude;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getLatitude()
-    {
-        return latitude;
-    }
-
-    public void setLatitude( String latitude )
-    {
-        this.latitude = latitude;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public Integer getZoom()
-    {
-        return zoom;
-    }
-
-    public void setZoom( Integer zoom )
-    {
-        this.zoom = zoom;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Integer getOpacity()
     {
         return opacity;
@@ -530,7 +465,6 @@ public class MapView
         {
             MapView mapView = (MapView) other;
 
-            user = mapView.getUser() == null ? user : mapView.getUser();
             valueType = mapView.getValueType() == null ? valueType : mapView.getValueType();
             indicatorGroup = mapView.getIndicatorGroup() == null ? indicatorGroup : mapView.getIndicatorGroup();
             indicator = mapView.getIndicator() == null ? indicator : mapView.getIndicator();
@@ -548,9 +482,6 @@ public class MapView
             legendSet = mapView.getLegendSet() == null ? legendSet : mapView.getLegendSet();
             radiusLow = mapView.getRadiusLow() == null ? radiusLow : mapView.getRadiusLow();
             radiusHigh = mapView.getRadiusHigh() == null ? radiusHigh : mapView.getRadiusHigh();
-            longitude = mapView.getLongitude() == null ? longitude : mapView.getLongitude();
-            latitude = mapView.getLatitude() == null ? latitude : mapView.getLatitude();
-            zoom = mapView.getZoom() == null ? zoom : mapView.getZoom();
         }
     }
 }

@@ -123,6 +123,22 @@ public interface MappingService
     Collection<MapLegendSet> getAllMapLegendSets();
 
     // -------------------------------------------------------------------------
+    // Map
+    // -------------------------------------------------------------------------
+
+    int addMap( Map map );
+    
+    void updateMap( Map map );
+    
+    Map getMap( int id );
+    
+    Map getMap( String uid );
+    
+    void deleteMap( Map map );
+    
+    Collection<Map> getSystemAndUserMaps();
+    
+    // -------------------------------------------------------------------------
     // MapView
     // -------------------------------------------------------------------------
 
@@ -147,11 +163,7 @@ public interface MappingService
     MapView getIndicatorLastYearMapView( String indicatorUid, String organisationUnitUid, int level );
 
     Collection<MapView> getAllMapViews();
-    
-    Collection<MapView> getSystemAndUserMapViews();
-
-    Collection<MapView> getMapViewsByFeatureType( String featureType );
-    
+        
     Collection<MapView> getMapViewsByUser( User user );
     
     Collection<MapView> getMapViewsBetweenByName( String name, int first, int max );

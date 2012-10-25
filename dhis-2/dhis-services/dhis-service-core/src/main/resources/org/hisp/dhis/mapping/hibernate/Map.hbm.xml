@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+  [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+>
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.mapping.Map" table="map">
+
+    <id name="id" column="mapid">
+      <generator class="native" />
+    </id>
+    &identifiableProperties;
+    
+    <many-to-one name="user" class="org.hisp.dhis.user.User" 
+        column="userid" foreign-key="fk_mapview_userid" />
+    
+    <property name="longitude" />
+    
+    <property name="latitude" />
+    
+    <property name="zoom" />
+    
+    <set name="views" table="mapmapviews">
+      <key column="mapid" foreign-key="fk_mapmapview_mapid" />
+      <many-to-many column="mapviewid" class="org.hisp.dhis.mapping.MapView" foreign-key="fk_mapmapview_mapviewid" />
+    </set>
+    
+  </class>
+</hibernate-mapping>

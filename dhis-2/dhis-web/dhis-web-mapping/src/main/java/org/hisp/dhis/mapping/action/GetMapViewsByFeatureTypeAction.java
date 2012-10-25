@@ -27,13 +27,11 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -83,10 +81,6 @@ public class GetMapViewsByFeatureTypeAction
 
     public String execute()
     {
-        object = new ArrayList<MapView>( mappingService.getMapViewsByFeatureType( featureType ) );
-
-        Collections.sort( object, new MapViewNameComparator() );
-
-        return SUCCESS;
+        throw new NotImplementedException();
     }
 }

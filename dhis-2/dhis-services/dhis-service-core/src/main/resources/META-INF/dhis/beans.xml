@@ -287,10 +287,17 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
+  <bean id="org.hisp.dhis.mapping.MapStore" class="org.hisp.dhis.mapping.hibernate.HibernateMapStore">
+    <property name="clazz" value="org.hisp.dhis.mapping.Map" />
+    <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
+  </bean>
+
   <bean id="org.hisp.dhis.mapping.MapViewStore"
-      class="org.hisp.dhis.mapping.hibernate.HibernateMapViewStore">
+      class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
     <property name="clazz" value="org.hisp.dhis.mapping.MapView" />
     <property name="sessionFactory" ref="sessionFactory" />
+    <property name="cacheable" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MapLayerStore"
@@ -529,6 +536,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </bean>
 
   <bean id="org.hisp.dhis.mapping.MappingService" class="org.hisp.dhis.mapping.DefaultMappingService">
+    <property name="mapStore" ref="org.hisp.dhis.mapping.MapStore" />
     <property name="mapViewStore" ref="org.hisp.dhis.mapping.MapViewStore" />
     <property name="mapLayerStore" ref="org.hisp.dhis.mapping.MapLayerStore" />
     <property name="mapLegendStore" ref="org.hisp.dhis.mapping.MapLegendStore" />

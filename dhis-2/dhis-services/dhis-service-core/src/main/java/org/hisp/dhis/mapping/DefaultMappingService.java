@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -64,28 +65,35 @@ public class DefaultMappingService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MapViewStore mapViewStore;
+    private MapStore mapStore;
+    
+    public void setMapStore( MapStore mapStore )
+    {
+        this.mapStore = mapStore;
+    }
 
-    private MapLayerStore mapLayerStore;
+    private GenericIdentifiableObjectStore<MapView> mapViewStore;
 
-    private MapLegendStore mapLegendStore;
-
-    private MapLegendSetStore mapLegendSetStore;
-
-    public void setMapViewStore( MapViewStore mapViewStore )
+    public void setMapViewStore( GenericIdentifiableObjectStore<MapView> mapViewStore )
     {
         this.mapViewStore = mapViewStore;
     }
+
+    private MapLayerStore mapLayerStore;
 
     public void setMapLayerStore( MapLayerStore mapLayerStore )
     {
         this.mapLayerStore = mapLayerStore;
     }
 
+    private MapLegendStore mapLegendStore;
+
     public void setMapLegendStore( MapLegendStore mapLegendStore )
     {
         this.mapLegendStore = mapLegendStore;
     }
+
+    private MapLegendSetStore mapLegendSetStore;
 
     public void setMapLegendSetStore( MapLegendSetStore mapLegendSetStore )
     {
@@ -394,6 +402,42 @@ public class DefaultMappingService
     }
 
     // -------------------------------------------------------------------------
+    // Map
+    // -------------------------------------------------------------------------
+
+    public int addMap( Map map )
+    {
+        return mapStore.save( map );
+    }
+    
+    public void updateMap( Map map )
+    {
+        mapStore.update( map );
+    }
+    
+    public Map getMap( int id )
+    {
+        return mapStore.get( id );
+    }
+    
+    public Map getMap( String uid )
+    {
+        return mapStore.getByCode( uid );
+    }
+    
+    public void deleteMap( Map map )
+    {
+        mapStore.delete( map );
+    }
+    
+    public Collection<Map> getSystemAndUserMaps()
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        return mapStore.getSystemAndUserMaps( user );
+    }
+        
+    // -------------------------------------------------------------------------
     // MapView
     // -------------------------------------------------------------------------
 
@@ -408,8 +452,6 @@ public class DefaultMappingService
         Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
         Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
     {
-        User user = system ? null : currentUserService.getCurrentUser();
-
         IndicatorGroup indicatorGroup = null;
 
         Indicator indicator = null;
@@ -440,9 +482,9 @@ public class DefaultMappingService
 
         MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
 
-        addMapView( new MapView( MapView.LAYER_THEMATIC1, name, user, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
+        addMapView( new MapView( MapView.LAYER_THEMATIC1, name, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
             periodType, period, parent, level, mapLegendType, method, classes, colorLow, colorHigh,
-            mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom, 1 ) );
+            mapLegendSet, radiusLow, radiusHigh, 1 ) );
     }
 
     public void updateMapView( MapView mapView )
@@ -507,13 +549,6 @@ public class DefaultMappingService
         return mapView;
     }
 
-    public Collection<MapView> getSystemAndUserMapViews()
-    {
-        User user = currentUserService.getCurrentUser();
-        
-        return mapViewStore.getSystemAndUserMapViews( user );
-    }
-    
     public Collection<MapView> getAllMapViews()
     {
         Collection<MapView> mapViews = mapViewStore.getAll();
@@ -530,21 +565,6 @@ public class DefaultMappingService
         return mapViews;
     }
 
-    public Collection<MapView> getMapViewsByFeatureType( String featureType )
-    {
-        User user = currentUserService.getCurrentUser();
-
-        Collection<MapView> mapViews = mapViewStore.getMapViewsByFeatureType( featureType, user );
-
-        for ( MapView mapView : mapViews )
-        {
-            mapView.getParentOrganisationUnit().setLevel(
-                organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit().getId() ) );
-        }
-
-        return mapViews;
-    }
-    
     public Collection<MapView> getMapViewsByUser( User user )
     {
         return mapViewStore.getByUser( user );

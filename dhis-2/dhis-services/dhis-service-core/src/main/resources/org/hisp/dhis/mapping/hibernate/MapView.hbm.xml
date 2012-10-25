@@ -15,8 +15,6 @@
 
     <property name="layer" />
 
-    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_mapview_userid" />
-
     <property name="valueType" />
 
     <many-to-one name="indicatorGroup" class="org.hisp.dhis.indicator.IndicatorGroup" column="indicatorgroupid"
@@ -58,12 +56,6 @@
     <property name="radiusLow" />
 
     <property name="radiusHigh" />
-
-    <property name="longitude" />
-
-    <property name="latitude" />
-
-    <property name="zoom" />
     
     <property name="opacity" />
 
