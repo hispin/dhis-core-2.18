@@ -22,17 +22,17 @@
 </tr>
 <tr>
 	<td>
-		<label for="weekly">$i18n.getString( "Weekly" )</label><input type="checkbox" id="weekly" class="scheduling" name="scheduledPeriodTypes" value="Weekly"#if( $scheduledPeriodTypes.contains( "Weekly" ) ) checked="checked"#end>&nbsp;
-		<label for="monthly">$i18n.getString( "Monthly" )</label><input type="checkbox" id="monthly" class="scheduling" name="scheduledPeriodTypes" value="Monthly"#if( $scheduledPeriodTypes.contains( "Monthly" ) ) checked="checked"#end>&nbsp;
-		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="checkbox" id="biMonthly" class="scheduling" name="scheduledPeriodTypes" value="BiMonthly"#if( $scheduledPeriodTypes.contains( "BiMonthly" ) ) checked="checked"#end>&nbsp;
-		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="checkbox" id="quarterly" class="scheduling" name="scheduledPeriodTypes" value="Quarterly"#if( $scheduledPeriodTypes.contains( "Quarterly" ) ) checked="checked"#end>
+		<label for="weekly">$i18n.getString( "Weekly" )</label><input type="radio" id="weekly" class="scheduling" name="scheduledPeriodType" value="Weekly"#if( $scheduledPeriodType.contains( "Weekly" ) ) checked="checked"#end>&nbsp;
+		<label for="monthly">$i18n.getString( "Monthly" )</label><input type="radio" id="monthly" class="scheduling" name="scheduledPeriodType" value="Monthly"#if( $scheduledPeriodType.contains( "Monthly" ) ) checked="checked"#end>&nbsp;
+		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="radio" id="biMonthly" class="scheduling" name="scheduledPeriodType" value="BiMonthly"#if( $scheduledPeriodType.contains( "BiMonthly" ) ) checked="checked"#end>&nbsp;
+		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="radio" id="quarterly" class="scheduling" name="scheduledPeriodType" value="Quarterly"#if( $scheduledPeriodType.contains( "Quarterly" ) ) checked="checked"#end>
 	</td>
 </tr>
 <tr>
 	<td>
-		<label for="sixMonthly">$i18n.getString( "SixMonthly" )</label><input type="checkbox" id="sixMonthly" class="scheduling" name="scheduledPeriodTypes" value="SixMonthly"#if( $scheduledPeriodTypes.contains( "SixMonthly" ) ) checked="checked"#end>&nbsp;
-		<label for="yearly">$i18n.getString( "Yearly" )</label><input type="checkbox" id="yearly" class="scheduling" name="scheduledPeriodTypes" value="Yearly"#if( $scheduledPeriodTypes.contains( "Yearly" ) ) checked="checked"#end>&nbsp;
-		<label for="financialYearly">$i18n.getString( "financial_yearly" )</label><input type="checkbox" id="financialYearly" class="scheduling" name="scheduledPeriodTypes" value="FinancialJuly"#if( $scheduledPeriodTypes.contains( "FinancialJuly" ) ) checked="checked"#end>			
+		<label for="sixMonthly">$i18n.getString( "SixMonthly" )</label><input type="radio" id="sixMonthly" class="scheduling" name="scheduledPeriodType" value="SixMonthly"#if( $scheduledPeriodTypes.contains( "SixMonthly" ) ) checked="checked"#end>&nbsp;
+		<label for="yearly">$i18n.getString( "Yearly" )</label><input type="radio" id="yearly" class="scheduling" name="scheduledPeriodType" value="Yearly"#if( $scheduledPeriodTypes.contains( "Yearly" ) ) checked="checked"#end>&nbsp;
+		<label for="financialYearly">$i18n.getString( "financial_yearly" )</label><input type="radio" id="financialYearly" class="scheduling" name="scheduledPeriodType" value="FinancialJuly"#if( $scheduledPeriodTypes.contains( "FinancialJuly" ) ) checked="checked"#end>			
 	</td>
 </tr>
 <tr>

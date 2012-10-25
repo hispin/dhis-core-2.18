@@ -28,13 +28,13 @@
 package org.hisp.dhis.patient.scheduling;
 
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -81,14 +81,7 @@ public class CaseAggregateConditionTask
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
-
-    private List<Period> periods;
-
-    public void setPeriods( List<Period> periods )
-    {
-        this.periods = periods;
-    }
-
+    
     private boolean last6Months;
 
     public void setLast6Months( boolean last6Months )
@@ -126,7 +119,6 @@ public class CaseAggregateConditionTask
     // -------------------------------------------------------------------------
 
     @Override
-    @SuppressWarnings( "unchecked" )
     public void run()
     {
         int level = (Integer) systemSettingManager.getSystemSetting(
@@ -140,11 +132,11 @@ public class CaseAggregateConditionTask
         // Get Period list in system-setting
         // ---------------------------------------------------------------------
 
-        Set<String> periodTypes = (Set<String>) systemSettingManager.getSystemSetting(
-            KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
-
-        List<Period> periods = getPeriods( periodTypes );
-
+        String periodType = (String) systemSettingManager.getSystemSetting(
+            KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE, KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE );
+       
+        List<Period> periods = getPeriods( periodType );
+        
         // ---------------------------------------------------------------------
         // Aggregation
         // ---------------------------------------------------------------------
@@ -220,13 +212,11 @@ public class CaseAggregateConditionTask
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private List<Period> getPeriods( Set<String> periodTypes )
+    private List<Period> getPeriods( String periodType )
     {
-        if ( periods != null && periods.size() > 0 )
-        {
-            return periods;
-        }
-
+        Set<String> periodTypes = new HashSet<String>();
+        periodTypes.add( periodType );
+        
         List<Period> relatives = new ArrayList<Period>();
 
         if ( last6Months )

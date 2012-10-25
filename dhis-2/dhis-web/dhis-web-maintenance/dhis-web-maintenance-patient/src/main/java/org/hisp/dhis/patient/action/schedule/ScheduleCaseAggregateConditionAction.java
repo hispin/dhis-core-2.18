@@ -28,12 +28,10 @@
 package org.hisp.dhis.patient.action.schedule;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager;
 import org.hisp.dhis.setting.SystemSettingManager;
@@ -82,11 +80,11 @@ public class ScheduleCaseAggregateConditionAction
         this.execute = execute;
     }
 
-    private Set<String> scheduledPeriodTypes = new HashSet<String>();
+    private String scheduledPeriodType;
 
-    public void setScheduledPeriodTypes( Set<String> scheduledPeriodTypes )
+    public void setScheduledPeriodType( String scheduledPeriodType )
     {
-        this.scheduledPeriodTypes = scheduledPeriodTypes;
+        this.scheduledPeriodType = scheduledPeriodType;
     }
 
     private Integer orgUnitGroupSetAggLevel;
@@ -135,8 +133,7 @@ public class ScheduleCaseAggregateConditionAction
         }
         else
         {
-            systemSettingManager.saveSystemSetting( KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES,
-                (HashSet<String>) scheduledPeriodTypes );
+            systemSettingManager.saveSystemSetting( KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE, scheduledPeriodType );
             systemSettingManager.saveSystemSetting( KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL,
                 orgUnitGroupSetAggLevel );
 

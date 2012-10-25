@@ -73,7 +73,7 @@ public interface SystemSettingManager
     final String KEY_SCHEDULE_MESSAGE_TASKS = "scheduleMessage";
     final String KEY_PHONE_NUMBER_AREA_CODE = "phoneNumberAreaCode";
     final String KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASKS = "scheduleAggregateQueryBuilder";
-    final String KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES = "keyScheduledAggregateQueryBuilderPeriodTypes";
+    final String KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE = "keyScheduledAggregateQueryBuilderPeriodType";
     final String KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL = "aggQueryBuilderorgUnitGroupSetAggregationLevel";
     final String KEY_CONFIGURATION = "keyConfig";
 
@@ -87,6 +87,7 @@ public interface SystemSettingManager
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
     final String DEFAULT_TIME_FOR_SENDING_MESSAGE = "08:00";
     
+    final String DEFAULT_SCHEDULED_CASE_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES = MonthlyPeriodType.NAME;
     final HashSet<String> DEFAULT_SCHEDULED_PERIOD_TYPES = new HashSet<String>() { {
         add( MonthlyPeriodType.NAME ); 
         add( QuarterlyPeriodType.NAME );
