@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -92,7 +93,7 @@ public class GetGeoJsonFacilitiesAction
     {
         return object;
     }
-    
+
     private Collection<OrganisationUnitGroupSet> groupSets;
 
     public Collection<OrganisationUnitGroupSet> getGroupSets()
@@ -117,7 +118,7 @@ public class GetGeoJsonFacilitiesAction
         FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
 
         groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
-        
+
         object = new ArrayList<OrganisationUnit>();
 
         for ( OrganisationUnit unit : organisationUnits )
@@ -126,15 +127,15 @@ public class GetGeoJsonFacilitiesAction
             {
                 int i = 0;
 
-                String[] groupNames = new String[groupSets.size()];
-                
+                List<String> groupNames = new ArrayList<String>( groupSets.size() );
+
                 for ( OrganisationUnitGroupSet groupSet : groupSets )
                 {
-                    groupNames[ i++ ] = unit.getGroupNameInGroupSet( groupSet );
+                    groupNames.add( unit.getGroupNameInGroupSet( groupSet ) );
                 }
-                
+
                 unit.setGroupNames( groupNames );
-                
+
                 object.add( unit );
             }
         }

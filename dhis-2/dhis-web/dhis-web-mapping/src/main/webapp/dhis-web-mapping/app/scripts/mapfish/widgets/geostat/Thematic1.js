@@ -217,7 +217,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
             doc = GIS.util.geojson.decode(doc, this);
         }
         else {
-			alert("no coordinates"); //todo //i18n
+			alert('No valid coordinates found'); //todo //i18n
 		}
         
         this.layer.removeFeatures(this.layer.features);
@@ -444,7 +444,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
                 }
 			}
         });
-        
+                
         this.cmp.periodType = Ext.create('Ext.form.field.ComboBox', {
             editable: false,
             valueField: 'id',
@@ -1522,7 +1522,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 			}
 			if (!model.indicator || !Ext.isString(model.indicator)) {
 				GIS.logg.push([model.indicator, this.xtype + '.indicator: string']);
-				//alert("validation failed"); //todo
+				alert('No indicator selected'); //todo //i18n
 				return false;
 			}
 		}
@@ -1534,7 +1534,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 			}
 			if (!model.dataElement || !Ext.isString(model.dataElement)) {
 				GIS.logg.push([model.dataElement, this.xtype + '.dataElement: string']);
-				//alert("validation failed"); //todo
+				alert('No data element selected'); //todo //i18n
 				return false;
 			}
 		}
@@ -1546,7 +1546,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 		}
 		if (!model.period || !Ext.isString(model.period)) {
 			GIS.logg.push([model.period, this.xtype + '.period: string']);
-				//alert("validation failed"); //todo
+				alert('No period selected'); //todo //i18n
 			return false;
 		}
 		
@@ -1585,14 +1585,14 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 		else if (model.legendType === GIS.conf.finals.widget.legendtype_predefined) {			
 			if (!model.legendSet || !Ext.isString(model.legendSet)) {
 				GIS.logg.push([model.legendSet, this.xtype + '.legendSet: string']);
-				//alert("validation failed"); //todo
+				alert('No legend set selected'); //todo //i18n
 				return false;
 			}
 		}
 		
 		if (!model.level || !Ext.isNumber(model.level)) {
 			GIS.logg.push([model.level, this.xtype + '.level: number']);
-				//alert("validation failed"); //todo
+				alert('No level selected'); //todo
 			return false;
 		}
 		if (!model.levelName || !Ext.isString(model.levelName)) {
@@ -1602,7 +1602,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 		}
 		if (!model.parentId || !Ext.isString(model.parentId)) {
 			GIS.logg.push([model.parentId, this.xtype + '.parentId: string']);
-				//alert("validation failed"); //todo
+				alert('No parent organisation unit selected'); //todo
 			return false;
 		}
 		if (!model.parentName || !Ext.isString(model.parentName)) {
@@ -1617,7 +1617,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 		}
 		if (model.parentLevel > model.level) {
 			GIS.logg.push([model.parentLevel, model.level, this.xtype + '.parentLevel: number <= ' + this.xtype + '.level']);
-				//alert("validation failed"); //todo
+				alert('Level cannot be higher than parent level'); //todo
 			return false;
 		}
 		
@@ -1668,7 +1668,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 					features = [];
 					
 				if (values.length === 0) {
-					alert("no data"); //todo Ext.message.msg(false, GIS.i18n.current_selection_no_data);
+					alert('No aggregated data values found'); //todo Ext.message.msg(false, GIS.i18n.current_selection_no_data);
 					GIS.mask.hide();
 					return;
 				}
