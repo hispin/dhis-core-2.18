@@ -27,6 +27,8 @@ package org.hisp.dhis.api.controller.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.period.PeriodType.getPeriodFromIsoString;
+
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
@@ -37,13 +39,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -69,7 +76,22 @@ public class MapController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
-
+    
+    @Autowired
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
+    private IndicatorService indicatorService;
+    
+    @Autowired
+    private DataElementService dataElementService;
+    
+    @Autowired
+    private PeriodService periodService;
+        
     @Autowired
     private MapGenerationService mapGenerationService;
 
@@ -86,9 +108,59 @@ public class MapController
     {
         Map map = JacksonUtils.fromJson( input, Map.class );
         
-        for ( MapView mapView : map.getViews() )
+        if ( map.getUser() != null )
         {
-            mappingService.addMapView( mapView );
+            map.setUser( userService.getUser( map.getUser().getUid() ) );
+        }
+        
+        for ( MapView view : map.getViews() )
+        {
+            if ( view.getIndicatorGroup() != null )
+            {
+                view.setIndicatorGroup( indicatorService.getIndicatorGroup( view.getIndicatorGroup().getUid() ) );
+            }
+            
+            if ( view.getIndicator() != null )
+            {
+                view.setIndicator( indicatorService.getIndicator( view.getIndicator().getUid() ) );
+            }
+            
+            if ( view.getDataElementGroup() != null )
+            {
+                view.setDataElementGroup( dataElementService.getDataElementGroup( view.getDataElementGroup().getUid() ) );
+            }
+            
+            if ( view.getDataElement() != null )
+            {
+                view.setDataElement( dataElementService.getDataElement( view.getDataElement().getUid() ) );
+            }
+            
+            if ( view.getPeriod() != null )
+            {
+                view.setPeriod( periodService.reloadPeriod( getPeriodFromIsoString( view.getPeriod().getUid() ) ) );
+            }
+            
+            if ( view.getParentOrganisationUnit() != null )
+            {
+                view.setParentOrganisationUnit( organisationUnitService.getOrganisationUnit( view.getParentOrganisationUnit().getUid() ) );
+            }
+            
+            if ( view.getOrganisationUnitLevel() != null )
+            {
+                view.setOrganisationUnitLevel( organisationUnitService.getOrganisationUnitLevel( view.getOrganisationUnitLevel().getUid() ) );
+            }
+            
+            if ( view.getLegendSet() != null )
+            {
+                view.setLegendSet( mappingService.getMapLegendSet( view.getLegendSet().getUid() ) );
+            }
+            
+            if ( view.getOrganisationUnitGroupSet() != null )
+            {
+                view.setOrganisationUnitGroupSet( organisationUnitGroupService.getOrganisationUnitGroupSet( view.getOrganisationUnitGroupSet().getUid() ) );
+            }
+            
+            mappingService.addMapView( view );
         }
         
         mappingService.addMap( map );

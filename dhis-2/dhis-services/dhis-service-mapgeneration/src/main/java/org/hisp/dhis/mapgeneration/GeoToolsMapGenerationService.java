@@ -128,7 +128,7 @@ public class GeoToolsMapGenerationService
         Assert.isTrue( mapView != null );
         Assert.isTrue( mapView.getValueType() != null );
 
-        boolean isIndicator = MappingService.MAP_VALUE_TYPE_INDICATOR.equals( mapView.getValueType() );
+        boolean isIndicator = MapView.VALUE_TYPE_INDICATOR.equals( mapView.getValueType() );
 
         Collection<AggregatedMapValue> mapValues;
         
