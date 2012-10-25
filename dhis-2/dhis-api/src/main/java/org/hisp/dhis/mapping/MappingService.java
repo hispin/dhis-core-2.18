@@ -50,9 +50,6 @@ public interface MappingService
     final String MAP_LEGEND_SYMBOLIZER_COLOR = "color";
     final String MAP_LEGEND_SYMBOLIZER_IMAGE = "image";
 
-    final String MAPLEGENDSET_TYPE_AUTOMATIC = "automatic";
-    final String MAPLEGENDSET_TYPE_PREDEFINED = "predefined";
-
     final String KEY_MAP_DATE_TYPE = "dateType";
 
     final String MAP_DATE_TYPE_FIXED = "fixed";
@@ -120,15 +117,7 @@ public interface MappingService
 
     MapLegendSet getMapLegendSetByName( String name );
 
-    Collection<MapLegendSet> getMapLegendSetsByType( String type );
-
-    MapLegendSet getMapLegendSetByIndicator( int indicatorId );
-
-    MapLegendSet getMapLegendSetByDataElement( int dataElementId );
-
     Collection<MapLegendSet> getAllMapLegendSets();
-
-    boolean indicatorHasMapLegendSet( int indicatorId );
 
     // -------------------------------------------------------------------------
     // MapView

@@ -819,16 +819,11 @@ public abstract class DhisConvenienceTest
         return legend;
     }
 
-    public static MapLegendSet createMapLegendSet( char uniqueCharacter, Indicator... indicators )
+    public static MapLegendSet createMapLegendSet( char uniqueCharacter )
     {
         MapLegendSet legendSet = new MapLegendSet();
 
         legendSet.setName( "MapLegendSet" + uniqueCharacter );
-
-        for ( Indicator indicator : indicators )
-        {
-            legendSet.getIndicators().add( indicator );
-        }
 
         return legendSet;
     }

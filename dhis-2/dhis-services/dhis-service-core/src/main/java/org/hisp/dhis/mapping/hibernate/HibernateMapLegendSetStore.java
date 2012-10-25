@@ -27,14 +27,9 @@ package org.hisp.dhis.mapping.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapLegendSetStore;
-
-import java.util.Collection;
 
 /**
  * @author Jan Henrik Overland
@@ -43,15 +38,4 @@ public class HibernateMapLegendSetStore
     extends HibernateIdentifiableObjectStore<MapLegendSet>
     implements MapLegendSetStore
 {
-    @SuppressWarnings( "unchecked" )
-    public Collection<MapLegendSet> getMapLegendSetsByType( String type )
-    {
-        Session session = this.sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( MapLegendSet.class );
-
-        criteria.add( Restrictions.eq( "type", type ) );
-
-        return criteria.list();
-    }
 }

@@ -354,11 +354,8 @@ public class DefaultMappingService
 
         if ( mapLegendSet != null )
         {
-            mapLegendSet.setType( type );
             mapLegendSet.setSymbolizer( symbolizer );
             mapLegendSet.setMapLegends( mapLegends );
-            mapLegendSet.setIndicators( indicators );
-            mapLegendSet.setDataElements( dataElements );
 
             mapLegendSetStore.update( mapLegendSet );
         }
@@ -391,65 +388,9 @@ public class DefaultMappingService
         return mapLegendSetStore.getByName( name );
     }
 
-    public Collection<MapLegendSet> getMapLegendSetsByType( String type )
-    {
-        return mapLegendSetStore.getMapLegendSetsByType( type );
-    }
-
-    public MapLegendSet getMapLegendSetByIndicator( int indicatorId )
-    {
-        Indicator indicator = indicatorService.getIndicator( indicatorId );
-
-        Collection<MapLegendSet> mapLegendSets = mapLegendSetStore.getAll();
-
-        for ( MapLegendSet mapLegendSet : mapLegendSets )
-        {
-            if ( mapLegendSet.getIndicators().contains( indicator ) )
-            {
-                return mapLegendSet;
-            }
-        }
-
-        return null;
-    }
-
-    public MapLegendSet getMapLegendSetByDataElement( int dataElementId )
-    {
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
-        Collection<MapLegendSet> mapLegendSets = mapLegendSetStore.getAll();
-
-        for ( MapLegendSet mapLegendSet : mapLegendSets )
-        {
-            if ( mapLegendSet.getDataElements().contains( dataElement ) )
-            {
-                return mapLegendSet;
-            }
-        }
-
-        return null;
-    }
-
     public Collection<MapLegendSet> getAllMapLegendSets()
     {
         return mapLegendSetStore.getAll();
-    }
-
-    public boolean indicatorHasMapLegendSet( int indicatorId )
-    {
-        Indicator indicator = indicatorService.getIndicator( indicatorId );
-
-        Collection<MapLegendSet> mapLegendSets = mapLegendSetStore.getAll();
-
-        for ( MapLegendSet mapLegendSet : mapLegendSets )
-        {
-            if ( mapLegendSet.getIndicators().contains( indicator ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     // -------------------------------------------------------------------------
@@ -500,7 +441,7 @@ public class DefaultMappingService
         MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
 
         addMapView( new MapView( name, user, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
-            periodType, period, parent, level, mapLegendType, method, classes, bounds, colorLow, colorHigh,
+            periodType, period, parent, level, method, classes, bounds, colorLow, colorHigh,
             mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom ) );
     }
 
