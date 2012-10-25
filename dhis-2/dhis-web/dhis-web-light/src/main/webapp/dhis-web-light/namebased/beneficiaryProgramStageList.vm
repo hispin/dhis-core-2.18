@@ -5,6 +5,7 @@
         <h3 style="text-align: left;">$i18n.getString("successfully_saved")</h3>
     </div>
 #end
+
 <p>
 <ul>
 #set($i = 0)
