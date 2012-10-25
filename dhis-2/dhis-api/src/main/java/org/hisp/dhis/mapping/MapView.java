@@ -236,7 +236,7 @@ public class MapView
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public PeriodType getPeriodType()
     {
-        return period.getPeriodType();
+        return period != null ? period.getPeriodType() : null;
     }
 
     @JsonProperty
