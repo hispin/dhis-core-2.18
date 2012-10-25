@@ -70,7 +70,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 @RequestMapping( value = MapController.RESOURCE_PATH )
 public class MapController
-    extends AbstractCrudController<MapView>
+    extends AbstractCrudController<Map>
 {
     public static final String RESOURCE_PATH = "/maps";
 
@@ -195,7 +195,7 @@ public class MapController
     @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
     public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception
     {
-        MapView mapView = getEntity( uid );
+        MapView mapView = mappingService.getMapView( uid );
 
         renderMapViewPng( mapView, response );
     }
