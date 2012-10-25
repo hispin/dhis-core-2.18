@@ -139,7 +139,7 @@ public class Map
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "views", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlElementWrapper( localName = "mapViews", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "mapView", namespace = Dxf2Namespace.NAMESPACE )
     public Set<MapView> getViews()
     {
