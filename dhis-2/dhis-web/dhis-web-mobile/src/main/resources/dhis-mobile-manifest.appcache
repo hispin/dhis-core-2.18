@@ -1,10 +1,12 @@
 CACHE MANIFEST
-# Version: 17
+# Version: 18
 
 CACHE:
 ../mobile/index
 ../mobile/data-entry
 ../dhis-web-commons/javascripts/jQuery/jquery.min.js?v=1.7.1
+../dhis-web-commons/javascripts/dhis2/dhis2.util.js
+../dhis-web-commons/javascripts/dhis2/dhis2.array.js
 ../dhis-web-commons/i18nJavaScript.action
 ../dhis-web-commons/javascripts/jQuery/jquery.glob.js
 ../dhis-web-commons/javascripts/jQuery/jquery.date.js
