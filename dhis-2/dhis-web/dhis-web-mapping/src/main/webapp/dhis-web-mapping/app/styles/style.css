@@ -185,17 +185,27 @@ html * {
 	border-radius: 2px;
 }
 
+.gis-toolbar-btn-menu-download .x-btn-icon,
+.gis-toolbar-btn-menu-download .x-btn-default-small-icon button {
+	width: 28px !important;
+	height: 28px !important;
+}
+	
+.gis-btn-icon-download {
+	background: url('../images/download_22.png') no-repeat;
+}
+
 /* Toolbar */
 
 .x-toolbar-default {
 	background-image: none;
 	background-color: #F3F3F3;
 	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #F1F1F1), color-stop(100%, whiteSmoke));
-	background-image: -webkit-linear-gradient(top, #F1F1F1,whiteSmoke);
-	background-image: -moz-linear-gradient(top, #F1F1F1,whiteSmoke);
-	background-image: -o-linear-gradient(top, #F1F1F1,whiteSmoke);
-	background-image: -ms-linear-gradient(top, #F1F1F1,whiteSmoke);
-	background-image: linear-gradient(top, #F1F1F1,whiteSmoke);
+	background-image: -webkit-linear-gradient(top, #F1F1F1, whiteSmoke);
+	background-image: -moz-linear-gradient(top, #F1F1F1, whiteSmoke);
+	background-image: -o-linear-gradient(top, #F1F1F1, whiteSmoke);
+	background-image: -ms-linear-gradient(top, #F1F1F1, whiteSmoke);
+	background-image: linear-gradient(top, #F1F1F1, whiteSmoke);
 }
 
 	/* Toolbar btn */

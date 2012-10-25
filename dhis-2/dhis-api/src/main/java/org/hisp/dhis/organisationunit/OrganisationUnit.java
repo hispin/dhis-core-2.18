@@ -132,7 +132,7 @@ public class OrganisationUnit
 
     private transient String type;
 
-    private transient String[] groupNames;
+    private transient List<String> groupNames = new ArrayList<String>();
 
     private transient Double value;
 
@@ -864,12 +864,12 @@ public class OrganisationUnit
         this.level = level;
     }
 
-    public String[] getGroupNames()
+    public List<String> getGroupNames()
     {
         return groupNames;
     }
 
-    public void setGroupNames( String[] groupNames )
+    public void setGroupNames( List<String> groupNames )
     {
         this.groupNames = groupNames;
     }

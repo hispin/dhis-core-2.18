@@ -1,1 +1,33 @@
-#set($size=$object.size()){"properties":{},"geojson":[#foreach($unit in $object){"ty":#if(${unit.featureType}=="Point")"2"#else"1"#end,"co":$!encoder.jsonEncode($!{unit.validCoordinates}),"uid":"$!{unit.uid}","iid":$!{unit.id},"na":"$!encoder.jsonEncode(${unit.name})"#foreach($set in $groupSets)#set($n=$velocityCount - 1),"$!encoder.jsonEncode(${set.getName()})":"$!encoder.jsonEncode(${unit.groupNames[$n]})"#end}#if($velocityCount<$size),#end#end]}
+
+#set($size=$object.size())
+#set($groupSetSize=$groupSets.size())
+{
+	"properties":{},
+	"geojson":[
+
+		#foreach($unit in $object)
+
+		{
+
+			"ty": #if(${unit.featureType}=="Point")"2"#else"1"#end,
+			"co":$!encoder.jsonEncode($!{unit.validCoordinates}),
+			"uid":"$!{unit.uid}",
+			"iid":$!{unit.id},
+			"na":"$!encoder.jsonEncode(${unit.name})",
+
+			"groupSets": {
+	
+				#foreach($set in $groupSets)
+				#set( $index = ( $velocityCount - 1 ) )
+				#set( $key = $!encoder.jsonEncode( ${set.name} ) )
+				#set( $val = $!encoder.jsonEncode( $unit.groupNames.get(${index}) ) )
+				"${key}":"${val}"
+				#if($velocityCount<$groupSetSize),#end	
+				
+				#end	
+			}
+		}#if($velocityCount<$size),#end
+		
+		#end
+	]
+}

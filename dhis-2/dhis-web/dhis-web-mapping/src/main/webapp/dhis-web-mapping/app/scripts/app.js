@@ -232,33 +232,33 @@ Ext.onReady( function() {
 			}
 		});
 		
-		// Load favorite
-		var config = {
-			classes: 5,
-			colorHigh: "ffff00",
-			colorLow: "0000ff",
-			dataElement: null,
-			dataElementGroup: null,
-			indicator: "Uvn6LCg7dVU",
-			indicatorGroup: "AoTB60phSOH",
-			legendSet: null,
-			legendType: "automatic",
-			level: 3,
-			levelName: "Chiefdom",
-			method: 2,
-			parentId: "fdc6uOvgoji",
-			parentLevel: 2,
-			parentName: "Bombali",
-			parentPath: "/ImspTQPwCqd/fdc6uOvgoji",
-			period: "2012",
-			periodType: "Yearly",
-			radiusHigh: 15,
-			radiusLow: 5,
-			updateData: false,
-			updateLegend: false,
-			updateOrganisationUnit: true,
-			valueType: "indicator"
-		};
+		// Load favorite //todo
+		//var config = {
+			//classes: 5,
+			//colorHigh: "ffff00",
+			//colorLow: "0000ff",
+			//dataElement: null,
+			//dataElementGroup: null,
+			//indicator: "Uvn6LCg7dVU",
+			//indicatorGroup: "AoTB60phSOH",
+			//legendSet: null,
+			//legendType: "automatic",
+			//level: 3,
+			//levelName: "Chiefdom",
+			//method: 2,
+			//parentId: "fdc6uOvgoji",
+			//parentLevel: 2,
+			//parentName: "Bombali",
+			//parentPath: "/ImspTQPwCqd/fdc6uOvgoji",
+			//period: "2012",
+			//periodType: "Yearly",
+			//radiusHigh: 15,
+			//radiusLow: 5,
+			//updateData: false,
+			//updateLegend: false,
+			//updateOrganisationUnit: true,
+			//valueType: "indicator"
+		//};
 		
 		//GIS.base.thematic1.widget.setConfig(config);
 		//GIS.base.thematic1.widget.execute();
@@ -279,11 +279,13 @@ Ext.onReady( function() {
 	GIS.util.map.getVisibleVectorLayers = function() {
 		var a = [];
 		for (var i = 0; i < GIS.map.layers.length; i++) {
-			if (GIS.map.layers[i].layerType === GIS.conf.finals.layer.type_vector && GIS.map.layers[i].visibility) {
+			if (GIS.map.layers[i].layerType === GIS.conf.finals.layer.type_vector &&
+				GIS.map.layers[i].visibility &&
+				GIS.map.layers[i].features.length) {
 				a.push(GIS.map.layers[i]);
 			}
 		}
-		return a;
+		return a.length ? a : false;
 	};
 	
     GIS.util.map.getLayersByType = function(layerType) {
@@ -367,8 +369,14 @@ Ext.onReady( function() {
 		y += 35;
 		
 		if (!layers.length) {
-			alert('No visible data layers'); //todo //i18n
-			return;
+			return false;
+		}
+		
+		for (var i = layers.length - 1; i > 0; i--) {
+			if (layers[i].base.id === GIS.base.facility.id) {
+				layers.splice(i, 1);
+				console.log('Facility layer export currently not supported');
+			}
 		}
 		
 		for (var i = 0; i < layers.length; i++) {
@@ -385,7 +393,7 @@ Ext.onReady( function() {
 			svgArray.push(layer.div.innerHTML);
 			
 			// Legend
-			if (id !== GIS.base.boundary.id) {
+			if (id !== GIS.base.boundary.id && id !== GIS.base.facility.id) {
 				what = '<g id="indicator" style="display: block; visibility: visible;">' +
 					   '<text id="indicator" x="' + x + '" y="' + y + '" font-size="12">' +
 					   '<tspan>' + legendConfig.what + '</tspan></text></g>';
@@ -681,7 +689,7 @@ Ext.onReady( function() {
     });
     
 	GIS.store.groupsByGroupSet = Ext.create('Ext.data.Store', {
-		fields: ['id', 'name'],
+		fields: ['id', 'name', 'symbol'],
 		proxy: {
 			type: 'ajax',
 			url: '',
@@ -1920,12 +1928,22 @@ Ext.onReady( function() {
 				prevItem = items[i - 1].data;
 				
 				if (item.startValue < prevItem.endValue) {
-					alert('Overlapping legends');
+					var msg = 'Overlapping legends not allowed!\n\n' +
+							  prevItem.name + ' (' + prevItem.startValue + ' - ' + prevItem.endValue + ')\n' +
+							  item.name + ' (' + item.startValue + ' - ' + item.endValue + ')';
+					alert(msg);
 					return false;
 				}
 				
 				if (prevItem.endValue < item.startValue) {
-					alert('Legend gaps');
+					var msg = 'Legend gaps detected!\n\n' +
+							  prevItem.name + ' (' + prevItem.startValue + ' - ' + prevItem.endValue + ')\n' +
+							  item.name + ' (' + item.startValue + ' - ' + item.endValue + ')\n\n' +
+							  'Proceed anyway?';
+					
+					if (!confirm(msg)) {
+						return false;
+					}
 				}
 			}
 			
@@ -1940,7 +1958,7 @@ Ext.onReady( function() {
 					var body = Ext.encode(getRequestBody());
 					
 					Ext.Ajax.request({
-						url: GIS.conf.url.path_api + 'mapLegendSet/',
+						url: GIS.conf.url.path_api + 'mapLegendSets/',
 						method: 'POST',
 						headers: {'Content-Type': 'application/json'},
 						params: body,
@@ -1963,7 +1981,7 @@ Ext.onReady( function() {
 					body = Ext.encode(getRequestBody());
 					
 					Ext.Ajax.request({
-						url: GIS.conf.url.path_api + 'mapLegendSet/' + id,
+						url: GIS.conf.url.path_api + 'mapLegendSets/' + id,
 						method: 'PUT',
 						headers: {'Content-Type': 'application/json'},
 						params: body,
@@ -2008,6 +2026,12 @@ Ext.onReady( function() {
 					create,
 					update
 				]
+			},
+			listeners: {
+				show: function() {
+					var x = this.getPosition()[0];
+					this.setPosition(x, 50);
+				}
 			}
 		});
 		
@@ -2022,28 +2046,33 @@ Ext.onReady( function() {
 			
 		textfield = Ext.create('Ext.form.field.Text', {
 			cls: 'gis-textfield',
-			height: 30,
+			height: 28,
 			emptyText: 'Enter map title..', //i18n
-			bodyStyle: 'margin-right: 3px'
+			style: 'margin-right: 2px'
 		});
 		
 		button = Ext.create('Ext.button.Button', {
-			text: 'D',
-			height: 30,
-			width: 30,
+			width: 28,
+			height: 28,
+			iconCls: 'gis-btn-icon-download',
 			handler: function() {
 				var title = textfield.getValue(),
 					svg = GIS.util.svg.getString(title, GIS.util.map.getVisibleVectorLayers()),
 					exportForm = document.getElementById('exportForm');
+					
+				if (svg) {
+					document.getElementById('svgField').value = svg;
+					document.getElementById('titleField').value = title;
+					exportForm.action = '../exportImage.action';
+					exportForm.method = 'post';
+					exportForm.submit();
 				
-				document.getElementById('svgField').value = svg;
-				document.getElementById('titleField').value = title;
-				exportForm.action = '../exportImage.action';
-				exportForm.method = 'post';
-				exportForm.submit();
-				
-				textfield.reset();
-				menu.hide();
+					textfield.reset();
+					menu.hide();
+				}
+				else {					
+					alert('No map data to export'); //todo //i18n
+				}					
 			}
 		});
 			
@@ -2063,10 +2092,24 @@ Ext.onReady( function() {
             enableKeyNav: false,
 			width: 185,
 			height: 30,
+			cls: 'gis-menu',
 			items: item,
 			listeners: {
+				beforeshow: function() {
+					if (!GIS.util.map.getVisibleVectorLayers()) {
+						alert('No map data to export'); //todo //i18n
+						return false;
+					}
+				},						
 				afterrender: function() {
 					this.getEl().addCls('gis-toolbar-btn-menu gis-toolbar-btn-menu-download');
+				},
+				show: function() {
+					this.keyNav.disable();
+					textfield.focus();
+				},
+				hide: function() {
+					this.keyNav.enable();
 				}
 			}
 		});
@@ -2294,6 +2337,7 @@ Ext.onReady( function() {
 						},
 						{
 							text: 'Legend', //i18n
+							menu: {},
 							handler: function() {
 								if (GIS.cmp.legendSetWindow && GIS.cmp.legendSetWindow.destroy) {
 									GIS.cmp.legendSetWindow.destroy();

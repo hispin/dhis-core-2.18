@@ -403,3 +403,4 @@ function FinancialAprilPeriodType( format_yyyymmdd, monthNames, fnFilter )
         return periods;
     };
 }
+

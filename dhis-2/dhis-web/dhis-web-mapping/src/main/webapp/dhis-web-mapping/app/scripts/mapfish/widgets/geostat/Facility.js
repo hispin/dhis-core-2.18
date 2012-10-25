@@ -97,6 +97,45 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 			}
 		})
 	},
+	
+	decode: function(doc) {
+		var feature,
+			group,
+			attr,
+			geojson = {
+				type: 'FeatureCollection',
+				crs: {
+					type: 'EPSG',
+					properties: {
+						code: '4326'
+					}
+				},
+				features: []
+			};
+			
+        doc = Ext.decode(doc);
+        
+        for (var i = 0; i < doc.geojson.length; i++) {
+			attr = doc.geojson[i];
+			
+			feature = {
+                geometry: {
+                    type: parseInt(attr.ty) === 1 ? 'MultiPolygon' : 'Point',
+                    coordinates: attr.co
+                },
+                properties: {
+                    id: attr.uid,
+                    internalId: attr.iid,
+                    name: attr.na
+                }
+            };            
+            feature.properties = Ext.Object.merge(feature.properties, attr.groupSets);
+            
+            geojson.features.push(feature);
+        }
+			
+        return geojson;
+    },
     
     setUrl: function(url) {
         this.url = url;
@@ -110,12 +149,11 @@ Ext.define('mapfish.widgets.geostat.Facility', {
         if (!doc || !doc.documentElement) {
             doc = request.responseText;
         }
-        
         if (doc.length) {
-            doc = GIS.util.geojson.decode(doc, this);
+            doc = this.decode(doc);
         }
         else {
-			alert("no coordinates"); //todo //i18n
+			alert('No valid coordinates found'); //todo //i18n
 		}
         
         this.layer.removeFeatures(this.layer.features);
@@ -184,7 +222,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
                         store.load({
 							scope: this,
 							callback: function() {
-								if (this.tmpModel.updateGui) { // When favorite, load store and continue execution
+								if (this.tmpModel.updateGui) { // If favorite, load store and continue execution
 									if (this.tmpModel.updateOrganisationUnit) {
 										this.loadOrganisationUnits();
 									}
@@ -341,7 +379,6 @@ Ext.define('mapfish.widgets.geostat.Facility', {
         onClickSelect = function fn(feature) {
 			var showInfo,				
 				showRelocate,
-				drill,
 				menu,
 				isPoint = feature.geometry.CLASS_NAME === GIS.conf.finals.openLayers.point_classname;
 			
@@ -583,67 +620,10 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 				});
 			};
 			
-			// Drill or float
-			drill = function(direction) {
-				var store = GIS.store.organisationUnitLevels;
-				
-				store.loadFn( function() {
-					var store = GIS.store.organisationUnitLevels;
-					
-					if (direction === 'up') {
-						var rootNode = GIS.init.rootNodes[0];
-						
-						that.config.level = that.model.level - 1;
-						that.config.levelName = store.getAt(store.find('level', that.config.level)).data.name;
-						that.config.parentId = rootNode.id;
-						that.config.parentName = rootNode.text;
-						that.config.parentLevel = rootNode.level;
-						that.config.parentPath = '/' + GIS.init.rootNodes[0].id;
-					}
-					else if (direction === 'down') {
-						that.config.level = that.model.level + 1;
-						that.config.levelName = store.getAt(store.find('level', that.config.level)).data.name;
-						that.config.parentId = feature.attributes.id;
-						that.config.parentName = feature.attributes.name;
-						that.config.parentLevel = that.model.level;
-						that.config.parentPath = feature.attributes.path;
-					}
-					
-					that.config.updateOrganisationUnit = true;
-					that.config.updateGui = true;
-					
-					that.execute();
-				});
-			};
-			
 			// Menu
-			var menuItems = [
-				Ext.create('Ext.menu.Item', {
-					text: 'Float up',
-					iconCls: 'gis-menu-item-icon-float',
-					disabled: !that.model.hasCoordinatesUp,
-					scope: this,
-					handler: function() {
-						drill('up');
-					}
-				}),
-				Ext.create('Ext.menu.Item', {
-					text: 'Drill down',
-					iconCls: 'gis-menu-item-icon-drill',
-					cls: 'gis-menu-item-first',
-					disabled: !feature.attributes.hcwc,
-					scope: this,
-					handler: function() {
-						drill('down');
-					}
-				})
-			];
+			var menuItems = [];
 			
-			if (isPoint) {
-				menuItems.push({
-					xtype: 'menuseparator'
-				});
-				
+			if (isPoint) {				
 				menuItems.push( Ext.create('Ext.menu.Item', {
 					text: GIS.i18n.relocate,
 					iconCls: 'gis-menu-item-icon-relocate',
@@ -819,13 +799,13 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 	validateModel: function(model) {
 		if (!model.groupSet || !Ext.isString(model.groupSet)) {
 			GIS.logg.push([model.groupSet, this.xtype + '.parentId: string']);
-				//alert("validation failed"); //todo
+				alert('No group set selected'); //todo //i18n
 			return false;
 		}
 		
 		if (!model.level || !Ext.isNumber(model.level)) {
 			GIS.logg.push([model.level, this.xtype + '.level: number']);
-				//alert("validation failed"); //todo
+				alert('No level selected'); //todo
 			return false;
 		}
 		if (!model.levelName || !Ext.isString(model.levelName)) {
@@ -835,7 +815,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		}
 		if (!model.parentId || !Ext.isString(model.parentId)) {
 			GIS.logg.push([model.parentId, this.xtype + '.parentId: string']);
-				//alert("validation failed"); //todo
+				alert('No parent organisation unit selected'); //todo
 			return false;
 		}
 		if (!model.parentName || !Ext.isString(model.parentName)) {
@@ -850,7 +830,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		}
 		if (model.parentLevel > model.level) {
 			GIS.logg.push([model.parentLevel, model.level, this.xtype + '.parentLevel: number <= ' + this.xtype + '.level']);
-				//alert("validation failed"); //todo
+				alert('Level cannot be higher than parent level'); //todo
 			return false;
 		}
 		
@@ -879,7 +859,6 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		for (var i = 0; i < this.layer.features.length; i++) {
 			var feature = this.layer.features[i];
 			feature.attributes.label = feature.attributes.name;
-			feature.attributes.value = 0;
 		}
 		
 		this.loadLegend();
@@ -933,7 +912,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		this.store.features.loadFeatures(this.layer.features);
 		
 		// Update filter window
-		if (this.cmp.filterWindow && this.cmp.filterWindow.isVisible()) { 
+		if (this.cmp.filterWindow && this.cmp.filterWindow.isVisible()) {
 			this.cmp.filterWindow.filter();
 		}
         

@@ -93,7 +93,7 @@ Ext.define('mapfish.widgets.geostat.Boundary', {
             doc = GIS.util.geojson.decode(doc, this);
         }
         else {
-			alert("no coordinates"); //todo //i18n
+			alert('No valid coordinates found'); //todo //i18n
 		}
         
         this.layer.removeFeatures(this.layer.features);
@@ -527,10 +527,10 @@ Ext.define('mapfish.widgets.geostat.Boundary', {
 		return model;
 	},
 	
-	validateModel: function(model) {		
+	validateModel: function(model) {
 		if (!model.level || !Ext.isNumber(model.level)) {
 			GIS.logg.push([model.level, this.xtype + '.level: number']);
-				//alert("validation failed"); //todo
+				alert('No level selected'); //todo
 			return false;
 		}
 		if (!model.levelName || !Ext.isString(model.levelName)) {
@@ -540,7 +540,7 @@ Ext.define('mapfish.widgets.geostat.Boundary', {
 		}
 		if (!model.parentId || !Ext.isString(model.parentId)) {
 			GIS.logg.push([model.parentId, this.xtype + '.parentId: string']);
-				//alert("validation failed"); //todo
+				alert('No parent organisation unit selected'); //todo
 			return false;
 		}
 		if (!model.parentName || !Ext.isString(model.parentName)) {
@@ -555,7 +555,7 @@ Ext.define('mapfish.widgets.geostat.Boundary', {
 		}
 		if (model.parentLevel > model.level) {
 			GIS.logg.push([model.parentLevel, model.level, this.xtype + '.parentLevel: number <= ' + this.xtype + '.level']);
-				//alert("validation failed"); //todo
+				alert('Level cannot be higher than parent level'); //todo
 			return false;
 		}
 		

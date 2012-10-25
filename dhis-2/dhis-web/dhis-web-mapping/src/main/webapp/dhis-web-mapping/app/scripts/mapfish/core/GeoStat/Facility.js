@@ -36,20 +36,19 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
     applyClassification: function(options) {
         this.updateOptions(options);
         
-        var store = GIS.store.groupsByGroupSet,
-			groupRecords = store.data.items;
+        var items = GIS.store.groupsByGroupSet.data.items;
 			
-        var rules = new Array(groupRecords.length);
-        for (var i = 0; i < groupRecords.length; i++) {
+        var rules = new Array(items.length);
+        for (var i = 0; i < items.length; i++) {
             var rule = new OpenLayers.Rule({                
                 symbolizer: {
                     'pointRadius': 8,
-                    'externalGraphic': '../../images/' + groupRecords[i].data.image
+                    'externalGraphic': '../../images/orgunitgroup/' + items[i].data.symbol
                 },                
                 filter: new OpenLayers.Filter.Comparison({
                     type: OpenLayers.Filter.Comparison.EQUAL_TO,
                     property: this.indicator,
-                    value: groupRecords[i].data.name
+                    value: items[i].data.name
                 })
             });
             rules[i] = rule;
@@ -65,7 +64,7 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
         }
         
         var config = this.widget.getLegendConfig(),
-			storeRecords = GIS.store.groupsByGroupSet.data.items,
+			items = GIS.store.groupsByGroupSet.data.items,
 			element;
 			
         this.legendDiv.update("");
@@ -84,9 +83,9 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
         element.style.height = "5px";
         this.legendDiv.appendChild(element);
 
-        for (var i = 0; i < storeRecords.length; i++) {
+        for (var i = 0; i < items.length; i++) {
             var element = document.createElement("div");
-            element.style.backgroundImage = 'url(../../images/' + storeRecords[i].data.image + ')';
+            element.style.backgroundImage = 'url(../../images/orgunitgroup/' + items[i].data.symbol + ')';
             element.style.backgroundRepeat = 'no-repeat';
             element.style.width = "25px";
             element.style.height = "18px";
@@ -95,7 +94,7 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
             this.legendDiv.appendChild(element);
 
             element = document.createElement("div");
-            element.innerHTML = storeRecords[i].data.name;
+            element.innerHTML = items[i].data.name;
             this.legendDiv.appendChild(element);
 
             element = document.createElement("div");
