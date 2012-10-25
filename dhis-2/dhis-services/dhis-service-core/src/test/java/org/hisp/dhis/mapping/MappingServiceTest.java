@@ -31,8 +31,8 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static org.hisp.dhis.mapping.MappingService.*;
-import static org.hisp.dhis.mapping.MapView.*;
+import static org.hisp.dhis.mapping.MapView.LAYER_THEMATIC1;
+import static org.hisp.dhis.mapping.MappingService.MAPLEGENDSET_TYPE_AUTOMATIC;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +54,6 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -314,34 +313,6 @@ public class MappingServiceTest
         mappingService.addMapView( mapView2 );
 
         assertEquals( 2, mappingService.getAllMapViews().size() );
-    }
-
-    @Test
-    @Ignore
-    // TODO
-    public void testGetMapViewsByFeatureType()
-    {
-        MapView mapView1 = new MapView( LAYER_THEMATIC1, "MapViewA", MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1 );
-
-        MapView mapView2 = new MapView( LAYER_THEMATIC1, "MapViewB", MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
-            indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1 );
-
-        MapView mapView3 = new MapView( LAYER_THEMATIC1, "MapViewC", MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
-            indicator, dataElementGroup, dataElement, periodType, period,
-            organisationUnit, organisationUnitLevel, MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1 );
-
-        mappingService.addMapView( mapView1 );
-        mappingService.addMapView( mapView2 );
-        mappingService.addMapView( mapView3 );
-
-        assertEquals( 1, mappingService.getMapViewsByFeatureType( OrganisationUnit.FEATURETYPE_POLYGON ).size() );
-        assertEquals( 2, mappingService.getMapViewsByFeatureType( OrganisationUnit.FEATURETYPE_MULTIPOLYGON ).size() );
     }
 
     // -------------------------------------------------------------------------

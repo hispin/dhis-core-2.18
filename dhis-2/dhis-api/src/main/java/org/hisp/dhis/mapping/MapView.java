@@ -65,7 +65,7 @@ public class MapView
     public static final String LAYER_THEMATIC2 = "thematic2";
     public static final String LAYER_FACILITY = "facility";
     public static final String LAYER_SYMBOL = "symbol";
-        
+    
     private static final long serialVersionUID = 1866358818802275436L;
 
     private String layer;
