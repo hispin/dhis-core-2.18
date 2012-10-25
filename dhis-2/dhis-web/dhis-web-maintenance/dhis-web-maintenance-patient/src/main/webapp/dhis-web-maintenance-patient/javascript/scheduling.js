@@ -46,8 +46,7 @@ function schedulingAggCondTasks()
 	$.post( 'scheduleCaseAggTasks.action',{
 		execute:false,
 		orgUnitGroupSetAggLevel:getFieldValue("orgUnitGroupSetAggLevel"),
-		aggQueryBuilderStrategy:getFieldValue("aggQueryBuilderStrategy"),
-		scheduledPeriodType: jQuery("[name=scheduledPeriodType]:checked").val()
+		aggQueryBuilderStrategy:getFieldValue("aggQueryBuilderStrategy")
 	}, function( json ){
 		var status = json.scheduleTasks.status;
 		if( status=='not_started' ){
@@ -72,8 +71,7 @@ function executeAggCondTasks()
 		$.post( 'scheduleCaseAggTasks.action',{
 			execute:true,
 			orgUnitGroupSetAggLevel:getFieldValue("orgUnitGroupSetAggLevel"),
-			aggQueryBuilderStrategy:getFieldValue("aggQueryBuilderStrategy"),
-			scheduledPeriodType: jQuery("[name=scheduledPeriodType]:checked").val()
+			aggQueryBuilderStrategy:getFieldValue("aggQueryBuilderStrategy")
 		},function( json ){
 			setMessage(i18n_execute_success);
 		});

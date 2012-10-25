@@ -28,9 +28,7 @@
 package org.hisp.dhis.patient.action.schedule;
 
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_CASE_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE;
 
 import java.util.List;
 
@@ -130,9 +128,6 @@ public class GetScheduleAggQueryBuilderParamsAction
     public String execute()
         throws Exception
     {
-        scheduledPeriodType = (String) systemSettingManager.getSystemSetting(
-            KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE, DEFAULT_SCHEDULED_CASE_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES );
-
         orgUnitGroupSetAggLevel = (Integer) systemSettingManager.getSystemSetting(
             KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
 
