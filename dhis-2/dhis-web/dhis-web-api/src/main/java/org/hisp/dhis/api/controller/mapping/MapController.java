@@ -29,25 +29,20 @@ package org.hisp.dhis.api.controller.mapping;
 
 import static org.hisp.dhis.period.PeriodType.getPeriodFromIsoString;
 
-import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.controller.AbstractCrudController;
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
@@ -56,11 +51,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -94,13 +87,7 @@ public class MapController
     
     @Autowired
     private PeriodService periodService;
-        
-    @Autowired
-    private MapGenerationService mapGenerationService;
-
-    @Autowired
-    private ContextUtils contextUtils;
-
+    
     //--------------------------------------------------------------------------
     // CRUD
     //--------------------------------------------------------------------------
@@ -189,58 +176,9 @@ public class MapController
     }
 
     //--------------------------------------------------------------------------
-    // Data
-    //--------------------------------------------------------------------------
-
-    @RequestMapping( value = { "/{uid}/data", "/{uid}/data.png" }, method = RequestMethod.GET )
-    public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception
-    {
-        MapView mapView = mappingService.getMapView( uid );
-
-        renderMapViewPng( mapView, response );
-    }
-
-    @RequestMapping( value = { "/data", "/data.png" }, method = RequestMethod.GET )
-    public void getMap( Model model,
-        @RequestParam( value = "in" ) String indicatorUid,
-        @RequestParam( value = "ou" ) String organisationUnitUid,
-        @RequestParam( value = "level", required = false ) Integer level,
-        HttpServletResponse response ) throws Exception
-    {
-        if ( level == null )
-        {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
-
-            level = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() );
-            level++;
-        }
-
-        MapView mapView = mappingService.getIndicatorLastYearMapView( indicatorUid, organisationUnitUid, level );
-
-        renderMapViewPng( mapView, response );
-    }
-
-    //--------------------------------------------------------------------------
     // Supportive methods
     //--------------------------------------------------------------------------
 
-    private void renderMapViewPng( MapView mapView, HttpServletResponse response )
-        throws Exception
-    {
-        BufferedImage image = mapGenerationService.generateMapImage( mapView );
-
-        if ( image != null )
-        {
-            contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "mapview.png", false );
-
-            ImageIO.write( image, "PNG", response.getOutputStream() );
-        }
-        else
-        {
-            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
-        }
-    }
-    
     // TODO use the import service instead
     
     private void mergeMap( Map map )

@@ -12,7 +12,7 @@
     <xsl:apply-templates select="d:*[local-name()!='pager']"/>
   </xsl:template>
 
-  <xsl:template match="d:resources|d:maps|d:charts|d:categoryCombos|d:categories|
+  <xsl:template match="d:resources|d:maps|d:mapViews|d:charts|d:categoryCombos|d:categories|
       d:categoryOptions|d:categoryOptionCombos|d:dataElements|d:indicators|
       d:organisationUnits|d:dataElementGroups|d:dataElementGroupSets|d:dataSets|
       d:documents|d:indicatorGroups|d:indicatorGroupSets|d:organisationUnitGroups|
