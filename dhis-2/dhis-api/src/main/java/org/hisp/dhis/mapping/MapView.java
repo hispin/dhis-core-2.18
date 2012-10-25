@@ -147,6 +147,12 @@ public class MapView
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @Override
+    public String getName()
+    {
+        return uid;
+    }
+    
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
