@@ -31,6 +31,7 @@ import static org.hisp.dhis.period.PeriodType.getPeriodFromIsoString;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +53,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +61,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -107,65 +110,82 @@ public class MapController
     public void postJsonObject( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws Exception
     {
         Map map = JacksonUtils.fromJson( input, Map.class );
-        
-        if ( map.getUser() != null )
-        {
-            map.setUser( userService.getUser( map.getUser().getUid() ) );
-        }
+
+        mergeMap( map );
         
         for ( MapView view : map.getViews() )
         {
-            if ( view.getIndicatorGroup() != null )
-            {
-                view.setIndicatorGroup( indicatorService.getIndicatorGroup( view.getIndicatorGroup().getUid() ) );
-            }
-            
-            if ( view.getIndicator() != null )
-            {
-                view.setIndicator( indicatorService.getIndicator( view.getIndicator().getUid() ) );
-            }
-            
-            if ( view.getDataElementGroup() != null )
-            {
-                view.setDataElementGroup( dataElementService.getDataElementGroup( view.getDataElementGroup().getUid() ) );
-            }
-            
-            if ( view.getDataElement() != null )
-            {
-                view.setDataElement( dataElementService.getDataElement( view.getDataElement().getUid() ) );
-            }
-            
-            if ( view.getPeriod() != null )
-            {
-                view.setPeriod( periodService.reloadPeriod( getPeriodFromIsoString( view.getPeriod().getUid() ) ) );
-            }
-            
-            if ( view.getParentOrganisationUnit() != null )
-            {
-                view.setParentOrganisationUnit( organisationUnitService.getOrganisationUnit( view.getParentOrganisationUnit().getUid() ) );
-            }
-            
-            if ( view.getOrganisationUnitLevel() != null )
-            {
-                view.setOrganisationUnitLevel( organisationUnitService.getOrganisationUnitLevel( view.getOrganisationUnitLevel().getUid() ) );
-            }
-            
-            if ( view.getLegendSet() != null )
-            {
-                view.setLegendSet( mappingService.getMapLegendSet( view.getLegendSet().getUid() ) );
-            }
-            
-            if ( view.getOrganisationUnitGroupSet() != null )
-            {
-                view.setOrganisationUnitGroupSet( organisationUnitGroupService.getOrganisationUnitGroupSet( view.getOrganisationUnitGroupSet().getUid() ) );
-            }
+            mergeMapView( view );
             
             mappingService.addMapView( view );
         }
-        
+
         mappingService.addMap( map );
         
         ContextUtils.createdResponse( response, "Map created", RESOURCE_PATH + "/" + map.getUid() );
+    }
+    
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
+    public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        Map map = mappingService.getMap( uid );
+        
+        if ( map == null )
+        {
+            ContextUtils.notFoundResponse( response, "Map does not exist: " + uid );
+            return;
+        }
+
+        Iterator<MapView> views = map.getViews().iterator();
+        
+        while ( views.hasNext() )
+        {
+            MapView view = views.next();
+            views.remove();
+            mappingService.deleteMapView( view );
+        }
+        
+        Map newMap = JacksonUtils.fromJson( input, Map.class );
+
+        mergeMap( newMap );
+
+        for ( MapView view : newMap.getViews() )
+        {
+            mergeMapView( view );
+            
+            mappingService.addMapView( view );
+        }
+
+        map.mergeWith( newMap );
+        
+        mappingService.updateMap( map );
+    }
+    
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
+    public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
+    {
+        Map map = mappingService.getMap( uid );
+        
+        if ( map == null )
+        {
+            ContextUtils.notFoundResponse( response, "Map does not exist: " + uid );
+            return;
+        }
+
+        Iterator<MapView> views = map.getViews().iterator();
+        
+        while ( views.hasNext() )
+        {
+            MapView view = views.next();
+            views.remove();
+            mappingService.deleteMapView( view );
+        }
+        
+        mappingService.deleteMap( map );
     }
 
     //--------------------------------------------------------------------------
@@ -218,6 +238,64 @@ public class MapController
         else
         {
             response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+        }
+    }
+    
+    // TODO use the import service instead
+    
+    private void mergeMap( Map map )
+    {
+        if ( map.getUser() != null )
+        {
+            map.setUser( userService.getUser( map.getUser().getUid() ) );
+        }        
+    }
+    
+    private void mergeMapView( MapView view )
+    {
+        if ( view.getIndicatorGroup() != null )
+        {
+            view.setIndicatorGroup( indicatorService.getIndicatorGroup( view.getIndicatorGroup().getUid() ) );
+        }
+        
+        if ( view.getIndicator() != null )
+        {
+            view.setIndicator( indicatorService.getIndicator( view.getIndicator().getUid() ) );
+        }
+        
+        if ( view.getDataElementGroup() != null )
+        {
+            view.setDataElementGroup( dataElementService.getDataElementGroup( view.getDataElementGroup().getUid() ) );
+        }
+        
+        if ( view.getDataElement() != null )
+        {
+            view.setDataElement( dataElementService.getDataElement( view.getDataElement().getUid() ) );
+        }
+        
+        if ( view.getPeriod() != null )
+        {
+            view.setPeriod( periodService.reloadPeriod( getPeriodFromIsoString( view.getPeriod().getUid() ) ) );
+        }
+        
+        if ( view.getParentOrganisationUnit() != null )
+        {
+            view.setParentOrganisationUnit( organisationUnitService.getOrganisationUnit( view.getParentOrganisationUnit().getUid() ) );
+        }
+        
+        if ( view.getOrganisationUnitLevel() != null )
+        {
+            view.setOrganisationUnitLevel( organisationUnitService.getOrganisationUnitLevel( view.getOrganisationUnitLevel().getUid() ) );
+        }
+        
+        if ( view.getLegendSet() != null )
+        {
+            view.setLegendSet( mappingService.getMapLegendSet( view.getLegendSet().getUid() ) );
+        }
+        
+        if ( view.getOrganisationUnitGroupSet() != null )
+        {
+            view.setOrganisationUnitGroupSet( organisationUnitGroupService.getOrganisationUnitGroupSet( view.getOrganisationUnitGroupSet().getUid() ) );
         }
     }
 }

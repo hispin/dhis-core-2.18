@@ -80,7 +80,7 @@ public class MapLegendSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, consumes = "application/json" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('ALL')" )
+    @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
     public void putJsonObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         MapLegendSet legendSet = mappingService.getMapLegendSet( uid );
@@ -114,7 +114,7 @@ public class MapLegendSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('ALL')" )
+    @PreAuthorize( "hasRole('F_GIS_ADMIN') or hasRole('ALL')" )
     public void deleteObject( HttpServletResponse response, HttpServletRequest request, @PathVariable( "uid" ) String uid ) throws Exception
     {
         MapLegendSet legendSet = mappingService.getMapLegendSet( uid );

@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -148,5 +149,24 @@ public class Map
     public void setViews( Set<MapView> views )
     {
         this.views = views;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+        
+        if ( other.getClass().isInstance( this ) )
+        {
+            Map map = (Map) other;
+            
+            user = map.getUser() == null ? user : map.getUser();
+            longitude = map.getLongitude() == null ? longitude : map.getLongitude();
+            latitude = map.getLatitude() == null ? latitude : map.getLatitude();
+            zoom = map.getZoom() == null ? zoom : map.getZoom();
+            
+            views.clear();
+            views.addAll( map.getViews() );
+        }            
     }
 }
