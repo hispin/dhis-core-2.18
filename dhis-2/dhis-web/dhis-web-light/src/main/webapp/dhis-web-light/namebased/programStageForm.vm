@@ -99,7 +99,13 @@
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
-	#if($orgUnitId == 0)
+	#if( $!programStageSectionId && $!programStageSectionId != 0 )
+		<li><a href="showProgramStageSection.action?programId=$programId&programStageId=$programStageId&programStageInstanceId=$programStageInstanceId&patientId=$patient.getId()&programInstanceId=$programInstanceId&orgUnitId=0&validated=false">
+			Section List
+		</a></li>
+	#end
+	
+	#if( $orgUnitId == 0 )
 		<li><a href="showPatientProgramStageList.action?patientId=$patientId&programInstanceId=$programInstanceId&programId=$programId&validated=false">$!encoder.htmlEncode( ${program.getName()} )</a></li>
 	#else
 		<li><a href="selectActivity.action?organisationUnitId=$orgUnitId&patientId=$patientId&current=$current"> $i18n.getString("activity_list")</a></li>
