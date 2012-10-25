@@ -442,6 +442,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<constructor-arg ref="jdbcTemplate" />
 		<constructor-arg ref="org.hisp.dhis.dataelement.DataElementService" />
 		<constructor-arg ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<constructor-arg ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
 	<bean id="aggregateLast12MonthsTask" class="org.hisp.dhis.patient.scheduling.CaseAggregateConditionTask"
