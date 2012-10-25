@@ -27,16 +27,10 @@ package org.hisp.dhis.dxf2.metadata.tasks;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
-import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.scheduling.TaskId;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -44,8 +38,6 @@ import java.io.InputStream;
 public class ImportMetaDataTask
     implements Runnable
 {
-    private static final Log log = LogFactory.getLog( ImportMetaDataTask.class );
-
     private ImportService importService;
 
     private ImportOptions importOptions;

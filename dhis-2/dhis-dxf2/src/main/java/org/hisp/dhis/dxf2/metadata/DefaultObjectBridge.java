@@ -510,7 +510,7 @@ public class DefaultObjectBridge
 
     private <T> boolean _shortNameUnique( T object )
     {
-        for ( Class clazz : shortNameNotUnique )
+        for ( Class<?> clazz : shortNameNotUnique )
         {
             if ( clazz.isAssignableFrom( object.getClass() ) )
             {
