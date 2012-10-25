@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 
@@ -89,6 +90,8 @@ public class GetMapLegendSetsByTypeAction
 
     public String execute()
     {
+        throw new NotImplementedException();
+        /*
         object = new ArrayList<MapLegendSet>( mappingService.getMapLegendSetsByType( type ) );
 
         if ( symbolizer != null )
@@ -121,5 +124,6 @@ public class GetMapLegendSetsByTypeAction
         }
 
         return SUCCESS;
+        */
     }
 }

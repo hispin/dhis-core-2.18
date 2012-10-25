@@ -27,6 +27,7 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang.NotImplementedException;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 
@@ -79,8 +80,6 @@ public class GetMapLegendSetByIndicatorAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getMapLegendSetByIndicator( indicatorId );
-        
-        return SUCCESS;
+        throw new NotImplementedException();
     }
 }

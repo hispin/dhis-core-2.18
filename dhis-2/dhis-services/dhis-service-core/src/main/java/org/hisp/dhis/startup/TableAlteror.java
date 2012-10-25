@@ -104,6 +104,8 @@ public class TableAlteror
         executeSql( "DROP TABLE datasetlock" );
         executeSql( "DROP TABLE datasetlockexceptions" );
         executeSql( "DROP TABLE indicator_indicatorgroupsetmembers" );
+        executeSql( "DROP TABLE maplegendsetindicator" );
+        executeSql( "DROP TABLE maplegendsetdataelement" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
         executeSql( "ALTER TABLE reporttable DROP column dimension_type" );
         executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );

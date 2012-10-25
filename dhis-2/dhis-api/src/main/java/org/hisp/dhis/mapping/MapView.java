@@ -81,8 +81,6 @@ public class MapView
 
     private OrganisationUnitLevel organisationUnitLevel;
 
-    private String mapLegendType;
-
     private Integer method;
 
     private Integer classes;
@@ -112,7 +110,7 @@ public class MapView
     public MapView( String name, User user, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
                     DataElementGroup dataElementGroup, DataElement dataElement, PeriodType periodType,
                     Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
-                    String mapLegendType, Integer method, Integer classes, String bounds, String colorLow, String colorHigh,
+                    Integer method, Integer classes, String bounds, String colorLow, String colorHigh,
                     MapLegendSet mapLegendSet, Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
     {
         this.name = name;
@@ -126,7 +124,6 @@ public class MapView
         this.period = period;
         this.parentOrganisationUnit = parentOrganisationUnit;
         this.organisationUnitLevel = organisationUnitLevel;
-        this.mapLegendType = mapLegendType;
         this.method = method;
         this.classes = classes;
         this.bounds = bounds;
@@ -328,19 +325,6 @@ public class MapView
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getMapLegendType()
-    {
-        return mapLegendType;
-    }
-
-    public void setMapLegendType( String mapLegendType )
-    {
-        this.mapLegendType = mapLegendType;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Integer getMethod()
     {
         return method;
@@ -501,7 +485,6 @@ public class MapView
             period = mapView.getPeriod() == null ? period : mapView.getPeriod();
             parentOrganisationUnit = mapView.getParentOrganisationUnit() == null ? parentOrganisationUnit : mapView.getParentOrganisationUnit();
             organisationUnitLevel = mapView.getOrganisationUnitLevel() == null ? organisationUnitLevel : mapView.getOrganisationUnitLevel();
-            mapLegendType = mapView.getMapLegendType() == null ? mapLegendType : mapView.getMapLegendType();
             method = mapView.getMethod() == null ? method : mapView.getMethod();
             classes = mapView.getClasses() == null ? classes : mapView.getClasses();
             bounds = mapView.getBounds() == null ? bounds : mapView.getBounds();
