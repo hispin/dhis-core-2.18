@@ -28,13 +28,11 @@
 package org.hisp.dhis.patient.action.schedule;
 
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
+import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_CASE_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -82,11 +80,11 @@ public class GetScheduleAggQueryBuilderParamsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Set<String> scheduledPeriodTypes = new HashSet<String>();
+    private String scheduledPeriodType;
 
-    public Set<String> getScheduledPeriodTypes()
+    public String getScheduledPeriodType()
     {
-        return scheduledPeriodTypes;
+        return scheduledPeriodType;
     }
 
     private Integer orgUnitGroupSetAggLevel;
@@ -128,13 +126,12 @@ public class GetScheduleAggQueryBuilderParamsAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     @Override
     public String execute()
         throws Exception
     {
-        scheduledPeriodTypes = (Set<String>) systemSettingManager.getSystemSetting(
-            KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
+        scheduledPeriodType = (String) systemSettingManager.getSystemSetting(
+            KEY_SCHEDULED_AGGREGATE_QUERY_BUILDER_PERIOD_TYPE, DEFAULT_SCHEDULED_CASE_AGGREGATE_QUERY_BUILDER_PERIOD_TYPES );
 
         orgUnitGroupSetAggLevel = (Integer) systemSettingManager.getSystemSetting(
             KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
