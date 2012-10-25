@@ -9,7 +9,7 @@
 <h2>$i18n.getString( "programs" )</h2>
 <ul>
 	<li><a href="program.action">$i18n.getString( "program" )</a></li>
-	<li><a href="caseAggregation.action">$i18n.getString( "aggregation_query_builder" )</a></li>
+	<li><a href="caseAggregation.action">$i18n.getString( "patient_aggregation" )</a></li>
 	<li><a href="validationCriteria.action">$i18n.getString( "validation_criteria" )</a></li>
 </ul>
 
@@ -21,7 +21,7 @@
 		<li><a href="viewScheduleTasks.action">$i18n.getString( "message" )</a></li>
 	#end
 	#if($auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
-		<li><a href="viewScheduledCaseAggCondTasks.action">$i18n.getString( "aggregation_query_builder" )</a></li>
+		<li><a href="viewScheduledCaseAggCondTasks.action">$i18n.getString( "patient_aggregation" )</a></li>
 	#end
 </ul>
 #end
