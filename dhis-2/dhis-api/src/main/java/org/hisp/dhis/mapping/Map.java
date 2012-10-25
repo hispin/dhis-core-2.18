@@ -1,4 +1,4 @@
-package org.hisp.dhis.mapping.action;
+package org.hisp.dhis.mapping;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,55 +27,96 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.hisp.dhis.mapping.MapView;
-import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.user.User;
 
 /**
- * @author Jan Henrik Overland
- * @version $Id$
+ * @author Lars Helge Overland
  */
-public class GetAllMapViewsAction
-    implements Action
+public class Map
+    extends BaseIdentifiableObject
 {
+    private User user;
+
+    private String longitude;
+
+    private String latitude;
+
+    private Integer zoom;
+    
+    private Set<MapView> views = new HashSet<MapView>();
+
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Constructors
     // -------------------------------------------------------------------------
 
-    private MappingService mappingService;
-
-    public void setMappingService( MappingService mappingService )
+    public Map()
     {
-        this.mappingService = mappingService;
+    }
+    
+    public Map( String name, User user, String longitude, String latitude, Integer zoom )
+    {
+        this.name = name;
+        this.user = user;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.zoom = zoom;
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Getters and setters
     // -------------------------------------------------------------------------
 
-    private List<MapView> object;
-
-    public List<MapView> getObject()
+    public User getUser()
     {
-        return object;
+        return user;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute()
+    public void setUser( User user )
     {
-        object = new ArrayList<MapView>( mappingService.getAllMapViews() );
+        this.user = user;
+    }
 
-        Collections.sort( object, new MapViewNameComparator() );
+    public String getLongitude()
+    {
+        return longitude;
+    }
 
-        return SUCCESS;
+    public void setLongitude( String longitude )
+    {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude()
+    {
+        return latitude;
+    }
+
+    public void setLatitude( String latitude )
+    {
+        this.latitude = latitude;
+    }
+
+    public Integer getZoom()
+    {
+        return zoom;
+    }
+
+    public void setZoom( Integer zoom )
+    {
+        this.zoom = zoom;
+    }
+
+    public Set<MapView> getViews()
+    {
+        return views;
+    }
+
+    public void setViews( Set<MapView> views )
+    {
+        this.views = views;
     }
 }
