@@ -11,8 +11,13 @@
     <id name="id" column="mapid">
       <generator class="native" />
     </id>
-    &identifiableProperties;
     
+    <property name="name" column="name" not-null="true" length="230" />
+      
+    <property name="uid" column="uid" length="11" />
+      
+    <property name="lastUpdated" type="timestamp" />
+        
     <many-to-one name="user" class="org.hisp.dhis.user.User" 
         column="userid" foreign-key="fk_mapview_userid" />
     
