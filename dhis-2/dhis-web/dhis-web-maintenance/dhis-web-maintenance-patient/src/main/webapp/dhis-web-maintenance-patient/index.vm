@@ -20,7 +20,7 @@ jQuery(function() {
 		#introListImgItem( "viewScheduleTasks.action" "scheduling_message" "scheduling" )
 	#end
 	#if($auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
-		#introListImgItem( "viewScheduledCaseAggCondTasks.action" "scheduling_aggregation_query_builder" "scheduling" )
+		#introListImgItem( "viewScheduledCaseAggCondTasks.action" "scheduling_person_aggregation" "scheduling" )
 	#end
 	
 </ul>
