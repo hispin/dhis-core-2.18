@@ -65,6 +65,12 @@ public class MapView
     public static final String LAYER_THEMATIC2 = "thematic2";
     public static final String LAYER_FACILITY = "facility";
     public static final String LAYER_SYMBOL = "symbol";
+
+    public static final String VALUE_TYPE_INDICATOR = "indicator";
+    public static final String VALUE_TYPE_DATAELEMENT = "dataelement";
+
+    public static final String LEGEND_TYPE_AUTOMATIC = "automatic";
+    public static final String LEGEND_TYPE_PREDEFINED = "predefined";
     
     private static final long serialVersionUID = 1866358818802275436L;
 
@@ -79,8 +85,6 @@ public class MapView
     private DataElementGroup dataElementGroup;
 
     private DataElement dataElement;
-
-    private PeriodType periodType;
 
     private Period period;
 
@@ -113,7 +117,7 @@ public class MapView
     }
 
     public MapView( String layer, String name, String valueType, IndicatorGroup indicatorGroup, Indicator indicator,
-                    DataElementGroup dataElementGroup, DataElement dataElement, PeriodType periodType,
+                    DataElementGroup dataElementGroup, DataElement dataElement,
                     Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
                     String legendType, Integer method, Integer classes, String colorLow, String colorHigh,
                     MapLegendSet legendSet, Integer radiusLow, Integer radiusHigh, int opacity )
@@ -125,7 +129,6 @@ public class MapView
         this.indicator = indicator;
         this.dataElementGroup = dataElementGroup;
         this.dataElement = dataElement;
-        this.periodType = periodType;
         this.period = period;
         this.parentOrganisationUnit = parentOrganisationUnit;
         this.organisationUnitLevel = organisationUnitLevel;
@@ -138,46 +141,6 @@ public class MapView
         this.radiusLow = radiusLow;
         this.radiusHigh = radiusHigh;
         this.opacity = opacity;
-    }
-
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        final MapView other = (MapView) object;
-
-        return name.equals( other.name );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[Name: " + name + ", indicator: " + indicator + ", org unit: " +
-            parentOrganisationUnit + ", period: " + period + ", value type: " + valueType + "]";
     }
 
     // -------------------------------------------------------------------------
@@ -273,12 +236,7 @@ public class MapView
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public PeriodType getPeriodType()
     {
-        return periodType;
-    }
-
-    public void setPeriodType( PeriodType periodType )
-    {
-        this.periodType = periodType;
+        return period.getPeriodType();
     }
 
     @JsonProperty
@@ -457,6 +415,13 @@ public class MapView
     }
 
     @Override
+    public String toString()
+    {
+        return "[Indicator: " + indicator + ", org unit: " +
+            parentOrganisationUnit + ", period: " + period + ", value type: " + valueType + "]";
+    }
+
+    @Override
     public void mergeWith( IdentifiableObject other )
     {
         super.mergeWith( other );
@@ -470,7 +435,6 @@ public class MapView
             indicator = mapView.getIndicator() == null ? indicator : mapView.getIndicator();
             dataElementGroup = mapView.getDataElementGroup() == null ? dataElementGroup : mapView.getDataElementGroup();
             dataElement = mapView.getDataElement() == null ? dataElement : mapView.getDataElement();
-            periodType = mapView.getPeriodType() == null ? periodType : mapView.getPeriodType();
             period = mapView.getPeriod() == null ? period : mapView.getPeriod();
             parentOrganisationUnit = mapView.getParentOrganisationUnit() == null ? parentOrganisationUnit : mapView.getParentOrganisationUnit();
             organisationUnitLevel = mapView.getOrganisationUnitLevel() == null ? organisationUnitLevel : mapView.getOrganisationUnitLevel();

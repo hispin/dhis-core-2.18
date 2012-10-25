@@ -46,7 +46,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -460,7 +459,7 @@ public class DefaultMappingService
 
         DataElement dataElement = null;
 
-        if ( mapValueType.equals( MappingService.MAP_VALUE_TYPE_INDICATOR ) )
+        if ( mapValueType.equals( MapView.VALUE_TYPE_INDICATOR ) )
         {
             indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
             indicator = indicatorService.getIndicator( indicatorId );
@@ -471,9 +470,6 @@ public class DefaultMappingService
             dataElement = dataElementService.getDataElement( dataElementId );
         }
 
-        PeriodType periodType = periodTypeName != null && !periodTypeName.isEmpty() ? periodService
-            .getPeriodTypeByClass( PeriodType.getPeriodTypeByName( periodTypeName ).getClass() ) : null;
-
         Period period = periodId != null ? periodService.getPeriod( periodId ) : null;
 
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
@@ -483,7 +479,7 @@ public class DefaultMappingService
         MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
 
         addMapView( new MapView( MapView.LAYER_THEMATIC1, name, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
-            periodType, period, parent, level, mapLegendType, method, classes, colorLow, colorHigh,
+            period, parent, level, mapLegendType, method, classes, colorLow, colorHigh,
             mapLegendSet, radiusLow, radiusHigh, 1 ) );
     }
 
@@ -544,7 +540,7 @@ public class DefaultMappingService
         mapView.setParentOrganisationUnit( unit );
         mapView.setOrganisationUnitLevel( new OrganisationUnitLevel( level, "" ) );
         mapView.setName( indicator.getName() );
-        mapView.setValueType( MappingService.MAP_VALUE_TYPE_INDICATOR );
+        mapView.setValueType( MapView.VALUE_TYPE_INDICATOR );
 
         return mapView;
     }
