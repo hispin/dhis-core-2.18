@@ -39,7 +39,6 @@ import java.util.Set;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
-import org.hisp.dhis.caseentry.state.PeriodGenericManager;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -97,13 +96,6 @@ public class CaseAggregationResultAction
         this.dataValueService = dataValueService;
     }
 
-    private PeriodGenericManager periodGenericManager;
-
-    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
-    {
-        this.periodGenericManager = periodGenericManager;
-    }
-
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -134,6 +126,20 @@ public class CaseAggregationResultAction
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
+    }
+
+    private String startDate;
+
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    private String endDate;
+
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
     }
 
     private Map<String, String> mapStatusValues = new HashMap<String, String>();
@@ -211,7 +217,7 @@ public class CaseAggregationResultAction
         // ---------------------------------------------------------------------
 
         DataSet selectedDataSet = dataSetService.getDataSet( dataSetId );
-        
+
         Collection<CaseAggregationCondition> aggregationConditions = aggregationConditionService
             .getAllCaseAggregationCondition();
 
@@ -219,15 +225,10 @@ public class CaseAggregationResultAction
         // Get selected periods list
         // ---------------------------------------------------------------------
 
-        Period startPeriod = periodGenericManager.getSelectedPeriod(
-            PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_START,
-            PeriodGenericManager.SESSION_KEY_BASE_PERIOD_START );
+        CalendarPeriodType periodType = (CalendarPeriodType) selectedDataSet.getPeriodType();
 
-        Period endPeriod = periodGenericManager.getSelectedPeriod(
-            PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_END,
-            PeriodGenericManager.SESSION_KEY_BASE_PERIOD_END );
-
-        periods = getPeriodList( (CalendarPeriodType) selectedDataSet.getPeriodType(), startPeriod, endPeriod );
+        periods.addAll( periodType.generatePeriods( format.parseDate( startDate ),
+            format.parseDate( endDate ) ) );
 
         // ---------------------------------------------------------------------
         // Aggregation
@@ -239,7 +240,7 @@ public class CaseAggregationResultAction
             {
                 DataElement dElement = condition.getAggregationDataElement();
                 DataElementCategoryOptionCombo optionCombo = condition.getOptionCombo();
-                
+
                 for ( Period period : periods )
                 {
                     Integer resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
@@ -314,22 +315,5 @@ public class CaseAggregationResultAction
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;
-    }
-
-    private List<Period> getPeriodList( CalendarPeriodType periodType, Period startPeriod, Period endPeriod )
-    {
-        Period period = periodType.createPeriod( startPeriod.getStartDate() );
-
-        List<Period> periods = new ArrayList<Period>();
-
-        periods.add( period );
-
-        while ( period.getEndDate().before( endPeriod.getEndDate() ) )
-        {
-            period = periodType.getNextPeriod( period );
-            periods.add( period );
-        }
-
-        return periods;
     }
 }

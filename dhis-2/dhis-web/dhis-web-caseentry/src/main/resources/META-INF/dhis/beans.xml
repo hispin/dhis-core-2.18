@@ -266,24 +266,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.caseaggregation.LoadPeriodsAction"
-		class="org.hisp.dhis.caseentry.action.caseaggregation.LoadPeriodsAction"
-		scope="prototype">
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.caseentry.state.PeriodGenericManager" />
-	</bean>
-
+	
 	<bean
 		id="org.hisp.dhis.caseentry.action.caseaggregation.ValidationCaseAggregationAction"
 		class="org.hisp.dhis.caseentry.action.caseaggregation.ValidationCaseAggregationAction"
 		scope="prototype">
 		<property name="selectionTreeManager"
 			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.caseentry.state.PeriodGenericManager" />
 	</bean>
 
 	<bean
@@ -296,8 +285,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="aggregationConditionService"
 			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.caseentry.state.PeriodGenericManager" />
 	</bean>
 
 	<bean
@@ -326,24 +313,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.state.PeriodGenericManager"
-		class="org.hisp.dhis.caseentry.state.DefaultPeriodGenericManager"
-		scope="singleton">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.state.NextPeriodsAction" class="org.hisp.dhis.caseentry.state.NextPeriodsAction"
-		scope="prototype">
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.caseentry.state.PeriodGenericManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.state.PreviousPeriodsAction"
-		class="org.hisp.dhis.caseentry.state.PreviousPeriodsAction" scope="prototype">
-		<property name="periodGenericManager"
-			ref="org.hisp.dhis.caseentry.state.PeriodGenericManager" />
 	</bean>
 
 	<bean
