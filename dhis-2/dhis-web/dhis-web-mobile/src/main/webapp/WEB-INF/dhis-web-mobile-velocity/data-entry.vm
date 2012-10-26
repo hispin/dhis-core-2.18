@@ -14,18 +14,15 @@
     var allowFuturePeriods = false;
 
     function selectOrganisationUnit( e ) {
-        var $this = $(this);
-        Selected.orgUnit = $this.data('id');
+        Selected.orgUnit = $(this).data('id');
     }
 
     function selectDataSet( e ) {
-        var $this = $(this);
-        Selected.dataSet = $this.data('id');
+        Selected.dataSet = $(this).data('id');
     }
 
     function selectPeriod( e ) {
-        var $this = $(this);
-        Selected.period = $this.data('id');
+        Selected.period = $(this).data('id');
     }
 
     function loadOrganisationUnitsPage() {

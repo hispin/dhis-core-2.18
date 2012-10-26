@@ -1,5 +1,16 @@
 
 <script>
+    function getDate( isoDate ) {
+        var d = new Date( isoDate ).toDateString();
+
+        if( d == "Invalid Date" )
+        {
+            d = isoDate.substring(0, 10);
+        }
+
+        return d;
+    }
+
     function bindSubmitHandler() {
         $('#reply-form input:submit').bind('click', function ( e ) {
             var msg = jQuery('#reply-text').val();
@@ -52,7 +63,7 @@
     <ul data-role="listview" data-inset="true">
         <li data-role="list-divider"><%= subject %></li>
         <% _( _( messages ).reverse() ).each( function(message, idx) { %>
-        <% var d = new Date( message.lastUpdated ).toDateString(); %>
+        <% var d = getDate( message.lastUpdated ); %>
         <li>
             <h3><%= message.sender.name %></h3>
             <p style="white-space: normal !important"><%= message.name %></p>
