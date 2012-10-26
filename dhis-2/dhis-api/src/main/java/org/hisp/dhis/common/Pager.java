@@ -92,6 +92,11 @@ public class Pager
         return "[Page: " + page + " total: " + total + " size: " + pageSize + " offset: " + getOffset() + "]";
     }
     
+    public boolean pageSizeIsDefault()
+    {
+        return pageSize == Pager.DEFAULT_PAGE_SIZE;
+    }
+    
     @JsonProperty
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getPage()

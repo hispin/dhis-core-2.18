@@ -64,7 +64,7 @@ public class WebUtils
                 {
                     if ( baseType != null )
                     {
-                        log.warn( "baseType already set, overwriting.." );
+                        log.warn( "baseType already set, overwriting" );
                     }
 
                     baseType = objects.get( 0 ).getClass();
@@ -84,20 +84,26 @@ public class WebUtils
 
             if ( pager.getPage() < pager.getPageCount() )
             {
-                pager.setNextPage( basePath + "?page=" + (pager.getPage() + 1) );
+                String nextPath = basePath + "?page=" + ( pager.getPage() + 1 );
+                nextPath += pager.pageSizeIsDefault() ? "" : "&pageSize=" + pager.getPageSize();
+                
+                pager.setNextPage( nextPath );
             }
 
             if ( pager.getPage() > 1 )
             {
                 if ( (pager.getPage() - 1) == 1 )
                 {
-                    pager.setPrevPage( basePath );
+                    String prevPath = pager.pageSizeIsDefault() ? basePath : basePath + "?pageSize=" + pager.getPageSize();
+                    pager.setPrevPage( prevPath );
                 }
                 else
                 {
-                    pager.setPrevPage( basePath + "?page=" + (pager.getPage() - 1) );
+                    String prevPath = basePath + "?page=" + ( pager.getPage() - 1 );
+                    prevPath += pager.pageSizeIsDefault() ? "" : "&pageSize=" + pager.getPageSize();
+                    
+                    pager.setPrevPage( prevPath );
                 }
-
             }
         }
     }

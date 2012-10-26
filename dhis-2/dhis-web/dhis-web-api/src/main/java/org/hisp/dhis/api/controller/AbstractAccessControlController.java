@@ -55,7 +55,7 @@ public class AbstractAccessControlController<T extends IdentifiableObject>
         {
             int count = manager.getCount( getEntityClass() );
 
-            Pager pager = new Pager( options.getPage(), count );
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
             entityList = new ArrayList<T>( manager.getAccessibleBetween( getEntityClass(), pager.getOffset(), pager.getPageSize() ) );
@@ -77,7 +77,7 @@ public class AbstractAccessControlController<T extends IdentifiableObject>
         {
             int count = manager.getCount( getEntityClass() );
 
-            Pager pager = new Pager( options.getPage(), count );
+            Pager pager = new Pager( options.getPage(), count, options.getPageSize() );
             metaData.setPager( pager );
 
             entityList = new ArrayList<T>( manager.getAccessibleBetweenLikeName( getEntityClass(), query, pager.getOffset(), pager.getPageSize() ) );
