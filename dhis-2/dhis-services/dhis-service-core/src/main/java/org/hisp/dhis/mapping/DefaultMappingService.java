@@ -433,7 +433,7 @@ public class DefaultMappingService
     {
         User user = currentUserService.getCurrentUser();
         
-        return mapStore.getSystemAndUserMaps( user );
+        return mapStore.getAccessibleByUser( user );
     }
         
     // -------------------------------------------------------------------------

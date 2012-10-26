@@ -27,10 +27,7 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -38,5 +35,4 @@ import org.hisp.dhis.user.User;
 public interface MapStore
     extends GenericIdentifiableObjectStore<Map>
 {
-    Collection<Map> getSystemAndUserMaps( User user );
 }

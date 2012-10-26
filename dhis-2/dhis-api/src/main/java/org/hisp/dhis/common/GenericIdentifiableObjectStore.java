@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.user.User;
 
 /**
@@ -138,6 +139,16 @@ public interface GenericIdentifiableObjectStore<T>
      * Retrieves objects associated with the given user.
      * 
      * @param user the user.
+     * @param a list of objects.
      */
     Collection<T> getByUser( User user );
+    
+    /**
+     * Retrieves objects which are accessible to the given user, which includes
+     * public objects and objects owned by this user.
+     * 
+     * @param user the user.
+     * @return a list of objects.
+     */
+    Collection<Map> getAccessibleByUser( User user );
 }
