@@ -347,13 +347,6 @@
 			<param name="requiredAuthorities">F_PATIENT_AGGREGATION</param>
 		</action>
 
-		<action name="loadPeriods"
-			class="org.hisp.dhis.caseentry.action.caseaggregation.LoadPeriodsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/responsePeriods.vm
-			</result>
-		</action>
-
 		<action name="validateCaseAggregation"
 			class="org.hisp.dhis.caseentry.action.caseaggregation.ValidationCaseAggregationAction">
 			<result name="success" type="velocity-xml">
@@ -388,19 +381,6 @@
 			class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultDetailsAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/caseAggregationResultDetails.vm</param>
-		</action>
-
-		<action name="nextPeriods" class="org.hisp.dhis.caseentry.state.NextPeriodsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPeriods.vm
-			</result>
-		</action>
-
-		<action name="previousPeriods"
-			class="org.hisp.dhis.caseentry.state.PreviousPeriodsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonPeriods.vm
-			</result>
 		</action>
 
 		<!-- Patient -->
