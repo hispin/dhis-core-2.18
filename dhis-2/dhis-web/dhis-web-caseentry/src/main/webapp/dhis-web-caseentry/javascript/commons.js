@@ -1717,3 +1717,13 @@ function commentDivToggle(isHide)
 		showById('hideCommentBtn');
 	}
 }
+
+function backPreviousPage( patientId )
+{
+	if(isDashboard){
+		showPatientDashboardForm( patientId )
+	}
+	else{
+		loadPatientList();
+	}
+}

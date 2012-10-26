@@ -79,7 +79,7 @@
 		<td></td>
 		<td>
 			<input type="submit" class='button' value="$i18n.getString( 'update' )" />
-			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="loadPatientList();" />
+			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="backPreviousPage( $patient.id )" />
 		</td>
 	</tr>
 </table>
