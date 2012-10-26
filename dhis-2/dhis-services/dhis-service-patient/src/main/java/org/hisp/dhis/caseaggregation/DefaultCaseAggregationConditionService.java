@@ -222,7 +222,7 @@ public class DefaultCaseAggregationConditionService
     }
 
     @Override
-    public Double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
+    public Integer parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
@@ -998,8 +998,8 @@ public class DefaultCaseAggregationConditionService
         return sql;
     }
 
-    public Double calValue( Collection<Integer> patientIds, String operator )
+    public Integer calValue( Collection<Integer> patientIds, String operator )
     {
-        return new Double( patientIds.size() );
+        return patientIds.size();
     }
 }

@@ -242,14 +242,14 @@ public class CaseAggregationResultAction
                 
                 for ( Period period : periods )
                 {
-                    Double resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
+                    Integer resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
 
                     DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
 
                     String key = orgUnit.getId() + "-" + format.formatPeriod( period );
                     String keyStatus = key + "-" + dElement.getId();
 
-                    if ( resultValue != null && resultValue != 0.0 )
+                    if ( resultValue != null && resultValue != 0 )
                     {
                         if ( dataValue == null )
                         {
