@@ -140,7 +140,7 @@ public class CaseAggregateConditionTask
         {
             String periodType = dataSet.getPeriodType().getName();
             List<Period> periods = getPeriods( periodType );
-            
+
             String sql = "select caseaggregationconditionid, aggregationdataelementid, optioncomboid "
                 + "from caseaggregationcondition cagg inner join datasetmembers dm "
                 + "on cagg.aggregationdataelementid=dm.dataelementid " + "inner join dataset ds "
@@ -173,10 +173,13 @@ public class CaseAggregateConditionTask
                 {
                     for ( Period period : periods )
                     {
+                        DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
+
+                        if ( dataValue != null && dataValue.getStoredBy().equals( STORED_BY_DHIS_SYSTEM ) )
+                            continue;
+
                         Integer resultValue = aggregationConditionService.parseConditition( aggCondition, orgUnit,
                             period );
-
-                        DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
 
                         if ( resultValue != null && resultValue != 0 )
                         {
@@ -192,7 +195,7 @@ public class CaseAggregateConditionTask
                             // -----------------------------------------------------
                             // Update dataValue
                             // -----------------------------------------------------
-                            else
+                            else if ( (double)resultValue != Double.parseDouble( dataValue.getValue() ) )
                             {
                                 dataValue.setValue( "" + resultValue );
                                 dataValue.setTimestamp( new Date() );
@@ -241,9 +244,9 @@ public class CaseAggregateConditionTask
 
         Iterator<Period> iter = relatives.iterator();
         Date currentDate = new Date();
-        while(iter.hasNext())
+        while ( iter.hasNext() )
         {
-            if(currentDate.before( iter.next().getEndDate() ))
+            if ( currentDate.before( iter.next().getEndDate() ) )
             {
                 iter.remove();
             }
