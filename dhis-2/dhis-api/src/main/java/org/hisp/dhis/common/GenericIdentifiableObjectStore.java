@@ -151,4 +151,28 @@ public interface GenericIdentifiableObjectStore<T>
      * @return a list of objects.
      */
     Collection<Map> getAccessibleByUser( User user );
+
+    /**
+     * Retrieves objects which are accessible to the given user, which includes
+     * public objects and objects owned by this user, which name is like the
+     * given name.
+     * 
+     * @param user the user.
+     * @param name the name.
+     * @return a list of objects.
+     */
+    List<Map> getAccessibleByName( User user, String name );
+
+    /**
+     * Retrieves objects which are accessible to the given user, which includes
+     * public objects and objects owned by this user, which name is like the
+     * given name, limited by the given offset and max result.
+     * 
+     * @param user the user.
+     * @param name the name.
+     * @param first the first result object to return.
+     * @param max the max number of result objects to return. 
+     * @return a list of objects.
+     */
+    List<Map> getAccessibleBetweenByName( User user, String name, int first, int max );
 }

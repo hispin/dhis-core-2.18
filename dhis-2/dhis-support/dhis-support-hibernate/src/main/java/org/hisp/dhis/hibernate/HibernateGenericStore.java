@@ -389,4 +389,26 @@ public class HibernateGenericStore<T>
             Restrictions.eq( "user", user ),
             Restrictions.isNull( "user" ) ) ).list();
     }
+
+    @SuppressWarnings( "unchecked" )
+    public List<Map> getAccessibleByName( User user, String name )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
+        criteria.add( Restrictions.or( Restrictions.eq( "user", user ), Restrictions.isNull( "user" ) ) );
+        criteria.addOrder( Order.asc( "name" ) );
+        return criteria.list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public List<Map> getAccessibleBetweenByName( User user, String name, int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
+        criteria.add( Restrictions.or( Restrictions.eq( "user", user ), Restrictions.isNull( "user" ) ) );
+        criteria.addOrder( Order.asc( "name" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        return criteria.list();
+    }
 }
