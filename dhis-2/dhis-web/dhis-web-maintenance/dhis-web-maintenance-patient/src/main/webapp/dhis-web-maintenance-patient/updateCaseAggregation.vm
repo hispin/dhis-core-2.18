@@ -7,7 +7,7 @@
 
 <script type="text/javascript" src="javascript/updateCaseAggregationForm.js"></script>
 
-<h3>$i18n.getString( "edit_case_aggregation_condition" )</h3>
+<h3>$i18n.getString( "edit_aggregation_query_builder" )</h3>
 
 <form id="updateCaseAggregationForm" action="updateCaseAggregation.action" method="post" >
 
@@ -15,7 +15,7 @@
 <table> 
 	<thead>
       <tr>
-        <th colspan="2">$i18n.getString( "case_aggregation_condition_detail" )</th>
+        <th colspan="2">$i18n.getString( "aggregation_query_builder_detail" )</th>
       </tr>
     </thead>
 	

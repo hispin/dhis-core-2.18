@@ -28,6 +28,6 @@
 	#end
 	
 	#if( $auth.hasAccess( "dhis-web-caseentry", "caseAggregationForm" ) )
-		#introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )
+		#introListImgItem( "caseAggregationForm.action" "manual_person_aggregation" "caseaggregation" )
 	#end
 </ul>
