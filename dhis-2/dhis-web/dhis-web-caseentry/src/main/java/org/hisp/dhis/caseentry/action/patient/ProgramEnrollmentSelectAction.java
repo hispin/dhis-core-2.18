@@ -116,10 +116,15 @@ public class ProgramEnrollmentSelectAction
         patient = patientService.getPatient( id );
 
         // Get all programs
-        programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );        
-        // Except anonymous program
-        programs.removeAll( programService.getPrograms( Program.SINGLE_EVENT_WITHOUT_REGISTRATION ) );
+        programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
 
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, false );
+
+        for ( ProgramInstance programInstance : programInstances )
+        {
+            programs.remove( programInstance.getProgram() );
+        }
+        
         return SUCCESS;
     }
 }
