@@ -3,6 +3,11 @@ jQuery( document ).ready( function()
 {
 	validation( 'programStageSectionForm', function(form){
 		form.submit();
+	}, function(){
+		selectAllById('dataElementIds');
+		if(jQuery("#dataElementIds option").length > 0 ){
+			setFieldValue('hasDataElement', 'true');
+		}
 	});
 	checkValueIsExist( "name", "validateProgramStageSection.action");
 	byId('name').focus();
@@ -11,11 +16,11 @@ jQuery( document ).ready( function()
 
 <h3>$i18n.getString( "create_new_program_stage_section" )</h3>
 
-</h4>$programStage.name</h4>
+<h4>$programStage.name</h4>
 																		
-<form id="programStageSectionForm" name="programStageSectionForm" onsubmit="selectAllById('dataElementIds');" action="addProgramStageSection.action" method="post">
-	<input type="hidden" id="programStageId" name="programStageId" value="$programStage.id"/>
+<form id="programStageSectionForm" name="programStageSectionForm" method="post">
 
+<input type="hidden" id="programStageId" name="programStageId" value="$programStage.id"/>
 <table>
 	<thead>
 		<tr><th colspan="2">$i18n.getString( "program_stage_details" )</th></tr>
@@ -33,7 +38,10 @@ jQuery( document ).ready( function()
       <tr>        
         <th>$i18n.getString( "available_data_elements" )</th>
         <th></th>
-        <th>$i18n.getString( "selected_data_elements" )</th>
+        <th>
+			$i18n.getString( "selected_data_elements" )
+			<input type='hidden' id='hasDataElement' name='hasDataElement' class="{validate:{required:true}}">
+		</th>
       </tr>
     </thead>
   
@@ -67,7 +75,7 @@ jQuery( document ).ready( function()
 </table>
 <p>
 	<input type="submit" value="$i18n.getString( 'add' )"/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStageSectionList.action?id=$programStageId'" />
+	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStageSectionList.action?id=$programStage.id'" />
 </p>
 
 </form> 	
