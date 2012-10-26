@@ -137,12 +137,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE programstage DROP COLUMN stageinprogram" );
 
         executeSql( "CREATE INDEX index_patientdatavalue ON patientdatavalue( programstageinstanceid, dataelementid, value, timestamp )" );
-        executeSql( "CREATE INDEX index_patientattributevalue ON patientattributevalue( patientattributeid, value )");
+
         executeSql( "CREATE INDEX index_programinstance ON programinstance( programinstanceid )" );
-        executeSql( "CREATE INDEX index_patient_gender ON patient( patientid, gender " );
-        executeSql( "CREATE INDEX index_patient_registrationdate ON patient( patientid, registrationdate )" );
-        executeSql( "CREATE INDEX index_programinstance_enrollmentdate ON programinstance( programinstanceid, enrollmentdate )" );
-        executeSql( "CREATE INDEX index_programstageinstance_enrollmentdate ON programstageinstance( programstageinstanceid, executiondate )" );
         
         executeSql( "ALTER TABLE program DROP COLUMN maxDaysAllowedInputData");
                 
