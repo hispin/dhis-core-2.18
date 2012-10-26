@@ -280,23 +280,6 @@ public class MappingServiceTest
     }
 
     @Test
-    public void testGetDeleteMapViewByName()
-    {
-        MapView mapView = new MapView( LAYER_THEMATIC1, "MapViewA", VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, period,
-            organisationUnit, organisationUnitLevel, LEGEND_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1 );
-
-        int id = mappingService.addMapView( mapView );
-
-        mapView = mappingService.getMapViewByName( "MapViewA" );
-
-        mappingService.deleteMapView( mapView );
-
-        assertNull( mappingService.getMapView( id ) );
-    }
-
-    @Test
     public void testGetAllMapViews()
     {
         MapView mapView1 = new MapView( LAYER_THEMATIC1, "MapViewA", VALUE_TYPE_INDICATOR, indicatorGroup,
