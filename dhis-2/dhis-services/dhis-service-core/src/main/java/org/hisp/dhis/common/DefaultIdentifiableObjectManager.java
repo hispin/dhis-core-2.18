@@ -83,10 +83,6 @@ public class DefaultIdentifiableObjectManager
         {
             store.save( object );
         }
-        else
-        {
-            log.warn( "No IdentifiableObject store found for " + object.getClass() + " (save)." );
-        }
     }
 
     @Override
@@ -97,10 +93,6 @@ public class DefaultIdentifiableObjectManager
         if ( store != null )
         {
             store.update( object );
-        }
-        else
-        {
-            log.warn( "No IdentifiableObject store found for " + object.getClass() + " (update)." );
         }
     }
 
@@ -113,10 +105,6 @@ public class DefaultIdentifiableObjectManager
         {
             store.delete( object );
         }
-        else
-        {
-            log.warn( "No IdentifiableObject store found for " + object.getClass() + " (delete)." );
-        }
     }
 
     @Override
@@ -127,8 +115,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null." );
-
             return null;
         }
 
@@ -143,8 +129,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null (getByCode)." );
-
             return null;
         }
 
@@ -159,8 +143,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning null (getByName)." );
-
             return null;
         }
 
@@ -193,8 +175,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getAll)." );
-
             return new ArrayList<T>();
         }
 
@@ -209,8 +189,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getAllSorted)." );
-
             return new ArrayList<T>();
         }
 
@@ -225,8 +203,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getBetween)." );
-
             return new ArrayList<T>();
         }
 
@@ -241,8 +217,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getBetweenByName)." );
-
             return new ArrayList<T>();
         }
 
@@ -257,8 +231,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getByLastUpdated)." );
-
             return new ArrayList<T>();
         }
 
@@ -273,8 +245,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty collection (getByLastUpdatedSorted)." );
-
             return new ArrayList<T>();
         }
 
@@ -291,8 +261,6 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
-            log.warn( "No IdentifiableObject store found for " + clazz + ", returning empty map (getIdMap)." );
-
             return map;
         }
 
@@ -426,10 +394,6 @@ public class DefaultIdentifiableObjectManager
         {
             return store.getCount();
         }
-        else
-        {
-            log.warn( "No IdentifiableObject store found for " + clazz + " (getCount)." );
-        }
 
         return 0;
     }
@@ -440,6 +404,8 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
+            log.warn( "No IdentifiableObjectStore found for class: " + clazz );
+            
             store = identifiableObjectStoreMap.get( clazz.getSuperclass() );
         }
 
@@ -452,6 +418,8 @@ public class DefaultIdentifiableObjectManager
 
         if ( store == null )
         {
+            log.warn( "No NameableObjectStore found for class: " + clazz );
+            
             store = nameableObjectStoreMap.get( clazz.getSuperclass() );
         }
 
