@@ -27,6 +27,11 @@ package org.hisp.dhis.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -36,15 +41,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.GenericNameableObjectStore;
-import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -381,17 +380,29 @@ public class HibernateGenericStore<T>
 
     @Override
     @SuppressWarnings("unchecked")
-    public Collection<Map> getAccessibleByUser( User user )
+    public List<T> getAccessibleByUser( User user )
     {
         //TODO link to interface
         
-        return getCriteria( Restrictions.or( 
-            Restrictions.eq( "user", user ),
-            Restrictions.isNull( "user" ) ) ).list();
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.or( Restrictions.eq( "user", user ), Restrictions.isNull( "user" ) ) );
+        criteria.addOrder( Order.asc( "name" ) );
+        return criteria.list();
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public List<T> getAccessibleByLastUpdated( User user, Date lastUpdated )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.or( Restrictions.eq( "user", user ), Restrictions.isNull( "user" ) ) );
+        criteria.add( Restrictions.ge( "lastUpdated", lastUpdated ) );
+        criteria.addOrder( Order.asc( "name" ) ).list();
+        return criteria.list();
     }
 
     @SuppressWarnings( "unchecked" )
-    public List<Map> getAccessibleByName( User user, String name )
+    public List<T> getAccessibleLikeName( User user, String name )
     {
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
@@ -399,9 +410,21 @@ public class HibernateGenericStore<T>
         criteria.addOrder( Order.asc( "name" ) );
         return criteria.list();
     }
-    
+
+    @Override
     @SuppressWarnings( "unchecked" )
-    public List<Map> getAccessibleBetweenByName( User user, String name, int first, int max )
+    public List<T> getAccessibleBetween( User user, int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.or( Restrictions.eq( "user", user ), Restrictions.isNull( "user" ) ) );
+        criteria.addOrder( Order.asc( "name" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        return criteria.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public List<T> getAccessibleBetweenLikeName( User user, String name, int first, int max )
     {
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
