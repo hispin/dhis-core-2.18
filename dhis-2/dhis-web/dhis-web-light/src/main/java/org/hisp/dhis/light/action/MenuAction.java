@@ -38,6 +38,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.util.SessionUtils;
 
 public class MenuAction
     implements Action
@@ -167,6 +168,8 @@ public class MenuAction
     @Override
     public String execute()
     {
+        SessionUtils.removeSessionVar( "prevDataValues" );
+        
         this.user = currentUserService.getCurrentUser();       
         
         if ( complete )
