@@ -31,6 +31,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.common.NameableObject.NameableProperty;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +48,9 @@ public class DefaultIdentifiableObjectManager
 {
     private static final Log log = LogFactory.getLog( DefaultIdentifiableObjectManager.class );
 
+    @Autowired
+    private CurrentUserService currentUserService;
+    
     @Autowired
     private Set<GenericIdentifiableObjectStore<IdentifiableObject>> identifiableObjectStores;
 
@@ -73,6 +78,10 @@ public class DefaultIdentifiableObjectManager
             nameableObjectStoreMap.put( store.getClazz(), store );
         }
     }
+
+    //--------------------------------------------------------------------------
+    // IdentifiableObjectManager implementation
+    //--------------------------------------------------------------------------
 
     @Override
     public void save( IdentifiableObject object )
@@ -208,7 +217,7 @@ public class DefaultIdentifiableObjectManager
 
         return (Collection<T>) store.getLikeName( name );
     }
-    
+
     @Override
     @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getBetween( Class<T> clazz, int first, int max )
@@ -264,7 +273,7 @@ public class DefaultIdentifiableObjectManager
 
         return (Collection<T>) store.getByLastUpdatedSorted( lastUpdated );
     }
-
+    
     @Override
     @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property )
@@ -438,5 +447,89 @@ public class DefaultIdentifiableObjectManager
         }
 
         return store;
+    }
+
+    //--------------------------------------------------------------------------
+    // Accessible
+    //--------------------------------------------------------------------------
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> List<T> getAllAccessible( Class<T> clazz )
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( user == null || store == null )
+        {
+            return new ArrayList<T>();
+        }
+
+        return (List<T>) store.getAccessibleByUser( user );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> List<T> getAccessibleLikeName( Class<T> clazz, String name )
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( user == null || store == null )
+        {
+            return new ArrayList<T>();
+        }
+
+        return (List<T>) store.getAccessibleLikeName( user, name );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> List<T> getAccessibleBetween( Class<T> clazz, int first, int max )
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( user == null || store == null )
+        {
+            return new ArrayList<T>();
+        }
+
+        return (List<T>) store.getAccessibleBetween( user, first, max );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> List<T> getAccessibleBetweenLikeName( Class<T> clazz, String name, int first, int max )
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( user == null || store == null )
+        {
+            return new ArrayList<T>();
+        }
+
+        return (List<T>) store.getAccessibleBetweenLikeName( user, name, first, max );
+    }
+
+    @Override
+    @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> List<T> getAccessibleByLastUpdated( Class<T> clazz, Date lastUpdated )
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return new ArrayList<T>();
+        }
+
+        return (List<T>) store.getAccessibleByLastUpdated( user, lastUpdated );
     }
 }

@@ -35,7 +35,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hisp.dhis.api.controller.AbstractCrudController;
+import org.hisp.dhis.api.controller.AbstractAccessControlController;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -63,7 +63,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 @RequestMapping( value = MapController.RESOURCE_PATH )
 public class MapController
-    extends AbstractCrudController<Map>
+    extends AbstractAccessControlController<Map>
 {
     public static final String RESOURCE_PATH = "/maps";
 

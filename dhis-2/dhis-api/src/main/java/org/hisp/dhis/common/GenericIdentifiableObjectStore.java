@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.user.User;
 
 /**
@@ -113,7 +112,7 @@ public interface GenericIdentifiableObjectStore<T>
     /**
      * Returns all objects that are equal to or newer than given date.
      *
-     * @param lastUpdated Date to compare to.
+     * @param lastUpdated Date to compare with.
      * @return All objects equal or newer than given date.
      */
     List<T> getByLastUpdated( Date lastUpdated );
@@ -150,8 +149,19 @@ public interface GenericIdentifiableObjectStore<T>
      * @param user the user.
      * @return a list of objects.
      */
-    Collection<Map> getAccessibleByUser( User user );
+    List<T> getAccessibleByUser( User user );
 
+    /**
+     * Retrieves objects which are accessible to the given user, which includes
+     * public objects and objects owned by this user, that are equal to or newer 
+     * than given date.
+     * 
+     * @param user the user.
+     * @param lastUpdated the Date to compare with.
+     * @return a list of objects.
+     */
+    List<T> getAccessibleByLastUpdated( User user, Date lastUpdated );
+    
     /**
      * Retrieves objects which are accessible to the given user, which includes
      * public objects and objects owned by this user, which name is like the
@@ -161,8 +171,20 @@ public interface GenericIdentifiableObjectStore<T>
      * @param name the name.
      * @return a list of objects.
      */
-    List<Map> getAccessibleByName( User user, String name );
-
+    List<T> getAccessibleLikeName( User user, String name );
+    
+    /**
+     * Retrieves objects which are accessible to the given user, which includes
+     * public objects and objects owned by this user, limited by the given offset 
+     * and max result.
+     * 
+     * @param user the user.
+     * @param first the first result object to return.
+     * @param max the max number of result objects to return. 
+     * @return a list of objects.
+     */
+    List<T> getAccessibleBetween( User user, int first, int max );
+    
     /**
      * Retrieves objects which are accessible to the given user, which includes
      * public objects and objects owned by this user, which name is like the
@@ -174,5 +196,5 @@ public interface GenericIdentifiableObjectStore<T>
      * @param max the max number of result objects to return. 
      * @return a list of objects.
      */
-    List<Map> getAccessibleBetweenByName( User user, String name, int first, int max );
+    List<T> getAccessibleBetweenLikeName( User user, String name, int first, int max );
 }
