@@ -1,5 +1,7 @@
 <h3>$i18n.getString( "edit_program_validation_rule" )</h3>
 
+<h4>$program.name</h4>
+
 <form id='programValidationForm' name='programValidationForm' method='post' action='updateProgramValidation.action'>
 
 <input type='hidden' id='id' name='id' value='$validation.id'>

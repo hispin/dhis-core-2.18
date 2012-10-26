@@ -1,4 +1,5 @@
 <h3>$i18n.getString( "program_validation_rule_management" )</h3>
+
 <h4>$program.name</h4>
 
 <table class="mainPageTable">

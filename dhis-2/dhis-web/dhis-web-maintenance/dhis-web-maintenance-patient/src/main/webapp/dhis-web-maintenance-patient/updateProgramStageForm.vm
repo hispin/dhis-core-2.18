@@ -2,6 +2,8 @@
 
 <h3>$i18n.getString( "edit_program_stage" )</h3>
 
+<h4>$programStage.program.name</h4>
+
 <form id="updateProgramStageForm" name="updateProgramStageForm" action="updateProgramStage.action" method="post">
 	<input type="hidden" id="id" name="id" value="$programStage.id"/>
 	<select id='daysAllowedSendMessages' name="daysAllowedSendMessages" multiple="multiple" class="hidden"></select>

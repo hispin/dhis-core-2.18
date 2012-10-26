@@ -1,5 +1,6 @@
-<h3>$i18n.getString( "program_stage_management" ) $i18n.getString( "for" ) $program.name</h3>
-<h4></h4>
+<h3>$i18n.getString( "program_stage_management" )</h3>
+
+<h4>$program.name</h4>
 
 <input type='hidden' id='id' name='id' value='$program.id'>
 

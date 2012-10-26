@@ -11,9 +11,11 @@ jQuery( document ).ready( function()
 </script>
 
 <h3>$i18n.getString( "update_program_stage_section" )</h3>
-																		
+			
+</h4>$programStage.name</h4>
+			
 <form id="programStageSectionForm" name="programStageSectionForm" onsubmit="selectAllById('dataElementIds');" action="updateProgramStageSection.action" method="post">
-	<input type="hidden" id="programStageId" name="programStageId" value="$programStageId"/>
+	<input type="hidden" id="programStageId" name="programStageId" value="$programStage.id"/>
 	<input type="hidden" id="id" name="id" value="$section.id"/>
 
 <table>

@@ -10,9 +10,11 @@ jQuery( document ).ready( function()
 </script>
 
 <h3>$i18n.getString( "create_new_program_stage_section" )</h3>
+
+</h4>$programStage.name</h4>
 																		
 <form id="programStageSectionForm" name="programStageSectionForm" onsubmit="selectAllById('dataElementIds');" action="addProgramStageSection.action" method="post">
-	<input type="hidden" id="programStageId" name="programStageId" value="$programStageId"/>
+	<input type="hidden" id="programStageId" name="programStageId" value="$programStage.id"/>
 
 <table>
 	<thead>

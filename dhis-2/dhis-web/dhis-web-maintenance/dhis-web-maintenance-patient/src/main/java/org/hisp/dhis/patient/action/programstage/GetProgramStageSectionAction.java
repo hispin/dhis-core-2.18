@@ -55,7 +55,7 @@ public class GetProgramStageSectionAction
     {
         this.programStageService = programStageService;
     }
-    
+
     private ProgramStageSectionService programStageSectionService;
 
     public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
@@ -76,14 +76,16 @@ public class GetProgramStageSectionAction
 
     private Integer programStageId;
 
-    public Integer getProgramStageId()
-    {
-        return programStageId;
-    }
-
     public void setProgramStageId( Integer programStageId )
     {
         this.programStageId = programStageId;
+    }
+
+    private ProgramStage programStage;
+
+    public ProgramStage getProgramStage()
+    {
+        return programStage;
     }
 
     private ProgramStageSection section;
@@ -109,10 +111,10 @@ public class GetProgramStageSectionAction
         throws Exception
     {
         section = programStageSectionService.getProgramStageSection( id );
-        
+
         if ( programStageId != null )
         {
-            ProgramStage programStage = programStageService.getProgramStage( programStageId );
+            programStage = programStageService.getProgramStage( programStageId );
 
             availableDataElements = programStage.getProgramStageDataElements();
 
@@ -121,7 +123,7 @@ public class GetProgramStageSectionAction
                 availableDataElements.removeAll( section.getProgramStageDataElements() );
             }
         }
-        
+
         return SUCCESS;
     }
 }
