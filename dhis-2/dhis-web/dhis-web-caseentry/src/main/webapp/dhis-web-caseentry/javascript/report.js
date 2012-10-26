@@ -37,6 +37,8 @@ function loadDataEntry( programStageInstanceId )
 		,function(){
 			jQuery("#viewRecordsDiv :input" ).attr("disabled", true);
 			jQuery("#viewRecordsDiv :input" ).datepicker("destroy");
+			showById("reportTitle");
+			hideById("patientInforTB");
 			jQuery(".ui-combobox" ).hide();
 			hideById('inputCriteriaDiv');
 		})
