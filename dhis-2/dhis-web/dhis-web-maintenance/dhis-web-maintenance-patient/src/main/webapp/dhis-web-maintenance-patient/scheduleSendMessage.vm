@@ -1,4 +1,4 @@
-<h3>$i18n.getString('scheduling_message') #openHelp( "schedule_sending_message" )</h3>
+<h3>$i18n.getString('schedule_message') #openHelp( "schedule_sending_message" )</h3>
 <table>
 	<tbody>
 		<tr>

@@ -6,7 +6,7 @@
 
 <div id='caseAggregationDiv'>
 
-	<h1> $i18n.getString( "case_aggregation_form" ) #openHelp('run_case_aggregation')</h1>
+	<h1> $i18n.getString( "manual_person_aggregation" ) #openHelp('run_case_aggregation')</h1>
 	
 	<form id="caseAggregationForm" name="caseAggregationForm" action="caseAggregationResult.action" method="post">
 		<table>
@@ -27,14 +27,14 @@
 			<tr>
 				<td>$i18n.getString( "from" )</td>
 				<td>
-					<input type='text' id="startDate" name="startDate" style="width:355px;"/>
+					<input type='text' id="startDate" name="startDate" style="width:355px;" />
 				</td>
 			</tr>
 			
 			<tr>
 				<td>$i18n.getString( "to" )</td>
 				<td>
-					<input type='text' id="endDate" name="endDate" style="width:355px;"/>
+					<input type='text' id="endDate" name="endDate" style="width:355px;" />
 					<script>
 						datePickerInRange( 'startDate','endDate' );
 					</script>
