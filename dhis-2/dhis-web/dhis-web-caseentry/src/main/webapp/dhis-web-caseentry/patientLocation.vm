@@ -18,6 +18,7 @@
 		<tr>
 			<td>
 				<input type="button" class='button' value="$i18n.getString('save')" onclick='registerPatientLocation( "$patientId" )'>
+				<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="backPreviousPage( $patientId )" />
 			</td>
 			<td></td>
 			<td></td>
