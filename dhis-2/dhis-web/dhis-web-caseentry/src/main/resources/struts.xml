@@ -864,13 +864,7 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
 		</action>
-
-		<action name="viewRecord"
-			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
-		</action>
-
+		
 		<!-- SMS Reminder -->
 
 		<action name="smsReminderSelect"
