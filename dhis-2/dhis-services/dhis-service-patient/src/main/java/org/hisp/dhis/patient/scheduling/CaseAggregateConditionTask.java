@@ -51,7 +51,6 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -174,12 +173,12 @@ public class CaseAggregateConditionTask
                 {
                     for ( Period period : periods )
                     {
-                        Double resultValue = aggregationConditionService.parseConditition( aggCondition, orgUnit,
+                        Integer resultValue = aggregationConditionService.parseConditition( aggCondition, orgUnit,
                             period );
 
                         DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
 
-                        if ( resultValue != null && resultValue != 0.0 )
+                        if ( resultValue != null && resultValue != 0 )
                         {
                             // -----------------------------------------------------
                             // Add dataValue
