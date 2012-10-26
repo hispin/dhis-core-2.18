@@ -88,6 +88,26 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
     }
 
+    @RequestMapping( value = "/query/{query}", method = RequestMethod.GET )
+    public String query( @PathVariable String query, @RequestParam Map<String, String> parameters, Model model, HttpServletRequest request ) throws Exception
+    {
+        WebOptions options = new WebOptions( parameters );
+        WebMetaData metaData = new WebMetaData();
+        List<T> entityList = queryForEntityList( metaData, options, query );
+
+        ReflectionUtils.invokeSetterMethod( ExchangeClasses.getExportMap().get( getEntityClass() ), metaData, entityList );
+
+        if ( options.hasLinks() )
+        {
+            WebUtils.generateLinks( metaData );
+        }
+
+        model.addAttribute( "model", metaData );
+        model.addAttribute( "viewClass", options.getViewClass( "basic" ) );
+
+        return StringUtils.uncapitalize( getEntitySimpleName() ) + "List";
+    }
+
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
     public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, 
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
@@ -234,6 +254,27 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
         else
         {
             entityList = new ArrayList<T>( manager.getAllSorted( getEntityClass() ) );
+        }
+
+        return entityList;
+    }
+
+    protected List<T> queryForEntityList( WebMetaData metaData, WebOptions options, String query )
+    {
+        List<T> entityList;
+
+        if ( options.hasPaging() )
+        {
+            int count = manager.getCount( getEntityClass() );
+
+            Pager pager = new Pager( options.getPage(), count );
+            metaData.setPager( pager );
+
+            entityList = new ArrayList<T>( manager.getBetweenByName( getEntityClass(), query, pager.getOffset(), pager.getPageSize() ) );
+        }
+        else
+        {
+            entityList = new ArrayList<T>( manager.getLikeName( getEntityClass(), query ) );
         }
 
         return entityList;

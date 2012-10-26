@@ -197,6 +197,20 @@ public class DefaultIdentifiableObjectManager
 
     @Override
     @SuppressWarnings( "unchecked" )
+    public <T extends IdentifiableObject> Collection<T> getLikeName( Class<T> clazz, String name )
+    {
+        GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
+
+        if ( store == null )
+        {
+            return new ArrayList<T>();
+        }
+
+        return (Collection<T>) store.getLikeName( name );
+    }
+    
+    @Override
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getBetween( Class<T> clazz, int first, int max )
     {
         GenericIdentifiableObjectStore<IdentifiableObject> store = getIdentifiableObjectStore( clazz );
