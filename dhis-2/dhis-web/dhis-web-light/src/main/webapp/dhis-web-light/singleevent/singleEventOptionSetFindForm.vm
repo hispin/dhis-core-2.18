@@ -1,5 +1,5 @@
 <h2>$i18n.getString("option_set_searching_result")</h2>
-<p>Searching for: "$keyword"</p>
+<p>$i18n.getString("search_for"): "$keyword"</p>
 <p>
 	#if( $searchingResultList.size() == 0 )
 		No result
