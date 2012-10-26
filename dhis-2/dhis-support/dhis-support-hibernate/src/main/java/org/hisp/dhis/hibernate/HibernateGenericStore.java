@@ -36,6 +36,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -376,5 +377,16 @@ public class HibernateGenericStore<T>
     public Collection<T> getByUser( User user )
     {
         return getCriteria( Restrictions.eq( "user", user ) ).list();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Collection<Map> getAccessibleByUser( User user )
+    {
+        //TODO link to interface
+        
+        return getCriteria( Restrictions.or( 
+            Restrictions.eq( "user", user ),
+            Restrictions.isNull( "user" ) ) ).list();
     }
 }
