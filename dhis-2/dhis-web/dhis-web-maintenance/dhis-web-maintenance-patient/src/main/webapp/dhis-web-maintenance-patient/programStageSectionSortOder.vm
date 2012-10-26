@@ -1,4 +1,6 @@
-<h3>$i18n.getString( "program_stage_section_sort_order" ) $i18n.getString( "for" ) $programStage.name</h3>
+<h3>$i18n.getString( "program_stage_section_sort_order" )</h3>
+
+<h4>$programStage.name</h4>
 
 <form id="programStageSectionSortOrderForm" name="programStageSectionSortOrderForm" onsubmit="selectAllById('sectionIds');" action="saveProgramStageSectionSortOrder.action" method="post">
 

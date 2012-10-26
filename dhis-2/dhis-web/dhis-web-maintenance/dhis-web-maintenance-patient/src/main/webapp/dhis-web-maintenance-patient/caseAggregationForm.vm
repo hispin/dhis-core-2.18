@@ -11,20 +11,23 @@
 			<td><label for="dataelement">$i18n.getString( "dataelement" )</label></td>
 			<td>
 				<label for="availableValues">$i18n.getString( "available_values" )</label>&nbsp;
-				<button title="$i18n.getString( 'insert_selected_values' )" class='arrow-down' onClick="insertMultiValues('suggestedDEValues');" />			</td>
+				<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button" onClick="insertMultiValues('suggestedDEValues');" >
+			</td>
         </tr>
         
         <tr>
 			<td>
 				<input type='text' id='txtSearchValue' name='txtSearchValue' onKeyUp="filterDE(event, this.value, 'dataElements');" style='width:265px;'/>
-				<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchValue', '');" style='width:50px'>			</td>
+				<input type='button' value='$i18n.getString("clear")' onClick="setFieldValue('txtSearchValue', '');" style='width:50px'>			
+			</td>
             <td rowspan="4">
-				<select name="suggestedDEValues" size="10" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" >
-			    </select>			</td>
+				<select name="suggestedDEValues" size="10" multiple id='suggestedDEValues' ondblclick="insertSingleValue('suggestedDEValues');" ></select>			
+			</td>
         </tr>
         <tr>
 			<td>
-				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this.id, 'suggestedDEValues' )"></select>			</td>
+				<select id="dataElements" name="dataElements" size="8" ondblclick="insertDataElement(this);" onclick="getSuggestedValues(this.id, 'suggestedDEValues' )"></select>
+			</td>
 		</tr>
       </table>
 	</div>
@@ -35,7 +38,7 @@
 				<td><label>$i18n.getString( "patient_attributes" )</label></td>
 				<td>
 					<label>$i18n.getString( "available_values" )</label>
-					<button title="$i18n.getString( 'insert_selected_values' )" class='arrow-down' onClick="insertMultiValues('caSuggestedValues');" />
+					<input type='button' title="$i18n.getString( 'insert_selected_values' )" value="&raquo;" class="small-button" onClick="insertMultiValues('caSuggestedValues');" >
 				</td>
 			</tr>
 			<tr>
