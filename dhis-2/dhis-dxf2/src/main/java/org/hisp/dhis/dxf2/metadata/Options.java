@@ -128,7 +128,8 @@ public class Options
             try
             {
                 return Integer.parseInt( str );
-            } catch ( NumberFormatException ignored )
+            } 
+            catch ( NumberFormatException ignored )
             {
             }
         }
