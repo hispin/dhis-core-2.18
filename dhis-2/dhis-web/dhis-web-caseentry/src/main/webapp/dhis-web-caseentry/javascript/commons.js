@@ -16,6 +16,8 @@ var SAVING_COLOR = '#ffffcc';
 var SUCCESS = 'success';
 var ERROR = 'error';
 
+var isDashboard = false;
+
 // Disable caching for ajax requests in general 
 
 $( document ).ready( function() {

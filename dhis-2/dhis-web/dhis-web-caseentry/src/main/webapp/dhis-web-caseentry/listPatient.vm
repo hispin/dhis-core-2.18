@@ -80,7 +80,9 @@
 				#if($value=="")
 					#set($value=$patient.getFullName())
 				#end
-				<td style='cursor:pointer;' onclick="javascript:setInnerHTML('addNewDiv','');unSave = false;showSelectedDataRecoding('$patient.id', getFieldValue('programIdAddPatient'));">$value</td>
+				<td style='cursor:pointer;' onclick="javascript:setInnerHTML('addNewDiv','');unSave = false;showSelectedDataRecoding('$patient.id', getFieldValue('programIdAddPatient'));">
+					<a>$value</a>
+				</td>
 				<td>			
 					$i18n.getString( $patient.gender )
 				</td>
