@@ -342,6 +342,10 @@ function insertSingleValue( elementId )
 function insertMultiValues( elementId )
 {
 	var list = jQuery('select[id=' + elementId + '] option:selected')
+	if( list.length == 0 )
+	{
+		return;
+	}
 	if( list.length > 1 )
 	{
 		var selectedValues = "";
