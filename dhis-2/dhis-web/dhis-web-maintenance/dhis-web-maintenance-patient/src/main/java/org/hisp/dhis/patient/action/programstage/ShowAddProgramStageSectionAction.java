@@ -60,15 +60,17 @@ public class ShowAddProgramStageSectionAction
     // -------------------------------------------------------------------------
 
     private Integer programStageId;
-
-    public Integer getProgramStageId()
-    {
-        return programStageId;
-    }
-
+    
     public void setProgramStageId( Integer programStageId )
     {
         this.programStageId = programStageId;
+    }
+    
+    private ProgramStage programStage;
+
+    public ProgramStage getProgramStage()
+    {
+        return programStage;
     }
 
     private ProgramStageSection section;
@@ -93,7 +95,7 @@ public class ShowAddProgramStageSectionAction
     public String execute()
         throws Exception
     {
-        ProgramStage programStage = programStageService.getProgramStage( programStageId );
+        programStage = programStageService.getProgramStage( programStageId );
 
         availableDataElements = programStage.getProgramStageDataElements();
 
