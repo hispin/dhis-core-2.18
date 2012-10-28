@@ -75,7 +75,7 @@
 						<option value="[PS:*]">$i18n.getString( "visit_selected_program_stage" )</option>
 						<option value="[PS:*.COUNT]" name="multiProgram">$i18n.getString( "visit_selected_program_stage_x_th_time" )</option>
 						<option value="[PS:*] AND [PSP:DATE@executionDate#-DATE@dueDate#]" name="multiProgram">$i18n.getString( "report_date" ) - $i18n.getString( "due_date" )</option>
-						<option value="[PS:*] AND [PC:DATE@executionDate#-DATE@birthDate#]" name="multiProgram">$i18n.getString( "report_date" ) - $i18n.getString( "date_of_birth" )</option>
+						<option value="[PS:*] AND [PC:DATE@executionDate#-DATE@birthDate#]" name="multiProgram">$i18n.getString( "age_at_visit_days_since_birth" )</option>
 					</select>
 					</select>
 				</td>
