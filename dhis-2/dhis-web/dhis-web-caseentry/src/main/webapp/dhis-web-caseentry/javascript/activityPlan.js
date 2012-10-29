@@ -264,7 +264,10 @@ function reloadRecordList()
 		scheduledEvent.css('border-color', MARKED_VISIT_COLOR);
 		scheduledEvent.focus();
 		
-		jQuery(this).find(".searched:first").show();
+		var firstEvent = jQuery(this).find(".searched:first");
+		firstEvent.show();
+		var id = firstEvent.attr("id").split('_')[1];
+		showById('arrow_' + id );
 	});
 	
 	resize();

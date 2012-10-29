@@ -6,7 +6,7 @@
 
 <div id='caseAggregationDiv'>
 
-	<h1> $i18n.getString( "manual_person_aggregation" ) #openHelp('run_case_aggregation')</h1>
+	<h1> $i18n.getString( "manual_person_aggregation_form" ) #openHelp('run_case_aggregation')</h1>
 	
 	<form id="caseAggregationForm" name="caseAggregationForm" action="caseAggregationResult.action" method="post">
 		<table>
