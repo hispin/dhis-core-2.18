@@ -39,16 +39,19 @@ import org.hisp.dhis.period.Period;
 public class H2StatementBuilder
     extends AbstractStatementBuilder
 {
+    @Override
     public String getDoubleColumnType()
     {
         return "DOUBLE";
     }
 
+    @Override
     public String getVacuum( String table )
     {
         return null;
     }
-    
+
+    @Override
     public String getPeriodIdentifierStatement( Period period )
     {
         return
@@ -56,7 +59,8 @@ public class H2StatementBuilder
             "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
             "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
     }
-        
+    
+    @Override
     public String getDeleteZeroDataValues()
     {
         return
@@ -64,11 +68,7 @@ public class H2StatementBuilder
             "WHERE datavalue.value = '0'";
     }
 
-    public int getMaximumNumberOfColumns()
-    {
-        return 1580; // TODO verify
-    }
-
+    @Override
     public String getDropDatasetForeignKeyForDataEntryFormTable()
     {
         return  "ALTER TABLE dataentryform DROP CONSTRAINT fk_dataentryform_datasetid;";
@@ -122,7 +122,8 @@ public class H2StatementBuilder
             + "AND d2.dataelementid="
             + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
     }
-    
+
+    @Override
     public String getStandardDeviation( int dataElementId, int categoryOptionComboId, int organisationUnitId ){
     	
         return "SELECT STDDEV( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue " +
@@ -130,7 +131,8 @@ public class H2StatementBuilder
 	    "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
 	    "AND sourceid='" + organisationUnitId + "'";
     }
-    
+
+    @Override
     public String getAverage( int dataElementId, int categoryOptionComboId, int organisationUnitId )
     {    
       	 return "SELECT AVG( CAST( value AS " + getDoubleColumnType() + " ) ) FROM datavalue " +
@@ -138,7 +140,8 @@ public class H2StatementBuilder
              "AND categoryoptioncomboid='" + categoryOptionComboId + "' " +
              "AND sourceid='" + organisationUnitId + "'";
     }
-    
+
+    @Override
     public String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
     		String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound )
     {	
@@ -157,7 +160,26 @@ public class H2StatementBuilder
             "AND ( CAST( dv.value AS " + getDoubleColumnType() + " ) < '" + lowerBound + "' " +
             "OR CAST( dv.value AS " + getDoubleColumnType() + " ) > '" + upperBound + "' )";
     }
-    
+
+    @Override
+    public String limitRecord( int min, int max )
+    {
+        return " LIMIT " + max + " OFFSET " + min;
+    }
+
+    @Override
+    public String getAddDate( String dateField, int days )
+    {
+        return "DATEADD('DAY'," + days + "," + dateField + ")";
+    }
+
+    @Override
+    public String getPatientFullName()
+    {
+        return  "concat( firstname, \" \",middleName , \" \" , lastname)";
+    }
+
+    @Override
     public String archiveData( String startDate, String endDate )
     {
        return "DELETE FROM datavalue AS a " +
@@ -167,7 +189,8 @@ public class H2StatementBuilder
             "AND p.startdate>='" + startDate + "' " +
             "AND p.enddate<='" + endDate + "')";
     }
-   
+
+    @Override
     public String unArchiveData( String startDate, String endDate )
     {
        return "DELETE FROM datavaluearchive AS a " +
@@ -177,7 +200,8 @@ public class H2StatementBuilder
            "AND p.startdate>='" + startDate + "' " +
            "AND p.enddate<='" + endDate + "')";
     }
-   
+
+    @Override
     public String deleteRegularOverlappingData()
     {       
        return "DELETE FROM datavalue AS d " +
@@ -190,6 +214,7 @@ public class H2StatementBuilder
 
     }
 
+    @Override
     public String deleteArchivedOverlappingData()
     {
        return "DELETE FROM datavaluearchive AS a " +
@@ -201,6 +226,7 @@ public class H2StatementBuilder
            "AND a.categoryoptioncomboid=d.categoryoptioncomboid)";
     }
 
+    @Override
     public String deleteOldestOverlappingDataValue()
     {       
        return "DELETE FROM datavalue AS d " +
@@ -212,7 +238,8 @@ public class H2StatementBuilder
            "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
            "AND d.lastupdated<a.lastupdated)";
     }
-   
+
+    @Override
     public String deleteOldestOverlappingArchiveData()
     {       
        return "DELETE FROM datavaluearchive AS a " +
@@ -224,7 +251,8 @@ public class H2StatementBuilder
            "AND a.categoryoptioncomboid=d.categoryoptioncomboid " +
            "AND a.lastupdated<=d.lastupdated)";
     }
-    
+
+    @Override
     public String archivePatientData ( String startDate, String endDate )
     {
         return "DELETE FROM patientdatavalue AS pdv " 
@@ -234,7 +262,8 @@ public class H2StatementBuilder
             + "WHERE pi.enddate >= '" + startDate + "' "
             + "AND pi.enddate <= '" +  endDate + "';";
     }
-    
+
+    @Override
     public String unArchivePatientData ( String startDate, String endDate )
     {
         return "DELETE FROM patientdatavaluearchive AS pdv " 
@@ -245,6 +274,7 @@ public class H2StatementBuilder
             + "AND pi.enddate <= '" +  endDate + "';";
     }
 
+    @Override
     public String deleteRegularOverlappingPatientData()
     {
         return "DELETE FROM patientdatavalue AS d " +
@@ -253,7 +283,8 @@ public class H2StatementBuilder
             "AND d.dataelementid=a.dataelementid " +
             "AND d.timestamp<a.timestamp;";
     }
-    
+
+    @Override
     public String deleteArchivedOverlappingPatientData()
     {
         return "DELETE FROM patientdatavaluearchive AS a " +
@@ -261,7 +292,8 @@ public class H2StatementBuilder
             "WHERE d.programstageinstanceid=a.programstageinstanceid " +
             "AND d.dataelementid=a.dataelementid ";
     }
-    
+
+    @Override
     public String deleteOldestOverlappingPatientDataValue()
     {
         return "DELETE FROM patientdatavalue AS d " +
@@ -270,7 +302,8 @@ public class H2StatementBuilder
             "AND d.dataelementid=a.dataelementid " +
             "AND d.timestamp<a.timestamp;";
     }
-    
+
+    @Override
     public String deleteOldestOverlappingPatientArchiveData()
     {
         return "DELETE FROM patientdatavalue AS d " +
@@ -279,7 +312,8 @@ public class H2StatementBuilder
             "AND d.dataelementid=a.dataelementid " +
             "AND a.timestamp<=d.timestamp;";
     }
-    
+
+    @Override
     public String queryDataElementStructureForOrgUnit()
     {
         StringBuffer sqlsb = new StringBuffer();
@@ -291,7 +325,8 @@ public class H2StatementBuilder
         
         return sqlsb.toString();
     }
-    
+
+    @Override
     public String queryRawDataElementsForOrgUnitBetweenPeriods(Integer orgUnitId, List<Integer> betweenPeriodIds)
     {
         StringBuffer sqlsb = new StringBuffer();
@@ -316,20 +351,4 @@ public class H2StatementBuilder
         
         return sqlsb.toString();
     }
-    
-    public String limitRecord( int min, int max )
-    {
-        return " LIMIT " + max + " OFFSET " + min;
-    }
-    
-    public String getAddDate( String dateField, int days )
-    {
-        return "DATEADD('DAY'," + days + "," + dateField + ")";
-    }
-    
-    public String getPatientFullName()
-    {
-        return  "concat( firstname, \" \",middleName , \" \" , lastname)";
-    }
-
 }

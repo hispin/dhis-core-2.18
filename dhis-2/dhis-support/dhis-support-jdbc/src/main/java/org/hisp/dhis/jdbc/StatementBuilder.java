@@ -37,7 +37,11 @@ import java.util.List;
 public interface StatementBuilder
 {
     final String QUOTE = "'";
-    
+
+    //--------------------------------------------------------------------------
+    // General
+    //--------------------------------------------------------------------------
+
     /**
      * Encodes the provided SQL value.
      * 
@@ -109,13 +113,6 @@ public interface StatementBuilder
     String getDeleteZeroDataValues();
     
     /**
-     * Returns the maximum number of columns in a table.
-     * 
-     * @return the maximum number of columns in a table.
-     */
-    int getMaximumNumberOfColumns();
-    
-    /**
      *  Drop Dataset foreign key for DataEntryForm table
      *  
      * @return
@@ -138,7 +135,17 @@ public interface StatementBuilder
     
     String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
     	String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound );
-    	
+    
+    String limitRecord( int min, int max );
+    
+    String getAddDate( String dateField, int days );
+    
+    String getPatientFullName();
+
+    //--------------------------------------------------------------------------
+    // Archiving
+    //--------------------------------------------------------------------------
+
     String archiveData( String startDate, String endDate );
     
     String unArchiveData( String startDate, String endDate );
@@ -166,10 +173,4 @@ public interface StatementBuilder
     String queryDataElementStructureForOrgUnit();
 
     String queryRawDataElementsForOrgUnitBetweenPeriods( Integer orgUnitId, List<Integer> betweenPeriodIds);
-    
-    String limitRecord( int min, int max );
-    
-    String getAddDate( String dateField, int days );
-    
-    String getPatientFullName();
 }
