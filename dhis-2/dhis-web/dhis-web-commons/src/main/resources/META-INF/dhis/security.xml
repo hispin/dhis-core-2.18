@@ -23,6 +23,8 @@
     <property name="redirectStrategy" ref="mappedRedirectStrategy" />
   </bean>
 
+  <bean id="customAuthenticationFilter" class="org.hisp.dhis.security.filter.CustomAuthenticationFilter" />
+
   <sec:http pattern="/dhis-web-commons/javascripts/**" security="none" />
   <sec:http pattern="/dhis-web-commons/css/**" security="none" />
   <sec:http pattern="/dhis-web-commons/flags/**" security="none" />
@@ -43,6 +45,7 @@
     <sec:intercept-url pattern="/api/account" access="permitAll()" />
     <sec:intercept-url pattern="/**" access="isAuthenticated()" />
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
+    <sec:custom-filter ref="customAuthenticationFilter" before="FORM_LOGIN_FILTER" />
   </sec:http>
 
   <!-- Security : Action -->

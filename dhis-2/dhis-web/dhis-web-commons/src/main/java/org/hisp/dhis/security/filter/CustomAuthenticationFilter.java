@@ -1,4 +1,4 @@
-package org.hisp.dhis.security.action;
+package org.hisp.dhis.security.filter;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,61 +27,35 @@ package org.hisp.dhis.security.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.struts2.ServletActionContext;
-import org.springframework.mobile.device.Device;
-import org.springframework.mobile.device.DeviceResolver;
-
-import com.opensymphony.xwork2.Action;
+import javax.servlet.*;
+import java.io.IOException;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class LoginAction
-    implements Action
+public class CustomAuthenticationFilter
+    implements Filter
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DeviceResolver deviceResolver;
-
-    public void setDeviceResolver( DeviceResolver deviceResolver )
+    @Override
+    public void init( FilterConfig filterConfig ) throws ServletException
     {
-        this.deviceResolver = deviceResolver;
     }
-
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-
-    private Boolean failed = false;
-
-    public void setFailed( Boolean failed )
-    {
-        this.failed = failed;
-    }
-
-    public Boolean getFailed()
-    {
-        return failed;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
 
     @Override
-    public String execute()
+    public void doFilter( ServletRequest request, ServletResponse response, FilterChain filterChain ) throws IOException, ServletException
     {
-        Device device = deviceResolver.resolveDevice( ServletActionContext.getRequest() );
+        String mobileVersion = request.getParameter( "mobileVersion" );
 
-        ServletActionContext.getResponse().addHeader( "Login-Page", "true" );
-
-        if ( device.isMobile() )
+        if ( mobileVersion != null )
         {
-            return "mobile";
+            request.setAttribute( "mobileVersion", mobileVersion );
         }
 
-        return "standard";
+        filterChain.doFilter( request, response );
+    }
+
+    @Override
+    public void destroy()
+    {
     }
 }
