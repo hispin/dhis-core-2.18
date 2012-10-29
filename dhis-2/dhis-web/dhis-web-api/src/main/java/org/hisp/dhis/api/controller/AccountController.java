@@ -40,6 +40,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.security.PasswordManager;
+import org.hisp.dhis.security.SecurityService;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -91,6 +92,66 @@ public class AccountController
     
     @Autowired
     private PasswordManager passwordManager;
+    
+    @Autowired
+    private SecurityService securityService;
+    
+    @RequestMapping( value = "/recovery", method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
+    public @ResponseBody String recoverAccount(
+        @RequestParam String username,
+        HttpServletRequest request,
+        HttpServletResponse response )
+    {
+        String rootPath = ContextUtils.getRootPath( request );
+        
+        boolean recover = securityService.sendRestoreMessage( username, rootPath );
+        
+        if ( !recover )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return "Account could not be recovered";
+        }
+
+        log.info( "Recovery message sent for user: " + username );
+        
+        response.setStatus( HttpServletResponse.SC_CREATED );
+        return "Recovery message sent";
+    }
+    
+    @RequestMapping( value = "/restore", method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
+    public @ResponseBody String restoreAccount(
+        @RequestParam String username,
+        @RequestParam String token,
+        @RequestParam String code,
+        @RequestParam String password,
+        HttpServletRequest request,
+        HttpServletResponse response )        
+    {
+        if ( password == null || !ValidationUtils.passwordIsValid( password ) )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return "Password is not specified or invalid";
+        }
+        
+        if ( password.trim().equals( username.trim() ) )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return "Password cannot be equal to username";
+        }
+        
+        boolean restore = securityService.restore( username, token, code, password );
+        
+        if ( !restore )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return "Account could not be restored";
+        }        
+
+        log.info( "Account restored for user: " + username );
+        
+        response.setStatus( HttpServletResponse.SC_CREATED );
+        return "Account restored";
+    }
     
     @RequestMapping( method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String createAccount( 
