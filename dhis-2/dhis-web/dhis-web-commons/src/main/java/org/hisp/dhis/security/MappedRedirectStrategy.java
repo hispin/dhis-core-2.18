@@ -91,11 +91,11 @@ public class MappedRedirectStrategy
         String mobileVersion = (String) request.getAttribute( "mobileVersion" );
         mobileVersion = mobileVersion == null ? "basic" : mobileVersion;
 
-        if ( mobileVersion.equals( "basic" ) )
+        if ( device.isMobile() && mobileVersion.equals( "basic" ) )
         {
             url = getRootPath( request ) + "/light/index.action";
         }
-        else if ( mobileVersion.equals( "smartphone" ) )
+        else if ( device.isMobile() && mobileVersion.equals( "smartphone" ) )
         {
             url = getRootPath( request ) + "/mobile";
         }
