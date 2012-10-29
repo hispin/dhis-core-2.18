@@ -147,4 +147,9 @@ public class DefaultSystemSettingManager
     {
         return StringUtils.trimToNull( (String) getSystemSetting( KEY_EMAIL_USERNAME ) );
     }
+    
+    public boolean accountRecoveryEnabled()
+    {
+        return (Boolean) getSystemSetting( KEY_ACCOUNT_RECOVERY, false );
+    }
 }

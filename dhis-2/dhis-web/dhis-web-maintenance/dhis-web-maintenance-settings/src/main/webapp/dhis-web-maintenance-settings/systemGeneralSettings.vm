@@ -94,7 +94,7 @@
 </div>
 
 <div class="setting">
-    <input type="checkbox" id="omitIndicatorsZeroNumeratorDataMart" name="omitIndicatorsZeroNumeratorDataMart" #if( $omitIndicatorsZeroNumeratorDataMart )checked="checked"#end/>
+    <input type="checkbox" id="omitIndicatorsZeroNumeratorDataMart" name="omitIndicatorsZeroNumeratorDataMart" #if( $omitIndicatorsZeroNumeratorDataMart )checked="checked"#end>
     <label for="omitIndicatorsZeroNumeratorDataMart">$i18n.getString( "omit_indicators_zero_numerator_data_mart" )</label>
 </div>
 

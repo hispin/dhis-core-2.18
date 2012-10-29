@@ -56,6 +56,19 @@
                             <input id="reset" class="button" type="reset" value="Clear" style="width:120px">
                         </td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td style="padding-top:8px">
+                        	<span id="loginFormFooter">
+                        	#if( $keyAccountRecovery )
+                        	<a href="recovery.action">Forgot password?</a>&nbsp;
+                        	#end
+                        	#if( $keyConfig.selfRegistrationAllowed() )
+                        	<a href="account.action">Create an account</a>	
+	                        #end
+	                        </span>
+                        </td>
+                    </tr>
                 </table>
             </form>
             #if( $failed == true )

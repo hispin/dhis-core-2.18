@@ -1,7 +1,11 @@
-Someone, probably you, have asked us to restore your useraccount at ${basePath}. 
-You have been sent two emails. This is the first email of those two. Please follow
-the link below this text. In the next step you will be asked to enter a code 
-which is sent to you in the other email. You must complete the restore within 1 
-hour.
+Someone, probably you, have asked us to restore your user account at ${object.rootPath}. 
+You have been sent two emails, where this is the first one. Please follow the 
+link below. In the next step you will be asked to enter a code which has been 
+sent to you in the other email.
 
-${restorePath}?username=${username}&token=${token}
+
+${object.restorePath}?username=${object.username}&token=${object.token}
+
+
+You must complete the restore process within 1 hour. If you take no action, your
+account will not be restored.

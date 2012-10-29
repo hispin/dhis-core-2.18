@@ -41,6 +41,7 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_OMIT_INDICATORS_ZER
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_CONFIGURATION;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCOUNT_RECOVERY;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,6 +103,7 @@ public class SystemSettingInterceptor
         map.put( KEY_FACTOR_OF_DEVIATION, systemSettingManager.getSystemSetting( KEY_FACTOR_OF_DEVIATION, DEFAULT_FACTOR_OF_DEVIATION ) );
         map.put( KEY_COMPLETENESS_OFFSET, systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET, DEFAULT_COMPLETENESS_OFFSET ) );
         map.put( KEY_PHONE_NUMBER_AREA_CODE, systemSettingManager.getSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, "" ) );
+        map.put( KEY_ACCOUNT_RECOVERY, systemSettingManager.getSystemSetting( KEY_ACCOUNT_RECOVERY, false ) );
         map.put( KEY_CONFIGURATION, configurationService.getConfiguration() );
         
         invocation.getStack().push( map );

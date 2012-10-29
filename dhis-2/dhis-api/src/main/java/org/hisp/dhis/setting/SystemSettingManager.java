@@ -75,6 +75,7 @@ public interface SystemSettingManager
     final String KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASKS = "scheduleAggregateQueryBuilder";
     final String KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL = "aggQueryBuilderorgUnitGroupSetAggregationLevel";
     final String KEY_CONFIGURATION = "keyConfig";
+    final String KEY_ACCOUNT_RECOVERY = "keyAccountRecovery";
 
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
@@ -111,4 +112,6 @@ public interface SystemSettingManager
     String getEmailUsername();
     
     String getEmailPassword();
+    
+    boolean accountRecoveryEnabled();
 }
