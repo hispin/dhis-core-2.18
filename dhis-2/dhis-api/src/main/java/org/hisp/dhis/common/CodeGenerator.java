@@ -43,21 +43,34 @@ public class CodeGenerator
     public static final int CODESIZE = 11;
 
     /**
-     * Generates a pseudo random string using the allowed characters
+     * Generates a pseudo random string using the allowed characters. Code is
+     * 11 characters long.
      * 
-     * @return the Code
+     * @param codeSize the number of characters in the code.
+     * @return the code.
      */
     public static String generateCode()
+    {
+        return generateCode( CODESIZE );
+    }
+        
+    /**
+     * Generates a pseudo random string using the allowed characters.
+     * 
+     * @param codeSize the number of characters in the code.
+     * @return the code.
+     */
+    public static String generateCode( int codeSize )
     {
         // Using the system default algorithm and seed
         SecureRandom sr = new SecureRandom();
 
-        char[] randomChars = new char[CODESIZE];
+        char[] randomChars = new char[codeSize];
         
         // first char should be a letter
         randomChars[0] = letters.charAt( sr.nextInt( letters.length() ) );
         
-        for ( int i = 1; i < CODESIZE; ++i )
+        for ( int i = 1; i < codeSize; ++i )
         {
             randomChars[i] = allowedChars.charAt( sr.nextInt( NUMBER_OF_CODEPOINTS ) );
         }
