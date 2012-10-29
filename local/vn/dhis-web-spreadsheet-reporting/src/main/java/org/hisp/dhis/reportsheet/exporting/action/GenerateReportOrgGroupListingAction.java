@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.exporting.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -114,6 +114,8 @@ public class GenerateReportOrgGroupListingAction
             {
                 generateOutPutFile2( exportReportInstance, exportReportItems, sheet );
             }
+
+            this.recalculatingFormula( sheet );
         }
 
         /**
@@ -199,12 +201,17 @@ public class GenerateReportOrgGroupListingAction
                 if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), unitGroup.getName(), ExcelUtils.TEXT,
-                        sheet, this.csText12BoldCenter );
+                        sheet, this.csText12NormalCenter );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo++],
-                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                        ExcelUtils.TEXT, sheet, this.csText12NormalCenter );
+                }
+                else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
+                {
+                    ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils.generateExcelFormula(
+                        reportItem.getExpression(), run, run ), sheet, this.csFormula, evaluatorFormula );
                 }
 
                 run++;
@@ -216,7 +223,7 @@ public class GenerateReportOrgGroupListingAction
                     if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION ) )
                     {
                         ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), o.getName(), ExcelUtils.TEXT,
-                            sheet, this.csText10Bold );
+                            sheet, this.csText10Normal );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
                     {
@@ -241,7 +248,8 @@ public class GenerateReportOrgGroupListingAction
                     // FORMULA_EXCEL
                     {
                         ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, this.csFormula );
+                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, this.csFormula,
+                            evaluatorFormula );
                     }
 
                     run++;
@@ -259,7 +267,7 @@ public class GenerateReportOrgGroupListingAction
                         formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
 
                         ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
-                            this.csFormula );
+                            this.csFormula, evaluatorFormula );
 
                         totalFormula += columnName + beginChapter + ",";
                     }
@@ -268,7 +276,7 @@ public class GenerateReportOrgGroupListingAction
                         formula = ExcelUtils.generateExcelFormula( reportItem.getExtraExpression(), next + 1, 0 );
 
                         ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
-                            this.csFormula );
+                            this.csFormula, evaluatorFormula );
                     }
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT )
@@ -276,7 +284,7 @@ public class GenerateReportOrgGroupListingAction
                     || reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin - 1, reportItem.getColumn(), null, ExcelUtils.NUMBER, sheet,
-                        this.csText10Bold );
+                        this.csText10Normal );
                 }
 
                 next = run;
@@ -287,13 +295,15 @@ public class GenerateReportOrgGroupListingAction
             {
                 totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
 
-                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );
+                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula,
+                    evaluatorFormula );
             }
             else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )
             {
                 totalFormula = ExcelUtils.generateExcelFormula( reportItem.getExtraExpression(), 0, 0 );
 
-                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );
+                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula,
+                    evaluatorFormula );
             }
         }
 
@@ -320,12 +330,12 @@ public class GenerateReportOrgGroupListingAction
                 if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), unitGroup.getName(), ExcelUtils.TEXT,
-                        sheet, this.csText12BoldCenter );
+                        sheet, this.csText12NormalCenter );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo++],
-                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                        ExcelUtils.TEXT, sheet, this.csText12NormalCenter );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
                 {
@@ -351,7 +361,7 @@ public class GenerateReportOrgGroupListingAction
                 // FORMULA_EXCEL
                 {
                     ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils.generateExcelFormula(
-                        reportItem.getExpression(), rowBegin, rowBegin ), sheet, this.csFormula );
+                        reportItem.getExpression(), rowBegin, rowBegin ), sheet, this.csFormula, evaluatorFormula );
                 }
 
                 rowBegin++;

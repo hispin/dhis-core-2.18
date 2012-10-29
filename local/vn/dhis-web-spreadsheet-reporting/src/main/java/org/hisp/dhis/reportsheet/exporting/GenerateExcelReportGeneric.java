@@ -213,15 +213,13 @@ public class GenerateExcelReportGeneric
 
     protected Font csFont;
 
+    protected Font csFont8Normal;
+
+    protected Font csFont10Normal;
+
     protected Font csFont11Bold;
 
-    protected Font csFont10Bold;
-
-    protected Font csFont9Bold;
-
-    protected Font csFont8Bold;
-
-    protected Font csFont12BoldCenter;
+    protected Font csFont12NormalCenter;
 
     protected CellStyle csNumber;
 
@@ -231,17 +229,17 @@ public class GenerateExcelReportGeneric
 
     protected CellStyle csTextWithoutBorder;
 
-    protected CellStyle csText10Bold;
+    protected CellStyle csText10Normal;
 
     protected CellStyle csText9Bold;
 
-    protected CellStyle csText8Bold;
+    protected CellStyle csText8Normal;
 
     protected CellStyle csTextSerial;
 
     protected CellStyle csTextICDJustify;
 
-    protected CellStyle csText12BoldCenter;
+    protected CellStyle csText12NormalCenter;
 
     protected FormulaEvaluator evaluatorFormula;
 
@@ -294,21 +292,19 @@ public class GenerateExcelReportGeneric
     {
         sheetPOI = templateWorkbook.getSheetAt( 0 );
         csFont = templateWorkbook.createFont();
-        csFont8Bold = templateWorkbook.createFont();
-        csFont9Bold = templateWorkbook.createFont();
-        csFont10Bold = templateWorkbook.createFont();
+        csFont8Normal = templateWorkbook.createFont();
+        csFont10Normal = templateWorkbook.createFont();
         csFont11Bold = templateWorkbook.createFont();
-        csFont12BoldCenter = templateWorkbook.createFont();
+        csFont12NormalCenter = templateWorkbook.createFont();
         csNumber = templateWorkbook.createCellStyle();
         csFormula = templateWorkbook.createCellStyle();
         csText = templateWorkbook.createCellStyle();
         csTextWithoutBorder = templateWorkbook.createCellStyle();
-        csText8Bold = templateWorkbook.createCellStyle();
-        csText9Bold = templateWorkbook.createCellStyle();
-        csText10Bold = templateWorkbook.createCellStyle();
+        csText8Normal = templateWorkbook.createCellStyle();
+        csText10Normal = templateWorkbook.createCellStyle();
         csTextSerial = templateWorkbook.createCellStyle();
         csTextICDJustify = templateWorkbook.createCellStyle();
-        csText12BoldCenter = templateWorkbook.createCellStyle();
+        csText12NormalCenter = templateWorkbook.createCellStyle();
     }
 
     @SuppressWarnings( "static-access" )
@@ -320,15 +316,13 @@ public class GenerateExcelReportGeneric
 
         csTextWithoutBorder.setFont( csFont );
 
-        initPOIStylesManager.initFont( csFont8Bold, "Tahoma", (short) 8, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
+        initPOIStylesManager.initFont( csFont8Normal, "Tahoma", (short) 8, Font.BOLDWEIGHT_NORMAL, IndexedColors.BLACK
             .getIndex() );
-        initPOIStylesManager.initFont( csFont9Bold, "Tahoma", (short) 9, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
-            .getIndex() );
-        initPOIStylesManager.initFont( csFont10Bold, "Tahoma", (short) 10, Font.BOLDWEIGHT_BOLD, IndexedColors.BLACK
-            .getIndex() );
+        initPOIStylesManager.initFont( csFont10Normal, "Tahoma", (short) 10, Font.BOLDWEIGHT_NORMAL,
+            IndexedColors.BLACK.getIndex() );
         initPOIStylesManager.initFont( csFont11Bold, "Tahoma", (short) 11, Font.BOLDWEIGHT_BOLD,
             IndexedColors.DARK_BLUE.getIndex() );
-        initPOIStylesManager.initFont( csFont12BoldCenter, "Tahoma", (short) 12, Font.BOLDWEIGHT_BOLD,
+        initPOIStylesManager.initFont( csFont12NormalCenter, "Tahoma", (short) 12, Font.BOLDWEIGHT_NORMAL,
             IndexedColors.BLUE.getIndex() );
 
         initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
@@ -338,15 +332,11 @@ public class GenerateExcelReportGeneric
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_ALIGN_RIGHT, true );
-        initPOIStylesManager.initCellStyle( csText8Bold, csFont8Bold, this.CELLSTYLE_BORDER,
+        initPOIStylesManager.initCellStyle( csText8Normal, csFont8Normal, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT,
             true );
-        initPOIStylesManager.initCellStyle( csText9Bold, csFont9Bold, this.CELLSTYLE_BORDER,
-            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
-            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT,
-            true );
-        initPOIStylesManager.initCellStyle( csText10Bold, csFont10Bold, this.CELLSTYLE_BORDER,
+        initPOIStylesManager.initCellStyle( csText10Normal, csFont10Normal, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_LEFT,
             true );
@@ -357,7 +347,7 @@ public class GenerateExcelReportGeneric
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_ALIGN_JUSTIFY, true );
-        initPOIStylesManager.initCellStyle( csText12BoldCenter, csFont12BoldCenter, this.CELLSTYLE_BORDER,
+        initPOIStylesManager.initCellStyle( csText12NormalCenter, csFont12NormalCenter, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_ALIGN_CENTER, true );
@@ -409,13 +399,9 @@ public class GenerateExcelReportGeneric
     protected void installReadTemplateFile( ExportReport exportReport, Period period, Object object )
         throws Exception
     {
-        this.outputReportFile = new File
-        (
-            reportLocationManager.getExportReportTemporaryDirectory(),
-            currentUserService.getCurrentUsername()
-            + this.dateformatter.format( Calendar.getInstance().getTime() )
-            + exportReport.getExcelTemplateFile()
-        );
+        this.outputReportFile = new File( reportLocationManager.getExportReportTemporaryDirectory(), currentUserService
+            .getCurrentUsername()
+            + this.dateformatter.format( Calendar.getInstance().getTime() ) + exportReport.getExcelTemplateFile() );
 
         this.outputStreamExcelTemplate = new FileOutputStream( outputReportFile );
 
@@ -424,6 +410,8 @@ public class GenerateExcelReportGeneric
         this.initExcelFormat();
 
         this.installDefaultExcelFormat();
+        
+        this.initFormulaEvaluating();
 
         if ( exportReport.getOrganisationRow() != null && exportReport.getOrganisationColumn() != null )
         {
