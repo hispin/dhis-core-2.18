@@ -73,3 +73,20 @@ order by province, county, district, ou.name;
 -- Compare user roles
 
 select authority from userroleauthorities where userroleid=33706 and authority not in (select authority from userroleauthorities where userroleid=21504);
+
+-- User overview (Postgres only)
+
+select u.username, u.lastlogin, ui.surname, ui.firstname, ui.email, ui.phonenumber, ui.jobtitle, (
+  select array_to_string( array(
+    select name from userrole ur
+    join userrolemembers urm using(userroleid)
+    where urm.userid=u.userid), ', ' )
+  )  as userroles, (
+  select array_to_string( array(
+    select name from organisationunit ou
+    join usermembership um using(organisationunitid)
+    where um.userinfoid=ui.userinfoid), ', ' )
+  ) as orgunits
+from users u 
+join userinfo ui on u.userid=ui.userinfoid
+order by u.username;
