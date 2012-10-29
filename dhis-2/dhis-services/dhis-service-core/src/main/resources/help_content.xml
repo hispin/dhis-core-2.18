@@ -5629,11 +5629,11 @@ elements. The &apos;Sort&apos; button can be used to sort the data elements into
           <para>Create, modify and view validation criteria. A criteria is used for validation of Person data. </para>
         </listitem>
         <listitem>
-          <para>Scheduling Message </para>
+          <para>Schedule Message </para>
           <para>Scheduled automatic messages to be sent in order to notify persons about upcoming or overdue visits.</para>
         </listitem>
         <listitem>
-          <para>Scheduling Aggregation Query Builder</para>
+          <para>Schedul Automated Aggregation</para>
           <para>Schedule for running aggregate builder formulas automatically. </para>
         </listitem>
       </itemizedlist>
@@ -5879,15 +5879,15 @@ For example: the date in which a person enrolls to the system.</para>
         </section>
       </section>
       <section id="patient_aggregation_query_builder">
-        <title>Person aggregation query builder management</title>
+        <title>Aggregation query builder management</title>
         <para>This is the core functionality for linking data between tracker module and aggregate management module by defining the linking/aggregating rules. The purpose  is to produce aggregated data / statistics based on the low-level case based data. It is based around flexible aggregation query definitions which maps the data elements used for case based data management to data elements used for aggregate data.</para>
         <para>This provides two functions - </para>
         <itemizedlist>
           <listitem>
-            <para><emphasis role="italic">Person aggregation query builder management</emphasis> is a tool for defining formulas, expressions, rules for aggregation data from tracker to aggregation module. </para>
+            <para><emphasis role="italic">Aggregation query builder management</emphasis> is a tool for defining formulas, expressions, rules for aggregation data from tracker to aggregation module. </para>
           </listitem>
           <listitem>
-            <para><emphasis role="italic">Person aggregation</emphasis> is used for generating routine data values from individual data by period and organization unit. Please refer the Service module to see this part.</para>
+            <para><emphasis role="italic">Manual person aggregation</emphasis> is used for generating routine data values from individual data by period and organization unit. Please refer the <emphasis role="italic">Service</emphasis> module to see this part.</para>
           </listitem>
         </itemizedlist>
         <section>
@@ -5904,22 +5904,22 @@ For example: the date in which a person enrolls to the system.</para>
           <para>Basic information -</para>
           <itemizedlist>
             <listitem>
-              <para><emphasis role="italic">Name</emphasis>: Provide name of query,  this name is usually same with the name of aggregate data element. For example Number of mothers got VAT, Number of children got BCG vaccine,...</para>
+              <para><emphasis role="italic">Name</emphasis> - Provide name of query,  this name is usually same with the name of aggregate data element. For example Number of mothers got VAT, Number of children got BCG vaccine,...</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Dataset</emphasis>: Select dataset contains data elements which will be used to link with individual data.</para>
+              <para><emphasis role="italic">Dataset</emphasis> - Select dataset contains data elements which will be used to link with individual data.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Data element</emphasis>: Select aggregate data element which will be used to link with individual data.</para>
+              <para><emphasis role="italic">Data element</emphasis> - Select aggregate data element which will be used to link with individual data.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Operator</emphasis>: Select <emphasis role="italic">Number of persons</emphasis> if aggregate based on persons, or <emphasis role="italic">Number of visits</emphasis> if aggregate data based on  times that persons received services.</para>
+              <para><emphasis role="italic">Operator</emphasis> - Select <emphasis role="italic">Number of persons</emphasis> if aggregate based on persons, or <emphasis role="italic">Number of visits</emphasis> if aggregate data based on  times that persons received services.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Program</emphasis>: Select program   needed for aggregation.</para>
+              <para><emphasis role="italic">Program</emphasis> - Select program   needed for aggregation.</para>
             </listitem>
             <listitem>
-              <para><emphasis role="italic">Program Stage</emphasis>: Select program stage from the selected program above.</para>
+              <para><emphasis role="italic">Program Stage</emphasis> - Select program stage from the selected program above.</para>
             </listitem>
           </itemizedlist>
           <para>Next section included 3 tabs: <emphasis role="italic">Data elements</emphasis>, <emphasis role="italic">Person attributes</emphasis> and <emphasis role="italic">Program</emphasis>. Depend on the requirement of data aggregation, data element, person attributes, and number of programs are selected. </para>
@@ -5974,6 +5974,8 @@ For example: the date in which a person enrolls to the system.</para>
           <orderedlist>
             <listitem>
               <para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Data Element and Indicators</emphasis> option and click on it. Select <emphasis role="italic">Data Element</emphasis> option to define two new data elements -</para>
+              <para>1) Define a new data element named <emphasis role="italic">Number of children - BCG</emphasis> with  <emphasis role="italic">Aggregate</emphasis> option for Domain Type.</para>
+              <para>2) Define a new data element named <emphasis role="italic">BCG dose give date</emphasis> with  <emphasis role="italic">Patient</emphasis> option for Domain Type.</para>
             </listitem>
             <listitem>
               <para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Datasets</emphasis> option and click on it. Select <emphasis role="italic">Dataset</emphasis> option to create a new dataset named <emphasis role="italic">BCG Report</emphasis> and add <emphasis role="italic">Number of children - BCG</emphasis> data element into the dataset.</para>
@@ -5982,7 +5984,7 @@ For example: the date in which a person enrolls to the system.</para>
               <para>From <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option   and click on it. Select <emphasis role="italic">Program</emphasis> option to create a program named <emphasis role="italic">Child Health Program</emphasis> with a stage named <emphasis role="italic">Birth Details</emphasis> and add the <emphasis role="italic">BCG dose given</emphasis> data element into this stage.</para>
             </listitem>
             <listitem>
-              <para>Create a new person aggregation query builder named <emphasis role="italic">Number of children - BCG Builder </emphasis>to linking between the data elements.</para>
+              <para>Create a new aggregation query builder named <emphasis role="italic">Number of children - BCG Builder </emphasis>to linking between the data elements.</para>
               <screenshot>
                 <mediaobject>
                   <imageobject>
@@ -5993,19 +5995,19 @@ For example: the date in which a person enrolls to the system.</para>
             </listitem>
             <listitem>
               <para>From <emphasis role="italic">Services</emphasis> menu, go to <emphasis role="italic">Individual Records </emphasis>option and click on it. Select <emphasis role="italic">Person</emphasis> option below <emphasis role="italic">Registration</emphasis> header in the left menu to register three persons named <emphasis role="italic">Micheal</emphasis>, <emphasis role="italic">Alice</emphasis> and <emphasis role="italic">Tom</emphasis> in <emphasis role="italic">Ngelehun CHC</emphasis> and enroll them into <emphasis role="italic">Child Health Program</emphasis>.</para>
-              <para>1) For  <emphasis role="italic">Micheal</emphasis>, open the <emphasis role="italic">Birth Details</emphasis> stage into <emphasis role="italic">Child Health Program</emphasis>. Enter value for <emphasis role="italic">BCG dose give date</emphasis> data element as &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;</para>
-              <para>2) For  <emphasis role="italic">Alice</emphasis>, open the <emphasis role="italic">Birth Details</emphasis> stage into Child Health Program. Enter Enter value for <emphasis role="italic">BCG dose give date</emphasis> data element as &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;</para>
+              <para>1) For  <emphasis role="italic">Micheal</emphasis>, open the <emphasis role="italic">Birth Details</emphasis> stage into <emphasis role="italic">Child Health Program</emphasis>. Enter value for <emphasis role="italic">BCG dose give date</emphasis> data element as &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;.</para>
+              <para>2) For  <emphasis role="italic">Alice</emphasis>, open the <emphasis role="italic">Birth Details</emphasis> stage into Child Health Program. Enter Enter value for <emphasis role="italic">BCG dose give date</emphasis> data element as &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;.</para>
               <para>3) For    <emphasis role="italic">Tom</emphasis>,  no enter any data value for <emphasis role="italic">Birth Details</emphasis> stage.</para>
               <warning>
-                <para>Before entering data value for the stage, choose <emphasis role="italic">Report Date</emphasis> as &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;</para>
+                <para>Before entering data value for the stage, choose <emphasis role="italic">Report Date</emphasis> as &quot;<emphasis role="italic">2012-01-18</emphasis>&quot;.</para>
               </warning>
             </listitem>
             <listitem>
-              <para>From <emphasis role="italic">Services</emphasis> menu, go to <emphasis role="italic">Individual Records</emphasis> option and click on it. Select <emphasis role="italic">Person aggregation</emphasis> option to run<emphasis role="italic"> Number of children - BCG Builder</emphasis> to get data value  and save it into database.</para>
+              <para>From <emphasis role="italic">Services</emphasis> menu, go to <emphasis role="italic">Individual Records</emphasis> option and click on it. Select <emphasis role="italic">Manual person aggregation</emphasis> option to run<emphasis role="italic"> Number of children - BCG Builder</emphasis> to get data value  and save it into database.</para>
               <screenshot>
                 <mediaobject>
                   <imageobject>
-                    <imagedata width="70%" fileref="resources/images/patients_programs/example_person_aggregation.png" format="PNG"/>
+                    <imagedata width="70%" fileref="resources/images/patients_programs/person_aggregation_form.png" format="PNG"/>
                   </imageobject>
                 </mediaobject>
               </screenshot>
@@ -6017,8 +6019,6 @@ For example: the date in which a person enrolls to the system.</para>
                   </imageobject>
                 </mediaobject>
               </screenshot>
-              <para>1) Define a new data element named <emphasis role="italic">Number of children - BCG</emphasis> with  <emphasis role="italic">Aggregate</emphasis> option for Domain Type.</para>
-              <para>2) Define a new data element named <emphasis role="italic">BCG dose give date</emphasis> with  <emphasis role="italic">Patient</emphasis> option for Domain Type.</para>
             </listitem>
           </orderedlist>
         </section>
@@ -6026,19 +6026,19 @@ For example: the date in which a person enrolls to the system.</para>
       <section id="validation_criteria">
         <title>Validation criteria</title>
         <para>Validation criteria section provides a mechanism for defining criteria for persons when enrolling a program.</para>
-        <para>To access the validation criteria maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Validation Criteria</emphasis> option to create a new program</para>
+        <para>To access the validation criteria maintenance module, from <emphasis role="italic">Maintenance</emphasis> menu, go to <emphasis role="italic">Persons and Programs</emphasis> option and click on it. Select <emphasis role="italic">Validation Criteria</emphasis> option to create a new program.</para>
         <para>To create a new validation criterion, click the <emphasis role="italic">Add new</emphasis> button. Fill all fields with read asterisk, and click <emphasis role="italic">Add</emphasis> button.</para>
-        <para>You can assign facilities to a validation criterion in the <emphasis role="italic">Validation Criteria Management </emphasis>(list of available validation criteria are shown) by clicking the blue folder icon, the first icon under Operations, corresponding to the validation criterion you would like to assign. Click the <emphasis role="italic">Move selected</emphasis> button to add the selected programs to the validation criterion. Click the <emphasis role="italic">Remove selected</emphasis> button to remove programs from the group that have been selected in the right panel. Finally, click the <emphasis role="italic">Save</emphasis> button to save changes, or the <emphasis role="italic">Cancel</emphasis> button to discard any changes.</para>
+        <para>You can assign facilities to a validation criterion in the <emphasis role="italic">Validation Criteria Management </emphasis>(list of available validation criteria are shown) by clicking the blue folder icon, the first icon under Operations, corresponding to the validation criterion you would like to assign. Click the <emphasis role="italic">Move selected</emphasis> button to add the selected programs to the validation criterion. Click the <emphasis role="italic">Remove selected</emphasis> button to remove programs from the group that have been selected in the right panel. Finally, click the <emphasis role="italic">Save</emphasis> button to save changes, or the <emphasis role="italic">Cancel</emphasis> button to discard any change.</para>
       </section>
       <section id="schedule_sending_message">
-        <title>Scheduling message</title>
+        <title>Schedule message</title>
         <para>This function is used for scheduling auto-send messages on the time defined. When the schedule is started, messages for each person are generated based on templates defined in each stage at midnight. On the time, the scheduled messages are sent.</para>
         <para>Click <emphasis role="italic">Execute</emphasis> button to generate and send each message for each  person at the time the button clicked.</para>
-        <para>Reminder messages can be automatically scheduled to run on regular intervals. Click <emphasis role="italic">Start</emphasis> button will enable the scheduled job to run the task. Messages are generated based on templates defined in each stages at mid-night and sent at a pre-determined time  or can be run immediately by pressing <emphasis role="italic">Execute now</emphasis> button.</para>
+        <para>Reminder messages can be automatically scheduled to run on regular intervals. Click <emphasis role="italic">Start</emphasis> button will enable the scheduled job to run the task. Messages are generated based on templates defined in each stages at mid-night and sent at a pre-determined time  or can be run immediately by pressing <emphasis role="italic">Execute</emphasis> button.</para>
       </section>
       <section id="scheduling_aggregation_query_builder">
-        <title>Scheduling Aggregation Query Builder</title>
-        <para>The aggregation query builder jobs can be automatically scheduled to run on regular intervals. Simply select the aggregation period types, organisation unit group set aggregation level, and strategy to configure how the scheduled job should run. Click <emphasis role="italic">Start</emphasis> button will enable the scheduled job to run at mid-night or can be run immediately by pressing <emphasis role="italic">Execute now</emphasis> button.<screenshot>
+        <title>Schedule Automated Aggregation</title>
+        <para>The aggregation query builder jobs can be automatically scheduled to run on regular intervals. Simply select  organisation unit group set aggregation level, and strategy to configure how the scheduled job should run. Click <emphasis role="italic">Start</emphasis> button will enable the scheduled job to run at mid-night or can be run immediately by pressing <emphasis role="italic">Execute</emphasis> button.<screenshot>
             <mediaobject>
               <imageobject>
                 <imagedata width="70%" fileref="resources/images/patients_programs/scheduling_aggregation_query_builder.png"/>
@@ -6181,11 +6181,23 @@ For example: the date in which a person enrolls to the system.</para>
             </listitem>
           </orderedlist>
           <para>The <emphasis role="italic">Active programs</emphasis> section consists of active programs of the person. Click on a program to show detail information below. Besides, there are two link in this tab - </para>
-          <para>1) To display completed program list of the person, click   <emphasis role="italic">Completed programs</emphasis> link. Select a program to show detail information below.</para>
-          <para>2) To enroll the person into a program, click <emphasis role="italic">Enroll</emphasis> link.</para>
+          <orderedlist>
+            <listitem>
+              <para>To display completed program list of the person, click   <emphasis role="italic">Completed programs</emphasis> link. Select a program to show detail information below.</para>
+            </listitem>
+            <listitem>
+              <para>To enroll the person into a program, click <emphasis role="italic">Enroll</emphasis> link.</para>
+            </listitem>
+          </orderedlist>
           <para>The <emphasis role="italic">Relationship</emphasis> section consists of relationships of the person. Click on a person in list to open his/her dashboard. Besides, there are two link in this tab - </para>
-          <para>1) To open Relationship management section, click <emphasis role="italic">Management</emphasis> link.</para>
-          <para>2) To register new person for relationship, click <emphasis role="italic">Register new person</emphasis> link.</para>
+          <orderedlist>
+            <listitem>
+              <para>To open Relationship management section, click <emphasis role="italic">Management</emphasis> link.</para>
+            </listitem>
+            <listitem>
+              <para>To register new person for relationship, click <emphasis role="italic">Register new person</emphasis> link.</para>
+            </listitem>
+          </orderedlist>
           <para>Besides, the system audits user&apos;s information who accessed on the dashboard. Click on the <emphasis role="italic">History</emphasis> link in the header to  display this information.</para>
         </section>
         <section>
@@ -6506,8 +6518,8 @@ The plan (expected visits for the upcoming period) will typically be a mix of re
         </section>
       </section>
       <section id="run_case_aggregation">
-        <title>Person aggregation</title>
-        <para>The <emphasis role="italic">Person Aggregation</emphasis> module is used for aggregating individual data and import into aggregated data element. To open <emphasis>Person Aggregation</emphasis> module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Individual Records</emphasis> option. Select <emphasis role="italic">Person Aggregation</emphasis> option on left menu.  <emphasis>Person Aggregation form</emphasis> is opened as below -</para>
+        <title>Manual person aggregation</title>
+        <para>The <emphasis role="italic">Manual person Aggregation</emphasis> module is used for aggregating individual data and import into aggregated data element. To open <emphasis>Manual person aggregation</emphasis> module, from the <emphasis role="italic">Services</emphasis> menu, go to the <emphasis role="italic">Individual Records</emphasis> option. Select <emphasis role="italic">Manual Person Aggregation</emphasis> option on left menu.  <emphasis>Manual person aggregation form</emphasis> is opened as below -</para>
         <screenshot>
           <mediaobject>
             <imageobject>
@@ -6521,7 +6533,7 @@ The plan (expected visits for the upcoming period) will typically be a mix of re
             <para>Select <emphasis role="italic">dataset</emphasis> from Dataset List to get aggregate values. Note that only datasets which were assigned to at least one organisation unit will be shown in this list.</para>
           </listitem>
           <listitem>
-            <para>Depend on frequency of the selected dataset, select <emphasis role="italic">period</emphasis> to get aggregate data. For example, if frequency of dataset is quarterly, then select begin quarter and end quarter. To select a particular quarter, then begin quarter and end quarter is the same particular quarter name.</para>
+            <para>Select a date range  from <emphasis role="italic">From</emphasis> and <emphasis role="italic">To</emphasis> fields.</para>
           </listitem>
           <listitem>
             <para>Select <emphasis role="italic">organisation unit level</emphasis> where person data will be select to aggregate. There are 3 options - </para>
@@ -6538,11 +6550,11 @@ The plan (expected visits for the upcoming period) will typically be a mix of re
           <screeninfo>Figure - Person aggregation result</screeninfo>
           <mediaobject>
             <imageobject>
-              <imagedata width="70%" fileref="resources/images/patients_programs/person_aggregation_result.png" format="PNG"/>
+              <imagedata width="70%" fileref="resources/images/patients_programs/example_person_aggregation_result.png" format="PNG"/>
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>In <emphasis>Person aggregation result</emphasis> page -</para>
+        <para>In <emphasis>Manual person aggregation result</emphasis> page -</para>
         <itemizedlist>
           <listitem>
             <para>Click <emphasis role="italic">Save all values</emphasis> button to save all aggregated data values .</para>
