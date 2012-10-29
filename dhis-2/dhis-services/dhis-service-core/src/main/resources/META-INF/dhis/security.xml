@@ -16,6 +16,12 @@
     <property name="usernameSaltSource" ref="usernameSaltSource" />
   </bean>
 
+  <bean id="org.hisp.dhis.security.SecurityService" class="org.hisp.dhis.security.DefaultSecurityService">
+    <property name="passwordManager" ref="org.hisp.dhis.security.PasswordManager" />
+    <property name="emailMessageSender" ref="emailMessageSender" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+  </bean>
+
   <sec:authentication-manager alias="authenticationManager">
     <sec:authentication-provider user-service-ref="userDetailsService">
       <sec:password-encoder hash="md5">

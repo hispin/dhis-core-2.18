@@ -1,0 +1,7 @@
+Someone, probably you, have asked us to restore your useraccount at ${basePath}. 
+You have been sent two emails. This is the second email of those two. Please
+read the first email and follow the instructions. If you already have done that,
+please use the code below to complete the account restore form. You must complete 
+the restore within 1 hour.
+
+${code}

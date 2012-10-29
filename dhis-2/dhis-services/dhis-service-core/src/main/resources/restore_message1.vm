@@ -1,0 +1,7 @@
+Someone, probably you, have asked us to restore your useraccount at ${basePath}. 
+You have been sent two emails. This is the first email of those two. Please follow
+the link below this text. In the next step you will be asked to enter a code 
+which is sent to you in the other email. You must complete the restore within 1 
+hour.
+
+${restorePath}?username=${username}&token=${token}
