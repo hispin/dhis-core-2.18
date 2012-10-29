@@ -71,6 +71,13 @@
         /light/index.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;periodId=${periodId}&amp;complete=true
       </result>
     </action>
+	
+	<action name="inComplete"
+        class="org.hisp.dhis.light.dataentry.action.UndoCompleteAction">
+      <result name="success" type="redirect">
+        /light/dataEntry.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;periodId=${periodId}
+      </result>
+    </action>
 
     <!-- Namebased Data Entry -->
 
