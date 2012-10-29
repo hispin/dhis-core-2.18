@@ -24,14 +24,18 @@
 </div>
 #end
 
-
 <form id='loginForm' action="../../dhis-web-commons-security/login.action" method="POST">
 
 <div class="header-box" align="center">
 	<h3 style="text-align: left;">Login</h3>
 	<p style="text-align: left;">
-		<label>Username</label> <input type="text" id="j_username" name="j_username" size="24"> <br />
-		<label>Password</label> <input type="password" id="j_password" name="j_password" size="24"> <br />
+		<label for="j_username">Username</label> <input type="text" id="j_username" name="j_username" size="24"> <br />
+		<label for="j_password">Password</label> <input type="password" id="j_password" name="j_password" size="24"> <br /> <br />
+        <label for="mobileVersion">Mobile Version</label><br />
+        <select id="mobileVersion" name="mobileVersion" style="width: 100%;">
+            <option value="basic">Basic</option>
+            <option value="smartphone">Smartphone</option>
+        </select>
 	</p>
 </div>
 

@@ -88,9 +88,16 @@ public class MappedRedirectStrategy
             }
         }
 
-        if ( device.isMobile() )
+        String mobileVersion = (String) request.getAttribute( "mobileVersion" );
+        mobileVersion = mobileVersion == null ? "basic" : mobileVersion;
+
+        if ( mobileVersion.equals( "basic" ) )
         {
             url = getRootPath( request ) + "/light/index.action";
+        }
+        else if ( mobileVersion.equals( "smartphone" ) )
+        {
+            url = getRootPath( request ) + "/mobile";
         }
 
         log.debug( "Redirecting to " + url );
