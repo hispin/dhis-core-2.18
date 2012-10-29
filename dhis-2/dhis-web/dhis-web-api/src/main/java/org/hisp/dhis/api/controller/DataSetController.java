@@ -27,23 +27,38 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.FormUtils;
+import org.hisp.dhis.api.view.ClassPathUriResolver;
 import org.hisp.dhis.api.webdomain.form.Form;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.dxf2.metadata.ExportService;
+import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,10 +74,14 @@ public class DataSetController
     extends AbstractCrudController<DataSet>
 {
     public static final String RESOURCE_PATH = "/dataSets";
-
+    public static final String DSD_TRANSFORM = "/templates/metadata2dsd.xsl";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    @Autowired
+    private ExportService exportService;
 
     @Autowired
     private DataValueService dataValueService;
@@ -70,6 +89,24 @@ public class DataSetController
     // -------------------------------------------------------------------------
     // Controller
     // -------------------------------------------------------------------------
+
+    @RequestMapping( produces = "application/dsd+xml" )
+    public void getStructureDefinition( @RequestParam Map<String, String> parameters, HttpServletResponse response ) 
+        throws IOException, TransformerConfigurationException, TransformerException
+    {
+        WebOptions options = filterMetadataOptions();
+        
+        MetaData metaData = exportService.getMetaData( options );
+
+        InputStream input = new ByteArrayInputStream(JacksonUtils.toXmlWithViewAsString(  metaData, ExportView.class ).getBytes("UTF-8"));
+        
+        TransformerFactory tf = TransformerFactory.newInstance();
+        tf.setURIResolver( new ClassPathUriResolver());
+
+        Transformer transformer = tf.newTransformer( new StreamSource( new ClassPathResource(DSD_TRANSFORM).getInputStream()) );
+        
+        transformer.transform( new StreamSource(input), new StreamResult( response.getOutputStream() ) );
+    }
 
     @RequestMapping( value = "/{uid}/form", method = RequestMethod.GET, produces = "application/json" )
     public void getFormJson( @PathVariable( "uid" ) String uid, @RequestParam( value = "ou", required = false ) String orgUnit,
@@ -134,4 +171,20 @@ public class DataSetController
     public void postFormXml( @PathVariable( "uid" ) String uid, HttpServletRequest request, HttpServletResponse response )
     {
     }
+
+    /**
+     * select only the metadata required to describe form definitions
+     * 
+     * @return the filtered options 
+     */
+    private WebOptions filterMetadataOptions()
+    {      
+        WebOptions options = new WebOptions(new HashMap<String,String>());
+        options.setAssumeTrue( false);
+        options.addOption( "categoryOptionCombos", "true" );
+        options.addOption( "dataElements","true" );
+        options.addOption( "dataSets", "true" );   
+        return options;
+    }
+
 }
