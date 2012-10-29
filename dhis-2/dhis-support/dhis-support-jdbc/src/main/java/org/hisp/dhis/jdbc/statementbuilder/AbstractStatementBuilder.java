@@ -27,7 +27,10 @@ package org.hisp.dhis.jdbc.statementbuilder;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
+
 import org.hisp.dhis.jdbc.StatementBuilder;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -35,6 +38,7 @@ import org.hisp.dhis.jdbc.StatementBuilder;
 public abstract class AbstractStatementBuilder
     implements StatementBuilder
 {
+    @Override
     public String encode( String value )
     {
         if ( value != null )
@@ -46,6 +50,16 @@ public abstract class AbstractStatementBuilder
         return QUOTE + value + QUOTE;
     }
 
+    @Override
+    public String getPeriodIdentifierStatement( Period period )
+    {
+        return
+            "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
+            "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
+            "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
+    }
+
+    @Override
     public String getCreateAggregatedDataValueTable( boolean temp )
     {
         return
@@ -59,6 +73,7 @@ public abstract class AbstractStatementBuilder
             "value " + getDoubleColumnType() + " );";
     }
 
+    @Override
     public String getCreateAggregatedOrgUnitDataValueTable( boolean temp )
     {
         return
@@ -72,7 +87,8 @@ public abstract class AbstractStatementBuilder
             "level INTEGER, " +
             "value " + getDoubleColumnType() + " );";
     }
-    
+
+    @Override
     public String getCreateAggregatedIndicatorTable( boolean temp )
     {
         return
@@ -89,6 +105,7 @@ public abstract class AbstractStatementBuilder
             "denominatorvalue " + getDoubleColumnType() + " );";
     }
 
+    @Override
     public String getCreateAggregatedOrgUnitIndicatorTable( boolean temp )
     {
         return
@@ -106,6 +123,7 @@ public abstract class AbstractStatementBuilder
             "denominatorvalue " + getDoubleColumnType() + " );";
     }
 
+    @Override
     public String getCreateDataSetCompletenessTable()
     {
         return
@@ -120,7 +138,8 @@ public abstract class AbstractStatementBuilder
             "value " + getDoubleColumnType() + ", " +
             "valueOnTime " + getDoubleColumnType() + " );";
     }
-    
+
+    @Override
     public String getCreateOrgUnitDataSetCompletenessTable()
     {
         return

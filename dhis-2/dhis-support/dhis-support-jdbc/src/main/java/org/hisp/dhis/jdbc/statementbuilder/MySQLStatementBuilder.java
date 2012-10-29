@@ -27,11 +27,7 @@ package org.hisp.dhis.jdbc.statementbuilder;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
-
 import java.util.List;
-
-import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -52,15 +48,6 @@ public class MySQLStatementBuilder
     }
 
     @Override
-    public String getPeriodIdentifierStatement( Period period )
-    {
-        return
-            "SELECT periodid FROM period WHERE periodtypeid=" + period.getPeriodType().getId() + " " + 
-            "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
-            "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
-    }    
-
-    @Override
     public String getDeleteZeroDataValues()
     {
         return
@@ -69,12 +56,6 @@ public class MySQLStatementBuilder
             "WHERE datavalue.dataelementid = dataelement.dataelementid " +
             "AND dataelement.aggregationtype = 'sum' " +
             "AND datavalue.value = '0'";
-    }
-
-    @Override
-    public String getDropDatasetForeignKeyForDataEntryFormTable()
-    {
-        return  "ALTER TABLE dataentryform DROP FOREIGN KEY fk_dataentryform_datasetid;" ;
     }
 
     @Override

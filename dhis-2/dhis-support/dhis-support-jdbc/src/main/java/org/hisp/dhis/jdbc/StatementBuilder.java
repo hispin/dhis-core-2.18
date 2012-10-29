@@ -112,13 +112,6 @@ public interface StatementBuilder
      */
     String getDeleteZeroDataValues();
     
-    /**
-     *  Drop Dataset foreign key for DataEntryForm table
-     *  
-     * @return
-     */
-    String getDropDatasetForeignKeyForDataEntryFormTable();
-    
     String getMoveDataValueToDestination( int sourceId, int destinationId );
 
     String getSummarizeDestinationAndSourceWhereMatching( int sourceId, int destinationId );
