@@ -164,6 +164,10 @@ public class DefaultSecurityService
         
         credentials.setPassword( newPassword );
         
+        credentials.setRestoreCode( null );
+        credentials.setRestoreToken( null );
+        credentials.setRestoreExpiry( null );
+        
         userService.updateUserCredentials( credentials );
         
         return true;
