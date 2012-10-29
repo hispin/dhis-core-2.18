@@ -71,6 +71,8 @@ public class GenerateReportPeriodColumnListingAction
 
             this.generateOutPutFile( exportReportInstance.getPeriodColumns(), exportReportItems, organisationUnit,
                 sheet );
+            
+            this.recalculatingFormula( sheet );
         }
         
         /**

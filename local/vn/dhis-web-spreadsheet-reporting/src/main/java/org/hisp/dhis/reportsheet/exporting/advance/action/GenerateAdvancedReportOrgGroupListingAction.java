@@ -133,7 +133,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
                 if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION ) )
                 {
                     ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), o.getName(), ExcelUtils.TEXT, sheet,
-                        this.csText10Bold );
+                        this.csText10Normal );
                 }
                 else if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
                 {
@@ -157,7 +157,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
                 else if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                 {
                     ExcelUtils.writeFormulaByPOI( rowBegin, exportItem.getColumn(), ExcelUtils.generateExcelFormula(
-                        exportItem.getExpression(), iRow, iCol ), sheet, this.csFormula );
+                        exportItem.getExpression(), iRow, iCol ), sheet, this.csFormula, evaluatorFormula );
                 }
 
                 rowBegin++;
@@ -170,7 +170,8 @@ public class GenerateAdvancedReportOrgGroupListingAction
             {
                 String columnName = ExcelUtils.convertColumnNumberToName( exportItem.getColumn() );
                 String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
-                ExcelUtils.writeFormulaByPOI( beginChapter, exportItem.getColumn(), formula, sheet, this.csFormula );
+                ExcelUtils.writeFormulaByPOI( beginChapter, exportItem.getColumn(), formula, sheet, this.csFormula,
+                    evaluatorFormula );
             }
         }
     }

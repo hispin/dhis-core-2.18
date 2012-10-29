@@ -66,6 +66,8 @@ public class GenerateReportNormalAction
             exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
 
             this.generateOutPutFile( exportReportItems, organisationUnit, sheet );
+
+            this.recalculatingFormula( sheet );
         }
 
         /**
@@ -108,7 +110,7 @@ public class GenerateReportNormalAction
             // EXCEL FORMULA
             {
                 ExcelUtils.writeFormulaByPOI( reportItem.getRow(), reportItem.getColumn(), reportItem.getExpression(),
-                    sheet, this.csFormula );
+                    sheet, this.csFormula, evaluatorFormula );
             }
         }
     }

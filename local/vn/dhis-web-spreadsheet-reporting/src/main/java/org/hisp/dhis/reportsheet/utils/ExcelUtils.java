@@ -392,7 +392,7 @@ public class ExcelUtils
 
     /* POI - Write formula without CellStyle */
     public static void writeFormulaByPOI( int row, int column, String formula,
-        org.apache.poi.ss.usermodel.Sheet sheetPOI )
+        org.apache.poi.ss.usermodel.Sheet sheetPOI, FormulaEvaluator evaluator )
     {
         if ( row > 0 && column > 0 )
         {
@@ -417,12 +417,15 @@ public class ExcelUtils
 
             cellPOI.setCellStyle( cellStylePOI );
             cellPOI.setCellFormula( formula );
+
+            evaluator.evaluateFormulaCell( cellPOI );
         }
     }
 
     /* POI - Write formula with customize CellStyle */
     public static void writeFormulaByPOI( int row, int column, String formula,
-        org.apache.poi.ss.usermodel.Sheet sheetPOI, org.apache.poi.ss.usermodel.CellStyle cellStyle )
+        org.apache.poi.ss.usermodel.Sheet sheetPOI, org.apache.poi.ss.usermodel.CellStyle cellStyle,
+        FormulaEvaluator evaluator )
     {
         if ( row > 0 && column > 0 )
         {
@@ -436,6 +439,8 @@ public class ExcelUtils
             org.apache.poi.ss.usermodel.Cell cellPOI = rowPOI.createCell( column - 1 );
             cellPOI.setCellStyle( cellStyle );
             cellPOI.setCellFormula( formula );
+            
+            evaluator.evaluateFormulaCell( cellPOI );
         }
     }
 

@@ -81,6 +81,8 @@ public class GenerateReportAttributeAction
 
             this.generateOutPutFile( defaultOptionCombo, exportReportInstance, exportReportItems, organisationUnit,
                 sheet );
+            
+            this.recalculatingFormula( sheet );
         }
 
         /**
@@ -123,7 +125,7 @@ public class GenerateReportAttributeAction
                         if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                         {
                             ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), avgOrder.getName(),
-                                ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                                ExcelUtils.TEXT, sheet, this.csText12NormalCenter );
                         }
 
                         rowBegin++;
@@ -132,7 +134,7 @@ public class GenerateReportAttributeAction
                     if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                     {
                         ExcelUtils.writeValueByPOI( rowBegin, exportItem.getColumn(), avalue, ExcelUtils.TEXT, sheet,
-                            this.csText10Bold );
+                            this.csText10Normal );
                     }
                     else if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
                     {
