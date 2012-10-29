@@ -1,7 +1,7 @@
-package org.hisp.dhis.settings.action.system;
+package org.hisp.dhis.useraccount.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,67 +27,36 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.configuration.Configuration;
-import org.hisp.dhis.configuration.ConfigurationService;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCOUNT_RECOVERY;
-
 /**
  * @author Lars Helge Overland
  */
-public class SetAccessSettingsAction
+public class IsRestoreTokenValidAction
     implements Action
 {
     @Autowired
-    private ConfigurationService configurationService;
-    
-    @Autowired
-    private SystemSettingManager systemSettingManager;
-    
-    @Autowired
-    private UserService userService;
+    private SecurityService securityService;
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer selfRegistrationRole;
-
-    public void setSelfRegistrationRole( Integer selfRegistrationRole )
-    {
-        this.selfRegistrationRole = selfRegistrationRole;
-    }
+    private String username;
     
-    private Boolean accountRecovery;
-
-    public void setAccountRecovery( Boolean accountRecovery )
+    public void setUsername( String username )
     {
-        this.accountRecovery = accountRecovery;
+        this.username = username;
     }
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+    private String token;
 
-    private String message;
-
-    public String getMessage()
+    public void setToken( String token )
     {
-        return message;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
+        this.token = token;
     }
 
     // -------------------------------------------------------------------------
@@ -96,21 +65,8 @@ public class SetAccessSettingsAction
 
     public String execute()
     {
-        UserAuthorityGroup group = null;
+        boolean verified = securityService.verifyToken( username, token );
         
-        if ( selfRegistrationRole != null )
-        {
-            group = userService.getUserAuthorityGroup( selfRegistrationRole );
-        }
-        
-        Configuration config = configurationService.getConfiguration();
-        config.setSelfRegistrationRole( group );
-        configurationService.setConfiguration( config );
-
-        systemSettingManager.saveSystemSetting( KEY_ACCOUNT_RECOVERY, accountRecovery );
-        
-        message = i18n.getString( "settings_updated" );
-
-        return SUCCESS;
+        return verified ? SUCCESS : ERROR;
     }
 }

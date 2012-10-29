@@ -2,7 +2,8 @@
 jQuery( document ).ready( function() {
     jQuery( "input[type=button]" ).click( function() {
         jQuery.postUTF8( "setSystemAccessSettings.action", {
-            selfRegistrationRole: jQuery( "#selfRegistrationRole" ).val()
+            selfRegistrationRole: jQuery( "#selfRegistrationRole" ).val(),
+            accountRecovery: jQuery( '#accountRecovery' ).is( ':checked' )
         }, function( json ) {
             if ( json.response == "success" ) {
                 setHeaderDelayMessage( json.message );
@@ -26,6 +27,11 @@ jQuery( document ).ready( function() {
     <option value="$role.id" #if( $curRole && $role.id == $curRole.id )selected="selected"#end>$i18n.getString( $role.name )</option>
     #end
 </select>
+</div>
+
+<div class="setting">
+	<input type="checkbox" id="accountRecovery" name="accountRecovery"#if( $keyAccountRecovery ) checked="checked"#end>
+	<label for="accountRecovery">$i18n.getString( "enable_user_account_recovery" )</label>
 </div>
 
 <div class="setting"><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></div>

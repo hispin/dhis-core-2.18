@@ -65,6 +65,11 @@ input[type=text],input[type=password]
   border: none;
 }
 
+#loginFormFooter
+{
+  font-size: 14px;
+}
+
 #accountArea
 {
   position: absolute;

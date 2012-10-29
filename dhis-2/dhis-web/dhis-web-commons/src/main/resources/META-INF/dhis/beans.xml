@@ -592,6 +592,12 @@
     
   <bean id="org.hisp.dhis.useraccount.action.IsSelfRegistrationAllowedAction" class="org.hisp.dhis.useraccount.action.IsSelfRegistrationAllowedAction"
     scope="prototype"/>
+    
+  <bean id="org.hisp.dhis.useraccount.action.IsRestoreTokenValidAction" class="org.hisp.dhis.useraccount.action.IsRestoreTokenValidAction"
+    scope="prototype"/>
+
+  <bean id="org.hisp.dhis.useraccount.action.IsAccountRecoveryAllowedAction" class="org.hisp.dhis.useraccount.action.IsAccountRecoveryAllowedAction"
+    scope="prototype"/>
 
   <!-- User settings -->
 

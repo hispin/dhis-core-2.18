@@ -124,7 +124,7 @@ public class EmailMessageSender
                 {
                     email.addBcc( user.getEmail() );
                     
-                    log.debug( "Sent email to user: " + user + " with email address: " + user.getEmail() );
+                    log.debug( "Sending email to user: " + user + " with email address: " + user.getEmail() );
                     
                     hasRecipients = true;
                 }
@@ -133,6 +133,8 @@ public class EmailMessageSender
             if ( hasRecipients )
             {
                 email.send();
+                
+                log.debug( "Email sent" );
             }
         }
         catch ( EmailException ex )
