@@ -6315,7 +6315,7 @@ The case update  is designed in the same manner so that services which are recei
           <title>Visit Schedule</title>
           <para>This will be used to provide the user at a facility or in an area with a list of upcoming visits to better plan for daily/weekly activities. This can also be used as quick navigation to the data entry screen when using the system as a live/real-time data entry system.
 </para>
-          <para> Clicking on an event to open the data entry screen, and plan is updated when closing data entry form.
+          <para>Clicking on an event to open the data entry screen, and plan is updated when closing data entry form.
 
 The plan (expected visits for the upcoming period) will typically be a mix of recently overdue stages and stages that are non-completed and scheduled for the coming days/week.</para>
           <para>After selecting organisation unit on the left panel, select a program in list. Then status which you would like. Select show events since ( if any) and Show events up to ( if any ). Finally, click Show Event List button to get events which are satisfied with searching criteria.</para>
@@ -6340,6 +6340,14 @@ The plan (expected visits for the upcoming period) will typically be a mix of re
                 </imageobject>
               </mediaobject>
             </screenshot></para>
+          <para>To search events by status and  some criteria such as name, identifiers or attributes, click on <emphasis role="italic">Search</emphasis> button next to <emphasis role="italic">List All Persons</emphasis>. A advanced search criteria is shown. After to fill search key values, click on <emphasis role="italic">Search</emphasis> button on this form to display result or click on <emphasis role="italic">Send message</emphasis> button to send a reminder message for person in result.</para>
+          <screenshot>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="resources/images/patients_programs/program_tracking_search_function.png" width="70%" format="PNG"/>
+              </imageobject>
+            </mediaobject>
+          </screenshot>
         </section>
       </section>
       <section>
