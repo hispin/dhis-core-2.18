@@ -94,6 +94,8 @@ public class DefaultSecurityService
         }
         
         // TODO check if email is configured
+        // TODO check if restore is allowed
+        // TODO deny restore if credentials contain certain authorities
         
         String[] result = initRestore( credentials );
         
@@ -107,8 +109,8 @@ public class DefaultSecurityService
         vars.put( "code", result[1] );
         vars.put( "username", username );
         
-        String text1 = new VelocityManager().render( vars, "restore_message1.vm" );
-        String text2 = new VelocityManager().render( vars, "restore_message2.vm" );
+        String text1 = new VelocityManager().render( vars, "restore_message1" );
+        String text2 = new VelocityManager().render( vars, "restore_message2" );
         
         emailMessageSender.sendMessage( "User account restore confirmation (message 1 of 2)", text1, null, users );
         emailMessageSender.sendMessage( "User account restore confirmation (message 2 of 2)", text2, null, users );
