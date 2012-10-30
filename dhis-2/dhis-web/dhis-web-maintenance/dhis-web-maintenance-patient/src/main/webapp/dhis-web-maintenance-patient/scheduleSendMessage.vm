@@ -18,7 +18,7 @@
 					value="$i18n.getString( 'start' )"
 				#end
 				onclick="scheduleTasks();"/>
-				<input type="button" style="width:150px;" value="$i18n.getString( 'execute' )" onclick="executeTasks();"/>
+				<input type="button" id="executeButton" name="executeButton" style="width:150px;" value="$i18n.getString( 'execute' )" onclick="executeTasks();" #if ( $running=='false' ) disabled #end/>
 			</td>
 		</tr>
 		
