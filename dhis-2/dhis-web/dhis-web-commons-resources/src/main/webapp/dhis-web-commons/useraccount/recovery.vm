@@ -3,10 +3,7 @@
 <head>
     <title>DHIS 2</title>
     <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
-    <script type="text/javascript" src="../javascripts/jQuery/jquery.validate.js"></script>
-    <script type="text/javascript" src="../javascripts/jQuery/jquery.validate.ext.js"></script>
-    <script type="text/javascript" src="../javascripts/useraccount/account.js"></script>
-    <script type="text/javascript" src="../i18nJavaScript.action"></script>
+    <script type="text/javascript" src="../javascripts/useraccount/restore.js"></script>
     <link type="text/css" rel="stylesheet" href="../css/account.css">
 </head>
 <body>
@@ -25,13 +22,27 @@
 
 <table>
     <tr>
-        <td style="width:120px"><label for="username">$i18n.getString( "user_name" )</label></td>
+        <td style="width:100px"><label for="username">$i18n.getString( "user_name" )</label></td>
         <td><input type="text" id="username" name="username" autocomplete="off"></td>
     </tr>
     <tr>
         <td></td>
-        <td><input id="submitButton" type="submit" value="$i18n.getString( 'recover' )" style="width:10em"></td>
+        <td><input id="recoveryButton" type="button" value="$i18n.getString( 'recover' )" style="width:10em" onclick="recoverAccount()"></td>
     </tr>
+</table>
+
+</form>
+
+<div id="recoverySuccessMessage" style="display:none">
+Please check your email inbox for this user account. We have sent you instructions
+on how to restore your password.	
+</div>
+
+<div id="recoveryErrorMessage" style="display:none">
+Sorry, we were not able to restore your account. The user name might be invalid, 
+your account might not permit restore or you might not have entered a valid email 
+address for your account.
+</div>
 
 </div>
 

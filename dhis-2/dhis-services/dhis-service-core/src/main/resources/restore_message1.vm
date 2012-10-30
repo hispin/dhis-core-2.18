@@ -8,4 +8,5 @@ ${object.restorePath}?username=${object.username}&token=${object.token}
 
 
 You must complete the restore process within 1 hour. If you take no action, your
-account will not be restored.
+account will not be restored. If you did not request this restore, please disregard
+this message.
