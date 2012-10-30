@@ -20,7 +20,7 @@
                 return;
             }
 
-            $.mobile.showPageLoadingMsg();
+            $.mobile.loading( 'show' );
 
             $.ajax({
                 url         : '$baseUrl/../api/messageConversations/${messageId}',
@@ -31,8 +31,14 @@
                 $.mobile.hidePageLoadingMsg();
                 location.reload(true);
             }).error(function () {
-                $.mobile.showPageLoadingMsg($.mobile.pageLoadErrorMessageTheme, "Unable to send reply, please try again later", true);
-                setTimeout($.mobile.hidePageLoadingMsg, 1500);
+                $.mobile.loading( 'show', {
+                    text: 'Unable to send reply, please try again later',
+                    textonly: true
+                });
+
+                setTimeout( function() {
+                    $.mobile.loading( 'hide' );
+                }, 1500);
             });
 
             e.preventDefault();
@@ -53,8 +59,14 @@
             $('section[data-role="content"]').trigger('create');
             bindSubmitHandler();
         }).error(function () {
-            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to load message, please try again later", true );
-            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
+            $.mobile.loading( 'show', {
+                text: 'Unable to load message, please try again later',
+                textonly: true
+            });
+
+            setTimeout( function() {
+                $.mobile.loading( 'hide' );
+            }, 1500);
         });
     });
 </script>

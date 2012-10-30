@@ -108,7 +108,7 @@
                 return;
             }
 
-            $.mobile.showPageLoadingMsg();
+            $.mobile.loading( 'show' );
 
             $.ajax({
                 url  : '$baseUrl/../api/currentUser/recipients',
@@ -186,8 +186,14 @@
                 $('#selection-list').listview('refresh');
                 $.mobile.hidePageLoadingMsg();
             }).error(function() {
-                $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to search, please try again later", true );
-                setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
+                $.mobile.loading( 'show', {
+                    text: 'Unable to search, please try again later',
+                    textonly: true
+                });
+
+                setTimeout( function() {
+                    $.mobile.loading( 'hide' );
+                }, 1500);
             });
 
             $('form[role="search"] input:text').bind('keyup', fn1);
@@ -208,18 +214,32 @@
         message.userGroups = [];
 
         if( !message.subject.length > 0 ) {
-            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Please fill in subject", true );
-            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
+            $.mobile.loading( 'show', {
+                text: 'Please fill in subject',
+                textonly: true
+            });
+
+            setTimeout( function() {
+                $.mobile.loading( 'hide' );
+            }, 1500);
+
             return false;
         }
 
         if( !message.text.length > 0 ) {
-            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Please fill in text", true );
-            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
+            $.mobile.loading( 'show', {
+                text: 'Please fill in text',
+                textonly: true
+            });
+
+            setTimeout( function() {
+                $.mobile.loading( 'hide' );
+            }, 1500);
+
             return false;
         }
 
-        $.mobile.showPageLoadingMsg();
+        $.mobile.loading( 'show' );
 
         _(_(selected).keys()).each(function(key) {
             if( key.indexOf('ou:') != -1 )
@@ -249,12 +269,17 @@
            data: JSON.stringify(message),
            async: false
         }).success(function() {
-            $.mobile.hidePageLoadingMsg();
+            $.mobile.loading( 'hide' );
             window.location.href = '../messages';
         }).error(function() {
-            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Unable to send message, please try again later", true );
-            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
-            console.log("failed to send message");
+            $.mobile.loading( 'show', {
+                text: 'Unable to send message, please try again later',
+                textonly: true
+            });
+
+            setTimeout( function() {
+                $.mobile.loading( 'hide' );
+            }, 1500);
         });
 
         e.preventDefault();

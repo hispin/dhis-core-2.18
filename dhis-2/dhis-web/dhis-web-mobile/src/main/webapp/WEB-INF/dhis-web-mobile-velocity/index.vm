@@ -32,21 +32,21 @@
             if( data.unreadMessageConversation > 0 ) {
                 $( '#messages a' ).append("<span class='ui-li-count'>" + data.unreadMessageConversation + "</span>");
             }
-        }).error(function() {
-            $.mobile.hidePageLoadingMsg();
         });
     }
 
-    $(document).bind('pagebeforecreate',function(){
-        $.mobile.showPageLoadingMsg();
+    $(document).bind('pagechange',function(){
+        $.mobile.loading( 'show' );
 
         getDashboard().always(function() {
             $('section[data-role="content"] ul').listview('refresh');
-        }).then( fm.getMetaData().then( fm.uploadDataValueSets() ).always( function() {
-            $.mobile.hidePageLoadingMsg();
-            updateMenu();
-            renderOfflineStatus();
-        }));
+
+            $.when( fm.getMetaData(), fm.uploadDataValueSets()).always(function() {
+                updateMenu();
+                renderOfflineStatus();
+                $.mobile.loading( 'hide' );
+            });
+        });
 
         $('body').bind('dhis2.online', function() {
             if( loggedInStatus ) {
