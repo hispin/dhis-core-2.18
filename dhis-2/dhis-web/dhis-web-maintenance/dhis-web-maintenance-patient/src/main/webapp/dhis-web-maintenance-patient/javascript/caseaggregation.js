@@ -8,6 +8,7 @@ function getDataElementsByDataset()
 	var dataSets = document.getElementById( 'dataSets' );
 	var dataSetId = dataSets.options[ dataSets.selectedIndex ].value;
 	setFieldValue('aggregationDataElementId','');
+	setFieldValue('aggregationDataElementInput','');
 	
 	if( dataSetId == "" ){
 		disable( 'dataElementsButton' );
