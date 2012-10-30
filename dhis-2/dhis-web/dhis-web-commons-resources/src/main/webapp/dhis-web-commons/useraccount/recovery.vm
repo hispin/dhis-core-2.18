@@ -34,8 +34,8 @@
 </form>
 
 <div id="recoverySuccessMessage" style="display:none">
-Please check your email inbox for this user account. We have sent you instructions
-on how to restore your password.	
+Please check the email account which you registered for this username. We have 
+sent you instructions on how to restore your password.	
 </div>
 
 <div id="recoveryErrorMessage" style="display:none">
