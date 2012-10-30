@@ -25,7 +25,7 @@
 		</tr>	
 		
 		<tr>
-			<td><label>$i18n.getString( "type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+			<td><label>$i18n.getString( "type" ) </label></td>
 			<td>
 				<select style="width: 336px;" id="type" name="type" onchange='programOnChange();' class="{validate:{required:true}}">
 					<option value='1'>$i18n.getString('multiple_events_with_registration')</option>

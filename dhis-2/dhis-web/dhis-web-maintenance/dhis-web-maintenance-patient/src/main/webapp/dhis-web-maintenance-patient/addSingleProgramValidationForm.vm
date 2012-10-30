@@ -16,29 +16,31 @@
     <tbody>
 	
 	<tr>
-		<td>
-			<label>$i18n.getString('description')</label>
-		</td>
+		<td><label>$i18n.getString('description') <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 	</tr>
 	<tr>
 		<td>			
-			<input type="text" id='description' name='description' class="{validate:{required:true,minlength:4}}" style='width:320px;'>
+			<input type="text" id='description' name='description' class="{validate:{required:true,minlength:4}}" style='width:300px;'>
 		</td>
 	</tr>
 	<tr>
-		<th>
-			<label>$i18n.getString('validation')</label>
-		</th>
+		<th><label>$i18n.getString('validation')</label></th>
+	</tr>
+	<tr>
+		<td>$i18n.getString("program_stage")</td>
 	</tr>
 	<tr>
 		<td>
 			<select id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();" style='width:320px;'>
-				<option value=''>[$i18n.getString( "please_select_program_stage" )]</option>
+				<option value=''>[$i18n.getString( "please_select" )]</option>
 				#foreach($stage in $program.programStages)
 				<option value='$stage.id'>$stage.name</option>
 				#end
 			</select>
 		</td>
+	</tr>
+	<tr>
+		<td>$i18n.getString("data_elements")</td>
 	</tr>
 	<tr>
 		<td>
@@ -63,15 +65,18 @@
 	</tr>
 	<tr>	
 		<td>
-			<textarea rows='5' id='leftSide' name='leftSide' class="{validate:{required:true,minlength:4}}" onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:320px;'></textarea>
-			<input type='hidden' id='rightSide' name='rightSide' value='1==1'>
+			<fieldset>
+				<legend>$i18n.getString("formula")</legend>
+				<textarea rows='5' id='leftSide' name='leftSide' class="{validate:{required:true,minlength:4}}" onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:320px;'></textarea>
+				<input type='hidden' id='rightSide' name='rightSide' value='1==1'>
+			</fieldset>
 		</td>
 	</tr>
 	<tr>	
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='leftStageDescription' style='width:320px;'></div>
+				<div id='leftStageDescription' style='width:300px;'></div>
 			</fieldset>
 		</td>
 	</tr>

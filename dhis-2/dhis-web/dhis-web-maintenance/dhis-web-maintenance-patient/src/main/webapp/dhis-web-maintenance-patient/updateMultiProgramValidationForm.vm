@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "edit_program_validation_rule" )</h3>
 
-<h4>$program.name</h4>
+<h4>$validation.program.name</h4>
 
 <form id='programValidationForm' name='programValidationForm' method='post' action='updateProgramValidation.action'>
 
@@ -16,29 +16,24 @@
 	
 	<tr>
 		<td>
-			<label>$i18n.getString('description')</label>
+			<label>$i18n.getString('description') <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>
 	</tr>
 	<tr>
 		<td colspan='2'>			
-			<input type="text" id='description' style='width:640px' name='description' value='$validation.description' style='width:640px;'>
+			<input type="text" id='description' style='width:640px' name='description' value='$validation.description' style='width:640px;' class="{validate:{required:true,minlength:4}}">
 		</td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<th colspan='2'>
-			<label>$i18n.getString('validation')</label>
-		</th>
+		<th><label>$i18n.getString('left_side')</label></th>
+		<th><label>$i18n.getString('right_side')</label></th>
 	</tr>
 	<tr>
-		<td>
-			<label>$i18n.getString('left_side')</label>
-		</td>
-		<td>
-			<label>$i18n.getString('right_side')</label>	
-		</td>
+		<td><label>$i18n.getString("program_stage")</label></td>
+		<td><label>$i18n.getString('program_stage')</label></td>
 	</tr>
 	<tr>
 		<td>
@@ -57,6 +52,10 @@
 				#end
 			</select>
 		</td>
+	</tr>
+	<tr>
+		<td><label>$i18n.getString("data_elements")</label></td>
+		<td><label>$i18n.getString('data_elements')</label></td>
 	</tr>
 	<tr>
 		<td>
@@ -98,23 +97,29 @@
 	</tr>
 	<tr>
 		<td>
-			<textarea rows='5' id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:320px;'>$validation.leftSide</textarea>
+			<fieldset>
+				<legend>$i18n.getString("formula")</legend>
+				<textarea rows='5' id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:320px;'>$validation.leftSide</textarea>
+			</fieldset>
 		</td>
 		<td>
-			<textarea rows='5' id='rightSide' name='rightSide' onkeyup="getValidationDescription('rightStageDescription', 'rightSide')" style='width:320px;'>$validation.rightSide</textarea>
+			<fieldset>
+				<legend>$i18n.getString("formula")</legend>
+				<textarea rows='5' id='rightSide' name='rightSide' onkeyup="getValidationDescription('rightStageDescription', 'rightSide')" style='width:300px;'>$validation.rightSide</textarea>
+			</fieldset>
 		</td>
 	</tr>
 	<tr>	
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='leftStageDescription' style='width:320px;'>$!leftDescription</div>
+				<div id='leftStageDescription' style='width:300px;'>$!leftDescription</div>
 			</fieldset>
 		</td>
 		<td>
 			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='rightStageDescription' style='width:320px;'>$!rightDescription</div>
+				<div id='rightStageDescription' style='width:300px;'>$!rightDescription</div>
 			</fieldset>
 		</td>
 	</tr>

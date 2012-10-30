@@ -48,7 +48,7 @@
 		</tr>
 		
 		<tr>
-			<td><label for="type">$i18n.getString( "type" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="type">$i18n.getString( "type" )</label></td>
 			<td>
 				<select style="width: 336px;" id="type" name="type" class="{validate:{required:true}}">
 					<option value="text" selected="selected">$i18n.getString( "text" )</option>
