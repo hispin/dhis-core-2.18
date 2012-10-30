@@ -14,7 +14,9 @@
 		  	<td></td>
 			<td colspan="3" style="text-align:right">
 				<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddPatientAttributeGroupForm.action'" style="width:75px">
+				#if($patientAttributeGroups.size() > 0)
 				<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortPatientAttributeGroup.action'" style="width:75px"><br>
+				#end
 			</td>
 		  </tr>
           <tr>
