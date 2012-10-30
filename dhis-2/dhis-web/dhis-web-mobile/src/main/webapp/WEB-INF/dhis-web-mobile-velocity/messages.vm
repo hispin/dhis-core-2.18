@@ -11,7 +11,7 @@
                     if(item.read) {
                         $('#messageList').append('<li><a href="messages/' + item.id + '">' + item.name + '</a></li>');
                     } else {
-                        $('#messageList').append('<li><a href="messages/' + item.id + '">' + item.name + '<span class="ui-li-count">Unread</span></a></li>');
+                        $('#messageList').append('<li class="ui-btn-active"><a href="messages/' + item.id + '">' + item.name + '</a></li>');
                     }
                 });
             } else {
