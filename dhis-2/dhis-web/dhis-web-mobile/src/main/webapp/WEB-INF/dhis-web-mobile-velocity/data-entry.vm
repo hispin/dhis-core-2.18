@@ -241,6 +241,11 @@
     $(document).bind( 'pagechange', function (event, data) {
         var pageId = data.toPage.attr('id');
 
+        if( fm.needMetaData() )
+        {
+            location.href = 'index';
+        }
+
         var pageLoaders = {
             'organisation-units-page': loadOrganisationUnitsPage,
             'data-sets-page': loadDataSetsPage,
@@ -252,8 +257,8 @@
             pageLoaders[pageId].call();
         } else {
             $.mobile.loading( 'show', {
-                text: 'Tried changing to invalid page',
-                textonly: true
+                html: '<h1>Tried changing to invalid page</h1>',
+                textVisible: true
             });
         }
     });

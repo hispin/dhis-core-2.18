@@ -44,9 +44,15 @@ dhis2.storage.FormManager.prototype.getMetaData = function () {
     });
 };
 
+dhis2.storage.FormManager.prototype.needMetaData = function () {
+    return this.organisationUnits() === undefined || this.forms() === undefined;
+};
+
 dhis2.storage.FormManager.prototype.organisationUnits = function () {
     if ( this._organisationUnits === undefined ) {
-        this._organisationUnits = JSON.parse(localStorage['organisationUnits']);
+        if( localStorage['organisationUnits'] ) {
+            this._organisationUnits = JSON.parse(localStorage['organisationUnits']);
+        }
     }
 
     return this._organisationUnits;
@@ -63,7 +69,9 @@ dhis2.storage.FormManager.prototype.dataSets = function (id) {
 
 dhis2.storage.FormManager.prototype.forms = function () {
     if( this._forms === undefined ) {
-        this._forms = JSON.parse( localStorage['forms'] );
+        if( localStorage['forms'] ) {
+            this._forms = JSON.parse( localStorage['forms'] );
+        }
     }
 
     return this._forms;
