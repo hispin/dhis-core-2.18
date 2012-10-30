@@ -207,6 +207,18 @@
         message.users = [];
         message.userGroups = [];
 
+        if( !message.subject.length > 0 ) {
+            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Please fill in subject", true );
+            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
+            return false;
+        }
+
+        if( !message.text.length > 0 ) {
+            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Please fill in text", true );
+            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
+            return false;
+        }
+
         $.mobile.showPageLoadingMsg();
 
         _(_(selected).keys()).each(function(key) {
@@ -223,6 +235,12 @@
                 message.userGroups.push( { "id": key.substring(3) } );
             }
         });
+
+        if( !( message.organisationUnits.length > 0 || message.users.length > 0 || message.userGroups.length > 0 ) ) {
+            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Please add at least one recipient", true );
+            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
+            return false;
+        }
 
         $.ajax({
            url: "$baseUrl/../api/messageConversations",
