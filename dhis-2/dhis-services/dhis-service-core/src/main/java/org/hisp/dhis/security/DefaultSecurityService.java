@@ -103,7 +103,6 @@ public class DefaultSecurityService
         }
         
         // TODO check if email is configured
-        // TODO check if restore is allowed
         // TODO deny restore if credentials contain certain authorities
         
         String[] result = initRestore( credentials );
