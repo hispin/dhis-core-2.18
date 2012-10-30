@@ -114,4 +114,6 @@ public interface SystemSettingManager
     String getEmailPassword();
     
     boolean accountRecoveryEnabled();
+    
+    boolean emailEnabled();
 }

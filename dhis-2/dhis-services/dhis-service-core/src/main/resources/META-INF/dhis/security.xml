@@ -19,7 +19,8 @@
   <bean id="org.hisp.dhis.security.SecurityService" class="org.hisp.dhis.security.DefaultSecurityService">
     <property name="passwordManager" ref="org.hisp.dhis.security.PasswordManager" />
     <property name="emailMessageSender" ref="emailMessageSender" />
-    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />    
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
   <sec:authentication-manager alias="authenticationManager">
