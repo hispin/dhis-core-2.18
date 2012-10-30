@@ -41,6 +41,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.security.SecurityService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -96,6 +97,9 @@ public class AccountController
     @Autowired
     private SecurityService securityService;
     
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+    
     @RequestMapping( value = "/recovery", method = RequestMethod.POST, produces = ContextUtils.CONTENT_TYPE_TEXT )
     public @ResponseBody String recoverAccount(
         @RequestParam String username,
@@ -104,11 +108,17 @@ public class AccountController
     {
         String rootPath = ContextUtils.getContextPath( request );
         
+        if ( !systemSettingManager.accountRecoveryEnabled() )
+        {
+            response.setStatus( HttpServletResponse.SC_CONFLICT );
+            return "Account recovery is not enabled";
+        }
+        
         boolean recover = securityService.sendRestoreMessage( username, rootPath );
         
         if ( !recover )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            response.setStatus( HttpServletResponse.SC_CONFLICT );
             return "Account could not be recovered";
         }
 
@@ -127,6 +137,12 @@ public class AccountController
         HttpServletRequest request,
         HttpServletResponse response )        
     {
+        if ( !systemSettingManager.accountRecoveryEnabled() )
+        {
+            response.setStatus( HttpServletResponse.SC_CONFLICT );
+            return "Account recovery is not enabled";
+        }
+        
         if ( password == null || !ValidationUtils.passwordIsValid( password ) )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
