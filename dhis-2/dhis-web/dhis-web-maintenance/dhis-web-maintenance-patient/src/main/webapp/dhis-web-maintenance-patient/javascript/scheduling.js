@@ -17,9 +17,11 @@ function scheduleTasks()
 		setInnerHTML('info', i18n_scheduling_is + " " + status);
 		if( json.scheduleTasks.running=="true" ){
 			setFieldValue('scheduledBtn', i18n_stop);
+			enable('executeButton');
 		}
 		else{
 			setFieldValue('scheduledBtn', i18n_start);
+			disable('executeButton');
 		}
 	});
 }
@@ -38,7 +40,7 @@ function executeTasks()
 }
 
 // -----------------------------------------------------------------------
-// Schedule Aggregate Query Builder
+// Schedule Automated Aggregate
 // -----------------------------------------------------------------------
 
 function schedulingAggCondTasks()
@@ -55,9 +57,11 @@ function schedulingAggCondTasks()
 		setInnerHTML('info', i18n_scheduling_is + " " + status);
 		if( json.scheduleTasks.running=="true" ){
 			setFieldValue('scheduledBtn', i18n_stop);
+			enable('executeButton');
 		}
 		else{
 			setFieldValue('scheduledBtn', i18n_start);
+			disable('executeButton');
 		}
 	});
 }

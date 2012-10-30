@@ -5879,7 +5879,7 @@ For example: the date in which a person enrolls to the system.</para>
         </section>
       </section>
       <section id="patient_aggregation_query_builder">
-        <title>Aggregation query builder management</title>
+        <title>Aggregation query builder</title>
         <para>This is the core functionality for linking data between tracker module and aggregate management module by defining the linking/aggregating rules. The purpose  is to produce aggregated data / statistics based on the low-level case based data. It is based around flexible aggregation query definitions which maps the data elements used for case based data management to data elements used for aggregate data.</para>
         <para>This provides two functions - </para>
         <itemizedlist>
@@ -6551,7 +6551,7 @@ The plan (expected visits for the upcoming period) will typically be a mix of re
           </listitem>
           <listitem>
             <para>Click on the 
-<emphasis role="italic">Aggregate</emphasis> button to execute aggregate function. The <emphasis>Person aggregation result</emphasis>page is shown after running successfully.</para>
+				<emphasis role="italic">Aggregate</emphasis> button to execute aggregate function. The <emphasis>Person aggregation result</emphasis>page is shown after running successfully.</para>
           </listitem>
         </orderedlist>
         <screenshot>
