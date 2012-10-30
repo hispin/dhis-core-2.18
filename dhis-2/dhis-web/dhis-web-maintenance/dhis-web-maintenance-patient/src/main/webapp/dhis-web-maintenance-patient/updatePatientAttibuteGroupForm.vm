@@ -13,11 +13,11 @@
 	</tr>
 	<tr>
 		<td>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $patientAttributeGroup.name )" /></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $patientAttributeGroup.name )" class="{validate:{required:true}}"/></td>
 	</tr>   
 	<tr>
 		<td>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
-		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $patientAttributeGroup.description )" /></td>
+		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $patientAttributeGroup.description )" class="{validate:{required:true}}"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
@@ -34,7 +34,7 @@
 		<th>$i18n.getString( "availableAttribute" )</th>
 		<th>$i18n.getString( "filter" )</th>
 		<th>$i18n.getString( "selectedAttribute" )
-			<select id="memberValidator" multiple="multiple" class="{validate:{required:true}} hidden"/>
+			<input type='hidden' id='hasAttributes' name='hasAttributes' class="{validate:{required:true}}">
 		</th>
 	</tr>
 	

@@ -2,7 +2,7 @@
 
 <h3>$i18n.getString( "create_new_patient_attribute_group" )</h3>
 																			
-<form id="addPatientAttributeGroupForm" action="addPatientAttributeGroup.action" method="post" >
+<form id="addPatientAttributeGroupForm" name="addPatientAttributeGroupForm" action="addPatientAttributeGroup.action" method="post" >
 
 <table>
 	<tr>
@@ -10,11 +10,11 @@
 	</tr>
 	<tr>
 		<td>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
-		<td><input type="text" id="name" name="name"/></td>
+		<td><input type="text" id="name" name="name" class="{validate:{required:true}}"/></td>
 	</tr> 	
 	<tr>
 		<td>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
-		<td><input type="text" id="description" name="description"/></td>
+		<td><input type="text" id="description" name="description" class="{validate:{required:true}}"/></td>
 	</tr>
 	<tr>
 		<td colspan="2">&nbsp;</td>
@@ -31,7 +31,7 @@
 		<th>$i18n.getString( "availableAttribute" )</th>
 		<th>$i18n.getString( "filter" )</th>
 		<th>$i18n.getString( "selectedAttribute" )
-			<select id="memberValidator" multiple="multiple" class="{validate:{required:true}} hidden"/>
+			<input type='hidden' id='hasAttributes' name='hasAttributes' class="{validate:{required:true}}">
 		</th>
 	</tr>
 	
