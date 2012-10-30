@@ -23,7 +23,7 @@
             $.mobile.showPageLoadingMsg();
 
             $.ajax({
-                url: '../api/currentUser/settings.json',
+                url: '../api/currentUser/user-account.json',
                 contentType: 'application/json',
                 data: JSON.stringify( settings ),
                 type: 'POST'

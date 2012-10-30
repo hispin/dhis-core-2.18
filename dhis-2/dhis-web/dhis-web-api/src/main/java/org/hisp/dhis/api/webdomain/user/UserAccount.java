@@ -37,7 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @JacksonXmlRootElement( localName = "settings", namespace = Dxf2Namespace.NAMESPACE )
-public class Settings
+public class UserAccount
 {
     private String firstName;
 
@@ -47,9 +47,7 @@ public class Settings
 
     private String phoneNumber;
 
-    private String jobTitle;
-
-    public Settings()
+    public UserAccount()
     {
     }
 
@@ -99,17 +97,5 @@ public class Settings
     public void setPhoneNumber( String phoneNumber )
     {
         this.phoneNumber = phoneNumber;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
-    public String getJobTitle()
-    {
-        return jobTitle;
-    }
-
-    public void setJobTitle( String jobTitle )
-    {
-        this.jobTitle = jobTitle;
     }
 }
