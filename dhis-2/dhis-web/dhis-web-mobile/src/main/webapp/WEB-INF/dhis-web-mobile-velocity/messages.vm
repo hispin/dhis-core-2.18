@@ -1,10 +1,11 @@
 
 <script>
-    $(document).bind('pagebeforecreate',function(){
+    $(document).bind('pagechange',function(){
+        $.mobile.loading( 'show' );
+
         $.ajax({
             url: '../api/currentUser/inbox',
-            dataType: 'json',
-            async: false
+            dataType: 'json'
         }).success(function(data) {
             if( data['messageConversations'] !== undefined ) {
                 $.each(data.messageConversations, function(i, item) {
@@ -18,8 +19,17 @@
                 $('#messageList').append('<li>No messages</li>');
             }
         }).error(function() {
-            $.mobile.showPageLoadingMsg($.mobile.pageLoadErrorMessageTheme, "Unable to get inbox, please try again later", true);
-            setTimeout($.mobile.hidePageLoadingMsg, 1500);
+            $.mobile.loading( 'show', {
+                text: 'Unable to get inbox, please try again later',
+                textonly: true
+            });
+
+            setTimeout( function() {
+                $.mobile.loading( 'hide' );
+            }, 1500);
+        }).complete(function() {
+            $('section[data-role="content"] ul').listview('refresh');
+            $.mobile.loading( 'hide' );
         });
     });
 </script>

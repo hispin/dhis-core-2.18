@@ -26,7 +26,7 @@
     }
 
     function loadOrganisationUnitsPage() {
-        $.mobile.showPageLoadingMsg();
+        $.mobile.loading( 'show' );
 
         var organisationUnits = fm.organisationUnits();
         var tmpl = $( '#organisation-units-template' ).html();
@@ -38,17 +38,16 @@
         $('#organisation-unit-list').listview();
         $('#organisation-unit-list li a').bind('click', selectOrganisationUnit);
 
-        $.mobile.hidePageLoadingMsg();
+        $.mobile.loading( 'hide' );
     }
 
     function loadDataSetsPage() {
-        if( Selected.orgUnit === undefined )
-        {
+        if( Selected.orgUnit === undefined ) {
             $.mobile.changePage( '#organisation-units-page' );
             return;
         }
 
-        $.mobile.showPageLoadingMsg();
+        $.mobile.loading( 'show' );
 
         var organisationUnit = fm.organisationUnit( Selected.orgUnit );
         var tmpl = $( '#data-sets-template' ).html();
@@ -60,7 +59,7 @@
         $('#data-set-list').listview();
         $('#data-set-list li a').bind( 'click', selectDataSet );
 
-        $.mobile.hidePageLoadingMsg();
+        $.mobile.loading( 'hide' );
     }
 
     function refreshPeriods() {
@@ -123,14 +122,14 @@
             return;
         }
 
-        $.mobile.showPageLoadingMsg();
+        $.mobile.loading( 'show' );
 
         var form = fm.form( Selected.dataSet );
         periodType = form.periodType;
         allowFuturePeriods = form.allowFuturePeriods;
         refreshPeriods();
 
-        $.mobile.hidePageLoadingMsg();
+        $.mobile.loading( 'hide' );
     }
 
     function loadDataEntryPage() {
@@ -152,7 +151,7 @@
             return;
         }
 
-        $.mobile.showPageLoadingMsg();
+        $.mobile.loading( 'show' );
 
         function renderFormTemplate(form, valueMap) {
             var tmpl = $( '#data-entry-template' ).html();
@@ -186,7 +185,7 @@
 
             var form = fm.form(Selected.dataSet);
             renderFormTemplate(form, valueMap);
-            $.mobile.hidePageLoadingMsg();
+            $.mobile.loading( 'hide' );
         } else {
             $.ajax({
                 url: '../api/dataSets/' + Selected.dataSet + '/form',
@@ -201,13 +200,13 @@
                 var form = fm.form(Selected.dataSet);
                 renderFormTemplate(form);
             }).complete(function() {
-                $.mobile.hidePageLoadingMsg();
+                $.mobile.loading( 'hide' );
             });
         }
     }
 
     function saveValues() {
-        $.mobile.showPageLoadingMsg();
+        $.mobile.loading( 'show' );
 
         var fields = $('#data-entry-form :input[name]');
 
@@ -234,7 +233,7 @@
         dataValueSet.dataValues = dataValues;
 
         fm.saveDataValueSet( dataValueSet ).always(function() {
-            $.mobile.hidePageLoadingMsg();
+            $.mobile.loading( 'hide' );
             location.href = 'index';
         });
     }
@@ -252,7 +251,10 @@
         if( pageLoaders[pageId] ) {
             pageLoaders[pageId].call();
         } else {
-            $.mobile.showPageLoadingMsg($.mobile.pageLoadErrorMessageTheme, "Tried changing to invalid page.", true);
+            $.mobile.loading( 'show', {
+                text: 'Tried changing to invalid page',
+                textonly: true
+            });
         }
     });
 </script>

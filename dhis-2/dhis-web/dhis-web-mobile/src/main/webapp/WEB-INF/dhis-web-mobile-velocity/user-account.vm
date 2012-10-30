@@ -1,15 +1,18 @@
 
 <script>
-    $(document).bind('pageinit',function(){
+    $(document).bind('pagechange',function(){
+        $.mobile.loading( 'show' );
+
         $.ajax({
             url: '../api/currentUser',
-            dataType: 'json',
-            async: false
+            dataType: 'json'
         }).success(function(data) {
             $('#firstNameInput').val(data.firstName);
             $('#surnameInput').val(data.surname);
             $('#emailInput').val(data.email);
             $('#phoneNumberInput').val(data.phoneNumber);
+        }).complete(function() {
+            $.mobile.loading( 'hide' );
         });
 
         $('input:submit').bind('click', function(e) {
@@ -20,7 +23,7 @@
                return acc;
             }, {});
 
-            $.mobile.showPageLoadingMsg();
+            $.mobile.loading( 'show' );
 
             $.ajax({
                 url: '../api/currentUser/user-account.json',
@@ -28,7 +31,7 @@
                 data: JSON.stringify( settings ),
                 type: 'POST'
             }).complete(function() {
-                $.mobile.hidePageLoadingMsg();
+                $.mobile.loading( 'hide' );
                 window.location.href = '../mobile';
             });
 
