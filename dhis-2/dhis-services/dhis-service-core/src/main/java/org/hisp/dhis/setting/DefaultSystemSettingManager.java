@@ -152,4 +152,9 @@ public class DefaultSystemSettingManager
     {
         return (Boolean) getSystemSetting( KEY_ACCOUNT_RECOVERY, false );
     }
+    
+    public boolean emailEnabled()
+    {
+        return getEmailHostName() != null && getEmailPassword() != null && getEmailUsername() != null;
+    }
 }
