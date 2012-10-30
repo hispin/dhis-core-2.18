@@ -13,6 +13,7 @@
  * TextField
  * Checkbox
  * NumberField
+ * Label
 */
 
 /* General */
@@ -182,7 +183,7 @@ html * {
 
 .x-btn-default-toolbar-small-over {
 	border-color: #bbb;
-	border-radius: 2px;
+	border-radius: 1px;
 }
 
 .gis-toolbar-btn-menu-download .x-btn-icon,
@@ -276,36 +277,21 @@ html * {
 	}
 	
 	.gis-menu-item-icon-edit,
-	.gis-menu-item-icon-refresh,
 	.gis-menu-item-icon-clear,
 	.gis-menu-item-icon-labels,
 	.gis-menu-item-icon-filter,
 	.gis-menu-item-icon-search,
-	.gis-menu-item-icon-opacity,
-	.gis-menu-item-icon-history,
 	
 	.gis-menu-item-icon-drill,
 	.gis-menu-item-icon-float,
 	.gis-menu-item-icon-information,
 	.gis-menu-item-icon-relocate,
 	
-	.gis-menu-item-icon-opacity10,
-	.gis-menu-item-icon-opacity20,
-	.gis-menu-item-icon-opacity30,
-	.gis-menu-item-icon-opacity40,
-	.gis-menu-item-icon-opacity50,
-	.gis-menu-item-icon-opacity60,
-	.gis-menu-item-icon-opacity70,
-	.gis-menu-item-icon-opacity80,
-	.gis-menu-item-icon-opacity90,
-	.gis-menu-item-icon-opacity100 {
+	.gis-menu-item-icon-favorite {
 		left: 6px;
 	}	
 	.gis-menu-item-icon-edit {
 		background: url('../images/edit_16.png') no-repeat;
-	}
-	.gis-menu-item-icon-refresh {
-		background: url('../images/refresh_16.png') no-repeat;
 	}
 	.gis-menu-item-icon-clear {
 		background: url('../images/clear_16.png') no-repeat;
@@ -319,12 +305,6 @@ html * {
 	.gis-menu-item-icon-search {
 		background: url('../images/search_16.png') no-repeat;
 	}
-	.gis-menu-item-icon-opacity {
-		background: url('../images/opacity_16.png') no-repeat;
-	}
-	.gis-menu-item-icon-history {
-		background: url('../images/history_16.png') no-repeat;
-	}
 	
 	.gis-menu-item-icon-drill {
 		background: url('../images/drill_16.png') no-repeat;
@@ -337,6 +317,10 @@ html * {
 	}
 	.gis-menu-item-icon-relocate {
 		background: url('../images/relocate_16.png') no-repeat;
+	}
+	
+	.gis-menu-item-icon-favorite {
+		background: url('../images/favorite_16.png') no-repeat;
 	}
 	
 	.x-menu-item-separator {
@@ -454,8 +438,32 @@ html * {
 
 /* Grid */
 
-.gis-grid .x-grid-cell-inner {
+.gis-grid-row-icon-edit,
+.gis-grid-row-icon-overwrite,
+.gis-grid-row-icon-delete {
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+.gis-grid-row-icon-edit {
+	background: url('../images/grid-edit_16.png') no-repeat;
+}
+.gis-grid-row-icon-overwrite {
+	background: url('../images/grid-save_16.png') no-repeat;
+	margin-left: 4px;
+}
+.gis-grid-row-icon-delete {
+	background: url('../images/grid-delete_16.png') no-repeat;
+	margin-left: 4px;
+}
+
+.gis-grid .x-grid-cell-inner,
+.gis-grid .x-grid-cell-inner * {
 	font-size: 10px !important;
+}
+.gis-grid .x-grid-cell-inner {
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
 .gis-grid .x-column-header-text {
@@ -463,19 +471,28 @@ html * {
 }
 .gis-grid .x-grid-header-ct {
 	border-bottom-width: 1px !important;
-	border-bottom-color: #dbdbdb;	
+	border-bottom-color: #d0d0d0;	
+}
+.gis-grid .x-grid-body {
+	border-top: 0 none !important;
 }
 
-.gis-grid .x-grid-dirty-cell { /* hide red cell icon */
+.gis-grid .x-grid-dirty-cell { /* hide red "dirty" icon */
 	background-image: none;
 }
 .gis-grid .x-grid-row { /* middle align text in row with image */
 	vertical-align: middle;
 }
 
-.gis-grid-icon-link {
+.gis-grid td.text-link,
+.gis-grid td.text-link div,
+.gis-grid td.text-link span  {
 	cursor: pointer;
 	cursor: hand;
+}
+.gis-grid td.text-link span {
+	color: blue;
+	text-decoration: underline;
 }
 
 /* TextField */
@@ -508,3 +525,4 @@ html * {
 	height: 22px;
 	line-height: 21px;
 }
+

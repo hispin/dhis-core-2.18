@@ -88,11 +88,10 @@ DV.conf = {
             path_visualizer: '../',
             path_api: '../../api/',
             path_commons: '../../dhis-web-commons-ajax-json/',
-            path_portal: '../../dhis-web-portal/',
             path_lib: '../../dhis-web-commons/javascripts/',
             path_images: 'images/',
             initialize: 'initialize.action',
-            redirect: 'redirect.action',
+            redirect: 'dhis-web-commons-about/redirect.action',
             data_get: 'chartValues.json',
             indicator_get: 'indicatorGroups/',
             indicator_getall: 'indicators.json?paging=false&links=false',
@@ -4959,7 +4958,7 @@ Ext.onReady( function() {
 							cls: 'dv-toolbar-btn-2',
                             text: 'Exit',
                             handler: function() {
-                                window.location.href = DV.conf.finals.ajax.path_portal + DV.conf.finals.ajax.redirect;
+                                window.location.href = '../../dhis-web-commons-about/redirect.action';
                             }
                         },
                         {
