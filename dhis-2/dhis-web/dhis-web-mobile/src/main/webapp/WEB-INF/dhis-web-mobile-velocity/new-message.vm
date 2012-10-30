@@ -187,8 +187,8 @@
                 $.mobile.hidePageLoadingMsg();
             }).error(function() {
                 $.mobile.loading( 'show', {
-                    text: 'Unable to search, please try again later',
-                    textonly: true
+                    html: '<h1>Unable to search, please try again later</h1>',
+                    textVisible: true
                 });
 
                 setTimeout( function() {
@@ -215,8 +215,8 @@
 
         if( !message.subject.length > 0 ) {
             $.mobile.loading( 'show', {
-                text: 'Please fill in subject',
-                textonly: true
+                html: '<h1>Please fill in subject</h1>',
+                textVisible: true
             });
 
             setTimeout( function() {
@@ -228,8 +228,8 @@
 
         if( !message.text.length > 0 ) {
             $.mobile.loading( 'show', {
-                text: 'Please fill in text',
-                textonly: true
+                html: '<h1>Please fill in text</h1>',
+                textVisible: true
             });
 
             setTimeout( function() {
@@ -257,8 +257,15 @@
         });
 
         if( !( message.organisationUnits.length > 0 || message.users.length > 0 || message.userGroups.length > 0 ) ) {
-            $.mobile.showPageLoadingMsg( $.mobile.pageLoadErrorMessageTheme, "Please add at least one recipient", true );
-            setTimeout( $.mobile.hidePageLoadingMsg, 1500 );
+            $.mobile.loading( 'show', {
+                html: '<h1>Please add at least one recipient</h1>',
+                textVisible: true
+            });
+
+            setTimeout( function() {
+                $.mobile.loading( 'hide' );
+            }, 1500);
+
             return false;
         }
 
@@ -273,8 +280,8 @@
             window.location.href = '../messages';
         }).error(function() {
             $.mobile.loading( 'show', {
-                text: 'Unable to send message, please try again later',
-                textonly: true
+                html: '<h1>Unable to send message, please try again later</h1>',
+                textVisible: true
             });
 
             setTimeout( function() {

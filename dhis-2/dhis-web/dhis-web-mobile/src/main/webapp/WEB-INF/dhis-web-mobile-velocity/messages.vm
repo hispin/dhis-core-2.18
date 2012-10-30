@@ -20,8 +20,8 @@
             }
         }).error(function() {
             $.mobile.loading( 'show', {
-                text: 'Unable to get inbox, please try again later',
-                textonly: true
+                html: '<h1>Unable to get inbox, please try again later</h1>',
+                textVisible: true
             });
 
             setTimeout( function() {

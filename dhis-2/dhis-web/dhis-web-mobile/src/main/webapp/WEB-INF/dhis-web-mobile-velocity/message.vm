@@ -32,8 +32,8 @@
                 location.reload(true);
             }).error(function () {
                 $.mobile.loading( 'show', {
-                    text: 'Unable to send reply, please try again later',
-                    textonly: true
+                    html: '<h1>Unable to send reply, please try again later</h1>',
+                    textVisible: true
                 });
 
                 setTimeout( function() {
@@ -60,8 +60,8 @@
             bindSubmitHandler();
         }).error(function () {
             $.mobile.loading( 'show', {
-                text: 'Unable to load message, please try again later',
-                textonly: true
+                html: '<h1>Unable to load message, please try again later</h1>',
+                textVisible: true
             });
 
             setTimeout( function() {
