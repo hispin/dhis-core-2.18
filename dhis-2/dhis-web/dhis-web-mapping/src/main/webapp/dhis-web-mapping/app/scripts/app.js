@@ -55,6 +55,9 @@ GIS.conf = {
 			item_width: 222,
 			itemlabel_width: 95,
 			window_width: 250
+		},
+		grid: {
+			row_height: 27
 		}
 	},
 	period: {
@@ -737,6 +740,39 @@ Ext.onReady( function() {
 			}
 		},
 		listeners: {
+			load: function() {
+				if (!this.isLoaded) {
+					this.isLoaded = true;
+				}
+				this.sort('name', 'ASC');
+			}
+		}
+	});
+	
+	GIS.store.maps = Ext.create('Ext.data.Store', {
+		fields: ['id', 'name', 'lastUpdated'],
+		proxy: {
+			type: 'ajax',
+			url: GIS.conf.url.path_api + 'indicators.json?links=false',
+			reader: {
+				type: 'json',
+				root: 'indicators'
+			}
+		},
+		isLoaded: false,
+		loadFn: function(fn) {
+			if (this.isLoaded) {
+				fn.call();
+			}
+			else {
+				this.load(fn);
+			}
+		},
+		listeners: {
+			beforeload: function() {
+				//console.log(this.getProxy());
+				//this.getProxy().setExtraParam('pageSize', GIS.cmp.region.center.getHeight() - 155);
+			},
 			load: function() {
 				if (!this.isLoaded) {
 					this.isLoaded = true;
@@ -1454,6 +1490,192 @@ Ext.onReady( function() {
 		return panel;
 	};
 	
+	GIS.obj.MapWindow = function() {
+		
+		// Objects
+		var UpdateWindow,
+		
+		// Instances
+			updateWindow,
+			
+		// Components
+			addButton,
+			searchTextfield,
+			grid,
+			prevButton,
+			nextButton,
+			tbar,
+			bbar,
+			
+			nameTextfied,
+			systemCheckbox,
+			createButton,
+			updateButton,
+			
+			window;
+			
+		searchTextfield = Ext.create('Ext.form.field.Text', {
+			width: 354,
+			height: 26,
+			style: 'margin-right: 4px',
+			fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb',
+			emptyText: 'Search for favorites..', //i18n
+			enableKeyEvents: true,
+			currentValue: '',
+			listeners: {
+				keyup: function() {
+					if (this.getValue() !== this.currentValue) {
+						console.log('Request ' + this.getValue());
+						this.currentValue = this.getValue();
+					}
+				}
+			}
+		});
+		
+		addButton = Ext.create('Ext.button.Button', {
+			text: 'Add new', //i18n
+			height: 26,
+			style: 'border-radius: 1px',
+			menu: {},
+			handler: function() {
+			}
+		});
+		
+		prevButton = Ext.create('Ext.button.Button', {
+			text: 'Prev', //i18n
+			handler: function() {
+			}
+		});
+		
+		nextButton = Ext.create('Ext.button.Button', {
+			text: 'Next', //i18n
+			handler: function() {
+			}
+		});
+		
+		grid = Ext.create('Ext.grid.Panel', {
+			cls: 'gis-grid',
+			bodyStyle: 'border-top-color: red !important, border-bottom: 0 none',
+			scroll: false,
+			hideHeaders: true,
+			columns: [						
+				{
+					dataIndex: 'name',
+					sortable: false,
+					width: 355,
+					renderer: function(value, metaData, record) {
+						var fn = function() {
+							var span = Ext.get(record.data.id),
+								div = span.parent('div'),
+								td = span.parent('td'),
+								currentElement,
+								clickHandler = function(id) {
+									alert(id);
+									console.log(record.data.id);
+								};
+								
+							td.addClsOnOver('text-link');
+							td.addListener('click', clickHandler(td.id));
+						};
+						
+						Ext.defer(fn, 100);
+						
+						return '<span id="' + record.data.id + '">' + value + '</span>';
+					}
+				},
+				{
+					xtype: 'actioncolumn',
+					sortable: false,
+					width: 65,
+					items: [
+						{
+							iconCls: 'gis-grid-row-icon-edit',
+							handler: function(grid, rowIndex, colIndex, col, event) {
+								//var id = this.up('grid').store.getAt(rowIndex).data.id;
+							}
+						},
+						{
+							iconCls: 'gis-grid-row-icon-overwrite',
+							handler: function(grid, rowIndex, colIndex, col, event) {
+								//var id = this.up('grid').store.getAt(rowIndex).data.id;
+							}
+						},
+						{
+							iconCls: 'gis-grid-row-icon-delete',
+							handler: function(grid, rowIndex, colIndex, col, event) {
+								//var id = this.up('grid').store.getAt(rowIndex).data.id;
+							}
+						}
+					]
+				}
+			],
+			store: GIS.store.maps,
+			bbar: [
+				'->',
+				prevButton,
+				nextButton
+			],
+			listeners: {
+				added: function() {
+					GIS.cmp.mapGrid = this;
+				},
+				render: function() {
+					var size = Math.floor((GIS.cmp.region.center.getHeight() - 155) / GIS.conf.layout.grid.row_height);
+					this.store.load({
+						params: {
+							pageSize: size
+						}
+					});
+				},
+				itemmouseenter: function(grid, record, item) {
+					this.currentItem = Ext.get(item);
+					this.currentItem.removeCls('x-grid-row-over');
+				},
+				select: function() {
+					this.currentItem.removeCls('x-grid-row-selected');
+				},
+				selectionchange: function() {
+					this.currentItem.removeCls('x-grid-row-focused');
+				}
+			}
+		});
+		
+		window = Ext.create('Ext.window.Window', {
+			title: 'Manage favorites',
+			iconCls: 'gis-window-title-icon-favorite',
+			cls: 'gis-container-default',
+			width: 450,
+			onmouseover: function(id) { // mapgrid
+				//Ext.get(id).addCls('gis-grid-icon-link');
+			},
+			onmouseout: function(id) {
+				//Ext.get(id).removeCls('gis-grid-icon-link');
+			},
+			onclick: function(id) {
+				//alert(id);
+			},
+			items: [
+				{
+					xtype: 'panel',
+					layout: 'hbox',
+					cls: 'gis-container-inner',
+					items: [
+						searchTextfield,
+						addButton
+					]
+				},
+				grid
+			],
+			listeners: {
+				show: function() {
+					this.setPosition(this.getPosition()[0], 40);
+				}
+			}
+		});
+		
+		return window;
+	};
+	
 	GIS.obj.LegendSetWindow = function() {
 		
 		// Stores
@@ -1493,7 +1715,7 @@ Ext.onReady( function() {
 			validateLegends;
 				
 		legendSetStore = Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'edit', 'del'],
+			fields: ['id', 'name'],
 			proxy: {
 				type: 'ajax',
 				url: GIS.conf.url.path_api + 'mapLegendSets.json?links=false&paging=false',
@@ -1505,15 +1727,6 @@ Ext.onReady( function() {
 			listeners: {
 				load: function(store, records) {
 					this.sort('name', 'ASC');
-					
-					this.each( function(record) {									
-						record.set({
-							edit: '<img id="' + record.getId() + '" class="gis-grid-icon-link" src="images/grid-edit_16.png"' +
-									'name="legendSetGrid" onclick="Ext.getCmp(this.name).showUpdateLegendSet(this.id);" />',
-							del: '<img id="' + record.getId() + '" class="gis-grid-icon-link" src="images/grid-delete_16.png"' +
-									'name="legendSetGrid" onclick="Ext.getCmp(this.name).deleteLegendSet(this.id);" />'
-						});
-					});
 					
 					info.setText(records.length + ' legend sets available');
 				}
@@ -1565,30 +1778,38 @@ Ext.onReady( function() {
 			});
 			
 			legendSetGrid = Ext.create('Ext.grid.Panel', {
-				id: 'legendSetGrid',
 				cls: 'gis-grid',
 				bodyStyle: 'border-top: 0 none',
 				width: GIS.conf.layout.widget.item_width,
 				scroll: 'vertical',
 				hideHeaders: true,
-				showUpdateLegendSet: showUpdateLegendSet,
-				deleteLegendSet: deleteLegendSet,
 				currentItem: null,
-				columns: [
+				columns: [						
 					{
 						dataIndex: 'name',
 						sortable: false,
 						width: GIS.conf.layout.widget.item_width - 62
 					},
 					{
-						dataIndex: 'edit',
+						xtype: 'actioncolumn',
 						sortable: false,
-						width: 20
-					},
-					{
-						dataIndex: 'del',
-						sortable: false,
-						width: 20
+						width: 40,
+						items: [
+							{
+								iconCls: 'gis-grid-row-icon-edit',
+								handler: function(grid, rowIndex, colIndex, col, event) {
+									var id = this.up('grid').store.getAt(rowIndex).data.id;
+									showUpdateLegendSet(id);
+								}
+							},
+							{
+								iconCls: 'gis-grid-row-icon-delete',
+								handler: function(grid, rowIndex, colIndex, col, event) {
+									var id = this.up('grid').store.getAt(rowIndex).data.id;
+									deleteLegendSet(id);
+								}
+							}
+						]
 					},
 					{
 						sortable: false,
@@ -1624,30 +1845,19 @@ Ext.onReady( function() {
 				data = [];
 				
 			tmpLegendStore = Ext.create('Ext.data.ArrayStore', {
-				fields: ['id', 'name', 'startValue', 'endValue', 'color', 'colorString', 'del'],
-				listeners: {
-					add: function() {						
-						this.each( function(record) {
-							record.set({
-								colorString: '<span style="color:' + record.data.color + '">Color</span>',
-								del: '<img id="' + record.data.id + '" class="gis-grid-icon-link" src="images/grid-delete_16.png"' +
-									 ' name="legendGrid" onclick="Ext.getCmp(this.name).deleteLegend(this.id);" />'
-							});
-						});
-					}
-				}
+				fields: ['id', 'name', 'startValue', 'endValue', 'color']
 			});
-		
+			
 			legendSetName = Ext.create('Ext.form.field.Text', {
 				cls: 'gis-textfield',
 				width: GIS.conf.layout.widget.item_width,
-				fieldLabel: 'Legend set name' //i18m
+				fieldLabel: 'Legend set name' //i18n
 			});
 			
 			legendName = Ext.create('Ext.form.field.Text', {
 				cls: 'gis-textfield',
 				width: GIS.conf.layout.widget.item_width - 12,
-				fieldLabel: 'Legend name' //i18m
+				fieldLabel: 'Legend name' //i18n
 			});
 			
 			startValue = Ext.create('Ext.form.field.Number', {
@@ -1665,7 +1875,7 @@ Ext.onReady( function() {
 			
 			color = Ext.create('Ext.ux.button.ColorButton', {
 				width: GIS.conf.layout.widget.item_width - GIS.conf.layout.widget.itemlabel_width - 10 - 12,
-				fieldLabel: 'Symbolizer', //i18m
+				fieldLabel: 'Symbolizer', //i18n
 				value: 'e1e1e1'
 			});
 			
@@ -1710,14 +1920,12 @@ Ext.onReady( function() {
 			});
 			
 			legendGrid = Ext.create('Ext.grid.Panel', {
-				id: 'legendGrid',
 				cls: 'gis-grid',
 				bodyStyle: 'border-top: 0 none',
 				width: GIS.conf.layout.widget.item_width,
 				height: 235,
 				scroll: 'vertical',
 				hideHeaders: true,
-				deleteLegend: deleteLegend,
 				currentItem: null,
 				columns: [
 					{
@@ -1726,15 +1934,16 @@ Ext.onReady( function() {
 						width: GIS.conf.layout.widget.item_width - 156
 					},
 					{
-						dataIndex: 'colorString',
 						sortable: false,
-						width: 40
+						width: 40,
+						renderer: function(value, metaData, record) {
+							return '<span style="color:' + record.data.color + '">Color</span>';
+						}
 					},
 					{
 						dataIndex: 'startValue',
 						sortable: false,
-						width: 37,
-						cls: 'NISSA'
+						width: 37
 					},
 					{
 						dataIndex: 'endValue',
@@ -1742,9 +1951,18 @@ Ext.onReady( function() {
 						width: 37
 					},
 					{
-						dataIndex: 'del',
+						xtype: 'actioncolumn',
 						sortable: false,
-						width: 20
+						width: 20,
+						items: [
+							{
+								iconCls: 'gis-grid-row-icon-delete',
+								handler: function(grid, rowIndex, colIndex, col, event) {
+									var id = this.up('grid').store.getAt(rowIndex).data.id;
+									deleteLegend(id);
+								}
+							}
+						]
 					},
 					{
 						sortable: false,
@@ -1862,10 +2080,8 @@ Ext.onReady( function() {
 		deleteLegendSet = function(id) {
 			if (id) {
 				Ext.Ajax.request({
-					url: GIS.conf.url.path_gis + 'deleteMapLegendSet.action',
-					params: {
-						id: id
-					},
+					url: GIS.conf.url.path_api + 'mapLegendSets/' + id,
+					method: 'DELETE',
 					success: function() {
 						legendSetStore.load();
 					}
@@ -1883,7 +2099,6 @@ Ext.onReady( function() {
 				
 			body = {
 				name: legendSetName.getValue(),
-				type: GIS.conf.finals.widget.legendtype_predefined,
 				symbolizer: GIS.conf.finals.widget.symbolizer_color,
 				mapLegends: []
 			};
@@ -2038,7 +2253,7 @@ Ext.onReady( function() {
 		return window;
 	};
 	
-	GIS.obj.getDownloadMenu = function() {
+	GIS.obj.DownloadMenu = function() {
 		var menu,
 			item,
 			textfield,
@@ -2059,20 +2274,20 @@ Ext.onReady( function() {
 				var title = textfield.getValue(),
 					svg = GIS.util.svg.getString(title, GIS.util.map.getVisibleVectorLayers()),
 					exportForm = document.getElementById('exportForm');
-					
+				
 				if (svg) {
 					document.getElementById('svgField').value = svg;
 					document.getElementById('titleField').value = title;
 					exportForm.action = '../exportImage.action';
 					exportForm.method = 'post';
 					exportForm.submit();
-				
-					textfield.reset();
-					menu.hide();
 				}
-				else {					
-					alert('No map data to export'); //todo //i18n
-				}					
+				else {
+					alert('Please create a map first'); //todo //i18n
+				}
+				
+				textfield.reset();
+				menu.hide();
 			}
 		});
 			
@@ -2094,13 +2309,7 @@ Ext.onReady( function() {
 			height: 30,
 			cls: 'gis-menu',
 			items: item,
-			listeners: {
-				beforeshow: function() {
-					if (!GIS.util.map.getVisibleVectorLayers()) {
-						alert('No map data to export'); //todo //i18n
-						return false;
-					}
-				},						
+			listeners: {				
 				afterrender: function() {
 					this.getEl().addCls('gis-toolbar-btn-menu gis-toolbar-btn-menu-download');
 				},
@@ -2326,14 +2535,17 @@ Ext.onReady( function() {
 							menu: new GIS.obj.LayerMenu(GIS.base.facility),
 							width: 26
 						},
-						//{
-							//iconCls: 'gis-btn-icon-' + GIS.base.symbol.id,
-							//menu: new GIS.obj.LayerMenu(GIS.base.symbol),
-							//width: 26
-						//},
 						{
 							text: 'Favorites', //i18n
-							menu: {}
+							menu: {},
+							handler: function() {
+								if (GIS.cmp.mapWindow && GIS.cmp.mapWindow.destroy) {
+									GIS.cmp.mapWindow.destroy();
+								}
+								
+								GIS.cmp.mapWindow = new GIS.obj.MapWindow();
+								GIS.cmp.mapWindow.show();
+							}
 						},
 						{
 							text: 'Legend', //i18n
@@ -2349,7 +2561,7 @@ Ext.onReady( function() {
 						},
 						{
 							text: 'Download', //i18n
-							menu: GIS.obj.getDownloadMenu()
+							menu: new GIS.obj.DownloadMenu()
 						},
 						'->',
 						{
