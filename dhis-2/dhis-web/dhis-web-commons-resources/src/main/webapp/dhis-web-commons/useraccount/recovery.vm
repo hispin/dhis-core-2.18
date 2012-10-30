@@ -3,7 +3,7 @@
 <head>
     <title>DHIS 2</title>
     <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
-    <script type="text/javascript" src="../javascripts/useraccount/restore.js"></script>
+    <script type="text/javascript" src="../javascripts/useraccount/recovery.js"></script>
     <link type="text/css" rel="stylesheet" href="../css/account.css">
 </head>
 <body>
