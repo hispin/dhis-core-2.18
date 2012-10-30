@@ -105,11 +105,11 @@ public class MobileController
         return "base";
     }
 
-    @RequestMapping( value = "/settings" )
+    @RequestMapping( value = "/user-account" )
     public String settings( Model model, HttpServletRequest request )
     {
         model.addAttribute( "baseUrl", ContextUtils.getRootPath( request ) );
-        model.addAttribute( "page", "settings.vm" );
+        model.addAttribute( "page", "user-account.vm" );
 
         return "base";
     }

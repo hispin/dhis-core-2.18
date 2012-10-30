@@ -72,10 +72,10 @@
     function updateMenu() {
         if( onlineStatus ) {
             $( '#messages').removeClass('ui-disabled');
-            $( '#settings').removeClass('ui-disabled');
+            $( '#user-account').removeClass('ui-disabled');
         } else {
             $( '#messages').addClass('ui-disabled');
-            $( '#settings').addClass('ui-disabled');
+            $( '#user-account').addClass('ui-disabled');
         }
     }
 
@@ -132,7 +132,7 @@
         <ul data-role="listview" data-inset="true">
             <li id="data-entry"><a href="data-entry">Aggregate Reporting</a></li>
             <li id="messages"><a href="messages">Messages</a></li>
-            <li id="settings"><a href="settings">User Account</a></li>
+            <li id="user-account"><a href="user-account">User Account</a></li>
             <li id="offline-status">
                 <h3></h3>
                 <p>&nbsp;</p>

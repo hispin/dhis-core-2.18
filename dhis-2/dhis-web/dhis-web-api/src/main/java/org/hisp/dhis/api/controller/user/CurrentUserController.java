@@ -45,7 +45,7 @@ import org.hisp.dhis.api.webdomain.Forms;
 import org.hisp.dhis.api.webdomain.user.Dashboard;
 import org.hisp.dhis.api.webdomain.user.Inbox;
 import org.hisp.dhis.api.webdomain.user.Recipients;
-import org.hisp.dhis.api.webdomain.user.Settings;
+import org.hisp.dhis.api.webdomain.user.UserAccount;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.interpretation.Interpretation;
@@ -146,8 +146,8 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), dashboard );
     }
 
-    @RequestMapping( value = "/settings", produces = {"application/json", "text/*"} )
-    public void getSettings( HttpServletResponse response ) throws Exception
+    @RequestMapping( value = "/user-account", produces = {"application/json", "text/*"} )
+    public void getUserAccount( HttpServletResponse response ) throws Exception
     {
         User currentUser = currentUserService.getCurrentUser();
 
@@ -157,19 +157,19 @@ public class CurrentUserController
             return;
         }
 
-        Settings settings = new Settings();
-        settings.setFirstName( currentUser.getFirstName() );
-        settings.setSurname( currentUser.getSurname() );
-        settings.setEmail( currentUser.getEmail() );
-        settings.setPhoneNumber( currentUser.getPhoneNumber() );
+        UserAccount userAccount = new UserAccount();
+        userAccount.setFirstName( currentUser.getFirstName() );
+        userAccount.setSurname( currentUser.getSurname() );
+        userAccount.setEmail( currentUser.getEmail() );
+        userAccount.setPhoneNumber( currentUser.getPhoneNumber() );
 
-        JacksonUtils.toJson( response.getOutputStream(), settings );
+        JacksonUtils.toJson( response.getOutputStream(), userAccount );
     }
 
-    @RequestMapping( value = "/settings", method = RequestMethod.POST, consumes = "application/xml" )
-    public void postSettingsXml( HttpServletResponse response, HttpServletRequest request ) throws Exception
+    @RequestMapping( value = "/user-account", method = RequestMethod.POST, consumes = "application/xml" )
+    public void postUserAccountXml( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
-        Settings settings = JacksonUtils.fromXml( request.getInputStream(), Settings.class );
+        UserAccount userAccount = JacksonUtils.fromXml( request.getInputStream(), UserAccount.class );
         User currentUser = currentUserService.getCurrentUser();
 
         if ( currentUser == null )
@@ -178,18 +178,18 @@ public class CurrentUserController
             return;
         }
 
-        currentUser.setFirstName( settings.getFirstName() );
-        currentUser.setSurname( settings.getSurname() );
-        currentUser.setEmail( settings.getEmail() );
-        currentUser.setPhoneNumber( settings.getPhoneNumber() );
+        currentUser.setFirstName( userAccount.getFirstName() );
+        currentUser.setSurname( userAccount.getSurname() );
+        currentUser.setEmail( userAccount.getEmail() );
+        currentUser.setPhoneNumber( userAccount.getPhoneNumber() );
 
         userService.updateUser( currentUser );
     }
 
-    @RequestMapping( value = "/settings", method = RequestMethod.POST, consumes = "application/json" )
-    public void postSettingsJson( HttpServletResponse response, HttpServletRequest request ) throws Exception
+    @RequestMapping( value = "/user-account", method = RequestMethod.POST, consumes = "application/json" )
+    public void postUserAccountJson( HttpServletResponse response, HttpServletRequest request ) throws Exception
     {
-        Settings settings = JacksonUtils.fromJson( request.getInputStream(), Settings.class );
+        UserAccount userAccount = JacksonUtils.fromJson( request.getInputStream(), UserAccount.class );
         User currentUser = currentUserService.getCurrentUser();
 
         if ( currentUser == null )
@@ -198,10 +198,10 @@ public class CurrentUserController
             return;
         }
 
-        currentUser.setFirstName( settings.getFirstName() );
-        currentUser.setSurname( settings.getSurname() );
-        currentUser.setEmail( settings.getEmail() );
-        currentUser.setPhoneNumber( settings.getPhoneNumber() );
+        currentUser.setFirstName( userAccount.getFirstName() );
+        currentUser.setSurname( userAccount.getSurname() );
+        currentUser.setEmail( userAccount.getEmail() );
+        currentUser.setPhoneNumber( userAccount.getPhoneNumber() );
 
         userService.updateUser( currentUser );
     }
