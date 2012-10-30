@@ -213,7 +213,7 @@ public class ContextUtils
         return getRootPath( getRequest() ) + "/" + resourcePath;
     }
 
-    public static String getRootPath( HttpServletRequest request )
+    public static String getContextPath( HttpServletRequest request )
     {
         StringBuilder builder = new StringBuilder();
         String xForwardedProto = request.getHeader( "X-Forwarded-Proto" );
@@ -247,8 +247,14 @@ public class ContextUtils
         }
 
         builder.append( request.getContextPath() );
-        builder.append( request.getServletPath() );
 
+        return builder.toString();
+    }
+    
+    public static String getRootPath( HttpServletRequest request )
+    {
+        StringBuilder builder = new StringBuilder( getContextPath( request ) );
+        builder.append( request.getServletPath() );
         return builder.toString();
     }
 }

@@ -102,7 +102,7 @@ public class AccountController
         HttpServletRequest request,
         HttpServletResponse response )
     {
-        String rootPath = ContextUtils.getRootPath( request );
+        String rootPath = ContextUtils.getContextPath( request );
         
         boolean recover = securityService.sendRestoreMessage( username, rootPath );
         

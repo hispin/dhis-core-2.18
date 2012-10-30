@@ -48,8 +48,8 @@
 </form>
 
 <div id="restoreSuccessMessage" style="display:none">
-You account was successfully restored. Go to the <a href="login.action">login page and log in</a>
-with your new password.
+You account was successfully restored. Use your new password to 
+<a href="login.action">log in at the login page</a>.
 </div>
 
 <div id="restoreErrorMessage" style="display:none">
