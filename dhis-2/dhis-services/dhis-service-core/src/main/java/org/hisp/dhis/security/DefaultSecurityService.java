@@ -37,6 +37,7 @@ import java.util.Set;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.period.Cal;
+import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.system.velocity.VelocityManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
@@ -50,6 +51,9 @@ public class DefaultSecurityService
 {
     private static final String RESTORE_PATH = "/dhis-web-commons/security/restore.action";
 
+    private static final int TOKEN_LENGTH = 50;
+    private static final int CODE_LENGTH = 15;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -88,7 +92,12 @@ public class DefaultSecurityService
         
         UserCredentials credentials = userService.getUserCredentialsByUsername( username );
         
-        if ( credentials == null )
+        if ( credentials == null || credentials.getUser() == null || credentials.getUser().getEmail() == null )
+        {
+            return false;
+        }
+        
+        if ( !ValidationUtils.emailIsValid( credentials.getUser().getEmail() ) )
         {
             return false;
         }
@@ -120,8 +129,8 @@ public class DefaultSecurityService
 
     public String[] initRestore( UserCredentials credentials )
     {
-        String token = CodeGenerator.generateCode( 40 );
-        String code = CodeGenerator.generateCode( 15 );
+        String token = CodeGenerator.generateCode( TOKEN_LENGTH );
+        String code = CodeGenerator.generateCode( CODE_LENGTH );
         
         String hashedToken = passwordManager.encodePassword( credentials.getUsername(), token );
         String hashedCode = passwordManager.encodePassword( credentials.getUsername(), code );

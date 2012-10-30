@@ -61,6 +61,7 @@ public class SecurityServiceTest
         credentials.setPassword( "" );
         
         User user = createUser( 'A' );
+        user.setEmail( "valid@email.com" );
         user.setUserCredentials( credentials );
         credentials.setUser( user );
         userService.addUserCredentials( credentials );

@@ -114,7 +114,7 @@ public class AccountController
 
         log.info( "Recovery message sent for user: " + username );
         
-        response.setStatus( HttpServletResponse.SC_CREATED );
+        response.setStatus( HttpServletResponse.SC_OK );
         return "Recovery message sent";
     }
     
@@ -149,7 +149,7 @@ public class AccountController
 
         log.info( "Account restored for user: " + username );
         
-        response.setStatus( HttpServletResponse.SC_CREATED );
+        response.setStatus( HttpServletResponse.SC_OK );
         return "Account restored";
     }
     
