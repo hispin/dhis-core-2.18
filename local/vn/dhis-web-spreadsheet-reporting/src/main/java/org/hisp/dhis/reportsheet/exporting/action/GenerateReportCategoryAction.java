@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.exporting.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,6 +52,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GenerateReportCategoryAction
     extends AbstractGenerateExcelReportSupport
 {
+    private static final int SHIFT_NUMBER_OF_ROWS = 5;
+
     @Autowired
     private DataElementGroupOrderService dataElementGroupOrderService;
 
@@ -93,7 +95,7 @@ public class GenerateReportCategoryAction
             {
                 this.generateHorizontalOutPutFile( exportReportInstance, exportReportItems, organisationUnit, sheet );
             }
-            
+
             this.recalculatingFormula( sheet );
         }
 
@@ -105,12 +107,15 @@ public class GenerateReportCategoryAction
     }
 
     // -------------------------------------------------------------------------
-    // Supportive method
+    // Supportive methods
     // -------------------------------------------------------------------------
 
     private void generateVerticalOutPutFile( List<DataElementGroupOrder> orderedGroups,
         Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {
+        boolean isFirst = true;
+        boolean isTitleSetup = isTitleSetup( exportReportItems );
+
         for ( ExportItem reportItem : exportReportItems )
         {
             int run = 0;
@@ -119,6 +124,13 @@ public class GenerateReportCategoryAction
             for ( DataElementGroupOrder group : orderedGroups )
             {
                 int beginChapter = rowBegin;
+
+                // Shift the number of rows - from start-row to end-row
+
+                if ( isTitleSetup && isFirst )
+                {
+                    sheet.shiftRows( rowBegin, rowBegin + SHIFT_NUMBER_OF_ROWS, group.getDataElements().size() + 1 );
+                }
 
                 if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                 {
@@ -189,6 +201,8 @@ public class GenerateReportCategoryAction
                         evaluatorFormula );
                 }
             }
+
+            isFirst = false;
         }
     }
 
@@ -242,5 +256,18 @@ public class GenerateReportCategoryAction
         }
 
         return true;
+    }
+
+    private boolean isTitleSetup( Collection<ExportItem> exportReportItems )
+    {
+        for ( ExportItem item : exportReportItems )
+        {
+            if ( item.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
