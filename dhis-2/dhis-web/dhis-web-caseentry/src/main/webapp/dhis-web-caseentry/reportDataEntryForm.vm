@@ -1,5 +1,5 @@
 <div id='reportTitle' name='reportTitle' style="display:none;">
-	<h3>$i18n.getString('records_for') $organisationUnit.name $i18n.getString('at') $programStage.name $i18n.getString('on') $format.formatDate($programStageInstance.executionDate)</h3>
+	<h3>$i18n.getString('records_of') $encoder.htmlEncode( $patient.getFullName() )  $i18n.getString('at') $programStage.name $i18n.getString('in') $organisationUnit.name  $i18n.getString('on_value') $format.formatDate($programStageInstance.executionDate)</h3>
 	<hr/>
 </div>
 
