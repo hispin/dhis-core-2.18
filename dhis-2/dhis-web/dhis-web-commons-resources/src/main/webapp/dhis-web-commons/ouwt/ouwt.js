@@ -36,6 +36,7 @@ function Selection()
     var unselectAllowed = false;
     var rootUnselectAllowed = false;
     var autoSelectRoot = true;
+    var realRoot = true;
 
     this.setListenerFunction = function ( listenerFunction_, skipInitialCall )
     {
@@ -147,6 +148,7 @@ function Selection()
                 if ( data.indexOf( "<!DOCTYPE" ) != 0 )
                 {
                     data = JSON.parse( data );
+                    realRoot = data.realRoot;
                     should_update = update_required( data.version, data.roots );
                 }
             }, "text" ).complete(
@@ -294,6 +296,11 @@ function Selection()
                 var roots = JSON.parse( localStorage[getTagId( "Roots" )] );
 
                 if ( $.inArray(selected, roots) == -1 )
+                {
+                    return;
+                }
+
+                if( !realRoot )
                 {
                     return;
                 }
