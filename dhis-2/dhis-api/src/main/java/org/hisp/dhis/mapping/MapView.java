@@ -112,6 +112,8 @@ public class MapView
     
     private OrganisationUnitGroupSet organisationUnitGroupSet;
 
+    private transient String parentGraph;
+
     public MapView()
     {
     }
@@ -418,6 +420,19 @@ public class MapView
     public void setOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet )
     {
         this.organisationUnitGroupSet = organisationUnitGroupSet;
+    }
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public String getParentGraph()
+    {
+        return parentGraph;
+    }
+
+    public void setParentGraph( String parentGraph )
+    {
+        this.parentGraph = parentGraph;
     }
 
     @Override
