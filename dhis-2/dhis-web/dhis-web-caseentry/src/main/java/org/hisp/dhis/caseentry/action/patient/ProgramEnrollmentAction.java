@@ -62,8 +62,6 @@ public class ProgramEnrollmentAction
 
     private ProgramInstanceService programInstanceService;
 
-    private ProgramStageInstanceService programStageInstanceService;
-
     private PatientIdentifierService patientIdentifierService;
 
     private PatientAttributeValueService patientAttributeValueService;
@@ -137,12 +135,7 @@ public class ProgramEnrollmentAction
     {
         this.programInstanceService = programInstanceService;
     }
-
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
+    
     public void setProgramInstanceId( Integer programInstanceId )
     {
         this.programInstanceId = programInstanceId;
