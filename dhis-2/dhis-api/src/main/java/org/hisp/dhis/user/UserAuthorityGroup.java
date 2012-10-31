@@ -53,6 +53,11 @@ public class UserAuthorityGroup
 {
     public static final String AUTHORITY_ALL = "ALL";
 
+    public static final String[] CRITICAL_AUTHS = { "ALL", "F_SCHEDULING_ADMIN", 
+        "F_PERFORM_MAINTENANCE", "F_MERGE_ORGANISATION_UNITS", "F_ELIMINATE_DUPLICATE_DATA_ELEMENTS", 
+        "F_ARCHIVE_DATA", "F_SQLVIEW_MANAGEMENT", "F_SYSTEM_SETTING", 
+        "F_USERROLE_LIST", "F_USERROLE_DELETE", "F_USERROLE_ADD", "F_USERROLE_UPDATE" };
+    
     /**
      * Required and unique.
      */
