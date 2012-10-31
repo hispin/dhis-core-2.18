@@ -135,7 +135,7 @@ public class OrganisationUnit
     private transient List<String> groupNames = new ArrayList<String>();
 
     private transient Double value;
-
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -544,6 +544,20 @@ public class OrganisationUnit
     public boolean isPoint()
     {
         return featureType.equals( FEATURETYPE_POINT );
+    }
+    
+    public String getParentGraph()
+    {
+        StringBuilder builder = new StringBuilder();
+        
+        List<OrganisationUnit> anchestors = getAncestors();
+        
+        for ( OrganisationUnit unit : anchestors )
+        {
+            builder.append( "/" ).append( unit.getUid() );
+        }
+        
+        return builder.toString();
     }
 
     // -------------------------------------------------------------------------

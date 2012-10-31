@@ -224,6 +224,10 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     {
     }
 
+    /**
+     * Override to process a single entity after it has been retrieved from 
+     * storage and before it is returned to the view. Entity is null-safe.
+     */
     public void postProcessEntity( T entity, Map<String, String> parameters ) throws Exception
     {
     }

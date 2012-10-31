@@ -174,6 +174,18 @@ public class MapController
         
         mappingService.deleteMap( map );
     }
+    
+    @Override
+    public void postProcessEntity( Map map )
+    {
+        for ( MapView view : map.getMapViews() )
+        {
+            if ( view != null && view.getParentOrganisationUnit() != null )
+            {
+                view.setParentGraph( view.getParentOrganisationUnit().getParentGraph() );
+            }
+        }
+    }
 
     //--------------------------------------------------------------------------
     // Supportive methods
