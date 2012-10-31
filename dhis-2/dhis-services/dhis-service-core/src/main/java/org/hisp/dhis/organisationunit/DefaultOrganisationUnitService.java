@@ -430,10 +430,10 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitsWithoutGroups();
     }
 
-    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name,
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String query,
         Collection<OrganisationUnitGroup> groups, boolean limit )
     {
-        return organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups, limit );
+        return organisationUnitStore.getOrganisationUnitsByNameAndGroups( query, groups, limit );
     }
 
     @SuppressWarnings( "unchecked" )

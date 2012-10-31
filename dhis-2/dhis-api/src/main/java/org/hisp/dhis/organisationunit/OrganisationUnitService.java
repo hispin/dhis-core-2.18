@@ -239,25 +239,24 @@ public interface OrganisationUnitService
     Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups();
 
     /**
-     * Get the units which name are like the given name and are members of the
-     * given groups. If name or groups are null or empty they are ignored in the
-     * search. If name and groups are null an empty collection is returned.
-     *
-     * @param name   the name.
+     * Returns all OrganisationUnit which names are like the given name, or which
+     * code or uid are equal the given name, and are within the given groups.
+     * 
+     * @param query the query to match on name, code or uid.
      * @param groups the organisation unit groups.
-     * @return a collection of organisation units.
+     * @param limit the limit of returned objects.
+     * @return a collection of OrganisationUnits.
      */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, boolean limit );
 
     /**
-     * Get the units which name are like the given name, are members of the
-     * given groups and children of the given parent organisation unit. If name
-     * or groups are null or empty they are ignored in the sarch. If name and
-     * groups are null an empty collection is returned.
-     *
-     * @param name   the name.
+     * Returns all OrganisationUnit which names are like the given name, or which
+     * code or uid are equal the given name, and are within the given groups.
+     * 
+     * @param query the query to match on name, code or uid.
      * @param groups the organisation unit groups.
-     * @return a collection of organisation units.
+     * @param limit the limit of returned objects.
+     * @return a collection of OrganisationUnits.
      */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit );
 
