@@ -282,8 +282,8 @@
 
 <script id="period-template" type="text/template">
     <div data-role="controlgroup" data-type="horizontal">
-        <button id="previous_year" data-icon="arrow-l">Previous Year</button>
-        <button id="next_year" data-icon="arrow-r" data-iconpos="right">Next Year</button>
+        <button id="previous_year" data-icon="arrow-l">Year</button>
+        <button id="next_year" data-icon="arrow-r" data-iconpos="right">Year</button>
     </div>
     <ul id="period-list" data-role="listview" data-inset="true">
         <% _( periods ).each( function(period, idx) { %>
