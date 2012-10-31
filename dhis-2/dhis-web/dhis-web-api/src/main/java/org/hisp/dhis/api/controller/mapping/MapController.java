@@ -182,7 +182,8 @@ public class MapController
         {
             if ( view != null && view.getParentOrganisationUnit() != null )
             {
-                view.setParentGraph( view.getParentOrganisationUnit().getParentGraph() );
+                String parentUid = view.getParentOrganisationUnit().getUid();
+                view.setParentGraph( view.getParentOrganisationUnit().getParentGraph() + "/" + parentUid );
                 view.setParentLevel( organisationUnitService.getLevelOfOrganisationUnit( view.getParentOrganisationUnit().getId() ) );
             }
         }
