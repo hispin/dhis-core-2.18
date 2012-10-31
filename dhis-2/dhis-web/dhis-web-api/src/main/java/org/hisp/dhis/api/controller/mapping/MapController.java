@@ -183,6 +183,7 @@ public class MapController
             if ( view != null && view.getParentOrganisationUnit() != null )
             {
                 view.setParentGraph( view.getParentOrganisationUnit().getParentGraph() );
+                view.setParentLevel( organisationUnitService.getLevelOfOrganisationUnit( view.getParentOrganisationUnit().getId() ) );
             }
         }
     }
