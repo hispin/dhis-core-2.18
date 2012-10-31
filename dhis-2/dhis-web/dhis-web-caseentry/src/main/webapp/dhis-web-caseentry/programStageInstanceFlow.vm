@@ -57,9 +57,17 @@
 				<select id='repeatableProgramStage_$!programInstance.id' name='repeatableProgramStageId_$!programInstance.id' onchange="setSuggestedDueDate('$programInstance.id')">
 					#foreach( $programStage in $programInstance.program.programStages )
 						#if( $programStage.irregular=='true')
-							<option value="$programStage.id" standardInterval='$programStage.standardInterval'>$!programStage.name</option>
+							<option value="$programStage.id" standardInterval='$programStage.standardInterval' repeatable="true">$!programStage.name</option>
 						#elseif( $programStage.autoGenerateEvent=='false')
-							<option value="$programStage.id" standardInterval='$programStage.minDaysFromStart'>$!programStage.name</option>
+							#set($hasEvent="false")
+							#foreach( $programStageInstance in $programInstance.programStageInstances )
+								#if( $programStage.id== $programStageInstance.programStage.id)
+									#set($hasEvent="true")
+								#end
+							#end
+							#if($hasEvent=="false")
+								<option value="$programStage.id" standardInterval='$programStage.minDaysFromStart' repeatable="false">$!programStage.name</option>
+							#end
 						#end
 					#end
 				</select>

@@ -621,6 +621,10 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			}
 			
 			jQuery('#ps_' + programStageInstanceId ).focus();
+			var repeatable = jQuery('#repeatableProgramStage_' + programInstanceId + " [value=" + programStageId + "]" )
+			if( repeatable.attr("repeatable")=="false"){
+				repeatable.remove();
+			}
 			jQuery('#createNewEncounterDiv_' + programInstanceId).dialog("close");
 			resetActiveEvent(programInstanceId);
 			loadDataEntry( programStageInstanceId );
