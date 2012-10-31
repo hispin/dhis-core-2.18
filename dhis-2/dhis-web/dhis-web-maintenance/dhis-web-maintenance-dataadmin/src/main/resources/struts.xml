@@ -103,6 +103,7 @@
       <param name="javascripts"> ../dhis-web-commons/oust/oust.js,
         javascript/dataBrowser.js,
         javascript/dataBrowserForm.js</param>
+      <param name="requiredAuthorities">F_VIEW_DATABROWSER</param>
     </action>
 
     <action name="searchResult" class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction">
@@ -112,6 +113,7 @@
         /dhis-web-maintenance-dataadmin/dataBrowserResult.vm</param>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="javascripts">javascript/dataBrowser.js</param>
+      <param name="requiredAuthorities">F_VIEW_DATABROWSER</param>
     </action>
 
     <action name="searchResultByAjax" class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction">
@@ -130,6 +132,7 @@
       <result name="csv" type="gridCsvResult" />
       <result name="xls" type="gridXlsResult" />
       <result name="pdf" type="gridPdfResult" />
+      <param name="requiredAuthorities">F_VIEW_DATABROWSER</param>
     </action>
 
     <!-- Organisation unit merge -->

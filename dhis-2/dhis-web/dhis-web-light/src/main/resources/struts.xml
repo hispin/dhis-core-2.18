@@ -70,6 +70,7 @@
       <result name="success" type="redirect">
         /light/index.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;periodId=${periodId}&amp;complete=true
       </result>
+      <param name="requiredAuthorities">F_DATAVALUE_ADD</param>
     </action>
 	
 	<action name="inComplete"
@@ -77,6 +78,7 @@
       <result name="success" type="redirect">
         /light/dataEntry.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;periodId=${periodId}
       </result>
+      <param name="requiredAuthorities">F_DATAVALUE_DELETE</param>
     </action>
 
     <!-- Namebased Data Entry -->
@@ -84,7 +86,6 @@
     <action name="trackingMenu" class="org.hisp.dhis.light.action.NoAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/trackingMenu.vm</param>
-      <param name="requiredAuthorities">M_dhis-web-maintenance-patient</param>
     </action>
     <action name="selectNamebasedOrganisationUnit"
         class="org.hisp.dhis.light.namebaseddataentry.action.GetNamebasedOrganisationUnitsAction">

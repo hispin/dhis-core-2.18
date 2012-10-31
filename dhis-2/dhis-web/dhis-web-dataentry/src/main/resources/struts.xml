@@ -66,10 +66,12 @@
     <action name="registerCompleteDataSet" class="org.hisp.dhis.de.action.RegisterCompleteDataSetAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="input" type="velocity-json">../dhis-web-commons/ajax/jsonResponseInput.vm</result>
+      <param name="requiredAuthorities">F_DATAVALUE_ADD</param>
     </action>
 
     <action name="undoCompleteDataSet" class="org.hisp.dhis.de.action.UndoCompleteDataSetAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="requiredAuthorities">F_DATAVALUE_DELETE</param>
     </action>
 
     <action name="getValidationViolations" class="org.hisp.dhis.de.action.ValidationAction">

@@ -87,22 +87,27 @@
       <param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditorView.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataElementGroupEditorView.js</param>
+      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
     <action name="getAssignedDataElementGroups" class="org.hisp.dhis.dd.action.dataelementgroup.GetAssignedGroupsByDataElementAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroups.vm</result>
+      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
     <action name="asignGroupsForDataElement" class="org.hisp.dhis.dd.action.dataelementgroup.AssignGroupsForDataElementAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
     <action name="addDataElementGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.AddDataElementGroupAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroup.vm</result>
+      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
     <action name="renameDataElementGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.RenameDEGroupNameEditorAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroup.vm</result>
+      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
     <action name="deleteDataElemenGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.RemoveDataElementGroupAction">
@@ -113,10 +118,12 @@
         /dhis-web-commons/ajax/jsonResponseError.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
     </action>
 
     <action name="updateDataElementGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
     <!-- DataElementGroup -->
@@ -300,22 +307,27 @@
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupEditorView.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/indicatorGroupEditorView.js</param>
+      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
     <action name="getAssignedIndicatorGroups" class="org.hisp.dhis.dd.action.indicatorgroup.GetAssignedIndicatorGroupsAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIndicatorGroups.vm</result>
+      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
     <action name="asignGroupsForIndicator" class="org.hisp.dhis.dd.action.indicatorgroup.AssignGroupsForIndicatorAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
     <action name="addIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.AddIndicatorGroupAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIndicatorGroup.vm</result>
+      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
     <action name="renameIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.RenameIndicatorGroupNameEditorAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIndicatorGroup.vm</result>
+      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
     <action name="deleteIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.RemoveIndicatorGroupAction">
@@ -326,10 +338,12 @@
         /dhis-web-commons/ajax/jsonResponseError.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
     </action>
 
     <action name="updateIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
     <!-- IndicatorGroup -->
