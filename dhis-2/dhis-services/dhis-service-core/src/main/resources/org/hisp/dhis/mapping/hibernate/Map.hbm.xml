@@ -27,7 +27,7 @@
     
     <property name="zoom" />
     
-    <set name="views" table="mapmapviews">
+    <set name="mapViews" table="mapmapviews">
       <key column="mapid" foreign-key="fk_mapmapview_mapid" />
       <many-to-many column="mapviewid" class="org.hisp.dhis.mapping.MapView" foreign-key="fk_mapmapview_mapviewid" />
     </set>

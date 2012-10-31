@@ -100,7 +100,7 @@ public class MapController
 
         mergeMap( map );
         
-        for ( MapView view : map.getViews() )
+        for ( MapView view : map.getMapViews() )
         {
             mergeMapView( view );
             
@@ -125,7 +125,7 @@ public class MapController
             return;
         }
 
-        Iterator<MapView> views = map.getViews().iterator();
+        Iterator<MapView> views = map.getMapViews().iterator();
         
         while ( views.hasNext() )
         {
@@ -138,7 +138,7 @@ public class MapController
 
         mergeMap( newMap );
 
-        for ( MapView view : newMap.getViews() )
+        for ( MapView view : newMap.getMapViews() )
         {
             mergeMapView( view );
             
@@ -163,7 +163,7 @@ public class MapController
             return;
         }
 
-        Iterator<MapView> views = map.getViews().iterator();
+        Iterator<MapView> views = map.getMapViews().iterator();
         
         while ( views.hasNext() )
         {
