@@ -118,26 +118,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
-  <bean id="org.hisp.dhis.user.action.SelectOrganisationUnitGroupMembersAction" class="org.hisp.dhis.user.action.SelectOrganisationUnitGroupMembersAction"
-    scope="prototype">
-    <property name="organisationUnitGroupService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-    </property>
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-    </property>
-  </bean>
-
-  <bean id="org.hisp.dhis.user.action.RemoveOrganisationUnitGroupMembersAction" class="org.hisp.dhis.user.action.RemoveOrganisationUnitGroupMembersAction"
-    scope="prototype">
-    <property name="organisationUnitGroupService">
-      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-    </property>
-    <property name="selectionTreeManager">
-      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-    </property>
-  </bean>
-
    <!-- PDF -->
 
   <bean id="org.hisp.dhis.user.action.pdf.ExportToPdfAction" class="org.hisp.dhis.user.action.pdf.ExportToPdfAction"
