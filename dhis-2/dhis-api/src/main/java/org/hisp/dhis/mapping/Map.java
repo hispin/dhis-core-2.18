@@ -61,7 +61,7 @@ public class Map
     private Integer zoom;
 
     @Scanned
-    private Set<MapView> views = new HashSet<MapView>();
+    private Set<MapView> mapViews = new HashSet<MapView>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -141,14 +141,14 @@ public class Map
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "mapViews", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "mapView", namespace = Dxf2Namespace.NAMESPACE )
-    public Set<MapView> getViews()
+    public Set<MapView> getMapViews()
     {
-        return views;
+        return mapViews;
     }
 
-    public void setViews( Set<MapView> views )
+    public void setMapViews( Set<MapView> mapViews )
     {
-        this.views = views;
+        this.mapViews = mapViews;
     }
 
     @Override
@@ -165,8 +165,8 @@ public class Map
             latitude = map.getLatitude() == null ? latitude : map.getLatitude();
             zoom = map.getZoom() == null ? zoom : map.getZoom();
             
-            views.clear();
-            views.addAll( map.getViews() );
+            mapViews.clear();
+            mapViews.addAll( map.getMapViews() );
         }            
     }
 }
