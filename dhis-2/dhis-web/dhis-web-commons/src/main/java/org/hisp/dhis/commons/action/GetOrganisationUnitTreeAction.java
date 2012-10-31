@@ -105,7 +105,7 @@ public class GetOrganisationUnitTreeAction
         return version;
     }
 
-    private Boolean versionOnly = false;
+    private boolean versionOnly;
 
     public void setVersionOnly( Boolean versionOnly )
     {
@@ -122,6 +122,13 @@ public class GetOrganisationUnitTreeAction
     public void setParentId( Integer parentId )
     {
         this.parentId = parentId;
+    }
+
+    private boolean realRoot;
+
+    public boolean isRealRoot()
+    {
+        return realRoot;
     }
 
     // -------------------------------------------------------------------------
@@ -205,6 +212,14 @@ public class GetOrganisationUnitTreeAction
                     }
                 } );
             }
+        }
+
+        Collection intersection = org.apache.commons.collections.CollectionUtils.intersection(
+            organisationUnitService.getRootOrganisationUnits(), rootOrganisationUnits );
+
+        if ( intersection.size() > 0 )
+        {
+            realRoot = true;
         }
 
         Collections.sort( rootOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
