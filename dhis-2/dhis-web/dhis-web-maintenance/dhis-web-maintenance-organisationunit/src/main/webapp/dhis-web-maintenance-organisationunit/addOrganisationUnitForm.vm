@@ -11,10 +11,11 @@
 			'rules' : getValidationRules("organisationUnit")
 		});
 	
-		checkValueIsExist("name", "validateOrganisationUnit.action");
-		datePickerValid('openingDate', false);
+        checkValueIsExist("name", "validateOrganisationUnit.action");
+        checkValueIsExist("code", "validateOrganisationUnit.action");
+        datePickerValid('openingDate', false);
 
-		jQuery("#name").focus();
+        jQuery("#name").focus();
 	});
 
 	var previousName = '';
