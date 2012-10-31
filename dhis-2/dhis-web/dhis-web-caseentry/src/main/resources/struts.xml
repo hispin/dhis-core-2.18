@@ -757,6 +757,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonminOrganisationUnitChildren.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="tabularInitialize"
@@ -764,6 +765,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonTabularInitialize.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="loadPatientProperties"
@@ -771,24 +773,28 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonPatientProperties.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="loadReportProgramStages"
 			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonProgramStages.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="loadDataElements"
 			class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responseDataElements.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="getTabularParams"
 			class="org.hisp.dhis.caseentry.action.report.GetTabularParamsAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responseTabularParams.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="validateTabularReport"
@@ -799,6 +805,7 @@
 			<result name="input" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseInput.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="generateTabularReport"
@@ -815,6 +822,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="getTabularReports"
@@ -822,6 +830,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonTabularReportList.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="getTabularReport"
@@ -829,6 +838,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-caseentry/jsonTabularReport.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="updateTabularReportName"
@@ -836,6 +846,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 
 		<action name="deleteTabularReport"
@@ -843,6 +854,7 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
+            <param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 		
 		<!-- SMS Reminder -->
@@ -868,6 +880,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programTrackingRecords.vm</param>
 			<param name="stylesheets">style/style.css</param>
+            <param name="requiredAuthorities">F_SMS_REMINDER</param>
 		</action>
 
 		<action name="programTrackingList"
@@ -883,6 +896,7 @@
 			<result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
+            <param name="requiredAuthorities">F_SMS_REMINDER</param>
 		</action>
 
 		<action name="sendSMSTotList"
@@ -892,6 +906,7 @@
 			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
+            <param name="requiredAuthorities">F_SMS_REMINDER</param>
 		</action>
 		
 		<action name="patientProgramTracking"
@@ -953,12 +968,14 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/activityPlanRecords.vm</param>
 			<param name="stylesheets">style/style.css</param>
+            <param name="requiredAuthorities">F_ACTIVITY_PLAN</param>
 		</action>
 		
 		<action name="exportActitityList"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
 			<result name="xls" type="gridXlsResult" />
 			<result name="pdf" type="gridPdfResult" />
+            <param name="requiredAuthorities">F_ACTIVITY_PLAN</param>
 		</action>
 
 	</package>
