@@ -5,6 +5,7 @@
 #set( $metaData = $noHeader - $valueTypes.size() )
 "message": "$!message",
 "total": "$total",
+"totalRecords": "$totalRecords",
 "columns":[
   #set($index = 0)
   #foreach( $col in $grid.getHeaders() )
