@@ -77,18 +77,6 @@
       <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-
-    <!-- WTF? -->
-
-    <action name="selectOrganisationUnitGroupMembers" class="org.hisp.dhis.user.action.SelectOrganisationUnitGroupMembersAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseSuccess.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="removeOrganisationUnitGroupMembers" class="org.hisp.dhis.user.action.RemoveOrganisationUnitGroupMembersAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseSuccess.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
     
 	<!-- PDF -->
 
