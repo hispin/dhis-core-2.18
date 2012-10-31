@@ -713,6 +713,7 @@ Ext.onReady( function() {
     TR.state = {
         currentPage: 1,
 		total: 1,
+		totalRecords: 0,
 		orderByOrgunitAsc: true,
 		orderByExecutionDateByAsc: true,
 		orgunitIds: [],
@@ -741,11 +742,11 @@ Ext.onReady( function() {
 					success: function(r) {
 						var json = Ext.JSON.decode(r.responseText);
 						if(json.message!=""){
-							//TR.util.notification.warning(json.message);
 							TR.util.notification.error(TR.i18n.error, json.message);
 						}
 						else{
 							TR.state.total = json.total;
+							TR.state.totalRecords = json.totalRecords
 							TR.value.columns = json.columns;
 							TR.value.values = json.items;
 							
@@ -1351,7 +1352,12 @@ Ext.onReady( function() {
 						handler: function() {
 							TR.exe.paging( TR.cmp.settings.currentPage.rawValue );
 						}
-					}
+					},
+					'->',
+					{
+						xtype: 'label',
+						text: TR.state.totalRecords + ' ' + TR.i18n.events
+					},
 				], 
 				plugins: [this.cellEditing],
 				store: TR.store.datatable
@@ -2095,7 +2101,7 @@ Ext.onReady( function() {
 														name: 'availableDataelements',
 														cls: 'tr-toolbar-multiselect-left',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 215,
+														height: 240,
 														displayField: 'name',
 														valueField: 'id',
 														queryMode: 'remote',
@@ -2158,7 +2164,7 @@ Ext.onReady( function() {
 														name: 'selectedDataelements',
 														cls: 'tr-toolbar-multiselect-right',
 														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: 215,
+														height: 240,
 														displayField: 'name',
 														valueField: 'id',
 														ddReorder: true,
