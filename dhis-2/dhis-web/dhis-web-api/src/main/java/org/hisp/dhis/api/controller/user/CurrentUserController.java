@@ -27,14 +27,6 @@ package org.hisp.dhis.api.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
@@ -54,16 +46,19 @@ import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -73,6 +68,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CurrentUserController
 {
     public static final String RESOURCE_PATH = "/currentUser";
+
     private static final int MAX_OBJECTS = 50;
 
     @Autowired
@@ -92,7 +88,7 @@ public class CurrentUserController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
+
     @Autowired
     private ContextUtils contextUtils;
 
@@ -213,7 +209,7 @@ public class CurrentUserController
         User currentUser = currentUserService.getCurrentUser();
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.CACHE_1_HOUR );
-        
+
         if ( currentUser == null )
         {
             ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
@@ -229,7 +225,7 @@ public class CurrentUserController
         JacksonUtils.toJson( response.getOutputStream(), recipients );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     @RequestMapping( value = "/forms", produces = {"application/json", "text/*"} )
     public void getForms( HttpServletResponse response ) throws IOException
     {
@@ -261,7 +257,7 @@ public class CurrentUserController
 
                 if ( childDataSets.size() > 0 )
                 {
-                    organisationUnits.add( ou );
+                    organisationUnits.add( child );
                 }
             }
         }
