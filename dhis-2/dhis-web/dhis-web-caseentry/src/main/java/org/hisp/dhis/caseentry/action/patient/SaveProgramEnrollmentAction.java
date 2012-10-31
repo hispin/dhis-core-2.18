@@ -184,11 +184,6 @@ public class SaveProgramEnrollmentAction
                 dateCreatedEvent = format.parseDate( enrollmentDate );
             }
             
-            if( program.isRegistration() && program.isSingleEvent())
-            {
-                
-            }
-            
             boolean isFirstStage = false;
             for ( ProgramStage programStage : program.getProgramStages() )
             {
