@@ -80,19 +80,19 @@ public class HibernateOrganisationUnitStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name,
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String query,
         Collection<OrganisationUnitGroup> groups, boolean limit )
     {
         boolean first = true;
 
-        name = StringUtils.trimToNull( name );
+        query = StringUtils.trimToNull( query );
         groups = CollectionUtils.isEmpty( groups ) ? null : groups;
 
         StringBuilder hql = new StringBuilder( "from OrganisationUnit o" );
 
-        if ( name != null )
+        if ( query != null )
         {
-            hql.append( " where lower(name) like :name" );
+            hql.append( " where ( lower(o.name) like :expression or o.code = :query or o.uid = :query )" );
 
             first = false;
         }
@@ -109,11 +109,12 @@ public class HibernateOrganisationUnitStore
             }
         }
 
-        Query query = sessionFactory.getCurrentSession().createQuery( hql.toString() );
-
-        if ( name != null )
+        Query q = sessionFactory.getCurrentSession().createQuery( hql.toString() );
+        
+        if ( query != null )
         {
-            query.setString( "name", "%" + name.toLowerCase() + "%" );
+            q.setString( "expression", "%" + query.toLowerCase() + "%" );
+            q.setString( "query", query );
         }
 
         if ( groups != null )
@@ -122,16 +123,16 @@ public class HibernateOrganisationUnitStore
 
             for ( OrganisationUnitGroup group : groups )
             {
-                query.setEntity( "g" + i++, group );
+                q.setEntity( "g" + i++, group );
             }
         }
 
         if ( limit )
         {
-            query.setMaxResults( OrganisationUnitService.MAX_LIMIT );
+            q.setMaxResults( OrganisationUnitService.MAX_LIMIT );
         }
 
-        return query.list();
+        return q.list();
     }
 
     public Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap()

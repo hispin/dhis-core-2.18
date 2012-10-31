@@ -72,7 +72,16 @@ public interface OrganisationUnitStore
      */
     Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups();
 
-    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, boolean limit );
+    /**
+     * Returns all OrganisationUnit which names are like the given name, or which
+     * code or uid are equal the given name, and are within the given groups.
+     * 
+     * @param query the query to match on name, code or uid.
+     * @param groups the organisation unit groups.
+     * @param limit the limit of returned objects.
+     * @return a collection of OrganisationUnits.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String query, Collection<OrganisationUnitGroup> groups, boolean limit );
 
     Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap();
 
