@@ -39,8 +39,17 @@ dhis2.storage.FormManager.prototype.getMetaData = function () {
         url      : '../api/currentUser/forms',
         dataType : 'json'
     }).success(function ( data ) {
-        localStorage['organisationUnits'] = JSON.stringify(data.organisationUnits);
-        localStorage['forms'] = JSON.stringify(data.forms);
+        if( data.organisationUnits ) {
+            localStorage['organisationUnits'] = JSON.stringify(data.organisationUnits);
+        } else {
+            localStorage['organisationUnits'] = JSON.stringify({});
+        }
+
+        if( data.forms ) {
+            localStorage['forms'] = JSON.stringify(data.forms);
+        } else {
+            localStorage['forms'] = JSON.stringify({});
+        }
     });
 };
 

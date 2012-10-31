@@ -266,9 +266,13 @@
 
 <script id="organisation-units-template" type="text/template">
     <ul id="organisation-unit-list" data-role="listview" data-inset="true">
-        <% _( organisationUnits ).each( function(organisationUnit, idx) { %>
-        <li><a href="#data-sets-page" data-id="<%= organisationUnit.id %>"><%= organisationUnit.label %></a></li>
-        <% }); %>
+        <% if( _.size( organisationUnits ) > 0 ) { %>
+            <% _( organisationUnits ).each( function(organisationUnit, idx) { %>
+            <li><a href="#data-sets-page" data-id="<%= organisationUnit.id %>"><%= organisationUnit.label %></a></li>
+            <% }); %>
+        <% } else { %>
+            <li>No organisation units available for data entry</li>
+        <% } %>
     </ul>
 </script>
 
