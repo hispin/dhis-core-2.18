@@ -40,7 +40,7 @@ sent you instructions on how to restore your password.
 
 <div id="recoveryErrorMessage" style="display:none">
 Sorry, we were not able to restore your account. The user name might be invalid, 
-your account might not permit restore or you might not have entered a valid email 
+your account might not permit restore or you might have entered an invalid email 
 address for your account.
 </div>
 

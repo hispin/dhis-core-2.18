@@ -180,6 +180,8 @@ public class AddUserAction
         UserCredentials currentUserCredentials = currentUserService.getCurrentUser() != null ? currentUserService
             .getCurrentUser().getUserCredentials() : null;
 
+        // TODO check permissions
+            
         // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------

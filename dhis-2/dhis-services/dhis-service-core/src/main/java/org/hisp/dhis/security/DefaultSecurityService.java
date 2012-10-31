@@ -27,6 +27,7 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ValidationUtils;
 import org.hisp.dhis.system.velocity.VelocityManager;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
@@ -122,7 +124,11 @@ public class DefaultSecurityService
             return false;
         }
         
-        // TODO deny restore if credentials contain certain authorities
+        if ( credentials.hasAnyAuthority( Arrays.asList( UserAuthorityGroup.CRITICAL_AUTHS ) ) )
+        {
+            log.info( "Not allowed to recover credentials with critical authorities" );
+            return false;
+        }
         
         String[] result = initRestore( credentials );
         

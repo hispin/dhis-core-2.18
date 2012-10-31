@@ -129,6 +129,19 @@ public class UserCredentials
 
         return authorities;
     }
+    
+    /**
+     * Tests whether this user credentials has any of the authorities in the
+     * given set.
+     * 
+     * @param auths the authorities to compare with.
+     * @return true or false.
+     */
+    public boolean hasAnyAuthority( Collection<String> auths )
+    {
+        Set<String> all = new HashSet<String>( getAllAuthorities() );
+        return all.removeAll( auths );
+    }
 
     /**
      * Indicates whether this user credentials is a super user, implying that the
