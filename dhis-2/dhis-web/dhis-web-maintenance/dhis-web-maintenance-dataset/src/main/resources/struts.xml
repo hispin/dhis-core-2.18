@@ -175,14 +175,17 @@
       <param name="javascripts">../dhis-web-commons/ckeditor/ckeditor.js,
         ../dhis-web-commons/ckeditor/adapters/jquery.js,
         javascript/dataEntryForm.js</param>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
     <action name="saveDataEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction">
       <result name="success" type="redirect">dataSet.action</result>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
     <action name="autoSaveDataEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.AutoSaveDataEntryFormAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
     <action name="validateDataEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.ValidateDataEntryFormAction">
@@ -193,6 +196,7 @@
 
     <action name="delDataEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.DelDataEntryFormAction">
       <result name="success" type="redirect">dataSet.action</result>
+      <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
 
     <action name="getSelectedDataElements" class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction">
@@ -204,10 +208,12 @@
     <action name="displayCompulsoryDataElementsForm" class="org.hisp.dhis.dataset.action.compulsory.GetCompulsoryDataElementsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/compulsoryDataElementsForm.vm</param>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
     <action name="saveCompulsoryDataElements" class="org.hisp.dhis.dataset.action.compulsory.SaveCompulsoryDataElementsAction">
       <result name="success" type="redirect">dataSet.action</result>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
 	<!-- Dataset Editor -->
@@ -217,18 +223,22 @@
       <param name="page">/dhis-web-maintenance-dataset/viewEditorForm.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/editor.js</param>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
     <action name="showedAssociationsEditor" class="org.hisp.dhis.dataset.action.editor.ShowedAssociationsEditorAction">
       <result name="success" type="velocity">/dhis-web-maintenance-dataset/htmlGrid.vm</result>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
     <action name="definedAssociationEditor" class="org.hisp.dhis.dataset.action.editor.DefinedAssociationEditorAction">
       <result name="success" type="velocity">/dhis-web-maintenance-dataset/loadIcon.vm</result>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
     <action name="definedMultiAssociationsEditor" class="org.hisp.dhis.dataset.action.editor.DefinedMultiAssociationsEditorAction">
       <result name="success" type="velocity">/dhis-web-maintenance-dataset/loadIcons.vm</result>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
   </package>

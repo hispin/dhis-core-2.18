@@ -13,13 +13,7 @@
       <param name="page">/dhis-web-reporting/index.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
     </action>
-	
-    <action name="viewGroups" class="org.hisp.dhis.reporting.action.NoAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/viewGroups.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-    </action>
-    
+	    
     <!-- Document -->
 
     <action name="saveDocument" class="org.hisp.dhis.reporting.document.action.SaveDocumentAction">

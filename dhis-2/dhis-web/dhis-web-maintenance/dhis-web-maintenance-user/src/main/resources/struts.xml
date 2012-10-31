@@ -78,6 +78,8 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <!-- WTF? -->
+
     <action name="selectOrganisationUnitGroupMembers" class="org.hisp.dhis.user.action.SelectOrganisationUnitGroupMembersAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-user/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
