@@ -2,7 +2,6 @@
 	<tr>
 		<th colspan='2'>$programStage.program.name</th>
 	</tr>
-	#set( $mark = true )
 	<!-- Identifiers/Attributes belong to the selected single program -->
 	#set($program = $programStage.program)
 	#parse( "/dhis-web-caseentry/identifierAndAttributeForm.vm" )
@@ -15,7 +14,7 @@
 	#set( $patientDataValue = false )
 	#set( $key = $programStageDataElement.dataElement.id )
 	#set( $patientDataValue = $patientDataValueMap.get( $key ) )    
-	<tr #alternate( $mark )>
+	<tr>
 		##data element name
 		<td class='text-column' align='center'>
 			<span id="value[$programStageDataElement.dataElement.id].name" title="$!encoder.htmlEncode( $programStageDataElement.dataElement.description )">
@@ -83,7 +82,6 @@
 			#end
 		</td>
 	</tr>
-	#set( $mark = !$mark )
 	#set( $tabIndex = $tabIndex + 1 )
 #end	
 </tbody>
