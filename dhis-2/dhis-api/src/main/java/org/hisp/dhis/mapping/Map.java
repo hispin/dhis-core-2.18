@@ -54,9 +54,9 @@ public class Map
 {
     private User user;
 
-    private String longitude;
+    private Double longitude;
 
-    private String latitude;
+    private Double latitude;
 
     private Integer zoom;
 
@@ -71,7 +71,7 @@ public class Map
     {
     }
     
-    public Map( String name, User user, String longitude, String latitude, Integer zoom )
+    public Map( String name, User user, Double longitude, Double latitude, Integer zoom )
     {
         this.name = name;
         this.user = user;
@@ -101,12 +101,12 @@ public class Map
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getLongitude()
+    public Double getLongitude()
     {
         return longitude;
     }
 
-    public void setLongitude( String longitude )
+    public void setLongitude( Double longitude )
     {
         this.longitude = longitude;
     }
@@ -114,12 +114,12 @@ public class Map
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public String getLatitude()
+    public Double getLatitude()
     {
         return latitude;
     }
 
-    public void setLatitude( String latitude )
+    public void setLatitude( Double latitude )
     {
         this.latitude = latitude;
     }
