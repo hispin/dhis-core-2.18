@@ -141,8 +141,6 @@ public class GetGeoJsonFacilitiesAction
         {
             if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
             {
-                int i = 0;
-
                 List<String> groupNames = new ArrayList<String>( groupSets.size() );
 
                 for ( OrganisationUnitGroupSet groupSet : groupSets )
