@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
