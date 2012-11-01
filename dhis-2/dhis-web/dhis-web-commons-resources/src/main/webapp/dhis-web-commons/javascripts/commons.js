@@ -1603,6 +1603,11 @@ function isNumber( value )
 	return regex.test( value );
 }
 
+function startsWith( string, substring )
+{
+	return ( string && string.lastIndexOf( substring, 0 ) === 0 ) ? true : false;
+}
+
 function isPositiveNumber( value )
 {
 	return isNumber( value ) && parseFloat( value ) > 0;
