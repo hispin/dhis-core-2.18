@@ -218,12 +218,16 @@ public class GenerateExcelReportGeneric
     protected Font csFont10Normal;
 
     protected Font csFont11Bold;
+    
+    protected Font csFont11Normal;
 
     protected Font csFont12NormalCenter;
 
     protected CellStyle csNumber;
 
-    protected CellStyle csFormula;
+    protected CellStyle csFormulaBold;
+    
+    protected CellStyle csFormulaNormal;
 
     protected CellStyle csText;
 
@@ -295,9 +299,11 @@ public class GenerateExcelReportGeneric
         csFont8Normal = templateWorkbook.createFont();
         csFont10Normal = templateWorkbook.createFont();
         csFont11Bold = templateWorkbook.createFont();
+        csFont11Normal = templateWorkbook.createFont();
         csFont12NormalCenter = templateWorkbook.createFont();
         csNumber = templateWorkbook.createCellStyle();
-        csFormula = templateWorkbook.createCellStyle();
+        csFormulaBold = templateWorkbook.createCellStyle();
+        csFormulaNormal = templateWorkbook.createCellStyle();
         csText = templateWorkbook.createCellStyle();
         csTextWithoutBorder = templateWorkbook.createCellStyle();
         csText8Normal = templateWorkbook.createCellStyle();
@@ -322,13 +328,19 @@ public class GenerateExcelReportGeneric
             IndexedColors.BLACK.getIndex() );
         initPOIStylesManager.initFont( csFont11Bold, "Tahoma", (short) 11, Font.BOLDWEIGHT_BOLD,
             IndexedColors.DARK_BLUE.getIndex() );
+        initPOIStylesManager.initFont( csFont11Normal, "Tahoma", (short) 11, Font.BOLDWEIGHT_NORMAL,
+            IndexedColors.DARK_BLUE.getIndex() );
         initPOIStylesManager.initFont( csFont12NormalCenter, "Tahoma", (short) 12, Font.BOLDWEIGHT_NORMAL,
             IndexedColors.BLUE.getIndex() );
 
         initPOIStylesManager.initCellStyle( csNumber, csFont, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_ALIGN_RIGHT, false );
-        initPOIStylesManager.initCellStyle( csFormula, csFont11Bold, this.CELLSTYLE_BORDER,
+        initPOIStylesManager.initCellStyle( csFormulaBold, csFont11Bold, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
+            this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
+            this.CELLSTYLE_ALIGN_RIGHT, true );
+        initPOIStylesManager.initCellStyle( csFormulaNormal, csFont11Normal, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER,
             this.CELLSTYLE_BORDER_COLOR, this.CELLSTYLE_BORDER, this.CELLSTYLE_BORDER_COLOR,
             this.CELLSTYLE_ALIGN_RIGHT, true );

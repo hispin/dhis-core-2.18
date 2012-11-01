@@ -157,7 +157,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
                 else if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                 {
                     ExcelUtils.writeFormulaByPOI( rowBegin, exportItem.getColumn(), ExcelUtils.generateExcelFormula(
-                        exportItem.getExpression(), iRow, iCol ), sheet, this.csFormula, evaluatorFormula );
+                        exportItem.getExpression(), iRow, iCol ), sheet, this.csFormulaNormal, evaluatorFormula );
                 }
 
                 rowBegin++;
@@ -170,7 +170,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
             {
                 String columnName = ExcelUtils.convertColumnNumberToName( exportItem.getColumn() );
                 String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
-                ExcelUtils.writeFormulaByPOI( beginChapter, exportItem.getColumn(), formula, sheet, this.csFormula,
+                ExcelUtils.writeFormulaByPOI( beginChapter, exportItem.getColumn(), formula, sheet, this.csFormulaBold,
                     evaluatorFormula );
             }
         }

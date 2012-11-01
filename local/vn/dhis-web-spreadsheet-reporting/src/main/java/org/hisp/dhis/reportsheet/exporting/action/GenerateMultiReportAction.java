@@ -133,7 +133,7 @@ public class GenerateMultiReportAction
                     this
                         .generatePeriodListing( reportInstance.getPeriodColumns(), exportItems, organisationUnit, sheet );
                 }
-                
+
                 this.recalculatingFormula( sheet );
             }
         }
@@ -175,7 +175,7 @@ public class GenerateMultiReportAction
             // EXCEL FORMULA
             {
                 ExcelUtils.writeFormulaByPOI( reportItem.getRow(), reportItem.getColumn(), reportItem.getExpression(),
-                    sheet, this.csFormula, evaluatorFormula );
+                    sheet, this.csFormulaBold, evaluatorFormula );
             }
         }
     }
@@ -310,7 +310,7 @@ public class GenerateMultiReportAction
                     else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                     {
                         ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, csFormula,
+                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, csFormulaNormal,
                             evaluatorFormula );
                     }
                     else
@@ -340,8 +340,8 @@ public class GenerateMultiReportAction
                     String columnName = ExcelUtils.convertColumnNumberToName( reportItem.getColumn() );
                     String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
 
-                    ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet, this.csFormula,
-                        evaluatorFormula );
+                    ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
+                        this.csFormulaBold, evaluatorFormula );
                 }
             }
         }
@@ -454,7 +454,7 @@ public class GenerateMultiReportAction
                         else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                         {
                             ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                                .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, csFormula,
+                                .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, csFormulaNormal,
                                 evaluatorFormula );
                         }
                         else
@@ -492,7 +492,7 @@ public class GenerateMultiReportAction
                                 + (rowBegin - 1) + ")";
 
                             ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
-                                this.csFormula, evaluatorFormula );
+                                this.csFormulaBold, evaluatorFormula );
                         }
                     }
                 }
@@ -590,7 +590,7 @@ public class GenerateMultiReportAction
                     // FORMULA_EXCEL
                     {
                         ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, this.csFormula,
+                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, this.csFormulaNormal,
                             evaluatorFormula );
                     }
 
@@ -609,7 +609,7 @@ public class GenerateMultiReportAction
                         formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
 
                         ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
-                            this.csFormula, evaluatorFormula );
+                            this.csFormulaBold, evaluatorFormula );
 
                         totalFormula += columnName + beginChapter + ",";
                     }
@@ -618,7 +618,7 @@ public class GenerateMultiReportAction
                         formula = ExcelUtils.generateExcelFormula( reportItem.getExtraExpression(), next + 1, 0 );
 
                         ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
-                            this.csFormula, evaluatorFormula );
+                            this.csFormulaBold, evaluatorFormula );
                     }
                 }
 
@@ -630,15 +630,15 @@ public class GenerateMultiReportAction
             {
                 totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
 
-                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula,
-                    evaluatorFormula );
+                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet,
+                    this.csFormulaBold, evaluatorFormula );
             }
             else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )
             {
                 totalFormula = ExcelUtils.generateExcelFormula( reportItem.getExtraExpression(), 0, 0 );
 
-                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula,
-                    evaluatorFormula );
+                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet,
+                    this.csFormulaBold, evaluatorFormula );
             }
         }
     }

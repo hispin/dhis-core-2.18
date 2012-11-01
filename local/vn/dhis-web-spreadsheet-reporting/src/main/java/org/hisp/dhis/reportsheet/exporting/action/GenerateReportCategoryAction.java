@@ -167,7 +167,7 @@ public class GenerateReportCategoryAction
                     else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                     {
                         ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, csFormula,
+                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, csFormulaNormal,
                             evaluatorFormula );
                     }
                     else
@@ -197,8 +197,8 @@ public class GenerateReportCategoryAction
                     String columnName = ExcelUtils.convertColumnNumberToName( reportItem.getColumn() );
                     String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
 
-                    ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet, this.csFormula,
-                        evaluatorFormula );
+                    ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
+                        this.csFormulaBold, evaluatorFormula );
                 }
             }
 

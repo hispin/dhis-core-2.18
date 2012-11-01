@@ -73,7 +73,7 @@ public class GenerateReportVerticalCategoryAction
             exportReportItems = exportReportInstance.getExportItemBySheet( sheetNo );
 
             this.generateVerticalOutPutFile( exportReportInstance, exportReportItems, unit, sheet );
-            
+
             this.recalculatingFormula( sheet );
         }
 
@@ -137,8 +137,8 @@ public class GenerateReportVerticalCategoryAction
                             else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                             {
                                 ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                                    .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, csFormula,
-                                    evaluatorFormula );
+                                    .generateExcelFormula( reportItem.getExpression(), run, run ), sheet,
+                                    csFormulaNormal, evaluatorFormula );
                             }
                             else
                             {
@@ -167,7 +167,7 @@ public class GenerateReportVerticalCategoryAction
                                     + (rowBegin - 1) + ")";
 
                                 ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
-                                    this.csFormula, evaluatorFormula );
+                                    this.csFormulaBold, evaluatorFormula );
                             }
 
                             break;
