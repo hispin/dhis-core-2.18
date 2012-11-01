@@ -64,6 +64,7 @@
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
 	<li><a href="selectSingleEventBeneficiary.action?organisationUnitId=$organisationUnitId&programId=$programId">$i18n.getString("beneficiary_list")</a></li>
+	<li><a href="showPatientProgramList.action?patientId=$patientId">$!encoder.htmlEncode( ${patient.getFullName()} )</a></li>
 	<li><a href="index.action">$i18n.getString("home")</a></li>
 </ul>
 </div>

@@ -221,13 +221,20 @@ public class GetSingleEventFormAction
     {
         this.programStageInstanceId = programStageInstanceId;
     }
+    
+    private Patient patient;
+    
+    public Patient getPatient()
+    {
+        return patient;
+    }
 
     @Override
     public String execute()
         throws Exception
-    {
-
+    {        
         Program program = programService.getProgram( programId );
+        this.patient = patientService.getPatient( this.patientId );
         eventName = program.getName();
         ProgramStage programStage = program.getProgramStages().iterator().next();
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
@@ -237,19 +244,17 @@ public class GetSingleEventFormAction
         {
             this.prevDataValues = (Map<String, String>) SessionUtils.getSessionVar( "prevDataValues" );
         }
-        if ( searchResult != null )
+        if ( searchResult != null && !searchResult.equals( "0" ))
         {
             this.prevDataValues.put( "DE" + this.dataElementIdForSearching, searchResult );
         }
-        else
+        else if ( searchResult == null)
         {
             // For editing if user finished the form
-            Patient patient = patientService.getPatient( this.patientId );
-
-            if ( programInstanceService.getProgramInstances( patient, program ).size() != 0 )
+            if ( programInstanceService.getProgramInstances( this.patient, program ).size() != 0 )
             {
                 List<ProgramInstance> proInstanceList = (List<ProgramInstance>) programInstanceService
-                    .getProgramInstances( patient, program );
+                    .getProgramInstances( this.patient, program );
 
                 ProgramInstance proInstance = null;
 
