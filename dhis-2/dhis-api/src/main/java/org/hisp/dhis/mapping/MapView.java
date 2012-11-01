@@ -465,6 +465,7 @@ public class MapView
         {
             MapView mapView = (MapView) other;
 
+            layer = mapView.getLayer() == null ? layer : mapView.getLayer();
             valueType = mapView.getValueType() == null ? valueType : mapView.getValueType();
             indicatorGroup = mapView.getIndicatorGroup() == null ? indicatorGroup : mapView.getIndicatorGroup();
             indicator = mapView.getIndicator() == null ? indicator : mapView.getIndicator();
@@ -481,6 +482,8 @@ public class MapView
             legendSet = mapView.getLegendSet() == null ? legendSet : mapView.getLegendSet();
             radiusLow = mapView.getRadiusLow() == null ? radiusLow : mapView.getRadiusLow();
             radiusHigh = mapView.getRadiusHigh() == null ? radiusHigh : mapView.getRadiusHigh();
+            opacity = mapView.getOpacity() == null ? opacity : mapView.getOpacity();
+            organisationUnitGroupSet = mapView.getOrganisationUnitGroupSet() == null ? organisationUnitGroupSet : mapView.getOrganisationUnitGroupSet();
         }
     }
 }
