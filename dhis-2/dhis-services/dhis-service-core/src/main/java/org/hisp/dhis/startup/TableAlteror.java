@@ -145,6 +145,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendtype TO legendtype" );
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendsetid TO legendsetid" );
         executeSql( "ALTER TABLE maplegend DROP CONSTRAINT maplegend_name_key" );
+        executeSql( "ALTER TABLE mapview ALTER COLUMN opacity TYPE double precision" );
         
         executeSql( "UPDATE mapview SET layer = 'thematic1' WHERE layer IS NULL" );
         
