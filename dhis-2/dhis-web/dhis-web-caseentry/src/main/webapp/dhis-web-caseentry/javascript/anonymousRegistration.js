@@ -4,7 +4,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	hideById('dataEntryInfor');
 	hideById('listDiv');
 	showById('mainLinkLbl');
-	
 	jQuery.getJSON( "anonymousPrograms.action",{}, 
 		function( json )
 		{   
@@ -16,8 +15,8 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 			for ( i in json.programs ) {
 				jQuery( '#programId').append( '<option value="' + json.programs[i].id +'" psid="' + json.programs[i].programStageId + '" reportDateDes="' + json.programs[i].reportDateDescription + '">' + json.programs[i].name + '</option>' );
 			}
-			
 			disableCriteriaDiv();
+			showById('selectDiv');
 		});
 		
 	setFieldValue( 'orgunitId', orgUnits[0] );
