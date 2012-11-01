@@ -45,7 +45,7 @@ public class HibernateOptionStore
 {
     @SuppressWarnings("unchecked")
     @Override
-    public List<String> getOptions( OptionSet optionSet, String key, Integer max )
+    public List<String> getOptions( int optionSetId, String key, Integer max )
     {
         String hql = "select option from OptionSet os inner join os.options as option where os.id = :optionSetId";
         
@@ -57,8 +57,12 @@ public class HibernateOptionStore
         hql += " order by option";
         
         Query query = getQuery( hql );
-        query.setInteger( "optionSetId", optionSet.getId() );
-        query.setMaxResults( max );
+        query.setInteger( "optionSetId", optionSetId );
+        
+        if ( max != null )
+        {
+            query.setMaxResults( max );
+        }
         
         return query.list();
     }

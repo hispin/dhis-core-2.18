@@ -55,9 +55,10 @@ public class OptionServiceTest
     {
         optionService = (OptionService) getBean( OptionService.ID );
         
-        options.add( "OptionA" );
-        options.add( "OptionB" );
-        options.add( "OptionC" );
+        options.add( "OptA1" );
+        options.add( "OptA2" );
+        options.add( "OptB1" );
+        options.add( "OptB2" );
         
         optionSetA.setOptions( options );
         optionSetB.setOptions( options );
@@ -78,13 +79,14 @@ public class OptionServiceTest
         assertEquals( optionSetB, actualB );
         assertEquals( optionSetC, actualC );
         
-        assertEquals( 3, optionSetA.getOptions().size() );
-        assertEquals( 3, optionSetB.getOptions().size() );
+        assertEquals( 4, optionSetA.getOptions().size() );
+        assertEquals( 4, optionSetB.getOptions().size() );
         assertEquals( 0, optionSetC.getOptions().size() );
         
-        assertTrue( optionSetA.getOptions().contains( "OptionA" ) );
-        assertTrue( optionSetA.getOptions().contains( "OptionB" ) );
-        assertTrue( optionSetA.getOptions().contains( "OptionC" ) );
+        assertTrue( optionSetA.getOptions().contains( "OptA1" ) );
+        assertTrue( optionSetA.getOptions().contains( "OptA2" ) );
+        assertTrue( optionSetA.getOptions().contains( "OptB1" ) );
+        assertTrue( optionSetA.getOptions().contains( "OptB2" ) );
     }
     
     @Test
@@ -95,5 +97,31 @@ public class OptionServiceTest
         
         assertEquals( encoded, OptionSet.optionEncode( decoded ) );
         assertEquals( decoded, OptionSet.optionDecode( encoded ) );
+    }
+    
+    @Test
+    public void testGetList()
+    {
+        int idA = optionService.saveOptionSet( optionSetA );
+        
+        List<String> options = optionService.getOptions( idA, "OptA", 10 );
+        
+        assertEquals( 2, options.size() );
+        
+        options = optionService.getOptions( idA, "OptA1", 10 );
+
+        assertEquals( 1, options.size() );
+
+        options = optionService.getOptions( idA, "OptA1", null );
+
+        assertEquals( 1, options.size() );
+
+        options = optionService.getOptions( idA, "Opt", null );
+
+        assertEquals( 4, options.size() );
+        
+        options = optionService.getOptions( idA, "Opt", 3 );
+
+        assertEquals( 3, options.size() );
     }
 }
