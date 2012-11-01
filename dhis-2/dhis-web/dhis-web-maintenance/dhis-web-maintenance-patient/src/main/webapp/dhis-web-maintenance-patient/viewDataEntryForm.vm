@@ -89,7 +89,7 @@
 		<tr>
 			<td>
 				<label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label>
-				<input type="text" id="name" value="$!dataEntryForm.name" name="name" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"   style="width:20em">
+				<input type="text" id="name" value="$!dataEntryForm.name" name="name" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}" style="margin-left:15px;width:30em;">
 			</td>				
 		</tr>	
 	</table>  
@@ -109,11 +109,11 @@
 
 <table width="100%">	
     <tr>
-        <td align="right">
-            <input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:100px"/>
-            <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location='programStage.action?id=$!programStage.program.id'">            
+        <td>
+            <input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:120px"/>
+            <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" style="width:120px" onclick="window.location='programStage.action?id=$!programStage.program.id'">            
 			#if( $!dataEntryForm )
-			<input type="button" name="delete" value="$i18n.getString( 'delete' )" style="width:100px" onclick="deleteDataEntryForm( $programStage.dataEntryForm.id, $programStage.id )" />
+			<input type="button" name="delete" value="$i18n.getString( 'delete' )" style="width:120px" onclick="deleteDataEntryForm( $programStage.dataEntryForm.id, $programStage.id )" />
 			#end
         </td>		
     </tr>
@@ -130,12 +130,12 @@
 		</tr>
 		<tr>
 			<td>	
-				<input type="text" style="min-width:290px" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
+				<input type="text" style="width:100%" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
 			</td>
 		</tr>
 		<tr>
 			<td>	
-				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.id')">
+				<select id="dataElementIds" name="dataElementIds" style="width:100%; height:210px;" multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.id')">
 					#foreach( $de in $dataElements)
 					#set($deJSON = '{' + '"id"' + ":" + $de.id + "," + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.getDetailedTextType()"  + '"}' );
 					<option value='$deJSON'>$encoder.htmlEncode( $de.name )</option>
@@ -151,7 +151,7 @@
 		</tr>
 		<tr>
 			<td>
-				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#dataElementSelection', '$programStage.id')"/>
+				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#dataElementSelection', '$programStage.id')" style="width:100px">
 			</td>
 		</tr>
 		<tr>

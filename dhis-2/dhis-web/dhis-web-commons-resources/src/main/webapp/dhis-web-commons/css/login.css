@@ -33,8 +33,8 @@ input[type=text],input[type=password]
 #flagArea
 {
   position: absolute;
-  top: 15px;
-  left: 20px;
+  top: 22px;
+  left: 52px;
   border: 1px solid #d5d5d5;
   border-radius: 2px;
   width: 105px;
@@ -44,8 +44,8 @@ input[type=text],input[type=password]
 #titleArea
 {
   position: absolute;
-  top: 17px;
-  left: 145px;
+  top: 24px;
+  left: 177px;
   font-size: 19px;
 }
 
@@ -53,8 +53,8 @@ input[type=text],input[type=password]
 {
   width: 250px;
   position: absolute;
-  top: 46px;
-  left: 145px;
+  top: 53px;
+  left: 177px;
   font-size: 17px;
   color: #bfd9f2;
 }
@@ -73,16 +73,9 @@ input[type=text],input[type=password]
 #accountArea
 {
   position: absolute;
-  right: 10px;
+  right: 17px;
   padding: 18px 30px 18px 0;
   font-size: 17px;
-}
-
-#accountIntro
-{
-  position: relative;
-  top: 1px;
-  padding-right: 15px
 }
 
 #loginField
