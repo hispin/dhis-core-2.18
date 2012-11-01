@@ -33,7 +33,7 @@
         </div>
         #if ( $keyConfig.selfRegistrationAllowed() )
         <div id="accountArea">
-        	<span id="accountIntro">Do you want access?</span> <a class="greenButtonLink" href="account.action">Create an account</a>
+        	<a class="greenButtonLink" href="account.action">Create an account</a>
         </div>
         #end
         <div id="loginField">
