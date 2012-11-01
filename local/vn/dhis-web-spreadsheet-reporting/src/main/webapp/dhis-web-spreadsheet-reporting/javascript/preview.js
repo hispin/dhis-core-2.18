@@ -141,7 +141,7 @@ function previewExportReportReceived( parentElement )
 					var _sData		= getElementValue( _cols[j], 'data' );
 					var _align		= getElementAttribute( _cols[j], 'format', 'align' );
 					var _border		= getElementAttribute( _cols[j], 'format', 'border' );
-					var _width		= getElementAttribute( _cols[j], 'format', 'width' );
+					//var _width		= getElementAttribute( _cols[j], 'format', 'width' );
 
 					// If this cell is merged - Key's form: Sheet#Row#Col
 					_sPattern 		=  _orderSheet + "#" + i + "#" + _number;
@@ -151,7 +151,8 @@ function previewExportReportReceived( parentElement )
 					j 		= Number(j) + Number(_colspan);
 					_index 	= Number(_index) + Number(_colspan);
 
-					_sHTML.push( "<td align='", _align, "' width='", _width, "px' colspan='", _colspan, "'" );
+					//_sHTML.push( "<td align='", _align, "' width='", _width, "px' colspan='", _colspan, "'" );
+					_sHTML.push( "<td align='", _align, "' colspan='", _colspan, "'" );
 					_sHTML.push( " class='printclass" );
 					_sHTML.push( _border > 0 ? " ui-widget-content" : "" );
 
