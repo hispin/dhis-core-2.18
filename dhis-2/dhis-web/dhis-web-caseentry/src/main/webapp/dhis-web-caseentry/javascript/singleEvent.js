@@ -4,6 +4,7 @@ var _continue = false;
 function orgunitSelected( orgUnits, orgUnitNames )
 {	
 	showById('mainLinkLbl');
+	hideById('addNewDiv');
 	organisationUnitSelected( orgUnits, orgUnitNames );
 	clearListById('programIdAddPatient');
 	$.postJSON( 'singleEventPrograms.action', {}, function( json )
