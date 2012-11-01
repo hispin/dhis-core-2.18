@@ -30,6 +30,7 @@ package org.hisp.dhis.patient.hibernate;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.patient.Patient;
@@ -49,7 +50,7 @@ public class HibernatePatientAuditStore
     @Override
     public Collection<PatientAudit> get( Patient patient )
     {
-        return getCriteria( Restrictions.eq( "patient", patient ) ).list();
+        return getCriteria( Restrictions.eq( "patient", patient ) ).addOrder( Order.desc( "date" ) ).list();
     }
 
     @Override
