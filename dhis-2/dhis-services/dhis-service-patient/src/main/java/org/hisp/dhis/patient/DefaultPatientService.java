@@ -574,7 +574,7 @@ public class DefaultPatientService
         grid.setTitle( i18n.getString( "activity_plan" ) );
         if ( !startDate.isEmpty() && !endDate.isEmpty() )
         {
-            grid.setSubtitle( i18n.getString( "from" ) + " " + startDate + " " + i18n.getString( "to" ) + endDate );
+            grid.setSubtitle( i18n.getString( "from" ) + " " + startDate + " " + i18n.getString( "to" )  + " " + endDate );
         }
 
         grid.addHeader( new GridHeader( "patientid", true, true ) );
