@@ -8,6 +8,8 @@
 <hibernate-mapping>
   <class name="org.hisp.dhis.mapping.Map" table="map">
 
+    <cache usage="read-write" />
+
     <id name="id" column="mapid">
       <generator class="native" />
     </id>
@@ -27,10 +29,13 @@
     
     <property name="zoom" />
     
-    <set name="mapViews" table="mapmapviews">
+    <list name="mapViews" table="mapmapviews">
+      <cache usage="read-write" />
       <key column="mapid" foreign-key="fk_mapmapview_mapid" />
-      <many-to-many column="mapviewid" class="org.hisp.dhis.mapping.MapView" foreign-key="fk_mapmapview_mapviewid" />
-    </set>
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="mapviewid" class="org.hisp.dhis.mapping.MapView" 
+        foreign-key="fk_mapmapview_mapviewid" />
+    </list>
     
   </class>
 </hibernate-mapping>
