@@ -168,6 +168,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     </bean>
 
+    <!-- Map -->
+
+    <bean id="org.hisp.dhis.mapping.action.RenameMapAction" class="org.hisp.dhis.mapping.action.RenameMapAction"
+        scope="prototype"/>
+
 	<!-- MapView -->
 
 	<bean id="org.hisp.dhis.mapping.action.DeleteMapViewAction" class="org.hisp.dhis.mapping.action.DeleteMapViewAction"

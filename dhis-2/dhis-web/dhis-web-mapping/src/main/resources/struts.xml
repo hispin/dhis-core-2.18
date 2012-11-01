@@ -180,11 +180,16 @@
             </result>
         </action>
 
+        <!-- Map -->
+
+        <action name="renameMap" class="org.hisp.dhis.mapping.action.RenameMapAction">
+            <result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
+        </action>
+
 		<!-- MapView -->
 
 		<action name="deleteMapView" class="org.hisp.dhis.mapping.action.DeleteMapViewAction">
-			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
-			</result>
+			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm</result>
 		</action>
 
 		<action name="getMapView" class="org.hisp.dhis.mapping.action.GetMapViewAction">
