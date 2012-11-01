@@ -141,6 +141,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE mapview DROP COLUMN mapsource" );
         executeSql( "ALTER TABLE mapview DROP COLUMN mapsourcetype" );
         executeSql( "ALTER TABLE mapview DROP COLUMN mapdatetype" );
+        executeSql( "ALTER TABLE mapview DROP COLUMN featuretype" );
+        executeSql( "ALTER TABLE mapview DROP COLUMN bounds" );
         executeSql( "ALTER TABLE mapview RENAME COLUMN mapvaluetype TO valuetype" );
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendtype TO legendtype" );
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendsetid TO legendsetid" );
