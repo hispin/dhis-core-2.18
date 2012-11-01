@@ -43,7 +43,7 @@ function listAllPatient()
 	setFieldValue('listAll', "true");
 	hideById('listEventDiv');
 	hideById('advanced-search');
-	
+	setFieldValue('statusEvent', "4");
 	contentDiv = 'listEventDiv';
 	$('#contentDataRecord').html('');
 	hideById('advanced-search');
