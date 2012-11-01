@@ -480,7 +480,7 @@ public class DefaultMappingService
 
         addMapView( new MapView( MapView.LAYER_THEMATIC1, name, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
             period, parent, level, mapLegendType, method, classes, colorLow, colorHigh,
-            mapLegendSet, radiusLow, radiusHigh, 1 ) );
+            mapLegendSet, radiusLow, radiusHigh, 1.0 ) );
     }
 
     public void updateMapView( MapView mapView )

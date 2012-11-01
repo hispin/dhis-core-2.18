@@ -269,7 +269,7 @@ public class MappingServiceTest
         MapView mapView = new MapView( LAYER_THEMATIC1, "MapViewA", VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, period,
             organisationUnit, organisationUnitLevel, LEGEND_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1 );
+            mapLegendSet, 5, 20, 1.0 );
 
         int idA = mappingService.addMapView( mapView );
 
@@ -285,12 +285,12 @@ public class MappingServiceTest
         MapView mapView1 = new MapView( LAYER_THEMATIC1, "MapViewA", VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, period,
             organisationUnit, organisationUnitLevel, LEGEND_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1 );
+            mapLegendSet, 5, 20, 1.0 );
 
         MapView mapView2 = new MapView( LAYER_THEMATIC1, "MapViewB", VALUE_TYPE_INDICATOR, indicatorGroup,
             indicator, dataElementGroup, dataElement, period,
             organisationUnit, organisationUnitLevel, LEGEND_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1 );
+            mapLegendSet, 5, 20, 1.0 );
 
         mappingService.addMapView( mapView1 );
         mappingService.addMapView( mapView2 );

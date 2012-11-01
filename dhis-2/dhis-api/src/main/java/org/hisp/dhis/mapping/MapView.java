@@ -108,7 +108,7 @@ public class MapView
 
     private Integer radiusHigh;
 
-    private Integer opacity;
+    private Double opacity;
     
     private OrganisationUnitGroupSet organisationUnitGroupSet;
 
@@ -124,7 +124,7 @@ public class MapView
                     DataElementGroup dataElementGroup, DataElement dataElement,
                     Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
                     String legendType, Integer method, Integer classes, String colorLow, String colorHigh,
-                    MapLegendSet legendSet, Integer radiusLow, Integer radiusHigh, int opacity )
+                    MapLegendSet legendSet, Integer radiusLow, Integer radiusHigh, Double opacity )
     {
         this.layer = layer;
         this.name = name;
@@ -399,12 +399,12 @@ public class MapView
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public Integer getOpacity()
+    public Double getOpacity()
     {
         return opacity;
     }
 
-    public void setOpacity( Integer opacity )
+    public void setOpacity( Double opacity )
     {
         this.opacity = opacity;
     }
