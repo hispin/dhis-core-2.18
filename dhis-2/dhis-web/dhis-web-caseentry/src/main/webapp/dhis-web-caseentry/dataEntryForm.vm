@@ -46,8 +46,7 @@
 
 <script>
 	var i18n_create_new_event = '$encoder.jsEscape( $i18n.getString( "create_new_event" ) , "'" )';
-	#if( $programStageInstance.programInstance.program.type=='1' && 
-		$programStageInstance.programInstance.completed=="true")
+	#if( $programStageInstance.programInstance.program.type=='1' && $programStageInstance.programInstance.completed=="true")
 		jQuery("[id=entryFormContainer] :input").prop('disabled', true);
 		jQuery("[id=entryFormContainer] :input").datepicker("destroy");
 		jQuery("[id=executionDate]").prop('disabled', true);
