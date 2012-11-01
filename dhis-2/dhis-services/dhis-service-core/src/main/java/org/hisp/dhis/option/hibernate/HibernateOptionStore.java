@@ -47,11 +47,14 @@ public class HibernateOptionStore
     @Override
     public List<String> getOptions( OptionSet optionSet, String key, Integer max )
     {
-        String hql = "select option from OptionSet as optionset inner join optionset.options as option where optionset.id = :optionSetId ";
-        if( key != null )
+        String hql = "select option from OptionSet os inner join os.options as option where os.id = :optionSetId";
+        
+        if ( key != null )
         {
             hql += " and lower(option) like lower('%" + key + "%') ";
         }
+        
+        hql += " order by option";
         
         Query query = getQuery( hql );
         query.setInteger( "optionSetId", optionSet.getId() );
