@@ -11,7 +11,10 @@
     <id name="id" column="mapviewid">
       <generator class="native" />
     </id>
-    &identifiableProperties;
+    
+    <property name="uid" column="uid" length="11" />
+    
+    <property name="lastUpdated" type="timestamp"/>
 
     <property name="layer" />
 
