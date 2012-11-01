@@ -199,6 +199,7 @@ public class GenerateReportOrgGroupListingAction
 
             for ( OrganisationUnitGroup unitGroup : exportReport.getOrganisationUnitGroups() )
             {
+                run++;
                 int beginChapter = rowBegin;
 
                 organisationUnits = childrenGroupMap.get( unitGroup.getId() );
@@ -223,15 +224,16 @@ public class GenerateReportOrgGroupListingAction
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                 {
                     ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils.generateExcelFormula(
-                        reportItem.getExpression(), run + 1, run + 1 ), sheet, this.csFormula, evaluatorFormula );
+                        reportItem.getExpression(), run, run ), sheet, this.csFormulaBold, evaluatorFormula );
                 }
 
-                run++;
                 rowBegin++;
                 int serial = 1;
 
                 for ( OrganisationUnit o : organisationUnits )
                 {
+                    run++;
+
                     if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION ) )
                     {
                         ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), o.getName(), ExcelUtils.TEXT,
@@ -260,11 +262,10 @@ public class GenerateReportOrgGroupListingAction
                     // FORMULA_EXCEL
                     {
                         ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils
-                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, this.csFormula,
+                            .generateExcelFormula( reportItem.getExpression(), run, run ), sheet, this.csFormulaNormal,
                             evaluatorFormula );
                     }
 
-                    run++;
                     rowBegin++;
                     serial++;
                 }
@@ -279,7 +280,7 @@ public class GenerateReportOrgGroupListingAction
                         formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
 
                         ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
-                            this.csFormula, evaluatorFormula );
+                            this.csFormulaBold, evaluatorFormula );
 
                         totalFormula += columnName + beginChapter + ",";
                     }
@@ -288,7 +289,7 @@ public class GenerateReportOrgGroupListingAction
                         formula = ExcelUtils.generateExcelFormula( reportItem.getExtraExpression(), next + 1, 0 );
 
                         ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
-                            this.csFormula, evaluatorFormula );
+                            this.csFormulaBold, evaluatorFormula );
                     }
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT )
@@ -307,15 +308,15 @@ public class GenerateReportOrgGroupListingAction
             {
                 totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
 
-                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula,
-                    evaluatorFormula );
+                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet,
+                    this.csFormulaBold, evaluatorFormula );
             }
             else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )
             {
                 totalFormula = ExcelUtils.generateExcelFormula( reportItem.getExtraExpression(), 0, 0 );
 
-                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula,
-                    evaluatorFormula );
+                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet,
+                    this.csFormulaBold, evaluatorFormula );
             }
 
             isFirst = false;
@@ -334,14 +335,18 @@ public class GenerateReportOrgGroupListingAction
 
         for ( ExportItem reportItem : exportReportItems )
         {
+            int run = 0;
             int chapperNo = 0;
             int firstRow = reportItem.getRow();
             int rowBegin = firstRow + 1;
+
             double value = 0;
             double totalValue = 0;
 
             for ( OrganisationUnitGroup unitGroup : exportReport.getOrganisationUnitGroups() )
             {
+                run++;
+
                 organisationUnits = childrenGroupMap.get( unitGroup.getId() );
 
                 // Shift the number of rows - From start-row To end-row
@@ -385,7 +390,7 @@ public class GenerateReportOrgGroupListingAction
                 // FORMULA_EXCEL
                 {
                     ExcelUtils.writeFormulaByPOI( rowBegin, reportItem.getColumn(), ExcelUtils.generateExcelFormula(
-                        reportItem.getExpression(), rowBegin, rowBegin ), sheet, this.csFormula, evaluatorFormula );
+                        reportItem.getExpression(), run, run ), sheet, this.csFormulaNormal, evaluatorFormula );
                 }
 
                 rowBegin++;

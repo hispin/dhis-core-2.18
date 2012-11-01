@@ -110,7 +110,7 @@ public class GenerateReportNormalAction
             // EXCEL FORMULA
             {
                 ExcelUtils.writeFormulaByPOI( reportItem.getRow(), reportItem.getColumn(), reportItem.getExpression(),
-                    sheet, this.csFormula, evaluatorFormula );
+                    sheet, this.csFormulaBold, evaluatorFormula );
             }
         }
     }
