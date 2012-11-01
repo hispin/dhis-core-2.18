@@ -27,6 +27,7 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -81,8 +82,25 @@ public class DefaultOptionService
         return optionStore.getAll();
     }
     
-    public List<String> getOptions( OptionSet optionSet, String key, Integer max  )
+    public List<String> getOptions( int optionSetId, String key, Integer max  )
     {
-        return optionStore.getOptions( optionSet, key, max );
+        List<String> options = null;
+        
+        if ( key != null || max != null )
+        {
+            // Use query as option set size might be very high
+            
+            options = optionStore.getOptions( optionSetId, key, max );
+        }
+        else
+        {
+            // Return all from object association to preserve custom order
+
+            OptionSet optionSet = getOptionSet( optionSetId );
+            
+            options = new ArrayList<String>( optionSet.getOptions() );
+        }
+        
+        return options;
     }
 }

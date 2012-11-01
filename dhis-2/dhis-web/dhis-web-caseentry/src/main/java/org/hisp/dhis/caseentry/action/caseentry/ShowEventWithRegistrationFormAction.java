@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -43,7 +42,6 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
@@ -53,8 +51,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version $ShowEventWithRegistrationFormAction.java Jun 26, 2012 4:41:09 PM$
  */
 public class ShowEventWithRegistrationFormAction
     implements Action
@@ -89,13 +85,6 @@ public class ShowEventWithRegistrationFormAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private ProgramDataEntryService programDataEntryService;
-
-    public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
-    {
-        this.programDataEntryService = programDataEntryService;
     }
 
     // -------------------------------------------------------------------------
