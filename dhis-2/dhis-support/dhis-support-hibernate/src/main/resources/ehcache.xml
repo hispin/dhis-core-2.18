@@ -186,7 +186,7 @@
   
   <cache name="org.hisp.dhis.chart.Chart.dataSets" maxElementsInMemory="200" />
 
-  <cache name="org.hisp.dhis.mapping.Map.views" maxElementsInMemory="1000" />
+  <cache name="org.hisp.dhis.mapping.Map.mapViews" maxElementsInMemory="1000" />
 
   <cache name="org.hisp.dhis.user.User.organisationUnits" maxElementsInMemory="20000" />
 

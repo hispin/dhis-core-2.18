@@ -27,8 +27,8 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
@@ -61,7 +61,7 @@ public class Map
     private Integer zoom;
 
     @Scanned
-    private Set<MapView> mapViews = new HashSet<MapView>();
+    private List<MapView> mapViews = new ArrayList<MapView>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -141,12 +141,12 @@ public class Map
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "mapViews", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "mapView", namespace = Dxf2Namespace.NAMESPACE )
-    public Set<MapView> getMapViews()
+    public List<MapView> getMapViews()
     {
         return mapViews;
     }
 
-    public void setMapViews( Set<MapView> mapViews )
+    public void setMapViews( List<MapView> mapViews )
     {
         this.mapViews = mapViews;
     }
