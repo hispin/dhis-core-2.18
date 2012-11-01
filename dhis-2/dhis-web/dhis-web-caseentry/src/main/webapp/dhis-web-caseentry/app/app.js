@@ -1356,6 +1356,7 @@ Ext.onReady( function() {
 					'->',
 					{
 						xtype: 'label',
+						style: 'margin-right:18px;',
 						text: TR.state.totalRecords + ' ' + TR.i18n.events
 					},
 				], 
