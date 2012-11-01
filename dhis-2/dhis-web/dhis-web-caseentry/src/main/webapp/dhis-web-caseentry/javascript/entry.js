@@ -81,6 +81,8 @@ function saveVal( dataElementId )
 	}
 	var valueSaver = new ValueSaver( dataElementId, fieldValue, type, SUCCESS_COLOR );
     valueSaver.save();
+    
+    jQuery( "body" ).trigger( "event-value-saved", [ dataElementId, fieldValue ] ); // Hook
 }
 
 function saveOpt( dataElementId )
@@ -101,8 +103,7 @@ function updateProvidingFacility( dataElementId, checkField )
 	spanField.style.backgroundColor = SAVING_COLOR;
     
     var facilitySaver = new FacilitySaver( dataElementId, checked, SUCCESS_COLOR );
-    facilitySaver.save();
-    
+    facilitySaver.save();    
 }
 
 function saveExecutionDate( programId, programStageInstanceId, field )
