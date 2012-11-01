@@ -39,6 +39,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -79,7 +80,7 @@ public class MapValueController
         @RequestParam String in,
         @RequestParam String pe,
         @RequestParam String ou,
-        @RequestParam Integer level,
+        @RequestParam String le,
         Model model,
         HttpServletResponse response ) throws Exception
     {
@@ -109,7 +110,15 @@ public class MapValueController
             return null;            
         }
         
-        Collection<AggregatedMapValue> mapValues = mappingService.getIndicatorMapValues( indicator.getId(), period.getId(), organisationUnit.getId(), level );
+        OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevel( le );
+        
+        if ( level == null )
+        {
+            ContextUtils.conflictResponse( response, "Invalid organisation unit level identifier" );
+            return null;            
+        }
+        
+        Collection<AggregatedMapValue> mapValues = mappingService.getIndicatorMapValues( indicator.getId(), period.getId(), organisationUnit.getId(), level.getLevel() );
         
         model.addAttribute( "model", mapValues );
         
@@ -121,7 +130,7 @@ public class MapValueController
         @RequestParam String de,
         @RequestParam String pe,
         @RequestParam String ou,
-        @RequestParam Integer level,
+        @RequestParam String le,
         Model model,
         HttpServletResponse response ) throws Exception
     {
@@ -151,7 +160,15 @@ public class MapValueController
             return null;            
         }
         
-        Collection<AggregatedMapValue> mapValues = mappingService.getDataElementMapValues( dataElement.getId(), period.getId(), organisationUnit.getId(), level );
+        OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevel( le );
+        
+        if ( level == null )
+        {
+            ContextUtils.conflictResponse( response, "Invalid organisation unit level identifier" );
+            return null;            
+        }
+        
+        Collection<AggregatedMapValue> mapValues = mappingService.getDataElementMapValues( dataElement.getId(), period.getId(), organisationUnit.getId(), level.getLevel() );
         
         model.addAttribute( "model", mapValues );
         

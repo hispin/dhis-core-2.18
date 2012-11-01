@@ -61,13 +61,15 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
     },
     
     createColorInterpolation: function() {
-        var numColors = this.classification.bins.length;
-        this.widget.imageLegend = [];
+        var numColors = this.classification.bins.length,
+			tmpView = this.widget.tmpView;
+        
+        tmpView.extended.imageLegendConfig = [];
 			
 		this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(this.colors[0], this.colors[1], numColors);
             
         for (var i = 0; i < this.classification.bins.length; i++) {
-            this.widget.imageLegend.push({
+            tmpView.extended.imageLegendConfig.push({
                 label: this.classification.bins[i].label.replace('&nbsp;&nbsp;', ' '),
                 color: this.colorInterpolation[i].toHexString()
             });
@@ -136,7 +138,8 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
         }
         
         var config = this.widget.getLegendConfig(),
-			element;
+			element,
+			legendNames = this.widget.tmpView.extended.legendNames;
 			
         this.legendDiv.update("");
         
@@ -158,45 +161,23 @@ mapfish.GeoStat.Boundary = OpenLayers.Class(mapfish.GeoStat, {
         element.style.height = "5px";
         this.legendDiv.appendChild(element);
         
-        if (this.widget.tmpModel.legendType === GIS.conf.finals.widget.legendtype_automatic) {
-            for (var i = 0; i < this.classification.bins.length; i++) {
-                var element = document.createElement("div");
-                element.style.backgroundColor = this.colorInterpolation[i].toHexString();
-                element.style.width = "30px";
-                element.style.height = "15px";
-                element.style.cssFloat = "left";
-                element.style.marginRight = "8px";
-                this.legendDiv.appendChild(element);
+		for (var i = 0; i < this.classification.bins.length; i++) {
+			var element = document.createElement("div");
+			element.style.backgroundColor = this.colorInterpolation[i].toHexString();
+			element.style.width = "30px";
+			element.style.height = "15px";
+			element.style.cssFloat = "left";
+			element.style.marginRight = "8px";
+			this.legendDiv.appendChild(element);
 
-                element = document.createElement("div");
-                element.innerHTML = this.classification.bins[i].label;
-                this.legendDiv.appendChild(element);
+			element = document.createElement("div");
+			element.innerHTML = this.classification.bins[i].label;
+			this.legendDiv.appendChild(element);
 
-                element = document.createElement("div");
-                element.style.clear = "left";
-                this.legendDiv.appendChild(element);
-            }
-        }
-        else if (this.widget.tmpModel.legendType === GIS.conf.finals.widget.legendtype_predefined) {
-            //for (var i = 0; i < this.classification.bins.length; i++) {
-                //var element = document.createElement("div");
-                //element.style.backgroundColor = this.colorInterpolation[i].toHexString();
-                //element.style.width = "30px";
-                //element.style.height = this.widget.legendNames[i] ? "25px" : "20px";
-                //element.style.cssFloat = "left";
-                //element.style.marginRight = "8px";
-                //this.legendDiv.appendChild(element);
-
-                //element = document.createElement("div");
-                //element.style.lineHeight = this.widget.legendNames[i] ? "12px" : "7px";
-                //element.innerHTML = '<b style="color:#222">' + (this.widget.legendNames[i] || '') + '</b><br/>' + this.classification.bins[i].label;
-                //this.legendDiv.appendChild(element);
-
-                //element = document.createElement("div");
-                //element.style.clear = "left";
-                //this.legendDiv.appendChild(element);
-            //}
-        }
+			element = document.createElement("div");
+			element.style.clear = "left";
+			this.legendDiv.appendChild(element);
+		}
     },
 
     CLASS_NAME: "mapfish.GeoStat.Boundary"

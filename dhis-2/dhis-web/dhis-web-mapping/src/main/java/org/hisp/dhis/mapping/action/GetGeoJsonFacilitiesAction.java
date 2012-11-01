@@ -34,6 +34,7 @@ import java.util.List;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.filter.OrganisationUnitWithValidCoordinatesFilter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -76,9 +77,9 @@ public class GetGeoJsonFacilitiesAction
         this.parentId = parentId;
     }
 
-    private Integer level;
+    private String level;
 
-    public void setLevel( Integer level )
+    public void setLevel( String level )
     {
         this.level = level;
     }
@@ -110,10 +111,25 @@ public class GetGeoJsonFacilitiesAction
     {
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
 
-        level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent.getId() ) : level;
+        if ( parent == null )
+        {
+            parent = organisationUnitService.getOrganisationUnit( Integer.parseInt( parentId ) );
+        }
 
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
-            parent );
+        OrganisationUnitLevel orgUnitLevel = organisationUnitService.getOrganisationUnitLevel( level );
+
+        if ( orgUnitLevel == null )
+        {
+            orgUnitLevel = organisationUnitService.getOrganisationUnitLevel( Integer.parseInt( level ) );
+        }
+
+        if ( orgUnitLevel == null )
+        {
+            orgUnitLevel = organisationUnitService.getOrganisationUnitLevel( parent.getOrganisationUnitLevel() );
+        }
+
+        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel(
+            orgUnitLevel.getLevel(), parent );
 
         FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
 

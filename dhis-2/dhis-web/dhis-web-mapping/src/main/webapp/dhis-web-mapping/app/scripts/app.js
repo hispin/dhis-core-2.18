@@ -95,6 +95,7 @@ GIS.init = {};
 GIS.mask;
 
 GIS.util = {
+	url: {},
 	google: {},
 	map: {},
 	svg: {},
@@ -193,9 +194,8 @@ Ext.onReady( function() {
 			GIS.init.onInitialize(r);	
 	
 	GIS.init.onRender = function() {
-		//GIS.base.googleStreets.layer.item.setValue(false);
 		if (!window.google) {
-			GIS.base.openStreetMap.layer.item.setValue(false);
+			GIS.base.openStreetMap.layer.item.setValue(true);
 		}
 	};
 	
@@ -235,36 +235,12 @@ Ext.onReady( function() {
 			}
 		});
 		
-		// Load favorite //todo
-		//var config = {
-			//classes: 5,
-			//colorHigh: "ffff00",
-			//colorLow: "0000ff",
-			//dataElement: null,
-			//dataElementGroup: null,
-			//indicator: "Uvn6LCg7dVU",
-			//indicatorGroup: "AoTB60phSOH",
-			//legendSet: null,
-			//legendType: "automatic",
-			//level: 3,
-			//levelName: "Chiefdom",
-			//method: 2,
-			//parentId: "fdc6uOvgoji",
-			//parentLevel: 2,
-			//parentName: "Bombali",
-			//parentPath: "/ImspTQPwCqd/fdc6uOvgoji",
-			//period: "2012",
-			//periodType: "Yearly",
-			//radiusHigh: 15,
-			//radiusLow: 5,
-			//updateData: false,
-			//updateLegend: false,
-			//updateOrganisationUnit: true,
-			//valueType: "indicator"
-		//};
+		// Favorite
 		
-		//GIS.base.thematic1.widget.setConfig(config);
-		//GIS.base.thematic1.widget.execute();
+		var id = GIS.util.url.getUrlParam('id');
+		if (id) {
+			GIS.util.map.getMap(id, true);
+		}
 	};
 	
 	// Mask
@@ -277,6 +253,25 @@ Ext.onReady( function() {
 	
 	GIS.util.google.openTerms = function() {
 		window.open('http://www.google.com/intl/en-US_US/help/terms_maps.html', '_blank');
+	};
+	
+	GIS.util.url.getUrlParam = function(s) {
+		var output = '';
+		var href = window.location.href;
+		if (href.indexOf('?') > -1 ) {
+			var query = href.substr(href.indexOf('?') + 1);
+			var query = query.split('&');
+			for (var i = 0; i < query.length; i++) {
+				if (query[i].indexOf('=') > -1) {
+					var a = query[i].split('=');
+					if (a[0].toLowerCase() === s) {
+						output = a[1];
+						break;
+					}
+				}
+			}
+		}
+		return unescape(output);
 	};
 	
 	GIS.util.map.getVisibleVectorLayers = function() {
@@ -339,7 +334,56 @@ Ext.onReady( function() {
 		return new OpenLayers.LonLat(point.x, point.y);
 	};
 	
-    GIS.util.svg.merge = function(str, strArray) {
+	GIS.util.map.getMap = function(id, setMap) {
+		if (!id) {
+			alert('No favorite id provided');
+			return;
+		}
+		if (!Ext.isString(id)) {
+			alert('Favorite id must be a string');
+			return;
+		}
+		
+		Ext.Ajax.request({
+			url: GIS.conf.url.path_api + 'maps/' + id + '.json?links=false',
+			success: function(r) {
+				var map = Ext.decode(r.responseText);
+				
+				if (setMap) {
+					GIS.util.map.setMap(map);
+				}
+			}
+		});
+	};
+	
+	GIS.util.map.setMap = function(map) {
+		var views = map.mapViews,
+			view,
+			center,
+			lonLat;
+			
+		GIS.map.map = map;
+			
+		GIS.util.map.closeAllLayers();
+		
+		for (var i = 0; i < views.length; i++) {
+			view = views[i];
+			
+			GIS.base[view.layer].widget.execute(view);
+		}
+		
+		lonLat = new OpenLayers.LonLat(map.longitude, map.latitude);
+        GIS.map.setCenter(lonLat, map.zoom);
+	};
+	
+	GIS.util.map.closeAllLayers = function() {
+		GIS.base.boundary.widget.reset();
+		GIS.base.thematic1.widget.reset();
+		GIS.base.thematic2.widget.reset();
+		GIS.base.facility.widget.reset();
+	};
+	
+	GIS.util.svg.merge = function(str, strArray) {
         if (strArray.length) {
             str = str || '<svg></svg>';
             for (var i = 0; i < strArray.length; i++) {
@@ -386,7 +430,7 @@ Ext.onReady( function() {
 			var layer = layers[i],
 				id = layer.base.id,
 				legendConfig = layer.base.widget.getLegendConfig(),
-				legendData = layer.base.widget.model.imageLegend,
+				imageLegendConfig = layer.base.widget.view.extended.imageLegendConfig,
 				what,
 				when,
 				where,
@@ -417,16 +461,16 @@ Ext.onReady( function() {
 				
 				legend = '<g>';
 				
-				for (var j = 0; j < legendData.length; j++) {
+				for (var j = 0; j < imageLegendConfig.length; j++) {
 					if (j !== 0) {
 						y += 15;
 					}
 					
 					legend += '<rect x="' + x + '" y="' + y + '" height="15" width="30" ' +
-							  'fill="' + legendData[j].color + '" stroke="#000000" stroke-width="1"/>';
+							  'fill="' + imageLegendConfig[j].color + '" stroke="#000000" stroke-width="1"/>';
 							  
 					legend += '<text id="label" x="' + (x + 40) + '" y="' + (y + 12) + '" font-size="12">' +
-							  '<tspan>' + legendData[j].label + '</tspan></text>';
+							  '<tspan>' + imageLegendConfig[j].label + '</tspan></text>';
 				}
 				
 				legend += '</g>';
@@ -476,7 +520,7 @@ Ext.onReady( function() {
         }
         
         if (widget) {
-			widget.tmpModel.hasCoordinatesUp = doc.properties.hasCoordinatesUp;
+			widget.tmpView.extended.hasCoordinatesUp = doc.properties.hasCoordinatesUp;
 		}
 			
         return geojson;
@@ -627,6 +671,9 @@ Ext.onReady( function() {
 				this.load(fn);
 			}
 		},
+		getRecordByLevel: function(level) {
+			return this.getAt(this.findExact('level', level));
+		},
 		listeners: {
 			load: function() {
 				if (!this.isLoaded) {
@@ -721,7 +768,7 @@ Ext.onReady( function() {
 	});
 	
 	GIS.store.legendSets = Ext.create('Ext.data.Store', {
-		fields: ['id', 'name', 'edit', 'del'],
+		fields: ['id', 'name'],
 		proxy: {
 			type: 'ajax',
 			url: GIS.conf.url.path_api + 'mapLegendSets.json?links=false&paging=false',
@@ -750,16 +797,28 @@ Ext.onReady( function() {
 	});
 	
 	GIS.store.maps = Ext.create('Ext.data.Store', {
-		fields: ['id', 'name', 'lastUpdated'],
+		fields: ['id', 'name', 'lastUpdated', 'system'],
 		proxy: {
 			type: 'ajax',
-			url: GIS.conf.url.path_api + 'indicators.json?links=false',
 			reader: {
 				type: 'json',
-				root: 'indicators'
+				root: 'maps'
 			}
 		},
 		isLoaded: false,
+		pageSize: 10,
+		page: 1,
+		defaultUrl: GIS.conf.url.path_api + 'maps.json?links=false',
+		loadStore: function(url) {
+			this.proxy.url = url || this.defaultUrl;
+			
+			this.load({
+				params: {
+					pageSize: this.pageSize,
+					page: this.page
+				}
+			});
+		},
 		loadFn: function(fn) {
 			if (this.isLoaded) {
 				fn.call();
@@ -769,10 +828,6 @@ Ext.onReady( function() {
 			}
 		},
 		listeners: {
-			beforeload: function() {
-				//console.log(this.getProxy());
-				//this.getProxy().setExtraParam('pageSize', GIS.cmp.region.center.getHeight() - 155);
-			},
 			load: function() {
 				if (!this.isLoaded) {
 					this.isLoaded = true;
@@ -980,19 +1035,23 @@ Ext.onReady( function() {
 			layer,
 			items = [],
 			item,
-			panel;
+			panel,
+			visibleLayer;
+			
+		visibleLayerId = window.google ? GIS.base.googleStreets.id : GIS.base.openStreetMap.id;
 		
 		for (var i = 0; i < layers.length; i++) {
 			layer = layers[i];
+			
 			item = Ext.create('Ext.ux.panel.LayerItemPanel', {
 				cls: 'gis-container-inner',
 				height: 23,
 				layer: layer,
 				text: layer.base.name,
 				imageUrl: 'images/' + layer.base.id + '_14.png',
-				value: layer.base.id === GIS.base.googleStreets.id ? true : false,
+				value: layer.base.id === visibleLayerId ? true : false,
 				opacity: layer.layerOpacity,
-				numberFieldDisabled: layer.base.id !== GIS.base.googleStreets.id
+				numberFieldDisabled: layer.base.id !== visibleLayerId
 			});
 			layer.item = item;
 			items.push(layer.item);
@@ -1026,6 +1085,7 @@ Ext.onReady( function() {
 				{
 					text: 'Update', //i18n
 					handler: function() {
+						GIS.map.map = null;
 						base.widget.execute();
 					}
 				}
@@ -1066,6 +1126,7 @@ Ext.onReady( function() {
 			iconCls: 'gis-window-title-icon-search',
 			cls: 'gis-container-default',
 			width: GIS.conf.layout.tool.window_width,
+			resizable: false,
 			height: 400,
 			items: [
 				{
@@ -1245,6 +1306,7 @@ Ext.onReady( function() {
 			iconCls: 'gis-window-title-icon-filter',
 			cls: 'gis-container-default',
 			width: GIS.conf.layout.tool.window_width,
+			resizable: false,
 			filter: filter,
 			items: {
 				layout: 'fit',
@@ -1385,6 +1447,7 @@ Ext.onReady( function() {
 			iconCls: 'gis-window-title-icon-labels',
 			cls: 'gis-container-default',
 			width: GIS.conf.layout.tool.window_width,
+			resizable: false,
 			closeAction: 'hide',
 			items: {
 				layout: 'fit',
@@ -1493,10 +1556,10 @@ Ext.onReady( function() {
 	GIS.obj.MapWindow = function() {
 		
 		// Objects
-		var UpdateWindow,
+		var NameWindow,
 		
 		// Instances
-			updateWindow,
+			nameWindow,
 			
 		// Components
 			addButton,
@@ -1507,17 +1570,156 @@ Ext.onReady( function() {
 			tbar,
 			bbar,
 			
-			nameTextfied,
+			nameTextfield,
 			systemCheckbox,
 			createButton,
 			updateButton,
+			cancelButton,
 			
-			window;
+			mapWindow;
+			
+		NameWindow = function(id) {
+			var window;
+			
+			nameTextfield = Ext.create('Ext.form.field.Text', {
+				height: 26,
+				width: 300,
+				labelWidth: 70,
+				fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb',
+				fieldLabel: 'Name', //i18n
+				value: id ? GIS.store.maps.getById(id).data.name : '',
+				listeners: {
+					afterrender: function() {
+						this.focus();
+					}
+				}
+			});
+			
+			systemCheckbox = Ext.create('Ext.form.field.Checkbox', {
+				labelWidth: 70,
+				fieldLabel: 'System', //i18n
+				style: 'margin-bottom: 0',
+				value: id ? GIS.store.maps.getById(id).data.system : false
+			});
+			
+			createButton = Ext.create('Ext.button.Button', {
+				text: 'Create', //i18n
+				handler: function() {
+					var name = nameTextfield.getValue(),
+						system = systemCheckbox.getValue(),
+						layers = GIS.util.map.getVisibleVectorLayers(),
+						layer,
+						lonlat = GIS.map.getCenter(),
+						views = [],
+						view,
+						map;
+						
+					if (name && layers.length) {
+						for (var i = 0; i < layers.length; i++) {
+							layer = layers[i];
+							view = layer.base.widget.getView();
+							
+							// add
+							view.layer = layer.base.id;
+							
+							// remove
+							delete view.periodType;
+							views.push(view);
+						}
+						
+						map = {
+							name: name,
+							longitude: lonlat.lon,
+							latitude: lonlat.lat,
+							zoom: GIS.map.getZoom(),
+							mapViews: views
+						};
+						
+						if (!system) {
+							map.user = {
+								id: 'currentUser'
+							};
+						}
+					
+						Ext.Ajax.request({
+							url: GIS.conf.url.path_api + 'maps/',
+							method: 'POST',
+							headers: {'Content-Type': 'application/json'},
+							params: Ext.encode(map),
+							success: function() {								
+								GIS.store.maps.loadStore();
+								
+								window.close();
+							}
+						});
+					}
+				}
+			});
+			
+			updateButton = Ext.create('Ext.button.Button', {
+				text: 'Update', //i18n
+				handler: function() {
+					var name = nameTextfield.getValue(),
+						system = systemCheckbox.getValue(),
+						map = {};
+						
+					map.name = name;
+					
+					if (!system) {
+						map.user = {
+							id: 'currentUser'
+						};
+					}
+					
+					Ext.Ajax.request({
+						url: GIS.conf.url.path_api + 'maps/' + id,
+						method: 'PUT',
+						headers: {'Content-Type': 'application/json'},
+						params: Ext.encode(map),
+						success: function() {								
+							GIS.store.maps.loadStore();
+							
+							window.close();
+						}
+					});
+				}
+			});
+			
+			cancelButton = Ext.create('Ext.button.Button', {
+				text: 'Cancel', //i18n
+				handler: function() {
+					console.log('hide + load');
+				}
+			});
+			
+			window = Ext.create('Ext.window.Window', {
+				title: id ? 'Edit favorite' : 'Create new favorite',
+				iconCls: 'gis-window-title-icon-favorite',
+				cls: 'gis-container-default',
+				resizable: false,
+				modal: true,
+				items: [
+					nameTextfield,
+					systemCheckbox
+				],
+				bbar: [
+					cancelButton,
+					'->',
+					id ? updateButton : createButton
+				],
+				listeners: {
+					show: function() {
+						this.setPosition(this.getPosition()[0], 100);
+					}
+				}
+			});
+			
+			return window;
+		};
 			
 		searchTextfield = Ext.create('Ext.form.field.Text', {
-			width: 354,
+			width: 353,
 			height: 26,
-			style: 'margin-right: 4px',
 			fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb',
 			emptyText: 'Search for favorites..', //i18n
 			enableKeyEvents: true,
@@ -1525,8 +1727,14 @@ Ext.onReady( function() {
 			listeners: {
 				keyup: function() {
 					if (this.getValue() !== this.currentValue) {
-						console.log('Request ' + this.getValue());
 						this.currentValue = this.getValue();
+						
+						var value = this.getValue(),
+							url = value ? GIS.conf.url.path_api +  'maps/query/' + value + '.json?links=false' : null,
+							store = GIS.store.maps;
+							
+						store.page = 1;
+						store.loadStore(url);
 					}
 				}
 			}
@@ -1535,27 +1743,40 @@ Ext.onReady( function() {
 		addButton = Ext.create('Ext.button.Button', {
 			text: 'Add new', //i18n
 			height: 26,
-			style: 'border-radius: 1px',
+			style: 'border-radius: 1px; margin-right: 5px',
 			menu: {},
 			handler: function() {
+				nameWindow = new NameWindow();
+				nameWindow.show();
 			}
 		});
 		
 		prevButton = Ext.create('Ext.button.Button', {
 			text: 'Prev', //i18n
 			handler: function() {
+				var value = searchTextfield.getValue(),
+					url = value ? GIS.conf.url.path_api +  'maps/query/' + value + '.json?links=false' : null,
+					store = GIS.store.maps;
+					
+				store.page = store.page <= 1 ? 1 : store.page - 1;
+				store.loadStore(url);
 			}
 		});
 		
 		nextButton = Ext.create('Ext.button.Button', {
 			text: 'Next', //i18n
 			handler: function() {
+				var value = searchTextfield.getValue(),
+					url = value ? GIS.conf.url.path_api +  'maps/query/' + value + '.json?links=false' : null,
+					store = GIS.store.maps;
+					
+				store.page = store.page + 1;
+				store.loadStore(url);
 			}
 		});
 		
 		grid = Ext.create('Ext.grid.Panel', {
 			cls: 'gis-grid',
-			bodyStyle: 'border-top-color: red !important, border-bottom: 0 none',
 			scroll: false,
 			hideHeaders: true,
 			columns: [						
@@ -1565,22 +1786,14 @@ Ext.onReady( function() {
 					width: 355,
 					renderer: function(value, metaData, record) {
 						var fn = function() {
-							var span = Ext.get(record.data.id),
-								div = span.parent('div'),
-								td = span.parent('td'),
-								currentElement,
-								clickHandler = function(id) {
-									alert(id);
-									console.log(record.data.id);
-								};
-								
-							td.addClsOnOver('text-link');
-							td.addListener('click', clickHandler(td.id));
+							var el = Ext.get(record.data.id).parent('td');
+							el.addClsOnOver('link');
+							el.dom.setAttribute('onclick', 'GIS.cmp.mapWindow.destroy(); GIS.util.map.getMap("' + record.data.id + '", true)');
 						};
 						
 						Ext.defer(fn, 100);
 						
-						return '<span id="' + record.data.id + '">' + value + '</span>';
+						return '<div id="' + record.data.id + '">' + value + '</div>';
 					}
 				},
 				{
@@ -1591,19 +1804,76 @@ Ext.onReady( function() {
 						{
 							iconCls: 'gis-grid-row-icon-edit',
 							handler: function(grid, rowIndex, colIndex, col, event) {
-								//var id = this.up('grid').store.getAt(rowIndex).data.id;
+								var id = this.up('grid').store.getAt(rowIndex).data.id;
+								nameWindow = new NameWindow(id);
+								nameWindow.show();
 							}
 						},
 						{
 							iconCls: 'gis-grid-row-icon-overwrite',
 							handler: function(grid, rowIndex, colIndex, col, event) {
-								//var id = this.up('grid').store.getAt(rowIndex).data.id;
+								var record = this.up('grid').store.getAt(rowIndex),
+									id = record.data.id,
+									name = record.data.name,
+									layers = GIS.util.map.getVisibleVectorLayers(),
+									layer,
+									lonlat = GIS.map.getCenter(),
+									views = [],
+									view,
+									map,
+									message = 'Overwrite the following favorite?\n\n' + name;
+								
+								if (confirm(message)) {
+									if (layers.length) {
+										for (var i = 0; i < layers.length; i++) {
+											layer = layers[i];
+											view = layer.base.widget.getView();
+											
+											// add
+											view.layer = layer.base.id;
+											
+											// remove
+											delete view.periodType;
+											views.push(view);
+										}
+										
+										map = {
+											longitude: lonlat.lon,
+											latitude: lonlat.lat,
+											zoom: GIS.map.getZoom(),
+											mapViews: views
+										};
+									
+										Ext.Ajax.request({
+											url: GIS.conf.url.path_api + 'maps/' + id,
+											method: 'PUT',
+											headers: {'Content-Type': 'application/json'},
+											params: Ext.encode(map),
+											success: function() {								
+												GIS.store.maps.loadStore();
+												
+												window.close();
+											}
+										});
+									}
+								}
 							}
 						},
 						{
 							iconCls: 'gis-grid-row-icon-delete',
 							handler: function(grid, rowIndex, colIndex, col, event) {
-								//var id = this.up('grid').store.getAt(rowIndex).data.id;
+								var id = this.up('grid').store.getAt(rowIndex).data.id,
+									message = 'Delete the following favorite?\n\n' + name;
+									
+								if (confirm(message)) {								
+									Ext.Ajax.request({
+										url: GIS.conf.url.path_api + 'maps/' + id,
+										method: 'DELETE',
+										success: function() {
+											GIS.store.maps.loadStore();
+										}
+									});
+								}
 							}
 						}
 					]
@@ -1621,11 +1891,9 @@ Ext.onReady( function() {
 				},
 				render: function() {
 					var size = Math.floor((GIS.cmp.region.center.getHeight() - 155) / GIS.conf.layout.grid.row_height);
-					this.store.load({
-						params: {
-							pageSize: size
-						}
-					});
+					this.store.pageSize = size;
+					this.store.page = 1;
+					this.store.loadStore();
 				},
 				itemmouseenter: function(grid, record, item) {
 					this.currentItem = Ext.get(item);
@@ -1640,28 +1908,21 @@ Ext.onReady( function() {
 			}
 		});
 		
-		window = Ext.create('Ext.window.Window', {
+		mapWindow = Ext.create('Ext.window.Window', {
 			title: 'Manage favorites',
 			iconCls: 'gis-window-title-icon-favorite',
 			cls: 'gis-container-default',
+			resizable: false,
+			modal: true,
 			width: 450,
-			onmouseover: function(id) { // mapgrid
-				//Ext.get(id).addCls('gis-grid-icon-link');
-			},
-			onmouseout: function(id) {
-				//Ext.get(id).removeCls('gis-grid-icon-link');
-			},
-			onclick: function(id) {
-				//alert(id);
-			},
 			items: [
 				{
 					xtype: 'panel',
 					layout: 'hbox',
 					cls: 'gis-container-inner',
 					items: [
-						searchTextfield,
-						addButton
+						addButton,
+						searchTextfield
 					]
 				},
 				grid
@@ -1673,7 +1934,7 @@ Ext.onReady( function() {
 			}
 		});
 		
-		return window;
+		return mapWindow;
 	};
 	
 	GIS.obj.LegendSetWindow = function() {
@@ -1684,11 +1945,11 @@ Ext.onReady( function() {
 			tmpLegendStore,
 			
 		// Objects
-			LegendSetGrid,
+			LegendSetPanel,
 			LegendPanel,
 			
 		// Instances
-			legendSetGrid,
+			legendSetPanel,
 			legendPanel,
 			
 		// Components
@@ -1729,6 +1990,8 @@ Ext.onReady( function() {
 					this.sort('name', 'ASC');
 					
 					info.setText(records.length + ' legend sets available');
+					
+					//window.setHeight(110 + (this.getCount() * GIS.conf.layout.grid.row_height));
 				}
 			}
 		});
@@ -1764,23 +2027,22 @@ Ext.onReady( function() {
 			}
 		});
 		
-		LegendSetGrid = function() {
-			var tbar = Ext.create('Ext.toolbar.Toolbar', {
-				items: [
-					'->',
-					{
-						text: 'Add new..',
-						handler: function() {
-							showUpdateLegendSet();
-						}
-					}
-				]
+		LegendSetPanel = function() {
+			var items,
+				addButton;
+				
+			addButton = Ext.create('Ext.button.Button', {
+				text: 'Add new', //i18n
+				height: 26,
+				style: 'border-radius: 1px',
+				menu: {},
+				handler: function() {
+					showUpdateLegendSet();
+				}
 			});
 			
 			legendSetGrid = Ext.create('Ext.grid.Panel', {
 				cls: 'gis-grid',
-				bodyStyle: 'border-top: 0 none',
-				width: GIS.conf.layout.widget.item_width,
 				scroll: 'vertical',
 				hideHeaders: true,
 				currentItem: null,
@@ -1788,12 +2050,12 @@ Ext.onReady( function() {
 					{
 						dataIndex: 'name',
 						sortable: false,
-						width: GIS.conf.layout.widget.item_width - 62
+						width: 355
 					},
 					{
 						xtype: 'actioncolumn',
 						sortable: false,
-						width: 40,
+						width: 45,
 						items: [
 							{
 								iconCls: 'gis-grid-row-icon-edit',
@@ -1817,10 +2079,16 @@ Ext.onReady( function() {
 					}
 				],
 				store: legendSetStore,
-				tbar: tbar,
 				listeners: {
 					render: function() {
 						this.store.load();
+					},
+					resize: function() {
+						var maxHeight = GIS.cmp.region.center.getHeight() - 155;
+												
+						if (this.getHeight() > maxHeight) {
+							this.setHeight(maxHeight);
+						}
 					},
 					itemmouseenter: function(grid, record, item) {
 						this.currentItem = Ext.get(item);
@@ -1835,7 +2103,20 @@ Ext.onReady( function() {
 				}
 			});
 			
-			return legendSetGrid;
+			items = [
+				{
+					xtype: 'panel',
+					layout: 'hbox',
+					cls: 'gis-container-inner',
+					style: 'margin-bottom: 5px',
+					items: [
+						addButton
+					]
+				},
+				legendSetGrid
+			];
+			
+			return items;
 		};
 		
 		LegendPanel = function(id) {
@@ -1850,37 +2131,49 @@ Ext.onReady( function() {
 			
 			legendSetName = Ext.create('Ext.form.field.Text', {
 				cls: 'gis-textfield',
-				width: GIS.conf.layout.widget.item_width,
+				width: 422,
+				height: 25,
+				fieldStyle: 'padding-left: 6px; border-color: #bbb',
 				fieldLabel: 'Legend set name' //i18n
 			});
 			
 			legendName = Ext.create('Ext.form.field.Text', {
 				cls: 'gis-textfield',
-				width: GIS.conf.layout.widget.item_width - 12,
+				fieldStyle: 'padding-left: 6px',
+				width: 404,
+				height: 23,
 				fieldLabel: 'Legend name' //i18n
 			});
 			
 			startValue = Ext.create('Ext.form.field.Number', {
-				width: 71,
+				width: 148,
+				height: 23,
 				allowDecimals: false,
+				fieldStyle: 'padding-left: 6px; border-radius: 1px',
 				value: 0
 			});
 			
 			endValue = Ext.create('Ext.form.field.Number', {
-				width: 71,
+				width: 148,
+				height: 23,
 				allowDecimals: false,
+				fieldStyle: 'padding-left: 6px; border-radius: 1px',
 				value: 0,
-				style: 'padding-left: 2px'
+				style: 'padding-left: 3px'
 			});
 			
 			color = Ext.create('Ext.ux.button.ColorButton', {
-				width: GIS.conf.layout.widget.item_width - GIS.conf.layout.widget.itemlabel_width - 10 - 12,
+				width: 299,
+				height: 23,
 				fieldLabel: 'Symbolizer', //i18n
+				style: 'border-radius: 1px',
 				value: 'e1e1e1'
 			});
 			
 			addLegend = Ext.create('Ext.button.Button', {
 				text: 'Add legend', //i18n
+				height: 26,
+				style: 'border-radius: 1px',
 				handler: function() {
 					var date = new Date(),
 						id = date.toISOString(),
@@ -1922,7 +2215,7 @@ Ext.onReady( function() {
 			legendGrid = Ext.create('Ext.grid.Panel', {
 				cls: 'gis-grid',
 				bodyStyle: 'border-top: 0 none',
-				width: GIS.conf.layout.widget.item_width,
+				width: 422,
 				height: 235,
 				scroll: 'vertical',
 				hideHeaders: true,
@@ -1931,11 +2224,11 @@ Ext.onReady( function() {
 					{
 						dataIndex: 'name',
 						sortable: false,
-						width: GIS.conf.layout.widget.item_width - 156
+						width: 247
 					},
 					{
 						sortable: false,
-						width: 40,
+						width: 45,
 						renderer: function(value, metaData, record) {
 							return '<span style="color:' + record.data.color + '">Color</span>';
 						}
@@ -1943,12 +2236,12 @@ Ext.onReady( function() {
 					{
 						dataIndex: 'startValue',
 						sortable: false,
-						width: 37
+						width: 45
 					},
 					{
 						dataIndex: 'endValue',
 						sortable: false,
-						width: 37
+						width: 45
 					},
 					{
 						xtype: 'actioncolumn',
@@ -2000,7 +2293,7 @@ Ext.onReady( function() {
 						cls: 'gis-panel-html-separator'
 					},
 					{
-						bodyStyle: 'background-color: #f1f1f1; border: 1px solid #ccc; border-radius: 2px; padding: 5px',
+						bodyStyle: 'background-color: #f1f1f1; border: 1px solid #ccc; border-radius: 1px; padding: 8px',
 						items: [
 							legendName,
 							{
@@ -2038,7 +2331,7 @@ Ext.onReady( function() {
 					{
 						cls: 'gis-container-inner',
 						bodyStyle: 'text-align: right',
-						width: GIS.conf.layout.widget.item_width,
+						width: 422,
 						items: addLegend
 					},
 					{
@@ -2118,9 +2411,9 @@ Ext.onReady( function() {
 		
 		reset = function() {
 			legendPanel.destroy();
-			legendSetGrid = new LegendSetGrid();
+			legendSetPanel = new LegendSetPanel();
 			window.removeAll();
-			window.add(legendSetGrid);
+			window.add(legendSetPanel);
 			
 			info.show();
 			cancel.hide();
@@ -2178,6 +2471,7 @@ Ext.onReady( function() {
 						headers: {'Content-Type': 'application/json'},
 						params: body,
 						success: function() {
+							GIS.store.legendSets.load();
 							reset();
 						}
 					});
@@ -2224,14 +2518,12 @@ Ext.onReady( function() {
 		
 		window = Ext.create('Ext.window.Window', {
 			title: 'Legend sets', //i18n
-			layout: 'fit',
 			iconCls: 'gis-window-title-icon-legendset', //todo
 			cls: 'gis-container-default',
-			width: GIS.conf.layout.widget.window_width,
-			height: 500,
 			resizable: false,
+			width: 450,
 			modal: true,
-			items: new LegendSetGrid(),
+			items: new LegendSetPanel(),
 			bbar: {
 				height: 27,
 				items: [
@@ -2242,10 +2534,9 @@ Ext.onReady( function() {
 					update
 				]
 			},
-			listeners: {
+			listeners: {					
 				show: function() {
-					var x = this.getPosition()[0];
-					this.setPosition(x, 50);
+					this.setPosition(this.getPosition()[0], 40);
 				}
 			}
 		});
@@ -2270,6 +2561,7 @@ Ext.onReady( function() {
 			width: 28,
 			height: 28,
 			iconCls: 'gis-btn-icon-download',
+			style: 'border-radius: 1px',
 			handler: function() {
 				var title = textfield.getValue(),
 					svg = GIS.util.svg.getString(title, GIS.util.map.getVisibleVectorLayers()),
@@ -2473,21 +2765,39 @@ Ext.onReady( function() {
                         contentEl: 'thematic1Legend',
                         bodyStyle: 'padding: 6px; border: 0 none',
                         collapsible: true,
-                        animCollapse: false
+                        collapsed: true,
+                        animCollapse: false,
+                        listeners: {
+							added: function() {
+								GIS.base.thematic1.layer.legend = this;
+							}
+						}
                     },
                     {
                         title: 'Thematic layer 2 legend', //i18n
                         contentEl: 'thematic2Legend',
                         bodyStyle: 'padding: 6px; border: 0 none',
                         collapsible: true,
-                        animCollapse: false
+                        collapsed: true,
+                        animCollapse: false,
+                        listeners: {
+							added: function() {
+								GIS.base.thematic2.layer.legend = this;
+							}
+						}
                     },
                     {
                         title: 'Facility layer legend', //i18n
                         contentEl: 'facilityLegend',
                         bodyStyle: 'padding: 6px; border: 0 none',
                         collapsible: true,
-                        animCollapse: false
+                        collapsed: true,
+                        animCollapse: false,
+                        listeners: {
+							added: function() {
+								GIS.base.facility.layer.legend = this;
+							}
+						}
                     }
 				],
 				listeners: {
@@ -2560,83 +2870,20 @@ Ext.onReady( function() {
 							}
 						},
 						{
+							xtype: 'tbseparator',
+							height: 18,
+							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 4px',
+						},
+						{
 							text: 'Download', //i18n
 							menu: new GIS.obj.DownloadMenu()
 						},
+						{
+							text: 'Share', //i18n
+							menu: {},
+							disabled: true
+						},
 						'->',
-						{
-							text: 'fav1()', //i18n
-							handler: function() {
-								var config = {
-									classes: 5,
-									colorHigh: "00ff00",
-									colorLow: "ff0000",
-									dataElement: null,
-									dataElementGroup: null,
-									indicator: "Uvn6LCg7dVU",
-									indicatorGroup: "AoTB60phSOH",
-									legendSet: null,
-									legendType: "automatic",
-									level: 3,
-									levelName: "Chiefdom",
-									method: 2,
-									parentId: "fdc6uOvgoji",
-									parentLevel: 2,
-									parentName: "Bombali",
-									parentPath: "/ImspTQPwCqd/fdc6uOvgoji",
-									period: "2012",
-									periodType: "Yearly",
-									radiusHigh: 15,
-									radiusLow: 5,
-									updateData: false,
-									updateLegend: false,
-									updateOrganisationUnit: true,
-									valueType: "indicator"
-								};
-								
-								GIS.base.thematic1.widget.setConfig(config);
-								GIS.base.thematic1.widget.execute();
-							}
-						},
-						{
-							text: 'fav2()', //i18n
-							handler: function() {
-								var config = {
-									classes: 5,
-									colorHigh: "ffff00",
-									colorLow: "0000ff",
-									dataElement: null,
-									dataElementGroup: null,
-									indicator: "Uvn6LCg7dVU",
-									indicatorGroup: "AoTB60phSOH",
-									legendSet: null,
-									legendType: "automatic",
-									level: 3,
-									levelName: "Chiefdom",
-									method: 2,
-									parentId: "Vth0fbpFcsO",
-									parentLevel: 2,
-									parentName: "Kono",
-									parentPath: "/ImspTQPwCqd/Vth0fbpFcsO",
-									period: "2012",
-									periodType: "Yearly",
-									radiusHigh: 15,
-									radiusLow: 5,
-									updateData: false,
-									updateLegend: false,
-									updateOrganisationUnit: true,
-									valueType: "indicator"
-								};
-								
-								GIS.base.thematic2.widget.setConfig(config);
-								GIS.base.thematic2.widget.execute();
-							}
-						},
-						{
-							text: 'log()', //i18n
-							handler: function() {
-							}
-						},
 						{
 							text: 'Exit', //i18n
 							handler: function() {

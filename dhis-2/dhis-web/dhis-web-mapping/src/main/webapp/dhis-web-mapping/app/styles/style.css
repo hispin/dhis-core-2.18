@@ -172,7 +172,7 @@ html * {
 }
 
 .gis-form-widget .x-btn-default-small { /* Button */
-	border-radius: 2px;
+	border-radius: 1px;
 }
 
 /* Button */
@@ -484,13 +484,10 @@ html * {
 	vertical-align: middle;
 }
 
-.gis-grid td.text-link,
-.gis-grid td.text-link div,
-.gis-grid td.text-link span  {
+.gis-grid .link,
+.gis-grid .link * {
 	cursor: pointer;
 	cursor: hand;
-}
-.gis-grid td.text-link span {
 	color: blue;
 	text-decoration: underline;
 }
@@ -498,7 +495,7 @@ html * {
 /* TextField */
 
 .gis-textfield input.x-form-text {
-	border-radius: 2px;
+	border-radius: 1px;
 }
 
 /* Checkbox */
