@@ -187,11 +187,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 
 	<!-- MapView -->
-    
-    <bean id="org.hisp.dhis.mapping.action.AddMapViewAction"
-        class="org.hisp.dhis.mapping.action.AddMapViewAction" scope="prototype">
-        <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
-    </bean>
 
 	<bean id="org.hisp.dhis.mapping.action.DeleteMapViewAction" class="org.hisp.dhis.mapping.action.DeleteMapViewAction"
 		scope="prototype">

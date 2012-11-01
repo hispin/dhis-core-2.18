@@ -444,45 +444,7 @@ public class DefaultMappingService
     {
         return mapViewStore.save( mapView );
     }
-
-    public void addMapView( String name, boolean system, String mapValueType, Integer indicatorGroupId,
-        Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
-        Integer periodId, Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType,
-        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
-        Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
-    {
-        IndicatorGroup indicatorGroup = null;
-
-        Indicator indicator = null;
-
-        DataElementGroup dataElementGroup = null;
-
-        DataElement dataElement = null;
-
-        if ( mapValueType.equals( MapView.VALUE_TYPE_INDICATOR ) )
-        {
-            indicatorGroup = indicatorService.getIndicatorGroup( indicatorGroupId );
-            indicator = indicatorService.getIndicator( indicatorId );
-        }
-        else
-        {
-            dataElementGroup = dataElementService.getDataElementGroup( dataElementGroupId );
-            dataElement = dataElementService.getDataElement( dataElementId );
-        }
-
-        Period period = periodId != null ? periodService.getPeriod( periodId ) : null;
-
-        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
-
-        OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevelByLevel( organisationUnitLevel );
-
-        MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
-
-        addMapView( new MapView( MapView.LAYER_THEMATIC1, name, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
-            period, parent, level, mapLegendType, method, classes, colorLow, colorHigh,
-            mapLegendSet, radiusLow, radiusHigh, 1.0 ) );
-    }
-
+    
     public void updateMapView( MapView mapView )
     {
         mapViewStore.update( mapView );

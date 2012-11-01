@@ -42,11 +42,13 @@ Ext.define('mapfish.widgets.geostat.Facility', {
     
     // Properties
     
-    config: {},
+    config: {
+		extended: {}
+	},
     
-    tmpModel: {},
+    tmpView: {},
     
-    model: {},
+    view: {},
     
     cmp: {},
     
@@ -212,27 +214,27 @@ Ext.define('mapfish.widgets.geostat.Facility', {
             width: GIS.conf.layout.widget.item_width,
             labelWidth: GIS.conf.layout.widget.itemlabel_width,
             currentValue: false,
+            scope: this,
             store: GIS.store.groupSets, //todo
             listeners: {
-                select: {
-                    scope: this,
-                    fn: function(cb) {
-                        var store = GIS.store.groupsByGroupSet;
-                        store.proxy.url = GIS.conf.url.path_api +  'organisationUnitGroupSets/' + cb.getValue() + '.json?links=false&paging=false';
-                        store.load({
-							scope: this,
-							callback: function() {
-								if (this.tmpModel.updateGui) { // If favorite, load store and continue execution
-									if (this.tmpModel.updateOrganisationUnit) {
-										this.loadOrganisationUnits();
-									}
-									else {
-										this.loadLegend();
-									}
-								}	
-							}
-						});
-                    }
+                select: function() {
+					var store = GIS.store.groupsByGroupSet,
+						value = this.getValue();
+					
+					store.proxy.url = GIS.conf.url.path_api +  'organisationUnitGroupSets/' + value + '.json?links=false&paging=false';
+					store.load({
+						scope: this.scope,
+						callback: function() {
+							if (this.config.extended.updateGui) { // If favorite, load store and continue execution
+								if (this.config.extended.updateOrganisationUnit) {
+									this.loadOrganisationUnits();
+								}
+								else {
+									this.loadLegend();
+								}
+							}	
+						}
+					});
                 }
             }
         });
@@ -242,7 +244,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
         this.cmp.level = Ext.create('Ext.form.field.ComboBox', {
             fieldLabel: GIS.i18n.level,
             editable: false,
-            valueField: 'level',
+            valueField: 'id',
             displayField: 'name',
             mode: 'remote',
             forceSelection: true,
@@ -257,7 +259,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 				select: {
 					scope: this,
 					fn: function() {
-						this.config.updateOrganisationUnit = true;
+						this.config.extended.updateOrganisationUnit = true;
 					}
 				}
 			}
@@ -298,7 +300,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 				select: {
 					scope: this,
 					fn: function() {
-						this.config.updateOrganisationUnit = true;
+						this.config.extended.updateOrganisationUnit = true;
 					}
 				},
 				afterrender: function() {					
@@ -334,7 +336,8 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 					this.cmp.groupSet,
 					{
 						html: 'Organisation unit level / parent', //i18n
-						cls: 'gis-form-subtitle'
+						cls: 'gis-form-subtitle',
+						bodyStyle: 'padding-top: 4px'
 					},
 					this.cmp.level,
 					this.cmp.parent
@@ -689,20 +692,13 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 	
 	getLegendConfig: function() {
 		return {
-			where: this.tmpModel.levelName + ' / ' + this.tmpModel.parentName
+			where: this.tmpView.organisationUnitLevel.name + ' / ' + this.tmpView.parentOrganisationUnit.name
 		};
 	},
-        //,
-        
-        //getImageExportValues: function() {
-			//return {
-				//mapValueTypeValue: this.cmp.valueType.getValue() == GIS.conf.map_value_type_indicator ?
-					//this.cmp.indicator.getRawValue() : this.cmp.dataElement.getRawValue(),
-				//dateValue: this.cmp.period.getRawValue()
-			//};
-		//},
 		
 	reset: function() {
+		
+		// Components
 		this.cmp.groupSet.clearValue();
 		
 		this.cmp.level.clearValue();
@@ -719,10 +715,12 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 			this.cmp.labelWindow.destroy();
 		}
 		
-		// Model
-		this.config = {};
-		this.tmpModel = {};
-		this.model = {};
+		// View
+		this.config = {
+			extended: {}
+		};
+		this.tmpView = {};
+		this.view = {};
 		
 		// Layer
 		this.layer.destroyFeatures();
@@ -734,114 +732,130 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		document.getElementById(this.legendDiv).innerHTML = '';
 	},
 	
-	setConfig: function(config) {
-		this.config.groupSet = config.groupSet;
-		this.config.level = config.level;
-		this.config.levelName = config.levelName;
-		this.config.parentId = config.parentId;
-		this.config.parentName = config.parentName;
-		this.config.parentLevel = config.parentLevel;
-		this.config.parentPath = config.parentPath;
-		this.config.updateOrganisationUnit = true;
-		this.config.updateLegend = false;
-		this.config.updateGui = true;
-	},
-	
 	setGui: function() {
-		var model = this.tmpModel;
+		var view = this.tmpView,
+			that = this;
 		
-		// Group set		
-		this.cmp.groupSet.setValue(model.groupSet);
+		// Group set
+		GIS.store.groupSets.load({
+			callback: function() {
+				that.cmp.groupSet.setValue(view.organisationUnitGroupSet.id);
+				that.cmp.groupSet.fireEvent('select');
+			}
+		});
+
+		this.cmp.groupSet.setValue(view.organisationUnitGroupSet.id);
 		this.cmp.groupSet.fireEvent('select');
 		
 		// Level and parent
-		var levelView = this.cmp.level;
 		GIS.store.organisationUnitLevels.loadFn( function() {
-			levelView.setValue(model.level);
+			that.cmp.level.setValue(view.organisationUnitLevel.id);
 		});
 		
-		this.cmp.parent.selectTreePath('/root' + model.parentPath);
+		this.cmp.parent.selectTreePath('/root' + view.parentGraph);
 	},
     	
-	getModel: function() {
+	getView: function() {
 		var level = this.cmp.level,
-			parent = this.cmp.parent.getSelectionModel().getSelection();
+			parent = this.cmp.parent.getSelectionModel().getSelection(),
+			view;
+				
 		parent = parent.length ? parent : [{raw: GIS.init.rootNodes[0]}];
 		
-		var model = {
-			groupSet: this.cmp.groupSet.getValue(),
-			level: level.getValue(),
-			levelName: level.getRawValue(),
-			parentId: parent[0].raw.id,
-			parentName: parent[0].raw.text,
+		view = {
+			organisationUnitGroupSet: {
+				id: this.cmp.groupSet.getValue(),
+				name: this.cmp.groupSet.getRawValue()
+			},
+			organisationUnitLevel: {
+				id: level.getValue(),
+				name: level.getRawValue(),
+				level: GIS.store.organisationUnitLevels.getById(level.getValue()).data.level
+			},
+			parentOrganisationUnit: {
+				id: parent[0].raw.id,
+				name: parent[0].raw.text
+			},
 			parentLevel: parent[0].raw.level,
-			parentPath: parent[0].raw.path,
-			updateOrganisationUnit: false,
-			updateData: false,
-			updateLegend: false,
-			updateGui: false
+			parentGraph: parent[0].raw.path,
+			opacity: this.layer.item.getOpacity()
 		};
 		
-		model.groupSet = this.config.groupSet || model.groupSet;
-		model.level = this.config.level || model.level;
-		model.levelName = this.config.levelName || model.levelName;
-		model.parentId = this.config.parentId || model.parentId;
-		model.parentName = this.config.parentName || model.parentName;
-		model.parentLevel = this.config.parentLevel || model.parentLevel;
-		model.parentPath = this.config.parentPath || null;
-		model.updateOrganisationUnit = Ext.isDefined(this.config.updateOrganisationUnit) ? this.config.updateOrganisationUnit : false;
-		model.updateLegend = Ext.isDefined(this.config.updateLegend) ? this.config.updateLegend : false;
-		model.updateGui = Ext.isDefined(this.config.updateGui) ? this.config.updateGui : false;
-		
-		return model;
+		return view;
 	},
 	
-	validateModel: function(model) {
-		if (!model.groupSet || !Ext.isString(model.groupSet)) {
-			GIS.logg.push([model.groupSet, this.xtype + '.parentId: string']);
+	extendView: function(view) {
+		var conf = this.config;
+		view = view || {};
+		
+		view.organisationUnitGroupSet = conf.organisationUnitGroupSet || view.organisationUnitGroupSet;
+		view.organisationUnitLevel = conf.organisationUnitLevel || view.organisationUnitLevel;
+		view.parentOrganisationUnit = conf.parentOrganisationUnit || view.parentOrganisationUnit;
+		view.parentLevel = conf.parentLevel || view.parentLevel;
+		view.parentGraph = conf.parentGraph || view.parentGraph;
+		view.opacity = conf.opacity || view.opacity;
+		
+		view.extended = {
+			updateOrganisationUnit: Ext.isDefined(conf.extended.updateOrganisationUnit) ? conf.extended.updateOrganisationUnit : false,
+			updateData: Ext.isDefined(conf.extended.updateData) ? conf.extended.updateData : false,
+			updateLegend: Ext.isDefined(conf.extended.updateLegend) ? conf.extended.updateLegend : false,
+			updateGui: Ext.isDefined(conf.extended.updateGui) ? conf.extended.updateGui : false
+		};
+		
+		return view;
+	},
+	
+	validateView: function(view) {
+		if (!view.organisationUnitGroupSet.id || !Ext.isString(view.organisationUnitGroupSet.id)) {
+			GIS.logg.push([view.organisationUnitGroupSet.id, this.xtype + '.organisationUnitGroupSet.id: string']);
 				alert('No group set selected'); //todo //i18n
 			return false;
 		}
 		
-		if (!model.level || !Ext.isNumber(model.level)) {
-			GIS.logg.push([model.level, this.xtype + '.level: number']);
+		if (!view.organisationUnitLevel.id || !Ext.isString(view.organisationUnitLevel.id)) {
+			GIS.logg.push([view.organisationUnitLevel.id, this.xtype + '.organisationUnitLevel.id: string']);
 				alert('No level selected'); //todo
 			return false;
 		}
-		if (!model.levelName || !Ext.isString(model.levelName)) {
-			GIS.logg.push([model.levelName, this.xtype + '.levelName: string']);
+		if (!view.organisationUnitLevel.name || !Ext.isString(view.organisationUnitLevel.name)) {
+			GIS.logg.push([view.organisationUnitLevel.name, this.xtype + '.organisationUnitLevel.name: string']);
 				//alert("validation failed"); //todo
 			return false;
 		}
-		if (!model.parentId || !Ext.isString(model.parentId)) {
-			GIS.logg.push([model.parentId, this.xtype + '.parentId: string']);
+		if (!view.organisationUnitLevel.level || !Ext.isNumber(view.organisationUnitLevel.level)) {
+			GIS.logg.push([view.organisationUnitLevel.level, this.xtype + '.organisationUnitLevel.level: number']);
+				//alert("validation failed"); //todo
+			return false;
+		}
+		if (!view.parentOrganisationUnit.id || !Ext.isString(view.parentOrganisationUnit.id)) {
+			GIS.logg.push([view.parentOrganisationUnit.id, this.xtype + '.parentOrganisationUnit.id: string']);
 				alert('No parent organisation unit selected'); //todo
 			return false;
 		}
-		if (!model.parentName || !Ext.isString(model.parentName)) {
-			GIS.logg.push([model.parentName, this.xtype + '.parentName: string']);
+		if (!view.parentOrganisationUnit.name || !Ext.isString(view.parentOrganisationUnit.name)) {
+			GIS.logg.push([view.parentOrganisationUnit.name, this.xtype + '.parentOrganisationUnit.name: string']);
 				//alert("validation failed"); //todo
 			return false;
 		}
-		if (!model.parentLevel || !Ext.isNumber(model.parentLevel)) {
-			GIS.logg.push([model.parentLevel, this.xtype + '.parentLevel: number']);
+		if (!view.parentLevel || !Ext.isNumber(view.parentLevel)) {
+			GIS.logg.push([view.parentLevel, this.xtype + '.parentLevel: number']);
 				//alert("validation failed"); //todo
 			return false;
 		}
-		if (model.parentLevel > model.level) {
-			GIS.logg.push([model.parentLevel, model.level, this.xtype + '.parentLevel: number <= ' + this.xtype + '.level']);
-				alert('Level cannot be higher than parent level'); //todo
-			return false;
-		}
-		
-		if (!model.parentPath && model.updateGui) {
-			GIS.logg.push([model.parentpath, this.xtype + '.parentpath: string']);
+		if (!view.parentGraph || !Ext.isString(view.parentGraph)) {
+			GIS.logg.push([view.parentGraph, this.xtype + '.parentGraph: string']);
 				//alert("validation failed"); //todo
 			return false;
 		}
 		
-		if (!model.updateOrganisationUnit && !model.updateLegend) {
-			GIS.logg.push([model.updateOrganisationUnit, model.updateLegend, this.xtype + '.update ou/legend: true||true']);
+		if (view.parentOrganisationUnit.level > view.organisationUnitLevel.level) {
+			GIS.logg.push([view.parentOrganisationUnit.level, view.organisationUnitLevel.level, this.xtype + '.parentOrganisationUnit.level: number <= ' + this.xtype + '.organisationUnitLevel.level']);
+				alert('Orgunit level cannot be higher than parent level'); //todo
+			return false;
+		}
+				
+		if (!view.extended.updateOrganisationUnit && !view.extended.updateData && !view.extended.updateLegend) {
+			GIS.logg.push([view.extended.updateOrganisationUnit, view.extended.updateData, view.extended.updateLegend, this.xtype + '.extended.update ou/data/legend: true||true||true']);
 			return false;
 		}
 		
@@ -850,8 +864,8 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 	
     loadOrganisationUnits: function() {
         var url = GIS.conf.url.path_gis + 'getGeoJsonFacilities.action?' +
-            'parentId=' + this.tmpModel.parentId +
-            '&level=' + this.tmpModel.level;
+            'parentId=' + this.tmpView.parentOrganisationUnit.id +
+            '&level=' + this.tmpView.organisationUnitLevel.id;
         this.setUrl(url);
     },
     
@@ -866,30 +880,38 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 	
 	loadLegend: function() {
 		var options = {
-            indicator: this.cmp.groupSet.getRawValue()
+            indicator: this.tmpView.organisationUnitGroupSet.name
 		};
 
         this.coreComp.applyClassification(options);
         this.classificationApplied = true;
         
         this.afterLoad();
-	},
+	},	
 	
-    execute: function() {
-		this.tmpModel = this.getModel();
+    execute: function(view) {
+		if (view) {
+			this.config.extended.updateOrganisationUnit = true;
+			this.config.extended.updateGui = true;
+		}
+		else {
+			view = this.getView();
+		}
 		
-		if (!this.validateModel(this.tmpModel)) {
+		this.tmpView = this.extendView(view);
+		
+		if (!this.validateView(this.tmpView)) {
 			return;
 		}
 				
 		GIS.mask.msg = GIS.i18n.loading;
 		GIS.mask.show();
 		
-		if (this.tmpModel.updateGui) { // If favorite, wait for groups store callback
+		if (this.tmpView.extended.updateGui) { // If favorite, wait for groups store callback 
 			this.setGui();
 		}
 		else {
-			if (this.tmpModel.updateOrganisationUnit) {
+			if (this.tmpView.extended.updateOrganisationUnit) {
 				this.loadOrganisationUnits();
 			}
 			else {
@@ -899,8 +921,10 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 	},
 	
 	afterLoad: function() {
-		this.model = this.tmpModel;
-		this.config = {};
+		this.view = this.tmpView;
+		this.config = {
+			extended: {}
+		};
 		
 		// Layer item
 		this.layer.item.setValue(true);
@@ -915,18 +939,15 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		if (this.cmp.filterWindow && this.cmp.filterWindow.isVisible()) {
 			this.cmp.filterWindow.filter();
 		}
-        
-        // Set favorite position, else zoom to visible extent
-        if (this.model.longitude && this.model.latitude && this.model.zoom) {
-			var lonLat = GIS.util.map.getLonLatByXY(this.model.longitude, this.model.latitude);
-			GIS.map.setCenter(lonLat, this.model.zoom);
-		}
-		else if (this.model.updateOrganisationUnit) {
-			GIS.util.map.zoomToVisibleExtent();
-		}
 		
 		// Legend
 		GIS.cmp.region.east.doLayout();
+		this.layer.legend.expand();
+        
+        // Zoom to visible extent if not loading a favorite
+        if (!GIS.map.map) {
+			GIS.util.map.zoomToVisibleExtent();
+		}
 		
         GIS.mask.hide();
 	},

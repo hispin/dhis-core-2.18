@@ -256,46 +256,6 @@ public class MappingServiceTest
         mappingService.addMapLegendSet( legendSet3 );
 
         assertTrue( mappingService.getAllMapLegendSets().containsAll( mapLegendSets ) );
-
-    }
-
-    // -------------------------------------------------------------------------
-    // MapView tests
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testAddGetMapView()
-    {
-        MapView mapView = new MapView( LAYER_THEMATIC1, "MapViewA", VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, period,
-            organisationUnit, organisationUnitLevel, LEGEND_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1.0 );
-
-        int idA = mappingService.addMapView( mapView );
-
-        assertEquals( mapView, mappingService.getMapView( idA ) );
-        assertEquals( indicatorGroup, mappingService.getMapView( idA ).getIndicatorGroup() );
-        assertEquals( indicator, mappingService.getMapView( idA ).getIndicator() );
-        assertEquals( period, mappingService.getMapView( idA ).getPeriod() );
-    }
-
-    @Test
-    public void testGetAllMapViews()
-    {
-        MapView mapView1 = new MapView( LAYER_THEMATIC1, "MapViewA", VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, period,
-            organisationUnit, organisationUnitLevel, LEGEND_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1.0 );
-
-        MapView mapView2 = new MapView( LAYER_THEMATIC1, "MapViewB", VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, period,
-            organisationUnit, organisationUnitLevel, LEGEND_TYPE_AUTOMATIC, 1, 1, "A", "B",
-            mapLegendSet, 5, 20, 1.0 );
-
-        mappingService.addMapView( mapView1 );
-        mappingService.addMapView( mapView2 );
-
-        assertEquals( 2, mappingService.getAllMapViews().size() );
     }
 
     // -------------------------------------------------------------------------

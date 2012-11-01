@@ -34,6 +34,7 @@ import java.util.Collection;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.filter.OrganisationUnitWithValidCoordinatesFilter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -68,9 +69,9 @@ public class GetGeoJsonAction
         this.parentId = parentId;
     }
 
-    private Integer level;
+    private String level;
 
-    public void setLevel( Integer level )
+    public void setLevel( String level )
     {
         this.level = level;
     }
@@ -108,10 +109,21 @@ public class GetGeoJsonAction
         {
             parent = organisationUnitService.getOrganisationUnit( Integer.parseInt( parentId ) );
         }
+        
+        OrganisationUnitLevel orgUnitLevel = organisationUnitService.getOrganisationUnitLevel( level );
 
-        level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent.getId() ) : level;
+        if ( orgUnitLevel == null )
+        {
+            orgUnitLevel = organisationUnitService.getOrganisationUnitLevel( Integer.parseInt( level ) );
+        }
+        
+        if ( orgUnitLevel == null )
+        {
+            orgUnitLevel = organisationUnitService.getOrganisationUnitLevel( parent.getOrganisationUnitLevel() );
+        }
 
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
+        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel(
+            orgUnitLevel.getLevel(), parent );
 
         FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
 
@@ -136,7 +148,7 @@ public class GetGeoJsonAction
             }
         }
         
-        Collection<OrganisationUnit> organisationUnitsUp = organisationUnitService.getOrganisationUnitsAtLevel( level - 1 );
+        Collection<OrganisationUnit> organisationUnitsUp = organisationUnitService.getOrganisationUnitsAtLevel( orgUnitLevel.getLevel() - 1 );
         
         FilterUtils.filter( organisationUnitsUp, new OrganisationUnitWithValidCoordinatesFilter() );
         

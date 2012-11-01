@@ -200,12 +200,6 @@
 
 		<!-- MapView -->
 
-        <action name="addMapView"
-            class="org.hisp.dhis.mapping.action.AddMapViewAction">
-            <result name="success" type="velocity-json">/dhis-web-mapping/void.vm
-            </result>
-        </action>
-
 		<action name="deleteMapView" class="org.hisp.dhis.mapping.action.DeleteMapViewAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
