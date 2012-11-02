@@ -29,6 +29,7 @@ package org.hisp.dhis.reportsheet.preview.action;
 
 import static org.apache.commons.io.FilenameUtils.getExtension;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertAlignmentString;
+import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertVerticalString;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.readValueByPOI;
 import static org.hisp.dhis.reportsheet.utils.NumberUtils.PATTERN_DECIMAL_FORMAT1;
 import static org.hisp.dhis.reportsheet.utils.NumberUtils.applyPatternDecimalFormat;
@@ -40,10 +41,12 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
 
+import org.apache.poi.hssf.usermodel.HSSFPatternFormatting;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.FontUnderline;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -61,7 +64,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @version $Id$
  */
 
-public class XMLStructureResponse
+public class XMLStructureResponseBIS
 {
     /**
      * The encoding to write
@@ -74,6 +77,16 @@ public class XMLStructureResponse
     private Workbook WORKBOOK;
 
     private FormulaEvaluator evaluatorFormula;
+
+    private boolean bWRITE_VERSION;
+
+    private boolean bWRITE_DTD;
+
+    private static final String XML_VERSION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+    private static final String DOCTYPE_NORMAL = "<!DOCTYPE WORKBOOK SYSTEM \"WORKBOOK.dtd\">";
+
+    private static final String DOCTYPE_FORMAT = "<!DOCTYPE WORKBOOK SYSTEM \"formatWORKBOOK.dtd\">";
 
     private static final String WORKBOOK_OPENTAG = "<workbook>";
 
@@ -108,10 +121,13 @@ public class XMLStructureResponse
      * @exception java.io.IOException
      */
 
-    public XMLStructureResponse( String pathFileName, Set<Integer> collectSheets )
+    public XMLStructureResponseBIS( String pathFileName, Set<Integer> collectSheets, boolean bWriteDTD,
+        boolean bWriteVersion, boolean bFormat, boolean bDetailed, boolean bWriteDescription )
         throws Exception
     {
         this.cleanUpForResponse();
+        this.bWRITE_DTD = bWriteDTD;
+        this.bWRITE_VERSION = bWriteVersion;
 
         if ( getExtension( pathFileName ).equals( "xls" ) )
         {
@@ -127,8 +143,61 @@ public class XMLStructureResponse
 
         this.evaluatorFormula = WORKBOOK.getCreationHelper().createFormulaEvaluator();
 
-        writeFormattedXML( collectSheets );
+        if ( bFormat )
+        {
+            writeFormattedXML( collectSheets, bDetailed, bWriteDescription );
+        }
+        else
+        {
+            writeXML( collectSheets );
+        }
+    }
 
+    /**
+     * Writes out the WORKBOOK data as XML, without formatting information
+     */
+    private void writeXML( Collection<Integer> collectSheets )
+        throws IOException
+    {
+        if ( this.bWRITE_VERSION )
+        {
+            xml.append( XML_VERSION );
+        }
+
+        if ( this.bWRITE_DTD )
+        {
+            xml.append( DOCTYPE_NORMAL );
+        }
+
+        xml.append( WORKBOOK_OPENTAG );
+
+        for ( Integer sheetNo : collectSheets )
+        {
+            Sheet sheet = WORKBOOK.getSheetAt( sheetNo - 1 );
+
+            xml.append( "<sheet id='" + sheet + "'>" );
+            xml.append( "<name><![CDATA[" + sheet.getSheetName() + "]]></name>" );
+
+            for ( Row row : sheet )
+            {
+                xml.append( "<row number='" + row.getRowNum() + "'>" );
+
+                for ( Cell cell : row )
+                {
+                    if ( cell.getCellType() != Cell.CELL_TYPE_BLANK )
+                    {
+                        xml.append( "<col number='" + cell.getColumnIndex() + "'>" );
+                        xml.append( "<![CDATA["
+                            + readValueByPOI( row.getRowNum() + 1, cell.getColumnIndex() + 1, sheet, evaluatorFormula )
+                            + "]]>" );
+                        xml.append( "</col>" );
+                    }
+                }
+                xml.append( "</row>" );
+            }
+            xml.append( "</sheet>" );
+        }
+        xml.append( WORKBOOK_CLOSETAG );
     }
 
     /**
@@ -139,17 +208,29 @@ public class XMLStructureResponse
      * @throws Exception
      */
 
-    private void writeFormattedXML( Collection<Integer> collectSheets )
+    private void writeFormattedXML( Collection<Integer> collectSheets, boolean bDetailed, boolean bWriteDescription )
         throws Exception
     {
+        if ( bWriteDescription )
+        {
+            this.writeXMLMergedDescription( collectSheets );
+        }
 
-        this.writeXMLMergedDescription( collectSheets );
+        if ( this.bWRITE_VERSION )
+        {
+            xml.append( XML_VERSION );
+        }
+
+        if ( this.bWRITE_DTD )
+        {
+            xml.append( DOCTYPE_FORMAT );
+        }
 
         xml.append( WORKBOOK_OPENTAG );
 
         for ( Integer sheet : collectSheets )
         {
-            writeBySheetNo( sheet );
+            writeBySheetNo( sheet, bDetailed );
         }
 
         xml.append( WORKBOOK_CLOSETAG );
@@ -159,7 +240,7 @@ public class XMLStructureResponse
     // Sub-methods
     // -------------------------------------------------------------------------
 
-    private void writeBySheetNo( int sheetNo )
+    private void writeBySheetNo( int sheetNo, boolean bDetailed )
     {
         Sheet s = WORKBOOK.getSheetAt( sheetNo - 1 );
 
@@ -181,7 +262,7 @@ public class XMLStructureResponse
                         + readValueByPOI( row.getRowNum() + 1, cell.getColumnIndex() + 1, s, evaluatorFormula )
                         + "]]></data>" );
 
-                    this.readingDetailsFormattedCell( s, cell );
+                    this.readingDetailsFormattedCell( s, cell, bDetailed );
 
                     xml.append( "</col>" );
                 }
@@ -191,7 +272,7 @@ public class XMLStructureResponse
         xml.append( "</sheet>" );
     }
 
-    private void readingDetailsFormattedCell( Sheet sheet, Cell objCell )
+    private void readingDetailsFormattedCell( Sheet sheet, Cell objCell, boolean bDetailed )
     {
         // The format information
         CellStyle format = objCell.getCellStyle();
@@ -199,20 +280,34 @@ public class XMLStructureResponse
         if ( format != null )
         {
             xml.append( "<format a='" + convertAlignmentString( format.getAlignment() ) + "'" );
-            xml.append( " b='"
-                + (format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight() + format.getBorderTop())
-                + "'" );
+            xml.append( " w='" + sheet.getColumnWidth( objCell.getColumnIndex() ) + "'" );
+            xml.append( " b='" + (format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight() + format.getBorderTop()) + "'" );
 
             Font font = WORKBOOK.getFontAt( format.getFontIndex() );
 
-            if ( font != null )
+            if ( bDetailed && font != null )
             {
-                xml.append( "><font s='" + font.getFontHeightInPoints() + "'" );
+                xml.append( " valign='" + convertVerticalString( format.getVerticalAlignment() ) + "'>" );
+
+                xml.append( "<font s='" + font.getFontHeightInPoints() + "'" );
                 xml.append( " b='" + (font.getBoldweight() == Font.BOLDWEIGHT_BOLD ? "1" : "0") + "'" );
                 xml.append( " i='" + font.getItalic() + "'" );
+                xml.append( " u='" + FontUnderline.valueOf( font.getUnderline() ).name() + "'" );
                 xml.append( " c='" + getSimilarColor( font.getColor() ) + "'" );
                 xml.append( "/>" );
 
+                // The cell background information
+                if ( format.getFillBackgroundColor() != IndexedColors.WHITE.getIndex()
+                    || format.getFillPattern() != HSSFPatternFormatting.NO_FILL )
+                {
+                    xml.append( "<bg c='" +  format.getFillBackgroundColor() + "'/>" );
+                }
+
+                // The cell number/date format
+                if ( !format.getDataFormatString().equals( "" ) )
+                {
+                    xml.append( "<dfs s='" + format.getDataFormatString() + "'/>" );
+                }
                 xml.append( "</format>" );
             }
             else
@@ -228,19 +323,25 @@ public class XMLStructureResponse
     private void writeXMLMergedDescription( Collection<Integer> collectSheets )
         throws IOException
     {
+        // Get the Range of the Merged Cells //
+        if ( this.bWRITE_VERSION )
+        {
+            xml.append( XML_VERSION );
+        }
+
         // Open the main Tag //
         xml.append( MERGEDCELL_OPENTAG );
 
         for ( Integer sheet : collectSheets )
         {
-            writeMergedInfoBySheetNo( sheet );
+            writeBySheetNo( sheet );
         }
 
         // Close the main Tag //
         xml.append( MERGEDCELL_CLOSETAG );
     }
 
-    private void writeMergedInfoBySheetNo( int sheetNo )
+    private void writeBySheetNo( int sheetNo )
     {
         Sheet sheet = WORKBOOK.getSheetAt( sheetNo - 1 );
         CellRangeAddress cellRangeAddress = null;
@@ -260,16 +361,11 @@ public class XMLStructureResponse
 
     private String getSimilarColor( short index )
     {
-        if ( IndexedColors.BLUE.getIndex() == index )
+        if ( IndexedColors.DARK_BLUE.getIndex() == index || IndexedColors.BLUE.getIndex() == index )
         {
             return "blue";
         }
-
-        if ( IndexedColors.DARK_BLUE.getIndex() == index )
-        {
-            return "darkblue";
-        }
-
+        
         if ( IndexedColors.BROWN.getIndex() == index )
         {
             return "brown";

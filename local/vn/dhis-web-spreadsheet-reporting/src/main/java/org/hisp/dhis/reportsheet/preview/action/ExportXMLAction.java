@@ -104,8 +104,7 @@ public class ExportXMLAction
                 }
             }
 
-            xmlStructureResponse = new XMLStructureResponse( selectionManager.getDownloadFilePath(), sheets, false,
-                false, true, false, true ).getXml();
+            xmlStructureResponse = new XMLStructureResponse( selectionManager.getDownloadFilePath(), sheets ).getXml();
 
             return SUCCESS;
         }
