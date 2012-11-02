@@ -1,4 +1,4 @@
-<h3>$i18n.getString('schedule_message_form') #openHelp( "schedule_sending_message" )</h3>
+<h3>$i18n.getString('schedule_automated_message_reminder_form') #openHelp( "schedule_sending_message" )</h3>
 <form id='scheduleMessageForm' name='scheduleMessageForm' method="post">
 	<table>
 		<tbody>

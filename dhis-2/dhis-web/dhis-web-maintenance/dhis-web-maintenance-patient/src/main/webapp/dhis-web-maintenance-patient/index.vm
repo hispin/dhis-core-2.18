@@ -17,7 +17,7 @@ jQuery(function() {
 	#introListImgItem( "validationCriteria.action" "validation_criteria" "validationrule" )
 	
 	#if( $auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduleTasks" ) )
-		#introListImgItem( "viewScheduleTasks.action" "schedule_message" "scheduling" )
+		#introListImgItem( "viewScheduleTasks.action" "schedule_automated_message_reminder" "scheduling" )
 	#end
 	#if($auth.hasAccess( "dhis-web-maintenance-patient", "viewScheduledCaseAggCondTasks" ) )
 		#introListImgItem( "viewScheduledCaseAggCondTasks.action" "schedule_automated_aggregation" "scheduling" )
