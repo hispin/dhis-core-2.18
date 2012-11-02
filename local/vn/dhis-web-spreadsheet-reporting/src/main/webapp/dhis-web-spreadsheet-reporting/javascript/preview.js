@@ -8,7 +8,7 @@ importlist = null;
 importItemIds = new Array();
 
 htmlStyle = ["<style type='text/css'>"];
-htmlStyle.push( "td.printclass { font-size: 12px; }" );
+htmlStyle.push( "td.printSetup { font-size: 12px; }" );
 htmlStyle.push( ".ui-preview-table{ border-collapse: collapse; }" );
 htmlStyle.push( ".ui-preview-normal{ font-weight: bold; color: blue }" );
 htmlStyle.push( ".ui-widget-content { border: 1px solid #a6c9e2; background: #fcfdfd url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }" );
@@ -139,9 +139,12 @@ function previewExportReportReceived( parentElement )
 				if ( _index == _number )
 				{
 					var _sData		= getElementValue( _cols[j], 'data' );
-					var _align		= getElementAttribute( _cols[j], 'format', 'align' );
-					var _border		= getElementAttribute( _cols[j], 'format', 'border' );
-					//var _width		= getElementAttribute( _cols[j], 'format', 'width' );
+					var _align		= getElementAttribute( _cols[j], 'format', 'a' );
+					var _border		= getElementAttribute( _cols[j], 'format', 'b' );
+					var _size		= getElementAttribute( _cols[j], 'font', 's' );
+					var _bold		= getElementAttribute( _cols[j], 'font', 'b' );
+					var _italic		= getElementAttribute( _cols[j], 'font', 'i' );
+					var _color		= getElementAttribute( _cols[j], 'font', 'c' );
 
 					// If this cell is merged - Key's form: Sheet#Row#Col
 					_sPattern 		=  _orderSheet + "#" + i + "#" + _number;
@@ -150,21 +153,31 @@ function previewExportReportReceived( parentElement )
 					// Jumping for <For Loop> AND <Empty Cells>
 					j 		= Number(j) + Number(_colspan);
 					_index 	= Number(_index) + Number(_colspan);
+					_size	= Number(_size) + 2;
 
-					//_sHTML.push( "<td align='", _align, "' width='", _width, "px' colspan='", _colspan, "'" );
 					_sHTML.push( "<td align='", _align, "' colspan='", _colspan, "'" );
-					_sHTML.push( " class='printclass" );
+					_sHTML.push( " style='font-size:", _size, "px" );
+					_sHTML.push( _color == "" ? "'" : ";color:" + _color + "'" );
+					_sHTML.push( " class='printSetup" );
 					_sHTML.push( _border > 0 ? " ui-widget-content" : "" );
 
-					// Preview without importing
-					if ( keyId && keyId.length > 0 )
+					if ( keyId && keyId.length > 0 ) // Used for Importing
 					{
 						_sHTML.push( " ui-preview-unselected' id='", keyId );
 					}
-					else if ( !isImport && isRealNumber( _sData.replace( /[.,]/g, "" ) ) )
+					else if ( isImport && isRealNumber( _sData.replace( /[.,]/g, "" ) ) )
 					{
-						_sHTML.push( " ui-preview-normal" );
+						_sHTML.push( " ui-preview-number" );
 					}
+					else if ( _bold == "1" )
+					{
+						_sData = "<b>" + _sData + "</b>";
+					}
+					if ( _italic == "true" )
+					{
+						_sData = "<i>" + _sData + "</i>";
+					}
+					
 					_sHTML.push( "'>", _sData, "</td>" );
 				}
 			}
@@ -174,7 +187,7 @@ function previewExportReportReceived( parentElement )
 	}
 
 	tabsHTML.push( '</ul>', _sHTML.join(''), '</div>' );
-	
+
 	jQuery( '#previewDiv' ).html( tabsHTML.join('') );
 	jQuery( '#tabs' ).tabs({ collapsible : true });
 	enable( 'printExcelReportButton' );
