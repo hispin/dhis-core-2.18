@@ -63,7 +63,6 @@
 					<input type="text" id='endDate' name='endDate' style='width:105px'>
 				</td>
 			</tr>
-			<tr><td colspan='2'><hr></td></td>
 			
 			<tbody id='advancedSearchTB'>
 				<tr id='advSearchBox0'>	
