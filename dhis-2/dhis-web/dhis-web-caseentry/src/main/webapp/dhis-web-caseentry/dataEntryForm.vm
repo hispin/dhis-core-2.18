@@ -23,6 +23,7 @@
 <input type='hidden' name='irregular' id='irregular' value='$!programStageInstance.programStage.irregular'>
 <input type='hidden' name='completed' id='completed' value='$!programStageInstance.completed'>
 <input type='hidden' name='programStageId' id='programStageId' value='$!programStageInstance.programStage.id'>
+<input type='hidden' name='programId' id='programId' value='$!programStageInstance.programInstance.program.id'>
 
 <div id='entryForm' #if($!programStageInstance.executionDate) class='visible' #else class='hidden' #end>					
 	#if( $customDataEntryFormCode )
