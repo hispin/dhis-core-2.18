@@ -81,8 +81,6 @@ function saveVal( dataElementId )
 	}
 	var valueSaver = new ValueSaver( dataElementId, fieldValue, type, SUCCESS_COLOR );
     valueSaver.save();
-    
-    jQuery( "body" ).trigger( "event-value-saved", [ dataElementId, fieldValue ] ); // Hook
 }
 
 function saveOpt( dataElementId )
@@ -595,7 +593,6 @@ function runValidation()
 		});
 }
 
-
 function autocompletedField( idField )
 {
 	var input = jQuery( "#" +  idField );
@@ -620,9 +617,17 @@ function autocompletedField( idField )
 		},
 		minLength: 0,
 		select: function( event, ui ) {
-			input.val(ui.item.value);
-			if(!unSave)
+			var fieldValue = ui.item.value;
+			
+			if ( !dhis2.trigger.invoke( "caseentry-value-selected", [dataElementId, fieldValue] ) ) {
+				input.val( "" );
+				return false;
+			}
+			
+			input.val( fieldValue );			
+			if ( !unSave ) {
 				saveVal( dataElementId );
+			}
 			input.autocomplete( "close" );
 		},
 		change: function( event, ui ) {
