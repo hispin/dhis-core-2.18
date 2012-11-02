@@ -29,7 +29,6 @@ package org.hisp.dhis.caseentry.action.caseaggregation;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,7 +38,6 @@ import java.util.Set;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -222,13 +220,13 @@ public class CaseAggregationResultAction
         }
 
         // ---------------------------------------------------------------------
-        // Get DataElement list of selected dataset
+        // Get CaseAggregateCondition list
         // ---------------------------------------------------------------------
 
         DataSet selectedDataSet = dataSetService.getDataSet( dataSetId );
 
         Collection<CaseAggregationCondition> aggregationConditions = aggregationConditionService
-            .getAllCaseAggregationCondition();
+            .getCaseAggregationCondition( selectedDataSet.getDataElements() );
 
         // ---------------------------------------------------------------------
         // Get selected periods list
@@ -255,7 +253,7 @@ public class CaseAggregationResultAction
                     Integer resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
                     DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
 
-                    String key = orgUnit.getId() + "-" + format.formatPeriod( period );
+                    String key = orgUnitId + "-" + format.formatPeriod( period );
                     String keyStatus = key + "-" + dElement.getId();
 
                     if ( resultValue != null && resultValue != 0 )
@@ -264,15 +262,12 @@ public class CaseAggregationResultAction
                         {
                             dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, "", new Date(),
                                 null, optionCombo );
-
                             mapStatusValues.put( keyStatus, i18n.getString( ADD_STATUS ) );
-                            orgunits.add( orgUnit );
                         }
                         else
                         {
                             dataValue.setValue( "" + resultValue );
                             dataValue.setTimestamp( new Date() );
-
                             mapStatusValues.put( keyStatus, i18n.getString( UPDATE_STATUS ) );
                         }
                         mapCaseAggCondition.put( dataValue, condition );
