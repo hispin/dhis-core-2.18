@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
@@ -37,9 +38,7 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -111,13 +110,6 @@ public class DefaultMappingService
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
     }
 
     private PeriodService periodService;
@@ -434,6 +426,13 @@ public class DefaultMappingService
         User user = currentUserService.getCurrentUser();
         
         return mapStore.getAccessibleByUser( user );
+    }
+    
+    public List<Map> getAccessibleMapsBetweenLikeName( String name, int first, int max )
+    {
+        User user = currentUserService.getCurrentUser();
+        
+        return mapStore.getAccessibleBetweenLikeName( user, name, first, max );
     }
         
     // -------------------------------------------------------------------------
