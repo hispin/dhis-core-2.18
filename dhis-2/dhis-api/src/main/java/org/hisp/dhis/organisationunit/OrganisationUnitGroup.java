@@ -180,7 +180,6 @@ public class OrganisationUnitGroup
         this.symbol = symbol;
     }
 
-    
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )

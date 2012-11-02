@@ -32,6 +32,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.User;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -131,6 +132,8 @@ public interface MappingService
     void deleteMap( Map map );
     
     Collection<Map> getSystemAndUserMaps();
+    
+    List<Map> getAccessibleMapsBetweenLikeName( String name, int first, int max );
     
     // -------------------------------------------------------------------------
     // MapView
