@@ -114,7 +114,7 @@ public class IdentifiableObjectUtils
         {
             for ( IdentifiableObject object : objects )
             {
-                if ( object != null && object.getLastUpdated() != null && (latest == null || object.getLastUpdated().after( latest )) )
+                if ( object != null && object.getLastUpdated() != null && ( latest == null || object.getLastUpdated().after( latest ) ) )
                 {
                     latest = object.getLastUpdated();
                 }
