@@ -352,7 +352,8 @@ body {
     background-image: linear-gradient(top, #f1f1f1,#f5f5f5);
 }
 
-/* Tooltip */.x-tip {
+/* Tooltip */
+.x-tip {
     border-radius: 2px;
     padding: 1px 4px;
     border: 1px solid #111;

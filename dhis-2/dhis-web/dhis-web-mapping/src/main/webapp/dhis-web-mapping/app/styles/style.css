@@ -14,6 +14,7 @@
  * Checkbox
  * NumberField
  * Label
+ * Tooltip
 */
 
 /* General */
@@ -456,6 +457,13 @@ html * {
 	background: url('../images/grid-delete_16.png') no-repeat;
 	margin-left: 4px;
 }
+.gis-grid-row-icon-disabled img {
+	opacity: 0;
+	filter:Alpha(opacity=0);
+}
+.gis-grid-row-icon-disabled * {
+	cursor: default !important;
+}
 
 .gis-grid .x-grid-cell-inner,
 .gis-grid .x-grid-cell-inner * {
@@ -521,5 +529,24 @@ html * {
 	padding-left: 4px;
 	height: 22px;
 	line-height: 21px;
+}
+
+/* Tooltip */
+
+/* Tooltip */
+.x-tip {
+    border-radius: 2px;
+    padding: 1px 4px;
+    border: 1px solid #111;
+    background-color: #111;
+}
+
+.x-tip .x-tip-body {
+	font-size: 10px;
+	color: #fff;
+}
+
+.x-tip-anchor {
+	border-top-color: #111;
 }
 
