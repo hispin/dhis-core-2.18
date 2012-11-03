@@ -31,7 +31,6 @@ body
 {
   position: relative;
   width: 600px;
-  height: 760px;
   margin-left: auto; 
   margin-right: auto;
 }
@@ -39,7 +38,7 @@ body
 #accountInput
 {
   position: relative;
-  padding-top: 65px;
+  padding-top: 50px;
 }
 
 h3
