@@ -36,7 +36,7 @@
     </tr>
     <tr>
         <td><label for="password">$i18n.getString( "password" )</label></td>
-        <td><input type="password" id="password" name="password" autocomplete="off"></td>
+        <td><input type="password" id="password" name="password" autocomplete="off" placeholder="$i18n.getString( 'password_hint' )"></td>
     </tr>
     <tr>
         <td><label for="retypePassword">$i18n.getString( "confirm_password" )</label></td>
@@ -48,7 +48,11 @@
     </tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "mobile_phone" )</label></td>
-        <td style="padding-bottom: 5px"><input type="text" id="phoneNumber" name="phoneNumber"></td>
+        <td style="padding-bottom: 5px"><input type="text" id="phoneNumber" name="phoneNumber" placeholder="$i18n.getString( 'optional' )"></td>
+    </tr>
+    <tr>
+        <td><label for="employer">$i18n.getString( "employer" )</label></td>
+        <td style="padding-bottom: 5px"><input type="text" id="employer" name="employer"></td>
     </tr>
     <tr>
     	<td><label>$i18n.getString( "prove_you_are_not_a_robot" )</label></td>

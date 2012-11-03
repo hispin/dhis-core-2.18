@@ -177,6 +177,7 @@ public class AccountController
         @RequestParam String password,
         @RequestParam String email,
         @RequestParam String phoneNumber,
+        @RequestParam String employer,
         @RequestParam( value = "recaptcha_challenge_field" ) String recapChallenge,
         @RequestParam( value = "recaptcha_response_field" ) String recapResponse,
         HttpServletRequest request,
@@ -200,6 +201,7 @@ public class AccountController
         password = StringUtils.trimToNull( password );
         email = StringUtils.trimToNull( email );
         phoneNumber = StringUtils.trimToNull( phoneNumber );
+        employer = StringUtils.trimToNull( employer );
         recapChallenge = StringUtils.trimToNull( recapChallenge );
         recapResponse = StringUtils.trimToNull( recapResponse );
 
@@ -251,6 +253,12 @@ public class AccountController
             return "Email is not specified or invalid";
         }
 
+        if ( employer == null || employer.trim().length() > MAX_LENGTH )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return "Employer is not specified or invalid";
+        }
+
         if ( recapChallenge == null )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
@@ -298,6 +306,7 @@ public class AccountController
         user.setSurname( surname );
         user.setEmail( email );
         user.setPhoneNumber( phoneNumber );
+        user.setEmployer( employer );
         
         credentials = new UserCredentials();
         credentials.setUsername( username );
