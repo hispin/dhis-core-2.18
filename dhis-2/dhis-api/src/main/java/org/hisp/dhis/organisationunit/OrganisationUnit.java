@@ -633,7 +633,6 @@ public class OrganisationUnit
 
     public void setAlternativeName( String alternativeName )
     {
-        // throw new UnsupportedOperationException( "Cannot set alternativeName on OrganisationUnit: " + alternativeName );
     }
 
     @JsonProperty

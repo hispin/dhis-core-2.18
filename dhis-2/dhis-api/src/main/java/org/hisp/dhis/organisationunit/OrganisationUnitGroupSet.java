@@ -45,6 +45,7 @@ import org.hisp.dhis.common.view.ExportView;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -190,18 +191,6 @@ public class OrganisationUnitGroupSet
         return name.equals( other.getName() );
     }
 
-/*
-    @Override
-    public String toString()
-    {
-        return "OrganisationUnitGroupSet{" +
-            "organisationUnitGroups=" + organisationUnitGroups +
-            ", description='" + description + '\'' +
-            ", compulsory=" + compulsory +
-            "} " + super.toString();
-    }
-*/
-
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -233,6 +222,7 @@ public class OrganisationUnitGroupSet
     }
 
     @JsonProperty( value = "organisationUnitGroups" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
