@@ -641,25 +641,6 @@ Ext.onReady( function() {
 		fields: ['id', 'name'],
 		data: GIS.conf.period.periodTypes
 	});
-	
-	//GIS.store.organisationUnitHierarchy = Ext.create('Ext.data.TreeStore', {
-		//proxy: {
-			//type: 'ajax',
-			//url: GIS.conf.url.path_gis + 'getOrganisationUnitChildren.action'
-		//},
-		//root: {
-			//id: 'root',
-			//expanded: true,
-			//children: GIS.init.rootNodes
-		//},
-		//listeners: {
-			//load: function(s, node, r) {
-				//for (var i = 0; i < r.length; i++) {
-					//r[i].data.text = GIS.util.jsonEncodeString(r[i].data.text);
-				//}
-			//}
-		//}
-	//});
     
     GIS.store.organisationUnitLevels = Ext.create('Ext.data.Store', {
 		fields: ['id', 'name', 'level'],
@@ -807,7 +788,7 @@ Ext.onReady( function() {
 	});
 	
 	GIS.store.maps = Ext.create('Ext.data.Store', {
-		fields: ['id', 'name', 'lastUpdated', 'system'],
+		fields: ['id', 'name', 'lastUpdated', 'user'],
 		proxy: {
 			type: 'ajax',
 			reader: {
@@ -818,7 +799,7 @@ Ext.onReady( function() {
 		isLoaded: false,
 		pageSize: 10,
 		page: 1,
-		defaultUrl: GIS.conf.url.path_api + 'maps.json?links=false',
+		defaultUrl: GIS.conf.url.path_api + 'maps.json?viewClass=detailed&links=false',
 		loadStore: function(url) {
 			this.proxy.url = url || this.defaultUrl;
 			
@@ -1121,7 +1102,7 @@ Ext.onReady( function() {
 		
 		if (!data.length) {
 			GIS.logg.push([data, base.widget.xtype + '.search.data: feature ids/names']);
-			alert("no features"); //todo
+			alert('Layer has no organisation units'); //todo
 			return;
 		}
 		
@@ -1614,6 +1595,7 @@ Ext.onReady( function() {
 				labelWidth: 70,
 				fieldLabel: 'System', //i18n
 				style: 'margin-bottom: 0',
+				disabled: !GIS.init.security.isAdmin,
 				value: id ? GIS.store.maps.getById(id).data.system : false
 			});
 			
@@ -1629,44 +1611,52 @@ Ext.onReady( function() {
 						view,
 						map;
 						
-					if (name && layers.length) {
-						for (var i = 0; i < layers.length; i++) {
-							layer = layers[i];
-							view = layer.base.widget.getView();
-							
-							// add
-							view.layer = layer.base.id;
-							
-							// remove
-							delete view.periodType;
-							views.push(view);
-						}
-						
-						map = {
-							name: name,
-							longitude: lonlat.lon,
-							latitude: lonlat.lat,
-							zoom: GIS.map.getZoom(),
-							mapViews: views
-						};
-						
-						if (!system) {
-							map.user = {
-								id: 'currentUser'
-							};
-						}
-					
-						Ext.Ajax.request({
-							url: GIS.conf.url.path_api + 'maps/',
-							method: 'POST',
-							headers: {'Content-Type': 'application/json'},
-							params: Ext.encode(map),
-							success: function() {								
-								GIS.store.maps.loadStore();
+					if (layers.length) {
+						if (name) {
+							for (var i = 0; i < layers.length; i++) {
+								layer = layers[i];
+								view = layer.base.widget.getView();
 								
-								window.destroy();
+								// add
+								view.layer = layer.base.id;
+								
+								// remove
+								delete view.periodType;
+								views.push(view);
 							}
-						});
+							
+							map = {
+								name: name,
+								longitude: lonlat.lon,
+								latitude: lonlat.lat,
+								zoom: GIS.map.getZoom(),
+								mapViews: views
+							};
+							
+							if (!system) {
+								map.user = {
+									id: 'currentUser'
+								};
+							}
+						
+							Ext.Ajax.request({
+								url: GIS.conf.url.path_api + 'maps/',
+								method: 'POST',
+								headers: {'Content-Type': 'application/json'},
+								params: Ext.encode(map),
+								success: function() {								
+									GIS.store.maps.loadStore();
+									
+									window.destroy();
+								}
+							});
+						}
+						else {
+							alert('Please enter a name');
+						}
+					}
+					else {
+						alert('No layers to save');
 					}
 				}
 			});
@@ -1797,7 +1787,7 @@ Ext.onReady( function() {
 						var fn = function() {
 							var el = Ext.get(record.data.id).parent('td');
 							el.addClsOnOver('link');
-							el.dom.setAttribute('onclick', 'GIS.cmp.mapWindow.destroy(); GIS.map.mapLoader = new GIS.obj.MapLoader(); GIS.map.mapLoader.load("' + record.data.id + '");');// GIS.util.map.getMap("' + record.data.id + '", true)');
+							el.dom.setAttribute('onclick', 'GIS.cmp.mapWindow.destroy(); GIS.map.mapLoader = new GIS.obj.MapLoader("' + record.data.id + '"); GIS.map.mapLoader.load();');
 						};
 						
 						Ext.defer(fn, 100);
@@ -1812,14 +1802,27 @@ Ext.onReady( function() {
 					items: [
 						{
 							iconCls: 'gis-grid-row-icon-edit',
+							getClass: function() {
+								return 'tooltip-map-edit'; // tooltips removed if deleteArray is empty
+							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
-								var id = this.up('grid').store.getAt(rowIndex).data.id;
-								nameWindow = new NameWindow(id);
-								nameWindow.show();
+								var record = this.up('grid').store.getAt(rowIndex),
+									id = record.data.id,
+									system = !record.data.user,
+									isAdmin = GIS.init.security.isAdmin;
+									
+								if (isAdmin || (!isAdmin && !system)) {
+									var id = this.up('grid').store.getAt(rowIndex).data.id;
+									nameWindow = new NameWindow(id);
+									nameWindow.show();
+								}
 							}
 						},
 						{
 							iconCls: 'gis-grid-row-icon-overwrite',
+							getClass: function() {
+								return 'tooltip-map-overwrite'; // tooltips removed if deleteArray is empty
+							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex),
 									id = record.data.id,
@@ -1832,8 +1835,8 @@ Ext.onReady( function() {
 									map,
 									message = 'Overwrite favorite?\n\n' + name;
 								
-								if (confirm(message)) {
-									if (layers.length) {
+								if (layers.length) {
+									if (confirm(message)) {
 										for (var i = 0; i < layers.length; i++) {
 											layer = layers[i];
 											view = layer.base.widget.getView();
@@ -1864,10 +1867,21 @@ Ext.onReady( function() {
 										});
 									}
 								}
+								else {
+									alert('No layers to save'); //i18n
+								}
 							}
 						},
 						{
 							iconCls: 'gis-grid-row-icon-delete',
+							getClass: function(value, metaData, record) { // all tooltips removed if deleteArray is empty
+								var system = !record.data.user,
+									isAdmin = GIS.init.security.isAdmin;
+								
+								if (isAdmin || (!isAdmin && !system)) {
+									return 'tooltip-map-delete';
+								}
+							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex),
 									id = record.data.id,
@@ -1885,7 +1899,12 @@ Ext.onReady( function() {
 								}
 							}
 						}
-					]
+					],
+					renderer: function(value, metaData, record) {
+						if (!GIS.init.security.isAdmin && !record.data.user) {
+							metaData.tdCls += ' gis-grid-row-icon-disabled';
+						}
+					}
 				}
 			],
 			store: GIS.store.maps,
@@ -1904,6 +1923,46 @@ Ext.onReady( function() {
 					this.store.pageSize = size;
 					this.store.page = 1;
 					this.store.loadStore();
+				},
+				afterrender: function() {
+					var fn = function() {
+						var editArray = document.getElementsByClassName('tooltip-map-edit'),
+							overwriteArray = document.getElementsByClassName('tooltip-map-overwrite'),
+							deleteArray = document.getElementsByClassName('tooltip-map-delete'),
+							len = deleteArray.length,
+							el;
+						
+						for (var i = 0; i < len; i++) {
+							el = editArray[i];
+							Ext.create('Ext.tip.ToolTip', {
+								target: el,
+								html: 'Rename',
+								'anchor': 'bottom',
+								anchorOffset: -14,
+								showDelay: 1000
+							});
+							
+							el = overwriteArray[i];
+							Ext.create('Ext.tip.ToolTip', {
+								target: el,
+								html: 'Overwrite',
+								'anchor': 'bottom',
+								anchorOffset: -14,
+								showDelay: 1000
+							});
+							
+							el = deleteArray[i];
+							Ext.create('Ext.tip.ToolTip', {
+								target: el,
+								html: 'Delete',
+								'anchor': 'bottom',
+								anchorOffset: -14,
+								showDelay: 1000
+							});
+						}
+					};
+					
+					Ext.defer(fn, 100);
 				},
 				itemmouseenter: function(grid, record, item) {
 					this.currentItem = Ext.get(item);
@@ -1947,7 +2006,7 @@ Ext.onReady( function() {
 		return mapWindow;
 	};
 	
-	GIS.obj.MapLoader = function() {
+	GIS.obj.MapLoader = function(id) {
 		var getMap,
 			setMap,
 			map,
@@ -1996,8 +2055,10 @@ Ext.onReady( function() {
 		};
 		
 		loader = {
+			id: id,
 			load: function(id) {
-				getMap(id);
+				this.id = id || this.id;
+				getMap(this.id);
 			},
 			callBack: function(widget) {
 				callbackRegister.push(widget);
@@ -2116,6 +2177,7 @@ Ext.onReady( function() {
 			legendSetGrid = Ext.create('Ext.grid.Panel', {
 				cls: 'gis-grid',
 				scroll: 'vertical',
+				height: true,
 				hideHeaders: true,
 				currentItem: null,
 				columns: [						
@@ -2131,6 +2193,9 @@ Ext.onReady( function() {
 						items: [
 							{
 								iconCls: 'gis-grid-row-icon-edit',
+								getClass: function() {
+									return 'tooltip-legendset-edit';
+								},
 								handler: function(grid, rowIndex, colIndex, col, event) {
 									var id = this.up('grid').store.getAt(rowIndex).data.id;
 									showUpdateLegendSet(id);
@@ -2138,9 +2203,18 @@ Ext.onReady( function() {
 							},
 							{
 								iconCls: 'gis-grid-row-icon-delete',
+								getClass: function() {
+									return 'tooltip-legendset-delete';
+								},
 								handler: function(grid, rowIndex, colIndex, col, event) {
-									var id = this.up('grid').store.getAt(rowIndex).data.id;
-									deleteLegendSet(id);
+									var record = this.up('grid').store.getAt(rowIndex),
+										id = record.data.id,
+										name = record.data.name,
+										message = 'Delete legend set?\n\n' + name;
+								
+									if (confirm(message)) {
+										deleteLegendSet(id);
+									}
 								}
 							}
 						]
@@ -2153,14 +2227,49 @@ Ext.onReady( function() {
 				store: legendSetStore,
 				listeners: {
 					render: function() {
+						var that = this,
+							maxHeight = GIS.cmp.region.center.getHeight() - 155,
+							height;
+							
+						this.store.on('load', function() {
+							if (Ext.isDefined(that.setHeight)) {
+								height = 1 + that.store.getCount() * GIS.conf.layout.grid.row_height;
+								that.setHeight(height > maxHeight ? maxHeight : height);
+								window.doLayout();
+							}
+						});
+								
 						this.store.load();
 					},
-					resize: function() {
-						var maxHeight = GIS.cmp.region.center.getHeight() - 155;
-												
-						if (this.getHeight() > maxHeight) {
-							this.setHeight(maxHeight);
-						}
+					afterrender: function() {
+						var fn = function() {
+							var editArray = document.getElementsByClassName('tooltip-legendset-edit'),
+								deleteArray = document.getElementsByClassName('tooltip-legendset-delete'),
+								len = editArray.length,
+								el;
+							
+							for (var i = 0; i < len; i++) {
+								el = editArray[i];
+								Ext.create('Ext.tip.ToolTip', {
+									target: el,
+									html: 'Rename',
+									'anchor': 'bottom',
+									anchorOffset: -14,
+									showDelay: 1000
+								});
+								
+								el = deleteArray[i];
+								Ext.create('Ext.tip.ToolTip', {
+									target: el,
+									html: 'Delete',
+									'anchor': 'bottom',
+									anchorOffset: -14,
+									showDelay: 1000
+								});
+							}
+						};
+						
+						Ext.defer(fn, 100);
 					},
 					itemmouseenter: function(grid, record, item) {
 						this.currentItem = Ext.get(item);
@@ -2322,6 +2431,9 @@ Ext.onReady( function() {
 						items: [
 							{
 								iconCls: 'gis-grid-row-icon-delete',
+								getClass: function() {
+									return 'tooltip-legend-delete';
+								},
 								handler: function(grid, rowIndex, colIndex, col, event) {
 									var id = this.up('grid').store.getAt(rowIndex).data.id;
 									deleteLegend(id);
@@ -2345,6 +2457,26 @@ Ext.onReady( function() {
 					},
 					selectionchange: function() {
 						this.currentItem.removeCls('x-grid-row-focused');
+					},
+					afterrender: function() {
+						var fn = function() {
+							var deleteArray = document.getElementsByClassName('tooltip-legend-delete'),
+								len = deleteArray.length,
+								el;
+							
+							for (var i = 0; i < len; i++) {
+								el = deleteArray[i];
+								Ext.create('Ext.tip.ToolTip', {
+									target: el,
+									html: 'Delete',
+									'anchor': 'bottom',
+									anchorOffset: -14,
+									showDelay: 1000
+								});
+							}
+						};
+						
+						Ext.defer(fn, 100);
 					}
 				}
 			});
@@ -2959,8 +3091,8 @@ Ext.onReady( function() {
 						'->',
 						{
 							text: 'Exit', //i18n
-							handler: function() {
-								alert('Exit');
+							handler: function() {								
+                                window.location.href = '../../dhis-web-commons-about/redirect.action';
 							}
 						},
 						{
