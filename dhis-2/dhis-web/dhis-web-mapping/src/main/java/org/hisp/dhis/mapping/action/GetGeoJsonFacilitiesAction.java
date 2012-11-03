@@ -27,11 +27,17 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.util.ContextUtils.clearIfNotModified;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -109,6 +115,30 @@ public class GetGeoJsonFacilitiesAction
     public String execute()
         throws Exception
     {
+        groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
+
+        // ---------------------------------------------------------------------
+        // Check if modified for caching purposes
+        // ---------------------------------------------------------------------
+
+        Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
+        
+        for ( OrganisationUnitGroupSet groupSet : groupSets )
+        {
+            groups.addAll( groupSet.getOrganisationUnitGroups() );
+        }
+        
+        boolean modified = !clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), groups );
+        
+        if ( !modified )
+        {
+            return SUCCESS;
+        }
+
+        // ---------------------------------------------------------------------
+        // Retrieve list of organisation units and populate group names
+        // ---------------------------------------------------------------------
+
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
 
         if ( parent == null )
@@ -132,8 +162,6 @@ public class GetGeoJsonFacilitiesAction
             orgUnitLevel.getLevel(), parent );
 
         FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
-
-        groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
 
         object = new ArrayList<OrganisationUnit>();
 
