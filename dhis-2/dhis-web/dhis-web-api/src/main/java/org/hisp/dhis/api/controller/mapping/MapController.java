@@ -46,7 +46,7 @@ import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -77,9 +77,6 @@ public class MapController
     private OrganisationUnitGroupService organisationUnitGroupService;
     
     @Autowired
-    private UserService userService;
-    
-    @Autowired
     private IndicatorService indicatorService;
     
     @Autowired
@@ -87,6 +84,9 @@ public class MapController
     
     @Autowired
     private PeriodService periodService;
+    
+    @Autowired
+    private CurrentUserService currentUserService;
     
     //--------------------------------------------------------------------------
     // CRUD
@@ -147,6 +147,11 @@ public class MapController
 
         map.mergeWith( newMap );
         
+        if ( newMap.getUser() == null )
+        {
+            map.setUser( null );
+        }
+        
         mappingService.updateMap( map );
     }
     
@@ -199,7 +204,7 @@ public class MapController
     {
         if ( map.getUser() != null )
         {
-            map.setUser( userService.getUser( map.getUser().getUid() ) );
+            map.setUser( currentUserService.getCurrentUser() );
         }        
     }
     
