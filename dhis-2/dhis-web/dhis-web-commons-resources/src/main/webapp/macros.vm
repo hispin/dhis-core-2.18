@@ -94,16 +94,12 @@
 #end
 
 #macro( filterDiv $action )
-$i18n.getString( "filter_by_name" ):
-<form id="filterKeyForm" action="${action}.action" method="POST">
-	<div style="inline">
-		#set ($value = $encoder.htmlEncode( ${key} ))
-		<input type="text" id="key" name="key" value="$!value"/>
-		<input type="hidden" id="curKey" name="curKey" value="$!value"/>
-		<input type="submit" value="$i18n.getString( 'filter' )"/>
-		<input type="button" value="$i18n.getString( 'clear' )" 
-		onclick="window.location.href='${action}.action'"/>
-	</div>
+<form id="filterKeyForm" action="${action}.action" method="POST">	
+	<input type="text" id="key" name="key" value="$!encoder.htmlEncode( $key )" placeholder="$i18n.getString( 'filter_by_name' )" style="width:140px"/>
+	<input type="hidden" id="curKey" name="curKey" value="$!encoder.htmlEncode( $key )"/>
+	<input type="submit" value="$i18n.getString( 'filter' )" style="width:55px"/>
+	<input type="button" value="$i18n.getString( 'clear' )" 
+	   onclick="window.location.href='${action}.action'" style="width:55px"/>
 </form>
 #end
 
