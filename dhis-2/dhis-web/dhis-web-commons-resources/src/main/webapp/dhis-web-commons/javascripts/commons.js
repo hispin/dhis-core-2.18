@@ -1678,37 +1678,20 @@ function pagingList( currentPage, pageSize )
 {
 	var baseLink = jQuery( "#baseLink" ).val();	
 	var url = baseLink + "currentPage=" + currentPage + "&pageSize=" + pageSize;
-
+	
 	var index = url.indexOf( '?' );
 	var link = url.substring( 0, index );
 	var data = url.substring( index + 1 );
 
 	if ( !isAjax )
 	{
-		var keyParam = data.split( '&' )[0];
-
-		if ( keyParam.split( '=' )[0] == "key" )
-		{
-			setFieldValue( 'key', keyParam.split( '=' )[1] )
-		}
-		
-		url = link + "?currentPage=" + currentPage + "&pageSize=" + pageSize;
-		
-		if ( $( '#filterKeyForm' ).length )
-		{
-			$( '#filterKeyForm' ).attr( 'action', url );
-			$( '#filterKeyForm' ).submit();
-		}
-		else
-		{
-			window.location.href = url;
-		}
+		window.location.href = encodeURI( url );
 	}
 	else
 	{		
 		jQuery.postUTF8( link, data, function( html ) {
 			setInnerHTML( contentDiv, html );
-		});
+		} );
 	}
 }
 

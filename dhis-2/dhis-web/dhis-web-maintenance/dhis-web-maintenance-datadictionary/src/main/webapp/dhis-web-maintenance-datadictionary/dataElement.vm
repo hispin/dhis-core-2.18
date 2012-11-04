@@ -33,10 +33,9 @@
 				<tr valign="bottom">
 					<td>#filterDiv( "dataElement" )</td>
 					<td>
-					   $i18n.getString( "select_data_dictionary" ):
 					   <div style="inline">
-					       <select id="dataDictionaryList" name="dataDictionaryList" onchange="criteriaChanged()" style="min-width:180px">
-					           <option value="-1">[ $i18n.getString( "all" ) ]</option>
+					       <select id="dataDictionaryList" name="dataDictionaryList" onchange="criteriaChanged()" style="width:160px">
+					           <option value="-1">[ $i18n.getString( "select_data_dictionary" ) ]</option>
 					           #foreach( $dictionary in $dataDictionaries )
 					           <option value="$dictionary.id" #if ( $!dataDictionaryId && $dictionary.id == $dataDictionaryId ) selected="selected"#end>$dictionary.name</option>
 					           #end

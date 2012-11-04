@@ -20,10 +20,10 @@
 			<table width="100%">
 				<tr>
 					<td>#filterDiv( "indicator" )</td>
-					<td>$i18n.getString( "select_data_dictionary" ):
+					<td>
 						<div style="inline">
-							<select id="dataDictionaryList" name="dataDictionaryList" onchange="criteriaChanged()" style="min-width:140px">
-								<option value="-1">[ $i18n.getString( "all" ) ]</option>
+							<select id="dataDictionaryList" name="dataDictionaryList" onchange="criteriaChanged()" style="width:160px">
+								<option value="-1">[ $i18n.getString( "select_data_dictionary" ) ]</option>
 								#foreach( $dictionary in $dataDictionaries )
 								<option value="$dictionary.id"#if ( $dictionary.id == $dataDictionaryId ) selected="selected"#end>$dictionary.displayName</option>
 								#end
