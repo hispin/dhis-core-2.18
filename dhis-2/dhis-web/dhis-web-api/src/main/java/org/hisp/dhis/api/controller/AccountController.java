@@ -314,6 +314,7 @@ public class AccountController
         credentials = new UserCredentials();
         credentials.setUsername( username );
         credentials.setPassword( passwordManager.encodePassword( username, password ) );
+        credentials.setSelfRegistered( true );
         credentials.setUser( user );
         credentials.getUserAuthorityGroups().add( userRole );
         
