@@ -2,6 +2,7 @@
 #set( $overlaysSize = $overlays.size() )
 #set( $rootNodesSize = $roteNodes.size() )
 {
+  "contextPath":"$!{contextPath}",
   "mapView": { 
     "id": "$!{mapView.id}",
     "name": "$!encoder.jsonEncode( ${mapView.name} )",
