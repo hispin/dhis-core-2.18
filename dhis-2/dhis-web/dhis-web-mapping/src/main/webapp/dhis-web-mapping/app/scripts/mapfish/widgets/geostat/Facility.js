@@ -139,38 +139,6 @@ Ext.define('mapfish.widgets.geostat.Facility', {
         return geojson;
     },
     
-    setUrl: function(url) {
-        this.url = url;
-        this.coreComp.setUrl(this.url);
-    },
-
-    requestSuccess: function(request) {
-        var doc = request.responseXML,
-			format = new OpenLayers.Format.GeoJSON();
-			
-        if (!doc || !doc.documentElement) {
-            doc = request.responseText;
-        }
-        if (doc.length) {
-            doc = this.decode(doc);
-        }
-        else {
-			alert('No valid coordinates found'); //todo //i18n
-		}
-        
-        this.layer.removeFeatures(this.layer.features);
-        this.layer.addFeatures(format.read(doc));
-		this.layer.features = GIS.util.vector.getTransformedFeatureArray(this.layer.features);
-        this.features = this.layer.features.slice(0);
-        
-        this.loadData();
-    },
-
-    requestFailure: function(request) {
-        GIS.logg.push(request.status, request.statusText);        
-        console.log(request.status, request.statusText);
-    },
-    
     getColors: function(low, high) {
         var startColor = new mapfish.ColorRgb();
         startColor.setFromHex(low || this.cmp.colorLow.getValue());
@@ -214,27 +182,34 @@ Ext.define('mapfish.widgets.geostat.Facility', {
             width: GIS.conf.layout.widget.item_width,
             labelWidth: GIS.conf.layout.widget.itemlabel_width,
             currentValue: false,
-            scope: this,
             store: GIS.store.groupSets, //todo
             listeners: {
-                select: function() {
-					var store = GIS.store.groupsByGroupSet,
-						value = this.getValue();
-					
-					store.proxy.url = GIS.conf.url.path_api +  'organisationUnitGroupSets/' + value + '.json?links=false&paging=false';
-					store.load({
-						scope: this.scope,
-						callback: function() {
-							if (this.config.extended.updateGui) { // If favorite, load store and continue execution
-								if (this.config.extended.updateOrganisationUnit) {
-									this.loadOrganisationUnits();
-								}
-								else {
-									this.loadLegend();
-								}
-							}	
-						}
-					});
+                select: {
+					scope: this,
+					fn: function(cb) {
+						var store = GIS.store.groupsByGroupSet,
+							value = cb.getValue();
+							
+						this.config.extended.updateLegend = true;
+						
+						store.proxy.url = GIS.conf.url.path_gis + 'getOrganisationUnitGroupsByGroupSet.action?id=' + value;
+						store.load(); //{
+							//scope: this.scope,
+							//callback: function() {
+								//if (this.config.extended.updateGui) { // If favorite, wait for callback and continue execution
+									//if (this.config.extended.updateOrganisationUnit) {
+										//this.loadOrganisationUnits();
+									//}
+									//else {
+										//this.loadLegend();
+									//}
+								//}
+								//else {
+									//this.config.extended.updateLegend = true;
+								//}
+							//}
+						//});
+					}
                 }
             }
         });
@@ -272,28 +247,10 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 			multiSelect: false,
 			width: GIS.conf.layout.widget.item_width,
 			height: 248,
-			pathToSelect: null,
-			pathToExpand: null,
 			reset: function() {
-				//this.collapseAll();
-				this.expandTreePath(GIS.init.rootNodes[0].path);
-				this.selectTreePath(GIS.init.rootNodes[0].path);
-			},
-			selectTreePath: function(path) {
-				if (this.rendered) {
-					this.selectPath(path);
-				}
-				else {
-					this.pathToSelect = path;
-				}
-			},
-			expandTreePath: function(path) {
-				if (this.rendered) {
-					this.expandPath(path);
-				}
-				else {
-					this.pathToExpand = path;
-				}
+				this.collapseAll();
+				this.expandPath(GIS.init.rootNodes[0].path);
+				this.selectPath(GIS.init.rootNodes[0].path);
 			},
 			store: Ext.create('Ext.data.TreeStore', {
 				proxy: {
@@ -320,19 +277,8 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 						this.config.extended.updateOrganisationUnit = true;
 					}
 				},
-				afterrender: function() {					
-					if (this.pathToSelect) {
-						this.selectPath(this.pathToSelect);
-						this.pathToSelect = null;
-					}
-					else {
-						this.getSelectionModel().select(0);
-					}
-					
-					if (this.pathToExpand) {
-						this.expandPath(this.pathToExpand);
-						this.pathToExpand = null;
-					}
+				afterrender: function() {
+					this.getSelectionModel().select(0);
 				}
 			}
         });
@@ -757,19 +703,15 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		GIS.store.groupSets.load({
 			callback: function() {
 				that.cmp.groupSet.setValue(view.organisationUnitGroupSet.id);
-				that.cmp.groupSet.fireEvent('select');
 			}
 		});
-
-		this.cmp.groupSet.setValue(view.organisationUnitGroupSet.id);
-		this.cmp.groupSet.fireEvent('select');
 		
 		// Level and parent
 		GIS.store.organisationUnitLevels.loadFn( function() {
 			that.cmp.level.setValue(view.organisationUnitLevel.id);
 		});
 		
-		this.cmp.parent.selectTreePath('/root' + view.parentGraph);
+		this.cmp.parent.selectPath('/root' + view.parentGraph);
 	},
     	
 	getView: function() {
@@ -880,30 +822,67 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 	},
 	
     loadOrganisationUnits: function() {
-        var url = GIS.conf.url.path_gis + 'getGeoJsonFacilities.action?' +
-            'parentId=' + this.tmpView.parentOrganisationUnit.id +
-            '&level=' + this.tmpView.organisationUnitLevel.id;
-        this.setUrl(url);
+		Ext.Ajax.request({
+			url: GIS.conf.url.path_gis + 'getGeoJsonFacilities.action',
+			params: {
+				parentId: this.tmpView.parentOrganisationUnit.id,
+				level: this.tmpView.organisationUnitLevel.id
+			},
+			scope: this,
+			success: function(r) {
+				var geojson = this.decode(r.responseText),
+					format = new OpenLayers.Format.GeoJSON(),
+					features = format.read(geojson);
+					
+				if (!features.length) {
+					alert('No valid coordinates found'); //todo //i18n
+					GIS.mask.hide();
+					
+					this.config = {
+						extended: {}
+					};
+					return;
+				}
+				
+				this.loadData(features);
+			}
+		});
     },
     
-    loadData: function() {
-		for (var i = 0; i < this.layer.features.length; i++) {
-			var feature = this.layer.features[i];
+    loadData: function(features) {
+		features = features || this.layer.features;
+		
+		for (var i = 0; i < features.length; i++) {
+			var feature = features[i];
 			feature.attributes.label = feature.attributes.name;
 		}
+				
+		this.layer.removeFeatures(this.layer.features);
+		this.layer.addFeatures(features);
+		this.layer.features = GIS.util.vector.getTransformedFeatureArray(this.layer.features);
+		this.features = this.layer.features.slice(0);
 		
 		this.loadLegend();
 	},
 	
 	loadLegend: function() {
-		var options = {
-            indicator: this.tmpView.organisationUnitGroupSet.name
-		};
+		var store = GIS.store.groupsByGroupSet,
+			options;
+			
+		store.proxy.url = GIS.conf.url.path_gis + 'getOrganisationUnitGroupsByGroupSet.action?id=' + this.tmpView.organisationUnitGroupSet.id;
+		store.load({
+			scope: this,
+			callback: function() {
+				options = {
+					indicator: this.tmpView.organisationUnitGroupSet.name
+				};
 
-        this.coreComp.applyClassification(options);
-        this.classificationApplied = true;
-        
-        this.afterLoad();
+				this.coreComp.applyClassification(options);
+				this.classificationApplied = true;
+				
+				this.afterLoad();
+			}
+		});
 	},	
 	
     execute: function(view) {
@@ -924,20 +903,24 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		GIS.mask.msg = GIS.i18n.loading;
 		GIS.mask.show();
 		
-		if (this.tmpView.extended.updateGui) { // If favorite, wait for groups store callback 
-			this.setGui();
-		}
-		else {
+		//if (this.tmpView.extended.updateGui) { // If favorite, wait for groups store callback 
+			//this.setGui();
+		//}
+		//else {
 			if (this.tmpView.extended.updateOrganisationUnit) {
 				this.loadOrganisationUnits();
 			}
 			else {
 				this.loadLegend();
 			}
-		}
+		//}
 	},
 	
 	afterLoad: function() {
+		if (this.tmpView.extended.updateGui) {
+			this.setGui();
+		}
+		
 		this.view = this.tmpView;
 		this.config = {
 			extended: {}

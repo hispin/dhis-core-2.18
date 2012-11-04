@@ -65,7 +65,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     </bean>
 
-    <!-- UserSetting -->
+    <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitGroupsByGroupSetAction"
+        class="org.hisp.dhis.mapping.action.GetOrganisationUnitGroupsByGroupSetAction"
+        scope="prototype">
+        <property name="organisationUnitGroupService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+	
+	<!-- UserSetting -->
 
     <bean id="org.hisp.dhis.mapping.action.GetMapUserSettingsAction"
         class="org.hisp.dhis.mapping.action.GetMapUserSettingsAction"

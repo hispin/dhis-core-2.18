@@ -84,6 +84,12 @@
 				/dhis-web-mapping/jsonminFacilityInfo.vm</result>
 		</action>
 
+        <action name="getOrganisationUnitGroupsByGroupSet"
+            class="org.hisp.dhis.mapping.action.GetOrganisationUnitGroupsByGroupSetAction">
+            <result name="success" type="velocity-json">/dhis-web-mapping/jsonminOrganisationUnitGroups.vm
+            </result>
+        </action>
+
         <!-- OrganisationUnitLevel -->
 
         <action name="getOrganisationUnitLevels"
