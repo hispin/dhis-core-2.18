@@ -55,15 +55,15 @@ public class ContextUtils
     public static final String CONTENT_TYPE_PDF = "application/pdf";
     public static final String CONTENT_TYPE_ZIP = "application/zip";
     public static final String CONTENT_TYPE_GZIP = "application/gzip";
-    public static final String CONTENT_TYPE_JSON = "application/json";
-    public static final String CONTENT_TYPE_HTML = "text/html";
-    public static final String CONTENT_TYPE_TEXT = "text/plain";
-    public static final String CONTENT_TYPE_XML = "application/xml";
-    public static final String CONTENT_TYPE_CSV = "application/csv";
+    public static final String CONTENT_TYPE_JSON = "application/json; charset=UTF-8";
+    public static final String CONTENT_TYPE_HTML = "text/html; charset=UTF-8";
+    public static final String CONTENT_TYPE_TEXT = "text/plain; charset=UTF-8";
+    public static final String CONTENT_TYPE_XML = "application/xml; charset=UTF-8";
+    public static final String CONTENT_TYPE_CSV = "application/csv; charset=UTF-8";
     public static final String CONTENT_TYPE_PNG = "image/png";
     public static final String CONTENT_TYPE_JPG = "image/jpeg";
     public static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
-    public static final String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
+    public static final String CONTENT_TYPE_JAVASCRIPT = "application/javascript; charset=UTF-8";
 
     public static final String HEADER_USER_AGENT = "User-Agent";
     public static final String HEADER_CACHE_CONTROL = "Cache-Control";

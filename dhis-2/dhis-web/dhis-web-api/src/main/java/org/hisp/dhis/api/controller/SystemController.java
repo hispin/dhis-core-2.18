@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.dxf2.metadata.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -72,7 +73,7 @@ public class SystemController
     @RequestMapping( value = "/uid", method = RequestMethod.GET )
     public void getUid( HttpServletResponse response ) throws IOException
     {
-        response.setContentType( "text/plain" );
+        response.setContentType( ContextUtils.CONTENT_TYPE_TEXT );
         response.getWriter().write( CodeGenerator.generateCode() );
     }
 
