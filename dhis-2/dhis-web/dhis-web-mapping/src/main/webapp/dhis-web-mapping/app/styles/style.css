@@ -192,16 +192,6 @@ html * {
 	border-radius: 1px;
 }
 
-.gis-toolbar-btn-menu-download .x-btn-icon,
-.gis-toolbar-btn-menu-download .x-btn-default-small-icon button {
-	width: 28px !important;
-	height: 28px !important;
-}
-	
-.gis-btn-icon-download {
-	background: url('../images/download_22.png') no-repeat;
-}
-
 /* Toolbar */
 
 .x-toolbar-default {
@@ -335,19 +325,7 @@ html * {
 	.x-menu-item-text {
 		font-size: 10px !important;
 	}
-	
-.gis-toolbar-btn-menu-download .x-panel-body-default { /* Specific for download menu */
-	border: 0 none;
-}
-.gis-toolbar-btn-menu-download .x-menu-body {
-	background: transparent !important;
-}
-.gis-toolbar-btn-menu-download .x-panel-body-default {
-	background: transparent;
-}
-.gis-toolbar-btn-menu-download .x-form-text {
-	padding-left: 6px;
-}
+
 	
 /* Treepanel */
 
@@ -440,6 +418,9 @@ html * {
 }
 .gis-window-title-icon-legendset {
 	background: url('../images/legendset_14.png') no-repeat;
+}
+.gis-window-title-icon-download {
+	background: url('../images/download_14.png') no-repeat;
 }
 .gis-window-title-icon-interpretation {
 	background: url('../images/interpretation_14.png') no-repeat;

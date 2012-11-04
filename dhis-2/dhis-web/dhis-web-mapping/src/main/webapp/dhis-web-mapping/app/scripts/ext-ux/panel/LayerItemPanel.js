@@ -78,6 +78,8 @@ Ext.define('Ext.ux.panel.LayerItemPanel', {
 						}
 					}
 					that.updateItem(value);
+					
+					GIS.cmp.downloadButton.xable();
 				}
 			}
 		});
