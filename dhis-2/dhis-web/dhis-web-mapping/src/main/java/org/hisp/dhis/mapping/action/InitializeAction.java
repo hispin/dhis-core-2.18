@@ -32,6 +32,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.mapping.MapLayer;
@@ -91,6 +93,13 @@ public class InitializeAction
     // Output
     // -------------------------------------------------------------------------
 
+    private String contextPath;
+
+    public String getContextPath()
+    {
+        return contextPath;
+    }
+
     private MapView mapView;
 
     public MapView getMapView()
@@ -138,6 +147,8 @@ public class InitializeAction
             mapView = mappingService.getMapView( id );
         }
 
+        contextPath = ContextUtils.getContextPath( ServletActionContext.getRequest() );
+        
         overlays = new ArrayList<MapLayer>( mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_OVERLAY ) );
 
         Collections.sort( overlays, new MapLayerNameComparator() );
