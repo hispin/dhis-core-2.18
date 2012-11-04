@@ -41,9 +41,7 @@ GIS.conf = {
 	url: {
 		path_api: '../../api/',
 		path_gis: '../',
-		path_scripts: 'scripts/',
-		google_terms: 'http://www.google.com/intl/en-US_US/help/terms_maps.html',
-		target_blank: '_blank'
+		path_scripts: 'scripts/'
 	},
 	layout: {
 		widget: {
@@ -197,6 +195,8 @@ Ext.onReady( function() {
 		GIS.init.security = {
 			isAdmin: init.security.isAdmin
 		};
+		
+		GIS.init.contextPath = init.contextPath;
 	};
 	
 	Ext.Ajax.request({
@@ -343,7 +343,7 @@ Ext.onReady( function() {
 	
 	GIS.util.map.zoomToVisibleExtent = function() {
 		var bounds = GIS.util.map.getExtendedBounds(GIS.util.map.getVisibleVectorLayers());
-		if (bounds.length) {
+		if (bounds) {
 			GIS.map.zoomToExtent(bounds);
 		}
 	};
@@ -1087,6 +1087,7 @@ Ext.onReady( function() {
 	
 	GIS.obj.WidgetWindow = function(base) {
 		return Ext.create('Ext.window.Window', {
+			autoShow: true,
 			title: base.name,
 			layout: 'fit',
 			iconCls: 'gis-window-title-icon-' + base.id,
@@ -1094,6 +1095,7 @@ Ext.onReady( function() {
 			closeAction: 'hide',
 			width: GIS.conf.layout.widget.window_width,
 			resizable: false,
+			isRendered: false,
 			items: base.widget,
 			bbar: [
 				'->',
@@ -1108,8 +1110,14 @@ Ext.onReady( function() {
 				}
 			],
 			listeners: {
-				show: function() {					
-					GIS.util.gui.window.setPositionTopLeft(this);
+				show: function() {
+					if (!this.isRendered) {
+						this.isRendered = true;
+						this.hide();
+					}
+					else {
+						GIS.util.gui.window.setPositionTopLeft(this);
+					}
 				}
 			}
 		});
@@ -2070,7 +2078,6 @@ Ext.onReady( function() {
 				alert('Favorite has no layers'); //i18n
 				return;
 			}
-				
 			GIS.util.map.closeAllLayers();
 			
 			for (var i = 0; i < views.length; i++) {
@@ -2837,12 +2844,20 @@ Ext.onReady( function() {
 	GIS.obj.InterpretationWindow = function() {
 		var window,
 			textarea,
+			panel,
 			button;
 			
 		textarea = Ext.create('Ext.form.field.TextArea', {
 			cls: 'gis-textarea',
-			height: 170,
+			height: 130,
+			fieldStyle: 'padding-left: 4px; padding-top: 3px',
 			emptyText: 'Write your interpretation...' //i18n
+		});
+		
+		panel = Ext.create('Ext.panel.Panel', {
+			cls: 'gis-container-inner',
+			html: '<b>Direct link: </b>' + GIS.init.contextPath + '/dhis-web-mapping/app/index.html?id=' + GIS.map.mapLoader.id,
+			style: 'padding-top: 9px; padding-bottom: 2px'
 		});
 		
 		button = Ext.create('Ext.button.Button', {
@@ -2869,10 +2884,13 @@ Ext.onReady( function() {
 			layout: 'fit',
 			iconCls: 'gis-window-title-icon-interpretation',
 			cls: 'gis-container-default',
-			width: 450,
+			width: 500,
 			resizable: true,
 			modal: true,
-			items: textarea,
+			items: [
+				textarea,
+				panel
+			],
 			bbar: [
 				'->',
 				button
@@ -2880,9 +2898,17 @@ Ext.onReady( function() {
 			listeners: {
 				show: function() {
 					this.setPosition(325, 37);
+				},
+				destroy: function() {
+					document.body.oncontextmenu = function(){
+						return false;
+					};
 				}
+					
 			}
 		});
+		
+		document.body.oncontextmenu = true; // right click to copy url
 		
 		return window;
 	};
