@@ -30,6 +30,7 @@ package org.hisp.dhis.configuration;
 import java.io.Serializable;
 
 import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
@@ -61,6 +62,8 @@ public class Configuration
     
     private UserAuthorityGroup selfRegistrationRole;
     
+    private OrganisationUnit selfRegistrationOrgUnit;
+    
     public Configuration()
     {
     }
@@ -76,7 +79,8 @@ public class Configuration
     
     public boolean selfRegistrationAllowed()
     {
-        return selfRegistrationRole != null && selfRegistrationRole instanceof UserAuthorityGroup;
+        return selfRegistrationRole != null && selfRegistrationRole instanceof UserAuthorityGroup &&
+            selfRegistrationOrgUnit != null && selfRegistrationOrgUnit instanceof OrganisationUnit;
     }
     
     // -------------------------------------------------------------------------
@@ -141,5 +145,15 @@ public class Configuration
     public void setSelfRegistrationRole( UserAuthorityGroup selfRegistrationRole )
     {
         this.selfRegistrationRole = selfRegistrationRole;
+    }
+
+    public OrganisationUnit getSelfRegistrationOrgUnit()
+    {
+        return selfRegistrationOrgUnit;
+    }
+
+    public void setSelfRegistrationOrgUnit( OrganisationUnit selfRegistrationOrgUnit )
+    {
+        this.selfRegistrationOrgUnit = selfRegistrationOrgUnit;
     }
 }
