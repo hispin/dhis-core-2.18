@@ -85,7 +85,7 @@ public class GetMessagesAction
 
     public String execute()
     {
-        this.paging = createPaging( messageService.getMessageConversationCount() );
+        this.paging = createPaging( messageService.getMessageConversationCount( followUp, unread ) );
         
         conversations = messageService.getMessageConversations( followUp, unread, paging.getStartPos(), paging.getPageSize() );
         
