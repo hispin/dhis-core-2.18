@@ -100,6 +100,11 @@ public class UserCredentials
      * The timestamp representing when the restore window expires.
      */
     private Date restoreExpiry;
+    
+    /**
+     * Indicates whether this user was originally self registered.
+     */
+    private boolean selfRegistered;
 
     // -------------------------------------------------------------------------
     // Logic
@@ -410,5 +415,15 @@ public class UserCredentials
     public void setRestoreExpiry( Date restoreExpiry )
     {
         this.restoreExpiry = restoreExpiry;
+    }
+
+    public boolean isSelfRegistered()
+    {
+        return selfRegistered;
+    }
+
+    public void setSelfRegistered( boolean selfRegistered )
+    {
+        this.selfRegistered = selfRegistered;
     }
 }

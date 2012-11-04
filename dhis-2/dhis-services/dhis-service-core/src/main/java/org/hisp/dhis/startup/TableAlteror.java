@@ -441,6 +441,8 @@ public class TableAlteror
         executeSql( "update chart set userorganisationunitchildren = false where userorganisationunitchildren is null" );
         executeSql( "update chart set userorganisationunit = false where userorganisationunit is null" );
 
+        executeSql( "update users set selfregistered = false where selfregistered is null" );
+        
         // report, reporttable, chart groups
         
         executeSql( "DROP TABLE reportgroupmembers" );
