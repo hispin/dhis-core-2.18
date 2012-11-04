@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -84,6 +86,13 @@ public class InitializeAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+
+    private String contextPath;
+
+    public String getContextPath()
+    {
+        return contextPath;
+    }
 
     private Collection<OrganisationUnit> rootNodes;
 
@@ -168,7 +177,7 @@ public class InitializeAction
     {
         return last5Years;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -176,6 +185,8 @@ public class InitializeAction
     public String execute()
         throws Exception
     {
+        contextPath = ContextUtils.getContextPath( ServletActionContext.getRequest() );
+        
         rootNodes = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
 
         if ( rootNodes.size() < 1 )
