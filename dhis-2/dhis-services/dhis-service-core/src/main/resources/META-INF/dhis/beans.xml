@@ -692,6 +692,14 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="skipInTests" value="true" />
   </bean>
 
+  <bean id="org.hisp.dhis.startup.MapViewUpgrader" class="org.hisp.dhis.startup.MapViewUpgrader">
+    <property name="statementManager" ref="statementManager" />
+    <property name="batchHandlerFactory" ref="batchHandlerFactory" />
+    <property name="name" value="MapViewUpgrader" />
+    <property name="runlevel" value="1" />
+    <property name="skipInTests" value="true" />
+  </bean>
+  
   <bean id="org.hisp.dhis.common.IdentityPopulator" class="org.hisp.dhis.common.IdentityPopulator">
     <property name="statementManager" ref="statementManager" />
     <property name="name" value="IdentityPopulator" />
@@ -739,6 +747,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
       <list>
         <list>
           <ref local="org.hisp.dhis.startup.TableAlteror" />
+          <ref local="org.hisp.dhis.startup.MapViewUpgrader" />
           <ref local="org.hisp.dhis.common.IdentityPopulator" />
           <ref local="org.hisp.dhis.period.PeriodTypePopulator" />
           <ref local="org.hisp.dhis.startup.TableCreator" />
