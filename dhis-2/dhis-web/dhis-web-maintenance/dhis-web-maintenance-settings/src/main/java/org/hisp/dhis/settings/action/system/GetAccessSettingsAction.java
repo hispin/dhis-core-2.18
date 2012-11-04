@@ -32,6 +32,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,9 @@ public class GetAccessSettingsAction
 {
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     // -------------------------------------------------------------------------
     // Output
@@ -57,6 +62,13 @@ public class GetAccessSettingsAction
     {
         return userRoles;
     }
+    
+    private List<OrganisationUnit> selfRegistrationOrgUnits = new ArrayList<OrganisationUnit>();
+
+    public List<OrganisationUnit> getSelfRegistrationOrgUnits()
+    {
+        return selfRegistrationOrgUnits;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -67,6 +79,9 @@ public class GetAccessSettingsAction
         userRoles = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
         
         Collections.sort( userRoles, IdentifiableObjectNameComparator.INSTANCE );
+        
+        selfRegistrationOrgUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
+        selfRegistrationOrgUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevel( 2 ) );
         
         return SUCCESS;        
     }
