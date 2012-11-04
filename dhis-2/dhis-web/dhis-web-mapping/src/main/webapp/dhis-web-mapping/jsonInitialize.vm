@@ -1,6 +1,6 @@
 #set( $baseLayersSize = $baseLayers.size() )
 #set( $overlaysSize = $overlays.size() )
-#set( $rootNodesSize = $roteNodes.size() )
+#set( $rootNodesSize = $rootNodes.size() )
 {
   "contextPath":"$!{contextPath}",
   "mapView": { 
