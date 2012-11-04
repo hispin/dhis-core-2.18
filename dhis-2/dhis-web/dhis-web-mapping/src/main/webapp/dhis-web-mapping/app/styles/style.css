@@ -11,6 +11,7 @@
  * Window
  * Grid
  * TextField
+ * TextArea
  * Checkbox
  * NumberField
  * Label
@@ -83,13 +84,17 @@ html * {
 }
 
 .olControlPanel.zoomIn {
-	right: 48px;
+	right: 72px;
 }
 .olControlPanel.zoomIn .olControlButtonItemActive {
 	border-bottom-left-radius: 2px;
 }
 
 .olControlPanel.zoomOut {
+	right: 48px;
+}
+
+.olControlPanel.zoomVisible {
 	right: 24px;
 }
 
@@ -436,6 +441,12 @@ html * {
 .gis-window-title-icon-legendset {
 	background: url('../images/legendset_14.png') no-repeat;
 }
+.gis-window-title-icon-interpretation {
+	background: url('../images/interpretation_14.png') no-repeat;
+}
+.gis-window-title-icon-measure {
+	background: url('../images/measure_14.png') no-repeat;
+}
 
 /* Grid */
 
@@ -504,6 +515,11 @@ html * {
 
 .gis-textfield input.x-form-text {
 	border-radius: 1px;
+}
+
+/* Textarea */
+.gis-textarea .x-form-field {
+	font-size: 11px;
 }
 
 /* Checkbox */

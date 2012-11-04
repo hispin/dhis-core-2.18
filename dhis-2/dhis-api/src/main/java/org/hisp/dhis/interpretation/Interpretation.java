@@ -40,6 +40,7 @@ import org.hisp.dhis.common.annotation.Scanned;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -60,7 +61,7 @@ public class Interpretation
 {
     private Chart chart;
 
-    private MapView mapView;
+    private Map map;
     
     private ReportTable reportTable;
     
@@ -95,9 +96,9 @@ public class Interpretation
         this.created = new Date();
     }
 
-    public Interpretation( MapView mapView, String text )
+    public Interpretation( Map map, String text )
     {
-        this.mapView = mapView;
+        this.map = map;
         this.text = text;
         this.created = new Date();
     }
@@ -133,9 +134,9 @@ public class Interpretation
         return chart != null;
     }
     
-    public boolean isMapViewInterpretation()
+    public boolean isMapInterpretation()
     {
-        return mapView != null;
+        return map != null;
     }
     
     public boolean isReportTableInterpretation()
@@ -181,14 +182,14 @@ public class Interpretation
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
-    public MapView getMapView()
+    public Map getMap()
     {
-        return mapView;
+        return map;
     }
 
-    public void setMapView( MapView mapView )
+    public void setMap( Map map )
     {
-        this.mapView = mapView;
+        this.map = map;
     }
 
     @JsonProperty

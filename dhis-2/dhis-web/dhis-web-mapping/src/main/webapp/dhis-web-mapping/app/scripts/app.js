@@ -109,7 +109,8 @@ GIS.util = {
 	gui: {
 		window: {},
 		combo: {}
-	}
+	},
+	measure: {}
 };
 
 GIS.map;
@@ -215,6 +216,7 @@ Ext.onReady( function() {
 		document.getElementsByClassName('zoomInButton')[0].innerHTML = '<img src="images/zoomin_24.png" />';
 		document.getElementsByClassName('zoomOutButton')[0].innerHTML = '<img src="images/zoomout_24.png" />';
 		document.getElementsByClassName('zoomVisibleButton')[0].innerHTML = '<img src="images/zoomvisible_24.png" />';
+		document.getElementsByClassName('measureButton')[0].innerHTML = '<img src="images/measure_24.png" />';
 		
 		// Map events
 		GIS.map.events.register('mousemove', null, function(e) {
@@ -980,6 +982,8 @@ Ext.onReady( function() {
 			text: 'Close', //i18n
 			iconCls: 'gis-menu-item-icon-clear',
 			handler: function() {
+				GIS.cmp.interpretationButton.disable();
+				
 				base.widget.reset();
 			}
 		};
@@ -1077,7 +1081,10 @@ Ext.onReady( function() {
 				{
 					text: 'Update', //i18n
 					handler: function() {
-						base.widget.execute();
+						GIS.map.mapLoader = null;
+						GIS.cmp.interpretationButton.disable();
+						
+						base.widget.execute();						
 					}
 				}
 			],
@@ -1647,6 +1654,8 @@ Ext.onReady( function() {
 								success: function() {								
 									GIS.store.maps.loadStore();
 									
+									GIS.cmp.interpretationButton.enable();
+									
 									window.destroy();
 								}
 							});
@@ -1998,7 +2007,7 @@ Ext.onReady( function() {
 			],
 			listeners: {
 				show: function() {
-					this.setPosition(this.getPosition()[0], 40);
+					this.setPosition(115, 37);
 				}
 			}
 		});
@@ -2064,7 +2073,7 @@ Ext.onReady( function() {
 				callbackRegister.push(widget);
 				
 				if (callbackRegister.length === map.mapViews.length) {
-					GIS.map.mapLoader = null;
+					GIS.cmp.interpretationButton.enable();
 				}
 			}
 		};
@@ -2741,7 +2750,7 @@ Ext.onReady( function() {
 			},
 			listeners: {					
 				show: function() {
-					this.setPosition(this.getPosition()[0], 40);
+					this.setPosition(185, 37);
 				}
 			}
 		});
@@ -2823,6 +2832,127 @@ Ext.onReady( function() {
 		return menu;
 	};
 	
+	GIS.obj.InterpretationWindow = function() {
+		var window,
+			textarea,
+			button;
+			
+		textarea = Ext.create('Ext.form.field.TextArea', {
+			xtype: 'textarea',
+			cls: 'gis-textarea',
+			height: 170,
+			emptyText: 'Write your interpretation...' //i18n
+		});
+		
+		button = Ext.create('Ext.button.Button', {
+			text: 'Share', //i18n
+			handler: function() {
+				if (textarea.getValue() && GIS.map.mapLoader) {
+					Ext.Ajax.request({
+						url: GIS.conf.url.path_api + 'interpretations/map/' + GIS.map.mapLoader.id,
+						method: 'POST',
+						params: textarea.getValue(),
+						headers: {'Content-Type': 'text/html'},
+						success: function() {
+							window.destroy();
+							
+							alert('Interpretation was shared!');
+						}
+					});
+				}
+			}
+		});
+		
+		window = Ext.create('Ext.window.Window', {
+			title: 'Share interpretation', //i18n
+			layout: 'fit',
+			iconCls: 'gis-window-title-icon-interpretation',
+			cls: 'gis-container-default',
+			width: 450,
+			resizable: true,
+			modal: true,
+			items: textarea,
+			bbar: [
+				'->',
+				button
+			],
+			listeners: {
+				show: function() {
+					this.setPosition(325, 37);
+				}
+			}
+		});
+		
+		return window;
+	};
+	
+	GIS.obj.MeasureWindow = function() {
+		var window,
+			label,
+			handleMeasurements,
+			control,
+			styleMap;
+			
+		styleMap = new OpenLayers.StyleMap({
+			'default': new OpenLayers.Style()
+		});
+			
+		control = new OpenLayers.Control.Measure( OpenLayers.Handler.Path, {
+			persist: true,
+			immediate: true,
+			handlerOption: {
+				layerOptions: {
+					styleMap: styleMap
+				}
+			}
+		});
+		
+		handleMeasurements = function(e) {
+			if (e.measure) {				
+				label.setText(e.measure.toFixed(2) + ' ' + e.units);
+			}
+		};
+		
+		GIS.map.addControl(control);
+		
+		control.events.on({
+			measurepartial: handleMeasurements,
+			measure: handleMeasurements
+		});
+		
+		control.geodesic = true;
+		control.activate();
+		
+		label = Ext.create('Ext.form.Label', {
+			style: 'height: 20px',
+			text: '0 km'
+		});
+		
+		window = Ext.create('Ext.window.Window', {
+			title: 'Measure distance', //i18n
+			layout: 'fit',
+			cls: 'gis-container-default',
+			bodyStyle: 'text-align: center',
+			width: 130,
+			minWidth: 130,
+			resizable: false,
+			items: label,
+			listeners: {
+				show: function() {
+					var x = GIS.cmp.region.east.x - this.getWidth() - 5,
+						y = 60;
+					this.setPosition(x, y);
+				},
+				destroy: function() {
+					control.deactivate();
+					GIS.map.removeControl(control);
+				}
+			}
+		});
+		
+		return window;
+	};
+	
 	// OpenLayers map
 	
 	GIS.map = new OpenLayers.Map({
@@ -2848,6 +2978,13 @@ Ext.onReady( function() {
 	GIS.util.map.addMapControl('zoomIn', GIS.map.zoomIn);
 	GIS.util.map.addMapControl('zoomOut', GIS.map.zoomOut);
 	GIS.util.map.addMapControl('zoomVisible', GIS.util.map.zoomToVisibleExtent);
+	GIS.util.map.addMapControl('measure', function() {
+		if (GIS.cmp.measureWindow && GIS.cmp.measureWindow.destroy) {
+			GIS.cmp.measureWindow.destroy();
+		}		
+		GIS.cmp.measureWindow = new GIS.obj.MeasureWindow();
+		GIS.cmp.measureWindow.show();
+	});
     
     // Base layers
     
@@ -3086,7 +3223,20 @@ Ext.onReady( function() {
 						{
 							text: 'Share', //i18n
 							menu: {},
-							disabled: true
+							disabled: true,
+							handler: function() {
+								if (GIS.cmp.interpretationWindow && GIS.cmp.interpretationWindow.destroy) {
+									GIS.cmp.interpretationWindow.destroy();
+								}
+								
+								GIS.cmp.interpretationWindow = new GIS.obj.InterpretationWindow();
+								GIS.cmp.interpretationWindow.show();
+							},
+							listeners: {
+								added: function() {
+									GIS.cmp.interpretationButton = this;
+								}
+							}
 						},
 						'->',
 						{
