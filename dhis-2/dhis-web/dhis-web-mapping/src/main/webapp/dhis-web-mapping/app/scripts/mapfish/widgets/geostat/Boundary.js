@@ -554,6 +554,7 @@ Ext.define('mapfish.widgets.geostat.Boundary', {
 				level: this.tmpView.organisationUnitLevel.id
 			},
 			scope: this,
+			disableCaching: false,
 			success: function(r) {
 				var geojson = GIS.util.geojson.decode(r.responseText, this),
 					format = new OpenLayers.Format.GeoJSON(),

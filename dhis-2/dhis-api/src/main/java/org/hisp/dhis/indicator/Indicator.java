@@ -367,15 +367,15 @@ public class Indicator
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public MapLegendSet getLegendSet() 
     {
-		return legendSet;
-	}
+        return legendSet;
+    }
 
-	public void setLegendSet( MapLegendSet legendSet ) 
-	{
-		this.legendSet = legendSet;
-	}
+    public void setLegendSet( MapLegendSet legendSet ) 
+    {
+        this.legendSet = legendSet;
+    }
 
-	@Override
+    @Override
     public void mergeWith( IdentifiableObject other )
     {
         super.mergeWith( other );
