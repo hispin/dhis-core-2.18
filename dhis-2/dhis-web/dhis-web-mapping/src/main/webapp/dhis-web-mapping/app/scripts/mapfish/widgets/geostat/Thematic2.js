@@ -1613,6 +1613,7 @@ Ext.define('mapfish.widgets.geostat.Thematic2', {
 				level: this.tmpView.organisationUnitLevel.id
 			},
 			scope: this,
+			disableCaching: false,
 			success: function(r) {
 				var geojson = GIS.util.geojson.decode(r.responseText, this),
 					format = new OpenLayers.Format.GeoJSON(),

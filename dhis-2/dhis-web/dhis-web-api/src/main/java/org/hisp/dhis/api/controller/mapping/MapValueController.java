@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
@@ -75,6 +76,9 @@ public class MapValueController
     @Autowired
     private OrganisationUnitService organisationUnitService;
 
+    @Autowired
+    private ContextUtils contextUtils;
+    
     @RequestMapping( value = "/in", method = RequestMethod.GET )
     public String getIndicatorMapValues(
         @RequestParam String in,
@@ -121,6 +125,8 @@ public class MapValueController
         Collection<AggregatedMapValue> mapValues = mappingService.getIndicatorMapValues( indicator.getId(), period.getId(), organisationUnit.getId(), level.getLevel() );
         
         model.addAttribute( "model", mapValues );
+        
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         
         return "mapValues";
     }
@@ -171,6 +177,8 @@ public class MapValueController
         Collection<AggregatedMapValue> mapValues = mappingService.getDataElementMapValues( dataElement.getId(), period.getId(), organisationUnit.getId(), level.getLevel() );
         
         model.addAttribute( "model", mapValues );
+
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING );
         
         return "mapValues";
     }

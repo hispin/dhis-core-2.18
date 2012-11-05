@@ -98,8 +98,6 @@ public class GetGeoJsonAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-
-
     public String execute()
         throws Exception
     {
@@ -128,23 +126,25 @@ public class GetGeoJsonAction
         FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
 
         boolean modified = !clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), organisationUnits );
-        
-        if ( modified )
+
+        if ( !modified )
         {
-            for ( OrganisationUnit unit : organisationUnits )
+            return SUCCESS;
+        }
+
+        for ( OrganisationUnit unit : organisationUnits )
+        {
+            if ( !unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
             {
-                if ( !unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-                {
-                    object.add( unit );
-                }
+                object.add( unit );
             }
-    
-            for ( OrganisationUnit unit : organisationUnits )
+        }
+
+        for ( OrganisationUnit unit : organisationUnits )
+        {
+            if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
             {
-                if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-                {
-                    object.add( unit );
-                }
+                object.add( unit );
             }
         }
         

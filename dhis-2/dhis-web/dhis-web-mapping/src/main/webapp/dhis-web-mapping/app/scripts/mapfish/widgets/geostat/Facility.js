@@ -830,6 +830,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 				level: this.tmpView.organisationUnitLevel.id
 			},
 			scope: this,
+			disableCaching: false,
 			success: function(r) {
 				var geojson = this.decode(r.responseText),
 					format = new OpenLayers.Format.GeoJSON(),
