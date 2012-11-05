@@ -1738,7 +1738,7 @@ Ext.onReady( function() {
 				],
 				listeners: {
 					show: function() {
-						this.setPosition(this.getPosition()[0], 100);
+						this.setPosition(mapWindow.x + 14, mapWindow.y + 67);
 					}
 				}
 			});
@@ -2024,6 +2024,7 @@ Ext.onReady( function() {
 				{
 					xtype: 'panel',
 					layout: 'hbox',
+					width: 422,
 					cls: 'gis-container-inner',
 					items: [
 						addButton,
@@ -2069,7 +2070,7 @@ Ext.onReady( function() {
 		};
 		
 		setMap = function(map) {
-			var views = map.mapViews,
+			var views = Ext.isDefined(map.mapViews) ? map.mapViews : [],
 				view,
 				center,
 				lonLat;

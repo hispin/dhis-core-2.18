@@ -10,9 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/style.css" />
 </head>
 
-<body>
-	<div id="slow" style="height:200px; width: 200px; padding: 20px"></div>
-	
+<body>	
 	<div id="layerItems"></div>
 	<div id="boundaryLegend"></div>
 	<div id="thematic1Legend"></div>
@@ -29,12 +27,9 @@
 		var GIS = {};
 		window.google = null;
 		document.body.oncontextmenu = function(){return false;};
-		document.getElementById('slow').innerHTML = "<a href=''>SLOW CONNECTION?</a>";
 	</script>
     
-<!--
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
--->
 
     <script type="text/javascript" src="../../dhis-web-commons/javascripts/ext/ext-all.js"></script>
     <script type="text/javascript">
@@ -45,9 +40,6 @@
 			'Ext.ux.button.ColorButton',
 			'Ext.ux.panel.LayerItemPanel'
 		]);
-		Ext.onReady( function() {	
-			Ext.removeNode(document.getElementById('slow'));
-		});
     </script>
     
     <script type="text/javascript" src="scripts/openlayers/OpenLayers.js"></script>

@@ -201,39 +201,6 @@ Ext.define('mapfish.widgets.geostat.Thematic2', {
 		})
 	},
     
-    setUrl: function(url) {
-        this.url = url;
-        this.coreComp.setUrl(this.url);
-    },
-
-    requestSuccess: function(request) {
-        var doc = request.responseXML,
-			format = new OpenLayers.Format.GeoJSON();
-			
-        if (!doc || !doc.documentElement) {
-            doc = request.responseText;
-        }
-        
-        if (doc.length) {
-            doc = GIS.util.geojson.decode(doc, this);
-        }
-        else {
-			alert('No valid coordinates found'); //todo //i18n
-		}
-        
-        this.layer.removeFeatures(this.layer.features);
-        this.layer.addFeatures(format.read(doc));
-		this.layer.features = GIS.util.vector.getTransformedFeatureArray(this.layer.features);
-        this.features = this.layer.features.slice(0);
-        
-        this.loadData();
-    },
-
-    requestFailure: function(request) {
-        GIS.logg.push(request.status, request.statusText);        
-        console.log(request.status, request.statusText);
-    },
-    
     getColors: function(low, high) {
         var startColor = new mapfish.ColorRgb();
         startColor.setFromHex(low || this.cmp.colorLow.getValue());
@@ -1420,6 +1387,7 @@ Ext.define('mapfish.widgets.geostat.Thematic2', {
 	getView: function() {
 		var level = this.cmp.level,
 			parent = this.cmp.parent.getSelectionModel().getSelection(),
+			store = GIS.store.organisationUnitLevels,
 			view;
 				
 		parent = parent.length ? parent : [{raw: GIS.init.rootNodes[0]}];
@@ -1460,7 +1428,7 @@ Ext.define('mapfish.widgets.geostat.Thematic2', {
 			organisationUnitLevel: {
 				id: level.getValue(),
 				name: level.getRawValue(),
-				level: GIS.store.organisationUnitLevels.getById(level.getValue()).data.level
+				level: store.data.items.length && level.getValue() ? store.getById(level.getValue()).data.level : null
 			},
 			parentOrganisationUnit: {
 				id: parent[0].raw.id,
@@ -1652,6 +1620,11 @@ Ext.define('mapfish.widgets.geostat.Thematic2', {
 					
 				if (!features.length) {
 					alert('No valid coordinates found'); //todo //i18n
+					GIS.mask.hide();
+					
+					this.config = {
+						extended: {}
+					};
 					return;
 				}
 				
@@ -1810,7 +1783,7 @@ Ext.define('mapfish.widgets.geostat.Thematic2', {
 		this.store.features.loadFeatures(this.layer.features); 
 		
 		// Update filter window
-		if (this.cmp.filterWindow && this.cmp.filterWindow.isVisible()) { 
+		if (this.cmp.filterWindow && this.cmp.filterWindow.isVisible()) {
 			this.cmp.filterWindow.filter();
 		}
 		
