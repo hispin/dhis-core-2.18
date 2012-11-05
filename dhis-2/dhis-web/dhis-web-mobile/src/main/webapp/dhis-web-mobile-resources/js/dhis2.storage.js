@@ -31,7 +31,7 @@ dhis2['storage'] = dhis2['storage'] || {};
 dhis2.storage.FormManager = function ( args ) {
     this._organisationUnits = undefined;
     this._forms = undefined;
-    this._id = _.uniqueId('formManager');
+    this._id = _.uniqueId('form-manager');
 };
 
 dhis2.storage.FormManager.prototype.getMetaData = function () {
@@ -133,7 +133,7 @@ dhis2.storage.FormManager.prototype.getDataValueSetValues = function( dataValueS
 dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) {
     var dataValueSets = this.dataValueSets();
 
-    return dhis2.storage.makeUploadDataValueSetRequest( dataValueSet ).always(function() {
+    return dhis2.storage.makeUploadDataValueSetRequest( dataValueSet ).error(function() {
         // add to local dataValueSets
         dataValueSets[dhis2.storage.getUniqueKey(dataValueSet)] = dataValueSet;
 
@@ -141,11 +141,12 @@ dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) 
         localStorage.removeItem('dataValueSets');
         localStorage.setItem('dataValueSets', JSON.stringify( dataValueSets ));
 
-        alert('stored locally');
+        alert(JSON.stringify( dataValueSets ));
     });
 };
 
 dhis2.storage.FormManager.prototype.uploadDataValueSets = function() {
+/*
     var dataValueSets = this.dataValueSets();
     var deferreds = [];
 
@@ -162,6 +163,7 @@ dhis2.storage.FormManager.prototype.uploadDataValueSets = function() {
         localStorage.removeItem('dataValueSets');
         localStorage.setItem('dataValueSets', JSON.stringify( dataValueSets ));
     });
+ */
 };
 
 // global storage manager instance
