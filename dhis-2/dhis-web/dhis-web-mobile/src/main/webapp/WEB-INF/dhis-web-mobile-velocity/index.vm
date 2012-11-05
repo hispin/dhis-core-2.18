@@ -49,6 +49,7 @@
         });
 
         $('body').bind('dhis2.online', function() {
+            /*
             if( loggedInStatus ) {
                 fm.uploadDataValueSets().always(function() {
                     updateMenu();
@@ -59,6 +60,14 @@
                     });
                 });
             }
+            */
+
+            updateMenu();
+            renderOfflineStatus();
+
+            getDashboard().always(function() {
+                $('section[data-role="content"] ul').listview('refresh');
+            });
         });
 
         $('body').bind('dhis2.offline', function() {
