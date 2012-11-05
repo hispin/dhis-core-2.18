@@ -74,7 +74,8 @@ DV.conf = {
 						isadmin: r.user.isAdmin,
 						ou: r.user.ou,
 						ouc: r.user.ouc
-					}
+					},
+					contextPath: r.contextPath
 				};
 				for (var i = 0; i < r.system.rn.length; i++) {
 					obj.system.rootnodes.push({id: r.system.rn[i][0], text: r.system.rn[i][1], level: 1});
@@ -309,7 +310,7 @@ Ext.require('Ext.ux.form.MultiSelect');
 
 Ext.onReady( function() {
     Ext.QuickTips.init();
-    document.body.oncontextmenu = function(){return false;}; 
+    document.body.oncontextmenu = function(){return false;};
     
     Ext.Ajax.request({
         url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.initialize,
@@ -4771,7 +4772,7 @@ Ext.onReady( function() {
 							},
 							getTitle: function() {
 								return DV.i18n.share + ' ' + DV.i18n.interpretation +
-										': <span style="font-weight:normal; font-size:10px">' + DV.c.currentFavorite.name + '</span>';
+										'<span style="font-weight:normal; font-size:11px"> (' + DV.c.currentFavorite.name + ') </span>';
 							},
 							disabledTooltip: null,
 							createTooltip: function() {
@@ -4789,11 +4790,10 @@ Ext.onReady( function() {
 								else {
 									DV.cmp.share.window = Ext.create('Ext.window.Window', {
 										title: this.getTitle(),
-										iconCls: 'dv-window-title-interpretation',
 										layout: 'fit',
+										iconCls: 'dv-window-title-interpretation',
+										width: 500,
 										bodyStyle: 'padding:8px 8px 3px; background-color:#fff',
-										width: DV.conf.layout.window_share_width,
-										height: 200,
 										closeAction: 'hide',
 										resizable: true,
 										modal: true,
@@ -4801,7 +4801,8 @@ Ext.onReady( function() {
 											{
 												xtype: 'textarea',
 												cls: 'dv-textarea',
-												width: 350,
+												height: 130,
+												fieldStyle: 'padding-left: 4px; padding-top: 3px',
 												emptyText: DV.i18n.write_your_interpretation + '...',
 												enableKeyEvents: true,
 												listeners: {
@@ -4812,6 +4813,12 @@ Ext.onReady( function() {
 														DV.cmp.share.button.xable();
 													}
 												}
+											},
+											{
+												xtype: 'panel',
+												html: '<b>Direct link: </b>' + DV.init.contextPath + '/dhis-web-visualizer/app/index.html?id=' + DV.c.currentFavorite.id,
+												style: 'padding-top: 9px; padding-bottom: 6px',
+												bodyStyle: 'border: 0 none'
 											}
 										],
 										bbar: {
@@ -4855,8 +4862,15 @@ Ext.onReady( function() {
 													}
 												}
 											]
+										},
+										listeners: {
+											hide: function() {
+												document.body.oncontextmenu = function(){return false;};
+											}
 										}
 									}).show();
+									
+									document.body.oncontextmenu = true;
 								}
 							},
                             listeners: {
