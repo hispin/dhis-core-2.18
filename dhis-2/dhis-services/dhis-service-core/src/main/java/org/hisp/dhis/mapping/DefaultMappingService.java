@@ -514,8 +514,13 @@ public class DefaultMappingService
         {
             for ( MapView mapView : mapViews )
             {
-                mapView.getParentOrganisationUnit().setLevel(
-                    organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit().getId() ) );
+                //TODO poor performance, fix
+                
+                if ( mapView.getParentOrganisationUnit() != null )
+                {
+                    mapView.getParentOrganisationUnit().setLevel(
+                        organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit().getId() ) );
+                }
             }
         }
 

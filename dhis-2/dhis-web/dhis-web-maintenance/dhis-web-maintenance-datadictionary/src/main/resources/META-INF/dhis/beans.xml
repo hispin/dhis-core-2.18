@@ -60,6 +60,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
     <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementAction" class="org.hisp.dhis.dd.action.dataelement.GetDataElementAction"
@@ -89,6 +90,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
     <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction" class="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction"
@@ -104,6 +106,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
     <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction" class="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction"
@@ -119,6 +122,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
     <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.ValidateDataElementAction" class="org.hisp.dhis.dd.action.dataelement.ValidateDataElementAction"
@@ -444,6 +448,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.indicator.IndicatorService" />
     </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction" class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction"
@@ -489,18 +494,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicator.ShowUpdateIndicatorFormAction" class="org.hisp.dhis.dd.action.indicator.ShowUpdateIndicatorFormAction"
     scope="prototype">
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction" class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction"
     scope="prototype">
     <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+    <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.indicator.ValidateIndicatorAction" class="org.hisp.dhis.dd.action.indicator.ValidateIndicatorAction"

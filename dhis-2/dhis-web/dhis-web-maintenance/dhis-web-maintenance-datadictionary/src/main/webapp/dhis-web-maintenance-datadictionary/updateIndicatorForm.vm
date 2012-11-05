@@ -65,6 +65,17 @@
 		</td>
 	</tr>
     <tr>
+        <td>$i18n.getString( 'legend_set' )</td>            
+        <td>
+            <select id="selectedLegendSetId" name="selectedLegendSetId">
+                <option value="0">[$i18n.getString('please_select')]</option>
+                #foreach ( $legendSet in $legendSets )
+                <option value="$legendSet.id" #if( $indicator.legendSet && $indicator.legendSet.id == "$legendSet.id" ) selected #end>$encoder.htmlEncode( $legendSet.name )</option>
+                #end
+            </select>
+        </td>
+    </tr>
+    <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $indicator.url )"></td>
     </tr>

@@ -36,6 +36,8 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.system.util.AttributeUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -62,6 +64,13 @@ public class UpdateIndicatorAction
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
+    }
+
+    private MappingService mappingService;
+
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
@@ -115,6 +124,13 @@ public class UpdateIndicatorAction
     public void setIndicatorTypeId( Integer indicatorTypeId )
     {
         this.indicatorTypeId = indicatorTypeId;
+    }
+
+    private Integer selectedLegendSetId;
+
+    public void setSelectedLegendSetId( Integer selectedLegendSetId )
+    {
+        this.selectedLegendSetId = selectedLegendSetId;
     }
 
     private String url;
@@ -183,6 +199,8 @@ public class UpdateIndicatorAction
 
         IndicatorType indicatorType = indicatorService.getIndicatorType( indicatorTypeId );
 
+        MapLegendSet legendSet = mappingService.getMapLegendSet( selectedLegendSetId );
+        
         if ( code != null && code.trim().length() == 0 )
         {
             code = null;
@@ -199,6 +217,7 @@ public class UpdateIndicatorAction
         indicator.setDescription( description );
         indicator.setAnnualized( annualized );
         indicator.setIndicatorType( indicatorType );
+        indicator.setLegendSet( legendSet );
         indicator.setUrl( url );
         indicator.setNumerator( numerator );
         indicator.setNumeratorDescription( numeratorDescription );
