@@ -36,8 +36,9 @@ dhis2.storage.FormManager = function ( args ) {
 
 dhis2.storage.FormManager.prototype.getMetaData = function () {
     return $.ajax({
-        url      : '../api/currentUser/forms',
-        dataType : 'json'
+        url         : '../api/currentUser/forms',
+        dataType    : 'json',
+        cache       : false
     }).success(function ( data ) {
         // clear out old localStorage, some phones doesn't like it when you overwrite old keys
         delete localStorage['organisationUnits'];
@@ -109,10 +110,11 @@ dhis2.storage.FormManager.prototype.dataValueSets = function() {
 
 dhis2.storage.makeUploadDataValueSetRequest = function( dataValueSet ) {
     return $.ajax({
-        url: '../api/dataValueSets',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify( dataValueSet )
+        url         : '../api/dataValueSets',
+        type        : 'POST',
+        cache       : false,
+        contentType : 'application/json',
+        data        : JSON.stringify( dataValueSet )
     });
 };
 
