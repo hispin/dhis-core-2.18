@@ -3,7 +3,7 @@
 	<hr/>
 </div>
 
-<div id='patientInforTB'>
+<div id='patientInforTB' name="patientInforTB" style="display:none;">
 	<table>
 		#if( $patient )
 			<tr>            
