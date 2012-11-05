@@ -1,4 +1,3 @@
-
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {	
 	showById('selectDiv');

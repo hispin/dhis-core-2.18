@@ -1,3 +1,4 @@
+isAjax = true;
 
 function multiDataEntryOrgunitSelected( orgUnits, orgUnitNames )
 {
@@ -69,6 +70,9 @@ function loadDataEntry( programStageInstanceId )
 	$('#contentDataRecord' ).load("viewProgramStageRecords.action",
 		{
 			programStageInstanceId: programStageInstanceId
+		},function()
+		{
+			showById('patientInforTB');
 		}).dialog(
 		{
 			title:i18n_program_stage,

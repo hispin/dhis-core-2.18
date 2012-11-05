@@ -93,7 +93,7 @@
 	</h3>
 	<table style="width:480px;">
 		<tr>
-			<th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" )</span> </th>
+			<th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" )</span> <em title="$i18n.getString( "required" )" class="required">*</em> </th>
 			<th><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();"></th>
 				<script type="text/javascript">
 				   datePickerValid( 'executionDate', false );
