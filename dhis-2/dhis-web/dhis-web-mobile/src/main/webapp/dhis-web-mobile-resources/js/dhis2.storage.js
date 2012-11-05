@@ -64,8 +64,10 @@ dhis2.storage.FormManager.prototype.needMetaData = function () {
 
 dhis2.storage.FormManager.prototype.organisationUnits = function () {
     if ( this._organisationUnits === undefined ) {
-        if( localStorage.getItem('organisationUnits') ) {
-            this._organisationUnits = JSON.parse(localStorage.getItem('organisationUnits'));
+        var organisationUnits = localStorage.getItem('organisationUnits');
+
+        if( organisationUnits != null && organisationUnits != "null" ) {
+            this._organisationUnits = JSON.parse(organisationUnits);
         }
     }
 
@@ -83,8 +85,10 @@ dhis2.storage.FormManager.prototype.dataSets = function (id) {
 
 dhis2.storage.FormManager.prototype.forms = function () {
     if( this._forms === undefined ) {
-        if( localStorage.getItem('forms') ) {
-            this._forms = JSON.parse( localStorage.getItem('forms') );
+        var form = localStorage.getItem('forms');
+
+        if( form != null && form != "null") {
+            this._forms = JSON.parse( form );
         }
     }
 
@@ -98,7 +102,7 @@ dhis2.storage.FormManager.prototype.form = function ( id ) {
 dhis2.storage.FormManager.prototype.dataValueSets = function() {
     var dataValueSets = localStorage.getItem('dataValueSets');
 
-    if(dataValueSets !== undefined )
+    if( dataValueSets != null && dataValueSets != "null" )
     {
         dataValueSets = JSON.parse( dataValueSets );
     } else {
