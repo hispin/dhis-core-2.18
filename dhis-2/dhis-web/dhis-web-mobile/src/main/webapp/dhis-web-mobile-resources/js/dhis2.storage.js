@@ -39,6 +39,10 @@ dhis2.storage.FormManager.prototype.getMetaData = function () {
         url      : '../api/currentUser/forms',
         dataType : 'json'
     }).success(function ( data ) {
+        // clear out old localStorage, some phones doesn't like it when you overwrite old keys
+        delete localStorage['organisationUnits'];
+        delete localStorage['forms'];
+
         if( data.organisationUnits ) {
             localStorage['organisationUnits'] = JSON.stringify(data.organisationUnits);
         } else {
