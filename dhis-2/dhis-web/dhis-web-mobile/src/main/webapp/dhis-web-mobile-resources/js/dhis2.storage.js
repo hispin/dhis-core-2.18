@@ -41,19 +41,19 @@ dhis2.storage.FormManager.prototype.getMetaData = function () {
         cache       : false
     }).success(function ( data ) {
         // clear out old localStorage, some phones doesn't like it when you overwrite old keys
-        delete localStorage['organisationUnits'];
-        delete localStorage['forms'];
+        localStorage.removeItem('organisationUnits';
+        localStorage.removeItem('forms');
 
         if( data.organisationUnits ) {
-            localStorage['organisationUnits'] = JSON.stringify(data.organisationUnits);
+            localStorage.setItem('organisationUnits', JSON.stringify(data.organisationUnits));
         } else {
-            localStorage['organisationUnits'] = JSON.stringify({});
+            localStorage.setItem('organisationUnits', JSON.stringify({}));
         }
 
         if( data.forms ) {
-            localStorage['forms'] = JSON.stringify(data.forms);
+            localStorage.setItem('forms', JSON.stringify(data.forms));
         } else {
-            localStorage['forms'] = JSON.stringify({});
+            localStorage.setItem('forms', JSON.stringify({}));
         }
     });
 };
@@ -64,8 +64,8 @@ dhis2.storage.FormManager.prototype.needMetaData = function () {
 
 dhis2.storage.FormManager.prototype.organisationUnits = function () {
     if ( this._organisationUnits === undefined ) {
-        if( localStorage['organisationUnits'] ) {
-            this._organisationUnits = JSON.parse(localStorage['organisationUnits']);
+        if( localStorage.getItem('organisationUnits') ) {
+            this._organisationUnits = JSON.parse(localStorage.getItem('organisationUnits'));
         }
     }
 
@@ -83,8 +83,8 @@ dhis2.storage.FormManager.prototype.dataSets = function (id) {
 
 dhis2.storage.FormManager.prototype.forms = function () {
     if( this._forms === undefined ) {
-        if( localStorage['forms'] ) {
-            this._forms = JSON.parse( localStorage['forms'] );
+        if( localStorage.getItem('forms') ) {
+            this._forms = JSON.parse( localStorage.getItem('forms') );
         }
     }
 
@@ -96,7 +96,7 @@ dhis2.storage.FormManager.prototype.form = function ( id ) {
 };
 
 dhis2.storage.FormManager.prototype.dataValueSets = function() {
-    var dataValueSets = localStorage['dataValueSets'];
+    var dataValueSets = localStorage.getItem('dataValueSets');
 
     if(dataValueSets !== undefined )
     {
@@ -135,8 +135,10 @@ dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) 
         dataValueSets[dhis2.storage.getUniqueKey(dataValueSet)] = dataValueSet;
 
         // delete old values
-        delete localStorage['dataValueSets'];
-        localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
+        localStorage.removeItem('dataValueSets');
+        localStorage.setItem('dataValueSets', JSON.stringify( dataValueSets ));
+
+        alert('stored locally');
     });
 };
 
@@ -146,15 +148,16 @@ dhis2.storage.FormManager.prototype.uploadDataValueSets = function() {
 
     _.each(dataValueSets, function( value, key ) {
         deferreds.push(dhis2.storage.makeUploadDataValueSetRequest( value ).success(function() {
-                delete dataValueSets[key];
+                // Do not remove old dvs for now
+                // delete dataValueSets[key];
             })
         );
     });
 
     return $.when.apply( null, deferreds ).always(function() {
         // delete old values
-        delete localStorage['dataValueSets'];
-        localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
+        localStorage.removeItem('dataValueSets');
+        localStorage.setItem('dataValueSets', JSON.stringify( dataValueSets ));
     });
 };
 
