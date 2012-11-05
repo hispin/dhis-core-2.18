@@ -232,7 +232,7 @@
 
         dataValueSet.dataValues = dataValues;
 
-        fm.saveDataValueSet( dataValueSet ).always(function() {
+        fm.saveDataValueSet( dataValueSet ).complete(function() {
             $.mobile.loading( 'hide' );
             location.href = 'index';
         });
