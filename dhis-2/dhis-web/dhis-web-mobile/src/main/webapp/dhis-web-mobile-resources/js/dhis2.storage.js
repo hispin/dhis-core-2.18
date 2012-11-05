@@ -130,7 +130,7 @@ dhis2.storage.FormManager.prototype.getDataValueSetValues = function( dataValueS
 dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) {
     var dataValueSets = this.dataValueSets();
 
-    return dhis2.storage.makeUploadDataValueSetRequest( dataValueSet ).error(function() {
+    return dhis2.storage.makeUploadDataValueSetRequest( dataValueSet ).always(function() {
         // add to local dataValueSets
         dataValueSets[dhis2.storage.getUniqueKey(dataValueSet)] = dataValueSet;
 
