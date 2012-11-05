@@ -7,11 +7,11 @@ import org.amplecode.quick.BatchHandlerFactory;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.jdbc.batchhandler.MapBatchHandler;
 import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.hisp.dhis.user.User;
-import org.springframework.transaction.annotation.Transactional;
 
 public class MapViewUpgrader
     extends AbstractStartupRoutine
@@ -33,7 +33,6 @@ public class MapViewUpgrader
     }
     
     @Override
-    @Transactional
     public void execute()
     {
         executeSql( "update mapview set valuetype=mapvaluetype where valuetype is null" );
@@ -62,8 +61,11 @@ public class MapViewUpgrader
             
             while ( rs.next() )
             {
+                log.info( "Upgrading map view..." );
+                
                 User user = null;
                 int userId = rs.getInt( "userid" );
+                int mapViewId = rs.getInt( "mapviewid" );
                 
                 if ( userId != 0 )
                 {
@@ -71,17 +73,22 @@ public class MapViewUpgrader
                     user.setId( userId );
                 }
 
+                String uid = CodeGenerator.generateCode();
+                
                 Map map = new Map( rs.getString( "name" ), user, 
                     rs.getDouble( "longitude" ), rs.getDouble( "latitude" ), rs.getInt( "zoom" ) );
+                map.setUid( uid );
 
-                batchHandler.addObject( map );
+                int mapId = batchHandler.insertObject( map, true );
+                
+                statementManager.getHolder().executeUpdate( "insert into mapmapviews (mapid,mapviewid,sort_order) values(" + mapId + "," + mapViewId + ",0);" );
                 
                 log.info( "Upgraded map view: " + map );
             }
         }
         catch ( Exception ex )
         {
-            log.debug( ex );
+            log.error( "Error", ex );
             return;
         }
         finally
@@ -104,7 +111,7 @@ public class MapViewUpgrader
         }
         catch ( Exception ex )
         {
-            log.debug( ex );
+            log.error( "Execution error", ex );
             return -1;
         }
     }
