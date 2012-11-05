@@ -32,6 +32,8 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.mapping.MapLegendSet;
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.system.util.AttributeUtils;
@@ -85,6 +87,13 @@ public class UpdateDataElementAction
     public void setOptionService( OptionService optionService )
     {
         this.optionService = optionService;
+    }
+
+    private MappingService mappingService;
+
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
@@ -238,6 +247,13 @@ public class UpdateDataElementAction
         this.selectedOptionSetId = selectedOptionSetId;
     }
 
+    private Integer selectedLegendSetId;
+
+    public void setSelectedLegendSetId( Integer selectedLegendSetId )
+    {
+        this.selectedLegendSetId = selectedLegendSetId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -278,6 +294,7 @@ public class UpdateDataElementAction
             .getDataElementCategoryCombo( selectedCategoryComboId );
 
         OptionSet optionSet = optionService.getOptionSet( selectedOptionSetId );
+        MapLegendSet legendSet = mappingService.getMapLegendSet( selectedLegendSetId );
 
         dataElement.setName( name );
         dataElement.setShortName( shortName );
@@ -287,6 +304,7 @@ public class UpdateDataElementAction
         dataElement.setActive( active );
         dataElement.setDomainType( domainType );
         dataElement.setType( valueType );
+        
         if ( DataElement.VALUE_TYPE_STRING.equalsIgnoreCase( valueType ) )
         {
             dataElement.setTextType( textType );
@@ -297,6 +315,7 @@ public class UpdateDataElementAction
             dataElement.setNumberType( numberType );
             dataElement.setTextType( null );
         }
+        
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setZeroIsSignificant( zeroIsSignificant );
@@ -304,6 +323,7 @@ public class UpdateDataElementAction
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
         dataElement.setOptionSet( optionSet );
+        dataElement.setLegendSet( legendSet );
 
         Set<DataSet> dataSets = dataElement.getDataSets();
 

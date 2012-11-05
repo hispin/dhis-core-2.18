@@ -138,10 +138,21 @@
 			<select id="selectedOptionSetId" name="selectedOptionSetId">
 				<option value="0">[$i18n.getString('please_select')]</option>
 				#foreach ( $optionSet in $optionSets )
-				<option value="$optionSet.id">$optionSet.name</option>
+				<option value="$optionSet.id">$encoder.htmlEncode( $optionSet.name )</option>
 				#end
 			</select>
 		</td>
+    </tr>
+    <tr>
+        <td>$i18n.getString( 'legend_set' )</td>            
+        <td>
+            <select id="selectedLegendSetId" name="selectedLegendSetId">
+                <option value="0">[$i18n.getString('please_select')]</option>
+                #foreach ( $legendSet in $legendSets )
+                <option value="$legendSet.id">$encoder.htmlEncode( $legendSet.name )</option>
+                #end
+            </select>
+        </td>
     </tr>
 </table>
 
