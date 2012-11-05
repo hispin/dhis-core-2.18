@@ -69,8 +69,6 @@ public class MapViewUpgrader
                 {
                     user = new User();
                     user.setId( userId );
-                    
-                    log.info( "Creating user " + userId );
                 }
 
                 Map map = new Map( rs.getString( "name" ), user, 
@@ -83,7 +81,7 @@ public class MapViewUpgrader
         }
         catch ( Exception ex )
         {
-            log.warn( ex );
+            log.debug( ex );
             return;
         }
         finally
@@ -106,7 +104,7 @@ public class MapViewUpgrader
         }
         catch ( Exception ex )
         {
-            log.warn( ex );
+            log.debug( ex );
             return -1;
         }
     }

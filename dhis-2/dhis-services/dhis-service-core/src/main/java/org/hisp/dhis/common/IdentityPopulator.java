@@ -48,7 +48,7 @@ public class IdentityPopulator
     private static String[] tables = {"chart", "constant", "attribute", "indicatortype", "indicatorgroupset", "indicator",
         "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule", "dataset", "orgunitlevel", "document",
         "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup", "sqlview",
-        "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "mapview",
+        "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "map", "mapview",
         "reporttable", "report", "messageconversation", "message", "userinfo", "usergroup", "userrole", "maplegend",
         "maplegendset", "maplayer", "section", "optionset"
     };
