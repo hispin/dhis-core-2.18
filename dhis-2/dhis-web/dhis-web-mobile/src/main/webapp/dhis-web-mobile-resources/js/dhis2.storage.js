@@ -140,8 +140,6 @@ dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) 
         // delete old values
         localStorage.removeItem('dataValueSets');
         localStorage.setItem('dataValueSets', JSON.stringify( dataValueSets ));
-
-        alert(JSON.stringify( dataValueSets ));
     });
 };
 
