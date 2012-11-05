@@ -79,8 +79,7 @@ dhis2.storage.FormManager.prototype.organisationUnit = function (id) {
 };
 
 dhis2.storage.FormManager.prototype.dataSets = function (id) {
-    var ou = this.organisationUnits()[id];
-    return ou.dataSets;
+    return this.organisationUnit(id).dataSets;
 };
 
 dhis2.storage.FormManager.prototype.forms = function () {
