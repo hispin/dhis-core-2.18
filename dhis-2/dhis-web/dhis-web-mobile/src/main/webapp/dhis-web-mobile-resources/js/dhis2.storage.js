@@ -41,7 +41,7 @@ dhis2.storage.FormManager.prototype.getMetaData = function () {
         cache       : false
     }).success(function ( data ) {
         // clear out old localStorage, some phones doesn't like it when you overwrite old keys
-        localStorage.removeItem('organisationUnits';
+        localStorage.removeItem('organisationUnits');
         localStorage.removeItem('forms');
 
         if( data.organisationUnits ) {
