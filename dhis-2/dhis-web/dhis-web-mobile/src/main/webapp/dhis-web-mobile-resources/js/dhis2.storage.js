@@ -131,6 +131,9 @@ dhis2.storage.FormManager.prototype.saveDataValueSet = function( dataValueSet ) 
     return dhis2.storage.makeUploadDataValueSetRequest( dataValueSet ).error(function() {
         // add to local dataValueSets
         dataValueSets[dhis2.storage.getUniqueKey(dataValueSet)] = dataValueSet;
+
+        // delete old values
+        delete localStorage['dataValueSets'];
         localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
     });
 };
@@ -147,6 +150,8 @@ dhis2.storage.FormManager.prototype.uploadDataValueSets = function() {
     });
 
     return $.when.apply( null, deferreds ).always(function() {
+        // delete old values
+        delete localStorage['dataValueSets'];
         localStorage['dataValueSets'] = JSON.stringify( dataValueSets );
     });
 };
