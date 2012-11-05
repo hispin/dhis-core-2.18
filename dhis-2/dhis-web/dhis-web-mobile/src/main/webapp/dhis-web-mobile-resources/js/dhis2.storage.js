@@ -101,7 +101,7 @@ dhis2.storage.FormManager.prototype.form = function ( id ) {
 dhis2.storage.FormManager.prototype.dataValueSets = function() {
     var dataValueSets = localStorage.getItem('dataValueSets');
 
-    if( dataValueSets != null && dataValueSets != "null" && !$.isArray(dataValueSets))
+    if( dataValueSets != null && dataValueSets != "null" && dataValueSets != "[]" )
     {
         dataValueSets = JSON.parse( dataValueSets );
     } else {
