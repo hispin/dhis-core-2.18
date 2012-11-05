@@ -88,7 +88,7 @@ public class MapViewUpgrader
         }
         catch ( Exception ex )
         {
-            log.error( "Error", ex );
+            log.debug( "Error", ex );
             return;
         }
         finally
@@ -111,7 +111,7 @@ public class MapViewUpgrader
         }
         catch ( Exception ex )
         {
-            log.error( "Execution error", ex );
+            log.debug( "Execution error", ex );
             return -1;
         }
     }
