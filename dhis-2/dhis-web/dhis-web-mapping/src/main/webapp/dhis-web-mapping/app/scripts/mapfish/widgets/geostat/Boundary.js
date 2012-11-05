@@ -452,6 +452,7 @@ Ext.define('mapfish.widgets.geostat.Boundary', {
 	getView: function() {
 		var level = this.cmp.level,
 			parent = this.cmp.parent.getSelectionModel().getSelection(),
+			store = GIS.store.organisationUnitLevels,
 			view;
 				
 		parent = parent.length ? parent : [{raw: GIS.init.rootNodes[0]}];
@@ -460,7 +461,7 @@ Ext.define('mapfish.widgets.geostat.Boundary', {
 			organisationUnitLevel: {
 				id: level.getValue(),
 				name: level.getRawValue(),
-				level: GIS.store.organisationUnitLevels.getById(level.getValue()).data.level
+				level: store.data.items.length && level.getValue() ? store.getById(level.getValue()).data.level : null
 			},
 			parentOrganisationUnit: {
 				id: parent[0].raw.id,
