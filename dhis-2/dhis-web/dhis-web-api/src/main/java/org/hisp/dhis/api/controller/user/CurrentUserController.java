@@ -39,6 +39,7 @@ import org.hisp.dhis.api.webdomain.user.Inbox;
 import org.hisp.dhis.api.webdomain.user.Recipients;
 import org.hisp.dhis.api.webdomain.user.UserAccount;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.interpretation.Interpretation;
 import org.hisp.dhis.interpretation.InterpretationService;
@@ -88,6 +89,9 @@ public class CurrentUserController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private DataSetService dataSetService;
 
     @Autowired
     private ContextUtils contextUtils;
@@ -240,9 +244,24 @@ public class CurrentUserController
         Forms forms = new Forms();
 
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-        Set<DataSet> userDataSets = currentUser.getUserCredentials().getAllDataSets();
+        Set<DataSet> userDataSets = null;
+        Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>( currentUser.getOrganisationUnits() );
 
-        for ( OrganisationUnit ou : currentUser.getOrganisationUnits() )
+        if ( currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )
+        {
+            userDataSets = new HashSet<DataSet>( dataSetService.getAllDataSets() );
+
+            if ( userOrganisationUnits.isEmpty() )
+            {
+                userOrganisationUnits = new HashSet<OrganisationUnit>( organisationUnitService.getRootOrganisationUnits() );
+            }
+        }
+        else
+        {
+            userDataSets = currentUser.getUserCredentials().getAllDataSets();
+        }
+
+        for ( OrganisationUnit ou : userOrganisationUnits )
         {
             Set<DataSet> dataSets = new HashSet<DataSet>( CollectionUtils.intersection( ou.getDataSets(), userDataSets ) );
 
