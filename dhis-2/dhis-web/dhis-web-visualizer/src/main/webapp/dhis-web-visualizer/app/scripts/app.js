@@ -861,12 +861,10 @@ Ext.onReady( function() {
 							style: {
 								opacity: 1,
 								lineWidth: 3,
+								'stroke-width': 2,
 								stroke: '#041423'
 							},
-							markerConfig: {
-								type: 'circle',
-								radius: 0
-							},
+							showMarkers: false,
 							title: title
 						};
 					},
@@ -883,10 +881,7 @@ Ext.onReady( function() {
 								lineWidth: 3,
 								stroke: '#041423'
 							},
-							markerConfig: {
-								type: 'circle',
-								radius: 0
-							},
+							showMarkers: false,
 							title: title
 						};
 					},
@@ -900,11 +895,12 @@ Ext.onReady( function() {
 								yField: DV.chart.trendline[i].key,
 								style: {
 									opacity: 0.8,
-									lineWidth: 3
+									lineWidth: 3,
+									'stroke-dasharray': 8
 								},
 								markerConfig: {
 									type: 'circle',
-									radius: 4
+									radius: 0
 								},
 								tips: DV.util.chart.def.series.getTips(),
 								title: DV.chart.trendline[i].name
@@ -2099,8 +2095,12 @@ Ext.onReady( function() {
 					}
 					
                     DV.value.values = DV.util.value.jsonfy(r.v);
-                                        
-					DV.c.data.names = DV.conf.util.jsonEncodeArray(r.d);
+                    
+					DV.c.data.names = [];					
+					for (var i = 0; i < DV.c.data.records.length; i++) {
+						DV.c.data.names.push(DV.c.data.records[i].name);
+					}
+					
 					DV.c.period.names = DV.conf.util.jsonEncodeArray(r.p);
 					DV.c.organisationunit.names = DV.conf.util.jsonEncodeArray(r.o);
 								
