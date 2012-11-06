@@ -29,7 +29,7 @@
 #end
 
 #if( $auth.hasAccess( "dhis-web-caseentry", "reportSelect" ) 
-	&& $auth.hasAccess( "dhis-web-caseentry", "generateTabularReport" ) )	
+	|| $auth.hasAccess( "dhis-web-caseentry", "generateTabularReport" ) )	
 <h2>$i18n.getString( "reports" )&nbsp;</h2>
 #end
 <ul>
