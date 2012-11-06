@@ -29,7 +29,7 @@ package org.hisp.dhis.dashboard.action;
 
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
-import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -90,9 +90,9 @@ public class RemoveMapViewAction
         {
             DashboardContent content = dashboardService.getDashboardContent( user );
             
-            MapView mapView = mappingService.getMapView( id );
+            Map map = mappingService.getMap( id );
             
-            if ( content.getMapViews().remove( mapView ) )
+            if ( content.getMaps().remove( map ) )
             {
                 dashboardService.saveDashboardContent( content );
             }

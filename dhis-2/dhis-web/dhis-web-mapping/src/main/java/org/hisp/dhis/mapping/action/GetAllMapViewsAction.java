@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -74,7 +74,7 @@ public class GetAllMapViewsAction
     {
         object = new ArrayList<MapView>( mappingService.getAllMapViews() );
 
-        Collections.sort( object, new MapViewNameComparator() );
+        Collections.sort( object, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
