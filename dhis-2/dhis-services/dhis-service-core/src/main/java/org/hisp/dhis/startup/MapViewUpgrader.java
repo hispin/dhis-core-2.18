@@ -47,7 +47,8 @@ public class MapViewUpgrader
         executeSql( "alter table mapview drop column code" );
         executeSql( "alter table mapview drop column periodtypeid" );
         
-        executeSql( "update mapview set layer = 'thematic1' where layer is null" );
+        executeSql( "update mapview set layer='thematic1' where layer is null" );
+        executeSql( "update mapview set valuetype='dataElement' where valuetype='dataelement'" );
         executeSql( "alter table mapview alter column opacity type double precision" );
         
         String sql = "select mapviewid, name, userid, longitude, latitude, zoom from mapview where mapviewid not in (" +
