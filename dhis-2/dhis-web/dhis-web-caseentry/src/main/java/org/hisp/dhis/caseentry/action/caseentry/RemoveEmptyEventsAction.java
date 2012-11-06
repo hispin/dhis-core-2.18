@@ -27,6 +27,9 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -59,6 +62,13 @@ public class RemoveEmptyEventsAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -79,8 +89,10 @@ public class RemoveEmptyEventsAction
     {
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
         
-        programStageInstanceService.removeEmptyEvents( programStage );
-        
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
+
+        programStageInstanceService.removeEmptyEvents( programStage, organisationUnit );
+
         return SUCCESS;
     }
 

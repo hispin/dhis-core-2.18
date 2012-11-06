@@ -96,7 +96,7 @@ public interface ProgramStageInstanceService
 
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
     
-    void removeEmptyEvents( ProgramStage programStage );
+    void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit );
 
     void updateProgramStageInstances( Collection<Integer> programStageInstances, OutboundSms outboundSms );
     
