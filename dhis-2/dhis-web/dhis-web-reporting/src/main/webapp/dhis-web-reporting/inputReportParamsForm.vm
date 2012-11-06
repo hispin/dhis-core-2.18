@@ -5,6 +5,7 @@ jQuery(document).ready(function() {
 	viewReport( '' );
 	#end
 	
+    selectionTree.clearSelectedOrganisationUnits();
 	selectionTreeSelection.setMultipleSelectionAllowed( false );
 	selectionTree.buildSelectionTree();
 });
