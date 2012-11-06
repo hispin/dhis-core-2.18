@@ -10,31 +10,32 @@
     <p class="bold">$encoder.htmlEncode( $i18n.getString( "successful_validation" ) )</p>
 #else
     <p class="bold">$encoder.htmlEncode( $i18n.getString( "unsuccessful_validation" ) )</p>
-
-	<p class="bold">$encoder.htmlEncode( $i18n.getString( "the_following_dataelements_are_in_multi_stages" ) )</p>
-	<table class="listTable" id="multiValidation" name="multiValidation" style="width:100%">
-		<thead>
-			<tr>
-				<th>$i18n.getString( "validation_rule" )</th>                
-				<th>$i18n.getString( "description" )</th>
-				<th>$i18n.getString( "left_value" )</th>
-				<th>$i18n.getString( "right_value" )</th>
-				<th>$i18n.getString( "description" )</th>
-			</tr>
-		</thead>
-		#set( $mark = false )	    
-		<tbody>
-			#foreach( $validationResult in $programValidationResults )
-				<tr #alternate( $mark )>	    
-					<td>$validationResult.programValidation.description</td>
-					<td>$leftsideFormulaMap.get( $validationResult.programValidation.id )</td>
-					<td>$validationResult.leftsideValue</td>
-					#if( $validationResult.programValidation.rightSide!="1==1")
-						<td>$validationResult.rightsideValue</td>
-						<td>$rightsideFormulaMap.get( $validationResult.programValidation.id )</td>	        
-					#end
-				#set( $mark = !$mark )
-			#end
-		</tbody>
-	</table>
+	#if($programValidationResults.size()>0 )
+		<p class="bold">$encoder.htmlEncode( $i18n.getString( "the_following_dataelements_are_in_predefined_validate_rules" ) )</p>
+		<table class="listTable" id="multiValidation" name="multiValidation" style="width:100%">
+			<thead>
+				<tr>
+					<th>$i18n.getString( "validation_rule" )</th>                
+					<th>$i18n.getString( "description" )</th>
+					<th>$i18n.getString( "left_value" )</th>
+					<th>$i18n.getString( "right_value" )</th>
+					<th>$i18n.getString( "description" )</th>
+				</tr>
+			</thead>
+			#set( $mark = false )	    
+			<tbody>
+				#foreach( $validationResult in $programValidationResults )
+					<tr #alternate( $mark )>	    
+						<td>$validationResult.programValidation.description</td>
+						<td>$leftsideFormulaMap.get( $validationResult.programValidation.id )</td>
+						<td>$validationResult.leftsideValue</td>
+						#if( $validationResult.programValidation.rightSide!="1==1")
+							<td>$validationResult.rightsideValue</td>
+							<td>$rightsideFormulaMap.get( $validationResult.programValidation.id )</td>	        
+						#end
+					#set( $mark = !$mark )
+				#end
+			</tbody>
+		</table>
+	#end
 #end
