@@ -3,7 +3,7 @@
     <div class="interpretationSymbol">
 	#if( $ip.chartInterpretation )
 	   <img src="../images/chart.png">
-    #elseif( $ip.mapViewInterpretation )
+    #elseif( $ip.mapInterpretation )
         <img src="../images/map.png">
     #elseif( $ip.reportTableInterpretation )
         <img src="../images/table.png">
