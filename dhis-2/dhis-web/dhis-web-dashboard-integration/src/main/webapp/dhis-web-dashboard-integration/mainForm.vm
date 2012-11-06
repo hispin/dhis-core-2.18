@@ -4,7 +4,9 @@ var i18n_interpretation_was_shared = '$encoder.jsEscape( $i18n.getString( "inter
 var i18n_viewing = '$encoder.jsEscape( $i18n.getString( "viewing" ), "'")';
 </script>
 
-<h3><a href="profile.action"><img src="../images/user_small.png"></a> &nbsp;<a href="profile.action">$encoder.htmlEncode( $currentUser.name )</a>
+<h3>
+<a href="profile.action"><img src="../images/user_small.png"></a> &nbsp;<a href="profile.action">$encoder.htmlEncode( $currentUser.name )</a>
+#if( !$currentUser.profileFilled )<span class="alert">(</span><a class="alert" href="../dhis-web-commons-about/showUpdateUserProfileForm.action">update profile!</a><span class="alert">)</span> #end
 &nbsp;&#8226;&nbsp; <a href="showSendFeedback.action">$i18n.getString( "write_feedback" )</a>
 #if( $messageCount > 0 )&nbsp;&#8226;&nbsp; <a href="message.action">$messageCount #if( $messageCount > 1 )$i18n.getString( "unread_messages" )#else$i18n.getString( "unread_message" )#end</a> #end
 &nbsp;&#8226;&nbsp; #if( $interpretationCount > 0 )<a href="interpretation.action">$interpretationCount #if( $interpretationCount > 1 )$i18n.getString( "new_interpretations" )#else$i18n.getString( "new_interpretation" )#end</a> 
