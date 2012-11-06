@@ -151,6 +151,25 @@ public class User
     {
         return firstName + " " + surname;
     }
+    
+    /**
+     * Checks whether the profile has been filled, which is defined as three
+     * not-null properties out of all optional properties.
+     */
+    public boolean isProfileFilled()
+    {
+        Object[] props = { jobTitle, introduction, gender, birthday, 
+            nationality, employer, education, interests, languages };
+        
+        int count = 0;
+        
+        for ( Object prop : props )
+        {
+            count = prop != null ? ( count + 1 ) : count;
+        }
+        
+        return count > 3;
+    }
 
     /**
      * Returns the first of the organisation units associated with the user.
