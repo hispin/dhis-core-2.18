@@ -259,8 +259,9 @@ public class FormUtils
         Validate.notNull( dataSetId );
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-
+        
         CalendarPeriodType periodType = null;
+
         if ( dataSet.getPeriodType().getName().equalsIgnoreCase( "Yearly" ) )
         {
             periodType = (CalendarPeriodType) new YearlyPeriodType();
@@ -269,17 +270,31 @@ public class FormUtils
         {
             periodType = (CalendarPeriodType) dataSet.getPeriodType();
         }
-
-        List<Period> periods = periodType.generateLast5Years( new Date() );
-        FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
-        Collections.reverse( periods );
-
-        if ( periods.size() > (first + max) )
+        
+        if ( dataSet.isAllowFuturePeriods() )
         {
-            periods = periods.subList( first, max );
+            List<Period> periods = new ArrayList<Period>();
+            //if ( periodType.getName().equals( "Monthly" ) || periodType.getName().equals( "Quarterly" ))
+            //{
+                periods = periodType.generatePeriods( new Date() );
+                Collections.reverse( periods );
+            //}
+            return periods;
         }
-
-        return periods;
+        else
+        {
+            
+            List<Period> periods = periodType.generateLast5Years( new Date() );
+            FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
+            Collections.reverse( periods );
+    
+            if ( periods.size() > (first + max) )
+            {
+                periods = periods.subList( first, max );
+            }
+    
+            return periods;
+        }
     }
 
     // -------------------------------------------------------------------------
