@@ -28,7 +28,7 @@
 	    #elseif( $ip.mapInterpretation )
 	        <a class="bold" 
 	           title="$i18n.getString( 'click_to_view_in_gis' )" 
-	           href="../dhis-web-mapping/mapping/app/index.html?id=${ip.map.uid}">
+	           href="../dhis-web-mapping/app/index.html?id=${ip.map.uid}">
 	           $encoder.htmlEncode( $ip.map.name )</a>
 	    #elseif( $ip.reportTableInterpretation )
 	        #if( $ip.organisationUnit )#set( $ou = "&ou=" + $ip.organisationUnit.uid )#else#set( $ou = "" )#end
