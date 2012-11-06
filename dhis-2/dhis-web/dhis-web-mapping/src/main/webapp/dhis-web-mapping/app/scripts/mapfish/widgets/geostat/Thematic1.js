@@ -1658,7 +1658,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 				
 				this.loadData(features);
 			}
-		});				
+		});
     },
     
     loadData: function(features) {

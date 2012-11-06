@@ -465,8 +465,6 @@ Ext.define('mapfish.widgets.geostat.Thematic2', {
 						
 						this.store.periodsByType.setIndex(periods);
 						this.store.periodsByType.loadData(periods);
-						
-                        this.cmp.period.selectFirst();
                     }
                 }
             }
@@ -482,11 +480,6 @@ Ext.define('mapfish.widgets.geostat.Thematic2', {
             width: GIS.conf.layout.widget.item_width,
             labelWidth: GIS.conf.layout.widget.itemlabel_width,
             store: this.store.periodsByType,
-            scope: this,
-            selectFirst: function() {
-				this.setValue(this.store.getAt(0).data.id);
-				this.scope.config.extended.updateData = true;
-			},
 			listeners: {
 				select: {
 					scope: this,
@@ -1665,7 +1658,7 @@ Ext.define('mapfish.widgets.geostat.Thematic2', {
 				
 				this.loadData(features);
 			}
-		});				
+		});
     },
     
     loadData: function(features) {
