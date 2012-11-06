@@ -83,6 +83,7 @@ public class TableAlteror
         executeSql( "DROP TABLE sectionmembers" );
         executeSql( "DROP TABLE reporttable_categoryoptioncombos" );
         executeSql( "DROP TABLE dashboardcontent_datamartexports" );
+        executeSql( "DROP TABLE dashboardcontent_mapview" );
         executeSql( "DROP TABLE customvalue" );
         executeSql( "DROP TABLE reporttable_displaycolumns" );
         executeSql( "DROP TABLE reportreporttables" );
