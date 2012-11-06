@@ -247,11 +247,11 @@ public class HibernateProgramStageInstanceStore
         return jdbcTemplate.queryForInt( sql );
     }
 
-    public void removeEmptyEvents( ProgramStage programStage )
+    public void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit )
     {
         String sql = "delete from programstageinstance where programstageid=" + programStage.getId()
+            + " and organisationunitid=" + organisationUnit.getId()
             + " and programstageinstanceid not in " + "(select pdv.programstageinstanceid from patientdatavalue pdv )";
-
         jdbcTemplate.execute( sql );
     }
 

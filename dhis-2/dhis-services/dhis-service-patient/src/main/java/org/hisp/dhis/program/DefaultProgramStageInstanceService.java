@@ -258,9 +258,9 @@ public class DefaultProgramStageInstanceService
         return grids;
     }
 
-    public void removeEmptyEvents( ProgramStage programStage )
+    public void removeEmptyEvents( ProgramStage programStage, OrganisationUnit organisationUnit )
     {
-        programStageInstanceStore.removeEmptyEvents( programStage );
+        programStageInstanceStore.removeEmptyEvents( programStage, organisationUnit );
     }
 
     @Override
