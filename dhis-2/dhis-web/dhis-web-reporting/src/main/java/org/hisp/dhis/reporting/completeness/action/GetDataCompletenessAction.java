@@ -228,11 +228,11 @@ public class GetDataCompletenessAction
         Grid grid = new ListGrid().setTitle( title );
 
         grid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
-        grid.addHeader( new GridHeader( i18n.getString( "actual" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "target" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "actual_reports" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "expected_reports" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "percent" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "on_time" ), false, false ) );
-        grid.addHeader( new GridHeader( i18n.getString( "percent" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "reports_on_time" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "percent_on_time" ), false, false ) );
 
         for ( DataSetCompletenessResult result : mainResults )
         {
