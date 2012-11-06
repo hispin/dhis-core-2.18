@@ -952,7 +952,7 @@ Ext.onReady( function() {
 		};
 		items.push(item);
 		
-		if (base.id !== GIS.base.boundary.id) {
+		if (base.id !== GIS.base.boundary.id && base.id !== GIS.base.facility.id) {
 			item = {
 				text: 'Filter..', //i18n
 				iconCls: 'gis-menu-item-icon-filter',
@@ -1609,7 +1609,8 @@ Ext.onReady( function() {
 		});
 			
 		NameWindow = function(id) {
-			var window;
+			var window,
+				record = GIS.store.maps.getById(id);
 			
 			nameTextfield = Ext.create('Ext.form.field.Text', {
 				height: 26,
@@ -1617,7 +1618,7 @@ Ext.onReady( function() {
 				labelWidth: 70,
 				fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb',
 				fieldLabel: 'Name', //i18n
-				value: id ? GIS.store.maps.getById(id).data.name : '',
+				value: id ? record.data.name : '',
 				listeners: {
 					afterrender: function() {
 						this.focus();
@@ -1630,7 +1631,7 @@ Ext.onReady( function() {
 				fieldLabel: 'System', //i18n
 				style: 'margin-bottom: 0',
 				disabled: !GIS.init.security.isAdmin,
-				value: id ? GIS.store.maps.getById(id).data.system : false
+				checked: !id ? false : (record.data.user ? false : true)
 			});
 			
 			createButton = Ext.create('Ext.button.Button', {
@@ -1678,7 +1679,11 @@ Ext.onReady( function() {
 								method: 'POST',
 								headers: {'Content-Type': 'application/json'},
 								params: Ext.encode(map),
-								success: function() {								
+								success: function(r) {
+									var id = r.getAllResponseHeaders().location.split('/').pop();
+									
+									GIS.map.mapLoader = new GIS.obj.MapLoader(id);
+									
 									GIS.store.maps.loadStore();
 									
 									GIS.cmp.interpretationButton.enable();
@@ -1722,7 +1727,7 @@ Ext.onReady( function() {
 			});
 			
 			window = Ext.create('Ext.window.Window', {
-				title: id ? 'Edit favorite' : 'Create new favorite',
+				title: id ? 'Rename favorite' : 'Create new favorite',
 				iconCls: 'gis-window-title-icon-favorite',
 				cls: 'gis-container-default',
 				resizable: false,
@@ -1745,9 +1750,20 @@ Ext.onReady( function() {
 			
 			return window;
 		};
+		
+		addButton = Ext.create('Ext.button.Button', {
+			text: 'Add new', //i18n
+			height: 26,
+			style: 'border-radius: 1px; margin-right: 7px',
+			menu: {},
+			handler: function() {
+				nameWindow = new NameWindow(null, 'create');
+				nameWindow.show();
+			}
+		});
 			
 		searchTextfield = Ext.create('Ext.form.field.Text', {
-			width: 353,
+			width: 343,
 			height: 26,
 			fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb',
 			emptyText: 'Search for favorites..', //i18n
@@ -1766,17 +1782,6 @@ Ext.onReady( function() {
 						store.loadStore(url);
 					}
 				}
-			}
-		});
-		
-		addButton = Ext.create('Ext.button.Button', {
-			text: 'Add new', //i18n
-			height: 26,
-			style: 'border-radius: 1px; margin-right: 5px',
-			menu: {},
-			handler: function() {
-				nameWindow = new NameWindow();
-				nameWindow.show();
 			}
 		});
 		
@@ -1821,10 +1826,13 @@ Ext.onReady( function() {
 					width: 335,
 					renderer: function(value, metaData, record) {
 						var fn = function() {
-console.log(record.data.id, record.data.name, Ext.get(record.data.id));
-							var el = Ext.get(record.data.id).parent('td');
-							el.addClsOnOver('link');
-							el.dom.setAttribute('onclick', 'GIS.cmp.mapWindow.destroy(); GIS.map.mapLoader = new GIS.obj.MapLoader("' + record.data.id + '"); GIS.map.mapLoader.load();');
+							var el = Ext.get(record.data.id);
+							
+							if (el) {
+								el = el.parent('td');
+								el.addClsOnOver('link');
+								el.dom.setAttribute('onclick', 'GIS.cmp.mapWindow.destroy(); GIS.map.mapLoader = new GIS.obj.MapLoader("' + record.data.id + '"); GIS.map.mapLoader.load();');
+							}
 						};
 						
 						Ext.defer(fn, 100);
@@ -1981,7 +1989,14 @@ console.log(record.data.id, record.data.name, Ext.get(record.data.id));
 					this.store.pageSize = size;
 					this.store.page = 1;
 					this.store.loadStore();
+					
+					GIS.store.maps.on('load', function() {
+						if (this.isVisible()) {
+							this.fireEvent('afterrender');
+						}
+					}, this);
 				},
+					
 				afterrender: function() {
 					var fn = function() {
 						var editArray = document.getElementsByClassName('tooltip-map-edit'),
@@ -2061,6 +2076,11 @@ console.log(record.data.id, record.data.name, Ext.get(record.data.id));
 					cls: 'gis-container-inner',
 					items: [
 						addButton,
+						{
+							height: 24,
+							style: 'width: 1px; margin-right: 7px; margin-top: 1px',
+							bodyStyle: 'border-left: 1px solid #aaa'
+						},
 						searchTextfield
 					]
 				},
@@ -2914,8 +2934,6 @@ console.log(record.data.id, record.data.name, Ext.get(record.data.id));
 						headers: {'Content-Type': 'text/html'},
 						success: function() {
 							window.destroy();
-							
-							alert('Interpretation was shared!');
 						}
 					});
 				}
@@ -3093,19 +3111,21 @@ console.log(record.data.id, record.data.name, Ext.get(record.data.id));
 		});
         GIS.map.addLayer(GIS.base.googleHybrid.layer);
     }
+    else {
     
-    // OpenStreetMap
-    GIS.base.openStreetMap.layer = new OpenLayers.Layer.OSM(GIS.base.openStreetMap.name);
-	GIS.base.openStreetMap.layer.layerType = GIS.conf.finals.layer.type_base;
-	GIS.base.openStreetMap.layer.base = GIS.base.openStreetMap;
-	GIS.base.openStreetMap.layer.layerOpacity = 1;
-	GIS.base.openStreetMap.layer.setLayerOpacity = function(number) {
-		if (number) {
-			this.layerOpacity = parseFloat(number);
-		}
-		this.setOpacity(this.layerOpacity);
-	};
-    GIS.map.addLayer(GIS.base.openStreetMap.layer);
+		// OpenStreetMap
+		GIS.base.openStreetMap.layer = new OpenLayers.Layer.OSM(GIS.base.openStreetMap.name);
+		GIS.base.openStreetMap.layer.layerType = GIS.conf.finals.layer.type_base;
+		GIS.base.openStreetMap.layer.base = GIS.base.openStreetMap;
+		GIS.base.openStreetMap.layer.layerOpacity = 1;
+		GIS.base.openStreetMap.layer.setLayerOpacity = function(number) {
+			if (number) {
+				this.layerOpacity = parseFloat(number);
+			}
+			this.setOpacity(this.layerOpacity);
+		};
+		GIS.map.addLayer(GIS.base.openStreetMap.layer);
+	}
     
     // Base objects
     
