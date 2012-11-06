@@ -1125,14 +1125,22 @@ Ext.onReady( function() {
 				url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_save,
 				method: 'POST',
 				params: params,
-				success: function() {
-					var rowIdx = e.rowIdx;
-					var colIdx = e.colIdx + 1;
-					if( e.colIdx == TR.datatable.datatable.columns.length - 2 ){
-						colIdx = 0;
-						rowIdx++;
+				success: function(r) {
+					var json = Ext.JSON.decode(r.responseText);
+					if(json.response=="success")
+					{
+						var rowIdx = e.rowIdx;
+						var colIdx = e.colIdx + 1;
+						if( e.colIdx == TR.datatable.datatable.columns.length - 2 ){
+							colIdx = 0;
+							rowIdx++;
+						}
+						TR.datatable.cellEditing.startEditByPosition({row: rowIdx, column: colIdx});
 					}
-					TR.datatable.cellEditing.startEditByPosition({row: rowIdx, column: colIdx});
+					else
+					{
+						TR.util.notification.error(TR.i18n.error, json.message);
+					}
 				}
 			});
 		},
@@ -1144,11 +1152,19 @@ Ext.onReady( function() {
 					var params = 'id=' + psiId; 
 					Ext.Ajax.request({
 						url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.datavalue_delete,
-						method: 'GET',
+						method: 'POST',
 						params: params,
-						success: function() {
-							var grid = TR.datatable.datatable;
-							grid.getView().getNode(rowIdx).classList.add('hidden');
+						success: function(r) {
+							var json = Ext.JSON.decode(r.responseText);
+							if(json.response=="success")
+							{
+								var grid = TR.datatable.datatable;
+								grid.getView().getNode(rowIdx).classList.add('hidden');
+							}
+							else
+							{
+								TR.util.notification.error(TR.i18n.error, json.message);
+							}
 						}
 					});
 				}
