@@ -67,6 +67,8 @@ public class DefaultProgramValidationService
         + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
     private final String regExpComparator = "(<=|>=|==|!=|<|>|>)+";
+    
+    private final String SEPARATE_SIDE_VALUE = "&&";
 
     private final String INVALID_CONDITION = "Invalid condition";
 
@@ -136,24 +138,24 @@ public class DefaultProgramValidationService
     }
 
     @Override
-    public boolean runValidation( ProgramValidation validation, ProgramStageInstance programStageInstance,
-        I18nFormat format )
+    public ProgramValidationResult runValidation( ProgramValidation validation,
+        ProgramStageInstance programStageInstance, I18nFormat format )
     {
         if ( !validation.getDateType() )
         {
-            // ---------------------------------------------------------------------
-            // parse left-expressions
-            // ---------------------------------------------------------------------
+            String resultLeft = runExpression( validation.getLeftSide(), programStageInstance );
+            String resultRight = runExpression( validation.getRightSide(), programStageInstance );
 
-            boolean resultLeft = runExpression( validation.getLeftSide(), programStageInstance );
-
-            // ---------------------------------------------------------------------
-            // parse right-expressions
-            // ---------------------------------------------------------------------
-
-            boolean resultRight = runExpression( validation.getRightSide(), programStageInstance );
-
-            return (resultLeft == resultRight);
+            boolean validLeftSide = Boolean.parseBoolean( resultLeft.split( SEPARATE_SIDE_VALUE )[0] );
+            boolean validRightSide = Boolean.parseBoolean( resultRight.split( SEPARATE_SIDE_VALUE )[0] );
+            if ( validLeftSide == validRightSide )
+            {
+                return null;
+            }
+            else
+            {
+                return new ProgramValidationResult( programStageInstance, validation, resultLeft.split( SEPARATE_SIDE_VALUE )[1], resultRight.split( SEPARATE_SIDE_VALUE )[1] );
+            }
         }
 
         return runDateExpression( validation, programStageInstance, format );
@@ -191,11 +193,12 @@ public class DefaultProgramValidationService
         return result;
     }
 
-    public boolean runDateExpression( ProgramValidation programValidation, ProgramStageInstance programStageInstance,
-        I18nFormat format )
+    private ProgramValidationResult runDateExpression( ProgramValidation programValidation,
+        ProgramStageInstance programStageInstance, I18nFormat format )
     {
-        Pattern pattern = Pattern.compile( regExp );
+        boolean valid = true;
 
+        Pattern pattern = Pattern.compile( regExp );
         Matcher matcher = pattern.matcher( programValidation.getLeftSide() );
 
         if ( matcher.find() )
@@ -204,57 +207,83 @@ public class DefaultProgramValidationService
 
             PatientDataValue dataValue = getPatientDataValue( match, programStageInstance );
 
-            if ( dataValue == null )
+            if ( dataValue != null )
             {
-                return true;
-            }
 
-            String rightSide = programValidation.getRightSide();
-            Date dueDate = dataValue.getProgramStageInstance().getDueDate();
-            Date currentDate = dataValue.getTimestamp();
-            Date value = format.parseDate( dataValue.getValue() );
+                String rightSide = programValidation.getRightSide();
+                Date dueDate = dataValue.getProgramStageInstance().getDueDate();
+                Date currentDate = dataValue.getTimestamp();
+                Date value = format.parseDate( dataValue.getValue() );
+                String operator = "";
 
-            int index = rightSide.indexOf( 'D' );
-            if ( index < 0 )
-            {
-                int rightValidation = Integer.parseInt( rightSide );
-
-                switch ( rightValidation )
+                int index = rightSide.indexOf( 'D' );
+                if ( index < 0 )
                 {
-                case BEFORE_CURRENT_DATE:
-                    return value.before( currentDate );
-                case BEFORE_OR_EQUALS_TO_CURRENT_DATE:
-                    return (value.before( currentDate ) || value.equals( currentDate ));
-                case AFTER_CURRENT_DATE:
-                    return value.after( currentDate );
-                case AFTER_OR_EQUALS_TO_CURRENT_DATE:
-                    return (value.after( currentDate ) || value.equals( currentDate ));
-                case BEFORE_DUE_DATE:
-                    return value.before( dueDate );
-                case BEFORE_OR_EQUALS_TO_DUE_DATE:
-                    return (value.before( dueDate ) || value.equals( dueDate ));
-                case AFTER_DUE_DATE:
-                    return value.after( dueDate );
-                case AFTER_OR_EQUALS_TO_DUE_DATE:
-                    return (value.after( dueDate ) || value.equals( dueDate ));
-                default:
-                    return true;
+                    int rightValidation = Integer.parseInt( rightSide );
+
+                    switch ( rightValidation )
+                    {
+                    case BEFORE_CURRENT_DATE:
+                        operator = "<";
+                        valid = value.before( currentDate );
+                        break;
+                    case BEFORE_OR_EQUALS_TO_CURRENT_DATE:
+                        operator = "<=";
+                        valid = (value.before( currentDate ) || value.equals( currentDate ));
+                        break;
+                    case AFTER_CURRENT_DATE:
+                        operator = ">";
+                        valid = value.after( currentDate );
+                        break;
+                    case AFTER_OR_EQUALS_TO_CURRENT_DATE:
+                        operator = ">=";
+                        valid = (value.after( currentDate ) || value.equals( currentDate ));
+                        break;
+                    case BEFORE_DUE_DATE:
+                        operator = "<";
+                        currentDate = dueDate;
+                        valid = value.before( dueDate );
+                        break;
+                    case BEFORE_OR_EQUALS_TO_DUE_DATE:
+                        operator = "<=";
+                        currentDate = dueDate;
+                        valid = (value.before( dueDate ) || value.equals( dueDate ));
+                    case AFTER_DUE_DATE:
+                        operator = ">";
+                        currentDate = dueDate;
+                        valid = value.after( dueDate );
+                        break;
+                    case AFTER_OR_EQUALS_TO_DUE_DATE:
+                        operator = ">=";
+                        currentDate = dueDate;
+                        valid = (value.after( dueDate ) || value.equals( dueDate ));
+                        break;
+                    default:
+                        break;
+                    }
+                }
+
+                int rightValidation = Integer.parseInt( rightSide.substring( 0, index ) );
+
+                int daysValue = Integer.parseInt( rightSide.substring( index + 1, rightSide.length() ) );
+
+                if ( rightValidation == BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS )
+                {
+                    long maxDays = dueDate.getTime() / 86400000 + daysValue;
+                    long minDays = dueDate.getTime() / 86400000 - daysValue;
+                    long valueDays = value.getTime() / 86400000;
+                    valid = (valueDays <= maxDays && valueDays >= minDays);
+                }
+
+                if ( !valid )
+                {
+                    String result = dataValue + " " + operator + " " + format.formatDate( currentDate );
+                    return new ProgramValidationResult( programStageInstance, programValidation, result, null );
                 }
             }
-
-            int rightValidation = Integer.parseInt( rightSide.substring( 0, index ) );
-
-            int daysValue = Integer.parseInt( rightSide.substring( index + 1, rightSide.length() ) );
-
-            if ( rightValidation == BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS )
-            {
-                long maxDays = dueDate.getTime() / 86400000 + daysValue;
-                long minDays = dueDate.getTime() / 86400000 - daysValue;
-                long valueDays = value.getTime() / 86400000;
-                return (valueDays <= maxDays && valueDays >= minDays);
-            }
         }
-        return true;
+
+        return null;
     }
 
     public Collection<ProgramValidation> getProgramValidation( ProgramStage programStage )
@@ -326,9 +355,8 @@ public class DefaultProgramValidationService
                 return INVALID_CONDITION;
             }
 
-            matcher.appendReplacement( description, "[" + programStage.getName() + SEPARATOR_ID + dataElement.getName()
-                + "]" );
-
+            matcher.appendReplacement( description, programStage.getName() + SEPARATOR_ID + dataElement.getName() );
+            
         }
 
         matcher.appendTail( description );
@@ -344,8 +372,9 @@ public class DefaultProgramValidationService
 
     private String NOT_NULL_VALUE_IN_EXPRESSION = "{NOT-NULL-VALUE}";
 
-    private boolean runExpression( String expression, ProgramStageInstance programStageInstance )
+    private String runExpression( String expression, ProgramStageInstance programStageInstance )
     {
+        boolean valid = true;
         String comparetor = "";
         Pattern pattern = Pattern.compile( regExpComparator );
         Matcher matcher = pattern.matcher( expression );
@@ -356,58 +385,43 @@ public class DefaultProgramValidationService
 
         String[] sides = expression.split( regExpComparator );
         String leftSideValue = getOneSideExpressionValue( sides[0].trim(), programStageInstance );
-        String rightSideValue = getOneSideExpressionValue( sides[1].trim(), programStageInstance );
-
+        String rightSideValue = getOneSideExpressionValue( sides[1].trim(), programStageInstance );        
         if ( leftSideValue == null || rightSideValue == null )
         {
-            return true;
+            return null;
         }
-        
+
         if ( expression.indexOf( SUM_OPERATOR_IN_EXPRESSION ) != -1 )
         {
             String result = leftSideValue + comparetor + rightSideValue;
             final JEP parser = new JEP();
             parser.parseExpression( result );
-            return (parser.getValue() == 1.0);
+            valid = (parser.getValue() == 1.0);
         }
         else
         {
             if ( rightSideValue.equals( NOT_NULL_VALUE_IN_EXPRESSION ) )
             {
-                return leftSideValue == null ? false : true;
+                valid = !( leftSideValue == null );            
             }
-            else if ( comparetor.equals( "==" ) && leftSideValue.equals( rightSideValue ) )
+            else if ( (comparetor.equals( "==" ) && leftSideValue.equals( rightSideValue ))
+                || (comparetor.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0)
+                || (comparetor.equals( "<=" ) && (leftSideValue.equals( rightSideValue ) || leftSideValue
+                    .compareTo( rightSideValue ) < 0))
+                || (comparetor.equals( ">" ) && leftSideValue.compareTo( rightSideValue ) > 0)
+                || (comparetor.equals( ">=" ) && (leftSideValue.equals( rightSideValue ) || leftSideValue
+                    .compareTo( rightSideValue ) > 0))
+                || (comparetor.equals( "!=" ) && !leftSideValue.equals( rightSideValue )) )
             {
-                return true; 
-            }
-            else if ( comparetor.equals( "<" ) && leftSideValue.compareTo( rightSideValue )<0 )
-            {
-                return true;
-            }
-            else if ( comparetor.equals( "<=" ) && 
-                (  leftSideValue.equals( rightSideValue ) || leftSideValue.compareTo( rightSideValue )<0 ))
-            {
-                return true;
-            }
-            else if ( comparetor.equals( ">" ) && leftSideValue.compareTo( rightSideValue )>0 )
-            {
-                return true;
-            }
-            else if ( comparetor.equals( ">=" ) &&                 
-                ( leftSideValue.equals( rightSideValue ) || leftSideValue.compareTo( rightSideValue )>0 ))
-            {
-                return true;
-            }
-            else if ( comparetor.equals( "!=" ) && !leftSideValue.equals( rightSideValue ) )
-            {
-                return true;
+                valid = true;
             }
             else
             {
-                return false;
+                valid = false;
             }
         }
 
+        return valid + SEPARATE_SIDE_VALUE + leftSideValue + " " + comparetor + " " + rightSideValue;
     }
 
     private String getOneSideExpressionValue( String expression, ProgramStageInstance programStageInstance )
