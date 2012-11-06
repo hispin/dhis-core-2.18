@@ -26,12 +26,20 @@
 			<tbody>
 				#foreach( $validationResult in $programValidationResults )
 					<tr #alternate( $mark )>	    
-						<td>$validationResult.programValidation.description</td>
+						<td>$validationResult.programValidation.description 
+						#if($validationResult.programValidation.dateType=="true")
+							$rightsideFormulaMap.get( $validationResult.programValidation.id )
+						#end
+						</td>
 						<td>$leftsideFormulaMap.get( $validationResult.programValidation.id )</td>
 						<td>$validationResult.leftsideValue</td>
-						#if( $validationResult.programValidation.rightSide!="1==1")
-							<td>$validationResult.rightsideValue</td>
+						#if( $validationResult.programValidation.dateType=="false" 
+							&& $validationResult.programValidation.rightSide!="1==1")
+							<td>$!validationResult.rightsideValue</td>
 							<td>$rightsideFormulaMap.get( $validationResult.programValidation.id )</td>	        
+						#else
+							<td></td>
+							<td></td>
 						#end
 					#set( $mark = !$mark )
 				#end
