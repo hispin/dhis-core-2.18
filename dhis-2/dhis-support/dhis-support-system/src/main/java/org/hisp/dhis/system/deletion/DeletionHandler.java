@@ -53,6 +53,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapView;
@@ -477,6 +478,15 @@ public abstract class DeletionHandler
         return null;
     }
 
+    public void deleteMap( Map map )
+    {
+    }
+    
+    public String allowDeleteMap( Map map )
+    {
+        return null;
+    }
+    
     public void deleteMapView( MapView mapView )
     {
     }

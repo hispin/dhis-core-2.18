@@ -186,7 +186,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="mapViewContentProvider" class="org.hisp.dhis.dashboard.provider.MapViewContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
-    <property name="key" value="mapViews" />
+    <property name="key" value="maps" />
   </bean>
 
   <bean id="rssHealthContentProvider" class="org.hisp.dhis.dashboard.provider.RssContentProvider">

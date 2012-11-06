@@ -27,15 +27,15 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.List;
+
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.document.Document;
-import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -60,7 +60,7 @@ public interface DashboardService
 
     Collection<DashboardContent> getByDocument( Document document );
     
-    Collection<DashboardContent> getByMapView( MapView mapView );
+    Collection<DashboardContent> getByMap( Map map );
     
     Collection<DashboardContent> getByReport( Report report );
     
