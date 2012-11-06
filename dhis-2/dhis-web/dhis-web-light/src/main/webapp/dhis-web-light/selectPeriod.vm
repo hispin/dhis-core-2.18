@@ -11,9 +11,7 @@
         $dataSetName
     </p>
 </div>
-
 <h2>$i18n.getString( "available_periods" )</h2>
-
 <p>
 <ul>
 #foreach( $period in $periods )
