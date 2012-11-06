@@ -37,15 +37,20 @@ import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE_PLUS_OR_MI
 import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_CURRENT_DATE;
 import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_DUE_DATE;
 
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.api.mobile.ActivityReportingService;
 import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.DataElement;
 import org.hisp.dhis.api.mobile.model.DataValue;
-//import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
@@ -69,12 +74,10 @@ import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationResult;
 import org.hisp.dhis.program.ProgramValidationService;
 import org.hisp.dhis.util.ContextUtils;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
+//import org.hisp.dhis.api.mobile.model.ProgramStage;
 
 public class SaveProgramStageFormAction
     implements Action
@@ -356,18 +359,6 @@ public class SaveProgramStageFormAction
         this.patient = patient;
     }
 
-    private List<ProgramValidation> programValidations;
-
-    public List<ProgramValidation> getProgramValidations()
-    {
-        return programValidations;
-    }
-
-    public void setProgramValidations( List<ProgramValidation> programValidations )
-    {
-        this.programValidations = programValidations;
-    }
-
     private Map<Integer, String> leftsideFormulaMap;
 
     public Map<Integer, String> getLeftsideFormulaMap()
@@ -543,12 +534,11 @@ public class SaveProgramStageFormAction
         // Check validation rule
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
-        programValidations = new ArrayList<ProgramValidation>();
         this.runProgramValidation(
             programValidationService.getProgramValidation( programStageInstance.getProgramStage() ),
             programStageInstance );
 
-        if ( programValidations.size() > 0 )
+        if ( programValidationResults.size() > 0 )
         {
             return ERROR;
         }
@@ -578,6 +568,7 @@ public class SaveProgramStageFormAction
     private void runProgramValidation( Collection<ProgramValidation> validations,
         ProgramStageInstance programStageInstance )
     {
+        programValidationResults = new ArrayList<ProgramValidationResult>();
         if ( validations != null )
         {
             for ( ProgramValidation validation : validations )
