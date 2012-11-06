@@ -25,7 +25,7 @@
             $.ajax({
                 url         : '$baseUrl/../api/messageConversations/${messageId}',
                 type        : 'post',
-                contentType : 'text/plain',
+                contentType : 'text/plain; charset=UTF-8',
                 data        : msg
             }).success(function () {
                 $.mobile.hidePageLoadingMsg();
