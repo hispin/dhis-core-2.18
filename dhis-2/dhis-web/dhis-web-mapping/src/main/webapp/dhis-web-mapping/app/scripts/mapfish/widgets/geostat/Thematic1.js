@@ -1654,8 +1654,6 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 					return;
 				}
 				
-				this.features = this.layer.features.slice(0);
-				
 				this.loadData(features);
 			}
 		});
@@ -1724,6 +1722,8 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 				if (this.tmpView.extended.updateOrganisationUnit) {
 					this.layer.features = GIS.util.vector.getTransformedFeatureArray(this.layer.features);
 				}
+				
+				this.features = this.layer.features.slice(0);
 				
 				this.loadLegend();
 			}
