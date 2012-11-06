@@ -42,17 +42,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.program.ProgramInstance;
-import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationResult;
@@ -72,8 +66,6 @@ public class ValidateProgramInstanceAction
     // -------------------------------------------------------------------------
 
     private SelectedStateManager selectedStateManager;
-
-    private PatientDataValueService patientDataValueService;
 
     private ProgramValidationService programValidationService;
 
@@ -131,11 +123,6 @@ public class ValidateProgramInstanceAction
         this.programValidationService = programValidationService;
     }
     
-    public void setPatientDataValueService( PatientDataValueService patientDataValueService )
-    {
-        this.patientDataValueService = patientDataValueService;
-    }
-
     public Map<DataElement, String> getResultDEMultiStages()
     {
         return resultDEMultiStages;
@@ -163,22 +150,7 @@ public class ValidateProgramInstanceAction
         // ---------------------------------------------------------------------
 
         ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
-
-        ProgramStage programStage = programStageInstance.getProgramStage();
-
-        // ---------------------------------------------------------------------
-        // Get selected objects
-        // ---------------------------------------------------------------------
-
-        Set<ProgramStageDataElement> dataElements = programStage.getProgramStageDataElements();
-
-        for ( ProgramStageDataElement psDataElement : dataElements )
-        {
-            DataElement dataElement = psDataElement.getDataElement();
-
-            checkDataElementInMultiStage( programStageInstance, dataElement );
-        }
-
+        
         // ---------------------------------------------------------------------
         // Check validations for dataelement into multi-stages
         // ---------------------------------------------------------------------
@@ -192,45 +164,6 @@ public class ValidateProgramInstanceAction
     // -------------------------------------------------------------------------
     // Support method
     // -------------------------------------------------------------------------
-
-    /**
-     * ------------------------------------------------------------------------
-     * // Check value of the dataElment into previous. // If the value
-     * exists,allow users to enter data of // the dataElement into the
-     * programStageInstance // Else, disable Input-field of the dataElement
-     * ------------------------------------------------------------------------
-     **/
-
-    private void checkDataElementInMultiStage( ProgramStageInstance programStageInstance, DataElement dataElement )
-    {
-        ProgramInstance programInstance = programStageInstance.getProgramInstance();
-        List<ProgramStageInstance> pogramStageInstances = new ArrayList<ProgramStageInstance>(
-            programInstance.getProgramStageInstances() );
-
-        int index=0;
-        for ( index=0; index<pogramStageInstances.size(); index++ )
-        {
-            if ( programStageInstance.equals( pogramStageInstances.get( index ) ) )
-            {
-                break;
-            }
-        }
-
-        if ( index > 0 )
-        {
-            ProgramStageInstance prevStageInstance = pogramStageInstances.get( index );
-            PatientDataValue prevValue = patientDataValueService.getPatientDataValue( prevStageInstance, dataElement );
-            if ( prevValue == null )
-            {
-                String message = i18n.getString( "selected" ) + " " + i18n.getString( "program_stage" ) + " "
-                    + i18n.getString( "should" ) + " " + i18n.getString( "data_value" ) + " "
-                    + i18n.getString( "is_null" );
-
-                resultDEMultiStages.put( dataElement, message );
-            }
-        }
-
-    }
 
     private void runProgramValidation( Collection<ProgramValidation> validations,
         ProgramStageInstance programStageInstance )

@@ -67,7 +67,7 @@ public class DefaultProgramValidationService
         + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
     private final String regExpComparator = "(<=|>=|==|!=|<|>|>)+";
-    
+
     private final String SEPARATE_SIDE_VALUE = "&&";
 
     private final String INVALID_CONDITION = "Invalid condition";
@@ -145,17 +145,18 @@ public class DefaultProgramValidationService
         {
             String resultLeft = runExpression( validation.getLeftSide(), programStageInstance );
             String resultRight = runExpression( validation.getRightSide(), programStageInstance );
+            if ( resultLeft != null && resultRight != null )
+            {
+                boolean validLeftSide = Boolean.parseBoolean( resultLeft.split( SEPARATE_SIDE_VALUE )[0] );
+                boolean validRightSide = Boolean.parseBoolean( resultRight.split( SEPARATE_SIDE_VALUE )[0] );
+                if ( validLeftSide != validRightSide )
+                {
+                    return new ProgramValidationResult( programStageInstance, validation,
+                        resultLeft.split( SEPARATE_SIDE_VALUE )[1], resultRight.split( SEPARATE_SIDE_VALUE )[1] );
+                }
+            }
 
-            boolean validLeftSide = Boolean.parseBoolean( resultLeft.split( SEPARATE_SIDE_VALUE )[0] );
-            boolean validRightSide = Boolean.parseBoolean( resultRight.split( SEPARATE_SIDE_VALUE )[0] );
-            if ( validLeftSide == validRightSide )
-            {
-                return null;
-            }
-            else
-            {
-                return new ProgramValidationResult( programStageInstance, validation, resultLeft.split( SEPARATE_SIDE_VALUE )[1], resultRight.split( SEPARATE_SIDE_VALUE )[1] );
-            }
+            return null;
         }
 
         return runDateExpression( validation, programStageInstance, format );
@@ -356,7 +357,7 @@ public class DefaultProgramValidationService
             }
 
             matcher.appendReplacement( description, programStage.getName() + SEPARATOR_ID + dataElement.getName() );
-            
+
         }
 
         matcher.appendTail( description );
@@ -385,26 +386,29 @@ public class DefaultProgramValidationService
 
         String[] sides = expression.split( regExpComparator );
         String leftSideValue = getOneSideExpressionValue( sides[0].trim(), programStageInstance );
-        String rightSideValue = getOneSideExpressionValue( sides[1].trim(), programStageInstance );        
-        if ( leftSideValue == null || rightSideValue == null )
-        {
-            return null;
-        }
+        String rightSideValue = getOneSideExpressionValue( sides[1].trim(), programStageInstance );
 
-        if ( expression.indexOf( SUM_OPERATOR_IN_EXPRESSION ) != -1 )
+        if( leftSideValue==null  && rightSideValue== null )
         {
-            String result = leftSideValue + comparetor + rightSideValue;
-            final JEP parser = new JEP();
-            parser.parseExpression( result );
-            valid = (parser.getValue() == 1.0);
+            return "false&& ";
+        }
+        else if ( expression.indexOf( SUM_OPERATOR_IN_EXPRESSION ) != -1 )
+        {
+            if ( leftSideValue != null && rightSideValue != null )
+            {
+                String result = leftSideValue + comparetor + rightSideValue;
+                final JEP parser = new JEP();
+                parser.parseExpression( result );
+                valid = (parser.getValue() == 1.0);
+            }
         }
         else
         {
-            if ( rightSideValue.equals( NOT_NULL_VALUE_IN_EXPRESSION ) )
+            if ( rightSideValue!= null && rightSideValue.equals( NOT_NULL_VALUE_IN_EXPRESSION ) )
             {
-                valid = !( leftSideValue == null );            
+                valid = !(leftSideValue == null);
             }
-            else if ( (comparetor.equals( "==" ) && leftSideValue.equals( rightSideValue ))
+            else if (leftSideValue!=null && rightSideValue!= null &&  (comparetor.equals( "==" ) && leftSideValue.equals( rightSideValue ))
                 || (comparetor.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0)
                 || (comparetor.equals( "<=" ) && (leftSideValue.equals( rightSideValue ) || leftSideValue
                     .compareTo( rightSideValue ) < 0))
