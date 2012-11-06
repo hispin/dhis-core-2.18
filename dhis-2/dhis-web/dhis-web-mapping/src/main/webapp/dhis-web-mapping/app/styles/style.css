@@ -433,6 +433,7 @@ html * {
 
 .gis-grid-row-icon-edit,
 .gis-grid-row-icon-overwrite,
+.gis-grid-row-icon-dashboard,
 .gis-grid-row-icon-delete {
 	width: 16px;
 	height: 16px;
@@ -445,11 +446,17 @@ html * {
 	background: url('../images/grid-save_16.png') no-repeat;
 	margin-left: 4px;
 }
+.gis-grid-row-icon-dashboard {
+	background: url('../images/grid-dashboard_16.png') no-repeat;
+	margin-left: 4px;
+}
 .gis-grid-row-icon-delete {
 	background: url('../images/grid-delete_16.png') no-repeat;
 	margin-left: 4px;
 }
-.gis-grid-row-icon-disabled img {
+.gis-grid-row-icon-disabled img.gis-grid-row-icon-edit,
+.gis-grid-row-icon-disabled img.gis-grid-row-icon-overwrite
+.gis-grid-row-icon-disabled img.gis-grid-row-icon-delete {
 	opacity: 0;
 	filter:Alpha(opacity=0);
 }

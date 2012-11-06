@@ -390,12 +390,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
                         
                         var store = this.cmp.dataElement.store;
                         store.proxy.url = GIS.conf.url.path_api +  'dataElementGroups/' + cb.getValue() + '.json?links=false&paging=false';
-                        store.load({
-							scope: this,
-							callback: function() {
-								this.cmp.dataElement.selectFirst();
-							}
-						});
+                        store.load();
                     }
                 }
             }
@@ -470,8 +465,6 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 						
 						this.store.periodsByType.setIndex(periods);
 						this.store.periodsByType.loadData(periods);
-						
-                        this.cmp.period.selectFirst();
                     }
                 }
             }
@@ -487,11 +480,6 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
             width: GIS.conf.layout.widget.item_width,
             labelWidth: GIS.conf.layout.widget.itemlabel_width,
             store: this.store.periodsByType,
-            scope: this,
-            selectFirst: function() {
-				this.setValue(this.store.getAt(0).data.id);
-				this.scope.config.extended.updateData = true;
-			},
 			listeners: {
 				select: {
 					scope: this,
@@ -1511,7 +1499,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 			updateLegend: Ext.isDefined(conf.extended.updateLegend) ? conf.extended.updateLegend : false,
 			updateGui: Ext.isDefined(conf.extended.updateGui) ? conf.extended.updateGui : false
 		};
-console.log(view);		
+		
 		return view;
 	},
 	
