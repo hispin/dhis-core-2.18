@@ -846,6 +846,8 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 					return;
 				}
 				
+				this.features = this.layer.features.slice(0);
+				
 				this.loadData(features);
 			}
 		});
@@ -861,8 +863,10 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 				
 		this.layer.removeFeatures(this.layer.features);
 		this.layer.addFeatures(features);
-		this.layer.features = GIS.util.vector.getTransformedFeatureArray(this.layer.features);
-		this.features = this.layer.features.slice(0);
+		
+		if (this.tmpView.extended.updateOrganisationUnit) {
+			this.layer.features = GIS.util.vector.getTransformedFeatureArray(this.layer.features);
+		}
 		
 		this.loadLegend();
 	},

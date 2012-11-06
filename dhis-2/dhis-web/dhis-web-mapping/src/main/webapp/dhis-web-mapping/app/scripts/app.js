@@ -2704,6 +2704,11 @@ Ext.onReady( function() {
 			hidden: true,
 			handler: function() {
 				if (legendSetName.getValue() && validateLegends()) {
+					if (legendSetStore.findExact('name', legendSetName.getValue()) !== -1) {
+						alert('Name already in use');
+						return;
+					}
+					
 					var body = Ext.encode(getRequestBody());
 					
 					Ext.Ajax.request({
@@ -2725,6 +2730,10 @@ Ext.onReady( function() {
 			hidden: true,
 			handler: function() {
 				if (legendSetName.getValue() && validateLegends()) {
+					if (legendSetStore.findExact('name', legendSetName.getValue()) !== -1) {
+						alert('Name already in use');
+						return;
+					}
 					var body = getRequestBody(),
 						id = legendPanel.legendSetId;
 					body.id = id;
@@ -2857,7 +2866,7 @@ Ext.onReady( function() {
 		
 		panel = Ext.create('Ext.panel.Panel', {
 			cls: 'gis-container-inner',
-			html: '<b>Direct link: </b>' + GIS.init.contextPath + '/dhis-web-mapping/app/index.html?id=' + GIS.map.mapLoader.id,
+			html: '<b>Link: </b>' + GIS.init.contextPath + '/dhis-web-mapping/app/index.html?id=' + GIS.map.mapLoader.id,
 			style: 'padding-top: 9px; padding-bottom: 2px'
 		});
 		
