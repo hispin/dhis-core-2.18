@@ -235,13 +235,6 @@ public class SaveTableAction
         this.paramReportingMonth = paramReportingMonth;
     }
 
-    private boolean paramLeafParentOrganisationUnit;
-    
-    public void setParamLeafParentOrganisationUnit( boolean paramLeafParentOrganisationUnit )
-    {
-        this.paramLeafParentOrganisationUnit = paramLeafParentOrganisationUnit;
-    }
-    
     private boolean paramGrandParentOrganisationUnit;
     
     public void setParamGrandParentOrganisationUnit( boolean paramGrandParentOrganisationUnit )
@@ -319,7 +312,6 @@ public class SaveTableAction
         ReportParams reportParams = new ReportParams();
         
         reportParams.setParamReportingMonth( paramReportingMonth );
-        reportParams.setParamLeafParentOrganisationUnit( paramLeafParentOrganisationUnit );
         reportParams.setParamGrandParentOrganisationUnit( paramGrandParentOrganisationUnit );
         reportParams.setParamParentOrganisationUnit( paramParentOrganisationUnit );
         reportParams.setParamOrganisationUnit( paramOrganisationUnit );

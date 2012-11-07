@@ -100,7 +100,6 @@
 
     <component name="reportParams">
       <property name="paramReportingMonth" />
-      <property name="paramLeafParentOrganisationUnit" />
       <property name="paramGrandParentOrganisationUnit" />
       <property name="paramParentOrganisationUnit" />
       <property name="paramOrganisationUnit" />

@@ -196,7 +196,7 @@ public class AddReportAction
         
         ReportTable reportTable = reportTableService.getReportTable( reportTableId );
         
-        ReportParams reportParams = new ReportParams( paramReportingMonth, false, false, false, paramOrganisationUnit );
+        ReportParams reportParams = new ReportParams( paramReportingMonth, false, false, paramOrganisationUnit );
         
         report.setName( name );
         report.setReportTable( reportTable );
