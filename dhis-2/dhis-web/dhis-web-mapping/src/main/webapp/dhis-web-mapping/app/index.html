@@ -29,18 +29,12 @@
 		document.body.oncontextmenu = function(){return false;};
 	</script>
     
+<!--
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+-->
 
     <script type="text/javascript" src="../../dhis-web-commons/javascripts/ext/ext-all.js"></script>
-    <script type="text/javascript">
-		Ext.Loader.setConfig({enabled: true, paths: {
-			'Ext.ux': 'scripts/ext-ux'
-		}});
-		Ext.require([
-			'Ext.ux.button.ColorButton',
-			'Ext.ux.panel.LayerItemPanel'
-		]);
-    </script>
+    <script type="text/javascript" src="scripts/ext-ux/ext-ux-custom.js"></script>
     
     <script type="text/javascript" src="scripts/openlayers/OpenLayers.js"></script>
     <script type="text/javascript" src="scripts/openlayers-ux/newSelectFeature.js"></script>

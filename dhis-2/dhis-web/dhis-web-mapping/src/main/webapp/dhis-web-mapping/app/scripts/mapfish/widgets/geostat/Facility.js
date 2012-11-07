@@ -193,22 +193,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 						this.config.extended.updateLegend = true;
 						
 						store.proxy.url = GIS.conf.url.path_gis + 'getOrganisationUnitGroupsByGroupSet.action?id=' + value;
-						store.load(); //{
-							//scope: this.scope,
-							//callback: function() {
-								//if (this.config.extended.updateGui) { // If favorite, wait for callback and continue execution
-									//if (this.config.extended.updateOrganisationUnit) {
-										//this.loadOrganisationUnits();
-									//}
-									//else {
-										//this.loadLegend();
-									//}
-								//}
-								//else {
-									//this.config.extended.updateLegend = true;
-								//}
-							//}
-						//});
+						store.load();
 					}
                 }
             }
@@ -846,8 +831,6 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 					return;
 				}
 				
-				this.features = this.layer.features.slice(0);
-				
 				this.loadData(features);
 			}
 		});
@@ -867,6 +850,8 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		if (this.tmpView.extended.updateOrganisationUnit) {
 			this.layer.features = GIS.util.vector.getTransformedFeatureArray(this.layer.features);
 		}
+				
+		this.features = this.layer.features.slice(0);
 		
 		this.loadLegend();
 	},

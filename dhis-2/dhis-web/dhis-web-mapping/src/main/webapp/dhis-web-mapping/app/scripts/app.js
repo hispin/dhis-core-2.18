@@ -952,7 +952,7 @@ Ext.onReady( function() {
 		};
 		items.push(item);
 		
-		if (base.id !== GIS.base.boundary.id && base.id !== GIS.base.facility.id) {
+		if (base.id !== GIS.base.boundary.id) {
 			item = {
 				text: 'Filter..', //i18n
 				iconCls: 'gis-menu-item-icon-filter',
@@ -966,7 +966,8 @@ Ext.onReady( function() {
 						}
 					}
 				
-					base.widget.cmp.filterWindow = new GIS.obj.FilterWindow(base);
+					base.widget.cmp.filterWindow = base.id === GIS.base.facility.id ?
+						new GIS.obj.FilterFacilityWindow(base) : new GIS.obj.FilterWindow(base);
 					base.widget.cmp.filterWindow.show();
 				}
 			};
@@ -1393,6 +1394,78 @@ Ext.onReady( function() {
 					base.widget.store.features.loadFeatures(layer.features);
 				}
 			}
+		});
+		
+		return window;
+	};
+	
+	GIS.obj.FilterFacilityWindow = function(base) {
+		var that = base.widget,
+			window,
+			multiSelect,
+			button,
+			filter,
+			selection,
+			features = [],
+			groupSetName = that.view.organisationUnitGroupSet.name,
+			store = GIS.store.groupsByGroupSet;
+			
+		filter = function() {
+			features = [];
+			
+			if (!selection.length || !selection[0]) {
+				features = that.features;
+			}
+			else {
+				for (var i = 0; i < that.features.length; i++) {
+					for (var j = 0; j < selection.length; j++) {
+						if (that.features[i].attributes[groupSetName] === selection[j]) {
+							features.push(that.features[i]);
+						}
+					}
+				}
+			}
+			
+			that.layer.removeAllFeatures();
+			that.layer.addFeatures(features);
+		};
+		
+		multiSelect = Ext.create('Ext.ux.form.MultiSelect', {
+			hideLabel: true,
+			dataFields: ['id', 'name'],
+			valueField: 'name',
+			displayField: 'name',
+			width: 200,
+			height: 300,
+			store: store
+		});
+		
+		button = Ext.create('Ext.button.Button', {
+			text: 'Filter',
+			handler: function() {
+				selection = multiSelect.getValue();
+				filter();
+			}
+		});
+		
+		window = Ext.create('Ext.window.Window', {
+			title: 'Filter by value',
+			iconCls: 'gis-window-title-icon-filter',
+			cls: 'gis-container-default',
+			//width: GIS.conf.layout.tool.window_width,
+			resizable: false,
+			filter: filter,
+			items: multiSelect,
+			bbar: [
+				'->',
+				button
+			],
+			listeners: {
+				destroy: function() {
+					that.layer.removeAllFeatures();
+					that.layer.addFeatures(that.features);
+				}
+			}					
 		});
 		
 		return window;
