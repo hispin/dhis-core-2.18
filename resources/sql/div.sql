@@ -90,3 +90,15 @@ select u.username, u.lastlogin, ui.surname, ui.firstname, ui.email, ui.phonenumb
 from users u 
 join userinfo ui on u.userid=ui.userinfoid
 order by u.username;
+
+-- Explore report tables
+
+select rt.name, rt.paramleafparentorganisationunit as leaf, 
+rt.paramgrandparentorganisationunit as grand, rt.paramparentorganisationunit as parent,
+(select count(*) from reporttable_dataelements where reporttableid=rt.reporttableid) as de,
+(select count(*) from reporttable_datasets where reporttableid=rt.reporttableid) as ds,
+(select count(*) from reporttable_indicators where reporttableid=rt.reporttableid) as in,
+(select count(*) from reporttable_organisationunits where reporttableid=rt.reporttableid) as ou, 
+(select count(*) from reporttable_orgunitgroups where reporttableid=rt.reporttableid) as oug,
+(select count(*) from reporttable_periods where reporttableid=rt.reporttableid) as pe
+from reporttable rt;

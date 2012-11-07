@@ -291,7 +291,7 @@ public class DefaultDataMartEngine
         indicatorOperands.retainAll( allOperands );
         
         clock.logTime( "Number of operands with data: " + allOperands.size() + ", " + SystemUtils.getMemoryString() );
-        notifier.notify( id, DATAMART, "Populating crosstabulation table" );
+        notifier.notify( id, DATAMART, "Populating crosstab table" );
 
         // ---------------------------------------------------------------------
         // Create crosstabtable
