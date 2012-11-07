@@ -5,10 +5,13 @@ TR.conf = {
 				r = Ext.JSON.decode(r.responseText);
 				var obj = { 
 					system: {
-						rootnode: {id: r.rn[0], name: r.rn[1], level: 1}, 
 						maxLevels: r.levels.length
 					}
 				};
+				obj.system.rootnodes = [];
+				for (var i = 0; i < r.user.ous.length; i++) {
+					obj.system.rootnodes.push({id: r.user.ous[i].id, text: r.user.ous[i].name, leaf: r.user.ous[i].leaf});
+				}
 				
 				obj.system.program = [];
 				for (var i = 0; i < r.programs.length; i++) {
@@ -1685,11 +1688,13 @@ Ext.onReady( function() {
 														url: TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.organisationunitchildren_get
 													},
 													root: {
-														id: TR.init.system.rootnode.id,
-                                                        text: TR.init.system.rootnode.name,
-														expanded: false
+														id: 0,
+                                                        text: "/",
+														expanded: true,
+														children: TR.init.system.rootnodes
 													}
 												}),
+												rootVisible: false, 
 												listeners: {
 													added: function() {
 														TR.cmp.params.organisationunit.treepanel = this;
@@ -1698,7 +1703,15 @@ Ext.onReady( function() {
 													{
 														treePanel.getSelectionModel().select( treePanel.getRootNode() );
 														TR.state.orgunitIds = [];
-														TR.state.orgunitIds.push( treePanel.getSelectionModel().getSelection() );
+														var orgunitid = treePanel.getSelectionModel().getSelection()[0].data.id;
+														if(orgunitid==0){
+															for( var i in TR.init.system.rootnodes){
+																 TR.state.orgunitIds.push( TR.init.system.rootnodes[i].id );
+															}
+														}
+														else{
+															TR.state.orgunitIds.push( orgunitid );
+														}													
 													},
 													itemclick : function(view,rec,item,index,eventObj){
 														TR.state.orgunitIds = [];
