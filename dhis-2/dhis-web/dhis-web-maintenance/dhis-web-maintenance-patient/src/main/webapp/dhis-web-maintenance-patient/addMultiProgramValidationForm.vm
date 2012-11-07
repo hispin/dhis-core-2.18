@@ -16,7 +16,7 @@
     <tbody>
 	<tr>
 		<td>
-			<label>$i18n.getString('description') <em title="$i18n.getString( "required" )" class="required">*</em></label>
+			<label>$i18n.getString('name') <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>
 	</tr>
 	<tr>
@@ -95,13 +95,13 @@
 	<tr>	
 		<td>
 			<fieldset>
-				<legend>$i18n.getString("formula")</legend>
+				<legend>$i18n.getString("formula") <em title="$i18n.getString( "required" )" class="required">*</em></legend>
 				<textarea rows='5' id='leftSide' name='leftSide' class="{validate:{required:true,minlength:4}}" onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:300px'></textarea>
 			</fieldset>
 		</td>
 		<td>
 			<fieldset>
-				<legend>$i18n.getString("formula")</legend>
+				<legend>$i18n.getString("formula") <em title="$i18n.getString( "required" )" class="required">*</em></legend>
 				<textarea rows='5' id='rightSide' name='rightSide' class="{validate:{required:true,minlength:4}}" onkeyup="getValidationDescription('rightStageDescription', 'rightSide')" style='width:300px'></textarea>
 			</fieldset>
 		</td>
