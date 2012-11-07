@@ -191,6 +191,14 @@
   margin: 0 0 6px 4px;
 }
 
+.interpretationCommentHeader
+{
+  padding: 7px 0 5px 0;
+  margin: 1px 0 12px 0;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
 a.alert, .alert
 {
   color: #E92B2B;

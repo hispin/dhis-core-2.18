@@ -12,6 +12,12 @@ $( document ).ready( function() {
 	$( "#interpretationFeed" ).load( "getInterpretations.action" );
 } );
 
+function expandComments( id )
+{
+	$( "#comments" + id ).children().show();
+	$( "#commentHeader" + id ).hide();
+}
+
 function isNextPage()
 {
 	var fromTop = $( document ).scrollTop();
