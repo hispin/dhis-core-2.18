@@ -96,17 +96,27 @@ public class DefaultMessageService
 
     public int sendMessage( String subject, String text, String metaData, Set<User> users )
     {
+        return sendMessage( subject, text, metaData, users, false );
+    }
+    
+    public int sendMessage( String subject, String text, String metaData, Set<User> users_, boolean includeFeedbackRecipients )
+    {
+        Set<User> users = new HashSet<User>( users_ );
+        
         // ---------------------------------------------------------------------
         // Add feedback recipients to users if they are not there
         // ---------------------------------------------------------------------
 
-        UserGroup userGroup = configurationService.getConfiguration().getFeedbackRecipients();
-
-        if ( userGroup != null && userGroup.getMembers().size() > 0 )
+        if ( includeFeedbackRecipients )
         {
-            users.addAll( userGroup.getMembers() );
+            UserGroup userGroup = configurationService.getConfiguration().getFeedbackRecipients();
+    
+            if ( userGroup != null && userGroup.getMembers().size() > 0 )
+            {
+                users.addAll( userGroup.getMembers() );
+            }
         }
-
+        
         User sender = currentUserService.getCurrentUser();
 
         if ( sender != null )
@@ -138,7 +148,7 @@ public class DefaultMessageService
 
     public int sendFeedback( String subject, String text, String metaData )
     {
-        return sendMessage( subject, text, metaData, new HashSet<User>() );
+        return sendMessage( subject, text, metaData, new HashSet<User>(), true );
     }
 
     public void sendReply( MessageConversation conversation, String text, String metaData )
