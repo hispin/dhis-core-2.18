@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.ProgramStage;
