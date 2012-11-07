@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -101,13 +100,6 @@ public class TabularInitializeAction
         return orgunitGroups;
     }
 
-    private OrganisationUnit rootNode;
-
-    public OrganisationUnit getRootNode()
-    {
-        return rootNode;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -118,12 +110,7 @@ public class TabularInitializeAction
         orgunitGroups = new ArrayList<OrganisationUnitGroup>(
             organisationUnitGroupService.getAllOrganisationUnitGroups() );
         Collections.sort( orgunitGroups, IdentifiableObjectNameComparator.INSTANCE );
-
-        Collection<OrganisationUnit> rootUnits = new ArrayList<OrganisationUnit>(
-            organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
-
-        rootNode = rootUnits.size() > 0 ? rootUnits.iterator().next() : new OrganisationUnit();
-
+        
         programs = programService.getAllPrograms();
 
         levels = organisationUnitService.getOrganisationUnitLevels();
