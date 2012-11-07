@@ -293,36 +293,36 @@ function removeEvent( programStageId )
 
 function showUpdateEvent( programStageInstanceId )
 {
+	hideById('selectDiv');
+    hideById('searchDiv');
+    hideById('listDiv');
 	setFieldValue('programStageInstanceId', programStageInstanceId);
-	$( '#dataEntryFormDiv' ).load( "viewProgramStageRecords.action", 
+	setInnerHTML('dataEntryFormDiv','');
+    showLoader();
+
+	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
 		{ 
 			programStageInstanceId: programStageInstanceId
 		},function()
 		{
-			showById('patientInforTB');
-			hideById('dueDateLbl');
-			hideById('dueDateField');
+			jQuery('#inputCriteriaDiv').remove();
+			hideById('mainLinkLbl');
+			showById('actionDiv');
 			var programName = jQuery('#programId option:selected').text();
 			var programStageId = jQuery('#programId option:selected').attr('psid');
 			jQuery('.stage-object-selected').attr('psid',programStageId);
 			setInnerHTML('programName', programName );
 			if( getFieldValue('completed')=='true' ){
-				jQuery("#inputCriteriaDiv [id=completeBtn]").attr("disabled", false);
-				jQuery("#inputCriteriaDiv [id=uncompleteBtn]").attr("disabled", true);
+				disable("completeBtn");
+				enable("uncompleteBtn");
 			}
 			else{
-				jQuery("#inputCriteriaDiv [id=completeBtn]").attr("disabled", true);
-				jQuery("#inputCriteriaDiv [id=uncompleteBtn]").attr("disabled", false);
+				enable("completeBtn");
+				disable("uncompleteBtn");
 			}
-		}).dialog(
-		{
-			title:i18n_data_entry,
-			maximize:true, 
-			closable:true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width:850,
-			height:500
+			hideById('loaderDiv');
+			showById('dataEntryInfor');
+			showById('entryFormContainer');
 		});
 }
 
@@ -347,6 +347,7 @@ function showAddEventForm()
 	hideById('actionDiv');
 	showById('dataEntryInfor');
 	setFieldValue('programStageInstanceId','0');
+	byId('executionDate').style.backgroundColor = "#ffffff";
 	setInnerHTML('programName', jQuery('#programId option:selected').text());
 }
 
@@ -402,6 +403,30 @@ function removeEmptyEvents()
 					showSuccessMessage( i18n_remove_empty_events_success );
 					validateSearchEvents( true )
 				}
+			});
+	}
+}
+
+function removeCurrentEvent()
+{	
+    var result = window.confirm( i18n_comfirm_delete_event );
+    if ( result )
+    {
+    	$.postJSON(
+    	    "removeCurrentEncounter.action",
+    	    {
+    	        "id": getFieldValue('programStageInstanceId')   
+    	    },
+    	    function( json )
+    	    { 
+    	    	if ( json.response == "success" )
+    	    	{
+					backEventList();
+				}
+				else if ( json.response == "error" )
+    	    	{ 
+					showWarningMessage( json.message );
+    	    	}
 			});
 	}
 }
