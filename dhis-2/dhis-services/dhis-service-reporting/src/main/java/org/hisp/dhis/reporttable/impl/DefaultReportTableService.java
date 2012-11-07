@@ -283,21 +283,6 @@ public class DefaultReportTableService
         }
 
         // ---------------------------------------------------------------------
-        // Leaf parent organisation unit report parameter
-        // ---------------------------------------------------------------------
-
-        if ( reportTable.getReportParams() != null &&
-            reportTable.getReportParams().isParamLeafParentOrganisationUnit() )
-        {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-            reportTable.getRelativeUnits().addAll(
-                new ArrayList<OrganisationUnit>( organisationUnitService.getLeafOrganisationUnits( organisationUnitId ) ) );
-            reportTable.setParentOrganisationUnit( organisationUnit );
-
-            log.info( "Leaf parent organisation unit: " + organisationUnit.getName() );
-        }
-
-        // ---------------------------------------------------------------------
         // Grand parent organisation unit report parameter
         // ---------------------------------------------------------------------
 

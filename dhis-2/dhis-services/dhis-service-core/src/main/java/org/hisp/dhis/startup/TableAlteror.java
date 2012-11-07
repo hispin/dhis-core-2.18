@@ -109,6 +109,7 @@ public class TableAlteror
         executeSql( "DROP TABLE maplegendsetindicator" );
         executeSql( "DROP TABLE maplegendsetdataelement" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
+        executeSql( "ALTER TABLE reporttable DROP column paramleafparentorganisationunit" );
         executeSql( "ALTER TABLE reporttable DROP column dimension_type" );
         executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );
         executeSql( "ALTER TABLE reporttable DROP column tablename" );
