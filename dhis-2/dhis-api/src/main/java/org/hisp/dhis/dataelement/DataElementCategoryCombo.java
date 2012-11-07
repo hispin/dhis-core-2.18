@@ -69,6 +69,8 @@ public class DataElementCategoryCombo
      */
     private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
 
+    private boolean skipTotal;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -111,7 +113,7 @@ public class DataElementCategoryCombo
 
     public boolean doTotal()
     {
-        return optionCombos != null && optionCombos.size() > 1;
+        return optionCombos != null && optionCombos.size() > 1 && !skipTotal;
     }
 
     public boolean doSubTotals()
@@ -296,6 +298,19 @@ public class DataElementCategoryCombo
     public void setOptionCombos( Set<DataElementCategoryOptionCombo> optionCombos )
     {
         this.optionCombos = optionCombos;
+    }
+
+    @JsonProperty
+    @JsonView( { DetailedView.class, ExportView.class } )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
+    public boolean isSkipTotal()
+    {
+        return skipTotal;
+    }
+
+    public void setSkipTotal( boolean skipTotal )
+    {
+        this.skipTotal = skipTotal;
     }
 
     @Override
