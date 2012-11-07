@@ -29,6 +29,8 @@
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid"
         foreign-key="fk_categorycombo_categoryoptioncomboid" unique="true" />
     </set>
+    
+    <property name="skipTotal" />
 
   </class>
 </hibernate-mapping>
