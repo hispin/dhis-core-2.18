@@ -191,10 +191,10 @@ public class PDFUtils
      * @param text The text to include in the cell.
      * @param colspan The column span of the cell.
      * @param font The font of the cell text.
-     * @param verticalAlign The vertical alignment of the text in the cell.
+     * @param horizontalAlign The vertical alignment of the text in the cell.
      * @return A PdfCell.
      */
-    public static PdfPCell getCell( String text, int colspan, Font font, int verticalAlign )
+    public static PdfPCell getCell( String text, int colspan, Font font, int horizontalAlign )
     {
         Paragraph paragraph = new Paragraph( text, font );
 
@@ -203,7 +203,7 @@ public class PDFUtils
         cell.setColspan( colspan );
         cell.setBorder( 0 );
         cell.setMinimumHeight( 15 );
-        cell.setHorizontalAlignment( verticalAlign );
+        cell.setHorizontalAlignment( horizontalAlign );
 
         return cell;
     }
