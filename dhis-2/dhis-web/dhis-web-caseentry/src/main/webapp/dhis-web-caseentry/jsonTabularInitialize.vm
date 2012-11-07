@@ -8,7 +8,7 @@
 			  {
 				"id":  "${orgunit.id}" ,
 				"name": "$!encoder.jsonEncode( ${orgunit.name} )",
-				"leaf": #if($orgunit.hasChild()) "false" #else "true" #end
+				"leaf": !$orgunit.hasChild()
 			  }#if( $velocityCount < $programs.size() ),#end
 			#end
 		]
