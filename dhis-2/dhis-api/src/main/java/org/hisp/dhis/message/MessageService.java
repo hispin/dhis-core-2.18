@@ -44,6 +44,8 @@ public interface MessageService
     
     int sendMessage( String subject, String text, String metaData, Set<User> users );
     
+    int sendMessage( String subject, String text, String metaData, Set<User> users, boolean includeFeedbackRecipients );
+    
     int sendFeedback( String subject, String text, String metaData );
     
     void sendReply( MessageConversation conversation, String text, String metaData );
