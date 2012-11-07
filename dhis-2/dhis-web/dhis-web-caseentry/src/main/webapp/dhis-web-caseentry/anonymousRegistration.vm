@@ -96,22 +96,23 @@
 		<a href="javascript:backEventList();">$i18n.getString( "anonymous_events_management" ) </a>
 		&raquo; <span id='programName' name='programName'></span>
 	</h3>
-	<table style="width:480px;">
-		<tr>
-			<th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" )</span> <em title="$i18n.getString( "required" )" class="required">*</em> </th>
-			<th><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();"></th>
-				<script type="text/javascript">
-				   datePickerValid( 'executionDate', false );
-				</script> 
-		</tr>
+	<table style="width:580px;" class="listTable">
+			<tr>
+				<th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" )</span> <em title="$i18n.getString( "required" )" class="required">*</em> </th>
+				<th><input type="text" id="executionDate" name="executionDate" onchange="addNewEvent();"></th>
+					<script type="text/javascript">
+					   datePickerValid( 'executionDate', false );
+					</script> 
+			</tr>
 	</table> 
 	<div id='dataEntryFormDiv'></div>
 	
-	<div id='actionDiv' class="page inputCriteria" style="width:600px;height:29px;">	
+	<div id='actionDiv' class="page inputCriteria" style="width:680px;height:29px;">	
 		<input type="button" onclick="doComplete()" value="$i18n.getString('complete')" id="completeBtn">
 		<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBtn" >
-		<input type="button" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();">
+		<input type="button" value="$i18n.getString('run_validation')" onclick="javascript: runValidation();">
 		<input type="button" onclick="completedAndAddNewEvent()" value="$i18n.getString('complete_and_add_new_event')" id="completeAndAddNewBtn" style="width:150px;">
+		<input type="button" class='large-button' onclick="javascript:removeCurrentEvent();" value="$i18n.getString('remove')">
 	</div>
 </div>
 
