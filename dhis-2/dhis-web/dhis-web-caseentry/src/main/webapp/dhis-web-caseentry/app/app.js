@@ -40,7 +40,6 @@ TR.conf = {
             path_api: '../../api/',
             path_images: 'images/',
 			initialize: 'tabularInitialize.action',
-			patientproperties_get: 'loadPatientProperties.action',
 			programstages_get: 'loadReportProgramStages.action',
 			dataelements_get: 'loadDataElements.action',
 			organisationunitchildren_get: 'getOrganisationUnitChildren.action',
@@ -151,7 +150,6 @@ Ext.onReady( function() {
         settings: {},
         params: {
             program:{},
-			patientProperty: {},
 			programStage: {},
 			dataelement: {},
 			organisationunit: {}
@@ -199,7 +197,7 @@ Ext.onReady( function() {
                 return ((screen.height/2)-((cmp.height/2)-100));
             },
             resizeParams: function() {
-				var a = [TR.cmp.params.patientProperty.panel, TR.cmp.params.dataelement.panel, 
+				var a = [TR.cmp.params.dataelement.panel, 
 						 TR.cmp.params.organisationunit.treepanel];
 				for (var i = 0; i < a.length; i++) {
 					if (!a[i].collapsed) {
@@ -492,32 +490,8 @@ Ext.onReady( function() {
 							Ext.getCmp('levelCombobox').setValue( f.level );
 							TR.state.orgunitIds = f.orgunitIds;
 							
-							TR.cmp.params.patientProperty.objects = [];
-							TR.cmp.params.dataelement.objects = [];
-							
-							// Patient properties
-							TR.store.patientProperty.selected.removeAll();
-							
-							// programs with registration
-							if (f.patientProperties && f.type != "3" ) {
-								for (var i = 0; i < f.patientProperties.length; i++) {
-									TR.cmp.params.patientProperty.objects.push({id: f.patientProperties[i].id, name: TR.util.string.getEncodedString(f.patientProperties[i].name)});
-								}
-								TR.store.patientProperty.selected.add(TR.cmp.params.patientProperty.objects);
-							
-								var storePatientProperty = TR.store.patientProperty.available;
-								storePatientProperty.parent = f.programId;
-								if (TR.util.store.containsParent(storePatientProperty)) {
-									TR.util.store.loadFromStorage(storePatientProperty);
-									TR.util.multiselect.filterAvailable(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
-								}
-								else {
-									storePatientProperty.load({params: {programId: f.programId}});
-								}
-							
-							}
-							
 							// Data element
+							TR.cmp.params.dataelement.objects = [];
 							TR.store.dataelement.selected.removeAll();
 							if (f.dataElements) {
 								for (var i = 0; i < f.dataElements.length; i++) {
@@ -570,32 +544,6 @@ Ext.onReady( function() {
 				}
 			}
 		}),
-		patientProperty: {
-            available: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name'],
-                proxy: {
-                    type: 'ajax',
-                    url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.patientproperties_get,
-                    reader: {
-                        type: 'json',
-                        root: 'patientProperties'
-                    }
-                },
-				isloaded: false,
-                storage: {},
-                listeners: {
-                    load: function(s) {
-						this.isloaded = true;
-						TR.util.store.addToStorage(s);
-                        TR.util.multiselect.filterAvailable(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
-                    }
-                }
-            }),
-            selected: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name'],
-                data: []
-            })
-        },
 		programStage: Ext.create('Ext.data.Store', {
 			fields: ['id', 'name'],
 			proxy: {
@@ -857,10 +805,6 @@ Ext.onReady( function() {
 			}
 			else
 			{
-				// Patient properties
-				TR.cmp.params.patientProperty.selected.store.each( function(r) {
-					p.searchingValues.push( r.data.id + '_false_' );
-				});
 				// Data elements
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					p.searchingValues.push( r.data.id +  '_false_' );
@@ -901,10 +845,6 @@ Ext.onReady( function() {
 			}
 			else
 			{
-				// Patient properties
-				TR.cmp.params.patientProperty.selected.store.each( function(r) {
-					p += "&searchingValues=" + r.data.id + '_false_';
-				});
 				// Data elements
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					p += "&searchingValues=" + r.data.id + '_false_';
@@ -961,17 +901,12 @@ Ext.onReady( function() {
 			{
 				var orgUnitCols = TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue();
 				var orgUnitColsInTable =  ( TR.datatable.datatable.columns.length 
-									- TR.cmp.params.patientProperty.selected.store.data.length
 									- TR.cmp.params.dataelement.selected.store.data.length - 3 );
 				if( orgUnitCols!=orgUnitColsInTable )
 				{
 					return true;
 				}
 				
-				var colNames = new Array();
-				TR.cmp.params.patientProperty.selected.store.each( function(r) {
-					colNames.push( r.data.id );
-				});
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					colNames.push( r.data.id );
 				});
@@ -1150,23 +1085,6 @@ Ext.onReady( function() {
 					menuDisabled: true
 				}
 			}
-			
-			// Patient properties columns
-			
-			TR.cmp.params.patientProperty.selected.store.each( function(r) {
-				cols[++index] = {
-					header: r.data.name, 
-					dataIndex: 'col' + index,
-					height: TR.conf.layout.east_gridcolumn_height,
-					name: r.data.id,
-					sortable: false,
-					draggable: false,
-					hidden: eval(TR.value.columns[index].hidden ),
-					filter:{
-						type: "string"
-					}
-				}
-			});
 			
 			// Data element columns
 			
@@ -1514,28 +1432,6 @@ Ext.onReady( function() {
 									},
 									select: function(cb) {
 										var pId = cb.getValue();
-										// Regular programs
-										if( cb.displayTplData[0].type !='3' )
-										{
-											// IDENTIFIER TYPE && PATIENT ATTRIBUTES
-											var storePatientProperty = TR.store.patientProperty.available;
-											TR.store.patientProperty.selected.removeAll();
-											storePatientProperty.parent = pId;
-											
-											if (TR.util.store.containsParent(storePatientProperty)) {
-												TR.util.store.loadFromStorage(storePatientProperty);
-												TR.util.multiselect.filterAvailable(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
-											}
-											else {
-												storePatientProperty.load({params: {programId: pId}});
-											}
-										}
-										else
-										{
-											TR.store.patientProperty.available.removeAll();
-											TR.store.patientProperty.selected.removeAll();
-										}
-										
 										// PROGRAM-STAGE										
 										var storeProgramStage = TR.store.programStage;
 										TR.store.dataelement.available.removeAll();
@@ -1729,133 +1625,6 @@ Ext.onReady( function() {
 											},
 											expand: function() {
 												TR.cmp.params.organisationunit.treepanel.setHeight(TR.cmp.params.organisationunit.panel.getHeight() - TR.conf.layout.west_fill_accordion_organisationunit);
-											}
-										}
-									},
-									
-									// IDENTIFIER TYPE and PATIENT-ATTRIBUTE
-									{
-										title: '<div style="height:17px;background-image:url(images/data.png); background-repeat:no-repeat; padding-left:20px">' + TR.i18n.identifiers_and_attributes + '</div>',
-										hideCollapseTool: true,
-										items: [
-											{
-												xtype: 'panel',
-												layout: 'column',
-												bodyStyle: 'border-style:none',
-												items: [
-													{
-														xtype: 'multiselect',
-														name: 'availablePatientProperties',
-														cls: 'tr-toolbar-multiselect-left',
-														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: TR.conf.layout.west_multiselect,
-														displayField: 'name',
-														valueField: 'id',
-														queryMode: 'local',
-														store: TR.store.patientProperty.available,
-														tbar: [
-															{
-																xtype: 'label',
-																text: TR.i18n.available,
-																cls: 'tr-toolbar-multiselect-left-label'
-															},
-															'->',
-															{
-																xtype: 'button',
-																icon: 'images/arrowright.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.select(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
-																}
-															},
-															{
-																xtype: 'button',
-																icon: 'images/arrowrightdouble.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.selectAll(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
-																}
-															},
-															' '
-														],
-														listeners: {
-															added: function() {
-																TR.cmp.params.patientProperty.available = this;
-															},                                                                
-															afterrender: function() {
-																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.select(this, TR.cmp.params.patientProperty.selected);
-																}, this);
-															}
-														}
-													},                                            
-													{
-														xtype: 'multiselect',
-														name: 'selectedPatientProperties',
-														cls: 'tr-toolbar-multiselect-right',
-														width: (TR.conf.layout.west_fieldset_width - TR.conf.layout.west_width_subtractor) / 2,
-														height: TR.conf.layout.west_multiselect,
-														displayField: 'name',
-														valueField: 'id',
-														ddReorder: true,
-														queryMode: 'local',
-														store: TR.store.patientProperty.selected,
-														tbar: [
-															' ',
-															{
-																xtype: 'button',
-																icon: 'images/arrowleftdouble.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.unselectAll(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
-																}
-															},
-															{
-																xtype: 'button',
-																icon: 'images/arrowleft.png',
-																width: 22,
-																handler: function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected);
-																}
-															},
-															'->',
-															{
-																xtype: 'label',
-																text: TR.i18n.selected,
-																cls: 'tr-toolbar-multiselect-right-label'
-															}
-														],
-														listeners: {
-															added: function() {
-																TR.cmp.params.patientProperty.selected = this;
-															},          
-															afterrender: function() {
-																this.boundList.on('itemdblclick', function() {
-																	TR.util.multiselect.unselect(TR.cmp.params.patientProperty.available, this);
-																}, this);
-															}
-														}
-													}
-												]
-											}
-											
-										],
-										listeners: {
-											added: function() {
-												TR.cmp.params.patientProperty.panel = this;
-											},
-											expand: function() {
-												// IDENTIFIER TYPE
-												TR.util.multiselect.setHeight(
-													[TR.cmp.params.patientProperty.available, TR.cmp.params.patientProperty.selected],
-													TR.cmp.params.patientProperty.panel
-												);
-												
-												var programId = TR.cmp.settings.program.getValue();			
-												var programType = TR.cmp.settings.program.displayTplData[0].type;											
-												if (programId != null && !TR.store.patientProperty.available.isloaded && programType !='3') {
-													TR.store.patientProperty.available.load({params: {programId: programId}});
-												}
 											}
 										}
 									},
