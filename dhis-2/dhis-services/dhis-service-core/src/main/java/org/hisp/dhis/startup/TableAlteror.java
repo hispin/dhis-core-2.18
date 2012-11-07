@@ -465,6 +465,13 @@ public class TableAlteror
         executeSql( "UPDATE dataset SET skipaggregation = false WHERE skipaggregation IS NULL" );
         executeSql( "UPDATE dataset SET skipoffline = false WHERE skipoffline IS NULL" );
 
+        // short names
+        
+        executeSql( "ALTER TABLE dataelement ALTER COLUMN shortname TYPE character varying(50)" );
+        executeSql( "ALTER TABLE indicator ALTER COLUMN shortname TYPE character varying(50)" );
+        executeSql( "ALTER TABLE dataset ALTER COLUMN shortname TYPE character varying(50)" );
+        executeSql( "ALTER TABLE organisationunit ALTER COLUMN shortname TYPE character varying(50)" );
+        
         log.info( "Tables updated" );
     }
 
