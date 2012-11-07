@@ -15,22 +15,15 @@
     <tbody>
 	
 	<tr>
-		<td width="20em" colspan='2'>
-			<label>$i18n.getString('description') <em title="$i18n.getString( "required" )" class="required">*</em></label>
+		<td>
+			<label>$i18n.getString('name') <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>
-	</tr>
-	<tr>
 		<td colspan='2'>			
 			<input type="text" id='description' name='description' value='$validation.description' class="{validate:{required:true,minlength:4}}">
 		</td>
 	</tr>
 	<tr>
-		<th><label>$i18n.getString('validation')</label></th>
-	</tr>
-	<tr>
 		<td><label>$i18n.getString("program_stage")</label></td>
-	</tr>
-	<tr>
 		<td>
 			<select id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();">
 				<option value=''>[$i18n.getString( "please_select" )]</option>
@@ -42,14 +35,13 @@
 	</tr>
 	<tr>
 		<td>$i18n.getString("data_elements")</td>
-	</tr>
-	<tr>
 		<td>
 			<select id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide', 'leftStageDescription');">
 			</select>
 		</td>
 	</tr>
 	<tr>
+		<td></td>
 		<td>
 			<input type='button' value="+" title="$i18n.getString( 'plus' )" onclick='insertOperator( "leftStageDescription", "leftSide", "+" );' class="small-button" >
 			&nbsp;&nbsp;
@@ -65,23 +57,22 @@
 		</td>
 	</tr>
 	<tr>
+		<td><label>$i18n.getString("formula") <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<fieldset>
-				<legend>$i18n.getString("formula")</legend>
-				<textarea rows='5' id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:300px;'>$validation.leftSide</textarea>
-				<input type='hidden' id='rightSide' name='rightSide' value='1==1'>
-			</fieldset>
+			<textarea rows='5' id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')" style='width:320px;' class="{validate:{required:true,minlength:4}}">$validation.leftSide</textarea>
+			<input type='hidden' id='rightSide' name='rightSide' value='1==1'>
 		</td>
 	</tr>
 	<tr>	
+		<td><label>$i18n.getString("description")</label></td>
 		<td>
-			<fieldset>
-				<legend>$i18n.getString( "description" )</legend>
+			<fieldset style='width:300px;'>
 				<div id='leftStageDescription' style='width:300px;'>$!leftDescription</div>
 			</fieldset>
 		</td>
 	</tr>
 	<tr>
+		<td></td>
 		<td>
 			<input type='submit' value="$i18n.getString( 'update' )" >
 			<input type='button' value="$i18n.getString( 'cancel' )" onclick="window.location.href='programValidation.action?programId=$validation.program.id'">
