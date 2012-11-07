@@ -2,17 +2,12 @@
 	"user":
 	{
 		"id":"$!currentUser.id",
-		"isAdmin":$!currentUser.userCredentials.isSuper(),
-		"ous":[
-			#foreach( $orgunit in $currentUser.organisationUnits )
-			  {
-				"id":  "${orgunit.id}" ,
-				"name": "$!encoder.jsonEncode( ${orgunit.name} )",
-				"leaf": !$orgunit.hasChild()
-			  }#if( $velocityCount < $programs.size() ),#end
-			#end
-		]
+		"isAdmin":$!currentUser.userCredentials.isSuper()
 	},
+	"rn":[
+		"$!{rootNode.id}",
+		"$!encoder.jsonEncode(${rootNode.name})"
+    ],
 	"programs": [
 		#foreach( $program in $programs )
 		  {
