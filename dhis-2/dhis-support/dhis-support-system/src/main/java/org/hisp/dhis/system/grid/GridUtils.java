@@ -69,6 +69,7 @@ import org.apache.velocity.VelocityContext;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.util.CodecUtils;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Encoder;
 import org.hisp.dhis.system.util.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
@@ -103,7 +104,7 @@ public class GridUtils
     private static final WritableCellFormat XLS_FORMAT_TTTLE = new WritableCellFormat( new WritableFont(
         WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
 
-    private static final WritableCellFormat XLS_FORMAT_SUBTTTLE = new WritableCellFormat( new WritableFont(
+    private static final WritableCellFormat XLS_FORMAT_SUBTITLE = new WritableCellFormat( new WritableFont(
         WritableFont.TAHOMA, 12, WritableFont.NO_BOLD, false ) );
     
     private static final WritableCellFormat XLS_FORMAT_LABEL = new WritableCellFormat( new WritableFont(
@@ -146,7 +147,9 @@ public class GridUtils
             Document document = openDocument( out );
             
             toPdfInternal( grid, document, 0F );
-    
+
+            addPdfTimestamp( document, true );
+            
             closeDocument( document );
         }
     }
@@ -164,6 +167,8 @@ public class GridUtils
             {
                 toPdfInternal( grid, document, 40F );
             }
+            
+            addPdfTimestamp( document, false );
             
             closeDocument( document );
         }
@@ -206,6 +211,14 @@ public class GridUtils
             }
         }
 
+        addTableToDocument( document, table );
+    }
+    
+    private static void addPdfTimestamp( Document document, boolean paddingTop )
+    {
+        PdfPTable table = new PdfPTable(1);
+        table.addCell( getEmptyCell( 1, ( paddingTop ? 30 : 0 ) ) );
+        table.addCell( getTextCell( getGeneratedString() ) );
         addTableToDocument( document, table );
     }
 
@@ -264,12 +277,11 @@ public class GridUtils
 
         rowNumber++;
 
-        if ( StringUtils.isNotEmpty( grid.getSubtitle() ) )
-        {
-            sheet.addCell( new Label( 0, rowNumber++, grid.getSubtitle(), XLS_FORMAT_SUBTTTLE ) );
-            
-            rowNumber++;
-        }
+        String subTitle = StringUtils.isNotEmpty( grid.getSubtitle() ) ? 
+            ( grid.getSubtitle() + "  (" + getGeneratedString() + ")" ) : grid.getSubtitle();
+        
+        sheet.addCell( new Label( 0, rowNumber++, subTitle, XLS_FORMAT_SUBTITLE ) );
+        rowNumber++;
         
         for ( GridHeader header : grid.getVisibleHeaders() )
         {
@@ -299,7 +311,7 @@ public class GridUtils
             rowNumber++;
         }
     }
-
+    
     /**
      * Writes a CSV representation of the given Grid to the given OutputStream.
      */
@@ -566,7 +578,15 @@ public class GridUtils
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
+    
+    /**
+     * Returns a string explaning when the grid was generated.
+     */
+    private static String getGeneratedString()
+    {
+        return "Generated: " + DateUtils.getMediumDateString();
+    }
+    
     /**
      * Render using Velocity.
      */
