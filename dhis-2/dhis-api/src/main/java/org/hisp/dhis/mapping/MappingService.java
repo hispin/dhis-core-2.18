@@ -27,13 +27,12 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.aggregation.AggregatedMapValue;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.user.User;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
+import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Jan Henrik Overland
@@ -154,8 +153,6 @@ public interface MappingService
     MapView getIndicatorLastYearMapView( String indicatorUid, String organisationUnitUid, int level );
 
     Collection<MapView> getAllMapViews();
-        
-    Collection<MapView> getMapViewsByUser( User user );
     
     Collection<MapView> getMapViewsBetweenByName( String name, int first, int max );
 
