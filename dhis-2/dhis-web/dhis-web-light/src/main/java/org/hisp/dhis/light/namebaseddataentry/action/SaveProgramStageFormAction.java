@@ -301,6 +301,15 @@ public class SaveProgramStageFormAction
     {
         return programStage;
     }
+    
+    private ProgramStageDataElement programStageDataElement;
+    
+    
+
+    public ProgramStageDataElement getProgramStageDataElement()
+    {
+        return programStageDataElement;
+    }
 
     private boolean current;
 
