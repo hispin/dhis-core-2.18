@@ -35,6 +35,7 @@
 
 <div class="header-box" align="center">
 	<p style="text-align: left;">
+
 		#foreach( $dataElement in $dataElements)
 			#set( $key = "DE${dataElement.id}" )
 			#if( $dataElement.shortName )
@@ -42,50 +43,68 @@
 			#else
 				#set( $dataElementName = $dataElement.name )
 			#end
-			
+
 			<label>$encoder.htmlEncode( $dataElementName )
 					#if($dataElement.isCompulsory())*#end
 					#if($dataElement.type=="date") [yyyy-MM-dd] #end
 			</label>
 			
-			#if( $typeViolations.get( $key ) )
-                		#set( $typeViolation = $typeViolations.get( $key ) )
-            			<br /><span style="color: #990000;">$prevDataValues.get($key) $i18n.getString($typeViolation)</span>
-            #end
 			
-				#if (! $dataElement.getOptionSet())			
-					
-					#if($dataElement.type=="bool")
-						<select name="$key">
-							<option value="">$i18n.getString("please_select")</option>
-							<option #if( $prevDataValues.get( $key ) == "true" ) selected="selected" #end value="true">$i18n.getString("yes")</option>
-							<option #if( $prevDataValues.get( $key ) == "false" ) selected="selected" #end value="false">$i18n.getString("no")</option>
-						</select>
-					#else
-						<input type="text" name="$key" value="$!prevDataValues.get($key)" />
-					#end
+			#if( $typeViolations.get( $key ) )
+				#set( $typeViolation = $typeViolations.get( $key ) )
+				<br /><span style="color: #990000;">$prevDataValues.get($key) $i18n.getString($typeViolation)</span>
+            #end
 
-				#elseif ($dataElement.getOptionSet())
-					#set( $options = $dataElement.getOptionSet().getOptions() )
-					<select type="text" name="$key" />
-					#set( $selected=false )
-					#foreach ($option in $options)
-						<option value="$option"
-						#if( $prevDataValues.get( $key ) == $option ) 
-							selected
-							#set( $selected=true )
-						#end
-						> $option </option>
-					#end
-
-					#if( !$selected ) 
-						<option selected > $i18n.getString("select_option") </option>
-					#end
-					
+			#if ( !$dataElement.getOptionSet() )			
+				
+				#if($dataElement.type=="bool")
+					<select name="$key">
+						<option value="">$i18n.getString("please_select")</option>
+						<option #if( $prevDataValues.get( $key ) == "true" ) selected="selected" #end value="true">$i18n.getString("yes")</option>
+						<option #if( $prevDataValues.get( $key ) == "false" ) selected="selected" #end value="false">$i18n.getString("no")</option>
 					</select>
+				#else
+					<input type="text" name="$key" value="$!prevDataValues.get($key)" />
 				#end
+	
+
+
+			#elseif ($dataElement.getOptionSet())
+				#set( $options = $dataElement.getOptionSet().getOptions() )
+				<select type="text" name="$key" />
+				#set( $selected=false )
+				#foreach ($option in $options)
+					<option value="$option"
+					#if( $prevDataValues.get( $key ) == $option ) 
+						selected
+						#set( $selected=true )
+					#end
+					> $option </option>
+				#end
+
+				#if( !$selected ) 
+					<option selected > $i18n.getString("select_option") </option>
+				#end
+				
+				</select>		
+				
+			#end
+			
+			#if( $programStage.program.displayProvidedOtherFacility=='true' )
+				#foreach( $programStageDataElement in $listOfProgramStageDataElement )
+				#if( $programStageDataElement.allowProvidedElsewhere == 'true' && $programStageDataElement.dataElement.id == $dataElement.id )
+					<input class='provided-elsewhere' name="$id" id="$id" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" #if($patientDataValue.providedElsewhere == 'true') checked #end />
+				#end
+				#end
+			#end
+			
 		#end
+
 	</p>
+	
+	
+	
+		
 </div>
 
 <div class="header-box" align="center">

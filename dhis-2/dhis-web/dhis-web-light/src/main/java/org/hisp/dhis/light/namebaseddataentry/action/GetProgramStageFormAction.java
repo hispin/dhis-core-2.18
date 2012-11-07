@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.light.namebaseddataentry.action;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +56,7 @@ public class GetProgramStageFormAction
     implements Action
 {
     private static final String REDIRECT = "redirect";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -95,9 +96,9 @@ public class GetProgramStageFormAction
     {
         this.patientDataValueService = patientDataValueService;
     }
-    
+
     private PatientService patientService;
-    
+
     public PatientService getPatientService()
     {
         return patientService;
@@ -107,9 +108,9 @@ public class GetProgramStageFormAction
     {
         this.patientService = patientService;
     }
-    
+
     private ProgramStageSectionService programStageSectionService;
-    
+
     public void setProgramStageSectionService( ProgramStageSectionService programStageSectionService )
     {
         this.programStageSectionService = programStageSectionService;
@@ -246,9 +247,9 @@ public class GetProgramStageFormAction
     {
         return prevDataValues;
     }
-    
+
     private Patient patient;
-    
+
     public Patient getPatient()
     {
         return patient;
@@ -258,7 +259,7 @@ public class GetProgramStageFormAction
     {
         this.patient = patient;
     }
-    
+
     private Integer programStageSectionId;
 
     public void setProgramStageSectionId( Integer programStageSectionId )
@@ -272,19 +273,19 @@ public class GetProgramStageFormAction
     }
 
     private List<ProgramStageSection> listOfProgramStageSections;
-    
+
     public List<ProgramStageSection> getListOfProgramStageSections()
     {
         return listOfProgramStageSections;
     }
-    
+
     public ProgramStageSection programStageSection;
 
     public ProgramStageSection getProgramStageSection()
     {
         return programStageSection;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -299,6 +300,13 @@ public class GetProgramStageFormAction
         this.current = current;
     }
 
+    private List<ProgramStageDataElement> listOfProgramStageDataElement;
+
+    public List<ProgramStageDataElement> getListOfProgramStageDataElement()
+    {
+        return listOfProgramStageDataElement;
+    }
+
     @Override
     public String execute()
         throws Exception
@@ -306,20 +314,26 @@ public class GetProgramStageFormAction
         prevDataValues.clear();
         programStage = util.getProgramStage( programId, programStageId );
         patient = patientService.getPatient( patientId );
-        
-        if( programStageSectionId != null && programStageSectionId != 0 )
+
+        if ( programStageSectionId != null && programStageSectionId != 0 )
         {
             this.programStageSection = programStageSectionService.getProgramStageSection( this.programStageSectionId );
-            
-            List<ProgramStageDataElement> listOfProgramStageDataElement = programStageSection.getProgramStageDataElements();
-            
+
+            listOfProgramStageDataElement = programStageSection.getProgramStageDataElements();
+
             dataElements = util.transformDataElementsToMobileModel( listOfProgramStageDataElement );
+
         }
         else
         {
+            listOfProgramStageDataElement = new ArrayList<ProgramStageDataElement>(
+                programStage.getProgramStageDataElements() );
+
             dataElements = util.transformDataElementsToMobileModel( programStageId );
         }
-        program = programStageInstanceService.getProgramStageInstance( programStageInstanceId ).getProgramInstance().getProgram();
+
+        program = programStageInstanceService.getProgramStageInstance( programStageInstanceId ).getProgramInstance()
+            .getProgram();
         Collection<PatientDataValue> patientDataValues = patientDataValueService
             .getPatientDataValues( programStageInstanceService.getProgramStageInstance( programStageInstanceId ) );
         for ( PatientDataValue patientDataValue : patientDataValues )
