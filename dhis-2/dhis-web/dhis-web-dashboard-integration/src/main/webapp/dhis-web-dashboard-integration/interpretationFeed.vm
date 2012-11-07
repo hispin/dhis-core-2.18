@@ -1,3 +1,4 @@
+#set( $maxComments = 4 )
 #foreach( $ip in $interpretations )
 <div class="interpretationContainer">
     <div class="interpretationSymbol">
@@ -45,18 +46,22 @@
 	    </div>
 	    
 	    #set( $comments = $ip.comments )
-	    <div class="interpretationCommentArea">
-	        <div id="comments${ip.uid}">
+	    #set( $commentStartPos = ( $comments.size() - $maxComments ) )
+	    <div class="interpretationCommentArea">	        
+	        #if( $comments.size() > $maxComments )
+	        <div id="commentHeader${ip.uid}" class="interpretationCommentHeader"><a href="javascript:expandComments( '${ip.uid}' )">View all $comments.size() comments</a></div>	        	
+        	#end
+        	<div id="comments${ip.uid}">
 	        #foreach( $comment in $comments )
-	        <div>
+	        <div #if( $velocityCount <= $commentStartPos ) style="display:none"#end>
 	            <div class="interpretationName">
 	                <span class="bold pointer" onclick="showUserInfo( '${comment.user.id}' )">${comment.user.name}</span>&nbsp;
 	                <span class="grey">${format.formatDate( $comment.created )}</span>
 	            </div>
-	        </div>
-	        <div class="interpretationText">
-	            ${comment.text}
-	        </div>
+		        <div class="interpretationText">
+		            ${comment.text}
+		        </div>
+            </div>
 	        #end
 	        </div>
 	        <textarea id="commentArea${ip.uid}" class="commentArea" placeholder="$i18n.getString( 'add_a_comment' )..."></textarea>
