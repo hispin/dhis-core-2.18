@@ -34,7 +34,7 @@ jQuery( document ).ready( function() {
 <div class="userRow"><div class="userLabel">$i18n.getString( "email" )</div><div class="userValue">$!encoder.htmlEncode( $user.email )</div></div>
 <div class="userRow"><div class="userLabel">$i18n.getString( "phone_number" )</div><div class="userValue">$!encoder.htmlEncode( $user.phoneNumber )</div></div>
 <div class="userRow"><div class="userLabel">$i18n.getString( "org_units" )</div><div class="userValue">$!encoder.htmlEncode( $user.getOrganisationUnitsName() )</div></div>
-<div class="userRow"><div class="userLabel">$i18n.getString( "user_roles" )</div><div class="userValue">$!encoder.htmlEncode( $user.getOrganisationUnitsName() )</div></div>
+<div class="userRow"><div class="userLabel">$i18n.getString( "user_roles" )</div><div class="userValue">$!encoder.htmlEncode( $user.userCredentials.getUserAuthorityGroupsName() )</div></div>
 </div>
 <div id="userInfoLink"><a class="bold" href="javascript:showFullProfile()">$i18n.getString( "view_full_profile" )</a></div>
 
