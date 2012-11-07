@@ -29,21 +29,21 @@ selection.setListenerFunction( organisationUnitSelected );
 
 function disableCriteriaDiv()
 {
-	jQuery('#selectDiv :input').each( function( idx, item ){
-		disable(this.id);
-	});
+	disable('listBtn');
+	disable('addBtn');
+	disable('advancedBtn');
+	disable('removeBtn');
 	jQuery('#criteriaDiv :input').each( function( idx, item ){
 		disable(this.id);
 	});
-	enable('orgunitName');
-	enable('programId');
 }
 
 function enableCriteriaDiv()
 {
-	jQuery('#selectDiv :input').each( function( idx, item ){
-		enable(this.id);
-	});
+	enable('listBtn');
+	enable('addBtn');
+	enable('advancedBtn');
+	enable('removeBtn');
 	jQuery('#criteriaDiv :input').each( function( idx, item ){
 		enable(this.id);
 	});
@@ -190,9 +190,10 @@ function searchEvents( listAll )
 	setFieldValue('isShowEventList', listAll );
 	
 	var params = '';
+	params += '&startDate=' + getFieldValue('startDate');
+	params += '&endDate=' + getFieldValue('endDate');
+		
 	if(listAll){	
-		params += '&startDate=';
-		params += '&endDate=';
 		jQuery( '#compulsoryDE option' ).each( function( i, item ){
 			var input = jQuery( item );
 			params += '&searchingValues=de_' + input.val() + '_false_';
@@ -200,8 +201,6 @@ function searchEvents( listAll )
 		hideById('advanced-search');
 	}
 	else{
-		params += '&startDate=' + getFieldValue('startDate');
-		params += '&endDate=' + getFieldValue('endDate');
 		var value = '';
 		var searchingValue = '';
 		jQuery( '#advancedSearchTB tr' ).each( function(){
@@ -294,36 +293,37 @@ function removeEvent( programStageId )
 
 function showUpdateEvent( programStageInstanceId )
 {
-	hideById('selectDiv');
-	hideById('searchDiv');
-	hideById('listDiv');
 	setFieldValue('programStageInstanceId', programStageInstanceId);
-	setInnerHTML('dataEntryFormDiv','');
-	showLoader();
-	
-	$( '#dataEntryFormDiv' ).load( "dataentryform.action", 
+	$( '#dataEntryFormDiv' ).load( "viewProgramStageRecords.action", 
 		{ 
 			programStageInstanceId: programStageInstanceId
 		},function()
 		{
-			jQuery('#inputCriteriaDiv').remove();
-			hideById('mainLinkLbl');
-			showById('actionDiv');
+			showById('patientInforTB');
+			hideById('dueDateLbl');
+			hideById('dueDateField');
 			var programName = jQuery('#programId option:selected').text();
 			var programStageId = jQuery('#programId option:selected').attr('psid');
 			jQuery('.stage-object-selected').attr('psid',programStageId);
 			setInnerHTML('programName', programName );
-			
 			if( getFieldValue('completed')=='true' ){
-				disableCompletedButton( true );
+				jQuery("#inputCriteriaDiv [id=completeBtn]").attr("disabled", false);
+				jQuery("#inputCriteriaDiv [id=uncompleteBtn]").attr("disabled", true);
 			}
 			else{
-				disableCompletedButton( false );
+				jQuery("#inputCriteriaDiv [id=completeBtn]").attr("disabled", true);
+				jQuery("#inputCriteriaDiv [id=uncompleteBtn]").attr("disabled", false);
 			}
-			hideById('loaderDiv');
-			showById('dataEntryInfor');
-			showById('entryFormContainer');
-		} );
+		}).dialog(
+		{
+			title:i18n_data_entry,
+			maximize:true, 
+			closable:true,
+			modal:false,
+			overlay:{background:'#000000', opacity:0.1},
+			width:850,
+			height:500
+		});
 }
 
 function backEventList()
