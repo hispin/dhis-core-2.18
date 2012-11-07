@@ -521,8 +521,8 @@ html * {
 /* NumberField */
 
 .gis-numberfield input.x-form-text {
-	border-top-left-radius: 2px;
-	border-bottom-left-radius: 2px;
+	border-top-left-radius: 1px;
+	border-bottom-left-radius: 1px;
 }
 
 /* Label */
