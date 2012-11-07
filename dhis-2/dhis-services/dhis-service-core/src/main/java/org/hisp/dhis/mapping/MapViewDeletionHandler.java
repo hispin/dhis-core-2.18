@@ -36,7 +36,6 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.deletion.DeletionHandler;
-import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
@@ -179,19 +178,6 @@ public class MapViewDeletionHandler
                 mapViews.remove();
                 mappingService.deleteMapView( mapView );
             }
-        }
-    }
-    
-    @Override
-    public void deleteUser( User user )
-    {
-        Iterator<MapView> iterator = mappingService.getMapViewsByUser( user ).iterator();
-        
-        while ( iterator.hasNext() )
-        {
-            MapView mapView = iterator.next();
-            iterator.remove();
-            mappingService.deleteMapView( mapView );
         }
     }
 }

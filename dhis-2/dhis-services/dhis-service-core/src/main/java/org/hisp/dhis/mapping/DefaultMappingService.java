@@ -526,11 +526,6 @@ public class DefaultMappingService
 
         return mapViews;
     }
-
-    public Collection<MapView> getMapViewsByUser( User user )
-    {
-        return mapViewStore.getByUser( user );
-    }
     
     public Collection<MapView> getMapViewsBetweenByName( String name, int first, int max )
     {
