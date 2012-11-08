@@ -1,6 +1,7 @@
 <script type="text/javascript" src="../dhis-web-commons/javascripts/useraccount/updateUserProfileForm.js"></script>
 
-<h3>$encoder.htmlEncode( $userCredentials.user.getName() )</h3>
+<div id="updateProfileHeader">$encoder.htmlEncode( $userCredentials.user.getName() )</div>
+<div id="updateProfileLink"><a class="blueButtonLink" href="../dhis-web-dashboard-integration/profile.action">$i18n.getString( "view_profile" )</a></div>
 
 <form id="updateUserProfileForm" name="updateUserProfileForm" class="inputForm">
 <div><input type="hidden" id="id" name="id" value="$userCredentials.id"/></div>
