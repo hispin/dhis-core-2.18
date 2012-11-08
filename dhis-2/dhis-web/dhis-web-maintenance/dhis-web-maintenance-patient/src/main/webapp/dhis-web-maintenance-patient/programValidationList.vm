@@ -34,12 +34,12 @@
 			  </tr>
 
 			  <tbody id="list">
-				<tr id="tr${validation.id}">
+				<!-- tr id="tr${validation.id}">
 					<td>$i18n.getString( "validation_for_date_data_elements" )</td>
 					<td>
 					  <a href="defineDateProgramValidationForm.action?id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>						
 					</td>
-				</tr>
+				</tr -->
 				#foreach( $validation in $validations )
 				  <tr id="tr${validation.id}">
 					
