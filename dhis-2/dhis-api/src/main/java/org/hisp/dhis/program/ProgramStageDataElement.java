@@ -62,6 +62,8 @@ public class ProgramStageDataElement
     private Boolean allowProvidedElsewhere;
 
     private Integer sortOrder;
+    
+    private Boolean displayInReports;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -135,6 +137,16 @@ public class ProgramStageDataElement
     public void setSortOrder( Integer sortOrder )
     {
         this.sortOrder = sortOrder;
+    }
+
+    public Boolean getDisplayInReports()
+    {
+        return displayInReports;
+    }
+
+    public void setDisplayInReports( Boolean displayInReports )
+    {
+        this.displayInReports = displayInReports;
     }
 
     // -------------------------------------------------------------------------

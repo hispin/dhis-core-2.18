@@ -177,6 +177,13 @@ public class UpdateProgramStageAction
         this.autoGenerateEvent = autoGenerateEvent;
     }
 
+    private List<Boolean> displayInReports = new ArrayList<Boolean>();
+
+    public void setDisplayInReports( List<Boolean> displayInReports )
+    {
+        this.displayInReports = displayInReports;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -216,6 +223,7 @@ public class UpdateProgramStageAction
         {
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
+            Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
 
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
@@ -225,16 +233,15 @@ public class UpdateProgramStageAction
                 programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
                     this.compulsories.get( i ), new Integer( i ) );
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
+                programStageDataElement.setDisplayInReports( displayInReport );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
             else
             {
                 programStageDataElement.setCompulsory( this.compulsories.get( i ) );
-
                 programStageDataElement.setSortOrder( new Integer( i ) );
-
                 programStageDataElement.setAllowProvidedElsewhere( allowed );
-
+                programStageDataElement.setDisplayInReports( displayInReport );
                 programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
 
                 programStageDataElements.remove( programStageDataElement );

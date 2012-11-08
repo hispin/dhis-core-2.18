@@ -184,6 +184,13 @@ public class AddProgramStageAction
         this.autoGenerateEvent = autoGenerateEvent;
     }
 
+    private List<Boolean> displayInReports = new ArrayList<Boolean>();
+
+    public void setDisplayInReports( List<Boolean> displayInReports )
+    {
+        this.displayInReports = displayInReports;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -194,7 +201,7 @@ public class AddProgramStageAction
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         irregular = (irregular == null) ? false : irregular;
         autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
-        
+
         ProgramStage programStage = new ProgramStage();
         Program program = programService.getProgram( id );
 
@@ -206,7 +213,7 @@ public class AddProgramStageAction
         programStage.setIrregular( irregular );
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setAutoGenerateEvent( autoGenerateEvent );
-        
+
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
         {
@@ -221,10 +228,13 @@ public class AddProgramStageAction
         for ( int i = 0; i < this.selectedDataElementsValidator.size(); i++ )
         {
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
+            Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
+            Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
+            
             ProgramStageDataElement programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
                 this.compulsories.get( i ), new Integer( i ) );
-            Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
             programStageDataElement.setAllowProvidedElsewhere( allowed );
+            programStageDataElement.setDisplayInReports( displayInReport );
             programStageDataElementService.addProgramStageDataElement( programStageDataElement );
         }
 

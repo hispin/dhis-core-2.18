@@ -18,7 +18,7 @@
 <input type='hidden' id='programStageId' name='programStageId' class='stage-object-selected'>
 <input type='hidden' id='isShowEventList' name='isShowEventList'>
 
-<select multiple id='compulsoryDE' name='compulsoryDE' class='hidden'></select>
+<select multiple id='displayInReports' name='displayInReports' class='hidden'></select>
 
 <div>
 	<div id='selectDiv'>

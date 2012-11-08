@@ -91,8 +91,9 @@ function selectDataElements()
 	jQuery("#availableList").children().each(function(i, item){
 		if( item.selected ){
 			html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onmousedown='select(event,this)'>" + item.text + "</td>";
-			html += "<td align='center'><input type='checkbox' name='compulsory' value='" + item.value + "'></td>";
-			html += "<td align='center'><input type='checkbox' name='allowProvided' value='" + item.value + "'></td>";
+			html += "<td align='center'><input type='checkbox' name='compulsory'></td>";
+			html += "<td align='center'><input type='checkbox' name='allowProvided'></td>";
+			html += "<td align='center'><input type='checkbox' name='displayInReport'></td>";
 			html += "</tr>";
 			selectedList.append( html );
 			jQuery( item ).remove();
@@ -106,8 +107,9 @@ function selectAllDataElements()
 	var selectedList = jQuery("#selectedList");
 	jQuery("#availableList").children().each(function(i, item){
 		html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onmousedown='select(this)'>" + item.text + "</td>";
-		html += "<td align='center'><input type='checkbox' name='compulsory' value='" + item.value + "'></td>";
-		html += "<td align='center'><input type='checkbox' name='allowProvided' value='" + item.value + "'></td>";
+		html += "<td align='center'><input type='checkbox' name='compulsory'></td>";
+		html += "<td align='center'><input type='checkbox' name='allowProvided'></td>";
+		html += "<td align='center'><input type='checkbox' name='displayInReport'></td>";
 		html += "</tr>";
 		selectedList.append( html );
 		jQuery( item ).remove();
