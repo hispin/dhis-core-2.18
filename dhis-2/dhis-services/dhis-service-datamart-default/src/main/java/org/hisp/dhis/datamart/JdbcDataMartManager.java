@@ -100,26 +100,27 @@ public class JdbcDataMartManager
     }
 
     @Override
-    public Map<Integer, String> getDataValueMap( DataElementOperand operand, int periodId )
+    public Map<DataElementOperand, String> getDataValueMap( int periodId, int sourceId )
     {
         final StatementHolder holder = statementManager.getHolder();
             
         try
         {
             final String sql =
-                "SELECT sourceid, value " +
+                "SELECT dataelementid, categoryoptioncomboid, value " +
                 "FROM datavalue " +
-                "WHERE dataelementid = " + operand.getDataElementId() + " " +
-                "AND categoryoptioncomboid = " + operand.getOptionComboId() + " " +
-                "AND periodid = " + periodId;
+                "WHERE periodid = " + periodId + " " +
+                "AND sourceid = " + sourceId;
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
-            final Map<Integer, String> map = new HashMap<Integer, String>();
+            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
             
             while ( resultSet.next() )
             {
-                map.put( resultSet.getInt( 1 ), resultSet.getString( 2 ) );
+                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
+                
+                map.put( operand, resultSet.getString( 3 ) );
             }
             
             return map;
@@ -139,46 +140,9 @@ public class JdbcDataMartManager
     // -------------------------------------------------------------------------
 
     @Override
-    public Map<DataElementOperand, String> getAggregatedValueMap( int periodId, int organisationUnitId )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-            
-        try
-        {
-            final String sql =
-                "SELECT dataelementid, categoryoptioncomboid, value " +
-                "FROM aggregateddatavalue " +
-                "WHERE periodid = " + periodId + " " +
-                "AND organisationunitid = " + organisationUnitId;
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
-            
-            while ( resultSet.next() )
-            {
-                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
-                
-                map.put( operand, resultSet.getString( 3 ) );
-            }
-            
-            return map;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get AggregatedDataValues", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-
-    @Override
     public void createDataValueIndex()
     {
         executeSilently( "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, periodid, organisationunitid, categoryoptioncomboid, value)" );
-        executeSilently( "CREATE INDEX aggregateddatavalue_period_index ON aggregateddatavalue (periodid, organisationunitid)" );
     }
 
     @Override
@@ -191,7 +155,6 @@ public class JdbcDataMartManager
     public void dropDataValueIndex()
     {
         executeSilently( "DROP INDEX aggregateddatavalue_index" );
-        executeSilently( "DROP INDEX aggregateddatavalue_period_index" );
     }
 
     @Override
@@ -225,47 +188,9 @@ public class JdbcDataMartManager
     // -------------------------------------------------------------------------
 
     @Override
-    public Map<DataElementOperand, String> getAggregatedOrgUnitValueMap( int periodId, int organisationUnitId, int organisationUnitGroupId )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-            
-        try
-        {
-            final String sql =
-                "SELECT dataelementid, categoryoptioncomboid, value " +
-                "FROM aggregatedorgunitdatavalue " +
-                "WHERE periodid = " + periodId + " " +
-                "AND organisationunitid = " + organisationUnitId + " " +
-                "AND organisationunitgroupid = " + organisationUnitGroupId;
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            final Map<DataElementOperand, String> map = new HashMap<DataElementOperand, String>();
-            
-            while ( resultSet.next() )
-            {
-                final DataElementOperand operand = new DataElementOperand( resultSet.getInt( 1 ), resultSet.getInt( 2 ) );
-                
-                map.put( operand, resultSet.getString( 3 ) );
-            }
-            
-            return map;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get AggregatedOrgUnitDataValues", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-    
-    @Override
     public void createOrgUnitDataValueIndex()
     {
         executeSilently( "CREATE INDEX aggregatedorgunitdatavalue_index ON aggregatedorgunitdatavalue (dataelementid, periodid, organisationunitid, organisationunitgroupid, categoryoptioncomboid, value)" );
-        executeSilently( "CREATE INDEX aggregatedorgunitdatavalue_period_index ON aggregatedorgunitdatavalue (periodid, organisationunitid, organisationunitgroupid)" );
     }
 
     @Override
@@ -278,7 +203,6 @@ public class JdbcDataMartManager
     public void dropOrgUnitDataValueIndex()
     {
         executeSilently( "DROP INDEX aggregatedorgunitdatavalue_index" );
-        executeSilently( "DROP INDEX aggregatedorgunitdatavalue_period_index" );
     }
 
     @Override
@@ -330,39 +254,28 @@ public class JdbcDataMartManager
     public void copyAggregatedDataValuesFromTemp()
     {
         executeSilently( "insert into aggregateddatavalue select * from aggregateddatavalue_temp" );
-        
-        executeSilently( statementBuilder.getVacuum( "aggregateddatavalue" ) );
     }
 
     public void copyAggregatedIndicatorValuesFromTemp()
     {
         executeSilently( "insert into aggregatedindicatorvalue select * from aggregatedindicatorvalue_temp" );
-        
-        executeSilently( statementBuilder.getVacuum( "aggregatedindicatorvalue" ) );
     }
 
     public void copyAggregatedOrgUnitDataValuesFromTemp()
     {
         executeSilently( "insert into aggregatedorgunitdatavalue select * from aggregatedorgunitdatavalue_temp" );
-        
-        executeSilently( statementBuilder.getVacuum( "aggregatedorgunitdatavalue" ) );
     }
 
     public void copyAggregatedOrgUnitIndicatorValuesFromTemp()
     {
         executeSilently( "insert into aggregatedorgunitindicatorvalue select * from aggregatedorgunitindicatorvalue_temp" );
-        
-        executeSilently( statementBuilder.getVacuum( "aggregatedorgunitindicatorvalue" ) );
     }
 
     private void executeSilently( String sql )
     {
         try
         {
-            if ( sql != null )
-            {
-                statementManager.getHolder().executeUpdate( sql, true );
-            }
+            statementManager.getHolder().executeUpdate( sql, true );
         }
         catch ( Exception ex )
         {

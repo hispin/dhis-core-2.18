@@ -30,23 +30,21 @@ package org.hisp.dhis.datamart.aggregation.dataelement;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.OrgUnitOperand;
+import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
-import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodHierarchy;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.MathUtils;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author Lars Helge Overland
@@ -54,6 +52,8 @@ import org.hisp.dhis.system.util.MathUtils;
 public class SumIntAggregator
     implements DataElementAggregator
 {
+    private static final Log log = LogFactory.getLog( SumIntAggregator.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -76,60 +76,42 @@ public class SumIntAggregator
     // DataElementAggregator implementation
     // -------------------------------------------------------------------------
 
-    public List<OrgUnitOperand> getAggregatedValues( DataElementOperand operand, Collection<Period> periods, 
-        Collection<Integer> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
-        PeriodHierarchy periodHierarchy, OrganisationUnitHierarchy orgUnitHierarchy, String key )
+    public Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
+        final Period period, int unitLevel, final Collection<Integer> organisationUnits, String key )
     {
-        final Map<String, String> crossTabValues = crossTabService.getCrossTabDataValues( operand, 
-            periodHierarchy.getPeriodsBetween( periods ), orgUnitHierarchy.getChildren( organisationUnits ), key );
-        
-        final List<OrgUnitOperand> values = new ArrayList<OrgUnitOperand>();
-
-        if ( crossTabValues.size() == 0 )
+        if ( CollectionUtils.isEmpty( operands ) )
         {
-            return values;
+            return EMPTY_MAP;
         }
         
-        for ( Period period : periods )
+        final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operands, 
+            aggregationCache.getPeriodsBetweenDates( period.getStartDate(), period.getEndDate() ), organisationUnits, key );
+        
+        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
+
+        for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
-            final PeriodType periodType = period.getPeriodType();
+            final int dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
             
-            if ( !isApplicable( operand, periodType ) )
+            for ( final Entry<DataElementOperand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
             {
-                continue;
-            }
-            
-            final Collection<Integer> periodsBetween = periodHierarchy.getPeriodsBetween( period );
-            
-            for ( Integer organisationUnit : organisationUnits )
-            {
-                final int unitLevel = operand.isHasAggregationLevels() ? aggregationCache.getLevelOfOrganisationUnit( organisationUnit ) : 0;
-                
-                for ( OrganisationUnitGroup group : organisationUnitGroups )
+                if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel ) )
                 {
-                    final Set<Integer> orgUnitChildren = orgUnitHierarchy.getChildren( organisationUnit, group );
+                    double value = 0.0;
                     
-                    aggregationCache.filterForAggregationLevel( orgUnitChildren, operand, unitLevel );
-                    
-                    double value = 0d;
-                    
-                    for ( Integer periodBetween : periodsBetween )
+                    try
                     {
-                        for ( Integer orgUnitChild : orgUnitChildren )
-                        {
-                            final String val = crossTabValues.get( periodBetween + CrossTabStore.SEPARATOR + orgUnitChild );
-                            
-                            if ( val != null )
-                            {
-                                value += Double.parseDouble( val );
-                            }                            
-                        }
+                        value = Double.parseDouble( entry.getValue() );
+                    }
+                    catch ( NumberFormatException ex )
+                    {
+                        log.warn( "Value skipped, not numeric: '" + entry.getValue() );
+                        continue;
                     }
                     
-                    if ( !MathUtils.isZero( value ) )
-                    {
-                        values.add( new OrgUnitOperand( period.getId(), periodType.getId(), organisationUnit, group != null ? group.getId() : 0, value ) );
-                    }
+                    final Double current = values.get( entry.getKey() );
+                    value += current != null ? current : 0.0;        
+                    values.put( entry.getKey(), value );
                 }
             }
         }
@@ -137,17 +119,19 @@ public class SumIntAggregator
         return values;
     }
     
-    public boolean isApplicable( DataElementOperand operand )
+    public Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final PeriodType periodType )
     {
-        return operand.getValueType().equals( VALUE_TYPE_INT ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM );
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private boolean isApplicable( DataElementOperand operand, PeriodType periodType )
-    {
-        return operand.getFrequencyOrder() <= periodType.getFrequencyOrder(); // Ignore disaggregation
+        final Collection<DataElementOperand> filteredOperands = new HashSet<DataElementOperand>();
+        
+        for ( final DataElementOperand operand : operands )
+        {
+            if ( operand.getValueType().equals( VALUE_TYPE_INT ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM ) &&
+                operand.getFrequencyOrder() <= periodType.getFrequencyOrder() ) // Ignore disaggregation
+            {
+                filteredOperands.add( operand );
+            }
+        }
+        
+        return filteredOperands;
     }
 }

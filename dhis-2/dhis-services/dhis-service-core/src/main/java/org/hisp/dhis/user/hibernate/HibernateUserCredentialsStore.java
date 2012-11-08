@@ -229,6 +229,29 @@ public class HibernateUserCredentialsStore
     }
 
     @SuppressWarnings( "unchecked" )
+    public Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.eq( "selfRegistered", true ) );
+        criteria.addOrder( Order.desc( "created" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        
+        return criteria.list();
+    }
+    
+    public int getSelfRegisteredUserCredentialsCount()
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );
+        criteria.add( Restrictions.eq( "selfRegistered", true ) );
+        criteria.setProjection( Projections.rowCount() );
+
+        Number rs = (Number) criteria.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+    
+    @SuppressWarnings( "unchecked" )
     public Collection<UserCredentials> getInactiveUsers( Date date )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( UserCredentials.class );

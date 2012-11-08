@@ -30,11 +30,8 @@ package org.hisp.dhis.datamart.aggregation.cache;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
-import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -53,15 +50,15 @@ public class MemoryAggregationCache
     // Cache
     // -------------------------------------------------------------------------
 
-    private final Map<String, Collection<Integer>> intersectingPeriodCache = new HashMap<String,Collection<Integer>>();
+    private final ThreadLocal<Map<String, Collection<Integer>>> intersectingPeriodCache = new ThreadLocal<Map<String,Collection<Integer>>>();
 
-    private final Map<String, Collection<Integer>> periodBetweenDatesCache = new HashMap<String,Collection<Integer>>();
+    private final ThreadLocal<Map<String, Collection<Integer>>> periodBetweenDatesCache = new ThreadLocal<Map<String,Collection<Integer>>>();
 
-    private final Map<String, Collection<Integer>> periodBetweenDatesPeriodTypeCache = new HashMap<String,Collection<Integer>>();
+    private final ThreadLocal<Map<String, Collection<Integer>>> periodBetweenDatesPeriodTypeCache = new ThreadLocal<Map<String,Collection<Integer>>>();
 
-    private final Map<String, Period> periodCache = new HashMap<String,Period>();
+    private final ThreadLocal<Map<String, Period>> periodCache = new ThreadLocal<Map<String,Period>>();
 
-    private final Map<String, Integer> organisationUnitLevelCache = new HashMap<String, Integer>();
+    private final ThreadLocal<Map<String, Integer>> organisationUnitLevelCache = new ThreadLocal<Map<String, Integer>>();
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -89,16 +86,22 @@ public class MemoryAggregationCache
     {
         final String key = startDate.toString() + SEPARATOR + endDate.toString();
         
+        Map<String, Collection<Integer>> cache = intersectingPeriodCache.get();
+        
         Collection<Integer> periods = null;
         
-        if ( ( periods = intersectingPeriodCache.get( key ) ) != null )
+        if ( cache != null && ( periods = cache.get( key ) ) != null )
         {
             return periods;
         }
         
         periods = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectingPeriods( startDate, endDate ) );
         
-        intersectingPeriodCache.put( key, periods );
+        cache = ( cache == null ) ? new HashMap<String, Collection<Integer>>() : cache;
+        
+        cache.put( key, periods );
+        
+        intersectingPeriodCache.set( cache );
         
         return periods;
     }
@@ -107,34 +110,46 @@ public class MemoryAggregationCache
     {
         final String key = startDate.toString() + SEPARATOR + endDate.toString();
         
+        Map<String, Collection<Integer>> cache = periodBetweenDatesCache.get();
+        
         Collection<Integer> periods = null;
         
-        if ( ( periods = periodBetweenDatesCache.get( key ) ) != null )
+        if ( cache != null && ( periods = cache.get( key ) ) != null )
         {
             return periods;
         }
         
         periods = ConversionUtils.getIdentifiers( Period.class, periodService.getPeriodsBetweenDates( startDate, endDate ) );
         
-        periodBetweenDatesCache.put( key, periods );
+        cache = ( cache == null ) ? new HashMap<String, Collection<Integer>>() : cache;
+        
+        cache.put( key, periods );
+        
+        periodBetweenDatesCache.set( cache );
         
         return periods;
     }
-    
+
     public Collection<Integer> getPeriodsBetweenDatesPeriodType( final PeriodType periodType, final Date startDate, final Date endDate )
     {
         final String key = periodType.getName() + SEPARATOR + startDate.toString() + SEPARATOR + endDate.toString();
         
+        Map<String, Collection<Integer>> cache = periodBetweenDatesPeriodTypeCache.get();
+        
         Collection<Integer> periods = null;
         
-        if ( ( periods = periodBetweenDatesPeriodTypeCache.get( key ) ) != null )
+        if ( cache != null && ( periods = cache.get( key ) ) != null )
         {
-        return periods;
+            return periods;
         }
         
         periods = ConversionUtils.getIdentifiers( Period.class, periodService.getPeriodsBetweenDates( periodType, startDate, endDate ) );
         
-        periodBetweenDatesPeriodTypeCache.put( key, periods );
+        cache = ( cache == null ) ? new HashMap<String, Collection<Integer>>() : cache;
+        
+        cache.put( key, periods );
+        
+        periodBetweenDatesPeriodTypeCache.set( cache );
         
         return periods;
     }
@@ -143,16 +158,22 @@ public class MemoryAggregationCache
     {
         final String key = String.valueOf( id );
         
+        Map<String, Period> cache = periodCache.get();
+        
         Period period = null;
         
-        if ( ( period = periodCache.get( key ) ) != null )
+        if ( cache != null && ( period = cache.get( key ) ) != null )
         {
             return period;
         }
         
         period = periodService.getPeriod( id );
         
-        periodCache.put( key, period );
+        cache = ( cache == null ) ? new HashMap<String, Period>() : cache;
+        
+        cache.put( key, period );
+        
+        periodCache.set( cache );
         
         return period;
     }
@@ -161,43 +182,32 @@ public class MemoryAggregationCache
     {
         final String key = String.valueOf( id );
         
+        Map<String, Integer> cache = organisationUnitLevelCache.get();
+        
         Integer level = null;
         
-        if ( ( level = organisationUnitLevelCache.get( key ) ) != null )
+        if ( cache != null && ( level = cache.get( key ) ) != null )
         {
             return level;
         }
                 
         level = organisationUnitService.getLevelOfOrganisationUnit( id );
         
-        organisationUnitLevelCache.put( key, level );
+        cache = ( cache == null ) ? new HashMap<String, Integer>() : cache;
+        
+        cache.put( key, level );
+        
+        organisationUnitLevelCache.set( cache );
         
         return level;
     }
     
-    public void filterForAggregationLevel( Set<Integer> organisationUnits, DataElementOperand operand, int unitLevel )
-    {
-        final Iterator<Integer> iter = organisationUnits.iterator();
-        
-        while ( iter.hasNext() )
-        {
-            final Integer orgUnitId = iter.next();
-            
-            final int dataValueLevel = operand.isHasAggregationLevels() ? getLevelOfOrganisationUnit( orgUnitId ) : 0;
-            
-            if ( operand.isHasAggregationLevels() && !operand.aggregationLevelIsValid( unitLevel, dataValueLevel ) )
-            {
-                iter.remove();
-            }
-        }        
-    }
-    
     public void clearCache()
     {
-        intersectingPeriodCache.clear();
-        periodBetweenDatesCache.clear();
-        periodBetweenDatesPeriodTypeCache.clear();
-        periodCache.clear();
-        organisationUnitLevelCache.clear();
+        intersectingPeriodCache.remove();
+        periodBetweenDatesCache.remove();
+        periodBetweenDatesPeriodTypeCache.remove();
+        periodCache.remove();
+        organisationUnitLevelCache.remove();
     }
 }

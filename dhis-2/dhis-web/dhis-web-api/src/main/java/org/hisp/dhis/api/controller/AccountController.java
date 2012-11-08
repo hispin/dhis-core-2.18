@@ -253,6 +253,12 @@ public class AccountController
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
             return "Email is not specified or invalid";
         }
+        
+        if ( phoneNumber == null || phoneNumber.trim().length() > 30 )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            return "Phone number is not specified or invalid";
+        }
 
         if ( employer == null || employer.trim().length() > MAX_LENGTH )
         {

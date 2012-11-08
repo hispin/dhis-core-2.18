@@ -18,5 +18,5 @@
 
 #if( $maps.size() == 0 )
 <div class="labelText">$i18n.getString( "insert_links_by_going_to" ) 
-<a href="../dhis-web-mapping/app/index.html">$i18n.getString( "map" )</a></div>
+<a href="../dhis-web-mapping/app/index.html">$i18n.getString( "gis" )</a></div>
 #end

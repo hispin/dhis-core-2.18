@@ -28,6 +28,10 @@ var validationRules = {
 			email: true,
 			rangelength: [ 4, 80 ]
 		},
+		phoneNumber: {
+			required: true,
+			rangelength: [ 6, 30 ]			
+		},
 		employer: {
 			required: true,
 			rangelength: [ 2, 80 ]

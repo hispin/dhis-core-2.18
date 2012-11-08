@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.datamart.CrossTabDataValue;
 
 /**
  * @author Lars Helge Overland
@@ -41,10 +42,8 @@ public interface CrossTabStore
 {
     final String ID = CrossTabStore.class.getName();
     final String CROSSTAB_TABLE_PREFIX = "crosstab_table_";
-    final String COLUMN_PREFIX = "col";
     final String AGGREGATEDDATA_CACHE_PREFIX = "aggregateddata_cache_";
     final String AGGREGATEDORGUNITDATA_CACHE_PREFIX = "aggregatedorgunitdata_cache_";
-    final String SEPARATOR = "-";
     
     /**
      * Creates a crosstab table where the first column is the period identifier,
@@ -53,7 +52,7 @@ public interface CrossTabStore
      * 
      * @param operands the DataElementOperands.
      */
-    void createCrossTabTable( List<Integer> organisationUnitIds, String key );
+    void createCrossTabTable( List<DataElementOperand> operands, String key );
 
     /**
      * Drops the crosstab table.
@@ -96,17 +95,26 @@ public interface CrossTabStore
     void dropAggregatedOrgUnitDataCache( String key );
     
     /**
-     * Gets all CrossTabDataValues for the given collection of period identifiers 
-     * and organisation unit identifiers as a map. The map key is a 
-     * concatenation of <period identifier>-<organisation unit identifier>.
+     * Gets all CrossTabDataValues for the given collection of period ids and source ids.
      * 
-     * @param operand the data element operand.
+     * @param dataElementIds the data element identifiers.
      * @param periodIds the period identifiers.
-     * @param organisationUnitIds the organisation unit identifiers.
+     * @param sourceIds the source identifiers.
      * @return collection of CrossTabDataValues.
      */
-    Map<String, String> getCrossTabDataValues( DataElementOperand operand, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key );
+    Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
+        Collection<Integer> sourceIds, String key );
+
+    /**
+     * Gets all CrossTabDataValues for the given collection of period ids and the source id.
+     * 
+     * @param dataElementIds the data element identifiers.
+     * @param periodIds the period identifiers.
+     * @param sourceId the source identifier.
+     * @return collection of CrossTabDataValues.
+     */
+    Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
+        int sourceId, String key );
 
     /**
      * Gets a map of DataElementOperands and corresponding Double aggregated data

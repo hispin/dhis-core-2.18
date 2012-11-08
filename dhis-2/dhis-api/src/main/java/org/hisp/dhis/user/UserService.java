@@ -221,9 +221,12 @@ public interface UserService
 
     Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max );
 
-    Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
-                                                                         int first, int max );
+    Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name, int first, int max );
 
+    Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max );
+    
+    int getSelfRegisteredUserCredentialsCount();
+    
     Collection<UserCredentials> getInactiveUsers( int months );
 
     Collection<UserCredentials> getInactiveUsers( int months, int first, int max );

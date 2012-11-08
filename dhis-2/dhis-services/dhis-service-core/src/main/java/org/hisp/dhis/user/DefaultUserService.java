@@ -420,6 +420,16 @@ public class DefaultUserService
         updateUserCredentials( credentials );
     }
 
+    public Collection<UserCredentials> getSelfRegisteredUserCredentials( int first, int max )
+    {
+        return userCredentialsStore.getSelfRegisteredUserCredentials( first, max );
+    }
+
+    public int getSelfRegisteredUserCredentialsCount()
+    {
+        return userCredentialsStore.getSelfRegisteredUserCredentialsCount();
+    }
+    
     public Collection<UserCredentials> getInactiveUsers( int months )
     {
         Calendar cal = PeriodType.createCalendarInstance();
