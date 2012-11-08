@@ -27,6 +27,8 @@
 
 package org.hisp.dhis.patient.action.validation;
 
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramExpressionService;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationService;
 
@@ -50,6 +52,13 @@ public class GetProgramValidationAction
         this.programValidationService = programValidationService;
     }
 
+    private ProgramExpressionService programExpressionService;
+
+    public void setProgramExpressionService( ProgramExpressionService programExpressionService )
+    {
+        this.programExpressionService = programExpressionService;
+    }
+
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
@@ -68,6 +77,27 @@ public class GetProgramValidationAction
         return validation;
     }
 
+    private String leftSideTextualExpression;
+
+    public String getLeftSideTextualExpression()
+    {
+        return leftSideTextualExpression;
+    }
+
+    private String rightSideTextualExpression;
+
+    public String getRightSideTextualExpression()
+    {
+        return rightSideTextualExpression;
+    }
+
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -78,7 +108,12 @@ public class GetProgramValidationAction
     {
         validation = programValidationService.getProgramValidation( validationId );
 
+        leftSideTextualExpression = programExpressionService.getExpressionDescription( validation.getLeftSide().getExpression() );
+        
+        rightSideTextualExpression = programExpressionService.getExpressionDescription( validation.getRightSide().getExpression() );
+        
+        program = validation.getProgram();
+
         return SUCCESS;
     }
-
 }

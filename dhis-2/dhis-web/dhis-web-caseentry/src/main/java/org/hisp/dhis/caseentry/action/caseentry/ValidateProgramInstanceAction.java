@@ -68,8 +68,6 @@ public class ValidateProgramInstanceAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Map<DataElement, String> resultDEMultiStages;
-
     private List<ProgramValidationResult> programValidationResults;
 
     private Map<Integer, String> leftsideFormulaMap;
@@ -109,11 +107,6 @@ public class ValidateProgramInstanceAction
     {
         this.programValidationService = programValidationService;
     }
-    
-    public Map<DataElement, String> getResultDEMultiStages()
-    {
-        return resultDEMultiStages;
-    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -123,8 +116,6 @@ public class ValidateProgramInstanceAction
     public String execute()
         throws Exception
     {
-        resultDEMultiStages = new HashMap<DataElement, String>();
-
         programValidationResults = new ArrayList<ProgramValidationResult>();
 
         // ---------------------------------------------------------------------

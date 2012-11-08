@@ -213,9 +213,13 @@ function editLeftExpression()
 	left = true;
 	
 	$( '#expression' ).val( $( '#leftSideExpression' ).val() );
-	$( '#description' ).val( $( '#leftSideDescription' ).val() );
+	$( '#expression-container [id=description]' ).val( $( '#leftSideDescription' ).val() );
 	$( '#formulaText' ).text( $( '#leftSideTextualExpression' ).val() );
 	$( '#nullIfBlank' ).attr( 'checked', ( $( '#leftSideNullIfBlank' ).val() == 'true' || $( '#leftSideNullIfBlank' ).val() == '' ) );
+	setInnerHTML( "exp-descriptionInfo", "" );
+	setInnerHTML( "exp-expressionInfo", "" );
+	$("#expression-container [id=description]" ).css( "background-color", "#ffffff" );
+	$("#expression-container [id=expression]" ).css( "background-color", "#ffffff" );
 	
 	dialog.dialog("open");
 }
@@ -225,7 +229,7 @@ function editRightExpression()
 	left = false;
 	
 	$( '#expression' ).val( $( '#rightSideExpression' ).val() );
-	$( '#description' ).val( $( '#rightSideDescription' ).val() );
+	$( '#expression-container [id=description]' ).val( $( '#rightSideDescription' ).val() );
 	$( '#formulaText' ).text( $( '#rightSideTextualExpression' ).val() );
 	$( '#nullIfBlank' ).attr( 'checked', ( $( '#rightSideNullIfBlank' ).val() == 'true' || $( '#rightSideNullIfBlank' ).val() == '' ) );
 	
@@ -260,20 +264,47 @@ var left = true;
 function insertExpression()
 {
 	var expression = $( '#expression' ).val();
-	var description = $( '#description' ).val();
+	var description = $( '#expression-container [id=description]' ).val();
 							
 	if ( left )
 	{
 		$( '#leftSideExpression' ).val( expression );
 		$( '#leftSideDescription' ).val( description );					
 		$( '#leftSideTextualExpression' ).val( $( '#formulaText' ).text() );
+		$( '#leftSideNullIfBlank' ).val( $( '#nullIfBlank' ).is( ':checked' ) );
 	}
 	else
 	{
 		$( '#rightSideExpression' ).val( expression );
 		$( '#rightSideDescription' ).val( description );					
 		$( '#rightSideTextualExpression' ).val( $( '#formulaText' ).text() );
+		$( '#rightSideNullIfBlank' ).val( $( '#nullIfBlank' ).is( ':checked' ) );								
 	}
 	
 	dialog.dialog( "close" );
+}
+
+function validateExpression()
+{
+    if ( checkNotEmpty( jQuery( "#expression-container [id=description]" ), i18n_description_not_null ) == false )
+        return;
+    if ( checkNotEmpty( jQuery( "#expression-container [id=expression]" ), i18n_expression_not_null ) == false )
+        return;
+	insertExpression();
+}
+
+function checkNotEmpty( field, message )
+{
+    if ( field.val().length == 0 )
+    {
+        setInnerHTML( "exp-" + field.attr("name") + "Info", message );
+        $('#expression-container [id=' + field.attr("name") + "]" ).css( "background-color", "#ffc5c5" );
+        return false;
+    } else
+    {
+        setInnerHTML( "exp-" + field.attr("name") + "Info", '' );
+        $('#expression-container [id=' + field.attr("name") + "]" ).css( "background-color", "#ffffff" );
+    }
+
+    return true;
 }

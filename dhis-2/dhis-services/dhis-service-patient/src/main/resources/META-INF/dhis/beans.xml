@@ -219,6 +219,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="validationStore" ref="org.hisp.dhis.program.ProgramValidationStore" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="expressionService" ref="org.hisp.dhis.program.ProgramExpressionService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.program.ProgramExpressionService" class="org.hisp.dhis.program.DefaultProgramExpressionService">
