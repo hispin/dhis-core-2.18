@@ -29,6 +29,8 @@ package org.hisp.dhis.program;
 
 import java.io.Serializable;
 
+import org.hisp.dhis.expression.Operator;
+
 /**
  * @author Chau Thu Tran
  * @version $ ProgramValidation.java Apr 28, 2011 10:27:29 AM $
@@ -66,6 +68,9 @@ public class ProgramValidation
     public static final int AFTER_OR_EQUALS_TO_DUE_DATE = -4;
     
     public static final int BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS = -5;
+    
+
+    public static final String NOT_NULL_VALUE_IN_EXPRESSION = "{NOT-NULL-VALUE}";
 
     // -------------------------------------------------------------------------
     // Fields
@@ -75,9 +80,11 @@ public class ProgramValidation
 
     private String description;
 
-    private String leftSide;
+    private ProgramExpression leftSide;
+    
+    private Operator operator;
 
-    private String rightSide;
+    private ProgramExpression rightSide;
 
     private Program program;
 
@@ -92,7 +99,7 @@ public class ProgramValidation
 
     }
 
-    public ProgramValidation( String description, String leftSide, String rightSide, Program program )
+    public ProgramValidation( String description, ProgramExpression leftSide, ProgramExpression rightSide, Program program )
     {
         this.description = description;
         this.leftSide = leftSide;
@@ -100,7 +107,7 @@ public class ProgramValidation
         this.program = program;
     }
 
-    public ProgramValidation( String description, String leftSide, String rightSide, Program program, Boolean dateType )
+    public ProgramValidation( String description, ProgramExpression leftSide, ProgramExpression rightSide, Program program, Boolean dateType )
     {
         this.description = description;
         this.leftSide = leftSide;
@@ -207,22 +214,22 @@ public class ProgramValidation
         this.description = description;
     }
 
-    public String getLeftSide()
+    public ProgramExpression getLeftSide()
     {
         return leftSide;
     }
 
-    public void setLeftSide( String leftSide )
+    public void setLeftSide( ProgramExpression leftSide )
     {
         this.leftSide = leftSide;
     }
 
-    public String getRightSide()
+    public ProgramExpression getRightSide()
     {
         return rightSide;
     }
 
-    public void setRightSide( String rightSide )
+    public void setRightSide( ProgramExpression rightSide )
     {
         this.rightSide = rightSide;
     }
@@ -245,5 +252,15 @@ public class ProgramValidation
     public void setDateType( Boolean dateType )
     {
         this.dateType = dateType;
+    }
+
+    public Operator getOperator()
+    {
+        return operator;
+    }
+
+    public void setOperator( Operator operator )
+    {
+        this.operator = operator;
     }
 }

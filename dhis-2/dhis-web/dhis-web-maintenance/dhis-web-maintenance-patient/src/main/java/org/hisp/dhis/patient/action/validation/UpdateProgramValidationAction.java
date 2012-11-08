@@ -27,6 +27,8 @@
 
 package org.hisp.dhis.patient.action.validation;
 
+import org.hisp.dhis.expression.Operator;
+import org.hisp.dhis.program.ProgramExpression;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationService;
 
@@ -45,52 +47,69 @@ public class UpdateProgramValidationAction
 
     private ProgramValidationService programValidationService;
 
+    public void setProgramValidationService( ProgramValidationService programValidationService )
+    {
+        this.programValidationService = programValidationService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
 
-    private String description;
-
-    private String leftSide;
-
-    private String rightSide;
-
-    private Integer programId;
-
-    // -------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------
-
-    public void setProgramValidationService( ProgramValidationService programValidationService )
-    {
-        this.programValidationService = programValidationService;
-    }
-
-    public Integer getProgramId()
-    {
-        return programId;
-    }
-
     public void setId( Integer id )
     {
         this.id = id;
     }
+
+    private String description;
 
     public void setDescription( String description )
     {
         this.description = description;
     }
 
-    public void setLeftSide( String leftSide )
+    private String operator;
+
+    public void setOperator( String operator )
     {
-        this.leftSide = leftSide;
+        this.operator = operator;
     }
 
-    public void setRightSide( String rightSide )
+    private String leftSideExpression;
+
+    public void setLeftSideExpression( String leftSideExpression )
     {
-        this.rightSide = rightSide;
+        this.leftSideExpression = leftSideExpression;
+    }
+
+    private String leftSideDescription;
+
+    public void setLeftSideDescription( String leftSideDescription )
+    {
+        this.leftSideDescription = leftSideDescription;
+    }
+
+    private String rightSideExpression;
+
+    public void setRightSideExpression( String rightSideExpression )
+    {
+        this.rightSideExpression = rightSideExpression;
+    }
+
+    private String rightSideDescription;
+
+    public void setRightSideDescription( String rightSideDescription )
+    {
+        this.rightSideDescription = rightSideDescription;
+    }
+
+    private Boolean dateType;
+
+    public void setDateType( Boolean dateType )
+    {
+        this.dateType = dateType;
     }
 
     // -------------------------------------------------------------------------
@@ -103,12 +122,15 @@ public class UpdateProgramValidationAction
     {
         ProgramValidation validation = programValidationService.getProgramValidation( id );
 
-        programId = validation.getProgram().getId();
+        ProgramExpression leftExpression = new ProgramExpression( leftSideExpression, leftSideDescription );
+        ProgramExpression rightExpression = new ProgramExpression( rightSideExpression, rightSideDescription );
 
         validation.setDescription( description.trim() );
-        validation.setLeftSide( leftSide.trim() );
-        validation.setRightSide( rightSide.trim() );
-        
+        validation.setOperator( Operator.valueOf( operator ) );
+        validation.setLeftSide( leftExpression );
+        validation.setRightSide( rightExpression );
+        validation.setDateType( dateType );
+
         programValidationService.updateProgramValidation( validation );
 
         return SUCCESS;

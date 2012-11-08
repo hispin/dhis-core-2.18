@@ -4,8 +4,7 @@
   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="org.hisp.dhis.program.ProgramValidation"
-		table="programvalidation">
+	<class name="org.hisp.dhis.program.ProgramValidation" table="programvalidation">
 
 		<id name="id" column="programvalidationid">
 			<generator class="native" />
@@ -13,13 +12,21 @@
 
 		<property name="description" type="text" />
 
-		<property name="leftSide" />
+		<many-to-one name="leftSide" column="leftprogramexpressionid"
+			class="org.hisp.dhis.expression.Expression" cascade="all"
+			foreign-key="fk_programvalidation_leftprogramexpressionid" />
 
-		<property name="rightSide" type="text" not-null="true" />
+		<property name="operator" type="org.hisp.dhis.expression.OperatorUserType">
+			<column name="operator" unique="false" />
+		</property>
+
+		<many-to-one name="rightSide" column="rightprogramexpressionid"
+			class="org.hisp.dhis.expression.Expression" cascade="all"
+			foreign-key="fk_programvalidation_rightprogramexpressionid" />
 
 		<many-to-one name="program" class="org.hisp.dhis.program.Program"
 			column="programid" not-null="true" foreign-key="fk_programvalidation_programid" />
-			
+
 		<property name="dateType" />
 
 	</class>

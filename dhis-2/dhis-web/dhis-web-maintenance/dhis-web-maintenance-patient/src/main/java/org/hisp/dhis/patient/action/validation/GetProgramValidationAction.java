@@ -44,42 +44,24 @@ public class GetProgramValidationAction
     // -------------------------------------------------------------------------
 
     private ProgramValidationService programValidationService;
-    
-    // -------------------------------------------------------------------------
-    // Input && Output
-    // -------------------------------------------------------------------------
-
-    private Integer validationId;
-
-    private ProgramValidation validation;
-
-    private String leftDescription;
-
-    public String getLeftDescription()
-    {
-        return leftDescription;
-    }
-
-    private String rightDescription;
-
-    public String getRightDescription()
-    {
-        return rightDescription;
-    }
-
-    // -------------------------------------------------------------------------
-    // Getter && Setter
-    // -------------------------------------------------------------------------
 
     public void setProgramValidationService( ProgramValidationService programValidationService )
     {
         this.programValidationService = programValidationService;
     }
 
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
+
+    private Integer validationId;
+
     public void setValidationId( Integer validationId )
     {
         this.validationId = validationId;
     }
+
+    private ProgramValidation validation;
 
     public ProgramValidation getValidation()
     {
@@ -95,9 +77,6 @@ public class GetProgramValidationAction
         throws Exception
     {
         validation = programValidationService.getProgramValidation( validationId );
-
-        leftDescription = programValidationService.getValidationDescription( validation.getLeftSide() );
-        rightDescription = programValidationService.getValidationDescription( validation.getRightSide() );
 
         return SUCCESS;
     }
