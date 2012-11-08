@@ -99,15 +99,14 @@ public class AddProgramValidationAction
     {
         this.rightSideExpression = rightSideExpression;
     }
-    
+
     private String rightSideDescription;
 
     public void setRightSideDescription( String rightSideDescription )
     {
         this.rightSideDescription = rightSideDescription;
     }
-    
-    
+
     private Boolean dateType;
 
     public void setDateType( Boolean dateType )
@@ -122,6 +121,11 @@ public class AddProgramValidationAction
         this.programId = programId;
     }
 
+    public Integer getProgramId()
+    {
+        return programId;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -132,17 +136,17 @@ public class AddProgramValidationAction
     {
         ProgramExpression leftExpression = new ProgramExpression( leftSideExpression, leftSideDescription );
         ProgramExpression rightExpression = new ProgramExpression( rightSideExpression, rightSideDescription );
-        
+
         ProgramValidation validation = new ProgramValidation();
         validation.setDescription( description.trim() );
-        validation.setOperator( Operator.valueOf(operator)  );
+        validation.setOperator( Operator.valueOf( operator ) );
         validation.setLeftSide( leftExpression );
         validation.setRightSide( rightExpression );
         validation.setDateType( dateType );
 
         Program program = programService.getProgram( programId );
         validation.setProgram( program );
-        
+
         programValidationService.addProgramValidation( validation );
 
         return SUCCESS;

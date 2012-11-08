@@ -15,32 +15,31 @@
 		<table class="listTable" id="multiValidation" name="multiValidation" style="width:100%">
 			<thead>
 				<tr>
-					<th>$i18n.getString( "validation_rule" )</th>                
+					<th style="width:110px">$i18n.getString( "validation_rule" )</th>                
+					<th>$i18n.getString( "expression" )</th>
 					<th>$i18n.getString( "description" )</th>
-					<th>$i18n.getString( "left_value" )</th>
-					<th>$i18n.getString( "right_value" )</th>
+					<th>$i18n.getString( "value" )</th>
+					<th>$i18n.getString( "operator" )</th>
+					<th>$i18n.getString( "value" )</th>
 					<th>$i18n.getString( "description" )</th>
 				</tr>
 			</thead>
 			#set( $mark = false )	    
 			<tbody>
-				#foreach( $validationResult in $programValidationResults )
+				#foreach( $result in $programValidationResults )
 					<tr #alternate( $mark )>	    
-						<td>$validationResult.programValidation.description 
-						#if($validationResult.programValidation.dateType=="true")
-							$rightsideFormulaMap.get( $validationResult.programValidation.id )
-						#end
-						</td>
-						<td>$leftsideFormulaMap.get( $validationResult.programValidation.id )</td>
-						<td>$validationResult.leftsideValue</td>
-						#if( $validationResult.programValidation.dateType=="false" 
-							&& $validationResult.programValidation.rightSide!="1==1")
-							<td>$!validationResult.rightsideValue</td>
-							<td>$rightsideFormulaMap.get( $validationResult.programValidation.id )</td>	        
-						#else
-							<td></td>
-							<td></td>
-						#end
+						#set ( $id = $result.programValidation.id )
+						#set ( $leftFormula = $leftsideFormulaMap.get( $id ) )
+						#set ( $rightFormula = $rightsideFormulaMap.get( $id ) )
+						<tr>
+							<td style="height:32px">$encoder.htmlEncode( $result.programValidation.description )</td>
+							<td>$!encoder.htmlEncode( $leftFormula ) $encoder.htmlEncode( $i18n.getString( $result.programValidation.operator.mathematicalOperator ) ) $!encoder.htmlEncode( $rightFormula )</td>
+							<td>$!encoder.htmlEncode( $result.programValidation.leftSide.description )</td>
+							<td>$result.leftsideValue</td>
+							<td>$encoder.htmlEncode( $i18n.getString( $result.programValidation.operator.mathematicalOperator ) )</td>
+							<td>$result.rightsideValue</td>
+							<td>$!encoder.htmlEncode( $result.programValidation.rightSide.description )</td>
+						</tr>
 					#set( $mark = !$mark )
 				#end
 			</tbody>

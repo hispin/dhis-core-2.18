@@ -28,6 +28,7 @@
 package org.hisp.dhis.patient.action.validation;
 
 import org.hisp.dhis.expression.Operator;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramExpression;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationService;
@@ -112,6 +113,25 @@ public class UpdateProgramValidationAction
         this.dateType = dateType;
     }
 
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
+    private Integer programId;
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
+    }
+
+    public Integer getProgramId()
+    {
+        return programId;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -121,7 +141,7 @@ public class UpdateProgramValidationAction
         throws Exception
     {
         ProgramValidation validation = programValidationService.getProgramValidation( id );
-
+        
         ProgramExpression leftExpression = new ProgramExpression( leftSideExpression, leftSideDescription );
         ProgramExpression rightExpression = new ProgramExpression( rightSideExpression, rightSideDescription );
 

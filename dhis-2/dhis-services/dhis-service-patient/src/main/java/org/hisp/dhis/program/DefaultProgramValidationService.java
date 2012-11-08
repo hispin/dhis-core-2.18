@@ -130,7 +130,7 @@ public class DefaultProgramValidationService
             String rightSideValue = expressionService.getProgramExpressionValue( validation.getRightSide(),
                 programStageInstance );
             String operator = validation.getOperator().getMathematicalOperator();
-
+            
             if ( (leftSideValue != null && rightSideValue.equals( NOT_NULL_VALUE_IN_EXPRESSION ) && rightSideValue == null)
                 || ( !(leftSideValue != null && rightSideValue != null 
                     && ((operator.equals( "==" ) && leftSideValue.equals( rightSideValue ))
@@ -192,7 +192,7 @@ public class DefaultProgramValidationService
         {
             ProgramValidation validation = iter.next();
 
-            String expression = validation.getLeftSide() + " " + validation.getRightSide();
+            String expression = validation.getLeftSide().getExpression() + " " + validation.getRightSide().getExpression();
             Matcher matcher = pattern.matcher( expression );
 
             boolean flag = false;
