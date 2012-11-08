@@ -8,7 +8,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 		function( json )
 		{   
 			clearListById('searchObjectId');
-			clearListById('compulsoryDE');
+			clearListById('displayInReports');
 			clearListById('programId');
 			
 			jQuery( '#programId').append( '<option value="" psid="" reportDateDes="' + i18n_report_date + '">[' + i18n_please_select + ']</option>' );
@@ -79,14 +79,14 @@ function getDataElements()
 			jQuery('.stage-object-selected').attr('psid', jQuery('#programId option:selected').attr("psid"));
 	
 			clearListById('searchObjectId');
-			clearListById('compulsoryDE');
+			clearListById('displayInReports');
 			
 			jQuery( '#searchObjectId').append( '<option value="" >[' + i18n_please_select + ']</option>' );
 			for ( i in json.programStageDataElements ) {
 				jQuery( '#searchObjectId').append( '<option value="' + json.programStageDataElements[i].id + '" type="' + json.programStageDataElements[i].type +'">' + json.programStageDataElements[i].name + '</option>' );
 				
-				if( json.programStageDataElements[i].compulsory=='true' ){
-					jQuery( '#compulsoryDE').append( '<option value="' + json.programStageDataElements[i].id + '"></option>');
+				if( json.programStageDataElements[i].displayInReports=='true' ){
+					jQuery( '#displayInReports').append( '<option value="' + json.programStageDataElements[i].id + '"></option>');
 				}
 			}
 			
@@ -194,7 +194,7 @@ function searchEvents( listAll )
 	params += '&endDate=' + getFieldValue('endDate');
 		
 	if(listAll){	
-		jQuery( '#compulsoryDE option' ).each( function( i, item ){
+		jQuery( '#displayInReports option' ).each( function( i, item ){
 			var input = jQuery( item );
 			params += '&searchingValues=de_' + input.val() + '_false_';
 		});

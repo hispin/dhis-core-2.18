@@ -213,7 +213,7 @@ Ext.onReady( function() {
                     var array = [];
                     Ext.Array.each(selected, function(item) {
 						var data = a.store.findExact('id', item);
-                        array.push({id: item, name: a.store.getAt(data).data.name, compulsory: a.store.getAt(data).data.compulsory, valueType: a.store.getAt(data).data.valueType});
+                        array.push({id: item, name: a.store.getAt(data).data.name, compulsory: a.store.getAt(data).data.compulsory, valueType: a.store.getAt(data).data.valueType, displayInReports:r.data.displayInReports});
                     });
                     s.store.add(array);
                 }
@@ -226,7 +226,7 @@ Ext.onReady( function() {
 				{
 					if( elements[i].style.display != 'none' )
 					{
-						array.push({id: a.store.getAt(i).data.id, name: a.store.getAt(i).data.name, compulsory: a.store.getAt(i).data.compulsory, valueType: a.store.getAt(i).data.valueType});
+						array.push({id: a.store.getAt(i).data.id, name: a.store.getAt(i).data.name, compulsory: a.store.getAt(i).data.compulsory, valueType: a.store.getAt(i).data.valueType, displayInReports:r.data.displayInReports});
 					}
 				}
 				s.store.add(array);
@@ -594,7 +594,7 @@ Ext.onReady( function() {
 		}),
 		dataelement: {
             available: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 'compulsory', 'valueType'],
+                fields: ['id', 'name', 'compulsory', 'valueType', 'displayInReports'],
                 proxy: {
                     type: 'ajax',
                     url: TR.conf.finals.ajax.path_commons + TR.conf.finals.ajax.dataelements_get,
@@ -608,6 +608,15 @@ Ext.onReady( function() {
                 listeners: {
 					load: function(s) {
 						this.isloaded = true;
+						// Get displayedInList-Data elements
+						var array = [];
+						TR.cmp.params.dataelement.available.store.each( function(r) {
+							if( r.data.displayInReports=="true" )
+							{
+								array.push({id: r.data.id, name: r.data.name, compulsory: r.data.compulsory, valueType: r.data.valueType, displayInReports:r.data.displayInReports });
+							}
+						});
+						TR.cmp.params.dataelement.selected.store.add(array);
                         TR.util.store.addToStorage(s);
                         TR.util.multiselect.filterAvailable(TR.cmp.params.dataelement.available, TR.cmp.params.dataelement.selected);
                     }

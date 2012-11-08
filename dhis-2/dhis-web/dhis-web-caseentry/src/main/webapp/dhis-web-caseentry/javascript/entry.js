@@ -605,7 +605,6 @@ function autocompletedField( idField )
 			$.ajax({
 				url: "getOptions.action?id=" + dataElementId + "&query=" + input.val(),
 				dataType: "json",
-				cache: true,
 				success: function(data) {
 					response($.map(data.options, function(item) {
 						return {

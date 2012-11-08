@@ -70,6 +70,7 @@
 			<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="hidden" ></select>
 			<select id="compulsories" name='compulsories' multiple="multiple" class="hidden"></select>     
 			<select id="allowProvidedElsewhere" name='allowProvidedElsewhere' multiple="multiple" class="hidden"></select>     
+			<select id="displayInReports" name='displayInReports' multiple="multiple" class=""></select>     
 		</th>
       </tr>
     </thead>
@@ -95,12 +96,14 @@
 						<col/>
 						<col style="width:20px;"/>
 						<col style="width:20px;"/>
+						<col style="width:20px;"/>
 					</colgroup>
 					<thead>
 						<tr>
 							<th>$i18n.getString( "dataelement" )</th>
 							<th>$i18n.getString( "compulsory" )</th>
 							<th>$i18n.getString( "allow_provided_elsewhere" )</th>
+							<th>$i18n.getString( "display_in_reports" )</th>
 					</thead>
 					<tbody id="selectedList"></tbody>
 				</table>
