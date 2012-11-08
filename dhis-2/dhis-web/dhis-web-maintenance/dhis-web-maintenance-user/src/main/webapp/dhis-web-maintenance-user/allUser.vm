@@ -53,7 +53,7 @@
 				#set( $mark = false )
 				#foreach( $userCredentials in $userCredentialsList )
 				<tr id="tr${userCredentials.id}" #alternate( $mark )>
-					<td>$encoder.htmlEncode( $userCredentials.username )</td>
+					<td><a href="../dhis-web-dashboard-integration/profile.action?id=${userCredentials.user.uid}">$encoder.htmlEncode( $userCredentials.username )</a></td>
 					<td>$encoder.htmlEncode( $userCredentials.user.surname ), $encoder.htmlEncode( $userCredentials.user.firstName )</td>
 					<td style="text-align:right">
 					<a href="showUpdateUserForm.action?id=$userCredentials.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
