@@ -57,8 +57,6 @@ public interface ProgramValidationService
 
     Collection<ProgramValidation> getProgramValidation( ProgramStageDataElement psdataElement );
 
-    ProgramValidationResult runValidation( ProgramValidation validation,
+    ProgramValidationResult validate( ProgramValidation validation,
         ProgramStageInstance programStageInstance, I18nFormat format );
-
-    String getValidationDescription( String condition );
 }

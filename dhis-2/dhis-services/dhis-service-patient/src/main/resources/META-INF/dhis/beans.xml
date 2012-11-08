@@ -61,6 +61,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="clazz" value="org.hisp.dhis.program.ProgramValidation" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.program.ProgramExpressionStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramExpression" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientStore">
 		<property name="clazz" value="org.hisp.dhis.patient.Patient" />
@@ -214,8 +219,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="validationStore" ref="org.hisp.dhis.program.ProgramValidationStore" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="valueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.program.ProgramExpressionService" class="org.hisp.dhis.program.DefaultProgramExpressionService">
+		<property name="programExpressionStore" ref="org.hisp.dhis.program.ProgramExpressionStore" />
+		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientService" class="org.hisp.dhis.patient.DefaultPatientService">
