@@ -198,7 +198,6 @@ function searchEvents( listAll )
 			var input = jQuery( item );
 			params += '&searchingValues=de_' + input.val() + '_false_';
 		});
-		hideById('advanced-search');
 	}
 	else{
 		var value = '';
@@ -428,5 +427,21 @@ function removeCurrentEvent()
 					showWarningMessage( json.message );
     	    	}
 			});
+	}
+}
+
+function filterDivToogle()
+{
+	jQuery('#advanced-search').toggle();
+	var isShown = jQuery('#advancedBtn').attr("isShown");
+	if( isShown=="false" ){
+		jQuery('#advancedBtn').val(i18n_clear_filter);
+		jQuery('#advancedBtn').attr("isShown", true );
+	}
+	else
+	{
+		jQuery('#advancedBtn').val(i18n_add_filter);
+		jQuery('#advancedBtn').attr("isShown", false);
+		searchEvents( true );
 	}
 }
