@@ -38,5 +38,11 @@ jQuery( document ).ready( function() {
 </div>
 <div id="userInfoLink"><a class="bold" href="javascript:showFullProfile()">$i18n.getString( "view_full_profile" )</a></div>
 
-<div id="profileInterpretationHeader" class="bold">$i18n.getString( "latest_interpretations" )</div>
+<div id="profileInterpretationHeader">
+	<span class="bold">$i18n.getString( "latest_interpretations" )</span> |
+    <span>$i18n.getString( "share_your_own_interpretations_from" ) 
+    <a href="../dhis-web-visualizer/app/index.html">$i18n.getString( "data_visualizer" )</a>,
+    <a href="../dhis-web-mapping/app/index.html">$i18n.getString( "gis" )</a> or 
+    <a href="../dhis-web-reporting/displayManageTableForm.action">$i18n.getString( "report_table" )</a></span>
+</div>
 <div id="profileInterpretationFeed"></div>

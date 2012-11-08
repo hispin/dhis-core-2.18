@@ -677,6 +677,26 @@ ul.pageSizeSelection input
 /* jQuery overrides                                                           */
 /*----------------------------------------------------------------------------*/
 
+#updateProfileHeader
+{
+  display: inline-block;
+  font-size: 14pt;
+  color: #606060;
+  padding: 0 0 19px 0;
+}
+
+#updateProfileLink
+{
+  position: relative; 
+  top: -2px; 
+  display: inline-block; 
+  margin-left: 200px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* jQuery overrides                                                           */
+/*----------------------------------------------------------------------------*/
+
 .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button
 {
   font-family: LiberationSansRegular, arial, sans-serif !important;
