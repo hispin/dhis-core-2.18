@@ -118,6 +118,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
   </bean>
 
+  <bean id="org.hisp.dhis.user.action.DisableUserAction" class="org.hisp.dhis.user.action.DisableUserAction" scope="prototype" />
+
    <!-- PDF -->
 
   <bean id="org.hisp.dhis.user.action.pdf.ExportToPdfAction" class="org.hisp.dhis.user.action.pdf.ExportToPdfAction"

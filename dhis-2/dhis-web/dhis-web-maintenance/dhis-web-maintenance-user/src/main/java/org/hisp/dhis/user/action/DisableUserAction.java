@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.aggregation.cache;
+package org.hisp.dhis.user.action;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,27 +27,65 @@ package org.hisp.dhis.datamart.aggregation.cache;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: AggregationCache.java 4646 2008-02-26 14:54:29Z larshelg $
  */
-public interface AggregationCache
+public class DisableUserAction
+    implements Action
 {
-    Collection<Integer> getIntersectingPeriods( Date startDate, Date endDate );
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CurrentUserService currentUserService;
     
-    Collection<Integer> getPeriodsBetweenDates( Date startDate, Date endDate );
+    private String username;
     
-    Collection<Integer> getPeriodsBetweenDatesPeriodType( PeriodType periodType, Date startDate, Date endDate );
+    public void setUsername( String username )
+    {
+        this.username = username;
+    }
     
-    Period getPeriod( int id );
-    
-    int getLevelOfOrganisationUnit( int id );
-    
-    void clearCache();
+    private boolean enable = false;
+
+    public void setEnable( boolean enable )
+    {
+        this.enable = enable;
+    }
+
+    public String execute()
+    {
+        UserCredentials credentials = userService.getUserCredentialsByUsername( username );
+        
+        if ( credentials == null )
+        {
+            return ERROR;
+        }
+        
+        User currentUser = currentUserService.getCurrentUser();
+        
+        if ( currentUser == null || currentUser.getUserCredentials() == null )
+        {
+            return ERROR;
+        }
+        
+        if ( !currentUser.getUserCredentials().canModify( credentials ) )
+        {
+            return ERROR;
+        }
+        
+        credentials.setDisabled( !enable );
+        
+        userService.updateUserCredentials( credentials );
+        
+        return SUCCESS;
+    }    
 }

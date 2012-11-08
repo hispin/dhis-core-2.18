@@ -27,8 +27,8 @@ package org.hisp.dhis.datamart.aggregation.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,6 +36,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
@@ -47,9 +49,11 @@ import org.springframework.util.CollectionUtils;
 /**
  * @author Lars Helge Overland
  */
-public class SumBoolAggregator
+public class AverageIntSingleValueAggregator
     implements DataElementAggregator
 {
+    private static final Log log = LogFactory.getLog( AverageIntSingleValueAggregator.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -81,8 +85,8 @@ public class SumBoolAggregator
         }
         
         final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operands, 
-            aggregationCache.getPeriodsBetweenDates( period.getStartDate(), period.getEndDate() ), organisationUnits, key );
-
+            aggregationCache.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ), organisationUnits, key );
+        
         final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
 
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
@@ -91,13 +95,18 @@ public class SumBoolAggregator
             
             for ( final Entry<DataElementOperand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
             {
-                if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel ) )
+                if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel )  )
                 {
                     double value = 0.0;
-
-                    if ( entry.getValue().toLowerCase().equals( TRUE ) )
+                    
+                    try
                     {
-                        value = 1;
+                        value = Double.parseDouble( entry.getValue() );
+                    }
+                    catch ( NumberFormatException ex )
+                    {
+                        log.warn( "Value skipped, not numeric: '" + entry.getValue() );
+                        continue;
                     }
 
                     final Double current = values.get( entry.getKey() );
@@ -105,7 +114,7 @@ public class SumBoolAggregator
                     values.put( entry.getKey(), value );
                 }
             }
-        }
+        }                    
         
         return values;
     }
@@ -116,13 +125,13 @@ public class SumBoolAggregator
         
         for ( final DataElementOperand operand : operands )
         {
-            if ( operand.getValueType().equals( VALUE_TYPE_BOOL ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM ) &&
-                operand.getFrequencyOrder() <= periodType.getFrequencyOrder() ) // Ignore disaggregation
+            if ( operand.getValueType().equals( VALUE_TYPE_INT ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) &&
+                operand.getFrequencyOrder() >= periodType.getFrequencyOrder() )
             {
                 filteredOperands.add( operand );
             }
         }
         
         return filteredOperands;
-    }
+    }    
 }

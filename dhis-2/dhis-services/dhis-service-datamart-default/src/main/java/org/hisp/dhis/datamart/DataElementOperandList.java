@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.dataelement;
+package org.hisp.dhis.datamart;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,24 +27,79 @@ package org.hisp.dhis.datamart.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.concurrent.Future;
+import java.util.Arrays;
+import java.util.List;
 
-import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.DataElementOperandList;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
 
 /**
+ * Wrapper class for a list of DataElementOperands which encapsulates logic for
+ * initializing, adding values and checking the state of the list. 
+ * 
  * @author Lars Helge Overland
  */
-public interface DataElementDataMart
+public class DataElementOperandList
 {
-    Future<?> exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
-        Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
-        DataElementOperandList operandList, OrganisationUnitHierarchy hierarchy, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key );
+    private List<DataElementOperand> operands;
+    
+    private Object[] valueList;
+    
+    private boolean hasValues;
+    
+    private int offset;
+    
+    public DataElementOperandList( List<DataElementOperand> operands )
+    {
+        this.operands = operands;
+    }
+    
+    public void init( Period period, OrganisationUnit unit, OrganisationUnitGroup group )
+    {
+        this.hasValues = false;
+        this.offset = group != null ? 3 : 2;
+        
+        if ( valid() )
+        {
+            this.valueList = new Object[operands.size() + offset];
+            this.valueList[0] = period.getId();
+            this.valueList[1] = unit.getId();
+            
+            if ( group != null && group.getId() != 0 )
+            {
+                this.valueList[2] = group.getId();
+            }
+        }
+    }
+    
+    public void addValue( DataElementOperand operand, Double value )
+    {
+        if ( valid() )
+        {
+            final int index = operands.indexOf( operand );
+            
+            if ( index != -1 && value != null )
+            {                
+                this.valueList[index + offset] = value;
+                this.hasValues = true;
+            }
+        }
+    }
+    
+    public List<Object> getList()
+    {
+        return valid() ? Arrays.asList( this.valueList ) : null;
+    }
+    
+    public boolean valid()
+    {
+        return operands != null && operands.size() > 0;
+    }
+    
+    public boolean hasValues()
+    {
+        return hasValues;
+    }
 }

@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
@@ -44,20 +45,19 @@ public interface CrossTabService
 {
     String ID = CrossTabService.class.getName();
 
-    String createCrossTabTable( List<Integer> organisationUnitIds );
+    String createCrossTabTable( List<DataElementOperand> operands );
     
     /**
      * Creates and populates the crosstab table. Operands without data will be
      * removed from the operands argument collection.
      * 
-     * @param operands the collection of DataElementOperands.
+     * @param operands the list of DataElementOperands.
      * @param periodIds the collection of Period identifiers.
      * @param organisationUnitIds the collection of OrganisationUnit identifiers.
-     *        The order of the list must be equal to the order of the table columns.
      * @return a List of random keys for each generated crosstab table. 
      */
-    Future<?> populateCrossTabTable( Collection<DataElementOperand> operands, 
-        Collection<Integer> periodIds, List<Integer> organisationUnitIds, String key );
+    Future<?> populateCrossTabTable( List<DataElementOperand> operands, 
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key );
 
     /**
      * Drops the crosstab table.
@@ -73,9 +73,6 @@ public interface CrossTabService
      * @param key the key to use in table name.
      */
     void createAggregatedDataCache( List<DataElementOperand> operands, String key );
-    
-    Future<?> populateAggregatedDataCache( List<DataElementOperand> operands,
-        Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, String key );
     
     /**
      * Drops the aggregated data cache table.
@@ -93,30 +90,36 @@ public interface CrossTabService
      * @param key the key to use in table name.
      */
     void createAggregatedOrgUnitDataCache( List<DataElementOperand> operands, String key );
-    
-    Future<?> populateAggregatedOrgUnitDataCache( List<DataElementOperand> operands,
-        Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, String key );
-    
+
     /**
      * Drops the aggregated org unit data cache table.
      * 
      * @param key the key used in the table name.
      */
     void dropAggregatedOrgUnitDataCache( String key );
-
+    
     /**
-     * Gets all CrossTabDataValues for the given collection of period identifiers 
-     * and organisation unit identifiers as a map. The map key is a 
-     * concatenation of <period identifier>-<organisation unit identifier>.
+     * Gets all CrossTabDataValues for the given collection of period ids and source ids.
      * 
-     * @param operand the data element operand.
+     * @param dataElementIds the data element identifiers.
      * @param periodIds the period identifiers.
-     * @param organisationUnitIds the organisation unit identifiers.
+     * @param sourceIds the source identifiers.
      * @return collection of CrossTabDataValues.
      */
-    Map<String, String> getCrossTabDataValues( DataElementOperand operand, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key );
+    Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
+        Collection<Integer> sourceIds, String key );
 
+    /**
+     * Gets all CrossTabDataValues for the given collection of period ids and the source id.
+     * 
+     * @param dataElementIds the data element identifiers.
+     * @param periodIds the period identifiers.
+     * @param sourceId the source identifier.
+     * @return collection of CrossTabDataValues.
+     */
+    Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
+        int sourceId, String key );
+    
     /**
      * Gets a map of DataElementOperands and corresponding Double aggregated data
      * element value from the cache table. If the group argument is not null it

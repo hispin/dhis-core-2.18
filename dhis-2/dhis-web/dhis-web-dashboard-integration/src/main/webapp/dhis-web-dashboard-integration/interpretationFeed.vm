@@ -55,7 +55,7 @@
 	        #foreach( $comment in $comments )
 	        <div #if( $velocityCount <= $commentStartPos ) style="display:none"#end>
 	            <div class="interpretationName">
-	                <span class="bold pointer" onclick="showUserInfo( '${comment.user.id}' )">${comment.user.name}</span>&nbsp;
+	                <a class="bold userLink" href="profile.action?id=${comment.user.uid}">${comment.user.name}</a>&nbsp;
 	                <span class="grey">${format.formatDate( $comment.created )}</span>
 	            </div>
 		        <div class="interpretationText">

@@ -34,6 +34,8 @@ import java.util.List;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.filter.NonCriticalUserAuthorityGroupFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,7 @@ public class GetAccessSettingsAction
     {
         userRoles = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
         
+        FilterUtils.filter( userRoles, new NonCriticalUserAuthorityGroupFilter() );
         Collections.sort( userRoles, IdentifiableObjectNameComparator.INSTANCE );
         
         selfRegistrationOrgUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );

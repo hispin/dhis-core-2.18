@@ -375,8 +375,8 @@ public class DataMartServiceOrgUnitTest
         assertEquals( 1.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitA, groupA ) );
         assertEquals( 1.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitB, groupA ) );
         assertEquals( 1.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitD, groupA ) );
-        //assertEquals( 0.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitE, groupA ) );
-        //assertEquals( 0.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitF, groupA ) );
+        assertEquals( 0.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitE, groupA ) );
+        assertEquals( 0.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitF, groupA ) );
         
         assertEquals( 3.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitA, groupB ) );
         assertEquals( 3.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitB, groupB ) );
@@ -522,7 +522,5 @@ public class DataMartServiceOrgUnitTest
         assertEquals( 22.1, aggregatedOrgUnitDataValueService.getAggregatedIndicatorValue( indicatorA, periodA, unitD, groupB ) );        
         assertEquals( 51.3, aggregatedOrgUnitDataValueService.getAggregatedIndicatorValue( indicatorA, periodD, unitD, groupA ) );        
         assertEquals( 480.6, aggregatedOrgUnitDataValueService.getAggregatedIndicatorValue( indicatorA, periodD, unitD, groupB ), 3.0 );
-        
-        // TODO check why the last value differs on various JVMs
     }
 }

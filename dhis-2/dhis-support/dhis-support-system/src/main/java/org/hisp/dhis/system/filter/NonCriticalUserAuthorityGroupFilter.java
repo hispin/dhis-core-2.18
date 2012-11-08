@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.aggregation.cache;
+package org.hisp.dhis.system.filter;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,27 +27,26 @@ package org.hisp.dhis.datamart.aggregation.cache;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
+import java.util.Arrays;
 
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
+import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.user.UserAuthorityGroup;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: AggregationCache.java 4646 2008-02-26 14:54:29Z larshelg $
  */
-public interface AggregationCache
+public class NonCriticalUserAuthorityGroupFilter
+    implements Filter<UserAuthorityGroup>
 {
-    Collection<Integer> getIntersectingPeriods( Date startDate, Date endDate );
-    
-    Collection<Integer> getPeriodsBetweenDates( Date startDate, Date endDate );
-    
-    Collection<Integer> getPeriodsBetweenDatesPeriodType( PeriodType periodType, Date startDate, Date endDate );
-    
-    Period getPeriod( int id );
-    
-    int getLevelOfOrganisationUnit( int id );
-    
-    void clearCache();
+    @Override
+    public boolean retain( UserAuthorityGroup userRole )
+    {
+        if ( userRole == null || userRole.getAuthorities() == null )
+        {
+            return false;
+        }
+        
+        return !CollectionUtils.containsAny( userRole.getAuthorities(), Arrays.asList( UserAuthorityGroup.CRITICAL_AUTHS ) );
+    }
 }

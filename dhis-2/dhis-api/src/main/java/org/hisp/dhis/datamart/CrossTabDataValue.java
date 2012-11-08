@@ -30,17 +30,22 @@ package org.hisp.dhis.datamart;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.dataelement.DataElementOperand;
+
 /**
  * @author Lars Helge Overland
+ * @version $Id: CrossTabDataValue.java 5514 2008-08-04 10:48:07Z larshelg $
  */
 public class CrossTabDataValue
 {
     private int periodId;
     
+    private int sourceId;
+    
     /**
-     * Contains org unit identifier mapped to data value.
+     * Contains Operand (data element id and category option combo id) and data value.
      */
-    private Map<Integer, String> valueMap = new HashMap<Integer, String>();
+    private Map<DataElementOperand, String> valueMap = new HashMap<DataElementOperand, String>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -50,6 +55,13 @@ public class CrossTabDataValue
     {   
     }
     
+    public CrossTabDataValue( int periodId, int sourceId, Map<DataElementOperand, String> valueMap )
+    {
+        this.periodId = periodId;
+        this.sourceId = sourceId;
+        this.valueMap = valueMap;
+    }
+
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
@@ -64,12 +76,22 @@ public class CrossTabDataValue
         this.periodId = periodId;
     }
 
-    public Map<Integer, String> getValueMap()
+    public int getSourceId()
+    {
+        return sourceId;
+    }
+
+    public void setSourceId( int sourceId )
+    {
+        this.sourceId = sourceId;
+    }
+
+    public Map<DataElementOperand, String> getValueMap()
     {
         return valueMap;
     }
 
-    public void setValueMap( Map<Integer, String> valueMap )
+    public void setValueMap( Map<DataElementOperand, String> valueMap )
     {
         this.valueMap = valueMap;
     }
@@ -84,8 +106,9 @@ public class CrossTabDataValue
         final int PRIME = 31;
         
         int result = 1;
-
+        
         result = PRIME * result + periodId;
+        result = PRIME * result + sourceId;
         
         return result;
     }
@@ -110,12 +133,14 @@ public class CrossTabDataValue
         
         final CrossTabDataValue other = (CrossTabDataValue) object;
         
-        return periodId == other.periodId;
+        return periodId == other.periodId && sourceId == other.sourceId;
     }
     
     @Override
     public String toString()
     {
-        return "[" + periodId + "]";
+        String toString = "[period id: " + periodId + ", source id: " + sourceId + "]";
+        
+        return toString;
     }
 }

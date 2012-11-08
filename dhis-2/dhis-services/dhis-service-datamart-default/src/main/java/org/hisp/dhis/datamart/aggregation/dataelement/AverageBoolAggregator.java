@@ -31,24 +31,20 @@ import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.system.util.DateUtils.getDaysInclusive;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datamart.OrgUnitOperand;
+import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
-import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodHierarchy;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.MathUtils;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author Lars Helge Overland
@@ -78,116 +74,113 @@ public class AverageBoolAggregator
     // DataElementAggregator implementation
     // -------------------------------------------------------------------------
 
-    public List<OrgUnitOperand> getAggregatedValues( DataElementOperand operand, Collection<Period> periods,
-        Collection<Integer> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
-        PeriodHierarchy periodHierarchy, OrganisationUnitHierarchy orgUnitHierarchy, String key )
+    public Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
+        final Period period, int unitLevel, final Collection<Integer> organisationUnits, String key )
     {
-        final Map<String, String> crossTabValues = crossTabService.getCrossTabDataValues( operand, 
-            periodHierarchy.getIntersectingPeriods( periods ), orgUnitHierarchy.getChildren( organisationUnits ), key );
-        
-        final List<OrgUnitOperand> values = new ArrayList<OrgUnitOperand>();
-
-        if ( crossTabValues.size() == 0 )
+        if ( CollectionUtils.isEmpty( operands ) )
         {
-            return values;
+            return EMPTY_MAP;
         }
+        
+        final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operands, 
+            aggregationCache.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ), organisationUnits, key );
+        
+        final Map<DataElementOperand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
+            period.getEndDate(), period.getStartDate(), period.getEndDate(), unitLevel ); // <Operand, [total value, total relevant days]>
 
-        for ( Period period : periods )
+        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
+
+        double average = 0.0;
+        
+        for ( final Entry<DataElementOperand, double[]> entry : entries.entrySet() )
         {
-            final PeriodType periodType = period.getPeriodType();
-            
-            final Collection<Integer> intersectingPeriods = periodHierarchy.getIntersectingPeriods( period );
-            
-            for ( final Integer organisationUnit : organisationUnits )
+            if ( entry.getValue() != null && entry.getValue()[ 1 ] > 0 )
             {
-                final int unitLevel = operand.isHasAggregationLevels() ? aggregationCache.getLevelOfOrganisationUnit( organisationUnit ) : 0;
+                average = entry.getValue()[ 0 ] / entry.getValue()[ 1 ] * 100; // Percentage value
                 
-                for ( OrganisationUnitGroup group : organisationUnitGroups )
-                {
-                    final Set<Integer> orgUnitChildren = orgUnitHierarchy.getChildren( organisationUnit, group );
-
-                    aggregationCache.filterForAggregationLevel( orgUnitChildren, operand, unitLevel );
-
-                    double totalValue = 0d;
-                    double totalRelevantDays = 0d;
-                    
-                    for ( Integer orgUnitChild : orgUnitChildren )
-                    {
-                        for ( Integer intersectingPeriod : intersectingPeriods )
-                        {
-                            final String val = crossTabValues.get( intersectingPeriod + CrossTabStore.SEPARATOR + orgUnitChild );
-                            
-                            if ( val != null )
-                            {
-                                final double[] entry = getAggregate( orgUnitChild, period, val, period.getStartDate(), period.getEndDate(), unitLevel ); // <Operand, [total value, total relevant days]>
-
-                                totalValue += entry[0];
-                                totalRelevantDays += entry[1];
-                            }
-                        }
-                    }
-                    
-                    if ( !MathUtils.isZero( totalRelevantDays ) )
-                    {
-                        double average = totalValue / totalRelevantDays * 100; // Percentage value                        
-                        
-                        values.add( new OrgUnitOperand( period.getId(), periodType.getId(), organisationUnit, group != null ? group.getId() : 0, average ) );
-                    }
-                }
+                values.put( entry.getKey(), average );
             }
         }
         
         return values;        
     }
-
-    public boolean isApplicable( DataElementOperand operand )
+    
+    private Map<DataElementOperand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
+        final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate, int unitLevel )
     {
-        return operand.getValueType().equals( VALUE_TYPE_BOOL ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE );
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private double[] getAggregate( int organisationUnit, Period period, String val, Date startDate, Date endDate, int unitLevel )
-    {
-        double value = 0.0;                        
-        double relevantDays = 0.0;
-
-        final Date currentStartDate = period.getStartDate();
-        final Date currentEndDate = period.getEndDate();
+        final Map<DataElementOperand, double[]> totalSums = new HashMap<DataElementOperand, double[]>(); // <Operand, [total value, total relevant days]>
         
-        final double duration = getDaysInclusive( currentStartDate, currentEndDate );
-
-        if ( duration > 0 )
+        for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {
-            if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 ) // Value is within period
-            {
-                relevantDays = getDaysInclusive( currentStartDate, currentEndDate );
-            }
-            else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 ) // Value spans whole period
-            {
-                relevantDays = getDaysInclusive( startDate, endDate );
-            }
-            else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0 // Value spans period start
-                && currentEndDate.compareTo( endDate ) <= 0 )
-            {
-                relevantDays = getDaysInclusive( startDate, currentEndDate );
-            }
-            else if ( currentStartDate.compareTo( startDate ) >= 0 && currentStartDate.compareTo( endDate ) <= 0 // Value spans period end
-                && currentEndDate.compareTo( endDate ) >= 0 )
-            {
-                relevantDays = getDaysInclusive( currentStartDate, endDate );
-            }
+            final Period period = aggregationCache.getPeriod( crossTabValue.getPeriodId() );
+            
+            final Date currentStartDate = period.getStartDate();
+            final Date currentEndDate = period.getEndDate();
+            
+            final double duration = getDaysInclusive( currentStartDate, currentEndDate );
 
-            if ( val.toLowerCase().equals( TRUE ) )
+            final int dataValueLevel = aggregationCache.getLevelOfOrganisationUnit( crossTabValue.getSourceId() );
+            
+            if ( duration > 0 )
             {
-                value = relevantDays;
+                for ( final Entry<DataElementOperand, String> entry : crossTabValue.getValueMap().entrySet() ) // <Operand, value>
+                {
+                    if ( entry.getValue() != null && entry.getKey().aggregationLevelIsValid( unitLevel, dataValueLevel ) )
+                    {
+                        double value = 0.0;                        
+                        double relevantDays = 0.0;
+                        
+                        if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 ) // Value is within period
+                        {
+                            relevantDays = getDaysInclusive( currentStartDate, currentEndDate );
+                        }
+                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 ) // Value spans whole period
+                        {
+                            relevantDays = getDaysInclusive( startDate, endDate );
+                        }
+                        else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0 // Value spans period start
+                            && currentEndDate.compareTo( endDate ) <= 0 )
+                        {
+                            relevantDays = getDaysInclusive( startDate, currentEndDate );
+                        }
+                        else if ( currentStartDate.compareTo( startDate ) >= 0 && currentStartDate.compareTo( endDate ) <= 0 // Value spans period end
+                            && currentEndDate.compareTo( endDate ) >= 0 )
+                        {
+                            relevantDays = getDaysInclusive( currentStartDate, endDate );
+                        }
+
+                        if ( entry.getValue().toLowerCase().equals( TRUE ) )
+                        {
+                            value = relevantDays;
+                        }
+
+                        final double[] totalSum = totalSums.get( entry.getKey() );
+                        value += totalSum != null ? totalSum[0] : 0;
+                        relevantDays += totalSum != null ? totalSum[1] : 0;
+                        
+                        final double[] values = { value, relevantDays };
+                        
+                        totalSums.put( entry.getKey(), values );
+                    }
+                }
             }
         }
-
-        final double[] values = { value, relevantDays };
         
-        return values;
+        return totalSums;
+    }
+
+    public Collection<DataElementOperand> filterOperands( final Collection<DataElementOperand> operands, final PeriodType periodType )
+    {
+        final Collection<DataElementOperand> filteredOperands = new HashSet<DataElementOperand>();
+        
+        for ( final DataElementOperand operand : operands )
+        {
+            if ( operand.getValueType().equals( VALUE_TYPE_BOOL ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) )
+            {
+                filteredOperands.add( operand );
+            }
+        }
+        
+        return filteredOperands;
     }
 }

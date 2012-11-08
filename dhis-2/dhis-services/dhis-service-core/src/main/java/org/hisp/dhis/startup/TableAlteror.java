@@ -130,7 +130,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicator DROP COLUMN alternativename" );
         executeSql( "ALTER TABLE orgunitgroup DROP COLUMN image" );
         
-        executeSql( "DROP INDEX crosstab" );
+        executeSql( "DROP INDEX datamart_crosstab" );
         
         // remove relative period type
         executeSql( "DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name in ( 'Survey', 'OnChange', 'Relative' ))" );
@@ -447,6 +447,7 @@ public class TableAlteror
         executeSql( "update chart set userorganisationunit = false where userorganisationunit is null" );
 
         executeSql( "update users set selfregistered = false where selfregistered is null" );
+        executeSql( "update users set disabled = false where disabled is null" );
         
         // report, reporttable, chart groups
         

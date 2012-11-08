@@ -43,6 +43,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.DataMartManager;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
@@ -97,19 +98,19 @@ public class DefaultCrossTabService
     // CrossTabService implementation
     // -------------------------------------------------------------------------
     
-    public String createCrossTabTable( List<Integer> organisationUnitIds )
+    public String createCrossTabTable( List<DataElementOperand> operands )
     {
         final String key = RandomStringUtils.randomAlphanumeric( 8 );
         
         crossTabStore.dropCrossTabTable( key );    
-        crossTabStore.createCrossTabTable( organisationUnitIds, key );
+        crossTabStore.createCrossTabTable( operands, key );
 
         return key;
     }
-
+    
     @Async
-    public Future<?> populateCrossTabTable( Collection<DataElementOperand> operands,
-        Collection<Integer> periodIds, List<Integer> organisationUnitIds, String key )
+    public Future<?> populateCrossTabTable( List<DataElementOperand> operands,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key )
     {
         statementManager.initialise();
         
@@ -118,23 +119,22 @@ public class DefaultCrossTabService
 
         int rows = 0;
         
-        for ( DataElementOperand operand : operands )
+        for ( final Integer periodId : periodIds )
         {
-            for ( int periodId : periodIds )
+            for ( final Integer sourceId : organisationUnitIds )
             {
-                final Map<Integer, String> map = dataMartManager.getDataValueMap( operand, periodId );
+                final Map<DataElementOperand, String> map = dataMartManager.getDataValueMap( periodId, sourceId );
 
-                final List<String> valueList = new ArrayList<String>( operands.size() + 3 );
+                final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
 
-                valueList.add( String.valueOf( operand.getDataElementId() ) );
-                valueList.add( String.valueOf( operand.getOptionComboId() ) );
                 valueList.add( String.valueOf( periodId ) );
+                valueList.add( String.valueOf( sourceId ) );
 
                 boolean hasValues = false;
 
-                for ( int organisationUnitId : organisationUnitIds )
+                for ( DataElementOperand operand : operands )
                 {
-                    String value = map.get( organisationUnitId );
+                    String value = map.get( operand );
 
                     if ( value != null && value.length() > MAX_LENGTH )
                     {
@@ -190,55 +190,7 @@ public class DefaultCrossTabService
     {
         crossTabStore.createAggregatedDataCache( operands, key );
     }
-
-    @Async
-    public Future<?> populateAggregatedDataCache( List<DataElementOperand> operands,
-        Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, String key )
-    {
-        statementManager.initialise();
-        
-        final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
-            setTableName( CrossTabStore.AGGREGATEDDATA_CACHE_PREFIX + key ).init();
-        
-        for ( final Period period : periods )
-        {
-            for ( final OrganisationUnit organisationUnit : organisationUnits )
-            {
-                final Map<DataElementOperand, String> map = dataMartManager.getAggregatedValueMap( period.getId(), organisationUnit.getId() );
-
-                final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
-
-                valueList.add( String.valueOf( period.getId() ) );
-                valueList.add( String.valueOf( organisationUnit.getId() ) );
-
-                boolean hasValues = false;
-
-                for ( DataElementOperand operand : operands )
-                {
-                    String value = map.get( operand );
-                    
-                    if ( value != null )
-                    {
-                        hasValues = true;
-                    }
-
-                    valueList.add( value );
-                }
-
-                if ( hasValues )
-                {
-                    batchHandler.addObject( valueList );
-                }
-            }
-        }
-        
-        batchHandler.flush();
-        
-        statementManager.destroy();
-        
-        return null;
-    }
-
+    
     public void dropAggregatedDataCache( String key )
     {
         crossTabStore.dropAggregatedDataCache( key );
@@ -248,70 +200,24 @@ public class DefaultCrossTabService
     {
         crossTabStore.createAggregatedOrgUnitDataCache( operands, key );
     }
-
-    @Async
-    public Future<?> populateAggregatedOrgUnitDataCache( List<DataElementOperand> operands,
-        Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, String key )
-    {
-        statementManager.initialise();
-        
-        final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
-            setTableName( CrossTabStore.AGGREGATEDORGUNITDATA_CACHE_PREFIX + key ).init();
-        
-        for ( final Period period : periods )
-        {
-            for ( final OrganisationUnitGroup group : organisationUnitGroups )
-            {
-                for ( final OrganisationUnit organisationUnit : organisationUnits )
-                {
-                    final Map<DataElementOperand, String> map = dataMartManager.getAggregatedOrgUnitValueMap( period.getId(), organisationUnit.getId(), group.getId() );
     
-                    final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
-    
-                    valueList.add( String.valueOf( period.getId() ) );
-                    valueList.add( String.valueOf( organisationUnit.getId() ) );
-                    valueList.add( String.valueOf( group.getId() ) );
-    
-                    boolean hasValues = false;
-    
-                    for ( DataElementOperand operand : operands )
-                    {
-                        String value = map.get( operand );
-                        
-                        if ( value != null )
-                        {
-                            hasValues = true;
-                        }
-    
-                        valueList.add( value );
-                    }
-    
-                    if ( hasValues )
-                    {
-                        batchHandler.addObject( valueList );
-                    }
-                }
-            }
-        }
-        
-        batchHandler.flush();
-        
-        statementManager.destroy();
-        
-        return null;
-    }
-
     public void dropAggregatedOrgUnitDataCache( String key )
     {
         crossTabStore.dropAggregatedOrgUnitDataCache( key );
     }
     
-    public Map<String, String> getCrossTabDataValues( DataElementOperand operand, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key )
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
+        Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
     {
-        return crossTabStore.getCrossTabDataValues( operand, periodIds, organisationUnitIds, key );
+        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceIds, key );
     }
 
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
+        Collection<Integer> periodIds, int sourceId, String key )
+    {
+        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceId, key );
+    }
+    
     public Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
         Period period, OrganisationUnit unit, OrganisationUnitGroup group, String key )
     {

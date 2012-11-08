@@ -105,7 +105,28 @@ public class UserCredentials
      * Indicates whether this user was originally self registered.
      */
     private boolean selfRegistered;
+    
+    /**
+     * Indicates whether this is user is disabled, which means the user cannot
+     * be authenticated.
+     */
+    private boolean disabled;
+    
+    /**
+     * The date this credentials was created.
+     */
+    private Date created;
 
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
+
+    public UserCredentials()
+    {
+        this.lastLogin = new Date();
+        this.created = new Date();
+    }
+    
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -207,6 +228,30 @@ public class UserCredentials
         }
 
         return !userAuthorityGroups.contains( group ) && authorities.containsAll( group.getAuthorities() );
+    }
+    
+    /**
+     * Indicates whether this user credentials can modify the given user 
+     * credentials. This user credentials must have the ALL authority or possess
+     * all user authorities of the other user credentials to do so.
+     * 
+     * @param other the user credentials to modify.
+     */
+    public boolean canModify( UserCredentials other )
+    {
+        if ( other == null )
+        {
+            return false;
+        }
+        
+        final Set<String> authorities = getAllAuthorities();
+
+        if ( authorities.contains( UserAuthorityGroup.AUTHORITY_ALL ) )
+        {
+            return true;
+        }      
+        
+        return authorities.containsAll( other.getAllAuthorities() );
     }
 
     /**
@@ -425,5 +470,25 @@ public class UserCredentials
     public void setSelfRegistered( boolean selfRegistered )
     {
         this.selfRegistered = selfRegistered;
+    }
+
+    public boolean isDisabled()
+    {
+        return disabled;
+    }
+
+    public void setDisabled( boolean disabled )
+    {
+        this.disabled = disabled;
+    }
+
+    public Date getCreated()
+    {
+        return created;
+    }
+
+    public void setCreated( Date created )
+    {
+        this.created = created;
     }
 }
