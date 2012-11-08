@@ -5,16 +5,28 @@
 <table class="mainPageTable">
 	<tr>
 		<td style="vertical-align:top">
-			<table class="listTable">
+			
+<table class="mainPageTable">
+  <tr>
+    <td style="vertical-align:top" colspan="2">
+		<table width="100%">
+			<tr>
+				<td>
+					$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+				</td>
+				<td align="right">
+					<!-- input type="button" value="$i18n.getString( "add_multi_rule" )" onclick="window.location.href='showAddMultiProgramValidationForm.action?id=$program.id'" style="width:100px" -->
+					<input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:100px">
+					<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddSingleProgramValidationForm.action?id=$program.id'" style="width:100px">
+				</td>
+			</tr>
+		</table>
+		<table class="listTable">
 			  <col>          
-			  <col width="60"> 
+			  <col width="100"> 
 			  <tr>
 				<td></td>
-				<td>
-					<input type="button" value="$i18n.getString( "add_single_rule" )" onclick="window.location.href='showAddSingleProgramValidationForm.action?id=$program.id'" style="width:100px">
-					<input type="button" value="$i18n.getString( "add_multi_rule" )" onclick="window.location.href='showAddMultiProgramValidationForm.action?id=$program.id'" style="width:100px">
-					<input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:100px">
-				</td>
+				<td></td>
 			  </tr>
 			  <tr>            
 				<th>$i18n.getString( "description" )</th>
@@ -38,15 +50,12 @@
 						#else
 							<a href="showUpdateMultiProgramValidationForm.action?validationId=$validation.id&id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 						#end
-					  <a href="javascript:removeProgramValidation( '$validation.id', '$encoder.jsEncode( $validation.description )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-					  <a href="javascript:showProgramValidationDetails( $validation.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+					  <a href="javascript:removeProgramValidation( '$validation.id', '$encoder.jsEncode( $validation.description )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+					  <a href="javascript:showProgramValidationDetails( $validation.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
 					</td>
-					
 				  </tr>
 				#end
-
 			  </tbody>
-
 			</table>
 		</td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">
