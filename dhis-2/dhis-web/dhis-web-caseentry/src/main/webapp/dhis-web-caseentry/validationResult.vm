@@ -32,12 +32,17 @@
 						#set ( $leftFormula = $leftsideFormulaMap.get( $id ) )
 						#set ( $rightFormula = $rightsideFormulaMap.get( $id ) )
 						<tr>
+							#set($leftsideValue = "NULL")
+							#if($result.leftsideValue) #set($leftsideValue = $result.leftsideValue) #end
+							#set($rightsideValue = "NULL")
+							#if($result.rightsideValue) #set($rightsideValue = $result.rightsideValue ) #end
+							
 							<td style="height:32px">$encoder.htmlEncode( $result.programValidation.description )</td>
 							<td>$!encoder.htmlEncode( $leftFormula ) $encoder.htmlEncode( $i18n.getString( $result.programValidation.operator.mathematicalOperator ) ) $!encoder.htmlEncode( $rightFormula )</td>
 							<td>$!encoder.htmlEncode( $result.programValidation.leftSide.description )</td>
-							<td>$result.leftsideValue</td>
+							<td>$leftsideValue</td>
 							<td>$encoder.htmlEncode( $i18n.getString( $result.programValidation.operator.mathematicalOperator ) )</td>
-							<td>$result.rightsideValue</td>
+							<td>$rightsideValue</td>
 							<td>$!encoder.htmlEncode( $result.programValidation.rightSide.description )</td>
 						</tr>
 					#set( $mark = !$mark )

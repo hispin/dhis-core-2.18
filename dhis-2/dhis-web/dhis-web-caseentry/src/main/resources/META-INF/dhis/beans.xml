@@ -323,6 +323,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 		<property name="programValidationService"
 			ref="org.hisp.dhis.program.ProgramValidationService" />
+		<property name="programExpressionService"
+			ref="org.hisp.dhis.program.ProgramExpressionService" />
 	</bean>
 
 	<bean
