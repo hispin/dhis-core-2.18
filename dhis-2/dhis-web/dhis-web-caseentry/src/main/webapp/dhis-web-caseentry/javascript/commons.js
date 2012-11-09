@@ -64,10 +64,11 @@ function dobTypeOnChange( container ){
 
 function addAttributeOption()
 {
+	jQuery('#advancedSearchTB [name=clearSearchBtn]').attr('disabled', false);
 	var rowId = 'advSearchBox' + jQuery('#advancedSearchTB select[name=searchObjectId]').length + 1;
 	var contend  = '<td>' + getInnerHTML('searchingAttributeIdTD') + '</td>';
 		contend += '<td>' + searchTextBox ;
-		contend += '&nbsp;<input type="button" class="tiny-button" value="-" onclick="removeAttributeOption(' + "'" + rowId + "'" + ');"></td>';
+		contend += '&nbsp;<input type="button" name="clearSearchBtn" class="large-button" value="' + i18n_clear + '" onclick="removeAttributeOption(' + "'" + rowId + "'" + ');"></td>';
 		contend = '<tr id="' + rowId + '">' + contend + '</tr>';
 
 	jQuery('#advancedSearchTB').append( contend );
@@ -76,6 +77,9 @@ function addAttributeOption()
 function removeAttributeOption( rowId )
 {
 	jQuery( '#' + rowId ).remove();
+	if( jQuery( '#advancedSearchTB tr' ).length == 3 ){
+		jQuery('#advancedSearchTB [name=clearSearchBtn]').attr('disabled', true);
+	}	
 }	
 
 //------------------------------------------------------------------------------
@@ -184,7 +188,7 @@ function validateAdvancedSearch()
 	
 	if (getFieldValue('searchByProgramStage') == "false" 
 		|| ( getFieldValue('searchByProgramStage') == "true"  
-			&& jQuery( '#advancedSearchTB tr' ).length > 1) ){
+			&& jQuery( '#advancedSearchTB tr' ).length > 2) ){
 		jQuery("#searchDiv :input").each( function( i, item )
 		{
 			var elementName = $(this).attr('name');
@@ -223,34 +227,36 @@ function getSearchParams()
 		var dateOperator = "";
 		var p = "";
 		jQuery( this ).find(':input').each( function( idx, item ){
-			if( idx == 0){
-				p = "&searchTexts=" + item.value;
-				if(item.value=='prg'){
-					programIds += '&programIds=';
-					flag = true;
-				}
-			}
-			else if( item.name == 'dateOperator'){
-				dateOperator = item.value;
-			}
-			else if( item.name == 'searchText'){
-				if( item.value!='')
-				{
-					p += "_";
-					if ( dateOperator.length >0 ) {
-						p += dateOperator + "'" +  item.value.toLowerCase() + "'";
-					}
-					else{
-						p += htmlEncode( item.value.toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "") );
-					}
-					
-					if( flag ){
-						programIds += item.value;
-						flag = false;
+			if(item.type!="button"){
+				if( idx == 0){
+					p = "&searchTexts=" + item.value;
+					if(item.value=='prg'){
+						programIds += '&programIds=';
+						flag = true;
 					}
 				}
-				else {
-					p = "";
+				else if( item.name == 'dateOperator'){
+					dateOperator = item.value;
+				}
+				else if( item.name == 'searchText'){
+					if( item.value!='')
+					{
+						p += "_";
+						if ( dateOperator.length >0 ) {
+							p += dateOperator + "'" +  item.value.toLowerCase() + "'";
+						}
+						else{
+							p += htmlEncode( item.value.toLowerCase().replace(/^\s*/, "").replace(/\s*$/, "") );
+						}
+						
+						if( flag ){
+							programIds += item.value;
+							flag = false;
+						}
+					}
+					else {
+						p = "";
+					}
 				}
 			}
 		});

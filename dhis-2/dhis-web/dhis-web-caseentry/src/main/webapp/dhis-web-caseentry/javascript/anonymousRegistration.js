@@ -4,10 +4,12 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	hideById('dataEntryInfor');
 	hideById('listDiv');
 	showById('mainLinkLbl');
+	setFieldValue("filter", false);
 	jQuery.getJSON( "anonymousPrograms.action",{}, 
 		function( json )
 		{   
-			clearListById('searchObjectId');
+			jQuery('#searchingAttributeIdTD [id=searchObjectId] option').remove();
+			jQuery('#advancedSearchTB [id=searchObjectId] option').remove();
 			clearListById('displayInReports');
 			clearListById('programId');
 			
@@ -53,7 +55,8 @@ function getDataElements()
 {
 	hideById('dataEntryInfor');
 	hideById('listDiv');
-	clearListById('searchObjectId');
+	jQuery('#searchingAttributeIdTD [id=searchObjectId] option').remove();
+	jQuery('#advancedSearchTB [id=searchObjectId] option').remove();
 	programStageId = jQuery('#programId option:selected').attr('psid');
 	setFieldValue('programStageId', programStageId );
 	setInnerHTML('reportDateDescriptionField', jQuery('#programId option:selected').attr('reportDateDes'));
@@ -83,7 +86,7 @@ function getDataElements()
 			
 			jQuery( '#searchObjectId').append( '<option value="" >[' + i18n_please_select + ']</option>' );
 			for ( i in json.programStageDataElements ) {
-				jQuery( '#searchObjectId').append( '<option value="' + json.programStageDataElements[i].id + '" type="' + json.programStageDataElements[i].type +'">' + json.programStageDataElements[i].name + '</option>' );
+				jQuery( '[id=searchObjectId]').append( '<option value="' + json.programStageDataElements[i].id + '" type="' + json.programStageDataElements[i].type +'">' + json.programStageDataElements[i].name + '</option>' );
 				
 				if( json.programStageDataElements[i].displayInReports=='true' ){
 					jQuery( '#displayInReports').append( '<option value="' + json.programStageDataElements[i].id + '"></option>');
@@ -256,7 +259,13 @@ function searchEvents( listAll )
 			
 			var searchInfor = (listAll) ? i18n_list_all_events : i18n_search_events_by_dataelements;
 			setInnerHTML( 'searchInforTD', searchInfor);
-			
+	
+			if(getFieldValue('filter')=='true')
+			{
+				showById('minimized-advanced-search');
+				hideById('advanced-search');
+			}
+	
 			showById('listDiv');
 			hideById('loaderDiv');
 		}
@@ -265,11 +274,6 @@ function searchEvents( listAll )
 
 function updateEvents()
 {
-	if(getFieldValue('filter')=='true')
-	{
-		showById('minimized-advanced-search');
-		hideById('advanced-search');
-	}
 	validateSearchEvents( false );
 }
 
