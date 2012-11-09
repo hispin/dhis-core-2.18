@@ -128,7 +128,6 @@ function validateSingleProgramEnrollment( programId, patientId )
 		});
 }
 
-
 function removePatientInSingleProgram( patientId )
 {
 	$("#patientForm :input").attr("disabled",false);

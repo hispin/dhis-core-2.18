@@ -1,3 +1,4 @@
+<div id='listPatientDiv'>
 <table>
 	<tr>
 		<td class='text-column' >$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
@@ -122,9 +123,10 @@
   </tr>
 </table>
 
-<div id="detailsInfo"></div>
+	<div id="detailsInfo"></div>
+	<span id="message"></span>
+</div>
 
-<span id="message"></span>
 <script>
 	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';
 	var i18n_list_all_patients = '$encoder.jsEscape( $i18n.getString( "list_all_patients" ) , "'" )';
