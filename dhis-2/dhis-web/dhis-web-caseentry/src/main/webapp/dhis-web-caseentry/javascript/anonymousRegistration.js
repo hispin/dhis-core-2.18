@@ -154,13 +154,44 @@ function autocompletedFilterField( idField, searchObjectId )
 				}
 			});
 		},
-		minLength: 2,
 		select: function( event, ui ) {
 			input.val(ui.item.value);
 			input.autocomplete( "close" );
 		}
 	})
 	.addClass( "ui-widget" );
+	
+	input.data( "autocomplete" )._renderItem = function( ul, item ) {
+		return $( "<li></li>" )
+			.data( "item.autocomplete", item )
+			.append( "<a>" + item.label + "</a>" )
+			.appendTo( ul );
+	};
+		
+	var wrapper = this.wrapper = $( "<span style='width:200px'>" )
+			.addClass( "ui-combobox" )
+			.insertAfter( input );
+						
+	var button = $( "<a style='width:20px; margin-bottom:-5px;height:20px;'>" )
+		.attr( "tabIndex", -1 )
+		.attr( "title", i18n_show_all_items )
+		.appendTo( wrapper )
+		.button({
+			icons: {
+				primary: "ui-icon-triangle-1-s"
+			},
+			text: false
+		})
+		.addClass('small-button')
+		.click(function() {
+			if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
+				input.autocomplete( "close" );
+				return;
+			}
+			$( this ).blur();
+			input.autocomplete( "search", "" );
+			input.focus();
+		});
 }
 
 function removeAllAttributeOption()
