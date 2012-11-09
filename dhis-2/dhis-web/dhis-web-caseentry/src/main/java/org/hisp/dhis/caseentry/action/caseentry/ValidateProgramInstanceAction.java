@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.program.ProgramExpressionService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationResult;
@@ -58,6 +58,8 @@ public class ValidateProgramInstanceAction
 
     private ProgramValidationService programValidationService;
 
+    private ProgramExpressionService programExpressionService;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -70,13 +72,18 @@ public class ValidateProgramInstanceAction
 
     private List<ProgramValidationResult> programValidationResults;
 
-    private Map<Integer, String> leftsideFormulaMap;
+    private Map<Integer, String> leftsideFormulaMap = new HashMap<Integer, String>();
 
-    private Map<Integer, String> rightsideFormulaMap;
+    private Map<Integer, String> rightsideFormulaMap = new HashMap<Integer, String>();
 
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+
+    public void setProgramExpressionService( ProgramExpressionService programExpressionService )
+    {
+        this.programExpressionService = programExpressionService;
+    }
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
@@ -123,7 +130,7 @@ public class ValidateProgramInstanceAction
         // ---------------------------------------------------------------------
 
         ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
-        
+
         // ---------------------------------------------------------------------
         // Check validations for dataelement into multi-stages
         // ---------------------------------------------------------------------
@@ -145,11 +152,22 @@ public class ValidateProgramInstanceAction
         {
             for ( ProgramValidation validation : validations )
             {
-                ProgramValidationResult validationResult = programValidationService.validate( validation, programStageInstance, format );
+                ProgramValidationResult validationResult = programValidationService.validate( validation,
+                    programStageInstance, format );
 
                 if ( validationResult != null )
                 {
                     programValidationResults.add( validationResult );
+                    
+                    leftsideFormulaMap.put(
+                        validationResult.getProgramValidation().getId(),
+                        programExpressionService.getExpressionDescription( validationResult.getProgramValidation()
+                            .getLeftSide().getExpression() ) );
+                    
+                    rightsideFormulaMap.put(
+                        validationResult.getProgramValidation().getId(),
+                        programExpressionService.getExpressionDescription( validationResult.getProgramValidation()
+                            .getRightSide().getExpression() ) );
                 }
             }
         }
