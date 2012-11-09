@@ -197,11 +197,11 @@ public class SaveValuesAction
             String providedElsewhereId = programStage.getId() + "_" + psDataElement.getDataElement().getId()
                 + "_facility";
             String value = request.getParameter( dataElementFieldId );
-            if ( value != null )
+            if ( value != null && value.trim().length()>0)
             {
                 boolean providedElsewhere = (request.getParameter( providedElsewhereId ) == null) ? false : true;
 
-                PatientDataValue patientDataValue = new PatientDataValue( programStageInstance, psDataElement.getDataElement(), new Date(), value );
+                PatientDataValue patientDataValue = new PatientDataValue( programStageInstance, psDataElement.getDataElement(), new Date(), value.trim() );
                 patientDataValue.setStoredBy( storedBy );
                 patientDataValue.setProvidedElsewhere( providedElsewhere );
                 patientDataValueService.savePatientDataValue( patientDataValue );
