@@ -47,24 +47,9 @@ public class ProgramExpression
     public static final String SEPARATOR_OBJECT = ":";
     
 
-    public static final int BEFORE_CURRENT_DATE = 1;
+    public static final String DUE_DATE = "DUE_DATE";
 
-    public static final int BEFORE_OR_EQUALS_TO_CURRENT_DATE = 2;
-
-    public static final int AFTER_CURRENT_DATE = 3;
-
-    public static final int AFTER_OR_EQUALS_TO_CURRENT_DATE = 4;
-    
-
-    public static final int BEFORE_DUE_DATE = -1;
-
-    public static final int BEFORE_OR_EQUALS_TO_DUE_DATE = -2;
-
-    public static final int AFTER_DUE_DATE = -3;
-
-    public static final int AFTER_OR_EQUALS_TO_DUE_DATE = -4;
-    
-    public static final int BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS = -5;
+    public static final String RANGE_IN_DUE_DATE = "RANGE_IN_DUE_DATE";
     
     public static final String NOT_NULL_VALUE_IN_EXPRESSION = "NOT-NULL-VALUE";
 

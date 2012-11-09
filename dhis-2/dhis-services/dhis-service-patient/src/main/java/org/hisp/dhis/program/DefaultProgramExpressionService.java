@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +54,7 @@ public class DefaultProgramExpressionService
 {
     private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
         + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
-    
+
     private final String INVALID_CONDITION = "Invalid condition";
 
     // -------------------------------------------------------------------------
@@ -124,8 +125,15 @@ public class DefaultProgramExpressionService
 
     @Override
     public String getProgramExpressionValue( ProgramExpression programExpression,
-        ProgramStageInstance programStageInstance )
+        ProgramStageInstance programStageInstance, I18nFormat format )
     {
+        String value = "";
+        if( ProgramExpression.DUE_DATE.equals( programExpression.getExpression()))
+        {
+            value = format.formatDate( programStageInstance.getDueDate() );
+        }
+        else
+        {
         StringBuffer description = new StringBuffer();
 
         Pattern pattern = Pattern.compile( regExp );
@@ -145,8 +153,10 @@ public class DefaultProgramExpressionService
         }
 
         matcher.appendTail( description );
-
-        return description.toString();
+        value = description.toString();
+        }
+        return value;
+        
     }
 
     @Override
