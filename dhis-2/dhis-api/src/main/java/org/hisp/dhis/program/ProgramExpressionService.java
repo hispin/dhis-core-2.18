@@ -29,6 +29,8 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hisp.dhis.i18n.I18nFormat;
+
 
 /**
  * @author Chau Thu Tran
@@ -49,7 +51,7 @@ public interface ProgramExpressionService
     
     Collection<ProgramExpression> getAllProgramExpressions();
     
-    String getProgramExpressionValue( ProgramExpression programExpression, ProgramStageInstance programStageInstance );
+    String getProgramExpressionValue( ProgramExpression programExpression, ProgramStageInstance programStageInstance, I18nFormat format );
     
     String getExpressionDescription( String programExpression );
     

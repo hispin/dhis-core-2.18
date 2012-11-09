@@ -39,16 +39,20 @@
 				<th>$i18n.getString( "available_data_elements" )</th>
 			</tr>
 			<tr>
-				<td>
+				<td rowspan='2'>
 					<textarea id="expression" name="expression" style="width:316px;height:138px" wrap="virtual" onchange="getExpressionText()" class="{validate:{required:true}}"></textarea><br/>
 					<span id="exp-expressionInfo" generated="true" class="error"></span>
 				</td>
 				<td valign="top">
-					<input type="text" id="filter" name="filter" style="width:150px" placeholder="$i18n.getString('filter')" onkeyup="filterList( this.value, 'dataElementId' )" {>
-					<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:80px">
+					<input type="text" id="filter" name="filter" style="width:240px" placeholder="$i18n.getString('filter')" onkeyup="filterList( this.value, 'dataElementId' )" {>
 					<input type="button" value="$i18n.getString( 'clear' )" onclick="clearSearchText();" style="width:80px"><br/>
 
-					<select id="dataElementId" name="dataElementId" size="8" ondblclick="insertText( 'expression', this.value )"></select>
+					<select id="dataElementId" name="dataElementId" size="8" ondblclick="insertText( 'expression', this.value )" style="height:100px"></select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" value="$i18n.getString('due_date')" onclick="insertText( 'expression', 'DUE_DATE' )">
 				</td>
 			</tr>
 			<tr>

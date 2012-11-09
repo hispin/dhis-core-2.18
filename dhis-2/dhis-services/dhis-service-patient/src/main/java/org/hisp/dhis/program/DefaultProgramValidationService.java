@@ -126,9 +126,9 @@ public class DefaultProgramValidationService
         if ( !validation.getDateType() )
         {
             String leftSideValue = expressionService.getProgramExpressionValue( validation.getLeftSide(),
-                programStageInstance );
+                programStageInstance, format );
             String rightSideValue = expressionService.getProgramExpressionValue( validation.getRightSide(),
-                programStageInstance );
+                programStageInstance, format );
             String operator = validation.getOperator().getMathematicalOperator();
             
             if ( (leftSideValue != null && rightSideValue.equals( NOT_NULL_VALUE_IN_EXPRESSION ) && rightSideValue == null)
