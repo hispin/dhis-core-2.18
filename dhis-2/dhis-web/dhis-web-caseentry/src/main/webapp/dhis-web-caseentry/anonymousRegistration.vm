@@ -69,19 +69,30 @@
 			<col/>
 			<col/>
 			<col width="180"/>
+			<tr class="hidden">
+				<td id='searchingAttributeIdTD'>
+					<select id="searchObjectId" name="searchObjectId" onchange='dataElementOnChange(this);'></select>
+				</td>
+			</tr>
 			<tbody id='advancedSearchTB'>
+				<tr><td></td></tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td rowspan='30' valign='bottom'>
+						<input type="button" class='large-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value="$i18n.getString('add')" onclick='addAttributeOption()'>
+					</td>
+					<td rowspan='30' valign='bottom' align='right'>
+						<input type="button" class='large-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value="$i18n.getString('clear_all')" onclick='removeAllOption()'>
+					</td>
+				</tr>
 				<tr id='advSearchBox0'>	
-					<td id='searchingAttributeIdTD'>
+					<td>
 						<select id="searchObjectId" name="searchObjectId" onchange='dataElementOnChange(this);'></select>
 					</td>		
-					<td style="padding-right:5px;">
+					<td>
 						<input type="text" id="searchText" name="searchText" value="$!searchText">
-					</td>
-					<td rowspan='30' valign='bottom' style="padding-bottom:5px">
-						<input type="button" class='tiny-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value="+" onclick='addAttributeOption()'>
-					</td>
-					<td rowspan='30' valign='bottom' align='right' style="padding-bottom:5px">
-						<input type="button" class='large-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value="$i18n.getString('clear_all')" onclick='removeAllOption()'>
+						<input type="button" class='large-button' name="clearSearchBtn" value='$i18n.getString( "clear" )' onclick="removeAttributeOption('advSearchBox0');" disabled>
 					</td>
 				</tr>
 			</tbody>
