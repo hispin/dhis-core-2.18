@@ -91,6 +91,9 @@ function getDataElements()
 			}
 			
 			enableCriteriaDiv();
+			
+			validateSearchEvents( true );
+			setFieldValue('isShowEventList', true);
 		});
 }
 
@@ -167,15 +170,23 @@ function validateSearchEvents( listAll )
 	var flag = true;
 	if( !listAll )
 	{
-		jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
-			jQuery( this ).find(':input').each( function( idx, item ){
-				var input = jQuery( item );
-				if( input.attr('type') != 'button' && idx==0 && input.val()=='' ){
-					showWarningMessage( i18n_specify_data_element );
-					flag = false;
-				}
-			})
-		});
+		if( getFieldValue('startDate')=="" || getFieldValue('endDate')=="" ){
+			showWarningMessage( i18n_specify_a_date );
+			flag = false;
+		}
+		
+		if(flag && getFieldValue('filter') == "true" )
+		{
+			jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
+				jQuery( this ).find(':input').each( function( idx, item ){
+					var input = jQuery( item );
+					if( input.attr('type') != 'button' && idx==0 && input.val()=='' ){
+						showWarningMessage( i18n_specify_data_element );
+						flag = false;
+					}
+				})
+			});
+		}
 	}
 	
 	if(flag){
@@ -190,18 +201,20 @@ function searchEvents( listAll )
 	setFieldValue('isShowEventList', listAll );
 	
 	var params = '';
-	params += '&startDate=' + getFieldValue('startDate');
-	params += '&endDate=' + getFieldValue('endDate');
-		
+	jQuery( '#displayInReports option' ).each( function( i, item ){
+		var input = jQuery( item );
+		params += '&searchingValues=de_' + input.val() + '_false_';
+	});
+	
 	if(listAll){	
-		jQuery( '#displayInReports option' ).each( function( i, item ){
-			var input = jQuery( item );
-			params += '&searchingValues=de_' + input.val() + '_false_';
-		});
+		params += '&startDate=';
+		params += '&endDate=';
 	}
 	else{
 		var value = '';
 		var searchingValue = '';
+		params += '&startDate=' + getFieldValue('startDate');
+		params += '&endDate=' + getFieldValue('endDate');
 		jQuery( '#advancedSearchTB tr' ).each( function(){
 			jQuery( this ).find(':input').each( function( idx, item ){
 				var input = jQuery( item );
@@ -248,6 +261,16 @@ function searchEvents( listAll )
 			hideById('loaderDiv');
 		}
     });
+}
+
+function updateEvents()
+{
+	if(getFieldValue('filter')=='true')
+	{
+		showById('minimized-advanced-search');
+		hideById('advanced-search');
+	}
+	validateSearchEvents( false );
 }
 
 function getValueFormula( value )
@@ -430,18 +453,34 @@ function removeCurrentEvent()
 	}
 }
 
-function filterDivToogle()
+function showFilterForm()
 {
 	jQuery('#advanced-search').toggle();
-	var isShown = jQuery('#advancedBtn').attr("isShown");
-	if( isShown=="false" ){
-		jQuery('#advancedBtn').val(i18n_clear_filter);
-		jQuery('#advancedBtn').attr("isShown", true );
-	}
-	else
-	{
-		jQuery('#advancedBtn').val(i18n_add_filter);
-		jQuery('#advancedBtn').attr("isShown", false);
-		searchEvents( true );
-	}
+	hideById('minimized-advanced-search');
+	disable('advancedBtn');
+	setFieldValue('filter', true);
+}
+
+function removeAllOption()
+{
+	enable('advancedBtn');
+	setFieldValue('filter', false);
+	jQuery('#advancedBtn').val(i18n_add_filter);
+	jQuery('#advancedBtn').attr("isShown", false);
+	jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
+		if(i==0){
+			jQuery( this ).find(':input').each( function( idx, item ){
+				var input = jQuery( item );
+				if( input.attr('type') != 'button'){
+					input.val('');
+				}
+			});
+		}
+		else{
+			jQuery(this).remove();
+		}
+	});
+	hideById('advanced-search');
+	hideById('minimized-advanced-search');
+	searchEvents( false );
 }
