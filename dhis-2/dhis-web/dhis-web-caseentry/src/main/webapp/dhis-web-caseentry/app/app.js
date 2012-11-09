@@ -662,10 +662,11 @@ Ext.onReady( function() {
         currentPage: 1,
 		total: 1,
 		totalRecords: 0,
+		isFilter:false,
 		orderByOrgunitAsc: true,
 		orderByExecutionDateByAsc: true,
 		orgunitIds: [],
-		generateReport: function( type, isFilter ) {
+		generateReport: function( type ) {
 			// Validation
 			if( !this.validation.objects() )
 			{
@@ -788,7 +789,7 @@ Ext.onReady( function() {
 			
 			// Get searching values
 			p.searchingValues = [];
-			if( !TR.state.paramChanged() )
+			if( !TR.state.paramChanged() || TR.state.isFilter )
 			{
 				var cols = TR.datatable.datatable.columns;
 				for( var k in cols )
@@ -828,7 +829,7 @@ Ext.onReady( function() {
 				p += '&orgunitIds=' + TR.state.orgunitIds[i];
 			}
 			
-			if( !TR.state.paramChanged() )
+			if( !TR.state.paramChanged() || TR.state.isFilter )
 			{
 				var cols = TR.datatable.datatable.columns;
 				for( var k in cols )
@@ -927,6 +928,7 @@ Ext.onReady( function() {
 				{
 					return true;
 				}
+				TR.state.isFilter = false;
 				return false;
 			}
 			return true;
@@ -1342,6 +1344,7 @@ Ext.onReady( function() {
 			TR.state.generateReport( type );
 		},
 		filter: function() {
+			TR.state.isFilter = true;
 			TR.state.filterReport();
 		},
 		paging: function( currentPage )
@@ -1992,7 +1995,7 @@ Ext.onReady( function() {
 							cls: 'tr-toolbar-btn-1',
                             text: TR.i18n.update,
 							handler: function() {
-                                if( !TR.state.paramChanged() )
+                                if( !TR.state.paramChanged() || TR.state.isFilter )
 								{
 									TR.exe.filter();
 								}
