@@ -2,9 +2,13 @@
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
 	hideById('dataEntryInfor');
+	hideById('advanced-search');
 	hideById('listDiv');
 	showById('mainLinkLbl');
 	setFieldValue("filter", false);
+	setFieldValue("startDate", '');
+	setFieldValue("endDate", '');
+	jQuery('#advancedSearchTB [name=searchText]').val('');
 	jQuery.getJSON( "anonymousPrograms.action",{}, 
 		function( json )
 		{   
@@ -79,6 +83,7 @@ function getDataElements()
 		}, 
 		function( json ) 
 		{   
+			jQuery('#advancedSearchTB [name=searchText]').val('');
 			jQuery('.stage-object-selected').attr('psid', jQuery('#programId option:selected').attr("psid"));
 	
 			clearListById('searchObjectId');
@@ -459,7 +464,7 @@ function removeCurrentEvent()
 
 function showFilterForm()
 {
-	jQuery('#advanced-search').toggle();
+	showById('advanced-search');
 	hideById('minimized-advanced-search');
 	disable('advancedBtn');
 	setFieldValue('filter', true);

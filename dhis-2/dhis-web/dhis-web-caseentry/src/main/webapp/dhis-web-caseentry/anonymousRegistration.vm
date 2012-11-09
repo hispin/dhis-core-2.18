@@ -60,6 +60,7 @@
 		
 		<table id='minimized-advanced-search' class="hidden">
 			<tr><td align='right'>
+				$i18n.getString('you_have_active_filters')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="button" class='large-button' value="$i18n.getString('show_all')" onclick='showFilterForm()'>
 				<input type="button" class='large-button' value="$i18n.getString('clear_all')" onclick='removeAllOption()'>
 			</td></tr>
