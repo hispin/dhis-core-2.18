@@ -28,7 +28,7 @@
 		</td>        
 		##entry        
 		<td class='input-column'>   
-			#set( $id = $programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val' )
+			#set( $id = "DE_" + $programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val' )
 			#if( $!programStageDataElement.dataElement.optionSet )
 				#set($hasOptionSet = 'true')
 			#else
@@ -67,7 +67,7 @@
 			#elseif( $programStageDataElement.dataElement.type == "date" )
 				<input name="entryfield" type="text" id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )"class="{validate:{$validate}}">
 				<script type="text/javascript">
-					datePicker($programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
+					datePicker("DE_" +  $programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
 				</script> 
 			#elseif($hasOptionSet=='true')
 				<input name="entryfield" options='$hasOptionSet' id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" class="option {validate:{$validate}}" />
@@ -75,9 +75,11 @@
 				<input name="entryfield" id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" class="{validate:{$validate}}" />
 			#end
 			#if( $programStage.program.displayProvidedOtherFacility=='true' )
-				#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
+				#set( $id = "DE_" + $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
 				#if( $programStageDataElement.allowProvidedElsewhere == 'true')
 					<input class='provided-elsewhere' name="$id" id="$id" type="checkbox" title="$i18n.getString('provided_elsewhere') ?"/>
+				#else
+					<input class='provided-elsewhere' name="$id" id="$id" type="hidden" value="false";>
 				#end
 			#end
 		</td>
