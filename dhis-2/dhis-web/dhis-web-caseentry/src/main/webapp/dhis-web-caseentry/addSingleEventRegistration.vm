@@ -47,9 +47,10 @@
 	<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 	<input type="hidden" id="programStageId" name="programStageId" value='$programStage.id'/>
 	
-	<table id='patientForm'>
+	<table>
+		<tbody id='patientForm'>
 		#parse( "/dhis-web-caseentry/patientForm.vm" )
-		
+		</tbody>
 		<tr><td>$programStage.program.name</td></tr>
 		#parse( "/dhis-web-caseentry/singleDataEntryForm.vm" )
 	</table>
