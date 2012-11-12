@@ -72,36 +72,6 @@ mapfish.GeoStat = OpenLayers.Class({
         }
     },
 
-    onSuccess2: function(request) {
-        var doc = request.responseXML;
-        if (!doc || !doc.documentElement) {
-            doc = request.responseText;
-        }
-        
-        if (doc.length && G.vars.activeWidget != symbol) {
-            doc = G.util.geoJsonDecode(doc);
-        }
-        var format = this.format || new OpenLayers.Format.GeoJSON();
-        this.layer.removeFeatures(this.layer.features);
-        
-        var geo = format.read(doc);
-		for (var i = 0; i < geo.length; i++) {
-            var c = geo[i].geometry.getCentroid();
-            if (c instanceof Object) {
-                var p = G.util.getTransformedPoint(c);
-                geo[i] = new OpenLayers.Feature.Vector(p, geo[i].attributes);
-            }
-		}
-        this.layer.addFeatures(geo);
-        G.vars.activeWidget.featureStorage = this.layer.features.slice(0);
-        this.requestSuccess(request);
-  
-		if (!G.vars.activeWidget.formValidation.validateForm.call(G.vars.activeWidget)) {
-			G.vars.mask.hide();
-		}
-		G.vars.activeWidget.classify(false, false, true);
-    },
-
     addOptions: function(newOptions) {
         if (newOptions) {
             if (!this.options) {
