@@ -87,9 +87,7 @@ public class ProgramValidation
     private ProgramExpression rightSide;
 
     private Program program;
-
-    private Boolean dateType;
-
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -113,8 +111,7 @@ public class ProgramValidation
         this.leftSide = leftSide;
         this.rightSide = rightSide;
         this.program = program;
-        this.dateType = dateType;
-    }
+   }
 
     // -------------------------------------------------------------------------
     // hashCode() and equals()
