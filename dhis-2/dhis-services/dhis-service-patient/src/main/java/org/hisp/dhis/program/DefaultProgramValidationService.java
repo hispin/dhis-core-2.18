@@ -132,13 +132,13 @@ public class DefaultProgramValidationService
             String operator = validation.getOperator().getMathematicalOperator();
             
             if ( (leftSideValue != null && rightSideValue.equals( NOT_NULL_VALUE_IN_EXPRESSION ) && rightSideValue == null)
-                || ( !(leftSideValue != null && rightSideValue != null 
-                    && ( (operator.equals( "==" ) && leftSideValue.compareTo( rightSideValue )==0 )
+                || ( (leftSideValue != null && rightSideValue != null 
+                    && !( (operator.equals( "==" ) && leftSideValue.compareTo( rightSideValue )==0 )
                     || (operator.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0 )
                     || (operator.equals( "<=" ) && (leftSideValue.compareTo( rightSideValue ) <= 0))
                     || (operator.equals( ">" ) && leftSideValue.compareTo( rightSideValue ) > 0)
-                    || (operator.equals( ">=" ) && leftSideValue.compareTo( rightSideValue ) >= 0)) 
-                    || (operator.equals( "!=" ) && leftSideValue.compareTo( rightSideValue ) ==0  ))) )
+                    || (operator.equals( ">=" ) && leftSideValue.compareTo( rightSideValue ) >= 0) 
+                    || (operator.equals( "!=" ) && leftSideValue.compareTo( rightSideValue ) ==0  ) ))))
             {
                 return new ProgramValidationResult( programStageInstance, validation, leftSideValue, rightSideValue );
             }
