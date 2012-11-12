@@ -1867,7 +1867,7 @@ Ext.onReady( function() {
 		});
 			
 		searchTextfield = Ext.create('Ext.form.field.Text', {
-			width: 343,
+			width: 340,
 			height: 26,
 			fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb',
 			emptyText: 'Search for favorites..', //i18n
