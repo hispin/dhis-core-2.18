@@ -53,7 +53,7 @@ public class DefaultProgramValidationService
 {
     private final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
         + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
-    
+
     private ProgramValidationStore validationStore;
 
     private ProgramStageService programStageService;
@@ -123,37 +123,30 @@ public class DefaultProgramValidationService
     public ProgramValidationResult validate( ProgramValidation validation, ProgramStageInstance programStageInstance,
         I18nFormat format )
     {
-        if ( !validation.getDateType() )
+        String leftSideValue = expressionService.getProgramExpressionValue( validation.getLeftSide(),
+            programStageInstance, format );
+        String rightSideValue = expressionService.getProgramExpressionValue( validation.getRightSide(),
+            programStageInstance, format );
+        String operator = validation.getOperator().getMathematicalOperator();
+
+        if ( (leftSideValue != null && rightSideValue.equals( NOT_NULL_VALUE_IN_EXPRESSION ) && rightSideValue == null)
+            || ((leftSideValue != null && rightSideValue != null && !((operator.equals( "==" ) && leftSideValue
+                .compareTo( rightSideValue ) == 0)
+                || (operator.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0)
+                || (operator.equals( "<=" ) && (leftSideValue.compareTo( rightSideValue ) <= 0))
+                || (operator.equals( ">" ) && leftSideValue.compareTo( rightSideValue ) > 0)
+                || (operator.equals( ">=" ) && leftSideValue.compareTo( rightSideValue ) >= 0) || (operator
+                .equals( "!=" ) && leftSideValue.compareTo( rightSideValue ) == 0)))) )
         {
-            String leftSideValue = expressionService.getProgramExpressionValue( validation.getLeftSide(),
-                programStageInstance, format );
-            String rightSideValue = expressionService.getProgramExpressionValue( validation.getRightSide(),
-                programStageInstance, format );
-            String operator = validation.getOperator().getMathematicalOperator();
-            
-            if ( (leftSideValue != null && rightSideValue.equals( NOT_NULL_VALUE_IN_EXPRESSION ) && rightSideValue == null)
-                || ( (leftSideValue != null && rightSideValue != null 
-                    && !( (operator.equals( "==" ) && leftSideValue.compareTo( rightSideValue )==0 )
-                    || (operator.equals( "<" ) && leftSideValue.compareTo( rightSideValue ) < 0 )
-                    || (operator.equals( "<=" ) && (leftSideValue.compareTo( rightSideValue ) <= 0))
-                    || (operator.equals( ">" ) && leftSideValue.compareTo( rightSideValue ) > 0)
-                    || (operator.equals( ">=" ) && leftSideValue.compareTo( rightSideValue ) >= 0) 
-                    || (operator.equals( "!=" ) && leftSideValue.compareTo( rightSideValue ) ==0  ) ))))
-            {
-                return new ProgramValidationResult( programStageInstance, validation, leftSideValue, rightSideValue );
-            }
+            return new ProgramValidationResult( programStageInstance, validation, leftSideValue, rightSideValue );
         }
+
         return null;
     }
 
     public Collection<ProgramValidation> getProgramValidation( Program program )
     {
         return validationStore.get( program );
-    }
-
-    public Collection<ProgramValidation> getProgramValidation( Program program, Boolean dateType )
-    {
-        return validationStore.get( program, dateType );
     }
 
     public Collection<ProgramValidation> getProgramValidation( ProgramStageDataElement psdataElement )
@@ -190,7 +183,8 @@ public class DefaultProgramValidationService
         {
             ProgramValidation validation = iter.next();
 
-            String expression = validation.getLeftSide().getExpression() + " " + validation.getRightSide().getExpression();
+            String expression = validation.getLeftSide().getExpression() + " "
+                + validation.getRightSide().getExpression();
             Matcher matcher = pattern.matcher( expression );
 
             boolean flag = false;
@@ -219,11 +213,11 @@ public class DefaultProgramValidationService
 
         return programValidation;
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     private Collection<DataElement> getDataElementInExpression( ProgramValidation programValidation )
     {
         Collection<DataElement> dataElements = new HashSet<DataElement>();

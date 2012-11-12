@@ -105,14 +105,6 @@ public class ProgramValidation
         this.program = program;
     }
 
-    public ProgramValidation( String description, ProgramExpression leftSide, ProgramExpression rightSide, Program program, Boolean dateType )
-    {
-        this.description = description;
-        this.leftSide = leftSide;
-        this.rightSide = rightSide;
-        this.program = program;
-   }
-
     // -------------------------------------------------------------------------
     // hashCode() and equals()
     // -------------------------------------------------------------------------
@@ -239,16 +231,6 @@ public class ProgramValidation
     public void setProgram( Program program )
     {
         this.program = program;
-    }
-
-    public Boolean getDateType()
-    {
-        return dateType;
-    }
-
-    public void setDateType( Boolean dateType )
-    {
-        this.dateType = dateType;
     }
 
     public Operator getOperator()

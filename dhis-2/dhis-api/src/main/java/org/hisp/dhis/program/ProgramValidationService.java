@@ -51,8 +51,6 @@ public interface ProgramValidationService
 
     Collection<ProgramValidation> getProgramValidation( Program program );
 
-    Collection<ProgramValidation> getProgramValidation( Program program, Boolean dateType );
-
     Collection<ProgramValidation> getProgramValidation( ProgramStage programStage );
 
     Collection<ProgramValidation> getProgramValidation( ProgramStageDataElement psdataElement );

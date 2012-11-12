@@ -892,17 +892,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.patient.action.validation.GetDateDataElementsAction"
-		class="org.hisp.dhis.patient.action.validation.GetDateDataElementsAction"
-		scope="prototype">
-		<property name="programStageService">
-			<ref bean="org.hisp.dhis.program.ProgramStageService" />
-		</property>
-		<property name="programValidationService"
-			ref="org.hisp.dhis.program.ProgramValidationService" />
-	</bean>
-	
-	<bean
 		id="org.hisp.dhis.patient.action.validation.GetProgramExpressionDescriptionAction"
 		class="org.hisp.dhis.patient.action.validation.GetProgramExpressionDescriptionAction"
 		scope="prototype">
