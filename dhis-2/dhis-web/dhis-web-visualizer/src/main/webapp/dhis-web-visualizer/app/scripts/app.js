@@ -846,7 +846,7 @@ Ext.onReady( function() {
 							trackMouse: true,
 							cls: 'dv-chart-tips',
 							renderer: function(si, item) {
-								this.update('' + item.value[1]);
+								this.update('<b>' + item.value[1] + '</b> (' + si.data[DV.conf.finals.data.domain] + ')');
 							}
 						};
 					},
@@ -3789,7 +3789,6 @@ Ext.onReady( function() {
 													},
 													listeners: {
 														load: function(s, node, r) {
-															console.log(r);
 															for (var i = 0; i < r.length; i++) {
 																r[i].data.text = DV.conf.util.jsonEncodeString(r[i].data.text);
 															}

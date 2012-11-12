@@ -360,6 +360,7 @@ body {
 .x-tip .x-tip-body {
 	font-size: 10px;
 	color: #fff;
+	-webkit-text-stroke: 0.2px #fff;
 }
 
 .x-tip-anchor {
@@ -502,7 +503,7 @@ body {
 /* Chart tips */
 .dv-chart-tips, .dv-chart-tips-pie {
     border-radius: 2px;
-    padding: 3px 4px 2px;
+    padding: 1px 4px 2px;
     border: 2px solid #777;
     background-color: #f1f1f1;
 }
@@ -511,11 +512,11 @@ body {
 }
 
 .dv-chart-tips .x-tip-body, .dv-chart-tips-pie .x-tip-body {
-    padding: 4px;
     background-color: #f1f1f1;
-    font-size: 20px;
+    font-size: 13px;
     font-weight: normal;
     color: #444;
+	-webkit-text-stroke: 0;
 }
 .dv-chart-tips-pie .x-tip-body {
 	font-size: 13px;
