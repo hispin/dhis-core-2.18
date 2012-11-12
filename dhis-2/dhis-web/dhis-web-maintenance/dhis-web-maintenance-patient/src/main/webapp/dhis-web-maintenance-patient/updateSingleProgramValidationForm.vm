@@ -6,7 +6,6 @@
 
 <input type='hidden' id='id' name='id' value='$validation.id'>
 <input type='hidden' id='programId' name='programId' value='$validation.program.id'>
-<input type='hidden' id='dateType' name='dateType' value='$validation.dateType'>
 <table>
 	<thead>
       <tr>
@@ -41,13 +40,13 @@
 		<td>
 			<input type="button" value="$i18n.getString( 'edit_left_side' )" onclick="editLeftExpression();">
 			<input type="hidden" id="leftSideDescription" name="leftSideDescription" value="$!validation.leftSide.description">
-			<input type="hidden" id="leftSideExpression" name="leftSideExpression" value="$!validation.leftSide.expression">
+			<input type="hidden" id="leftSideExpression" name="leftSideExpression" value="$!validation.leftSide.expression" class="{validate:{required:true}}">
 			<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression" value="$!leftSideTextualExpression">
 			<input type="hidden" id="leftSideNullIfBlank" name="leftSideNullIfBlank" value="$!validation.leftSide.nullIfBlank">
 			
 			<input type="button" value="$i18n.getString( 'edit_right_side' )" onclick="editRightExpression();">
 			<input type="hidden" id="rightSideDescription" name="rightSideDescription" value="$!validation.rightSide.description">
-			<input type="hidden" id="rightSideExpression" name="rightSideExpression" value="$!validation.rightSide.expression">
+			<input type="hidden" id="rightSideExpression" name="rightSideExpression" value="$!validation.rightSide.expression" class="{validate:{required:true}}">
 			<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression" value="$!rightSideTextualExpression">
 			<input type="hidden" id="rightSideNullIfBlank" name="rightSideNullIfBlank" value="$!validation.rightSide.nullIfBlank">
 		</td>

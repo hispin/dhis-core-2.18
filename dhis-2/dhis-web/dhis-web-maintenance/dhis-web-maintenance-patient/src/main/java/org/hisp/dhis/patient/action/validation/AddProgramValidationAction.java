@@ -107,13 +107,6 @@ public class AddProgramValidationAction
         this.rightSideDescription = rightSideDescription;
     }
 
-    private Boolean dateType;
-
-    public void setDateType( Boolean dateType )
-    {
-        this.dateType = dateType;
-    }
-
     private Integer programId;
 
     public void setProgramId( Integer programId )
@@ -142,7 +135,6 @@ public class AddProgramValidationAction
         validation.setOperator( Operator.valueOf( operator ) );
         validation.setLeftSide( leftExpression );
         validation.setRightSide( rightExpression );
-        validation.setDateType( dateType );
 
         Program program = programService.getProgram( programId );
         validation.setProgram( program );
