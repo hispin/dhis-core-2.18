@@ -178,6 +178,97 @@ Ext.define('Ext.ux.panel.LayerItemPanel', {
 	}
 });
 
+/* CheckTextNumber */
+
+Ext.define('Ext.ux.panel.CheckTextNumber', {
+	extend: 'Ext.panel.Panel',
+	alias: 'widget.checktextnumber',
+	layout: 'column',
+	layer: null,
+	checkbox: null,
+	text: null,
+	numberField: null,
+	width: 184,
+	height: 22,
+	value: false,
+	number: 5,
+	getValue: function() {
+		return this.checkbox.getValue();
+	},
+	getNumber: function() {
+		return this.numberField.getValue();
+	},
+	setValue: function(value, number) {
+		if (value) {
+			this.checkbox.setValue(value);
+		}
+		if (number) {
+			this.numberField.setValue(number);
+		}
+	},
+	enable: function() {
+		this.numberField.enable();
+	},
+	disable: function() {
+		this.numberField.disable();
+	},
+	reset: function() {
+		this.checkbox.setValue(false);
+		this.numberField.setValue(this.number);
+		this.numberField.disable();
+	},
+	initComponent: function() {
+		var that = this;
+		
+		this.checkbox = Ext.create('Ext.form.field.Checkbox', {
+			width: 14,
+			checked: this.value,
+			disabled: this.disabled,
+			listeners: {
+				change: function(chb, value) {
+					if (value) {
+						that.enable();
+					}
+					else {
+						that.disable();
+					}
+				}
+			}
+		});
+		
+		this.numberField = Ext.create('Ext.form.field.Number', {
+			cls: 'gis-numberfield',
+			fieldStyle: 'border-top-left-radius: 1px; border-bottom-left-radius: 1px',
+			style: 'padding-bottom: 3px',
+			width: 60,
+			height: 21,
+			minValue: 0,
+			maxValue: 10000,
+			value: this.number,
+			allowBlank: false,
+			disabled: true
+		});
+		
+		this.items = [
+			{
+				width: this.checkbox.width + 6,
+				items: this.checkbox
+			},
+			{
+				width: this.width - this.checkbox.width - 6 - this.numberField.width,
+				html: this.text,
+				bodyStyle: 'padding-top: 4px'
+			},
+			{
+				width: this.numberField.width,
+				items: this.numberField
+			}
+		];
+		
+		this.callParent();
+	}
+});
+
 /* MultiSelect */
 
 Ext.define("Ext.ux.layout.component.form.MultiSelect",{extend:"Ext.layout.component.field.Field",alias:["layout.multiselectfield"],type:"multiselectfield",defaultHeight:200,sizeBodyContents:function(a,b){var c=this;if(!Ext.isNumber(b)){b=c.defaultHeight}c.owner.panel.setSize(a,b)}});

@@ -156,6 +156,8 @@ mapfish.GeoStat.Thematic1 = OpenLayers.Class(mapfish.GeoStat, {
 			if (config.hasOwnProperty(key)) {
 				element = document.createElement("div");
 				element.style.height = "14px";
+				element.style.overflow = "hidden";
+				element.title = config[key];
 				element.innerHTML = config[key];
 				this.legendDiv.appendChild(element);
 				

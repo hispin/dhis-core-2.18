@@ -231,7 +231,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 			rootVisible: false,
 			multiSelect: false,
 			width: GIS.conf.layout.widget.item_width,
-			height: 248,
+			height: 210,
 			reset: function() {
 				this.collapseAll();
 				this.expandPath(GIS.init.rootNodes[0].path);
@@ -267,6 +267,22 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 				}
 			}
         });
+        
+        this.cmp.areaRadius = Ext.create('Ext.ux.panel.CheckTextNumber', {
+			width: 262,
+			text: 'Show circular area with radius (km):', //i18n
+			listeners: {
+				added: function() {
+					var that = this;
+					this.checkbox.on('change', function() {
+						GIS.base.facility.widget.config.extended.updateLegend = true;
+					});
+					this.numberField.on('change', function() {
+						GIS.base.facility.widget.config.extended.updateLegend = true;
+					});
+				}
+			}
+		});
     },
     
     addItems: function() {
@@ -275,7 +291,6 @@ Ext.define('mapfish.widgets.geostat.Facility', {
             {
                 xtype: 'form',
 				cls: 'el-border-0',
-                width: 270,
                 items: [
 					{
 						html: 'Organisation unit group set', //i18n
@@ -288,7 +303,13 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 						bodyStyle: 'padding-top: 4px'
 					},
 					this.cmp.level,
-					this.cmp.parent
+					this.cmp.parent,
+					{
+						html: 'Surrounding areas', //i18n
+						cls: 'gis-form-subtitle',
+						bodyStyle: 'padding-top: 4px'
+					},					
+					this.cmp.areaRadius
 				]
             }
         ];
@@ -652,6 +673,8 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		this.cmp.level.clearValue();
 		this.cmp.parent.reset();
 		
+		this.cmp.areaRadius.reset();
+		
 		// Layer options
 		if (this.cmp.searchWindow) {
 			this.cmp.searchWindow.destroy();
@@ -676,6 +699,11 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		this.store.features.loadFeatures();
 		this.layer.item.setValue(false);
 		
+		if (this.layer.circleLayer) {
+			this.layer.circleLayer.deactivateControls();
+			this.layer.circleLayer = null;
+		}		
+		
 		// Legend
 		document.getElementById(this.legendDiv).innerHTML = '';
 	},
@@ -697,6 +725,13 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		});
 		
 		this.cmp.parent.selectPath('/root' + view.parentGraph);
+		
+		if (Ext.isDefined(view.areaRadius)) {
+			this.cmp.areaRadius.setValue(true, view.areaRadius);
+		}
+		else {
+			this.cmp.areaRadius.reset();
+		}
 	},
     	
 	getView: function() {
@@ -721,6 +756,7 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 				id: parent[0].raw.id,
 				name: parent[0].raw.text
 			},
+			areaRadius: this.cmp.areaRadius.getValue() ? this.cmp.areaRadius.getNumber() : null,
 			parentLevel: parent[0].raw.level,
 			parentGraph: parent[0].raw.path,
 			opacity: this.layer.item.getOpacity()
@@ -867,14 +903,27 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 				options = {
 					indicator: this.tmpView.organisationUnitGroupSet.name
 				};
-
 				this.coreComp.applyClassification(options);
 				this.classificationApplied = true;
+				
+				this.addCircles();
 				
 				this.afterLoad();
 			}
 		});
-	},	
+	},
+	
+	addCircles: function() {
+		var radius = this.tmpView.areaRadius;
+		
+		if (this.layer.circleLayer) {
+			this.layer.circleLayer.deactivateControls();
+			this.layer.circleLayer = null;
+		}
+		if (Ext.isDefined(radius) && radius) {
+			this.layer.circleLayer = new GIS.obj.CircleLayer(this.layer.features, radius);
+		}
+	},		
 	
     execute: function(view) {
 		if (view) {
@@ -894,17 +943,12 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 		GIS.mask.msg = GIS.i18n.loading;
 		GIS.mask.show();
 		
-		//if (this.tmpView.extended.updateGui) { // If favorite, wait for groups store callback 
-			//this.setGui();
-		//}
-		//else {
-			if (this.tmpView.extended.updateOrganisationUnit) {
-				this.loadOrganisationUnits();
-			}
-			else {
-				this.loadLegend();
-			}
-		//}
+		if (this.tmpView.extended.updateOrganisationUnit) {
+			this.loadOrganisationUnits();
+		}
+		else {
+			this.loadLegend();
+		}
 	},
 	
 	afterLoad: function() {

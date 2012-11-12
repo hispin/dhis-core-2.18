@@ -150,6 +150,10 @@ GIS.base = {
 	openStreetMap: {
 		id: 'openStreetMap',
 		name: 'OpenStreetMap'
+	},
+	circle: {
+		id: 'circle',
+		name: 'Circle'
 	}
 };
 
@@ -301,6 +305,36 @@ Ext.onReady( function() {
 		return layers;
 	};
 	
+	GIS.util.map.getFeaturesByLayers = function(layers) {
+		var a = [];			
+		for (var i = 0; i < layers.length; i++) {
+			a = a.concat(layers[i].features);
+		}
+		return a;
+	};
+	
+	GIS.util.map.getPointsByFeatures = function(features) {
+		var a = [];
+		for (var i = 0; i < features.length; i++) {
+			if (features[i].geometry.CLASS_NAME === GIS.conf.finals.openLayers.point_classname) {
+				a.push(features[i]);
+			}
+		}
+		return a;
+	};
+	
+	GIS.util.map.getLonLatsByPoints = function(points) {
+		var lonLat,
+			point,
+			a = [];
+		for (var i = 0; i < points.length; i++) {
+			point = points[i];
+			lonLat = new OpenLayers.LonLat(point.geometry.x, point.geometry.y);
+			a.push(lonLat);
+		}
+		return a;
+	};
+	
 	GIS.util.map.hasVisibleFeatures = function() {
 		var layers = GIS.util.map.getVisibleVectorLayers(),
 			layer;
@@ -349,7 +383,7 @@ Ext.onReady( function() {
 	};
 	
 	GIS.util.map.addMapControl = function(name, fn) {
-		var panel = new GIS.obj.MapControlPanel(name, fn);		
+		var panel = GIS.obj.MapControlPanel(name, fn);		
 		GIS.map.addControl(panel);
 		panel.div.className += ' ' + name;
 		panel.div.childNodes[0].className += ' ' + name + 'Button';
@@ -908,8 +942,7 @@ Ext.onReady( function() {
 				}
 				this.setOpacity(this.layerOpacity);
 			},
-			hasLabels: false
-			
+			hasLabels: false			
 		});
 		layer.base = base;
 		
@@ -945,7 +978,7 @@ Ext.onReady( function() {
 					base.widget.cmp.labelWindow.show();
 				}
 				else {
-					base.widget.cmp.labelWindow = new GIS.obj.LabelWindow(base);
+					base.widget.cmp.labelWindow = GIS.obj.LabelWindow(base);
 					base.widget.cmp.labelWindow.show();
 				}
 			}
@@ -967,7 +1000,7 @@ Ext.onReady( function() {
 					}
 				
 					base.widget.cmp.filterWindow = base.id === GIS.base.facility.id ?
-						new GIS.obj.FilterFacilityWindow(base) : new GIS.obj.FilterWindow(base);
+						GIS.obj.FilterFacilityWindow(base) : GIS.obj.FilterWindow(base);
 					base.widget.cmp.filterWindow.show();
 				}
 			};
@@ -987,7 +1020,7 @@ Ext.onReady( function() {
 					}
 				}
 			
-				base.widget.cmp.searchWindow = new GIS.obj.SearchWindow(base);
+				base.widget.cmp.searchWindow = GIS.obj.SearchWindow(base);
 				base.widget.cmp.searchWindow.show();
 			}
 		};
@@ -1055,8 +1088,7 @@ Ext.onReady( function() {
 			visibleLayer;
 			
 		visibleLayerId = window.google ? GIS.base.googleStreets.id : GIS.base.openStreetMap.id;
-		
-		for (var i = 0; i < layers.length; i++) {
+		for (var i = 0; i < layers.length; i++) { //todo important
 			layer = layers[i];
 			
 			item = Ext.create('Ext.ux.panel.LayerItemPanel', {
@@ -1613,9 +1645,8 @@ Ext.onReady( function() {
 						}
 						else {
 							layer.hasLabels = true;
-							layer.styleMap = GIS.obj.StyleMap(base, getLabelConfig());
+							layer.styleMap = GIS.obj.StyleMap(base, getLabelConfig());							
 						}
-						
 						base.widget.config.extended.updateLegend = true;
 						base.widget.execute();
 					}
@@ -1755,7 +1786,7 @@ Ext.onReady( function() {
 								success: function(r) {
 									var id = r.getAllResponseHeaders().location.split('/').pop();
 									
-									GIS.map.mapLoader = new GIS.obj.MapLoader(id);
+									GIS.map.mapLoader = GIS.obj.MapLoader(id);
 									
 									GIS.store.maps.loadStore();
 									
@@ -1904,7 +1935,7 @@ Ext.onReady( function() {
 							if (el) {
 								el = el.parent('td');
 								el.addClsOnOver('link');
-								el.dom.setAttribute('onclick', 'GIS.cmp.mapWindow.destroy(); GIS.map.mapLoader = new GIS.obj.MapLoader("' + record.data.id + '"); GIS.map.mapLoader.load();');
+								el.dom.setAttribute('onclick', 'GIS.cmp.mapWindow.destroy(); GIS.map.mapLoader = GIS.obj.MapLoader("' + record.data.id + '"); GIS.map.mapLoader.load();');
 							}
 						};
 						
@@ -2856,10 +2887,6 @@ Ext.onReady( function() {
 			hidden: true,
 			handler: function() {
 				if (legendSetName.getValue() && validateLegends()) {
-					if (legendSetStore.findExact('name', legendSetName.getValue()) !== -1) {
-						alert('Name already in use');
-						return;
-					}
 					var body = getRequestBody(),
 						id = legendPanel.legendSetId;
 					body.id = id;
@@ -3114,6 +3141,54 @@ Ext.onReady( function() {
 		return window;
 	};
 	
+	GIS.obj.CircleLayer = function(features, radius) {
+		var points = GIS.util.map.getPointsByFeatures(features),
+			lonLats = GIS.util.map.getLonLatsByPoints(points),
+			controls = [],
+			control,
+			layer = new OpenLayers.Layer.Vector(),
+			deactivateControls,
+			createCircles,
+			params = {};
+		
+		radius = radius && Ext.isNumber(parseInt(radius)) ? parseInt(radius) : 5;
+			
+		deactivateControls = function() {
+			for (var i = 0; i < controls.length; i++) {
+				controls[i].deactivate();
+			}
+		};
+		
+		createCircles = function() {
+			if (lonLats.length) {
+				for (var i = 0; i < lonLats.length; i++) {
+					control = new OpenLayers.Control.Circle({
+						layer: layer
+					});
+					control.lonLat = lonLats[i];
+					controls.push(control);
+				}
+				
+				GIS.map.addControls(controls);
+					
+				for (var i = 0; i < controls.length; i++) {
+					control = controls[i];
+					control.activate();
+					control.updateCircle(control.lonLat, radius);
+				}
+			}
+			else {
+				alert('No facilities');
+			}
+		};
+		
+		createCircles();
+		
+		layer.deactivateControls = deactivateControls;
+		
+		return layer;
+	};
+	
 	// OpenLayers map
 	
 	GIS.map = new OpenLayers.Map({
@@ -3143,7 +3218,7 @@ Ext.onReady( function() {
 		if (GIS.cmp.measureWindow && GIS.cmp.measureWindow.destroy) {
 			GIS.cmp.measureWindow.destroy();
 		}		
-		GIS.cmp.measureWindow = new GIS.obj.MeasureWindow();
+		GIS.cmp.measureWindow = GIS.obj.MeasureWindow();
 		GIS.cmp.measureWindow.show();
 	});
     
@@ -3202,48 +3277,48 @@ Ext.onReady( function() {
     
     // Base objects
     
-    GIS.base.boundary.layer = new GIS.obj.VectorLayer(GIS.base.boundary);
+    GIS.base.boundary.layer = GIS.obj.VectorLayer(GIS.base.boundary);
     GIS.map.addLayer(GIS.base.boundary.layer);
-	GIS.base.boundary.menu = new GIS.obj.LayerMenu(GIS.base.boundary, 'gis-toolbar-btn-menu-first');	
+	GIS.base.boundary.menu = GIS.obj.LayerMenu(GIS.base.boundary, 'gis-toolbar-btn-menu-first');	
 	GIS.base.boundary.widget = Ext.create('mapfish.widgets.geostat.Boundary', {
         map: GIS.map,
         layer: GIS.base.boundary.layer,
         menu: GIS.base.boundary.menu
     });    
-    GIS.base.boundary.window = new GIS.obj.WidgetWindow(GIS.base.boundary);
+    GIS.base.boundary.window = GIS.obj.WidgetWindow(GIS.base.boundary);
     
-    GIS.base.thematic1.layer = new GIS.obj.VectorLayer(GIS.base.thematic1, {opacity: 0.8});
+    GIS.base.thematic1.layer = GIS.obj.VectorLayer(GIS.base.thematic1, {opacity: 0.8});
     GIS.map.addLayer(GIS.base.thematic1.layer);
-	GIS.base.thematic1.menu = new GIS.obj.LayerMenu(GIS.base.thematic1);	
+	GIS.base.thematic1.menu = GIS.obj.LayerMenu(GIS.base.thematic1);	
 	GIS.base.thematic1.widget = Ext.create('mapfish.widgets.geostat.Thematic1', {
         map: GIS.map,
         layer: GIS.base.thematic1.layer,
         menu: GIS.base.thematic1.menu,
         legendDiv: GIS.base.thematic1.legendDiv
     });
-    GIS.base.thematic1.window = new GIS.obj.WidgetWindow(GIS.base.thematic1);
+    GIS.base.thematic1.window = GIS.obj.WidgetWindow(GIS.base.thematic1);
     
-    GIS.base.thematic2.layer = new GIS.obj.VectorLayer(GIS.base.thematic2, {opacity: 0.8});
+    GIS.base.thematic2.layer = GIS.obj.VectorLayer(GIS.base.thematic2, {opacity: 0.8});
     GIS.map.addLayer(GIS.base.thematic2.layer);
-	GIS.base.thematic2.menu = new GIS.obj.LayerMenu(GIS.base.thematic2);	
+	GIS.base.thematic2.menu = GIS.obj.LayerMenu(GIS.base.thematic2);	
 	GIS.base.thematic2.widget = Ext.create('mapfish.widgets.geostat.Thematic2', {
         map: GIS.map,
         layer: GIS.base.thematic2.layer,
         menu: GIS.base.thematic2.menu,
         legendDiv: GIS.base.thematic2.legendDiv
     });    
-    GIS.base.thematic2.window = new GIS.obj.WidgetWindow(GIS.base.thematic2);
+    GIS.base.thematic2.window = GIS.obj.WidgetWindow(GIS.base.thematic2);
     
-    GIS.base.facility.layer = new GIS.obj.VectorLayer(GIS.base.facility);
+    GIS.base.facility.layer = GIS.obj.VectorLayer(GIS.base.facility);
     GIS.map.addLayer(GIS.base.facility.layer);
-	GIS.base.facility.menu = new GIS.obj.LayerMenu(GIS.base.facility);
+	GIS.base.facility.menu = GIS.obj.LayerMenu(GIS.base.facility);
 	GIS.base.facility.widget = Ext.create('mapfish.widgets.geostat.Facility', {
         map: GIS.map,
         layer: GIS.base.facility.layer,
         menu: GIS.base.facility.menu,
         legendDiv: GIS.base.facility.legendDiv
     });
-    GIS.base.facility.window = new GIS.obj.WidgetWindow(GIS.base.facility);
+    GIS.base.facility.window = GIS.obj.WidgetWindow(GIS.base.facility);
     
 	// User interface
 	
@@ -3261,7 +3336,7 @@ Ext.onReady( function() {
                     {
                         title: 'Layer overview and visibility %', //i18n
                         bodyStyle: 'padding: 6px',
-                        items: new GIS.obj.LayersPanel(),
+                        items: GIS.obj.LayersPanel(),
                         collapsible: true,
                         animCollapse: false
                     },
@@ -3342,12 +3417,12 @@ Ext.onReady( function() {
 						},
 						{
 							iconCls: 'gis-btn-icon-' + GIS.base.thematic2.id,
-							menu: new GIS.obj.LayerMenu(GIS.base.thematic2),
+							menu: GIS.obj.LayerMenu(GIS.base.thematic2),
 							width: 26
 						},
 						{
 							iconCls: 'gis-btn-icon-' + GIS.base.facility.id,
-							menu: new GIS.obj.LayerMenu(GIS.base.facility),
+							menu: GIS.obj.LayerMenu(GIS.base.facility),
 							width: 26
 						},
 						{
@@ -3358,7 +3433,7 @@ Ext.onReady( function() {
 									GIS.cmp.mapWindow.destroy();
 								}
 								
-								GIS.cmp.mapWindow = new GIS.obj.MapWindow();
+								GIS.cmp.mapWindow = GIS.obj.MapWindow();
 								GIS.cmp.mapWindow.show();
 							}
 						},
@@ -3370,7 +3445,7 @@ Ext.onReady( function() {
 									GIS.cmp.legendSetWindow.destroy();
 								}
 								
-								GIS.cmp.legendSetWindow = new GIS.obj.LegendSetWindow();
+								GIS.cmp.legendSetWindow = GIS.obj.LegendSetWindow();
 								GIS.cmp.legendSetWindow.show();
 							}
 						},
@@ -3388,7 +3463,7 @@ Ext.onReady( function() {
 									GIS.cmp.downloadWindow.destroy();
 								}
 								
-								GIS.cmp.downloadWindow = new GIS.obj.DownloadWindow();
+								GIS.cmp.downloadWindow = GIS.obj.DownloadWindow();
 								GIS.cmp.downloadWindow.show();
 							},								
 							xable: function() {
@@ -3414,7 +3489,7 @@ Ext.onReady( function() {
 									GIS.cmp.interpretationWindow.destroy();
 								}
 								
-								GIS.cmp.interpretationWindow = new GIS.obj.InterpretationWindow();
+								GIS.cmp.interpretationWindow = GIS.obj.InterpretationWindow();
 								GIS.cmp.interpretationWindow.show();
 							},
 							listeners: {

@@ -71,6 +71,8 @@ mapfish.GeoStat.Facility = OpenLayers.Class(mapfish.GeoStat, {
         
         var element = document.createElement("div");
         element.style.height = "14px";
+		element.style.overflow = "hidden";
+		element.title = config.where;
         element.innerHTML = config.where;
         this.legendDiv.appendChild(element);
         

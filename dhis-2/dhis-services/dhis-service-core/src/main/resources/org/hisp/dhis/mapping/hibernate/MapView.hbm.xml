@@ -61,6 +61,8 @@
 
     <many-to-one name="organisationUnitGroupSet" class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" 
         column="orgunitgroupsetid" foreign-key="fk_mapview_orgunitgroupsetid" />
+    
+    <property name="areaRadius" />
 
   </class>
 </hibernate-mapping>

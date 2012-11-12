@@ -615,7 +615,7 @@ Ext.define('mapfish.widgets.geostat.Boundary', {
         this.coreComp.applyClassification(options);
         this.classificationApplied = true;
         
-        this.afterLoad();		
+        this.afterLoad();
 	},
 	
     execute: function(view) {
