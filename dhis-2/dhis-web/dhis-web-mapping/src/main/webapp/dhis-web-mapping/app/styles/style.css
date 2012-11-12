@@ -234,9 +234,9 @@ html * {
 		/* Toolbar btn menu */
 		.gis-toolbar-btn-menu { /* Align menu */
 			margin-top: 5px;
-		}		
+		}
 		.gis-toolbar-btn-menu .x-panel-body-default { /* Menu border */
-			border-radius: 3px;
+			border-radius: 2px;
 			border-color: #999;
 		}		
 		

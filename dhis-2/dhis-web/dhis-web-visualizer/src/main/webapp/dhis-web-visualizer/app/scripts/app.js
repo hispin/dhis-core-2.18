@@ -4178,10 +4178,16 @@ Ext.onReady( function() {
                                 DV.exe.execute();
                             }
                         },
+						{
+							xtype: 'tbseparator',
+							height: 18,
+							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 4px',
+						},
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
-                            text: DV.i18n.favorites + '..',
+                            text: DV.i18n.favorites,
+                            menu: {},
                             listeners: {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
@@ -4753,10 +4759,71 @@ Ext.onReady( function() {
                                 }
                             }
                         },
+						{
+							xtype: 'tbseparator',
+							height: 18,
+							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 4px',
+						},
+                        {
+                            xtype: 'button',
+							cls: 'dv-toolbar-btn-2',
+                            text: DV.i18n.download,
+                            menu: {},
+                            execute: function(type) {
+                                var svg = document.getElementsByTagName('svg');
+                                
+                                if (svg.length < 1) {
+									DV.util.notification.error(DV.i18n.et_svg_browser, DV.i18n.em_svg_browser);
+                                    return;
+                                }
+                                
+                                document.getElementById('titleField').value = DV.c.filter.names[0] || 'Example chart';
+                                document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
+                                document.getElementById('typeField').value = type;
+                                
+                                var exportForm = document.getElementById('exportForm');
+                                exportForm.action = '../exportImage.action';
+                                
+                                if (svg[0].parentNode.innerHTML && type) {
+                                    exportForm.submit();
+                                }
+                                else {
+                                    alert(DV.i18n.no_svg_format);
+                                }
+                            },
+                            listeners: {
+                                afterrender: function(b) {
+                                    this.menu = Ext.create('Ext.menu.Menu', {
+										cls: 'dv-menu',
+                                        shadow: false,
+                                        showSeparator: false,
+                                        items: [
+                                            {
+                                                text: DV.i18n.image_png,
+                                                iconCls: 'dv-menu-item-png',
+                                                minWidth: 105,
+                                                handler: function() {
+                                                    b.execute(DV.conf.finals.image.png);
+                                                }
+                                            },
+                                            {
+                                                text: 'PDF',
+                                                iconCls: 'dv-menu-item-pdf',
+                                                minWidth: 105,
+                                                handler: function() {
+                                                    b.execute(DV.conf.finals.image.pdf);
+                                                }
+                                            }
+                                        ]                                            
+                                    });
+                                }
+                            }
+                        },
                         {
 							xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
-							text: DV.i18n.share + '..',
+							text: DV.i18n.share,
+							menu: {},
 							disabled: true,
 							xable: function() {
 								if (DV.c.currentFavorite) {
@@ -4882,60 +4949,6 @@ Ext.onReady( function() {
 								}
                             }
 						},
-                        {
-                            xtype: 'button',
-							cls: 'dv-toolbar-btn-2',
-                            text: DV.i18n.download + '..',
-                            execute: function(type) {
-                                var svg = document.getElementsByTagName('svg');
-                                
-                                if (svg.length < 1) {
-									DV.util.notification.error(DV.i18n.et_svg_browser, DV.i18n.em_svg_browser);
-                                    return;
-                                }
-                                
-                                document.getElementById('titleField').value = DV.c.filter.names[0] || 'Example chart';
-                                document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
-                                document.getElementById('typeField').value = type;
-                                
-                                var exportForm = document.getElementById('exportForm');
-                                exportForm.action = '../exportImage.action';
-                                
-                                if (svg[0].parentNode.innerHTML && type) {
-                                    exportForm.submit();
-                                }
-                                else {
-                                    alert(DV.i18n.no_svg_format);
-                                }
-                            },
-                            listeners: {
-                                afterrender: function(b) {
-                                    this.menu = Ext.create('Ext.menu.Menu', {
-										cls: 'dv-menu',
-                                        shadow: false,
-                                        showSeparator: false,
-                                        items: [
-                                            {
-                                                text: DV.i18n.image_png,
-                                                iconCls: 'dv-menu-item-png',
-                                                minWidth: 105,
-                                                handler: function() {
-                                                    b.execute(DV.conf.finals.image.png);
-                                                }
-                                            },
-                                            {
-                                                text: 'PDF',
-                                                iconCls: 'dv-menu-item-pdf',
-                                                minWidth: 105,
-                                                handler: function() {
-                                                    b.execute(DV.conf.finals.image.pdf);
-                                                }
-                                            }
-                                        ]                                            
-                                    });
-                                }
-                            }
-                        },
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',

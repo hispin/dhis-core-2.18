@@ -269,9 +269,6 @@ body {
     width: 32px;
     height: 32px;
 }
-.x-btn-arrow {
-    background-image: url('../images/arrow.png');
-}
 
 /* Button border */
 .x-btn-default-toolbar-small,
