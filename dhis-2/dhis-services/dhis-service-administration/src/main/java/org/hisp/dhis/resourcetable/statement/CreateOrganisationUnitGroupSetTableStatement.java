@@ -63,6 +63,7 @@ public class CreateOrganisationUnitGroupSetTableStatement
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
             statement += CodecUtils.databaseEncode( groupSet.getName() ) + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR;
+            statement += "ougs_" + groupSet.getUid() + SPACE + "INTEGER" + SEPARATOR;
         }
         
         statement += "PRIMARY KEY ( organisationunitid ) )";

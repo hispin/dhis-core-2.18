@@ -233,7 +233,8 @@ public class DefaultResourceTableService
             {
                 DataElementGroup group = groupSet.getGroup( dataElement );
                 
-                values.add( group != null ? group.getName() : null );    
+                values.add( group != null ? group.getName() : null );
+                values.add( group != null ? String.valueOf( group.getId() ) : null );
             }
             
             batchHandler.addObject( values );
@@ -280,7 +281,8 @@ public class DefaultResourceTableService
             {
                 IndicatorGroup group = groupSet.getGroup( indicator );
                 
-                values.add( group != null ? group.getName() : null );    
+                values.add( group != null ? group.getName() : null );
+                values.add( group != null ? String.valueOf( group.getId() ) : null );
             }
             
             batchHandler.addObject( values );
@@ -330,6 +332,7 @@ public class DefaultResourceTableService
                 OrganisationUnitGroup group = groupSet.getGroup( unit );
                 
                 values.add( group != null ? group.getName() : null );
+                values.add( group != null ? String.valueOf( group.getId() ) : null );
             }
 
             batchHandler.addObject( values );
@@ -373,9 +376,10 @@ public class DefaultResourceTableService
             
             for ( DataElementCategory category : categories )
             {
-                DataElementCategoryOption dimensionOption = category.getCategoryOption( categoryOptionCombo );
+                DataElementCategoryOption categoryOption = category.getCategoryOption( categoryOptionCombo );
                 
-                values.add( dimensionOption != null ? dimensionOption.getName() : null );    
+                values.add( categoryOption != null ? categoryOption.getName() : null );
+                values.add( categoryOption != null ? String.valueOf( categoryOption.getId() ) : null );
             }
             
             batchHandler.addObject( values );
