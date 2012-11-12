@@ -9,8 +9,7 @@
 <input type='hidden' id='orgunitId' name='orgunitId' value='$orgunit.id'>
 <input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='0'>
 <input type='hidden' id='programStageId' name='programStageId' class='stage-object-selected'>
-<input type='hidden' id='isShowEventList' name='isShowEventList'>
-<input type='hidden' id='filter' name='filter' value='false'>
+<input type='hidden' id='listAll' name='listAll' value="true">
 
 <select multiple id='displayInReports' name='displayInReports' class='hidden'></select>
 
@@ -53,7 +52,7 @@
 				</td>
 				<td>
 					<input type="button" class='large-button' id='advancedBtn' value='$i18n.getString( "filter" )' onclick="showFilterForm();" style="width:140px;">
-					<input type="button" class='large-button' id='listBtn' value="$i18n.getString( 'update' )" onclick='setFieldValue("isShowEventList", false);updateEvents();'>
+					<input type="button" class='large-button' id='listBtn' value="$i18n.getString( 'update' )" onclick='updateEvents();'>
 				</td>
 			</tr>
 			<tr id='minimized-advanced-search' class="hidden">
@@ -83,7 +82,7 @@
 						<input type="button" class='large-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value="$i18n.getString('add')" onclick='addAttributeOption()'>
 					</td>
 					<td rowspan='30' valign='bottom' align='right'>
-						<input type="button" class='large-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value="$i18n.getString('clear_all')" onclick='removeAllOption()'>
+						<input type="button" class='large-button' id='clearAllBtn' name='clearAllBtnaddSearchOptionBtn' value="$i18n.getString('clear_all')" onclick='removeAllOption()'>
 					</td>
 				</tr>
 				<tr id='advSearchBox0'>	
