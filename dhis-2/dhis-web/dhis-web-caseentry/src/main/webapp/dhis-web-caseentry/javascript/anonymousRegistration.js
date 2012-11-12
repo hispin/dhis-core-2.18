@@ -5,7 +5,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	hideById('advanced-search');
 	hideById('listDiv');
 	showById('mainLinkLbl');
-	setFieldValue("filter", false);
+	setFieldValue("listAll", true);
 	setFieldValue("startDate", '');
 	setFieldValue("endDate", '');
 	jQuery('#advancedSearchTB [name=searchText]').val('');
@@ -101,7 +101,6 @@ function getDataElements()
 			enableCriteriaDiv();
 			
 			validateSearchEvents( true );
-			setFieldValue('isShowEventList', true);
 		});
 }
 
@@ -137,6 +136,7 @@ function dataElementOnChange( this_ )
 function autocompletedFilterField( idField, searchObjectId )
 {
 	var input = jQuery( "#" +  idField );
+	input.css("width","237px");
 	input.autocomplete({
 		delay: 0,
 		minLength: 0,
@@ -207,7 +207,7 @@ function removeAllAttributeOption()
 function validateSearchEvents( listAll )
 {	
 	var flag = true;
-	if( !listAll )
+	if( listAll=="false" )
 	{
 		if( getFieldValue('startDate')=="" || getFieldValue('endDate')=="" ){
 			showWarningMessage( i18n_specify_a_date );
@@ -237,7 +237,7 @@ function searchEvents( listAll )
 {
 	hideById('dataEntryInfor');
 	hideById('listDiv');
-	setFieldValue('isShowEventList', listAll );
+	setFieldValue('listAll', listAll );
 	
 	var params = '';
 	jQuery( '#displayInReports option' ).each( function( i, item ){
@@ -245,7 +245,7 @@ function searchEvents( listAll )
 		params += '&searchingValues=de_' + input.val() + '_false_';
 	});
 	
-	if(listAll){	
+	if(listAll=='true'){	
 		params += '&startDate=';
 		params += '&endDate=';
 	}
@@ -395,7 +395,7 @@ function backEventList()
 	showById('selectDiv');
 	showById('searchDiv');
 	showById('listDiv');
-	searchEvents( getFieldValue('isShowEventList') );
+	searchEvents( getFieldValue('listAll') );
 }
 
 function showAddEventForm()
@@ -498,17 +498,18 @@ function showFilterForm()
 	showById('advanced-search');
 	hideById('minimized-advanced-search');
 	disable('advancedBtn');
-	setFieldValue('filter', true);
 }
 
 function removeAllOption()
 {
 	enable('advancedBtn');
 	setFieldValue('filter', false);
-	jQuery('#advancedBtn').val(i18n_add_filter);
 	jQuery('#advancedBtn').attr("isShown", false);
 	jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
-		if(i==0){
+		if(i>2){
+			jQuery(this).remove();
+		}
+		else if(i==2){
 			jQuery( this ).find(':input').each( function( idx, item ){
 				var input = jQuery( item );
 				if( input.attr('type') != 'button'){
@@ -516,10 +517,9 @@ function removeAllOption()
 				}
 			});
 		}
-		else{
-			jQuery(this).remove();
-		}
 	});
+	jQuery('#searchObjectId').val("");
+	jQuery('#searchText').val("");
 	hideById('advanced-search');
 	hideById('minimized-advanced-search');
 	searchEvents( false );

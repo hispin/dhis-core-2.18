@@ -14,7 +14,7 @@
 		entryFormContainerOnReady();
 	});
 </script>
-
+$programStageInstance.organisationUnit.name
 <div id='entryFormContainer'>
 
 <input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
