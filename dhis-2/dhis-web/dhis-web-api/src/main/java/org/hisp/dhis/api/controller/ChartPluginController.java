@@ -273,7 +273,7 @@ public class ChartPluginController
                 String[] record = new String[4];
 
                 record[0] = String.valueOf( value.getValue() );
-                record[1] = indicatorService.getIndicator( value.getIndicatorId() ).getDisplayShortName();
+                record[1] = indicatorService.getIndicator( value.getIndicatorId() ).getName();
                 record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
                 record[3] = useGroupSets ?
                     organisationUnitGroupService.getOrganisationUnitGroup( value.getOrganisationUnitGroupId() ).getName() :
@@ -313,7 +313,7 @@ public class ChartPluginController
                 String[] record = new String[4];
 
                 record[0] = String.valueOf( value.getValue() );
-                record[1] = dataElementService.getDataElement( value.getDataElementId() ).getDisplayShortName();
+                record[1] = dataElementService.getDataElement( value.getDataElementId() ).getName();
                 record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
                 record[3] = useGroupSets ?
                     organisationUnitGroupService.getOrganisationUnitGroup( value.getOrganisationUnitGroupId() ).getName() :
@@ -357,7 +357,7 @@ public class ChartPluginController
                 String[] record = new String[4];
                 
                 record[0] = String.valueOf( value.getValue() );
-                record[1] = dataSetService.getDataSet( value.getDataSetId() ).getDisplayShortName();
+                record[1] = dataSetService.getDataSet( value.getDataSetId() ).getName();
                 record[2] = format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) );
                 record[3] = organisationUnitService.getOrganisationUnit( value.getOrganisationUnitId() ).getName();
                 

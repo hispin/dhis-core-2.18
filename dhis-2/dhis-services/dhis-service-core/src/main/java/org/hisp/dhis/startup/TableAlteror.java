@@ -150,8 +150,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendtype TO legendtype" );
         executeSql( "ALTER TABLE mapview RENAME COLUMN maplegendsetid TO legendsetid" );
         executeSql( "ALTER TABLE mapview ALTER COLUMN opacity TYPE double precision" );
-        
-        executeSql( "ALTER TABLE datavalue ALTER COLUMN storedby TYPE character varying(100)" );
+
+        //TODO executeSql( "ALTER TABLE datavalue ALTER COLUMN storedby TYPE character varying(100)" );
 
         executeSql( "ALTER TABLE maplegend DROP CONSTRAINT maplegend_name_key" );
         
