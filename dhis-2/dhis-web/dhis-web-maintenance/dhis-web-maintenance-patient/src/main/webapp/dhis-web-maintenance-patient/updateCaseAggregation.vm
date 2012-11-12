@@ -15,7 +15,7 @@
 <table> 
 	<thead>
       <tr>
-        <th colspan="2">$i18n.getString( "aggregation_query_builder_detail" )</th>
+        <th colspan="2">$i18n.getString( "case_aggregation_query_builder_detail" )</th>
       </tr>
     </thead>
 	
