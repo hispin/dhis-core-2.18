@@ -15,22 +15,47 @@ function showProgramValidationDetails ( programValidationId )
 {
     jQuery.getJSON( 'getProgramValidation.action', { validationId: programValidationId }, function ( json ) {
 		setInnerHTML( 'descriptionField', json.validation.description );
-		setInnerHTML( 'leftSideField', json.validation.leftSide );
-		if( json.validation.rightSide != '1==1')
-		{
-			setInnerHTML( 'leftSideTitle', i18n_left_side );
-			setInnerHTML( 'rightSideField', json.validation.rightSide );
-			showById('rightSideDiv');
-		}
-		else
-		{
-			setInnerHTML( 'leftSideTitle', i18n_condition );
-			hideById('rightSideDiv');
-		}
-		setInnerHTML( 'programField', json.validation.program );
+		
+		var operator = json.validation.operator;
+		setInnerHTML( 'operatorField', i18nalizeOperator( operator ) );
+		
+		setInnerHTML( 'leftSideDescriptionField', json.validation.leftSideDescription );
+		setInnerHTML( 'leftSideExpressionField', json.validation.leftSideExpression );
+		setInnerHTML( 'rightSideDescriptionField', json.validation.rightSideDescription );
+		setInnerHTML( 'rightSideExpressionField', json.validation.rightSideExpression );
 		
 		showDetails();
 	});
+}
+
+function i18nalizeOperator( operator )
+{
+    if ( operator == "equal_to" )
+    {
+        return i18n_equal_to;
+    }
+    else if ( operator == "not_equal_to" )
+    {
+        return i18n_not_equal_to;
+    }
+    else if ( operator == "greater_than" )
+    {
+        return i18n_greater_than;       
+    }
+    else if ( operator == "greater_than_or_equal_to" )
+    {
+        return i18n_greater_than_or_equal_to;
+    }
+    else if ( operator == "less_than" )
+    {
+        return i18n_less_than;
+    }
+    else if ( operator == "less_than_or_equal_to" )
+    {
+        return i18n_less_than_or_equal_to;
+    }
+    
+    return null;
 }
 
 // -----------------------------------------------------------------------------
