@@ -102,3 +102,17 @@ rt.paramgrandparentorganisationunit as grand, rt.paramparentorganisationunit as 
 (select count(*) from reporttable_orgunitgroups where reporttableid=rt.reporttableid) as oug,
 (select count(*) from reporttable_periods where reporttableid=rt.reporttableid) as pe
 from reporttable rt;
+
+-- Insert random org unit codes
+
+create function setrandomcode() returns integer AS $$
+declare ou integer;
+begin
+for ou in select organisationunitid from _orgunitstructure where level=6 loop
+  execute 'update organisationunit set code=(select substring(cast(random() as text),5,6)) where organisationunitid=' || ou;
+end loop;
+return 1;
+end;
+$$ language plpgsql;
+
+select setrandomcode();
