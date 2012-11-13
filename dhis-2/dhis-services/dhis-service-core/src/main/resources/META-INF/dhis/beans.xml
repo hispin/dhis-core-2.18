@@ -563,6 +563,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <value>cambodia</value>
         <value>china</value>
         <value>colombia</value>
+        <value>congo_brazzaville</value>
+        <value>congo_kinshasa</value>
         <value>ecuador</value>
         <value>ethiopia</value>
         <value>gambia</value>
