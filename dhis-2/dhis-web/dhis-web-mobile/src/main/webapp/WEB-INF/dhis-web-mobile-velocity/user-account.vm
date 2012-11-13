@@ -21,9 +21,9 @@
                 item.selected = item.value == data.gender;
             });
 
-            $('#genderInput').selectmenu('refresh')
+            $('#genderInput').selectmenu('refresh');
 
-            // $('#birthdayInput').val(data.birthday);
+            $('#birthdayInput').val(data.birthday);
             $('#nationalityInput').val(data.nationality);
             $('#employerInput').val(data.employer);
             $('#educationInput').val(data.education);
