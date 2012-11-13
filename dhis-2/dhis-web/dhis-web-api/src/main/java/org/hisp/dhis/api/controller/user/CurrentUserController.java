@@ -57,6 +57,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -71,6 +72,8 @@ public class CurrentUserController
     public static final String RESOURCE_PATH = "/currentUser";
 
     private static final int MAX_OBJECTS = 50;
+
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -169,7 +172,7 @@ public class CurrentUserController
         userAccount.setIntroduction( currentUser.getIntroduction() );
         userAccount.setJobTitle( currentUser.getJobTitle() );
         userAccount.setGender( currentUser.getGender() );
-        // currentUser.setBirthday( currentUser.getBirthday() );
+        userAccount.setBirthday( simpleDateFormat.format( currentUser.getBirthday() ) );
         userAccount.setNationality( currentUser.getNationality() );
         userAccount.setEmployer( currentUser.getEmployer() );
         userAccount.setEducation( currentUser.getEducation() );
@@ -201,7 +204,7 @@ public class CurrentUserController
         currentUser.setIntroduction( userAccount.getIntroduction() );
         currentUser.setJobTitle( userAccount.getJobTitle() );
         currentUser.setGender( userAccount.getGender() );
-        // currentUser.setBirthday( userAccount.getBirthday() );
+        currentUser.setBirthday( simpleDateFormat.parse( userAccount.getBirthday() ) );
         currentUser.setNationality( userAccount.getNationality() );
         currentUser.setEmployer( userAccount.getEmployer() );
         currentUser.setEducation( userAccount.getEducation() );
