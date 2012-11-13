@@ -197,7 +197,7 @@ Ext.onReady( function() {
 		};
 		
 		GIS.init.security = {
-			isAdmin: false//init.security.isAdmin
+			isAdmin: init.security.isAdmin
 		};
 		
 		GIS.init.contextPath = init.contextPath;
