@@ -124,37 +124,31 @@ public class DefaultReportTableService
     // ReportTableService implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public Grid getReportTableGrid( String uid, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
     {
         ReportTable reportTable = getReportTable( uid );
         
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
-
-        Integer organisationUnitId = organisationUnit != null ? organisationUnit.getId() : null;
-        
-        return getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
+        return getReportTableGrid( reportTable, format, reportingPeriod, organisationUnitUid, false );
     }
 
-    public Grid getReportTableGrid( int id, I18nFormat format, Date reportingPeriod, Integer organisationUnitId )
+    @Override
+    public Grid getReportTableGrid( int reportTableId, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
     {
-        ReportTable reportTable = getReportTable( id );
-
-        reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
-
-        return getGrid( reportTable, false );
+        ReportTable reportTable = getReportTable( reportTableId );
+        
+        return getReportTableGrid( reportTable, format, reportingPeriod, organisationUnitUid, false );
     }
-
+    
+    @Override
     public Grid getReportTableGrid( ReportTable reportTable, I18nFormat format, Date reportingPeriod, String organisationUnitUid, boolean minimal )
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
-
-        Integer organisationUnitId = organisationUnit != null ? organisationUnit.getId() : null;
-        
-        reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
+        reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitUid, format );
 
         return getGrid( reportTable, minimal );
     }
 
+    @Override
     public ReportTable getReportTable( String uid, String mode )
     {
         if ( mode.equals( MODE_REPORT_TABLE ) )
@@ -256,7 +250,7 @@ public class DefaultReportTableService
      * @return a report table.
      */
     private ReportTable initDynamicMetaObjects( ReportTable reportTable, Date reportingPeriod,
-                                                Integer organisationUnitId, I18nFormat format )
+                                                String organisationUnitUid, I18nFormat format )
     {
         // ---------------------------------------------------------------------
         // Reporting period report parameter / current reporting period
@@ -289,7 +283,7 @@ public class DefaultReportTableService
         if ( reportTable.getReportParams() != null &&
             reportTable.getReportParams().isParamGrandParentOrganisationUnit() )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
             organisationUnit.setCurrentParent( true );
             reportTable.getRelativeUnits().addAll(
                 new ArrayList<OrganisationUnit>( organisationUnit.getGrandChildren() ) );
@@ -306,7 +300,7 @@ public class DefaultReportTableService
         if ( reportTable.getReportParams() != null && 
             reportTable.getReportParams().isParamParentOrganisationUnit() )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
             organisationUnit.setCurrentParent( true );
             reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
             reportTable.getRelativeUnits().add( organisationUnit );
@@ -322,7 +316,7 @@ public class DefaultReportTableService
         if ( reportTable.getReportParams() != null && 
             reportTable.getReportParams().isParamOrganisationUnit() )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
             reportTable.getRelativeUnits().add( organisationUnit );
             reportTable.setParentOrganisationUnit( organisationUnit );
 
