@@ -13,10 +13,6 @@
 
 <h3>$i18n.getString( "generate_export_report" ) #openHelp( "excelReportingExportReport" )</h3>
 
-<div id="showButtonDiv" style="display:none">
-	<input type="button" onclick="showExportDiv();" value="$i18n.getString( 'show_export_params' )"/>
-</div>
-
 <div id="exportReportDiv" class="inputCriteria" style="width:640px;height:300px">
 <table>	
 	<tr>
@@ -55,7 +51,8 @@
 	</tr>
 	<tr>
 		<td>
-			<select type="text" id="exportReport" name="exportReport" style="width:380px" size="8" onchange="reportSelected()"></select>
+			<select type="text" id="exportReport" name="exportReport" style="width:380px" size="8" onchange="reportSelected()"></select><br/>
+			<span id="elementSelect_loader" style="display:none;color:red" >$i18n.getString( "loading" )&nbsp;&nbsp;<img src="../images/ajax-loader-bar.gif" /></span>
 		</td>
 		<td id="periodCol">
 			<select type="text" id="selectedPeriodId" name="selectedPeriodId" style="width:220px" size="6" onchange="getRelativePeriods( this.value )"></select>
@@ -89,9 +86,9 @@
 <hr/>
 
 <p>
+	<input type="button" id="showButtonDiv" onclick="showExportDiv();" value="$i18n.getString( 'show_export_params' )" style="display:none"/>
 	<input type="button" id="previewButton" value='$i18n.getString( "preview_report" )' onclick="validatePreviewReport();" style="width:150px"/>
 	<input type="button" id="generateExportReport" value='$i18n.getString( "generate_export_report" )' onclick="validateGenerateReport();" style="width:150px"/>
-	<input type="button" id="printExcelReportButton" value='$i18n.getString("print")' onclick='printExportReport()' style="width:150px"/>
 </p>
 
 <div id="previewDiv"></div>

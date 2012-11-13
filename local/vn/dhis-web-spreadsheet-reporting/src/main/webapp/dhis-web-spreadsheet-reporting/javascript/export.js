@@ -33,6 +33,8 @@ function getExportReportsByGroup( selectedOrgUnitName ) {
 
 		if ( groupId )
 		{
+			showById( "elementSelect_loader" );
+		
 			jQuery.postJSON( 'getExportReportsByGroup.action',
 			{
 				group: groupId
@@ -44,6 +46,8 @@ function getExportReportsByGroup( selectedOrgUnitName ) {
 					addOptionById( 'exportReport', item.id + '_' + item.periodType + '_' + item.reportType, item.name );
 				});
 
+				hideById( "elementSelect_loader" );
+				
 				currentPeriodOffset = 0;
 
 				reportSelected();
