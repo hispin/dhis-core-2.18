@@ -191,9 +191,6 @@ Ext.define('mapfish.widgets.geostat.Facility', {
 							value = cb.getValue();
 							
 						this.config.extended.updateLegend = true;
-						
-						store.proxy.url = GIS.conf.url.path_gis + 'getOrganisationUnitGroupsByGroupSet.action?id=' + value;
-						store.load();
 					}
                 }
             }

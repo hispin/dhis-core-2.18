@@ -789,6 +789,7 @@ Ext.onReady( function() {
 		proxy: {
 			type: 'ajax',
 			url: '',
+			noCache: false,
 			reader: {
 				type: 'json',
 				root: 'organisationUnitGroups'
