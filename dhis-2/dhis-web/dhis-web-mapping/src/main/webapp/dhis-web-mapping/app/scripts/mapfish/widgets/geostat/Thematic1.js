@@ -386,7 +386,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
                 select: {
                     scope: this,
                     fn: function(cb) {
-                        this.cmp.indicator.clearValue();
+                        this.cmp.dataElement.clearValue();
                         
                         var store = this.cmp.dataElement.store;
                         store.proxy.url = GIS.conf.url.path_api +  'dataElementGroups/' + cb.getValue() + '.json?links=false&paging=false';
@@ -1319,7 +1319,7 @@ Ext.define('mapfish.widgets.geostat.Thematic1', {
 		this.cmp.colorHigh.reset();
 		this.cmp.radiusLow.reset();
 		this.cmp.radiusHigh.reset();
-		this.cmp.level.clearValue();		
+		this.cmp.level.clearValue();
 		this.cmp.parent.reset();
 		
 		// Layer options
