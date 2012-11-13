@@ -117,11 +117,11 @@ function validateSingleProgramEnrollment( programId, patientId )
 				addData( programId, patientId );
 			}
 			else if ( type == 'error' ){
-				setMessage( i18n_program_enrollment_failed + ':' + '\n' + message );
+				showWarningMessage( i18n_program_enrollment_failed + ':' + '\n' + message );
 				removePatientInSingleProgram(patientId);
 			}
 			else if ( type == 'input' ){
-				setMessage( json.message );
+				showWarningMessage( json.message );
 				removePatientInSingleProgram(patientId);
 			}
 			jQuery('#loaderDiv').hide();
@@ -298,7 +298,7 @@ function validateAllowEnrollment( patientId, programId  )
 				showSelectedDataRecoding(patientId, programId );
 			}
 			else if ( type == 'input' ){
-				setMessage( json.message );
+				showWarningMessage( json.message );
 			}
 		});
 }
