@@ -1857,8 +1857,9 @@ Ext.onReady( function() {
 		
 		addButton = Ext.create('Ext.button.Button', {
 			text: 'Add new', //i18n
+			width: 67,
 			height: 26,
-			style: 'border-radius: 1px; margin-right: 7px',
+			style: 'border-radius: 1px;',
 			menu: {},
 			handler: function() {
 				nameWindow = new NameWindow(null, 'create');
@@ -1869,7 +1870,7 @@ Ext.onReady( function() {
 		searchTextfield = Ext.create('Ext.form.field.Text', {
 			width: 340,
 			height: 26,
-			fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb',
+			fieldStyle: 'padding-right: 0; padding-left: 6px; border-radius: 1px; border-color: #bbb',
 			emptyText: 'Search for favorites', //i18n
 			enableKeyEvents: true,
 			currentValue: '',
@@ -1927,7 +1928,7 @@ Ext.onReady( function() {
 				{
 					dataIndex: 'name',
 					sortable: false,
-					width: 338,
+					width: 334,
 					renderer: function(value, metaData, record) {
 						var fn = function() {
 							var el = Ext.get(record.data.id);
@@ -1947,7 +1948,7 @@ Ext.onReady( function() {
 				{
 					xtype: 'actioncolumn',
 					sortable: false,
-					width: 76,
+					width: 80,
 					items: [
 						{
 							iconCls: 'gis-grid-row-icon-edit',
@@ -2196,7 +2197,8 @@ Ext.onReady( function() {
 						addButton,
 						{
 							height: 24,
-							style: 'width: 1px; margin-right: 7px; margin-top: 1px',
+							width: 1,
+							style: 'width: 1px; margin-left: 7px; margin-right: 7px; margin-top: 1px',
 							bodyStyle: 'border-left: 1px solid #aaa'
 						},
 						searchTextfield
@@ -2391,12 +2393,12 @@ Ext.onReady( function() {
 					{
 						dataIndex: 'name',
 						sortable: false,
-						width: 364
+						width: 363
 					},
 					{
 						xtype: 'actioncolumn',
 						sortable: false,
-						width: 36,
+						width: 40,
 						items: [
 							{
 								iconCls: 'gis-grid-row-icon-edit',
@@ -2428,7 +2430,7 @@ Ext.onReady( function() {
 					},
 					{
 						sortable: false,
-						width: 20
+						width: 17
 					}
 				],
 				store: legendSetStore,
@@ -2612,7 +2614,7 @@ Ext.onReady( function() {
 					{
 						dataIndex: 'name',
 						sortable: false,
-						width: 247
+						width: 250
 					},
 					{
 						sortable: false,
@@ -2650,7 +2652,7 @@ Ext.onReady( function() {
 					},
 					{
 						sortable: false,
-						width: 20
+						width: 17
 					}
 				],
 				store: tmpLegendStore,
