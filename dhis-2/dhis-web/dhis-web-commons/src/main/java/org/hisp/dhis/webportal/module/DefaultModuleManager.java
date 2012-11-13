@@ -242,6 +242,8 @@ public class DefaultModuleManager
         }
 
         Collections.sort( menuModules, moduleComparator );
+        Collections.sort( maintenanceMenuModules, moduleComparator );
+        Collections.sort( serviceMenuModules, moduleComparator );
 
         modulesDetected = true;
     }
