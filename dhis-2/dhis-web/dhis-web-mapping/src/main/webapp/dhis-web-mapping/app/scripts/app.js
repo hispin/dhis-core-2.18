@@ -1870,7 +1870,7 @@ Ext.onReady( function() {
 			width: 340,
 			height: 26,
 			fieldStyle: 'padding-left: 6px; border-radius: 1px; border-color: #bbb',
-			emptyText: 'Search for favorites..', //i18n
+			emptyText: 'Search for favorites', //i18n
 			enableKeyEvents: true,
 			currentValue: '',
 			listeners: {
@@ -2971,7 +2971,7 @@ Ext.onReady( function() {
 			height: 26,
 			width: 230,
 			fieldStyle: 'padding-left: 5px',
-			emptyText: 'Enter map title...' //i18n
+			emptyText: 'Enter map title' //i18n
 		});
 		
 		button = Ext.create('Ext.button.Button', {
@@ -3028,7 +3028,7 @@ Ext.onReady( function() {
 			cls: 'gis-textarea',
 			height: 130,
 			fieldStyle: 'padding-left: 4px; padding-top: 3px',
-			emptyText: 'Write your interpretation...' //i18n
+			emptyText: 'Write your interpretation' //i18n
 		});
 		
 		panel = Ext.create('Ext.panel.Panel', {
