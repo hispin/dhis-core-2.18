@@ -14,6 +14,11 @@ htmlStyle.push( ".ui-preview-normal{ font-weight: bold; color: blue }" );
 htmlStyle.push( ".ui-widget-content { border: 1px solid #a6c9e2; background: #fcfdfd url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }" );
 htmlStyle.push( "</style>" );
 
+htmlPrintDownloadFunc = [ "<div align='right'>" ];
+htmlPrintDownloadFunc.push(	"<a href='javascript:printExportReport();' title='Print'>" );
+htmlPrintDownloadFunc.push( "<img src='../images/printer.png'/></a>&nbsp;&nbsp;" );
+htmlPrintDownloadFunc.push( "<a href='downloadFile.action' title='Download'><img src='images/download.png'/></a></div>" );
+
 // ----------------------------------------------------------------------
 // Methods
 // ----------------------------------------------------------------------
@@ -105,7 +110,7 @@ function previewExportReportReceived( parentElement )
 	var _cols 		= "";
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
 	var _sHTML		= [];
-	var tabsHTML 	= ['<div id="tabs"><ul>'];
+	var tabsHTML 	= [ htmlPrintDownloadFunc.join('') + '<div id="tabs"><ul>' ];
 
 	for (var s = 0 ; s < _sheets.length ; s ++)
 	{
@@ -187,6 +192,7 @@ function previewExportReportReceived( parentElement )
 	}
 
 	tabsHTML.push( '</ul>', _sHTML.join(''), '</div>' );
+	tabsHTML.push( htmlPrintDownloadFunc.join('') );
 
 	jQuery( '#previewDiv' ).html( tabsHTML.join('') );
 	jQuery( '#tabs' ).tabs({ collapsible : true });
