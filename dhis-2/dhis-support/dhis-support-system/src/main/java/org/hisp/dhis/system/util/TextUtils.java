@@ -1,9 +1,5 @@
 package org.hisp.dhis.system.util;
 
-import java.util.Collection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -31,6 +27,10 @@ import java.util.regex.Pattern;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Lars Helge Overland
  */
@@ -38,7 +38,7 @@ public class TextUtils
 {
     public static final TextUtils INSTANCE = new TextUtils();
     
-    private static final Pattern LINK_PATTERN = Pattern.compile( "((http://|https://|www\\.).+?)($| )" );
+    private static final Pattern LINK_PATTERN = Pattern.compile( "((http://|https://|www\\.).+?)($|\\n|\\r|\\r\\n| )" );
     
     /**
      * Performs the htmlNewline(String) and htmlLinks(String) methods against
@@ -49,28 +49,11 @@ public class TextUtils
      */
     public static String htmlify( String text )
     {
-        text = htmlNewline( text );
         text = htmlLinks( text );
+        text = htmlNewline( text );
         return text;
     }
-    
-    /**
-     * Replaces common newline characters like \n, \r, \r\n to the HTML line
-     * break tag <br>.
-     * 
-     * @param text the text to substitute.
-     * @return the substituted text.
-     */
-    public static String htmlNewline( String text )
-    {
-        if ( text == null || text.trim().isEmpty() )
-        {
-            return null;
-        }
         
-        return text.replaceAll( "(\n|\r|\r\n)", "<br>" );
-    }
-    
     /**
      * Substitutes links in the given text with valid HTML mark-up. For instance, 
      * http://dhis2.org is replaced with <a href="http://dhis2.org">http://dhis2.org</a>,
@@ -103,6 +86,23 @@ public class TextUtils
         }
         
         return matcher.appendTail( buffer ).toString();
+    }
+
+    /**
+     * Replaces common newline characters like \n, \r, \r\n to the HTML line
+     * break tag <br>.
+     * 
+     * @param text the text to substitute.
+     * @return the substituted text.
+     */
+    public static String htmlNewline( String text )
+    {
+        if ( text == null || text.trim().isEmpty() )
+        {
+            return null;
+        }
+        
+        return text.replaceAll( "(\n|\r|\r\n)", "<br>" );
     }
     
     /**
