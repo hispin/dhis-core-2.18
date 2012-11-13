@@ -45,7 +45,8 @@ public interface SystemSettingManager
     final String ID = SystemSettingManager.class.getName();
     
     final String KEY_APPLICATION_TITLE = "applicationTitle";
-    final String KEY_APPLICATION_INTRO = "applicationIntro";
+    final String KEY_APPLICATION_INTRO = "keyApplicationIntro";
+    final String KEY_APPLICATION_NOTIFICATION = "keyApplicationNotification";
     final String KEY_FLAG = "keyFlag";
     final String KEY_FLAG_IMAGE = "keyFlagImage";
     final String KEY_START_MODULE = "startModule";

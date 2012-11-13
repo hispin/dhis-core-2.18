@@ -2,9 +2,10 @@
 	jQuery(document).ready(function() {
 		jQuery("input[type=button]").click(function() {
 			jQuery.postUTF8( 'setSystemAppearanceSettings.action', {
-				applicationTitle: getFieldValue( 'applicationTitle' ),
+                applicationTitle: getFieldValue( 'applicationTitle' ),
                 applicationIntro: getFieldValue( 'applicationIntro' ),
-				currentStyle: getFieldValue( 'currentStyle' ),
+                applicationNotification: getFieldValue( 'applicationNotification' ),
+                currentStyle: getFieldValue( 'currentStyle' ),
 				flag: getFieldValue( 'flag' ),
 				startModule: getFieldValue( 'startModule' )
 			}, function( json ) {
@@ -24,7 +25,11 @@
 
 <div class="settingLabel">$i18n.getString( "application_introduction" )</div>
 
-<div class="setting"><input type="text" id="applicationIntro" name="applicationIntro" maxlength="80" value="$!{applicationIntro}"/></div>
+<div class="setting"><input type="text" id="applicationIntro" name="applicationIntro" maxlength="80" value="$!{keyApplicationIntro}"/></div>
+
+<div class="settingLabel">$i18n.getString( "application_notification" )</div>
+
+<div class="setting"><textarea id="applicationNotification" name="applicationNotification">$!{keyApplicationNotification}"</textarea></div>
 
 <div class="settingLabel">$i18n.getString( "style" )</div>
 
