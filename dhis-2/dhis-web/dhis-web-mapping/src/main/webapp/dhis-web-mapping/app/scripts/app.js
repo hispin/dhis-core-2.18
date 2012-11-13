@@ -1927,7 +1927,7 @@ Ext.onReady( function() {
 				{
 					dataIndex: 'name',
 					sortable: false,
-					width: 335,
+					width: 338,
 					renderer: function(value, metaData, record) {
 						var fn = function() {
 							var el = Ext.get(record.data.id);
@@ -1947,7 +1947,7 @@ Ext.onReady( function() {
 				{
 					xtype: 'actioncolumn',
 					sortable: false,
-					width: 85,
+					width: 76,
 					items: [
 						{
 							iconCls: 'gis-grid-row-icon-edit',
@@ -2085,6 +2085,10 @@ Ext.onReady( function() {
 							metaData.tdCls = 'gis-grid-row-icon-disabled';
 						}
 					}
+				},
+				{
+					sortable: false,
+					width: 6
 				}
 			],
 			store: GIS.store.maps,
@@ -2387,12 +2391,12 @@ Ext.onReady( function() {
 					{
 						dataIndex: 'name',
 						sortable: false,
-						width: 355
+						width: 364
 					},
 					{
 						xtype: 'actioncolumn',
 						sortable: false,
-						width: 45,
+						width: 36,
 						items: [
 							{
 								iconCls: 'gis-grid-row-icon-edit',
