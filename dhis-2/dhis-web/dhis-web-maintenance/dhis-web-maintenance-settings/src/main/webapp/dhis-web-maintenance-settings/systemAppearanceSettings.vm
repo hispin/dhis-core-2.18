@@ -29,7 +29,7 @@
 
 <div class="settingLabel">$i18n.getString( "application_notification" )</div>
 
-<div class="setting"><textarea id="applicationNotification" name="applicationNotification">$!{keyApplicationNotification}"</textarea></div>
+<div class="setting"><textarea id="applicationNotification" name="applicationNotification">$!{keyApplicationNotification}</textarea></div>
 
 <div class="settingLabel">$i18n.getString( "style" )</div>
 
