@@ -520,6 +520,10 @@ html * {
     cursor: pointer;
     cursor: hand;
 }
+label.x-form-cb-label {
+    cursor: pointer;
+    cursor: hand;
+}
 
 /* NumberField */
 
