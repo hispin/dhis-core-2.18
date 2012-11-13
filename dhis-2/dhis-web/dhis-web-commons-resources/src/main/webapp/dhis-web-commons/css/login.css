@@ -104,15 +104,13 @@ input[type=text],input[type=password]
   border-radius: 2px;
 }
 
-#footerArea
+#notificationArea
 {
-  position: absolute;
-  font-size: 13px;
-  bottom: 20px;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  text-align: center;
+  background-color: #D0E6FD;
+  color: #1D5288;
+  margin: 40px 0 0 40px;
+  padding: 15px;
+  border-radius: 3px;
 }
 
 .greenButtonLink

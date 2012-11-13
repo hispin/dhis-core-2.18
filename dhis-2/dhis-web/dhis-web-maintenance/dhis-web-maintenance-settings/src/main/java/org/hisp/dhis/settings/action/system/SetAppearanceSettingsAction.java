@@ -29,6 +29,7 @@ package org.hisp.dhis.settings.action.system;
 
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_TITLE;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_INTRO;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_NOTIFICATION;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
 
@@ -80,6 +81,13 @@ public class SetAppearanceSettingsAction
     public void setApplicationIntro( String applicationIntro )
     {
         this.applicationIntro = applicationIntro;
+    }
+    
+    private String applicationNotification;
+
+    public void setApplicationNotification( String applicationNotification )
+    {
+        this.applicationNotification = applicationNotification;
     }
 
     private String flag;
@@ -137,6 +145,7 @@ public class SetAppearanceSettingsAction
 
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_INTRO, applicationIntro );
+        systemSettingManager.saveSystemSetting( KEY_APPLICATION_NOTIFICATION, applicationNotification );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
         styleManager.setSystemStyle( currentStyle );

@@ -27,8 +27,8 @@
         #if ( $applicationTitle )
             <span id="titleArea">$encoder.htmlEncode( $applicationTitle )</span>
         #end        
-        #if ( $applicationIntro )
-            <span id="introArea">$encoder.htmlEncode( $applicationIntro )</span>
+        #if ( $keyApplicationIntro )
+            <span id="introArea">$encoder.htmlEncode( $keyApplicationIntro )</span>
         #end
         </div>
         #if ( $keyConfig.selfRegistrationAllowed() )
@@ -73,7 +73,10 @@
             </form>
             #if( $failed == true )
             <span id="loginMessage">Wrong username or password</span>
-            #end            
+            #end
+            #if ( $keyApplicationNotification )
+            <div id="notificationArea">$encoder.htmlEncode( $keyApplicationNotification )</div>
+            #end
         </div>
     </body>
 </html>
