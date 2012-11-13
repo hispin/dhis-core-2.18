@@ -27,8 +27,11 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.util.ContextUtils.clearIfNotModified;
+
 import java.util.Set;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -87,6 +90,8 @@ public class GetOrganisationUnitGroupsByGroupSetAction
         if ( groupSet != null )
         {
             object = groupSet.getOrganisationUnitGroups();
+
+            boolean modified = !clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), object );
         }
         
         return SUCCESS;

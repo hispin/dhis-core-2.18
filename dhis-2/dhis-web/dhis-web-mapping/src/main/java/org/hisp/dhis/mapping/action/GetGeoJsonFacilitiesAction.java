@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -128,13 +129,6 @@ public class GetGeoJsonFacilitiesAction
             groups.addAll( groupSet.getOrganisationUnitGroups() );
         }
         
-        boolean modified = !clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), groups );
-        
-        if ( !modified )
-        {
-            return SUCCESS;
-        }
-
         // ---------------------------------------------------------------------
         // Retrieve list of organisation units and populate group names
         // ---------------------------------------------------------------------
@@ -163,6 +157,21 @@ public class GetGeoJsonFacilitiesAction
 
         FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidCoordinatesFilter() );
 
+        // ---------------------------------------------------------------------
+        // Check both org unit groups and org units for caching purposes as both 
+        // membership and coordinates may have been modified
+        // ---------------------------------------------------------------------
+
+        Collection<IdentifiableObject> cachingCollection = new ArrayList<IdentifiableObject>( groups );
+        cachingCollection.addAll( organisationUnits );
+        
+        boolean modified = !clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), cachingCollection );
+        
+        if ( !modified )
+        {
+            return SUCCESS;
+        }
+        
         object = new ArrayList<OrganisationUnit>();
 
         for ( OrganisationUnit unit : organisationUnits )
