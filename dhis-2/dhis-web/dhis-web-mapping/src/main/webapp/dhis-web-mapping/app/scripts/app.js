@@ -197,7 +197,7 @@ Ext.onReady( function() {
 		};
 		
 		GIS.init.security = {
-			isAdmin: init.security.isAdmin
+			isAdmin: false//init.security.isAdmin
 		};
 		
 		GIS.init.contextPath = init.contextPath;
@@ -1951,8 +1951,13 @@ Ext.onReady( function() {
 					items: [
 						{
 							iconCls: 'gis-grid-row-icon-edit',
-							getClass: function() {
-								return 'tooltip-map-edit';
+							getClass: function(value, metaData, record) {
+								var system = !record.data.user,
+									isAdmin = GIS.init.security.isAdmin;
+								
+								if (isAdmin || (!isAdmin && !system)) {
+									return 'tooltip-map-edit';
+								}
 							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex),
@@ -1969,8 +1974,13 @@ Ext.onReady( function() {
 						},
 						{
 							iconCls: 'gis-grid-row-icon-overwrite',
-							getClass: function() {
-								return 'tooltip-map-overwrite';
+							getClass: function(value, metaData, record) {
+								var system = !record.data.user,
+									isAdmin = GIS.init.security.isAdmin;
+								
+								if (isAdmin || (!isAdmin && !system)) {
+									return 'tooltip-map-overwrite';
+								}
 							},
 							handler: function(grid, rowIndex, colIndex, col, event) {
 								var record = this.up('grid').store.getAt(rowIndex),
@@ -2072,7 +2082,7 @@ Ext.onReady( function() {
 					],
 					renderer: function(value, metaData, record) {
 						if (!GIS.init.security.isAdmin && !record.data.user) {
-							metaData.tdCls += ' gis-grid-row-icon-disabled';
+							metaData.tdCls = 'gis-grid-row-icon-disabled';
 						}
 					}
 				}
