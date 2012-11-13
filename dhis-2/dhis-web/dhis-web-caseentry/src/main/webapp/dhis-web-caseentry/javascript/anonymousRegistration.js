@@ -3,6 +3,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 {
 	hideById('dataEntryInfor');
 	hideById('advanced-search');
+	hideById('minimized-advanced-search');
 	hideById('listDiv');
 	showById('mainLinkLbl');
 	setFieldValue("listAll", true);
@@ -37,7 +38,7 @@ function disableCriteriaDiv()
 {
 	disable('listBtn');
 	disable('addBtn');
-	disable('advancedBtn');
+	disable('filterBtn');
 	disable('removeBtn');
 	jQuery('#criteriaDiv :input').each( function( idx, item ){
 		disable(this.id);
@@ -48,7 +49,7 @@ function enableCriteriaDiv()
 {
 	enable('listBtn');
 	enable('addBtn');
-	enable('advancedBtn');
+	enable('filterBtn');
 	enable('removeBtn');
 	jQuery('#criteriaDiv :input').each( function( idx, item ){
 		enable(this.id);
@@ -89,17 +90,15 @@ function getDataElements()
 			clearListById('searchObjectId');
 			clearListById('displayInReports');
 			
-			jQuery( '#searchObjectId').append( '<option value="" >[' + i18n_please_select + ']</option>' );
+			jQuery( '[name=searchObjectId]').append( '<option value="" >[' + i18n_please_select + ']</option>' );
 			for ( i in json.programStageDataElements ) {
-				jQuery( '[id=searchObjectId]').append( '<option value="' + json.programStageDataElements[i].id + '" type="' + json.programStageDataElements[i].type +'">' + json.programStageDataElements[i].name + '</option>' );
-				
+				jQuery( '[name=searchObjectId]').append( '<option value="' + json.programStageDataElements[i].id + '" type="' + json.programStageDataElements[i].type +'">' + json.programStageDataElements[i].name + '</option>' );
 				if( json.programStageDataElements[i].displayInReports=='true' ){
 					jQuery( '#displayInReports').append( '<option value="' + json.programStageDataElements[i].id + '"></option>');
 				}
 			}
 			
 			enableCriteriaDiv();
-			
 			validateSearchEvents( true );
 		});
 }
@@ -206,24 +205,30 @@ function removeAllAttributeOption()
 
 function validateSearchEvents( listAll )
 {	
+	listAll = eval(listAll);
+	setFieldValue('listAll', listAll );
+	
 	var flag = true;
-	if( listAll=="false" )
+	if( !listAll )
 	{
 		if( getFieldValue('startDate')=="" || getFieldValue('endDate')=="" ){
 			showWarningMessage( i18n_specify_a_date );
 			flag = false;
 		}
 		
-		if(flag && getFieldValue('filter') == "true" )
+		if(flag && !listAll && jQuery('#filterBtn').attr("disabled")=="disabled" )
 		{
-			jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
-				jQuery( this ).find(':input').each( function( idx, item ){
-					var input = jQuery( item );
-					if( input.attr('type') != 'button' && idx==0 && input.val()=='' ){
-						showWarningMessage( i18n_specify_data_element );
-						flag = false;
-					}
-				})
+			jQuery( '#advancedSearchTB tr' ).each( function( index, row ){
+				if( index>1 )
+				{
+					jQuery( row ).find(':input').each( function( idx, item ){
+						var input = jQuery( item );
+						if( input.attr('type') != 'button' && idx==0 && input.val()=='' ){
+							showWarningMessage( i18n_specify_data_element );
+							flag = false;
+						}
+					})
+				}
 			});
 		}
 	}
@@ -237,7 +242,6 @@ function searchEvents( listAll )
 {
 	hideById('dataEntryInfor');
 	hideById('listDiv');
-	setFieldValue('listAll', listAll );
 	
 	var params = '';
 	jQuery( '#displayInReports option' ).each( function( i, item ){
@@ -245,7 +249,7 @@ function searchEvents( listAll )
 		params += '&searchingValues=de_' + input.val() + '_false_';
 	});
 	
-	if(listAll=='true'){	
+	if(listAll){	
 		params += '&startDate=';
 		params += '&endDate=';
 	}
@@ -254,25 +258,28 @@ function searchEvents( listAll )
 		var searchingValue = '';
 		params += '&startDate=' + getFieldValue('startDate');
 		params += '&endDate=' + getFieldValue('endDate');
-		jQuery( '#advancedSearchTB tr' ).each( function(){
-			jQuery( this ).find(':input').each( function( idx, item ){
-				var input = jQuery( item );
-				if( input.attr('type') != 'button' ){
-					if( idx==0 && input.val()!=''){
-						searchingValue = 'de_' + input.val() + '_false_';
+		jQuery( '#advancedSearchTB tr' ).each( function(index, row){
+			if( index>1 )
+			{
+				jQuery( row ).find(':input').each( function( idx, item ){
+					var input = jQuery( item );
+					if( input.attr('type') != 'button' ){
+						if( idx==0 && input.val()!=''){
+							searchingValue = 'de_' + input.val() + '_false_';
+						}
+						else if( input.val()!='' ){
+							value += jQuery.trim(input.val()).toLowerCase();
+						}
 					}
-					else if( input.val()!='' ){
-						value += jQuery.trim(input.val()).toLowerCase();
-					}
+				});
+				
+				if( value !=''){
+					searchingValue += getValueFormula(value);
 				}
-			});
-			
-			if( value !=''){
-				searchingValue += getValueFormula(value);
+				params += '&searchingValues=' + searchingValue;
+				searchingValue = '';
+				value = '';
 			}
-			params += '&searchingValues=' + searchingValue;
-			searchingValue = '';
-			value = '';
 		})
 	}
 	
@@ -295,22 +302,23 @@ function searchEvents( listAll )
 			
 			var searchInfor = (listAll) ? i18n_list_all_events : i18n_search_events_by_dataelements;
 			setInnerHTML( 'searchInforTD', searchInfor);
-	
-			if(getFieldValue('filter')=='true')
+			
+			if(!listAll && jQuery('#filterBtn').attr("disabled")=="disabled")
 			{
 				showById('minimized-advanced-search');
 				hideById('advanced-search');
+			}
+			else
+			{
+				hideById('minimized-advanced-search');
+				hideById('advanced-search');
+				showById('filterBtn');
 			}
 	
 			showById('listDiv');
 			hideById('loaderDiv');
 		}
     });
-}
-
-function updateEvents()
-{
-	validateSearchEvents( false );
 }
 
 function getValueFormula( value )
@@ -497,14 +505,13 @@ function showFilterForm()
 {
 	showById('advanced-search');
 	hideById('minimized-advanced-search');
-	disable('advancedBtn');
+	disable('filterBtn');
+	setFieldValue('listAll', false);
 }
 
 function removeAllOption()
 {
-	enable('advancedBtn');
-	setFieldValue('filter', false);
-	jQuery('#advancedBtn').attr("isShown", false);
+	enable('filterBtn');
 	jQuery( '#advancedSearchTB tr' ).each( function( i, row ){
 		if(i>2){
 			jQuery(this).remove();
@@ -520,7 +527,5 @@ function removeAllOption()
 	});
 	jQuery('#searchObjectId').val("");
 	jQuery('#searchText').val("");
-	hideById('advanced-search');
-	hideById('minimized-advanced-search');
-	searchEvents( false );
+	searchEvents( eval(getFieldValue("listAll")) );
 }
