@@ -158,32 +158,25 @@ public class CurrentUserController
         }
 
         UserAccount userAccount = new UserAccount();
+
+        // user account
         userAccount.setFirstName( currentUser.getFirstName() );
         userAccount.setSurname( currentUser.getSurname() );
         userAccount.setEmail( currentUser.getEmail() );
         userAccount.setPhoneNumber( currentUser.getPhoneNumber() );
 
+        // profile
+        userAccount.setIntroduction( currentUser.getIntroduction() );
+        userAccount.setJobTitle( currentUser.getJobTitle() );
+        userAccount.setGender( currentUser.getGender() );
+        // currentUser.setBirthday( currentUser.getBirthday() );
+        userAccount.setNationality( currentUser.getNationality() );
+        userAccount.setEmployer( currentUser.getEmployer() );
+        userAccount.setEducation( currentUser.getEducation() );
+        userAccount.setInterests( currentUser.getInterests() );
+        userAccount.setLanguages( currentUser.getLanguages() );
+
         JacksonUtils.toJson( response.getOutputStream(), userAccount );
-    }
-
-    @RequestMapping( value = "/user-account", method = RequestMethod.POST, consumes = "application/xml" )
-    public void postUserAccountXml( HttpServletResponse response, HttpServletRequest request ) throws Exception
-    {
-        UserAccount userAccount = JacksonUtils.fromXml( request.getInputStream(), UserAccount.class );
-        User currentUser = currentUserService.getCurrentUser();
-
-        if ( currentUser == null )
-        {
-            ContextUtils.notFoundResponse( response, "User object is null, user is not authenticated." );
-            return;
-        }
-
-        currentUser.setFirstName( userAccount.getFirstName() );
-        currentUser.setSurname( userAccount.getSurname() );
-        currentUser.setEmail( userAccount.getEmail() );
-        currentUser.setPhoneNumber( userAccount.getPhoneNumber() );
-
-        userService.updateUser( currentUser );
     }
 
     @RequestMapping( value = "/user-account", method = RequestMethod.POST, consumes = "application/json" )
@@ -198,10 +191,22 @@ public class CurrentUserController
             return;
         }
 
+        // basic user account
         currentUser.setFirstName( userAccount.getFirstName() );
         currentUser.setSurname( userAccount.getSurname() );
         currentUser.setEmail( userAccount.getEmail() );
         currentUser.setPhoneNumber( userAccount.getPhoneNumber() );
+
+        // profile
+        currentUser.setIntroduction( userAccount.getIntroduction() );
+        currentUser.setJobTitle( userAccount.getJobTitle() );
+        currentUser.setGender( userAccount.getGender() );
+        // currentUser.setBirthday( userAccount.getBirthday() );
+        currentUser.setNationality( userAccount.getNationality() );
+        currentUser.setEmployer( userAccount.getEmployer() );
+        currentUser.setEducation( userAccount.getEducation() );
+        currentUser.setInterests( userAccount.getInterests() );
+        currentUser.setLanguages( userAccount.getLanguages() );
 
         userService.updateUser( currentUser );
     }
@@ -244,7 +249,7 @@ public class CurrentUserController
         Forms forms = new Forms();
 
         Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
-        Set<DataSet> userDataSets = null;
+        Set<DataSet> userDataSets;
         Set<OrganisationUnit> userOrganisationUnits = new HashSet<OrganisationUnit>( currentUser.getOrganisationUnits() );
 
         if ( currentUser.getUserCredentials().getAllAuthorities().contains( "ALL" ) )

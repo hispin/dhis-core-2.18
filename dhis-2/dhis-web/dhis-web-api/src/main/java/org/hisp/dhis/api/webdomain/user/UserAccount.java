@@ -27,18 +27,14 @@ package org.hisp.dhis.api.webdomain.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.Dxf2Namespace;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "settings", namespace = Dxf2Namespace.NAMESPACE )
 public class UserAccount
 {
+    // user account
     private String firstName;
 
     private String surname;
@@ -47,12 +43,30 @@ public class UserAccount
 
     private String phoneNumber;
 
+    // profile
+    private String introduction;
+
+    private String jobTitle;
+
+    private String gender;
+
+    private String birthday;
+
+    private String nationality;
+
+    private String employer;
+
+    private String education;
+
+    private String interests;
+
+    private String languages;
+
     public UserAccount()
     {
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JsonProperty( required = true )
     public String getFirstName()
     {
         return firstName;
@@ -63,8 +77,7 @@ public class UserAccount
         this.firstName = firstName;
     }
 
-    @JsonProperty(required = true)
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JsonProperty( required = true )
     public String getSurname()
     {
         return surname;
@@ -76,7 +89,6 @@ public class UserAccount
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getEmail()
     {
         return email;
@@ -88,7 +100,6 @@ public class UserAccount
     }
 
     @JsonProperty
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getPhoneNumber()
     {
         return phoneNumber;
@@ -97,5 +108,104 @@ public class UserAccount
     public void setPhoneNumber( String phoneNumber )
     {
         this.phoneNumber = phoneNumber;
+    }
+
+    @JsonProperty
+    public String getIntroduction()
+    {
+        return introduction;
+    }
+
+    public void setIntroduction( String introduction )
+    {
+        this.introduction = introduction;
+    }
+
+    @JsonProperty
+    public String getJobTitle()
+    {
+        return jobTitle;
+    }
+
+    public void setJobTitle( String jobTitle )
+    {
+        this.jobTitle = jobTitle;
+    }
+
+    @JsonProperty
+    public String getGender()
+    {
+        return gender;
+    }
+
+    public void setGender( String gender )
+    {
+        this.gender = gender;
+    }
+
+    @JsonProperty
+    public String getBirthday()
+    {
+        return birthday;
+    }
+
+    public void setBirthday( String birthday )
+    {
+        this.birthday = birthday;
+    }
+
+    @JsonProperty
+    public String getNationality()
+    {
+        return nationality;
+    }
+
+    public void setNationality( String nationality )
+    {
+        this.nationality = nationality;
+    }
+
+    @JsonProperty
+    public String getEmployer()
+    {
+        return employer;
+    }
+
+    public void setEmployer( String employer )
+    {
+        this.employer = employer;
+    }
+
+    @JsonProperty
+    public String getEducation()
+    {
+        return education;
+    }
+
+    public void setEducation( String education )
+    {
+        this.education = education;
+    }
+
+    @JsonProperty
+    public String getInterests()
+    {
+        return interests;
+    }
+
+    public void setInterests( String interests )
+    {
+        this.interests = interests;
+    }
+
+    @JsonProperty
+    public String getLanguages()
+    {
+        return languages;
+    }
+
+    public void setLanguages( String languages )
+    {
+        this.languages = languages;
     }
 }
