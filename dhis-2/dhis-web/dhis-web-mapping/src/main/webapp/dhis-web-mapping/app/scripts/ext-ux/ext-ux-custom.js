@@ -260,7 +260,6 @@ Ext.define('Ext.ux.panel.CheckTextNumber', {
 				items: this.numberField
 			}
 		];
-		alert(this.width - this.checkbox.width - 6 - this.numberField.width);
 		
 		this.callParent();
 	}
