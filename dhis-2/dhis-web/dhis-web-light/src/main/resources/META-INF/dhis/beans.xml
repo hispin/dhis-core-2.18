@@ -210,6 +210,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
 		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService"/>
+		<property name="programExpressionService" ref="org.hisp.dhis.program.ProgramExpressionService" />
 
 	</bean>
 

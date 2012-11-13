@@ -41,6 +41,7 @@ import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.api.mobile.model.DataElement;
 import org.hisp.dhis.api.mobile.model.DataValue;
+import org.hisp.dhis.program.ProgramExpressionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -63,10 +64,9 @@ import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.program.ProgramValidationResult;
 import org.hisp.dhis.program.ProgramValidationService;
 import org.hisp.dhis.util.ContextUtils;
-
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
-//import org.hisp.dhis.api.mobile.model.ProgramStage;
+
 
 public class SaveProgramStageFormAction
     implements Action
@@ -204,7 +204,19 @@ public class SaveProgramStageFormAction
     {
         this.programStageSectionService = programStageSectionService;
     }
+    
+    private ProgramExpressionService programExpressionService;
+    
+    public ProgramExpressionService getProgramExpressionService()
+    {
+        return programExpressionService;
+    }
 
+    public void setProgramExpressionService( ProgramExpressionService programExpressionService )
+    {
+        this.programExpressionService = programExpressionService;
+    }
+        
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -357,7 +369,7 @@ public class SaveProgramStageFormAction
         this.patient = patient;
     }
 
-    private Map<Integer, String> leftsideFormulaMap;
+    private Map<Integer, String> leftsideFormulaMap = new HashMap<Integer, String>();;
 
     public Map<Integer, String> getLeftsideFormulaMap()
     {
@@ -369,7 +381,7 @@ public class SaveProgramStageFormAction
         this.leftsideFormulaMap = leftsideFormulaMap;
     }
 
-    private Map<Integer, String> rightsideFormulaMap;
+    private Map<Integer, String> rightsideFormulaMap = new HashMap<Integer, String>();;
 
     public Map<Integer, String> getRightsideFormulaMap()
     {
@@ -565,6 +577,7 @@ public class SaveProgramStageFormAction
         ProgramStageInstance programStageInstance )
     {
         programValidationResults = new ArrayList<ProgramValidationResult>();
+        
         if ( validations != null )
         {
             for ( ProgramValidation validation : validations )
@@ -575,8 +588,19 @@ public class SaveProgramStageFormAction
                 if ( validationResult != null )
                 {
                     programValidationResults.add( validationResult );
+                    
+                    leftsideFormulaMap.put(
+                        validationResult.getProgramValidation().getId(),
+                        programExpressionService.getExpressionDescription( validationResult.getProgramValidation()
+                            .getLeftSide().getExpression() ) );
+                    
+                    rightsideFormulaMap.put(
+                        validationResult.getProgramValidation().getId(),
+                        programExpressionService.getExpressionDescription( validationResult.getProgramValidation()
+                            .getRightSide().getExpression() ) );
                 }
             }
         }
+        
     }
 }

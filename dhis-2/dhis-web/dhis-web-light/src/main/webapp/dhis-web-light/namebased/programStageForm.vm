@@ -15,8 +15,11 @@
 	<h3 style="text-align: left; background-color: #990000; color: white;">$i18n.getString("warnings_and_errors")</h3>
 	<p style="text-align: left;">
 		#if ($typeViolationsSize > 0)$typeViolationsSize $i18n.getString("type_violation_errors"). <br /> #end
-		#foreach($programValidation in $programValidationResults)
-			$programValidation.programValidation.description . <br/>
+		#foreach($result in $programValidationResults)
+			#set ( $id = $result.programValidation.id )
+			#set ( $leftFormula = $leftsideFormulaMap.get( $id ) )
+			#set ( $rightFormula = $rightsideFormulaMap.get( $id ) )
+			$!encoder.htmlEncode( $leftFormula ) $encoder.htmlEncode( $result.programValidation.operator.mathematicalOperator ) $!encoder.htmlEncode( $rightFormula ) <br/>
 		#end
 		#if ($programViolationsSize > 0 && $typeViolationsSize == 0) <a href="showPatientProgramList.action?patientId=${patientId}">$i18n.getString("save_any_way")</a> #end	
 	</p>
