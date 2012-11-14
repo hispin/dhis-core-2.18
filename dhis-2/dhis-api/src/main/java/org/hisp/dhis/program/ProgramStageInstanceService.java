@@ -89,10 +89,10 @@ public interface ProgramStageInstanceService
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
 
     Grid getTabularReport( ProgramStage programStage, List<TabularReportColumn> columns, Collection<Integer> organisationUnits, 
-        int level, Date startDate, Date endDate, boolean descOrder, Integer min, Integer max );
+        int level, Date startDate, Date endDate, boolean descOrder, Boolean completed, Integer min, Integer max );
 
     int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, Date startDate, Date endDate );
+        Collection<Integer> organisationUnits, int level, Boolean completed, Date startDate, Date endDate );
 
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
     

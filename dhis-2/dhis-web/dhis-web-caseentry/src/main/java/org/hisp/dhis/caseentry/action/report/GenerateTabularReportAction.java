@@ -196,6 +196,13 @@ public class GenerateTabularReportAction
         this.format = format;
     }
     
+    private Boolean completed;
+    
+    public void setCompleted( Boolean completed )
+    {
+        this.completed = completed;
+    }
+
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
     public List<DataElement> getDataElements()
@@ -317,20 +324,20 @@ public class GenerateTabularReportAction
             if ( type == null ) // Tabular report
             {
                 totalRecords = programStageInstanceService.getTabularReportCount( programStage, columns,
-                    organisationUnits, level, startValue, endValue );
+                    organisationUnits, level, completed, startValue, endValue );
 
                 total = getNumberOfPages( totalRecords );
 
                 this.paging = createPaging( totalRecords );
                 
                 grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
-                    startValue, endValue, !orderByOrgunitAsc, getStartPos(), paging.getPageSize() );
+                    startValue, endValue, !orderByOrgunitAsc, completed, getStartPos(), paging.getPageSize() );
             }
             else
             // Download as Excel
             {
                 grid = programStageInstanceService.getTabularReport( programStage, columns, organisationUnits, level,
-                    startValue, endValue, !orderByOrgunitAsc, null, null );
+                    startValue, endValue, !orderByOrgunitAsc, completed, null, null );
             }
         }
         catch ( SQLGrammarException ex )

@@ -5,7 +5,9 @@
 	});
 </script>
 				
-<h3 id='mainLinkLbl'>$i18n.getString( "anonymous_events_management" ) #openHelp('single_event_without_registration')</h3>
+<h3>$i18n.getString( "anonymous_events_management" ) #openHelp('single_event_without_registration')</h3>
+<h4 id='programName' name='programName'></h4>
+
 <input type='hidden' id='orgunitId' name='orgunitId' value='$orgunit.id'>
 <input type='hidden' id='programStageInstanceId' name='programStageInstanceId' value='0'>
 <input type='hidden' id='programStageId' name='programStageId' class='stage-object-selected'>
@@ -51,6 +53,7 @@
 					<input type="text" id='endDate' name='endDate' style="width:240px;">
 				</td>
 				<td>
+					<input type="checkbox" id="incompleted" name="incompleted" value="true">$i18n.getString("incomplete")
 					<input type="button" class='large-button' id='filterBtn' name="filterBtn" value='$i18n.getString( "filter" )' onclick="showFilterForm();">
 					<input type="button" class='large-button' id='listBtn' value="$i18n.getString( 'update' )" onclick="validateSearchEvents(false);">&nbsp;
 				</td>
@@ -103,10 +106,6 @@
 <div id='listDiv'></div>
 
 <div id='dataEntryInfor' class='hidden'>
-	<h3>
-		<a href="javascript:backEventList();">$i18n.getString( "anonymous_events_management" ) </a>
-		&raquo; <span id='programName' name='programName'></span>
-	</h3>
 	<table style="width:580px;" class="listTable">
 			<tr>
 				<th><span id="reportDateDescriptionField2">$i18n.getString( "report_date" )</span> <em title="$i18n.getString( "required" )" class="required">*</em> </th>
@@ -118,13 +117,10 @@
 	</table> 
 	<div id='dataEntryFormDiv'></div>
 	
-	<div id='actionDiv' class="page inputCriteria" style="width:800px;height:29px;">	
+	<div id='actionDiv' class="page inputCriteria" style="width:580px;height:29px;">	
 		<input type="button" onclick="doComplete()" value="$i18n.getString('complete')" id="completeBtn">
 		<input type="button" onclick="doUnComplete()" value="$i18n.getString('incomplete')" id="uncompleteBtn" >
 		<input type="button" value="$i18n.getString('run_validation')" onclick="javascript: runValidation();">
-		<input type="button" onclick="completedAndAddNewEvent()" value="$i18n.getString('complete_and_add_new_event')" id="completeAndAddNewBtn" style="width:150px;">
-		<input type="button" class='large-button' onclick="javascript:backEventList();" value="$i18n.getString('save')">
-		<input type="button" class='large-button' onclick="javascript:removeCurrentEvent();" value="$i18n.getString('remove')">
 	</div>
 </div>
 
