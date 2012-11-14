@@ -273,7 +273,7 @@ public class DefaultMessageService
     {
         for ( MessageSender messageSender : messageSenders )
         {
-            messageSender.sendMessage( subject, text, sender, users );
+            messageSender.sendMessage( subject, text, sender, users, false );
         }
     }
 }
