@@ -1369,10 +1369,10 @@ function validateCompulsoryCombinations()
 function displayHistoryDialog( operandName )
 {
     $( '#historyDiv' ).dialog( {
-        modal : true,
-        title : operandName,
-        width : 580,
-        height : 710
+        modal: true,
+        title: operandName,
+        width: 580,
+        height: 660
     } );
 }
 
