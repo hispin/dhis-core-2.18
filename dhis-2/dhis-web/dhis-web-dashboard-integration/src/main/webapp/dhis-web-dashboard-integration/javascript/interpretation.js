@@ -72,8 +72,8 @@ function postComment( uid )
 			data: $.trim( text ),
 			success: function() {			
 				var template = 
-					"<div><div class=\"interpretationName\"><span class=\"bold pointer\" " +
-					"onclick=\"showUserInfo( \'${userId}\' )\">${userName}<\/span>&nbsp; " +
+					"<div><div class=\"interpretationName\">" +
+					"<a class=\"bold userLink\" href=\"profile.action?id=${userId}\">${userName}</a>&nbsp;" +
 					"<span class=\"grey\">${created}<\/span><\/div><\/div>" +
 					"<div class=\"interpretationText\">${text}<\/div>";
 				
