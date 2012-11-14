@@ -145,8 +145,8 @@ public class DefaultSecurityService
         String text1 = new VelocityManager().render( vars, "restore_message1" );
         String text2 = new VelocityManager().render( vars, "restore_message2" );
         
-        emailMessageSender.sendMessage( "User account restore confirmation (message 1 of 2)", text1, null, users );
-        emailMessageSender.sendMessage( "User account restore confirmation (message 2 of 2)", text2, null, users );
+        emailMessageSender.sendMessage( "User account restore confirmation (message 1 of 2)", text1, null, users, true );
+        emailMessageSender.sendMessage( "User account restore confirmation (message 2 of 2)", text2, null, users, true );
         
         return true;
     }

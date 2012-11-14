@@ -89,7 +89,7 @@ public class EmailMessageSender
      */
     @Async
     @Override
-    public void sendMessage( String subject, String text, User sender, Set<User> users )
+    public void sendMessage( String subject, String text, User sender, Set<User> users, boolean forceSend )
     {        
         String hostName = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_HOST_NAME ) );
         String username = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_USERNAME ) );
@@ -119,8 +119,10 @@ public class EmailMessageSender
             for ( User user : users )
             {
                 boolean emailNotification = settings.get( user ) != null && (Boolean) settings.get( user ) == true;
+                
+                boolean doSend = forceSend || emailNotification;
     
-                if ( emailNotification && user.getEmail() != null && !user.getEmail().trim().isEmpty() )
+                if ( doSend && user.getEmail() != null && !user.getEmail().trim().isEmpty() )
                 {
                     email.addBcc( user.getEmail() );
                     
