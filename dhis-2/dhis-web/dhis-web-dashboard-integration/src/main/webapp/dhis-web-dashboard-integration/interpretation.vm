@@ -12,6 +12,7 @@
 <script type="text/javascript">
 var currentUser = {
 	id: "${currentUser.id}",
+	uid: "${currentUser.uid}",
 	name: "${currentUser.name}"
 };	
 </script>
