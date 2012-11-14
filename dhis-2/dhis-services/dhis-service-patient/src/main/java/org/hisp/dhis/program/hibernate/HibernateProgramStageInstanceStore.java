@@ -202,7 +202,7 @@ public class HibernateProgramStageInstanceStore
         Grid grid = new ListGrid();
 
         grid.addHeader( new GridHeader( "id", true, true ) );
-        grid.addHeader( new GridHeader( "Report date", false, true ) );
+        grid.addHeader( new GridHeader( programStage.getReportDateDescription(), false, true ) );
 
         for ( int i = level; i <= maxLevel; i++ )
         {
