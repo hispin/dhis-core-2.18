@@ -85,7 +85,7 @@
 					<td rowspan='30' valign='bottom'>
 						<input type="button" class='large-button' id='addSearchOptionBtn' name='addSearchOptionBtn' value="$i18n.getString('add')" onclick='addAttributeOption()'>
 					</td>
-					<td rowspan='30' valign='bottom' align='right'>
+					<td rowspan='30' valign='bottom'>
 						<input type="button" class='large-button' id='clearAllBtn' name='clearAllBtnaddSearchOptionBtn' value="$i18n.getString('clear_all')" onclick='removeAllOption()'>
 					</td>
 				</tr>

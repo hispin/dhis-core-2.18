@@ -264,7 +264,6 @@ function searchEvents( listAll )
 		{
 			params += '&completed=false';
 		}
-		params += '&endDate=' + getFieldValue('endDate');
 		jQuery( '#advancedSearchTB tr' ).each( function(index, row){
 			if( index>1 )
 			{
