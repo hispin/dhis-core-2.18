@@ -20,6 +20,7 @@
 		setFieldValue('searchByProgramStage', 'true');
 		setFieldValue('hideLink', 'true');
 		showById('dueDateTR');
+		mainPage = 0;
 	});	
 </script>
 
@@ -29,6 +30,7 @@
 	<input type='hidden' id='listAll' name='listAll'>
 	<input type='hidden' id='sendToList' name='sendToList'>
 	<input type='hidden' id='programStageName' name='programStageName'>
+	<input type='hidden' id='programTrackingPage' name='programTrackingPage'>
 	<div id='searchDiv'>
 		#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	
 	</div>
@@ -62,7 +64,7 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type='button' value='$i18n.getString("send_sms")' onclick='sendSmsToList();'></td>
+			<td><input type='button' value='$i18n.getString("send")' onclick='sendSmsToList();'></td>
 		</tr>
 	</table>
 </div>

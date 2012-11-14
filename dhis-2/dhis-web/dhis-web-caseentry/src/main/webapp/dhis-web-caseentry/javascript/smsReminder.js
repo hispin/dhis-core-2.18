@@ -157,7 +157,7 @@ function showSendSmsForm()
 			closable: true,
 			modal:true,
 			overlay:{background:'#000000', opacity:0.1},
-			width: 350,
+			width: 420,
 			height: 200
 		});
 }
@@ -334,7 +334,7 @@ function onClickBackBtn()
 	showById('mainLinkLbl');
 	showById('searchDiv');
 	showById('listEventDiv');
-	showById('migrationPatientDiv');
+	hideById('migrationPatientDiv');
 	hideById('smsManagementDiv');
 	hideById('patientDashboard');
 	

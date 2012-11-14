@@ -1,9 +1,5 @@
-<script>
-	hideById('mainLinkLbl');
-</script>
-
 <h5>
-	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
+	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
 	&#8226; <a href="javascript:showPatientDashboardForm($!patient.id);">$i18n.getString( 'patient_dashboard' )</a>
 	&#8226; $i18n.getString( "relationship_management" )
 </h5>
@@ -135,7 +131,12 @@
 </div>
 
 <script type="text/javascript">
-    var i18n_confirm_delete_relationship = '$encoder.jsEscape( $i18n.getString( "confirm_delete_relationship" ) , "'" )';
+	jQuery(document).ready(	function(){
+		hideById('mainLinkLbl');
+		jQuery('[name=mainPagelink]').html(i18n_main_form_link);
+	});
+	
+	var i18n_confirm_delete_relationship = '$encoder.jsEscape( $i18n.getString( "confirm_delete_relationship" ) , "'" )';
     var i18n_please_select_a_representative = '$encoder.jsEscape( $i18n.getString( "please_select_a_representative" ) , "'" )';
     var i18n_saving_representative_failed = '$encoder.jsEscape( $i18n.getString( "saving_representative_failed" ) , "'" )';
     var i18n_removing_representative_failed = '$encoder.jsEscape( $i18n.getString( "removing_representative_failed" ) , "'" )';
