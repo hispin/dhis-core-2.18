@@ -711,24 +711,8 @@ Ext.onReady( function() {
 							// Set data for grid
 							TR.store.getDataTableStore();
 							TR.datatable.getDataTable();
-							if ( json.items.length > 1 )
-							{
-								TR.datatable.setPagingToolbarStatus();
-								Ext.getCmp('btnClean').enable();
-								Ext.getCmp('btnSortBy').enable();
-							}
-							else
-							{
-								Ext.getCmp('currentPage').setValue('');
-								Ext.getCmp('currentPage').disable();
-								Ext.getCmp('firstPageBtn').disable();
-								Ext.getCmp('previousPageBtn').disable();
-								Ext.getCmp('nextPageBtn').disable();
-								Ext.getCmp('lastPageBtn').disable();
-					
-								Ext.getCmp('btnClean').disable();
-								Ext.getCmp('btnSortBy').disable();
-							}
+							
+							TR.datatable.setPagingToolbarStatus();
 						}
 						TR.util.mask.hideMask();
 					}
@@ -738,6 +722,7 @@ Ext.onReady( function() {
 		},
 		filterReport: function() {
 			TR.util.mask.showMask(TR.cmp.region.center, TR.i18n.loading);
+			TR.state.isFilter = true;
 			var url = TR.conf.finals.ajax.path_root + TR.conf.finals.ajax.generatetabularreport_get;
 			Ext.Ajax.request({
 				url: url,
@@ -747,28 +732,17 @@ Ext.onReady( function() {
 				success: function(r) {
 					var json = Ext.JSON.decode(r.responseText);
 					TR.value.values = json.items;
+					TR.state.total = json.total;
+					TR.state.totalRecords = json.totalRecords
+					TR.value.columns = json.columns;
 					TR.store.datatable.loadData(TR.value.values,false);
-					if ( json.items.length > 1 )
-					{
-						Ext.getCmp('btnClean').enable();
-						Ext.getCmp('btnSortBy').enable();
-					}
-					else
-					{
-						Ext.getCmp('currentPage').setValue('');
-						Ext.getCmp('currentPage').disable();
-						Ext.getCmp('firstPageBtn').disable();
-						Ext.getCmp('previousPageBtn').disable();
-						Ext.getCmp('nextPageBtn').disable();
-						Ext.getCmp('lastPageBtn').disable();
-			
-						Ext.getCmp('btnClean').disable();
-						Ext.getCmp('btnSortBy').disable();
-					}
+					
+					TR.datatable.setPagingToolbarStatus();
+						
 					TR.util.notification.ok();
 					TR.util.mask.hideMask();
 				}
-			})
+			});
 		},
 		getParams: function() {
 			var p = {};
@@ -789,7 +763,7 @@ Ext.onReady( function() {
 			
 			// Get searching values
 			p.searchingValues = [];
-			if( !TR.state.paramChanged() || TR.state.isFilter )
+			if( !TR.state.paramChanged() )
 			{
 				var cols = TR.datatable.datatable.columns;
 				for( var k in cols )
@@ -829,7 +803,7 @@ Ext.onReady( function() {
 				p += '&orgunitIds=' + TR.state.orgunitIds[i];
 			}
 			
-			if( !TR.state.paramChanged() || TR.state.isFilter )
+			if( !TR.state.paramChanged() )
 			{
 				var cols = TR.datatable.datatable.columns;
 				for( var k in cols )
@@ -902,12 +876,13 @@ Ext.onReady( function() {
 			{
 				var orgUnitCols = TR.init.system.maxLevels + 1 - TR.cmp.settings.level.getValue();
 				var orgUnitColsInTable =  ( TR.datatable.datatable.columns.length 
-									- TR.cmp.params.dataelement.selected.store.data.length - 3 );
+									- TR.cmp.params.dataelement.selected.store.data.length - 2 );
 				if( orgUnitCols!=orgUnitColsInTable )
 				{
 					return true;
 				}
 				
+				var colNames=[];
 				TR.cmp.params.dataelement.selected.store.each( function(r) {
 					colNames.push( r.data.id );
 				});
@@ -928,8 +903,8 @@ Ext.onReady( function() {
 				{
 					return true;
 				}
-				TR.state.isFilter = false;
-				return false;
+				
+				return !TR.state.isFilter;
 			}
 			return true;
 		},
@@ -1168,6 +1143,7 @@ Ext.onReady( function() {
 					},
 					{
 						xtype: 'label',
+						id:'totalPageLbl',
 						text: ' of ' + TR.state.total + ' | '
 					},
 					{
@@ -1200,6 +1176,7 @@ Ext.onReady( function() {
 					'->',
 					{
 						xtype: 'label',
+						id: 'totalEventLbl',
 						style: 'margin-right:18px;',
 						text: TR.state.totalRecords + ' ' + TR.i18n.events
 					},
@@ -1307,35 +1284,57 @@ Ext.onReady( function() {
 		},
         setPagingToolbarStatus: function() {
 			Ext.getCmp('currentPage').enable();
-			if( TR.state.currentPage == TR.state.total 
-				&& TR.state.total== 1 )
+			Ext.getCmp('totalEventLbl').setText( TR.state.totalRecords + ' ' + TR.i18n.events );
+			Ext.getCmp('totalPageLbl').setText( ' of ' + TR.state.total + ' | ' );
+			if( TR.state.totalRecords== 0 )
 			{
+				Ext.getCmp('currentPage').setValue('');
+				Ext.getCmp('currentPage').setValue('');
+				Ext.getCmp('currentPage').disable();
 				Ext.getCmp('firstPageBtn').disable();
 				Ext.getCmp('previousPageBtn').disable();
 				Ext.getCmp('nextPageBtn').disable();
 				Ext.getCmp('lastPageBtn').disable();
-			}
-			else if( TR.state.currentPage == TR.state.total )
-			{
-				Ext.getCmp('firstPageBtn').enable();
-				Ext.getCmp('previousPageBtn').enable();
-				Ext.getCmp('nextPageBtn').disable();
-				Ext.getCmp('lastPageBtn').disable();
-			}
-			else if( TR.state.currentPage == 1 )
-			{
-				Ext.getCmp('firstPageBtn').disable();
-				Ext.getCmp('previousPageBtn').disable();
-				Ext.getCmp('nextPageBtn').enable();
-				Ext.getCmp('lastPageBtn').enable();
+	
+				Ext.getCmp('btnClean').disable();
+				Ext.getCmp('btnSortBy').disable();
 			}
 			else
 			{
-				Ext.getCmp('firstPageBtn').enable();
-				Ext.getCmp('previousPageBtn').enable();
-				Ext.getCmp('nextPageBtn').enable();
-				Ext.getCmp('lastPageBtn').enable();
-			} 
+				Ext.getCmp('btnClean').enable();
+				Ext.getCmp('btnSortBy').enable();
+				Ext.getCmp('currentPage').setValue(TR.state.currentPage);
+				
+				if( TR.state.currentPage == TR.state.total 
+					&& TR.state.total== 1 )
+				{
+					Ext.getCmp('firstPageBtn').disable();
+					Ext.getCmp('previousPageBtn').disable();
+					Ext.getCmp('nextPageBtn').disable();
+					Ext.getCmp('lastPageBtn').disable();
+				}
+				else if( TR.state.currentPage == TR.state.total )
+				{
+					Ext.getCmp('firstPageBtn').enable();
+					Ext.getCmp('previousPageBtn').enable();
+					Ext.getCmp('nextPageBtn').disable();
+					Ext.getCmp('lastPageBtn').disable();
+				}
+				else if( TR.state.currentPage == 1 )
+				{
+					Ext.getCmp('firstPageBtn').disable();
+					Ext.getCmp('previousPageBtn').disable();
+					Ext.getCmp('nextPageBtn').enable();
+					Ext.getCmp('lastPageBtn').enable();
+				}
+				else
+				{
+					Ext.getCmp('firstPageBtn').enable();
+					Ext.getCmp('previousPageBtn').enable();
+					Ext.getCmp('nextPageBtn').enable();
+					Ext.getCmp('lastPageBtn').enable();
+				} 
+			}
         }           
     };
         
@@ -1434,6 +1433,7 @@ Ext.onReady( function() {
 										TR.cmp.settings.program = this;
 									},
 									select: function(cb) {
+										TR.state.isFilter = false;
 										var pId = cb.getValue();
 										// PROGRAM-STAGE										
 										var storeProgramStage = TR.store.programStage;
@@ -1657,6 +1657,7 @@ Ext.onReady( function() {
 														TR.cmp.params.programStage = this;
 													},  
 													select: function(cb) {
+														TR.state.isFilter = false;
 														var store = TR.store.dataelement.available;
 														TR.store.dataelement.selected.loadData([],false);
 														store.parent = cb.getValue();
@@ -1995,7 +1996,7 @@ Ext.onReady( function() {
 							cls: 'tr-toolbar-btn-1',
                             text: TR.i18n.update,
 							handler: function() {
-                                if( !TR.state.paramChanged() || TR.state.isFilter )
+                                if( !TR.state.paramChanged() )
 								{
 									TR.exe.filter();
 								}

@@ -458,6 +458,7 @@ function doComplete(isCreateEvent){
 				});
 			}
 			else{
+				hideById('validateProgramDiv');
 				runCompleteEvent( isCreateEvent );
 			}
 	});
