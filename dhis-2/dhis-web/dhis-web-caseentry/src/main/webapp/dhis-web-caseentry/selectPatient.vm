@@ -12,11 +12,11 @@
 		#end
 	});
 </script>
-<h3 id='mainLinkLbl'>$i18n.getString( "patient_management" ) #openHelp( "patient" )</h3>
+<h3 id='mainLinkLbl'>$i18n.getString( "patient_management" ) #openHelp( "patient" )</a></h3>
 
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='false'>
 <input type='hidden' id='isShowPatientList' name= 'isShowPatientList' >
-<input type='hidden' id='listAll' name= 'listAll' >
+<input type='hidden' id='listAll' name= 'listAll'>
 
 <div id='searchDiv'>
 	#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )

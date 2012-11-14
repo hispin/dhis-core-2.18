@@ -161,6 +161,7 @@ function onClickBackBtn()
 	hideById('addRelationshipDiv');
 	hideById('migrationPatientDiv');
 	setInnerHTML('patientDashboard','');
+	loadPatientList();
 }
 
 function loadPatientList()

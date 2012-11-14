@@ -6,12 +6,12 @@
 		validation( 'relationshipSelectForm', function(form){
 			validateSearchPartner();
 		}); 
-		
+		jQuery('[name=mainPagelink]').html(i18n_main_form_link);
 	});		
 </script>
 
 <h5>
-	<a href="javascript:loadPatientList();">$i18n.getString( 'patient_management' )</a>
+	<a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
 	&#8226; <a href="javascript:showPatientDashboardForm($!patient.id);">$i18n.getString( 'patient_dashboard' )</a>
 	&#8226; <a href="javascript:showRelationshipList( '$patient.id' )">$i18n.getString( "relationship_management" )</a>
 	

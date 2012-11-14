@@ -1,5 +1,5 @@
 <h3>
- <a href="javascript:onClickBackBtn();" id='mainFormLink' name='mainFormLink'>$i18n.getString( 'patient_management' )</a>
+ <a name="mainPagelink" href="javascript:onClickBackBtn();">$i18n.getString( 'patient_management' )</a>
  &#8226; $i18n.getString( 'patient_dashboard' )
  &raquo; <a href="javascript:dashboardHistoryToggle();" >$i18n.getString( 'history' )</a>
 </h3>
@@ -223,5 +223,6 @@
 
 <script>
 	hideById('mainLinkLbl');
+	jQuery('[name=mainPagelink]').html(i18n_main_form_link);
 	var i18n_history = '$encoder.jsEscape( $i18n.getString( "history" ) , "'" )';
 </script>
