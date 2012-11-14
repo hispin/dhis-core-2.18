@@ -616,12 +616,12 @@ public class ReportTable
 
         for ( NameableObject object : objects1 )
         {
-            identifiers.add( getIdentifier( object.getClass(), object.getId() ) );
+            identifiers.add( getIdentifier( getNameableClass( object.getClass() ), object.getId() ) );
         }
 
         for ( NameableObject object : objects2 )
         {
-            identifiers.add( getIdentifier( object.getClass(), object.getId() ) );
+            identifiers.add( getIdentifier( getNameableClass( object.getClass() ), object.getId() ) );
         }
 
         return getIdentifier( identifiers.toArray( SRT ) );
@@ -636,7 +636,7 @@ public class ReportTable
 
         for ( NameableObject object : objects )
         {
-            identifiers.add( getIdentifier( object.getClass(), object.getId() ) );
+            identifiers.add( getIdentifier( getNameableClass( object.getClass() ), object.getId() ) );
         }
 
         identifiers.add( getIdentifier( clazz, id ) );
@@ -904,6 +904,25 @@ public class ReportTable
             throw new IllegalStateException( falseMessage );
         }
     }
+    
+    /**
+     * Gets the real Nameable class in case of a proxy.
+     */
+    @SuppressWarnings("unchecked")
+    public static Class<? extends NameableObject> getNameableClass( Class<?> clazz )
+    {
+        while ( clazz != null )
+        {       
+            if ( BaseNameableObject.class.equals( clazz.getSuperclass() ) )
+            {
+                return (Class<? extends NameableObject>) clazz;
+            }
+            
+            clazz = clazz.getSuperclass();
+        }
+        
+        throw new IllegalStateException( "Class is not a Nameable object: " + clazz );
+    }    
 
     // -------------------------------------------------------------------------
     // Equals and hashCode
