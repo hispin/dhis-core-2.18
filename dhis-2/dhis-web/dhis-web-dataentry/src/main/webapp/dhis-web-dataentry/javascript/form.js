@@ -519,7 +519,7 @@ function getDynamicSelectElementId( dataElementId )
 function enableSectionFilter()
 {
     var $sectionsHeaders = $( '.formSection .cent h3' );
-    $( '#filterDataSetSection' ).children().remove();
+    clearSectionFilters();
 
     if ( $sectionsHeaders.size() > 1)
     {
@@ -538,6 +538,21 @@ function enableSectionFilter()
         $( '#selectionBox' ).css( 'height', '93px' );
         $( '#filterDataSetSectionTr' ).hide();
     }
+}
+
+function resetSectionFilters()
+{
+    $( '#selectionBox' ).css( 'height', '93px' );
+    $( '#filterDataSetSectionTr' ).hide();
+    $( '.formSection' ).show();
+}
+
+function clearSectionFilters()
+{
+    $( '#filterDataSetSection' ).children().remove();
+    $( '#selectionBox' ).css( 'height', '93px' );
+    $( '#filterDataSetSectionTr' ).hide();
+    $( '.formSection' ).show();
 }
 
 function filterOnSection()
@@ -694,7 +709,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
     var dataSetValid = false;
 
-    for ( i in dataSetList )
+    for ( var i in dataSetList )
     {
         addOptionById( 'selectedDataSetId', dataSetList[i].id, dataSetList[i].name );
 
@@ -710,12 +725,14 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
         if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
         {
+            resetSectionFilters();
             showLoader();
             loadDataValues();
         }
     }
     else
     {
+        clearSectionFilters();
         clearPeriod();
     }
 }
@@ -787,6 +804,7 @@ function dataSetSelected()
     if ( dataSetId && dataSetId != -1 )
     {
         clearListById( 'selectedPeriodId' );
+        clearSectionFilters();
 
         addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
 
