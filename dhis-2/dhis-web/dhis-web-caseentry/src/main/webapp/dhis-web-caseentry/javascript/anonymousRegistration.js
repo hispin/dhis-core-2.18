@@ -1,11 +1,13 @@
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
+	showById('dataEntryMenu');
+	hideById('eventActionMenu');
 	hideById('dataEntryInfor');
 	hideById('advanced-search');
 	hideById('minimized-advanced-search');
 	hideById('listDiv');
-	showById('mainLinkLbl');
+	hideById('programName');
 	setFieldValue("listAll", true);
 	setFieldValue("startDate", '');
 	setFieldValue("endDate", '');
@@ -258,6 +260,11 @@ function searchEvents( listAll )
 		var searchingValue = '';
 		params += '&startDate=' + getFieldValue('startDate');
 		params += '&endDate=' + getFieldValue('endDate');
+		if(byId("incompleted").checked)
+		{
+			params += '&completed=false';
+		}
+		params += '&endDate=' + getFieldValue('endDate');
 		jQuery( '#advancedSearchTB tr' ).each( function(index, row){
 			if( index>1 )
 			{
@@ -363,6 +370,9 @@ function removeEvent( programStageId )
 
 function showUpdateEvent( programStageInstanceId )
 {
+	hideById('dataEntryMenu');
+	showById('eventActionMenu');
+	jQuery("[name=eventActionLink]").show();
 	hideById('selectDiv');
     hideById('searchDiv');
     hideById('listDiv');
@@ -376,7 +386,7 @@ function showUpdateEvent( programStageInstanceId )
 		},function()
 		{
 			jQuery('#inputCriteriaDiv').remove();
-			hideById('mainLinkLbl');
+			showById('programName');
 			showById('actionDiv');
 			var programName = jQuery('#programId option:selected').text();
 			var programStageId = jQuery('#programId option:selected').attr('psid');
@@ -398,22 +408,27 @@ function showUpdateEvent( programStageInstanceId )
 
 function backEventList()
 {
+	showById('dataEntryMenu');
+	hideById('eventActionMenu');
 	hideById('dataEntryInfor');
-	showById('mainLinkLbl');
+	hideById('programName');
 	showById('selectDiv');
 	showById('searchDiv');
 	showById('listDiv');
-	searchEvents( getFieldValue('listAll') );
+	searchEvents( eval(getFieldValue('listAll')) );
 }
 
 function showAddEventForm()
 {
+	showById('eventActionMenu');
+	jQuery("[name=eventActionLink]").hide();
+	hideById('dataEntryMenu');
 	setInnerHTML('dataEntryFormDiv','');
 	setFieldValue('executionDate','');
 	hideById('selectDiv');
 	hideById('searchDiv');
 	hideById('listDiv');
-	hideById('mainLinkLbl');
+	showById('programName');
 	hideById('actionDiv');
 	showById('dataEntryInfor');
 	setFieldValue('programStageInstanceId','0');

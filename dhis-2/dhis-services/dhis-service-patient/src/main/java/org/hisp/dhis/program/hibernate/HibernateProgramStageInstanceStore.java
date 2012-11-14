@@ -193,7 +193,7 @@ public class HibernateProgramStageInstanceStore
 
     public Grid getTabularReport( ProgramStage programStage, Map<Integer, OrganisationUnitLevel> orgUnitLevelMap,
         Collection<Integer> orgUnits, List<TabularReportColumn> columns, int level, int maxLevel, Date startDate,
-        Date endDate, boolean descOrder, Integer min, Integer max )
+        Date endDate, boolean descOrder, Boolean completed, Integer min, Integer max )
     {
         // ---------------------------------------------------------------------
         // Headers TODO hidden cols
@@ -229,7 +229,7 @@ public class HibernateProgramStageInstanceStore
         // ---------------------------------------------------------------------
 
         String sql = getTabularReportSql( false, programStage, columns, orgUnits, level, maxLevel, startDate, endDate,
-            descOrder, min, max );
+            descOrder, completed, min, max );
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
 
@@ -239,10 +239,10 @@ public class HibernateProgramStageInstanceStore
     }
 
     public int getTabularReportCount( ProgramStage programStage, List<TabularReportColumn> columns,
-        Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate )
+        Collection<Integer> organisationUnits, int level, int maxLevel, Date startDate, Date endDate, Boolean completed )
     {
         String sql = getTabularReportSql( true, programStage, columns, organisationUnits, level, maxLevel, startDate,
-            endDate, false, null, null );
+            endDate, false, completed, null, null );
 
         return jdbcTemplate.queryForInt( sql );
     }
@@ -346,7 +346,7 @@ public class HibernateProgramStageInstanceStore
 
     private String getTabularReportSql( boolean count, ProgramStage programStage, List<TabularReportColumn> columns,
         Collection<Integer> orgUnits, int level, int maxLevel, Date startDate, Date endDate, boolean descOrder,
-        Integer min, Integer max )
+        Boolean completed, Integer min, Integer max )
     {
         Set<String> deKeys = new HashSet<String>();
         String selector = count ? "count(*) " : "* ";
@@ -462,7 +462,11 @@ public class HibernateProgramStageInstanceStore
         {
             sql += "and ou.organisationunitid in (" + TextUtils.getCommaDelimitedString( orgUnits ) + ") ";
         }
-
+        if( completed!= null )
+        {
+            sql += "and psi.completed="+ completed + " ";
+        }
+        
         sql += "order by ";
 
         for ( int i = level; i <= maxLevel; i++ )

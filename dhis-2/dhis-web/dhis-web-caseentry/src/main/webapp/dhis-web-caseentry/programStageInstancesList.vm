@@ -40,7 +40,7 @@
 				<tbody id="list">
 					#foreach( $row in $grid.getRows() )
 						#set($index = 0)
-						<tr id="row"  #alternate( $mark )>
+						<tr id="row" #alternate( $mark )>
 							<td>
 								#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
 								$nr
