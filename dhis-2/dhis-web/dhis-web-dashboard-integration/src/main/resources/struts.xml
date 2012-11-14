@@ -65,7 +65,6 @@
 
     <action name="sendMessage" class="org.hisp.dhis.dashboard.message.action.SendMessageAction">
       <result name="success" type="redirect">message.action</result>
-      <param name="requiredAuthorities">F_SEND_MESSAGE</param>
     </action>
 
     <action name="sendFeedback" class="org.hisp.dhis.dashboard.message.action.SendFeedbackAction">
@@ -83,7 +82,6 @@
       <param name="menu">/dhis-web-commons/about/menuDashboard.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/message.js,../dhis-web-commons/select2/select2.min.js</param>
       <param name="stylesheets">style/dashboard.css,../dhis-web-commons/select2/select2.css</param>
-      <param name="requiredAuthorities">F_SEND_MESSAGE</param>
     </action>
 
     <action name="showSendFeedback" class="org.hisp.dhis.dashboard.action.NoAction">
