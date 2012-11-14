@@ -1802,7 +1802,7 @@ Ext.onReady( function() {
 						}
 					}
 					else {
-						alert('No layers to save');
+						alert('Please create a map first');
 					}
 				}
 			});
@@ -2250,7 +2250,7 @@ Ext.onReady( function() {
 				lonLat;
 				
 			if (!views.length) {
-				alert('Favorite has no layers'); //i18n
+				alert('Favorite has no layers (probably outdated)'); //i18n
 				return;
 			}
 			GIS.util.map.closeAllLayers();
@@ -3414,35 +3414,36 @@ Ext.onReady( function() {
                 region: 'center',
                 map: GIS.map,
                 height: 31,
-                cmp: {
+				cmp: {
 					tbar: {}
 				},
                 tbar: {
 					defaults: {
 						height: 26
 					},
-					items: [
-						{
+					items: function() {
+						var a = [];
+						a.push({
 							iconCls: 'gis-btn-icon-' + GIS.base.boundary.id,
 							menu: GIS.base.boundary.menu,
 							width: 26
-						},
-						{
+						});
+						a.push({
 							iconCls: 'gis-btn-icon-' + GIS.base.thematic1.id,
 							menu: GIS.base.thematic1.menu,
 							width: 26
-						},
-						{
+						});
+						a.push({
 							iconCls: 'gis-btn-icon-' + GIS.base.thematic2.id,
-							menu: GIS.obj.LayerMenu(GIS.base.thematic2),
+							menu: GIS.base.thematic2.menu,
 							width: 26
-						},
-						{
+						});
+						a.push({
 							iconCls: 'gis-btn-icon-' + GIS.base.facility.id,
-							menu: GIS.obj.LayerMenu(GIS.base.facility),
+							menu: GIS.base.facility.menu,
 							width: 26
-						},
-						{
+						});
+						a.push({
 							text: 'Favorites', //i18n
 							menu: {},
 							handler: function() {
@@ -3453,25 +3454,27 @@ Ext.onReady( function() {
 								GIS.cmp.mapWindow = GIS.obj.MapWindow();
 								GIS.cmp.mapWindow.show();
 							}
-						},
-						{
-							text: 'Legend', //i18n
-							menu: {},
-							handler: function() {
-								if (GIS.cmp.legendSetWindow && GIS.cmp.legendSetWindow.destroy) {
-									GIS.cmp.legendSetWindow.destroy();
+						});
+						if (GIS.init.security.isAdmin) {
+							a.push({
+								text: 'Legend', //i18n
+								menu: {},
+								handler: function() {
+									if (GIS.cmp.legendSetWindow && GIS.cmp.legendSetWindow.destroy) {
+										GIS.cmp.legendSetWindow.destroy();
+									}
+									
+									GIS.cmp.legendSetWindow = GIS.obj.LegendSetWindow();
+									GIS.cmp.legendSetWindow.show();
 								}
-								
-								GIS.cmp.legendSetWindow = GIS.obj.LegendSetWindow();
-								GIS.cmp.legendSetWindow.show();
-							}
-						},
-						{
+							});
+						}
+						a.push({
 							xtype: 'tbseparator',
 							height: 18,
 							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 4px',
-						},
-						{
+						});
+						a.push({
 							text: 'Download', //i18n
 							menu: {},
 							disabled: true,
@@ -3496,8 +3499,8 @@ Ext.onReady( function() {
 									GIS.cmp.downloadButton = this;
 								}
 							}
-						},
-						{
+						});
+						a.push({
 							text: 'Share', //i18n
 							menu: {},
 							disabled: true,
@@ -3514,15 +3517,15 @@ Ext.onReady( function() {
 									GIS.cmp.interpretationButton = this;
 								}
 							}
-						},
-						'->',
-						{
+						});
+						a.push('->');
+						a.push({
 							text: 'Exit', //i18n
 							handler: function() {								
-                                window.location.href = '../../dhis-web-commons-about/redirect.action';
+								window.location.href = '../../dhis-web-commons-about/redirect.action';
 							}
-						},
-						{
+						});
+						a.push({
 							text: '>>>', //i18n
 							handler: function() {
 								GIS.cmp.region.east.toggleCollapse();
@@ -3532,9 +3535,9 @@ Ext.onReady( function() {
 									GIS.cmp.region.center.cmp.tbar.resize = this;
 								}
 							}
-						}
-						
-					]
+						});
+						return a;
+					}()
 				},
 				listeners: {
 					added: function() {
