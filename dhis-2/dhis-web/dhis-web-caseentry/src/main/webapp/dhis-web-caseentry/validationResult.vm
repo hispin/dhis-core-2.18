@@ -5,7 +5,7 @@
 		<img src="../images/warning_small.png">
 	#end
 </h3>
-
+<input type="hidden" id="violateValidation" name="violateValidation" #if( $programValidationResults.size()==0 ) value="false" #else value="true" #end />
 #if( $programValidationResults.size()==0 )  
     <p class="bold">$encoder.htmlEncode( $i18n.getString( "successful_validation" ) )</p>
 #else
