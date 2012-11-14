@@ -158,7 +158,7 @@ public class RegisterCompleteDataSetAction
             registration.setDate( new Date() );
             registration.setStoredBy( storedBy );
 
-            registration.getPeriod().setName( format.formatPeriod( registration.getPeriod() ) );
+            registration.setPeriodName( format.formatPeriod( registration.getPeriod() ) );
 
             boolean notify = dataSet != null && dataSet.getNotificationRecipients() != null;
             
