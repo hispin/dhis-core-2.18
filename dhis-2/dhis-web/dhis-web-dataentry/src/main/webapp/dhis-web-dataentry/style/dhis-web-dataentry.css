@@ -53,3 +53,10 @@ input[type=text],textarea
   outline: 0;
   color: #333;
 }
+
+.historyHeader
+{
+  color: #606060;
+  font-size: 17px;
+  padding: 5px 0;
+}
