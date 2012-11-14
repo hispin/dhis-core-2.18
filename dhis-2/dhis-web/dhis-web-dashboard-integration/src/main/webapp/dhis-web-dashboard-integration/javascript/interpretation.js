@@ -3,13 +3,13 @@ var currentPage = 0;
 var pageLock = false;
 
 $( document ).ready( function() {
-	$( ".commentArea" ).autogrow();
-	
 	$( document ).scroll( function() {
 		isNextPage();
 	} );
 	
-	$( "#interpretationFeed" ).load( "getInterpretations.action" );
+	$( "#interpretationFeed" ).load( "getInterpretations.action", function() {
+		$( ".commentArea" ).autogrow();
+	} );
 } );
 
 function expandComments( id )
