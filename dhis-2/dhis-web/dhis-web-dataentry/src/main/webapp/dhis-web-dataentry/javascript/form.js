@@ -880,10 +880,9 @@ function displayPeriodsInternal()
 
     addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
 
-    for ( i in periods )
-    {
-        addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
-    }
+    $.each(periods, function(idx, item) {
+        addOptionById( 'selectedPeriodId', item.id, item.name );
+    });
 }
 
 // -----------------------------------------------------------------------------
@@ -915,10 +914,9 @@ function dataSetSelected()
 
         addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
 
-        for ( i in periods )
-        {
-            addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
-        }
+        $.each(periods, function(idx, item) {
+            addOptionById( 'selectedPeriodId', item.id, item.name );
+        });
 
         var previousPeriodType = currentDataSetId ? dataSets[currentDataSetId].periodType : null;
 
@@ -1546,17 +1544,14 @@ function purgeLocalForms()
 {
     var formIds = storageManager.getAllForms();
 
-    for ( i in formIds )
-    {
-        var localId = formIds[i];
-
-        if ( dataSets[localId] == null )
+    $.each(formIds, function(idx, item) {
+        if ( dataSets[item] == null )
         {
-            storageManager.deleteForm( localId );
-            storageManager.deleteFormVersion( localId );
-            log( 'Deleted locally stored form: ' + localId );
+            storageManager.deleteForm( item );
+            storageManager.deleteFormVersion( item );
+            log( 'Deleted locally stored form: ' + item );
         }
-    }
+    });
 
     log( 'Purged local forms' );
 }
@@ -1566,31 +1561,27 @@ function updateExistingLocalForms()
     var formIds = storageManager.getAllForms();
     var formVersions = storageManager.getAllFormVersions();
 
-    for ( i in formIds )
-    {
-        var localId = formIds[i];
-
-        var remoteVersion = dataSets[localId].version;
-        var localVersion = formVersions[localId];
+    $.each(formIds, function(idx, item) {
+        var remoteVersion = dataSets[item].version;
+        var localVersion = formVersions[item];
 
         if ( remoteVersion == null || localVersion == null || remoteVersion != localVersion )
         {
-            storageManager.downloadForm( localId, remoteVersion );
+            storageManager.downloadForm( item, remoteVersion );
         }
-    }
+    });
 }
 
 function downloadRemoteForms()
 {
-    for ( dataSetId in dataSets )
-    {
-        var remoteVersion = dataSets[dataSetId].version;
+    $.each(dataSets, function(idx, item) {
+        var remoteVersion = item.version;
 
-        if ( !storageManager.formExists( dataSetId ) && !dataSets[dataSetId].skipOffline )
+        if ( !storageManager.formExists( idx ) && !item.skipOffline )
         {
-            storageManager.downloadForm( dataSetId, remoteVersion );
+            storageManager.downloadForm( idx, remoteVersion );
         }
-    }
+    });
 }
 
 // TODO break if local storage is full
