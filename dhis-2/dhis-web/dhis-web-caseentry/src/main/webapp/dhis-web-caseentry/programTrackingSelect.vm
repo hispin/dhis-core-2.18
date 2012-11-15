@@ -19,6 +19,7 @@
 		disable('advancedSearchBtn');
 		setFieldValue('searchByProgramStage', 'true');
 		setFieldValue('hideLink', 'true');
+		isDashboard = true;
 		showById('dueDateTR');
 		mainPage = 0;
 	});	
