@@ -27,19 +27,7 @@ package org.hisp.dhis.integration.management;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.concurrent.ThreadPoolExecutor;
-import org.apache.camel.CamelContext;
-import org.apache.camel.Component;
-import org.apache.camel.Endpoint;
-import org.apache.camel.ErrorHandlerFactory;
-import org.apache.camel.Processor;
-import org.apache.camel.Route;
-import org.apache.camel.Service;
-import org.apache.camel.VetoCamelContextStartException;
+import org.apache.camel.*;
 import org.apache.camel.model.RoutesDefinition;
 import org.apache.camel.spi.LifecycleStrategy;
 import org.apache.camel.spi.RouteContext;
@@ -50,42 +38,49 @@ import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * @author bobj
  */
-public class DHIS2LifecycleStrategy 
+public class DHIS2LifecycleStrategy
     implements LifecycleStrategy
 {
     private final Log log = LogFactory.getLog( DHIS2LifecycleStrategy.class );
-    
+
     @Autowired
     private LocationManager locationManager;
-    
+
     @Override
-    public void onContextStart( CamelContext context ) 
+    public void onContextStart( CamelContext context )
         throws VetoCamelContextStartException
     {
         try
         {
             log.info( "Camel context started" );
-            if (locationManager== null) throw new LocationManagerException("No locationManager configured");
-            
-            File rootsDir = new File(locationManager.getExternalDirectory().getAbsolutePath() + "/routes/");
-            
-            if (!rootsDir.exists()) {
+            if ( locationManager == null ) throw new LocationManagerException( "No locationManager configured" );
+
+            File rootsDir = new File( locationManager.getExternalDirectory().getAbsolutePath() + "/routes/" );
+
+            if ( !rootsDir.exists() )
+            {
                 rootsDir.mkdir();
             }
-            
+
             File[] routeFiles = rootsDir.listFiles();
-            for (File routeFile : routeFiles) 
+            for ( File routeFile : routeFiles )
             {
                 // load xml route
-                if (routeFile.getName().endsWith( ".xml") ) 
+                if ( routeFile.getName().endsWith( ".xml" ) )
                 {
                     InputStream is = null;
                     try
                     {
-                        is = new FileInputStream(routeFile);
+                        is = new FileInputStream( routeFile );
                         RoutesDefinition routes = context.loadRoutesDefinition( is );
                         context.addRouteDefinitions( routes.getRoutes() );
                     } catch ( Exception ex )
@@ -93,16 +88,16 @@ public class DHIS2LifecycleStrategy
                         log.info( "Unable to load routes from " + routeFile.getName() + " : " + ex.getMessage() );
                     } finally
                     {
-                        IOUtils.closeQuietly( is);
+                        IOUtils.closeQuietly( is );
                     }
                 }
             }
         } catch ( LocationManagerException ex )
         {
             // no dhis2_home directory configured .. no routes to load ... that's ok
-            log.info("Not loading external routes from DHIS2_HOME");
+            log.info( "Not loading external routes from DHIS2_HOME" );
         }
-        
+
     }
 
     @Override
@@ -170,8 +165,20 @@ public class DHIS2LifecycleStrategy
     }
 
     @Override
+    public void onErrorHandlerRemove( RouteContext routeContext, Processor errorHandler, ErrorHandlerFactory ehf )
+    {
+        log.debug( "Camel error handler removed: " + ehf.toString() );
+    }
+
+    @Override
     public void onThreadPoolAdd( CamelContext cc, ThreadPoolExecutor tpe, String string, String string1, String string2, String string3 )
     {
-        log.debug( "Camel threadpool added" );
+        log.debug( "Camel threadPool added" );
+    }
+
+    @Override
+    public void onThreadPoolRemove( CamelContext camelContext, ThreadPoolExecutor threadPool )
+    {
+        log.debug( "Camel threadPool removed" );
     }
 }
