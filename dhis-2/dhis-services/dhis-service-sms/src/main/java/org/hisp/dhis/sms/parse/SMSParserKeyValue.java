@@ -15,8 +15,10 @@ import java.util.regex.Pattern;
 public class SMSParserKeyValue
     implements IParser
 {
-  //= "([a-zA-Z]+)\\s*(\\d+)";
-    private String defaultPattern = "(\\w+)\\s*\\*\\s*([\\w ]+)\\s*(\\*|$)*\\s*";
+    // "(\\w+)\\s*\\*\\s*([\\w ]+)\\s*(\\*|$)*\\s*";
+    // = "([a-zA-Z]+)\\s*(\\d+)";
+    private String defaultPattern = "([a-zA-Z]+)\\s*(\\d+)";
+
     private Pattern pattern = Pattern.compile( defaultPattern );
 
     @Override
@@ -42,7 +44,8 @@ public class SMSParserKeyValue
 
     public void setSeparator( String separator )
     {
-        String x = "(\\w+)\\s*" + separator.trim()  + "\\s*(\\d+)";
+        String x = null;
+        x = "(\\w+)\\s*\\" + separator.trim() + "\\s*([\\w ]+)\\s*(\\" + separator.trim() + "|$)*\\s*";
         pattern = Pattern.compile( x );
     }
 

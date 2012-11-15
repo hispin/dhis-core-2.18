@@ -7,10 +7,8 @@ import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsStore;
 import org.hisp.dhis.sms.incoming.SmsMessageEncoding;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
-import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.sms.parse.ParserManager;
-import org.hisp.dhis.sms.parse.SMSParserException;
 
 import com.opensymphony.xwork2.Action;
 
@@ -22,8 +20,6 @@ public class SMSInput
     implements Action
 {
 
-    private ParserManager smsParserManager;
-
     private String msisdn, sender, message, dca, reffering_batch, network_id, concat_reference, concat_num_segments,
         concat_seq_num, received_time;
 
@@ -34,13 +30,6 @@ public class SMSInput
     private IncomingSms sms;
 
     private IncomingSmsStore smsStore;
-
-    private OutboundSmsService outboundSmsService;
-
-    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
-    {
-        this.outboundSmsService = outboundSmsService;
-    }
 
     public SMSInput()
     {
@@ -78,32 +67,7 @@ public class SMSInput
 
         smsStore.save( sms );
 
-        try
-        {
-            smsParserManager.parse( sender, message );
-        }
-        catch ( SMSParserException e )
-        {
-            sendSMS( e.getMessage() );
-            return ERROR;
-        }
-
-        sendSMS( "SMS successfully received" );
-        // TODO DataEntry stuff
         return SUCCESS;
-    }
-
-    private void sendSMS( String message )
-    {
-        if ( outboundSmsService != null )
-        {
-            outboundSmsService.sendMessage( new OutboundSms( message, sender ), null );
-        }
-        else
-        {
-            // Just for testing
-            System.out.println( "\n\n\n SMS: " + message + "\n\n\n" );
-        }
     }
 
     public void setSmsStore( IncomingSmsStore smsStore )
@@ -242,9 +206,5 @@ public class SMSInput
         this.source_id = source_id;
     }
 
-    public void setSmsParserManager( ParserManager smsParserManager )
-    {
-        this.smsParserManager = smsParserManager;
-    }
 
 }
