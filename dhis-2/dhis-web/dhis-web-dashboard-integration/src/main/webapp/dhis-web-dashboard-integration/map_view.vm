@@ -17,6 +17,6 @@
 </table>
 
 #if( $maps.size() == 0 )
-<div class="labelText">$i18n.getString( "insert_links_by_going_to" ) 
+<div class="labelText">$i18n.getString( "insert_links_by_going_to" )<br>
 <a href="../dhis-web-mapping/app/index.html">$i18n.getString( "gis" )</a></div>
 #end

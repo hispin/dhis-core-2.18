@@ -31,7 +31,10 @@
     #if ( $page )
         #parse( "/dhis-web-dashboard-integration/${page}.vm" )
     #else
-        <div class="labelText">$i18n.getString( 'this_is_a_link_area' )</div>
+        <div class="labelText">
+        	$i18n.getString( 'this_is_a_link_area' )<br><br>
+            $i18n.getString( 'click_insert_and_select_link' )
+        </div>
     #end
 </div>
 #end
@@ -48,7 +51,10 @@
     #if ( $chart )
         <img style="cursor:pointer" src="../api/charts/${chart.uid}/data?width=310&height=310" onclick="viewChart( '../api/charts/${chart.uid}/data', '${encoder.htmlEncode( $chart.name )}' )">
     #else
-        <div class="labelText">$i18n.getString( 'this_is_a_chart_area' )</div>
+        <div class="labelText">
+        	$i18n.getString( 'this_is_a_chart_area' )<br><br>
+            $i18n.getString( 'click_insert_and_select_chart' )
+        </div>
     #end
 </div>
 #end
