@@ -65,6 +65,7 @@ var DEFAULT_NAME = '[unknown]';
 
 var FORMTYPE_CUSTOM = 'custom';
 var FORMTYPE_SECTION = 'section';
+var FORMTYPE_MULTIORG_SECTION = 'multiorg_section';
 var FORMTYPE_DEFAULT = 'default';
 
 var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded";
@@ -249,7 +250,7 @@ function uploadLocalData()
                 $( '#sync_button' ).bind( 'click', uploadLocalData );
             }
         } );
-    };
+    }
 
     ( function pushDataValues( array )
     {
@@ -595,21 +596,6 @@ function enableSectionFilter()
     }
 }
 
-function resetSectionFilters()
-{
-    $( '#selectionBox' ).css( 'height', '93px' );
-    $( '#filterDataSetSectionTr' ).hide();
-    $( '.formSection' ).show();
-}
-
-function clearSectionFilters()
-{
-    $( '#filterDataSetSection' ).children().remove();
-    $( '#selectionBox' ).css( 'height', '93px' );
-    $( '#filterDataSetSectionTr' ).hide();
-    $( '.formSection' ).show();
-}
-
 function filterOnSection()
 {
     var $filterDataSetSection = $( '#filterDataSetSection' );
@@ -741,16 +727,15 @@ function getSortedDataSetList( orgUnit )
 
     var dataSetList = [];
 
-    for ( i in orgUnitDataSets )
-    {
-        var dataSetId = orgUnitDataSets[i];
+    $.each(orgUnitDataSets, function(idx, item) {
+        var dataSetId = orgUnitDataSets[idx];
         var dataSetName = dataSets[dataSetId].name;
 
         var row = [];
         row['id'] = dataSetId;
         row['name'] = dataSetName;
-        dataSetList[i] = row;
-    }
+        dataSetList[idx] = row;
+    });
 
     dataSetList.sort( function( a, b )
     {
@@ -780,11 +765,11 @@ function getSortedDataSetListForOrgUnits( orgUnits )
                 found = true;
         });
 
-        if( !found && formType == 'section' )
+        if( !found && formType == FORMTYPE_SECTION )
         {
             filteredDataSetList.push(item);
         }
-    })
+    });
 
     return filteredDataSetList;
 }
@@ -814,15 +799,14 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 
     var dataSetValid = false;
 
-    for ( var i in dataSetList )
-    {
-        addOptionById( 'selectedDataSetId', dataSetList[i].id, dataSetList[i].name );
+    $.each(dataSetList, function(idx, item) {
+        addOptionById( 'selectedDataSetId', item.id, item.name );
 
-        if ( dataSetId == dataSetList[i].id )
+        if ( dataSetId == item.id )
         {
             dataSetValid = true;
         }
-    }
+    });
 
     if ( children )
     {
@@ -830,7 +814,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 
         if( childrenDataSets && childrenDataSets.length > 0 )
         {
-            $('#selectedDataSetId').append('<optgroup label="Childrens DataSets">')
+            $('#selectedDataSetId').append('<optgroup label=' + i18n_childrens_forms + '>');
 
             $.each(childrenDataSets, function(idx, item) {
                 $('<option />').attr('data-multiorg', true).attr('value', item.id).html(item.name).appendTo('#selectedDataSetId');
@@ -1814,7 +1798,7 @@ function StorageManager()
     /**
      * Saves a version for a form.
      *
-     * @param the identifier of the data set of the form.
+     * @param dataSetId the identifier of the data set of the form.
      * @param formVersion the version of the form.
      */
     this.saveFormVersion = function( dataSetId, formVersion )
@@ -1875,7 +1859,7 @@ function StorageManager()
                 localStorage[KEY_FORM_VERSIONS] = JSON.stringify( formVersions );
             }
         }
-    }
+    };
 
     this.getAllFormVersions = function()
     {
@@ -2053,7 +2037,7 @@ function StorageManager()
     /**
      * Removes the given complete data set registration.
      *
-     * @param the complete data set registration as JSON.
+     * @param json the complete data set registration as JSON.
      */
     this.clearCompleteDataSet = function( json )
     {
@@ -2066,7 +2050,7 @@ function StorageManager()
 
             if ( completeDataSets.length > 0 )
             {
-                localStorage.remoteItem( KEY_COMPLETEDATASETS );
+                localStorage.removeItem( KEY_COMPLETEDATASETS );
             }
             else
             {
