@@ -2527,8 +2527,7 @@ Ext.onReady( function() {
                 collapseMode: 'mini',
                 items: [
                     {
-                        xtype: 'toolbar',
-                        cls: 'dv-toolbar-2',
+						xtype: 'toolbar',
                         height: 45,
                         style: 'padding-top:0px; border-style:none',
                         defaults: {
@@ -3616,7 +3615,6 @@ Ext.onReady( function() {
 											{
 												id: 'organisationunit_t',
 												xtype: 'toolbar',
-												cls: 'dv-toolbar-tbar',
 												style: 'margin-bottom: 5px',
 												width: DV.conf.layout.west_fieldset_width - 18,
 												xable: function(checked, value) {
@@ -3628,18 +3626,17 @@ Ext.onReady( function() {
 													}
 												},
 												defaults: {
-													height: 28
+													height: 24
 												},
 												items: [
 													{
 														xtype: 'label',
 														text: 'Auto-select organisation units by',
-														style: 'padding-left:8px; color:#666; line-height:28px'
+														style: 'padding-left:8px; color:#666; line-height:24px'
 													},
 													'->',
 													{
 														text: 'Group..',
-														cls: 'dv-toolbar-btn-2',
 														handler: function() {},
 														listeners: {
 															added: function() {
@@ -4142,16 +4139,13 @@ Ext.onReady( function() {
                 layout: 'fit',
                 bodyStyle: 'padding-top:5px',
                 tbar: {
-                    xtype: 'toolbar',
-                    cls: 'dv-toolbar-1',
                     defaults: {
-                        height: 30
+                        height: 26
                     },
                     items: [
                         {
                             xtype: 'button',
                             name: 'resizewest',
-							cls: 'dv-toolbar-btn-2',
                             text: '<<<',
                             handler: function() {
                                 var p = DV.cmp.region.west;
@@ -4170,21 +4164,14 @@ Ext.onReady( function() {
                         },
                         {
                             xtype: 'button',
-							cls: 'dv-toolbar-btn-1',
-                            text: DV.i18n.update,
+                            text: '<b>' + DV.i18n.update + '</b>',
                             handler: function() {
 								DV.c.currentFavorite = null;
                                 DV.exe.execute();
                             }
                         },
-						{
-							xtype: 'tbseparator',
-							height: 18,
-							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 4px',
-						},
                         {
                             xtype: 'button',
-							cls: 'dv-toolbar-btn-2',
                             text: DV.i18n.favorites,
                             menu: {},
                             listeners: {
@@ -4286,9 +4273,8 @@ Ext.onReady( function() {
                                                                     store: DV.store.favorite,
                                                                     tbar: {
                                                                         id: 'favorite_t',
-                                                                        cls: 'dv-toolbar-tbar',
                                                                         defaults: {
-                                                                            height: 28
+                                                                            height: 24
                                                                         },
                                                                         items: [
                                                                             {
@@ -4402,7 +4388,7 @@ Ext.onReady( function() {
                                                                                         bbar: {
 																							cls: 'dv-toolbar-bbar',
 																							defaults: {
-																								height: 28
+																								height: 22
 																							},
 																							items: [
 																								{
@@ -4505,7 +4491,7 @@ Ext.onReady( function() {
                                                                                             bbar: {
 																								cls: 'dv-toolbar-bbar',
 																								defaults: {
-																									height: 28
+																									height: 22
 																								},
 																								items: [
 																									{
@@ -4561,12 +4547,12 @@ Ext.onReady( function() {
                                                             bbar: {
 																cls: 'dv-toolbar-bbar',
 																defaults: {
-																	height: 28
+																	height: 22
 																},
 																items: [
 																	{
 																		xtype: 'label',
-																		style: 'padding-left:6px; line-height:29px; font-size:10px; color:#666; width:70%',
+																		style: 'padding-left:6px; line-height:22px; font-size:10px; color:#666; width:70%',
 																		listeners: {
 																			added: function() {
 																				DV.cmp.favorite.label = this;
@@ -4635,7 +4621,7 @@ Ext.onReady( function() {
 																						bbar: {
 																							cls: 'dv-toolbar-bbar',
 																							defaults: {
-																								height: 28
+																								height: 22
 																							},
 																							items: [
 																								{
@@ -4765,7 +4751,6 @@ Ext.onReady( function() {
 						},
                         {
                             xtype: 'button',
-							cls: 'dv-toolbar-btn-2',
                             text: DV.i18n.download,
                             menu: {},
                             execute: function(type) {
@@ -4820,7 +4805,6 @@ Ext.onReady( function() {
                         },
                         {
 							xtype: 'button',
-							cls: 'dv-toolbar-btn-2',
 							text: DV.i18n.share,
 							menu: {},
 							disabled: true,
@@ -4890,7 +4874,7 @@ Ext.onReady( function() {
 										bbar: {
 											cls: 'dv-toolbar-bbar',
 											defaults: {
-												height: 28
+												height: 24
 											},
 											items: [
 												'->',
@@ -4948,9 +4932,13 @@ Ext.onReady( function() {
 								}
                             }
 						},
+						{
+							xtype: 'tbseparator',
+							height: 18,
+							style: 'border-color: transparent #d1d1d1 transparent transparent; margin-right: 4px',
+						},
                         {
                             xtype: 'button',
-							cls: 'dv-toolbar-btn-2',
                             text: DV.i18n.data_table,
                             disabled: true,
                             handler: function() {
@@ -4981,7 +4969,6 @@ Ext.onReady( function() {
                         '->',
                         {
                             xtype: 'button',
-							cls: 'dv-toolbar-btn-2',
                             text: 'Exit',
                             handler: function() {
                                 window.location.href = '../../dhis-web-commons-about/redirect.action';
@@ -4990,7 +4977,6 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
                             name: 'resizeeast',
-							cls: 'dv-toolbar-btn-2',
                             text: '>>>',
                             hidden: true,
                             handler: function() {

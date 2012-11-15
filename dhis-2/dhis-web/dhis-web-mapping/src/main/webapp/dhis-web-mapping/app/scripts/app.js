@@ -3413,7 +3413,6 @@ Ext.onReady( function() {
                 xtype: 'gx_mappanel',
                 region: 'center',
                 map: GIS.map,
-                height: 31,
 				cmp: {
 					tbar: {}
 				},
