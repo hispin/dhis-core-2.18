@@ -172,7 +172,12 @@ public class CurrentUserController
         userAccount.setIntroduction( currentUser.getIntroduction() );
         userAccount.setJobTitle( currentUser.getJobTitle() );
         userAccount.setGender( currentUser.getGender() );
-        userAccount.setBirthday( simpleDateFormat.format( currentUser.getBirthday() ) );
+
+        if ( currentUser.getBirthday() != null )
+        {
+            userAccount.setBirthday( simpleDateFormat.format( currentUser.getBirthday() ) );
+        }
+
         userAccount.setNationality( currentUser.getNationality() );
         userAccount.setEmployer( currentUser.getEmployer() );
         userAccount.setEducation( currentUser.getEducation() );
@@ -204,7 +209,12 @@ public class CurrentUserController
         currentUser.setIntroduction( userAccount.getIntroduction() );
         currentUser.setJobTitle( userAccount.getJobTitle() );
         currentUser.setGender( userAccount.getGender() );
-        currentUser.setBirthday( simpleDateFormat.parse( userAccount.getBirthday() ) );
+
+        if ( userAccount.getBirthday() != null )
+        {
+            currentUser.setBirthday( simpleDateFormat.parse( userAccount.getBirthday() ) );
+        }
+
         currentUser.setNationality( userAccount.getNationality() );
         currentUser.setEmployer( userAccount.getEmployer() );
         currentUser.setEducation( userAccount.getEducation() );
