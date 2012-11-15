@@ -32,11 +32,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.hisp.dhis.api.mobile.model.Activity;
 import org.hisp.dhis.api.mobile.model.ActivityPlan;
-import org.hisp.dhis.api.mobile.model.DataElement;
-
 import org.hisp.dhis.light.utils.NamebasedUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -168,13 +165,6 @@ public class GetProgramStageFormAction
         this.organisationUnit = organisationUnit;
     }
 
-    private List<DataElement> dataElements;
-
-    public List<DataElement> getDataElements()
-    {
-        return this.dataElements;
-    }
-
     private ProgramStage programStage;
 
     public ProgramStage getProgramStage()
@@ -300,11 +290,16 @@ public class GetProgramStageFormAction
         this.current = current;
     }
 
-    private List<ProgramStageDataElement> listOfProgramStageDataElement;
+    private List<ProgramStageDataElement> dataElements;
 
-    public List<ProgramStageDataElement> getListOfProgramStageDataElement()
+    public List<ProgramStageDataElement> getDataElements()
     {
-        return listOfProgramStageDataElement;
+        return dataElements;
+    }
+
+    public void setDataElements( List<ProgramStageDataElement> dataElements )
+    {
+        this.dataElements = dataElements;
     }
 
     @Override
@@ -318,18 +313,12 @@ public class GetProgramStageFormAction
         if ( programStageSectionId != null && programStageSectionId != 0 )
         {
             this.programStageSection = programStageSectionService.getProgramStageSection( this.programStageSectionId );
-
-            listOfProgramStageDataElement = programStageSection.getProgramStageDataElements();
-
-            dataElements = util.transformDataElementsToMobileModel( listOfProgramStageDataElement );
+            dataElements = programStageSection.getProgramStageDataElements();
 
         }
         else
         {
-            listOfProgramStageDataElement = new ArrayList<ProgramStageDataElement>(
-                programStage.getProgramStageDataElements() );
-
-            dataElements = util.transformDataElementsToMobileModel( programStageId );
+            dataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
         }
 
         program = programStageInstanceService.getProgramStageInstance( programStageInstanceId ).getProgramInstance()
@@ -339,6 +328,11 @@ public class GetProgramStageFormAction
         for ( PatientDataValue patientDataValue : patientDataValues )
         {
             prevDataValues.put( "DE" + patientDataValue.getDataElement().getId(), patientDataValue.getValue() );
+            if ( patientDataValue.getProvidedElsewhere() != null )
+            {
+                prevDataValues.put( "CB" + patientDataValue.getDataElement().getId(), patientDataValue
+                    .getProvidedElsewhere().toString() );
+            }
         }
         return SUCCESS;
     }

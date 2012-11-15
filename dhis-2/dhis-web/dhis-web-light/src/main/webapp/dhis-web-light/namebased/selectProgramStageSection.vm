@@ -17,9 +17,17 @@
 <h2>$i18n.getString( "sections" )</h2>
 <div>
 	<ul>
-	#foreach( $each in $listOfProgramStageSections )
-		<li><a href="showProgramStageForm.action?programStageSectionId=$each.Id&programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&patientId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">$each.name</a></li>
+	#if ($programStageInstance.isCompleted() == true)
+		#foreach( $each in $listOfProgramStageSections )
+			<li><a href="showCompletedProgramStageForm.action?programStageSectionId=$each.Id&programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&patientId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">$each.name</a></li>
+		#end
+	#else
+		#foreach( $each in $listOfProgramStageSections )
+			<li><a href="showProgramStageForm.action?programStageSectionId=$each.Id&programId=$programId&programStageId=$programStageInstance.getProgramStage().getId()&programStageInstanceId=$programStageInstance.getId()&patientId=$patient.getId()&programInstanceId=$programStageInstance.getProgramInstance().getId()&orgUnitId=0">$each.name</a></li>
+		#end
 	#end
+		
+	
 	</ul>
 </div>
 

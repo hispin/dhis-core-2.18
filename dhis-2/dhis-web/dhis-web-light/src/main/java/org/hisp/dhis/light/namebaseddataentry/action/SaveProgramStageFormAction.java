@@ -29,18 +29,12 @@ package org.hisp.dhis.light.namebaseddataentry.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.api.mobile.ActivityReportingService;
-import org.hisp.dhis.api.mobile.NotAllowedException;
-import org.hisp.dhis.api.mobile.model.ActivityValue;
-import org.hisp.dhis.api.mobile.model.DataElement;
-import org.hisp.dhis.api.mobile.model.DataValue;
 import org.hisp.dhis.program.ProgramExpressionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -50,6 +44,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
@@ -66,7 +61,6 @@ import org.hisp.dhis.program.ProgramValidationService;
 import org.hisp.dhis.util.ContextUtils;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
-
 
 public class SaveProgramStageFormAction
     implements Action
@@ -99,14 +93,7 @@ public class SaveProgramStageFormAction
     {
         this.dataElementService = dataElementService;
     }
-
-    private ActivityReportingService activityReportingService;
-
-    public void setActivityReportingService( ActivityReportingService activityReportingService )
-    {
-        this.activityReportingService = activityReportingService;
-    }
-
+    
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -204,9 +191,9 @@ public class SaveProgramStageFormAction
     {
         this.programStageSectionService = programStageSectionService;
     }
-    
+
     private ProgramExpressionService programExpressionService;
-    
+
     public ProgramExpressionService getProgramExpressionService()
     {
         return programExpressionService;
@@ -216,7 +203,7 @@ public class SaveProgramStageFormAction
     {
         this.programExpressionService = programExpressionService;
     }
-        
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -302,10 +289,8 @@ public class SaveProgramStageFormAction
     {
         return programStage;
     }
-    
+
     private ProgramStageDataElement programStageDataElement;
-    
-    
 
     public ProgramStageDataElement getProgramStageDataElement()
     {
@@ -324,9 +309,9 @@ public class SaveProgramStageFormAction
         return current;
     }
 
-    private List<DataElement> dataElements;
+    private List<ProgramStageDataElement> dataElements;
 
-    public List<DataElement> getDataElements()
+    public List<ProgramStageDataElement> getDataElements()
     {
         return dataElements;
     }
@@ -427,12 +412,12 @@ public class SaveProgramStageFormAction
     private I18nFormat format;
 
     private List<ProgramValidationResult> programValidationResults;
-    
+
     public List<ProgramValidationResult> getProgramValidationResults()
     {
         return programValidationResults;
     }
-    
+
     @Override
     public String execute()
         throws Exception
@@ -450,27 +435,28 @@ public class SaveProgramStageFormAction
         program = programStageService.getProgramStage( programStageId ).getProgram();
         org.hisp.dhis.program.ProgramStage dhisProgramStage = programStageService.getProgramStage( programStageId );
 
+        ProgramStageInstance programStageInstance = programStageInstanceService
+            .getProgramStageInstance( programStageInstanceId );
+
+        List<PatientDataValue> patientDataValues = new ArrayList<PatientDataValue>();
+
         patient = patientService.getPatient( patientId );
         if ( programStageSectionId != null && programStageSectionId != 0 )
         {
             this.programStageSection = programStageSectionService.getProgramStageSection( this.programStageSectionId );
 
-            List<ProgramStageDataElement> listOfProgramStageDataElement = programStageSection
-                .getProgramStageDataElements();
-
-            dataElements = util.transformDataElementsToMobileModel( listOfProgramStageDataElement );
+            dataElements = programStageSection.getProgramStageDataElements();
         }
         else
         {
-            dataElements = util.transformDataElementsToMobileModel( programStageId );
+            dataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
         }
 
-        int defaultCategoryOptionId = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo().getId();
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
             ServletActionContext.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
 
-        List<DataValue> dataValues = new ArrayList<DataValue>();
+        // List<DataValue> dataValues = new ArrayList<DataValue>();
 
         typeViolations.clear();
         prevDataValues.clear();
@@ -480,13 +466,12 @@ public class SaveProgramStageFormAction
             if ( key.startsWith( "DE" ) )
             {
                 Integer dataElementId = Integer.parseInt( key.substring( 2, key.length() ) );
-                // Integer categoryOptComboId = Integer.parseInt( splitKey[1] );
                 String value = parameterMap.get( key );
 
-                // validate types
                 org.hisp.dhis.dataelement.DataElement dataElement = dataElementService.getDataElement( dataElementId );
                 ProgramStageDataElement programStageDataElement = programStageDataElementService.get( dhisProgramStage,
                     dataElement );
+
                 value = value.trim();
                 Boolean valueIsEmpty = (value == null || value.length() == 0);
 
@@ -498,23 +483,26 @@ public class SaveProgramStageFormAction
                     {
                         typeViolations.put( key, typeViolation );
                     }
-
-                    prevDataValues.put( key, value );
                 }
                 else if ( valueIsEmpty && programStageDataElement.isCompulsory() )
                 {
                     typeViolations.put( key, "is_empty" );
-                    prevDataValues.put( key, value );
                 }
 
-                // build dataValue for activity value
-                DataValue dataValue = new DataValue();
-                dataValue.setId( dataElementId );
-                dataValue.setValue( value );
+                prevDataValues.put( key, value );
+                prevDataValues.put( "CB" + dataElement.getId(), parameterMap.get( "CB" + dataElement.getId() ) );
+                
+                // build patient data value
+                PatientDataValue patientDataValue = new PatientDataValue( programStageInstance, dataElement,
+                    new Date(), value );
+                String providedElseWhereValue = parameterMap.get( "CB" + dataElementId );
 
-                dataValue.setCategoryOptComboID( defaultCategoryOptionId );
+                if ( providedElseWhereValue != null )
+                {
+                    patientDataValue.setProvidedElsewhere( Boolean.parseBoolean( providedElseWhereValue ) );
+                }
 
-                dataValues.add( dataValue );
+                patientDataValues.add( patientDataValue );
             }
         }
 
@@ -525,23 +513,9 @@ public class SaveProgramStageFormAction
         }
 
         // Save patient data value
-        ActivityValue activityValue = new ActivityValue();
-        activityValue.setDataValues( dataValues );
-        activityValue.setProgramInstanceId( programStageInstanceId );
-
-        try
-        {
-            activityReportingService.saveActivityReport( organisationUnit, activityValue, programStageSectionId );
-        }
-        catch ( NotAllowedException e )
-        {
-            e.printStackTrace();
-            return ERROR;
-        }
+        this.savePatientDataValues( patientDataValues, programStageInstance );
 
         // Check validation rule
-        ProgramStageInstance programStageInstance = programStageInstanceService
-            .getProgramStageInstance( programStageInstanceId );
         this.runProgramValidation(
             programValidationService.getProgramValidation( programStageInstance.getProgramStage() ),
             programStageInstance );
@@ -573,11 +547,38 @@ public class SaveProgramStageFormAction
         }
     }
 
+    private void savePatientDataValues( List<PatientDataValue> patientDataValues,
+        ProgramStageInstance programStageInstance )
+    {
+        for ( PatientDataValue patientDataValue : patientDataValues )
+        {
+            PatientDataValue previousPatientDataValue = patientDataValueService.getPatientDataValue(
+                patientDataValue.getProgramStageInstance(), patientDataValue.getDataElement() );
+
+            if ( previousPatientDataValue == null )
+            {
+                patientDataValueService.savePatientDataValue( patientDataValue );
+            }
+            else
+            {
+                previousPatientDataValue.setValue( patientDataValue.getValue() );
+                previousPatientDataValue.setTimestamp( new Date() );
+                previousPatientDataValue.setProvidedElsewhere( patientDataValue.getProvidedElsewhere() );
+                patientDataValueService.updatePatientDataValue( previousPatientDataValue );
+            }
+
+        }
+
+        programStageInstance.setCompleted( true );
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+
+    }
+
     private void runProgramValidation( Collection<ProgramValidation> validations,
         ProgramStageInstance programStageInstance )
     {
         programValidationResults = new ArrayList<ProgramValidationResult>();
-        
+
         if ( validations != null )
         {
             for ( ProgramValidation validation : validations )
@@ -588,12 +589,12 @@ public class SaveProgramStageFormAction
                 if ( validationResult != null )
                 {
                     programValidationResults.add( validationResult );
-                    
+
                     leftsideFormulaMap.put(
                         validationResult.getProgramValidation().getId(),
                         programExpressionService.getExpressionDescription( validationResult.getProgramValidation()
                             .getLeftSide().getExpression() ) );
-                    
+
                     rightsideFormulaMap.put(
                         validationResult.getProgramValidation().getId(),
                         programExpressionService.getExpressionDescription( validationResult.getProgramValidation()
@@ -601,6 +602,6 @@ public class SaveProgramStageFormAction
                 }
             }
         }
-        
+
     }
 }

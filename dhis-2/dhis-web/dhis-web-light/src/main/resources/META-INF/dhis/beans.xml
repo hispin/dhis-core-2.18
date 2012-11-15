@@ -198,8 +198,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="activityReportingService"
-			ref="org.hisp.dhis.mobile.api.ActivityReportingService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
@@ -211,6 +209,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
 		<property name="programStageSectionService" ref="org.hisp.dhis.program.ProgramStageSectionService"/>
 		<property name="programExpressionService" ref="org.hisp.dhis.program.ProgramExpressionService" />
+		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 
 	</bean>
 
