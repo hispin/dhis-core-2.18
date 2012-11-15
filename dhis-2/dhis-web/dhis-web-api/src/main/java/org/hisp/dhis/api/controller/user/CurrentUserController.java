@@ -210,7 +210,7 @@ public class CurrentUserController
         currentUser.setJobTitle( userAccount.getJobTitle() );
         currentUser.setGender( userAccount.getGender() );
 
-        if ( userAccount.getBirthday() != null && userAccount.getBirthday().isEmpty() )
+        if ( userAccount.getBirthday() != null && !userAccount.getBirthday().isEmpty() )
         {
             currentUser.setBirthday( simpleDateFormat.parse( userAccount.getBirthday() ) );
         }
