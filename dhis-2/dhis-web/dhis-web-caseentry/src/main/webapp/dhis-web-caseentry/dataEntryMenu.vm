@@ -13,7 +13,7 @@
 <div id="eventActionMenu" class="hidden">
 	<ul>
 		<li><a href="javascript:backEventList();">$i18n.getString( "back_to_event_list" )</a></li>     
-		<li name="eventActionLink"><a href="javascript:completedAndAddNewEvent();">$i18n.getString('complete_and_add_new_event')</a></li>
-		<li name="eventActionLink"><a href="javascript:javascript:removeCurrentEvent();">$i18n.getString('remove')</a></li>
+		<li id="nextEventLink" name="eventActionLink"><a href="javascript:completedAndAddNewEvent();">$i18n.getString('complete_and_add_new_event')</a></li>
+		<li id="removeEventLink" name="eventActionLink"><a href="javascript:javascript:removeCurrentEvent();">$i18n.getString('remove')</a></li>
 	</ul>
 </div>

@@ -8,12 +8,14 @@
 			}
 		});
 		disable('advancedSearchBtn');
+		hideById('removeEventLink');
 		setFieldValue('isSearchByProgram', true);
 		$("#searchObjectId option[value='prg']").remove();
 	});
 </script>
 
-<h3 id='mainLinkLbl'>$i18n.getString( "single_event_with_registration_management" ) #openHelp('single_event_with_registration')</h3>
+<h3>$i18n.getString( "single_event_with_registration_management" ) #openHelp('single_event_with_registration')</h3>
+<h4 id='singleProgramName' name='singleProgramName'></h4>
 
 <input type='hidden' id='isRegistration' name= 'isRegistration' value='true'>
 <input type='hidden' id='listAll' name='listAll'>
@@ -24,7 +26,7 @@
 	#parse( "dhis-web-caseentry/searchPatientCriteria.vm" )	
 </div>
 
-<p><input type="button" class='button' value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick='backMainPage();' style='display:none;'></p>
+<p><input type="button" class='button' value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick='backEventList();' style='display:none;'></p>
 
 <div class='hidden' id='selectForm' name='selectForm'>
 	<input id='executionDateNewEvent' name='executionDateNewEvent'>
