@@ -47,6 +47,14 @@ public class PageInitAction
         this.selectionManager = selectionManager;
     }
 
+    // we might refactor this into a system property, hard-coding to true for now
+    private boolean multiOrganisationUnit = true;
+
+    public boolean isMultiOrganisationUnit()
+    {
+        return multiOrganisationUnit;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

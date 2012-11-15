@@ -1,6 +1,10 @@
 <script type="text/javascript">
 jQuery(document).ready(function() {
-	selection.setListenerFunction( organisationUnitSelected );
+    selection.setListenerFunction( organisationUnitSelected );
+
+    #if( $multiOrganisationUnit )
+    selection.setIncludeChildren( true );
+    #end
 });
 </script>
 

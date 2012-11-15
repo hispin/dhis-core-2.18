@@ -37,6 +37,8 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import java.util.*;
 
@@ -71,6 +73,13 @@ public class LoadFormAction
         this.dataSetService = dataSetService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -100,9 +109,23 @@ public class LoadFormAction
         this.dataSetId = dataSetId;
     }
 
+    private Integer multiOrganisationUnit;
+
+    public void setMultiOrganisationUnit( Integer multiOrganisationUnit )
+    {
+        this.multiOrganisationUnit = multiOrganisationUnit;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+
+    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+
+    public List<OrganisationUnit> getOrganisationUnits()
+    {
+        return organisationUnits;
+    }
 
     private Map<DataElementCategoryCombo, List<DataElement>> orderedDataElements = new HashMap<DataElementCategoryCombo, List<DataElement>>();
 
@@ -283,6 +306,21 @@ public class LoadFormAction
 
         String displayMode = dataSet.getDataSetType();
 
+        if ( multiOrganisationUnit != null && multiOrganisationUnit != 0 ) // for multiOrg, we only support section forms
+        {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( multiOrganisationUnit );
+
+            for ( OrganisationUnit child : organisationUnit.getChildren() )
+            {
+                if ( child.getDataSets().contains( dataSet ) )
+                {
+                    organisationUnits.add( child );
+                }
+            }
+
+            getSectionForm( dataElements, dataSet );
+            displayMode = "multiorg_section";
+        }
         if ( displayMode.equals( DataSet.TYPE_SECTION ) )
         {
             getSectionForm( dataElements, dataSet );
@@ -334,7 +372,7 @@ public class LoadFormAction
                 i18n, dataSet );
 
             dataElementsNotInForm = new ArrayList<DataElement>( dataSet.getDataElements() );
-            dataElementsNotInForm.removeAll( dataEntryFormService.getDataElementsInDataEntryForm( dataSet ) );        
+            dataElementsNotInForm.removeAll( dataEntryFormService.getDataElementsInDataEntryForm( dataSet ) );
             Collections.sort( dataElementsNotInForm, IdentifiableObjectNameComparator.INSTANCE );
         }
 

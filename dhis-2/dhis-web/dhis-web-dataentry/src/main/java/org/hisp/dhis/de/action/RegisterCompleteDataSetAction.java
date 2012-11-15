@@ -27,8 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
@@ -42,7 +41,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -116,6 +116,13 @@ public class RegisterCompleteDataSetAction
         this.organisationUnitId = organisationUnitId;
     }
 
+    private boolean multiOrganisationUnit;
+
+    public void setMultiOrganisationUnit( boolean multiOrganisationUnit )
+    {
+        this.multiOrganisationUnit = multiOrganisationUnit;
+    }
+
     private int statusCode;
 
     public int getStatusCode()
@@ -129,11 +136,10 @@ public class RegisterCompleteDataSetAction
 
     public String execute()
     {
-        CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
-
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
         Period period = PeriodType.createPeriodExternalId( periodId );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        Set<OrganisationUnit> children = organisationUnit.getChildren();
 
         String storedBy = currentUserService.getCurrentUsername();
 
@@ -141,14 +147,53 @@ public class RegisterCompleteDataSetAction
         // Check locked status
         // ---------------------------------------------------------------------
 
-        if ( dataSetService.isLocked( dataSet, period, organisationUnit, null ) )
+        if ( !multiOrganisationUnit )
         {
-            return logError( "Entry locked for combination: " + dataSet + ", " + period + ", " + organisationUnit, 2 );
+            if ( dataSetService.isLocked( dataSet, period, organisationUnit, null ) )
+            {
+                return logError( "Entry locked for combination: " + dataSet + ", " + period + ", " + organisationUnit, 2 );
+            }
+        }
+        else
+        {
+            for ( OrganisationUnit ou : children )
+            {
+                if ( ou.getDataSets().contains( dataSet ) && dataSetService.isLocked( dataSet, period, ou, null ) )
+                {
+                    return logError( "Entry locked for combination: " + dataSet + ", " + period + ", " + ou, 2 );
+                }
+            }
         }
 
         // ---------------------------------------------------------------------
         // Register as completed dataSet
         // ---------------------------------------------------------------------
+
+        if ( !multiOrganisationUnit )
+        {
+            registerCompleteDataSet( dataSet, period, organisationUnit, storedBy );
+        }
+        else
+        {
+            for ( OrganisationUnit ou : children )
+            {
+                if ( ou.getDataSets().contains( dataSet ) )
+                {
+                    registerCompleteDataSet( dataSet, period, ou, storedBy );
+                }
+            }
+        }
+
+        return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void registerCompleteDataSet( DataSet dataSet, Period period, OrganisationUnit organisationUnit, String storedBy )
+    {
+        CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
 
         if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit ) == null )
         {
@@ -161,18 +206,12 @@ public class RegisterCompleteDataSetAction
             registration.setPeriodName( format.formatPeriod( registration.getPeriod() ) );
 
             boolean notify = dataSet != null && dataSet.getNotificationRecipients() != null;
-            
+
             registrationService.saveCompleteDataSetRegistration( registration, notify );
 
             log.info( "DataSet registered as complete: " + registration );
         }
-
-        return SUCCESS;
     }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
 
     private String logError( String message, int statusCode )
     {
