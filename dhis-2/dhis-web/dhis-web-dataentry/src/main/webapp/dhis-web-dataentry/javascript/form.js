@@ -70,6 +70,14 @@ var FORMTYPE_DEFAULT = 'default';
 
 var EVENT_FORM_LOADED = "dhis-web-dataentry-form-loaded";
 
+(function( $ ) {
+    $.safeEach = function( arr, fn ) {
+        if( arr ) {
+            $.each( arr, fn );
+        }
+    };
+})( jQuery );
+
 /**
  * Page init. The order of events is:
  *
@@ -727,7 +735,7 @@ function getSortedDataSetList( orgUnit )
 
     var dataSetList = [];
 
-    $.each(orgUnitDataSets, function(idx, item) {
+    $.safeEach(orgUnitDataSets, function(idx, item) {
         var dataSetId = orgUnitDataSets[idx];
         var dataSetName = dataSets[dataSetId].name;
 
@@ -749,17 +757,17 @@ function getSortedDataSetListForOrgUnits( orgUnits )
 {
     var dataSetList = [];
 
-    $.each(orgUnits, function(idx, item) {
+    $.safeEach(orgUnits, function(idx, item) {
         dataSetList.push.apply( dataSetList, getSortedDataSetList(item) )
     });
 
     var filteredDataSetList = [];
 
-    $.each(dataSetList, function(idx, item) {
+    $.safeEach(dataSetList, function(idx, item) {
         var formType = dataSets[item.id].type;
         var found = false;
 
-        $.each(filteredDataSetList, function(i, el) {
+        $.safeEach(filteredDataSetList, function(i, el) {
 
             if(item.name == el.name)
                 found = true;
@@ -799,7 +807,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 
     var dataSetValid = false;
 
-    $.each(dataSetList, function(idx, item) {
+    $.safeEach(dataSetList, function(idx, item) {
         addOptionById( 'selectedDataSetId', item.id, item.name );
 
         if ( dataSetId == item.id )
@@ -816,7 +824,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
         {
             $('#selectedDataSetId').append('<optgroup label=' + i18n_childrens_forms + '>');
 
-            $.each(childrenDataSets, function(idx, item) {
+            $.safeEach(childrenDataSets, function(idx, item) {
                 $('<option />').attr('data-multiorg', true).attr('value', item.id).html(item.name).appendTo('#selectedDataSetId');
             });
 
@@ -880,7 +888,7 @@ function displayPeriodsInternal()
 
     addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
 
-    $.each(periods, function(idx, item) {
+    $.safeEach(periods, function(idx, item) {
         addOptionById( 'selectedPeriodId', item.id, item.name );
     });
 }
@@ -914,7 +922,7 @@ function dataSetSelected()
 
         addOptionById( 'selectedPeriodId', '-1', '[ ' + i18n_select_period + ' ]' );
 
-        $.each(periods, function(idx, item) {
+        $.safeEach(periods, function(idx, item) {
             addOptionById( 'selectedPeriodId', item.id, item.name );
         });
 
@@ -1043,7 +1051,7 @@ function insertDataValues()
 	    	
 	        // Set data values, works for selects too as data value=select value
 
-	        $.each( json.dataValues, function( i, value )
+	        $.safeEach( json.dataValues, function( i, value )
 	        {
 	            var fieldId = '#' + value.id + '-val';
 
@@ -1098,7 +1106,7 @@ function insertDataValues()
 
 	        // Set min-max values and colorize violation fields
 
-	        $.each( json.minMaxDataElements, function( i, value )
+	        $.safeEach( json.minMaxDataElements, function( i, value )
 	        {
 	            var minId = value.id + '-min';
 	            var maxId = value.id + '-max';
@@ -1544,7 +1552,7 @@ function purgeLocalForms()
 {
     var formIds = storageManager.getAllForms();
 
-    $.each(formIds, function(idx, item) {
+    $.safeEach(formIds, function(idx, item) {
         if ( dataSets[item] == null )
         {
             storageManager.deleteForm( item );
@@ -1561,7 +1569,7 @@ function updateExistingLocalForms()
     var formIds = storageManager.getAllForms();
     var formVersions = storageManager.getAllFormVersions();
 
-    $.each(formIds, function(idx, item) {
+    $.safeEach(formIds, function(idx, item) {
         var remoteVersion = dataSets[item].version;
         var localVersion = formVersions[item];
 
@@ -1574,7 +1582,7 @@ function updateExistingLocalForms()
 
 function downloadRemoteForms()
 {
-    $.each(dataSets, function(idx, item) {
+    $.safeEach(dataSets, function(idx, item) {
         var remoteVersion = item.version;
 
         if ( !storageManager.formExists( idx ) && !item.skipOffline )
