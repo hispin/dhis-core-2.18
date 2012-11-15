@@ -842,11 +842,8 @@ function resetActiveEvent( programInstanceId )
 			enable('ps_' + programStageInstanceId );
 			if( jQuery(".stage-object-selected").attr('id')!=jQuery(this).attr('id') )
 			{
-				hideById('entryForm');
-				hideById('executionDateTB');
-				hideById('inputCriteriaDiv');
+				hasActiveEvent = true;
 			}
-			hasActiveEvent = true;
 		}
 	});
 	
