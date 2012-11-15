@@ -822,7 +822,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames, children )
 
         if( childrenDataSets && childrenDataSets.length > 0 )
         {
-            $('#selectedDataSetId').append('<optgroup label=' + i18n_childrens_forms + '>');
+            $('#selectedDataSetId').append('<optgroup label="' + i18n_childrens_forms + '">');
 
             $.safeEach(childrenDataSets, function(idx, item) {
                 $('<option />').attr('data-multiorg', true).attr('value', item.id).html(item.name).appendTo('#selectedDataSetId');
