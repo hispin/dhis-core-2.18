@@ -1,6 +1,6 @@
 <script>
 	
-	jQuery(document).ready(	function(){
+	jQuery("#singleEventForm").ready(	function(){
 
 		currentDiv = 'patientForm';
 		checkedDuplicate = false;
@@ -35,14 +35,8 @@
 	});	
 	
 </script>
-<h3>
-	<a href="javascript:backMainPage();">$i18n.getString( "single_event_with_registration_management" )</a>
-	&#8226; <span id='singleProgramName' name='singleProgramName'></span>
-	&raquo; $i18n.getString( "add_new_patient" )
-</h3>	
 	
 <form id='singleEventForm'>
- 
 	<input type="hidden" id="representativeId" name="representativeId"/> 
 	<input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 	<input type="hidden" id="programStageId" name="programStageId" value='$programStage.id'/>
@@ -53,12 +47,15 @@
 		</tbody>
 		<tr><td>$programStage.program.name</td></tr>
 		#parse( "/dhis-web-caseentry/singleDataEntryForm.vm" )
+		<tr><td>&nbsp;</td><tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick='_continue=false;'/>
+				<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="javascript:backEventList();"/>
+			</td>
+		</tr>
 	</table>
-	<p>
-		<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick='_continue=false;'/>
-		<input type="submit" class="button" value="$i18n.getString( 'add_and_continue' )" onclick='_continue=true;'/>
-		<input type="button" class="button" value="$i18n.getString( 'back' )" onclick="javascript:backMainPage();"/>
-	</p>
 </form>
 
 <script>

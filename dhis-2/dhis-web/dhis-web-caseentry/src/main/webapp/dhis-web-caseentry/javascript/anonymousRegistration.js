@@ -472,7 +472,7 @@ function completedAndAddNewEvent()
 
 function removeEmptyEvents()
 {	
-	var result = window.confirm( i18n_confirm_remove_empty_events );
+	var result = window.confirm( i18n_confirm_delete );
     
     if ( result )
     {
