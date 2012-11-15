@@ -28,32 +28,44 @@ package org.hisp.dhis.de.action;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class PageInitAction
+public class GetMultiOrgSettingAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager selectionManager;
+    private SystemSettingManager systemSettingManager;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.selectionManager = selectionManager;
+        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Output
     // -------------------------------------------------------------------------
 
-    public String execute()
+    private Boolean multiOrganisationUnitForms = false;
+
+    public Boolean getMultiOrganisationUnitForms()
     {
-        selectionManager.clearSelectedOrganisationUnits();
+        return multiOrganisationUnitForms;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public String execute() throws Exception
+    {
+        multiOrganisationUnitForms = (Boolean) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_MULTI_ORGANISATION_UNIT_FORMS );
 
         return SUCCESS;
     }

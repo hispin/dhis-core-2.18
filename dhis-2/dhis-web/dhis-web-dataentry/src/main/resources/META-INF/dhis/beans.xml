@@ -15,6 +15,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
   </bean>
 
+  <bean id="org.hisp.dhis.de.action.GetMultiOrgSettingAction" class="org.hisp.dhis.de.action.GetMultiOrgSettingAction" scope="prototype">
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+  </bean>
+
   <bean id="org.hisp.dhis.de.action.GetMetaDataAction" class="org.hisp.dhis.de.action.GetMetaDataAction"
       scope="prototype">
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
