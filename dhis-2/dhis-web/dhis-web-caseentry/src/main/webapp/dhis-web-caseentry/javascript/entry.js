@@ -523,7 +523,6 @@ function runCompleteEvent( isCreateEvent )
 					resetActiveEvent( eventBox.attr("pi") );
 			
 					hideLoader();
-					hideById('contentDiv');
 					
 					if( isCreateEvent ){
 						showAddEventForm();
