@@ -106,6 +106,10 @@ function loadDataEntry( programStageInstanceId )
 	$('#contentDataRecord' ).load("viewProgramStageRecords.action",
 		{
 			programStageInstanceId: programStageInstanceId
+		}, function(){
+			showById('patientInforTB');
+			showById('entryForm');
+			showById('inputCriteriaDiv');
 		}).dialog(
 		{
 			title:i18n_program_stage,
