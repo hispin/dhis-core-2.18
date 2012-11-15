@@ -160,6 +160,13 @@ public class SetGeneralSettingsAction
         this.phoneNumberAreaCode = phoneNumberAreaCode;
     }
 
+    private boolean multiOrganisationUnitForms;
+
+    public void setMultiOrganisationUnitForms( boolean multiOrganisationUnitForms )
+    {
+        this.multiOrganisationUnitForms = multiOrganisationUnitForms;
+    }
+
     private String message;
 
     public String getMessage()
@@ -186,6 +193,7 @@ public class SetGeneralSettingsAction
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
         systemSettingManager.saveSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, phoneNumberAreaCode );
+        systemSettingManager.saveSystemSetting( KEY_MULTI_ORGANISATION_UNIT_FORMS, multiOrganisationUnitForms );
 
         Configuration configuration = configurationService.getConfiguration();
 

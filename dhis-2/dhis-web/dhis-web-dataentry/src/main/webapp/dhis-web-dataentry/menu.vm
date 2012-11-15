@@ -2,9 +2,14 @@
 jQuery(document).ready(function() {
     selection.setListenerFunction( organisationUnitSelected );
 
-    #if( $multiOrganisationUnit )
-    selection.setIncludeChildren( true );
-    #end
+    $.ajax({
+       url: 'getMultiOrgUnitForms.action',
+       dataType: 'json',
+       async: false,
+       success: function(data) {
+           selection.setIncludeChildren( data.enabled );
+       }
+    });
 });
 </script>
 

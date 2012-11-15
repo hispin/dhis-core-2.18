@@ -10,7 +10,8 @@
 				omitIndicatorsZeroNumeratorDataMart: jQuery( '#omitIndicatorsZeroNumeratorDataMart' ).is( ':checked' ),
 				factorDeviation: getFieldValue( 'factorDeviation' ),
 				completenessOffset: getFieldValue( 'completenessOffset' ),
-				phoneNumberAreaCode: getFieldValue( 'phoneNumberAreaCode' )
+				phoneNumberAreaCode: getFieldValue( 'phoneNumberAreaCode' ),
+                multiOrganisationUnitForms: getFieldValue( 'multiOrganisationUnitForms' )
 			}, function( json ) {
 				if ( json.response == "success" ) {
 					setHeaderDelayMessage( json.message );
@@ -91,6 +92,15 @@
 
 <div class="setting">
 	<input type="text" id="phoneNumberAreaCode" name="phoneNumberAreaCode" value="$!phoneNumberAreaCode"/>
+</div>
+
+<div class="settingLabel">$i18n.getString( "multi_organisation_unit_forms" )</div>
+
+<div class="setting">
+    <select id="multiOrganisationUnitForms" name="multiOrganisationUnitForms">
+        <option value="true" #if( $multiOrganisationUnitForms == true)selected="selected"#end>True</option>
+        <option value="false" #if( $multiOrganisationUnitForms == false)selected="selected"#end>False</option>
+    </select>
 </div>
 
 <div class="setting">

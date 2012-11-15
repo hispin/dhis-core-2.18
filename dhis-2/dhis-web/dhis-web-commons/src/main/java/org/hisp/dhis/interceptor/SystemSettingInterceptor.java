@@ -27,23 +27,6 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_COMPLETENESS_OFFSET;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_FACTOR_OF_DEVIATION;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_START_MODULE;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_TITLE;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_INTRO;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_NOTIFICATION;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_FLAG;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_FLAG_IMAGE;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_PHONE_NUMBER_AREA_CODE;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_CONFIGURATION;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_ACCOUNT_RECOVERY;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +35,8 @@ import org.hisp.dhis.setting.SystemSettingManager;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
+
+import static org.hisp.dhis.setting.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -105,6 +90,7 @@ public class SystemSettingInterceptor
         map.put( KEY_FACTOR_OF_DEVIATION, systemSettingManager.getSystemSetting( KEY_FACTOR_OF_DEVIATION, DEFAULT_FACTOR_OF_DEVIATION ) );
         map.put( KEY_COMPLETENESS_OFFSET, systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET, DEFAULT_COMPLETENESS_OFFSET ) );
         map.put( KEY_PHONE_NUMBER_AREA_CODE, systemSettingManager.getSystemSetting( KEY_PHONE_NUMBER_AREA_CODE, "" ) );
+        map.put( KEY_MULTI_ORGANISATION_UNIT_FORMS, systemSettingManager.getSystemSetting( KEY_MULTI_ORGANISATION_UNIT_FORMS, false ) );
         map.put( KEY_ACCOUNT_RECOVERY, systemSettingManager.getSystemSetting( KEY_ACCOUNT_RECOVERY, false ) );
         map.put( KEY_CONFIGURATION, configurationService.getConfiguration() );
         
