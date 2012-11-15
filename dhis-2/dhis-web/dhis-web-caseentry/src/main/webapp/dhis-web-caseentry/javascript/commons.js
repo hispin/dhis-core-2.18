@@ -580,7 +580,7 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 				if( dueDate < dueDateInStage && !flag)
 				{	
 					jQuery('<td>'
-						+ '<div class="orgunit-object" id="org_' + programStageInstanceId + '"></div>'
+						+ '<div class="orgunit-object" id="org_' + programStageInstanceId + '">&nbsp;</div>'
 						+ '<input name="programStageBtn" '
 						+ 'pi="' + programInstanceId + '" ' 
 						+ 'id="' + elementId + '" ' 
@@ -600,9 +600,9 @@ function registerIrregularEncounter( programInstanceId, programStageId, programS
 			
 			if( !flag )
 			{
-				jQuery("#programStageIdTR_" + programInstanceId).append('<td><img src="images/rightarrow.png"></td>'
+				jQuery("#programStageIdTR_" + programInstanceId).append('<td id="arrow_' + programStageInstanceId + '"><img src="images/rightarrow.png"></td>'
 					+ '<td>'
-					+ '<div class="orgunit-object" id="org_' + programStageInstanceId + '"></div>'
+					+ '<div class="orgunit-object" id="org_' + programStageInstanceId + '">&nbsp;</div>'
 					+ '<input name="programStageBtn" '
 					+ 'id="' + elementId + '" ' 
 					+ 'psid="' + programStageId + '" '

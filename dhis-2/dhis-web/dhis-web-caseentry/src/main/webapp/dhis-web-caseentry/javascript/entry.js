@@ -518,6 +518,10 @@ function runCompleteEvent( isCreateEvent )
 						jQuery('#completedList' ).append('<option value="' +  programInstanceId + '">' + getInnerHTML('infor_' + programInstanceId ) + '</option>');
 					}
 					
+					var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
+					eventBox.attr('status',1);
+					resetActiveEvent( eventBox.attr("pi") );
+			
 					hideLoader();
 					hideById('contentDiv');
 					
@@ -542,6 +546,9 @@ function doUnComplete( isCreateEvent )
 				jQuery(".stage-object-selected").css('border-color', COLOR_LIGHTRED);
 				jQuery(".stage-object-selected").css('background-color', COLOR_LIGHT_LIGHTRED);
 				disableCompletedButton(false);
+				var eventBox = jQuery('#ps_' + getFieldValue('programStageInstanceId'));
+				eventBox.attr('status',2);
+				resetActiveEvent( eventBox.attr("pi") );
 			});
 	}
     
