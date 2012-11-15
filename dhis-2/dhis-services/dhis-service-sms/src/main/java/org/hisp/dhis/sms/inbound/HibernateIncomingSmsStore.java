@@ -29,6 +29,8 @@ package org.hisp.dhis.sms.inbound;
 
 import java.util.Collection;
 
+import javax.jms.JMSException;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,6 +40,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsStore;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
+import org.hisp.dhis.sms.parse.SMSPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -49,6 +52,8 @@ public class HibernateIncomingSmsStore
     // -------------------------------------------------------------------------
 
     private SessionFactory sessionFactory;
+    
+    private SMSPublisher smsPublisher;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
@@ -62,7 +67,16 @@ public class HibernateIncomingSmsStore
     @Override
     public int save( IncomingSms sms )
     {
+        try
+        {
+            smsPublisher.putObject( sms );
+        }
+        catch ( JMSException e )
+        {
+            e.printStackTrace();
+        }   
         return (Integer) sessionFactory.getCurrentSession().save( sms );
+        
     }
 
     @Override
@@ -143,5 +157,10 @@ public class HibernateIncomingSmsStore
     // {
     // return getSms( null, startDate, endDate );
     // }
+    
+    public void setSmsPublisher( SMSPublisher smsPublisher )
+    {
+        this.smsPublisher = smsPublisher;
+    }
 
 }

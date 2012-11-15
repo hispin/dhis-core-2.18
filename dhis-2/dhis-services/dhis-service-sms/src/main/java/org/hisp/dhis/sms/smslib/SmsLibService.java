@@ -46,6 +46,8 @@ import org.hisp.dhis.sms.outbound.OutboundSms;
 import org.hisp.dhis.sms.outbound.OutboundSmsStatus;
 import org.hisp.dhis.sms.outbound.OutboundSmsStore;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
+import org.hisp.dhis.sms.parse.SMSConsumer;
+import org.hisp.dhis.sms.parse.SMSPublisher;
 import org.smslib.AGateway;
 import org.smslib.GatewayException;
 import org.smslib.IInboundMessageNotification;
@@ -86,9 +88,16 @@ public class SmsLibService
 
     private OutboundSmsStore outboundSmsStore;
 
+    private SMSConsumer smsConsumer;
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
+
+    public void setSmsConsumer( SMSConsumer smsConsumer )
+    {
+        this.smsConsumer = smsConsumer;
+    }
 
     @Override
     public boolean isEnabled()
@@ -99,7 +108,7 @@ public class SmsLibService
     @Override
     public Map<String, String> getGatewayMap()
     {
-        if( gatewayMap == null || gatewayMap.isEmpty())
+        if ( gatewayMap == null || gatewayMap.isEmpty() )
         {
             reloadConfig();
         }
@@ -334,6 +343,16 @@ public class SmsLibService
                     getService().setInboundMessageNotification( smppInboundMessageNotification );
                 }
 
+                try
+                {  
+                    smsConsumer.start();
+                }
+                catch ( Exception e1 )
+                {
+                    message = "Unable to start smsConsumer service " + e1.getMessage();
+                    log.warn( "Unable to start smsConsumer service ", e1 );
+                }
+
             }
             catch ( SMSLibException e )
             {
@@ -366,6 +385,7 @@ public class SmsLibService
         try
         {
             getService().stopService();
+            smsConsumer.stop();
         }
         catch ( SMSLibException e )
         {
@@ -493,4 +513,5 @@ public class SmsLibService
         
         outboundSmsStore.delete( sms );   
     }
+
 }
