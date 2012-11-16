@@ -111,9 +111,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- REPORT EXCEL CORE BEAN -->
 
+	<bean id="org.hisp.dhis.reportsheet.exportreport.action.CheckPermissionAction"
+		class="org.hisp.dhis.reportsheet.exportreport.action.CheckPermissionAction" scope="prototype">
+		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+	</bean>
+
 	<bean id="org.hisp.dhis.reportsheet.exportreport.action.AddExportReportAction"
 		class="org.hisp.dhis.reportsheet.exportreport.action.AddExportReportAction" scope="prototype">
 		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportsheet.exportreport.action.DeleteExportReportAction"
@@ -126,15 +135,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.exportreport.action.GetExportReportAction"
 		scope="prototype">
 		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
+		<property name="selectionManager" ref="org.hisp.dhis.reportsheet.state.SelectionManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportsheet.exportreport.action.GetExportReportGroupsAction"
 		class="org.hisp.dhis.reportsheet.exportreport.action.GetExportReportGroupsAction"
 		scope="prototype">
-		<property name="exportReportService"
-			ref="org.hisp.dhis.reportsheet.ExportReportService" />
+		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportsheet.exportreport.action.ListExportReportAction"
@@ -157,6 +164,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.exportreport.action.UpdateExportReportAction"
 		scope="prototype">
 		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportsheet.exportreport.action.ValidateExportReportAction"

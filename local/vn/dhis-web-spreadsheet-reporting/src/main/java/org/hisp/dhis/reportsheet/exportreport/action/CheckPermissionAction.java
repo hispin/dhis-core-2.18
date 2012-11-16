@@ -27,20 +27,19 @@ package org.hisp.dhis.reportsheet.exportreport.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
-import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.action.ActionSupport;
-import org.hisp.dhis.reportsheet.state.SelectionManager;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 
 /**
- * @author Tran Thanh Tri
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class GetExportReportAction
+public class CheckPermissionAction
     extends ActionSupport
 {
     // -------------------------------------------------------------------------
@@ -54,11 +53,18 @@ public class GetExportReportAction
         this.exportReportService = exportReportService;
     }
 
-    private SelectionManager selectionManager;
+    private CurrentUserService currentUserService;
 
-    public void setSelectionManager( SelectionManager selectionManager )
+    public void setCurrentUserService( CurrentUserService currentUserService )
     {
-        this.selectionManager = selectionManager;
+        this.currentUserService = currentUserService;
+    }
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -66,12 +72,6 @@ public class GetExportReportAction
     // -------------------------------------------------------------------------
 
     private Integer id;
-
-    private ExportReport report;
-
-    // -------------------------------------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------------------------------------
 
     public void setId( Integer id )
     {
@@ -83,26 +83,6 @@ public class GetExportReportAction
         return id;
     }
 
-    public ExportReport getReport()
-    {
-        return report;
-    }
-
-    public void setReport( ExportReport report )
-    {
-        this.report = report;
-    }
-
-    public String getClazzSimpleName()
-    {
-        return ExportReport.class.getSimpleName();
-    }
-
-    public List<String> getPeriodTypes()
-    {
-        return ExportItem.PERIODTYPE.getPeriodTypes();
-    }
-
     // -------------------------------------------------------------------------
     // Execute method
     // -------------------------------------------------------------------------
@@ -110,15 +90,33 @@ public class GetExportReportAction
     public String execute()
         throws Exception
     {
+        message = "";
+
         if ( id == null )
         {
+            message = i18n.getString( "the_specified_report_is_not_exist" );
+
             return ERROR;
         }
         else
         {
-            selectionManager.setSelectedReportId( id );
+            ExportReport report = exportReportService.getExportReport( id );
 
-            report = exportReportService.getExportReport( id );
+            UserCredentials ownerCredentials = userService.getUserCredentialsByUsername( report.getCreatedBy() );
+            UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
+            User owner = (ownerCredentials != null) ? ownerCredentials.getUser() : null;
+
+            if ( userCredentials.isSuper()
+                || (ownerCredentials != null && ownerCredentials.getUsername().equals( userCredentials.getUsername() )) )
+            {
+                message = "granted";
+            }
+            else if ( !userCredentials.isSuper() )
+            {
+                message = i18n.getString( "permission_notification" ) + " \"" + owner.getName() + "\"";
+                message += (owner != null && owner.getEmail() != null && !owner.getEmail().trim().isEmpty()) ? " <"
+                    + owner.getEmail() + ">" : "";
+            }
         }
 
         return SUCCESS;

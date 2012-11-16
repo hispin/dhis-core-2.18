@@ -32,6 +32,14 @@
 
 		<!-- SYSTEM CONFIGURATION ACTION -->
 
+		<action name="openAdministrator"
+			class="org.hisp.dhis.reportsheet.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/viewAdministrator.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
 		<action name="getConfiguration"
 			class="org.hisp.dhis.reportsheet.configuration.action.GetReportConfigurationAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -62,14 +70,6 @@
 			../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="error" type="velocity-json">
 			../dhis-web-commons/ajax/jsonResponseError.vm</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
-
-		<action name="openAdministrator"
-			class="org.hisp.dhis.reportsheet.action.NoAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/viewAdministrator.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -113,18 +113,27 @@
 
 		<!-- REPORT EXCEL CORE ACTION -->
 
+		<action name="checkPermission"
+			class="org.hisp.dhis.reportsheet.exportreport.action.CheckPermissionAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<action name="addExportReportForm"
 			class="org.hisp.dhis.reportsheet.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/report/addExportReportForm.vm</param>		
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_REPORT_ADD</param>
 		</action>
 
 		<action name="addExportReport"
 			class="org.hisp.dhis.reportsheet.exportreport.action.AddExportReportAction">
 			<result name="success" type="redirect">listAllExportReport.action
 			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_REPORT_ADD</param>
 		</action>
 
 		<action name="deleteExportReport"
@@ -134,7 +143,7 @@
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_REPORT_DELETE</param>
 		</action>
 
 		<action name="getExportReportGroups"
@@ -148,7 +157,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/report/exportReports.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>		
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_REPORT_MANAGEMENT</param>
 		</action>
 		
 		<action name="getAllExportReport"
@@ -167,14 +176,13 @@
 			class="org.hisp.dhis.reportsheet.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/report/updateExportReportForm.vm</param>	
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_REPORT_UPDATE</param>
 		</action>
 
 		<action name="updateExportReport"
 			class="org.hisp.dhis.reportsheet.exportreport.action.UpdateExportReportAction">
-			<result name="success" type="redirect">listAllExportReport.action
-			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<result name="success" type="redirect">listAllExportReport.action</result>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_REPORT_UPDATE</param>
 		</action>
 
 		<action name="validateExportReportAction"
@@ -571,7 +579,7 @@
 			<param name="page">/dhis-web-spreadsheet-reporting/exportReportAssociation.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/associations.js</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_DEFINE_ASSOCIATION</param>
 		</action>		
 
 		<action name="updateDefineAssociations"
@@ -603,7 +611,7 @@
 			<param name="page">/dhis-web-spreadsheet-reporting/report/exportItems.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="javascripts">javascript/exportItems.js</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_ITEM_MANAGEMENT</param>
 		</action>
 
 		<action name="validationExportItem"
@@ -629,7 +637,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/report/addExportItemForm.vm</param>
 			<param name="javascripts">javascript/exportItems.js</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_ITEM_ADD</param>
 		</action>
 
 		<action name="addExportItem"
@@ -637,7 +645,7 @@
 			<result name="success" type="redirect">
 				listExportItemAction.action?exportReportId=${exportReportId}
 			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_ITEM_ADD</param>
 		</action>
 
 		<action name="updateExportItemForm"
@@ -645,7 +653,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/report/updateExportItemForm.vm</param>
 			<param name="javascripts">javascript/exportItems.js</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_ITEM_UPDATE</param>
 		</action>
 
 		<action name="updateExportItem"
@@ -653,7 +661,7 @@
 			<result name="success" type="redirect">
 				listExportItemAction.action?exportReportId=${exportReportId}
 			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_ITEM_UPDATE</param>
 		</action>	
 		
 		<action name="getDataElementCategoryOptionCombos"
@@ -669,7 +677,7 @@
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_ITEM_DELETE</param>
 		</action>
 
 		<action name="deleteMultiExportItem"
@@ -679,7 +687,7 @@
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_ITEM_DELETE</param>
 		</action>
 
 		<action name="getExportItemTypes"
@@ -698,14 +706,14 @@
 			class="org.hisp.dhis.reportsheet.exportitem.action.CopyExportItemToExportReportAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_ITEM_COPY</param>
 		</action>
 
 		<action name="copyExportItemToImportReport"
 			class="org.hisp.dhis.reportsheet.exportitem.action.CopyExportItemToImportReportAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_EXPORT_ITEM_COPY</param>
 		</action>
 		
 		<action name="getListSheet"
@@ -831,18 +839,33 @@
 			<param name="menuTreeHeight">400</param>
 		</action>
 
+		<action name="openAddDataEntryStatus" class="org.hisp.dhis.reportsheet.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/addDataStatus.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_ENTRY_STATUS_ADD</param>
+		</action>
+
 		<action name="addDataEntryStatus"
 			class="org.hisp.dhis.reportsheet.dataentrystatus.action.AddDataEntryStatusAction">
 			<result name="success" type="redirect">listDataEntryStatus.action
 			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_ENTRY_STATUS_ADD</param>
+		</action>
+
+		<action name="openUpdateDataEntryStatus"
+			class="org.hisp.dhis.reportsheet.dataentrystatus.action.GetDataEntryStatusAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/updateDataStatus.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_ENTRY_STATUS_UPDATE</param>
 		</action>
 
 		<action name="updateDataEntryStatus"
 			class="org.hisp.dhis.reportsheet.dataentrystatus.action.UpdateDataEntryStatusAction">
 			<result name="success" type="redirect">listDataEntryStatus.action
 			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_ENTRY_STATUS_UPDATE</param>
 		</action>
 		
 		<action name="updateDefault"
@@ -855,22 +878,7 @@
 			class="org.hisp.dhis.reportsheet.dataentrystatus.action.DeleteDataEntryStatusAction">
 			<result name="success" type="redirect">listDataEntryStatus.action
 			</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
-
-		<action name="openAddDataEntryStatus" class="org.hisp.dhis.reportsheet.action.NoAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/addDataStatus.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
-
-		<action name="openUpdateDataEntryStatus"
-			class="org.hisp.dhis.reportsheet.dataentrystatus.action.GetDataEntryStatusAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/updateDataStatus.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_ENTRY_STATUS_DELETE</param>
 		</action>
 
 		<action name="getDataSets"
@@ -1089,21 +1097,30 @@
 
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<!-- IMPORT REPORT                                               -->
+		<!-- IMPORT REPORT                                                 -->
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+		<action name="listAllImportReport"
+			class="org.hisp.dhis.reportsheet.importreport.action.ListAllImportReportAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-spreadsheet-reporting/import/importReports.vm</param>
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="menuTreeHeight">220</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_REPORT_MANAGEMENT</param>
+		</action>
 
 		<action name="addImportReportForm"
 			class="org.hisp.dhis.reportsheet.importreport.action.SetupImportReportFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/import/addImportReport.vm</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_REPORT_ADD</param>
 		</action>
 
 		<action name="addImportReport"
 			class="org.hisp.dhis.reportsheet.importreport.action.AddImportReportAction">
-			<result name="success" type="redirect">
-				listAllImportReport.action
-			</result>
+			<result name="success" type="redirect">listAllImportReport.action</result>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_REPORT_ADD</param>
 		</action>
 
 		<action name="deleteImportReport"
@@ -1113,16 +1130,7 @@
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-		</action>
-
-		<action name="listAllImportReport"
-			class="org.hisp.dhis.reportsheet.importreport.action.ListAllImportReportAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/import/importReports.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
-			<param name="menuTreeHeight">220</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_REPORT_DELETE</param>
 		</action>
 
 		<action name="getAllImportReport"
@@ -1141,7 +1149,7 @@
 			class="org.hisp.dhis.reportsheet.importreport.action.SetupImportReportFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/import/updateImportReport.vm</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_REPORT_UPDATE</param>
 		</action>
 
 		<action name="updateImportReport"
@@ -1194,7 +1202,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/import/addImportItem.vm</param>
 			<param name="javascripts">javascript/importItems.js</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_ITEM_ADD</param>
 		</action>
 
 		<action name="addImportItem"
@@ -1210,7 +1218,7 @@
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_ITEM_DELETE</param>
 		</action>
 
 		<action name="getSelectedDataElements"
@@ -1246,7 +1254,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/import/updateImportItem.vm</param>
 			<param name="javascripts">javascript/importItems.js</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_ITEM_UPDATE</param>
 		</action>
 
 		<action name="updateImportItem"
@@ -1281,14 +1289,14 @@
 			class="org.hisp.dhis.reportsheet.importitem.action.CopyImportItemToImportReportAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<param name="requiredAuthorities">F_COPY_IMPORT_ITEM_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_ITEM_COPY</param>
 		</action>
 		
 		<action name="copyImportItemToExportReport"
 			class="org.hisp.dhis.reportsheet.importitem.action.CopyImportItemToExportReportAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<param name="requiredAuthorities">F_COPY_IMPORT_ITEM_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_ITEM_COPY</param>
 		</action>
 
 		<!-- IMPORT DATA -->
@@ -1469,7 +1477,7 @@
 			<param name="page">/dhis-web-spreadsheet-reporting/excelTemplateList.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="javascripts">javascript/exceltemplate.js</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT</param>
 		</action>
 
 		<action name="deleteExcelTemplate"
@@ -1479,13 +1487,13 @@
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_DELETE</param>
 		</action>
 
 		<action name="uploadExcelTemplate"
 			class="org.hisp.dhis.reportsheet.filemanager.action.UploadExcelFileAction">
 			<result name="success" type="redirect">listAllExcelTemplates.action</result>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_UPLOAD</param>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
 
@@ -1497,7 +1505,7 @@
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 			<result name="none" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
-			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_RENAME</param>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_RENAME</param>
 		</action>
 
 		<action name="updateExportReportByTemplate"
@@ -1506,7 +1514,7 @@
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>			
-			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_RENAME</param>
+			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_UPLOAD</param>
 		</action>
 
 		<action name="validateUploadExcelTemplate"
