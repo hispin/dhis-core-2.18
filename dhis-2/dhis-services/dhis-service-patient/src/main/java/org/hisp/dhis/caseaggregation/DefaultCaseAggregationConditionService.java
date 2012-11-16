@@ -892,7 +892,8 @@ public class DefaultCaseAggregationConditionService
     private String getConditionForProgram( String programId, String operator, int orgunitId, String startDate,
         String endDate )
     {
-        String sql = "SELECT distinct(pi.patientid) FROM programinstance as pi ";
+        String sql = "SELECT distinct(pi.patientid) FROM programinstance as pi "
+        	   + "inner join patient psi on psi.patientid=pi.patientid ";
 
         if ( operator.equals( AGGRERATION_SUM ) )
         {
@@ -900,7 +901,7 @@ public class DefaultCaseAggregationConditionService
                 + "INNER JOIN programstageinstance psi ON pi.programinstanceid=psi.programinstanceid ";
         }
 
-        return sql + "WHERE pi.programid=" + programId + " " + "AND psi.organisationunitid = " + orgunitId
+        return sql + "WHERE pi.programid=" + programId + " " + " AND psi.organisationunitid = " + orgunitId
             + " AND pi.enrollmentdate >= '" + startDate + "' AND pi.enrollmentdate <= '" + endDate + "' ";
     }
 

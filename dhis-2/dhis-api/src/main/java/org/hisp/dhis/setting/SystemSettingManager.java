@@ -75,7 +75,6 @@ public interface SystemSettingManager
     final String KEY_PHONE_NUMBER_AREA_CODE = "phoneNumberAreaCode";
     final String KEY_MULTI_ORGANISATION_UNIT_FORMS = "multiOrganisationUnitForms";
     final String KEY_SCHEDULE_AGGREGATE_QUERY_BUILDER_TASKS = "scheduleAggregateQueryBuilder";
-    final String KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL = "aggQueryBuilderorgUnitGroupSetAggregationLevel";
     final String KEY_CONFIGURATION = "keyConfig";
     final String KEY_ACCOUNT_RECOVERY = "keyAccountRecovery";
 
