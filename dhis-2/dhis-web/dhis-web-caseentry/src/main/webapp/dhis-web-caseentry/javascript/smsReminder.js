@@ -288,6 +288,7 @@ function reloadRecordList()
 		status = 4;
 	}
 	
+	var paddingIndex = 1;
 	jQuery("#patientList .stage-object").each( function(){
 		var id = this.id.split('_')[1];
 		var dueDate = jQuery(this).attr('dueDate');
@@ -296,9 +297,16 @@ function reloadRecordList()
 		if( dueDate >= startDate && dueDate <= endDate && statusEvent == status )
 		{
 			if( jQuery("#tb_" + programInstanceId + " .searched").length > 0 ){
-				jQuery("#ps_" + id ).addClass("stage-object-selected searched");
 				hideById('arrow_' + id );
 				hideById("ps_" + id );
+			}
+			else
+			{
+				jQuery("#arrow_" + id ).addClass("displayed");
+				var index = eval(jQuery("#ps_" + id ).attr("index"));
+				if( paddingIndex < index ){
+					 paddingIndex = index;
+				}
 			}
 			jQuery("#ps_" + id ).addClass("stage-object-selected searched");
 		}
@@ -306,6 +314,15 @@ function reloadRecordList()
 		{
 			hideById('arrow_' + id );
 			hideById('ps_' + id );
+		}
+	});
+	
+	jQuery("[id^=arrow_].displayed" ).each( function(){
+		var id = this.id.split('_')[1];
+		var index = eval(jQuery("#ps_" + id ).attr("index"));
+		if( index<paddingIndex){
+			var paddingLeft = ( paddingIndex - index ) * 20;
+			jQuery(this).css("padding-left", paddingLeft + "px");
 		}
 	});
 }
