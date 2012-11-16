@@ -27,13 +27,10 @@
 
 package org.hisp.dhis.patient.action.schedule;
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
 
 import com.opensymphony.xwork2.Action;
@@ -54,13 +51,6 @@ public class ScheduleCaseAggregateConditionAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     private CaseAggregateConditionSchedulingManager schedulingManager;
 
     public void setSchedulingManager( CaseAggregateConditionSchedulingManager schedulingManager )
@@ -78,14 +68,7 @@ public class ScheduleCaseAggregateConditionAction
     {
         this.execute = execute;
     }
-
-    private Integer orgUnitGroupSetAggLevel;
-
-    public void setOrgUnitGroupSetAggLevel( Integer orgUnitGroupSetAggLevel )
-    {
-        this.orgUnitGroupSetAggLevel = orgUnitGroupSetAggLevel;
-    }
-
+    
     private String aggQueryBuilderStrategy;
 
     public void setAggQueryBuilderStrategy( String aggQueryBuilderStrategy )
@@ -124,10 +107,7 @@ public class ScheduleCaseAggregateConditionAction
             schedulingManager.executeTasks();
         }
         else
-        {
-            systemSettingManager.saveSystemSetting( KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL,
-                orgUnitGroupSetAggLevel );
-
+        {       
             if ( Scheduler.STATUS_RUNNING.equals( schedulingManager.getTaskStatus() ) )
             {
                 schedulingManager.stopTasks();

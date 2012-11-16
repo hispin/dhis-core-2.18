@@ -27,15 +27,7 @@
 
 package org.hisp.dhis.patient.action.schedule;
 
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL;
-
-import java.util.List;
-
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.scheduling.CaseAggregateConditionSchedulingManager;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
 
 import com.opensymphony.xwork2.Action;
@@ -53,51 +45,16 @@ public class GetScheduleAggQueryBuilderParamsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     private CaseAggregateConditionSchedulingManager schedulingManager;
 
     public void setSchedulingManager( CaseAggregateConditionSchedulingManager schedulingManager )
     {
         this.schedulingManager = schedulingManager;
     }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
-    private String scheduledPeriodType;
-
-    public String getScheduledPeriodType()
-    {
-        return scheduledPeriodType;
-    }
-
-    private Integer orgUnitGroupSetAggLevel;
-
-    public Integer getOrgUnitGroupSetAggLevel()
-    {
-        return orgUnitGroupSetAggLevel;
-    }
-
-    private String aggQueryBuilderStrategy;
-
-    public String getAggQueryBuilderStrategy()
-    {
-        return aggQueryBuilderStrategy;
-    }
 
     private String status;
 
@@ -113,13 +70,6 @@ public class GetScheduleAggQueryBuilderParamsAction
         return running;
     }
 
-    private List<OrganisationUnitLevel> levels;
-
-    public List<OrganisationUnitLevel> getLevels()
-    {
-        return levels;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -128,14 +78,9 @@ public class GetScheduleAggQueryBuilderParamsAction
     public String execute()
         throws Exception
     {
-        orgUnitGroupSetAggLevel = (Integer) systemSettingManager.getSystemSetting(
-            KEY_AGGREGATE_QUERY_BUILDER_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
-
         status = schedulingManager.getTaskStatus();
 
         running = Scheduler.STATUS_RUNNING.equals( status );
-
-        levels = organisationUnitService.getOrganisationUnitLevels();
 
         return SUCCESS;
     }
