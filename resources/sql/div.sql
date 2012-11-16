@@ -76,7 +76,7 @@ select authority from userroleauthorities where userroleid=33706 and authority n
 
 -- User overview (Postgres only)
 
-select u.username, u.lastlogin, ui.surname, ui.firstname, ui.email, ui.phonenumber, ui.jobtitle, (
+select u.username, u.lastlogin, u.selfregistered, ui.surname, ui.firstname, ui.email, ui.phonenumber, ui.jobtitle, (
   select array_to_string( array(
     select name from userrole ur
     join userrolemembers urm using(userroleid)
