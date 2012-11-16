@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.UserAuthorityGroup;
 
@@ -56,11 +57,15 @@ public abstract class ExportReport
 
     private Set<OrganisationUnit> organisationAssocitions;
 
+    private Set<DataSet> dataSets;
+
+    private Collection<UserAuthorityGroup> userRoles;
+
     private String group;
 
     private String excelTemplateFile;
 
-    private Collection<UserAuthorityGroup> userRoles;
+    private String createdBy = "[unknown]";
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -122,7 +127,7 @@ public abstract class ExportReport
     // -------------------------------------------------------------------------
 
     public abstract String getReportType();
-    
+
     public abstract List<String> getItemTypes();
 
     // -------------------------------------------------------------------------
@@ -236,6 +241,19 @@ public abstract class ExportReport
         return items;
     }
 
+    public void updateDataSetMembers( Set<DataSet> dataSetList )
+    {
+        for ( DataSet ds : new HashSet<DataSet>( dataSets ) )
+        {
+            if ( !dataSetList.contains( ds ) )
+            {
+                dataSets.remove( ds );
+            }
+        }
+
+        dataSets.addAll( dataSetList );
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -320,6 +338,26 @@ public abstract class ExportReport
         this.organisationAssocitions = organisationAssocitions;
     }
 
+    public Set<DataSet> getDataSets()
+    {
+        return dataSets == null ? new HashSet<DataSet>() : dataSets;
+    }
+
+    public void setDataSets( Set<DataSet> dataSets )
+    {
+        this.dataSets = dataSets;
+    }
+
+    public Collection<UserAuthorityGroup> getUserRoles()
+    {
+        return userRoles;
+    }
+
+    public void setUserRoles( Collection<UserAuthorityGroup> userRoles )
+    {
+        this.userRoles = userRoles;
+    }
+
     public String getGroup()
     {
         return group;
@@ -340,14 +378,13 @@ public abstract class ExportReport
         this.excelTemplateFile = excelTemplateFile;
     }
 
-    public Collection<UserAuthorityGroup> getUserRoles()
+    public String getCreatedBy()
     {
-        return userRoles;
+        return createdBy;
     }
 
-    public void setUserRoles( Collection<UserAuthorityGroup> userRoles )
+    public void setCreatedBy( String createdBy )
     {
-        this.userRoles = userRoles;
+        this.createdBy = createdBy;
     }
-
 }

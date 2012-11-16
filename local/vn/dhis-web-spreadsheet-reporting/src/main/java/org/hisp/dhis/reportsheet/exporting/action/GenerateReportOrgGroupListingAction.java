@@ -31,11 +31,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -139,6 +141,7 @@ public class GenerateReportOrgGroupListingAction
         Collection<OrganisationUnit> membersOfGroup = null;
         Collection<OrganisationUnit> organisationUnitsAtLevel = null;
         Collection<OrganisationUnit> childrens = organisationUnit.getChildren();
+        Collection<DataSet> dataSets = exportReport.getDataSets();
 
         for ( OrganisationUnitGroup organisationUnitGroup : exportReport.getOrganisationUnitGroups() )
         {
@@ -165,6 +168,16 @@ public class GenerateReportOrgGroupListingAction
                 organisationUnits.retainAll( childrens );
             }
 
+            Iterator<OrganisationUnit> iterater = organisationUnits.iterator();
+
+            while ( iterater.hasNext() )
+            {
+                if ( !iterater.next().getDataSets().retainAll( dataSets ) )
+                {
+                    iterater.remove();
+                }
+            }
+
             Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
 
             childrenGroupMap.put( organisationUnitGroup.getId(), organisationUnits );
@@ -173,6 +186,7 @@ public class GenerateReportOrgGroupListingAction
         /**
          * Garbage
          */
+        dataSets = null;
         childrens = null;
         membersOfGroup = null;
         organisationUnitLevel = null;
