@@ -77,7 +77,7 @@
 												#if($!programStageInstance.executionDate)
 													#set($valueDate=$format.formatDate( $programStageInstance.executionDate ))
 												#end
-$idx<br>												
+												
 												<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' 
 													programStageInstanceId='$programStageInstance.id' 
 													programStageName='$programStageInstance.programStage.name' 
