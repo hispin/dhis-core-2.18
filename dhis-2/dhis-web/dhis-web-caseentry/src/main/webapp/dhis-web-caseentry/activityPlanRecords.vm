@@ -36,7 +36,7 @@
 						<a>&raquo;</a>
 					</td>
 					#set( $programStageInstances = $programInstance.programStageInstances )
-					<td>
+						<td>
 						<table id='tb_$programInstance.id'>	
 							<tr>
 								<td>
@@ -47,7 +47,9 @@
 										<table class="table-flow">
 										<tr>
 										#set( $flag = "false" )
+										#set( $idx = 0)
 										#foreach( $programStageInstance in $programStageInstances )
+											#set( $idx = $idx + 1)
 											<td id="arrow_$programStageInstance.id" style='font-size:25px;'>&rarr;</td>
 											<td>
 												#set($title="")
@@ -72,6 +74,7 @@
 													reportDateDes="$programStageInstance.programStage.reportDateDescription"
 													dueDate="$format.formatDate( $programStageInstance.dueDate )"
 													status='$programStageInstance.getEventStatus()'
+													index="$idx"
 													class="stage-object" 
 													title="$title"
 													value="$programStageInstance.programStage.name&#13;&#10;$valueDate" 

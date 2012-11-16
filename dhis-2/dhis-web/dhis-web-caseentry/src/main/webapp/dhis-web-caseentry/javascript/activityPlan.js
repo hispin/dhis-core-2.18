@@ -247,6 +247,7 @@ function reloadRecordList()
 	var startDate = getFieldValue('startDueDate');
 	var endDate = getFieldValue('endDueDate');
 	var arrStatus = getFieldValue('statusEvent').split('_');
+	var paddingIndex = 1;
 	
 	jQuery("#patientList .stage-object").each( function(){
 		var id = this.id.split('_')[1];
@@ -256,6 +257,14 @@ function reloadRecordList()
 		if( dueDate >= startDate && dueDate <= endDate 
 			&& jQuery.inArray(statusEvent, arrStatus) > -1)
 		{
+			if( jQuery("#tb_" + programInstanceId + " .searched").length == 0 )
+			{
+				jQuery("#arrow_" + id ).addClass("displayed");
+				var index = eval(jQuery("#ps_" + id ).attr("index"));
+				if( paddingIndex < index ){
+					 paddingIndex = index;
+				}
+			}
 			jQuery("#ps_" + id ).addClass("stage-object-selected searched");
 		}
 		hideById('arrow_' + id );
@@ -272,6 +281,11 @@ function reloadRecordList()
 		firstEvent.show();
 		var id = firstEvent.attr("id").split('_')[1];
 		showById('arrow_' + id );
+		var index = firstEvent.attr("index");
+		if( index<paddingIndex){
+			var paddingLeft = ( paddingIndex - index ) * 20;
+			jQuery('#arrow_' + id).css("padding-left", paddingLeft + "px");
+		}
 	});
 	
 	resize();
