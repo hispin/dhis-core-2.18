@@ -39,18 +39,18 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-api</artifactId>
     </dependency>
-<!--    <dependency>
+    <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-core</artifactId>
-    </dependency>-->
+    </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-patient</artifactId>
     </dependency>
-<!--	<dependency>
+    <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-sms</artifactId>
-    </dependency>-->
+    </dependency>
     
   </dependencies>
   <properties>
