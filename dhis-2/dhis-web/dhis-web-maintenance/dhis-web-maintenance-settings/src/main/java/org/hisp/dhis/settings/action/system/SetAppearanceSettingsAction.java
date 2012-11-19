@@ -131,7 +131,9 @@ public class SetAppearanceSettingsAction
 
     public String execute()
     {
+        applicationIntro = StringUtils.trimToNull( applicationIntro );
         applicationTitle = StringUtils.trimToNull( applicationTitle );
+        applicationNotification = StringUtils.trimToNull( applicationNotification );
 
         if ( flag != null && flag.equals( "NO_FLAG" ) )
         {
