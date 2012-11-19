@@ -17,7 +17,8 @@
 		<action name="administration" class="org.hisp.dhis.reportsheet.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/viewAdministrator.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>			
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>	
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
 		<action name="downloadFile"
@@ -205,6 +206,7 @@
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="javascripts">javascript/category.ajax.js,javascript/categoryOptionGroupOrder.js</param>
 			<param name="stylesheets">style/basic.css,style/style.css</param>
+			<param name="requiredAuthorities">F_EXCEL_CATEGORY_OPTION_GROUP_ORDER_MANAGEMENT</param>
 		</action>
 		
 		<action name="listCategoryOptionGroupOrderForImportReport"
@@ -350,6 +352,7 @@
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="javascripts">javascript/dataElementGroupOrder.js</param>
 			<param name="stylesheets">style/basic.css,style/style.css</param>
+			<param name="requiredAuthorities">F_EXCEL_DATAELEMENT_GROUP_ORDER_MANAGEMENT</param>
 		</action>
 		
 		<action name="listDataElementGroupOrderForImportReport"
@@ -468,6 +471,7 @@
 			<param name="page">/dhis-web-spreadsheet-reporting/updateAttributeValueGroupOrderForReportForm.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
 			<param name="stylesheets">style/basic.css,style/style.css</param>
+			<param name="requiredAuthorities">F_EXCEL_ATTRIBUTE_VALUE_GROUP_ORDER_MANAGEMENT</param>
 		</action>
 		
 		<action name="validateAttributeValueGroupOrder"
@@ -550,6 +554,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/organisationUnitGroupListingReport.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_ORG_UNIT_GROUP_LISTING_MANAGEMENT</param>
 		</action>
 
 		<action name="updateOrgUnitGroupListingReport"
@@ -563,6 +568,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/organisationUnitAtLevels.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_ORG_UNIT_LEVEL_MANAGEMENT</param>
 		</action>
 
 		<action name="updateOrganisationUnitGroupAtLevel"
@@ -595,6 +601,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/exportReportUserRoles.vm</param>
 			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ASSIGN_USER_ROLE</param>
 		</action>
 
 		<action name="updateExportReportUserRole"
@@ -1338,6 +1345,7 @@
 			<param name="stylesheets">
 				style/style.css,
 				style/previewStyle.css</param>
+			<param name="requiredAuthorities">F_EXCEL_IMPORT_DATA</param>
 		</action>
 
 		<action name="getPeriodsByImportReport"
@@ -1441,7 +1449,8 @@
 			class="org.hisp.dhis.reportsheet.exportreport.action.GetExportReportAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-spreadsheet-reporting/periodcolumns.vm</param>
-			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>			
+			<param name="menu">/dhis-web-spreadsheet-reporting/menu.vm</param>
+			<param name="requiredAuthorities">F_EXCEL_PERIOD_COLUMN_LISTING_MANAGEMENT</param>			
 		</action>
 
 		<action name="savePeriodColumn"
