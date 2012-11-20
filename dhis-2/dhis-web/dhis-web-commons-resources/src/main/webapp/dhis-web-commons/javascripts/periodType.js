@@ -275,7 +275,7 @@ function YearlyPeriodType( dateFormat )
             period['endDate'] = endDate.format( dateFormat );
             period['name'] = startDate.date().getFullYear();
             period['id'] = 'Yearly_' + period['startDate'];
-            period['iso'] = year;
+            period['iso'] = startDate.date().getFullYear();
             periods[i] = period;
 
             startDate.adjust( 'Y', +1 );
@@ -302,7 +302,7 @@ function FinancialOctoberPeriodType( dateFormat )
             period['endDate'] = endDate.format( dateFormat );
             period['name'] =  monthNames[9] + ' ' +  startDate.date().getFullYear() + '-' + monthNames[8] + ' ' + (startDate.date().getFullYear() +1 );
             period['id'] = 'FinancialOct_' + period['startDate'];
-            period['iso'] = year + 'Oct';
+            period['iso'] = startDate.date().getFullYear() + 'Oct';
             periods[i] = period;
 
             startDate.adjust( 'Y', +1 );
@@ -329,7 +329,7 @@ function FinancialJulyPeriodType( dateFormat )
             period['endDate'] = endDate.format( dateFormat );
             period['name'] =  monthNames[6] + ' ' +  startDate.date().getFullYear() + '-' + monthNames[5] + ' ' + (startDate.date().getFullYear() +1 );
             period['id'] = 'FinancialJuly_' + period['startDate'];
-            period['iso'] = year + 'July';
+            period['iso'] = startDate.date().getFullYear() + 'July';
             periods[i] = period;
 
             startDate.adjust( 'Y', +1 );
@@ -356,7 +356,7 @@ function FinancialAprilPeriodType( dateFormat )
             period['endDate'] = endDate.format( dateFormat );
             period['name'] =  monthNames[3] + ' ' +  startDate.date().getFullYear() + '-' + monthNames[2] + ' ' + (startDate.date().getFullYear() +1 );
             period['id'] = 'FinancialApril_' + period['startDate'];
-            period['iso'] = year + 'April';
+            period['iso'] = startDate.date().getFullYear() + 'April';
             periods[i] = period;
 
             startDate.adjust( 'Y', +1 );
