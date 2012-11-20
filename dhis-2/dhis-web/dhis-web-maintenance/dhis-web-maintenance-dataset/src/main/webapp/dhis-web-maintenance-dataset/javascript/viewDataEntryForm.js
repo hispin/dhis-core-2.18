@@ -2,6 +2,7 @@
 var currentDynamicElementCode = null;
 var currentCategoryComboId = null;
 var currentCategoryComboName = null;
+var timeOut;
 
 $( document ).ready( function() {
 	
@@ -194,9 +195,9 @@ $( document ).ready( function() {
 	
 	$("#dynamicElementSelector").dblclick(insertDynamicElement);
 	
-	if( autoSave == 'true' )
+	if( autoSave )
 	{
-		window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
+		timeOut = window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
 	}
 });
 
@@ -439,4 +440,19 @@ function checkExisted(id) {
 	});
 
 	return result;
+}
+ 
+function setAutoSaveSetting(_autoSave)
+{
+	jQuery.postJSON("setAutoSaveSetting.action",{autoSave:_autoSave}, 
+		function(json)
+		{
+			autoSave = _autoSave;
+			if(_autoSave){
+				window.setTimeout( "validateDataEntryFormTimeout( false );", 60000 );
+			}
+			else{
+				window.clearTimeout(timeOut);
+			}
+		});
 }

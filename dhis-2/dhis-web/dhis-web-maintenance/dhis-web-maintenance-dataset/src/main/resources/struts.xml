@@ -202,6 +202,10 @@
     <action name="getSelectedDataElements" class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSelDataElementList.vm</result>
     </action>
+    
+    <action name="setAutoSaveSetting" class="org.hisp.dhis.dataset.action.dataentryform.SetAutoSaveSettingAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+    </action>
 
 	<!-- Compulsory data elements -->
 

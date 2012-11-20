@@ -27,7 +27,6 @@ package org.hisp.dhis.settings.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.user.UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM;
 import static org.hisp.dhis.user.UserSettingService.KEY_DB_LOCALE;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
@@ -77,13 +76,6 @@ public class SetGeneralSettingsAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
-    private Boolean autoSave;
-
-    public void setAutoSave( Boolean autoSave )
-    {
-        this.autoSave = autoSave;
-    }
 
     private String currentLocale;
 
@@ -147,9 +139,7 @@ public class SetGeneralSettingsAction
             .trimToNull( currentLocaleDb ) ) );
 
         styleManager.setUserStyle( currentStyle );
-
-        userSettingService.saveUserSetting( AUTO_SAVE_DATA_ENTRY_FORM, autoSave );
-
+        
         userSettingService.saveUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, messageEmailNotification );
 
         userSettingService.saveUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, messageSmsNotification );

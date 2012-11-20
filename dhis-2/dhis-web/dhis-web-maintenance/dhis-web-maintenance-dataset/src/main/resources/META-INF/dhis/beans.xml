@@ -303,6 +303,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 		
+  <bean id="org.hisp.dhis.dataset.action.dataentryform.SetAutoSaveSettingAction" class="org.hisp.dhis.dataset.action.dataentryform.SetAutoSaveSettingAction"
+    scope="prototype">
+    <property name="userSettingService">
+      <ref bean="org.hisp.dhis.user.UserSettingService" />
+    </property>
+  </bean>
+		
 	<!-- Compulsory data elements -->
 
   <bean id="org.hisp.dhis.dataset.action.compulsory.GetCompulsoryDataElementsAction" class="org.hisp.dhis.dataset.action.compulsory.GetCompulsoryDataElementsAction"
