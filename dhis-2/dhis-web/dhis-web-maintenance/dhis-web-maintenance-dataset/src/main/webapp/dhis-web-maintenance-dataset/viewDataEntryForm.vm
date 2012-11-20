@@ -94,6 +94,7 @@
         <button type="button" id="cancelButton" onclick="window.location.href='dataSet.action'">$i18n.getString( 'cancel' )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
         <button type="button" id="insertDataElementsButton" >$i18n.getString( 'insert_data_elements' )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
         <button type="button" id="delete" onclick="removeDataEntryForm( '$dataSet.id', '$dataEntryForm.id', '$dataEntryForm.name' )">$i18n.getString( 'delete' )</button>
+		<input type="checkbox" id="autoSave" name="autoSave" #if($autoSave && $autoSave=="true") checked #end onchange="setAutoSaveSetting(this.checked)" />$i18n.getString( 'auto_save_data_entry_forms' )
       </td>          
 	  <script>
 		if(stat == "EDIT")
