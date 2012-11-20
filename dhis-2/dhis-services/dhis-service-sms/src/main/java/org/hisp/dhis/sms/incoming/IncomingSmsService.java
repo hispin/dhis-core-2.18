@@ -1,5 +1,10 @@
 package org.hisp.dhis.sms.incoming;
 
+import java.util.List;
+
+import org.hisp.dhis.sms.queue.MessageQueue;
+import org.smslib.InboundMessage;
+
 /*
  * Copyright (c) 2011, University of Oslo
  * All rights reserved.
@@ -27,34 +32,36 @@ package org.hisp.dhis.sms.incoming;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 
-/** 
- * Store for incoming SMS messages.
+/**
+ * Service providing support for retrieving incoming SMSes.
  */
-public interface IncomingSmsStore
+public interface IncomingSmsService
 {
-    static final String ID = IncomingSmsStore.class.getName();
+    String ID = IncomingSmsService.class.getName();
+
+    /**
+     * Get the next sms incoming for processing, if any.
+     * 
+     * @return the oldest sms in the INCOMING state.
+     */
+    IncomingSms getNextUnprocessed();
     
-    int save( IncomingSms incomingSms );
+    void update( IncomingSms sms );
     
-    void update ( IncomingSms incomingSms );
-
-    IncomingSms get( int id );
-
-    Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status );
-
-    Collection<IncomingSms> getSmsByOriginator( String originator );
-
-    long getSmsCount();
-
-    Collection<IncomingSms> getAllSmses();
+    IncomingSms findBy ( Integer id );
     
-    void delete( IncomingSms incomingSms);
-
-//    public Collection<IncomingSms> getSms( String originator, Date startDate, Date endDate);
-//    
-//    public Collection<IncomingSms> getSmsByDate( Date startDate, Date endDate );
-//
-
+    List<IncomingSms> listAllMessage();
+    
+    List<IncomingSms> listAllMessageFromModem();
+    
+    void deleteAllFromModem();
+    
+    void deleteById( Integer id );
+    
+    List<InboundMessage> getMsgList();
+    
+    void save ( IncomingSms sms );
+    
+    public void setIncomingSmsQueue( MessageQueue incomingSmsQueue );
 }

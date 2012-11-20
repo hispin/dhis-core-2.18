@@ -1,9 +1,5 @@
 package org.hisp.dhis.sms.incoming;
 
-import java.util.List;
-
-import org.smslib.InboundMessage;
-
 /*
  * Copyright (c) 2011, University of Oslo
  * All rights reserved.
@@ -31,34 +27,31 @@ import org.smslib.InboundMessage;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 
-/**
- * Service providing support for retrieving incoming SMSes.
+/** 
+ * Store for incoming SMS messages.
  */
-public interface IncomingSmsService
+public interface IncomingSmsStore
 {
-    String ID = IncomingSmsService.class.getName();
+    static final String ID = IncomingSmsStore.class.getName();
+    
+    int save( IncomingSms incomingSms );
+    
+    void update ( IncomingSms incomingSms );
 
-    /**
-     * Get the next sms incoming for processing, if any.
-     * 
-     * @return the oldest sms in the INCOMING state.
-     */
-    IncomingSms getNextUnprocessed();
+    IncomingSms get( int id );
+
+    Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status );
+
+    Collection<IncomingSms> getSmsByOriginator( String originator );
+
+    long getSmsCount();
+
+    Collection<IncomingSms> getAllSmses();
     
-    void update( IncomingSms sms );
+    void delete( IncomingSms incomingSms);
     
-    IncomingSms findBy ( Integer id );
-    
-    List<IncomingSms> listAllMessage();
-    
-    List<IncomingSms> listAllMessageFromModem();
-    
-    void deleteAllFromModem();
-    
-    void deleteById( Integer id );
-    
-    List<InboundMessage> getMsgList();
-    
-    void save ( IncomingSms sms );
+    Collection<IncomingSms> getAllUnparsedSmses();
+
 }
