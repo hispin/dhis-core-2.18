@@ -65,12 +65,18 @@ public class HibernateOptionStore
     @Override
     public List<String> getOptions( int optionSetId, String key, Integer max )
     {
-        String sql = "select optionvalue from optionset os inner join optionsetmembers as om on os.optionsetid=om.optionsetid "
-            + "where os.optionsetid=" + optionSetId;
+        //TODO Should ideally be cached and go through Hibernate
+        
+        String sql = 
+            "select optionvalue from optionset os " +
+            "inner join optionsetmembers as om on os.optionsetid=om.optionsetid " +
+            "where os.optionsetid=" + optionSetId;
+        
         if ( key != null )
         {
             sql += " and lower(om.optionvalue) like lower('%" + key + "%')";
         }
+        
         sql += " order by sort_order";
 
         if ( max != null )
@@ -79,10 +85,10 @@ public class HibernateOptionStore
         }
         
         List<String> optionValues = new ArrayList<String>();
+        
         optionValues = jdbcTemplate.query( sql, new RowMapper<String>()
         {
-            public String mapRow( ResultSet rs, int rowNum )
-                throws SQLException
+            public String mapRow( ResultSet rs, int rowNum ) throws SQLException
             {
                 return rs.getString( 1 );
             }
