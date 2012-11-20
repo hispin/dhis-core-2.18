@@ -103,6 +103,21 @@ rt.paramgrandparentorganisationunit as grand, rt.paramparentorganisationunit as 
 (select count(*) from reporttable_periods where reporttableid=rt.reporttableid) as pe
 from reporttable rt;
 
+-- Turn longitude/latitude around for organisationunit coordinates (adjust the like clause)
+
+update organisationunit set coordinates=regexp_replace(coordinates,'\[(.+?\..+?),(.+?\..+?)\]','[\2,\1]')
+where coordinates like '[0%'
+and featuretype='Point';
+
+-- Nullify coordinates with longitude outside range (adjust where clause values)
+
+update organisationunit set coordinates=null
+where featuretype='Point'
+and (
+  cast(substring(coordinates from '\[(.+?\..+?),.+?\..+?\]') as double precision) < 32
+  or cast(substring(coordinates from '\[(.+?\..+?),.+?\..+?\]') as double precision) > 43
+);
+
 -- Insert random org unit codes
 
 create function setrandomcode() returns integer AS $$
