@@ -27,12 +27,16 @@
 
 package org.hisp.dhis.option.hibernate;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.option.OptionStore;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
  * @author Chau Thu Tran
@@ -43,27 +47,47 @@ public class HibernateOptionStore
     extends HibernateIdentifiableObjectStore<OptionSet>
     implements OptionStore
 {
-    @SuppressWarnings("unchecked")
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
+
     @Override
     public List<String> getOptions( int optionSetId, String key, Integer max )
     {
-        String hql = "select option from OptionSet os inner join os.options as option where os.id = :optionSetId";
-        
+        String sql = "select optionvalue from optionset os inner join optionsetmembers as om on os.optionsetid=om.optionsetid "
+            + "where os.optionsetid=" + optionSetId;
         if ( key != null )
         {
-            hql += " and lower(option) like lower('%" + key + "%') ";
+            sql += " and lower(om.optionvalue) like lower('%" + key + "%')";
         }
-        
-        hql += " order by option";
-        
-        Query query = getQuery( hql );
-        query.setInteger( "optionSetId", optionSetId );
-        
+        sql += " order by sort_order";
+
         if ( max != null )
         {
-            query.setMaxResults( max );
+            sql += " limit " + max;
         }
         
-        return query.list();
+        List<String> optionValues = new ArrayList<String>();
+        optionValues = jdbcTemplate.query( sql, new RowMapper<String>()
+        {
+            public String mapRow( ResultSet rs, int rowNum )
+                throws SQLException
+            {
+                return rs.getString( 1 );
+            }
+        } );
+        
+        return optionValues;
     }
 }
