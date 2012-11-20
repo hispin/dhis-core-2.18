@@ -663,6 +663,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	<list>
 	  <value>af</value>
 	  <value>ar</value>
+	  <value>bi</value>
 	  <value>am</value>
 	  <value>de</value>
 	  <value>en</value>
@@ -673,7 +674,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	  <value>hi</value>
 	  <value>id</value>
 	  <value>it</value>
-	  <value>mm</value>
+	  <value>my</value>
 	  <value>nl</value>
 	  <value>no</value>
 	  <value>ps</value>
