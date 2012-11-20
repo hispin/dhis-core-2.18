@@ -46,6 +46,11 @@ input[type=text],textarea
   padding-left: 2px;
 }
 
+.formSection th
+{
+  text-align: center;
+}
+
 .sectionFilter
 {
   padding: 5px;
