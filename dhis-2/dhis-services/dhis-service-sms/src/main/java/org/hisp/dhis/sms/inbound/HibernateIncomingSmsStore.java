@@ -29,8 +29,6 @@ package org.hisp.dhis.sms.inbound;
 
 import java.util.Collection;
 
-import javax.jms.JMSException;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -40,7 +38,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.sms.incoming.IncomingSms;
 import org.hisp.dhis.sms.incoming.IncomingSmsStore;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
-import org.hisp.dhis.sms.parse.SMSPublisher;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -53,7 +50,6 @@ public class HibernateIncomingSmsStore
 
     private SessionFactory sessionFactory;
     
-    private SMSPublisher smsPublisher;
 
     public void setSessionFactory( SessionFactory sessionFactory )
     {
@@ -67,14 +63,6 @@ public class HibernateIncomingSmsStore
     @Override
     public int save( IncomingSms sms )
     {
-        try
-        {
-            smsPublisher.putObject( sms );
-        }
-        catch ( JMSException e )
-        {
-            e.printStackTrace();
-        }   
         return (Integer) sessionFactory.getCurrentSession().save( sms );
         
     }
@@ -134,33 +122,13 @@ public class HibernateIncomingSmsStore
         sessionFactory.getCurrentSession().update( incomingSms );
     }
 
-    // @Override
-    // public Collection<IncomingSms> getSms( String originator, Date startDate,
-    // Date endDate )
-    // {
-    // Criteria crit = sessionFactory.getCurrentSession().createCriteria(
-    // IncomingSms.class );
-    // if ( originator != null && !originator.equals( "" ) )
-    // {
-    // crit.add( Restrictions.eq( "originator", originator ) );
-    // }
-    // if ( startDate != null && endDate != null )
-    // {
-    // crit.add( Restrictions.between( "receiveDate", startDate, endDate ) );
-    // }
-    // return crit.list();
-    // }
-    //
-    // @Override
-    // public Collection<IncomingSms> getSmsByDate( Date startDate, Date endDate
-    // )
-    // {
-    // return getSms( null, startDate, endDate );
-    // }
-    
-    public void setSmsPublisher( SMSPublisher smsPublisher )
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<IncomingSms> getAllUnparsedSmses()
     {
-        this.smsPublisher = smsPublisher;
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( IncomingSms.class );
+        criteria.add( Restrictions.eq( "parsed", false ) );
+        return criteria.list();
     }
 
 }

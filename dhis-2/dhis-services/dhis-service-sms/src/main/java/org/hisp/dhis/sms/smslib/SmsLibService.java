@@ -47,7 +47,6 @@ import org.hisp.dhis.sms.outbound.OutboundSmsStatus;
 import org.hisp.dhis.sms.outbound.OutboundSmsStore;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.sms.parse.SMSConsumer;
-import org.hisp.dhis.sms.parse.SMSPublisher;
 import org.smslib.AGateway;
 import org.smslib.GatewayException;
 import org.smslib.IInboundMessageNotification;
@@ -344,7 +343,7 @@ public class SmsLibService
                 }
 
                 try
-                {  
+                {
                     smsConsumer.start();
                 }
                 catch ( Exception e1 )
@@ -510,8 +509,8 @@ public class SmsLibService
     public void deleteById( Integer outboundSmsId )
     {
         OutboundSms sms = outboundSmsStore.get( outboundSmsId );
-        
-        outboundSmsStore.delete( sms );   
+
+        outboundSmsStore.delete( sms );
     }
 
 }

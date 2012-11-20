@@ -5,46 +5,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.sms.outbound.SmsConfigurationManager" class="org.hisp.dhis.sms.SmsConfigurationManagerImpl" />
 
-  <!-- Outbound SMS service -->
 
-<!-- 
-  <bean id="fetchAndParseSMSJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-    <property name="targetObject" ref="smsConsumer" />
-    <property name="targetMethod" value="fetchAndParseSMS" />
-  </bean>
-
-  <bean id="fetchAndParseSMSTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-    <property name="jobDetail" ref="fetchAndParseSMSJobDetail" />
-    <property name="repeatInterval" value="3000" />
-  </bean>
-
-  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-    <property name="triggers">
-      <list>
-        <ref bean="fetchAndParseSMSTrigger" />
-      </list>
-    </property>
-  </bean>
-
- -->
-  <bean id="smsPublisher" class="org.hisp.dhis.sms.parse.SMSPublisher">
-    <property name="factory" ref="jmsFactory" />
-    <property name="queue" value="TEST.QUEUE" />
+  <bean id="incomingSmsQueue" class="org.hisp.dhis.sms.queue.DatabaseSupportedInternalMemoryMessageQueue">
+      <property name="smsStore" ref="org.hisp.dhis.sms.incoming.IncomingSmsStore" />
   </bean>
 
   <bean id="smsConsumer" class="org.hisp.dhis.sms.parse.SMSConsumer">
-    <property name="factory" ref="jmsFactory" />
-    <property name="queue" value="TEST.QUEUE" />
-    <property name="brokerURL" value="vm://localhost:61616" />
-    <property name="parserManager" ref="org.hisp.dhis.sms.parse.DefaultParserManager" />
+    <property name="parserManager" ref="org.hisp.dhis.sms.parse.DefaultParserManager" />  
+    <property name="messageQueue" ref="incomingSmsQueue" />
   </bean>
-
-  <bean id="jmsFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-    <property name="brokerURL">
-      <value>vm://localhost:61616</value>
-    </property>
-  </bean>
-
 
   <bean id="outboundSmsStore" class="org.hisp.dhis.sms.outbound.HibernateOutboundSmsStore">
     <property name="sessionFactory" ref="sessionFactory" />
@@ -78,11 +47,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.sms.incoming.IncomingSmsStore" class="org.hisp.dhis.sms.inbound.HibernateIncomingSmsStore">
     <property name="sessionFactory" ref="sessionFactory" />
-    <property name="smsPublisher" ref="smsPublisher" />
   </bean>
 
   <bean id="org.hisp.dhis.sms.incoming.IncomingSmsService" class="org.hisp.dhis.sms.inbound.DefaultInboundSmsService">
     <property name="incomingSmsStore" ref="org.hisp.dhis.sms.incoming.IncomingSmsStore" />
+    <property name="incomingSmsQueue" ref="incomingSmsQueue" />
   </bean>
 
   <bean id="org.hisp.dhis.sms.parse.DefaultParserManager" class="org.hisp.dhis.sms.parse.DefaultParserManager"
