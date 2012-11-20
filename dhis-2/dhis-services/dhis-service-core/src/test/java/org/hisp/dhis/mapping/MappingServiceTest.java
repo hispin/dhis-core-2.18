@@ -27,13 +27,10 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static org.hisp.dhis.mapping.MapView.LAYER_THEMATIC1;
-import static org.hisp.dhis.mapping.MapView.LEGEND_TYPE_AUTOMATIC;
-import static org.hisp.dhis.mapping.MapView.VALUE_TYPE_INDICATOR;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -154,8 +151,8 @@ public class MappingServiceTest
         mappingService.addOrUpdateMapLegend( legend.getName(), legend.getStartValue(), 0.3, "ColorB", "img.png" );
 
         assertEquals( "MapLegendA", mappingService.getMapLegend( id ).getName() );
-        assertEquals( 0.1, mappingService.getMapLegend( id ).getStartValue() );
-        assertEquals( 0.3, mappingService.getMapLegend( id ).getEndValue() );
+        assertEquals( new Double( 0.1 ), mappingService.getMapLegend( id ).getStartValue() );
+        assertEquals( new Double( 0.3 ), mappingService.getMapLegend( id ).getEndValue() );
         assertEquals( "ColorB", mappingService.getMapLegend( id ).getColor() );
         assertEquals( "img.png", mappingService.getMapLegend( id ).getImage() );
     }
@@ -274,7 +271,7 @@ public class MappingServiceTest
         assertEquals( MappingService.MAP_LAYER_TYPE_BASELAYER, mappingService.getMapLayer( id ).getType() );
         assertEquals( "A", mappingService.getMapLayer( id ).getFillColor() );
         assertEquals( "B", mappingService.getMapLayer( id ).getStrokeColor() );
-        assertEquals( 0.1, mappingService.getMapLayer( id ).getFillOpacity() );
+        assertEquals( 0.1, mappingService.getMapLayer( id ).getFillOpacity(), DELTA );
         assertEquals( 1, mappingService.getMapLayer( id ).getStrokeWidth() );
     }
 
@@ -295,7 +292,7 @@ public class MappingServiceTest
         mappingService.updateMapLayer( mapLayer );
 
         assertEquals( "MapLayerB", mappingService.getMapLayerByName( "MapLayerB" ).getName() );
-        assertEquals( 0.05, mappingService.getMapLayerByName( "MapLayerB" ).getFillOpacity() );
+        assertEquals( 0.05, mappingService.getMapLayerByName( "MapLayerB" ).getFillOpacity(), DELTA );
         assertEquals( 0, mappingService.getMapLayerByName( "MapLayerB" ).getStrokeWidth() );
     }
 

@@ -27,7 +27,7 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.user.User;

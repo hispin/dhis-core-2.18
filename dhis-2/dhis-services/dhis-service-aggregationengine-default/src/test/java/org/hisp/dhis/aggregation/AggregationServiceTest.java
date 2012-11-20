@@ -27,7 +27,7 @@ package org.hisp.dhis.aggregation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
 import java.util.Date;
@@ -309,37 +309,37 @@ public class AggregationServiceTest
     @Test
     public void indicator()
     {
-        assertEquals( 10000.0, aggregationService.getAggregatedIndicatorValue( indicatorA, mar01, mar31, unitB ) );
+        assertEquals( 10000.0, aggregationService.getAggregatedIndicatorValue( indicatorA, mar01, mar31, unitB ), DELTA );
         
-        assertEquals( 30.0, aggregationService.getAggregatedDataValue( dataElementC, categoryOptionComboA, mar01, mar31, unitB ) );
-        assertEquals( 20.0, aggregationService.getAggregatedDataValue( dataElementC, categoryOptionComboB, mar01, mar31, unitB ) );
-        assertEquals( 50.0, aggregationService.getAggregatedDataValue( dataElementC, null, mar01, mar31, unitB ) );
+        assertEquals( 30.0, aggregationService.getAggregatedDataValue( dataElementC, categoryOptionComboA, mar01, mar31, unitB ), DELTA );
+        assertEquals( 20.0, aggregationService.getAggregatedDataValue( dataElementC, categoryOptionComboB, mar01, mar31, unitB ), DELTA );
+        assertEquals( 50.0, aggregationService.getAggregatedDataValue( dataElementC, null, mar01, mar31, unitB ), DELTA );
         
-        assertEquals( 5000.0, aggregationService.getAggregatedIndicatorValue( indicatorB, mar01, mar31, unitB ) );
+        assertEquals( 5000.0, aggregationService.getAggregatedIndicatorValue( indicatorB, mar01, mar31, unitB ), DELTA );
     }
     
     @Test
     public void sumIntDataElement()
     {
-        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitC ) );
-        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitF ) );
-        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitB ) );
+        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitC ), DELTA );
+        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitF ), DELTA );
+        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitB ), DELTA );
 
-        assertEquals( 255.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitC ) );
-        assertEquals( 345.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitF ) );
-        assertEquals( 580.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitB ) );
+        assertEquals( 255.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitC ), DELTA );
+        assertEquals( 345.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitF ), DELTA );
+        assertEquals( 580.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitB ), DELTA );
     }
     
     @Test
     public void sumBoolDataElement()
     {
-        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitC ) );
-        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitF ) );
-        assertEquals( 3.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitB ) );
+        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitC ), DELTA );
+        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitF ), DELTA );
+        assertEquals( 3.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitB ), DELTA );
 
-        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitC ) );
-        assertEquals( 7.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitF ) );
-        assertEquals( 10.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitB ) );
+        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitC ), DELTA );
+        assertEquals( 7.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitF ), DELTA );
+        assertEquals( 10.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitB ), DELTA );
     }
     
     @Test
@@ -348,9 +348,9 @@ public class AggregationServiceTest
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
         dataElementService.updateDataElement( dataElementA );
         
-        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitC ) );
-        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitF ) );
-        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitB ) );
+        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitC ), DELTA );
+        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitF ), DELTA );
+        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitB ), DELTA );
 
         assertEquals( 85.2, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitC ), 0.1 );
         assertEquals( 115.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitF ), 0.1 );
@@ -363,9 +363,9 @@ public class AggregationServiceTest
         dataElementB.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
         dataElementService.updateDataElement( dataElementB );
         
-        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitC ) );
-        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitF ), 0.01 );
-        assertEquals( 0.6, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitB ) );
+        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitC ), DELTA );
+        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitF ), DELTA );
+        assertEquals( 0.6, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitB ), DELTA );
         
         assertEquals( 0.66, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitC ), 0.01 );
         assertEquals( 0.78, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitF ), 0.01 );

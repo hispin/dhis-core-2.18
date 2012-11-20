@@ -112,6 +112,8 @@ public abstract class DhisConvenienceTest
     private static final String EXT_TEST_DIR = System.getProperty( "user.home" ) + File.separator + "dhis2_test_dir";
 
     private static Date date;
+    
+    protected static final double DELTA = 0.01;
 
     // -------------------------------------------------------------------------
     // Service references

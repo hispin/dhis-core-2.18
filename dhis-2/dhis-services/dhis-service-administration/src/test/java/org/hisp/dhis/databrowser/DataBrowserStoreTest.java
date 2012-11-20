@@ -35,7 +35,7 @@ import org.hisp.dhis.system.grid.ListGrid;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * @author joakibj, briane, eivinhb

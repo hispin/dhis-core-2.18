@@ -45,7 +45,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -155,7 +155,7 @@ public class DataAnalysisStoreTest
         dataValueService.addDataValue( createDataValue( dataElementA, periodI, organisationUnitA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodJ, organisationUnitA, "15", categoryOptionCombo ) );
         
-        assertEquals( 14.49, dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), 0.01 );
+        assertEquals( 14.49, dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), DELTA );
         assertNull( dataAnalysisStore.getStandardDeviation( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitB.getId() ) );
     }
 
@@ -173,7 +173,7 @@ public class DataAnalysisStoreTest
         dataValueService.addDataValue( createDataValue( dataElementA, periodI, organisationUnitA, "3", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementA, periodJ, organisationUnitA, "15", categoryOptionCombo ) );
         
-        assertEquals( 13, dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), 0.01 );
+        assertEquals( 13, dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitA.getId() ), DELTA );
         assertNull( dataAnalysisStore.getAverage( dataElementA, categoryOptionCombo, organisationUnits ).get( organisationUnitB.getId() ) );
     }
 }
