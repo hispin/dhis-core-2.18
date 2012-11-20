@@ -185,7 +185,6 @@
 			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageInstancesList.vm</param>
-			<param name="requiredAuthorities">F_PROGRAM_STAGE_INSTANCE_SEARCH</param>
 		</action>
 
 		<action name="removeEmptyEvents"
@@ -193,7 +192,6 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm
 			</result>
-			<param name="requiredAuthorities">F_PROGRAM_STAGE_INSTANCE_DELETE</param>
 		</action>
 
 		<!-- save value -->
