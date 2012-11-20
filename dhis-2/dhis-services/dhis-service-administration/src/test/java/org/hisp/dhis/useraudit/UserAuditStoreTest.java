@@ -30,7 +30,7 @@ package org.hisp.dhis.useraudit;
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland

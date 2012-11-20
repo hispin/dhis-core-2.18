@@ -27,9 +27,9 @@ package org.hisp.dhis.completeness;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.Date;
@@ -226,11 +226,11 @@ public class DataSetCompletenessServiceTest
         DataSetCompletenessResult resultA = new DataSetCompletenessResult( dataSetA.getName(), 20, 15, 10 );
         DataSetCompletenessResult resultB = new DataSetCompletenessResult( dataSetA.getName(), 0, 15, 10 );
         
-        assertEquals( 75.0, resultA.getPercentage() );
-        assertEquals( 0.0, resultB.getPercentage() );
+        assertEquals( 75.0, resultA.getPercentage(), DELTA );
+        assertEquals( 0.0, resultB.getPercentage(), DELTA );
         
-        assertEquals( 50.0, resultA.getPercentageOnTime() );
-        assertEquals( 0.0, resultB.getPercentageOnTime() );
+        assertEquals( 50.0, resultA.getPercentageOnTime(), DELTA );
+        assertEquals( 0.0, resultB.getPercentageOnTime(), DELTA );
     }
     
     // -------------------------------------------------------------------------

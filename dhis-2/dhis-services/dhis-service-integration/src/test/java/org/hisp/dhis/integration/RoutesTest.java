@@ -27,7 +27,7 @@ package org.hisp.dhis.integration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 import org.hisp.dhis.DhisTest;
 import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.CODE;
 import org.hisp.dhis.dataelement.DataElement;
