@@ -27,9 +27,13 @@ package org.hisp.dhis.reporting.completeness.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -49,8 +53,6 @@ import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
 
-import static org.hisp.dhis.system.util.ConversionUtils.*;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -65,7 +67,7 @@ public class GetDataCompletenessAction
     private static final String TITLE_SEP = " - ";
     
     private static final String EMPTY = "";
-
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -143,6 +145,13 @@ public class GetDataCompletenessAction
     {
         this.type = type;
     }
+    
+    private Set<Integer> groupId = new HashSet<Integer>();
+
+    public void setGroupId( Set<Integer> groupId )
+    {
+        this.groupId = groupId;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -194,18 +203,18 @@ public class GetDataCompletenessAction
                 if ( dataSetId != null && dataSetId != 0 ) // One ds for one ou
                 {
                     mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
-                        _periodId, getIdentifiers( OrganisationUnit.class, selectedUnit.getChildren() ), dataSetId ) );
+                        _periodId, getIdentifiers( OrganisationUnit.class, selectedUnit.getChildren() ), dataSetId, groupId ) );
 
                     footerResults = new ArrayList<DataSetCompletenessResult>(
                         completenessService.getDataSetCompleteness( _periodId, Arrays.asList( selectedUnit.getId() ),
-                            dataSetId ) );
+                            dataSetId, groupId ) );
 
                     dataSet = dataSetService.getDataSet( dataSetId );
                 }
                 else // All ds for children of one ou               
                 {
                     mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
-                        _periodId, selectedUnit.getId() ) );
+                        _periodId, selectedUnit.getId(), groupId ) );
                 }
 
                 grid = getGrid( mainResults, footerResults, selectedUnit, dataSet, period );
