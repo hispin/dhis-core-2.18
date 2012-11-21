@@ -211,6 +211,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction"
     scope="prototype">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
   </bean>
 
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction"
