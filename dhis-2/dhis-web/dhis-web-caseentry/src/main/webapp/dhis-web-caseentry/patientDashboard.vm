@@ -18,11 +18,11 @@
 			<table>
 				<tr>
 					<td>$i18n.getString("full_name")</td>
-					<td>$!patient.getFullName()</td>
+					<td>$encoder.htmlEncode($!patient.getFullName())</td>
 				</tr>
 				<tr>
 					<td>$i18n.getString("location")</td>
-					<td>$!patient.organisationUnit.name</td>
+					<td>$encoder.htmlEncode($!patient.organisationUnit.name)</td>
 				</tr>
 				<tr>
 					<td>$i18n.getString("gender")</td>
@@ -46,7 +46,7 @@
 					<td>$i18n.getString("health_worker")</td>
 					<td>
 						#if($!patient.healthWorker )
-							$!patient.healthWorker.name
+							$encoder.htmlEncode($!patient.healthWorker.name)
 						#else
 							[$i18n.getString('none')]
 						#end
@@ -75,7 +75,7 @@
 						#elseif($attributeValue.patientAttribute.valueType=='DATE')
 							$format.formatDate( $attributeValue.value )
 						#else
-							$attributeValue.value
+							$encoder.htmlEncode($attributeValue.value)
 						#end	
 					</td>
 				</tr>
@@ -213,7 +213,7 @@
 		#set( $mark = false )
 		#foreach( $patientAudit in $patientAudits )
 		<tr #alternate( $mark )>
-			<td>$patientAudit.visitor</td>
+			<td>$encoder.htmlEncode($patientAudit.visitor)</td>
 			<td>$format.formatDate($patientAudit.date)</td>
 		</tr>
 		#set( $mark = !$mark )

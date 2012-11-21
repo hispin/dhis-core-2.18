@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.reminder;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -133,9 +134,9 @@ public class GetProgramTrackingListAction
         throws Exception
     {
         programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
-
+        
         outboundSms = new ArrayList<OutboundSms>( programStageInstance.getOutboundSms() );
-
+       
         comments = new ArrayList<PatientComment>( programStageInstance.getPatientComments() );
 
         currentUsername = currentUserService.getCurrentUsername();
