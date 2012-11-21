@@ -102,7 +102,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>$i18n.getString( "message" )</td>
+					<td>$i18n.getString( "send_message" )</td>
 					<td>
 						<input type="text" id="smsMessage" name="smsMessage" class="{validate:{required:true,maxlength:160}}" onkeypress="keypressOnMessage(event, this,'$programStageInstance.id');"></input>
 						<input type="button" value="&raquo;" class='tiny-button' onclick="sendSmsOnePatient( byId('smsMessage'),'$programStageInstance.id' );"/>
