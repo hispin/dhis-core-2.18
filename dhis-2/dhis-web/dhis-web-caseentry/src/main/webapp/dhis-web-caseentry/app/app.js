@@ -666,7 +666,7 @@ Ext.onReady( function() {
 		orderByOrgunitAsc: true,
 		orderByExecutionDateByAsc: true,
 		orgunitIds: [],
-		generateReport: function( type ) {
+		generateReport: function( type, isSorted ) {
 			// Validation
 			if( !this.validation.objects() )
 			{
@@ -677,7 +677,7 @@ Ext.onReady( function() {
 			// Export to XLS 
 			if( type)
 			{
-				window.location.href = url + "?" + this.getURLParams(type);
+				window.location.href = url + "?" + this.getURLParams(type, isSorted );
 			}
 			// Show report on grid
 			else
@@ -687,31 +687,34 @@ Ext.onReady( function() {
 					url: url,
 					method: "POST",
 					scope: this,
-					params: this.getParams(),
+					params: this.getParams(isSorted),
 					success: function(r) {
 						var json = Ext.JSON.decode(r.responseText);
 						if(json.message!=""){
 							TR.util.notification.error(TR.i18n.error, json.message);
 						}
 						else{
-							TR.state.total = json.total;
-							TR.state.totalRecords = json.totalRecords
-							TR.value.columns = json.columns;
-							TR.value.values = json.items;
-							
-							// Get fields
-							var fields = [];
-							fields[0] = 'id';
-							for( var index=1; index < TR.value.columns.length; index++ )
-							{
-								fields[index] = 'col' + index;
+							if( isSorted ){
+								TR.store.datatable.loadData(TR.value.values,false);
 							}
-							TR.value.fields = fields;
-							
-							// Set data for grid
-							TR.store.getDataTableStore();
-							TR.datatable.getDataTable();
-							
+							else{
+								TR.state.total = json.total;
+								TR.state.totalRecords = json.totalRecords
+								TR.value.columns = json.columns;
+								TR.value.values = json.items;
+								// Get fields
+								var fields = [];
+								fields[0] = 'id';
+								for( var index=1; index < TR.value.columns.length; index++ )
+								{
+									fields[index] = 'col' + index;
+								}
+								TR.value.fields = fields;
+								
+								// Set data for grid
+								TR.store.getDataTableStore();
+								TR.datatable.getDataTable();
+							}
 							TR.datatable.setPagingToolbarStatus();
 						}
 						TR.util.mask.hideMask();
@@ -744,7 +747,7 @@ Ext.onReady( function() {
 				}
 			});
 		},
-		getParams: function() {
+		getParams: function(isSorted) {
 			var p = {};
             p.startDate = TR.cmp.settings.startDate.rawValue;
             p.endDate = TR.cmp.settings.endDate.rawValue;
@@ -763,7 +766,7 @@ Ext.onReady( function() {
 			
 			// Get searching values
 			p.searchingValues = [];
-			if( !TR.state.paramChanged() )
+			if( !TR.state.paramChanged() || isSorted )
 			{
 				var cols = TR.datatable.datatable.columns;
 				for( var k in cols )
@@ -787,7 +790,7 @@ Ext.onReady( function() {
 			}
             return p;
         },
-		getURLParams: function( type ) {
+		getURLParams: function( type, isSorted ) {
             var p = "";
             p += "startDate=" + TR.cmp.settings.startDate.rawValue;
             p += "&endDate=" + TR.cmp.settings.endDate.rawValue;
@@ -803,7 +806,7 @@ Ext.onReady( function() {
 				p += '&orgunitIds=' + TR.state.orgunitIds[i];
 			}
 			
-			if( !TR.state.paramChanged() )
+			if( !TR.state.paramChanged() || isSorted )
 			{
 				var cols = TR.datatable.datatable.columns;
 				for( var k in cols )
@@ -1339,8 +1342,8 @@ Ext.onReady( function() {
     };
         
 	TR.exe = {
-		execute: function( type ) {
-			TR.state.generateReport( type );
+		execute: function( type, isSorted ) {
+			TR.state.generateReport( type, isSorted );
 		},
 		filter: function() {
 			TR.state.isFilter = true;
@@ -2032,7 +2035,7 @@ Ext.onReady( function() {
 						id: 'btnSortBy',
 						disabled: true,
 						execute: function() {
-							TR.exe.execute();
+							TR.exe.execute(false, true );
 						},
 						listeners: {
 							afterrender: function(b) {
