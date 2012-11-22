@@ -45,7 +45,7 @@
 			<th>#</th>
             #foreach( $identifierType in $identifierTypes)
 				<th>
-					$identifierType.name
+					$encoder.htmlEncode($identifierType.name)
 				</th>
 			#end
 			#if( $identifierTypes.size()==0 )
@@ -82,7 +82,7 @@
 					#set($value=$patient.getFullName())
 				#end
 				<td style='cursor:pointer;' onclick="javascript:">
-					<a>$value</a>
+					<a>$encoder.htmlEncode($value)</a>
 				</td>
 				<td>			
 					$i18n.getString( $patient.gender )

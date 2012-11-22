@@ -90,23 +90,23 @@
 <div id="representativeInfo" class='hidden text-column'>
 	<table>
 		<tr>
-			<td class="bold text-column">$i18n.getString("full_name"):</td>
-			<td>$!representative.getFullName()</td>
+			<td class="bold text-column">$i18n.getString("full_name"): </td>
+			<td>$encoder.htmlEncode($!representative.getFullName())</td>
 		</tr>
 		<tr>
-			<td class="bold text-column">$i18n.getString("relationship"):</td>
-			<td>$!relationship.relationshipType.aIsToB</td>
+			<td class="bold text-column">$i18n.getString("relationship"): </td>
+			<td>$encoder.htmlEncode($!relationship.relationshipType.aIsToB)</td>
 		</tr>
 		<tr>
-			<td class="bold text-column">$i18n.getString("gender"):</td>
-			<td> $!representative.gender</td>
+			<td class="bold text-column">$i18n.getString("gender"): </td>
+			<td>$!representative.gender</td>
 		</tr>
 		<tr>
-			<td class="bold text-column">$i18n.getString("date_of_birth"):</td>
+			<td class="bold text-column">$i18n.getString("date_of_birth"): </td>
 			<td>$!format.formatDate( $!representative.birthDate )</td>
 		</tr>
 		<tr>
-			<td class="bold text-column">$i18n.getString("age"):</td>
+			<td class="bold text-column">$i18n.getString("age"): </td>
 			<td> $!representative.getAge() </td>
 		</tr>
 		#foreach( $patientIdentifier in $representative.identifiers )
@@ -119,13 +119,12 @@
 			<td class="bold text-column">$i18n.getString("enrolled_in_program"):</td>
 			<td>  
 				 #foreach( $program in $representative.programs )
-					#if( $velocityCount == 1 )
-						 $program.name
-					#else , $program.name 
+					$encoder.htmlEncode($program.name)
+					#if( $velocityCount > 1 )
+						<br>
 					#end
 				 #end  
 			</td>
 		</tr>
-			   
 	</table>
 </div>

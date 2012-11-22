@@ -49,14 +49,12 @@
 				<th>#</th>
 				#foreach( $attribute in $patientAttributes )
 					#if($attribute)
-						<th id="patientAttributeName">$attribute.name</th>
+						<th id="patientAttributeName">$encoder.htmlEncode($attribute.name)</th>
 					#end
 				#end
 				
 				#foreach( $identifierType in $identifierTypes)
-					<th>
-						$identifierType.name
-					</th>
+					<th>$encoder.htmlEncode($identifierType.name)</th>
 				#end
 				#if( $identifierTypes.size()==0 )
 					<th>$i18n.getString( "full_name" )</th>          
@@ -107,7 +105,7 @@
 					#set($value=$patient.getFullName())
 				#end
 				<td style="cursor:pointer;" onclick="javascript:isDashboard=true;showPatientDashboardForm( '$patient.id' )">
-					<a>$value</a>
+					<a>$encoder.htmlEncode($value)</a>
 				</td>
 				
 				<td>$i18n.getString($!patient.gender)</td>
