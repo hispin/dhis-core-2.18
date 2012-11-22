@@ -31,6 +31,7 @@
 		
 		datePickerValid( 'patientForm [id=registrationDate]' );
 		datePickerValid( 'patientForm [id=birthDate]' );
+		datePickerValid( 'patientForm [id=deathDate]' );
 		addEventForPatientForm( 'patientForm' );
 	});	
 	hideById('patientForm [id=age]');

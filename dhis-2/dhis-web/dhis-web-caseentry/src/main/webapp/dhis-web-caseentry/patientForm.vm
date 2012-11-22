@@ -97,7 +97,7 @@
 
 <!-- DEAD -->
 
-<tr>
+<tr id="deathCheckboxTR">
 	<td class='text-column'>$i18n.getString("is_dead")</td>
 	<td>
 		<input type="checkbox" name="isDead" id="isDead" value="true" #if($!patient.isDead) checked="checked" #end onchange='isDeathOnChange();'/>

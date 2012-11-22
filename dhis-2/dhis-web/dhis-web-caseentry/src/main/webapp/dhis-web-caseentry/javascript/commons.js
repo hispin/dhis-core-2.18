@@ -289,6 +289,7 @@ function getSearchParams()
 function isDeathOnChange()
 {
 	var isDeath = byId('isDead').checked;
+	setFieldValue('deathDate','');
 	if(isDeath)
 	{
 		showById('deathDateTR');
@@ -1128,6 +1129,11 @@ function toggleUnderAge(this_)
 			function(){
 				$('#patientForm [id=birthDate]').attr('id','birthDate_id');
 				$('#patientForm [id=birthDate_id]').attr('name','birthDate_id');
+				
+				$('#patientForm [id=registrationDate]').attr('id','registrationDate_id');
+				$('#patientForm [id=registrationDate_id]').attr('name','registrationDate_id');
+				
+				datePickerValid( 'representativeDiv [id=registrationDate]' );
 			}).dialog({
 			title: i18n_child_representative,
 			maximize: true, 
@@ -1140,6 +1146,9 @@ function toggleUnderAge(this_)
 			{
 				$('#patientForm [id=birthDate_id]').attr('id','birthDate');
 				$('#patientForm [id=birthDate]').attr('name','birthDate');
+				
+				$('#patientForm [id=registrationDate_id]').attr('id','registrationDate');
+				$('#patientForm [id=registrationDate]').attr('name','registrationDate');
 			}
 		});
 	}else

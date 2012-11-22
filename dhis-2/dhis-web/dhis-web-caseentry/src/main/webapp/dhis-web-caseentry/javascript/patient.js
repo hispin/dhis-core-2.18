@@ -137,7 +137,6 @@ function addPatient()
       data: getParamsForDiv('patientForm'),
       success: function(json) {
 		var patientId = json.message.split('_')[0];
-		jQuery('#resultSearchDiv').dialog('close');
 		showPatientDashboardForm( patientId );
       }
      });
