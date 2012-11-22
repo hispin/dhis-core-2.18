@@ -5,7 +5,7 @@
 	
 	<tr>
 		<td>$i18n.getString( "full_name" )</td>
-		<td>: $partner.getFullName()</td>
+		<td>: $encoder.htmlEncode($partner.getFullName())</td>
 	</tr>
 	
 	<tr>
@@ -49,7 +49,7 @@
 			#if( $patientAttributeValueMap.get( $attribute.id ) != " " )
 			<tr>
 				<td>$attribute.name</td>
-				<td>: $patientAttributeValueMap.get( $attribute.id )</td>
+				<td>: $encoder.htmlEncode($patientAttributeValueMap.get( $attribute.id ))</td>
 			</tr>
 			#end
 		#end
@@ -60,7 +60,7 @@
 		<td><label class="bold">$i18n.getString( "enrolled_in_program" )</label></td>
 		<td>: 
 		#foreach( $program in $partner.programs )
-			$program.name
+			$encoder.htmlEncode($program.name)
 		#end
 		</td>
 	</tr>

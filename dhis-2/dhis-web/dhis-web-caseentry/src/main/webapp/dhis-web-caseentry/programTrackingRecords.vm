@@ -80,7 +80,7 @@
 												
 												<input type='button' id='ps_$programStageInstance.id' name='programStageBtn' 
 													programStageInstanceId='$programStageInstance.id' 
-													programStageName='$programStageInstance.programStage.name' 
+													programStageName='$encoder.htmlEncode($programStageInstance.programStage.name)' 
 													programStageId='$programStageInstance.programStage.id' 
 													programInstanceId='$programInstance.id'
 													dueDate='$format.formatDate( $programStageInstance.dueDate )'

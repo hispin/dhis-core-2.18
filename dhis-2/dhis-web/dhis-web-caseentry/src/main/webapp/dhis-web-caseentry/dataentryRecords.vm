@@ -41,7 +41,7 @@
 						#if($value=="")
 							#set($value=$patient.getFullName())
 						#end
-						<input type='button' class='patient-object' value="$value"
+						<input type='button' class='patient-object' value="$encoder.htmlEncode($value)"
 							onclick='javascript:showPatientHistory( "$patient.id" );' title='$i18n.getString( "patient_details_and_history" )'>
 					</td>
 					#set( $programStageInstances = $programInstance.programStageInstances )
