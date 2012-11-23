@@ -29,6 +29,8 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
@@ -70,6 +72,13 @@ public class ProgramEnrollmentSelectAction
         this.programInstanceService = programInstanceService;
     }
 
+    private SelectedStateManager selectedStateManager;
+
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -107,13 +116,18 @@ public class ProgramEnrollmentSelectAction
         // Get all programs
         programs = programService.getPrograms( Program.MULTIPLE_EVENTS_WITH_REGISTRATION );
 
+        // Check single-event with registration
+        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+
+        programs.addAll( programService.getPrograms( Program.SINGLE_EVENT_WITH_REGISTRATION, orgunit ) );
+        programs.removeAll( patient.getPrograms() );
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, false );
 
         for ( ProgramInstance programInstance : programInstances )
         {
             programs.remove( programInstance.getProgram() );
         }
-        
+
         return SUCCESS;
     }
 }
