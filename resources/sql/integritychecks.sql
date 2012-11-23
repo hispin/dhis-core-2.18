@@ -133,9 +133,12 @@ as categorycount from categories_categoryoptions as cc join dataelementcategoryo
 
 select * from categoryoptioncombo where categoryoptioncomboid not in (select distinct categoryoptioncomboid from datavalue);
 
--- Search for anomalies in category option combo sort order (might cause nulls)
+-- Category combo and option combo overview
 
-select * from categoryoptioncombos_categoryoptions order by categoryoptioncomboid, sort_order;
+select c.name as categorycombo, n.categoryoptioncomboname, n.categoryoptioncomboid  from _categoryoptioncomboname n 
+join categorycombos_optioncombos co on (n.categoryoptioncomboid=co.categoryoptioncomboid)
+join categorycombo c on (co.categorycomboid=c.categorycomboid)
+order by c.name, n.categoryoptioncomboname;
 
 -- Get category combinations without data elements
 
