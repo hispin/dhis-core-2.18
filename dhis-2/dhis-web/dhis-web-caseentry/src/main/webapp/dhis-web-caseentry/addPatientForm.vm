@@ -10,7 +10,7 @@
 				,errorElement:"span"
 				,submitHandler: function(form)
 					{
-						validateAddPatient();
+						validateAddPatient(isContinue);
 					}
 				,beforeValidateHandler: function(form)
 					{
@@ -51,8 +51,14 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="submit" class="button" value="$i18n.getString( 'add' )"/>
+			<input type="submit" class="button" value="$i18n.getString( 'add' )" onclick="isContinue=false;"/>
 			<input type='button' class="button" value="$i18n.getString( 'cancel' )" onclick="loadPatientList();" />
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>			
+			<input type="submit" class="button" value="$i18n.getString( 'add_patient_and_add_new' )" style="width:260px;" onclick="isContinue=true;"/>
 		</td>
 	</tr>
 </table>
