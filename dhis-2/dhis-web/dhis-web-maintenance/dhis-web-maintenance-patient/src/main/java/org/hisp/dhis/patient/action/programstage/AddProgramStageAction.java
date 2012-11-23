@@ -191,6 +191,13 @@ public class AddProgramStageAction
         this.displayInReports = displayInReports;
     }
 
+    private Boolean validCompleteOnly;
+
+    public void setValidCompleteOnly( Boolean validCompleteOnly )
+    {
+        this.validCompleteOnly = validCompleteOnly;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -201,7 +208,8 @@ public class AddProgramStageAction
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         irregular = (irregular == null) ? false : irregular;
         autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
-
+        validCompleteOnly = (validCompleteOnly == null) ? false : validCompleteOnly;
+        
         ProgramStage programStage = new ProgramStage();
         Program program = programService.getProgram( id );
 
@@ -213,6 +221,7 @@ public class AddProgramStageAction
         programStage.setIrregular( irregular );
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setAutoGenerateEvent( autoGenerateEvent );
+        programStage.setValidCompleteOnly( validCompleteOnly );
 
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < daysAllowedSendMessages.size(); i++ )
@@ -230,7 +239,7 @@ public class AddProgramStageAction
             DataElement dataElement = dataElementService.getDataElement( selectedDataElementsValidator.get( i ) );
             Boolean allowed = allowProvidedElsewhere.get( i ) == null ? false : allowProvidedElsewhere.get( i );
             Boolean displayInReport = displayInReports.get( i ) == null ? false : displayInReports.get( i );
-            
+
             ProgramStageDataElement programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
                 this.compulsories.get( i ), new Integer( i ) );
             programStageDataElement.setAllowProvidedElsewhere( allowed );

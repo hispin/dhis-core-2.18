@@ -62,6 +62,9 @@ function showProgramStageDetails( programStageId )
 		var autoGenerateEvent = (json.programStage.autoGenerateEvent=='true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'autoGenerateEventField', autoGenerateEvent );  
 		
+		var validCompleteOnly = (json.programStage.validCompleteOnly=='true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'validCompleteOnlyField', validCompleteOnly );  
+		
 		setInnerHTML( 'standardIntervalField', json.programStage.standardInterval );  
 		setInnerHTML( 'dataElementCountField', json.programStage.dataElementCount );   
 		setInnerHTML( 'reportDateDescriptionField', json.programStage.reportDateDescription );

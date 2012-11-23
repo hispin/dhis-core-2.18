@@ -184,6 +184,13 @@ public class UpdateProgramStageAction
         this.displayInReports = displayInReports;
     }
 
+    private Boolean validCompleteOnly;
+
+    public void setValidCompleteOnly( Boolean validCompleteOnly )
+    {
+        this.validCompleteOnly = validCompleteOnly;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -194,6 +201,7 @@ public class UpdateProgramStageAction
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         irregular = (irregular == null) ? false : irregular;
         autoGenerateEvent = (autoGenerateEvent == null) ? false : autoGenerateEvent;
+        validCompleteOnly = (validCompleteOnly == null) ? false : validCompleteOnly;
 
         ProgramStage programStage = programStageService.getProgramStage( id );
 
@@ -204,6 +212,7 @@ public class UpdateProgramStageAction
         programStage.setMinDaysFromStart( minDaysFromStart );
         programStage.setIrregular( irregular );
         programStage.setAutoGenerateEvent( autoGenerateEvent );
+        programStage.setValidCompleteOnly( validCompleteOnly );
 
         Set<PatientReminder> patientReminders = new HashSet<PatientReminder>();
         for ( int i = 0; i < this.daysAllowedSendMessages.size(); i++ )

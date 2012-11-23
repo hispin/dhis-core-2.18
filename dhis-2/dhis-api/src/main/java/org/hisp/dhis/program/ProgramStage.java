@@ -84,6 +84,8 @@ public class ProgramStage
 
     private Boolean autoGenerateEvent = true;
 
+    private Boolean validCompleteOnly = false;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -250,6 +252,16 @@ public class ProgramStage
     public void setAutoGenerateEvent( Boolean autoGenerateEvent )
     {
         this.autoGenerateEvent = autoGenerateEvent;
+    }
+
+    public Boolean getValidCompleteOnly()
+    {
+        return validCompleteOnly;
+    }
+
+    public void setValidCompleteOnly( Boolean validCompleteOnly )
+    {
+        this.validCompleteOnly = validCompleteOnly;
     }
 
     public String getDataEntryType()
