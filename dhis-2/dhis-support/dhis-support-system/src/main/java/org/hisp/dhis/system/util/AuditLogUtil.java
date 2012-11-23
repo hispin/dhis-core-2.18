@@ -37,7 +37,7 @@ public class AuditLogUtil
      * Generate audit trail logging message
      * 
      * @param userName : Current user name
-     * @param action : user's action ( add, edidt, delete )
+     * @param action : user's action ( add, edit, delete )
      * @param objectType : The name of the object that user is working on
      * @param objectName : The value of the name attribute of the object that
      *        user is working on
