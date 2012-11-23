@@ -443,25 +443,33 @@ function toggleContentForReportDate(show)
 }
 
 function doComplete(isCreateEvent){
-	jQuery.get( 'validateProgram.action'
-		, function(html){ 
-			$('#validateProgramDiv').html(html);
-			if(getFieldValue('violateValidation')=='true'){
-				$('#validateProgramDiv' ).dialog({
-					title: i18n_violate_validation,
-					maximize: true, 
-					closable: true,
-					modal:true,
-					overlay:{background:'#000000', opacity:0.1},
-					width: 800,
-					height: 450
-				});
-			}
-			else{
-				hideById('validateProgramDiv');
-				runCompleteEvent( isCreateEvent );
-			}
-	});
+	
+	if(getFieldValue('validCompleteOnly')=="true")
+	{
+		jQuery.get( 'validateProgram.action'
+			, function(html){ 
+				$('#validateProgramDiv').html(html);
+				if(getFieldValue('violateValidation')=='true'){
+					$('#validateProgramDiv' ).dialog({
+						title: i18n_violate_validation,
+						maximize: true, 
+						closable: true,
+						modal:true,
+						overlay:{background:'#000000', opacity:0.1},
+						width: 800,
+						height: 450
+					});
+				}
+				else{
+					hideById('validateProgramDiv');
+					runCompleteEvent( isCreateEvent );
+				}
+		});
+	}
+	else
+	{
+		runCompleteEvent( isCreateEvent );
+	}
 }
 
 function runCompleteEvent( isCreateEvent )

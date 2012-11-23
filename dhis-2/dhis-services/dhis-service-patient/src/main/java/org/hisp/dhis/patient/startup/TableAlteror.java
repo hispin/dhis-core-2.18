@@ -151,7 +151,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE programvalidation DROP COLUMN leftside" );
         executeSql( "ALTER TABLE programvalidation DROP COLUMN rightside" );
         executeSql( "ALTER TABLE programvalidation DROP COLUMN dateType" );
-
+        
+        executeSql( "UPDATE programstage SET validCompleteOnly=false WHERE validCompleteOnly is null" );
     }
 
     // -------------------------------------------------------------------------

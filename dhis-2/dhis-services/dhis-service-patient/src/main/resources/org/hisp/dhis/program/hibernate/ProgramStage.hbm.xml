@@ -46,5 +46,7 @@
     
     <property name="autoGenerateEvent"/>
     
+    <property name="validCompleteOnly"/>
+    
   </class>
 </hibernate-mapping>
