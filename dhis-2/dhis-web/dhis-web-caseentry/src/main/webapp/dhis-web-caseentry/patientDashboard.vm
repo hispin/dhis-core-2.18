@@ -131,21 +131,6 @@
 					</tr>
 					#end
 				#end
-				#foreach($program in $singlePrograms)
-					<tr id='tr_$program.id' name='tr_$program.id' style='cursor:pointer;'
-						onclick='javascript:saveSingleEnrollment("$patient.id","$program.id")' >
-						<td>
-							<a><span id='infor_$program.id'></span></a>
-							<script>
-								var infor = "$program.name" + " (" + getCurrentDate() + ")";
-								setInnerHTML("infor_$program.id", infor);
-							</script>
-						</td>
-					</tr>
-					<tr style='cursor:pointer;'>
-						<td id='tr2_$programInstance.id'></td>
-					</tr>
-				#end
 			</table>
 		</div>
 	</div>
