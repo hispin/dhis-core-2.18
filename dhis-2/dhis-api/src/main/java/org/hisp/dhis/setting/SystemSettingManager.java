@@ -53,8 +53,6 @@ public interface SystemSettingManager
     final String KEY_FORUM_INTEGRATION = "forumIntegration";
     final String KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART = "omitIndicatorsZeroNumeratorDataMart";
     final String KEY_REPORT_TEMPLATE_DIRECTORY = "reportTemplateDirectory";
-    final String KEY_MAX_NUMBER_OF_ATTEMPTS = "maxAttempts";
-    final String KEY_TIMEFRAME_MINUTES = "lockoutTimeframe";
     final String KEY_GOOGLE_MAPS_API_KEY = "googleMapsAPIKey";
     final String KEY_FACTOR_OF_DEVIATION = "factorDeviation";
     final String KEY_COMPLETENESS_OFFSET = "completenessOffset";
