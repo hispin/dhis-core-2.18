@@ -36,7 +36,7 @@ function viewReport( type )
 
     if ( mode == MODE_REPORT )
     {
-    	window.location.href = "../api/reports/" + uid + "/data." + type + "?" + getUrlParams();
+    	window.location.href = "../api/reports/" + uid + "/data." + reportType + "?" + getUrlParams();
     } 
     else // MODE_TABLE
     {
