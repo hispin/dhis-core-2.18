@@ -89,18 +89,21 @@ function showAddPatientForm()
 	
 }
 
-function validateAddPatient()
+function validateAddPatient( isContinue )
 {	
 	$("#patientForm :input").attr("disabled", true);
+	$("#patientForm").find("select").attr("disabled", true);
 	$.ajax({
 		type: "POST",
 		url: 'validatePatient.action',
 		data: getParamsForDiv('patientForm'),
-		success:addValidationCompleted
+		success: function(data){
+			addValidationCompleted(data,isContinue);
+		}
     });	
 }
 
-function addValidationCompleted( data )
+function addValidationCompleted( data, isContinue )
 {
     var type = jQuery(data).find('message').attr('type');
 	var message = jQuery(data).find('message').text();
@@ -108,7 +111,7 @@ function addValidationCompleted( data )
 	if ( type == 'success' )
 	{
 		removeDisabledIdentifier( );
-		addPatient();
+		addPatient( isContinue );
 	}
 	else
 	{
@@ -126,10 +129,11 @@ function addValidationCompleted( data )
 		}
 			
 		$("#patientForm :input").attr("disabled", false);
+		$("#patientForm").find("select").attr("disabled", false);
 	}
 }
 
-function addPatient()
+function addPatient( isContinue )
 {
 	$.ajax({
       type: "POST",
@@ -137,7 +141,21 @@ function addPatient()
       data: getParamsForDiv('patientForm'),
       success: function(json) {
 		var patientId = json.message.split('_')[0];
-		showPatientDashboardForm( patientId );
+		if(isContinue){
+			jQuery("#patientForm :input").each( function(){
+				if( $(this).attr('id') != "registrationDate" 
+					&& $(this).attr('type') != 'button'
+					&& $(this).attr('type') != 'submit' )
+				{
+					$(this).val("");
+				}
+			});
+			$("#patientForm :input").attr("disabled", false);
+			$("#patientForm").find("select").attr("disabled", false);
+		}
+		else{
+			showPatientDashboardForm( patientId );
+		}
       }
      });
     return false;
