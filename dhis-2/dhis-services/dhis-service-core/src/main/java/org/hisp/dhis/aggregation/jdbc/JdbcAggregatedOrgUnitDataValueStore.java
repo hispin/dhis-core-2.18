@@ -74,13 +74,13 @@ public class JdbcAggregatedOrgUnitDataValueStore
         Collection<Integer> periodIds, int organisationUnitId, Collection<Integer> organisationUnitGroupIds )
     {
         final String sql = 
-            "SELECT dataelementid, 0 as categoryoptioncomboid, periodid, organisationunitid, organisationunitgroupid, periodtypeid, level, SUM(value) as value " +
+            "SELECT dataelementid, 0 as categoryoptioncomboid, periodid, organisationunitid, organisationunitgroupid, SUM(value) as value " +
             "FROM aggregatedorgunitdatavalue " +
             "WHERE dataelementid IN ( " + getCommaDelimitedString( dataElementIds ) + " ) " +
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid = " + organisationUnitId + " " +
             "AND organisationunitgroupid IN ( " + getCommaDelimitedString( organisationUnitGroupIds ) + " ) " +
-            "GROUP BY dataelementid, periodid, organisationunitid, organisationunitgroupid, periodtypeid, level";
+            "GROUP BY dataelementid, periodid, organisationunitid, organisationunitgroupid";
         
         return jdbcTemplate.query( sql, new AggregatedOrgUnitDataValueRowMapper() );
     }

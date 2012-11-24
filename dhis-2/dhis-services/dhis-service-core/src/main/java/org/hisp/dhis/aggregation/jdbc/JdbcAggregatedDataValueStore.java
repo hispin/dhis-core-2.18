@@ -159,11 +159,11 @@ public class JdbcAggregatedDataValueStore
     public Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final String sql = 
-            "SELECT dataelementid, 0 as categoryoptioncomboid, periodid, organisationunitid, periodtypeid, level, SUM(value) as value " +
+            "SELECT dataelementid, 0 as categoryoptioncomboid, periodid, organisationunitid, SUM(value) as value " +
             "FROM aggregateddatavalue " +
             "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " ) " +
-            "GROUP BY dataelementid, periodid, organisationunitid, periodtypeid, level";
+            "GROUP BY dataelementid, periodid, organisationunitid";
         
         return jdbcTemplate.query( sql, new AggregatedDataValueRowMapper() );
     }
@@ -196,12 +196,12 @@ public class JdbcAggregatedDataValueStore
     public Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final String sql = 
-            "SELECT dataelementid, 0 as categoryoptioncomboid, periodid, organisationunitid, periodtypeid, level, SUM(value) as value " +
+            "SELECT dataelementid, 0 as categoryoptioncomboid, periodid, organisationunitid, SUM(value) as value " +
             "FROM aggregateddatavalue " +
             "WHERE dataelementid IN ( " + getCommaDelimitedString( dataElementIds ) + " ) " +
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " ) " +
-            "GROUP BY dataelementid, periodid, organisationunitid, periodtypeid, level";
+            "GROUP BY dataelementid, periodid, organisationunitid";
         
         return jdbcTemplate.query( sql, new AggregatedDataValueRowMapper() );
     }
@@ -217,7 +217,7 @@ public class JdbcAggregatedDataValueStore
             String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periods));
 
             final String sql =
-                "SELECT dataelementid, categoryoptioncomboid, periodid, adv.organisationunitid, periodtypeid, adv.level, value " +
+                "SELECT dataelementid, categoryoptioncomboid, periodid, adv.organisationunitid, value " +
                 "FROM aggregateddatavalue AS adv " +
                 "INNER JOIN _orgunitstructure AS ous on adv.organisationunitid=ous.organisationunitid " +
                 "WHERE adv.level = " + level.getLevel() +
