@@ -27,21 +27,6 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.getCountByName;
-import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
-import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18nService;
@@ -54,6 +39,10 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+
+import static org.hisp.dhis.i18n.I18nUtils.*;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: DefaultDataSetService.java 6255 2008-11-10 16:01:24Z larshelg $
@@ -62,8 +51,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataSetService
     implements DataSetService
 {
-    private static final Log log = LogFactory.getLog( DefaultDataSetService.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -102,25 +89,16 @@ public class DefaultDataSetService
 
     public int addDataSet( DataSet dataSet )
     {
-        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-        //    AuditLogUtil.ACTION_CREATE, DataSet.class.getSimpleName(), dataSet.getName() ) );
-
         return dataSetStore.save( dataSet );
     }
 
     public void updateDataSet( DataSet dataSet )
     {
         dataSetStore.update( dataSet );
-
-        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-        //    AuditLogUtil.ACTION_UPDATE, DataSet.class.getSimpleName(), dataSet.getName() ) );
     }
 
     public void deleteDataSet( DataSet dataSet )
     {
-        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-        //    AuditLogUtil.ACTION_DELETE, DataSet.class.getSimpleName(), dataSet.getName() ) );
-        
         dataSetStore.delete( dataSet );
     }
 
@@ -295,7 +273,7 @@ public class DefaultDataSetService
 
         return dataElements;
     }
-    
+
     public List<DataSet> getDataSetsByUid( Collection<String> uids )
     {
         return dataSetStore.getByUid( uids );
@@ -402,21 +380,21 @@ public class DefaultDataSetService
     public boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Date now )
     {
         now = now != null ? now : new Date();
-        
+
         boolean expired = dataSet.getExpiryDays() != DataSet.NO_EXPIRY && new DateTime( period.getEndDate() ).plusDays( dataSet.getExpiryDays() ).isBefore( new DateTime( now ) );
-        
+
         return expired && lockExceptionStore.getCount( dataSet, period, organisationUnit ) == 0l;
     }
-    
+
     @Override
     public boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit, Date now )
     {
         now = now != null ? now : new Date();
-        
+
         int expiryDays = dataElement.getExpiryDays();
-        
+
         boolean expired = expiryDays != DataSet.NO_EXPIRY && new DateTime( period.getEndDate() ).plusDays( expiryDays ).isBefore( new DateTime( now ) );
-        
+
         return expired && lockExceptionStore.getCount( dataElement, period, organisationUnit ) == 0l;
     }
 }
