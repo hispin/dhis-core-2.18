@@ -82,16 +82,15 @@ public class JdbcResourceTableStore
         StringBuilder sql = new StringBuilder();
         
         sql.append( "CREATE TABLE " ).append( TABLE_NAME_ORGANISATION_UNIT_STRUCTURE ).
-            append( " ( organisationunitid INTEGER NOT NULL, level INTEGER, " );
+            append( " ( organisationunitid INTEGER NOT NULL PRIMARY KEY, level INTEGER" );
         
         for ( int k = 1 ; k <= maxLevel; k++ )
         {
             String levelName = "idlevel" + String.valueOf( k );
-            sql.append ( levelName );
-            sql.append (" INTEGER, ");
+            sql.append( ", " ).append ( levelName ).append (" INTEGER");
         }
         
-        sql.append( "PRIMARY KEY ( organisationunitid ) );" );
+        sql.append( ");" );
         
         log.info( "Create organisation unit structure table SQL: " + sql );
         
@@ -114,7 +113,7 @@ public class JdbcResourceTableStore
         }
         
         final String sql = "CREATE TABLE " + TABLE_NAME_CATEGORY_OPTION_COMBO_NAME + 
-            " ( categoryoptioncomboid INTEGER NOT NULL, categoryoptioncomboname VARCHAR(250) )";
+            " ( categoryoptioncomboid INTEGER NOT NULL PRIMARY KEY, categoryoptioncomboname VARCHAR(250) )";
         
         log.info( "Create category option combo name table SQL: " + sql );
         
@@ -217,7 +216,7 @@ public class JdbcResourceTableStore
         }
         
         final String sql = "CREATE TABLE " + TABLE_NAME_DATA_ELEMENT_STRUCTURE + 
-            " ( dataelementid INTEGER NOT NULL, dataelementname VARCHAR(250), periodtypeid INTEGER, periodtypename VARCHAR(250) )";
+            " ( dataelementid INTEGER NOT NULL PRIMARY KEY, dataelementname VARCHAR(250), periodtypeid INTEGER, periodtypename VARCHAR(250) )";
         
         log.info( "Create data element structure SQL: " + sql );
         
@@ -241,7 +240,7 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
-        String sql = "CREATE TABLE " + tableName + " (periodid INTEGER NOT NULL";
+        String sql = "CREATE TABLE " + tableName + " (periodid INTEGER NOT NULL PRIMARY KEY";
         
         for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
         {
