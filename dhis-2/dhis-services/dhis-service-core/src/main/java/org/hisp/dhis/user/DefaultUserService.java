@@ -37,7 +37,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.filter.UserCredentialsCanUpdateFilter;
-import org.hisp.dhis.system.util.AuditLogUtil;
+import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,7 +156,7 @@ public class DefaultUserService
 
     public int addUser( User user )
     {
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_ADD, User.class
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_CREATE, User.class
             .getSimpleName(), user.getName() ) );
 
         return userStore.save( user );
@@ -166,7 +166,7 @@ public class DefaultUserService
     {
         userStore.update( user );
 
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_EDIT,
+        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_UPDATE,
             User.class.getSimpleName(), user.getName() ) );
     }
 

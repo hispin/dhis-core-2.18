@@ -63,7 +63,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
 
     @Autowired
     protected IdentifiableObjectManager manager;
-    
+
     //--------------------------------------------------------------------------
     // GET
     //--------------------------------------------------------------------------
@@ -109,7 +109,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters, 
+    public String getObject( @PathVariable( "uid" ) String uid, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -120,7 +120,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             ContextUtils.notFoundResponse( response, "Object not found for uid: " + uid );
             return null;
         }
-        
+
         if ( options.hasLinks() )
         {
             WebUtils.generateLinks( entity );
@@ -136,7 +136,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     @RequestMapping( value = "/search/{query}", method = RequestMethod.GET )
-    public String search( @PathVariable String query, @RequestParam Map<String, String> parameters, 
+    public String search( @PathVariable String query, @RequestParam Map<String, String> parameters,
         Model model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
         WebOptions options = new WebOptions( parameters );
@@ -147,7 +147,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
             ContextUtils.notFoundResponse( response, "Object not found for query: " + query );
             return null;
         }
-        
+
         if ( options.hasLinks() )
         {
             WebUtils.generateLinks( entity );
@@ -217,7 +217,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     //--------------------------------------------------------------------------
 
     /**
-     * Override to process a single entity after it has been retrieved from 
+     * Override to process a single entity after it has been retrieved from
      * storage and before it is returned to the view. Entity is null-safe.
      */
     public void postProcessEntity( T entity ) throws Exception
@@ -225,7 +225,7 @@ public abstract class AbstractCrudController<T extends IdentifiableObject>
     }
 
     /**
-     * Override to process a single entity after it has been retrieved from 
+     * Override to process a single entity after it has been retrieved from
      * storage and before it is returned to the view. Entity is null-safe.
      */
     public void postProcessEntity( T entity, Map<String, String> parameters ) throws Exception

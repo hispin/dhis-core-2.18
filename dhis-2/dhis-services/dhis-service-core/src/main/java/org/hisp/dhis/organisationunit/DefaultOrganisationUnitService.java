@@ -33,7 +33,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
-import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -105,8 +104,8 @@ public class DefaultOrganisationUnitService
             currentUserService.getCurrentUser().getOrganisationUnits().add( organisationUnit );
         }
 
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_ADD,
-            OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_CREATE,
+        //    OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
 
         updateVersion();
 
@@ -117,8 +116,8 @@ public class DefaultOrganisationUnitService
     {
         organisationUnitStore.update( organisationUnit );
 
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_EDIT,
-            OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_UPDATE,
+        //    OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
 
         updateVersion();
     }
@@ -147,8 +146,8 @@ public class DefaultOrganisationUnitService
             organisationUnitStore.update( parent );
         }
 
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_DELETE,
-            OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
+        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_DELETE,
+        //    OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
 
         organisationUnitStore.delete( organisationUnit );
 

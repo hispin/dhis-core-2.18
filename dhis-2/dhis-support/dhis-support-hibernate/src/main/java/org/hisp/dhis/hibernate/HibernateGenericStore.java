@@ -27,11 +27,8 @@ package org.hisp.dhis.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -40,10 +37,18 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.AuditLogUtil;
 import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -52,6 +57,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class HibernateGenericStore<T>
     implements GenericNameableObjectStore<T>
 {
+    private static final Log log = LogFactory.getLog( HibernateGenericStore.class );
+
     protected SessionFactory sessionFactory;
 
     @Required
@@ -66,6 +73,9 @@ public class HibernateGenericStore<T>
     {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    @Autowired
+    private CurrentUserService currentUserService;
 
     private Class<T> clazz;
 
@@ -133,7 +143,7 @@ public class HibernateGenericStore<T>
     }
 
     /**
-     * Creates a Critera for the implementation Class type.
+     * Creates a Criteria for the implementation Class type.
      *
      * @return a Criteria instance.
      */
@@ -197,18 +207,22 @@ public class HibernateGenericStore<T>
     @Override
     public int save( T object )
     {
+        AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_CREATE );
         return (Integer) sessionFactory.getCurrentSession().save( object );
     }
 
     @Override
     public void update( T object )
     {
+        AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE );
         sessionFactory.getCurrentSession().update( object );
     }
 
     @Override
     public void saveOrUpdate( T object )
     {
+        // TODO check if object is persisted or not to decide logging? defaulting to edit for now
+        AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_UPDATE );
         sessionFactory.getCurrentSession().saveOrUpdate( object );
     }
 
@@ -216,38 +230,56 @@ public class HibernateGenericStore<T>
     @SuppressWarnings( "unchecked" )
     public final T get( int id )
     {
-        return (T) sessionFactory.getCurrentSession().get( getClazz(), id );
+        T object = (T) sessionFactory.getCurrentSession().get( getClazz(), id );
+        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+
+        return object;
     }
 
     @Override
     @SuppressWarnings( "unchecked" )
     public final T load( int id )
     {
-        return (T) sessionFactory.getCurrentSession().load( getClazz(), id );
+        T object = (T) sessionFactory.getCurrentSession().load( getClazz(), id );
+        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+
+        return object;
     }
-    
+
     @Override
     public final T getByUid( String uid )
     {
-        return getObject( Restrictions.eq( "uid", uid ) );
+        T object = getObject( Restrictions.eq( "uid", uid ) );
+        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+
+        return object;
     }
 
     @Override
     public final T getByName( String name )
     {
-        return getObject( Restrictions.eq( "name", name ) );
+        T object = getObject( Restrictions.eq( "name", name ) );
+        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+
+        return object;
     }
 
     @Override
     public final T getByShortName( String shortName )
     {
-        return getObject( Restrictions.eq( "shortName", shortName ) );
+        T object = getObject( Restrictions.eq( "shortName", shortName ) );
+        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+
+        return object;
     }
 
     @Override
     public final T getByCode( String code )
     {
-        return getObject( Restrictions.eq( "code", code ) );
+        T object = getObject( Restrictions.eq( "code", code ) );
+        // AuditLogUtil.infoWrapper( log, currentUserService.getCurrentUsername(), object, AuditLogUtil.ACTION_READ );
+
+        return object;
     }
 
     @Override
@@ -366,8 +398,8 @@ public class HibernateGenericStore<T>
     @Override
     public long getCountByLastUpdated( Date lastUpdated )
     {
-        Object count  = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).setProjection( Projections.rowCount() ).list().get( 0 );
-        
+        Object count = getCriteria().add( Restrictions.ge( "lastUpdated", lastUpdated ) ).setProjection( Projections.rowCount() ).list().get( 0 );
+
         return count != null ? (Long) count : -1;
     }
 
@@ -379,11 +411,11 @@ public class HibernateGenericStore<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public List<T> getAccessibleByUser( User user )
     {
         //TODO link to interface
-        
+
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.or( Restrictions.eq( "user", user ), Restrictions.isNull( "user" ) ) );
         criteria.addOrder( Order.asc( "name" ) );
