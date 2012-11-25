@@ -228,18 +228,20 @@ public class JdbcResourceTableStore
     // PeriodTable
     // -------------------------------------------------------------------------
 
-    public void createPeriodStructure()
+    public void createPeriodStructure( boolean noDisaggregation )
     {
+        String tableName = noDisaggregation ? TABLE_NAME_PERIOD_NO_DISAGGREGATION_STRUCTURE : TABLE_NAME_PERIOD_STRUCTURE;
+        
         try
         {
-            jdbcTemplate.update( "DROP TABLE " + TABLE_NAME_PERIOD_STRUCTURE );            
+            jdbcTemplate.update( "DROP TABLE " + tableName );            
         }
         catch ( BadSqlGrammarException ex )
         {
             // Do nothing, table does not exist
         }
         
-        String sql = "CREATE TABLE " + TABLE_NAME_PERIOD_STRUCTURE + " (periodid INTEGER NOT NULL";
+        String sql = "CREATE TABLE " + tableName + " (periodid INTEGER NOT NULL";
         
         for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
         {

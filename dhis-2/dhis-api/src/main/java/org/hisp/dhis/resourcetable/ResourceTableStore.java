@@ -45,6 +45,7 @@ public interface ResourceTableStore
     final String TABLE_NAME_ORGANISATION_UNIT_STRUCTURE = "_orgunitstructure";
     final String TABLE_NAME_DATA_ELEMENT_STRUCTURE = "_dataelementstructure";
     final String TABLE_NAME_PERIOD_STRUCTURE = "_periodstructure";
+    final String TABLE_NAME_PERIOD_NO_DISAGGREGATION_STRUCTURE = "_period_no_disaggregation_structure";
     
     // -------------------------------------------------------------------------
     // OrganisationUnitStructure
@@ -104,5 +105,5 @@ public interface ResourceTableStore
     /**
      * Creates table.
      */
-    void createPeriodStructure();
+    void createPeriodStructure( boolean noDisaggregation );
 }
