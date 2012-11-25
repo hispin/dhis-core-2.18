@@ -28,8 +28,6 @@ package org.hisp.dhis.organisationunit;
  */
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
@@ -53,8 +51,6 @@ public class DefaultOrganisationUnitService
     implements OrganisationUnitService
 {
     private static final String LEVEL_PREFIX = "Level ";
-
-    private static final Log log = LogFactory.getLog( DefaultOrganisationUnitService.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -100,12 +96,9 @@ public class DefaultOrganisationUnitService
         if ( organisationUnit.getParent() == null && currentUserService.getCurrentUser() != null )
         {
             // Adding a new root node, add this node to the current user
-            
+
             currentUserService.getCurrentUser().getOrganisationUnits().add( organisationUnit );
         }
-
-        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_CREATE,
-        //    OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
 
         updateVersion();
 
@@ -115,9 +108,6 @@ public class DefaultOrganisationUnitService
     public void updateOrganisationUnit( OrganisationUnit organisationUnit )
     {
         organisationUnitStore.update( organisationUnit );
-
-        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_UPDATE,
-        //    OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
 
         updateVersion();
     }
@@ -131,7 +121,7 @@ public class DefaultOrganisationUnitService
         throws HierarchyViolationException
     {
         organisationUnit = getOrganisationUnit( organisationUnit.getId() );
-        
+
         if ( !organisationUnit.getChildren().isEmpty() )
         {
             throw new HierarchyViolationException( "Cannot delete an OrganisationUnit with children" );
@@ -145,9 +135,6 @@ public class DefaultOrganisationUnitService
 
             organisationUnitStore.update( parent );
         }
-
-        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_DELETE,
-        //    OrganisationUnit.class.getSimpleName(), organisationUnit.getName() ) );
 
         organisationUnitStore.delete( organisationUnit );
 
@@ -539,7 +526,7 @@ public class DefaultOrganisationUnitService
     {
         return organisationUnitStore.getBetweenByName( name, first, max );
     }
-    
+
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
