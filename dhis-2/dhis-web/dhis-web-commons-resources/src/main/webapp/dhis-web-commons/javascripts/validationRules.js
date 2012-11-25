@@ -287,12 +287,6 @@ var validationRules = {
         },
         "region" : {
             "rangelength" : [ 0, 255 ]
-        },
-        "memberValidator" : {
-            "required" : true
-        },
-        "memberValidatorIn" : {
-            "required" : true
         }
     },
     "indicator" : {
