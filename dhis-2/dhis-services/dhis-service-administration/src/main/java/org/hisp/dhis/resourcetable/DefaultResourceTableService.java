@@ -64,6 +64,8 @@ import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableState
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
 
+import static org.hisp.dhis.resourcetable.ResourceTableStore.*;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: DefaultResourceTableService.java 5459 2008-06-26 01:12:03Z
@@ -440,7 +442,7 @@ public class DefaultResourceTableService
     // PeriodTable
     // -------------------------------------------------------------------------
 
-    public void generatePeriodTable()
+    public void generatePeriodTable( boolean noDisaggregation )
     {
         // ---------------------------------------------------------------------
         // Create table
@@ -448,18 +450,21 @@ public class DefaultResourceTableService
 
         Collection<Period> periods = periodService.getAllPeriods();
         
-        resourceTableStore.createPeriodStructure();
+        resourceTableStore.createPeriodStructure( noDisaggregation );
         
         // ---------------------------------------------------------------------
         // Populate table
         // ---------------------------------------------------------------------
 
+        String tableName = noDisaggregation ? TABLE_NAME_PERIOD_NO_DISAGGREGATION_STRUCTURE : TABLE_NAME_PERIOD_STRUCTURE;
+        
         BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
-            setTableName( ResourceTableStore.TABLE_NAME_PERIOD_STRUCTURE ).init();
+            setTableName( tableName ).init();
         
         for ( Period period : periods )
         {
             final Date startDate = period.getStartDate();
+            final PeriodType rowType = period.getPeriodType();
             
             final List<String> values = new ArrayList<String>();
             
@@ -467,7 +472,14 @@ public class DefaultResourceTableService
             
             for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
             {
-                values.add( periodType.createPeriod( startDate ).getIsoDate() );
+                if ( rowType.getFrequencyOrder() <= periodType.getFrequencyOrder() || !noDisaggregation )
+                {
+                    values.add( periodType.createPeriod( startDate ).getIsoDate() );
+                }
+                else
+                {
+                    values.add( null );
+                }
             }
             
             batchHandler.addObject( values );

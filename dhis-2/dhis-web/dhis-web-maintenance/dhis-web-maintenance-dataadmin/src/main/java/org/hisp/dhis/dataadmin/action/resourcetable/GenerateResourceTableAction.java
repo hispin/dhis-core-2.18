@@ -169,7 +169,8 @@ public class GenerateResourceTableAction
         
         if ( periodStructure )
         {
-            resourceTableService.generatePeriodTable();
+            resourceTableService.generatePeriodTable( false );
+            resourceTableService.generatePeriodTable( true );
         }
         
         log.info( "Generated resource tables" );
