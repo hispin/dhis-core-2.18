@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.util;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,20 +27,57 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+
 public class AuditLogUtil
 {
-    public static final String ACTION_ADD = "added";
-    public static final String ACTION_EDIT = "edited";
+    public static final String ACTION_CREATE = "create";
+    public static final String ACTION_READ = "read";
+    public static final String ACTION_UPDATE = "updated";
     public static final String ACTION_DELETE = "deleted";
+
+    public static void infoWrapper( Log log, String username, Object object, String action )
+    {
+        if ( log.isInfoEnabled() )
+        {
+            if ( username != null && object != null && IdentifiableObject.class.isInstance( object ) )
+            {
+                IdentifiableObject idObject = (IdentifiableObject) object;
+                StringBuilder builder = new StringBuilder();
+
+                builder.append( "'" );
+                builder.append( username );
+                builder.append( "' " );
+                builder.append( action );
+                builder.append( " " );
+                builder.append( object.getClass().getName() );
+
+                if ( idObject.getName() != null && !idObject.getName().isEmpty() )
+                {
+                    builder.append( ", name: " );
+                    builder.append( idObject.getName() );
+                }
+
+                if ( idObject.getUid() != null && !idObject.getUid().isEmpty() )
+                {
+                    builder.append( ", uid: " );
+                    builder.append( idObject.getUid() );
+                }
+
+                // String msg = logMessage( username, action, object.getClass().getName(), builder.toString() );
+                log.info( builder.toString() );
+            }
+        }
+    }
 
     /**
      * Generate audit trail logging message
-     * 
-     * @param userName : Current user name
-     * @param action : user's action ( add, edit, delete )
+     *
+     * @param userName   : Current user name
+     * @param action     : user's action ( add, edit, delete )
      * @param objectType : The name of the object that user is working on
      * @param objectName : The value of the name attribute of the object that
-     *        user is working on
+     *                   user is working on
      * @return : the audit trail logging message
      */
     public static String logMessage( String userName, String action, String objectType, String objectName )

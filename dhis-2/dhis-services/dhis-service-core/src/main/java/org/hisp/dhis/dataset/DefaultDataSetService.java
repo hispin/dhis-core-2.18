@@ -48,7 +48,6 @@ import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
@@ -103,8 +102,8 @@ public class DefaultDataSetService
 
     public int addDataSet( DataSet dataSet )
     {
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-            AuditLogUtil.ACTION_ADD, DataSet.class.getSimpleName(), dataSet.getName() ) );
+        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+        //    AuditLogUtil.ACTION_CREATE, DataSet.class.getSimpleName(), dataSet.getName() ) );
 
         return dataSetStore.save( dataSet );
     }
@@ -113,14 +112,14 @@ public class DefaultDataSetService
     {
         dataSetStore.update( dataSet );
 
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-            AuditLogUtil.ACTION_EDIT, DataSet.class.getSimpleName(), dataSet.getName() ) );
+        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+        //    AuditLogUtil.ACTION_UPDATE, DataSet.class.getSimpleName(), dataSet.getName() ) );
     }
 
     public void deleteDataSet( DataSet dataSet )
     {
-        log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
-            AuditLogUtil.ACTION_DELETE, DataSet.class.getSimpleName(), dataSet.getName() ) );
+        //log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
+        //    AuditLogUtil.ACTION_DELETE, DataSet.class.getSimpleName(), dataSet.getName() ) );
         
         dataSetStore.delete( dataSet );
     }
