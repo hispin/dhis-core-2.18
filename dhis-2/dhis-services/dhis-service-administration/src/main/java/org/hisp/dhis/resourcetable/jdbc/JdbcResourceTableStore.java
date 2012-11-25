@@ -36,6 +36,7 @@ import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.ResourceTableStore;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
@@ -112,7 +113,7 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
-        String sql = "CREATE TABLE " + TABLE_NAME_CATEGORY_OPTION_COMBO_NAME + 
+        final String sql = "CREATE TABLE " + TABLE_NAME_CATEGORY_OPTION_COMBO_NAME + 
             " ( categoryoptioncomboid INTEGER NOT NULL, categoryoptioncomboname VARCHAR(250) )";
         
         log.info( "Create category option combo name table SQL: " + sql );
@@ -215,11 +216,38 @@ public class JdbcResourceTableStore
             // Do nothing, table does not exist
         }
         
-        String sql = "CREATE TABLE " + TABLE_NAME_DATA_ELEMENT_STRUCTURE + 
+        final String sql = "CREATE TABLE " + TABLE_NAME_DATA_ELEMENT_STRUCTURE + 
             " ( dataelementid INTEGER NOT NULL, dataelementname VARCHAR(250), periodtypeid INTEGER, periodtypename VARCHAR(250) )";
         
         log.info( "Create data element structure SQL: " + sql );
         
         jdbcTemplate.update( sql );        
+    }
+    
+    // -------------------------------------------------------------------------
+    // PeriodTable
+    // -------------------------------------------------------------------------
+
+    public void createPeriodStructure()
+    {
+        try
+        {
+            jdbcTemplate.update( "DROP TABLE " + TABLE_NAME_PERIOD_STRUCTURE );            
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        String sql = "CREATE TABLE " + TABLE_NAME_PERIOD_STRUCTURE + " (periodid INTEGER NOT NULL";
+        
+        for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
+        {
+            sql += ", " + periodType.getName().toLowerCase() + " VARCHAR(100)";
+        }
+        
+        sql += ")";
+        
+        jdbcTemplate.update( sql );
     }
 }

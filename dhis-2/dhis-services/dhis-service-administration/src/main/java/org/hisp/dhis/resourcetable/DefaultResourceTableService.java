@@ -30,6 +30,7 @@ package org.hisp.dhis.resourcetable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
@@ -113,6 +116,13 @@ public class DefaultResourceTableService
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+    
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     private BatchHandlerFactory batchHandlerFactory;
@@ -423,6 +433,46 @@ public class DefaultResourceTableService
             batchHandler.addObject( values );
         }
         
+        batchHandler.flush();
+    }
+
+    // -------------------------------------------------------------------------
+    // PeriodTable
+    // -------------------------------------------------------------------------
+
+    public void generatePeriodTable()
+    {
+        // ---------------------------------------------------------------------
+        // Create table
+        // ---------------------------------------------------------------------
+
+        Collection<Period> periods = periodService.getAllPeriods();
+        
+        resourceTableStore.createPeriodStructure();
+        
+        // ---------------------------------------------------------------------
+        // Populate table
+        // ---------------------------------------------------------------------
+
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( ResourceTableStore.TABLE_NAME_PERIOD_STRUCTURE ).init();
+        
+        for ( Period period : periods )
+        {
+            final Date startDate = period.getStartDate();
+            
+            final List<String> values = new ArrayList<String>();
+            
+            values.add( String.valueOf( period.getId() ) );
+            
+            for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
+            {
+                values.add( periodType.createPeriod( startDate ).getIsoDate() );
+            }
+            
+            batchHandler.addObject( values );
+        }
+
         batchHandler.flush();
     }
 }

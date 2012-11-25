@@ -42,6 +42,11 @@
     <label for="dataElementStructure">$i18n.getString( "data_element_structure" ) <span style="color:#606060">(_dataelementstructure)</span></label>
 </p>
 
+<p>
+    <input type="checkbox" name="resourceTableCheckBox" id="periodStructure"/>
+    <label for="periodStructure">$i18n.getString( "period_structure" ) <span style="color:#606060">(_periodstructure)</span></label>
+</p>
+
 <table>
 	<tr>
 		<td>

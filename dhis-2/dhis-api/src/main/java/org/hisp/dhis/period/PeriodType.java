@@ -53,7 +53,7 @@ public abstract class PeriodType
     // Available PeriodTypes
     // -------------------------------------------------------------------------
 
-    private static final List<PeriodType> PERIOD_TYPES = new ArrayList<PeriodType>()
+    public static final List<PeriodType> PERIOD_TYPES = new ArrayList<PeriodType>()
     {
         {
             add( new DailyPeriodType() );
