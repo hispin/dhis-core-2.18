@@ -244,7 +244,7 @@ public class JdbcResourceTableStore
         
         for ( PeriodType periodType : PeriodType.PERIOD_TYPES )
         {
-            sql += ", " + periodType.getName().toLowerCase() + " VARCHAR(100)";
+            sql += ", " + periodType.getName().toLowerCase() + " VARCHAR(10)";
         }
         
         sql += ")";
