@@ -27,17 +27,12 @@
 
 package org.hisp.dhis.option.hibernate;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.option.OptionStore;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 /**
  * @author Chau Thu Tran
@@ -49,17 +44,6 @@ public class HibernateOptionStore
     implements OptionStore
 {
     // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private JdbcTemplate jdbcTemplate;
-
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
 
@@ -68,15 +52,18 @@ public class HibernateOptionStore
     public List<String> getOptions( int optionSetId, String key, Integer max )
     {
         String hql = "select option from OptionSet as optionset inner join optionset.options as option where optionset.id = :optionSetId ";
-        if( key != null )
+        if ( key != null )
         {
             hql += " and lower(option) like lower('%" + key + "%') ";
         }
-        
+
         hql += " order by index(option)";
         Query query = getQuery( hql );
         query.setInteger( "optionSetId", optionSetId );
-        query.setMaxResults( max );
+        if ( max != null )
+        {
+            query.setMaxResults( max );
+        }
         
         return query.list();
     }
